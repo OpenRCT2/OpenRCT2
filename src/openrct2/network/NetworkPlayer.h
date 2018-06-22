@@ -9,39 +9,39 @@
 
 #pragma once
 
-#include <string>
 #include "../common.h"
-
 #include "../peep/Peep.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"
+
+#include <string>
 
 class NetworkPacket;
 
 class NetworkPlayer final
 {
 public:
-    uint8_t       Id                      = 0;
+    uint8_t Id = 0;
     std::string Name;
-    uint16_t      Ping                    = 0;
-    uint8_t       Flags                   = 0;
-    uint8_t       Group                   = 0;
-    money32     MoneySpent              = MONEY(0, 0);
-    uint32_t      CommandsRan             = 0;
-    int32_t      LastAction              = -999;
-    uint32_t      LastActionTime          = 0;
-    LocationXYZ16   LastActionCoord     = {};
-    rct_peep*   PickupPeep              = nullptr;
-    int32_t      PickupPeepOldX          = LOCATION_NULL;
+    uint16_t Ping = 0;
+    uint8_t Flags = 0;
+    uint8_t Group = 0;
+    money32 MoneySpent = MONEY(0, 0);
+    uint32_t CommandsRan = 0;
+    int32_t LastAction = -999;
+    uint32_t LastActionTime = 0;
+    LocationXYZ16 LastActionCoord = {};
+    rct_peep* PickupPeep = nullptr;
+    int32_t PickupPeepOldX = LOCATION_NULL;
     std::string KeyHash;
-    uint32_t      LastDemolishRideTime    = 0;
-    uint32_t      LastPlaceSceneryTime    = 0;
+    uint32_t LastDemolishRideTime = 0;
+    uint32_t LastPlaceSceneryTime = 0;
 
     NetworkPlayer() = default;
 
-    void SetName(const std::string &name);
+    void SetName(const std::string& name);
 
-    void Read(NetworkPacket &packet);
-    void Write(NetworkPacket &packet);
+    void Read(NetworkPacket& packet);
+    void Write(NetworkPacket& packet);
     void AddMoneySpent(money32 cost);
 };

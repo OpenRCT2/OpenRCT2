@@ -9,9 +9,10 @@
 
 #pragma once
 
+#include "../common.h"
+
 #include <string>
 #include <vector>
-#include "../common.h"
 
 struct server_entry
 {
@@ -19,11 +20,11 @@ struct server_entry
     std::string name;
     std::string description;
     std::string version;
-    bool        requiresPassword    = false;
-    bool        favourite           = false;
-    uint8_t       players             = 0;
-    uint8_t       maxplayers          = 0;
+    bool requiresPassword = false;
+    bool favourite = false;
+    uint8_t players = 0;
+    uint8_t maxplayers = 0;
 };
 
 std::vector<server_entry> server_list_read();
-bool server_list_write(const std::vector<server_entry> &entries);
+bool server_list_write(const std::vector<server_entry>& entries);

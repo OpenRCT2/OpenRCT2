@@ -9,14 +9,20 @@
 
 #ifndef DISABLE_NETWORK
 
-#include <vector>
-#include "../core/Crypt.h"
-#include "../core/IStream.hpp"
-#include "../Diagnostic.h"
 #include "NetworkKey.h"
 
-NetworkKey::NetworkKey() { }
-NetworkKey::~NetworkKey() { }
+#include "../Diagnostic.h"
+#include "../core/Crypt.h"
+#include "../core/IStream.hpp"
+
+#include <vector>
+
+NetworkKey::NetworkKey()
+{
+}
+NetworkKey::~NetworkKey()
+{
+}
 
 void NetworkKey::Unload()
 {
@@ -38,7 +44,7 @@ bool NetworkKey::Generate()
     }
 }
 
-bool NetworkKey::LoadPrivate(IStream * stream)
+bool NetworkKey::LoadPrivate(IStream* stream)
 {
     Guard::ArgumentNotNull(stream);
 
@@ -70,7 +76,7 @@ bool NetworkKey::LoadPrivate(IStream * stream)
     }
 }
 
-bool NetworkKey::LoadPublic(IStream * stream)
+bool NetworkKey::LoadPublic(IStream* stream)
 {
     Guard::ArgumentNotNull(stream);
 
@@ -102,7 +108,7 @@ bool NetworkKey::LoadPublic(IStream * stream)
     }
 }
 
-bool NetworkKey::SavePrivate(IStream * stream)
+bool NetworkKey::SavePrivate(IStream* stream)
 {
     try
     {
@@ -121,7 +127,7 @@ bool NetworkKey::SavePrivate(IStream * stream)
     }
 }
 
-bool NetworkKey::SavePublic(IStream * stream)
+bool NetworkKey::SavePublic(IStream* stream)
 {
     try
     {
@@ -188,7 +194,7 @@ std::string NetworkKey::PublicKeyHash()
     return nullptr;
 }
 
-bool NetworkKey::Sign(const uint8_t * md, const size_t len, char ** signature, size_t * out_size)
+bool NetworkKey::Sign(const uint8_t* md, const size_t len, char** signature, size_t* out_size)
 {
     try
     {
@@ -208,7 +214,7 @@ bool NetworkKey::Sign(const uint8_t * md, const size_t len, char ** signature, s
     }
 }
 
-bool NetworkKey::Verify(const uint8_t * md, const size_t len, const char * sig, const size_t siglen)
+bool NetworkKey::Verify(const uint8_t* md, const size_t len, const char* sig, const size_t siglen)
 {
     try
     {

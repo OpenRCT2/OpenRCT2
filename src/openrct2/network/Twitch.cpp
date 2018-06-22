@@ -9,29 +9,26 @@
 
 #ifdef DISABLE_TWITCH
 
-    #include "twitch.h"
+#include "twitch.h"
 
-    void twitch_update() { }
+void twitch_update()
+{
+}
 
 #else
 
 #ifdef DISABLE_HTTP
-    #error HTTP must be enabled to use the TWITCH functionality.
+#error HTTP must be enabled to use the TWITCH functionality.
 #endif
 
-#include <jansson.h>
-#include <memory>
-#include <vector>
 #include "../Context.h"
-
-#include "../core/Math.hpp"
-#include "../core/String.hpp"
+#include "../Game.h"
 #include "../OpenRCT2.h"
-
 #include "../config/Config.h"
 #include "../core/Json.hpp"
+#include "../core/Math.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../Game.h"
 #include "../interface/InteractiveConsole.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
@@ -42,9 +39,12 @@
 #include "Http.h"
 #include "twitch.h"
 
+#include <jansson.h>
+#include <memory>
+#include <vector>
+
 using namespace OpenRCT2;
 using namespace OpenRCT2::Network;
-
 
 bool gTwitchEnable = false;
 
@@ -68,22 +68,23 @@ namespace Twitch
 
     struct AudienceMember
     {
-        const char * Name;
-        bool         IsFollower;
-        bool         IsInChat;
-        bool         IsMod;
-        bool         Exists;
-        bool         ShouldTrack;
+        const char* Name;
+        bool IsFollower;
+        bool IsInChat;
+        bool IsMod;
+        bool Exists;
+        bool ShouldTrack;
 
-        static AudienceMember FromJson(json_t * json)
+        static AudienceMember FromJson(json_t* json)
         {
             AudienceMember member = {};
 
-            if (!json_is_object(json)) return member;
-            json_t * name = json_object_get(json, "name");
-            json_t * isFollower = json_object_get(json, "isFollower");
-            json_t * isInChat = json_object_get(json, "inChat");
-            json_t * isMod = json_object_get(json, "isMod");
+            if (!json_is_object(json))
+                return member;
+            json_t* name = json_object_get(json, "name");
+            json_t* isFollower = json_object_get(json, "isFollower");
+            json_t* isInChat = json_object_get(json, "inChat");
+            json_t* isMod = json_object_get(json, "isMod");
 
             member.Name = json_string_value(name);
             member.IsFollower = json_is_true(isFollower);
@@ -102,11 +103,11 @@ namespace Twitch
      */
     constexpr uint32_t PulseTime = 10 * 1000;
 
-    static int32_t               _twitchState = TWITCH_STATE_LEFT;
-    static bool              _twitchIdle = true;
-    static uint32_t            _twitchLastPulseTick = 0;
-    static int32_t               _twitchLastPulseOperation = 1;
-    static Http::Response       _twitchJsonResponse;
+    static int32_t _twitchState = TWITCH_STATE_LEFT;
+    static bool _twitchIdle = true;
+    static uint32_t _twitchLastPulseTick = 0;
+    static int32_t _twitchLastPulseOperation = 1;
+    static Http::Response _twitchJsonResponse;
 
     static void Join();
     static void Leave();
@@ -114,65 +115,74 @@ namespace Twitch
     static void GetMessages();
     static void ParseFollowers();
     static void ParseMessages();
-    static bool ShouldTrackMember(const AudienceMember * member);
-    static bool ShouldMemberBeGuest(const AudienceMember * member);
-    static void ManageGuestNames(std::vector<AudienceMember> &members);
-    static void ParseChatMessage(const char * message);
-    static void DoChatMessageNews(const char * message);
+    static bool ShouldTrackMember(const AudienceMember* member);
+    static bool ShouldMemberBeGuest(const AudienceMember* member);
+    static void ManageGuestNames(std::vector<AudienceMember>& members);
+    static void ParseChatMessage(const char* message);
+    static void DoChatMessageNews(const char* message);
 
     static bool IsTwitchEnabled()
     {
-        if (!gTwitchEnable) return false;
-        if (gScreenFlags & (~SCREEN_FLAGS_PLAYING)) return false;
-        if (String::IsNullOrEmpty(gConfigTwitch.channel)) return false;
+        if (!gTwitchEnable)
+            return false;
+        if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
+            return false;
+        if (String::IsNullOrEmpty(gConfigTwitch.channel))
+            return false;
         return true;
     }
 
     static void Update()
     {
-        if (!_twitchIdle) return;
-        if (IsTwitchEnabled()) {
-            if (game_is_paused()) return;
+        if (!_twitchIdle)
+            return;
+        if (IsTwitchEnabled())
+        {
+            if (game_is_paused())
+                return;
 
-            switch (_twitchState) {
-            case TWITCH_STATE_LEFT:
+            switch (_twitchState)
             {
-                uint32_t currentTime = platform_get_ticks();
-                uint32_t timeSinceLastPulse = currentTime - _twitchLastPulseTick;
-                if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime)
+                case TWITCH_STATE_LEFT:
                 {
-                    _twitchLastPulseTick = currentTime;
-                    Join();
-                }
-                break;
-            }
-            case TWITCH_STATE_JOINED:
-            {
-                uint32_t currentTime = platform_get_ticks();
-                uint32_t timeSinceLastPulse = currentTime - _twitchLastPulseTick;
-                if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime) {
-                    _twitchLastPulseTick = currentTime;
-                    _twitchLastPulseOperation = (_twitchLastPulseOperation + 1) % 2;
-                    switch (_twitchLastPulseOperation + TWITCH_STATE_GET_FOLLOWERS) {
-                    case TWITCH_STATE_GET_FOLLOWERS:
-                        GetFollowers();
-                        break;
-                    case TWITCH_STATE_GET_MESSAGES:
-                        if (gConfigTwitch.enable_news)
-                        {
-                            GetMessages();
-                        }
-                        break;
+                    uint32_t currentTime = platform_get_ticks();
+                    uint32_t timeSinceLastPulse = currentTime - _twitchLastPulseTick;
+                    if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime)
+                    {
+                        _twitchLastPulseTick = currentTime;
+                        Join();
                     }
+                    break;
                 }
-                break;
-            }
-            case TWITCH_STATE_GET_FOLLOWERS:
-                ParseFollowers();
-                break;
-            case TWITCH_STATE_GET_MESSAGES:
-                ParseMessages();
-                break;
+                case TWITCH_STATE_JOINED:
+                {
+                    uint32_t currentTime = platform_get_ticks();
+                    uint32_t timeSinceLastPulse = currentTime - _twitchLastPulseTick;
+                    if (_twitchLastPulseTick == 0 || timeSinceLastPulse > PulseTime)
+                    {
+                        _twitchLastPulseTick = currentTime;
+                        _twitchLastPulseOperation = (_twitchLastPulseOperation + 1) % 2;
+                        switch (_twitchLastPulseOperation + TWITCH_STATE_GET_FOLLOWERS)
+                        {
+                            case TWITCH_STATE_GET_FOLLOWERS:
+                                GetFollowers();
+                                break;
+                            case TWITCH_STATE_GET_MESSAGES:
+                                if (gConfigTwitch.enable_news)
+                                {
+                                    GetMessages();
+                                }
+                                break;
+                        }
+                    }
+                    break;
+                }
+                case TWITCH_STATE_GET_FOLLOWERS:
+                    ParseFollowers();
+                    break;
+                case TWITCH_STATE_GET_MESSAGES:
+                    ParseMessages();
+                    break;
             }
         }
         else
@@ -216,8 +226,8 @@ namespace Twitch
                 return;
             }
 
-            auto     root       = Json::FromString(res.body);
-            json_t * jsonStatus = json_object_get(root, "status");
+            auto root = Json::FromString(res.body);
+            json_t* jsonStatus = json_object_get(root, "status");
             if (json_is_number(jsonStatus) && json_integer_value(jsonStatus) == TWITCH_STATUS_OK)
             {
                 _twitchState = TWITCH_STATE_JOINED;
@@ -288,7 +298,7 @@ namespace Twitch
             }
 
             _twitchJsonResponse = res;
-            _twitchState        = TWITCH_STATE_GET_FOLLOWERS;
+            _twitchState = TWITCH_STATE_GET_FOLLOWERS;
         });
     }
 
@@ -320,13 +330,13 @@ namespace Twitch
             }
 
             _twitchJsonResponse = res;
-            _twitchState        = TWITCH_STATE_GET_MESSAGES;
+            _twitchState = TWITCH_STATE_GET_MESSAGES;
         });
     }
 
     static void ParseFollowers()
     {
-        json_t * root = Json::FromString(_twitchJsonResponse.body);
+        json_t* root = Json::FromString(_twitchJsonResponse.body);
         if (json_is_array(root))
         {
             std::vector<AudienceMember> members;
@@ -334,7 +344,7 @@ namespace Twitch
             size_t audienceCount = json_array_size(root);
             for (size_t i = 0; i < audienceCount; i++)
             {
-                json_t * jsonAudienceMember = json_array_get(root, i);
+                json_t* jsonAudienceMember = json_array_get(root, i);
                 auto member = AudienceMember::FromJson(jsonAudienceMember);
                 if (!String::IsNullOrEmpty(member.Name))
                 {
@@ -357,19 +367,20 @@ namespace Twitch
 
     static void ParseMessages()
     {
-        json_t * root = Json::FromString(_twitchJsonResponse.body);
+        json_t* root = Json::FromString(_twitchJsonResponse.body);
         if (json_is_array(root))
         {
             size_t messageCount = json_array_size(root);
-            for (size_t i = 0; i < messageCount; i++) {
-                json_t * jsonMessage = json_array_get(root, i);
+            for (size_t i = 0; i < messageCount; i++)
+            {
+                json_t* jsonMessage = json_array_get(root, i);
                 if (!json_is_object(jsonMessage))
                 {
                     continue;
                 }
 
-                json_t * jsonText = json_object_get(jsonMessage, "message");
-                const char * text = json_string_value(jsonText);
+                json_t* jsonText = json_object_get(jsonMessage, "message");
+                const char* text = json_string_value(jsonText);
                 ParseChatMessage(text);
             }
         }
@@ -378,7 +389,7 @@ namespace Twitch
         _twitchState = TWITCH_STATE_JOINED;
     }
 
-    static bool ShouldTrackMember(const AudienceMember * member)
+    static bool ShouldTrackMember(const AudienceMember* member)
     {
         if (member->IsInChat && gConfigTwitch.enable_chat_peep_tracking)
         {
@@ -391,7 +402,7 @@ namespace Twitch
         return false;
     }
 
-    static bool ShouldMemberBeGuest(const AudienceMember * member)
+    static bool ShouldMemberBeGuest(const AudienceMember* member)
     {
         if (gConfigTwitch.enable_chat_peep_names && member->IsInChat)
         {
@@ -404,20 +415,20 @@ namespace Twitch
         return false;
     }
 
-    static void ManageGuestNames(std::vector<AudienceMember> &members)
+    static void ManageGuestNames(std::vector<AudienceMember>& members)
     {
         // Check what followers are already in the park
         uint16_t spriteIndex;
-        rct_peep *peep;
-        FOR_ALL_GUESTS(spriteIndex, peep)
+        rct_peep* peep;
+        FOR_ALL_GUESTS (spriteIndex, peep)
         {
             if (is_user_string_id(peep->name_string_idx))
             {
                 utf8 buffer[256];
                 format_string(buffer, 256, peep->name_string_idx, nullptr);
 
-                AudienceMember * member = nullptr;
-                for (AudienceMember &m : members)
+                AudienceMember* member = nullptr;
+                for (AudienceMember& m : members)
                 {
                     if (String::Equals(buffer, m.Name, true))
                     {
@@ -464,7 +475,7 @@ namespace Twitch
         if (!members.empty())
         {
             size_t memberIndex = SIZE_MAX;
-            FOR_ALL_GUESTS(spriteIndex, peep)
+            FOR_ALL_GUESTS (spriteIndex, peep)
             {
                 size_t originalMemberIndex = memberIndex;
                 for (size_t i = memberIndex + 1; i < members.size(); i++)
@@ -480,7 +491,7 @@ namespace Twitch
                     break;
                 }
 
-                AudienceMember * member = &members[memberIndex];
+                AudienceMember* member = &members[memberIndex];
                 if (!is_user_string_id(peep->name_string_idx) && !(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
                 {
                     // Rename peep and add flags
@@ -504,16 +515,16 @@ namespace Twitch
         }
     }
 
-    static char * strskipwhitespace(const char * str)
+    static char* strskipwhitespace(const char* str)
     {
         while (*str == ' ' || *str == '\t')
         {
             str++;
         }
-        return (char *)str;
+        return (char*)str;
     }
 
-    static void ParseChatMessage(const char * message)
+    static void ParseChatMessage(const char* message)
     {
         message = strskipwhitespace(message);
         if (!String::StartsWith(message, "!"))
@@ -526,17 +537,20 @@ namespace Twitch
 
         // Check that command is "news"
         const char *ch, *cmd;
-        for (ch = message, cmd = "news"; *cmd != '\0'; ++ch, ++cmd) {
-            if (*ch != *cmd) return;
+        for (ch = message, cmd = "news"; *cmd != '\0'; ++ch, ++cmd)
+        {
+            if (*ch != *cmd)
+                return;
         }
 
-        if (!isspace(*ch)) return;
+        if (!isspace(*ch))
+            return;
 
         ch = strskipwhitespace(ch);
         DoChatMessageNews(ch);
     }
 
-    static void DoChatMessageNews(const char * message)
+    static void DoChatMessageNews(const char* message)
     {
         if (gConfigTwitch.enable_news)
         {
@@ -544,7 +558,7 @@ namespace Twitch
             buffer[0] = (utf8)(uint8_t)FORMAT_TOPAZ;
             safe_strcpy(buffer + 1, message, sizeof(buffer) - 1);
 
-	    utf8_remove_formatting(buffer, false);
+            utf8_remove_formatting(buffer, false);
 
             // TODO Create a new news item type for twitch which has twitch icon
             news_item_add_to_queue_raw(NEWS_ITEM_BLANK, buffer, 0);

@@ -9,12 +9,12 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "network.h"
 #include "NetworkConnection.h"
-#include "../core/String.hpp"
 
+#include "../core/String.hpp"
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
+#include "network.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
 
@@ -34,7 +34,7 @@ int32_t NetworkConnection::ReadPacket()
     if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Size))
     {
         // read packet size
-        void * buffer = &((char*)&InboundPacket.Size)[InboundPacket.BytesTransferred];
+        void* buffer = &((char*)&InboundPacket.Size)[InboundPacket.BytesTransferred];
         size_t bufferLength = sizeof(InboundPacket.Size) - InboundPacket.BytesTransferred;
         size_t readBytes;
         NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
@@ -59,7 +59,7 @@ int32_t NetworkConnection::ReadPacket()
         // read packet data
         if (InboundPacket.Data->capacity() > 0)
         {
-            void * buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
+            void* buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
             size_t bufferLength = sizeof(InboundPacket.Size) + InboundPacket.Size - InboundPacket.BytesTransferred;
             size_t readBytes;
             NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
@@ -87,7 +87,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     tosend.insert(tosend.end(), (uint8_t*)&sizen, (uint8_t*)&sizen + sizeof(sizen));
     tosend.insert(tosend.end(), packet.Data->begin(), packet.Data->end());
 
-    const void * buffer = &tosend[packet.BytesTransferred];
+    const void* buffer = &tosend[packet.BytesTransferred];
     size_t bufferSize = tosend.size() - packet.BytesTransferred;
     size_t sent = Socket->SendData(buffer, bufferSize);
     if (sent > 0)
@@ -147,12 +147,12 @@ bool NetworkConnection::ReceivedPacketRecently()
     return true;
 }
 
-const utf8 * NetworkConnection::GetLastDisconnectReason() const
+const utf8* NetworkConnection::GetLastDisconnectReason() const
 {
     return this->_lastDisconnectReason;
 }
 
-void NetworkConnection::SetLastDisconnectReason(const utf8 * src)
+void NetworkConnection::SetLastDisconnectReason(const utf8* src)
 {
     if (src == nullptr)
     {
@@ -171,7 +171,7 @@ void NetworkConnection::SetLastDisconnectReason(const utf8 * src)
     String::Set(_lastDisconnectReason, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, src);
 }
 
-void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void *args)
+void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void* args)
 {
     char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
     format_string(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);

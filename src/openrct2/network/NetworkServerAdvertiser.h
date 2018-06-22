@@ -20,10 +20,12 @@ enum class ADVERTISE_STATUS
 
 interface INetworkServerAdvertiser
 {
-    virtual ~INetworkServerAdvertiser() { }
+    virtual ~INetworkServerAdvertiser()
+    {
+    }
 
-    virtual ADVERTISE_STATUS    GetStatus() const abstract;
-    virtual void                Update() abstract;
+    virtual ADVERTISE_STATUS GetStatus() const abstract;
+    virtual void Update() abstract;
 };
 
-INetworkServerAdvertiser * CreateServerAdvertiser(uint16_t port);
+INetworkServerAdvertiser* CreateServerAdvertiser(uint16_t port);

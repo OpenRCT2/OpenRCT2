@@ -12,6 +12,7 @@
 #ifdef __ENABLE_DISCORD__
 
 #include "../common.h"
+
 #include <limits>
 
 class DiscordService final

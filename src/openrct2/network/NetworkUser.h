@@ -19,15 +19,15 @@
 class NetworkUser final
 {
 public:
-    std::string         Hash;
-    std::string         Name;
-    Nullable<uint8_t>     GroupId;
-    bool                Remove;
+    std::string Hash;
+    std::string Name;
+    Nullable<uint8_t> GroupId;
+    bool Remove;
 
-    static NetworkUser * FromJson(json_t * json);
+    static NetworkUser* FromJson(json_t* json);
 
-    json_t * ToJson() const;
-    json_t * ToJson(json_t * json) const;
+    json_t* ToJson() const;
+    json_t* ToJson(json_t* json) const;
 };
 
 class NetworkUserManager final
@@ -46,16 +46,16 @@ public:
     void Save();
 
     void UnsetUsersOfGroup(uint8_t groupId);
-    void RemoveUser(const std::string &hash);
+    void RemoveUser(const std::string& hash);
 
-    NetworkUser * GetUserByHash(const std::string &hash);
-    const NetworkUser * GetUserByHash(const std::string &hash) const;
-    const NetworkUser * GetUserByName(const std::string &name) const;
-    NetworkUser * GetOrAddUser(const std::string &hash);
+    NetworkUser* GetUserByHash(const std::string& hash);
+    const NetworkUser* GetUserByHash(const std::string& hash) const;
+    const NetworkUser* GetUserByName(const std::string& name) const;
+    NetworkUser* GetOrAddUser(const std::string& hash);
 
 private:
     std::map<std::string, NetworkUser*> _usersByHash;
 
     void DisposeUsers();
-    static void GetStorePath(utf8 * buffer, size_t bufferSize);
+    static void GetStorePath(utf8* buffer, size_t bufferSize);
 };

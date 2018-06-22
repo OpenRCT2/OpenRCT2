@@ -9,30 +9,31 @@
 
 #pragma once
 
+#include "../common.h"
+#include "NetworkPacket.h"
+
 #include <array>
 #include <jansson.h>
 #include <string>
-#include "NetworkPacket.h"
-#include "../common.h"
 
 class NetworkGroup final
 {
 public:
-    std::array<uint8_t, 8>    ActionsAllowed{};
-    uint8_t                   Id = 0;
+    std::array<uint8_t, 8> ActionsAllowed{};
+    uint8_t Id = 0;
 
-    static NetworkGroup FromJson(const json_t * json);
+    static NetworkGroup FromJson(const json_t* json);
 
-    const std::string & GetName() const;
+    const std::string& GetName() const;
     void SetName(std::string name);
 
-    void Read(NetworkPacket &packet);
-    void Write(NetworkPacket &packet);
+    void Read(NetworkPacket& packet);
+    void Write(NetworkPacket& packet);
     void ToggleActionPermission(size_t index);
     bool CanPerformAction(size_t index) const;
     bool CanPerformCommand(int32_t command) const;
 
-    json_t * ToJson() const;
+    json_t* ToJson() const;
 
 private:
     std::string _name;

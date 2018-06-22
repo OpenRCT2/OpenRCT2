@@ -13,6 +13,7 @@
 #ifndef DISABLE_NETWORK
 
 #include "../common.h"
+
 #include <memory>
 #include <string>
 
@@ -29,17 +30,18 @@ public:
     NetworkKey();
     ~NetworkKey();
     bool Generate();
-    bool LoadPrivate(IStream * stream);
-    bool LoadPublic(IStream * stream);
-    bool SavePrivate(IStream * stream);
-    bool SavePublic(IStream * stream);
+    bool LoadPrivate(IStream* stream);
+    bool LoadPublic(IStream* stream);
+    bool SavePrivate(IStream* stream);
+    bool SavePublic(IStream* stream);
     std::string PublicKeyString();
     std::string PublicKeyHash();
     void Unload();
-    bool Sign(const uint8_t * md, const size_t len, char ** signature, size_t * out_size);
-    bool Verify(const uint8_t * md, const size_t len, const char * sig, const size_t siglen);
+    bool Sign(const uint8_t* md, const size_t len, char** signature, size_t* out_size);
+    bool Verify(const uint8_t* md, const size_t len, const char* sig, const size_t siglen);
+
 private:
-    NetworkKey (const NetworkKey &) = delete;
+    NetworkKey(const NetworkKey&) = delete;
     std::unique_ptr<Crypt::RsaKey> _key;
 };
 

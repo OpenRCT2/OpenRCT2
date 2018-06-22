@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
 #include "../common.h"
+
+#include <string>
+#include <vector>
 
 enum MISC_COMMAND
 {
@@ -23,8 +24,8 @@ enum MISC_COMMAND
 class NetworkAction final
 {
 public:
-    rct_string_id       Name;
-    std::string         PermissionName;
+    rct_string_id Name;
+    std::string PermissionName;
     std::vector<int32_t> Commands;
 };
 
@@ -34,5 +35,5 @@ public:
     static const std::vector<NetworkAction> Actions;
 
     static int32_t FindCommand(int32_t command);
-    static int32_t FindCommandByPermissionName(const std::string &permission_name);
+    static int32_t FindCommandByPermissionName(const std::string& permission_name);
 };

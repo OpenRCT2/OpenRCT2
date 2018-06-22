@@ -9,8 +9,9 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkTypes.h"
 #include "NetworkPacket.h"
+
+#include "NetworkTypes.h"
 
 #include <memory>
 
@@ -19,12 +20,12 @@ std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()
     return std::make_unique<NetworkPacket>();
 }
 
-std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket &packet)
+std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket& packet)
 {
     return std::make_unique<NetworkPacket>(packet);
 }
 
-uint8_t * NetworkPacket::GetData()
+uint8_t* NetworkPacket::GetData()
 {
     return &(*Data)[0];
 }
@@ -33,7 +34,7 @@ int32_t NetworkPacket::GetCommand()
 {
     if (Data->size() >= sizeof(uint32_t))
     {
-        return ByteSwapBE(*(uint32_t *)(&(*Data)[0]));
+        return ByteSwapBE(*(uint32_t*)(&(*Data)[0]));
     }
     else
     {
@@ -50,29 +51,30 @@ void NetworkPacket::Clear()
 
 bool NetworkPacket::CommandRequiresAuth()
 {
-    switch (GetCommand()) {
-    case NETWORK_COMMAND_PING:
-    case NETWORK_COMMAND_AUTH:
-    case NETWORK_COMMAND_TOKEN:
-    case NETWORK_COMMAND_GAMEINFO:
-    case NETWORK_COMMAND_OBJECTS:
-        return false;
-    default:
-        return true;
+    switch (GetCommand())
+    {
+        case NETWORK_COMMAND_PING:
+        case NETWORK_COMMAND_AUTH:
+        case NETWORK_COMMAND_TOKEN:
+        case NETWORK_COMMAND_GAMEINFO:
+        case NETWORK_COMMAND_OBJECTS:
+            return false;
+        default:
+            return true;
     }
 }
 
-void NetworkPacket::Write(const uint8_t * bytes, size_t size)
+void NetworkPacket::Write(const uint8_t* bytes, size_t size)
 {
     Data->insert(Data->end(), bytes, bytes + size);
 }
 
-void NetworkPacket::WriteString(const utf8 * string)
+void NetworkPacket::WriteString(const utf8* string)
 {
-    Write((uint8_t *)string, strlen(string) + 1);
+    Write((uint8_t*)string, strlen(string) + 1);
 }
 
-const uint8_t * NetworkPacket::Read(size_t size)
+const uint8_t* NetworkPacket::Read(size_t size)
 {
     if (BytesRead + size > NetworkPacket::Size)
     {
@@ -80,16 +82,16 @@ const uint8_t * NetworkPacket::Read(size_t size)
     }
     else
     {
-        uint8_t * data = &GetData()[BytesRead];
+        uint8_t* data = &GetData()[BytesRead];
         BytesRead += size;
         return data;
     }
 }
 
-const utf8 * NetworkPacket::ReadString()
+const utf8* NetworkPacket::ReadString()
 {
-    char * str = (char *)&GetData()[BytesRead];
-    char * strend = str;
+    char* str = (char*)&GetData()[BytesRead];
+    char* strend = str;
     while (BytesRead < Size && *strend != 0)
     {
         BytesRead++;
