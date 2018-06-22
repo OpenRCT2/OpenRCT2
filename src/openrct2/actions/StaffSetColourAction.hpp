@@ -27,10 +27,12 @@ private:
     uint8_t _colour;
 
 public:
-    StaffSetColourAction() {}
+    StaffSetColourAction()
+    {
+    }
     StaffSetColourAction(uint8_t staffType, uint8_t colour)
-        : _staffType(staffType),
-          _colour(colour)
+        : _staffType(staffType)
+        , _colour(colour)
     {
     }
 
@@ -47,9 +49,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_staffType != STAFF_TYPE_HANDYMAN &&
-            _staffType != STAFF_TYPE_MECHANIC &&
-            _staffType != STAFF_TYPE_SECURITY)
+        if (_staffType != STAFF_TYPE_HANDYMAN && _staffType != STAFF_TYPE_MECHANIC && _staffType != STAFF_TYPE_SECURITY)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
@@ -66,8 +66,8 @@ public:
 
         // Update each staff member's uniform
         int32_t spriteIndex;
-        rct_peep * peep;
-        FOR_ALL_PEEPS(spriteIndex, peep)
+        rct_peep* peep;
+        FOR_ALL_PEEPS (spriteIndex, peep)
         {
             if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == _staffType)
             {

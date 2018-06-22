@@ -9,18 +9,17 @@
 
 #pragma once
 
+#include "../Game.h"
+#include "../common.h"
+#include "../core/DataSerialiser.h"
+#include "../core/IStream.hpp"
+#include "../localisation/StringIds.h"
+#include "../world/Map.h"
+
 #include <array>
 #include <functional>
 #include <memory>
 #include <utility>
-
-#include "../common.h"
-#include "../core/DataSerialiser.h"
-#include "../core/IStream.hpp"
-
-#include "../Game.h"
-#include "../localisation/StringIds.h"
-#include "../world/Map.h"
 
 /**
  * Common error codes for game actions.
@@ -48,9 +47,9 @@ enum class GA_ERROR : uint16_t
 namespace GA_FLAGS
 {
     constexpr uint16_t ALLOW_WHILE_PAUSED = 1 << 0;
-    constexpr uint16_t CLIENT_ONLY        = 1 << 1;
-    constexpr uint16_t EDITOR_ONLY        = 1 << 2;
-}
+    constexpr uint16_t CLIENT_ONLY = 1 << 1;
+    constexpr uint16_t EDITOR_ONLY = 1 << 2;
+} // namespace GA_FLAGS
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #pragma GCC diagnostic push
@@ -66,34 +65,34 @@ class GameActionResult
 public:
     using Ptr = std::unique_ptr<GameActionResult>;
 
-    GA_ERROR                Error = GA_ERROR::OK;
-    rct_string_id           ErrorTitle = STR_NONE;
-    rct_string_id           ErrorMessage = STR_NONE;
-    std::array<uint8_t, 12>   ErrorMessageArgs;
-    CoordsXYZ               Position = {};
-    money32                 Cost = 0;
-    uint16_t                  ExpenditureType = 0;
+    GA_ERROR Error = GA_ERROR::OK;
+    rct_string_id ErrorTitle = STR_NONE;
+    rct_string_id ErrorMessage = STR_NONE;
+    std::array<uint8_t, 12> ErrorMessageArgs;
+    CoordsXYZ Position = {};
+    money32 Cost = 0;
+    uint16_t ExpenditureType = 0;
 
     GameActionResult() = default;
     GameActionResult(GA_ERROR error, rct_string_id message);
     GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message);
-    GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t * args);
+    GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t* args);
     GameActionResult(const GameActionResult&) = delete;
-    virtual ~GameActionResult() {};
+    virtual ~GameActionResult(){};
 };
 
 struct GameAction
 {
 public:
-    using Ptr        = std::unique_ptr<GameAction>;
-    using Callback_t = std::function<void(const struct GameAction *, const GameActionResult *)>;
+    using Ptr = std::unique_ptr<GameAction>;
+    using Callback_t = std::function<void(const struct GameAction*, const GameActionResult*)>;
 
 private:
     uint32_t const _type;
 
-    uint32_t _playerId    = 0;    // Callee
-    uint32_t _flags       = 0;    // GAME_COMMAND_FLAGS
-    uint32_t _networkId   = 0;
+    uint32_t _playerId = 0; // Callee
+    uint32_t _flags = 0;    // GAME_COMMAND_FLAGS
+    uint32_t _networkId = 0;
     Callback_t _callback;
 
 public:
@@ -115,13 +114,12 @@ public:
     }
 
     /**
-    * Gets the GA_FLAGS flags that are enabled for this game action.
-    */
+     * Gets the GA_FLAGS flags that are enabled for this game action.
+     */
     virtual uint16_t GetActionFlags() const
     {
         // Make sure we execute some things only on the client.
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 ||
-            (GetFlags() & GAME_COMMAND_FLAG_5) != 0)
+        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_5) != 0)
         {
             return GA_FLAGS::CLIENT_ONLY;
         }
@@ -130,8 +128,8 @@ public:
     }
 
     /**
-    * Currently used for GAME_COMMAND_FLAGS, needs refactoring once everything is replaced.
-    */
+     * Currently used for GAME_COMMAND_FLAGS, needs refactoring once everything is replaced.
+     */
     uint32_t GetFlags() const
     {
         return _flags;
@@ -152,7 +150,7 @@ public:
         _callback = cb;
     }
 
-    const Callback_t & GetCallback() const
+    const Callback_t& GetCallback() const
     {
         return _callback;
     }
@@ -181,13 +179,13 @@ public:
     }
 
     /**
-    * Query the result of the game action without changing the game state.
-    */
+     * Query the result of the game action without changing the game state.
+     */
     virtual GameActionResult::Ptr Query() const abstract;
 
     /**
-    * Apply the game action and change the game state.
-    */
+     * Apply the game action and change the game state.
+     */
     virtual GameActionResult::Ptr Execute() const abstract;
 };
 
@@ -195,8 +193,7 @@ public:
 #pragma GCC diagnostic pop
 #endif
 
-template<uint32_t TType, typename TResultType>
-struct GameActionBase : GameAction
+template<uint32_t TType, typename TResultType> struct GameActionBase : GameAction
 {
 public:
     using Result = TResultType;
@@ -208,40 +205,34 @@ public:
     {
     }
 
-    void SetCallback(std::function<void(const struct GameAction *, const TResultType *)> typedCallback)
+    void SetCallback(std::function<void(const struct GameAction*, const TResultType*)> typedCallback)
     {
-        GameAction::SetCallback([typedCallback](const GameAction * ga, const GameActionResult * result)
-        {
-            typedCallback(ga, static_cast<const TResultType *>(result));
+        GameAction::SetCallback([typedCallback](const GameAction* ga, const GameActionResult* result) {
+            typedCallback(ga, static_cast<const TResultType*>(result));
         });
     }
 
 protected:
-    template<class... TTypes>
-    static constexpr std::unique_ptr<TResultType> MakeResult(TTypes&&... args)
+    template<class... TTypes> static constexpr std::unique_ptr<TResultType> MakeResult(TTypes&&... args)
     {
         return std::make_unique<TResultType>(std::forward<TTypes>(args)...);
     }
 };
 
-using GameActionFactory = GameAction *(*)();
+using GameActionFactory = GameAction* (*)();
 
 namespace GameActions
 {
-    void                    Initialize();
-    void                    Register();
-    GameAction::Ptr         Create(uint32_t id);
-    GameActionResult::Ptr   Query(const GameAction * action);
-    GameActionResult::Ptr   Execute(const GameAction * action);
-    GameActionFactory       Register(uint32_t id, GameActionFactory action);
+    void Initialize();
+    void Register();
+    GameAction::Ptr Create(uint32_t id);
+    GameActionResult::Ptr Query(const GameAction* action);
+    GameActionResult::Ptr Execute(const GameAction* action);
+    GameActionFactory Register(uint32_t id, GameActionFactory action);
 
-    template<typename T>
-    static GameActionFactory Register()
+    template<typename T> static GameActionFactory Register()
     {
-        GameActionFactory factory = []() -> GameAction *
-        {
-            return new T();
-        };
+        GameActionFactory factory = []() -> GameAction* { return new T(); };
         Register(T::TYPE, factory);
         return factory;
     }

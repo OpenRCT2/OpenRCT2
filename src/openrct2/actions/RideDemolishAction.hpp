@@ -11,8 +11,8 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
-#include "../core/MemoryStream.h"
 #include "../GameState.h"
+#include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
@@ -20,8 +20,8 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Banner.h"
-#include "../world/Sprite.h"
 #include "../world/Park.h"
+#include "../world/Sprite.h"
 #include "GameAction.h"
 #include "MazeSetTrackAction.hpp"
 
@@ -34,10 +34,12 @@ private:
     uint8_t _modifyType = RIDE_MODIFY_DEMOLISH;
 
 public:
-    RideDemolishAction() {}
-    RideDemolishAction(int32_t rideIndex, uint8_t modifyType) :
-        _rideIndex(rideIndex),
-        _modifyType(modifyType)
+    RideDemolishAction()
+    {
+    }
+    RideDemolishAction(int32_t rideIndex, uint8_t modifyType)
+        : _rideIndex(rideIndex)
+        , _modifyType(modifyType)
     {
     }
 
@@ -55,7 +57,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Ride *ride = get_ride(_rideIndex);
+        Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
@@ -64,7 +66,9 @@ public:
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && _modifyType == RIDE_MODIFY_DEMOLISH)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NO_CLEARANCE, STR_CANT_DEMOLISH_RIDE,
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::NO_CLEARANCE,
+                STR_CANT_DEMOLISH_RIDE,
                 STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         }
 
@@ -74,20 +78,20 @@ public:
         {
             if (ride->status != RIDE_STATUS_CLOSED)
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE,
-                    STR_MUST_BE_CLOSED_FIRST);
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
             }
 
             if (ride->num_riders > 0)
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE,
-                    STR_RIDE_NOT_YET_EMPTY);
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
             }
 
             if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED) || RideAvailableBreakdowns[ride->type] == 0)
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE,
-                    STR_CANT_REFURBISH_NOT_NEEDED);
+                return std::make_unique<GameActionResult>(
+                    GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
             }
 
             result->ErrorTitle = STR_CANT_REFURBISH_RIDE;
@@ -99,26 +103,26 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Ride *ride = get_ride(_rideIndex);
+        Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
-        switch (_modifyType) {
-        case RIDE_MODIFY_DEMOLISH:
-            return DemolishRide(ride);
-        case RIDE_MODIFY_RENEW:
-            return RefurbishRide(ride);
+        switch (_modifyType)
+        {
+            case RIDE_MODIFY_DEMOLISH:
+                return DemolishRide(ride);
+            case RIDE_MODIFY_RENEW:
+                return RefurbishRide(ride);
         }
 
         return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
     }
 
 private:
-
-    GameActionResult::Ptr DemolishRide(Ride * ride) const
+    GameActionResult::Ptr DemolishRide(Ride* ride) const
     {
         money32 refundPrice = DemolishTracks();
 
@@ -129,11 +133,9 @@ private:
         sub_6CB945(_rideIndex);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
-        for (auto &banner : gBanners)
+        for (auto& banner : gBanners)
         {
-            if (banner.type != BANNER_NULL &&
-                banner.flags & BANNER_FLAG_LINKED_TO_RIDE &&
-                banner.ride_index == _rideIndex)
+            if (banner.type != BANNER_NULL && banner.flags & BANNER_FLAG_LINKED_TO_RIDE && banner.ride_index == _rideIndex)
             {
                 banner.flags &= 0xFB;
                 banner.string_idx = STR_DEFAULT_SIGN;
@@ -141,8 +143,8 @@ private:
         }
 
         uint16_t spriteIndex;
-        rct_peep *peep;
-        FOR_ALL_GUESTS(spriteIndex, peep)
+        rct_peep* peep;
+        FOR_ALL_GUESTS (spriteIndex, peep)
         {
             uint8_t ride_id_bit = _rideIndex % 8;
             uint8_t ride_id_offset = _rideIndex / 8;
@@ -165,8 +167,7 @@ private:
             // remove any free voucher for this ride from peep
             if (peep->item_standard_flags & PEEP_ITEM_VOUCHER)
             {
-                if (peep->voucher_type == VOUCHER_TYPE_RIDE_FREE &&
-                    peep->voucher_arguments == _rideIndex)
+                if (peep->voucher_type == VOUCHER_TYPE_RIDE_FREE && peep->voucher_arguments == _rideIndex)
                 {
                     peep->item_standard_flags &= ~(PEEP_ITEM_VOUCHER);
                 }
@@ -213,14 +214,13 @@ private:
 
             for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
             {
-                if (peep->thoughts[i].type != PEEP_THOUGHT_TYPE_NONE &&
-                    peep->thoughts[i].item == _rideIndex)
+                if (peep->thoughts[i].type != PEEP_THOUGHT_TYPE_NONE && peep->thoughts[i].item == _rideIndex)
                 {
                     // Clear top thought, push others up
-                    memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought)*(PEEP_MAX_THOUGHTS - i - 1));
+                    memmove(&peep->thoughts[i], &peep->thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
                     peep->thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
                     peep->thoughts[PEEP_MAX_THOUGHTS - 1].item = PEEP_THOUGHT_ITEM_NONE;
-                    //Next iteration, check the new thought at this index
+                    // Next iteration, check the new thought at this index
                     i--;
                 }
             }
@@ -322,8 +322,7 @@ private:
                 continue;
             }
 
-            static constexpr const LocationXY16 DirOffsets[] =
-            {
+            static constexpr const LocationXY16 DirOffsets[] = {
                 { 0, 0 },
                 { 0, 16 },
                 { 16, 16 },
@@ -347,7 +346,7 @@ private:
         return refundPrice;
     }
 
-    GameActionResult::Ptr RefurbishRide(Ride * ride) const
+    GameActionResult::Ptr RefurbishRide(Ride* ride) const
     {
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;

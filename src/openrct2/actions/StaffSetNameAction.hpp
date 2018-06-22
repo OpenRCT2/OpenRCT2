@@ -9,19 +9,18 @@
 
 #pragma once
 
-#include "../core/MemoryStream.h"
-#include "../localisation/StringIds.h"
-#include "GameAction.h"
-
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
-#include "../peep/Staff.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
+#include "../peep/Staff.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
+#include "GameAction.h"
 
 struct StaffSetNameAction : public GameActionBase<GAME_COMMAND_SET_STAFF_NAME, GameActionResult>
 {
@@ -30,10 +29,12 @@ private:
     std::string _name;
 
 public:
-    StaffSetNameAction() {}
+    StaffSetNameAction()
+    {
+    }
     StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
-        : _spriteIndex(spriteIndex),
-        _name(name)
+        : _spriteIndex(spriteIndex)
+        , _name(name)
     {
     }
 
@@ -53,7 +54,8 @@ public:
     {
         if (_spriteIndex >= MAX_SPRITES)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
         if (_name.empty())
@@ -61,18 +63,21 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER);
         }
 
-        rct_peep * peep = GET_PEEP(_spriteIndex);
+        rct_peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_STAFF)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
-        rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId
+            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
         }
         user_string_free(newUserStringId);
 
@@ -81,22 +86,25 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId
+            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
         }
 
-        rct_peep * peep = GET_PEEP(_spriteIndex);
+        rct_peep* peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_STAFF)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
         set_format_arg(0, uint32_t, peep->id);
-        utf8 * curName = gCommonStringFormatBuffer;
+        utf8* curName = gCommonStringFormatBuffer;
         rct_string_id curId = peep->name_string_idx;
         format_string(curName, 256, curId, gCommonFormatArgs);
 

@@ -9,15 +9,14 @@
 
 #pragma once
 
+#include "../Cheats.h"
+#include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
-#include "../OpenRCT2.h"
-#include "GameAction.h"
-
-#include "../Cheats.h"
 #include "../management/Finance.h"
-#include "../world/Park.h"
 #include "../world/Footpath.h"
+#include "../world/Park.h"
+#include "GameAction.h"
 
 static int32_t _nextPeepSpawnIndex = 0;
 
@@ -27,9 +26,11 @@ private:
     CoordsXYZD _location;
 
 public:
-    PlacePeepSpawnAction() {}
-    PlacePeepSpawnAction(CoordsXYZD location) :
-        _location(location)
+    PlacePeepSpawnAction()
+    {
+    }
+    PlacePeepSpawnAction(CoordsXYZD location)
+        : _location(location)
     {
     }
 
@@ -49,7 +50,8 @@ public:
     {
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NOT_IN_EDITOR_MODE, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::NOT_IN_EDITOR_MODE, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
@@ -63,25 +65,32 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
-        if (_location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16) || _location.y >= (gMapSizeUnits - 16))
+        if (_location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
+            || _location.y >= (gMapSizeUnits - 16))
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         rct_tile_element *mapElement, *surfaceMapElement;
         // Verify footpath exists at location, and retrieve coordinates
         mapElement = map_get_path_element_at(_location.x >> 5, _location.y >> 5, _location.z / 8);
-        if (mapElement == nullptr) {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+        if (mapElement == nullptr)
+        {
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
 
         // Verify location is unowned
         surfaceMapElement = map_get_surface_element_at(_location.x >> 5, _location.y >> 5);
-        if (surfaceMapElement == nullptr) {
+        if (surfaceMapElement == nullptr)
+        {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
-        if (surfaceMapElement->properties.surface.ownership & 0xF0) {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
+        if (surfaceMapElement->properties.surface.ownership & 0xF0)
+        {
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
         }
 
         return std::make_unique<GameActionResult>();
@@ -97,8 +106,10 @@ public:
 
         // Find empty or next appropriate peep spawn to use
         int32_t peepSpawnIndex = -1;
-        for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++) {
-            if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
+        for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
+        {
+            if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED)
+            {
                 peepSpawnIndex = i;
                 break;
             }
