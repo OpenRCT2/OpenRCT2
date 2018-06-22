@@ -9,8 +9,8 @@
 
 #ifndef DISABLE_NETWORK
 
-#include <cmath>
 #include <chrono>
+#include <cmath>
 #include <cstring>
 #include <future>
 #include <string>
@@ -63,7 +63,7 @@
 constexpr auto CONNECT_TIMEOUT = std::chrono::milliseconds(3000);
 
 #ifdef _WIN32
-    static bool _wsaInitialised = false;
+static bool _wsaInitialised = false;
 #endif
 
 class TcpSocket;
@@ -71,19 +71,22 @@ class TcpSocket;
 class SocketException : public std::runtime_error
 {
 public:
-    explicit SocketException(const std::string &message) : std::runtime_error(message) { }
+    explicit SocketException(const std::string& message)
+        : std::runtime_error(message)
+    {
+    }
 };
 
 class TcpSocket final : public ITcpSocket
 {
 private:
-    SOCKET_STATUS   _status         = SOCKET_STATUS_CLOSED;
-    uint16_t          _listeningPort  = 0;
-    SOCKET          _socket         = INVALID_SOCKET;
+    SOCKET_STATUS _status = SOCKET_STATUS_CLOSED;
+    uint16_t _listeningPort = 0;
+    SOCKET _socket = INVALID_SOCKET;
 
-    std::string         _hostName;
-    std::future<void>   _connectFuture;
-    std::string         _error;
+    std::string _hostName;
+    std::future<void> _connectFuture;
+    std::string _error;
 
 public:
     TcpSocket() = default;
@@ -102,7 +105,7 @@ public:
         return _status;
     }
 
-    const char * GetError() override
+    const char* GetError() override
     {
         return _error.empty() ? nullptr : _error.c_str();
     }
@@ -112,14 +115,14 @@ public:
         Listen(nullptr, port);
     }
 
-    void Listen(const char * address, uint16_t port) override
+    void Listen(const char* address, uint16_t port) override
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
             throw std::runtime_error("Socket not closed.");
         }
 
-        sockaddr_storage ss { };
+        sockaddr_storage ss{};
         int32_t ss_len;
         if (!ResolveAddress(address, port, &ss, &ss_len))
         {
@@ -149,7 +152,7 @@ public:
         try
         {
             // Bind to address:port and listen
-            if (bind(_socket, (sockaddr *)&ss, ss_len) != 0)
+            if (bind(_socket, (sockaddr*)&ss, ss_len) != 0)
             {
                 throw SocketException("Unable to bind to socket.");
             }
@@ -163,7 +166,7 @@ public:
                 throw SocketException("Failed to set non-blocking mode.");
             }
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             CloseSocket();
             throw;
@@ -173,17 +176,19 @@ public:
         _status = SOCKET_STATUS_LISTENING;
     }
 
-    ITcpSocket * Accept() override
+    ITcpSocket* Accept() override
     {
         if (_status != SOCKET_STATUS_LISTENING)
         {
             throw std::runtime_error("Socket not listening.");
         }
-        struct sockaddr_storage client_addr { };
+        struct sockaddr_storage client_addr
+        {
+        };
         socklen_t client_len = sizeof(struct sockaddr_storage);
 
-        ITcpSocket * tcpSocket = nullptr;
-        SOCKET socket = accept(_socket, (struct sockaddr *)&client_addr, &client_len);
+        ITcpSocket* tcpSocket = nullptr;
+        SOCKET socket = accept(_socket, (struct sockaddr*)&client_addr, &client_len);
         if (socket == INVALID_SOCKET)
         {
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
@@ -202,7 +207,7 @@ public:
             {
                 char hostName[NI_MAXHOST];
                 int32_t rc = getnameinfo(
-                    (struct sockaddr *)&client_addr,
+                    (struct sockaddr*)&client_addr,
                     client_len,
                     hostName,
                     sizeof(hostName),
@@ -220,7 +225,7 @@ public:
         return tcpSocket;
     }
 
-    void Connect(const char * address, uint16_t port) override
+    void Connect(const char* address, uint16_t port) override
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
@@ -232,7 +237,7 @@ public:
             // Resolve address
             _status = SOCKET_STATUS_RESOLVING;
 
-            sockaddr_storage ss { };
+            sockaddr_storage ss{};
             int32_t ss_len;
             if (!ResolveAddress(address, port, &ss, &ss_len))
             {
@@ -253,9 +258,8 @@ public:
             }
 
             // Connect
-            int32_t connectResult = connect(_socket, (sockaddr *)&ss, ss_len);
-            if (connectResult != SOCKET_ERROR || (LAST_SOCKET_ERROR() != EINPROGRESS &&
-                                                  LAST_SOCKET_ERROR() != EWOULDBLOCK))
+            int32_t connectResult = connect(_socket, (sockaddr*)&ss, ss_len);
+            if (connectResult != SOCKET_ERROR || (LAST_SOCKET_ERROR() != EINPROGRESS && LAST_SOCKET_ERROR() != EWOULDBLOCK))
             {
                 throw SocketException("Failed to connect.");
             }
@@ -264,7 +268,7 @@ public:
 
             int32_t error = 0;
             socklen_t len = sizeof(error);
-            if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char *)&error, &len) != 0)
+            if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len) != 0)
             {
                 throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
             }
@@ -284,7 +288,7 @@ public:
 #pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
                 FD_SET(_socket, &writeFD);
 #pragma warning(pop)
-                timeval timeout { };
+                timeval timeout{};
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
                 if (select((int32_t)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
@@ -306,14 +310,14 @@ public:
             // Connection request timed out
             throw SocketException("Connection timed out.");
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             CloseSocket();
             throw;
         }
     }
 
-    void ConnectAsync(const char * address, uint16_t port) override
+    void ConnectAsync(const char* address, uint16_t port) override
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
@@ -323,18 +327,19 @@ public:
         auto saddress = std::string(address);
         std::promise<void> barrier;
         _connectFuture = barrier.get_future();
-        auto thread = std::thread([this, saddress, port](std::promise<void> barrier2) -> void
-        {
-            try
-            {
-                Connect(saddress.c_str(), port);
-            }
-            catch (const std::exception &ex)
-            {
-                _error = std::string(ex.what());
-            }
-            barrier2.set_value();
-        }, std::move(barrier));
+        auto thread = std::thread(
+            [this, saddress, port](std::promise<void> barrier2) -> void {
+                try
+                {
+                    Connect(saddress.c_str(), port);
+                }
+                catch (const std::exception& ex)
+                {
+                    _error = std::string(ex.what());
+                }
+                barrier2.set_value();
+            },
+            std::move(barrier));
         thread.detach();
     }
 
@@ -346,7 +351,7 @@ public:
         }
     }
 
-    size_t SendData(const void * buffer, size_t size) override
+    size_t SendData(const void* buffer, size_t size) override
     {
         if (_status != SOCKET_STATUS_CONNECTED)
         {
@@ -356,7 +361,7 @@ public:
         size_t totalSent = 0;
         do
         {
-            const char * bufferStart = (const char *)buffer + totalSent;
+            const char* bufferStart = (const char*)buffer + totalSent;
             size_t remainingSize = size - totalSent;
             int32_t sentBytes = send(_socket, bufferStart, (int32_t)remainingSize, FLAG_NO_PIPE);
             if (sentBytes == SOCKET_ERROR)
@@ -368,14 +373,14 @@ public:
         return totalSent;
     }
 
-    NETWORK_READPACKET ReceiveData(void * buffer, size_t size, size_t * sizeReceived) override
+    NETWORK_READPACKET ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
     {
         if (_status != SOCKET_STATUS_CONNECTED)
         {
             throw std::runtime_error("Socket not connected.");
         }
 
-        int32_t readBytes = recv(_socket, (char *)buffer, (int32_t)size, 0);
+        int32_t readBytes = recv(_socket, (char*)buffer, (int32_t)size, 0);
         if (readBytes == 0)
         {
             *sizeReceived = 0;
@@ -391,8 +396,10 @@ public:
             // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms737828(v=vs.85).aspx
             // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms741580(v=vs.85).aspx
             // * https://msdn.microsoft.com/en-us/library/windows/desktop/ms740668(v=vs.85).aspx
-            static_assert(EWOULDBLOCK == EAGAIN, "Portability note: your system has different values for EWOULDBLOCK "
-                    "and EAGAIN, please extend the condition below");
+            static_assert(
+                EWOULDBLOCK == EAGAIN,
+                "Portability note: your system has different values for EWOULDBLOCK "
+                "and EAGAIN, please extend the condition below");
 #endif // _WIN32
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
@@ -419,7 +426,7 @@ public:
         CloseSocket();
     }
 
-    const char * GetHostName() const override
+    const char* GetHostName() const override
     {
         return _hostName.empty() ? nullptr : _hostName.c_str();
     }
@@ -441,7 +448,7 @@ private:
         _status = SOCKET_STATUS_CLOSED;
     }
 
-    bool ResolveAddress(const char * address, uint16_t port, sockaddr_storage * ss, int32_t * ss_len)
+    bool ResolveAddress(const char* address, uint16_t port, sockaddr_storage* ss, int32_t* ss_len)
     {
         std::string serviceName = std::to_string(port);
 
@@ -452,7 +459,7 @@ private:
             hints.ai_flags = AI_PASSIVE;
         }
 
-        addrinfo * result = nullptr;
+        addrinfo* result = nullptr;
         int errorcode = getaddrinfo(address, serviceName.c_str(), &hints, &result);
         if (errorcode != 0)
         {
@@ -490,7 +497,7 @@ private:
     }
 };
 
-ITcpSocket * CreateTcpSocket()
+ITcpSocket* CreateTcpSocket()
 {
     return new TcpSocket();
 }

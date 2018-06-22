@@ -9,16 +9,16 @@
 
 #ifndef DISABLE_NETWORK
 
-#include <algorithm>
 #include "NetworkAction.h"
 
 #include "../Game.h"
 #include "../localisation/StringIds.h"
 
+#include <algorithm>
+
 int32_t NetworkActions::FindCommand(int32_t command)
 {
-    auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const &action)
-    {
+    auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const& action) {
         for (int currentCommand : action.Commands)
         {
             if (currentCommand == command)
@@ -35,10 +35,9 @@ int32_t NetworkActions::FindCommand(int32_t command)
     return -1;
 }
 
-int32_t NetworkActions::FindCommandByPermissionName(const std::string &permission_name)
+int32_t NetworkActions::FindCommandByPermissionName(const std::string& permission_name)
 {
-    auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const &action)
-    {
+    auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const& action) {
         return action.PermissionName == permission_name;
     });
     if (it != Actions.end())
