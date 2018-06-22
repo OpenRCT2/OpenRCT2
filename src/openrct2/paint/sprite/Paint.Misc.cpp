@@ -7,32 +7,29 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../world/Sprite.h"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "Paint.Sprite.h"
-#include "../Paint.h"
 #include "../../localisation/StringIds.h"
+#include "../../world/Sprite.h"
+#include "../Paint.h"
+#include "Paint.Sprite.h"
 
 /** rct2: 0x0097EDA4 */
-static constexpr const int8_t money_wave[] = {
-    0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
-    0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1
-};
+static constexpr const int8_t money_wave[] = { 0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
+                                               0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1 };
 
 /** rct2: 0x0097ED90 */
-const uint32_t vehicle_particle_base_sprites[] = {
-    22577, 22589, 22601, 22613, 22625
-};
+const uint32_t vehicle_particle_base_sprites[] = { 22577, 22589, 22601, 22613, 22625 };
 
 /**
  * rct2: 0x00672AC9
  */
-void misc_paint(paint_session * session, const rct_sprite *misc, int32_t imageDirection)
+void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDirection)
 {
-    rct_drawpixelinfo * dpi = session->DPI;
+    rct_drawpixelinfo* dpi = session->DPI;
 
-    switch (misc->steam_particle.misc_identifier) {
+    switch (misc->steam_particle.misc_identifier)
+    {
         case SPRITE_MISC_STEAM_PARTICLE: // 0
         {
             uint32_t imageId = 22637 + (misc->steam_particle.frame / 256);
@@ -42,28 +39,37 @@ void misc_paint(paint_session * session, const rct_sprite *misc, int32_t imageDi
 
         case SPRITE_MISC_MONEY_EFFECT: // 1
         {
-            if (dpi->zoom_level != 0) {
+            if (dpi->zoom_level != 0)
+            {
                 return;
             }
 
-            const rct_money_effect * moneyEffect = &misc->money_effect;
+            const rct_money_effect* moneyEffect = &misc->money_effect;
             money32 value;
             rct_string_id stringId = money_effect_get_string_id(moneyEffect, &value);
             paint_floating_money_effect(
-                session, value, stringId, moneyEffect->y, moneyEffect->z, (int8_t *)&money_wave[moneyEffect->wiggle % 22],
-                moneyEffect->offset_x, session->CurrentRotation);
+                session,
+                value,
+                stringId,
+                moneyEffect->y,
+                moneyEffect->z,
+                (int8_t*)&money_wave[moneyEffect->wiggle % 22],
+                moneyEffect->offset_x,
+                session->CurrentRotation);
             break;
         }
 
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE: // 2
         {
-            if (dpi->zoom_level != 0) {
+            if (dpi->zoom_level != 0)
+            {
                 return;
             }
 
             rct_crashed_vehicle_particle particle = misc->crashed_vehicle_particle;
             uint32_t imageId = vehicle_particle_base_sprites[particle.crashed_sprite_base] + particle.frame / 256;
-            imageId = imageId | (particle.colour[0] << 19) | (particle.colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+            imageId = imageId | (particle.colour[0] << 19) | (particle.colour[1] << 24) | IMAGE_TYPE_REMAP
+                | IMAGE_TYPE_REMAP_2_PLUS;
             sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z);
             break;
         }
@@ -92,9 +98,10 @@ void misc_paint(paint_session * session, const rct_sprite *misc, int32_t imageDi
         }
 
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER: // 6
-        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW: // 9
+        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:  // 9
         {
-            if (dpi->zoom_level != 0) {
+            if (dpi->zoom_level != 0)
+            {
                 return;
             }
 
@@ -106,17 +113,22 @@ void misc_paint(paint_session * session, const rct_sprite *misc, int32_t imageDi
             uint8_t al = (jumpingFountain.fountain_flags / 128) & 1;
             uint8_t ah = (jumpingFountain.sprite_direction / 16) & 1;
 
-            if (al == ah) {
+            if (al == ah)
+            {
                 al = ebx / 2;
-            } else {
+            }
+            else
+            {
                 al = ebx / 2;
                 al = al ^ 1;
             }
 
             uint32_t baseImageId = (jumpingFountain.misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
             uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain.frame;
-            if (al & 1) {
-                switch (ebx) {
+            if (al & 1)
+            {
+                switch (ebx)
+                {
                     case 0:
                         sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, -3, height);
                         break;
@@ -133,8 +145,11 @@ void misc_paint(paint_session * session, const rct_sprite *misc, int32_t imageDi
                         sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, -32, height);
                         break;
                 }
-            } else {
-                switch (ebx) {
+            }
+            else
+            {
+                switch (ebx)
+                {
                     case 0:
                         sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, 3, height);
                         break;
@@ -160,7 +175,8 @@ void misc_paint(paint_session * session, const rct_sprite *misc, int32_t imageDi
             rct_balloon balloon = misc->balloon;
 
             uint32_t imageId = 22651 + (balloon.frame & 7);
-            if (balloon.popped != 0) {
+            if (balloon.popped != 0)
+            {
                 imageId += 8;
             }
 
@@ -170,10 +186,12 @@ void misc_paint(paint_session * session, const rct_sprite *misc, int32_t imageDi
         }
 
         case SPRITE_MISC_DUCK:
-            if (dpi->zoom_level == 0) {
-                const rct_duck * duck = &misc->duck;
+            if (dpi->zoom_level == 0)
+            {
+                const rct_duck* duck = &misc->duck;
                 uint32_t imageId = duck_get_frame_image(&misc->duck, imageDirection);
-                if (imageId != 0) {
+                if (imageId != 0)
+                {
                     sub_98196C(session, imageId, 0, 0, 1, 1, 0, duck->z);
                 }
             }

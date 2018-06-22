@@ -7,12 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Paint.Sprite.h"
-#include "../../world/Sprite.h"
 #include "../../interface/Viewport.h"
+#include "../../world/Sprite.h"
 #include "../Paint.h"
+#include "Paint.Sprite.h"
 
-enum {
+enum
+{
     SPR_LITTER_SICK = 23101,
 
     SPR_LITTER_SICK_ALT = 23103,
@@ -38,37 +39,39 @@ enum {
     SPR_LITTER_EMPTY_BOWL_BLUE = 23129,
 };
 
-struct litter_sprite {
+struct litter_sprite
+{
     uint16_t base_id;
     uint8_t direction_mask;
 };
 
 /** rct2: 0x0097EF6C */
 static constexpr const litter_sprite litter_sprites[] = {
-    { SPR_LITTER_SICK,              0x1 },
-    { SPR_LITTER_SICK_ALT,          0x1 },
-    { SPR_LITTER_EMPTY_CAN,         0x1 },
-    { SPR_LITTER_RUBBISH,           0x1 },
-    { SPR_LITTER_EMPTY_BURGER_BOX,  0x1 },
-    { SPR_LITTER_EMPTY_CUP,         0x1 },
-    { SPR_LITTER_EMPTY_BOX,         0x1 },
-    { SPR_LITTER_EMPTY_BOTTLE,      0x1 },
-    { SPR_LITTER_EMPTY_BOWL_RED,    0x3 },
-    { SPR_LITTER_EMPTY_DRINK_CART,  0x3 },
-    { SPR_LITTER_EMPTY_JUICE_CUP,   0x3 },
-    { SPR_LITTER_EMPTY_BOWL_BLUE,   0x3 },
+    { SPR_LITTER_SICK, 0x1 },
+    { SPR_LITTER_SICK_ALT, 0x1 },
+    { SPR_LITTER_EMPTY_CAN, 0x1 },
+    { SPR_LITTER_RUBBISH, 0x1 },
+    { SPR_LITTER_EMPTY_BURGER_BOX, 0x1 },
+    { SPR_LITTER_EMPTY_CUP, 0x1 },
+    { SPR_LITTER_EMPTY_BOX, 0x1 },
+    { SPR_LITTER_EMPTY_BOTTLE, 0x1 },
+    { SPR_LITTER_EMPTY_BOWL_RED, 0x3 },
+    { SPR_LITTER_EMPTY_DRINK_CART, 0x3 },
+    { SPR_LITTER_EMPTY_JUICE_CUP, 0x3 },
+    { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
 };
 
 /**
  * Litter Paint Setup
  *  rct2: 0x006736FC
  */
-void litter_paint(paint_session * session, const rct_litter *litter, int32_t imageDirection)
+void litter_paint(paint_session* session, const rct_litter* litter, int32_t imageDirection)
 {
-    rct_drawpixelinfo *dpi;
+    rct_drawpixelinfo* dpi;
 
     dpi = session->DPI;
-    if (dpi->zoom_level != 0) return; // If zoomed at all no litter drawn
+    if (dpi->zoom_level != 0)
+        return; // If zoomed at all no litter drawn
 
     // litter has no sprite direction so remove that
     imageDirection >>= 3;
