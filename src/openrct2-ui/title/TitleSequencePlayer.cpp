@@ -7,60 +7,62 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "TitleSequencePlayer.h"
+
+#include "../interface/Window.h"
+
 #include <memory>
-#include <openrct2/common.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
+#include <openrct2/GameState.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/ParkImporter.h>
+#include <openrct2/common.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/interface/Viewport.h>
+#include <openrct2/interface/Window.h>
+#include <openrct2/management/NewsItem.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/GameState.h>
-#include <openrct2/ParkImporter.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/title/TitleSequence.h>
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/title/TitleSequencePlayer.h>
-#include <openrct2/Game.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Window.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
-#include <openrct2/management/NewsItem.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Sprite.h>
-#include "TitleSequencePlayer.h"
-#include "../interface/Window.h"
 
 using namespace OpenRCT2;
 
 class TitleSequencePlayer final : public ITitleSequencePlayer
 {
 private:
-    static constexpr const char * SFMM_FILENAME = "Six Flags Magic Mountain.SC6";
+    static constexpr const char* SFMM_FILENAME = "Six Flags Magic Mountain.SC6";
 
-    IScenarioRepository&    _scenarioRepository;
-    GameState&              _gameState;
+    IScenarioRepository& _scenarioRepository;
+    GameState& _gameState;
 
-    size_t          _sequenceId = 0;
-    TitleSequence * _sequence = nullptr;
-    int32_t          _position = 0;
-    int32_t          _waitCounter = 0;
+    size_t _sequenceId = 0;
+    TitleSequence* _sequence = nullptr;
+    int32_t _position = 0;
+    int32_t _waitCounter = 0;
 
-    int32_t          _lastScreenWidth = 0;
-    int32_t          _lastScreenHeight = 0;
-    CoordsXY        _viewCentreLocation = {};
+    int32_t _lastScreenWidth = 0;
+    int32_t _lastScreenHeight = 0;
+    CoordsXY _viewCentreLocation = {};
 
 public:
     explicit TitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)
-        : _scenarioRepository(scenarioRepository),
-          _gameState(gameState)
+        : _scenarioRepository(scenarioRepository)
+        , _gameState(gameState)
     {
     }
 
@@ -127,7 +129,7 @@ public:
             _waitCounter--;
             if (_waitCounter == 0)
             {
-                const TitleCommand * command = &_sequence->Commands[_position];
+                const TitleCommand* command = &_sequence->Commands[_position];
                 if (command->Type == TITLE_SCRIPT_WAIT)
                 {
                     IncrementPosition();
@@ -138,7 +140,7 @@ public:
         {
             while (true)
             {
-                const TitleCommand * command = &_sequence->Commands[_position];
+                const TitleCommand* command = &_sequence->Commands[_position];
                 if (ExecuteCommand(command))
                 {
                     if (command->Type == TITLE_SCRIPT_WAIT)
@@ -193,7 +195,7 @@ public:
         // Set position to the last LOAD command before target position
         for (int32_t i = targetPosition; i >= 0; i--)
         {
-            const TitleCommand * command = &_sequence->Commands[i];
+            const TitleCommand* command = &_sequence->Commands[i];
             if ((_position == i && _position != targetPosition) || TitleSequenceIsLoadCommand(command))
             {
                 // Break if we have a new load command or if we're already in the range of the correct load command
@@ -235,134 +237,135 @@ private:
     bool SkipToNextLoadCommand()
     {
         int32_t entryPosition = _position;
-        const TitleCommand * command;
+        const TitleCommand* command;
         do
         {
             IncrementPosition();
             command = &_sequence->Commands[_position];
-        }
-        while (!TitleSequenceIsLoadCommand(command) && _position != entryPosition);
+        } while (!TitleSequenceIsLoadCommand(command) && _position != entryPosition);
         return _position != entryPosition;
     }
 
-    bool ExecuteCommand(const TitleCommand * command)
+    bool ExecuteCommand(const TitleCommand* command)
     {
-        switch (command->Type) {
-        case TITLE_SCRIPT_END:
-            _waitCounter = 1;
-            break;
-        case TITLE_SCRIPT_WAIT:
-            // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms / 25 ms/tick
-            _waitCounter = std::max<int32_t>(1, command->Milliseconds / (uint32_t)GAME_UPDATE_TIME_MS);
-            break;
-        case TITLE_SCRIPT_LOADMM:
+        switch (command->Type)
         {
-            const scenario_index_entry * entry = _scenarioRepository.GetByFilename(SFMM_FILENAME);
-            if (entry == nullptr)
+            case TITLE_SCRIPT_END:
+                _waitCounter = 1;
+                break;
+            case TITLE_SCRIPT_WAIT:
+                // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms /
+                // 25 ms/tick
+                _waitCounter = std::max<int32_t>(1, command->Milliseconds / (uint32_t)GAME_UPDATE_TIME_MS);
+                break;
+            case TITLE_SCRIPT_LOADMM:
             {
-                Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
-                return false;
-            }
-
-            const utf8 * path = entry->path;
-            if (!LoadParkFromFile(path))
-            {
-                Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
-                return false;
-            }
-            break;
-        }
-        case TITLE_SCRIPT_LOCATION:
-        {
-            int32_t x = command->X * 32 + 16;
-            int32_t y = command->Y * 32 + 16;
-            SetViewLocation(x, y);
-            break;
-        }
-        case TITLE_SCRIPT_ROTATE:
-            RotateView(command->Rotations);
-            break;
-        case TITLE_SCRIPT_ZOOM:
-            SetViewZoom(command->Zoom);
-            break;
-        case TITLE_SCRIPT_SPEED:
-            gGameSpeed = Math::Clamp<uint8_t>(1, command->Speed, 4);
-            break;
-        case TITLE_SCRIPT_FOLLOW:
-            FollowSprite(command->SpriteIndex);
-            break;
-        case TITLE_SCRIPT_RESTART:
-            Reset();
-            break;
-        case TITLE_SCRIPT_LOAD:
-        {
-            bool loadSuccess = false;
-            uint8_t saveIndex = command->SaveIndex;
-            TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
-            if (parkHandle != nullptr)
-            {
-                loadSuccess = LoadParkFromStream((IStream *)parkHandle->Stream, parkHandle->HintPath);
-                TitleSequenceCloseParkHandle(parkHandle);
-            }
-            if (!loadSuccess)
-            {
-                if (_sequence->NumSaves > saveIndex)
+                const scenario_index_entry* entry = _scenarioRepository.GetByFilename(SFMM_FILENAME);
+                if (entry == nullptr)
                 {
-                    const utf8 * path = _sequence->Saves[saveIndex];
+                    Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
+                    return false;
+                }
+
+                const utf8* path = entry->path;
+                if (!LoadParkFromFile(path))
+                {
                     Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
+                    return false;
                 }
-                return false;
+                break;
             }
-            break;
-        }
-        case TITLE_SCRIPT_LOADRCT1:
-        {
-            source_desc sourceDesc;
-            if (!ScenarioSources::TryGetById(command->SaveIndex, &sourceDesc) || sourceDesc.index == -1)
+            case TITLE_SCRIPT_LOCATION:
             {
-                Console::Error::WriteLine("Invalid scenario id.");
-                return false;
+                int32_t x = command->X * 32 + 16;
+                int32_t y = command->Y * 32 + 16;
+                SetViewLocation(x, y);
+                break;
             }
-
-            const utf8 * path = nullptr;
-            size_t numScenarios =  _scenarioRepository.GetCount();
-            for (size_t i = 0; i < numScenarios; i++)
+            case TITLE_SCRIPT_ROTATE:
+                RotateView(command->Rotations);
+                break;
+            case TITLE_SCRIPT_ZOOM:
+                SetViewZoom(command->Zoom);
+                break;
+            case TITLE_SCRIPT_SPEED:
+                gGameSpeed = Math::Clamp<uint8_t>(1, command->Speed, 4);
+                break;
+            case TITLE_SCRIPT_FOLLOW:
+                FollowSprite(command->SpriteIndex);
+                break;
+            case TITLE_SCRIPT_RESTART:
+                Reset();
+                break;
+            case TITLE_SCRIPT_LOAD:
             {
-                const scenario_index_entry * scenario = _scenarioRepository.GetByIndex(i);
-                if (scenario && scenario->source_index == sourceDesc.index)
+                bool loadSuccess = false;
+                uint8_t saveIndex = command->SaveIndex;
+                TitleSequenceParkHandle* parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
+                if (parkHandle != nullptr)
                 {
-                    path = scenario->path;
-                    break;
+                    loadSuccess = LoadParkFromStream((IStream*)parkHandle->Stream, parkHandle->HintPath);
+                    TitleSequenceCloseParkHandle(parkHandle);
                 }
+                if (!loadSuccess)
+                {
+                    if (_sequence->NumSaves > saveIndex)
+                    {
+                        const utf8* path = _sequence->Saves[saveIndex];
+                        Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
+                    }
+                    return false;
+                }
+                break;
             }
-            if (path == nullptr || !LoadParkFromFile(path))
+            case TITLE_SCRIPT_LOADRCT1:
             {
-                return false;
+                source_desc sourceDesc;
+                if (!ScenarioSources::TryGetById(command->SaveIndex, &sourceDesc) || sourceDesc.index == -1)
+                {
+                    Console::Error::WriteLine("Invalid scenario id.");
+                    return false;
+                }
+
+                const utf8* path = nullptr;
+                size_t numScenarios = _scenarioRepository.GetCount();
+                for (size_t i = 0; i < numScenarios; i++)
+                {
+                    const scenario_index_entry* scenario = _scenarioRepository.GetByIndex(i);
+                    if (scenario && scenario->source_index == sourceDesc.index)
+                    {
+                        path = scenario->path;
+                        break;
+                    }
+                }
+                if (path == nullptr || !LoadParkFromFile(path))
+                {
+                    return false;
+                }
+                break;
             }
-            break;
-        }
-        case TITLE_SCRIPT_LOADSC:
-        {
-            bool loadSuccess = false;
-            auto scenario = GetScenarioRepository()->GetByInternalName(command->Scenario);
-            if (scenario != nullptr)
+            case TITLE_SCRIPT_LOADSC:
             {
-                loadSuccess = LoadParkFromFile(scenario->path);
+                bool loadSuccess = false;
+                auto scenario = GetScenarioRepository()->GetByInternalName(command->Scenario);
+                if (scenario != nullptr)
+                {
+                    loadSuccess = LoadParkFromFile(scenario->path);
+                }
+                if (!loadSuccess)
+                {
+                    Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command->Scenario);
+                    return false;
+                }
+                break;
             }
-            if (!loadSuccess)
-            {
-                Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command->Scenario);
-                return false;
-            }
-            break;
-        }
         }
         return true;
     }
 
-    void SetViewZoom(const uint32_t &zoom)
+    void SetViewZoom(const uint32_t& zoom)
     {
-        rct_window * w = window_get_main();
+        rct_window* w = window_get_main();
         if (w != nullptr && w->viewport != nullptr)
         {
             window_zoom_set(w, zoom, false);
@@ -371,7 +374,7 @@ private:
 
     void RotateView(uint32_t count)
     {
-        rct_window * w = window_get_main();
+        rct_window* w = window_get_main();
         if (w != nullptr)
         {
             for (uint32_t i = 0; i < count; i++)
@@ -383,7 +386,7 @@ private:
 
     void FollowSprite(uint16_t spriteIndex)
     {
-        rct_window * w = window_get_main();
+        rct_window* w = window_get_main();
         if (w != nullptr)
         {
             window_follow_sprite(w, spriteIndex);
@@ -392,14 +395,14 @@ private:
 
     void UnfollowSprite()
     {
-        rct_window * w = window_get_main();
+        rct_window* w = window_get_main();
         if (w != nullptr)
         {
             window_unfollow_sprite(w);
         }
     }
 
-    bool LoadParkFromFile(const utf8 * path)
+    bool LoadParkFromFile(const utf8* path)
     {
         log_verbose("TitleSequencePlayer::LoadParkFromFile(%s)", path);
         bool success = false;
@@ -424,7 +427,7 @@ private:
             PrepareParkForPlayback();
             success = true;
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             Console::Error::WriteLine("Unable to load park: %s", path);
         }
@@ -436,7 +439,7 @@ private:
      * @param stream The stream to read the park data from.
      * @param hintPath Hint path, the extension is grabbed to determine what importer to use.
      */
-    bool LoadParkFromStream(IStream * stream, const std::string &hintPath)
+    bool LoadParkFromStream(IStream* stream, const std::string& hintPath)
     {
         log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
         bool success = false;
@@ -463,7 +466,7 @@ private:
             PrepareParkForPlayback();
             success = true;
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             Console::Error::WriteLine("Unable to load park: %s", hintPath.c_str());
         }
@@ -518,7 +521,7 @@ private:
     void SetViewLocation(int32_t x, int32_t y)
     {
         // Update viewport
-        rct_window * w = window_get_main();
+        rct_window* w = window_get_main();
         if (w != nullptr)
         {
             int32_t z = tile_element_height(x, y);
@@ -544,11 +547,10 @@ private:
      */
     void FixViewLocation()
     {
-        rct_window * w = window_get_main();
+        rct_window* w = window_get_main();
         if (w != nullptr && w->viewport_smart_follow_sprite == SPRITE_INDEX_NULL)
         {
-            if (w->width != _lastScreenWidth ||
-                w->height != _lastScreenHeight)
+            if (w->width != _lastScreenWidth || w->height != _lastScreenHeight)
             {
                 SetViewLocation(_viewCentreLocation.x, _viewCentreLocation.y);
             }
