@@ -7,13 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <list>
+#include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
-#include "../OpenRCT2.h"
-
 #include "Drawing.h"
+
+#include <algorithm>
+#include <list>
 
 constexpr uint32_t BASE_IMAGE_ID = 29294;
 constexpr uint32_t MAX_IMAGES = 262144;
@@ -25,9 +25,9 @@ struct ImageList
     uint32_t Count;
 };
 
-static bool                 _initialised = false;
+static bool _initialised = false;
 static std::list<ImageList> _freeLists;
-static uint32_t               _allocatedImageCount;
+static uint32_t _allocatedImageCount;
 
 #ifdef DEBUG
 static std::list<ImageList> _allocatedLists;
@@ -40,13 +40,10 @@ static std::list<ImageList> _allocatedLists;
 
 [[maybe_unused]] static bool AllocatedListContains(uint32_t baseImageId, uint32_t count)
 {
-    bool contains = std::any_of(
-        _allocatedLists.begin(),
-        _allocatedLists.end(),
-        [baseImageId, count](const ImageList &imageList) -> bool
-        {
-            return imageList.BaseId == baseImageId && imageList.Count == count;
-        });
+    bool contains
+        = std::any_of(_allocatedLists.begin(), _allocatedLists.end(), [baseImageId, count](const ImageList& imageList) -> bool {
+              return imageList.BaseId == baseImageId && imageList.Count == count;
+          });
     return contains;
 }
 
@@ -55,10 +52,7 @@ static std::list<ImageList> _allocatedLists;
 static bool AllocatedListRemove(uint32_t baseImageId, uint32_t count)
 {
     auto foundItem = std::find_if(
-        _allocatedLists.begin(),
-        _allocatedLists.end(),
-        [baseImageId, count](const ImageList &imageList) -> bool
-        {
+        _allocatedLists.begin(), _allocatedLists.end(), [baseImageId, count](const ImageList& imageList) -> bool {
             return imageList.BaseId == baseImageId && imageList.Count == count;
         });
     if (foundItem != _allocatedLists.end())
@@ -93,11 +87,7 @@ static void InitialiseImageList()
  */
 static void MergeFreeLists()
 {
-    _freeLists.sort(
-        [](const ImageList &a, const ImageList &b) -> bool
-        {
-            return a.BaseId < b.BaseId;
-        });
+    _freeLists.sort([](const ImageList& a, const ImageList& b) -> bool { return a.BaseId < b.BaseId; });
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
     {
         bool mergeHappened;
@@ -129,8 +119,7 @@ static uint32_t TryAllocateImageList(uint32_t count)
             _freeLists.erase(it);
             if (imageList.Count > count)
             {
-                ImageList remainder = { imageList.BaseId + count,
-                                        imageList.Count - count };
+                ImageList remainder = { imageList.BaseId + count, imageList.Count - count };
                 _freeLists.push_back(remainder);
             }
 
@@ -197,7 +186,7 @@ static void FreeImageList(uint32_t baseImageId, uint32_t count)
     _freeLists.push_back({ baseImageId, count });
 }
 
-uint32_t gfx_object_allocate_images(const rct_g1_element * images, uint32_t count)
+uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count)
 {
     if (count == 0 || gOpenRCT2NoGraphics)
     {
@@ -251,4 +240,3 @@ void gfx_object_check_all_images_freed()
 #endif
     }
 }
-

@@ -12,14 +12,16 @@
 
 #include "../common.h"
 
-enum {
+enum
+{
     FONT_SIZE_TINY = 2,
     FONT_SIZE_SMALL = 0,
     FONT_SIZE_MEDIUM = 1,
     FONT_SIZE_COUNT = 3
 };
 
-enum {
+enum
+{
     FONT_SPRITE_GLYPH_COUNT = 224,
     FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK = -2,
     FONT_SPRITE_BASE_MEDIUM_DARK = -1,
@@ -33,22 +35,24 @@ enum {
 
 struct _TTF_Font;
 using TTF_Font = _TTF_Font;
-struct TTFFontDescriptor {
-    const utf8 *filename;
-    const utf8 *font_name;
+struct TTFFontDescriptor
+{
+    const utf8* filename;
+    const utf8* font_name;
     int32_t ptSize;
     int32_t offset_x;
     int32_t offset_y;
     int32_t line_height;
     int32_t hinting_threshold;
-    TTF_Font * font;
+    TTF_Font* font;
 };
 
-struct TTFFontSetDescriptor {
+struct TTFFontSetDescriptor
+{
     TTFFontDescriptor size[FONT_SIZE_COUNT];
 };
 
-extern TTFFontSetDescriptor *gCurrentTTFFontSet;
+extern TTFFontSetDescriptor* gCurrentTTFFontSet;
 
 #endif // NO_TTF
 
@@ -60,8 +64,8 @@ int32_t font_get_font_index_from_sprite_base(uint16_t spriteBase);
 int32_t font_get_size_from_sprite_base(uint16_t spriteBase);
 int32_t font_get_line_height(int32_t fontSpriteBase);
 int32_t font_get_line_height_small(int32_t fontSpriteBase);
-bool font_supports_string_sprite(const utf8 *text);
-bool font_supports_string_ttf(const utf8 *text, int32_t fontSize);
-bool font_supports_string(const utf8 *text, int32_t fontSize);
+bool font_supports_string_sprite(const utf8* text);
+bool font_supports_string_ttf(const utf8* text, int32_t fontSize);
+bool font_supports_string(const utf8* text, int32_t fontSize);
 
 #endif
