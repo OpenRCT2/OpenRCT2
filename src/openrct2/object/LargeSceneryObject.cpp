@@ -9,7 +9,8 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
-#include <algorithm>
+#include "LargeSceneryObject.h"
+
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
@@ -17,10 +18,11 @@
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Location.hpp"
-#include "LargeSceneryObject.h"
 #include "ObjectJsonHelpers.h"
 
-void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
+#include <algorithm>
+
+void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.tool_id = stream->ReadValue<uint8_t>();
@@ -97,7 +99,7 @@ void LargeSceneryObject::Unload()
     _legacyType.image = 0;
 }
 
-void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
+void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     int32_t x = width / 2;
     int32_t y = (height / 2) - 39;
@@ -106,7 +108,7 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int
     gfx_draw_sprite(dpi, imageId, x, y, 0);
 }
 
-std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream * stream)
+std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream* stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();
     while (stream->ReadValue<uint16_t>() != 0xFFFF)
@@ -119,25 +121,25 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream * stre
     return tiles;
 }
 
-void LargeSceneryObject::ReadJson(IReadObjectContext * context, const json_t * root)
+void LargeSceneryObject::ReadJson(IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
 
-    _legacyType.large_scenery.tool_id = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
+    _legacyType.large_scenery.tool_id
+        = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
     _legacyType.large_scenery.price = json_integer_value(json_object_get(properties, "price"));
     _legacyType.large_scenery.removal_price = json_integer_value(json_object_get(properties, "removalPrice"));
 
     auto jScrollingMode = json_object_get(properties, "scrollingMode");
-    _legacyType.large_scenery.scrolling_mode = jScrollingMode != nullptr ?
-        json_integer_value(jScrollingMode) :
-        -1;
+    _legacyType.large_scenery.scrolling_mode = jScrollingMode != nullptr ? json_integer_value(jScrollingMode) : -1;
 
     // Flags
-    _legacyType.large_scenery.flags = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
-        { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
-        { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
-        { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
-        { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC } });
+    _legacyType.large_scenery.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
+        properties,
+        { { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
+          { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+          { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
+          { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC } });
 
     // Tiles
     auto jTiles = json_object_get(properties, "tiles");
@@ -160,11 +162,11 @@ void LargeSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
-std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json_t * jTiles)
+std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json_t* jTiles)
 {
     std::vector<rct_large_scenery_tile> tiles;
     size_t index;
-    const json_t * jTile;
+    const json_t* jTile;
     json_array_foreach(jTiles, index, jTile)
     {
         rct_large_scenery_tile tile = {};
@@ -203,7 +205,7 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json
     return tiles;
 }
 
-std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const json_t * j3dFont)
+std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const json_t* j3dFont)
 {
     auto font = std::make_unique<rct_large_scenery_text>();
 
@@ -217,9 +219,8 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const
 
     font->max_width = json_integer_value(json_object_get(j3dFont, "maxWidth"));
     font->num_images = json_integer_value(json_object_get(j3dFont, "numImages"));
-    font->flags = ObjectJsonHelpers::GetFlags<uint8_t>(j3dFont, {
-        { "isVertical", LARGE_SCENERY_TEXT_FLAG_VERTICAL },
-        { "isTwoLine", LARGE_SCENERY_TEXT_FLAG_TWO_LINE } });
+    font->flags = ObjectJsonHelpers::GetFlags<uint8_t>(
+        j3dFont, { { "isVertical", LARGE_SCENERY_TEXT_FLAG_VERTICAL }, { "isTwoLine", LARGE_SCENERY_TEXT_FLAG_TWO_LINE } });
 
     auto jGlyphs = json_object_get(j3dFont, "glyphs");
     if (jGlyphs != nullptr)
@@ -232,11 +233,11 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const
     return font;
 }
 
-std::vector<LocationXY16> LargeSceneryObject::ReadJsonOffsets(const json_t * jOffsets)
+std::vector<LocationXY16> LargeSceneryObject::ReadJsonOffsets(const json_t* jOffsets)
 {
     std::vector<LocationXY16> offsets;
     size_t index;
-    const json_t * jOffset;
+    const json_t* jOffset;
     json_array_foreach(jOffsets, index, jOffset)
     {
         LocationXY16 offset = {};
@@ -247,11 +248,11 @@ std::vector<LocationXY16> LargeSceneryObject::ReadJsonOffsets(const json_t * jOf
     return offsets;
 }
 
-std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(const json_t * jGlpyhs)
+std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(const json_t* jGlpyhs)
 {
     std::vector<rct_large_scenery_text_glyph> glyphs;
     size_t index;
-    const json_t * jGlyph;
+    const json_t* jGlyph;
     json_array_foreach(jGlpyhs, index, jGlyph)
     {
         rct_large_scenery_text_glyph glyph;

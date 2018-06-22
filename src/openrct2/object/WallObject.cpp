@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "WallObject.h"
+
 #include "../core/IStream.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "ObjectJsonHelpers.h"
-#include "WallObject.h"
 
-void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
+void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.wall.tool_id = stream->ReadValue<uint8_t>();
@@ -55,7 +56,7 @@ void WallObject::Unload()
     _legacyType.image = 0;
 }
 
-void WallObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
+void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     int32_t x = width / 2;
     int32_t y = height / 2;
@@ -83,33 +84,32 @@ void WallObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t hei
     }
 }
 
-void WallObject::ReadJson(IReadObjectContext * context, const json_t * root)
+void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
 
-    _legacyType.wall.tool_id = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_FENCE_DOWN);
+    _legacyType.wall.tool_id
+        = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_FENCE_DOWN);
     _legacyType.wall.height = json_integer_value(json_object_get(properties, "height"));
     _legacyType.wall.price = json_integer_value(json_object_get(properties, "price"));
 
     auto jScrollingMode = json_object_get(properties, "scrollingMode");
-    _legacyType.wall.scrolling_mode = jScrollingMode != nullptr ?
-        json_integer_value(jScrollingMode) :
-        -1;
+    _legacyType.wall.scrolling_mode = jScrollingMode != nullptr ? json_integer_value(jScrollingMode) : -1;
 
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
 
     // Flags
-    _legacyType.wall.flags = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
-        { "hasPrimaryColour", WALL_SCENERY_HAS_PRIMARY_COLOUR },
-        { "hasSecondaryColour", WALL_SCENERY_HAS_SECONDARY_COLOUR },
-        { "hasTernaryColour", WALL_SCENERY_HAS_TERNARY_COLOUR },
-        { "hasGlass", WALL_SCENERY_HAS_GLASS },
-        { "isBanner", WALL_SCENERY_IS_BANNER },
-        { "isDoor", WALL_SCENERY_IS_DOOR },
-        { "isLongDoorAnimation", WALL_SCENERY_LONG_DOOR_ANIMATION }});
-    _legacyType.wall.flags2 = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
-        { "isOpaque", WALL_SCENERY_2_IS_OPAQUE },
-        { "isAnimated", WALL_SCENERY_2_ANIMATED }});
+    _legacyType.wall.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
+        properties,
+        { { "hasPrimaryColour", WALL_SCENERY_HAS_PRIMARY_COLOUR },
+          { "hasSecondaryColour", WALL_SCENERY_HAS_SECONDARY_COLOUR },
+          { "hasTernaryColour", WALL_SCENERY_HAS_TERNARY_COLOUR },
+          { "hasGlass", WALL_SCENERY_HAS_GLASS },
+          { "isBanner", WALL_SCENERY_IS_BANNER },
+          { "isDoor", WALL_SCENERY_IS_DOOR },
+          { "isLongDoorAnimation", WALL_SCENERY_LONG_DOOR_ANIMATION } });
+    _legacyType.wall.flags2 = ObjectJsonHelpers::GetFlags<uint8_t>(
+        properties, { { "isOpaque", WALL_SCENERY_2_IS_OPAQUE }, { "isAnimated", WALL_SCENERY_2_ANIMATED } });
 
     // HACK To avoid 'negated' properties in JSON, handle this separately until
     //      flag is inverted in this code base.
@@ -122,8 +122,8 @@ void WallObject::ReadJson(IReadObjectContext * context, const json_t * root)
     //      JSON and handle this on load. We should change code base in future to reflect the JSON.
     if (!(_legacyType.wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR))
     {
-        if ((_legacyType.wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) ||
-            (_legacyType.wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR))
+        if ((_legacyType.wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+            || (_legacyType.wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR))
         {
             _legacyType.wall.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;
         }

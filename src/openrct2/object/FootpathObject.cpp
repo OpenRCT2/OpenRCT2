@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "FootpathObject.h"
+
 #include "../core/IStream.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
-#include "FootpathObject.h"
 #include "ObjectJsonHelpers.h"
 
-void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
+void FootpathObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(10, STREAM_SEEK_CURRENT);
     _legacyType.support_type = stream->ReadValue<uint8_t>();
@@ -49,7 +50,7 @@ void FootpathObject::Unload()
     _legacyType.image = 0;
 }
 
-void FootpathObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
+void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     int32_t x = width / 2;
     int32_t y = height / 2;
@@ -57,23 +58,26 @@ void FootpathObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t
     gfx_draw_sprite(dpi, _legacyType.image + 72, x + 4, y - 17, 0);
 }
 
-static uint8_t ParseSupportType(const std::string &s)
+static uint8_t ParseSupportType(const std::string& s)
 {
-    if (s == "pole") return FOOTPATH_ENTRY_SUPPORT_TYPE_POLE;
-    else /* if (s == "box") */ return FOOTPATH_ENTRY_SUPPORT_TYPE_BOX;
+    if (s == "pole")
+        return FOOTPATH_ENTRY_SUPPORT_TYPE_POLE;
+    else /* if (s == "box") */
+        return FOOTPATH_ENTRY_SUPPORT_TYPE_BOX;
 }
 
-void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
+void FootpathObject::ReadJson(IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
     _legacyType.support_type = ParseSupportType(ObjectJsonHelpers::GetString(json_object_get(properties, "supportType")));
     _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
 
     // Flags
-    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
-        { "hasSupportImages", FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
-        { "hasElevatedPathImages", FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE },
-        { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR } });
+    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
+        properties,
+        { { "hasSupportImages", FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
+          { "hasElevatedPathImages", FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE },
+          { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR } });
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());

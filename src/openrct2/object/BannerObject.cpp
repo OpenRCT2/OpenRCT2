@@ -7,16 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "BannerObject.h"
+
 #include "../core/IStream.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../object/Object.h"
 #include "../object/ObjectRepository.h"
-#include "BannerObject.h"
 #include "ObjectJsonHelpers.h"
 #include "ObjectList.h"
 
-void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
+void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.banner.scrolling_mode = stream->ReadValue<uint8_t>();
@@ -47,9 +48,9 @@ void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     if (item != nullptr)
     {
         auto objectEntry = &item->ObjectEntry;
-        if (object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_WACKY_WORLDS ||
-            object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_TIME_TWISTER ||
-            object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_CUSTOM)
+        if (object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_WACKY_WORLDS
+            || object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_TIME_TWISTER
+            || object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_CUSTOM)
         {
             auto scgPathX = Object::GetScgPathXHeader();
             SetPrimarySceneryGroup(&scgPathX);
@@ -73,7 +74,7 @@ void BannerObject::Unload()
     _legacyType.image = 0;
 }
 
-void BannerObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
+void BannerObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     int32_t x = width / 2;
     int32_t y = height / 2;
@@ -83,14 +84,14 @@ void BannerObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t h
     gfx_draw_sprite(dpi, imageId + 1, x - 12, y + 8, 0);
 }
 
-void BannerObject::ReadJson(IReadObjectContext * context, const json_t * root)
+void BannerObject::ReadJson(IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
 
     _legacyType.banner.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
     _legacyType.banner.price = json_integer_value(json_object_get(properties, "price"));
-    _legacyType.banner.flags = ObjectJsonHelpers::GetFlags<uint8_t>(properties, {
-        { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR }});
+    _legacyType.banner.flags
+        = ObjectJsonHelpers::GetFlags<uint8_t>(properties, { { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR } });
 
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
 

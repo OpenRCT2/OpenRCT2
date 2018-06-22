@@ -9,6 +9,8 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
+#include "SmallSceneryObject.h"
+
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
@@ -18,10 +20,9 @@
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
-#include "SmallSceneryObject.h"
 #include "ObjectJsonHelpers.h"
 
-void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
+void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.small_scenery.flags = stream->ReadValue<uint32_t>();
@@ -88,7 +89,7 @@ void SmallSceneryObject::Unload()
     _legacyType.image = 0;
 }
 
-void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
+void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     uint32_t imageId = _legacyType.image;
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
@@ -104,8 +105,8 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int
     int32_t y = (height / 2) + (_legacyType.small_scenery.height / 2);
     y = std::min(y, height - 16);
 
-    if ((scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_FULL_TILE)) &&
-        (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)))
+    if ((scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_FULL_TILE))
+        && (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)))
     {
         y -= 12;
     }
@@ -133,7 +134,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int
     }
 }
 
-std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(IStream * stream)
+std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(IStream* stream)
 {
     uint8_t frameOffset;
     auto data = std::vector<uint8_t>();
@@ -228,12 +229,13 @@ rct_object_entry SmallSceneryObject::GetScgAbstrHeader()
     return Object::CreateHeader("SCGABSTR", 207140231, 932253451);
 }
 
-void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * root)
+void SmallSceneryObject::ReadJson(IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
 
     _legacyType.small_scenery.height = json_integer_value(json_object_get(properties, "height"));
-    _legacyType.small_scenery.tool_id = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
+    _legacyType.small_scenery.tool_id
+        = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
     _legacyType.small_scenery.price = json_integer_value(json_object_get(properties, "price"));
     _legacyType.small_scenery.removal_price = json_integer_value(json_object_get(properties, "removalPrice"));
     _legacyType.small_scenery.animation_delay = json_integer_value(json_object_get(properties, "animationDelay"));
@@ -241,30 +243,31 @@ void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
     _legacyType.small_scenery.num_frames = json_integer_value(json_object_get(properties, "numFrames"));
 
     // Flags
-    _legacyType.small_scenery.flags = ObjectJsonHelpers::GetFlags<uint32_t>(properties, {
-        { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SMALL_SCENERY_FLAG_VOFFSET_CENTRE },
-        { "requiresFlatSurface", SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE },
-        { "isRotatable", SMALL_SCENERY_FLAG_ROTATABLE },
-        { "isAnimated", SMALL_SCENERY_FLAG_ANIMATED },
-        { "canWither", SMALL_SCENERY_FLAG_CAN_WITHER },
-        { "canBeWatered", SMALL_SCENERY_FLAG_CAN_BE_WATERED },
-        { "hasOverlayImage", SMALL_SCENERY_FLAG_ANIMATED_FG },
-        { "hasGlass", SMALL_SCENERY_FLAG_HAS_GLASS },
-        { "hasPrimaryColour", SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
-        { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 },
-        { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 },
-        { "isClock", SMALL_SCENERY_FLAG_IS_CLOCK },
-        { "SMALL_SCENERY_FLAG_SWAMP_GOO", SMALL_SCENERY_FLAG_SWAMP_GOO },
-        { "SMALL_SCENERY_FLAG17", SMALL_SCENERY_FLAG17 },
-        { "isStackable", SMALL_SCENERY_FLAG_STACKABLE },
-        { "prohibitWalls", SMALL_SCENERY_FLAG_NO_WALLS },
-        { "hasSecondaryColour", SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
-        { "hasNoSupports", SMALL_SCENERY_FLAG_NO_SUPPORTS },
-        { "SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED", SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED },
-        { "SMALL_SCENERY_FLAG_COG", SMALL_SCENERY_FLAG_COG },
-        { "allowSupportsAbove", SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP },
-        { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
-        { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 } });
+    _legacyType.small_scenery.flags = ObjectJsonHelpers::GetFlags<uint32_t>(
+        properties,
+        { { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SMALL_SCENERY_FLAG_VOFFSET_CENTRE },
+          { "requiresFlatSurface", SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE },
+          { "isRotatable", SMALL_SCENERY_FLAG_ROTATABLE },
+          { "isAnimated", SMALL_SCENERY_FLAG_ANIMATED },
+          { "canWither", SMALL_SCENERY_FLAG_CAN_WITHER },
+          { "canBeWatered", SMALL_SCENERY_FLAG_CAN_BE_WATERED },
+          { "hasOverlayImage", SMALL_SCENERY_FLAG_ANIMATED_FG },
+          { "hasGlass", SMALL_SCENERY_FLAG_HAS_GLASS },
+          { "hasPrimaryColour", SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
+          { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 },
+          { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 },
+          { "isClock", SMALL_SCENERY_FLAG_IS_CLOCK },
+          { "SMALL_SCENERY_FLAG_SWAMP_GOO", SMALL_SCENERY_FLAG_SWAMP_GOO },
+          { "SMALL_SCENERY_FLAG17", SMALL_SCENERY_FLAG17 },
+          { "isStackable", SMALL_SCENERY_FLAG_STACKABLE },
+          { "prohibitWalls", SMALL_SCENERY_FLAG_NO_WALLS },
+          { "hasSecondaryColour", SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+          { "hasNoSupports", SMALL_SCENERY_FLAG_NO_SUPPORTS },
+          { "SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED", SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED },
+          { "SMALL_SCENERY_FLAG_COG", SMALL_SCENERY_FLAG_COG },
+          { "allowSupportsAbove", SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP },
+          { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
+          { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 } });
 
     // Determine shape flags from a shape string
     auto shape = ObjectJsonHelpers::GetString(properties, "shape");
@@ -305,11 +308,11 @@ void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
 
-std::vector<uint8_t> SmallSceneryObject::ReadJsonFrameOffsets(const json_t * jFrameOffsets)
+std::vector<uint8_t> SmallSceneryObject::ReadJsonFrameOffsets(const json_t* jFrameOffsets)
 {
     std::vector<uint8_t> offsets;
     size_t index;
-    const json_t * jOffset;
+    const json_t* jOffset;
     json_array_foreach(jFrameOffsets, index, jOffset)
     {
         offsets.push_back(json_integer_value(jOffset));

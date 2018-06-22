@@ -7,18 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <cstring>
+#include "ObjectList.h"
 
 #include "../Context.h"
+#include "../Game.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
-#include "../Game.h"
 #include "../object/Object.h"
-#include "ObjectList.h"
-#include "ObjectRepository.h"
-#include "ObjectManager.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
+#include "ObjectManager.h"
+#include "ObjectRepository.h"
+
+#include <cstring>
 
 // 98DA00
 // clang-format off
@@ -52,23 +53,25 @@ int32_t object_entry_group_encoding[] = {
 };
 // clang-format on
 
-bool object_entry_is_empty(const rct_object_entry *entry)
+bool object_entry_is_empty(const rct_object_entry* entry)
 {
     uint64_t a, b;
-    memcpy(&a, (uint8_t *)entry, 8);
-    memcpy(&b, (uint8_t *)entry + 8, 8);
+    memcpy(&a, (uint8_t*)entry, 8);
+    memcpy(&b, (uint8_t*)entry + 8, 8);
 
-    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF) return true;
-    if (a == 0 && b == 0) return true;
+    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF)
+        return true;
+    if (a == 0 && b == 0)
+        return true;
     return false;
 }
 
-uint8_t object_entry_get_type(const rct_object_entry * objectEntry)
+uint8_t object_entry_get_type(const rct_object_entry* objectEntry)
 {
     return (objectEntry->flags & 0x0F);
 }
 
-uint8_t object_entry_get_source_game(const rct_object_entry * objectEntry)
+uint8_t object_entry_get_source_game(const rct_object_entry* objectEntry)
 {
     return (objectEntry->flags & 0xF0) >> 4;
 }
@@ -88,7 +91,7 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  * bl = entry_index
  * ecx = entry_type
  */
-bool find_object_in_entry_group(const rct_object_entry * entry, uint8_t * entry_type, uint8_t * entry_index)
+bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, uint8_t* entry_index)
 {
     int32_t objectType = object_entry_get_type(entry);
     if (objectType >= OBJECT_TYPE_COUNT)
@@ -113,24 +116,29 @@ bool find_object_in_entry_group(const rct_object_entry * entry, uint8_t * entry_
     return false;
 }
 
-void get_type_entry_index(size_t index, uint8_t * outObjectType, uint8_t * outEntryIndex)
+void get_type_entry_index(size_t index, uint8_t* outObjectType, uint8_t* outEntryIndex)
 {
     uint8_t objectType = OBJECT_TYPE_RIDE;
     for (size_t groupCount : object_entry_group_counts)
     {
-        if (index >= groupCount) {
+        if (index >= groupCount)
+        {
             index -= groupCount;
             objectType++;
-        } else {
+        }
+        else
+        {
             break;
         }
     }
 
-    if (outObjectType != nullptr) *outObjectType = objectType;
-    if (outEntryIndex != nullptr) *outEntryIndex = (uint8_t)index;
+    if (outObjectType != nullptr)
+        *outObjectType = objectType;
+    if (outEntryIndex != nullptr)
+        *outEntryIndex = (uint8_t)index;
 }
 
-const rct_object_entry * get_loaded_object_entry(size_t index)
+const rct_object_entry* get_loaded_object_entry(size_t index)
 {
     uint8_t objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
@@ -138,21 +146,21 @@ const rct_object_entry * get_loaded_object_entry(size_t index)
     return object_entry_get_entry(objectType, entryIndex);
 }
 
-void * get_loaded_object_chunk(size_t index)
+void* get_loaded_object_chunk(size_t index)
 {
     uint8_t objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
     return object_entry_get_chunk(objectType, entryIndex);
 }
 
-void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry)
+void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry)
 {
     bufferSize = std::min((size_t)DAT_NAME_LENGTH + 1, bufferSize);
     memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
 }
 
-void * object_entry_get_chunk(int32_t objectType, size_t index)
+void* object_entry_get_chunk(int32_t objectType, size_t index)
 {
     size_t objectIndex = index;
     for (int32_t i = 0; i < objectType; i++)
@@ -160,7 +168,7 @@ void * object_entry_get_chunk(int32_t objectType, size_t index)
         objectIndex += object_entry_group_counts[i];
     }
 
-    void * result = nullptr;
+    void* result = nullptr;
     auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objectMgr->GetLoadedObject(objectIndex);
     if (obj != nullptr)
@@ -170,9 +178,9 @@ void * object_entry_get_chunk(int32_t objectType, size_t index)
     return result;
 }
 
-const rct_object_entry * object_entry_get_entry(int32_t objectType, size_t index)
+const rct_object_entry* object_entry_get_entry(int32_t objectType, size_t index)
 {
-    const rct_object_entry * result = nullptr;
+    const rct_object_entry* result = nullptr;
     auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objectMgr->GetLoadedObject(objectType, index);
     if (obj != nullptr)

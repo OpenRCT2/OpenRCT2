@@ -7,15 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
+#include "Object.h"
+
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
-#include "Object.h"
 #include "ObjectLimits.h"
 
-Object::Object(const rct_object_entry &entry)
+#include <algorithm>
+
+Object::Object(const rct_object_entry& entry)
 {
     _objectEntry = entry;
 
@@ -48,10 +50,10 @@ Object::~Object()
 
 std::string Object::GetOverrideString(uint8_t index) const
 {
-    const char * identifier = GetIdentifier();
+    const char* identifier = GetIdentifier();
     rct_string_id stringId = language_get_object_override_string_id(identifier, index);
 
-    const utf8 * result = nullptr;
+    const utf8* result = nullptr;
     if (stringId != STR_NONE)
     {
         result = language_get_string(stringId);
@@ -102,8 +104,7 @@ void Object::SetSourceGame(const uint8_t sourceGame)
 
 bool Object::IsRCT1Object()
 {
-    static const char _rct1Objects[][9] =
-    {
+    static const char _rct1Objects[][9] = {
         "CLIFT1  ",
         "MONO1   ",
         "MONO2   ",
@@ -405,8 +406,7 @@ bool Object::IsRCT1Object()
 
 bool Object::IsAAObject()
 {
-    static const char _aaObjects[][9] =
-    {
+    static const char _aaObjects[][9] = {
         // Rides / vehicles / stalls
         "BMFL    ",
         "BMRB    ",
@@ -521,8 +521,7 @@ bool Object::IsAAObject()
 
 bool Object::IsLLObject()
 {
-    static const char _llObjects[][9] =
-    {
+    static const char _llObjects[][9] = {
         // Rides / vehicles / stalls
         "AML1    ",
         "ARRT2   ",
@@ -650,8 +649,7 @@ bool Object::IsLLObject()
 
 bool Object::IsOpenRCT2OfficialObject()
 {
-    static const char _openRCT2OfficialObjects[][9] =
-    {
+    static const char _openRCT2OfficialObjects[][9] = {
         // Offical extended scenery set
         "XXBBBR01",
         "TTRFTL02",
@@ -698,10 +696,9 @@ bool Object::IsOpenRCT2OfficialObject()
     return false;
 }
 
-
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
 std::string Object::GetName() const
@@ -715,5 +712,5 @@ std::string Object::GetName(int32_t language) const
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-    #pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
 #endif
