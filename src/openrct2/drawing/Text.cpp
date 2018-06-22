@@ -7,15 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Drawing.h"
 #include "Text.h"
 
 #include "../localisation/Localisation.h"
+#include "Drawing.h"
 
 static TextPaint _legacyPaint;
 
-static void DrawText(rct_drawpixelinfo * dpi, int32_t x, int32_t y, TextPaint * paint, const_utf8string text);
-static void DrawText(rct_drawpixelinfo * dpi, int32_t x, int32_t y, TextPaint * paint, rct_string_id format, void * args);
+static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, const_utf8string text);
+static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, rct_string_id format, void* args);
 
 StaticLayout::StaticLayout(utf8string source, TextPaint paint, int32_t width)
 {
@@ -30,7 +30,7 @@ StaticLayout::StaticLayout(utf8string source, TextPaint paint, int32_t width)
     _lineHeight = font_get_line_height(fontSpriteBase);
 }
 
-void StaticLayout::Draw(rct_drawpixelinfo * dpi, int32_t x, int32_t y)
+void StaticLayout::Draw(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
 {
     gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = _paint.SpriteBase;
@@ -40,18 +40,19 @@ void StaticLayout::Draw(rct_drawpixelinfo * dpi, int32_t x, int32_t y)
     gCurrentFontFlags = 0;
     int32_t lineY = y;
     int32_t lineX = x;
-    switch (_paint.Alignment) {
-    case TextAlignment::LEFT:
-        lineX = x;
-        break;
-    case TextAlignment::CENTRE:
-        lineX = x + _maxWidth / 2;
-        break;
-    case TextAlignment::RIGHT:
-        lineX = x + _maxWidth;
-        break;
+    switch (_paint.Alignment)
+    {
+        case TextAlignment::LEFT:
+            lineX = x;
+            break;
+        case TextAlignment::CENTRE:
+            lineX = x + _maxWidth / 2;
+            break;
+        case TextAlignment::RIGHT:
+            lineX = x + _maxWidth;
+            break;
     }
-    utf8 * buffer = _buffer;
+    utf8* buffer = _buffer;
     for (int32_t line = 0; line < _lineCount; ++line)
     {
         DrawText(dpi, lineX, lineY, &tempPaint, buffer);
@@ -76,19 +77,20 @@ int32_t StaticLayout::GetLineCount()
     return _lineCount;
 }
 
-static void DrawText(rct_drawpixelinfo * dpi, int32_t x, int32_t y, TextPaint * paint, const_utf8string text)
+static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, const_utf8string text)
 {
     int32_t width = gfx_get_string_width(text);
 
-    switch (paint->Alignment) {
-    case TextAlignment::LEFT:
-        break;
-    case TextAlignment::CENTRE:
-        x -= (width - 1) / 2;
-        break;
-    case TextAlignment::RIGHT:
-        x -= width;
-        break;
+    switch (paint->Alignment)
+    {
+        case TextAlignment::LEFT:
+            break;
+        case TextAlignment::CENTRE:
+            x -= (width - 1) / 2;
+            break;
+        case TextAlignment::RIGHT:
+            x -= width;
+            break;
     }
 
     ttf_draw_string(dpi, text, paint->Colour, x, y);
@@ -103,15 +105,22 @@ static void DrawText(rct_drawpixelinfo * dpi, int32_t x, int32_t y, TextPaint * 
     }
 }
 
-static void DrawText(rct_drawpixelinfo * dpi, int32_t x, int32_t y, TextPaint * paint, rct_string_id format, void * args)
+static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, rct_string_id format, void* args)
 {
     utf8 buffer[256];
     format_string(buffer, sizeof(buffer), format, args);
     DrawText(dpi, x, y, paint, buffer);
 }
 
-static void DrawTextCompat(rct_drawpixelinfo * dpi, int32_t x, int32_t y, rct_string_id format, void * args, uint8_t colour,
-                           TextAlignment alignment, bool underline = false)
+static void DrawTextCompat(
+    rct_drawpixelinfo* dpi,
+    int32_t x,
+    int32_t y,
+    rct_string_id format,
+    void* args,
+    uint8_t colour,
+    TextAlignment alignment,
+    bool underline = false)
 {
     _legacyPaint.UnderlineText = underline;
     _legacyPaint.Colour = colour;
@@ -121,9 +130,16 @@ static void DrawTextCompat(rct_drawpixelinfo * dpi, int32_t x, int32_t y, rct_st
     DrawText(dpi, x, y, &_legacyPaint, format, args);
 }
 
-static void DrawTextEllipsisedCompat(rct_drawpixelinfo * dpi, int32_t x, int32_t y, int32_t width, rct_string_id format, void * args,
-                                     uint8_t colour,
-                                     TextAlignment alignment, bool underline = false)
+static void DrawTextEllipsisedCompat(
+    rct_drawpixelinfo* dpi,
+    int32_t x,
+    int32_t y,
+    int32_t width,
+    rct_string_id format,
+    void* args,
+    uint8_t colour,
+    TextAlignment alignment,
+    bool underline = false)
 {
     _legacyPaint.UnderlineText = underline;
     _legacyPaint.Colour = colour;
@@ -138,7 +154,7 @@ static void DrawTextEllipsisedCompat(rct_drawpixelinfo * dpi, int32_t x, int32_t
     DrawText(dpi, x, y, &_legacyPaint, buffer);
 }
 
-void gfx_draw_string(rct_drawpixelinfo *dpi, const_utf8string buffer, uint8_t colour, int32_t x, int32_t y)
+void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, int32_t x, int32_t y)
 {
     _legacyPaint.UnderlineText = false;
     _legacyPaint.Colour = colour;
@@ -148,55 +164,60 @@ void gfx_draw_string(rct_drawpixelinfo *dpi, const_utf8string buffer, uint8_t co
 }
 
 // Basic
-void gfx_draw_string_left(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8_t colour, int32_t x, int32_t y)
+void gfx_draw_string_left(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
 {
     DrawTextCompat(dpi, x, y, format, args, colour, TextAlignment::LEFT);
 }
 
-void gfx_draw_string_centred(rct_drawpixelinfo * dpi, rct_string_id format, int32_t x, int32_t y, uint8_t colour, void * args)
+void gfx_draw_string_centred(rct_drawpixelinfo* dpi, rct_string_id format, int32_t x, int32_t y, uint8_t colour, void* args)
 {
     DrawTextCompat(dpi, x, y, format, args, colour, TextAlignment::CENTRE);
 }
 
-void gfx_draw_string_right(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8_t colour, int32_t x, int32_t y)
+void gfx_draw_string_right(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
 {
     DrawTextCompat(dpi, x, y, format, args, colour, TextAlignment::RIGHT);
 }
 
 // Underline
-void draw_string_left_underline(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8_t colour, int32_t x, int32_t y)
+void draw_string_left_underline(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
 {
     DrawTextCompat(dpi, x, y, format, args, colour, TextAlignment::LEFT, true);
 }
 
-void draw_string_centred_underline(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8_t colour, int32_t x, int32_t y)
+void draw_string_centred_underline(
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
 {
     DrawTextCompat(dpi, x, y, format, args, colour, TextAlignment::CENTRE, true);
 }
 
-void draw_string_right_underline(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8_t colour, int32_t x, int32_t y)
+void draw_string_right_underline(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
 {
     DrawTextCompat(dpi, x, y, format, args, colour, TextAlignment::RIGHT, true);
 }
 
 // Ellipsised
-void gfx_draw_string_left_clipped(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8_t colour, int32_t x, int32_t y, int32_t width)
+void gfx_draw_string_left_clipped(
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y, int32_t width)
 {
     DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::LEFT);
 }
 
-void gfx_draw_string_centred_clipped(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8_t colour, int32_t x, int32_t y, int32_t width)
+void gfx_draw_string_centred_clipped(
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y, int32_t width)
 {
     DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::CENTRE);
 }
 
-void gfx_draw_string_right_clipped(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8_t colour, int32_t x, int32_t y, int32_t width)
+void gfx_draw_string_right_clipped(
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y, int32_t width)
 {
     DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::RIGHT);
 }
 
 // Wrapping
-int32_t gfx_draw_string_left_wrapped(rct_drawpixelinfo * dpi, void * args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
+int32_t gfx_draw_string_left_wrapped(
+    rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
 {
     utf8 buffer[256];
     format_string(buffer, sizeof(buffer), format, args);
@@ -214,7 +235,8 @@ int32_t gfx_draw_string_left_wrapped(rct_drawpixelinfo * dpi, void * args, int32
     return layout.GetHeight();
 }
 
-int32_t gfx_draw_string_centred_wrapped(rct_drawpixelinfo * dpi, void * args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
+int32_t gfx_draw_string_centred_wrapped(
+    rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
 {
     utf8 buffer[256];
     format_string(buffer, sizeof(buffer), format, args);
@@ -237,4 +259,3 @@ int32_t gfx_draw_string_centred_wrapped(rct_drawpixelinfo * dpi, void * args, in
 
     return layout.GetHeight();
 }
-

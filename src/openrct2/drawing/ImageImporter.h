@@ -7,10 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <string_view>
-#include <tuple>
 #include "../core/Imaging.h"
 #include "Drawing.h"
+
+#include <string_view>
+#include <tuple>
 
 struct Image;
 
@@ -25,7 +26,7 @@ namespace OpenRCT2::Drawing
         struct ImportResult
         {
             rct_g1_element Element{};
-            void * Buffer{};
+            void* Buffer{};
             size_t BufferLength{};
         };
 
@@ -53,14 +54,16 @@ namespace OpenRCT2::Drawing
     private:
         static const PaletteBGRA StandardPalette[256];
 
-        static std::vector<int32_t> GetPixels(const uint8_t * pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode);
-        static std::tuple<void *, size_t> EncodeRaw(const int32_t * pixels, uint32_t width, uint32_t height);
-        static std::tuple<void *, size_t> EncodeRLE(const int32_t * pixels, uint32_t width, uint32_t height);
+        static std::vector<int32_t>
+            GetPixels(const uint8_t* pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode);
+        static std::tuple<void*, size_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
+        static std::tuple<void*, size_t> EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height);
 
-        static int32_t CalculatePaletteIndex(IMPORT_MODE mode, int16_t * rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
-        static int32_t GetPaletteIndex(const PaletteBGRA * palette, int16_t * colour);
-        static bool IsTransparentPixel(const int16_t * colour);
+        static int32_t
+            CalculatePaletteIndex(IMPORT_MODE mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
+        static int32_t GetPaletteIndex(const PaletteBGRA* palette, int16_t* colour);
+        static bool IsTransparentPixel(const int16_t* colour);
         static bool IsChangablePixel(int32_t paletteIndex);
-        static int32_t GetClosestPaletteIndex(const PaletteBGRA * palette, const int16_t * colour);
+        static int32_t GetClosestPaletteIndex(const PaletteBGRA* palette, const int16_t* colour);
     };
-}
+} // namespace OpenRCT2::Drawing

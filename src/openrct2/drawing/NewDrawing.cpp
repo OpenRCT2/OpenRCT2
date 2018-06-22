@@ -7,25 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../Context.h"
-#include "../ui/UiContext.h"
-#include "../interface/Screenshot.h"
-#include "../paint/Painter.h"
-#include "IDrawingContext.h"
-#include "IDrawingEngine.h"
 #include "NewDrawing.h"
 
+#include "../Context.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
+#include "../interface/Screenshot.h"
 #include "../localisation/StringIds.h"
+#include "../paint/Painter.h"
+#include "../ui/UiContext.h"
+#include "IDrawingContext.h"
+#include "IDrawingEngine.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
-rct_string_id DrawingEngineStringIds[] =
-{
+rct_string_id DrawingEngineStringIds[] = {
     STR_DRAWING_ENGINE_SOFTWARE,
     STR_DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
     STR_DRAWING_ENGINE_OPENGL,
@@ -37,9 +36,9 @@ int32_t drawing_engine_get_type()
     return context->GetDrawingEngineType();
 }
 
-static IDrawingEngine * GetDrawingEngine()
+static IDrawingEngine* GetDrawingEngine()
 {
-    IDrawingEngine * result = nullptr;
+    IDrawingEngine* result = nullptr;
     auto context = GetContext();
     if (context != nullptr)
     {
@@ -85,7 +84,7 @@ void drawing_engine_resize()
     }
 }
 
-void drawing_engine_set_palette(const rct_palette_entry * colours)
+void drawing_engine_set_palette(const rct_palette_entry* colours)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -120,7 +119,7 @@ void drawing_engine_dispose()
     }
 }
 
-rct_drawpixelinfo * drawing_engine_get_dpi()
+rct_drawpixelinfo* drawing_engine_get_dpi()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
@@ -169,82 +168,83 @@ void gfx_draw_all_dirty_blocks()
 {
 }
 
-void gfx_clear(rct_drawpixelinfo * dpi, uint8_t paletteIndex)
+void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->Clear(paletteIndex);
     }
 }
 
-void gfx_fill_rect(rct_drawpixelinfo * dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t colour)
+void gfx_fill_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->FillRect(colour, left, top, right, bottom);
     }
 }
 
-void gfx_filter_rect(rct_drawpixelinfo * dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FILTER_PALETTE_ID palette)
+void gfx_filter_rect(
+    rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FILTER_PALETTE_ID palette)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->FilterRect(palette, left, top, right, bottom);
     }
 }
 
-void gfx_draw_line(rct_drawpixelinfo *dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour)
+void gfx_draw_line(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawLine(colour, x1, y1, x2, y2);
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, int32_t image, int32_t x, int32_t y, uint32_t tertiary_colour)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint32_t tertiary_colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawSprite(image, x, y, tertiary_colour);
     }
 }
 
-void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo * dpi, int32_t image, int32_t x, int32_t y, uint8_t * palette)
+void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t* palette)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawGlyph(image, x, y, palette);
     }
 }
 
-void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo * dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
+void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawSpriteRawMasked(x, y, maskImage, colourImage);
     }
 }
 
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, int32_t image, int32_t x, int32_t y, uint8_t colour)
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawSpriteSolid(image, x, y, colour);
     }
 }
@@ -258,4 +258,3 @@ int32_t screenshot_dump()
     }
     return false;
 }
-
