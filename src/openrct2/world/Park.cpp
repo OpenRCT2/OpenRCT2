@@ -7,15 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Park.h"
+
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Date.h"
+#include "../Game.h"
+#include "../GameState.h"
+#include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
-#include "../Date.h"
-#include "../Game.h"
-#include "../GameState.h"
 #include "../interface/Colour.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -25,7 +28,6 @@
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/network.h"
-#include "../OpenRCT2.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
@@ -35,7 +37,6 @@
 #include "../windows/Intent.h"
 #include "Entrance.h"
 #include "Map.h"
-#include "Park.h"
 #include "Sprite.h"
 #include "Surface.h"
 
@@ -84,7 +85,8 @@ void reset_park_entry()
 {
     gParkName = 0;
     reset_park_entrance();
-    for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++) {
+    for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
+    {
         gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
     }
 }
@@ -96,10 +98,12 @@ static uint32_t get_random_peep_spawn_index()
 {
     uint32_t spawnIndexList[MAX_PEEP_SPAWNS];
     uint32_t numSpawns = map_get_available_peep_spawn_index_list(spawnIndexList);
-    if (numSpawns > 0) {
+    if (numSpawns > 0)
+    {
         return spawnIndexList[scenario_rand() % numSpawns];
     }
-    else {
+    else
+    {
         return 0;
     }
 }
@@ -114,15 +118,16 @@ void park_set_open(int32_t open)
  *  rct2: 0x00669D4A
  */
 void game_command_set_park_open(
-    [[maybe_unused]] int32_t * eax,
-    int32_t *                  ebx,
-    [[maybe_unused]] int32_t * ecx,
-    int32_t *                  edx,
-    [[maybe_unused]] int32_t * esi,
-    int32_t *                  edi,
-    [[maybe_unused]] int32_t * ebp)
+    [[maybe_unused]] int32_t* eax,
+    int32_t* ebx,
+    [[maybe_unused]] int32_t* ecx,
+    int32_t* edx,
+    [[maybe_unused]] int32_t* esi,
+    int32_t* edi,
+    [[maybe_unused]] int32_t* ebp)
 {
-    if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+    if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
+    {
         *ebx = 0;
         return;
     }
@@ -130,36 +135,39 @@ void game_command_set_park_open(
     int32_t dh = (*edx >> 8) & 0xFF;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
-    switch (dh) {
-    case 0:
-        if (gParkFlags & PARK_FLAGS_PARK_OPEN) {
-            gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
-        }
-        break;
-    case 1:
-        if (!(gParkFlags & PARK_FLAGS_PARK_OPEN)) {
-            gParkFlags |= PARK_FLAGS_PARK_OPEN;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
-        }
-        break;
-    case 2:
-        gSamePriceThroughoutParkA = *edi;
-        window_invalidate_by_class(WC_RIDE);
-        break;
-    case 3:
-        gSamePriceThroughoutParkB = *edi;
-        window_invalidate_by_class(WC_RIDE);
-        break;
+    switch (dh)
+    {
+        case 0:
+            if (gParkFlags & PARK_FLAGS_PARK_OPEN)
+            {
+                gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+            break;
+        case 1:
+            if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
+            {
+                gParkFlags |= PARK_FLAGS_PARK_OPEN;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+            break;
+        case 2:
+            gSamePriceThroughoutParkA = *edi;
+            window_invalidate_by_class(WC_RIDE);
+            break;
+        case 3:
+            gSamePriceThroughoutParkB = *edi;
+            window_invalidate_by_class(WC_RIDE);
+            break;
     }
 
     *ebx = 0;
 }
 
 /**
-*
-*  rct2: 0x00664D05
-*/
+ *
+ *  rct2: 0x00664D05
+ */
 void update_park_fences(const CoordsXY coords)
 {
     if (map_is_edge(coords))
@@ -170,41 +178,49 @@ void update_park_fences(const CoordsXY coords)
         return;
 
     uint8_t newOwnership = surfaceElement->properties.surface.ownership & 0xF0;
-    if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
+    if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0)
+    {
         bool fenceRequired = true;
 
         rct_tile_element* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
         // If an entrance element do not place flags around surface
-        do {
+        do
+        {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
             if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if (!(tileElement->flags & TILE_ELEMENT_FLAG_GHOST)) {
+            if (!(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            {
                 fenceRequired = false;
                 break;
             }
         } while (!(tileElement++)->IsLastForTile());
 
-        if (fenceRequired) {
+        if (fenceRequired)
+        {
             // As map_is_location_in_park sets the error text
             // will require to back it up.
             rct_string_id previous_error = gGameCommandErrorText;
-            if (map_is_location_in_park({coords.x - 32, coords.y})){
+            if (map_is_location_in_park({ coords.x - 32, coords.y }))
+            {
                 newOwnership |= 0x8;
             }
 
-            if (map_is_location_in_park({coords.x, coords.y - 32})){
+            if (map_is_location_in_park({ coords.x, coords.y - 32 }))
+            {
                 newOwnership |= 0x4;
             }
 
-            if (map_is_location_in_park({coords.x + 32, coords.y})){
+            if (map_is_location_in_park({ coords.x + 32, coords.y }))
+            {
                 newOwnership |= 0x2;
             }
 
-            if (map_is_location_in_park({coords.x, coords.y + 32})){
+            if (map_is_location_in_park({ coords.x, coords.y + 32 }))
+            {
                 newOwnership |= 0x1;
             }
 
@@ -212,7 +228,8 @@ void update_park_fences(const CoordsXY coords)
         }
     }
 
-    if (surfaceElement->properties.surface.ownership != newOwnership) {
+    if (surfaceElement->properties.surface.ownership != newOwnership)
+    {
         int32_t z0 = surfaceElement->base_height * 8;
         int32_t z1 = z0 + 16;
         map_invalidate_tile(coords.x, coords.y, z0, z1);
@@ -223,13 +240,13 @@ void update_park_fences(const CoordsXY coords)
 void update_park_fences_around_tile(const CoordsXY coords)
 {
     update_park_fences(coords);
-    update_park_fences({coords.x + 32, coords.y});
-    update_park_fences({coords.x - 32, coords.y});
-    update_park_fences({coords.x, coords.y + 32});
-    update_park_fences({coords.x, coords.y - 32});
+    update_park_fences({ coords.x + 32, coords.y });
+    update_park_fences({ coords.x - 32, coords.y });
+    update_park_fences({ coords.x, coords.y + 32 });
+    update_park_fences({ coords.x, coords.y - 32 });
 }
 
-void park_set_name(const char *name)
+void park_set_name(const char* name)
 {
     auto nameId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, name);
     if (nameId != 0)
@@ -239,116 +256,141 @@ void park_set_name(const char *name)
     }
 }
 
-static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t setting, int32_t flags) {
-    rct_tile_element* surfaceElement = map_get_surface_element_at({x, y});
+static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t setting, int32_t flags)
+{
+    rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
     if (surfaceElement == nullptr)
         return MONEY32_UNDEFINED;
 
-    switch (setting) {
-    case BUY_LAND_RIGHTS_FLAG_BUY_LAND: // 0
-        if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) != 0) { // If the land is already owned
+    switch (setting)
+    {
+        case BUY_LAND_RIGHTS_FLAG_BUY_LAND: // 0
+            if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) != 0)
+            { // If the land is already owned
+                return 0;
+            }
+
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
+                || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0)
+            {
+                gGameCommandErrorText = STR_LAND_NOT_FOR_SALE;
+                return MONEY32_UNDEFINED;
+            }
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->properties.surface.ownership |= OWNERSHIP_OWNED;
+                update_park_fences_around_tile({ x, y });
+            }
+            return gLandPrice;
+        case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->properties.surface.ownership &= ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                update_park_fences_around_tile({ x, y });
+            }
             return 0;
-        }
+        case BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS: // 2
+            if ((surfaceElement->properties.surface.ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
+            { // If the land or construction rights are already owned
+                return 0;
+            }
 
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0) {
-            gGameCommandErrorText = STR_LAND_NOT_FOR_SALE;
-            return MONEY32_UNDEFINED;
-        }
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership |= OWNERSHIP_OWNED;
-            update_park_fences_around_tile({x, y});
-        }
-        return gLandPrice;
-    case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership &= ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-            update_park_fences_around_tile({x, y});
-        }
-        return 0;
-    case BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS: // 2
-        if ((surfaceElement->properties.surface.ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0) { // If the land or construction rights are already owned
-            return 0;
-        }
-
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
-            gGameCommandErrorText = STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE;
-            return MONEY32_UNDEFINED;
-        }
-
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
-            uint16_t baseHeight = surfaceElement->base_height * 8;
-            map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-        }
-        return gConstructionRightsPrice;
-    case BUY_LAND_RIGHTS_FLAG_UNOWN_CONSTRUCTION_RIGHTS: // 3
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership &= ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
-            uint16_t baseHeight = surfaceElement->base_height * 8;
-            map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-        }
-        return 0;
-    case BUY_LAND_RIGHTS_FLAG_SET_FOR_SALE: // 4
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            uint16_t baseHeight = surfaceElement->base_height * 8;
-            map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-        }
-        return 0;
-    case BUY_LAND_RIGHTS_FLAG_SET_CONSTRUCTION_RIGHTS_FOR_SALE: // 5
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
-            uint16_t baseHeight = surfaceElement->base_height * 8;
-            map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-        }
-        return 0;
-    case BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS:
-        {
-            if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
+                || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
+            {
+                gGameCommandErrorText = STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE;
                 return MONEY32_UNDEFINED;
             }
 
-            if (x <= 0 || y <= 0) {
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
+            return gConstructionRightsPrice;
+        case BUY_LAND_RIGHTS_FLAG_UNOWN_CONSTRUCTION_RIGHTS: // 3
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->properties.surface.ownership &= ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
+            return 0;
+        case BUY_LAND_RIGHTS_FLAG_SET_FOR_SALE: // 4
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
+            return 0;
+        case BUY_LAND_RIGHTS_FLAG_SET_CONSTRUCTION_RIGHTS_FOR_SALE: // 5
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
+            return 0;
+        case BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS:
+        {
+            if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
+            {
+                return MONEY32_UNDEFINED;
+            }
+
+            if (x <= 0 || y <= 0)
+            {
                 gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
                 return MONEY32_UNDEFINED;
             }
 
-            if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
+            if (x >= gMapSizeUnits || y >= gMapSizeUnits)
+            {
                 gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
                 return MONEY32_UNDEFINED;
             }
 
             uint8_t newOwnership = (flags & 0xFF00) >> 4;
-            if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0)) {
+            if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0))
+            {
                 return 0;
             }
 
             rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
-            do {
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE) {
+            do
+            {
+                if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+                {
                     // Do not allow ownership of park entrance.
                     if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
                         return 0;
                     // Allow construction rights available / for sale on park entrances on surface.
                     // There is no need to check the height if newOwnership is 0 (unowned and no rights available).
-                    if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED ||
-                         newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) &&
-                        (tileElement->base_height - 3 > surfaceElement->base_height ||
-                         tileElement->base_height < surfaceElement->base_height))
+                    if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED
+                         || newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+                        && (tileElement->base_height - 3 > surfaceElement->base_height
+                            || tileElement->base_height < surfaceElement->base_height))
                         return 0;
                 }
             } while (!(tileElement++)->IsLastForTile());
 
-            if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+            if (!(flags & GAME_COMMAND_FLAG_APPLY))
+            {
                 return gLandPrice;
             }
 
-            if ((newOwnership & 0xF0) != 0) {
-                PeepSpawn *peepSpawns = gPeepSpawns;
+            if ((newOwnership & 0xF0) != 0)
+            {
+                PeepSpawn* peepSpawns = gPeepSpawns;
 
-                for (uint8_t i = 0; i < MAX_PEEP_SPAWNS; ++i) {
-                    if (x == (peepSpawns[i].x & 0xFFE0)) {
-                        if (y == (peepSpawns[i].y & 0xFFE0)) {
+                for (uint8_t i = 0; i < MAX_PEEP_SPAWNS; ++i)
+                {
+                    if (x == (peepSpawns[i].x & 0xFFE0))
+                    {
+                        if (y == (peepSpawns[i].y & 0xFFE0))
+                        {
                             peepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
                         }
                     }
@@ -356,14 +398,14 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
             }
             surfaceElement->properties.surface.ownership &= 0x0F;
             surfaceElement->properties.surface.ownership |= newOwnership;
-            update_park_fences_around_tile({x, y});
+            update_park_fences_around_tile({ x, y });
             gMapLandRightsUpdateSuccess = true;
             return 0;
         }
-    default:
-        log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
-        assert(false);
-        return MONEY32_UNDEFINED;
+        default:
+            log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
+            assert(false);
+            return MONEY32_UNDEFINED;
     }
 }
 
@@ -373,7 +415,8 @@ int32_t map_buy_land_rights(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int3
     money32 totalCost, cost;
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
-    if (x1 == 0 && y1 == 0) {
+    if (x1 == 0 && y1 == 0)
+    {
         x1 = x0;
         y1 = y0;
     }
@@ -388,9 +431,12 @@ int32_t map_buy_land_rights(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int3
     // Game command modified to accept selection size
     totalCost = 0;
     gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || game_is_not_paused() || gCheatsBuildInPauseMode) {
-        for (y = y0; y <= y1; y += 32) {
-            for (x = x0; x <= x1; x += 32) {
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || game_is_not_paused() || gCheatsBuildInPauseMode)
+    {
+        for (y = y0; y <= y1; y += 32)
+        {
+            for (x = x0; x <= x1; x += 32)
+            {
                 cost = map_buy_land_rights_for_tile(x, y, setting, flags);
                 if (cost != MONEY32_UNDEFINED)
                 {
@@ -404,27 +450,21 @@ int32_t map_buy_land_rights(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int3
 }
 
 /**
-*
-*  rct2: 0x006649BD
-*/
+ *
+ *  rct2: 0x006649BD
+ */
 void game_command_buy_land_rights(
-    int32_t * eax, int32_t * ebx, int32_t * ecx, int32_t * edx, [[maybe_unused]] int32_t * esi, int32_t * edi, int32_t * ebp)
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     int32_t flags = *ebx & 0xFFFF;
 
-    *ebx = map_buy_land_rights(
-        (*eax & 0xFFFF),
-        (*ecx & 0xFFFF),
-        (*edi & 0xFFFF),
-        (*ebp & 0xFFFF),
-        (*edx & 0x00FF),
-        flags
-    );
+    *ebx = map_buy_land_rights((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edi & 0xFFFF), (*ebp & 0xFFFF), (*edx & 0x00FF), flags);
 
     // Too expensive to always call in map_buy_land_rights.
     // It's already counted when the park is loaded, after
     // that it should only be called for user actions.
-    if (flags & GAME_COMMAND_FLAG_APPLY) {
+    if (flags & GAME_COMMAND_FLAG_APPLY)
+    {
         map_count_remaining_land_rights();
     }
 }
@@ -532,30 +572,25 @@ void Park::Initialise()
 
     gParkEntranceFee = MONEY(10, 00);
 
-    for (auto &peepSpawn : gPeepSpawns)
+    for (auto& peepSpawn : gPeepSpawns)
     {
         peepSpawn.x = PEEP_SPAWN_UNDEFINED;
     }
 
-    gResearchPriorities =
-        (1 << RESEARCH_CATEGORY_TRANSPORT) |
-        (1 << RESEARCH_CATEGORY_GENTLE) |
-        (1 << RESEARCH_CATEGORY_ROLLERCOASTER) |
-        (1 << RESEARCH_CATEGORY_THRILL) |
-        (1 << RESEARCH_CATEGORY_WATER) |
-        (1 << RESEARCH_CATEGORY_SHOP) |
-        (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
+    gResearchPriorities = (1 << RESEARCH_CATEGORY_TRANSPORT) | (1 << RESEARCH_CATEGORY_GENTLE)
+        | (1 << RESEARCH_CATEGORY_ROLLERCOASTER) | (1 << RESEARCH_CATEGORY_THRILL) | (1 << RESEARCH_CATEGORY_WATER)
+        | (1 << RESEARCH_CATEGORY_SHOP) | (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-    gGuestInitialCash = MONEY(50,00);
+    gGuestInitialCash = MONEY(50, 00);
     gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
     gGuestInitialHunger = 200;
     gGuestInitialThirst = 200;
     gScenarioObjectiveType = OBJECTIVE_GUESTS_BY;
     gScenarioObjectiveYear = 4;
     gScenarioObjectiveNumGuests = 1000;
-    gLandPrice = MONEY(90,00);
-    gConstructionRightsPrice = MONEY(40,00);
+    gLandPrice = MONEY(90, 00);
+    gConstructionRightsPrice = MONEY(40, 00);
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     finance_reset_history();
@@ -565,7 +600,7 @@ void Park::Initialise()
     format_string(gS6Info.details, 256, STR_NO_DETAILS_YET, nullptr);
 }
 
-void Park::Update(const Date &date)
+void Park::Update(const Date& date)
 {
     // Every ~13 seconds
     if (gCurrentTicks % 512 == 0)
@@ -602,7 +637,8 @@ int32_t Park::CalculateParkSize() const
 
     tiles = 0;
     tile_element_iterator_begin(&it);
-    do {
+    do
+    {
         if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
             if (it.element->properties.surface.ownership & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
@@ -612,7 +648,8 @@ int32_t Park::CalculateParkSize() const
         }
     } while (tile_element_iterator_next(&it));
 
-    if (tiles != gParkSize) {
+    if (tiles != gParkSize)
+    {
         gParkSize = tiles;
         window_invalidate_by_class(WC_PARK_INFORMATION);
     }
@@ -642,8 +679,8 @@ int32_t Park::CalculateParkRating() const
         int32_t happyGuestCount = 0;
         int32_t lostGuestCount = 0;
         uint16_t spriteIndex;
-        rct_peep * peep;
-        FOR_ALL_GUESTS(spriteIndex, peep)
+        rct_peep* peep;
+        FOR_ALL_GUESTS (spriteIndex, peep)
         {
             if (peep->outside_of_park == 0)
             {
@@ -651,8 +688,7 @@ int32_t Park::CalculateParkRating() const
                 {
                     happyGuestCount++;
                 }
-                if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) &&
-                    (peep->peep_is_lost_countdown < 90))
+                if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
                 {
                     lostGuestCount++;
                 }
@@ -682,8 +718,8 @@ int32_t Park::CalculateParkRating() const
         int32_t totalRideExcitement = 0;
 
         int32_t i;
-        Ride * ride;
-        FOR_ALL_RIDES(i, ride)
+        Ride* ride;
+        FOR_ALL_RIDES (i, ride)
         {
             totalRideUptime += 100 - ride->downtime;
             if (ride->excitement != RIDE_RATING_UNDEFINED)
@@ -729,9 +765,10 @@ int32_t Park::CalculateParkRating() const
 
     // Litter
     {
-        rct_litter * litter;
+        rct_litter* litter;
         int32_t litterCount = 0;
-        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = litter->next)
+        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;
+             spriteIndex = litter->next)
         {
             litter = &(get_sprite(spriteIndex)->litter);
 
@@ -766,11 +803,10 @@ money32 Park::CalculateParkValue() const
     return result;
 }
 
-money32 Park::CalculateRideValue(const Ride * ride) const
+money32 Park::CalculateRideValue(const Ride* ride) const
 {
     money32 result = 0;
-    if (ride->type != RIDE_TYPE_NULL &&
-        ride->value != RIDE_VALUE_UNDEFINED)
+    if (ride->type != RIDE_TYPE_NULL && ride->value != RIDE_VALUE_UNDEFINED)
     {
         result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
     }
@@ -786,12 +822,15 @@ money16 Park::CalculateTotalRideValueForMoney() const
 {
     money16 totalRideValue = 0;
     int32_t i;
-    Ride * ride;
-    FOR_ALL_RIDES(i, ride)
+    Ride* ride;
+    FOR_ALL_RIDES (i, ride)
     {
-        if (ride->status != RIDE_STATUS_OPEN) continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) continue;
+        if (ride->status != RIDE_STATUS_OPEN)
+            continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            continue;
 
         // Add ride value
         if (ride->value != RIDE_VALUE_UNDEFINED)
@@ -812,12 +851,15 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 
     // TODO combine the two ride loops
     int32_t i;
-    Ride * ride;
-    FOR_ALL_RIDES(i, ride)
+    Ride* ride;
+    FOR_ALL_RIDES (i, ride)
     {
-        if (ride->status != RIDE_STATUS_OPEN) continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) continue;
+        if (ride->status != RIDE_STATUS_OPEN)
+            continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            continue;
 
         // Add guest score for ride type
         suggestedMaxGuests += rideBonusValue[ride->type];
@@ -827,15 +869,22 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
     if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
     {
         suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
-        FOR_ALL_RIDES(i, ride)
+        FOR_ALL_RIDES (i, ride)
         {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED) continue;
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) continue;
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)) continue;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) continue;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING)) continue;
-            if (ride->length[0] < (600 << 16)) continue;
-            if (ride->excitement < RIDE_RATING(6, 00)) continue;
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+                continue;
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+                continue;
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+                continue;
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+                continue;
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+                continue;
+            if (ride->length[0] < (600 << 16))
+                continue;
+            if (ride->excitement < RIDE_RATING(6, 00))
+                continue;
 
             // Bonus guests for good ride
             suggestedMaxGuests += rideBonusValue[ride->type] * 2;
@@ -947,7 +996,7 @@ void Park::GenerateGuests()
     }
 }
 
-rct_peep * Park::GenerateGuestFromCampaign(int32_t campaign)
+rct_peep* Park::GenerateGuestFromCampaign(int32_t campaign)
 {
     auto peep = GenerateGuest();
     if (peep != nullptr)
@@ -957,9 +1006,9 @@ rct_peep * Park::GenerateGuestFromCampaign(int32_t campaign)
     return peep;
 }
 
-rct_peep * Park::GenerateGuest()
+rct_peep* Park::GenerateGuest()
 {
-    rct_peep * peep = nullptr;
+    rct_peep* peep = nullptr;
     PeepSpawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
 
     if (spawn.x != PEEP_SPAWN_UNDEFINED)
@@ -983,8 +1032,7 @@ rct_peep * Park::GenerateGuest()
     return peep;
 }
 
-template<typename T, size_t TSize>
-static void HistoryPushRecord(T history[TSize], T newItem)
+template<typename T, size_t TSize> static void HistoryPushRecord(T history[TSize], T newItem)
 {
     for (size_t i = TSize - 1; i > 0; i--)
     {

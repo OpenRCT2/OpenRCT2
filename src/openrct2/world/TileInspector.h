@@ -12,7 +12,8 @@
 #include "../common.h"
 #include "Map.h"
 
-enum TILE_INSPECTOR_ELEMENT_TYPE {
+enum TILE_INSPECTOR_ELEMENT_TYPE
+{
     TILE_INSPECTOR_ELEMENT_ANY = 0,
     TILE_INSPECTOR_ELEMENT_SURFACE,
     TILE_INSPECTOR_ELEMENT_PATH,
@@ -25,7 +26,8 @@ enum TILE_INSPECTOR_ELEMENT_TYPE {
     TILE_INSPECTOR_ELEMENT_CORRUPT,
 };
 
-enum TILE_INSPECTOR_INSTRUCTION_TYPE {
+enum TILE_INSPECTOR_INSTRUCTION_TYPE
+{
     TILE_INSPECTOR_ANY_REMOVE,
     TILE_INSPECTOR_ANY_SWAP,
     TILE_INSPECTOR_ANY_INSERT_CORRUPT,
@@ -63,8 +65,12 @@ int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementInd
 int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);
 int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex, int32_t slopeValue, int32_t flags);
 int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t elementIndex, int8_t offset, int32_t flags);
-int32_t tile_inspector_track_set_chain(int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain, int32_t flags);
-int32_t tile_inspector_scenery_set_quarter_location(int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags);
-int32_t tile_inspector_scenery_set_quarter_collision(int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags);
-int32_t tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags);
+int32_t tile_inspector_track_set_chain(
+    int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain, int32_t flags);
+int32_t tile_inspector_scenery_set_quarter_location(
+    int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags);
+int32_t tile_inspector_scenery_set_quarter_collision(
+    int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags);
+int32_t
+    tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags);
 int32_t tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);

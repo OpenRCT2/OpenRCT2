@@ -7,24 +7,25 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Banner.h"
-#include "../common.h"
+#include "TileInspector.h"
+
 #include "../Context.h"
 #include "../Game.h"
+#include "../common.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
 #include "../windows/tile_inspector.h"
+#include "Banner.h"
 #include "Footpath.h"
 #include "LargeScenery.h"
 #include "Map.h"
+#include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
-#include "TileInspector.h"
-#include "../ride/Station.h"
-#include "Park.h"
 
 using namespace OpenRCT2;
 
@@ -35,8 +36,8 @@ int32_t windowTileInspectorSelectedIndex;
 
 static bool map_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t second)
 {
-    rct_tile_element * const firstElement  = map_get_nth_element_at(x, y, first);
-    rct_tile_element * const secondElement = map_get_nth_element_at(x, y, second);
+    rct_tile_element* const firstElement = map_get_nth_element_at(x, y, first);
+    rct_tile_element* const secondElement = map_get_nth_element_at(x, y, second);
 
     if (firstElement == nullptr)
     {
@@ -56,8 +57,8 @@ static bool map_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t se
 
     // Swap their memory
     rct_tile_element temp = *firstElement;
-    *firstElement         = *secondElement;
-    *secondElement        = temp;
+    *firstElement = *secondElement;
+    *secondElement = temp;
 
     // Swap the 'last map element for tile' flag if either one of them was last
     if ((firstElement)->IsLastForTile() || (secondElement)->IsLastForTile())
@@ -85,7 +86,7 @@ int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIn
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Create new corrupt element
-        rct_tile_element * corruptElement = tile_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
+        rct_tile_element* corruptElement = tile_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == nullptr)
         {
             log_warning("Failed to insert corrupt element.");
@@ -94,7 +95,7 @@ int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIn
         corruptElement->type = TILE_ELEMENT_TYPE_CORRUPT;
 
         // Set the base height to be the same as the selected element
-        rct_tile_element * const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
+        rct_tile_element* const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
         if (!selectedElement)
         {
             return MONEY32_UNDEFINED;
@@ -117,8 +118,9 @@ int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIn
         map_invalidate_tile_full(x << 5, y << 5);
 
         // Update the tile inspector's list for everyone who has the tile selected
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             windowTileInspectorElementCount++;
 
@@ -147,7 +149,7 @@ int32_t tile_inspector_remove_element_at(int32_t x, int32_t y, int16_t elementIn
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Forcefully remove the element
-        rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
+        rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
         if (!tileElement)
         {
             return MONEY32_UNDEFINED;
@@ -156,8 +158,9 @@ int32_t tile_inspector_remove_element_at(int32_t x, int32_t y, int16_t elementIn
         map_invalidate_tile_full(x << 5, y << 5);
 
         // Update the window
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             windowTileInspectorElementCount--;
 
@@ -188,8 +191,9 @@ int32_t tile_inspector_swap_elements_at(int32_t x, int32_t y, int16_t first, int
         map_invalidate_tile_full(x << 5, y << 5);
 
         // Update the window
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             // If one of them was selected, update selected list item
             if (windowTileInspectorSelectedIndex == first)
@@ -210,69 +214,69 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
     {
         uint8_t newRotation, pathEdges, pathCorners;
 
-        rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
+        rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
         if (!tileElement)
         {
             return MONEY32_UNDEFINED;
         }
         switch (tileElement->GetType())
         {
-        case TILE_ELEMENT_TYPE_PATH:
-            if (footpath_element_is_sloped(tileElement))
+            case TILE_ELEMENT_TYPE_PATH:
+                if (footpath_element_is_sloped(tileElement))
+                {
+                    newRotation = (footpath_element_get_slope_direction(tileElement) + 1) & TILE_ELEMENT_DIRECTION_MASK;
+                    tileElement->properties.path.type &= ~TILE_ELEMENT_DIRECTION_MASK;
+                    tileElement->properties.path.type |= newRotation;
+                }
+                pathEdges = tileElement->properties.path.edges & 0x0F;
+                pathCorners = tileElement->properties.path.edges & 0xF0;
+                tileElement->properties.path.edges = 0;
+                tileElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;
+                tileElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
+                break;
+            case TILE_ELEMENT_TYPE_ENTRANCE:
             {
-                newRotation = (footpath_element_get_slope_direction(tileElement) + 1) & TILE_ELEMENT_DIRECTION_MASK;
-                tileElement->properties.path.type &= ~TILE_ELEMENT_DIRECTION_MASK;
-                tileElement->properties.path.type |= newRotation;
-            }
-            pathEdges                          = tileElement->properties.path.edges & 0x0F;
-            pathCorners                        = tileElement->properties.path.edges & 0xF0;
-            tileElement->properties.path.edges = 0;
-            tileElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;
-            tileElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
-            break;
-        case TILE_ELEMENT_TYPE_ENTRANCE:
-        {
-            // Update element rotation
-            newRotation = tile_element_get_direction_with_offset(tileElement, 1);
-            tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
-            tileElement->type |= newRotation;
+                // Update element rotation
+                newRotation = tile_element_get_direction_with_offset(tileElement, 1);
+                tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
+                tileElement->type |= newRotation;
 
-            // Update ride's known entrance/exit rotation
-            Ride * ride         = get_ride(tileElement->properties.entrance.ride_index);
-            uint8_t  stationIndex = tileElement->properties.entrance.index;
-            auto   entrance     = ride_get_entrance_location(ride, stationIndex);
-            auto   exit         = ride_get_exit_location(ride, stationIndex);
-            uint8_t  entranceType = entrance_element_get_type(tileElement);
-            uint8_t  z            = tileElement->base_height;
+                // Update ride's known entrance/exit rotation
+                Ride* ride = get_ride(tileElement->properties.entrance.ride_index);
+                uint8_t stationIndex = tileElement->properties.entrance.index;
+                auto entrance = ride_get_entrance_location(ride, stationIndex);
+                auto exit = ride_get_exit_location(ride, stationIndex);
+                uint8_t entranceType = entrance_element_get_type(tileElement);
+                uint8_t z = tileElement->base_height;
 
-            // Make sure this is the correct entrance or exit
-            if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
-            {
-                ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
+                // Make sure this is the correct entrance or exit
+                if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == x && entrance.y == y && entrance.z == z)
+                {
+                    ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
+                }
+                else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
+                {
+                    ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
+                }
+                break;
             }
-            else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
+            case TILE_ELEMENT_TYPE_TRACK:
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TILE_ELEMENT_TYPE_WALL:
+                newRotation = tile_element_get_direction_with_offset(tileElement, 1);
+                tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
+                tileElement->type |= newRotation;
+                break;
+            case TILE_ELEMENT_TYPE_BANNER:
             {
-                ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
+                uint8_t unblockedEdges = tileElement->properties.banner.flags & 0xF;
+                unblockedEdges = (unblockedEdges << 1 | unblockedEdges >> 3) & 0xF;
+                tileElement->properties.banner.flags &= ~0xF;
+                tileElement->properties.banner.flags |= unblockedEdges;
+                tileElement->properties.banner.position++;
+                tileElement->properties.banner.position &= 3;
+                break;
             }
-            break;
-        }
-        case TILE_ELEMENT_TYPE_TRACK:
-        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-        case TILE_ELEMENT_TYPE_WALL:
-            newRotation = tile_element_get_direction_with_offset(tileElement, 1);
-            tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
-            tileElement->type |= newRotation;
-            break;
-        case TILE_ELEMENT_TYPE_BANNER:
-        {
-            uint8_t unblockedEdges = tileElement->properties.banner.flags & 0xF;
-            unblockedEdges = (unblockedEdges << 1 | unblockedEdges >> 3) & 0xF;
-            tileElement->properties.banner.flags &= ~0xF;
-            tileElement->properties.banner.flags |= unblockedEdges;
-            tileElement->properties.banner.position++;
-            tileElement->properties.banner.position &= 3;
-            break;
-        }
         }
 
         map_invalidate_tile_full(x << 5, y << 5);
@@ -306,10 +310,10 @@ int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, rct_tile_element e
             {
                 return MONEY32_UNDEFINED;
             }
-            rct_banner & newBanner = gBanners[newBannerIndex];
-            newBanner              = gBanners[bannerIndex];
-            newBanner.x            = x;
-            newBanner.y            = y;
+            rct_banner& newBanner = gBanners[newBannerIndex];
+            newBanner = gBanners[bannerIndex];
+            newBanner.x = x;
+            newBanner.y = y;
 
             // Use the new banner index
             tile_element_set_banner_index(&element, newBannerIndex);
@@ -329,10 +333,10 @@ int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, rct_tile_element e
             }
         }
 
-        rct_tile_element * const pastedElement = tile_element_insert(x, y, element.base_height, 0);
+        rct_tile_element* const pastedElement = tile_element_insert(x, y, element.base_height, 0);
 
         bool lastForTile = pastedElement->IsLastForTile();
-        *pastedElement   = element;
+        *pastedElement = element;
         pastedElement->flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
         if (lastForTile)
         {
@@ -341,8 +345,9 @@ int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, rct_tile_element e
 
         map_invalidate_tile_full(x << 5, y << 5);
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             windowTileInspectorElementCount++;
 
@@ -364,11 +369,11 @@ int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags)
 {
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        const rct_tile_element * const firstElement = map_get_first_element_at(x, y);
+        const rct_tile_element* const firstElement = map_get_first_element_at(x, y);
 
         // Count elements on tile
-        int32_t                   numElement      = 0;
-        const rct_tile_element * elementIterator = firstElement;
+        int32_t numElement = 0;
+        const rct_tile_element* elementIterator = firstElement;
         do
         {
             numElement++;
@@ -377,15 +382,16 @@ int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags)
         // Bubble sort
         for (int32_t loopStart = 1; loopStart < numElement; loopStart++)
         {
-            int32_t                   currentId      = loopStart;
-            const rct_tile_element * currentElement = firstElement + currentId;
-            const rct_tile_element * otherElement   = currentElement - 1;
+            int32_t currentId = loopStart;
+            const rct_tile_element* currentElement = firstElement + currentId;
+            const rct_tile_element* otherElement = currentElement - 1;
 
             // While current element's base height is lower, or (when their baseheight is the same) the other map element's
             // clearance height is lower...
-            while (currentId > 0 && (otherElement->base_height > currentElement->base_height ||
-                                     (otherElement->base_height == currentElement->base_height &&
-                                      otherElement->clearance_height > currentElement->clearance_height)))
+            while (currentId > 0
+                   && (otherElement->base_height > currentElement->base_height
+                       || (otherElement->base_height == currentElement->base_height
+                           && otherElement->clearance_height > currentElement->clearance_height)))
             {
                 if (!map_swap_elements_at(x, y, currentId - 1, currentId))
                 {
@@ -404,8 +410,9 @@ int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags)
         map_invalidate_tile_full(x << 5, y << 5);
 
         // Deselect tile for clients who had it selected
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             windowTileInspectorSelectedIndex = -1;
             window_invalidate(tileInspectorWindow);
@@ -417,11 +424,11 @@ int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags)
 
 int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elementIndex, int8_t heightOffset, int32_t flags)
 {
-    rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
     if (tileElement == nullptr)
         return MONEY32_UNDEFINED;
 
-    int16_t newBaseHeight      = (int16_t)tileElement->base_height + heightOffset;
+    int16_t newBaseHeight = (int16_t)tileElement->base_height + heightOffset;
     int16_t newClearanceHeight = (int16_t)tileElement->clearance_height + heightOffset;
     if (newBaseHeight < 0 || newBaseHeight > 0xff || newClearanceHeight < 0 || newClearanceHeight > 0xff)
     {
@@ -436,10 +443,10 @@ int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elem
             if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
             {
                 // Update the ride's known entrance or exit height
-                Ride * ride          = get_ride(tileElement->properties.entrance.ride_index);
-                uint8_t  entranceIndex = tileElement->properties.entrance.index;
-                auto   entrance      = ride_get_entrance_location(ride, entranceIndex);
-                auto   exit          = ride_get_exit_location(ride, entranceIndex);
+                Ride* ride = get_ride(tileElement->properties.entrance.ride_index);
+                uint8_t entranceIndex = tileElement->properties.entrance.index;
+                auto entrance = ride_get_entrance_location(ride, entranceIndex);
+                auto exit = ride_get_exit_location(ride, entranceIndex);
                 uint8_t z = tileElement->base_height;
 
                 // Make sure this is the correct entrance or exit
@@ -447,8 +454,7 @@ int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elem
                     ride_set_entrance_location(
                         ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
                 else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == x && exit.y == y && exit.z == z)
-                    ride_set_exit_location(
-                        ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
+                    ride_set_exit_location(ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
             }
         }
 
@@ -457,8 +463,9 @@ int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elem
 
         map_invalidate_tile_full(x << 5, y << 5);
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -469,7 +476,7 @@ int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elem
 
 int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool showFences, int32_t flags)
 {
-    rct_tile_element * const surfaceelement = map_get_surface_element_at(x, y);
+    rct_tile_element* const surfaceelement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceelement == nullptr)
@@ -480,12 +487,13 @@ int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool showF
         if (!showFences)
             surfaceelement->properties.surface.ownership &= ~0x0F;
         else
-            update_park_fences({x << 5, y << 5});
+            update_park_fences({ x << 5, y << 5 });
 
         map_invalidate_tile_full(x << 5, y << 5);
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -496,7 +504,7 @@ int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool showF
 
 int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t cornerIndex, int32_t flags)
 {
-    rct_tile_element * const surfaceElement = map_get_surface_element_at(x, y);
+    rct_tile_element* const surfaceElement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -505,7 +513,7 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         const uint8_t originalSlope = surfaceElement->properties.surface.slope;
-        const bool  diagonal      = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
+        const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
 
         surfaceElement->properties.surface.slope ^= 1 << cornerIndex;
         if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
@@ -526,18 +534,18 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
             {
                 switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                 {
-                case TILE_ELEMENT_SLOPE_S_CORNER_DN:
-                    surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
-                    break;
-                case TILE_ELEMENT_SLOPE_W_CORNER_DN:
-                    surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
-                    break;
-                case TILE_ELEMENT_SLOPE_N_CORNER_DN:
-                    surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
-                    break;
-                case TILE_ELEMENT_SLOPE_E_CORNER_DN:
-                    surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
-                    break;
+                    case TILE_ELEMENT_SLOPE_S_CORNER_DN:
+                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                        break;
+                    case TILE_ELEMENT_SLOPE_W_CORNER_DN:
+                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                        break;
+                    case TILE_ELEMENT_SLOPE_N_CORNER_DN:
+                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                        break;
+                    case TILE_ELEMENT_SLOPE_E_CORNER_DN:
+                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                        break;
                 }
             }
 
@@ -548,8 +556,9 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
 
         map_invalidate_tile_full(x << 5, y << 5);
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -560,7 +569,7 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
 
 int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t flags)
 {
-    rct_tile_element * const surfaceElement = map_get_surface_element_at(x, y);
+    rct_tile_element* const surfaceElement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -584,8 +593,9 @@ int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t fla
 
         map_invalidate_tile_full(x << 5, y << 5);
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -596,7 +606,7 @@ int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t fla
 
 int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementIndex, bool sloped, int32_t flags)
 {
-    rct_tile_element * const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
@@ -611,8 +621,9 @@ int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementInde
 
         map_invalidate_tile_full(x << 5, y << 5);
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -623,7 +634,7 @@ int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementInde
 
 int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags)
 {
-    rct_tile_element * const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
@@ -634,8 +645,9 @@ int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementInd
 
         map_invalidate_tile_full(x << 5, y << 5);
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -646,12 +658,12 @@ int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementInd
 
 int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elementIndex, int32_t flags)
 {
-    rct_tile_element * const entranceElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const entranceElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
         return MONEY32_UNDEFINED;
 
-    Ride * ride = get_ride(entranceElement->properties.entrance.ride_index);
+    Ride* ride = get_ride(entranceElement->properties.entrance.ride_index);
 
     if (ride == nullptr)
         return MONEY32_UNDEFINED;
@@ -662,16 +674,23 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
 
         switch (entranceElement->properties.entrance.type)
         {
-        case ENTRANCE_TYPE_RIDE_ENTRANCE:
-            ride_set_entrance_location(ride, stationIndex, { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
-            break;
-        case ENTRANCE_TYPE_RIDE_EXIT:
-            ride_set_exit_location(ride, stationIndex, { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
-            break;
+            case ENTRANCE_TYPE_RIDE_ENTRANCE:
+                ride_set_entrance_location(
+                    ride,
+                    stationIndex,
+                    { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
+                break;
+            case ENTRANCE_TYPE_RIDE_EXIT:
+                ride_set_exit_location(
+                    ride,
+                    stationIndex,
+                    { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
+                break;
         }
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -682,7 +701,7 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
 
 int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex, int32_t slopeValue, int32_t flags)
 {
-    rct_tile_element * const wallElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const wallElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (wallElement == nullptr || wallElement->GetType() != TILE_ELEMENT_TYPE_WALL)
         return MONEY32_UNDEFINED;
@@ -695,8 +714,9 @@ int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex
 
         map_invalidate_tile_full(x << 5, y << 5);
 
-        rct_window * const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && (uint32_t)x == windowTileInspectorTileX
+            && (uint32_t)y == windowTileInspectorTileY)
         {
             window_invalidate(tileInspectorWindow);
         }
@@ -709,7 +729,7 @@ int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex
 // Broxzier: Copied from track_remove and stripped of unneeded code, but I think this should be smaller
 int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t elementIndex, int8_t offset, int32_t flags)
 {
-    rct_tile_element * const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (offset == 0)
         return 0;
@@ -719,35 +739,35 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        uint8_t                     type       = track_element_get_type(trackElement);
-        int16_t                    originX    = x << 5;
-        int16_t                    originY    = y << 5;
-        int16_t                    originZ    = trackElement->base_height * 8;
-        uint8_t                     rotation   = tile_element_get_direction(trackElement);
-        uint8_t                     rideIndex  = track_element_get_ride_index(trackElement);
-        Ride *                    ride       = get_ride(rideIndex);
-        const rct_preview_track * trackBlock = get_track_def_from_ride(ride, type);
+        uint8_t type = track_element_get_type(trackElement);
+        int16_t originX = x << 5;
+        int16_t originY = y << 5;
+        int16_t originZ = trackElement->base_height * 8;
+        uint8_t rotation = tile_element_get_direction(trackElement);
+        uint8_t rideIndex = track_element_get_ride_index(trackElement);
+        Ride* ride = get_ride(rideIndex);
+        const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += tile_element_get_track_sequence(trackElement);
 
         uint8_t originDirection = tile_element_get_direction(trackElement);
         switch (originDirection)
         {
-        case 0:
-            originX -= trackBlock->x;
-            originY -= trackBlock->y;
-            break;
-        case 1:
-            originX -= trackBlock->y;
-            originY += trackBlock->x;
-            break;
-        case 2:
-            originX += trackBlock->x;
-            originY += trackBlock->y;
-            break;
-        case 3:
-            originX += trackBlock->y;
-            originY -= trackBlock->x;
-            break;
+            case 0:
+                originX -= trackBlock->x;
+                originY -= trackBlock->y;
+                break;
+            case 1:
+                originX -= trackBlock->y;
+                originY += trackBlock->x;
+                break;
+            case 2:
+                originX += trackBlock->x;
+                originY += trackBlock->y;
+                break;
+            case 3:
+                originX += trackBlock->y;
+                originY -= trackBlock->x;
+                break;
         }
 
         originZ -= trackBlock->z;
@@ -759,30 +779,30 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
 
             switch (originDirection)
             {
-            case 0:
-                elemX += trackBlock->x;
-                elemY += trackBlock->y;
-                break;
-            case 1:
-                elemX += trackBlock->y;
-                elemY -= trackBlock->x;
-                break;
-            case 2:
-                elemX -= trackBlock->x;
-                elemY -= trackBlock->y;
-                break;
-            case 3:
-                elemX -= trackBlock->y;
-                elemY += trackBlock->x;
-                break;
+                case 0:
+                    elemX += trackBlock->x;
+                    elemY += trackBlock->y;
+                    break;
+                case 1:
+                    elemX += trackBlock->y;
+                    elemY -= trackBlock->x;
+                    break;
+                case 2:
+                    elemX -= trackBlock->x;
+                    elemY -= trackBlock->y;
+                    break;
+                case 3:
+                    elemX -= trackBlock->y;
+                    elemY += trackBlock->x;
+                    break;
             }
 
             elemZ += trackBlock->z;
 
             map_invalidate_tile_full(elemX, elemY);
 
-            bool               found       = false;
-            rct_tile_element * tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
+            bool found = false;
+            rct_tile_element* tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
             do
             {
                 if (tileElement->base_height != elemZ / 8)
@@ -812,8 +832,8 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
 
             // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when
             // you decrease the map size.
-            openrct2_assert(map_get_surface_element_at({elemX, elemY}) != nullptr, "No surface at %d,%d", elemX >> 5,
-                            elemY >> 5);
+            openrct2_assert(
+                map_get_surface_element_at({ elemX, elemY }) != nullptr, "No surface at %d,%d", elemX >> 5, elemY >> 5);
 
             // Keep?
             // invalidate_test_results(rideIndex);
@@ -831,10 +851,10 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
 
 // Sets chainlift, optionally for an entire track block
 // Broxzier: Basically a copy of the above function, with just two different lines... should probably be combined somehow
-int32_t tile_inspector_track_set_chain(int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain,
-                                      int32_t flags)
+int32_t tile_inspector_track_set_chain(
+    int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain, int32_t flags)
 {
-    rct_tile_element * const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return MONEY32_UNDEFINED;
@@ -852,35 +872,35 @@ int32_t tile_inspector_track_set_chain(int32_t x, int32_t y, int32_t elementInde
             return 0;
         }
 
-        uint8_t                     type       = track_element_get_type(trackElement);
-        int16_t                    originX    = x << 5;
-        int16_t                    originY    = y << 5;
-        int16_t                    originZ    = trackElement->base_height * 8;
-        uint8_t                     rotation   = tile_element_get_direction(trackElement);
-        uint8_t                     rideIndex  = track_element_get_ride_index(trackElement);
-        Ride *                    ride       = get_ride(rideIndex);
-        const rct_preview_track * trackBlock = get_track_def_from_ride(ride, type);
+        uint8_t type = track_element_get_type(trackElement);
+        int16_t originX = x << 5;
+        int16_t originY = y << 5;
+        int16_t originZ = trackElement->base_height * 8;
+        uint8_t rotation = tile_element_get_direction(trackElement);
+        uint8_t rideIndex = track_element_get_ride_index(trackElement);
+        Ride* ride = get_ride(rideIndex);
+        const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += tile_element_get_track_sequence(trackElement);
 
         uint8_t originDirection = tile_element_get_direction(trackElement);
         switch (originDirection)
         {
-        case 0:
-            originX -= trackBlock->x;
-            originY -= trackBlock->y;
-            break;
-        case 1:
-            originX -= trackBlock->y;
-            originY += trackBlock->x;
-            break;
-        case 2:
-            originX += trackBlock->x;
-            originY += trackBlock->y;
-            break;
-        case 3:
-            originX += trackBlock->y;
-            originY -= trackBlock->x;
-            break;
+            case 0:
+                originX -= trackBlock->x;
+                originY -= trackBlock->y;
+                break;
+            case 1:
+                originX -= trackBlock->y;
+                originY += trackBlock->x;
+                break;
+            case 2:
+                originX += trackBlock->x;
+                originY += trackBlock->y;
+                break;
+            case 3:
+                originX += trackBlock->y;
+                originY -= trackBlock->x;
+                break;
         }
 
         originZ -= trackBlock->z;
@@ -892,30 +912,30 @@ int32_t tile_inspector_track_set_chain(int32_t x, int32_t y, int32_t elementInde
 
             switch (originDirection)
             {
-            case 0:
-                elemX += trackBlock->x;
-                elemY += trackBlock->y;
-                break;
-            case 1:
-                elemX += trackBlock->y;
-                elemY -= trackBlock->x;
-                break;
-            case 2:
-                elemX -= trackBlock->x;
-                elemY -= trackBlock->y;
-                break;
-            case 3:
-                elemX -= trackBlock->y;
-                elemY += trackBlock->x;
-                break;
+                case 0:
+                    elemX += trackBlock->x;
+                    elemY += trackBlock->y;
+                    break;
+                case 1:
+                    elemX += trackBlock->y;
+                    elemY -= trackBlock->x;
+                    break;
+                case 2:
+                    elemX -= trackBlock->x;
+                    elemY -= trackBlock->y;
+                    break;
+                case 3:
+                    elemX -= trackBlock->y;
+                    elemY += trackBlock->x;
+                    break;
             }
 
             elemZ += trackBlock->z;
 
             map_invalidate_tile_full(elemX, elemY);
 
-            bool               found       = false;
-            rct_tile_element * tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
+            bool found = false;
+            rct_tile_element* tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
             do
             {
                 if (tileElement->base_height != elemZ / 8)
@@ -945,8 +965,8 @@ int32_t tile_inspector_track_set_chain(int32_t x, int32_t y, int32_t elementInde
 
             // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is for when
             // you decrease the map size.
-            openrct2_assert(map_get_surface_element_at({elemX, elemY}) != nullptr, "No surface at %d,%d", elemX >> 5,
-                            elemY >> 5);
+            openrct2_assert(
+                map_get_surface_element_at({ elemX, elemY }) != nullptr, "No surface at %d,%d", elemX >> 5, elemY >> 5);
 
             // Keep?
             // invalidate_test_results(rideIndex);
@@ -964,9 +984,10 @@ int32_t tile_inspector_track_set_chain(int32_t x, int32_t y, int32_t elementInde
     return 0;
 }
 
-int32_t tile_inspector_scenery_set_quarter_location(int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)
+int32_t
+    tile_inspector_scenery_set_quarter_location(int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)
 {
-    rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return MONEY32_UNDEFINED;
@@ -991,9 +1012,10 @@ int32_t tile_inspector_scenery_set_quarter_location(int32_t x, int32_t y, int32_
     return 0;
 }
 
-int32_t tile_inspector_scenery_set_quarter_collision(int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)
+int32_t tile_inspector_scenery_set_quarter_collision(
+    int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)
 {
-    rct_tile_element * const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return MONEY32_UNDEFINED;
@@ -1014,7 +1036,7 @@ int32_t tile_inspector_scenery_set_quarter_collision(int32_t x, int32_t y, int32
 
 int32_t tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags)
 {
-    rct_tile_element * const bannerElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const bannerElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (bannerElement == nullptr || bannerElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
         return MONEY32_UNDEFINED;
@@ -1034,7 +1056,7 @@ int32_t tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t
 
 int32_t tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t elementIndex, int32_t flags)
 {
-    rct_tile_element * const corruptElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element* const corruptElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (corruptElement == nullptr || corruptElement->GetType() != TILE_ELEMENT_TYPE_CORRUPT)
         return MONEY32_UNDEFINED;
@@ -1044,7 +1066,7 @@ int32_t tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t elementIndex,
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_tile_element * const nextElement = corruptElement + 1;
+        rct_tile_element* const nextElement = corruptElement + 1;
         corruptElement->base_height = corruptElement->clearance_height = nextElement->base_height;
 
         if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)

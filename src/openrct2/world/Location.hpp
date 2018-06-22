@@ -11,14 +11,20 @@
 
 #include "../common.h"
 
-#define LOCATION_NULL     ((int16_t)(uint16_t)0x8000)
+#define LOCATION_NULL ((int16_t)(uint16_t)0x8000)
 #define RCT_XY8_UNDEFINED 0xFFFF
-#define MakeXY16(x, y)    {(int16_t)(x), (int16_t)(y)}
+#define MakeXY16(x, y)                                                                                                         \
+    {                                                                                                                          \
+        (int16_t)(x), (int16_t)(y)                                                                                             \
+    }
 
 #pragma pack(push, 1)
-struct LocationXY8 {
-    union {
-        struct {
+struct LocationXY8
+{
+    union
+    {
+        struct
+        {
             uint8_t x, y;
         };
         uint16_t xy;
@@ -26,18 +32,20 @@ struct LocationXY8 {
 };
 assert_struct_size(LocationXY8, 2);
 
-struct sLocationXY8 {
+struct sLocationXY8
+{
     int8_t x, y;
 };
 assert_struct_size(sLocationXY8, 2);
 
-struct LocationXY16 {
+struct LocationXY16
+{
     int16_t x, y;
 };
 assert_struct_size(LocationXY16, 4);
 
-
-struct LocationXYZ16 {
+struct LocationXYZ16
+{
     int16_t x, y, z;
 };
 assert_struct_size(LocationXYZ16, 6);
@@ -57,8 +65,16 @@ struct CoordsXY
 struct TileCoordsXY
 {
     TileCoordsXY() = default;
-    TileCoordsXY(int32_t x_, int32_t y_) : x(x_), y(y_) {}
-    explicit TileCoordsXY(CoordsXY c) : x(c.x / 32), y(c.y / 32) {}
+    TileCoordsXY(int32_t x_, int32_t y_)
+        : x(x_)
+        , y(y_)
+    {
+    }
+    explicit TileCoordsXY(CoordsXY c)
+        : x(c.x / 32)
+        , y(c.y / 32)
+    {
+    }
     TileCoordsXY& operator+=(const TileCoordsXY rhs)
     {
         x += rhs.x;
@@ -76,9 +92,24 @@ struct CoordsXYZ
 struct TileCoordsXYZ
 {
     TileCoordsXYZ() = default;
-    TileCoordsXYZ(int32_t x_, int32_t y_, int32_t z_) : x(x_), y(y_), z(z_) {}
-    explicit TileCoordsXYZ(CoordsXY c, int32_t z_) : x(c.x / 32), y(c.y / 32), z(z_) {}
-    explicit TileCoordsXYZ(CoordsXYZ c) : x(c.x / 32), y(c.y / 32), z(c.z / 8) {}
+    TileCoordsXYZ(int32_t x_, int32_t y_, int32_t z_)
+        : x(x_)
+        , y(y_)
+        , z(z_)
+    {
+    }
+    explicit TileCoordsXYZ(CoordsXY c, int32_t z_)
+        : x(c.x / 32)
+        , y(c.y / 32)
+        , z(z_)
+    {
+    }
+    explicit TileCoordsXYZ(CoordsXYZ c)
+        : x(c.x / 32)
+        , y(c.y / 32)
+        , z(c.z / 8)
+    {
+    }
     TileCoordsXYZ& operator+=(const TileCoordsXY rhs)
     {
         x += rhs.x;
@@ -93,7 +124,10 @@ struct CoordsXYZD
     int32_t x, y, z;
     uint8_t direction;
 
-    bool isNull() const { return x == COORDS_NULL; };
+    bool isNull() const
+    {
+        return x == COORDS_NULL;
+    };
 };
 
 struct TileCoordsXYZD
@@ -101,5 +135,8 @@ struct TileCoordsXYZD
     int32_t x, y, z;
     uint8_t direction;
 
-    bool isNull() const { return x == COORDS_NULL; };
+    bool isNull() const
+    {
+        return x == COORDS_NULL;
+    };
 };

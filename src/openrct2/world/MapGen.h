@@ -26,19 +26,19 @@ struct mapgen_settings
     // Simplex Noise Parameters
     int32_t simplex_low;
     int32_t simplex_high;
-    float  simplex_base_freq;
+    float simplex_base_freq;
     int32_t simplex_octaves;
 
     // Height map settings
-    bool   smooth;
-    bool   smooth_height_map;
+    bool smooth;
+    bool smooth_height_map;
     uint32_t smooth_strength;
-    bool   normalize_height;
+    bool normalize_height;
 };
 
-void mapgen_generate_blank(mapgen_settings * settings);
-void mapgen_generate(mapgen_settings * settings);
-void mapgen_generate_custom_simplex(mapgen_settings * settings);
-bool mapgen_load_heightmap(const utf8 * path);
+void mapgen_generate_blank(mapgen_settings* settings);
+void mapgen_generate(mapgen_settings* settings);
+void mapgen_generate_custom_simplex(mapgen_settings* settings);
+bool mapgen_load_heightmap(const utf8* path);
 void mapgen_unload_heightmap();
-void mapgen_generate_from_heightmap(mapgen_settings * settings);
+void mapgen_generate_from_heightmap(mapgen_settings* settings);
