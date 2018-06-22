@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Award.h"
+
 #include "../config/Config.h"
 #include "../core/Util.hpp"
 #include "../interface/Window.h"
@@ -15,14 +17,12 @@
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../world/Park.h"
-#include "Award.h"
 #include "NewsItem.h"
 
 #define NEGATIVE 0
 #define POSITIVE 1
 
-static constexpr const uint8_t AwardPositiveMap[] =
-{
+static constexpr const uint8_t AwardPositiveMap[] = {
     NEGATIVE, // PARK_AWARD_MOST_UNTIDY
     POSITIVE, // PARK_AWARD_MOST_TIDY
     POSITIVE, // PARK_AWARD_BEST_ROLLERCOASTERS
@@ -42,8 +42,7 @@ static constexpr const uint8_t AwardPositiveMap[] =
     POSITIVE, // PARK_AWARD_BEST_GENTLE_RIDES
 };
 
-static constexpr const rct_string_id AwardNewsStrings[] =
-{
+static constexpr const rct_string_id AwardNewsStrings[] = {
     STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
     STR_NEWS_ITEM_MOST_TIDY,
     STR_NEWS_ITEM_BEST_ROLLERCOASTERS,
@@ -76,7 +75,7 @@ bool award_is_positive(int32_t type)
 static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
-    rct_peep * peep;
+    rct_peep* peep;
     int32_t negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_BEAUTIFUL))
@@ -87,7 +86,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
         return false;
 
     negativeCount = 0;
-    FOR_ALL_GUESTS(spriteIndex, peep)
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
             continue;
@@ -95,9 +94,9 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
         if (peep->thoughts[0].freshness > 5)
             continue;
 
-        if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
-            peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING ||
-            peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
+            || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
+            || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
         {
             negativeCount++;
         }
@@ -110,7 +109,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
-    rct_peep * peep;
+    rct_peep* peep;
     int32_t positiveCount;
     int32_t negativeCount;
 
@@ -121,7 +120,7 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 
     positiveCount = 0;
     negativeCount = 0;
-    FOR_ALL_GUESTS(spriteIndex, peep)
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
             continue;
@@ -132,10 +131,9 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
         if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VERY_CLEAN)
             positiveCount++;
 
-        if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
-            peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING ||
-            peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM
-            )
+        if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
+            || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
+            || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
         {
             negativeCount++;
         }
@@ -148,11 +146,11 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 static bool award_is_deserved_best_rollercoasters([[maybe_unused]] int32_t activeAwardTypes)
 {
     int32_t i, rollerCoasters;
-    Ride           * ride;
-    rct_ride_entry * rideEntry;
+    Ride* ride;
+    rct_ride_entry* rideEntry;
 
     rollerCoasters = 0;
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
@@ -201,7 +199,7 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
 static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
-    rct_peep * peep;
+    rct_peep* peep;
     int32_t positiveCount;
     int32_t negativeCount;
 
@@ -212,7 +210,7 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 
     positiveCount = 0;
     negativeCount = 0;
-    FOR_ALL_GUESTS(spriteIndex, peep)
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
             continue;
@@ -223,9 +221,9 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
         if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_SCENERY)
             positiveCount++;
 
-        if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER ||
-            peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING ||
-            peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
+            || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
+            || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
         {
             negativeCount++;
         }
@@ -255,11 +253,11 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 {
     int32_t i, peepsWhoDislikeVandalism;
     uint16_t spriteIndex;
-    rct_peep * peep;
-    Ride     * ride;
+    rct_peep* peep;
+    Ride* ride;
 
     peepsWhoDislikeVandalism = 0;
-    FOR_ALL_GUESTS(spriteIndex, peep)
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
             continue;
@@ -271,7 +269,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
         return false;
 
     // Check for rides that have crashed maybe?
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         if (ride->last_crash_type != RIDE_CRASH_TYPE_NONE)
             return false;
@@ -284,17 +282,17 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
 {
     uint16_t spriteIndex;
-    rct_peep * peep;
+    rct_peep* peep;
     int32_t peepCount, staffCount;
     int32_t staffTypeFlags;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
         return false;
 
-    peepCount      = 0;
-    staffCount     = 0;
+    peepCount = 0;
+    staffCount = 0;
     staffTypeFlags = 0;
-    FOR_ALL_PEEPS(spriteIndex, peep)
+    FOR_ALL_PEEPS (spriteIndex, peep)
     {
         if (peep->type == PEEP_TYPE_STAFF)
         {
@@ -308,7 +306,6 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
     }
 
     return ((staffTypeFlags & 0xF) && staffCount >= 20 && staffCount >= peepCount / 32);
-
 }
 
 /** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */
@@ -316,18 +313,18 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 {
     int32_t i, hungryPeeps, shops, uniqueShops;
     uint64_t shopTypes;
-    Ride           * ride;
-    rct_ride_entry * rideEntry;
+    Ride* ride;
+    rct_ride_entry* rideEntry;
     uint16_t spriteIndex;
-    rct_peep * peep;
+    rct_peep* peep;
 
     if (activeAwardTypes & (1 << PARK_AWARD_WORST_FOOD))
         return false;
 
-    shops       = 0;
+    shops = 0;
     uniqueShops = 0;
-    shopTypes   = 0;
-    FOR_ALL_RIDES(i, ride)
+    shopTypes = 0;
+    FOR_ALL_RIDES (i, ride)
     {
         if (ride->status != RIDE_STATUS_OPEN)
             continue;
@@ -352,7 +349,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 
     // Count hungry peeps
     hungryPeeps = 0;
-    FOR_ALL_GUESTS(spriteIndex, peep)
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
             continue;
@@ -369,18 +366,18 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 {
     int32_t i, hungryPeeps, shops, uniqueShops;
     uint64_t shopTypes;
-    Ride           * ride;
-    rct_ride_entry * rideEntry;
+    Ride* ride;
+    rct_ride_entry* rideEntry;
     uint16_t spriteIndex;
-    rct_peep * peep;
+    rct_peep* peep;
 
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_FOOD))
         return false;
 
-    shops       = 0;
+    shops = 0;
     uniqueShops = 0;
-    shopTypes   = 0;
-    FOR_ALL_RIDES(i, ride)
+    shopTypes = 0;
+    FOR_ALL_RIDES (i, ride)
     {
         if (ride->status != RIDE_STATUS_OPEN)
             continue;
@@ -405,7 +402,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 
     // Count hungry peeps
     hungryPeeps = 0;
-    FOR_ALL_GUESTS(spriteIndex, peep)
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
             continue;
@@ -421,13 +418,13 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwardTypes)
 {
     uint32_t i, numRestrooms, guestsWhoNeedRestroom;
-    Ride * ride;
+    Ride* ride;
     uint16_t spriteIndex;
-    rct_peep * peep;
+    rct_peep* peep;
 
     // Count open restrooms
     numRestrooms = 0;
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         if (ride->type == RIDE_TYPE_TOILETS && ride->status == RIDE_STATUS_OPEN)
             numRestrooms++;
@@ -443,7 +440,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
 
     // Count number of guests who are thinking they need the restroom
     guestsWhoNeedRestroom = 0;
-    FOR_ALL_GUESTS(spriteIndex, peep)
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
             continue;
@@ -459,7 +456,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
 static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
 {
     uint32_t i, countedRides, disappointingRides;
-    Ride * ride;
+    Ride* ride;
 
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
         return false;
@@ -467,10 +464,10 @@ static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
         return false;
 
     // Count the number of disappointing rides
-    countedRides       = 0;
+    countedRides = 0;
     disappointingRides = 0;
 
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         if (ride->excitement == RIDE_RATING_UNDEFINED || ride->popularity == 0xFF)
             continue;
@@ -490,11 +487,11 @@ static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
 static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAwardTypes)
 {
     int32_t i, waterRides;
-    Ride           * ride;
-    rct_ride_entry * rideEntry;
+    Ride* ride;
+    rct_ride_entry* rideEntry;
 
     waterRides = 0;
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
@@ -522,13 +519,13 @@ static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAw
 static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardTypes)
 {
     int32_t i, customDesignedRides;
-    Ride * ride;
+    Ride* ride;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
         return false;
 
     customDesignedRides = 0;
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
             continue;
@@ -546,20 +543,21 @@ static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardType
 }
 
 /** At least 5 colourful rides and more than half of the rides are colourful. */
-static constexpr const uint8_t dazzling_ride_colours[] = {COLOUR_BRIGHT_PURPLE, COLOUR_BRIGHT_GREEN, COLOUR_LIGHT_ORANGE, COLOUR_BRIGHT_PINK};
+static constexpr const uint8_t dazzling_ride_colours[]
+    = { COLOUR_BRIGHT_PURPLE, COLOUR_BRIGHT_GREEN, COLOUR_LIGHT_ORANGE, COLOUR_BRIGHT_PINK };
 
 static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardTypes)
 {
     int32_t i, countedRides, colourfulRides;
-    Ride * ride;
+    Ride* ride;
     uint8_t mainTrackColour;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
         return false;
 
-    countedRides   = 0;
+    countedRides = 0;
     colourfulRides = 0;
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
             continue;
@@ -585,17 +583,18 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
 {
     uint32_t peepsCounted, peepsLost;
     uint16_t spriteIndex;
-    rct_peep * peep;
+    rct_peep* peep;
 
     peepsCounted = 0;
-    peepsLost    = 0;
-    FOR_ALL_GUESTS(spriteIndex, peep)
+    peepsLost = 0;
+    FOR_ALL_GUESTS (spriteIndex, peep)
     {
         if (peep->outside_of_park != 0)
             continue;
 
         peepsCounted++;
-        if (peep->thoughts[0].freshness <= 5 && (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND))
+        if (peep->thoughts[0].freshness <= 5
+            && (peep->thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND))
             peepsLost++;
     }
 
@@ -606,11 +605,11 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
 static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeAwardTypes)
 {
     int32_t i, gentleRides;
-    Ride           * ride;
-    rct_ride_entry * rideEntry;
+    Ride* ride;
+    rct_ride_entry* rideEntry;
 
     gentleRides = 0;
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
@@ -636,26 +635,23 @@ static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeA
 
 using award_deserved_check = bool (*)(int32_t);
 
-static constexpr const award_deserved_check _awardChecks[] =
-{
-    award_is_deserved_most_untidy,
-    award_is_deserved_most_tidy,
-    award_is_deserved_best_rollercoasters,
-    award_is_deserved_best_value,
-    award_is_deserved_most_beautiful,
-    award_is_deserved_worst_value,
-    award_is_deserved_safest,
-    award_is_deserved_best_staff,
-    award_is_deserved_best_food,
-    award_is_deserved_worst_food,
-    award_is_deserved_best_restrooms,
-    award_is_deserved_most_disappointing,
-    award_is_deserved_best_water_rides,
-    award_is_deserved_best_custom_designed_rides,
-    award_is_deserved_most_dazzling_ride_colours,
-    award_is_deserved_most_confusing_layout,
-    award_is_deserved_best_gentle_rides
-};
+static constexpr const award_deserved_check _awardChecks[] = { award_is_deserved_most_untidy,
+                                                               award_is_deserved_most_tidy,
+                                                               award_is_deserved_best_rollercoasters,
+                                                               award_is_deserved_best_value,
+                                                               award_is_deserved_most_beautiful,
+                                                               award_is_deserved_worst_value,
+                                                               award_is_deserved_safest,
+                                                               award_is_deserved_best_staff,
+                                                               award_is_deserved_best_food,
+                                                               award_is_deserved_worst_food,
+                                                               award_is_deserved_best_restrooms,
+                                                               award_is_deserved_most_disappointing,
+                                                               award_is_deserved_best_water_rides,
+                                                               award_is_deserved_best_custom_designed_rides,
+                                                               award_is_deserved_most_dazzling_ride_colours,
+                                                               award_is_deserved_most_confusing_layout,
+                                                               award_is_deserved_best_gentle_rides };
 
 static bool award_is_deserved(int32_t awardType, int32_t activeAwardTypes)
 {
@@ -666,7 +662,7 @@ static bool award_is_deserved(int32_t awardType, int32_t activeAwardTypes)
 
 void award_reset()
 {
-    for (auto &award : gCurrentAwards)
+    for (auto& award : gCurrentAwards)
     {
         award.Time = 0;
         award.Type = 0;
@@ -683,9 +679,9 @@ void award_update_all()
     if (gParkFlags & PARK_FLAGS_PARK_OPEN)
     {
         // Set active award types as flags
-        int32_t      activeAwardTypes    = 0;
-        int32_t      freeAwardEntryIndex = -1;
-        for (int32_t i                   = 0; i < MAX_AWARDS; i++)
+        int32_t activeAwardTypes = 0;
+        int32_t freeAwardEntryIndex = -1;
+        for (int32_t i = 0; i < MAX_AWARDS; i++)
         {
             if (gCurrentAwards[i].Time != 0)
                 activeAwardTypes |= (1 << gCurrentAwards[i].Type);
@@ -701,8 +697,7 @@ void award_update_all()
             do
             {
                 awardType = (((scenario_rand() & 0xFF) * 17) >> 8) & 0xFF;
-            }
-            while (activeAwardTypes & (1 << awardType));
+            } while (activeAwardTypes & (1 << awardType));
 
             // Check if award is deserved
             if (award_is_deserved(awardType, activeAwardTypes))
@@ -720,7 +715,7 @@ void award_update_all()
     }
 
     // Decrease award times
-    for (auto &award : gCurrentAwards)
+    for (auto& award : gCurrentAwards)
     {
         if (award.Time != 0)
             if (--award.Time == 0)

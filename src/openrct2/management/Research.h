@@ -42,7 +42,7 @@ assert_struct_size(rct_research_item, 5);
 enum
 {
     RESEARCH_ENTRY_TYPE_SCENERY = 0,
-    RESEARCH_ENTRY_TYPE_RIDE    = 1,
+    RESEARCH_ENTRY_TYPE_RIDE = 1,
 };
 
 enum
@@ -58,13 +58,14 @@ enum
 // Extra end of list entry. Leftover from RCT1.
 #define RESEARCHED_ITEMS_END_2 (-3)
 
-#define MAX_RESEARCH_ITEMS            500
-#define MAX_RESEARCHED_TRACK_TYPES    128
+#define MAX_RESEARCH_ITEMS 500
+#define MAX_RESEARCHED_TRACK_TYPES 128
 #define MAX_RESEARCHED_SCENERY_ITEMS 1792
 
 #define RESEARCH_ENTRY_RIDE_MASK 0x10000
 
-enum {
+enum
+{
     RESEARCH_FUNDING_NONE,
     RESEARCH_FUNDING_MINIMUM,
     RESEARCH_FUNDING_NORMAL,
@@ -73,7 +74,8 @@ enum {
     RESEARCH_FUNDING_COUNT
 };
 
-enum {
+enum
+{
     RESEARCH_STAGE_INITIAL_RESEARCH,
     RESEARCH_STAGE_DESIGNING,
     RESEARCH_STAGE_COMPLETING_DESIGN,
@@ -81,7 +83,8 @@ enum {
     RESEARCH_STAGE_FINISHED_ALL
 };
 
-enum {
+enum
+{
     RESEARCH_CATEGORY_TRANSPORT,
     RESEARCH_CATEGORY_GENTLE,
     RESEARCH_CATEGORY_ROLLERCOASTER,
@@ -112,9 +115,9 @@ void research_populate_list_random();
 void research_populate_list_researched();
 void research_process_random_items();
 
-void research_finish_item(rct_research_item * researchItem);
+void research_finish_item(rct_research_item* researchItem);
 void research_insert(int32_t researched, int32_t rawValue, uint8_t category);
-void research_remove(rct_research_item * researchItem);
+void research_remove(rct_research_item* researchItem);
 
 void research_insert_ride_entry(uint8_t entryIndex, bool researched);
 void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched);
@@ -136,12 +139,12 @@ void set_every_ride_type_invented();
 void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
 void set_every_ride_entry_not_invented();
-rct_string_id research_item_get_name(const rct_research_item * researchItem);
-rct_string_id research_get_friendly_base_ride_type_name(uint8_t trackType, rct_ride_entry * rideEntry);
+rct_string_id research_item_get_name(const rct_research_item* researchItem);
+rct_string_id research_get_friendly_base_ride_type_name(uint8_t trackType, rct_ride_entry* rideEntry);
 void research_remove_flags();
 void research_fix();
 
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();
 void research_items_shuffle();
-bool research_item_is_always_researched(rct_research_item * researchItem);
+bool research_item_is_always_researched(rct_research_item* researchItem);
