@@ -9,13 +9,14 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
-#include <cstring>
-#include <pwd.h>
-#include <cstdlib>
-#include <ctime>
 #include "../core/String.hpp"
 #include "Platform2.h"
 #include "platform.h"
+
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <pwd.h>
 
 namespace Platform
 {
@@ -24,12 +25,12 @@ namespace Platform
         return platform_get_ticks();
     }
 
-    std::string GetEnvironmentVariable(const std::string &name)
+    std::string GetEnvironmentVariable(const std::string& name)
     {
         return String::ToStd(getenv(name.c_str()));
     }
 
-    std::string GetEnvironmentPath(const char * name)
+    std::string GetEnvironmentPath(const char* name)
     {
         auto value = getenv(name);
         if (value == nullptr)
@@ -90,14 +91,11 @@ namespace Platform
         if (!hasChecked)
         {
             auto term = GetEnvironmentVariable("TERM");
-            isSupported =
-                term != "cons25" &&
-                term != "dumb" &&
-                term != "emacs";
+            isSupported = term != "cons25" && term != "dumb" && term != "emacs";
             hasChecked = true;
         }
         return isSupported;
     }
-}
+} // namespace Platform
 
 #endif

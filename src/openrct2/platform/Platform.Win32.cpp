@@ -13,22 +13,22 @@
 #include <windows.h>
 
 // Then the rest
-#include <memory>
 #include <datetimeapi.h>
+#include <memory>
 #include <shlobj.h>
 #undef GetEnvironmentVariable
 
 #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
-    #define __USE_SHGETKNOWNFOLDERPATH__
-    #define __USE_GETDATEFORMATEX__
+#define __USE_SHGETKNOWNFOLDERPATH__
+#define __USE_GETDATEFORMATEX__
 #else
-    #define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 #endif
 
+#include "../OpenRCT2.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../OpenRCT2.h"
 #include "Platform2.h"
 #include "platform.h"
 
@@ -46,7 +46,7 @@ namespace Platform
         return platform_get_ticks();
     }
 
-    std::string GetEnvironmentVariable(const std::string &name)
+    std::string GetEnvironmentVariable(const std::string& name)
     {
         std::wstring result;
         auto wname = String::ToUtf16(name);
@@ -82,10 +82,10 @@ namespace Platform
     {
         switch (folder)
         {
-        // We currently store everything under Documents/OpenRCT2
-        case SPECIAL_FOLDER::USER_CACHE:
-        case SPECIAL_FOLDER::USER_CONFIG:
-        case SPECIAL_FOLDER::USER_DATA:
+            // We currently store everything under Documents/OpenRCT2
+            case SPECIAL_FOLDER::USER_CACHE:
+            case SPECIAL_FOLDER::USER_CONFIG:
+            case SPECIAL_FOLDER::USER_DATA:
             {
 #ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Documents);
@@ -98,7 +98,7 @@ namespace Platform
                 }
                 return path;
             }
-        case SPECIAL_FOLDER::USER_HOME:
+            case SPECIAL_FOLDER::USER_HOME:
             {
 #ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Profile);
@@ -115,8 +115,8 @@ namespace Platform
                 }
                 return path;
             }
-        default:
-            return std::string();
+            default:
+                return std::string();
         }
     }
 
@@ -151,7 +151,7 @@ namespace Platform
         LONGLONG ll = Int32x32To64(timestamp, 10000000) + 116444736000000000;
 
         FILETIME ft;
-        ft.dwLowDateTime = (DWORD) ll;
+        ft.dwLowDateTime = (DWORD)ll;
         ft.dwHighDateTime = ll >> 32;
 
         SYSTEMTIME st;
@@ -199,7 +199,7 @@ namespace Platform
         auto hModule = GetModuleHandleA("ntdll.dll");
         if (hModule != nullptr)
         {
-            using RtlGetVersionPtr = NTSTATUS(WINAPI *)(PRTL_OSVERSIONINFOW);
+            using RtlGetVersionPtr = NTSTATUS(WINAPI*)(PRTL_OSVERSIONINFOW);
             auto fn = (RtlGetVersionPtr)GetProcAddress(hModule, "RtlGetVersion");
             if (fn != nullptr)
             {
@@ -207,11 +207,9 @@ namespace Platform
                 rovi.dwOSVersionInfoSize = sizeof(rovi);
                 if (fn(&rovi) == 0)
                 {
-                    if (rovi.dwMajorVersion > major ||
-                        (rovi.dwMajorVersion == major &&
-                        (rovi.dwMinorVersion > minor ||
-                            (rovi.dwMinorVersion == minor &&
-                                rovi.dwBuildNumber >= build))))
+                    if (rovi.dwMajorVersion > major
+                        || (rovi.dwMajorVersion == major
+                            && (rovi.dwMinorVersion > minor || (rovi.dwMinorVersion == minor && rovi.dwBuildNumber >= build))))
                     {
                         result = true;
                     }
@@ -265,11 +263,11 @@ namespace Platform
         return isSupported;
     }
 
- #ifdef __USE_SHGETKNOWNFOLDERPATH__
+#ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
     {
         std::string path;
-        wchar_t * wpath = nullptr;
+        wchar_t* wpath = nullptr;
         if (SUCCEEDED(SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &wpath)))
         {
             path = String::ToUtf8(std::wstring(wpath));
@@ -300,8 +298,7 @@ namespace Platform
             wExePathCapacity *= 2;
             wExePath = std::make_unique<wchar_t[]>(wExePathCapacity);
             size = GetModuleFileNameW(hModule, wExePath.get(), wExePathCapacity);
-        }
-        while (size >= wExePathCapacity);
+        } while (size >= wExePathCapacity);
         return String::ToUtf8(wExePath.get());
     }
 } // namespace Platform

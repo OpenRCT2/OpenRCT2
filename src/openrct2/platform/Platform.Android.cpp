@@ -19,13 +19,13 @@ namespace Platform
         // Android builds currently only read from /sdcard/openrct2*
         switch (folder)
         {
-        case SPECIAL_FOLDER::USER_CACHE:
-        case SPECIAL_FOLDER::USER_CONFIG:
-        case SPECIAL_FOLDER::USER_DATA:
-        case SPECIAL_FOLDER::USER_HOME:
-            return "/sdcard";
-        default:
-            return std::string();
+            case SPECIAL_FOLDER::USER_CACHE:
+            case SPECIAL_FOLDER::USER_CONFIG:
+            case SPECIAL_FOLDER::USER_DATA:
+            case SPECIAL_FOLDER::USER_HOME:
+                return "/sdcard";
+            default:
+                return std::string();
         }
     }
 
@@ -44,6 +44,6 @@ namespace Platform
         Guard::Assert(false, "GetCurrentExecutablePath() not implemented for Android.");
         return std::string();
     }
-}
+} // namespace Platform
 
 #endif

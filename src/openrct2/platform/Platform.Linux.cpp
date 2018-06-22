@@ -13,18 +13,18 @@
 #include <pwd.h>
 #if defined(__FreeBSD__)
 #include <stddef.h>
-#include <sys/types.h>
 #include <sys/sysctl.h>
+#include <sys/types.h>
 #endif // __FreeBSD__
 #if defined(__linux__)
 // for PATH_MAX
 #include <linux/limits.h>
 #endif // __linux__
+#include "../OpenRCT2.h"
 #include "../core/Path.hpp"
 #include "../core/Util.hpp"
-#include "../OpenRCT2.h"
-#include "platform.h"
 #include "Platform2.h"
+#include "platform.h"
 
 namespace Platform
 {
@@ -32,9 +32,9 @@ namespace Platform
     {
         switch (folder)
         {
-        case SPECIAL_FOLDER::USER_CACHE:
-        case SPECIAL_FOLDER::USER_CONFIG:
-        case SPECIAL_FOLDER::USER_DATA:
+            case SPECIAL_FOLDER::USER_CACHE:
+            case SPECIAL_FOLDER::USER_CONFIG:
+            case SPECIAL_FOLDER::USER_DATA:
             {
                 auto path = GetEnvironmentPath("XDG_CONFIG_HOME");
                 if (path.empty())
@@ -44,17 +44,16 @@ namespace Platform
                 }
                 return path;
             }
-        case SPECIAL_FOLDER::USER_HOME:
-            return GetHomePath();
-        default:
-            return std::string();
+            case SPECIAL_FOLDER::USER_HOME:
+                return GetHomePath();
+            default:
+                return std::string();
         }
     }
 
     std::string GetDocsPath()
     {
-        static const utf8 * searchLocations[] =
-        {
+        static const utf8* searchLocations[] = {
             "./doc",
             "/usr/share/doc/openrct2",
         };
@@ -71,8 +70,7 @@ namespace Platform
 
     static std::string FindInstallPath()
     {
-        static const char * SearchLocations[] =
-        {
+        static const char* SearchLocations[] = {
             "../share/openrct2",
 #ifdef ORCT2_RESOURCE_DIR
             // defined in CMakeLists.txt
@@ -160,10 +158,10 @@ namespace Platform
         // If you are not using the port or package, you may have to change this line!
         strlcpy(exePath, "/usr/local/bin/", sizeof(exePath));
 #else
-    #error "Platform does not support full path exe retrieval"
+#error "Platform does not support full path exe retrieval"
 #endif
         return exePath;
     }
-}
+} // namespace Platform
 
 #endif
