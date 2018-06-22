@@ -30,21 +30,23 @@ namespace OpenRCT2
         class DrawingEngineFactory final : public IDrawingEngineFactory
         {
         public:
-            std::unique_ptr<IDrawingEngine> Create(DRAWING_ENGINE_TYPE type, const std::shared_ptr<IUiContext>& uiContext) override
+            std::unique_ptr<IDrawingEngine>
+                Create(DRAWING_ENGINE_TYPE type, const std::shared_ptr<IUiContext>& uiContext) override
             {
-                switch ((int32_t)type) {
-                case DRAWING_ENGINE_SOFTWARE:
-                    return CreateSoftwareDrawingEngine(uiContext);
-                case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
-                    return CreateHardwareDisplayDrawingEngine(uiContext);
+                switch ((int32_t)type)
+                {
+                    case DRAWING_ENGINE_SOFTWARE:
+                        return CreateSoftwareDrawingEngine(uiContext);
+                    case DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY:
+                        return CreateHardwareDisplayDrawingEngine(uiContext);
 #ifndef DISABLE_OPENGL
-                case DRAWING_ENGINE_OPENGL:
-                    return CreateOpenGLDrawingEngine(uiContext);
+                    case DRAWING_ENGINE_OPENGL:
+                        return CreateOpenGLDrawingEngine(uiContext);
 #endif
-                default:
-                    return nullptr;
+                    default:
+                        return nullptr;
                 }
             }
         };
-    }
-}
+    } // namespace Ui
+} // namespace OpenRCT2

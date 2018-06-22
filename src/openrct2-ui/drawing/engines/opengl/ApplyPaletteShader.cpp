@@ -18,17 +18,17 @@ namespace
         GLfloat position[2];
         GLfloat texturecoordinate[2];
     };
-}
+} // namespace
 
-constexpr VDStruct VertexData[4] =
-{
+constexpr VDStruct VertexData[4] = {
     { -1.0f, -1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f, 0.0f, 1.0f },
-    {  1.0f,  1.0f, 1.0f, 1.0f },
+    { 1.0f, -1.0f, 1.0f, 0.0f },
+    { -1.0f, 1.0f, 0.0f, 1.0f },
+    { 1.0f, 1.0f, 1.0f, 1.0f },
 };
 
-ApplyPaletteShader::ApplyPaletteShader() : OpenGLShaderProgram("applypalette")
+ApplyPaletteShader::ApplyPaletteShader()
+    : OpenGLShaderProgram("applypalette")
 {
     GetLocations();
 
@@ -39,8 +39,9 @@ ApplyPaletteShader::ApplyPaletteShader() : OpenGLShaderProgram("applypalette")
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, position));
-    glVertexAttribPointer(vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, texturecoordinate));
+    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, position));
+    glVertexAttribPointer(
+        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, texturecoordinate));
 
     glEnableVertexAttribArray(vPosition);
     glEnableVertexAttribArray(vTextureCoordinate);
@@ -57,11 +58,11 @@ ApplyPaletteShader::~ApplyPaletteShader()
 
 void ApplyPaletteShader::GetLocations()
 {
-    uTexture            = GetUniformLocation("uTexture");
-    uPalette            = GetUniformLocation("uPalette");
+    uTexture = GetUniformLocation("uTexture");
+    uPalette = GetUniformLocation("uPalette");
 
-    vPosition           = GetAttributeLocation("vPosition");
-    vTextureCoordinate  = GetAttributeLocation("vTextureCoordinate");
+    vPosition = GetAttributeLocation("vPosition");
+    vTextureCoordinate = GetAttributeLocation("vTextureCoordinate");
 }
 
 void ApplyPaletteShader::SetTexture(GLuint texture)
@@ -69,9 +70,9 @@ void ApplyPaletteShader::SetTexture(GLuint texture)
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
-void ApplyPaletteShader::SetPalette(const vec4 * glPalette)
+void ApplyPaletteShader::SetPalette(const vec4* glPalette)
 {
-    glUniform4fv(uPalette, 256, (const GLfloat *)glPalette);
+    glUniform4fv(uPalette, 256, (const GLfloat*)glPalette);
 }
 
 void ApplyPaletteShader::Draw()

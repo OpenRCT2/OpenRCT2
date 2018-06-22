@@ -9,15 +9,16 @@
 
 #ifndef DISABLE_OPENGL
 
+#include "OpenGLFramebuffer.h"
+
+#include <SDL2/SDL_video.h>
 #include <algorithm>
 #include <memory>
 #include <openrct2/common.h>
-#include <SDL2/SDL_video.h>
-#include "OpenGLFramebuffer.h"
 
 constexpr GLuint BACKBUFFER_ID = 0;
 
-OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window * window)
+OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window* window)
 {
     _id = BACKBUFFER_ID;
     _texture = 0;
@@ -84,7 +85,7 @@ void OpenGLFramebuffer::BindRead() const
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _id);
 }
 
-void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
+void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo& dpi) const
 {
     assert(dpi.width == _width && dpi.height == _height);
 
@@ -94,8 +95,8 @@ void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
 
     // Flip pixels vertically on copy
-    uint8_t * src = pixels.get() + ((_height - 1) * _width);
-    uint8_t * dst = dpi.bits;
+    uint8_t* src = pixels.get() + ((_height - 1) * _width);
+    uint8_t* dst = dpi.bits;
     for (int32_t y = 0; y < _height; y++)
     {
         std::copy_n(src, _width, dst);
@@ -104,7 +105,7 @@ void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
     }
 }
 
-void OpenGLFramebuffer::SwapColourBuffer(OpenGLFramebuffer &other)
+void OpenGLFramebuffer::SwapColourBuffer(OpenGLFramebuffer& other)
 {
     std::swap(_texture, other._texture);
 
@@ -125,14 +126,11 @@ GLuint OpenGLFramebuffer::SwapDepthTexture(GLuint depth)
     return depth;
 }
 
-void OpenGLFramebuffer::Copy(OpenGLFramebuffer &src, GLenum filter)
+void OpenGLFramebuffer::Copy(OpenGLFramebuffer& src, GLenum filter)
 {
     BindDraw();
     src.BindRead();
-    glBlitFramebuffer(
-        0, 0, src.GetWidth(), src.GetHeight(),
-        0, 0, _width, _height, GL_COLOR_BUFFER_BIT, filter
-    );
+    glBlitFramebuffer(0, 0, src.GetWidth(), src.GetHeight(), 0, 0, _width, _height, GL_COLOR_BUFFER_BIT, filter);
     Bind();
 }
 

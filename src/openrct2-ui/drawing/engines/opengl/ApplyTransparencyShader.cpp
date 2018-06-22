@@ -18,17 +18,17 @@ namespace
         GLfloat position[2];
         GLfloat texturecoordinate[2];
     };
-}
+} // namespace
 
-constexpr VDStruct VertexData[4] =
-{
+constexpr VDStruct VertexData[4] = {
     { -1.0f, -1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f, 0.0f, 1.0f },
-    {  1.0f,  1.0f, 1.0f, 1.0f },
+    { 1.0f, -1.0f, 1.0f, 0.0f },
+    { -1.0f, 1.0f, 0.0f, 1.0f },
+    { 1.0f, 1.0f, 1.0f, 1.0f },
 };
 
-ApplyTransparencyShader::ApplyTransparencyShader() : OpenGLShaderProgram("applytransparency")
+ApplyTransparencyShader::ApplyTransparencyShader()
+    : OpenGLShaderProgram("applytransparency")
 {
     GetLocations();
 
@@ -39,8 +39,9 @@ ApplyTransparencyShader::ApplyTransparencyShader() : OpenGLShaderProgram("applyt
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, position));
-    glVertexAttribPointer(vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, texturecoordinate));
+    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, position));
+    glVertexAttribPointer(
+        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, texturecoordinate));
 
     glEnableVertexAttribArray(vPosition);
     glEnableVertexAttribArray(vTextureCoordinate);
@@ -61,19 +62,18 @@ ApplyTransparencyShader::~ApplyTransparencyShader()
 
 void ApplyTransparencyShader::GetLocations()
 {
-    uOpaqueTex          = GetUniformLocation("uOpaqueTex");
-    uOpaqueDepth        = GetUniformLocation("uOpaqueDepth");
-    uTransparentTex     = GetUniformLocation("uTransparentTex");
-    uTransparentDepth   = GetUniformLocation("uTransparentDepth");
-    uPaletteTex         = GetUniformLocation("uPaletteTex");
+    uOpaqueTex = GetUniformLocation("uOpaqueTex");
+    uOpaqueDepth = GetUniformLocation("uOpaqueDepth");
+    uTransparentTex = GetUniformLocation("uTransparentTex");
+    uTransparentDepth = GetUniformLocation("uTransparentDepth");
+    uPaletteTex = GetUniformLocation("uPaletteTex");
 
-    vPosition           = GetAttributeLocation("vPosition");
-    vTextureCoordinate  = GetAttributeLocation("vTextureCoordinate");
+    vPosition = GetAttributeLocation("vPosition");
+    vTextureCoordinate = GetAttributeLocation("vTextureCoordinate");
 }
 
-void ApplyTransparencyShader::SetTextures(GLuint opaqueTex, GLuint opaqueDepth,
-                                          GLuint transparentTex, GLuint transparentDepth,
-                                          GLuint paletteTex)
+void ApplyTransparencyShader::SetTextures(
+    GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex)
 {
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, opaqueTex);
     OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, opaqueDepth);
