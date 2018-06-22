@@ -18,16 +18,16 @@ interface IStringReader
 {
     virtual ~IStringReader() = default;
 
-    virtual bool TryPeek(codepoint_t * outCodepoint)       abstract;
-    virtual bool TryRead(codepoint_t * outCodepoint)       abstract;
-    virtual void Skip()                                    abstract;
-    virtual bool CanRead()                           const abstract;
+    virtual bool TryPeek(codepoint_t * outCodepoint) abstract;
+    virtual bool TryRead(codepoint_t * outCodepoint) abstract;
+    virtual void Skip() abstract;
+    virtual bool CanRead() const abstract;
 };
 
 class UTF8StringReader final : public IStringReader
 {
 public:
-    explicit UTF8StringReader(const utf8 * text)
+    explicit UTF8StringReader(const utf8* text)
     {
         text = String::SkipBOM(text);
 
@@ -35,18 +35,20 @@ public:
         _current = text;
     }
 
-    bool TryPeek(codepoint_t * outCodepoint) override
+    bool TryPeek(codepoint_t* outCodepoint) override
     {
-        if (_current == nullptr) return false;
+        if (_current == nullptr)
+            return false;
 
         codepoint_t codepoint = String::GetNextCodepoint(_current);
         *outCodepoint = codepoint;
         return true;
     }
 
-    bool TryRead(codepoint_t * outCodepoint) override
+    bool TryRead(codepoint_t* outCodepoint) override
     {
-        if (_current == nullptr) return false;
+        if (_current == nullptr)
+            return false;
 
         codepoint_t codepoint = String::GetNextCodepoint(_current, &_current);
         *outCodepoint = codepoint;
@@ -70,6 +72,6 @@ public:
     }
 
 private:
-    const utf8 *_text;
-    const utf8 *_current;
+    const utf8* _text;
+    const utf8* _current;
 };

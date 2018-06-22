@@ -9,23 +9,26 @@
 
 #pragma once
 
-#include <type_traits>
 #include "DataSerialiserTraits.h"
+
+#include <type_traits>
 
 class DataSerialiser
 {
 private:
     MemoryStream _stream;
-    MemoryStream *_activeStream;
+    MemoryStream* _activeStream;
     bool _isSaving;
 
 public:
-    DataSerialiser(bool isSaving) : _isSaving(isSaving)
+    DataSerialiser(bool isSaving)
+        : _isSaving(isSaving)
     {
         _activeStream = &_stream;
     }
 
-    DataSerialiser(bool isSaving, MemoryStream& stream) : _isSaving(isSaving)
+    DataSerialiser(bool isSaving, MemoryStream& stream)
+        : _isSaving(isSaving)
     {
         _activeStream = &stream;
     }
@@ -45,12 +48,11 @@ public:
         return _stream;
     }
 
-    template<typename T>
-    DataSerialiser& operator<<(T& data)
+    template<typename T> DataSerialiser& operator<<(T& data)
     {
         if (_isSaving)
             DataSerializerTraits<T>::encode(_activeStream, data);
-        else 
+        else
             DataSerializerTraits<T>::decode(_activeStream, data);
         return *this;
     }
