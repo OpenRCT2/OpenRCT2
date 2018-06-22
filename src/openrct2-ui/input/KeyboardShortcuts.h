@@ -12,14 +12,14 @@
 #include <memory>
 #include <openrct2/common.h>
 
-#define SHIFT   0x100
-#define CTRL    0x200
-#define ALT     0x400
-#define CMD     0x800
+#define SHIFT 0x100
+#define CTRL 0x200
+#define ALT 0x400
+#define CMD 0x800
 #ifdef __MACOSX__
-    #define PLATFORM_MODIFIER CMD
+#define PLATFORM_MODIFIER CMD
 #else
-    #define PLATFORM_MODIFIER CTRL
+#define PLATFORM_MODIFIER CTRL
 #endif
 
 enum
@@ -128,7 +128,7 @@ namespace OpenRCT2
 
             void Set(int32_t key);
             int32_t GetFromKey(int32_t key);
-            void GetKeyboardMapScroll(const uint8_t * keysState, int32_t * x, int32_t * y) const;
+            void GetKeyboardMapScroll(const uint8_t* keysState, int32_t* x, int32_t* y) const;
         };
     } // namespace Input
 } // namespace OpenRCT2
@@ -142,10 +142,10 @@ bool keyboard_shortcuts_load();
 bool keyboard_shortcuts_save();
 void keyboard_shortcuts_set(int32_t key);
 int32_t keyboard_shortcuts_get_from_key(int32_t key);
-void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, int32_t shortcut);
+void keyboard_shortcuts_format_string(char* buffer, size_t bufferSize, int32_t shortcut);
 
 void keyboard_shortcut_handle(int32_t key);
 void keyboard_shortcut_handle_command(int32_t shortcutIndex);
-void keyboard_shortcut_format_string(char *buffer, size_t size, uint16_t shortcutKey);
+void keyboard_shortcut_format_string(char* buffer, size_t size, uint16_t shortcutKey);
 
-void get_keyboard_map_scroll(const uint8_t * keysState, int32_t * x, int32_t * y);
+void get_keyboard_map_scroll(const uint8_t* keysState, int32_t* x, int32_t* y);
