@@ -7,20 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Fonts.h"
+
 #include "../config/Config.h"
 #include "../core/String.hpp"
-#include "Fonts.h"
-#include "FontFamilies.h"
-
 #include "../drawing/TTF.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
+#include "FontFamilies.h"
 
 using namespace OpenRCT2::Localisation;
 
 #ifndef NO_TTF
-uint8_t const HINTING_DISABLED         =  0;
-uint8_t const HINTING_THRESHOLD_LOW    = 40;
+uint8_t const HINTING_DISABLED = 0;
+uint8_t const HINTING_THRESHOLD_LOW = 40;
 uint8_t const HINTING_THRESHOLD_MEDIUM = 60;
 
 // clang-format off
@@ -96,7 +96,7 @@ static void LoadSpriteFont(LocalisationService& localisationService)
 }
 
 #ifndef NO_TTF
-static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescriptor * font)
+static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescriptor* font)
 {
     localisationService.UseTrueTypeFont(true);
     gCurrentTTFFontSet = font;
@@ -109,12 +109,30 @@ static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescrip
 static bool LoadCustomConfigFont(LocalisationService& localisationService)
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_tiny, gConfigFonts.hinting_threshold, nullptr },
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_small, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_small, gConfigFonts.hinting_threshold, nullptr },
-        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_medium, gConfigFonts.x_offset,
-          gConfigFonts.y_offset, gConfigFonts.height_medium, gConfigFonts.hinting_threshold, nullptr },
+        { gConfigFonts.file_name,
+          gConfigFonts.font_name,
+          gConfigFonts.size_tiny,
+          gConfigFonts.x_offset,
+          gConfigFonts.y_offset,
+          gConfigFonts.height_tiny,
+          gConfigFonts.hinting_threshold,
+          nullptr },
+        { gConfigFonts.file_name,
+          gConfigFonts.font_name,
+          gConfigFonts.size_small,
+          gConfigFonts.x_offset,
+          gConfigFonts.y_offset,
+          gConfigFonts.height_small,
+          gConfigFonts.hinting_threshold,
+          nullptr },
+        { gConfigFonts.file_name,
+          gConfigFonts.font_name,
+          gConfigFonts.size_medium,
+          gConfigFonts.x_offset,
+          gConfigFonts.y_offset,
+          gConfigFonts.height_medium,
+          gConfigFonts.hinting_threshold,
+          nullptr },
     } };
 
     ttf_dispose();
@@ -130,7 +148,7 @@ void TryLoadFonts(LocalisationService& localisationService)
 {
 #ifndef NO_TTF
     auto currentLanguage = localisationService.GetCurrentLanguage();
-    TTFontFamily const * fontFamily = LanguagesDescriptors[currentLanguage].font_family;
+    TTFontFamily const* fontFamily = LanguagesDescriptors[currentLanguage].font_family;
 
     if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {
@@ -143,7 +161,7 @@ void TryLoadFonts(LocalisationService& localisationService)
             log_verbose("Unable to initialise configured TrueType font -- falling back to the language's default.");
         }
 
-        for (auto &font : *fontFamily)
+        for (auto& font : *fontFamily)
         {
             if (LoadFont(localisationService, font))
             {
@@ -158,7 +176,7 @@ void TryLoadFonts(LocalisationService& localisationService)
         {
             log_verbose("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
 
-            for (auto &font : TTFFamilySansSerif)
+            for (auto& font : TTFFamilySansSerif)
             {
                 if (LoadFont(localisationService, font))
                 {
