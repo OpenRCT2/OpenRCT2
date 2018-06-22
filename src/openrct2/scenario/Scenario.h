@@ -30,12 +30,13 @@ struct ParkLoadResult;
  * SV6/SC6 header chunk
  * size: 0x20
  */
-struct rct_s6_header {
-    uint8_t type;                 // 0x00
-    uint8_t classic_flag;         // 0x01
-    uint16_t num_packed_objects;  // 0x02
-    uint32_t version;             // 0x04
-    uint32_t magic_number;        // 0x08
+struct rct_s6_header
+{
+    uint8_t type;                // 0x00
+    uint8_t classic_flag;        // 0x01
+    uint16_t num_packed_objects; // 0x02
+    uint32_t version;            // 0x04
+    uint32_t magic_number;       // 0x08
     uint8_t pad_0C[0x14];
 };
 assert_struct_size(rct_s6_header, 0x20);
@@ -44,21 +45,23 @@ assert_struct_size(rct_s6_header, 0x20);
  * SC6 information chunk
  * size: 0x198
  */
-struct rct_s6_info {
+struct rct_s6_info
+{
     uint8_t editor_step;
-    uint8_t category;             // 0x01
-    uint8_t objective_type;       // 0x02
-    uint8_t objective_arg_1;      // 0x03
-    int32_t objective_arg_2;     // 0x04
-    int16_t objective_arg_3;     // 0x08
+    uint8_t category;        // 0x01
+    uint8_t objective_type;  // 0x02
+    uint8_t objective_arg_1; // 0x03
+    int32_t objective_arg_2; // 0x04
+    int16_t objective_arg_3; // 0x08
     uint8_t pad_00A[0x3E];
-    char name[64];              // 0x48
-    char details[256];          // 0x88
-    rct_object_entry entry;     // 0x188
+    char name[64];          // 0x48
+    char details[256];      // 0x88
+    rct_object_entry entry; // 0x188
 };
 assert_struct_size(rct_s6_info, 0x198);
 
-enum SCENARIO_SOURCE {
+enum SCENARIO_SOURCE
+{
     SCENARIO_SOURCE_RCT1,
     SCENARIO_SOURCE_RCT1_AA,
     SCENARIO_SOURCE_RCT1_LL,
@@ -69,16 +72,18 @@ enum SCENARIO_SOURCE {
     SCENARIO_SOURCE_OTHER,
 };
 
-struct rct_stex_entry {
-    rct_string_id scenario_name;    // 0x00
-    rct_string_id park_name;        // 0x02
-    rct_string_id details;          // 0x04
+struct rct_stex_entry
+{
+    rct_string_id scenario_name; // 0x00
+    rct_string_id park_name;     // 0x02
+    rct_string_id details;       // 0x04
     uint8_t var_06;
 };
 assert_struct_size(rct_stex_entry, 7);
 
 // This will be useful for backwards compatibility
-struct rct_s6_data {
+struct rct_s6_data
+{
     // SC6[0]
     rct_s6_header header;
 
@@ -281,7 +286,7 @@ struct rct_s6_data {
     uint8_t current_rain_level;
     uint8_t next_rain_level;
     rct12_news_item news_items[RCT12_MAX_NEWS_ITEMS];
-    char rct1_scenario_name[62];     // Unused in RCT2
+    char rct1_scenario_name[62];       // Unused in RCT2
     uint16_t rct1_scenario_slot_index; // Unused in RCT2
     uint32_t rct1_scenario_flags;      // Unused in RCT2
     uint16_t wide_path_tile_loop_x;
@@ -291,13 +296,15 @@ struct rct_s6_data {
 assert_struct_size(rct_s6_data, 0x46b44a);
 #pragma pack(pop)
 
-enum {
+enum
+{
     SCENARIO_FLAGS_VISIBLE = (1 << 0),
     SCENARIO_FLAGS_COMPLETED = (1 << 1),
     SCENARIO_FLAGS_SIXFLAGS = (1 << 2)
 };
 
-enum {
+enum
+{
     S6_TYPE_SAVEDGAME,
     S6_TYPE_SCENARIO
 };
@@ -305,7 +312,8 @@ enum {
 #define S6_RCT2_VERSION 120001
 #define S6_MAGIC_NUMBER 0x00031144
 
-enum {
+enum
+{
     // RCT2 categories (keep order)
     SCENARIO_CATEGORY_BEGINNER,
     SCENARIO_CATEGORY_CHALLENGING,
@@ -320,7 +328,8 @@ enum {
     SCENARIO_CATEGORY_COUNT
 };
 
-enum {
+enum
+{
     OBJECTIVE_NONE,
     OBJECTIVE_GUESTS_BY,
     OBJECTIVE_PARK_VALUE_BY,
@@ -335,12 +344,14 @@ enum {
     OBJECTIVE_MONTHLY_FOOD_INCOME
 };
 
-enum {
+enum
+{
     SCENARIO_SELECT_MODE_DIFFICULTY,
     SCENARIO_SELECT_MODE_ORIGIN,
 };
 
-enum {
+enum
+{
     AUTOSAVE_EVERY_MINUTE,
     AUTOSAVE_EVERY_5MINUTES,
     AUTOSAVE_EVERY_15MINUTES,
@@ -378,15 +389,15 @@ extern uint32_t gLastAutoSaveUpdate;
 
 extern char gScenarioFileName[260];
 
-void load_from_sc6(const char *path);
+void load_from_sc6(const char* path);
 void scenario_begin();
 void scenario_update();
 
 #ifdef DEBUG_DESYNC
-uint32_t dbg_scenario_rand(const char *file, const char *function, const uint32_t line, const void *data);
+uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data);
 #define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
 #define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
-void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char *clientHash, const char *serverHash);
+void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char* clientHash, const char* serverHash);
 #else
 uint32_t scenario_rand();
 #endif
@@ -394,12 +405,12 @@ uint32_t scenario_rand();
 uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();
-int32_t scenario_save(const utf8 * path, int32_t flags);
-void scenario_remove_trackless_rides(rct_s6_data *s6);
-void scenario_fix_ghosts(rct_s6_data *s6);
+int32_t scenario_save(const utf8* path, int32_t flags);
+void scenario_remove_trackless_rides(rct_s6_data* s6);
+void scenario_fix_ghosts(rct_s6_data* s6);
 void scenario_failure();
 void scenario_success();
-void scenario_success_submit_name(const char *name);
+void scenario_success_submit_name(const char* name);
 void scenario_autosave_check();
 
 #endif
