@@ -7,16 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2-ui/windows/Window.h>
-
 #include <openrct2/audio/audio.h>
-#include <openrct2/drawing/Font.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/core/Math.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Font.h>
+#include <openrct2/localisation/Localisation.h>
 
 // clang-format off
 enum {
@@ -73,24 +72,26 @@ static uint16_t _window_error_num_lines;
  * bx: title
  * dx: message
  */
-rct_window * window_error_open(rct_string_id title, rct_string_id message)
+rct_window* window_error_open(rct_string_id title, rct_string_id message)
 {
-    utf8 *dst;
+    utf8* dst;
     int32_t numLines, fontHeight, x, y, width, height, maxY;
-    rct_window *w;
+    rct_window* w;
 
     window_close_by_class(WC_ERROR);
     dst = _window_error_text;
 
     // Format the title
     dst = utf8_write_codepoint(dst, FORMAT_BLACK);
-    if (title != STR_NONE) {
+    if (title != STR_NONE)
+    {
         format_string(dst, 512 - (dst - _window_error_text), title, gCommonFormatArgs);
         dst = get_string_end(dst);
     }
 
     // Format the message
-    if (message != STR_NONE) {
+    if (message != STR_NONE)
+    {
         dst = utf8_write_codepoint(dst, FORMAT_NEWLINE);
         format_string(dst, 512 - (dst - _window_error_text), message, gCommonFormatArgs);
         dst = get_string_end(dst);
@@ -99,7 +100,8 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
     log_verbose("show error, %s", _window_error_text + 1);
 
     // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
-    if (gOpenRCT2Headless) {
+    if (gOpenRCT2Headless)
+    {
         return nullptr;
     }
 
@@ -123,14 +125,15 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
-    const CursorState * state = context_get_cursor_state();
+    const CursorState* state = context_get_cursor_state();
     x = state->x - (width / 2);
     x = Math::Clamp(0, x, screenWidth);
 
     y = state->y + 26;
     y = std::max(22, y);
     maxY = screenHeight - height;
-    if (y > maxY) {
+    if (y > maxY)
+    {
         y = y - height - 40;
         y = std::min(y, maxY);
     }
@@ -138,7 +141,8 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
     w = window_create(x, y, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     w->widgets = window_error_widgets;
     w->error.var_480 = 0;
-    if (!gDisableErrorWindowSound) {
+    if (!gDisableErrorWindowSound)
+    {
         audio_play_sound(SOUND_ERROR, 0, w->x + (w->width / 2));
     }
 
@@ -149,7 +153,7 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
  *
  *  rct2: 0x00667BFE
  */
-static void window_error_unknown5(rct_window *w)
+static void window_error_unknown5(rct_window* w)
 {
     w->error.var_480++;
     if (w->error.var_480 >= 8)
@@ -160,7 +164,7 @@ static void window_error_unknown5(rct_window *w)
  *
  *  rct2: 0x00667AA3
  */
-static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t t, l, r, b;
 

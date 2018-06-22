@@ -7,18 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/config/Config.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-
 #include <openrct2/Game.h>
+#include <openrct2/actions/BannerSetNameAction.hpp>
+#include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/actions/BannerSetNameAction.hpp>
 
 #define WW 113
 #define WH 96
@@ -109,14 +108,13 @@ static rct_window_event_list window_banner_events = {
 // clang-format on
 
 /**
-*
-*  rct2: 0x006BA305
-*/
-rct_window * window_banner_open(rct_windownumber number)
+ *
+ *  rct2: 0x006BA305
+ */
+rct_window* window_banner_open(rct_windownumber number)
 {
     rct_window* w;
-    rct_widget *viewportWidget;
-
+    rct_widget* viewportWidget;
 
     // Check if window is already open
     w = window_bring_to_front_by_number(WC_BANNER, number);
@@ -125,14 +123,8 @@ rct_window * window_banner_open(rct_windownumber number)
 
     w = window_create_auto_pos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
     w->widgets = window_banner_widgets;
-    w->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_BANNER_TEXT) |
-        (1 << WIDX_BANNER_NO_ENTRY) |
-        (1 << WIDX_BANNER_DEMOLISH) |
-        (1 << WIDX_MAIN_COLOUR) |
-        (1 << WIDX_TEXT_COLOUR_DROPDOWN) |
-        (1 << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_BANNER_TEXT) | (1 << WIDX_BANNER_NO_ENTRY) | (1 << WIDX_BANNER_DEMOLISH)
+        | (1 << WIDX_MAIN_COLOUR) | (1 << WIDX_TEXT_COLOUR_DROPDOWN) | (1 << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
 
     w->number = number;
     window_init_scroll_widgets(w);
@@ -141,18 +133,17 @@ rct_window * window_banner_open(rct_windownumber number)
     int32_t view_y = gBanners[w->number].y << 5;
 
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
-    while(1) {
-        if (
-            (tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) &&
-            (tile_element->properties.banner.index == w->number)
-        ) {
+    while (1)
+    {
+        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->properties.banner.index == w->number))
+        {
             break;
         }
 
         tile_element++;
     }
 
-    int32_t view_z = tile_element->base_height<<3;
+    int32_t view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
     view_x += 16;
@@ -171,8 +162,7 @@ rct_window * window_banner_open(rct_windownumber number)
         view_y,
         view_z,
         0,
-        -1
-    );
+        -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
@@ -184,7 +174,7 @@ rct_window * window_banner_open(rct_windownumber number)
  *
  *  rct2: 0x6ba4d6
  */
-static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_banner* banner = &gBanners[w->number];
     int32_t x = banner->x << 5;
@@ -192,26 +182,43 @@ static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
     rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
-    while (1){
-        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) &&
-            (tile_element->properties.banner.index == w->number)) break;
+    while (1)
+    {
+        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->properties.banner.index == w->number))
+            break;
         tile_element++;
     }
 
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_BANNER_DEMOLISH:
-        game_do_command(x, 1, y, tile_element->base_height | (tile_element->properties.banner.position << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
-        break;
-    case WIDX_BANNER_TEXT:
-        window_text_input_open(w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, gBanners[w->number].string_idx, 0, 32);
-        break;
-    case WIDX_BANNER_NO_ENTRY:
-        textinput_cancel();
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, banner->flags ^ BANNER_FLAG_NO_ENTRY);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_BANNER_DEMOLISH:
+            game_do_command(
+                x,
+                1,
+                y,
+                tile_element->base_height | (tile_element->properties.banner.position << 8),
+                GAME_COMMAND_REMOVE_BANNER,
+                0,
+                0);
+            break;
+        case WIDX_BANNER_TEXT:
+            window_text_input_open(
+                w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, gBanners[w->number].string_idx, 0, 32);
+            break;
+        case WIDX_BANNER_NO_ENTRY:
+            textinput_cancel();
+            game_do_command(
+                1,
+                GAME_COMMAND_FLAG_APPLY,
+                w->number,
+                banner->colour,
+                GAME_COMMAND_SET_BANNER_STYLE,
+                banner->text_colour,
+                banner->flags ^ BANNER_FLAG_NO_ENTRY);
+            break;
     }
 }
 
@@ -219,36 +226,38 @@ static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x6ba4ff
  */
-static void window_banner_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     rct_banner* banner = &gBanners[w->number];
 
-    switch (widgetIndex) {
-    case WIDX_MAIN_COLOUR:
-        window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), banner->colour);
-        break;
-    case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
+    switch (widgetIndex)
+    {
+        case WIDX_MAIN_COLOUR:
+            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), banner->colour);
+            break;
+        case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
-        for( int32_t i = 0; i < 13; ++i){
-            gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
-        }
+            for (int32_t i = 0; i < 13; ++i)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
+            }
 
-        // Switch to the dropdown box widget.
-        widget--;
+            // Switch to the dropdown box widget.
+            widget--;
 
-        window_dropdown_show_text_custom_width(
-            widget->left + w->x,
-            widget->top + w->y,
-            widget->bottom - widget->top + 1,
-            w->colours[1],
-            0,
-            DROPDOWN_FLAG_STAY_OPEN,
-            13,
-            widget->right - widget->left - 3);
+            window_dropdown_show_text_custom_width(
+                widget->left + w->x,
+                widget->top + w->y,
+                widget->bottom - widget->top + 1,
+                w->colours[1],
+                0,
+                DROPDOWN_FLAG_STAY_OPEN,
+                13,
+                widget->right - widget->left - 3);
 
-        dropdown_set_checked(banner->text_colour - 1, true);
-        break;
+            dropdown_set_checked(banner->text_colour - 1, true);
+            break;
     }
 }
 
@@ -256,23 +265,38 @@ static void window_banner_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
  *
  *  rct2: 0x6ba517
  */
-static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void window_banner_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     rct_banner* banner = &gBanners[w->number];
 
-    switch(widgetIndex){
-    case WIDX_MAIN_COLOUR:
-        if (dropdownIndex == -1)
-            break;
+    switch (widgetIndex)
+    {
+        case WIDX_MAIN_COLOUR:
+            if (dropdownIndex == -1)
+                break;
 
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour, banner->flags);
-        break;
-    case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
-        if (dropdownIndex == -1)
+            game_do_command(
+                1,
+                GAME_COMMAND_FLAG_APPLY,
+                w->number,
+                dropdownIndex,
+                GAME_COMMAND_SET_BANNER_STYLE,
+                banner->text_colour,
+                banner->flags);
             break;
+        case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
+            if (dropdownIndex == -1)
+                break;
 
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, dropdownIndex + 1, banner->flags);
-        break;
+            game_do_command(
+                1,
+                GAME_COMMAND_FLAG_APPLY,
+                w->number,
+                banner->colour,
+                GAME_COMMAND_SET_BANNER_STYLE,
+                dropdownIndex + 1,
+                banner->flags);
+            break;
     }
 }
 
@@ -280,7 +304,7 @@ static void window_banner_dropdown(rct_window *w, rct_widgetindex widgetIndex, i
  *
  *  rct2: 0x6ba50c
  */
-static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
+static void window_banner_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     if (widgetIndex == WIDX_BANNER_TEXT && text != nullptr)
     {
@@ -293,7 +317,7 @@ static void window_banner_textinput(rct_window *w, rct_widgetindex widgetIndex, 
  *
  *  rct2: 0x006BA44D
  */
-static void window_banner_invalidate(rct_window *w)
+static void window_banner_invalidate(rct_window* w)
 {
     rct_banner* banner = &gBanners[w->number];
     rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
@@ -306,18 +330,15 @@ static void window_banner_invalidate(rct_window *w)
         colour_btn->type = WWT_COLOURBTN;
     }
 
-    w->pressed_widgets &= ~(1ULL<<WIDX_BANNER_NO_ENTRY);
-    w->disabled_widgets &= ~(
-        (1ULL<<WIDX_BANNER_TEXT)|
-        (1ULL<<WIDX_TEXT_COLOUR_DROPDOWN)|
-        (1ULL<<WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
+    w->pressed_widgets &= ~(1ULL << WIDX_BANNER_NO_ENTRY);
+    w->disabled_widgets
+        &= ~((1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
 
-    if (banner->flags & BANNER_FLAG_NO_ENTRY){
-        w->pressed_widgets |= (1ULL<<WIDX_BANNER_NO_ENTRY);
-        w->disabled_widgets |=
-            (1ULL<<WIDX_BANNER_TEXT)|
-            (1ULL<<WIDX_TEXT_COLOUR_DROPDOWN)|
-            (1ULL<<WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
+    if (banner->flags & BANNER_FLAG_NO_ENTRY)
+    {
+        w->pressed_widgets |= (1ULL << WIDX_BANNER_NO_ENTRY);
+        w->disabled_widgets
+            |= (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
     }
 
     colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(banner->colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
@@ -327,12 +348,13 @@ static void window_banner_invalidate(rct_window *w)
 }
 
 /* rct2: 0x006BA4C5 */
-static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_banner_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
     // Draw viewport
-    if (w->viewport != nullptr) {
+    if (w->viewport != nullptr)
+    {
         window_draw_viewport(dpi, w);
     }
 }
@@ -341,7 +363,7 @@ static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x6BA7B5
  */
-static void window_banner_viewport_rotate(rct_window *w)
+static void window_banner_viewport_rotate(rct_window* w)
 {
     rct_viewport* view = w->viewport;
     w->viewport = nullptr;
@@ -367,8 +389,7 @@ static void window_banner_viewport_rotate(rct_window *w)
         view_y,
         view_z,
         0,
-        -1
-    );
+        -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);

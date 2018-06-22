@@ -7,20 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/config/Config.h>
-#include <openrct2/network/network.h>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/Game.h>
-#include <openrct2/Input.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/sprites.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2/util/Util.h>
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/interface/Colour.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Game.h>
+#include <openrct2/Input.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/network.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 
 // clang-format off
 enum WINDOW_PLAYER_PAGE {
@@ -182,12 +181,13 @@ static uint32_t window_player_page_enabled_widgets[] = {
 };
 // clang-format on
 
-rct_window * window_player_open(uint8_t id)
+rct_window* window_player_open(uint8_t id)
 {
     rct_window* window;
 
     window = window_bring_to_front_by_number(WC_PLAYER, id);
-    if (window == nullptr) {
+    if (window == nullptr)
+    {
         window = window_create_auto_pos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
         window->number = id;
         window->page = 0;
@@ -221,12 +221,13 @@ rct_window * window_player_open(uint8_t id)
     return window;
 }
 
-static void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widget)
+static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget* widget)
 {
-    rct_widget *dropdownWidget;
+    rct_widget* dropdownWidget;
     int32_t numItems, i;
     int32_t player = network_get_player_index((uint8_t)w->number);
-    if (player == -1) {
+    if (player == -1)
+    {
         return;
     }
 
@@ -242,10 +243,10 @@ static void window_player_overview_show_group_dropdown(rct_window *w, rct_widget
         0,
         0,
         numItems,
-        widget->right - dropdownWidget->left
-    );
+        widget->right - dropdownWidget->left);
 
-    for (i = 0; i < network_get_num_groups(); i++) {
+    for (i = 0; i < network_get_num_groups(); i++)
+    {
         gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
         gDropdownItemsArgs[i] = (uintptr_t)network_get_group_name(i);
     }
@@ -253,56 +254,64 @@ static void window_player_overview_show_group_dropdown(rct_window *w, rct_widget
     dropdown_set_checked(network_get_group_index(network_get_player_group(player)), true);
 }
 
-void window_player_overview_close(rct_window *w)
+void window_player_overview_close(rct_window* w)
 {
-
 }
 
-void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
+void window_player_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch(widgetIndex){
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_TAB_1:
-    case WIDX_TAB_2:
-        window_player_set_page(w, widgetIndex - WIDX_TAB_1);
-        break;
-    case WIDX_LOCATE:{
-        rct_window* mainWindow = window_get_main();
-        if (mainWindow != nullptr) {
-            int32_t player = network_get_player_index((uint8_t)w->number);
-            if (player == -1) {
-                return;
-            }
-            LocationXYZ16 coord = network_get_player_last_action_coord(player);
-            if (coord.x || coord.y || coord.z) {
-                window_scroll_to_location(mainWindow, coord.x, coord.y, coord.z);
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+            window_player_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+        case WIDX_LOCATE:
+        {
+            rct_window* mainWindow = window_get_main();
+            if (mainWindow != nullptr)
+            {
+                int32_t player = network_get_player_index((uint8_t)w->number);
+                if (player == -1)
+                {
+                    return;
+                }
+                LocationXYZ16 coord = network_get_player_last_action_coord(player);
+                if (coord.x || coord.y || coord.z)
+                {
+                    window_scroll_to_location(mainWindow, coord.x, coord.y, coord.z);
+                }
             }
         }
-    }break;
-    case WIDX_KICK:
-        game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, 0);
         break;
+        case WIDX_KICK:
+            game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_KICK_PLAYER, 0, 0);
+            break;
     }
 }
 
-void window_player_overview_mouse_down(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+void window_player_overview_mouse_down(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    switch(widgetIndex){
-    case WIDX_GROUP_DROPDOWN:
-        window_player_overview_show_group_dropdown(w, widget);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_GROUP_DROPDOWN:
+            window_player_overview_show_group_dropdown(w, widget);
+            break;
     }
 }
 
-void window_player_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     int32_t player = network_get_player_index((uint8_t)w->number);
-    if (player == -1) {
+    if (player == -1)
+    {
         return;
     }
-    if (dropdownIndex == -1) {
+    if (dropdownIndex == -1)
+    {
         return;
     }
     int32_t group = network_get_group_id(dropdownIndex);
@@ -310,7 +319,7 @@ void window_player_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex,
     window_invalidate(w);
 }
 
-void window_player_overview_resize(rct_window *w)
+void window_player_overview_resize(rct_window* w)
 {
     window_set_resize(w, 240, 170, 500, 300);
 }
@@ -320,7 +329,8 @@ void window_player_overview_update(rct_window* w)
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_1 + w->page);
 
-    if (network_get_player_index((uint8_t)w->number) == -1) {
+    if (network_get_player_index((uint8_t)w->number) == -1)
+    {
         window_close(w);
         return;
     }
@@ -329,33 +339,36 @@ void window_player_overview_update(rct_window* w)
     bool scroll = true;
 
     // Use this spare window field for rotation check
-    if (w->var_4AE != get_current_rotation()) {
+    if (w->var_4AE != get_current_rotation())
+    {
         w->var_4AE = get_current_rotation();
         scroll = false;
     }
     window_player_update_viewport(w, scroll);
 }
 
-void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
+void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
     window_player_draw_tab_images(dpi, w);
 
     int32_t player = network_get_player_index((uint8_t)w->number);
-    if (player == -1) {
+    if (player == -1)
+    {
         return;
     }
 
     // Draw current group
     int32_t groupindex = network_get_group_index(network_get_player_group(player));
-    if (groupindex != -1) {
+    if (groupindex != -1)
+    {
         rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
         char buffer[300];
         char* lineCh;
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
         safe_strcpy(lineCh, network_get_group_name(groupindex), sizeof(buffer) - (lineCh - buffer));
-        set_format_arg(0, const char *, buffer);
+        set_format_arg(0, const char*, buffer);
 
         gfx_draw_string_centred_clipped(
             dpi,
@@ -364,8 +377,7 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
             COLOUR_BLACK,
             w->x + (widget->left + widget->right - 11) / 2,
             w->y + widget->top,
-            widget->right - widget->left - 8
-        );
+            widget->right - widget->left - 8);
     }
 
     // Draw ping
@@ -384,19 +396,22 @@ void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi)
     int32_t width = w->width - 8;
     int32_t lastaction = network_get_player_last_action(player, 0);
     set_format_arg(0, rct_string_id, STR_ACTION_NA);
-    if (lastaction != -999) {
+    if (lastaction != -999)
+    {
         set_format_arg(0, rct_string_id, network_get_action_name_string_id(lastaction));
     }
     gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
-    if (w->viewport != nullptr && w->var_492 != -1) {
+    if (w->viewport != nullptr && w->var_492 != -1)
+    {
         window_draw_viewport(dpi, w);
     }
 }
 
-void window_player_overview_invalidate(rct_window *w)
+void window_player_overview_invalidate(rct_window* w)
 {
-    if (window_player_page_widgets[w->page] != w->widgets) {
+    if (window_player_page_widgets[w->page] != w->widgets)
+    {
         w->widgets = window_player_page_widgets[w->page];
         window_init_scroll_widgets(w);
     }
@@ -409,7 +424,7 @@ void window_player_overview_invalidate(rct_window *w)
 
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].right =w->width - 1;
+    w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
     w->widgets[WIDX_CLOSE].left = w->width - 13;
@@ -429,9 +444,10 @@ void window_player_overview_invalidate(rct_window *w)
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_2);
 
-    rct_viewport *viewport = w->viewport;
-    if (viewport != nullptr) {
-        rct_widget *viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
+    rct_viewport* viewport = w->viewport;
+    if (viewport != nullptr)
+    {
+        rct_widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
 
         viewport->x = w->x + viewportWidget->left;
         viewport->y = w->y + viewportWidget->top;
@@ -442,28 +458,30 @@ void window_player_overview_invalidate(rct_window *w)
     }
 }
 
-void window_player_statistics_close(rct_window *w)
+void window_player_statistics_close(rct_window* w)
 {
-    if (w->error.var_480) {
+    if (w->error.var_480)
+    {
         user_string_free(w->error.var_480);
         w->error.var_480 = 0;
     }
 }
 
-void window_player_statistics_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
+void window_player_statistics_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_TAB_1:
-    case WIDX_TAB_2:
-        window_player_set_page(w, widgetIndex - WIDX_TAB_1);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+            window_player_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
     }
 }
 
-void window_player_statistics_resize(rct_window *w)
+void window_player_statistics_resize(rct_window* w)
 {
     window_set_resize(w, 210, 80, 210, 80);
 }
@@ -473,14 +491,16 @@ void window_player_statistics_update(rct_window* w)
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_1 + w->page);
 
-    if (network_get_player_index((uint8_t)w->number) == -1) {
+    if (network_get_player_index((uint8_t)w->number) == -1)
+    {
         window_close(w);
     }
 }
 
-void window_player_statistics_invalidate(rct_window *w)
+void window_player_statistics_invalidate(rct_window* w)
 {
-    if (window_player_page_widgets[w->page] != w->widgets) {
+    if (window_player_page_widgets[w->page] != w->widgets)
+    {
         w->widgets = window_player_page_widgets[w->page];
         window_init_scroll_widgets(w);
     }
@@ -502,13 +522,14 @@ void window_player_statistics_invalidate(rct_window *w)
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_2);
 }
 
-void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi)
+void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
     window_player_draw_tab_images(dpi, w);
 
     int32_t player = network_get_player_index((uint8_t)w->number);
-    if (player == -1) {
+    if (player == -1)
+    {
         return;
     }
 
@@ -544,31 +565,39 @@ static void window_player_set_page(rct_window* w, int32_t page)
     window_init_scroll_widgets(w);
     window_invalidate(w);
 
-    if (page == WINDOW_PLAYER_PAGE_OVERVIEW) {
-        if (w->viewport == nullptr) {
+    if (page == WINDOW_PLAYER_PAGE_OVERVIEW)
+    {
+        if (w->viewport == nullptr)
+        {
             viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);
             w->flags |= WF_NO_SCROLLING;
             window_event_invalidate_call(w);
             window_player_update_viewport(w, false);
-        } else if (originalPage != page) {
+        }
+        else if (originalPage != page)
+        {
             window_event_invalidate_call(w);
             window_player_update_viewport(w, false);
         }
-    } else {
-        if (w->viewport != nullptr) {
+    }
+    else
+    {
+        if (w->viewport != nullptr)
+        {
             w->viewport->width = 0;
             w->viewport = nullptr;
         }
     }
 }
 
-static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
+static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    rct_widget *widget;
+    rct_widget* widget;
     int32_t x, y, imageId;
 
     // Tab 1
-    if (!widget_is_disabled(w, WIDX_TAB_1)) {
+    if (!widget_is_disabled(w, WIDX_TAB_1))
+    {
         widget = &w->widgets[WIDX_TAB_1];
         x = widget->left + w->x;
         y = widget->top + w->y;
@@ -577,13 +606,15 @@ static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
     }
 
     // Tab 2
-    if (!widget_is_disabled(w, WIDX_TAB_2)) {
+    if (!widget_is_disabled(w, WIDX_TAB_2))
+    {
         widget = &w->widgets[WIDX_TAB_2];
         x = widget->left + w->x;
         y = widget->top + w->y;
         imageId = SPR_TAB_FINANCES_SUMMARY_0;
 
-        if (w->page == WINDOW_PLAYER_PAGE_STATISTICS) {
+        if (w->page == WINDOW_PLAYER_PAGE_STATISTICS)
+        {
             imageId += (w->frame_no / 2) & 7;
         }
 
@@ -591,30 +622,36 @@ static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
     }
 }
 
-static void window_player_update_viewport(rct_window *w, bool scroll)
+static void window_player_update_viewport(rct_window* w, bool scroll)
 {
     int32_t playerIndex = network_get_player_index((uint8_t)w->number);
-    if (playerIndex == -1) {
+    if (playerIndex == -1)
+    {
         return;
     }
 
-    rct_viewport *viewport = w->viewport;
-    if (viewport != nullptr) {
+    rct_viewport* viewport = w->viewport;
+    if (viewport != nullptr)
+    {
         LocationXYZ16 coord = network_get_player_last_action_coord(playerIndex);
-        if (coord.x != 0 || coord.y != 0 || coord.z != 0) {
+        if (coord.x != 0 || coord.y != 0 || coord.z != 0)
+        {
             int32_t viewX, viewY;
             centre_2d_coordinates(coord.x, coord.y, coord.z, &viewX, &viewY, viewport);
 
             // Don't scroll if the view was originally undefined
-            if (w->var_492 == -1) {
+            if (w->var_492 == -1)
+            {
                 scroll = false;
             }
 
-            if (!scroll || w->saved_view_x != viewX || w->saved_view_y != viewY) {
+            if (!scroll || w->saved_view_x != viewX || w->saved_view_y != viewY)
+            {
                 w->flags |= WF_SCROLLING_TO_LOCATION;
                 w->saved_view_x = viewX;
                 w->saved_view_y = viewY;
-                if (!scroll) {
+                if (!scroll)
+                {
                     w->viewport->view_x = viewX;
                     w->viewport->view_y = viewY;
                 }
@@ -623,7 +660,9 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
 
             // Draw the viewport
             w->var_492 = 0;
-        } else {
+        }
+        else
+        {
             // Don't draw the viewport
             w->var_492 = -1;
         }
@@ -633,9 +672,12 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
 static void window_player_update_title(rct_window* w)
 {
     int32_t player = network_get_player_index((uint8_t)w->number);
-    if (player != -1) {
-        set_format_arg(0, const char *, network_get_player_name(player)); // set title caption to player name
-    } else {
-        set_format_arg(0, const char *, "");
+    if (player != -1)
+    {
+        set_format_arg(0, const char*, network_get_player_name(player)); // set title caption to player name
+    }
+    else
+    {
+        set_format_arg(0, const char*, "");
     }
 }

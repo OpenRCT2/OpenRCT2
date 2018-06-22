@@ -7,14 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/config/Config.h>
-#include <openrct2-ui/windows/Window.h>
 #include <openrct2-ui/input/KeyboardShortcuts.h>
-
-#include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Localisation.h>
 
 #define WW 250
 #define WH 60
@@ -70,13 +69,13 @@ static rct_window_event_list window_shortcut_change_events = {
 };
 // clang-format on
 
-rct_window * window_shortcut_change_open(int32_t selected_key)
+rct_window* window_shortcut_change_open(int32_t selected_key)
 {
     // Move this to window_shortcut_change_open
     window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
     // Save the item we are selecting for new window
     gKeyboardShortcutChangeId = selected_key;
-    rct_window * w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+    rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
     w->widgets = window_shortcut_change_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE);
@@ -85,23 +84,24 @@ rct_window * window_shortcut_change_open(int32_t selected_key)
 }
 
 /**
-*
-*  rct2: 0x006E3AE0
-*/
-static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+ *
+ *  rct2: 0x006E3AE0
+ */
+static void window_shortcut_change_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex){
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
     }
 }
 
 /**
-*
-*  rct2: 0x006E3A9F
-*/
-static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ *  rct2: 0x006E3A9F
+ */
+static void window_shortcut_change_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 

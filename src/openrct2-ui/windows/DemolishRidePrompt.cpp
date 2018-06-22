@@ -7,14 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/drawing/Drawing.h>
 #include <openrct2/Game.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
 
 #define WW 200
 #define WH 100
@@ -88,41 +88,39 @@ static rct_window_event_list window_ride_demolish_events = {
 };
 // clang-format on
 
-static rct_window_event_list window_ride_refurbish_events = {
-    nullptr,
-    window_ride_refurbish_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_refurbish_paint,
-    nullptr
-};
+static rct_window_event_list window_ride_refurbish_events = { nullptr,
+                                                              window_ride_refurbish_mouseup,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              nullptr,
+                                                              window_ride_refurbish_paint,
+                                                              nullptr };
 
 /** Based off of rct2: 0x006B486A */
-rct_window * window_ride_demolish_prompt_open(int32_t rideIndex)
+rct_window* window_ride_demolish_prompt_open(int32_t rideIndex)
 {
-    rct_window *w;
+    rct_window* w;
 
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
@@ -146,9 +144,9 @@ rct_window * window_ride_demolish_prompt_open(int32_t rideIndex)
     return w;
 }
 
-rct_window * window_ride_refurbish_prompt_open(int32_t rideIndex)
+rct_window* window_ride_refurbish_prompt_open(int32_t rideIndex)
 {
-    rct_window *w;
+    rct_window* w;
 
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
@@ -173,44 +171,46 @@ rct_window * window_ride_refurbish_prompt_open(int32_t rideIndex)
 }
 
 /**
-*
-*  rct2: 0x006B4933
-*/
-static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+ *
+ *  rct2: 0x006B4933
+ */
+static void window_ride_demolish_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_DEMOLISH:
+    switch (widgetIndex)
     {
-        ride_action_modify(w->number, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
-        break;
-    }
-    case WIDX_CANCEL:
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
+        case WIDX_DEMOLISH:
+        {
+            ride_action_modify(w->number, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+            break;
+        }
+        case WIDX_CANCEL:
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
     }
 }
 
-static void window_ride_refurbish_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_ride_refurbish_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_REFURBISH:
+    switch (widgetIndex)
     {
-        ride_action_modify(w->number, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
-        break;
-    }
-    case WIDX_CANCEL:
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
+        case WIDX_REFURBISH:
+        {
+            ride_action_modify(w->number, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
+            break;
+        }
+        case WIDX_CANCEL:
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
     }
 }
 
 /**
-*
-*  rct2: 0x006B48E5
-*/
-static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ *  rct2: 0x006B48E5
+ */
+static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
@@ -233,7 +233,7 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 }
 
-static void window_ride_refurbish_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 

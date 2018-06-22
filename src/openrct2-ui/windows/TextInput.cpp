@@ -14,17 +14,16 @@
  * that is used for inputing new text for ride names and peep names.
  */
 
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/Util.hpp>
-#include <openrct2-ui/interface/Widget.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/drawing/Drawing.h>
 
 #define WW 250
 #define WH 90
@@ -95,7 +94,14 @@ static rct_windownumber calling_number = 0;
 static int32_t calling_widget = 0;
 static int32_t _maxInputLength;
 
-void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
+void window_text_input_open(
+    rct_window* call_w,
+    rct_widgetindex call_widget,
+    rct_string_id title,
+    rct_string_id description,
+    rct_string_id existing_text,
+    uintptr_t existing_args,
+    int32_t maxLength)
 {
     // Get the raw string
     utf8 buffer[Util::CountOf(text_input)]{};
@@ -106,7 +112,13 @@ void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct
     window_text_input_raw_open(call_w, call_widget, title, description, buffer, maxLength);
 }
 
-void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const_utf8string existing_text, int32_t maxLength)
+void window_text_input_raw_open(
+    rct_window* call_w,
+    rct_widgetindex call_widget,
+    rct_string_id title,
+    rct_string_id description,
+    const_utf8string existing_text,
+    int32_t maxLength)
 {
     _maxInputLength = maxLength;
 
@@ -133,13 +145,7 @@ void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget,
     int32_t height = no_lines * 10 + WH;
 
     // Window will be in the centre of the screen
-    rct_window* w = window_create_centred(
-        WW,
-        height,
-        &window_text_input_events,
-        WC_TEXTINPUT,
-        WF_STICK_TO_FRONT
-    );
+    rct_window* w = window_create_centred(WW, height, &window_text_input_events, WC_TEXTINPUT, WF_STICK_TO_FRONT);
 
     w->widgets = window_text_input_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_OKAY);
@@ -160,37 +166,38 @@ void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget,
 }
 
 /**
-*
-*/
-static void window_text_input_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+ *
+ */
+static void window_text_input_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_window *calling_w;
+    rct_window* calling_w;
 
     calling_w = window_find_by_number(calling_class, calling_number);
-    switch (widgetIndex){
-    case WIDX_CANCEL:
-    case WIDX_CLOSE:
-        context_stop_text_input();
-        // Pass back the text that has been entered.
-        // ecx when zero means text input failed
-        if (calling_w != nullptr)
-            window_event_textinput_call(calling_w, calling_widget, nullptr);
-        window_close(w);
-        break;
-    case WIDX_OKAY:
-        context_stop_text_input();
-        // Pass back the text that has been entered.
-        // ecx when nonzero means text input success
-        if (calling_w != nullptr)
-            window_event_textinput_call(calling_w, calling_widget, text_input);
-        window_close(w);
+    switch (widgetIndex)
+    {
+        case WIDX_CANCEL:
+        case WIDX_CLOSE:
+            context_stop_text_input();
+            // Pass back the text that has been entered.
+            // ecx when zero means text input failed
+            if (calling_w != nullptr)
+                window_event_textinput_call(calling_w, calling_widget, nullptr);
+            window_close(w);
+            break;
+        case WIDX_OKAY:
+            context_stop_text_input();
+            // Pass back the text that has been entered.
+            // ecx when nonzero means text input success
+            if (calling_w != nullptr)
+                window_event_textinput_call(calling_w, calling_widget, text_input);
+            window_close(w);
     }
 }
 
 /**
-*
-*/
-static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ */
+static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
@@ -198,7 +205,6 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     int32_t no_lines = 0;
     int32_t font_height = 0;
-
 
     gfx_draw_string_centred(dpi, input_text_description, w->x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
 
@@ -224,12 +230,14 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     int32_t cursorX = 0;
     int32_t cursorY = 0;
-    for (int32_t line = 0; line <= no_lines; line++) {
+    for (int32_t line = 0; line <= no_lines; line++)
+    {
         gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->x + 12, y);
 
         size_t string_length = get_string_size(wrap_pointer) - 1;
 
-        if (!cur_drawn && (gTextInput->SelectionStart <= char_count + string_length)) {
+        if (!cur_drawn && (gTextInput->SelectionStart <= char_count + string_length))
+        {
             // Make a copy of the string for measuring the width.
             char temp_string[TEXT_INPUT_SIZE] = { 0 };
             memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
@@ -237,7 +245,8 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
             cursorY = y;
 
             int32_t width = 6;
-            if (gTextInput->SelectionStart < strlen(text_input)){
+            if (gTextInput->SelectionStart < strlen(text_input))
+            {
                 // Make a 1 utf8-character wide string for measuring the width
                 // of the currently selected character.
                 utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
@@ -246,7 +255,8 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 width = std::max(gfx_get_string_width(tmp) - 2, 4);
             }
 
-            if (w->frame_no > 15){
+            if (w->frame_no > 15)
+            {
                 uint8_t colour = ColourMapA[w->colours[1]].mid_light;
                 // TODO: palette index addition
                 gfx_fill_rect(dpi, cursorX, y + 9, cursorX + width, y + 9, colour + 5);
@@ -257,19 +267,22 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         wrap_pointer += string_length + 1;
 
-        if (text_input[char_count + string_length] == ' ')char_count++;
+        if (text_input[char_count + string_length] == ' ')
+            char_count++;
         char_count += string_length;
 
         y += 10;
     }
 
-    if (!cur_drawn) {
+    if (!cur_drawn)
+    {
         cursorX = gLastDrawStringX;
         cursorY = y - 10;
     }
 
     // IME composition
-    if (!str_is_null_or_empty(gTextInput->ImeBuffer)) {
+    if (!str_is_null_or_empty(gTextInput->ImeBuffer))
+    {
         draw_ime_composition(dpi, cursorX, cursorY);
     }
 }
@@ -277,7 +290,8 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi)
 void window_text_input_key(rct_window* w, char keychar)
 {
     // If the return button is pressed stop text input
-    if (keychar == '\r'){
+    if (keychar == '\r')
+    {
         context_stop_text_input();
         window_close(w);
         rct_window* calling_w = window_find_by_number(calling_class, calling_number);
@@ -290,29 +304,31 @@ void window_text_input_key(rct_window* w, char keychar)
     window_invalidate(w);
 }
 
-void window_text_input_update7(rct_window *w)
+void window_text_input_update7(rct_window* w)
 {
     rct_window* calling_w = window_find_by_number(calling_class, calling_number);
     // If the calling window is closed then close the text
     // input window.
-    if (!calling_w){
+    if (!calling_w)
+    {
         window_close(w);
     }
 
     // Used to blink the cursor.
     w->frame_no++;
-    if (w->frame_no > 30) w->frame_no = 0;
+    if (w->frame_no > 30)
+        w->frame_no = 0;
     window_invalidate(w);
 }
 
-static void window_text_input_close(rct_window *w)
+static void window_text_input_close(rct_window* w)
 {
     // Make sure that we take it out of the text input
     // mode otherwise problems may occur.
     context_stop_text_input();
 }
 
-static void window_text_input_invalidate(rct_window *w)
+static void window_text_input_invalidate(rct_window* w)
 {
     // Work out the existing size of the window
     char wrapped_string[TEXT_INPUT_SIZE];
@@ -327,7 +343,8 @@ static void window_text_input_invalidate(rct_window *w)
     int32_t height = no_lines * 10 + WH;
 
     // Change window size if required.
-    if (height != w->height) {
+    if (height != w->height)
+    {
         window_invalidate(w);
         window_set_resize(w, WW, height, WW, height);
     }
@@ -341,7 +358,7 @@ static void window_text_input_invalidate(rct_window *w)
     window_text_input_widgets[WIDX_BACKGROUND].bottom = height - 1;
 }
 
-static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY)
+static void draw_ime_composition(rct_drawpixelinfo* dpi, int cursorX, int cursorY)
 {
     int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer);
     int x = cursorX - (compositionWidth / 2);
@@ -351,5 +368,5 @@ static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int curso
 
     gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
     gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
-    gfx_draw_string(dpi, (char *)gTextInput->ImeBuffer, COLOUR_DARK_GREEN, x, y);
+    gfx_draw_string(dpi, (char*)gTextInput->ImeBuffer, COLOUR_DARK_GREEN, x, y);
 }

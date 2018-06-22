@@ -7,34 +7,31 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/Context.h>
-#include <openrct2/core/Util.hpp>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/Input.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2/Context.h>
+#include <openrct2/Input.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Util.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/drawing/Drawing.h>
 
 // The maximum number of rows to list before items overflow into new columns
 #define DROPDOWN_TEXT_MAX_ROWS 32
 
 #define DROPDOWN_ITEM_HEIGHT 12
 
-int32_t gAppropriateImageDropdownItemsPerRow[] = {
-    1, 1, 1, 1, 2, 2, 3, 3, 4,
-    3, 5, 4, 4, 5, 5, 5, 4, 5,
-    6, 5, 5, 7, 4, 5, 6, 5, 6,
-    6, 6, 6, 6, 8, 8, 0
-};
+int32_t gAppropriateImageDropdownItemsPerRow[]
+    = { 1, 1, 1, 1, 2, 2, 3, 3, 4, 3, 5, 4, 4, 5, 5, 5, 4, 5, 6, 5, 5, 7, 4, 5, 6, 5, 6, 6, 6, 6, 6, 8, 8, 0 };
 
-enum {
+enum
+{
     WIDX_BACKGROUND,
 };
 
 static rct_widget window_dropdown_widgets[] = {
-    { WWT_IMGBTN, 0, 0, 0, 0, 0, (uint32_t) SPR_NONE, STR_NONE },
+    { WWT_IMGBTN, 0, 0, 0, 0, 0, (uint32_t)SPR_NONE, STR_NONE },
     { WIDGETS_END },
 };
 
@@ -90,7 +87,7 @@ void dropdown_set_disabled(int32_t index, bool value)
     _dropdownItemsDisabled[index] = value;
 }
 
-static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
 static rct_window_event_list window_dropdown_events = {
@@ -143,7 +140,8 @@ void window_dropdown_show_text(int32_t x, int32_t y, int32_t extray, uint8_t col
 
     // Calculate the longest string width
     max_string_width = 0;
-    for (size_t i = 0; i < num_items; i++) {
+    for (size_t i = 0; i < num_items; i++)
+    {
         format_string(buffer, 256, gDropdownItemsFormat[i], (void*)(&gDropdownItemsArgs[i]));
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         string_width = gfx_get_string_width(buffer);
@@ -165,16 +163,17 @@ void window_dropdown_show_text(int32_t x, int32_t y, int32_t extray, uint8_t col
  * @param colour (al)
  * @param custom_height (ah) requires flag set as well
  */
-void window_dropdown_show_text_custom_width(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items, int32_t width)
+void window_dropdown_show_text_custom_width(
+    int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items, int32_t width)
 {
     rct_window* w;
 
-    input_set_flag((INPUT_FLAGS) (INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    input_set_flag((INPUT_FLAGS)(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & DROPDOWN_FLAG_STAY_OPEN)
         input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     window_dropdown_close();
-    
+
     // Set and calculate num items, rows and columns
     _dropdown_item_width = width;
     _dropdown_item_height = (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT) ? custom_height : DROPDOWN_ITEM_HEIGHT;
@@ -190,7 +189,7 @@ void window_dropdown_show_text_custom_width(int32_t x, int32_t y, int32_t extray
         _dropdown_num_columns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
         _dropdown_num_rows = (gDropdownNumItems + _dropdown_num_columns - 1) / _dropdown_num_columns;
     }
-    
+
     // Text dropdowns are listed horizontally
     _dropdown_list_vertically = true;
 
@@ -208,13 +207,13 @@ void window_dropdown_show_text_custom_width(int32_t x, int32_t y, int32_t extray
 
     // Create the window
     w = window_create(
-        x, y + extray,
+        x,
+        y + extray,
         window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
         window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
         &window_dropdown_events,
         WC_DROPDOWN,
-        WF_STICK_TO_FRONT
-    );
+        WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)
         w->flags |= WF_TRANSPARENT;
@@ -243,12 +242,21 @@ void window_dropdown_show_text_custom_width(int32_t x, int32_t y, int32_t extray
  * @param itemHeight (ah)
  * @param numColumns (bl)
  */
-void window_dropdown_show_image(int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth, int32_t itemHeight, int32_t numColumns)
+void window_dropdown_show_image(
+    int32_t x,
+    int32_t y,
+    int32_t extray,
+    uint8_t colour,
+    uint8_t flags,
+    int32_t numItems,
+    int32_t itemWidth,
+    int32_t itemHeight,
+    int32_t numColumns)
 {
     int32_t width, height;
     rct_window* w;
 
-    input_set_flag((INPUT_FLAGS) (INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
+    input_set_flag((INPUT_FLAGS)(INPUT_FLAG_DROPDOWN_STAY_OPEN | INPUT_FLAG_DROPDOWN_MOUSE_UP), false);
     if (flags & DROPDOWN_FLAG_STAY_OPEN)
         input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
@@ -291,13 +299,13 @@ void window_dropdown_show_image(int32_t x, int32_t y, int32_t extray, uint8_t co
 
     // Create the window
     w = window_create(
-        x, y + extray,
+        x,
+        y + extray,
         window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
         window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1,
         &window_dropdown_events,
         WC_DROPDOWN,
-        WF_STICK_TO_FRONT
-    );
+        WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)
         w->flags |= WF_TRANSPARENT;
@@ -317,41 +325,51 @@ void window_dropdown_close()
     window_close_by_class(WC_DROPDOWN);
 }
 
-static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t cell_x, cell_y, l, t, r, b, item, image, colour;
 
     window_draw_widgets(w, dpi);
 
     int32_t highlightedIndex = gDropdownHighlightedIndex;
-    for (int32_t i = 0; i < gDropdownNumItems; i++) {
-        if (_dropdown_list_vertically) {
+    for (int32_t i = 0; i < gDropdownNumItems; i++)
+    {
+        if (_dropdown_list_vertically)
+        {
             cell_x = i / _dropdown_num_rows;
             cell_y = i % _dropdown_num_rows;
         }
-        else {
+        else
+        {
             cell_x = i % _dropdown_num_columns;
             cell_y = i / _dropdown_num_columns;
         }
 
-        if (gDropdownItemsFormat[i] == DROPDOWN_SEPARATOR) {
+        if (gDropdownItemsFormat[i] == DROPDOWN_SEPARATOR)
+        {
             l = w->x + 2 + (cell_x * _dropdown_item_width);
             t = w->y + 2 + (cell_y * _dropdown_item_height);
             r = l + _dropdown_item_width - 1;
             t += (_dropdown_item_height / 2);
             b = t;
 
-            if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) {
+            if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT)
+            {
                 translucent_window_palette palette = TranslucentWindowPalettes[BASE_COLOUR(w->colours[0])];
                 gfx_filter_rect(dpi, l, t, r, b, palette.highlight);
                 gfx_filter_rect(dpi, l, t + 1, r, b + 1, palette.shadow);
-            } else {
+            }
+            else
+            {
                 gfx_fill_rect(dpi, l, t, r, b, ColourMapA[w->colours[0]].mid_dark);
                 gfx_fill_rect(dpi, l, t + 1, r, b + 1, ColourMapA[w->colours[0]].lightest);
             }
-        } else {
+        }
+        else
+        {
             //
-            if (i == highlightedIndex) {
+            if (i == highlightedIndex)
+            {
                 l = w->x + 2 + (cell_x * _dropdown_item_width);
                 t = w->y + 2 + (cell_y * _dropdown_item_height);
                 r = l + _dropdown_item_width - 1;
@@ -360,22 +378,23 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
             }
 
             item = gDropdownItemsFormat[i];
-            if (item == DROPDOWN_FORMAT_LAND_PICKER || item == DROPDOWN_FORMAT_COLOUR_PICKER) {
+            if (item == DROPDOWN_FORMAT_LAND_PICKER || item == DROPDOWN_FORMAT_COLOUR_PICKER)
+            {
                 // Image item
                 image = (uint32_t)gDropdownItemsArgs[i];
                 if (item == DROPDOWN_FORMAT_COLOUR_PICKER && highlightedIndex == i)
                     image++;
 
                 gfx_draw_sprite(
-                    dpi,
-                    image,
-                    w->x + 2 + (cell_x * _dropdown_item_width),
-                    w->y + 2 + (cell_y * _dropdown_item_height), 0
-                );
-            } else {
+                    dpi, image, w->x + 2 + (cell_x * _dropdown_item_width), w->y + 2 + (cell_y * _dropdown_item_height), 0);
+            }
+            else
+            {
                 // Text item
-                if (i < DROPDOWN_ITEMS_MAX_SIZE) {
-                    if (dropdown_is_checked(i)) {
+                if (i < DROPDOWN_ITEMS_MAX_SIZE)
+                {
+                    if (dropdown_is_checked(i))
+                    {
                         item++;
                     }
                 }
@@ -392,11 +411,11 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 gfx_draw_string_left_clipped(
                     dpi,
                     item,
-                    (void*)(&gDropdownItemsArgs[i]), colour,
+                    (void*)(&gDropdownItemsArgs[i]),
+                    colour,
                     w->x + 2 + (cell_x * _dropdown_item_width),
                     w->y + 2 + (cell_y * _dropdown_item_height),
-                    w->width - 5
-                );
+                    w->width - 5);
             }
         }
     }
@@ -406,21 +425,26 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
  * New function based on 6e914e
  * returns -1 if index is invalid
  */
-int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window *w)
+int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window* w)
 {
     int32_t top = y - w->y - 2;
-    if (top < 0) return -1;
+    if (top < 0)
+        return -1;
 
     int32_t left = x - w->x;
-    if (left >= w->width) return -1;
+    if (left >= w->width)
+        return -1;
     left -= 2;
-    if (left < 0) return -1;
+    if (left < 0)
+        return -1;
 
     int32_t column_no = left / _dropdown_item_width;
-    if (column_no >= _dropdown_num_columns) return -1;
+    if (column_no >= _dropdown_num_columns)
+        return -1;
 
     int32_t row_no = top / _dropdown_item_height;
-    if (row_no >= _dropdown_num_rows) return -1;
+    if (row_no >= _dropdown_num_rows)
+        return -1;
 
     int32_t dropdown_index;
     if (_dropdown_list_vertically)
@@ -428,7 +452,8 @@ int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window *w)
     else
         dropdown_index = row_no * _dropdown_num_columns + column_no;
 
-    if (dropdown_index >= gDropdownNumItems) return -1;
+    if (dropdown_index >= gDropdownNumItems)
+        return -1;
 
     return dropdown_index;
 }
@@ -436,7 +461,7 @@ int32_t dropdown_index_from_point(int32_t x, int32_t y, rct_window *w)
 /**
  *  rct2: 0x006ED43D
  */
-void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8_t dropdownColour, uint8_t selectedColour)
+void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
     // Set items
@@ -459,8 +484,7 @@ void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8_t drop
         COLOUR_COUNT,
         12,
         12,
-        gAppropriateImageDropdownItemsPerRow[COLOUR_COUNT]
-    );
+        gAppropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
