@@ -9,12 +9,13 @@
 
 #pragma once
 
-#include <string_view>
-#include <vector>
 #include "../common.h"
 #include "../core/Json.hpp"
 #include "ImageTable.h"
 #include "StringTable.h"
+
+#include <string_view>
+#include <vector>
 
 // First 0xF of rct_object_entry->flags
 enum OBJECT_TYPE
@@ -30,7 +31,7 @@ enum OBJECT_TYPE
     OBJECT_TYPE_PARK_ENTRANCE,
     OBJECT_TYPE_WATER,
     OBJECT_TYPE_SCENARIO_TEXT,
-    
+
     OBJECT_TYPE_COUNT
 };
 
@@ -68,20 +69,24 @@ enum OBJECT_SOURCE_GAME
  * Object entry structure.
  * size: 0x10
  */
-struct rct_object_entry {
-    union {
+struct rct_object_entry
+{
+    union
+    {
         uint8_t end_flag; // needed not to read past allocated buffer.
         uint32_t flags;
     };
-    union {
+    union
+    {
         char nameWOC[12];
-        struct {
+        struct
+        {
             char name[8];
             uint32_t checksum;
         };
     };
 
-    void SetName(const char * value)
+    void SetName(const char* value)
     {
         auto src = value;
         for (size_t i = 0; i < sizeof(name); i++)
@@ -97,22 +102,26 @@ struct rct_object_entry {
 };
 assert_struct_size(rct_object_entry, 0x10);
 
-struct rct_object_entry_group {
-    void **chunks;
-    rct_object_entry *entries;
+struct rct_object_entry_group
+{
+    void** chunks;
+    rct_object_entry* entries;
 };
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_object_entry_group, 8);
 #endif
 
-struct rct_ride_filters {
+struct rct_ride_filters
+{
     uint8_t category[2];
     uint8_t ride_type;
 };
 assert_struct_size(rct_ride_filters, 3);
 
-struct rct_object_filters {
-    union {
+struct rct_object_filters
+{
+    union
+    {
         rct_ride_filters ride;
     };
 };
@@ -121,8 +130,8 @@ assert_struct_size(rct_object_filters, 3);
 
 interface IObjectRepository;
 interface IStream;
-struct    ObjectRepositoryItem;
-struct    rct_drawpixelinfo;
+struct ObjectRepositoryItem;
+struct rct_drawpixelinfo;
 
 interface IReadObjectContext
 {
@@ -132,69 +141,95 @@ interface IReadObjectContext
     virtual bool ShouldLoadImages() abstract;
     virtual std::vector<uint8_t> GetData(const std::string_view& path) abstract;
 
-    virtual void LogWarning(uint32_t code, const utf8 * text) abstract;
-    virtual void LogError(uint32_t code, const utf8 * text) abstract;
+    virtual void LogWarning(uint32_t code, const utf8* text) abstract;
+    virtual void LogError(uint32_t code, const utf8* text) abstract;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
-    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 class Object
 {
 private:
-    char *              _identifier;
-    rct_object_entry    _objectEntry{};
-    StringTable         _stringTable;
-    ImageTable          _imageTable;
+    char* _identifier;
+    rct_object_entry _objectEntry{};
+    StringTable _stringTable;
+    ImageTable _imageTable;
 
 protected:
-    StringTable &       GetStringTable() { return _stringTable; }
-    const StringTable & GetStringTable() const { return _stringTable; }
-    ImageTable &        GetImageTable() { return _imageTable; }
+    StringTable& GetStringTable()
+    {
+        return _stringTable;
+    }
+    const StringTable& GetStringTable() const
+    {
+        return _stringTable;
+    }
+    ImageTable& GetImageTable()
+    {
+        return _imageTable;
+    }
 
-    std::string         GetOverrideString(uint8_t index) const;
-    std::string         GetString(uint8_t index) const;
-    std::string         GetString(int32_t language, uint8_t index) const;
+    std::string GetOverrideString(uint8_t index) const;
+    std::string GetString(uint8_t index) const;
+    std::string GetString(int32_t language, uint8_t index) const;
 
-    void                SetSourceGame(const uint8_t sourceGame);
-    bool                IsRCT1Object();
-    bool                IsAAObject();
-    bool                IsLLObject();
-    bool                IsOpenRCT2OfficialObject();
+    void SetSourceGame(const uint8_t sourceGame);
+    bool IsRCT1Object();
+    bool IsAAObject();
+    bool IsLLObject();
+    bool IsOpenRCT2OfficialObject();
 
 public:
-    explicit Object(const rct_object_entry &entry);
+    explicit Object(const rct_object_entry& entry);
     virtual ~Object();
 
     // Legacy data structures
-    const char *                GetIdentifier() const { return _identifier; }
-    const rct_object_entry *    GetObjectEntry() const { return &_objectEntry; }
-    virtual void *              GetLegacyData() abstract;
+    const char* GetIdentifier() const
+    {
+        return _identifier;
+    }
+    const rct_object_entry* GetObjectEntry() const
+    {
+        return &_objectEntry;
+    }
+    virtual void* GetLegacyData() abstract;
 
-    virtual void ReadJson(IReadObjectContext * /*context*/, const json_t * /*root*/) { }
-    virtual void ReadLegacy(IReadObjectContext * context, IStream * stream) abstract;
+    virtual void ReadJson(IReadObjectContext* /*context*/, const json_t* /*root*/)
+    {
+    }
+    virtual void ReadLegacy(IReadObjectContext* context, IStream* stream) abstract;
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
-    virtual void DrawPreview(rct_drawpixelinfo * /*dpi*/, int32_t /*width*/, int32_t /*height*/) const { }
+    virtual void DrawPreview(rct_drawpixelinfo* /*dpi*/, int32_t /*width*/, int32_t /*height*/) const
+    {
+    }
 
-    virtual uint8_t           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
-    virtual std::string     GetName() const;
-    virtual std::string     GetName(int32_t language) const;
+    virtual uint8_t GetObjectType() const final
+    {
+        return _objectEntry.flags & 0x0F;
+    }
+    virtual std::string GetName() const;
+    virtual std::string GetName(int32_t language) const;
 
-    virtual void SetRepositoryItem(ObjectRepositoryItem * /*item*/) const { }
+    virtual void SetRepositoryItem(ObjectRepositoryItem* /*item*/) const
+    {
+    }
 
-    const ImageTable & GetImageTable() const { return _imageTable; }
+    const ImageTable& GetImageTable() const
+    {
+        return _imageTable;
+    }
 
     rct_object_entry GetScgWallsHeader();
     rct_object_entry GetScgPathXHeader();
     rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
-
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-    #pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
 #endif
 
 enum OBJECT_ERROR : uint32_t
@@ -213,15 +248,15 @@ extern int32_t object_entry_group_encoding[];
 
 void object_list_load();
 
-bool object_entry_is_empty(const rct_object_entry *entry);
-bool object_entry_compare(const rct_object_entry *a, const rct_object_entry *b);
-int32_t object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength);
+bool object_entry_is_empty(const rct_object_entry* entry);
+bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b);
+int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
 bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, uint8_t* entry_index);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
-const rct_object_entry * object_list_find(rct_object_entry *entry);
+const rct_object_entry* object_list_find(rct_object_entry* entry);
 
-void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
+void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
 
-void * object_entry_get_chunk(int32_t objectType, size_t index);
-const rct_object_entry * object_entry_get_entry(int32_t objectType, size_t index);
+void* object_entry_get_chunk(int32_t objectType, size_t index);
+const rct_object_entry* object_entry_get_entry(int32_t objectType, size_t index);

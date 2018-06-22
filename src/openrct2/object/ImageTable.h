@@ -9,10 +9,11 @@
 
 #pragma once
 
-#include <memory>
-#include <vector>
 #include "../common.h"
 #include "../drawing/Drawing.h"
+
+#include <memory>
+#include <vector>
 
 interface IReadObjectContext;
 interface IStream;
@@ -20,17 +21,23 @@ interface IStream;
 class ImageTable
 {
 private:
-    std::unique_ptr<uint8_t[]>    _data;
+    std::unique_ptr<uint8_t[]> _data;
     std::vector<rct_g1_element> _entries;
 
 public:
     ImageTable() = default;
-    ImageTable(const ImageTable &) = delete;
-    ImageTable & operator=(const ImageTable &) = delete;
+    ImageTable(const ImageTable&) = delete;
+    ImageTable& operator=(const ImageTable&) = delete;
     ~ImageTable();
 
-    void                    Read(IReadObjectContext * context, IStream * stream);
-    const rct_g1_element *  GetImages() const { return _entries.data(); }
-    uint32_t                  GetCount() const { return (uint32_t)_entries.size(); }
-    void                    AddImage(const rct_g1_element * g1);
+    void Read(IReadObjectContext* context, IStream* stream);
+    const rct_g1_element* GetImages() const
+    {
+        return _entries.data();
+    }
+    uint32_t GetCount() const
+    {
+        return (uint32_t)_entries.size();
+    }
+    void AddImage(const rct_g1_element* g1);
 };

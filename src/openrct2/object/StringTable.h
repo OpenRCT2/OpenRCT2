@@ -9,10 +9,11 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
 #include "../common.h"
 #include "../localisation/Language.h"
+
+#include <string>
+#include <vector>
 
 interface IReadObjectContext;
 interface IStream;
@@ -31,8 +32,8 @@ enum OBJ_STRING_ID : uint8_t
 
 struct StringTableEntry
 {
-    uint8_t       Id          = OBJ_STRING_ID_UNKNOWN;
-    uint8_t       LanguageId  = LANGUAGE_UNDEFINED;
+    uint8_t Id = OBJ_STRING_ID_UNKNOWN;
+    uint8_t LanguageId = LANGUAGE_UNDEFINED;
     std::string Text;
 };
 
@@ -43,12 +44,12 @@ private:
 
 public:
     StringTable() = default;
-    StringTable(const StringTable &) = delete;
-    StringTable & operator=(const StringTable &) = delete;
+    StringTable(const StringTable&) = delete;
+    StringTable& operator=(const StringTable&) = delete;
 
-    void            Read(IReadObjectContext * context, IStream * stream, uint8_t id);
-    void            Sort();
-    std::string     GetString(uint8_t id) const;
-    std::string     GetString(uint8_t language, uint8_t id) const;
-    void            SetString(uint8_t id, uint8_t language, const std::string &text);
+    void Read(IReadObjectContext* context, IStream* stream, uint8_t id);
+    void Sort();
+    std::string GetString(uint8_t id) const;
+    std::string GetString(uint8_t language, uint8_t id) const;
+    void SetString(uint8_t id, uint8_t language, const std::string& text);
 };
