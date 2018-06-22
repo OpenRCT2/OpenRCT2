@@ -68,10 +68,12 @@ enum
     SPR_CHAIRLIFT_STATION_END_CAP_NW,
 };
 
-const uint32_t chairlift_bullwheel_frames[] = { SPR_CHAIRLIFT_BULLWHEEL_FRAME_1, SPR_CHAIRLIFT_BULLWHEEL_FRAME_2,
-                                              SPR_CHAIRLIFT_BULLWHEEL_FRAME_3, SPR_CHAIRLIFT_BULLWHEEL_FRAME_4 };
+const uint32_t chairlift_bullwheel_frames[] = { SPR_CHAIRLIFT_BULLWHEEL_FRAME_1,
+                                                SPR_CHAIRLIFT_BULLWHEEL_FRAME_2,
+                                                SPR_CHAIRLIFT_BULLWHEEL_FRAME_3,
+                                                SPR_CHAIRLIFT_BULLWHEEL_FRAME_4 };
 
-static void chairlift_paint_util_draw_supports(paint_session * session, int32_t segments, uint16_t height)
+static void chairlift_paint_util_draw_supports(paint_session* session, int32_t segments, uint16_t height)
 {
     bool success = false;
 
@@ -93,24 +95,24 @@ static void chairlift_paint_util_draw_supports(paint_session * session, int32_t 
         return;
     }
 
-    support_height * supportSegments = session->SupportSegments;
+    support_height* supportSegments = session->SupportSegments;
     for (int32_t s = 0; s < 9; s++)
     {
         if (!(segments & segment_offsets[s]))
         {
             continue;
         }
-        uint16_t temp               = supportSegments[s].height;
+        uint16_t temp = supportSegments[s].height;
         supportSegments[s].height = session->Support.height;
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         supportSegments[s].height = temp;
     }
 }
 
-static const rct_tile_element *
-chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(int32_t x, int32_t y, int32_t z, int32_t rideIndex)
+static const rct_tile_element*
+    chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(int32_t x, int32_t y, int32_t z, int32_t rideIndex)
 {
-    const rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    const rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -131,64 +133,64 @@ chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(int32_t x, int32_t
     return nullptr;
 };
 
-static bool chairlift_paint_util_is_first_track(uint8_t rideIndex, const rct_tile_element * tileElement, LocationXY16 pos,
-                                                uint8_t trackType)
+static bool chairlift_paint_util_is_first_track(
+    uint8_t rideIndex, const rct_tile_element* tileElement, LocationXY16 pos, uint8_t trackType)
 {
     if (track_element_get_type(tileElement) != TRACK_ELEM_BEGIN_STATION)
     {
         return false;
     }
 
-    CoordsXY delta  = CoordsDirectionDelta[tile_element_get_direction(tileElement)];
+    CoordsXY delta = CoordsDirectionDelta[tile_element_get_direction(tileElement)];
     CoordsXY newPos = {
         static_cast<int32_t>(pos.x - delta.x),
         static_cast<int32_t>(pos.y - delta.y),
     };
 
-    const rct_tile_element * nextTrack =
-        chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, tileElement->base_height, rideIndex);
+    const rct_tile_element* nextTrack = chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(
+        newPos.x, newPos.y, tileElement->base_height, rideIndex);
 
     return nextTrack == nullptr;
 }
 
-static bool chairlift_paint_util_is_last_track(uint8_t rideIndex, const rct_tile_element * tileElement, LocationXY16 pos,
-                                               uint8_t trackType)
+static bool chairlift_paint_util_is_last_track(
+    uint8_t rideIndex, const rct_tile_element* tileElement, LocationXY16 pos, uint8_t trackType)
 {
     if (track_element_get_type(tileElement) != TRACK_ELEM_END_STATION)
     {
         return false;
     }
 
-    CoordsXY delta  = CoordsDirectionDelta[tile_element_get_direction(tileElement)];
+    CoordsXY delta = CoordsDirectionDelta[tile_element_get_direction(tileElement)];
     CoordsXY newPos = {
         static_cast<int32_t>(pos.x + delta.x),
         static_cast<int32_t>(pos.y + delta.y),
     };
 
-    const rct_tile_element * nextTrack =
-        chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, tileElement->base_height, rideIndex);
+    const rct_tile_element* nextTrack = chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(
+        newPos.x, newPos.y, tileElement->base_height, rideIndex);
 
     return nextTrack == nullptr;
 }
 
 static void chairlift_paint_station_ne_sw(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
-    const LocationXY16 pos       = session->MapPosition;
-    uint8_t          trackType = track_element_get_type(tileElement);
-    Ride *         ride      = get_ride(rideIndex);
-    uint32_t         imageId;
+    const LocationXY16 pos = session->MapPosition;
+    uint8_t trackType = track_element_get_type(tileElement);
+    Ride* ride = get_ride(rideIndex);
+    uint32_t imageId;
 
     bool isStart = chairlift_paint_util_is_first_track(rideIndex, tileElement, pos, trackType);
     ;
     bool isEnd = chairlift_paint_util_is_last_track(rideIndex, tileElement, pos, trackType);
 
-    const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+    const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -224,7 +226,7 @@ static void chairlift_paint_station_ne_sw(
     track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, height);
 
     bool drawFrontColumn = true;
-    bool drawBackColumn  = true;
+    bool drawBackColumn = true;
     if ((direction == 0 && isStart) || (direction == 2 && isEnd))
     {
         imageId = SPR_FENCE_METAL_SW | session->TrackColours[SCHEME_TRACK];
@@ -267,23 +269,23 @@ static void chairlift_paint_station_ne_sw(
 }
 
 static void chairlift_paint_station_se_nw(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
-    const LocationXY16 pos       = session->MapPosition;
-    uint8_t          trackType = track_element_get_type(tileElement);
-    Ride *         ride      = get_ride(rideIndex);
-    uint32_t         imageId;
+    const LocationXY16 pos = session->MapPosition;
+    uint8_t trackType = track_element_get_type(tileElement);
+    Ride* ride = get_ride(rideIndex);
+    uint32_t imageId;
 
     bool isStart = chairlift_paint_util_is_first_track(rideIndex, tileElement, pos, trackType);
     ;
     bool isEnd = chairlift_paint_util_is_last_track(rideIndex, tileElement, pos, trackType);
 
-    const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+    const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -319,7 +321,7 @@ static void chairlift_paint_station_se_nw(
     track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, height);
 
     bool drawRightColumn = true;
-    bool drawLeftColumn  = true;
+    bool drawLeftColumn = true;
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
         imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | session->TrackColours[SCHEME_TRACK];
@@ -364,12 +366,12 @@ static void chairlift_paint_station_se_nw(
 
 /** rct2: 0x00744068 */
 static void chairlift_paint_station(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     if (direction % 2)
     {
@@ -382,12 +384,12 @@ static void chairlift_paint_station(
 }
 
 static void chairlift_paint_flat(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     uint32_t imageId;
     if (direction & 1)
@@ -409,40 +411,40 @@ static void chairlift_paint_flat(
 
 /** rct2: 0x00743FD8 */
 static void chairlift_paint_25_deg_up(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     uint32_t imageId;
 
     switch (direction)
     {
-    case 0:
-        imageId = SPR_CHAIRLIFT_CABLE_UP_SW_NE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
-        paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
-        break;
+        case 0:
+            imageId = SPR_CHAIRLIFT_CABLE_UP_SW_NE | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
+            break;
 
-    case 1:
-        imageId = SPR_CHAIRLIFT_CABLE_UP_NW_SE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
-        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
-        break;
+        case 1:
+            imageId = SPR_CHAIRLIFT_CABLE_UP_NW_SE | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+            break;
 
-    case 2:
-        imageId = SPR_CHAIRLIFT_CABLE_UP_NE_SW | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
-        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
-        break;
+        case 2:
+            imageId = SPR_CHAIRLIFT_CABLE_UP_NE_SW | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+            break;
 
-    case 3:
-        imageId = SPR_CHAIRLIFT_CABLE_UP_SE_NW | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
-        paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
-        break;
+        case 3:
+            imageId = SPR_CHAIRLIFT_CABLE_UP_SE_NW | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
+            break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -451,56 +453,56 @@ static void chairlift_paint_25_deg_up(
 
 /** rct2: 0x00743FD8 */
 static void chairlift_paint_flat_to_25_deg_up(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     uint32_t imageId;
 
     switch (direction)
     {
-    case 0:
-        imageId = SPR_20508 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
+        case 0:
+            imageId = SPR_20508 | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
 
-        imageId = SPR_20520 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
+            imageId = SPR_20520 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
-        break;
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            break;
 
-    case 1:
-        imageId = SPR_20509 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
+        case 1:
+            imageId = SPR_20509 | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
 
-        imageId = SPR_20521 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
+            imageId = SPR_20521 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-        paint_util_push_tunnel_right(session, height, TUNNEL_8);
-        break;
+            paint_util_push_tunnel_right(session, height, TUNNEL_8);
+            break;
 
-    case 2:
-        imageId = SPR_20510 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
+        case 2:
+            imageId = SPR_20510 | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
 
-        imageId = SPR_20522 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
+            imageId = SPR_20522 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-        paint_util_push_tunnel_left(session, height, TUNNEL_8);
-        break;
+            paint_util_push_tunnel_left(session, height, TUNNEL_8);
+            break;
 
-    case 3:
-        imageId = SPR_20511 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
+        case 3:
+            imageId = SPR_20511 | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
 
-        imageId = SPR_20523 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
+            imageId = SPR_20523 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
-        break;
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            break;
     }
 
     chairlift_paint_util_draw_supports(session, SEGMENT_C4, height);
@@ -510,56 +512,56 @@ static void chairlift_paint_flat_to_25_deg_up(
 
 /** rct2: 0x00743FF8 */
 static void chairlift_paint_25_deg_up_to_flat(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     uint32_t imageId;
 
     switch (direction)
     {
-    case 0:
-        imageId = SPR_20512 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
+        case 0:
+            imageId = SPR_20512 | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
 
-        imageId = SPR_20524 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
+            imageId = SPR_20524 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-        paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
-        break;
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
+            break;
 
-    case 1:
-        imageId = SPR_20513 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
+        case 1:
+            imageId = SPR_20513 | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
 
-        imageId = SPR_20525 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
+            imageId = SPR_20525 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-        paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
-        break;
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
+            break;
 
-    case 2:
-        imageId = SPR_20514 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
+        case 2:
+            imageId = SPR_20514 | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28);
 
-        imageId = SPR_20526 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
+            imageId = SPR_20526 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-        paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
-        break;
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
+            break;
 
-    case 3:
-        imageId = SPR_20515 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
+        case 3:
+            imageId = SPR_20515 | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28);
 
-        imageId = SPR_20527 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
+            imageId = SPR_20527 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1);
 
-        paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
-        break;
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
+            break;
     }
 
     chairlift_paint_util_draw_supports(session, SEGMENT_C4, height);
@@ -569,103 +571,103 @@ static void chairlift_paint_25_deg_up_to_flat(
 
 /** rct2: 0x00744008 */
 static void chairlift_paint_25_deg_down(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     chairlift_paint_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x00744018 */
 static void chairlift_paint_flat_to_25_deg_down(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     chairlift_paint_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x00744028 */
 static void chairlift_paint_25_deg_down_to_flat(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     chairlift_paint_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x00744038 */
 static void chairlift_paint_left_quarter_turn_1_tile(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     uint32_t imageId;
 
     switch (direction)
     {
-    case 0:
-        imageId = SPR_CHAIRLIFT_CORNER_NW_SW | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 16, 0, height + 28);
+        case 0:
+            imageId = SPR_CHAIRLIFT_CORNER_NW_SW | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 16, 0, height + 28);
 
-        imageId = SPR_20532 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 4, height);
+            imageId = SPR_20532 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 4, height);
 
-        imageId = SPR_20536 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 28, 4, height);
+            imageId = SPR_20536 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 28, 4, height);
 
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
-        break;
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            break;
 
-    case 1:
-        imageId = SPR_CHAIRLIFT_CORNER_NW_NE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 0, 0, height + 28);
+        case 1:
+            imageId = SPR_CHAIRLIFT_CORNER_NW_NE | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 0, 0, height + 28);
 
-        imageId = SPR_20533 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 4, height);
+            imageId = SPR_20533 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 4, height);
 
-        imageId = SPR_20537 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 4, 16, height);
-        break;
+            imageId = SPR_20537 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 4, 16, height);
+            break;
 
-    case 2:
-        imageId = SPR_CHAIRLIFT_CORNER_SE_NE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 0, 16, height + 28);
+        case 2:
+            imageId = SPR_CHAIRLIFT_CORNER_SE_NE | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 0, 16, height + 28);
 
-        imageId = SPR_20534 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 4, 16, height);
+            imageId = SPR_20534 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 4, 16, height);
 
-        imageId = SPR_20538 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 28, height);
+            imageId = SPR_20538 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 28, height);
 
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
-        break;
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            break;
 
-    case 3:
-        imageId = SPR_CHAIRLIFT_CORNER_SW_SE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 16, 16, height + 28);
+        case 3:
+            imageId = SPR_CHAIRLIFT_CORNER_SW_SE | session->TrackColours[SCHEME_TRACK];
+            sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 16, 16, height + 28);
 
-        imageId = SPR_20535 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 28, 16, height);
+            imageId = SPR_20535 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 28, 16, height);
 
-        imageId = SPR_20539 | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 28, height);
+            imageId = SPR_20539 | session->TrackColours[SCHEME_SUPPORTS];
+            sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 28, height);
 
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
-        break;
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            break;
     }
 
     chairlift_paint_util_draw_supports(session, paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_D0, direction), height);
@@ -676,12 +678,12 @@ static void chairlift_paint_left_quarter_turn_1_tile(
 
 /** rct2: 0x00744048 */
 static void chairlift_paint_right_quarter_turn_1_tile(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     chairlift_paint_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
 }
@@ -691,32 +693,32 @@ TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int32_t trackType, int32
 {
     switch (trackType)
     {
-    case TRACK_ELEM_BEGIN_STATION:
-    case TRACK_ELEM_MIDDLE_STATION:
-    case TRACK_ELEM_END_STATION:
-        return chairlift_paint_station;
+        case TRACK_ELEM_BEGIN_STATION:
+        case TRACK_ELEM_MIDDLE_STATION:
+        case TRACK_ELEM_END_STATION:
+            return chairlift_paint_station;
 
-    case TRACK_ELEM_FLAT:
-        return chairlift_paint_flat;
+        case TRACK_ELEM_FLAT:
+            return chairlift_paint_flat;
 
-    case TRACK_ELEM_FLAT_TO_25_DEG_UP:
-        return chairlift_paint_flat_to_25_deg_up;
-    case TRACK_ELEM_25_DEG_UP:
-        return chairlift_paint_25_deg_up;
-    case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-        return chairlift_paint_25_deg_up_to_flat;
+        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+            return chairlift_paint_flat_to_25_deg_up;
+        case TRACK_ELEM_25_DEG_UP:
+            return chairlift_paint_25_deg_up;
+        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+            return chairlift_paint_25_deg_up_to_flat;
 
-    case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
-        return chairlift_paint_flat_to_25_deg_down;
-    case TRACK_ELEM_25_DEG_DOWN:
-        return chairlift_paint_25_deg_down;
-    case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
-        return chairlift_paint_25_deg_down_to_flat;
+        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+            return chairlift_paint_flat_to_25_deg_down;
+        case TRACK_ELEM_25_DEG_DOWN:
+            return chairlift_paint_25_deg_down;
+        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+            return chairlift_paint_25_deg_down_to_flat;
 
-    case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
-        return chairlift_paint_left_quarter_turn_1_tile;
-    case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
-        return chairlift_paint_right_quarter_turn_1_tile;
+        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+            return chairlift_paint_left_quarter_turn_1_tile;
+        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+            return chairlift_paint_right_quarter_turn_1_tile;
     }
 
     return nullptr;

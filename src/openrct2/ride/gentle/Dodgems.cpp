@@ -15,19 +15,20 @@
 
 enum
 {
-    SPR_DODGEMS_FLOOR              = 21925,
-    SPR_DODGEMS_ROOF_FRAME         = 21926, // 4 directions
-    SPR_DODGEMS_ROOF_GLASS         = 21930, // 4 directions
-    SPR_DODGEMS_FENCE_TOP_RIGHT    = 21934,
+    SPR_DODGEMS_FLOOR = 21925,
+    SPR_DODGEMS_ROOF_FRAME = 21926, // 4 directions
+    SPR_DODGEMS_ROOF_GLASS = 21930, // 4 directions
+    SPR_DODGEMS_FENCE_TOP_RIGHT = 21934,
     SPR_DODGEMS_FENCE_BOTTOM_RIGHT = 21935,
-    SPR_DODGEMS_FENCE_BOTTOM_LEFT  = 21936,
-    SPR_DODGEMS_FENCE_TOP_LEFT     = 21937
+    SPR_DODGEMS_FENCE_BOTTOM_LEFT = 21936,
+    SPR_DODGEMS_FENCE_TOP_LEFT = 21937
 };
 
-static constexpr const uint32_t dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
-                                         SPR_DODGEMS_FENCE_BOTTOM_LEFT, SPR_DODGEMS_FENCE_TOP_LEFT };
+static constexpr const uint32_t dodgems_fence_sprites[] = {
+    SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_LEFT, SPR_DODGEMS_FENCE_TOP_LEFT
+};
 
-static void paint_dodgems_roof(paint_session * session, int32_t height, int32_t offset)
+static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t offset)
 {
     uint32_t image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session->TrackColours[SCHEME_TRACK];
     sub_98196C(session, image_id, 0, 0, 32, 32, 2, height);
@@ -37,17 +38,17 @@ static void paint_dodgems_roof(paint_session * session, int32_t height, int32_t 
 }
 
 static void paint_dodgems(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session,
+    uint8_t rideIndex,
+    uint8_t trackSequence,
+    uint8_t direction,
+    int32_t height,
+    const rct_tile_element* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
-    int32_t   edges    = edges_4x4[relativeTrackSequence];
-    Ride *   ride     = get_ride(rideIndex);
+    int32_t edges = edges_4x4[relativeTrackSequence];
+    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
@@ -56,38 +57,45 @@ static void paint_dodgems(
     sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
     track_paint_util_paint_fences(
-        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, dodgems_fence_sprites,
+        session,
+        edges,
+        position,
+        tileElement,
+        ride,
+        session->TrackColours[SCHEME_SUPPORTS],
+        height,
+        dodgems_fence_sprites,
         session->CurrentRotation);
 
     switch (direction)
     {
-    case 2:
-        trackSequence = 15 - trackSequence;
-        // Fallthrough
-    case 0:
-        if ((trackSequence / 4) & 1)
-        {
-            paint_dodgems_roof(session, height + 30, 0);
-        }
-        else
-        {
-            paint_dodgems_roof(session, height + 30, 2);
-        }
-        break;
+        case 2:
+            trackSequence = 15 - trackSequence;
+            // Fallthrough
+        case 0:
+            if ((trackSequence / 4) & 1)
+            {
+                paint_dodgems_roof(session, height + 30, 0);
+            }
+            else
+            {
+                paint_dodgems_roof(session, height + 30, 2);
+            }
+            break;
 
-    case 3:
-        trackSequence = 15 - trackSequence;
-        // Fallthrough
-    case 1:
-        if ((trackSequence / 4) & 1)
-        {
-            paint_dodgems_roof(session, height + 30, 1);
-        }
-        else
-        {
-            paint_dodgems_roof(session, height + 30, 3);
-        }
-        break;
+        case 3:
+            trackSequence = 15 - trackSequence;
+            // Fallthrough
+        case 1:
+            if ((trackSequence / 4) & 1)
+            {
+                paint_dodgems_roof(session, height + 30, 1);
+            }
+            else
+            {
+                paint_dodgems_roof(session, height + 30, 3);
+            }
+            break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, height + 36, 0x20);
