@@ -7,15 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../thirdparty/linenoise.hpp"
 #include "../OpenRCT2.h"
 #include "../platform/Platform2.h"
+#include "../thirdparty/linenoise.hpp"
 #include "InteractiveConsole.h"
 
 void StdInOutConsole::Start()
 {
-    std::thread replThread ([this]() -> void
-    {
+    std::thread replThread([this]() -> void {
         linenoise::SetMultiLine(true);
         linenoise::SetHistoryMaxLen(32);
 
@@ -50,7 +49,7 @@ void StdInOutConsole::Start()
     replThread.detach();
 }
 
-std::future<void> StdInOutConsole::Eval(const std::string &s)
+std::future<void> StdInOutConsole::Eval(const std::string& s)
 {
     // Push on-demand evaluations onto a queue so that it can be processed deterministically
     // on the main thead at the right time.
@@ -86,7 +85,7 @@ void StdInOutConsole::Close()
     openrct2_finish();
 }
 
-void StdInOutConsole::WriteLine(const std::string &s, uint32_t colourFormat)
+void StdInOutConsole::WriteLine(const std::string& s, uint32_t colourFormat)
 {
     std::string formatBegin;
     if (colourFormat != FORMAT_WINDOW_COLOUR_2)

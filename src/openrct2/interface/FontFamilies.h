@@ -18,7 +18,7 @@
 
 struct TTFFontSetDescriptor;
 
-using TTFontFamily = std::vector<TTFFontSetDescriptor *>;
+using TTFontFamily = std::vector<TTFFontSetDescriptor*>;
 
 extern TTFontFamily const TTFFamilyChineseSimplified;
 extern TTFontFamily const TTFFamilyChineseTraditional;
@@ -28,7 +28,7 @@ extern TTFontFamily const TTFFamilySansSerif;
 
 #define FAMILY(x) x
 
-#else  // NO_TTF
+#else // NO_TTF
 
 #define FAMILY(x) FAMILY_OPENRCT2_SPRITE
 
