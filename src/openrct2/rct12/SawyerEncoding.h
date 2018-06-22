@@ -15,5 +15,5 @@ interface IStream;
 
 namespace SawyerEncoding
 {
-    bool ValidateChecksum(IStream * stream);
+    bool ValidateChecksum(IStream* stream);
 }

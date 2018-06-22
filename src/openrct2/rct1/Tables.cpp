@@ -7,15 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Tables.h"
+
 #include "../common.h"
 #include "../core/Guard.hpp"
 #include "../core/Util.hpp"
-#include "Tables.h"
-
 #include "../interface/Colour.h"
-#include "RCT1.h"
 #include "../ride/Ride.h"
 #include "../world/Surface.h"
+#include "RCT1.h"
 
 // clang-format off
 namespace RCT1
