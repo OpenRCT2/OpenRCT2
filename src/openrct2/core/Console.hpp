@@ -16,19 +16,19 @@
 namespace Console
 {
     void Write(char c);
-    void Write(const utf8 * str);
+    void Write(const utf8* str);
     void WriteSpace(size_t count);
-    void WriteFormat(const utf8 * format, ...);
+    void WriteFormat(const utf8* format, ...);
     void WriteLine();
-    void WriteLine(const utf8 * format, ...);
+    void WriteLine(const utf8* format, ...);
 
     namespace Error
     {
         void Write(char c);
-        void Write(const utf8 * str);
-        void WriteFormat(const utf8 * format, ...);
+        void Write(const utf8* str);
+        void WriteFormat(const utf8* format, ...);
         void WriteLine();
-        void WriteLine(const utf8 * format, ...);
-        void WriteLine_VA(const utf8 * format, va_list args);
+        void WriteLine(const utf8* format, ...);
+        void WriteLine_VA(const utf8* format, va_list args);
     } // namespace Error
 } // namespace Console

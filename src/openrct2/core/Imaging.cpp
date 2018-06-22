@@ -9,17 +9,19 @@
 
 #pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 
-#include <algorithm>
-#include <fstream>
-#include <stdexcept>
-#include <unordered_map>
-#include <png.h>
-#include "IStream.hpp"
-#include "Guard.hpp"
 #include "Imaging.h"
+
+#include "../drawing/Drawing.h"
+#include "Guard.hpp"
+#include "IStream.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
-#include "../drawing/Drawing.h"
+
+#include <algorithm>
+#include <fstream>
+#include <png.h>
+#include <stdexcept>
+#include <unordered_map>
 
 namespace Imaging
 {
@@ -29,28 +31,28 @@ namespace Imaging
 
     static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
-        auto istream = static_cast<std::istream *>(png_get_io_ptr(png_ptr));
-        istream->read((char *)data, length);
+        auto istream = static_cast<std::istream*>(png_get_io_ptr(png_ptr));
+        istream->read((char*)data, length);
     }
 
     static void PngWriteData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
-        auto ostream = static_cast<std::ostream *>(png_get_io_ptr(png_ptr));
-        ostream->write((const char *)data, length);
+        auto ostream = static_cast<std::ostream*>(png_get_io_ptr(png_ptr));
+        ostream->write((const char*)data, length);
     }
 
     static void PngFlush(png_structp png_ptr)
     {
-        auto ostream = static_cast<std::ostream *>(png_get_io_ptr(png_ptr));
+        auto ostream = static_cast<std::ostream*>(png_get_io_ptr(png_ptr));
         ostream->flush();
     }
 
-    static void PngWarning(png_structp, const char * b)
+    static void PngWarning(png_structp, const char* b)
     {
         log_warning(b);
     }
 
-    static void PngError(png_structp, const char * b)
+    static void PngError(png_structp, const char* b)
     {
         log_error(b);
     }
@@ -152,7 +154,7 @@ namespace Imaging
             img.Stride = pngWidth * (expandTo32 ? 4 : 1);
             return img;
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
             throw;
@@ -232,7 +234,7 @@ namespace Imaging
             auto pixels = image.Pixels.data();
             for (uint32_t y = 0; y < image.Height; y++)
             {
-                png_write_row(png_ptr, (png_byte *)pixels);
+                png_write_row(png_ptr, (png_byte*)pixels);
                 pixels += image.Stride;
             }
 
@@ -348,4 +350,4 @@ namespace Imaging
                 throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
         }
     }
-}
+} // namespace Imaging

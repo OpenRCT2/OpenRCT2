@@ -34,7 +34,6 @@
 #include "../localisation/ConversionTables.h"
 #include "../localisation/Language.h"
 #include "../util/Util.h"
-
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
@@ -42,13 +41,15 @@
 
 namespace String
 {
-    std::string ToStd(const utf8 * str)
+    std::string ToStd(const utf8* str)
     {
-        if (str == nullptr) return std::string();
-        else return std::string(str);
+        if (str == nullptr)
+            return std::string();
+        else
+            return std::string(str);
     }
 
-    std::string StdFormat_VA(const utf8 * format, va_list args)
+    std::string StdFormat_VA(const utf8* format, va_list args)
     {
         auto buffer = Format_VA(format, args);
         auto returnValue = ToStd(buffer);
@@ -56,11 +57,11 @@ namespace String
         return returnValue;
     }
 
-    std::string StdFormat(const utf8 * format, ...)
+    std::string StdFormat(const utf8* format, ...)
     {
         va_list args;
         va_start(args, format);
-        const utf8 * buffer = Format_VA(format, args);
+        const utf8* buffer = Format_VA(format, args);
         va_end(args);
         std::string returnValue = ToStd(buffer);
         Memory::Free(buffer);
@@ -79,11 +80,11 @@ namespace String
 // Which constructor to use depends on the size of wchar_t...
 // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
 // Unfortunately, we'll have to help the compiler here.
-#if U_SIZEOF_WCHAR_T==4
-        icu::UnicodeString str = icu::UnicodeString::fromUTF32((const UChar32*) src.data(), src.length());
-#elif U_SIZEOF_WCHAR_T==2
+#if U_SIZEOF_WCHAR_T == 4
+        icu::UnicodeString str = icu::UnicodeString::fromUTF32((const UChar32*)src.data(), src.length());
+#elif U_SIZEOF_WCHAR_T == 2
         std::wstring wstr = std::wstring(src);
-        icu::UnicodeString str = icu::UnicodeString((const wchar_t*) wstr.c_str());
+        icu::UnicodeString str = icu::UnicodeString((const wchar_t*)wstr.c_str());
 #else
 #error Unsupported U_SIZEOF_WCHAR_T size
 #endif
@@ -109,16 +110,16 @@ namespace String
 // Which constructor to use depends on the size of wchar_t...
 // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
 // Unfortunately, we'll have to help the compiler here.
-#if U_SIZEOF_WCHAR_T==4
-        size_t length = (size_t) str.length();
+#if U_SIZEOF_WCHAR_T == 4
+        size_t length = (size_t)str.length();
         std::wstring result(length, '\0');
 
         UErrorCode status = U_ZERO_ERROR;
-        str.toUTF32((UChar32*) &result[0], str.length(), status);
+        str.toUTF32((UChar32*)&result[0], str.length(), status);
 
-#elif U_SIZEOF_WCHAR_T==2
+#elif U_SIZEOF_WCHAR_T == 2
         const char16_t* buffer = str.getBuffer();
-        std::wstring result = (wchar_t*) buffer;
+        std::wstring result = (wchar_t*)buffer;
 
 #else
 #error Unsupported U_SIZEOF_WCHAR_T size
@@ -128,21 +129,24 @@ namespace String
 #endif
     }
 
-    bool IsNullOrEmpty(const utf8 * str)
+    bool IsNullOrEmpty(const utf8* str)
     {
         return str == nullptr || str[0] == '\0';
     }
 
-    int32_t Compare(const std::string &a, const std::string &b, bool ignoreCase)
+    int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase)
     {
         return Compare(a.c_str(), b.c_str(), ignoreCase);
     }
 
-    int32_t Compare(const utf8 * a, const utf8 * b, bool ignoreCase)
+    int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase)
     {
-        if (a == b) return 0;
-        if (a == nullptr) a = "";
-        if (b == nullptr) b = "";
+        if (a == b)
+            return 0;
+        if (a == nullptr)
+            a = "";
+        if (b == nullptr)
+            b = "";
         if (ignoreCase)
         {
             return _stricmp(a, b);
@@ -153,15 +157,17 @@ namespace String
         }
     }
 
-    bool Equals(const std::string &a, const std::string &b, bool ignoreCase)
+    bool Equals(const std::string& a, const std::string& b, bool ignoreCase)
     {
         return Equals(a.c_str(), b.c_str(), ignoreCase);
     }
 
-    bool Equals(const utf8 * a, const utf8 * b, bool ignoreCase)
+    bool Equals(const utf8* a, const utf8* b, bool ignoreCase)
     {
-        if (a == b) return true;
-        if (a == nullptr || b == nullptr) return false;
+        if (a == b)
+            return true;
+        if (a == nullptr || b == nullptr)
+            return false;
 
         if (ignoreCase)
         {
@@ -173,7 +179,7 @@ namespace String
         }
     }
 
-    bool StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase)
+    bool StartsWith(const utf8* str, const utf8* match, bool ignoreCase)
     {
         if (ignoreCase)
         {
@@ -199,7 +205,7 @@ namespace String
         }
     }
 
-    bool StartsWith(const std::string &str, const std::string &match, bool ignoreCase)
+    bool StartsWith(const std::string& str, const std::string& match, bool ignoreCase)
     {
         return StartsWith(str.c_str(), match.c_str(), ignoreCase);
     }
@@ -214,9 +220,9 @@ namespace String
         return false;
     }
 
-    size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex)
+    size_t IndexOf(const utf8* str, utf8 match, size_t startIndex)
     {
-        const utf8 * ch = str + startIndex;
+        const utf8* ch = str + startIndex;
         for (; *ch != '\0'; ch++)
         {
             if (*ch == match)
@@ -227,10 +233,10 @@ namespace String
         return SIZE_MAX;
     }
 
-    ptrdiff_t LastIndexOf(const utf8 * str, utf8 match)
+    ptrdiff_t LastIndexOf(const utf8* str, utf8 match)
     {
-        const utf8 * lastOccurance = nullptr;
-        const utf8 * ch = str;
+        const utf8* lastOccurance = nullptr;
+        const utf8* ch = str;
         for (; *ch != '\0'; ch++)
         {
             if (*ch == match)
@@ -249,41 +255,42 @@ namespace String
         }
     }
 
-    size_t LengthOf(const utf8 * str)
+    size_t LengthOf(const utf8* str)
     {
         return utf8_length(str);
     }
 
-    size_t SizeOf(const utf8 * str)
+    size_t SizeOf(const utf8* str)
     {
         return strlen(str);
     }
 
-    utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src)
     {
         return safe_strcpy(buffer, src, bufferSize);
     }
 
-    utf8 * Set(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t srcSize)
+    utf8* Set(utf8* buffer, size_t bufferSize, const utf8* src, size_t srcSize)
     {
-        utf8 * dst = buffer;
+        utf8* dst = buffer;
         size_t minSize = std::min(bufferSize - 1, srcSize);
         for (size_t i = 0; i < minSize; i++)
         {
             *dst++ = *src;
-            if (*src == '\0') break;
+            if (*src == '\0')
+                break;
             src++;
         }
         *dst = '\0';
         return buffer;
     }
 
-    utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src)
     {
         return safe_strcat(buffer, src, bufferSize);
     }
 
-    utf8 * Format(utf8 * buffer, size_t bufferSize, const utf8 * format, ...)
+    utf8* Format(utf8* buffer, size_t bufferSize, const utf8* format, ...)
     {
         va_list args;
 
@@ -297,16 +304,16 @@ namespace String
         return buffer;
     }
 
-    utf8 * Format(const utf8 * format, ...)
+    utf8* Format(const utf8* format, ...)
     {
         va_list args;
         va_start(args, format);
-        utf8 * result = Format_VA(format, args);
+        utf8* result = Format_VA(format, args);
         va_end(args);
         return result;
     }
 
-    utf8 * Format_VA(const utf8 * format, va_list args)
+    utf8* Format_VA(const utf8* format, va_list args)
     {
         va_list args1, args2;
         va_copy(args1, args);
@@ -314,7 +321,7 @@ namespace String
 
         // Try to format to a initial buffer, enlarge if not big enough
         size_t bufferSize = 4096;
-        utf8 * buffer = Memory::Allocate<utf8>(bufferSize);
+        utf8* buffer = Memory::Allocate<utf8>(bufferSize);
 
         // Start with initial buffer
         int32_t len = vsnprintf(buffer, bufferSize, format, args);
@@ -359,13 +366,14 @@ namespace String
         return buffer;
     }
 
-    utf8 * AppendFormat(utf8 * buffer, size_t bufferSize, const utf8 * format, ...)
+    utf8* AppendFormat(utf8* buffer, size_t bufferSize, const utf8* format, ...)
     {
-        utf8 * dst = buffer;
+        utf8* dst = buffer;
         size_t i;
         for (i = 0; i < bufferSize; i++)
         {
-            if (*dst == '\0') break;
+            if (*dst == '\0')
+                break;
             dst++;
         }
 
@@ -383,14 +391,14 @@ namespace String
         return buffer;
     }
 
-    utf8 * Duplicate(const std::string &src)
+    utf8* Duplicate(const std::string& src)
     {
         return String::Duplicate(src.c_str());
     }
 
-    utf8 * Duplicate(const utf8 * src)
+    utf8* Duplicate(const utf8* src)
     {
-        utf8 * result = nullptr;
+        utf8* result = nullptr;
         if (src != nullptr)
         {
             size_t srcSize = SizeOf(src) + 1;
@@ -400,19 +408,19 @@ namespace String
         return result;
     }
 
-    utf8 * DiscardUse(utf8 * * ptr, utf8 * replacement)
+    utf8* DiscardUse(utf8** ptr, utf8* replacement)
     {
         Memory::Free(*ptr);
         *ptr = replacement;
         return replacement;
     }
 
-    utf8 * DiscardDuplicate(utf8 * * ptr, const utf8 * replacement)
+    utf8* DiscardDuplicate(utf8** ptr, const utf8* replacement)
     {
         return DiscardUse(ptr, String::Duplicate(replacement));
     }
 
-    std::vector<std::string> Split(const std::string &s, const std::string &delimiter)
+    std::vector<std::string> Split(const std::string& s, const std::string& delimiter)
     {
         if (delimiter.empty())
         {
@@ -438,18 +446,17 @@ namespace String
                 }
                 results.push_back(value);
                 index = nextIndex + delimiter.size();
-            }
-            while (nextIndex != SIZE_MAX);
+            } while (nextIndex != SIZE_MAX);
         }
         return results;
     }
 
-    utf8 * SkipBOM(utf8 * buffer)
+    utf8* SkipBOM(utf8* buffer)
     {
-        return (utf8*)SkipBOM((const utf8 *)buffer);
+        return (utf8*)SkipBOM((const utf8*)buffer);
     }
 
-    const utf8 * SkipBOM(const utf8 * buffer)
+    const utf8* SkipBOM(const utf8* buffer)
     {
         if ((uint8_t)buffer[0] == 0xEF && (uint8_t)buffer[1] == 0xBB && (uint8_t)buffer[2] == 0xBF)
         {
@@ -463,17 +470,17 @@ namespace String
         return utf8_get_codepoint_length(codepoint);
     }
 
-    codepoint_t GetNextCodepoint(utf8 * ptr, utf8 * * nextPtr)
+    codepoint_t GetNextCodepoint(utf8* ptr, utf8** nextPtr)
     {
-        return GetNextCodepoint((const utf8 *)ptr, (const utf8 * *)nextPtr);
+        return GetNextCodepoint((const utf8*)ptr, (const utf8**)nextPtr);
     }
 
-    codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 * * nextPtr)
+    codepoint_t GetNextCodepoint(const utf8* ptr, const utf8** nextPtr)
     {
         return utf8_get_next(ptr, nextPtr);
     }
 
-    utf8 * WriteCodepoint(utf8 * dst, codepoint_t codepoint)
+    utf8* WriteCodepoint(utf8* dst, codepoint_t codepoint)
     {
         return utf8_write_codepoint(dst, codepoint);
     }
@@ -484,13 +491,13 @@ namespace String
         return iswspace((wchar_t)codepoint) || codepoint == 0x3000;
     }
 
-    utf8 * Trim(utf8 * str)
+    utf8* Trim(utf8* str)
     {
-        utf8 * firstNonWhitespace = nullptr;
+        utf8* firstNonWhitespace = nullptr;
 
         codepoint_t codepoint;
-        utf8 * ch = str;
-        utf8 * nextCh;
+        utf8* ch = str;
+        utf8* nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
             if (codepoint <= WCHAR_MAX && !IsWhiteSpace(codepoint))
@@ -503,8 +510,7 @@ namespace String
             ch = nextCh;
         }
 
-        if (firstNonWhitespace != nullptr &&
-            firstNonWhitespace != str)
+        if (firstNonWhitespace != nullptr && firstNonWhitespace != str)
         {
             // Take multibyte characters into account: use the last byte of the
             // current character.
@@ -526,11 +532,11 @@ namespace String
         return str;
     }
 
-    const utf8 * TrimStart(const utf8 * str)
+    const utf8* TrimStart(const utf8* str)
     {
         codepoint_t codepoint;
-        const utf8 * ch = str;
-        const utf8 * nextCh;
+        const utf8* ch = str;
+        const utf8* nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
             if (codepoint <= WCHAR_MAX && !IsWhiteSpace(codepoint))
@@ -543,24 +549,24 @@ namespace String
         return ch;
     }
 
-    utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    utf8* TrimStart(utf8* buffer, size_t bufferSize, const utf8* src)
     {
         return String::Set(buffer, bufferSize, TrimStart(src));
     }
 
-    std::string TrimStart(const std::string &s)
+    std::string TrimStart(const std::string& s)
     {
-        const utf8 * trimmed = TrimStart(s.c_str());
+        const utf8* trimmed = TrimStart(s.c_str());
         return std::string(trimmed);
     }
 
-    std::string Trim(const std::string &s)
+    std::string Trim(const std::string& s)
     {
         codepoint_t codepoint;
-        const utf8 * ch = s.c_str();
-        const utf8 * nextCh;
-        const utf8 * startSubstr = nullptr;
-        const utf8 * endSubstr = nullptr;
+        const utf8* ch = s.c_str();
+        const utf8* nextCh;
+        const utf8* startSubstr = nullptr;
+        const utf8* endSubstr = nullptr;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
             bool isWhiteSpace = codepoint <= WCHAR_MAX && IsWhiteSpace(codepoint);
@@ -593,26 +599,26 @@ namespace String
     {
         switch (codePage)
         {
-        case CODE_PAGE::CP_932:
-            return "windows-932";
+            case CODE_PAGE::CP_932:
+                return "windows-932";
 
-        case CODE_PAGE::CP_936:
-            return "GB2312";
+            case CODE_PAGE::CP_936:
+                return "GB2312";
 
-        case CODE_PAGE::CP_949:
-            return "windows-949";
+            case CODE_PAGE::CP_949:
+                return "windows-949";
 
-        case CODE_PAGE::CP_950:
-            return "big5";
+            case CODE_PAGE::CP_950:
+                return "big5";
 
-        case CODE_PAGE::CP_1252:
-            return "windows-1252";
+            case CODE_PAGE::CP_1252:
+                return "windows-1252";
 
-        case CODE_PAGE::CP_UTF8:
-            return "utf-8";
+            case CODE_PAGE::CP_UTF8:
+                return "utf-8";
 
-        default:
-            throw std::runtime_error("Unsupported code page: " + std::to_string(codePage));
+            default:
+                throw std::runtime_error("Unsupported code page: " + std::to_string(codePage));
         }
     }
 
@@ -642,7 +648,7 @@ namespace String
 
         // Convert the lot.
         char* buffer_target = &buffer[0];
-        ucnv_fromUnicode(conv, &buffer_target, buffer_limit, (const UChar**) &source, source_limit, nullptr, true, &status);
+        ucnv_fromUnicode(conv, &buffer_target, buffer_limit, (const UChar**)&source, source_limit, nullptr, true, &status);
 
         if (U_FAILURE(status))
         {

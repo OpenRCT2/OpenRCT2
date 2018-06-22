@@ -9,28 +9,27 @@
 
 #include <algorithm>
 #ifndef _WIN32
-    #include <dirent.h>
+#include <dirent.h>
 #endif
 
+#include "../localisation/Language.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
-#include "../localisation/Language.h"
-
 #include "File.h"
 #include "Math.hpp"
 #include "Memory.hpp"
 #include "Path.hpp"
-#include "Util.hpp"
 #include "String.hpp"
+#include "Util.hpp"
 
 namespace Path
 {
-    utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src)
+    utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src)
     {
         return safe_strcat_path(buffer, src, bufferSize);
     }
 
-    std::string Combine(const std::string &a, const std::string &b)
+    std::string Combine(const std::string& a, const std::string& b)
     {
         utf8 buffer[MAX_PATH];
         String::Set(buffer, sizeof(buffer), a.c_str());
@@ -38,7 +37,7 @@ namespace Path
         return std::string(buffer);
     }
 
-    std::string GetDirectory(const std::string &path)
+    std::string GetDirectory(const std::string& path)
     {
         const utf8* directory = GetDirectory(path.c_str());
         std::string result(directory);
@@ -46,22 +45,19 @@ namespace Path
         return result;
     }
 
-    utf8 * GetDirectory(const utf8 * path)
+    utf8* GetDirectory(const utf8* path)
     {
         size_t maxSize = String::SizeOf(path) + 1;
-        utf8 * result = Memory::Allocate<utf8>(maxSize);
+        utf8* result = Memory::Allocate<utf8>(maxSize);
         GetDirectory(result, maxSize, path);
         size_t reducedSize = String::SizeOf(path) + 1;
         result = Memory::Reallocate(result, reducedSize);
         return result;
     }
 
-    utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path)
+    utf8* GetDirectory(utf8* buffer, size_t bufferSize, const utf8* path)
     {
-        auto lastPathSepIndex = std::max(
-            String::LastIndexOf(path, *PATH_SEPARATOR),
-            String::LastIndexOf(path, '/')
-        );
+        auto lastPathSepIndex = std::max(String::LastIndexOf(path, *PATH_SEPARATOR), String::LastIndexOf(path, '/'));
         if (lastPathSepIndex < 0)
         {
             return String::Set(buffer, bufferSize, String::Empty);
@@ -73,25 +69,25 @@ namespace Path
         return buffer;
     }
 
-    void CreateDirectory(const std::string &path)
+    void CreateDirectory(const std::string& path)
     {
         platform_ensure_directory_exists(path.c_str());
     }
 
-    bool DirectoryExists(const std::string &path)
+    bool DirectoryExists(const std::string& path)
     {
         return platform_directory_exists(path.c_str());
     }
 
-    std::string GetFileName(const std::string &path)
+    std::string GetFileName(const std::string& path)
     {
         return GetFileName(path.c_str());
     }
 
-    const utf8 * GetFileName(const utf8 * path)
+    const utf8* GetFileName(const utf8* path)
     {
-        const utf8 * lastPathSeparator = nullptr;
-        for (const utf8 * ch = path; *ch != '\0'; ch++)
+        const utf8* lastPathSeparator = nullptr;
+        for (const utf8* ch = path; *ch != '\0'; ch++)
         {
             if (*ch == *PATH_SEPARATOR || *ch == '/')
             {
@@ -99,35 +95,33 @@ namespace Path
             }
         }
 
-        return lastPathSeparator == nullptr ?
-            path :
-            lastPathSeparator + 1;
+        return lastPathSeparator == nullptr ? path : lastPathSeparator + 1;
     }
 
-    std::string GetFileNameWithoutExtension(const std::string &path)
+    std::string GetFileNameWithoutExtension(const std::string& path)
     {
-        utf8 * cstr = GetFileNameWithoutExtension(path.c_str());
+        utf8* cstr = GetFileNameWithoutExtension(path.c_str());
         std::string result = String::ToStd(cstr);
         Memory::Free(cstr);
         return result;
     }
 
-    utf8 * GetFileNameWithoutExtension(const utf8 * path)
+    utf8* GetFileNameWithoutExtension(const utf8* path)
     {
         size_t maxSize = String::SizeOf(path) + 1;
-        utf8 * result = Memory::Allocate<utf8>(maxSize);
+        utf8* result = Memory::Allocate<utf8>(maxSize);
         GetFileNameWithoutExtension(result, maxSize, path);
         size_t reducedSize = String::SizeOf(path) + 1;
         result = Memory::Reallocate(result, reducedSize);
         return result;
     }
 
-    utf8 * GetFileNameWithoutExtension(utf8 * buffer, size_t bufferSize, const utf8 * path)
+    utf8* GetFileNameWithoutExtension(utf8* buffer, size_t bufferSize, const utf8* path)
     {
         path = GetFileName(path);
 
-        const utf8 * lastDot = nullptr;
-        const utf8 * ch = path;
+        const utf8* lastDot = nullptr;
+        const utf8* ch = path;
         for (; *ch != '\0'; ch++)
         {
             if (*ch == '.')
@@ -147,15 +141,15 @@ namespace Path
         return buffer;
     }
 
-    const std::string GetExtension(const std::string &path)
+    const std::string GetExtension(const std::string& path)
     {
         return GetExtension(path.c_str());
     }
 
-    const utf8 * GetExtension(const utf8 * path)
+    const utf8* GetExtension(const utf8* path)
     {
-        const utf8 * lastDot = nullptr;
-        const utf8 * ch = GetFileName(path);
+        const utf8* lastDot = nullptr;
+        const utf8* ch = GetFileName(path);
         for (; *ch != '\0'; ch++)
         {
             if (*ch == '.')
@@ -174,11 +168,11 @@ namespace Path
         return lastDot;
     }
 
-    utf8 * GetAbsolute(utf8 *buffer, size_t bufferSize, const utf8 * relativePath)
+    utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath)
     {
 #ifdef _WIN32
-        wchar_t * relativePathW = utf8_to_widechar(relativePath);
-        wchar_t   absolutePathW[MAX_PATH];
+        wchar_t* relativePathW = utf8_to_widechar(relativePath);
+        wchar_t absolutePathW[MAX_PATH];
         DWORD length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, nullptr);
         Memory::Free(relativePathW);
         if (length == 0)
@@ -187,13 +181,13 @@ namespace Path
         }
         else
         {
-            utf8 * absolutePath = widechar_to_utf8(absolutePathW);
+            utf8* absolutePath = widechar_to_utf8(absolutePathW);
             String::Set(buffer, bufferSize, absolutePath);
             Memory::Free(absolutePath);
             return buffer;
         }
 #else
-        utf8 * absolutePath = realpath(relativePath, nullptr);
+        utf8* absolutePath = realpath(relativePath, nullptr);
         if (absolutePath == nullptr)
         {
             return String::Set(buffer, bufferSize, relativePath);
@@ -207,18 +201,18 @@ namespace Path
 #endif
     }
 
-    std::string GetAbsolute(const std::string &relative)
+    std::string GetAbsolute(const std::string& relative)
     {
         utf8 absolute[MAX_PATH];
         return GetAbsolute(absolute, sizeof(absolute), relative.c_str());
     }
 
-    bool Equals(const std::string &a, const std::string &b)
+    bool Equals(const std::string& a, const std::string& b)
     {
         return String::Equals(a.c_str(), b.c_str());
     }
 
-    bool Equals(const utf8 * a, const utf8 * b)
+    bool Equals(const utf8* a, const utf8* b)
     {
         bool ignoreCase = false;
 #ifdef _WIN32
@@ -227,7 +221,7 @@ namespace Path
         return String::Equals(a, b, ignoreCase);
     }
 
-    std::string ResolveCasing(const std::string &path)
+    std::string ResolveCasing(const std::string& path)
     {
         std::string result;
         if (File::Exists(path))
@@ -242,7 +236,7 @@ namespace Path
             std::string fileName = Path::GetFileName(path);
             std::string directory = Path::GetDirectory(path);
 
-            struct dirent * * files;
+            struct dirent** files;
             auto count = scandir(directory.c_str(), &files, nullptr, alphasort);
             if (count != -1)
             {

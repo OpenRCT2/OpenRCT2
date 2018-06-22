@@ -8,14 +8,16 @@
  *****************************************************************************/
 
 #ifndef __ANDROID__
-#include <zip.h>
-#include "IStream.hpp"
 #include "Zip.h"
+
+#include "IStream.hpp"
+
+#include <zip.h>
 
 class ZipArchive final : public IZipArchive
 {
 private:
-    zip_t * _zip;
+    zip_t* _zip;
     ZIP_ACCESS _access;
     std::vector<std::vector<uint8_t>> _writeBuffers;
 
@@ -188,4 +190,4 @@ namespace Zip
     }
 } // namespace Zip
 
-# endif
+#endif

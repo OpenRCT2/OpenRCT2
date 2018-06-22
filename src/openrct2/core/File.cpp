@@ -8,38 +8,38 @@
  *****************************************************************************/
 
 #ifdef _WIN32
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #else
-    #include <sys/stat.h>
+#include <sys/stat.h>
 #endif
 
-#include <fstream>
+#include "../platform/platform.h"
+#include "../util/Util.h"
 #include "File.h"
 #include "FileStream.hpp"
 #include "String.hpp"
-#include "../util/Util.h"
 
-#include "../platform/platform.h"
+#include <fstream>
 
 namespace File
 {
-    bool Exists(const std::string &path)
+    bool Exists(const std::string& path)
     {
         return platform_file_exists(path.c_str());
     }
 
-    bool Copy(const std::string &srcPath, const std::string &dstPath, bool overwrite)
+    bool Copy(const std::string& srcPath, const std::string& dstPath, bool overwrite)
     {
         return platform_file_copy(srcPath.c_str(), dstPath.c_str(), overwrite);
     }
 
-    bool Delete(const std::string &path)
+    bool Delete(const std::string& path)
     {
         return platform_file_delete(path.c_str());
     }
 
-    bool Move(const std::string &srcPath, const std::string &dstPath)
+    bool Move(const std::string& srcPath, const std::string& dstPath)
     {
         return platform_file_move(srcPath.c_str(), dstPath.c_str());
     }
@@ -70,7 +70,7 @@ namespace File
         {
             result.resize(fsize);
             fs.seekg(0);
-            fs.read((char *)result.data(), result.size());
+            fs.read((char*)result.data(), result.size());
             fs.exceptions(fs.failbit);
         }
         return result;
@@ -85,17 +85,17 @@ namespace File
         return result;
     }
 
-    void WriteAllBytes(const std::string &path, const void * buffer, size_t length)
+    void WriteAllBytes(const std::string& path, const void* buffer, size_t length)
     {
         auto fs = FileStream(path, FILE_MODE_WRITE);
         fs.Write(buffer, length);
     }
 
-    std::vector<std::string> ReadAllLines(const std::string &path)
+    std::vector<std::string> ReadAllLines(const std::string& path)
     {
         std::vector<std::string> lines;
         auto data = ReadAllBytes(path);
-        auto lineStart = (const char *)data.data();
+        auto lineStart = (const char*)data.data();
         auto ch = lineStart;
         char lastC = 0;
         for (size_t i = 0; i < data.size(); i++)
@@ -120,7 +120,7 @@ namespace File
         return lines;
     }
 
-    uint64_t GetLastModified(const std::string &path)
+    uint64_t GetLastModified(const std::string& path)
     {
         uint64_t lastModified = 0;
 #ifdef _WIN32
@@ -137,26 +137,27 @@ namespace File
         }
         free(pathW);
 #else
-        struct stat statInfo{};
+        struct stat statInfo
+        {
+        };
         if (stat(path.c_str(), &statInfo) == 0)
         {
             lastModified = statInfo.st_mtime;
         }
 #endif
-        return lastModified; 
+        return lastModified;
     }
 } // namespace File
 
-bool writeentirefile(const utf8 * path, const void * buffer, size_t length)
+bool writeentirefile(const utf8* path, const void* buffer, size_t length)
 {
     try
     {
         File::WriteAllBytes(String::ToStd(path), buffer, length);
         return true;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         return false;
     }
 }
-
