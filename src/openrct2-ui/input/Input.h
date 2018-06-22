@@ -10,4 +10,3 @@
 #pragma once
 
 void input_handle_keyboard(bool isTitle);
-
