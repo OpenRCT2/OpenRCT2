@@ -7,22 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <string>
-#include <vector>
-
-#include <openrct2/Context.h>
-#include <openrct2/object/ObjectManager.h>
-#include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/audio/audio.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/audio/audio.h>
+#include <openrct2/core/Math.hpp>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2/ride/TrackDesign.h>
+#include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/ride/TrackDesign.h>
+#include <string>
+#include <vector>
 
 // clang-format off
 enum {
@@ -92,32 +90,35 @@ static rct_window_event_list window_install_track_events = {
 };
 // clang-format on
 
-static rct_track_td6 * _trackDesign;
+static rct_track_td6* _trackDesign;
 static std::string _trackPath;
 static std::string _trackName;
 static std::vector<uint8_t> _trackDesignPreviewPixels;
 
 static void window_install_track_update_preview();
-static void window_install_track_design(rct_window *w);
+static void window_install_track_design(rct_window* w);
 
 /**
-*
-*  rct2: 0x006D386D
-*/
-rct_window * window_install_track_open(const utf8 *path)
+ *
+ *  rct2: 0x006D386D
+ */
+rct_window* window_install_track_open(const utf8* path)
 {
     _trackDesign = track_design_open(path);
-    if (_trackDesign == nullptr) {
+    if (_trackDesign == nullptr)
+    {
         context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE);
         return nullptr;
     }
 
     object_manager_unload_all_objects();
-    if (_trackDesign->type == RIDE_TYPE_NULL){
+    if (_trackDesign->type == RIDE_TYPE_NULL)
+    {
         log_error("Failed to load track (ride type null): %s", path);
         return nullptr;
     }
-    if (object_manager_load_object(&_trackDesign->vehicle_object) == nullptr) {
+    if (object_manager_load_object(&_trackDesign->vehicle_object) == nullptr)
+    {
         log_error("Failed to load track (vehicle load fail): %s", path);
         return nullptr;
     }
@@ -133,9 +134,10 @@ rct_window * window_install_track_open(const utf8 *path)
     int32_t x = screenWidth / 2 - 201;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
-    rct_window *w = window_create(x, y, WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
+    rct_window* w = window_create(x, y, WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL) | (1 << WIDX_CANCEL);
+    w->enabled_widgets
+        = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL) | (1 << WIDX_CANCEL);
     window_init_scroll_widgets(w);
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
@@ -151,10 +153,10 @@ rct_window * window_install_track_open(const utf8 *path)
 }
 
 /**
-*
-*  rct2: 0x006D41DC
-*/
-static void window_install_track_close(rct_window *w)
+ *
+ *  rct2: 0x006D41DC
+ */
+static void window_install_track_close(rct_window* w)
 {
     _trackPath.clear();
     _trackName.clear();
@@ -165,43 +167,46 @@ static void window_install_track_close(rct_window *w)
 }
 
 /**
-*
-*  rct2: 0x006D407A
-*/
-static void window_install_track_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+ *
+ *  rct2: 0x006D407A
+ */
+static void window_install_track_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-    case WIDX_CANCEL:
-        window_close(w);
-        break;
-    case WIDX_ROTATE:
-        _currentTrackPieceDirection++;
-        _currentTrackPieceDirection %= 4;
-        window_invalidate(w);
-        break;
-    case WIDX_TOGGLE_SCENERY:
-        gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
-        window_install_track_update_preview();
-        window_invalidate(w);
-        break;
-    case WIDX_INSTALL:
-        window_install_track_design(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+        case WIDX_CANCEL:
+            window_close(w);
+            break;
+        case WIDX_ROTATE:
+            _currentTrackPieceDirection++;
+            _currentTrackPieceDirection %= 4;
+            window_invalidate(w);
+            break;
+        case WIDX_TOGGLE_SCENERY:
+            gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
+            window_install_track_update_preview();
+            window_invalidate(w);
+            break;
+        case WIDX_INSTALL:
+            window_install_track_design(w);
+            break;
     }
 }
 
-
 /**
-*
-*  rct2: 0x006D3B06
-*/
-static void window_install_track_invalidate(rct_window *w)
+ *
+ *  rct2: 0x006D3B06
+ */
+static void window_install_track_invalidate(rct_window* w)
 {
     w->pressed_widgets |= 1 << WIDX_TRACK_PREVIEW;
-    if (!gTrackDesignSceneryToggle) {
+    if (!gTrackDesignSceneryToggle)
+    {
         w->pressed_widgets |= (1 << WIDX_TOGGLE_SCENERY);
-    } else {
+    }
+    else
+    {
         w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
     }
 
@@ -213,15 +218,15 @@ static void window_install_track_invalidate(rct_window *w)
 }
 
 /**
-*
-*  rct2: 0x006D3B1F
-*/
-static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ *  rct2: 0x006D3B1F
+ */
+static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
     // Track preview
-    rct_widget *widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
+    rct_widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
     int32_t x = w->x + widget->left + 1;
     int32_t y = w->y + widget->top + 1;
     int32_t colour = ColourMapA[w->colours[0]].darkest;
@@ -239,13 +244,14 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y = w->y + widget->bottom - 12;
 
     // Warnings
-    rct_track_td6 *td6 = _trackDesign;
+    rct_track_td6* td6 = _trackDesign;
     if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE)
     {
         if (!gTrackDesignSceneryToggle)
         {
             // Scenery not available
-            gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, x, y, 368);
+            gfx_draw_string_centred_clipped(
+                dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, x, y, 368);
             y -= LIST_ROW_HEIGHT;
         }
     }
@@ -257,13 +263,13 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Track design name & type
     auto trackName = _trackName.c_str();
-    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &trackName, COLOUR_BLACK, x-1, y);
+    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &trackName, COLOUR_BLACK, x - 1, y);
     y += LIST_ROW_HEIGHT;
 
     rct_ride_name rideName;
     rct_string_id friendlyTrackName;
 
-    void * objectEntry = object_manager_load_object(&td6->vehicle_object);
+    void* objectEntry = object_manager_load_object(&td6->vehicle_object);
     if (objectEntry != nullptr)
     {
         int32_t groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);
@@ -391,12 +397,13 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 /**
-*
-*  rct2: 0x006D40A7
-*/
-static void window_install_track_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text)
+ *
+ *  rct2: 0x006D40A7
+ */
+static void window_install_track_text_input(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    if (widgetIndex != WIDX_INSTALL || str_is_null_or_empty(text)) {
+    if (widgetIndex != WIDX_INSTALL || str_is_null_or_empty(text))
+    {
         return;
     }
 
@@ -410,12 +417,13 @@ static void window_install_track_update_preview()
     track_design_draw_preview(_trackDesign, _trackDesignPreviewPixels.data());
 }
 
-static void window_install_track_design(rct_window *w)
+static void window_install_track_design(rct_window* w)
 {
     utf8 destPath[MAX_PATH];
 
     platform_get_user_directory(destPath, "track", sizeof(destPath));
-    if (!platform_ensure_directory_exists(destPath)) {
+    if (!platform_ensure_directory_exists(destPath))
+    {
         log_error("Unable to create directory '%s'", destPath);
         context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
         return;
@@ -424,7 +432,8 @@ static void window_install_track_design(rct_window *w)
     safe_strcat_path(destPath, _trackName.c_str(), sizeof(destPath));
     path_append_extension(destPath, ".td6", sizeof(destPath));
 
-    if (platform_file_exists(destPath)) {
+    if (platform_file_exists(destPath))
+    {
         log_info("%s already exists, prompting user for a different track design name", destPath);
         context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE);
         window_text_input_raw_open(
@@ -433,12 +442,16 @@ static void window_install_track_design(rct_window *w)
             STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN,
             STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME,
             _trackName.c_str(),
-            255
-        );
-    } else {
-        if (track_repository_install(_trackPath.c_str())) {
+            255);
+    }
+    else
+    {
+        if (track_repository_install(_trackPath.c_str()))
+        {
             window_close(w);
-        } else {
+        }
+        else
+        {
             context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
         }
     }

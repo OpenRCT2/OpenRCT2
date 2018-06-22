@@ -8,18 +8,18 @@
  *****************************************************************************/
 
 #include <fstream>
-#include <vector>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/platform/platform.h>
-#include <openrct2/PlatformEnvironment.h>
-#include <openrct2/util/Util.h>
-#include <openrct2-ui/windows/Window.h>
-#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/platform/platform.h>
+#include <openrct2/util/Util.h>
+#include <vector>
 
 using namespace OpenRCT2;
 
@@ -90,10 +90,10 @@ static bool window_changelog_read_file();
 static void window_changelog_dispose_file();
 
 static std::string _changelogText;
-static std::vector<const char *> _changelogLines;
+static std::vector<const char*> _changelogLines;
 static int32_t _changelogLongestLineWidth = 0;
 
-rct_window * window_changelog_open()
+rct_window* window_changelog_open()
 {
     rct_window* window;
 
@@ -108,12 +108,7 @@ rct_window * window_changelog_open()
     int32_t screenHeight = context_get_height();
 
     window = window_create_centred(
-        screenWidth * 4 / 5,
-        screenHeight * 4 / 5,
-        &window_changelog_events,
-        WC_CHANGELOG,
-        WF_RESIZABLE
-    );
+        screenWidth * 4 / 5, screenHeight * 4 / 5, &window_changelog_events, WC_CHANGELOG, WF_RESIZABLE);
     window->widgets = window_changelog_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE);
 
@@ -125,21 +120,22 @@ rct_window * window_changelog_open()
     return window;
 }
 
-static void window_changelog_close([[maybe_unused]] rct_window * w)
+static void window_changelog_close([[maybe_unused]] rct_window* w)
 {
     window_changelog_dispose_file();
 }
 
-static void window_changelog_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_changelog_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
     }
 }
 
-static void window_changelog_resize(rct_window *w)
+static void window_changelog_resize(rct_window* w)
 {
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
@@ -149,18 +145,20 @@ static void window_changelog_resize(rct_window *w)
 
     w->min_width = MIN_WW;
     w->min_height = MIN_WH;
-    if (w->width < w->min_width) {
+    if (w->width < w->min_width)
+    {
         window_invalidate(w);
         w->width = w->min_width;
     }
-    if (w->height < w->min_height) {
+    if (w->height < w->min_height)
+    {
         window_invalidate(w);
         w->height = w->min_height;
     }
 }
 
 static void window_changelog_scrollgetsize(
-    [[maybe_unused]] rct_window * w, [[maybe_unused]] int32_t scrollIndex, int32_t * width, int32_t * height)
+    [[maybe_unused]] rct_window* w, [[maybe_unused]] int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *width = _changelogLongestLineWidth + 4;
 
@@ -168,7 +166,7 @@ static void window_changelog_scrollgetsize(
     *height = (int32_t)(_changelogLines.size() * lineHeight);
 }
 
-static void window_changelog_invalidate(rct_window *w)
+static void window_changelog_invalidate(rct_window* w)
 {
     window_changelog_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_changelog_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -181,12 +179,12 @@ static void window_changelog_invalidate(rct_window *w)
     window_changelog_widgets[WIDX_SCROLL].bottom = w->height - 15;
 }
 
-static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_changelog_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 }
 
-static void window_changelog_scrollpaint(rct_window * w, rct_drawpixelinfo * dpi, [[maybe_unused]] int32_t scrollIndex)
+static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t scrollIndex)
 {
     gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -201,7 +199,7 @@ static void window_changelog_scrollpaint(rct_window * w, rct_drawpixelinfo * dpi
         if (y + lineHeight < dpi->y || y >= dpi->y + dpi->height)
             continue;
 
-        gfx_draw_string(dpi, (char *)line, w->colours[0], x, y);
+        gfx_draw_string(dpi, (char*)line, w->colours[0], x, y);
     }
 }
 
@@ -233,19 +231,19 @@ static bool window_changelog_read_file()
     {
         _changelogText = GetChangelogText();
     }
-    catch (const std::bad_alloc &)
+    catch (const std::bad_alloc&)
     {
         log_error("Unable to allocate memory for changelog.txt");
         return false;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         log_error("Unable to read changelog.txt");
         return false;
     }
 
     // Non-const cast required until C++17 is enabled
-    auto * start = (char *)_changelogText.data();
+    auto* start = (char*)_changelogText.data();
     if (_changelogText.size() >= 3 && utf8_is_bom(start))
     {
         start += 3;

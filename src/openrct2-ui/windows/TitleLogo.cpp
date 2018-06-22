@@ -7,13 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/interface/Colour.h>
-#include <openrct2/drawing/Drawing.h>
 
 // clang-format off
 static rct_widget window_title_logo_widgets[] = {
@@ -58,9 +57,10 @@ static rct_window_event_list window_title_logo_events = {
  * Creates the window containing the logo and the expansion packs on the title screen.
  *  rct2: 0x0066B679 (part of 0x0066B3E8)
  */
-rct_window * window_title_logo_open()
+rct_window* window_title_logo_open()
 {
-    rct_window *window = window_create(0, 0, 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+    rct_window* window
+        = window_create(0, 0, 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
     window_init_scroll_widgets(window);
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);
@@ -71,10 +71,10 @@ rct_window * window_title_logo_open()
 }
 
 /**
-*
-*  rct2: 0x0066B872
-*/
-static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ *  rct2: 0x0066B872
+ */
+static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x = 2;
     int32_t y = 2;

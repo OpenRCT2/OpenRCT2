@@ -7,23 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Editor.h>
+#include <openrct2/Input.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/interface/Cursors.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/management/Research.h>
 #include <openrct2/object/DefaultObjects.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/core/Util.hpp>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/Editor.h>
-#include <openrct2/Input.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/management/Research.h>
+#include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/ride/RideGroupManager.h>
 
 #pragma region Widgets
 
@@ -167,8 +166,8 @@ static constexpr const rct_string_id EditorInventionsResearchCategories[] = {
 };
 // clang-format on
 
-static void window_editor_inventions_list_drag_open(rct_research_item *researchItem);
-static void move_research_item(rct_research_item *beforeItem);
+static void window_editor_inventions_list_drag_open(rct_research_item* researchItem);
+static void move_research_item(rct_research_item* beforeItem);
 
 /**
  *
@@ -205,8 +204,9 @@ static void research_rides_setup()
  */
 static void research_scenery_groups_setup()
 {
-    for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++) {
-        const rct_object_entry * object = &RequiredSelectedObjects[i];
+    for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++)
+    {
+        const rct_object_entry* object = &RequiredSelectedObjects[i];
 
         uint8_t entry_type, entryIndex;
         if (!find_object_in_entry_group(object, &entry_type, &entryIndex))
@@ -239,15 +239,13 @@ static void research_always_researched_setup()
     research_scenery_groups_setup();
 }
 
-
-
 /**
  *
  *  rct2: 0x006855E7
  */
-static void move_research_item(rct_research_item *beforeItem)
+static void move_research_item(rct_research_item* beforeItem)
 {
-    rct_window *w;
+    rct_window* w;
     rct_research_item *researchItem, draggedItem;
 
     if (_editorInventionsListDraggedItem + 1 == beforeItem)
@@ -258,7 +256,8 @@ static void move_research_item(rct_research_item *beforeItem)
 
     // Remove dragged item from list
     researchItem = _editorInventionsListDraggedItem;
-    do {
+    do
+    {
         *researchItem = *(researchItem + 1);
         researchItem++;
     } while (researchItem->rawValue != RESEARCHED_ITEMS_END_2);
@@ -268,7 +267,8 @@ static void move_research_item(rct_research_item *beforeItem)
         beforeItem--;
 
     // Add dragged item to list
-    do {
+    do
+    {
         *researchItem = *(researchItem - 1);
         researchItem--;
     } while (researchItem != beforeItem);
@@ -276,7 +276,8 @@ static void move_research_item(rct_research_item *beforeItem)
     *researchItem = draggedItem;
 
     w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
-    if (w != nullptr) {
+    if (w != nullptr)
+    {
         w->research_item = nullptr;
         window_invalidate(w);
     }
@@ -286,19 +287,23 @@ static void move_research_item(rct_research_item *beforeItem)
  *
  *  rct2: 0x0068558E
  */
-static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(int32_t scrollIndex, int32_t y)
+static rct_research_item* window_editor_inventions_list_get_item_from_scroll_y(int32_t scrollIndex, int32_t y)
 {
-    rct_research_item *researchItem;
+    rct_research_item* researchItem;
 
     researchItem = gResearchItems;
 
-    if (scrollIndex != 0) {
+    if (scrollIndex != 0)
+    {
         // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
+        {
+        }
         researchItem++;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END;
+         researchItem++)
     {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
@@ -314,19 +319,23 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(i
  *
  *  rct2: 0x006855BB
  */
-static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_include_seps(int32_t scrollIndex, int32_t y)
+static rct_research_item* window_editor_inventions_list_get_item_from_scroll_y_include_seps(int32_t scrollIndex, int32_t y)
 {
-    rct_research_item *researchItem;
+    rct_research_item* researchItem;
 
     researchItem = gResearchItems;
 
-    if (scrollIndex != 0) {
+    if (scrollIndex != 0)
+    {
         // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
+        {
+        }
         researchItem++;
     }
 
-    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END;
+         researchItem++)
     {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
@@ -338,17 +347,20 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
     return researchItem;
 }
 
-static rct_research_item *get_research_item_at(int32_t x, int32_t y)
+static rct_research_item* get_research_item_at(int32_t x, int32_t y)
 {
-    rct_window *w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
-    if (w != nullptr && w->x <= x && w->y < y && w->x + w->width > x && w->y + w->height > y) {
+    rct_window* w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
+    if (w != nullptr && w->x <= x && w->y < y && w->x + w->width > x && w->y + w->height > y)
+    {
         rct_widgetindex widgetIndex = window_find_widget_from_point(w, x, y);
-        rct_widget *widget = &w->widgets[widgetIndex];
-        if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL) {
+        rct_widget* widget = &w->widgets[widgetIndex];
+        if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
+        {
             gPressedWidget.widget_index = widgetIndex;
             int32_t outX, outY, outScrollArea, outScrollId;
             widget_scroll_get_part(w, widget, x, y, &outX, &outY, &outScrollArea, &outScrollId);
-            if (outScrollArea == SCROLL_PART_VIEW) {
+            if (outScrollArea == SCROLL_PART_VIEW)
+            {
                 outScrollId = outScrollId == 0 ? 0 : 1;
 
                 int32_t scrollY = y - (w->y + widget->top) + w->scrolls[outScrollId].v_top + 5;
@@ -364,9 +376,9 @@ static rct_research_item *get_research_item_at(int32_t x, int32_t y)
  *
  *  rct2: 0x00684E04
  */
-rct_window * window_editor_inventions_list_open()
+rct_window* window_editor_inventions_list_open()
 {
-    rct_window *w;
+    rct_window* w;
 
     w = window_bring_to_front_by_class(WC_EDITOR_INVENTION_LIST);
     if (w != nullptr)
@@ -375,20 +387,10 @@ rct_window * window_editor_inventions_list_open()
     research_always_researched_setup();
 
     w = window_create_centred(
-        WW,
-        WH,
-        &window_editor_inventions_list_events,
-        WC_EDITOR_INVENTION_LIST,
-        WF_NO_SCROLLING | WF_RESIZABLE
-    );
+        WW, WH, &window_editor_inventions_list_events, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);
     w->widgets = window_editor_inventions_list_widgets;
-    w->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_RESIZE) |
-        (1 << WIDX_TAB_1) |
-        (1 << WIDX_RANDOM_SHUFFLE) |
-        (1 << WIDX_MOVE_ITEMS_TO_BOTTOM) |
-        (1 << WIDX_MOVE_ITEMS_TO_TOP);
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESIZE) | (1 << WIDX_TAB_1) | (1 << WIDX_RANDOM_SHUFFLE)
+        | (1 << WIDX_MOVE_ITEMS_TO_BOTTOM) | (1 << WIDX_MOVE_ITEMS_TO_TOP);
     window_init_scroll_widgets(w);
     w->var_4AE = 0;
     w->selected_tab = 0;
@@ -407,12 +409,13 @@ rct_window * window_editor_inventions_list_open()
  *
  *  rct2: 0x006853D2
  */
-static void window_editor_inventions_list_close(rct_window *w)
+static void window_editor_inventions_list_close(rct_window* w)
 {
     research_remove_flags();
 
     // When used in-game (as a cheat)
-    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR)) {
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+    {
         gSilentResearch = true;
         research_reset_current_item();
         gSilentResearch = false;
@@ -423,30 +426,31 @@ static void window_editor_inventions_list_close(rct_window *w)
  *
  *  rct2: 0x0068521B
  */
-static void window_editor_inventions_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_editor_inventions_list_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_RANDOM_SHUFFLE:
-        research_items_shuffle();
-        window_invalidate(w);
-        break;
-    case WIDX_MOVE_ITEMS_TO_TOP:
-        research_items_make_all_researched();
-        window_init_scroll_widgets(w);
-        window_invalidate(w);
-        break;
-    case WIDX_MOVE_ITEMS_TO_BOTTOM:
-        research_items_make_all_unresearched();
-        window_init_scroll_widgets(w);
-        window_invalidate(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_RANDOM_SHUFFLE:
+            research_items_shuffle();
+            window_invalidate(w);
+            break;
+        case WIDX_MOVE_ITEMS_TO_TOP:
+            research_items_make_all_researched();
+            window_init_scroll_widgets(w);
+            window_invalidate(w);
+            break;
+        case WIDX_MOVE_ITEMS_TO_BOTTOM:
+            research_items_make_all_unresearched();
+            window_init_scroll_widgets(w);
+            window_invalidate(w);
+            break;
     }
 }
 
-static void window_editor_inventions_list_resize(rct_window *w)
+static void window_editor_inventions_list_resize(rct_window* w)
 {
     if (w->width < w->min_width)
     {
@@ -464,7 +468,7 @@ static void window_editor_inventions_list_resize(rct_window *w)
  *
  *  rct2: 0x00685392
  */
-static void window_editor_inventions_list_update(rct_window *w)
+static void window_editor_inventions_list_update(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -484,9 +488,9 @@ static void window_editor_inventions_list_update(rct_window *w)
  *
  *  rct2: 0x00685239
  */
-static void window_editor_inventions_list_scrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
+static void window_editor_inventions_list_scrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    rct_research_item *researchItem;
+    rct_research_item* researchItem;
 
     *height = 0;
 
@@ -494,7 +498,8 @@ static void window_editor_inventions_list_scrollgetheight(rct_window *w, int32_t
     for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
         *height += SCROLLABLE_ROW_HEIGHT;
 
-    if (scrollIndex == 1) {
+    if (scrollIndex == 1)
+    {
         researchItem++;
 
         // Count non pre-researched items
@@ -508,9 +513,9 @@ static void window_editor_inventions_list_scrollgetheight(rct_window *w, int32_t
  *
  *  rct2: 0x006852D4
  */
-static void window_editor_inventions_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_editor_inventions_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    rct_research_item *researchItem;
+    rct_research_item* researchItem;
 
     researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
     if (researchItem == nullptr)
@@ -528,9 +533,9 @@ static void window_editor_inventions_list_scrollmousedown(rct_window *w, int32_t
  *
  *  rct2: 0x00685275
  */
-static void window_editor_inventions_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_editor_inventions_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    rct_research_item *researchItem;
+    rct_research_item* researchItem;
 
     researchItem = window_editor_inventions_list_get_item_from_scroll_y(scrollIndex, y);
     if (researchItem != w->research_item)
@@ -550,7 +555,7 @@ static void window_editor_inventions_list_scrollmouseover(rct_window *w, int32_t
  *
  *  rct2: 0x0068526B
  */
-static void window_editor_inventions_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
+static void window_editor_inventions_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
 {
     set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -559,20 +564,22 @@ static void window_editor_inventions_list_tooltip(rct_window* w, rct_widgetindex
  *
  *  rct2: 0x00685291
  */
-static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t *cursorId)
+static void
+    window_editor_inventions_list_cursor(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t* cursorId)
 {
-    rct_research_item *researchItem;
+    rct_research_item* researchItem;
     int32_t scrollIndex;
 
-    switch (widgetIndex) {
-    case WIDX_PRE_RESEARCHED_SCROLL:
-        scrollIndex = 0;
-        break;
-    case WIDX_RESEARCH_ORDER_SCROLL:
-        scrollIndex = 1;
-        break;
-    default:
-        return;
+    switch (widgetIndex)
+    {
+        case WIDX_PRE_RESEARCHED_SCROLL:
+            scrollIndex = 0;
+            break;
+        case WIDX_RESEARCH_ORDER_SCROLL:
+            scrollIndex = 1;
+            break;
+        default:
+            return;
     }
 
     // Use the open hand as cursor for items that can be picked up
@@ -588,13 +595,12 @@ static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex 
  *
  *  rct2: 0x00685392
  */
-static void window_editor_inventions_list_invalidate(rct_window *w)
+static void window_editor_inventions_list_invalidate(rct_window* w)
 {
     w->pressed_widgets |= 1 << WIDX_PREVIEW;
     w->pressed_widgets |= 1 << WIDX_TAB_1;
 
-    w->widgets[WIDX_CLOSE].type =
-        gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+    w->widgets[WIDX_CLOSE].type = gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
 
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -636,10 +642,10 @@ static void window_editor_inventions_list_invalidate(rct_window *w)
  *
  *  rct2: 0x00684EE0
  */
-static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    rct_widget *widget;
-    rct_research_item *researchItem;
+    rct_widget* widget;
+    rct_research_item* researchItem;
     rct_string_id stringId;
     int32_t x, y, width;
 
@@ -668,8 +674,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
         w->y + widget->top + 1,
         w->x + widget->right - 1,
         w->y + widget->bottom - 1,
-        ColourMapA[w->colours[1]].darkest
-    );
+        ColourMapA[w->colours[1]].darkest);
 
     researchItem = _editorInventionsListDraggedItem;
     if (researchItem == nullptr)
@@ -692,14 +697,16 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
 
-    void * object = object_manager_get_loaded_object(entry);
-    if (object != nullptr) {
+    void* object = object_manager_get_loaded_object(entry);
+    if (object != nullptr)
+    {
         rct_drawpixelinfo clipDPI;
         x = w->x + widget->left + 1;
         y = w->y + widget->top + 1;
         width = widget->right - widget->left - 1;
         int32_t height = widget->bottom - widget->top - 1;
-        if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height)) {
+        if (clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height))
+        {
             object_draw_preview(object, &clipDPI, width, height);
         }
     }
@@ -723,7 +730,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
  *
  *  rct2: 0x006850BD
  */
-static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
+static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     // Draw background
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
@@ -735,7 +742,9 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
     if (scrollIndex == 1)
     {
         // Skip pre-researched items
-        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
+        {
+        }
         researchItem++;
         researchItemEndMarker = RESEARCHED_ITEMS_END;
     }
@@ -803,10 +812,13 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 
         rct_string_id itemNameId = research_item_get_name(researchItem);
 
-        if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
+        if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
+            && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
         {
-            const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
-            format_string(groupNamePtr, Util::CountOf(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*) &rideGroupName);
+            const rct_string_id rideGroupName
+                = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+            format_string(
+                groupNamePtr, Util::CountOf(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*)&rideGroupName);
             format_string(vehicleNamePtr, Util::CountOf(vehicleNameBuffer), itemNameId, nullptr);
         }
         else
@@ -825,8 +837,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
             gfx_clip_string(vehicleNameBuffer, columnSplitOffset - 11);
             gfx_draw_string(dpi, vehicleNameBuffer, colour, columnSplitOffset + 1, itemY);
         }
-    }
-    while (researchItem++->rawValue != researchItemEndMarker);
+    } while (researchItem++->rawValue != researchItemEndMarker);
 }
 
 #pragma region Drag item
@@ -835,11 +846,11 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
  *
  *  rct2: 0x006852F4
  */
-static void window_editor_inventions_list_drag_open(rct_research_item *researchItem)
+static void window_editor_inventions_list_drag_open(rct_research_item* researchItem)
 {
     char buffer[256], *ptr;
     int32_t stringWidth;
-    rct_window *w;
+    rct_window* w;
 
     window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
     _editorInventionsListDraggedItem = researchItem;
@@ -848,11 +859,9 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
     ptr = buffer;
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
     {
-        const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
-        rct_string_id args[] = {
-                rideGroupName,
-                stringId
-        };
+        const rct_string_id rideGroupName
+            = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+        rct_string_id args[] = { rideGroupName, stringId };
         format_string(ptr, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &args);
     }
     else
@@ -870,8 +879,7 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
         14,
         &window_editor_inventions_list_drag_events,
         WC_EDITOR_INVENTION_LIST_DRAG,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING
-    );
+        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     w->widgets = window_editor_inventions_list_drag_widgets;
     w->colours[1] = COLOUR_WHITE;
     input_window_position_begin(w, 0, gTooltipCursorX, gTooltipCursorY);
@@ -881,12 +889,15 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
  *
  *  rct2: 0x0068549C
  */
-static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t *cursorId)
+static void window_editor_inventions_list_drag_cursor(
+    rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t* cursorId)
 {
-    rct_window *inventionListWindow = window_find_by_class(WC_EDITOR_INVENTION_LIST);
-    if (inventionListWindow != nullptr) {
-        rct_research_item *researchItem = get_research_item_at(x, y);
-        if (researchItem != inventionListWindow->research_item) {
+    rct_window* inventionListWindow = window_find_by_class(WC_EDITOR_INVENTION_LIST);
+    if (inventionListWindow != nullptr)
+    {
+        rct_research_item* researchItem = get_research_item_at(x, y);
+        if (researchItem != inventionListWindow->research_item)
+        {
             window_invalidate(inventionListWindow);
         }
     }
@@ -900,7 +911,7 @@ static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgeti
  */
 static void window_editor_inventions_list_drag_moved(rct_window* w, int32_t x, int32_t y)
 {
-    rct_research_item *researchItem;
+    rct_research_item* researchItem;
 
     // Skip always researched items, so that the dragged item gets placed underneath them
     do
@@ -921,7 +932,7 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, int32_t x, i
  *
  *  rct2: 0x006853D9
  */
-static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id drawString;
     int32_t x, y;
@@ -932,7 +943,7 @@ static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixe
     gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, x, y);
 }
 
-static rct_string_id window_editor_inventions_list_prepare_name(const rct_research_item * researchItem, bool withGap)
+static rct_string_id window_editor_inventions_list_prepare_name(const rct_research_item* researchItem, bool withGap)
 {
     rct_string_id drawString;
     rct_string_id stringId = research_item_get_name(researchItem);
@@ -940,7 +951,8 @@ static rct_string_id window_editor_inventions_list_prepare_name(const rct_resear
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
     {
         drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-        rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+        rct_string_id rideGroupName
+            = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
         set_format_arg(0, rct_string_id, rideGroupName);
         set_format_arg(2, rct_string_id, stringId);
     }

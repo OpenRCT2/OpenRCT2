@@ -7,21 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
-#include <openrct2-ui/interface/Widget.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/sprites.h>
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/world/Park.h>
 #include <openrct2/management/Finance.h>
+#include <openrct2/sprites.h>
+#include <openrct2/world/Park.h>
 
 #pragma region Widgets
 
@@ -363,21 +362,16 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
  *
  *  rct2: 0x00670138
  */
-rct_window * window_editor_scenario_options_open()
+rct_window* window_editor_scenario_options_open()
 {
-    rct_window *w;
+    rct_window* w;
 
     w = window_bring_to_front_by_class(WC_EDITOR_SCENARIO_OPTIONS);
     if (w != nullptr)
         return w;
 
     w = window_create_centred(
-        280,
-        148,
-        window_editor_scenario_options_page_events[0],
-        WC_EDITOR_SCENARIO_OPTIONS,
-        WF_NO_SCROLLING
-    );
+        280, 148, window_editor_scenario_options_page_events[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
     w->widgets = window_editor_scenario_options_widgets[0];
     w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
@@ -388,7 +382,7 @@ rct_window * window_editor_scenario_options_open()
     return w;
 }
 
-static void window_editor_scenario_options_set_pressed_tab(rct_window *w)
+static void window_editor_scenario_options_set_pressed_tab(rct_window* w)
 {
     int32_t i;
     for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
@@ -396,7 +390,7 @@ static void window_editor_scenario_options_set_pressed_tab(rct_window *w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void window_editor_scenario_options_anchor_border_widgets(rct_window *w)
+static void window_editor_scenario_options_anchor_border_widgets(rct_window* w)
 {
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -411,9 +405,9 @@ static void window_editor_scenario_options_anchor_border_widgets(rct_window *w)
  *
  *  rct2: 0x006712E8
  */
-static void window_editor_scenario_options_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    rct_widget *widget;
+    rct_widget* widget;
     int32_t spriteIndex;
 
     // Tab 1
@@ -442,7 +436,7 @@ static void window_editor_scenario_options_draw_tab_images(rct_window *w, rct_dr
  *
  *  rct2: 0x00668496
  */
-static void window_editor_scenario_options_set_page(rct_window *w, int32_t page)
+static void window_editor_scenario_options_set_page(rct_window* w, int32_t page)
 {
     if (w->page == page)
         return;
@@ -467,54 +461,53 @@ static void window_editor_scenario_options_set_page(rct_window *w, int32_t page)
  *
  *  rct2: 0x0067049D
  */
-static void window_editor_scenario_options_financial_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_editor_scenario_options_financial_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_TAB_1:
-    case WIDX_TAB_2:
-    case WIDX_TAB_3:
-        window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
-        break;
-    case WIDX_NO_MONEY:
+    switch (widgetIndex)
     {
-        int32_t newMoneySetting;
-
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+            window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+        case WIDX_NO_MONEY:
         {
-            newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) ? 0 : 1;
-        }
-        else
-        {
-            newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
-        }
+            int32_t newMoneySetting;
 
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETNOMONEY,
-            newMoneySetting,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
-    }
-    case WIDX_FORBID_MARKETING:
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS,
-            gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
+            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+            {
+                newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) ? 0 : 1;
+            }
+            else
+            {
+                newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
+            }
+
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETNOMONEY,
+                newMoneySetting,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
+        }
+        case WIDX_FORBID_MARKETING:
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS,
+                gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN ? 0 : 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
     }
 }
 
@@ -522,7 +515,7 @@ static void window_editor_scenario_options_financial_mouseup(rct_window *w, rct_
  *
  *  rct2: 0x0067077A
  */
-static void window_editor_scenario_options_financial_resize(rct_window *w)
+static void window_editor_scenario_options_financial_resize(rct_window* w)
 {
     window_set_resize(w, 280, 149, 280, 149);
 }
@@ -531,152 +524,172 @@ static void window_editor_scenario_options_financial_resize(rct_window *w)
  *
  *  rct2: 0x006704C8
  */
-static void window_editor_scenario_options_financial_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+static void window_editor_scenario_options_financial_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    switch (widgetIndex) {
-    case WIDX_INITIAL_CASH_INCREASE:
-        if (gInitialCash < MONEY(1000000,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETINITIALCASH,
-                gInitialCash + MONEY(500,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_CASH, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_INITIAL_CASH_DECREASE:
-        if (gInitialCash > MONEY(0,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETINITIALCASH,
-                gInitialCash - MONEY(500,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_CASH, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_INITIAL_LOAN_INCREASE:
-        if (gBankLoan < MONEY(5000000,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETINITIALLOAN,
-                gBankLoan + MONEY(1000,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_INITIAL_LOAN_DECREASE:
-        if (gBankLoan > MONEY(0,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETINITIALLOAN,
-                gBankLoan - MONEY(1000,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_MAXIMUM_LOAN_INCREASE:
-        if (gMaxBankLoan < MONEY(5000000,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE,
-                gMaxBankLoan + MONEY(1000,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_MAXIMUM_LOAN_DECREASE:
-        if (gMaxBankLoan > MONEY(0,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE,
-                gMaxBankLoan - MONEY(1000,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_INTEREST_RATE_INCREASE:
-        if (gBankLoanInterestRate < 80) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
-                gBankLoanInterestRate + 1,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_INTEREST_RATE_DECREASE:
-        if (gBankLoanInterestRate > 0) {
-            if (gBankLoanInterestRate > 80) {
+    switch (widgetIndex)
+    {
+        case WIDX_INITIAL_CASH_INCREASE:
+            if (gInitialCash < MONEY(1000000, 00))
+            {
                 game_do_command(
                     0,
                     GAME_COMMAND_FLAG_APPLY,
-                    EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
-                    80,
+                    EDIT_SCENARIOOPTIONS_SETINITIALCASH,
+                    gInitialCash + MONEY(500, 00),
                     GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
                     0,
-                    0
-                );
-            } else {
-                game_do_command(
-                    0,
-                    GAME_COMMAND_FLAG_APPLY,
-                    EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
-                    gBankLoanInterestRate - 1,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                    0,
-                    0
-                );
+                    0);
             }
-        } else {
-            context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_CASH, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_INITIAL_CASH_DECREASE:
+            if (gInitialCash > MONEY(0, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETINITIALCASH,
+                    gInitialCash - MONEY(500, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_CASH, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_INITIAL_LOAN_INCREASE:
+            if (gBankLoan < MONEY(5000000, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETINITIALLOAN,
+                    gBankLoan + MONEY(1000, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_INITIAL_LOAN_DECREASE:
+            if (gBankLoan > MONEY(0, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETINITIALLOAN,
+                    gBankLoan - MONEY(1000, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_MAXIMUM_LOAN_INCREASE:
+            if (gMaxBankLoan < MONEY(5000000, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE,
+                    gMaxBankLoan + MONEY(1000, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_MAXIMUM_LOAN_DECREASE:
+            if (gMaxBankLoan > MONEY(0, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE,
+                    gMaxBankLoan - MONEY(1000, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_INTEREST_RATE_INCREASE:
+            if (gBankLoanInterestRate < 80)
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
+                    gBankLoanInterestRate + 1,
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_INTEREST_RATE_DECREASE:
+            if (gBankLoanInterestRate > 0)
+            {
+                if (gBankLoanInterestRate > 80)
+                {
+                    game_do_command(
+                        0,
+                        GAME_COMMAND_FLAG_APPLY,
+                        EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
+                        80,
+                        GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                        0,
+                        0);
+                }
+                else
+                {
+                    game_do_command(
+                        0,
+                        GAME_COMMAND_FLAG_APPLY,
+                        EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
+                        gBankLoanInterestRate - 1,
+                        GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                        0,
+                        0);
+                }
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
     }
 
-    if(gScreenFlags == SCREEN_FLAGS_PLAYING) {
+    if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+    {
         window_invalidate_by_class(WC_FINANCES);
         window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
     }
@@ -686,7 +699,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
  *
  *  rct2: 0x00670760
  */
-static void window_editor_scenario_options_financial_update(rct_window *w)
+static void window_editor_scenario_options_financial_update(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -697,35 +710,39 @@ static void window_editor_scenario_options_financial_update(rct_window *w)
  *
  *  rct2: 0x006701CF
  */
-static void window_editor_scenario_options_financial_invalidate(rct_window *w)
+static void window_editor_scenario_options_financial_invalidate(rct_window* w)
 {
-    rct_widget *widgets = window_editor_scenario_options_widgets[w->page];
-    if (w->widgets != widgets) {
+    rct_widget* widgets = window_editor_scenario_options_widgets[w->page];
+    if (w->widgets != widgets)
+    {
         w->widgets = widgets;
         window_init_scroll_widgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
-        (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
+        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    {
         w->pressed_widgets |= (1 << WIDX_NO_MONEY);
         for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
             w->widgets[i].type = WWT_EMPTY;
-    } else {
+    }
+    else
+    {
         w->pressed_widgets &= ~(1 << WIDX_NO_MONEY);
         w->widgets[WIDX_INITIAL_CASH].type = WWT_SPINNER;
         w->widgets[WIDX_INITIAL_CASH_INCREASE].type = WWT_BUTTON;
         w->widgets[WIDX_INITIAL_CASH_DECREASE].type = WWT_BUTTON;
         w->widgets[WIDX_INITIAL_LOAN].type = WWT_SPINNER;
-        w->widgets[WIDX_INITIAL_LOAN_INCREASE].type =  WWT_BUTTON;
-        w->widgets[WIDX_INITIAL_LOAN_DECREASE].type =  WWT_BUTTON;
+        w->widgets[WIDX_INITIAL_LOAN_INCREASE].type = WWT_BUTTON;
+        w->widgets[WIDX_INITIAL_LOAN_DECREASE].type = WWT_BUTTON;
         w->widgets[WIDX_MAXIMUM_LOAN].type = WWT_SPINNER;
-        w->widgets[WIDX_MAXIMUM_LOAN_INCREASE].type =  WWT_BUTTON;
-        w->widgets[WIDX_MAXIMUM_LOAN_DECREASE].type =  WWT_BUTTON;
+        w->widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WWT_BUTTON;
+        w->widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WWT_BUTTON;
         w->widgets[WIDX_INTEREST_RATE].type = WWT_SPINNER;
-        w->widgets[WIDX_INTEREST_RATE_INCREASE].type =  WWT_BUTTON;
-        w->widgets[WIDX_INTEREST_RATE_DECREASE].type =  WWT_BUTTON;
+        w->widgets[WIDX_INTEREST_RATE_INCREASE].type = WWT_BUTTON;
+        w->widgets[WIDX_INTEREST_RATE_DECREASE].type = WWT_BUTTON;
         w->widgets[WIDX_FORBID_MARKETING].type = WWT_CHECKBOX;
     }
 
@@ -743,14 +760,15 @@ static void window_editor_scenario_options_financial_invalidate(rct_window *w)
  *
  *  rct2: 0x00670338
  */
-static void window_editor_scenario_options_financial_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_editor_scenario_options_financial_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x, y;
 
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_INITIAL_CASH].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_INITIAL_CASH].type != WWT_EMPTY)
+    {
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_INITIAL_CASH].top;
         gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, nullptr, COLOUR_BLACK, x, y);
@@ -760,7 +778,8 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gInitialCash, COLOUR_BLACK, x, y);
     }
 
-    if (w->widgets[WIDX_INITIAL_LOAN].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_INITIAL_LOAN].type != WWT_EMPTY)
+    {
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_INITIAL_LOAN].top;
         gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, nullptr, COLOUR_BLACK, x, y);
@@ -770,7 +789,8 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gBankLoan, COLOUR_BLACK, x, y);
     }
 
-    if (w->widgets[WIDX_MAXIMUM_LOAN].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_MAXIMUM_LOAN].type != WWT_EMPTY)
+    {
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_MAXIMUM_LOAN].top;
         gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, nullptr, COLOUR_BLACK, x, y);
@@ -780,7 +800,8 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, COLOUR_BLACK, x, y);
     }
 
-    if (w->widgets[WIDX_INTEREST_RATE].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_INTEREST_RATE].type != WWT_EMPTY)
+    {
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
         gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, nullptr, COLOUR_BLACK, x, y);
@@ -801,41 +822,40 @@ static void window_editor_scenario_options_financial_paint(rct_window *w, rct_dr
  *
  *  rct2: 0x00670A62
  */
-static void window_editor_scenario_options_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_editor_scenario_options_guests_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_TAB_1:
-    case WIDX_TAB_2:
-    case WIDX_TAB_3:
-        window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
-        break;
-    case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES,
-            gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
-    case WIDX_GUEST_PREFER_MORE_INTENSE_RIDES:
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES,
-            gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+            window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+        case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES,
+                gParkFlags & PARK_FLAGS_PREF_LESS_INTENSE_RIDES ? 0 : 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
+        case WIDX_GUEST_PREFER_MORE_INTENSE_RIDES:
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETGUESTSPREFERMOREINTENSERIDES,
+                gParkFlags & PARK_FLAGS_PREF_MORE_INTENSE_RIDES ? 0 : 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
     }
 }
 
@@ -843,7 +863,7 @@ static void window_editor_scenario_options_guests_mouseup(rct_window *w, rct_wid
  *
  *  rct2: 0x00670C59
  */
-static void window_editor_scenario_options_guests_resize(rct_window *w)
+static void window_editor_scenario_options_guests_resize(rct_window* w)
 {
     window_set_resize(w, 380, 149, 380, 149);
 }
@@ -852,137 +872,154 @@ static void window_editor_scenario_options_guests_resize(rct_window *w)
  *
  *  rct2: 0x00670A89
  */
-static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    switch (widgetIndex) {
-    case WIDX_CASH_PER_GUEST_INCREASE:
-        if (gGuestInitialCash < MONEY(1000, 00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST,
-                gGuestInitialCash + MONEY(1, 00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_CASH_PER_GUEST_DECREASE:
-        if (gGuestInitialCash > MONEY(0, 00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST,
-                gGuestInitialCash - MONEY(1, 00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
-        if (gGuestInitialHappiness < 250) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS,
-                gGuestInitialHappiness + 4,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
-        if (gGuestInitialHappiness > 40) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS,
-                gGuestInitialHappiness - 4,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
-        if (gGuestInitialHunger > 40) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER,
-                gGuestInitialHunger - 4,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
-        if (gGuestInitialHunger < 250) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER,
-                gGuestInitialHunger + 4,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_GUEST_INITIAL_THIRST_INCREASE:
-        if (gGuestInitialThirst > 40) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST,
-                gGuestInitialThirst - 4,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_GUEST_INITIAL_THIRST_DECREASE:
-        if (gGuestInitialThirst < 250) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST,
-                gGuestInitialThirst + 4,
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CASH_PER_GUEST_INCREASE:
+            if (gGuestInitialCash < MONEY(1000, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST,
+                    gGuestInitialCash + MONEY(1, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_CASH_PER_GUEST_DECREASE:
+            if (gGuestInitialCash > MONEY(0, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST,
+                    gGuestInitialCash - MONEY(1, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_GUEST_INITIAL_HAPPINESS_INCREASE:
+            if (gGuestInitialHappiness < 250)
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS,
+                    gGuestInitialHappiness + 4,
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_GUEST_INITIAL_HAPPINESS_DECREASE:
+            if (gGuestInitialHappiness > 40)
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS,
+                    gGuestInitialHappiness - 4,
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_GUEST_INITIAL_HUNGER_INCREASE:
+            if (gGuestInitialHunger > 40)
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER,
+                    gGuestInitialHunger - 4,
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_GUEST_INITIAL_HUNGER_DECREASE:
+            if (gGuestInitialHunger < 250)
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER,
+                    gGuestInitialHunger + 4,
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_GUEST_INITIAL_THIRST_INCREASE:
+            if (gGuestInitialThirst > 40)
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST,
+                    gGuestInitialThirst - 4,
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_GUEST_INITIAL_THIRST_DECREASE:
+            if (gGuestInitialThirst < 250)
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST,
+                    gGuestInitialThirst + 4,
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
     }
 }
 
@@ -990,7 +1027,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
  *
  *  rct2: 0x00670C3F
  */
-static void window_editor_scenario_options_guests_update(rct_window *w)
+static void window_editor_scenario_options_guests_update(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -1001,24 +1038,28 @@ static void window_editor_scenario_options_guests_update(rct_window *w)
  *
  *  rct2: 0x006707DB
  */
-static void window_editor_scenario_options_guests_invalidate(rct_window *w)
+static void window_editor_scenario_options_guests_invalidate(rct_window* w)
 {
-    rct_widget *widgets;
+    rct_widget* widgets;
 
     widgets = window_editor_scenario_options_widgets[w->page];
-    if (w->widgets != widgets) {
+    if (w->widgets != widgets)
+    {
         w->widgets = widgets;
         window_init_scroll_widgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
-        (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
+        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    {
         w->widgets[WIDX_CASH_PER_GUEST].type = WWT_EMPTY;
         w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WWT_EMPTY;
         w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WWT_EMPTY;
-    } else {
+    }
+    else
+    {
         w->widgets[WIDX_CASH_PER_GUEST].type = WWT_SPINNER;
         w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WWT_BUTTON;
         w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WWT_BUTTON;
@@ -1045,14 +1086,15 @@ static void window_editor_scenario_options_guests_invalidate(rct_window *w)
  *
  *  rct2: 0x006708C4
  */
-static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x, y, arg;
 
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_CASH_PER_GUEST].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_CASH_PER_GUEST].type != WWT_EMPTY)
+    {
         // Cash per guest label
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_CASH_PER_GUEST].top;
@@ -1107,77 +1149,73 @@ static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawp
  *
  *  rct2: 0x00670FD8
  */
-static void window_editor_scenario_options_park_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_editor_scenario_options_park_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_TAB_1:
-    case WIDX_TAB_2:
-    case WIDX_TAB_3:
-        window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
-        break;
-    case WIDX_FORBID_TREE_REMOVAL:
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL,
-            gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
-    case WIDX_FORBID_LANDSCAPE_CHANGES:
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES,
-            gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
-    case WIDX_FORBID_HIGH_CONSTRUCTION:
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION,
-            gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
-    case WIDX_HARD_PARK_RATING:
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL,
-            gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
-    case WIDX_HARD_GUEST_GENERATION:
-        game_do_command(
-            0,
-            GAME_COMMAND_FLAG_APPLY,
-            EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL,
-            gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            0,
-            0
-        );
-        window_invalidate(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+            window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+        case WIDX_FORBID_TREE_REMOVAL:
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL,
+                gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL ? 0 : 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
+        case WIDX_FORBID_LANDSCAPE_CHANGES:
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETFORBIDLANDSCAPECHANGES,
+                gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES ? 0 : 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
+        case WIDX_FORBID_HIGH_CONSTRUCTION:
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETFORBIDHIGHCONSTRUCTION,
+                gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION ? 0 : 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
+        case WIDX_HARD_PARK_RATING:
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETPARKRATINGHIGHERDIFFICULTLEVEL,
+                gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING ? 0 : 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
+        case WIDX_HARD_GUEST_GENERATION:
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL,
+                gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION ? 0 : 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0);
+            window_invalidate(w);
+            break;
     }
 }
 
@@ -1185,7 +1223,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window *w, rct_widge
  *
  *  rct2: 0x00671287
  */
-static void window_editor_scenario_options_park_resize(rct_window *w)
+static void window_editor_scenario_options_park_resize(rct_window* w)
 {
     window_set_resize(w, 400, 183, 400, 183);
 }
@@ -1194,136 +1232,148 @@ static void window_editor_scenario_options_park_resize(rct_window *w)
  *
  *  rct2: 0x00671019
  */
-static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    rct_widget *dropdownWidget;
+    rct_widget* dropdownWidget;
 
-    switch (widgetIndex) {
-    case WIDX_LAND_COST_INCREASE:
-        if (gLandPrice < MONEY(200,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND,
-                gLandPrice + MONEY(1,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_LAND_COST_DECREASE:
-        if (gLandPrice > MONEY(5,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND,
-                gLandPrice - MONEY(1, 00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-        if (gConstructionRightsPrice < MONEY(200,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS,
-                gConstructionRightsPrice + MONEY(1,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-        if (gConstructionRightsPrice > MONEY(5,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS,
-                gConstructionRightsPrice - MONEY(1,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_ENTRY_PRICE_INCREASE:
-        if (gParkEntranceFee < MAX_ENTRANCE_FEE) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE,
-                gParkEntranceFee + MONEY(1,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_ENTRY_PRICE_DECREASE:
-        if (gParkEntranceFee > MONEY(0,00)) {
-            game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE,
-                gParkEntranceFee - MONEY(1,00),
-                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                0,
-                0
-            );
-        } else {
-            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
-        dropdownWidget = widget - 1;
+    switch (widgetIndex)
+    {
+        case WIDX_LAND_COST_INCREASE:
+            if (gLandPrice < MONEY(200, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND,
+                    gLandPrice + MONEY(1, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_LAND_COST_DECREASE:
+            if (gLandPrice > MONEY(5, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND,
+                    gLandPrice - MONEY(1, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
+            if (gConstructionRightsPrice < MONEY(200, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS,
+                    gConstructionRightsPrice + MONEY(1, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
+            if (gConstructionRightsPrice > MONEY(5, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS,
+                    gConstructionRightsPrice - MONEY(1, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_ENTRY_PRICE_INCREASE:
+            if (gParkEntranceFee < MAX_ENTRANCE_FEE)
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE,
+                    gParkEntranceFee + MONEY(1, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_ENTRY_PRICE_DECREASE:
+            if (gParkEntranceFee > MONEY(0, 00))
+            {
+                game_do_command(
+                    0,
+                    GAME_COMMAND_FLAG_APPLY,
+                    EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE,
+                    gParkEntranceFee - MONEY(1, 00),
+                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                    0,
+                    0);
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
+            dropdownWidget = widget - 1;
 
-        gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[0] = STR_FREE_PARK_ENTER;
-        gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[1] = STR_PAY_PARK_ENTER;
-        gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_FREE_PARK_ENTER;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[1] = STR_PAY_PARK_ENTER;
+            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
 
-        window_dropdown_show_text_custom_width(
-            w->x + dropdownWidget->left,
-            w->y + dropdownWidget->top,
-            dropdownWidget->bottom - dropdownWidget->top - 1,
-            w->colours[1],
-            0,
-            DROPDOWN_FLAG_STAY_OPEN,
-            3,
-            dropdownWidget->right - dropdownWidget->left - 3
-        );
+            window_dropdown_show_text_custom_width(
+                w->x + dropdownWidget->left,
+                w->y + dropdownWidget->top,
+                dropdownWidget->bottom - dropdownWidget->top - 1,
+                w->colours[1],
+                0,
+                DROPDOWN_FLAG_STAY_OPEN,
+                3,
+                dropdownWidget->right - dropdownWidget->left - 3);
 
-        if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-            dropdown_set_checked(2, true);
-        else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-            dropdown_set_checked(0, true);
-        else
-            dropdown_set_checked(1, true);
+            if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+                dropdown_set_checked(2, true);
+            else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+                dropdown_set_checked(0, true);
+            else
+                dropdown_set_checked(1, true);
 
-        break;
+            break;
     }
 }
 
@@ -1331,9 +1381,10 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
  *
  *  rct2: 0x00671060
  */
-static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if (widgetIndex == WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN && dropdownIndex != -1) {
+    if (widgetIndex == WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN && dropdownIndex != -1)
+    {
         game_do_command(
             0,
             GAME_COMMAND_FLAG_APPLY,
@@ -1341,8 +1392,7 @@ static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widg
             dropdownIndex,
             GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
             0,
-            0
-        );
+            0);
         window_invalidate(w);
     }
 }
@@ -1351,7 +1401,7 @@ static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widg
  *
  *  rct2: 0x0067126D
  */
-static void window_editor_scenario_options_park_update(rct_window *w)
+static void window_editor_scenario_options_park_update(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -1362,20 +1412,22 @@ static void window_editor_scenario_options_park_update(rct_window *w)
  *
  *  rct2: 0x00670CBA
  */
-static void window_editor_scenario_options_park_invalidate(rct_window *w)
+static void window_editor_scenario_options_park_invalidate(rct_window* w)
 {
     uint64_t pressedWidgets;
 
-    rct_widget *widgets = window_editor_scenario_options_widgets[w->page];
-    if (w->widgets != widgets) {
+    rct_widget* widgets = window_editor_scenario_options_widgets[w->page];
+    if (w->widgets != widgets)
+    {
         w->widgets = widgets;
         window_init_scroll_widgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)) ||
-        (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
+    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
+        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    {
         for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
             w->widgets[i].type = WWT_EMPTY;
     }
@@ -1434,7 +1486,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
  *
  *  rct2: 0x00670E5B
  */
-static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x, y, arg;
     rct_string_id stringId;
@@ -1442,7 +1494,8 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_LAND_COST].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_LAND_COST].type != WWT_EMPTY)
+    {
         // Cost to buy land label
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_LAND_COST].top;
@@ -1455,7 +1508,8 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
     }
 
-    if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WWT_EMPTY)
+    {
         // Cost to buy construction rights label
         x = w->x + 8;
         y = w->y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
@@ -1468,7 +1522,8 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
     }
 
-    if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WWT_EMPTY)
+    {
         // Pay for park or rides label
         x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1;
         y = w->y + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top;
@@ -1485,7 +1540,8 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
         gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
     }
 
-    if (w->widgets[WIDX_ENTRY_PRICE].type != WWT_EMPTY) {
+    if (w->widgets[WIDX_ENTRY_PRICE].type != WWT_EMPTY)
+    {
         // Entry price label
         x = w->x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8;
         y = w->y + w->widgets[WIDX_ENTRY_PRICE].top;

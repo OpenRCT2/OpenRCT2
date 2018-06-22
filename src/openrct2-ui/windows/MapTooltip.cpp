@@ -7,14 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/windows/Window.h>
+#include "../interface/Theme.h"
 
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2/drawing/Drawing.h>
-#include "../interface/Theme.h"
+#include <openrct2/localisation/Localisation.h>
 
 // clang-format off
 static rct_widget window_map_tooltip_widgets[] = {
@@ -80,7 +80,7 @@ void window_map_tooltip_update_visibility()
 
     int32_t cursorX, cursorY;
 
-    const CursorState * state = context_get_cursor_state();
+    const CursorState* state = context_get_cursor_state();
     cursorX = state->x;
     cursorY = state->y;
 
@@ -96,13 +96,15 @@ void window_map_tooltip_update_visibility()
     rct_string_id stringId;
     memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
 
-    if (_cursorHoldDuration < 25 ||
-        stringId == STR_NONE ||
-        input_test_place_object_modifier((PLACE_OBJECT_MODIFIER) (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z)) ||
-        window_find_by_class(WC_ERROR) != nullptr
-    ) {
+    if (_cursorHoldDuration < 25 || stringId == STR_NONE
+        || input_test_place_object_modifier(
+               (PLACE_OBJECT_MODIFIER)(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+        || window_find_by_class(WC_ERROR) != nullptr)
+    {
         window_close_by_class(WC_MAP_TOOLTIP);
-    } else {
+    }
+    else
+    {
         window_map_tooltip_open();
     }
 }
@@ -118,17 +120,25 @@ static void window_map_tooltip_open()
 
     width = 200;
     height = 44;
-    const CursorState * state = context_get_cursor_state();
+    const CursorState* state = context_get_cursor_state();
     x = state->x - (width / 2);
     y = state->y + 15;
 
     w = window_find_by_class(WC_MAP_TOOLTIP);
-    if (w == nullptr) {
+    if (w == nullptr)
+    {
         w = window_create(
-            x, y, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
-        );
+            x,
+            y,
+            width,
+            height,
+            &window_map_tooltip_events,
+            WC_MAP_TOOLTIP,
+            WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
         w->widgets = window_map_tooltip_widgets;
-    } else {
+    }
+    else
+    {
         window_invalidate(w);
         w->x = x;
         w->y = y;
@@ -141,7 +151,7 @@ static void window_map_tooltip_open()
  *
  *  rct2: 0x006EE8CE
  */
-static void window_map_tooltip_update(rct_window *w)
+static void window_map_tooltip_update(rct_window* w)
 {
     window_invalidate(w);
 }
@@ -150,13 +160,21 @@ static void window_map_tooltip_update(rct_window *w)
  *
  *  rct2: 0x006EE894
  */
-static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_map_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id stringId;
     memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
-    if (stringId == STR_NONE) {
+    if (stringId == STR_NONE)
+    {
         return;
     }
 
-    gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, w->x + (w->width / 2), w->y + (w->height / 2), w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(
+        dpi,
+        gMapTooltipFormatArgs,
+        w->x + (w->width / 2),
+        w->y + (w->height / 2),
+        w->width,
+        STR_MAP_TOOLTIP_STRINGID,
+        COLOUR_BLACK);
 }

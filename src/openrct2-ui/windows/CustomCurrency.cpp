@@ -7,15 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/config/Config.h>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/interface/Colour.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/util/Util.h>
 
 // clang-format off
 enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
@@ -81,32 +80,19 @@ static rct_window_event_list _windowCustomCurrencyEvents = {
 };
 // clang-format on
 
-
-rct_window * custom_currency_window_open()
+rct_window* custom_currency_window_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_CUSTOM_CURRENCY_CONFIG);
-    if(window != nullptr)
+    if (window != nullptr)
         return window;
 
-    window = window_create_centred(
-        400,
-        100,
-        &_windowCustomCurrencyEvents,
-        WC_CUSTOM_CURRENCY_CONFIG,
-        0
-    );
+    window = window_create_centred(400, 100, &_windowCustomCurrencyEvents, WC_CUSTOM_CURRENCY_CONFIG, 0);
     window->widgets = window_custom_currency_widgets;
-    window->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_RATE) |
-        (1 << WIDX_RATE_UP) |
-        (1 << WIDX_RATE_DOWN) |
-        (1 << WIDX_SYMBOL_TEXT) |
-        (1 << WIDX_AFFIX_DROPDOWN) |
-        (1 << WIDX_AFFIX_DROPDOWN_BUTTON);
+    window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RATE) | (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN)
+        | (1 << WIDX_SYMBOL_TEXT) | (1 << WIDX_AFFIX_DROPDOWN) | (1 << WIDX_AFFIX_DROPDOWN_BUTTON);
 
     window->hold_down_widgets = (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN);
     window_init_scroll_widgets(window);
@@ -117,153 +103,149 @@ rct_window * custom_currency_window_open()
     return window;
 }
 
-
-
-static void custom_currency_window_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
+static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     widget = &w->widgets[widgetIndex - 1];
 
-    switch(widgetIndex) {
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
 
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-
-    case WIDX_RATE_UP:
-        CurrencyDescriptors[CURRENCY_CUSTOM].rate += 1;
-        gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
-        config_save_default();
-        window_invalidate_all();
-        break;
-
-    case WIDX_RATE_DOWN:
-        if(CurrencyDescriptors[CURRENCY_CUSTOM].rate > 1) {
-            CurrencyDescriptors[CURRENCY_CUSTOM].rate -= 1;
+        case WIDX_RATE_UP:
+            CurrencyDescriptors[CURRENCY_CUSTOM].rate += 1;
             gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
             config_save_default();
             window_invalidate_all();
-        }
-        break;
+            break;
 
-    case WIDX_AFFIX_DROPDOWN_BUTTON:
-        gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[0] = STR_PREFIX;
+        case WIDX_RATE_DOWN:
+            if (CurrencyDescriptors[CURRENCY_CUSTOM].rate > 1)
+            {
+                CurrencyDescriptors[CURRENCY_CUSTOM].rate -= 1;
+                gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
+                config_save_default();
+                window_invalidate_all();
+            }
+            break;
 
-        gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[1] = STR_SUFFIX;
+        case WIDX_AFFIX_DROPDOWN_BUTTON:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_PREFIX;
 
-        window_dropdown_show_text_custom_width(
-            w->x + widget->left,
-            w->y + widget->top,
-            widget->bottom - widget->top + 1,
-            w->colours[1],
-            0,
-            DROPDOWN_FLAG_STAY_OPEN,
-            2,
-            widget->right - widget->left - 3
-        );
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[1] = STR_SUFFIX;
 
-        if(CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX) {
-            dropdown_set_checked(0, true);
-        } else {
-            dropdown_set_checked(1, true);
-        }
+            window_dropdown_show_text_custom_width(
+                w->x + widget->left,
+                w->y + widget->top,
+                widget->bottom - widget->top + 1,
+                w->colours[1],
+                0,
+                DROPDOWN_FLAG_STAY_OPEN,
+                2,
+                widget->right - widget->left - 3);
 
-        break;
+            if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
+            {
+                dropdown_set_checked(0, true);
+            }
+            else
+            {
+                dropdown_set_checked(1, true);
+            }
 
-    case WIDX_SYMBOL_TEXT:
-        window_text_input_raw_open(
-            w,
-            WIDX_SYMBOL_TEXT,
-            STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE,
-            STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
-            CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
-            CURRENCY_SYMBOL_MAX_SIZE
-        );
-        break;
+            break;
 
+        case WIDX_SYMBOL_TEXT:
+            window_text_input_raw_open(
+                w,
+                WIDX_SYMBOL_TEXT,
+                STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE,
+                STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
+                CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
+                CURRENCY_SYMBOL_MAX_SIZE);
+            break;
     }
 }
 
-static void custom_currency_window_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void custom_currency_window_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch(widgetIndex) {
-    case WIDX_RATE:
-        window_text_input_open(
-            w,
-            WIDX_RATE,
-            STR_RATE_INPUT_TITLE,
-            STR_RATE_INPUT_DESC,
-            STR_FORMAT_INTEGER,
-            (uint32_t)CurrencyDescriptors[CURRENCY_CUSTOM].rate,
-            CURRENCY_RATE_MAX_NUM_DIGITS
-        );
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_RATE:
+            window_text_input_open(
+                w,
+                WIDX_RATE,
+                STR_RATE_INPUT_TITLE,
+                STR_RATE_INPUT_DESC,
+                STR_FORMAT_INTEGER,
+                (uint32_t)CurrencyDescriptors[CURRENCY_CUSTOM].rate,
+                CURRENCY_RATE_MAX_NUM_DIGITS);
+            break;
     }
 }
 
-static void custom_currency_window_dropdown([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void custom_currency_window_dropdown([[maybe_unused]] rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if(dropdownIndex == -1)
+    if (dropdownIndex == -1)
         return;
 
-    if(widgetIndex == WIDX_AFFIX_DROPDOWN_BUTTON) {
-
-        if(dropdownIndex == 0) {
+    if (widgetIndex == WIDX_AFFIX_DROPDOWN_BUTTON)
+    {
+        if (dropdownIndex == 0)
+        {
             CurrencyDescriptors[CURRENCY_CUSTOM].affix_ascii = CURRENCY_PREFIX;
             CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = CURRENCY_PREFIX;
-        } else if(dropdownIndex == 1) {
+        }
+        else if (dropdownIndex == 1)
+        {
             CurrencyDescriptors[CURRENCY_CUSTOM].affix_ascii = CURRENCY_SUFFIX;
             CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = CURRENCY_SUFFIX;
         }
-
 
         gConfigGeneral.custom_currency_affix = CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode;
         config_save_default();
 
         window_invalidate_all();
-
     }
 }
 
-static void custom_currency_window_text_input([[maybe_unused]] struct rct_window * w, rct_widgetindex widgetIndex, char * text)
+static void custom_currency_window_text_input([[maybe_unused]] struct rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     if (text == nullptr)
         return;
     int32_t rate;
     char* end;
-    switch(widgetIndex){
-    case WIDX_SYMBOL_TEXT:
-        safe_strcpy(
-            CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
-            text,
-            CURRENCY_SYMBOL_MAX_SIZE
-        );
+    switch (widgetIndex)
+    {
+        case WIDX_SYMBOL_TEXT:
+            safe_strcpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, text, CURRENCY_SYMBOL_MAX_SIZE);
 
-        safe_strcpy(
-            gConfigGeneral.custom_currency_symbol,
-            CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
-            CURRENCY_SYMBOL_MAX_SIZE
-        );
+            safe_strcpy(
+                gConfigGeneral.custom_currency_symbol,
+                CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
+                CURRENCY_SYMBOL_MAX_SIZE);
 
-        config_save_default();
-        window_invalidate_all();
-        break;
-
-    case WIDX_RATE:
-        rate = strtol(text, &end, 10);
-        if (*end == '\0') {
-            CurrencyDescriptors[CURRENCY_CUSTOM].rate = rate;
-            gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
             config_save_default();
             window_invalidate_all();
-        }
-        break;
+            break;
+
+        case WIDX_RATE:
+            rate = strtol(text, &end, 10);
+            if (*end == '\0')
+            {
+                CurrencyDescriptors[CURRENCY_CUSTOM].rate = rate;
+                gConfigGeneral.custom_currency_rate = CurrencyDescriptors[CURRENCY_CUSTOM].rate;
+                config_save_default();
+                window_invalidate_all();
+            }
+            break;
     }
 }
 
-
-static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t x, y;
 
@@ -291,23 +273,24 @@ static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi)
         w->x + window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
         w->y + window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top);
 
-    if(CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX) {
+    if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
+    {
         gfx_draw_string_left(
             dpi,
             STR_PREFIX,
             w,
             w->colours[1],
             w->x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-            w->y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top
-        );
-    } else {
+            w->y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top);
+    }
+    else
+    {
         gfx_draw_string_left(
             dpi,
             STR_SUFFIX,
             w,
             w->colours[1],
             w->x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-            w->y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top
-        );
+            w->y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top);
     }
 }

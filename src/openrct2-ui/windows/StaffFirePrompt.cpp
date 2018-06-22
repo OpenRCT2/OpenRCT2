@@ -7,13 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
-#include <openrct2-ui/interface/Widget.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Sprite.h>
-#include <openrct2/interface/Colour.h>
-#include <openrct2/drawing/Drawing.h>
 
 #define WW 200
 #define WH 100

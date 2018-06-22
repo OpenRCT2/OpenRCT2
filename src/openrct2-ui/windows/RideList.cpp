@@ -7,22 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/windows/Window.h>
+#include "../interface/Theme.h"
 
-#include <openrct2/config/Config.h>
-#include <openrct2/Context.h>
-#include <openrct2/core/Util.hpp>
-#include <openrct2/Game.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/Game.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/core/Util.hpp>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
-#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/interface/Colour.h>
-#include <openrct2/drawing/Drawing.h>
-#include "../interface/Theme.h"
 
 // clang-format off
 enum {
@@ -185,35 +185,29 @@ static constexpr const rct_string_id page_names[] = {
 
 static int32_t _window_ride_list_information_type;
 
-static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_ride_list_close_all(rct_window *w);
-static void window_ride_list_open_all(rct_window *w);
+static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w);
+static void window_ride_list_close_all(rct_window* w);
+static void window_ride_list_open_all(rct_window* w);
 
 /**
  *
  *  rct2: 0x006B30BC
  */
-rct_window * window_ride_list_open()
+rct_window* window_ride_list_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_RIDE_LIST);
-    if (window == nullptr) {
+    if (window == nullptr)
+    {
         window = window_create_auto_pos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
         window->widgets = window_ride_list_widgets;
-        window->enabled_widgets =
-            (1 << WIDX_CLOSE) |
-            (1 << WIDX_OPEN_CLOSE_ALL) |
-            (1 << WIDX_CURRENT_INFORMATION_TYPE) |
-            (1 << WIDX_INFORMATION_TYPE_DROPDOWN) |
-            (1 << WIDX_SORT) |
-            (1 << WIDX_TAB_1) |
-            (1 << WIDX_TAB_2) |
-            (1 << WIDX_TAB_3) |
-            (1 << WIDX_CLOSE_LIGHT) |
-            (1 << WIDX_OPEN_LIGHT);
-        if (network_get_mode() != NETWORK_MODE_CLIENT) {
+        window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_CLOSE_ALL) | (1 << WIDX_CURRENT_INFORMATION_TYPE)
+            | (1 << WIDX_INFORMATION_TYPE_DROPDOWN) | (1 << WIDX_SORT) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2)
+            | (1 << WIDX_TAB_3) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
+        if (network_get_mode() != NETWORK_MODE_CLIENT)
+        {
             window->enabled_widgets |= (1 << WIDX_QUICK_DEMOLISH);
         }
         window_init_scroll_widgets(window);
@@ -238,47 +232,52 @@ rct_window * window_ride_list_open()
  *
  *  rct2: 0x006B3511
  */
-static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_ride_list_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_SORT:
-        w->list_information_type = _window_ride_list_information_type;
-        w->no_list_items = 0;
-        w->selected_list_item = -1;
-        window_ride_list_refresh_list(w);
-        break;
-    case WIDX_TAB_1:
-    case WIDX_TAB_2:
-    case WIDX_TAB_3:
-        if (w->page != widgetIndex - WIDX_TAB_1) {
-            w->page = widgetIndex - WIDX_TAB_1;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_SORT:
+            w->list_information_type = _window_ride_list_information_type;
             w->no_list_items = 0;
-            w->frame_no = 0;
             w->selected_list_item = -1;
-            if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_RUNNING_COST) {
-                _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
-            }
             window_ride_list_refresh_list(w);
-        }
-        break;
-    case WIDX_CLOSE_LIGHT:
-        window_ride_list_close_all(w);
-        break;
-    case WIDX_OPEN_LIGHT:
-        window_ride_list_open_all(w);
-        break;
-    case WIDX_QUICK_DEMOLISH:
-        if (network_get_mode() != NETWORK_MODE_CLIENT) {
-            _quickDemolishMode = !_quickDemolishMode;
-        }
-        else {
-            _quickDemolishMode = false;
-        }
-        window_invalidate(w);
-        break;
+            break;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+            if (w->page != widgetIndex - WIDX_TAB_1)
+            {
+                w->page = widgetIndex - WIDX_TAB_1;
+                w->no_list_items = 0;
+                w->frame_no = 0;
+                w->selected_list_item = -1;
+                if (w->page != PAGE_RIDES && _window_ride_list_information_type > INFORMATION_TYPE_RUNNING_COST)
+                {
+                    _window_ride_list_information_type = INFORMATION_TYPE_STATUS;
+                }
+                window_ride_list_refresh_list(w);
+            }
+            break;
+        case WIDX_CLOSE_LIGHT:
+            window_ride_list_close_all(w);
+            break;
+        case WIDX_OPEN_LIGHT:
+            window_ride_list_open_all(w);
+            break;
+        case WIDX_QUICK_DEMOLISH:
+            if (network_get_mode() != NETWORK_MODE_CLIENT)
+            {
+                _quickDemolishMode = !_quickDemolishMode;
+            }
+            else
+            {
+                _quickDemolishMode = false;
+            }
+            window_invalidate(w);
+            break;
     }
 }
 
@@ -286,15 +285,17 @@ static void window_ride_list_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006B38A7
  */
-static void window_ride_list_resize(rct_window *w)
+static void window_ride_list_resize(rct_window* w)
 {
     w->min_width = 340;
     w->min_height = 124;
-    if (w->width < w->min_width) {
+    if (w->width < w->min_width)
+    {
         window_invalidate(w);
         w->width = w->min_width;
     }
-    if (w->height < w->min_height) {
+    if (w->height < w->min_height)
+    {
         window_invalidate(w);
         w->height = w->min_height;
     }
@@ -302,7 +303,8 @@ static void window_ride_list_resize(rct_window *w)
     // Refreshing the list can be a very intensive operation
     // owing to its use of ride_has_any_track_elements().
     // This makes sure it's only refreshed every 64 ticks.
-    if (!(gCurrentTicks & 0x3f)) {
+    if (!(gCurrentTicks & 0x3f))
+    {
         window_ride_list_refresh_list(w);
     }
 }
@@ -311,13 +313,16 @@ static void window_ride_list_resize(rct_window *w)
  *
  *  rct2: 0x006B3532
  */
-static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
+    if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
+    {
         gDropdownItemsFormat[0] = STR_CLOSE_ALL;
         gDropdownItemsFormat[1] = STR_OPEN_ALL;
         window_dropdown_show_text(w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0, 2);
-    } else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN) {
+    }
+    else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
+    {
         widget--;
 
         int32_t lastType;
@@ -328,14 +333,18 @@ static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetInde
 
         int32_t numItems = 0;
         int32_t selectedIndex = -1;
-        for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++) {
-            if ((gParkFlags & PARK_FLAGS_NO_MONEY)) {
-                if (ride_info_type_money_mapping[type]) {
+        for (int32_t type = INFORMATION_TYPE_STATUS; type <= lastType; type++)
+        {
+            if ((gParkFlags & PARK_FLAGS_NO_MONEY))
+            {
+                if (ride_info_type_money_mapping[type])
+                {
                     continue;
                 }
             }
 
-            if (type == _window_ride_list_information_type) {
+            if (type == _window_ride_list_information_type)
+            {
                 selectedIndex = numItems;
             }
 
@@ -352,9 +361,9 @@ static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetInde
             0,
             DROPDOWN_FLAG_STAY_OPEN,
             numItems,
-            widget->right - widget->left - 3
-        );
-        if (selectedIndex != -1) {
+            widget->right - widget->left - 3);
+        if (selectedIndex != -1)
+        {
             dropdown_set_checked(selectedIndex, true);
         }
     }
@@ -364,7 +373,7 @@ static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006B3547
  */
-static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void window_ride_list_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
     {
@@ -403,7 +412,7 @@ static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x006B386B
  */
-static void window_ride_list_update(rct_window *w)
+static void window_ride_list_update(rct_window* w)
 {
     w->frame_no = (w->frame_no + 1) % 64;
     widget_invalidate(w, WIDX_TAB_1 + w->page);
@@ -415,12 +424,13 @@ static void window_ride_list_update(rct_window *w)
  *
  *  rct2: 0x006B35A1
  */
-static void window_ride_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
+static void window_ride_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     int32_t top;
 
     *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
-    if (w->selected_list_item != -1) {
+    if (w->selected_list_item != -1)
+    {
         w->selected_list_item = -1;
         window_invalidate(w);
     }
@@ -428,7 +438,8 @@ static void window_ride_list_scrollgetsize(rct_window *w, int32_t scrollIndex, i
     top = *height - window_ride_list_widgets[WIDX_LIST].bottom + window_ride_list_widgets[WIDX_LIST].top + 21;
     if (top < 0)
         top = 0;
-    if (top < w->scrolls[0].v_top) {
+    if (top < w->scrolls[0].v_top)
+    {
         w->scrolls[0].v_top = top;
         window_invalidate(w);
     }
@@ -438,7 +449,7 @@ static void window_ride_list_scrollgetsize(rct_window *w, int32_t scrollIndex, i
  *
  *  rct2: 0x006B361F
  */
-static void window_ride_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_ride_list_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     int32_t index;
 
@@ -448,11 +459,13 @@ static void window_ride_list_scrollmousedown(rct_window *w, int32_t scrollIndex,
 
     // Open ride window
     uint8_t rideIndex = w->list_item_positions[index];
-    if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT) {
+    if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT)
+    {
         ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
         window_ride_list_refresh_list(w);
     }
-    else {
+    else
+    {
         auto intent = Intent(WC_RIDE);
         intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
         context_open_intent(&intent);
@@ -463,7 +476,7 @@ static void window_ride_list_scrollmousedown(rct_window *w, int32_t scrollIndex,
  *
  *  rct2: 0x006B35EF
  */
-static void window_ride_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_ride_list_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     int32_t index;
 
@@ -479,7 +492,7 @@ static void window_ride_list_scrollmouseover(rct_window *w, int32_t scrollIndex,
  *
  *  rct2: 0x006B3861
  */
-static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
+static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
 {
     set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -488,9 +501,10 @@ static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006B3182
  */
-static void window_ride_list_invalidate(rct_window *w)
+static void window_ride_list_invalidate(rct_window* w)
 {
-    window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_window_ride_list_information_type];
+    window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].text
+        = ride_info_type_string_mapping[_window_ride_list_information_type];
 
     // Set correct active tab
     for (int32_t i = 0; i < 3; i++)
@@ -522,7 +536,8 @@ static void window_ride_list_invalidate(rct_window *w)
     w->widgets[WIDX_QUICK_DEMOLISH].right = w->width - 2;
     w->widgets[WIDX_QUICK_DEMOLISH].left = w->width - 25;
 
-    if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE) {
+    if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
+    {
         w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_EMPTY;
         w->widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
         w->widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
@@ -530,24 +545,32 @@ static void window_ride_list_invalidate(rct_window *w)
         int8_t allClosed = -1;
         int8_t allOpen = -1;
         int32_t i;
-        Ride *ride;
-        FOR_ALL_RIDES(i, ride) {
+        Ride* ride;
+        FOR_ALL_RIDES (i, ride)
+        {
             if (w->page != gRideClassifications[ride->type])
                 continue;
-            if (ride->status == RIDE_STATUS_OPEN) {
-                if (allOpen == -1) allOpen = true;
+            if (ride->status == RIDE_STATUS_OPEN)
+            {
+                if (allOpen == -1)
+                    allOpen = true;
                 allClosed = false;
             }
-            else {
-                if (allClosed == -1) allClosed = true;
+            else
+            {
+                if (allClosed == -1)
+                    allClosed = true;
                 allOpen = false;
             }
         }
-        w->widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed == 1) * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
-        w->widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen == 1) * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
+        w->widgets[WIDX_CLOSE_LIGHT].image
+            = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed == 1) * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+        w->widgets[WIDX_OPEN_LIGHT].image
+            = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen == 1) * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
         w->widgets[WIDX_QUICK_DEMOLISH].top = w->widgets[WIDX_OPEN_LIGHT].bottom + 3;
     }
-    else {
+    else
+    {
         w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_FLATBTN;
         w->widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
         w->widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
@@ -561,33 +584,41 @@ static void window_ride_list_invalidate(rct_window *w)
  *
  *  rct2: 0x006B3235
  */
-static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
     window_ride_list_draw_tab_images(dpi, w);
 
     // Draw number of attractions on bottom
-    gfx_draw_string_left(dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK, w->x + 4, w->widgets[WIDX_LIST].bottom + w->y + 2);
+    gfx_draw_string_left(
+        dpi,
+        ride_list_statusbar_count_strings[w->page],
+        &w->no_list_items,
+        COLOUR_BLACK,
+        w->x + 4,
+        w->widgets[WIDX_LIST].bottom + w->y + 2);
 }
 
 /**
  *
  *  rct2: 0x006B3240
  */
-static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
+static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t i, y, argument;
     rct_string_id format, formatSecondary;
-    Ride *ride;
+    Ride* ride;
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[1]].mid_light);
 
     y = 0;
-    for (i = 0; i < w->no_list_items; i++) {
+    for (i = 0; i < w->no_list_items; i++)
+    {
         format = (_quickDemolishMode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
         // Background highlight
-        if (i == w->selected_list_item) {
+        if (i == w->selected_list_item)
+        {
             gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
             format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
         }
@@ -602,111 +633,127 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 
         // Ride information
         formatSecondary = 0;
-        switch (_window_ride_list_information_type) {
-        case INFORMATION_TYPE_STATUS:
-            ride_get_status(w->list_item_positions[i], &formatSecondary, &argument);
-            set_format_arg(2, int32_t, argument);
-            break;
-        case INFORMATION_TYPE_POPULARITY:
-            formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
-            if (ride->popularity != 255) {
-                formatSecondary = STR_POPULARITY_LABEL;
-                set_format_arg(2, uint16_t, ride->popularity * 4);
-            }
-            break;
-        case INFORMATION_TYPE_SATISFACTION:
-            formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
-            if (ride->satisfaction != 255) {
-                formatSecondary = STR_SATISFACTION_LABEL;
-                set_format_arg(2, uint16_t, ride->satisfaction * 5);
-            }
-            break;
-        case INFORMATION_TYPE_PROFIT:
-            formatSecondary = 0;
-            if (ride->profit != MONEY32_UNDEFINED) {
-                formatSecondary = STR_PROFIT_LABEL;
-                set_format_arg(2, int32_t, ride->profit);
-            }
-            break;
-        case INFORMATION_TYPE_TOTAL_CUSTOMERS:
-            formatSecondary = STR_RIDE_LIST_TOTAL_CUSTOMERS_LABEL;
-            set_format_arg(2, uint32_t, ride->total_customers);
-            break;
-        case INFORMATION_TYPE_TOTAL_PROFIT:
-            formatSecondary = 0;
-            if (ride->total_profit != MONEY32_UNDEFINED) {
-                formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
-                set_format_arg(2, int32_t, ride->total_profit);
-            }
-            break;
-        case INFORMATION_TYPE_CUSTOMERS:
-            formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
-            set_format_arg(2, uint32_t, ride_customers_per_hour(ride));
-            break;
-        case INFORMATION_TYPE_AGE:
+        switch (_window_ride_list_information_type)
         {
-            int16_t age = date_get_year(gDateMonthsElapsed - ride->build_date);
-            switch (age) {
-            case 0:  formatSecondary = STR_RIDE_LIST_BUILT_THIS_YEAR_LABEL; break;
-            case 1:  formatSecondary = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL; break;
-            default: formatSecondary = STR_RIDE_LIST_BUILT_X_YEARS_AGO_LABEL; break;
-            }
-            set_format_arg(2, int16_t, age);
-            break;
-        }
-        case INFORMATION_TYPE_INCOME:
-            formatSecondary = 0;
-            if (ride->income_per_hour != MONEY32_UNDEFINED) {
-                formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
-                set_format_arg(2, int32_t, ride->income_per_hour);
-            }
-            break;
-        case INFORMATION_TYPE_RUNNING_COST:
-            formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
-            if (ride->upkeep_cost != (money16)(uint16_t)0xFFFF) {
-                formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
-                set_format_arg(2, int32_t, ride->upkeep_cost * 16);
-            }
-            break;
-        case INFORMATION_TYPE_QUEUE_LENGTH:
-            set_format_arg(2, uint16_t, ride_get_total_queue_length(ride));
-            formatSecondary = STR_QUEUE_EMPTY;
+            case INFORMATION_TYPE_STATUS:
+                ride_get_status(w->list_item_positions[i], &formatSecondary, &argument);
+                set_format_arg(2, int32_t, argument);
+                break;
+            case INFORMATION_TYPE_POPULARITY:
+                formatSecondary = STR_POPULARITY_UNKNOWN_LABEL;
+                if (ride->popularity != 255)
+                {
+                    formatSecondary = STR_POPULARITY_LABEL;
+                    set_format_arg(2, uint16_t, ride->popularity * 4);
+                }
+                break;
+            case INFORMATION_TYPE_SATISFACTION:
+                formatSecondary = STR_SATISFACTION_UNKNOWN_LABEL;
+                if (ride->satisfaction != 255)
+                {
+                    formatSecondary = STR_SATISFACTION_LABEL;
+                    set_format_arg(2, uint16_t, ride->satisfaction * 5);
+                }
+                break;
+            case INFORMATION_TYPE_PROFIT:
+                formatSecondary = 0;
+                if (ride->profit != MONEY32_UNDEFINED)
+                {
+                    formatSecondary = STR_PROFIT_LABEL;
+                    set_format_arg(2, int32_t, ride->profit);
+                }
+                break;
+            case INFORMATION_TYPE_TOTAL_CUSTOMERS:
+                formatSecondary = STR_RIDE_LIST_TOTAL_CUSTOMERS_LABEL;
+                set_format_arg(2, uint32_t, ride->total_customers);
+                break;
+            case INFORMATION_TYPE_TOTAL_PROFIT:
+                formatSecondary = 0;
+                if (ride->total_profit != MONEY32_UNDEFINED)
+                {
+                    formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
+                    set_format_arg(2, int32_t, ride->total_profit);
+                }
+                break;
+            case INFORMATION_TYPE_CUSTOMERS:
+                formatSecondary = STR_RIDE_LIST_CUSTOMERS_PER_HOUR_LABEL;
+                set_format_arg(2, uint32_t, ride_customers_per_hour(ride));
+                break;
+            case INFORMATION_TYPE_AGE:
             {
-                uint16_t arg;
-                memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
+                int16_t age = date_get_year(gDateMonthsElapsed - ride->build_date);
+                switch (age)
+                {
+                    case 0:
+                        formatSecondary = STR_RIDE_LIST_BUILT_THIS_YEAR_LABEL;
+                        break;
+                    case 1:
+                        formatSecondary = STR_RIDE_LIST_BUILT_LAST_YEAR_LABEL;
+                        break;
+                    default:
+                        formatSecondary = STR_RIDE_LIST_BUILT_X_YEARS_AGO_LABEL;
+                        break;
+                }
+                set_format_arg(2, int16_t, age);
+                break;
+            }
+            case INFORMATION_TYPE_INCOME:
+                formatSecondary = 0;
+                if (ride->income_per_hour != MONEY32_UNDEFINED)
+                {
+                    formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
+                    set_format_arg(2, int32_t, ride->income_per_hour);
+                }
+                break;
+            case INFORMATION_TYPE_RUNNING_COST:
+                formatSecondary = STR_RIDE_LIST_RUNNING_COST_UNKNOWN;
+                if (ride->upkeep_cost != (money16)(uint16_t)0xFFFF)
+                {
+                    formatSecondary = STR_RIDE_LIST_RUNNING_COST_LABEL;
+                    set_format_arg(2, int32_t, ride->upkeep_cost * 16);
+                }
+                break;
+            case INFORMATION_TYPE_QUEUE_LENGTH:
+                set_format_arg(2, uint16_t, ride_get_total_queue_length(ride));
+                formatSecondary = STR_QUEUE_EMPTY;
+                {
+                    uint16_t arg;
+                    memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
 
-                if (arg == 1)
-                    formatSecondary = STR_QUEUE_ONE_PERSON;
-                else if (arg > 1)
-                    formatSecondary = STR_QUEUE_PEOPLE;
-            }
-            break;
-        case INFORMATION_TYPE_QUEUE_TIME:
-            set_format_arg(2, uint16_t, ride_get_max_queue_time(ride));
-            formatSecondary = STR_QUEUE_TIME_LABEL;
-            {
-                uint16_t arg;
-                memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
+                    if (arg == 1)
+                        formatSecondary = STR_QUEUE_ONE_PERSON;
+                    else if (arg > 1)
+                        formatSecondary = STR_QUEUE_PEOPLE;
+                }
+                break;
+            case INFORMATION_TYPE_QUEUE_TIME:
+                set_format_arg(2, uint16_t, ride_get_max_queue_time(ride));
+                formatSecondary = STR_QUEUE_TIME_LABEL;
+                {
+                    uint16_t arg;
+                    memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
 
-                if (arg > 1)
-                    formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
-            }
-            break;
-        case INFORMATION_TYPE_RELIABILITY:
-            set_format_arg(2, uint16_t, ride->reliability_percentage);
-            formatSecondary = STR_RELIABILITY_LABEL;
-            break;
-        case INFORMATION_TYPE_DOWN_TIME:
-            set_format_arg(2, uint16_t, ride->downtime);
-            formatSecondary = STR_DOWN_TIME_LABEL;
-            break;
-        case INFORMATION_TYPE_GUESTS_FAVOURITE:
-            formatSecondary = 0;
-            if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
-                set_format_arg(2, uint16_t, ride->guests_favourite);
-                formatSecondary = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
-            }
-            break;
+                    if (arg > 1)
+                        formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+                }
+                break;
+            case INFORMATION_TYPE_RELIABILITY:
+                set_format_arg(2, uint16_t, ride->reliability_percentage);
+                formatSecondary = STR_RELIABILITY_LABEL;
+                break;
+            case INFORMATION_TYPE_DOWN_TIME:
+                set_format_arg(2, uint16_t, ride->downtime);
+                formatSecondary = STR_DOWN_TIME_LABEL;
+                break;
+            case INFORMATION_TYPE_GUESTS_FAVOURITE:
+                formatSecondary = 0;
+                if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
+                {
+                    set_format_arg(2, uint16_t, ride->guests_favourite);
+                    formatSecondary
+                        = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
+                }
+                break;
         }
 
         // Make test red and bold if broken down or crashed
@@ -723,7 +770,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
  *
  *  rct2: 0x006B38EA
  */
-static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
+static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 {
     int32_t sprite_idx;
 
@@ -746,167 +793,184 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
     gfx_draw_sprite(dpi, sprite_idx, w->x + w->widgets[WIDX_TAB_3].left, w->y + w->widgets[WIDX_TAB_3].top, 0);
 }
 
-
-
 /**
  *
  *  rct2: 0x006B39A8
  */
-void window_ride_list_refresh_list(rct_window *w)
+void window_ride_list_refresh_list(rct_window* w)
 {
     int32_t i;
     Ride *ride, *otherRide;
     char bufferA[128], bufferB[128];
     int32_t list_index = 0;
 
-    FOR_ALL_RIDES(i, ride) {
-        if (w->page != gRideClassifications[ride->type] || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(i)))
+    FOR_ALL_RIDES (i, ride)
+    {
+        if (w->page != gRideClassifications[ride->type]
+            || (ride->status == RIDE_STATUS_CLOSED && !ride_has_any_track_elements(i)))
             continue;
 
-        if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST) {
+        if (ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_LIST)
+        {
             ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_LIST;
         }
 
         w->list_item_positions[list_index] = i;
         int32_t current_list_position = list_index;
-        switch (w->list_information_type) {
-        case INFORMATION_TYPE_STATUS:
-            format_string_to_upper(bufferA, 128, ride->name, &ride->name_arguments);
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                format_string_to_upper(bufferB, 128, otherRide->name, &otherRide->name_arguments);
-                if (strcmp(bufferA, bufferB) >= 0)
-                    break;
+        switch (w->list_information_type)
+        {
+            case INFORMATION_TYPE_STATUS:
+                format_string_to_upper(bufferA, 128, ride->name, &ride->name_arguments);
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    format_string_to_upper(bufferB, 128, otherRide->name, &otherRide->name_arguments);
+                    if (strcmp(bufferA, bufferB) >= 0)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_POPULARITY:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->popularity * 4 <= otherRide->popularity * 4)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_POPULARITY:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->popularity * 4 <= otherRide->popularity * 4)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_SATISFACTION:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->satisfaction * 5 <= otherRide->satisfaction * 5)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_SATISFACTION:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->satisfaction * 5 <= otherRide->satisfaction * 5)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_PROFIT:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->profit <= otherRide->profit)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_PROFIT:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->profit <= otherRide->profit)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_TOTAL_CUSTOMERS:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->total_customers <= otherRide->total_customers)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_TOTAL_CUSTOMERS:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->total_customers <= otherRide->total_customers)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_TOTAL_PROFIT:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->total_profit <= otherRide->total_profit)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_TOTAL_PROFIT:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->total_profit <= otherRide->total_profit)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_CUSTOMERS:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride_customers_per_hour(ride) <= ride_customers_per_hour(otherRide))
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_CUSTOMERS:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride_customers_per_hour(ride) <= ride_customers_per_hour(otherRide))
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_AGE:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->build_date <= otherRide->build_date)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_AGE:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->build_date <= otherRide->build_date)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_INCOME:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->income_per_hour <= otherRide->income_per_hour)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_INCOME:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->income_per_hour <= otherRide->income_per_hour)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_RUNNING_COST:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->upkeep_cost <= otherRide->upkeep_cost)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_RUNNING_COST:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->upkeep_cost <= otherRide->upkeep_cost)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_QUEUE_LENGTH:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride_get_total_queue_length(ride) <= ride_get_total_queue_length(otherRide))
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_QUEUE_LENGTH:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride_get_total_queue_length(ride) <= ride_get_total_queue_length(otherRide))
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_QUEUE_TIME:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride_get_max_queue_time(ride) <= ride_get_max_queue_time(otherRide))
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_QUEUE_TIME:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride_get_max_queue_time(ride) <= ride_get_max_queue_time(otherRide))
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_RELIABILITY:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->reliability_percentage <= otherRide->reliability_percentage)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_RELIABILITY:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->reliability_percentage <= otherRide->reliability_percentage)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_DOWN_TIME:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->downtime <= otherRide->downtime)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_DOWN_TIME:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->downtime <= otherRide->downtime)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
-        case INFORMATION_TYPE_GUESTS_FAVOURITE:
-            while (--current_list_position >= 0) {
-                otherRide = get_ride(w->list_item_positions[current_list_position]);
-                if (ride->guests_favourite <= otherRide->guests_favourite)
-                    break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
+            case INFORMATION_TYPE_GUESTS_FAVOURITE:
+                while (--current_list_position >= 0)
+                {
+                    otherRide = get_ride(w->list_item_positions[current_list_position]);
+                    if (ride->guests_favourite <= otherRide->guests_favourite)
+                        break;
 
-                window_bubble_list_item(w, current_list_position);
-            }
-            break;
+                    window_bubble_list_item(w, current_list_position);
+                }
+                break;
         }
 
         list_index++;
@@ -917,12 +981,13 @@ void window_ride_list_refresh_list(rct_window *w)
     window_invalidate(w);
 }
 
-static void window_ride_list_close_all(rct_window *w)
+static void window_ride_list_close_all(rct_window* w)
 {
     int32_t i;
-    Ride *ride;
+    Ride* ride;
 
-    FOR_ALL_RIDES(i, ride) {
+    FOR_ALL_RIDES (i, ride)
+    {
         if (w->page != gRideClassifications[ride->type])
             continue;
         if (ride->status == RIDE_STATUS_CLOSED)
@@ -931,12 +996,13 @@ static void window_ride_list_close_all(rct_window *w)
     }
 }
 
-static void window_ride_list_open_all(rct_window *w)
+static void window_ride_list_open_all(rct_window* w)
 {
     int32_t i;
-    Ride *ride;
+    Ride* ride;
 
-    FOR_ALL_RIDES(i, ride) {
+    FOR_ALL_RIDES (i, ride)
+    {
         if (w->page != gRideClassifications[ride->type])
             continue;
         if (ride->status == RIDE_STATUS_OPEN)
