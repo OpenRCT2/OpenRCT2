@@ -9,9 +9,10 @@
 
 #pragma once
 
+#include "DrawCommands.h"
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
-#include "DrawCommands.h"
+
 #include <SDL2/SDL_pixels.h>
 #include <vector>
 

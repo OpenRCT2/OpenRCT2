@@ -31,12 +31,12 @@ typedef std::vector<XData> SweepLine;
  * from left to right. If multiple edges are at the same x coordinate, Then
  * edges for boxes to the left will appear before edges for boxes to the right.
  */
-static inline SweepLine CreateXList(const RectCommandBatch &transparent)
+static inline SweepLine CreateXList(const RectCommandBatch& transparent)
 {
     SweepLine x_sweep;
     x_sweep.reserve(transparent.size() * 2);
 
-    for (const DrawRectCommand &command : transparent)
+    for (const DrawRectCommand& command : transparent)
     {
         int32_t left = std::min(std::max(command.bounds.x, command.clip.x), command.clip.z);
         int32_t top = std::min(std::max(command.bounds.y, command.clip.y), command.clip.w);
@@ -45,16 +45,20 @@ static inline SweepLine CreateXList(const RectCommandBatch &transparent)
 
         assert(left <= right);
         assert(top <= bottom);
-        if (left == right) continue;
-        if (top == bottom) continue;
+        if (left == right)
+            continue;
+        if (top == bottom)
+            continue;
 
-        x_sweep.push_back({left, true, top, bottom});
-        x_sweep.push_back({right, false, top, bottom});
+        x_sweep.push_back({ left, true, top, bottom });
+        x_sweep.push_back({ right, false, top, bottom });
     }
 
-    std::sort(x_sweep.begin(), x_sweep.end(), [](const XData &a, const XData &b) -> bool {
-        if (a.xposition != b.xposition) return a.xposition < b.xposition;
-        else return !a.begin && b.begin;
+    std::sort(x_sweep.begin(), x_sweep.end(), [](const XData& a, const XData& b) -> bool {
+        if (a.xposition != b.xposition)
+            return a.xposition < b.xposition;
+        else
+            return !a.begin && b.begin;
     });
 
     return x_sweep;
@@ -78,9 +82,9 @@ typedef std::map<int32_t, YData> IntervalTree;
  * Inserts the interval's top endpoint into the interval tree. If the endpoint
  * already exists in the interval tree, it stacks the endpoints.
  */
-static inline IntervalTree::iterator InsertTopEndpoint(IntervalTree &y_intersect, int32_t top)
+static inline IntervalTree::iterator InsertTopEndpoint(IntervalTree& y_intersect, int32_t top)
 {
-    auto top_in = y_intersect.insert({top, {1, 0}});
+    auto top_in = y_intersect.insert({ top, { 1, 0 } });
     IntervalTree::iterator top_it = top_in.first;
     if (top_in.second)
     {
@@ -102,9 +106,9 @@ static inline IntervalTree::iterator InsertTopEndpoint(IntervalTree &y_intersect
  * endpoint already exists in the interval tree, it stacks the endpoint.
  * This function can produce a new maximum depth.
  */
-static inline IntervalTree::iterator InsertBottomEndpoint(IntervalTree &y_intersect, int32_t bottom)
+static inline IntervalTree::iterator InsertBottomEndpoint(IntervalTree& y_intersect, int32_t bottom)
 {
-    auto bottom_in = y_intersect.insert({bottom, {1, 1}});
+    auto bottom_in = y_intersect.insert({ bottom, { 1, 1 } });
     IntervalTree::iterator bottom_it = bottom_in.first;
     if (bottom_in.second)
     {
@@ -125,7 +129,7 @@ static inline IntervalTree::iterator InsertBottomEndpoint(IntervalTree &y_inters
 /*
  * Removes the interval's top endpoint, handling stacked endpoints.
  */
-static inline void RemoveTopEndpoint(IntervalTree &y_intersect, IntervalTree::iterator top_it)
+static inline void RemoveTopEndpoint(IntervalTree& y_intersect, IntervalTree::iterator top_it)
 {
     if (top_it->second.count == 1)
     {
@@ -140,7 +144,7 @@ static inline void RemoveTopEndpoint(IntervalTree &y_intersect, IntervalTree::it
 /*
  * Removes the interval's bottom endpoint, handling stacked endpoints.
  */
-static inline void RemoveBottomEndpoint(IntervalTree &y_intersect, IntervalTree::iterator bottom_it)
+static inline void RemoveBottomEndpoint(IntervalTree& y_intersect, IntervalTree::iterator bottom_it)
 {
     if (bottom_it->second.count == 1)
     {
@@ -158,13 +162,13 @@ static inline void RemoveBottomEndpoint(IntervalTree &y_intersect, IntervalTree:
  * to render the command batch. It will never underestimate the number of
  * iterations, but it can overestimate, usually by no more than +2.
  */
-int32_t MaxTransparencyDepth(const RectCommandBatch &transparent)
+int32_t MaxTransparencyDepth(const RectCommandBatch& transparent)
 {
     int32_t max_depth = 1;
     SweepLine x_sweep = CreateXList(transparent);
     IntervalTree y_intersect{};
 
-    for (const XData &x : x_sweep)
+    for (const XData& x : x_sweep)
     {
         if (x.begin)
         {

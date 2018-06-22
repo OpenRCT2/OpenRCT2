@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <stdexcept>
-#include <cstring>
-#include <SDL2/SDL.h>
-#include <openrct2/core/Imaging.h>
 #include "BitmapReader.h"
 
-static std::vector<uint8_t> ReadToVector(std::istream &stream)
+#include <SDL2/SDL.h>
+#include <algorithm>
+#include <cstring>
+#include <openrct2/core/Imaging.h>
+#include <stdexcept>
+
+static std::vector<uint8_t> ReadToVector(std::istream& stream)
 {
     std::vector<uint8_t> result;
     if (!stream.eof() && !stream.fail())
@@ -23,14 +24,14 @@ static std::vector<uint8_t> ReadToVector(std::istream &stream)
         auto size = stream.tellg();
         result.resize(size);
         stream.seekg(0, std::ios_base::beg);
-        stream.read((char *)result.data(), size);
+        stream.read((char*)result.data(), size);
     }
     return result;
 }
 
 // TODO Bitmaps aren't very complicated to read so we should probably just write our
 //      own implementation in libopenrct2 and spare the AOT implementation registration.
-static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
+static Image ReadBitmap(std::istream& istream, IMAGE_FORMAT format)
 {
     auto buffer = ReadToVector(istream);
     auto sdlStream = SDL_RWFromConstMem(buffer.data(), (int)buffer.size());
@@ -58,7 +59,7 @@ static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
             std::fill(image.Pixels.begin(), image.Pixels.end(), 0xFF);
 
             // Copy pixels over
-            auto src = (const uint8_t *)bitmap->pixels;
+            auto src = (const uint8_t*)bitmap->pixels;
             auto dst = image.Pixels.data();
             if (numChannels == 4)
             {

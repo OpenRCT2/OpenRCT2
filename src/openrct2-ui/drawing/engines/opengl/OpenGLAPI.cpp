@@ -18,18 +18,17 @@
 #undef OPENGL_PROC
 
 #include <SDL2/SDL_video.h>
-
 #include <openrct2/core/Console.hpp>
 
-static const char * TryLoadAllProcAddresses()
+static const char* TryLoadAllProcAddresses()
 {
-#define OPENGL_PROC(TYPE, PROC)                     \
-    {                                               \
-        PROC = (TYPE)SDL_GL_GetProcAddress(#PROC);  \
-        if (PROC == nullptr)                        \
-        {                                           \
-            return #PROC;                           \
-        }                                           \
+#define OPENGL_PROC(TYPE, PROC)                                                                                                \
+    {                                                                                                                          \
+        PROC = (TYPE)SDL_GL_GetProcAddress(#PROC);                                                                             \
+        if (PROC == nullptr)                                                                                                   \
+        {                                                                                                                      \
+            return #PROC;                                                                                                      \
+        }                                                                                                                      \
     }
 #include "OpenGLAPIProc.h"
 #undef OPENGL_PROC
@@ -49,7 +48,7 @@ namespace OpenGLState
         ActiveTexture = UINT16_MAX;
         CurrentProgram = UINT32_MAX;
     }
-}
+} // namespace OpenGLState
 
 void OpenGLAPI::SetTexture(uint16_t index, GLenum type, GLuint texture)
 {
@@ -65,7 +64,7 @@ bool OpenGLAPI::Initialise()
     OpenGLState::Reset();
 
 #ifdef OPENGL_NO_LINK
-    const char * failedProcName = TryLoadAllProcAddresses();
+    const char* failedProcName = TryLoadAllProcAddresses();
     if (failedProcName != nullptr)
     {
         Console::Error::WriteLine("Failed to load %s.", failedProcName);

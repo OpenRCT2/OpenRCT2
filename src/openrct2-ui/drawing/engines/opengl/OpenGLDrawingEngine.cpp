@@ -9,21 +9,6 @@
 
 #ifndef DISABLE_OPENGL
 
-#include <algorithm>
-#include <cmath>
-#include <unordered_map>
-#include <SDL2/SDL.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/core/Console.hpp>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/IDrawingContext.h>
-#include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/drawing/LightFX.h>
-#include <openrct2/drawing/Rain.h>
-#include <openrct2/interface/Screenshot.h>
-#include <openrct2/Intro.h>
-#include <openrct2-ui/interface/Window.h>
-#include <openrct2/ui/UiContext.h>
 #include "../DrawingEngineFactory.hpp"
 #include "ApplyPaletteShader.h"
 #include "DrawCommands.h"
@@ -35,6 +20,22 @@
 #include "SwapFramebuffer.h"
 #include "TextureCache.h"
 #include "TransparencyDepth.h"
+
+#include <SDL2/SDL.h>
+#include <algorithm>
+#include <cmath>
+#include <openrct2-ui/interface/Window.h>
+#include <openrct2/Intro.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/core/Console.hpp>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/IDrawingContext.h>
+#include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/LightFX.h>
+#include <openrct2/drawing/Rain.h>
+#include <openrct2/interface/Screenshot.h>
+#include <openrct2/ui/UiContext.h>
+#include <unordered_map>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -53,40 +54,45 @@ class OpenGLDrawingEngine;
 class OpenGLDrawingContext final : public IDrawingContext
 {
 private:
-    OpenGLDrawingEngine *   _engine = nullptr;
-    rct_drawpixelinfo *     _dpi    = nullptr;
+    OpenGLDrawingEngine* _engine = nullptr;
+    rct_drawpixelinfo* _dpi = nullptr;
 
-    ApplyTransparencyShader *   _applyTransparencyShader    = nullptr;
-    DrawLineShader *            _drawLineShader             = nullptr;
-    DrawRectShader *            _drawRectShader             = nullptr;
-    SwapFramebuffer *           _swapFramebuffer            = nullptr;
+    ApplyTransparencyShader* _applyTransparencyShader = nullptr;
+    DrawLineShader* _drawLineShader = nullptr;
+    DrawRectShader* _drawRectShader = nullptr;
+    SwapFramebuffer* _swapFramebuffer = nullptr;
 
-    TextureCache * _textureCache = nullptr;
+    TextureCache* _textureCache = nullptr;
 
-    int32_t _offsetX    = 0;
-    int32_t _offsetY    = 0;
-    int32_t _clipLeft   = 0;
-    int32_t _clipTop    = 0;
-    int32_t _clipRight  = 0;
+    int32_t _offsetX = 0;
+    int32_t _offsetY = 0;
+    int32_t _clipLeft = 0;
+    int32_t _clipTop = 0;
+    int32_t _clipRight = 0;
     int32_t _clipBottom = 0;
 
-    int32_t _drawCount  = 0;
+    int32_t _drawCount = 0;
 
     struct
     {
         LineCommandBatch lines;
         RectCommandBatch rects;
         RectCommandBatch transparent;
-    }
-    _commandBuffers;
+    } _commandBuffers;
 
 public:
-    explicit OpenGLDrawingContext(OpenGLDrawingEngine * engine);
+    explicit OpenGLDrawingContext(OpenGLDrawingEngine* engine);
     ~OpenGLDrawingContext() override;
 
-    IDrawingEngine * GetEngine() override;
-    TextureCache * GetTextureCache() const { return _textureCache; }
-    const OpenGLFramebuffer & GetFinalFramebuffer() const { return _swapFramebuffer->GetFinalFramebuffer(); }
+    IDrawingEngine* GetEngine() override;
+    TextureCache* GetTextureCache() const
+    {
+        return _textureCache;
+    }
+    const OpenGLFramebuffer& GetFinalFramebuffer() const
+    {
+        return _swapFramebuffer->GetFinalFramebuffer();
+    }
 
     void Initialise();
     void Resize(int32_t width, int32_t height);
@@ -100,7 +106,7 @@ public:
     void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) override;
     void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) override;
     void DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour) override;
-    void DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t * palette) override;
+    void DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t* palette) override;
 
     void FlushCommandBuffers();
 
@@ -108,39 +114,39 @@ public:
     void FlushRectangles();
     void HandleTransparency();
 
-    void SetDPI(rct_drawpixelinfo * dpi);
+    void SetDPI(rct_drawpixelinfo* dpi);
 };
 
 class OpenGLDrawingEngine : public IDrawingEngine
 {
 private:
     std::shared_ptr<IUiContext> const _uiContext;
-    SDL_Window *        _window     = nullptr;
-    SDL_GLContext       _context    = nullptr;
+    SDL_Window* _window = nullptr;
+    SDL_GLContext _context = nullptr;
 
-    uint32_t  _width      = 0;
-    uint32_t  _height     = 0;
-    uint32_t  _pitch      = 0;
-    size_t  _bitsSize   = 0;
-    uint8_t * _bits       = nullptr;
+    uint32_t _width = 0;
+    uint32_t _height = 0;
+    uint32_t _pitch = 0;
+    size_t _bitsSize = 0;
+    uint8_t* _bits = nullptr;
 
-    rct_drawpixelinfo _bitsDPI  = {};
+    rct_drawpixelinfo _bitsDPI = {};
 
-    OpenGLDrawingContext *    _drawingContext;
+    OpenGLDrawingContext* _drawingContext;
 
-    ApplyPaletteShader *    _applyPaletteShader     = nullptr;
-    OpenGLFramebuffer *     _screenFramebuffer      = nullptr;
-    OpenGLFramebuffer *     _scaleFramebuffer       = nullptr;
-    OpenGLFramebuffer *     _smoothScaleFramebuffer = nullptr;
+    ApplyPaletteShader* _applyPaletteShader = nullptr;
+    OpenGLFramebuffer* _screenFramebuffer = nullptr;
+    OpenGLFramebuffer* _scaleFramebuffer = nullptr;
+    OpenGLFramebuffer* _smoothScaleFramebuffer = nullptr;
 
 public:
     SDL_Color Palette[256];
-    vec4      GLPalette[256];
+    vec4 GLPalette[256];
 
     explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
     {
-        _window = (SDL_Window *)_uiContext->GetWindow();
+        _window = (SDL_Window*)_uiContext->GetWindow();
         _drawingContext = new OpenGLDrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__
         lightfx_set_available(false);
@@ -153,7 +159,7 @@ public:
         delete _screenFramebuffer;
 
         delete _drawingContext;
-        delete [] _bits;
+        delete[] _bits;
 
         SDL_GL_DeleteContext(_context);
     }
@@ -191,7 +197,7 @@ public:
         _drawingContext->Resize(width, height);
     }
 
-    void SetPalette(const rct_palette_entry * palette) override
+    void SetPalette(const rct_palette_entry* palette) override
     {
         for (int32_t i = 0; i < 256; i++)
         {
@@ -202,10 +208,7 @@ public:
             colour.a = i == 0 ? 0 : 255;
 
             Palette[i] = colour;
-            GLPalette[i] = { colour.r / 255.0f,
-                             colour.g / 255.0f,
-                             colour.b / 255.0f,
-                             colour.a / 255.0f };
+            GLPalette[i] = { colour.r / 255.0f, colour.g / 255.0f, colour.b / 255.0f, colour.a / 255.0f };
         }
 
         _applyPaletteShader->Use();
@@ -278,7 +281,7 @@ public:
 
     int32_t Screenshot() override
     {
-        const OpenGLFramebuffer & framebuffer = _drawingContext->GetFinalFramebuffer();
+        const OpenGLFramebuffer& framebuffer = _drawingContext->GetFinalFramebuffer();
         framebuffer.Bind();
         framebuffer.GetPixels(_bitsDPI);
         int32_t result = screenshot_dump_png(&_bitsDPI);
@@ -290,13 +293,13 @@ public:
         // Not applicable for this engine
     }
 
-    IDrawingContext * GetDrawingContext(rct_drawpixelinfo * dpi) override
+    IDrawingContext* GetDrawingContext(rct_drawpixelinfo* dpi) override
     {
         _drawingContext->SetDPI(dpi);
         return _drawingContext;
     }
 
-    rct_drawpixelinfo * GetDrawingPixelInfo() override
+    rct_drawpixelinfo* GetDrawingPixelInfo() override
     {
         return &_bitsDPI;
     }
@@ -308,11 +311,10 @@ public:
 
     void InvalidateImage(uint32_t image) override
     {
-        _drawingContext->GetTextureCache()
-                       ->InvalidateImage(image);
+        _drawingContext->GetTextureCache()->InvalidateImage(image);
     }
 
-    rct_drawpixelinfo * GetDPI()
+    rct_drawpixelinfo* GetDPI()
     {
         return &_bitsDPI;
     }
@@ -323,16 +325,18 @@ private:
         CheckGLError(); // Clear Any Errors
         OpenGLVersion version = { 0, 0 };
         glGetIntegerv(GL_MAJOR_VERSION, &version.Major);
-        if (glGetError() != GL_NO_ERROR) return { 0, 0 };
+        if (glGetError() != GL_NO_ERROR)
+            return { 0, 0 };
         glGetIntegerv(GL_MINOR_VERSION, &version.Minor);
-        if (glGetError() != GL_NO_ERROR) return { 0, 0 };
+        if (glGetError() != GL_NO_ERROR)
+            return { 0, 0 };
         return version;
     }
 
     void ConfigureBits(uint32_t width, uint32_t height, uint32_t pitch)
     {
-        size_t  newBitsSize = pitch * height;
-        uint8_t * newBits = new uint8_t[newBitsSize];
+        size_t newBitsSize = pitch * height;
+        uint8_t* newBits = new uint8_t[newBitsSize];
         if (_bits == nullptr)
         {
             std::fill_n(newBits, newBitsSize, 0);
@@ -345,8 +349,8 @@ private:
             }
             else
             {
-                uint8_t * src = _bits;
-                uint8_t * dst = newBits;
+                uint8_t* src = _bits;
+                uint8_t* dst = newBits;
 
                 uint32_t minWidth = std::min(_width, width);
                 uint32_t minHeight = std::min(_height, height);
@@ -361,7 +365,7 @@ private:
                     dst += pitch;
                 }
             }
-            delete [] _bits;
+            delete[] _bits;
         }
 
         _bits = newBits;
@@ -370,7 +374,7 @@ private:
         _height = height;
         _pitch = pitch;
 
-        rct_drawpixelinfo * dpi = &_bitsDPI;
+        rct_drawpixelinfo* dpi = &_bitsDPI;
         dpi->bits = _bits;
         dpi->x = 0;
         dpi->y = 0;
@@ -417,7 +421,7 @@ std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateOpenGLDrawingEngine(const st
     return std::make_unique<OpenGLDrawingEngine>(uiContext);
 }
 
-OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)
+OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine* engine)
 {
     _engine = engine;
 }
@@ -432,7 +436,7 @@ OpenGLDrawingContext::~OpenGLDrawingContext()
     delete _textureCache;
 }
 
-IDrawingEngine * OpenGLDrawingContext::GetEngine()
+IDrawingEngine* OpenGLDrawingContext::GetEngine()
 {
     return _engine;
 }
@@ -462,7 +466,7 @@ void OpenGLDrawingContext::Resize(int32_t width, int32_t height)
 
 void OpenGLDrawingContext::ResetPalette()
 {
-    //FlushCommandBuffers();
+    // FlushCommandBuffers();
 }
 
 void OpenGLDrawingContext::StartNewDraw()
@@ -581,11 +585,13 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     int32_t top = y + g1Element->y_offset;
 
     int32_t zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
-    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION){
+    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION)
+    {
         top -= ~zoom_mask;
     }
 
-    if (!(g1Element->flags & G1_FLAG_RLE_COMPRESSION)) {
+    if (!(g1Element->flags & G1_FLAG_RLE_COMPRESSION))
+    {
         top &= zoom_mask;
         left += ~zoom_mask;
     }
@@ -595,7 +601,8 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     int32_t right = left + g1Element->width;
     int32_t bottom = top + g1Element->height;
 
-    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION) {
+    if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION)
+    {
         bottom += top & ~zoom_mask;
     }
 
@@ -802,7 +809,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y,
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t * palette)
+void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t* palette)
 {
     auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
     if (g1Element == nullptr)
@@ -867,7 +874,8 @@ void OpenGLDrawingContext::FlushCommandBuffers()
 
 void OpenGLDrawingContext::FlushLines()
 {
-    if (_commandBuffers.lines.size() == 0) return;
+    if (_commandBuffers.lines.size() == 0)
+        return;
 
     _drawLineShader->Use();
     _drawLineShader->DrawInstances(_commandBuffers.lines);
@@ -877,7 +885,8 @@ void OpenGLDrawingContext::FlushLines()
 
 void OpenGLDrawingContext::FlushRectangles()
 {
-    if (_commandBuffers.rects.size() == 0) return;
+    if (_commandBuffers.rects.size() == 0)
+        return;
 
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());
     OpenGLAPI::SetTexture(1, GL_TEXTURE_RECTANGLE, _textureCache->GetPaletteTexture());
@@ -900,7 +909,7 @@ void OpenGLDrawingContext::HandleTransparency()
     _drawRectShader->SetInstances(_commandBuffers.transparent);
 
     int32_t max_depth = MaxTransparencyDepth(_commandBuffers.transparent);
-    for (int32_t i=0; i < max_depth; ++i)
+    for (int32_t i = 0; i < max_depth; ++i)
     {
         _swapFramebuffer->BindTransparent();
 
@@ -924,9 +933,9 @@ void OpenGLDrawingContext::HandleTransparency()
     _commandBuffers.transparent.clear();
 }
 
-void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
+void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo* dpi)
 {
-    rct_drawpixelinfo * screenDPI = _engine->GetDPI();
+    rct_drawpixelinfo* screenDPI = _engine->GetDPI();
 #ifndef NDEBUG
     size_t bitsSize = (size_t)screenDPI->height * (size_t)(screenDPI->width + screenDPI->pitch);
 #endif

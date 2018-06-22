@@ -9,11 +9,12 @@
 
 #ifndef DISABLE_OPENGL
 
+#include "TextureCache.h"
+
 #include <algorithm>
+#include <openrct2/drawing/Drawing.h>
 #include <stdexcept>
 #include <vector>
-#include <openrct2/drawing/Drawing.h>
-#include "TextureCache.h"
 
 constexpr uint32_t UNUSED_INDEX = 0xFFFFFFFF;
 
@@ -66,8 +67,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
     if (index != UNUSED_INDEX)
     {
         const auto& info = _textureCache[index];
-        return
-        {
+        return {
             info.index,
             info.normalizedBounds,
         };
@@ -83,18 +83,17 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
     return info;
 }
 
-BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t * palette)
+BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* palette)
 {
     GlyphId glyphId;
     glyphId.Image = image;
-    std::copy_n(palette, sizeof(glyphId.Palette), (uint8_t *)&glyphId.Palette);
+    std::copy_n(palette, sizeof(glyphId.Palette), (uint8_t*)&glyphId.Palette);
 
     auto kvp = _glyphTextureMap.find(glyphId);
     if (kvp != _glyphTextureMap.end())
     {
         const auto& info = kvp->second;
-        return
-        {
+        return {
             info.index,
             info.normalizedBounds,
         };
@@ -112,13 +111,15 @@ void TextureCache::CreateTextures()
     {
         // Determine width and height to use for texture atlases
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_atlasesTextureDimensions);
-        if (_atlasesTextureDimensions > TEXTURE_CACHE_MAX_ATLAS_SIZE) {
+        if (_atlasesTextureDimensions > TEXTURE_CACHE_MAX_ATLAS_SIZE)
+        {
             _atlasesTextureDimensions = TEXTURE_CACHE_MAX_ATLAS_SIZE;
         }
 
         // Determine maximum number of atlases (minimum of size and array limit)
         glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &_atlasesTextureIndicesLimit);
-        if (_atlasesTextureDimensions < _atlasesTextureIndicesLimit) _atlasesTextureIndicesLimit = _atlasesTextureDimensions;
+        if (_atlasesTextureDimensions < _atlasesTextureIndicesLimit)
+            _atlasesTextureIndicesLimit = _atlasesTextureDimensions;
 
         glGenTextures(1, &_atlasesTexture);
         glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
@@ -143,12 +144,12 @@ void TextureCache::GeneratePaletteTexture()
     rct_drawpixelinfo dpi = CreateDPI(256, PALETTE_TO_G1_OFFSET_COUNT + 5);
 
     // Init no-op palette
-    for (int i=0; i < 256; ++i)
+    for (int i = 0; i < 256; ++i)
     {
         dpi.bits[i] = i;
     }
 
-    for (int i=0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
+    for (int i = 0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
     {
         GLint y = PaletteToY(i);
         uint16_t image = palette_to_g1_offset[i];
@@ -157,7 +158,8 @@ void TextureCache::GeneratePaletteTexture()
     }
 
     glBindTexture(GL_TEXTURE_RECTANGLE, _paletteTexture);
-    glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_R8UI, 256, PALETTE_TO_G1_OFFSET_COUNT + 5, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+    glTexImage2D(
+        GL_TEXTURE_RECTANGLE, 0, GL_R8UI, 256, PALETTE_TO_G1_OFFSET_COUNT + 5, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
     DeleteDPI(dpi);
 }
 
@@ -175,10 +177,31 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
     }
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
-    glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, newIndices, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+    glTexImage3D(
+        GL_TEXTURE_2D_ARRAY,
+        0,
+        GL_R8UI,
+        _atlasesTextureDimensions,
+        _atlasesTextureDimensions,
+        newIndices,
+        0,
+        GL_RED_INTEGER,
+        GL_UNSIGNED_BYTE,
+        nullptr);
 
     // Restore old data
-    glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+    glTexSubImage3D(
+        GL_TEXTURE_2D_ARRAY,
+        0,
+        0,
+        0,
+        0,
+        _atlasesTextureDimensions,
+        _atlasesTextureDimensions,
+        _atlasesTextureIndices,
+        GL_RED_INTEGER,
+        GL_UNSIGNED_BYTE,
+        oldPixels.data());
 
     _atlasesTextureIndices = newIndices;
 }
@@ -191,14 +214,25 @@ AtlasTextureInfo TextureCache::LoadImageTexture(uint32_t image)
     cacheInfo.image = image;
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
-    glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+    glTexSubImage3D(
+        GL_TEXTURE_2D_ARRAY,
+        0,
+        cacheInfo.bounds.x,
+        cacheInfo.bounds.y,
+        cacheInfo.index,
+        dpi.width,
+        dpi.height,
+        1,
+        GL_RED_INTEGER,
+        GL_UNSIGNED_BYTE,
+        dpi.bits);
 
     DeleteDPI(dpi);
 
     return cacheInfo;
 }
 
-AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, uint8_t * palette)
+AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, uint8_t* palette)
 {
     rct_drawpixelinfo dpi = GetGlyphAsDPI(image, palette);
 
@@ -206,7 +240,18 @@ AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, uint8_t * palett
     cacheInfo.image = image;
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
-    glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+    glTexSubImage3D(
+        GL_TEXTURE_2D_ARRAY,
+        0,
+        cacheInfo.bounds.x,
+        cacheInfo.bounds.y,
+        cacheInfo.index,
+        dpi.width,
+        dpi.height,
+        1,
+        GL_RED_INTEGER,
+        GL_UNSIGNED_BYTE,
+        dpi.bits);
 
     DeleteDPI(dpi);
 
@@ -227,13 +272,13 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     }
 
     // If there is no such atlas, then create a new one
-    if ((int32_t) _atlases.size() >= _atlasesTextureIndicesLimit)
+    if ((int32_t)_atlases.size() >= _atlasesTextureIndicesLimit)
     {
         throw std::runtime_error("more texture atlases required, but device limit reached!");
     }
 
-    int32_t atlasIndex = (int32_t) _atlases.size();
-    int32_t atlasSize = (int32_t) powf(2, (float) Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
+    int32_t atlasIndex = (int32_t)_atlases.size();
+    int32_t atlasSize = (int32_t)powf(2, (float)Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
 
 #ifdef DEBUG
     log_verbose("new texture atlas #%d (size %d) allocated\n", atlasIndex, atlasSize);
@@ -260,7 +305,7 @@ rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32_t image, uint32_t tertiaryC
     return dpi;
 }
 
-rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, uint8_t * palette)
+rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, uint8_t* palette)
 {
     auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
     int32_t width = g1Element->width;
@@ -298,7 +343,7 @@ rct_drawpixelinfo TextureCache::CreateDPI(int32_t width, int32_t height)
 
 void TextureCache::DeleteDPI(rct_drawpixelinfo dpi)
 {
-    delete [] dpi.bits;
+    delete[] dpi.bits;
 }
 
 GLuint TextureCache::GetAtlasesTexture()

@@ -7,19 +7,19 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <cmath>
-#include <vector>
-#include <openrct2/common.h>
-#include <SDL2/SDL.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/drawing/X8DrawingEngine.h>
-#include <openrct2/ui/UiContext.h>
 #include "DrawingEngineFactory.hpp"
 
-#include <openrct2/drawing/LightFX.h>
+#include <SDL2/SDL.h>
+#include <cmath>
 #include <openrct2/Game.h>
+#include <openrct2/common.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/LightFX.h>
+#include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/paint/Paint.h>
+#include <openrct2/ui/UiContext.h>
+#include <vector>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -31,33 +31,33 @@ private:
     constexpr static uint32_t DIRTY_VISUAL_TIME = 32;
 
     std::shared_ptr<IUiContext> const _uiContext;
-    SDL_Window *        _window                     = nullptr;
-    SDL_Renderer *      _sdlRenderer                = nullptr;
-    SDL_Texture *       _screenTexture              = nullptr;
-    SDL_Texture *       _scaledScreenTexture        = nullptr;
-    SDL_PixelFormat *   _screenTextureFormat        = nullptr;
-    uint32_t              _paletteHWMapped[256]       = { 0 };
+    SDL_Window* _window = nullptr;
+    SDL_Renderer* _sdlRenderer = nullptr;
+    SDL_Texture* _screenTexture = nullptr;
+    SDL_Texture* _scaledScreenTexture = nullptr;
+    SDL_PixelFormat* _screenTextureFormat = nullptr;
+    uint32_t _paletteHWMapped[256] = { 0 };
 #ifdef __ENABLE_LIGHTFX__
-    uint32_t              _lightPaletteHWMapped[256]  = { 0 };
+    uint32_t _lightPaletteHWMapped[256] = { 0 };
 #endif
 
     // Steam overlay checking
-    uint32_t  _pixelBeforeOverlay     = 0;
-    uint32_t  _pixelAfterOverlay      = 0;
-    bool    _overlayActive          = false;
-    bool    _pausedBeforeOverlay    = false;
-    bool    _useVsync               = true;
+    uint32_t _pixelBeforeOverlay = 0;
+    uint32_t _pixelAfterOverlay = 0;
+    bool _overlayActive = false;
+    bool _pausedBeforeOverlay = false;
+    bool _useVsync = true;
 
     std::vector<uint32_t> _dirtyVisualsTime;
-    
-    bool    smoothNN = false;
+
+    bool smoothNN = false;
 
 public:
     explicit HardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
-        : X8DrawingEngine(uiContext),
-          _uiContext(uiContext)
+        : X8DrawingEngine(uiContext)
+        , _uiContext(uiContext)
     {
-        _window = (SDL_Window *)_uiContext->GetWindow();
+        _window = (SDL_Window*)_uiContext->GetWindow();
     }
 
     ~HardwareDisplayDrawingEngine() override
@@ -109,9 +109,8 @@ public:
         for (uint32_t i = 0; i < rendererInfo.num_texture_formats; i++)
         {
             uint32_t format = rendererInfo.texture_formats[i];
-            if (!SDL_ISPIXELFORMAT_FOURCC(format) &&
-                !SDL_ISPIXELFORMAT_INDEXED(format) &&
-                (pixelFormat == SDL_PIXELFORMAT_UNKNOWN || SDL_BYTESPERPIXEL(format) < SDL_BYTESPERPIXEL(pixelFormat)))
+            if (!SDL_ISPIXELFORMAT_FOURCC(format) && !SDL_ISPIXELFORMAT_INDEXED(format)
+                && (pixelFormat == SDL_PIXELFORMAT_UNKNOWN || SDL_BYTESPERPIXEL(format) < SDL_BYTESPERPIXEL(pixelFormat)))
             {
                 pixelFormat = format;
             }
@@ -142,13 +141,13 @@ public:
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
             uint32_t scale = std::ceil(gConfigGeneral.window_scale);
-            _scaledScreenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET,
-                                                     width * scale, height * scale);
+            _scaledScreenTexture
+                = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
         }
         else
         {
-            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING,width, height);
-        }        
+            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+        }
 
         uint32_t format;
         SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
@@ -157,7 +156,7 @@ public:
         ConfigureBits(width, height, width);
     }
 
-    void SetPalette(const rct_palette_entry * palette) override
+    void SetPalette(const rct_palette_entry* palette) override
     {
         if (_screenTextureFormat != nullptr)
         {
@@ -212,7 +211,7 @@ private:
 #ifdef __ENABLE_LIGHTFX__
         if (gConfigGeneral.enable_light_fx)
         {
-            void * pixels;
+            void* pixels;
             int32_t pitch;
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
@@ -229,7 +228,7 @@ private:
         {
             SDL_SetRenderTarget(_sdlRenderer, _scaledScreenTexture);
             SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
-            
+
             SDL_SetRenderTarget(_sdlRenderer, nullptr);
             SDL_RenderCopy(_sdlRenderer, _scaledScreenTexture, nullptr, nullptr);
         }
@@ -257,16 +256,16 @@ private:
         }
     }
 
-    void CopyBitsToTexture(SDL_Texture * texture, uint8_t * src, int32_t width, int32_t height, const uint32_t * palette)
+    void CopyBitsToTexture(SDL_Texture* texture, uint8_t* src, int32_t width, int32_t height, const uint32_t* palette)
     {
-        void *  pixels;
-        int32_t     pitch;
+        void* pixels;
+        int32_t pitch;
         if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0)
         {
             int32_t padding = pitch - (width * 4);
             if (pitch == width * 4)
             {
-                uint32_t * dst = (uint32_t *)pixels;
+                uint32_t* dst = (uint32_t*)pixels;
                 for (int32_t i = width * height; i > 0; i--)
                 {
                     *dst++ = palette[*src++];
@@ -276,26 +275,26 @@ private:
             {
                 if (pitch == (width * 2) + padding)
                 {
-                    uint16_t * dst = (uint16_t *)pixels;
+                    uint16_t* dst = (uint16_t*)pixels;
                     for (int32_t y = height; y > 0; y--)
                     {
                         for (int32_t x = width; x > 0; x--)
                         {
-                            const uint8_t lower = *(uint8_t *)(&palette[*src++]);
-                            const uint8_t upper = *(uint8_t *)(&palette[*src++]);
+                            const uint8_t lower = *(uint8_t*)(&palette[*src++]);
+                            const uint8_t upper = *(uint8_t*)(&palette[*src++]);
                             *dst++ = (lower << 8) | upper;
                         }
-                        dst = (uint16_t*)(((uint8_t *)dst) + padding);
+                        dst = (uint16_t*)(((uint8_t*)dst) + padding);
                     }
                 }
                 else if (pitch == width + padding)
                 {
-                    uint8_t * dst = (uint8_t *)pixels;
+                    uint8_t* dst = (uint8_t*)pixels;
                     for (int32_t y = height; y > 0; y--)
                     {
                         for (int32_t x = width; x > 0; x--)
                         {
-                            *dst++ = *(uint8_t *)(&palette[*src++]);
+                            *dst++ = *(uint8_t*)(&palette[*src++]);
                         }
                         dst += padding;
                     }
@@ -369,7 +368,7 @@ private:
         }
     }
 
-    void ReadCentrePixel(uint32_t * pixel)
+    void ReadCentrePixel(uint32_t* pixel)
     {
         SDL_Rect centrePixelRegion = { (int32_t)(_width / 2), (int32_t)(_height / 2), 1, 1 };
         SDL_RenderReadPixels(_sdlRenderer, &centrePixelRegion, SDL_PIXELFORMAT_RGBA8888, pixel, sizeof(uint32_t));

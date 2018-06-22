@@ -9,17 +9,18 @@
 
 #ifndef DISABLE_OPENGL
 
+#include "OpenGLShaderProgram.h"
+
 #include <openrct2/Context.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/FileStream.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/PlatformEnvironment.h>
-#include "OpenGLShaderProgram.h"
 
 using namespace OpenRCT2;
 
-OpenGLShader::OpenGLShader(const char * name, GLenum type)
+OpenGLShader::OpenGLShader(const char* name, GLenum type)
 {
     _type = type;
 
@@ -28,7 +29,7 @@ OpenGLShader::OpenGLShader(const char * name, GLenum type)
     auto sourceCodeStr = sourceCode.c_str();
 
     _id = glCreateShader(type);
-    glShaderSource(_id, 1, (const GLchar * *)&sourceCodeStr, nullptr);
+    glShaderSource(_id, 1, (const GLchar**)&sourceCodeStr, nullptr);
     glCompileShader(_id);
 
     GLint status;
@@ -56,7 +57,7 @@ GLuint OpenGLShader::GetShaderId()
     return _id;
 }
 
-std::string OpenGLShader::GetPath(const std::string &name)
+std::string OpenGLShader::GetPath(const std::string& name)
 {
     auto env = GetContext()->GetPlatformEnvironment();
     auto shadersPath = env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::SHADER);
@@ -72,7 +73,7 @@ std::string OpenGLShader::GetPath(const std::string &name)
     return path;
 }
 
-std::string OpenGLShader::ReadSourceCode(const std::string &path)
+std::string OpenGLShader::ReadSourceCode(const std::string& path)
 {
     auto fs = FileStream(path, FILE_MODE_OPEN);
 
@@ -83,11 +84,11 @@ std::string OpenGLShader::ReadSourceCode(const std::string &path)
     }
 
     auto fileData = std::string((size_t)fileLength + 1, '\0');
-    fs.Read((void *)fileData.data(), fileLength);
+    fs.Read((void*)fileData.data(), fileLength);
     return fileData;
 }
 
-OpenGLShaderProgram::OpenGLShaderProgram(const char * name)
+OpenGLShaderProgram::OpenGLShaderProgram(const char* name)
 {
     _vertexShader = new OpenGLShader(name, GL_VERTEX_SHADER);
     _fragmentShader = new OpenGLShader(name, GL_FRAGMENT_SHADER);
@@ -125,12 +126,12 @@ OpenGLShaderProgram::~OpenGLShaderProgram()
     glDeleteProgram(_id);
 }
 
-GLuint OpenGLShaderProgram::GetAttributeLocation(const char * name)
+GLuint OpenGLShaderProgram::GetAttributeLocation(const char* name)
 {
     return glGetAttribLocation(_id, name);
 }
 
-GLuint OpenGLShaderProgram::GetUniformLocation(const char * name)
+GLuint OpenGLShaderProgram::GetUniformLocation(const char* name)
 {
     return glGetUniformLocation(_id, name);
 }
