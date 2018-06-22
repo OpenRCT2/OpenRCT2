@@ -8,13 +8,13 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/world/Map.h>
-#include <openrct2/world/Surface.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/world/Map.h>
+#include <openrct2/world/Surface.h>
 
 // clang-format off
 static uint16_t toolSizeSpriteIndices[] =
@@ -84,7 +84,7 @@ uint32_t land_tool_size_to_sprite_index(uint16_t size)
     }
 }
 
-void land_tool_show_surface_style_dropdown(rct_window * w, rct_widget * widget, uint8_t currentSurfaceType)
+void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentSurfaceType)
 {
     uint8_t defaultIndex = 0;
 
@@ -99,25 +99,27 @@ void land_tool_show_surface_style_dropdown(rct_window * w, rct_widget * widget, 
     }
 
     window_dropdown_show_image(
-       w->x + widget->left, w->y + widget->top,
-       widget->bottom - widget->top,
-       w->colours[2],
-       0,
-       TERRAIN_COUNT_REGULAR,
-       47, 36,
-       gAppropriateImageDropdownItemsPerRow[TERRAIN_COUNT_REGULAR]
-    );
+        w->x + widget->left,
+        w->y + widget->top,
+        widget->bottom - widget->top,
+        w->colours[2],
+        0,
+        TERRAIN_COUNT_REGULAR,
+        47,
+        36,
+        gAppropriateImageDropdownItemsPerRow[TERRAIN_COUNT_REGULAR]);
 
     gDropdownDefaultIndex = defaultIndex;
 }
 
-void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uint8_t currentEdgeType)
+void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentEdgeType)
 {
     uint8_t defaultIndex = 0;
     // Do not show RCT1 edge styles if the player does not have RCT1.
     const uint8_t edgeCount = is_csg_loaded() ? TERRAIN_EDGE_COUNT : TERRAIN_EDGE_RCT2_COUNT;
 
-    for (uint8_t i = 0; i < edgeCount; i++) {
+    for (uint8_t i = 0; i < edgeCount; i++)
+    {
         gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
         gDropdownItemsArgs[i] = WallTexturePreviews[WallTextureOrder[i]];
         if (WallTextureOrder[i] == currentEdgeType)
@@ -125,14 +127,15 @@ void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uin
     }
 
     window_dropdown_show_image(
-       w->x + widget->left, w->y + widget->top,
-       widget->bottom - widget->top,
-       w->colours[2],
-       0,
-       edgeCount,
-       47, 36,
-       gAppropriateImageDropdownItemsPerRow[edgeCount]
-    );
+        w->x + widget->left,
+        w->y + widget->top,
+        widget->bottom - widget->top,
+        w->colours[2],
+        0,
+        edgeCount,
+        47,
+        36,
+        gAppropriateImageDropdownItemsPerRow[edgeCount]);
 
     gDropdownDefaultIndex = defaultIndex;
 }
