@@ -1202,6 +1202,10 @@ static constexpr const rct_window_graphs_y_axis window_graphs_y_axi[] = {
     { 13, -4, 1, STR_RIDE_STATS_G_FORCE_FORMAT },  // GRAPH_LATERAL
 };
 
+static constexpr auto RIDE_G_FORCES_RED_POS_VERTICAL = FIXED_2DP(5, 00);
+static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 00);
+static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 80);
+
 // Used for sorting the ride type cheat dropdown.
 struct RideTypeLabel
 {
@@ -5595,21 +5599,21 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 {
                     // Max. positive vertical G's
                     maxPositiveVerticalGs = ride->max_positive_vertical_g;
-                    stringId = maxPositiveVerticalGs >= FIXED_2DP(5, 00) ? STR_MAX_POSITIVE_VERTICAL_G_RED
-                                                                         : STR_MAX_POSITIVE_VERTICAL_G;
+                    stringId = maxPositiveVerticalGs >= RIDE_G_FORCES_RED_POS_VERTICAL ? STR_MAX_POSITIVE_VERTICAL_G_RED
+                                                                                       : STR_MAX_POSITIVE_VERTICAL_G;
                     gfx_draw_string_left(dpi, stringId, &maxPositiveVerticalGs, COLOUR_BLACK, x, y);
                     y += LIST_ROW_HEIGHT;
 
                     // Max. negative vertical G's
                     maxNegativeVerticalGs = ride->max_negative_vertical_g;
-                    stringId = maxNegativeVerticalGs <= -FIXED_2DP(2, 00) ? STR_MAX_NEGATIVE_VERTICAL_G_RED
-                                                                          : STR_MAX_NEGATIVE_VERTICAL_G;
+                    stringId = maxNegativeVerticalGs <= RIDE_G_FORCES_RED_NEG_VERTICAL ? STR_MAX_NEGATIVE_VERTICAL_G_RED
+                                                                                       : STR_MAX_NEGATIVE_VERTICAL_G;
                     gfx_draw_string_left(dpi, stringId, &maxNegativeVerticalGs, COLOUR_BLACK, x, y);
                     y += LIST_ROW_HEIGHT;
 
                     // Max lateral G's
                     maxLateralGs = ride->max_lateral_g;
-                    stringId = maxLateralGs >= FIXED_2DP(2, 80) ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
+                    stringId = maxLateralGs >= RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                     gfx_draw_string_left(dpi, stringId, &maxLateralGs, COLOUR_BLACK, x, y);
                     y += LIST_ROW_HEIGHT;
 
@@ -5974,6 +5978,9 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     // Plot
     int32_t x = dpi->x;
     int32_t top, bottom;
+    // Uses the limits (used to draw high forces in red on measurement tab) to determine if line should be drawn red.
+    // By default they are kept 0 unless the graph type supports it.
+    int32_t intensityThresholdPositive = 0, intensityThresholdNegative = 0;
     for (int32_t width = 0; width < dpi->width; width++, x++)
     {
         if (x < 0 || x >= measurement->num_items - 1)
@@ -5992,25 +5999,62 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             case GRAPH_VERTICAL:
                 top = measurement->vertical[x] + 39;
                 bottom = measurement->vertical[x + 1] + 39;
+                intensityThresholdPositive = (RIDE_G_FORCES_RED_POS_VERTICAL / 8) + 39;
+                intensityThresholdNegative = (RIDE_G_FORCES_RED_NEG_VERTICAL / 8) + 39;
                 break;
             case GRAPH_LATERAL:
                 top = measurement->lateral[x] + 52;
                 bottom = measurement->lateral[x + 1] + 52;
+                intensityThresholdPositive = (RIDE_G_FORCES_RED_LATERAL / 8) + 52;
+                intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + 52;
                 break;
             default:
                 log_error("Wrong graph type %d", listType);
                 top = bottom = 0;
         }
 
+        // Adjust line to match graph widget position.
         top = widget->bottom - widget->top - top - 13;
         bottom = widget->bottom - widget->top - bottom - 13;
+
+        // If red threshold is supported, adjust threshold line position as well. Otherwise, keep 0.
+        if (intensityThresholdPositive != 0 && intensityThresholdNegative != 0)
+        {
+            intensityThresholdPositive = widget->bottom - widget->top - intensityThresholdPositive - 13;
+            intensityThresholdNegative = widget->bottom - widget->top - intensityThresholdNegative - 13;
+        }
+
+        // Line is drawn from top to bottom.
         if (top > bottom)
         {
             int32_t tmp = top;
             top = bottom;
             bottom = tmp;
         }
+
+        // Draw the current line in gray.
         gfx_fill_rect(dpi, x, top, x, bottom, x > measurement->current_item ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
+
+        // Draw red over extreme values (if supported by graph type).
+        if (intensityThresholdPositive != 0 && intensityThresholdNegative != 0)
+        {
+            // If line exceeds negative threshold (at bottom of graph).
+            if (top >= intensityThresholdNegative || bottom >= intensityThresholdNegative)
+            {
+                gfx_fill_rect(
+                    dpi, x, top >= intensityThresholdNegative ? top : intensityThresholdNegative, x,
+                    bottom >= intensityThresholdNegative ? bottom : intensityThresholdNegative,
+                    x > measurement->current_item ? PALETTE_INDEX_171 : PALETTE_INDEX_173);
+            }
+            // If line exceeds positive threshold (at top of graph).
+            if (top <= intensityThresholdPositive || bottom <= intensityThresholdPositive)
+            {
+                gfx_fill_rect(
+                    dpi, x, top <= intensityThresholdPositive ? top : intensityThresholdPositive, x,
+                    bottom <= intensityThresholdPositive ? bottom : intensityThresholdPositive,
+                    x > measurement->current_item ? PALETTE_INDEX_171 : PALETTE_INDEX_173);
+            }
+        }
     }
 }
 

@@ -97,6 +97,7 @@ enum
     PALETTE_INDEX_162 = 162, //
     PALETTE_INDEX_171 = 171, // Saturated Red (lightest) Bright Red (middark)
     PALETTE_INDEX_172 = 172, // Saturated Red (10-11), Bright Red (midlight)
+    PALETTE_INDEX_173 = 173, // Used to draw intense lines in the Ride Graphs window
     PALETTE_INDEX_183 = 183, // Used to draw rides in the Map window
     PALETTE_INDEX_186 = 186, //
     PALETTE_INDEX_194 = 194, //
