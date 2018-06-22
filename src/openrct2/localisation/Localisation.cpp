@@ -7,42 +7,42 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <ctype.h>
 #include <cstring>
+#include <ctype.h>
 #include <limits.h>
 
 #ifdef _WIN32
 #include <windows.h>
 #elif defined(__ANDROID__)
-#include <jni.h>
 #include <SDL.h>
+#include <jni.h>
 
 #else
-#include <iconv.h>
 #include <errno.h>
+#include <iconv.h>
 #endif // _WIN32
 
+#include "../Game.h"
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "Date.h"
-#include "../Game.h"
-#include "Localisation.h"
 #include "../management/Marketing.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
+#include "Date.h"
+#include "Localisation.h"
 
 char gCommonStringFormatBuffer[256];
 uint8_t gCommonFormatArgs[80];
 uint8_t gMapTooltipFormatArgs[40];
 
 #ifdef DEBUG
-    // Set to true before a string format call to see details of the formatting.
-    // Set to false after the call.
-    bool gDebugStringFormatting = false;
+// Set to true before a string format call to see details of the formatting.
+// Set to false after the call.
+bool gDebugStringFormatting = false;
 #endif
 
 // clang-format off
@@ -330,24 +330,54 @@ const rct_string_id DateGameShortMonthNames[MONTH_COUNT] = {
 };
 // clang-format on
 
-#define format_push_char_safe(C) { *(*dest)++ = (C); --(*size); }
-#define format_handle_overflow(X) if ((*size) <= (X)) { *(*dest) = '\0'; (*size) = 0; return; }
-#define format_push_char(C) { format_handle_overflow(1); format_push_char_safe(C); }
+#define format_push_char_safe(C)                                                                                               \
+    {                                                                                                                          \
+        *(*dest)++ = (C);                                                                                                      \
+        --(*size);                                                                                                             \
+    }
+#define format_handle_overflow(X)                                                                                              \
+    if ((*size) <= (X))                                                                                                        \
+    {                                                                                                                          \
+        *(*dest) = '\0';                                                                                                       \
+        (*size) = 0;                                                                                                           \
+        return;                                                                                                                \
+    }
+#define format_push_char(C)                                                                                                    \
+    {                                                                                                                          \
+        format_handle_overflow(1);                                                                                             \
+        format_push_char_safe(C);                                                                                              \
+    }
 
-#define format_push_wrap(C) { *ncur = (C); if (ncur == (*dest)) ncur = nbegin; }
-#define reverse_string() while (nbegin < nend) { tmp = *nbegin; *nbegin++ = *nend; *nend-- = tmp; }
+#define format_push_wrap(C)                                                                                                    \
+    {                                                                                                                          \
+        *ncur = (C);                                                                                                           \
+        if (ncur == (*dest))                                                                                                   \
+            ncur = nbegin;                                                                                                     \
+    }
+#define reverse_string()                                                                                                       \
+    while (nbegin < nend)                                                                                                      \
+    {                                                                                                                          \
+        tmp = *nbegin;                                                                                                         \
+        *nbegin++ = *nend;                                                                                                     \
+        *nend-- = tmp;                                                                                                         \
+    }
 
-static void format_string_part_from_raw(char **dest, size_t *size, const char *src, char **args);
-static void format_string_part(char **dest, size_t *size, rct_string_id format, char **args);
+static void format_string_part_from_raw(char** dest, size_t* size, const char* src, char** args);
+static void format_string_part(char** dest, size_t* size, rct_string_id format, char** args);
 
-static void format_append_string(char **dest, size_t *size, const utf8 *string) {
-    if ((*size) == 0) return;
+static void format_append_string(char** dest, size_t* size, const utf8* string)
+{
+    if ((*size) == 0)
+        return;
     size_t length = strlen(string);
-    if (length < (*size)) {
+    if (length < (*size))
+    {
         memcpy((*dest), string, length);
         (*dest) += length;
         (*size) -= length;
-    } else {
+    }
+    else
+    {
         memcpy((*dest), string, (*size) - 1);
         (*dest) += (*size) - 1;
         *(*dest)++ = '\0';
@@ -355,14 +385,19 @@ static void format_append_string(char **dest, size_t *size, const utf8 *string) 
     }
 }
 
-static void format_append_string_n(char **dest, size_t *size, const utf8 *string, size_t maxlen) {
-    if ((*size) == 0) return;
+static void format_append_string_n(char** dest, size_t* size, const utf8* string, size_t maxlen)
+{
+    if ((*size) == 0)
+        return;
     size_t length = std::min(maxlen, strlen(string));
-    if (length < (*size)) {
+    if (length < (*size))
+    {
         memcpy((*dest), string, length);
         (*dest) += length;
         (*size) -= length;
-    } else {
+    }
+    else
+    {
         memcpy((*dest), string, (*size) - 1);
         (*dest) += (*size) - 1;
         *(*dest)++ = '\0';
@@ -370,21 +405,24 @@ static void format_append_string_n(char **dest, size_t *size, const utf8 *string
     }
 }
 
-static void format_integer(char **dest, size_t *size, int64_t value)
+static void format_integer(char** dest, size_t* size, int64_t value)
 {
     int32_t digit;
     char *nbegin, *nend, *ncur;
     char tmp;
 
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
     // Negative sign
-    if (value < 0) {
+    if (value < 0)
+    {
         format_push_char('-');
         value = -value;
     }
 
-    if (value == 0) {
+    if (value == 0)
+    {
         format_push_char('0');
         return;
     }
@@ -392,17 +430,20 @@ static void format_integer(char **dest, size_t *size, int64_t value)
     nbegin = (*dest);
 
     // Right to left
-    while (value > 0 && (*size) > 1) {
+    while (value > 0 && (*size) > 1)
+    {
         digit = value % 10;
         value /= 10;
 
         format_push_char_safe('0' + digit);
     }
 
-    if (value > 0) {
+    if (value > 0)
+    {
         ncur = nbegin;
 
-        while (value > 0) {
+        while (value > 0)
+        {
             digit = value % 10;
             value /= 10;
 
@@ -419,30 +460,35 @@ static void format_integer(char **dest, size_t *size, int64_t value)
         reverse_string();
 
         format_push_char_safe('\0'); // Truncate overflowed string
-    } else {
+    }
+    else
+    {
         // Reverse string
         nend = (*dest) - 1;
         reverse_string();
     }
 }
 
-static void format_comma_separated_integer(char **dest, size_t *size, int64_t value)
+static void format_comma_separated_integer(char** dest, size_t* size, int64_t value)
 {
     int32_t digit, groupIndex;
     char *nbegin, *nend, *ncur;
     char tmp;
-    const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
-    const char *ch = nullptr;
+    const char* commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
+    const char* ch = nullptr;
 
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
     // Negative sign
-    if (value < 0) {
+    if (value < 0)
+    {
         format_push_char('-');
         value = -value;
     }
 
-    if (value == 0) {
+    if (value == 0)
+    {
         format_push_char('0');
         return;
     }
@@ -451,17 +497,23 @@ static void format_comma_separated_integer(char **dest, size_t *size, int64_t va
 
     // Groups of three digits, right to left
     groupIndex = 0;
-    while (value > 0 && (*size) > 1) {
+    while (value > 0 && (*size) > 1)
+    {
         // Append group separator
-        if (groupIndex == 3) {
+        if (groupIndex == 3)
+        {
             groupIndex = 0;
             ch = commaMark;
         }
 
-        if (ch != nullptr ) {
+        if (ch != nullptr)
+        {
             format_push_char_safe(*ch++);
-            if (*ch == '\0') ch = nullptr;
-        } else {
+            if (*ch == '\0')
+                ch = nullptr;
+        }
+        else
+        {
             digit = value % 10;
             value /= 10;
 
@@ -470,20 +522,27 @@ static void format_comma_separated_integer(char **dest, size_t *size, int64_t va
         }
     }
 
-    if (value > 0) {
+    if (value > 0)
+    {
         ncur = nbegin;
 
-        while (value > 0) {
+        while (value > 0)
+        {
             // Append group separator
-            if (groupIndex == 3) {
+            if (groupIndex == 3)
+            {
                 groupIndex = 0;
                 ch = commaMark;
             }
 
-            if (ch != nullptr ) {
+            if (ch != nullptr)
+            {
                 format_push_wrap(*ch++);
-                if (*ch == '\0') ch = nullptr;
-            } else {
+                if (*ch == '\0')
+                    ch = nullptr;
+            }
+            else
+            {
                 digit = value % 10;
                 value /= 10;
 
@@ -502,27 +561,31 @@ static void format_comma_separated_integer(char **dest, size_t *size, int64_t va
         reverse_string();
 
         format_push_char_safe('\0'); // Truncate overflowed string
-    } else {
+    }
+    else
+    {
         // Reverse string
         nend = *dest - 1;
         reverse_string();
     }
 }
 
-static void format_comma_separated_fixed_1dp(char **dest, size_t *size, int64_t value)
+static void format_comma_separated_fixed_1dp(char** dest, size_t* size, int64_t value)
 {
     int32_t digit, groupIndex;
     char *nbegin, *nend, *ncur;
     char tmp;
-    const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
-    const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    const char *ch = nullptr;
+    const char* commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
+    const char* decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
+    const char* ch = nullptr;
     int32_t zeroNeeded = 1;
 
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
     // Negative sign
-    if (value < 0) {
+    if (value < 0)
+    {
         format_push_char('-');
         value = -value;
     }
@@ -532,7 +595,8 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, int64_t 
     // In the case of buffers this small,
     // all of this would be truncated anyways.
     format_handle_overflow(1);
-    if ((*size) > 2) {
+    if ((*size) > 2)
+    {
         // One decimal place
         digit = value % 10;
         format_push_char_safe('0' + digit);
@@ -542,17 +606,23 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, int64_t 
     value /= 10;
 
     groupIndex = 0;
-    while ((zeroNeeded || value > 0) && (*size) > 1) {
+    while ((zeroNeeded || value > 0) && (*size) > 1)
+    {
         // Append group separator
-        if (groupIndex == 3) {
+        if (groupIndex == 3)
+        {
             groupIndex = 0;
             ch = commaMark;
         }
 
-        if (ch != nullptr ) {
+        if (ch != nullptr)
+        {
             format_push_char_safe(*ch++);
-            if (*ch == '\0') ch = nullptr;
-        } else {
+            if (*ch == '\0')
+                ch = nullptr;
+        }
+        else
+        {
             zeroNeeded = 0;
             digit = value % 10;
             value /= 10;
@@ -562,20 +632,27 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, int64_t 
         }
     }
 
-    if (zeroNeeded || value > 0) {
+    if (zeroNeeded || value > 0)
+    {
         ncur = nbegin;
 
-        while (zeroNeeded || value > 0) {
+        while (zeroNeeded || value > 0)
+        {
             // Append group separator
-            if (groupIndex == 3) {
+            if (groupIndex == 3)
+            {
                 groupIndex = 0;
                 ch = commaMark;
             }
 
-            if (ch != nullptr ) {
+            if (ch != nullptr)
+            {
                 format_push_wrap(*ch++);
-                if (*ch == '\0') ch = nullptr;
-            } else {
+                if (*ch == '\0')
+                    ch = nullptr;
+            }
+            else
+            {
                 zeroNeeded = 0;
                 digit = value % 10;
                 value /= 10;
@@ -595,27 +672,31 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, int64_t 
         reverse_string();
 
         format_push_char_safe('\0'); // Truncate overflowed string
-    } else {
+    }
+    else
+    {
         // Reverse string
         nend = *dest - 1;
         reverse_string();
     }
 }
 
-static void format_comma_separated_fixed_2dp(char **dest, size_t *size, int64_t value)
+static void format_comma_separated_fixed_2dp(char** dest, size_t* size, int64_t value)
 {
     int32_t digit, groupIndex;
     char *nbegin, *nend, *ncur;
     char tmp;
-    const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
-    const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    const char *ch = nullptr;
+    const char* commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
+    const char* decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
+    const char* ch = nullptr;
     int32_t zeroNeeded = 1;
 
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
     // Negative sign
-    if (value < 0) {
+    if (value < 0)
+    {
         format_push_char('-');
         value = -value;
     }
@@ -625,9 +706,12 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, int64_t 
     // In the case of buffers this small,
     // all of this would be truncated anyways.
     format_handle_overflow(1);
-    if ((*size) < 3) {
+    if ((*size) < 3)
+    {
         value /= 100;
-    } else {
+    }
+    else
+    {
         // Two decimal places
         digit = value % 10;
         value /= 10;
@@ -641,17 +725,23 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, int64_t 
     }
 
     groupIndex = 0;
-    while ((zeroNeeded || value > 0) && (*size) > 1) {
+    while ((zeroNeeded || value > 0) && (*size) > 1)
+    {
         // Append group separator
-        if (groupIndex == 3) {
+        if (groupIndex == 3)
+        {
             groupIndex = 0;
             ch = commaMark;
         }
 
-        if (ch != nullptr ) {
+        if (ch != nullptr)
+        {
             format_push_char_safe(*ch++);
-            if (*ch == '\0') ch = nullptr;
-        } else {
+            if (*ch == '\0')
+                ch = nullptr;
+        }
+        else
+        {
             zeroNeeded = 0;
             digit = value % 10;
             value /= 10;
@@ -661,20 +751,27 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, int64_t 
         }
     }
 
-    if (zeroNeeded || value > 0) {
+    if (zeroNeeded || value > 0)
+    {
         ncur = nbegin;
 
-        while (zeroNeeded || value > 0) {
+        while (zeroNeeded || value > 0)
+        {
             // Append group separator
-            if (groupIndex == 3) {
+            if (groupIndex == 3)
+            {
                 groupIndex = 0;
                 ch = commaMark;
             }
 
-            if (ch != nullptr ) {
+            if (ch != nullptr)
+            {
                 format_push_wrap(*ch++);
-                if (*ch == '\0') ch = nullptr;
-            } else {
+                if (*ch == '\0')
+                    ch = nullptr;
+            }
+            else
+            {
                 zeroNeeded = 0;
                 digit = value % 10;
                 value /= 10;
@@ -694,23 +791,27 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, int64_t 
         reverse_string();
 
         format_push_char_safe('\0'); // Truncate overflowed string
-    } else {
+    }
+    else
+    {
         // Reverse string
         nend = *dest - 1;
         reverse_string();
     }
 }
 
-static void format_currency(char **dest, size_t *size, int64_t value)
+static void format_currency(char** dest, size_t* size, int64_t value)
 {
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
-    const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
     value *= currencyDesc->rate;
 
     // Negative sign
-    if (value < 0) {
+    if (value < 0)
+    {
         format_push_char('-');
         value = -value;
     }
@@ -719,9 +820,10 @@ static void format_currency(char **dest, size_t *size, int64_t value)
     value = (value + 99) / 100;
 
     // Currency symbol
-    const utf8 *symbol = currencyDesc->symbol_unicode;
+    const utf8* symbol = currencyDesc->symbol_unicode;
     uint8_t affix = currencyDesc->affix_unicode;
-    if (!font_supports_string(symbol, FONT_SIZE_MEDIUM)) {
+    if (!font_supports_string(symbol, FONT_SIZE_MEDIUM))
+    {
         symbol = currencyDesc->symbol_ascii;
         affix = currencyDesc->affix_ascii;
     }
@@ -729,35 +831,40 @@ static void format_currency(char **dest, size_t *size, int64_t value)
     // Prefix
     if (affix == CURRENCY_PREFIX)
         format_append_string(dest, size, symbol);
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
     format_comma_separated_integer(dest, size, value);
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
     // Currency symbol suffix
     if (affix == CURRENCY_SUFFIX)
         format_append_string(dest, size, symbol);
 }
 
-static void format_currency_2dp(char **dest, size_t *size, int64_t value)
+static void format_currency_2dp(char** dest, size_t* size, int64_t value)
 {
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
-    const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
     int32_t rate = currencyDesc->rate;
     value *= rate;
 
     // Negative sign
-    if (value < 0) {
+    if (value < 0)
+    {
         format_push_char('-');
         value = -value;
     }
 
     // Currency symbol
-    const utf8 *symbol = currencyDesc->symbol_unicode;
+    const utf8* symbol = currencyDesc->symbol_unicode;
     uint8_t affix = currencyDesc->affix_unicode;
-    if (!font_supports_string(symbol, FONT_SIZE_MEDIUM)) {
+    if (!font_supports_string(symbol, FONT_SIZE_MEDIUM))
+    {
         symbol = currencyDesc->symbol_ascii;
         affix = currencyDesc->affix_ascii;
     }
@@ -765,80 +872,89 @@ static void format_currency_2dp(char **dest, size_t *size, int64_t value)
     // Prefix
     if (affix == CURRENCY_PREFIX)
         format_append_string(dest, size, symbol);
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
     // Drop the pennies for "large" currencies
-    if (rate >= 100) {
+    if (rate >= 100)
+    {
         format_comma_separated_integer(dest, size, value / 100);
-    } else {
+    }
+    else
+    {
         format_comma_separated_fixed_2dp(dest, size, value);
     }
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
     // Currency symbol suffix
     if (affix == CURRENCY_SUFFIX)
         format_append_string(dest, size, symbol);
 }
 
-static void format_date(char **dest, size_t *size, uint16_t value)
+static void format_date(char** dest, size_t* size, uint16_t value)
 {
     uint16_t args[] = { static_cast<uint16_t>(date_get_month(value)), static_cast<uint16_t>(date_get_year(value) + 1) };
-    uint16_t *argsRef = args;
+    uint16_t* argsRef = args;
     format_string_part(dest, size, STR_DATE_FORMAT_MY, (char**)&argsRef);
 }
 
-static void format_length(char **dest, size_t *size, int16_t value)
+static void format_length(char** dest, size_t* size, int16_t value)
 {
     rct_string_id stringId = STR_UNIT_SUFFIX_METRES;
 
-    if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL) {
+    if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL)
+    {
         value = metres_to_feet(value);
         stringId = STR_UNIT_SUFFIX_FEET;
     }
 
-    int16_t *argRef = &value;
+    int16_t* argRef = &value;
     format_string_part(dest, size, stringId, (char**)&argRef);
 }
 
-static void format_velocity(char **dest, size_t *size, uint16_t value)
+static void format_velocity(char** dest, size_t* size, uint16_t value)
 {
     rct_string_id stringId;
 
-    switch (gConfigGeneral.measurement_format) {
-    default:
-        stringId = STR_UNIT_SUFFIX_MILES_PER_HOUR;
-        break;
-    case MEASUREMENT_FORMAT_METRIC:
-        value = mph_to_kmph(value);
-        stringId = STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR;
-        break;
-    case MEASUREMENT_FORMAT_SI:
-        value = mph_to_dmps(value);
-        stringId = STR_UNIT_SUFFIX_METRES_PER_SECOND;
-        break;
+    switch (gConfigGeneral.measurement_format)
+    {
+        default:
+            stringId = STR_UNIT_SUFFIX_MILES_PER_HOUR;
+            break;
+        case MEASUREMENT_FORMAT_METRIC:
+            value = mph_to_kmph(value);
+            stringId = STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR;
+            break;
+        case MEASUREMENT_FORMAT_SI:
+            value = mph_to_dmps(value);
+            stringId = STR_UNIT_SUFFIX_METRES_PER_SECOND;
+            break;
     }
 
-    uint16_t *argRef = &value;
+    uint16_t* argRef = &value;
     format_string_part(dest, size, stringId, (char**)&argRef);
 }
 
 static constexpr const rct_string_id DurationFormats[][2] = {
-    {STR_DURATION_SEC,      STR_DURATION_SECS},
-    {STR_DURATION_MIN_SEC,  STR_DURATION_MIN_SECS},
-    {STR_DURATION_MINS_SEC, STR_DURATION_MINS_SECS},
+    { STR_DURATION_SEC, STR_DURATION_SECS },
+    { STR_DURATION_MIN_SEC, STR_DURATION_MIN_SECS },
+    { STR_DURATION_MINS_SEC, STR_DURATION_MINS_SECS },
 };
 
-static void format_duration(char **dest, size_t *size, uint16_t value)
+static void format_duration(char** dest, size_t* size, uint16_t value)
 {
     uint16_t minutes = value / 60;
     uint16_t seconds = value % 60;
     uint16_t args[] = { minutes, seconds };
-    uint16_t *argsRef = &args[1];
+    uint16_t* argsRef = &args[1];
 
     int32_t minuteIndex = 0;
-    if (minutes > 0) {
+    if (minutes > 0)
+    {
         minuteIndex = 1;
-        if (minutes != 1) {
+        if (minutes != 1)
+        {
             minuteIndex = 2;
         }
 
@@ -846,7 +962,8 @@ static void format_duration(char **dest, size_t *size, uint16_t value)
     }
 
     int32_t secondsIndex = 0;
-    if (seconds != 1) {
+    if (seconds != 1)
+    {
         secondsIndex = 1;
     }
 
@@ -856,22 +973,24 @@ static void format_duration(char **dest, size_t *size, uint16_t value)
 }
 
 static constexpr const rct_string_id RealtimeFormats[][2] = {
-    {STR_REALTIME_MIN,       STR_REALTIME_MINS},
-    {STR_REALTIME_HOUR_MIN,  STR_REALTIME_HOUR_MINS},
-    {STR_REALTIME_HOURS_MIN, STR_REALTIME_HOURS_MINS},
+    { STR_REALTIME_MIN, STR_REALTIME_MINS },
+    { STR_REALTIME_HOUR_MIN, STR_REALTIME_HOUR_MINS },
+    { STR_REALTIME_HOURS_MIN, STR_REALTIME_HOURS_MINS },
 };
 
-static void format_realtime(char **dest, size_t *size, uint16_t value)
+static void format_realtime(char** dest, size_t* size, uint16_t value)
 {
     uint16_t hours = value / 60;
     uint16_t minutes = value % 60;
     uint16_t args[] = { hours, minutes };
-    uint16_t *argsRef = &args[1];
+    uint16_t* argsRef = &args[1];
 
     int32_t hourIndex = 0;
-    if (hours > 0) {
+    if (hours > 0)
+    {
         hourIndex = 1;
-        if (hours != 1) {
+        if (hours != 1)
+        {
             hourIndex = 2;
         }
 
@@ -879,7 +998,8 @@ static void format_realtime(char **dest, size_t *size, uint16_t value)
     }
 
     int32_t minuteIndex = 0;
-    if (minutes != 1) {
+    if (minutes != 1)
+    {
         minuteIndex = 1;
     }
 
@@ -888,180 +1008,195 @@ static void format_realtime(char **dest, size_t *size, uint16_t value)
     format_string_part(dest, size, stringId, (char**)&argsRef);
 }
 
-static void format_string_code(uint32_t format_code, char **dest, size_t *size, char **args)
+static void format_string_code(uint32_t format_code, char** dest, size_t* size, char** args)
 {
     intptr_t value;
 
-    if ((*size) == 0) return;
+    if ((*size) == 0)
+        return;
 
 #ifdef DEBUG
-    if (gDebugStringFormatting) {
+    if (gDebugStringFormatting)
+    {
         printf("format_string_code(\"%s\")\n", format_get_token(format_code));
     }
 #endif
 
-    switch (format_code) {
-    case FORMAT_COMMA32:
-        // Pop argument
-        value = *((int32_t*)*args);
-        *args += 4;
+    switch (format_code)
+    {
+        case FORMAT_COMMA32:
+            // Pop argument
+            value = *((int32_t*)*args);
+            *args += 4;
 
-        format_comma_separated_integer(dest, size, value);
-        break;
-    case FORMAT_INT32:
-        // Pop argument
-        value = *((int32_t*)*args);
-        *args += 4;
+            format_comma_separated_integer(dest, size, value);
+            break;
+        case FORMAT_INT32:
+            // Pop argument
+            value = *((int32_t*)*args);
+            *args += 4;
 
-        format_integer(dest, size, value);
-        break;
-    case FORMAT_COMMA2DP32:
-        // Pop argument
-        value = *((int32_t*)*args);
-        *args += 4;
+            format_integer(dest, size, value);
+            break;
+        case FORMAT_COMMA2DP32:
+            // Pop argument
+            value = *((int32_t*)*args);
+            *args += 4;
 
-        format_comma_separated_fixed_2dp(dest, size, value);
-        break;
-    case FORMAT_COMMA1DP16:
-        // Pop argument
-        value = *((int16_t*)*args);
-        *args += 2;
+            format_comma_separated_fixed_2dp(dest, size, value);
+            break;
+        case FORMAT_COMMA1DP16:
+            // Pop argument
+            value = *((int16_t*)*args);
+            *args += 2;
 
-        format_comma_separated_fixed_1dp(dest, size, value);
-        break;
-    case FORMAT_COMMA16:
-        // Pop argument
-        value = *((int16_t*)*args);
-        *args += 2;
+            format_comma_separated_fixed_1dp(dest, size, value);
+            break;
+        case FORMAT_COMMA16:
+            // Pop argument
+            value = *((int16_t*)*args);
+            *args += 2;
 
-        format_comma_separated_integer(dest, size, value);
-        break;
-    case FORMAT_UINT16:
-        // Pop argument
-        value = *((uint16_t*)*args);
-        *args += 2;
+            format_comma_separated_integer(dest, size, value);
+            break;
+        case FORMAT_UINT16:
+            // Pop argument
+            value = *((uint16_t*)*args);
+            *args += 2;
 
-        format_integer(dest, size, value);
-        break;
-    case FORMAT_CURRENCY2DP:
-        // Pop argument
-        value = *((int32_t*)*args);
-        *args += 4;
+            format_integer(dest, size, value);
+            break;
+        case FORMAT_CURRENCY2DP:
+            // Pop argument
+            value = *((int32_t*)*args);
+            *args += 4;
 
-        format_currency_2dp(dest, size, value);
-        break;
-    case FORMAT_CURRENCY:
-        // Pop argument
-        value = *((int32_t*)*args);
-        *args += 4;
+            format_currency_2dp(dest, size, value);
+            break;
+        case FORMAT_CURRENCY:
+            // Pop argument
+            value = *((int32_t*)*args);
+            *args += 4;
 
-        format_currency(dest, size, value);
-        break;
-    case FORMAT_STRINGID:
-    case FORMAT_STRINGID2:
-        // Pop argument
-        value = *((uint16_t*)*args);
-        *args += 2;
+            format_currency(dest, size, value);
+            break;
+        case FORMAT_STRINGID:
+        case FORMAT_STRINGID2:
+            // Pop argument
+            value = *((uint16_t*)*args);
+            *args += 2;
 
-        format_string_part(dest, size, (rct_string_id)value, args);
-        break;
-    case FORMAT_STRING:
-        // Pop argument
-        value = *((uintptr_t*)*args);
-        *args += sizeof(uintptr_t);
+            format_string_part(dest, size, (rct_string_id)value, args);
+            break;
+        case FORMAT_STRING:
+            // Pop argument
+            value = *((uintptr_t*)*args);
+            *args += sizeof(uintptr_t);
 
-        if (value != 0)
-            format_append_string(dest, size, (char*)value);
-        break;
-    case FORMAT_MONTHYEAR:
-        // Pop argument
-        value = *((uint16_t*)*args);
-        *args += 2;
+            if (value != 0)
+                format_append_string(dest, size, (char*)value);
+            break;
+        case FORMAT_MONTHYEAR:
+            // Pop argument
+            value = *((uint16_t*)*args);
+            *args += 2;
 
-        format_date(dest, size, (uint16_t)value);
-        break;
-    case FORMAT_MONTH:
-        // Pop argument
-        value = *((uint16_t*)*args);
-        *args += 2;
+            format_date(dest, size, (uint16_t)value);
+            break;
+        case FORMAT_MONTH:
+            // Pop argument
+            value = *((uint16_t*)*args);
+            *args += 2;
 
-        format_append_string(dest, size, language_get_string(DateGameMonthNames[date_get_month((int32_t)value)]));
-        break;
-    case FORMAT_VELOCITY:
-        // Pop argument
-        value = *((int16_t*)*args);
-        *args += 2;
+            format_append_string(dest, size, language_get_string(DateGameMonthNames[date_get_month((int32_t)value)]));
+            break;
+        case FORMAT_VELOCITY:
+            // Pop argument
+            value = *((int16_t*)*args);
+            *args += 2;
 
-        format_velocity(dest, size, (uint16_t)value);
-        break;
-    case FORMAT_POP16:
-        *args += 2;
-        break;
-    case FORMAT_PUSH16:
-        *args -= 2;
-        break;
-    case FORMAT_DURATION:
-        // Pop argument
-        value = *((uint16_t*)*args);
-        *args += 2;
+            format_velocity(dest, size, (uint16_t)value);
+            break;
+        case FORMAT_POP16:
+            *args += 2;
+            break;
+        case FORMAT_PUSH16:
+            *args -= 2;
+            break;
+        case FORMAT_DURATION:
+            // Pop argument
+            value = *((uint16_t*)*args);
+            *args += 2;
 
-        format_duration(dest, size, (uint16_t)value);
-        break;
-    case FORMAT_REALTIME:
-        // Pop argument
-        value = *((uint16_t*)*args);
-        *args += 2;
+            format_duration(dest, size, (uint16_t)value);
+            break;
+        case FORMAT_REALTIME:
+            // Pop argument
+            value = *((uint16_t*)*args);
+            *args += 2;
 
-        format_realtime(dest, size, (uint16_t)value);
-        break;
-    case FORMAT_LENGTH:
-        // Pop argument
-        value = *((int16_t*)*args);
-        *args += 2;
+            format_realtime(dest, size, (uint16_t)value);
+            break;
+        case FORMAT_LENGTH:
+            // Pop argument
+            value = *((int16_t*)*args);
+            *args += 2;
 
-        format_length(dest, size, (int16_t)value);
-        break;
-    case FORMAT_SPRITE:
-        // Pop argument
-        value = *((uint32_t*)*args);
-        *args += 4;
+            format_length(dest, size, (int16_t)value);
+            break;
+        case FORMAT_SPRITE:
+            // Pop argument
+            value = *((uint32_t*)*args);
+            *args += 4;
 
-        format_handle_overflow(1 + sizeof(uint32_t));
+            format_handle_overflow(1 + sizeof(uint32_t));
 
-        format_push_char_safe('\x17');
-        *((uint32_t*)(*dest)) = (uint32_t)value;
-        (*dest) += sizeof(uint32_t);
-        (*size) -= sizeof(uint32_t);
-        break;
+            format_push_char_safe('\x17');
+            *((uint32_t*)(*dest)) = (uint32_t)value;
+            (*dest) += sizeof(uint32_t);
+            (*size) -= sizeof(uint32_t);
+            break;
     }
 }
 
-static void format_string_part_from_raw(utf8 **dest, size_t *size, const utf8 *src, char **args)
+static void format_string_part_from_raw(utf8** dest, size_t* size, const utf8* src, char** args)
 {
 #ifdef DEBUG
-    if (gDebugStringFormatting) {
+    if (gDebugStringFormatting)
+    {
         printf("format_string_part_from_raw(\"%s\")\n", src);
     }
 #endif
 
-    while (*size > 1) {
+    while (*size > 1)
+    {
         uint32_t code = utf8_get_next(src, &src);
-        if (code < ' ') {
-            if (code == 0) {
+        if (code < ' ')
+        {
+            if (code == 0)
+            {
                 break;
-            } else if (code <= 4) {
+            }
+            else if (code <= 4)
+            {
                 format_handle_overflow(2);
                 format_push_char_safe(code);
                 format_push_char_safe(*src++);
-            } else if (code <= 16) {
+            }
+            else if (code <= 16)
+            {
                 format_handle_overflow(1);
                 format_push_char_safe(code);
-            } else if (code <= 22) {
+            }
+            else if (code <= 22)
+            {
                 format_handle_overflow(3);
                 format_push_char_safe(code);
                 format_push_char_safe(*src++);
                 format_push_char_safe(*src++);
-            } else {
+            }
+            else
+            {
                 format_handle_overflow(5);
                 format_push_char_safe(code);
                 format_push_char_safe(*src++);
@@ -1069,14 +1204,21 @@ static void format_string_part_from_raw(utf8 **dest, size_t *size, const utf8 *s
                 format_push_char_safe(*src++);
                 format_push_char_safe(*src++);
             }
-        } else if (code <= 'z') {
+        }
+        else if (code <= 'z')
+        {
             format_push_char(code);
-        } else if (code < FORMAT_COLOUR_CODE_START || code == FORMAT_COMMA1DP16) {
+        }
+        else if (code < FORMAT_COLOUR_CODE_START || code == FORMAT_COMMA1DP16)
+        {
             format_string_code(code, dest, size, args);
-        } else {
+        }
+        else
+        {
             size_t codepointLength = (size_t)utf8_get_codepoint_length(code);
             format_handle_overflow(codepointLength);
-            if (*size > codepointLength) {
+            if (*size > codepointLength)
+            {
                 *dest = utf8_write_codepoint(*dest, code);
                 *size -= codepointLength;
             }
@@ -1084,17 +1226,23 @@ static void format_string_part_from_raw(utf8 **dest, size_t *size, const utf8 *s
     }
 }
 
-static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, char **args)
+static void format_string_part(utf8** dest, size_t* size, rct_string_id format, char** args)
 {
-    if (format == STR_NONE) {
-        if (*size > 0) {
+    if (format == STR_NONE)
+    {
+        if (*size > 0)
+        {
             *(*dest) = '\0';
         }
-    } else if (format < USER_STRING_START) {
+    }
+    else if (format < USER_STRING_START)
+    {
         // Language string
-        const utf8 * rawString = language_get_string(format);
+        const utf8* rawString = language_get_string(format);
         format_string_part_from_raw(dest, size, rawString, args);
-    } else if (format <= USER_STRING_END) {
+    }
+    else if (format <= USER_STRING_END)
+    {
         // Custom string
         format -= 0x8000;
 
@@ -1103,20 +1251,26 @@ static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, 
         format &= ~0xC00;
 
         format_append_string_n(dest, size, gUserStrings[format], USER_STRING_MAX_LENGTH);
-        if ((*size) > 0) *(*dest) = '\0';
-    } else if (format <= REAL_NAME_END) {
+        if ((*size) > 0)
+            *(*dest) = '\0';
+    }
+    else if (format <= REAL_NAME_END)
+    {
         // Real name
         auto realNameIndex = format - REAL_NAME_START;
 
         format_append_string(dest, size, real_names[realNameIndex % Util::CountOf(real_names)]);
-        if ((*size) == 0) return;
+        if ((*size) == 0)
+            return;
         format_push_char(' ');
         format_push_char(real_name_initials[(realNameIndex >> 10) % Util::CountOf(real_name_initials)]);
         format_push_char('.');
         *(*dest) = '\0';
 
         *args += 4;
-    } else {
+    }
+    else
+    {
         // ?
         log_error("Localisation CALLPROC reached. Please contact a dev");
         assert(false);
@@ -1130,26 +1284,31 @@ static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, 
  * format (ax)
  * args (ecx)
  */
-void format_string(utf8 *dest, size_t size, rct_string_id format, void *args)
+void format_string(utf8* dest, size_t size, rct_string_id format, void* args)
 {
 #ifdef DEBUG
-    if (gDebugStringFormatting) {
+    if (gDebugStringFormatting)
+    {
         printf("format_string(%hu)\n", format);
     }
 #endif
 
-    if (size == 0) {
+    if (size == 0)
+    {
         return;
     }
 
-    utf8 *end = dest;
+    utf8* end = dest;
     size_t left = size;
     format_string_part(&end, &left, format, (char**)&args);
-    if (left == 0) {
+    if (left == 0)
+    {
         // Replace last character with null terminator
         *(end - 1) = '\0';
         log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
-    } else {
+    }
+    else
+    {
         // Null terminate
         *end = '\0';
     }
@@ -1160,26 +1319,31 @@ void format_string(utf8 *dest, size_t size, rct_string_id format, void *args)
 #endif
 }
 
-void format_string_raw(utf8 *dest, size_t size, utf8 *src, void *args)
+void format_string_raw(utf8* dest, size_t size, utf8* src, void* args)
 {
 #ifdef DEBUG
-    if (gDebugStringFormatting) {
+    if (gDebugStringFormatting)
+    {
         printf("format_string_raw(\"%s\")\n", src);
     }
 #endif
 
-    if (size == 0) {
+    if (size == 0)
+    {
         return;
     }
 
-    utf8 *end = dest;
+    utf8* end = dest;
     size_t left = size;
     format_string_part_from_raw(&end, &left, src, (char**)&args);
-    if (left == 0) {
+    if (left == 0)
+    {
         // Replace last character with null terminator
         *(end - 1) = '\0';
         log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
-    } else {
+    }
+    else
+    {
         // Null terminate
         *end = '\0';
     }
@@ -1197,15 +1361,17 @@ void format_string_raw(utf8 *dest, size_t size, utf8 *src, void *args)
  * format (ax)
  * args (ecx)
  */
-void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void *args)
+void format_string_to_upper(utf8* dest, size_t size, rct_string_id format, void* args)
 {
 #ifdef DEBUG
-    if (gDebugStringFormatting) {
+    if (gDebugStringFormatting)
+    {
         printf("format_string_to_upper(%hu)\n", format);
     }
 #endif
 
-    if (size == 0) {
+    if (size == 0)
+    {
         return;
     }
 
@@ -1213,7 +1379,8 @@ void format_string_to_upper(utf8 *dest, size_t size, rct_string_id format, void 
 
     std::string upperString = String::ToUpper(dest);
 
-    if (upperString.size() + 1 >= size) {
+    if (upperString.size() + 1 >= size)
+    {
         upperString.resize(size - 1);
         dest[size - 1] = '\0';
         log_warning("Truncating formatted string \"%s\" to %d bytes.", dest, size);
@@ -1323,7 +1490,7 @@ money32 string_to_money(const char* string_to_monetise)
  * @param forceDecimals Show decimals, even if the amount does not have them. Will be ignored if the current exchange
  *                          rate is too big to have decimals.
  */
-void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
+void money_to_string(money32 amount, char* buffer_to_put_value_to, size_t buffer_len, bool forceDecimals)
 {
     if (amount == MONEY32_UNDEFINED)
     {
@@ -1331,7 +1498,7 @@ void money_to_string(money32 amount, char * buffer_to_put_value_to, size_t buffe
         return;
     }
 
-    const currency_descriptor *currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
 
     int sign = amount >= 0 ? 1 : -1;
     int a = abs(amount) * currencyDesc->rate;

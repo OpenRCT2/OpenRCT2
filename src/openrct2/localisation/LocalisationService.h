@@ -9,11 +9,12 @@
 
 #pragma once
 
+#include "../common.h"
+
 #include <memory>
 #include <stack>
 #include <string>
 #include <tuple>
-#include "../common.h"
 
 interface ILanguagePack;
 interface IObjectManager;
@@ -36,16 +37,26 @@ namespace OpenRCT2::Localisation
         std::stack<rct_string_id> _availableObjectStringIds;
 
     public:
-        int32_t GetCurrentLanguage() const { return _currentLanguage; }
-        bool UseTrueTypeFont() const { return _useTrueTypeFont; }
-        void UseTrueTypeFont(bool value) { _useTrueTypeFont = value; }
+        int32_t GetCurrentLanguage() const
+        {
+            return _currentLanguage;
+        }
+        bool UseTrueTypeFont() const
+        {
+            return _useTrueTypeFont;
+        }
+        void UseTrueTypeFont(bool value)
+        {
+            _useTrueTypeFont = value;
+        }
 
         LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env);
         ~LocalisationService();
 
-        const char * GetString(rct_string_id id) const;
-        std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(const std::string& scenarioFilename) const;
-        rct_string_id GetObjectOverrideStringId(const char * identifier, uint8_t index) const;
+        const char* GetString(rct_string_id id) const;
+        std::tuple<rct_string_id, rct_string_id, rct_string_id>
+            GetLocalisedScenarioStrings(const std::string& scenarioFilename) const;
+        rct_string_id GetObjectOverrideStringId(const char* identifier, uint8_t index) const;
         std::string GetLanguagePath(uint32_t languageId) const;
 
         void OpenLanguage(int32_t id, IObjectManager& objectManager);
@@ -53,7 +64,7 @@ namespace OpenRCT2::Localisation
         rct_string_id AllocateObjectString(const std::string& target);
         void FreeObjectString(rct_string_id stringId);
     };
-}
+} // namespace OpenRCT2::Localisation
 
 // Legacy getters
 // TODO Remove usages of these and instead call via shared reference

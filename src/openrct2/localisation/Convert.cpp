@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <limits>
-#include <stdexcept>
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "ConversionTables.h"
 #include "Language.h"
+
+#include <algorithm>
+#include <limits>
+#include <stdexcept>
 
 /**
  * Decodes an RCT2 string to a wide char string still in the original code page.
@@ -23,7 +24,7 @@ static std::wstring DecodeToWideChar(const std::string_view& src)
 {
     std::wstring decoded;
     decoded.reserve(src.size());
-    for (auto it = src.begin(); it != src.end(); )
+    for (auto it = src.begin(); it != src.end();)
     {
         uint8_t c = *it++;
         if (c == 255)
@@ -88,7 +89,7 @@ static std::string DecodeToMultiByte(const std::string_view& src)
 static std::string Encode(const std::string_view& src)
 {
     std::string dst;
-    const utf8 * ch = src.data();
+    const utf8* ch = src.data();
     int32_t codepoint;
     while ((codepoint = utf8_get_next(ch, &ch)) != 0)
     {
@@ -129,8 +130,7 @@ static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
     }
 }
 
-template<typename TConvertFunc>
-static std::string DecodeConvertWithTable(const std::string_view& src, TConvertFunc func)
+template<typename TConvertFunc> static std::string DecodeConvertWithTable(const std::string_view& src, TConvertFunc func)
 {
     auto decoded = DecodeToWideChar(src);
     std::wstring u16;

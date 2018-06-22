@@ -7,9 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Currency.h"
+
 #include "../config/Config.h"
 #include "../util/Util.h"
-#include "Currency.h"
 #include "StringIds.h"
 
 // clang-format off
@@ -40,6 +41,9 @@ void currency_load_custom_currency_config()
     CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = gConfigGeneral.custom_currency_affix;
     if (gConfigGeneral.custom_currency_symbol != nullptr)
     {
-        safe_strcpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol, CURRENCY_SYMBOL_MAX_SIZE);
+        safe_strcpy(
+            CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
+            gConfigGeneral.custom_currency_symbol,
+            CURRENCY_SYMBOL_MAX_SIZE);
     }
 }

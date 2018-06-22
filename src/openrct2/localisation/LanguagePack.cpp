@@ -7,35 +7,35 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <string>
-#include <vector>
+#include "LanguagePack.h"
 
 #include "../common.h"
-#include "Localisation.h"
-
 #include "../core/FileStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "../core/StringReader.hpp"
-#include "LanguagePack.h"
+#include "Localisation.h"
+
+#include <algorithm>
+#include <string>
+#include <vector>
 
 // Don't try to load more than language files that exceed 64 MiB
 constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
 constexpr uint64_t MAX_OBJECT_OVERRIDES = 4096;
 constexpr uint64_t MAX_SCENARIO_OVERRIDES = 4096;
 
-constexpr rct_string_id ObjectOverrideBase             = 0x6000;
-constexpr int32_t           ObjectOverrideMaxStringCount   = 3;
+constexpr rct_string_id ObjectOverrideBase = 0x6000;
+constexpr int32_t ObjectOverrideMaxStringCount = 3;
 
-constexpr rct_string_id ScenarioOverrideBase           = 0x7000;
-constexpr int32_t           ScenarioOverrideMaxStringCount = 3;
+constexpr rct_string_id ScenarioOverrideBase = 0x7000;
+constexpr int32_t ScenarioOverrideMaxStringCount = 3;
 
 struct ObjectOverride
 {
-    char        name[8] = { 0 };
+    char name[8] = { 0 };
     std::string strings[ObjectOverrideMaxStringCount];
 };
 
@@ -49,24 +49,24 @@ class LanguagePack final : public ILanguagePack
 {
 private:
     uint16_t const _id;
-    std::vector<std::string>      _strings;
-    std::vector<ObjectOverride>   _objectOverrides;
+    std::vector<std::string> _strings;
+    std::vector<ObjectOverride> _objectOverrides;
     std::vector<ScenarioOverride> _scenarioOverrides;
 
     ///////////////////////////////////////////////////////////////////////////
     // Parsing work data
     ///////////////////////////////////////////////////////////////////////////
-    std::string        _currentGroup;
-    ObjectOverride *   _currentObjectOverride = nullptr;
-    ScenarioOverride * _currentScenarioOverride = nullptr;
+    std::string _currentGroup;
+    ObjectOverride* _currentObjectOverride = nullptr;
+    ScenarioOverride* _currentScenarioOverride = nullptr;
 
 public:
-    static LanguagePack * FromFile(uint16_t id, const utf8 * path)
+    static LanguagePack* FromFile(uint16_t id, const utf8* path)
     {
         Guard::ArgumentNotNull(path);
 
         // Load file directly into memory
-        utf8 * fileData = nullptr;
+        utf8* fileData = nullptr;
         try
         {
             FileStream fs = FileStream(path, FILE_MODE_OPEN);
@@ -81,7 +81,7 @@ public:
             fs.Read(fileData, fileLength);
             fileData[fileLength] = '\0';
         }
-        catch (const std::exception &ex)
+        catch (const std::exception& ex)
         {
             Memory::Free(fileData);
             log_error("Unable to open %s: %s", path, ex.what());
@@ -89,18 +89,18 @@ public:
         }
 
         // Parse the memory as text
-        LanguagePack * result = FromText(id, fileData);
+        LanguagePack* result = FromText(id, fileData);
 
         Memory::Free(fileData);
         return result;
     }
 
-    static LanguagePack * FromText(uint16_t id, const utf8 * text)
+    static LanguagePack* FromText(uint16_t id, const utf8* text)
     {
         return new LanguagePack(id, text);
     }
 
-    LanguagePack(uint16_t id, const utf8 * text)
+    LanguagePack(uint16_t id, const utf8* text)
         : _id(id)
     {
         Guard::ArgumentNotNull(text);
@@ -135,7 +135,7 @@ public:
         }
     }
 
-    void SetString(rct_string_id stringId, const std::string &str) override
+    void SetString(rct_string_id stringId, const std::string& str) override
     {
         if (_strings.size() >= (size_t)stringId)
         {
@@ -143,7 +143,7 @@ public:
         }
     }
 
-    const utf8 * GetString(rct_string_id stringId) const override
+    const utf8* GetString(rct_string_id stringId) const override
     {
         if (stringId >= ScenarioOverrideBase)
         {
@@ -188,13 +188,13 @@ public:
         }
     }
 
-    rct_string_id GetObjectOverrideStringId(const char * objectIdentifier, uint8_t index) override
+    rct_string_id GetObjectOverrideStringId(const char* objectIdentifier, uint8_t index) override
     {
         Guard::ArgumentNotNull(objectIdentifier);
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 
         int32_t ooIndex = 0;
-        for (const ObjectOverride &objectOverride : _objectOverrides)
+        for (const ObjectOverride& objectOverride : _objectOverrides)
         {
             if (strncmp(objectOverride.name, objectIdentifier, 8) == 0)
             {
@@ -210,13 +210,13 @@ public:
         return STR_NONE;
     }
 
-    rct_string_id GetScenarioOverrideStringId(const utf8 * scenarioFilename, uint8_t index) override
+    rct_string_id GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) override
     {
         Guard::ArgumentNotNull(scenarioFilename);
         Guard::Assert(index < ScenarioOverrideMaxStringCount);
 
         int32_t ooIndex = 0;
-        for (const ScenarioOverride &scenarioOverride : _scenarioOverrides)
+        for (const ScenarioOverride& scenarioOverride : _scenarioOverrides)
         {
             if (String::Equals(scenarioOverride.filename.c_str(), scenarioFilename, true))
             {
@@ -233,9 +233,9 @@ public:
     }
 
 private:
-    ObjectOverride * GetObjectOverride(const std::string &objectIdentifier)
+    ObjectOverride* GetObjectOverride(const std::string& objectIdentifier)
     {
-        for (auto &oo : _objectOverrides)
+        for (auto& oo : _objectOverrides)
         {
             if (strncmp(oo.name, objectIdentifier.c_str(), 8) == 0)
             {
@@ -245,9 +245,9 @@ private:
         return nullptr;
     }
 
-    ScenarioOverride * GetScenarioOverride(const std::string &scenarioIdentifier)
+    ScenarioOverride* GetScenarioOverride(const std::string& scenarioIdentifier)
     {
-        for (auto &so : _scenarioOverrides)
+        for (auto& so : _scenarioOverrides)
         {
             if (String::Equals(so.strings[0], scenarioIdentifier.c_str(), true))
             {
@@ -267,9 +267,9 @@ private:
     // Unsure at how the original game decides which entries to write resource strings to, but this could affect adding new
     // strings for the time being. Further investigation is required.
     //
-    // When reading the language files, the STR_XXXX part is read and XXXX becomes the string id number. Everything after the colon
-    // and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}.
-    // Use # at the beginning of a line to leave a comment.
+    // When reading the language files, the STR_XXXX part is read and XXXX becomes the string id number. Everything after the
+    // colon and before the new line will be saved as the string. Tokens are written with inside curly braces {TOKEN}. Use # at
+    // the beginning of a line to leave a comment.
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     static bool IsWhitespace(codepoint_t codepoint)
@@ -282,7 +282,7 @@ private:
         return codepoint == '\r' || codepoint == '\n';
     }
 
-    static void SkipWhitespace(IStringReader * reader)
+    static void SkipWhitespace(IStringReader* reader)
     {
         codepoint_t codepoint;
         while (reader->TryPeek(&codepoint))
@@ -298,7 +298,7 @@ private:
         }
     }
 
-    static void SkipNewLine(IStringReader * reader)
+    static void SkipNewLine(IStringReader* reader)
     {
         codepoint_t codepoint;
         while (reader->TryPeek(&codepoint))
@@ -314,10 +314,11 @@ private:
         }
     }
 
-    static void SkipToEndOfLine(IStringReader * reader)
+    static void SkipToEndOfLine(IStringReader* reader)
     {
         codepoint_t codepoint;
-        while (reader->TryPeek(&codepoint)) {
+        while (reader->TryPeek(&codepoint))
+        {
             if (codepoint != '\r' && codepoint != '\n')
             {
                 reader->Skip();
@@ -329,36 +330,37 @@ private:
         }
     }
 
-    void ParseLine(IStringReader *reader)
+    void ParseLine(IStringReader* reader)
     {
         SkipWhitespace(reader);
 
         codepoint_t codepoint;
         if (reader->TryPeek(&codepoint))
         {
-            switch (codepoint) {
-            case '#':
-                SkipToEndOfLine(reader);
-                break;
-            case '[':
-                ParseGroupObject(reader);
-                break;
-            case '<':
-                ParseGroupScenario(reader);
-                break;
-            case '\r':
-            case '\n':
-                break;
-            default:
-                ParseString(reader);
-                break;
+            switch (codepoint)
+            {
+                case '#':
+                    SkipToEndOfLine(reader);
+                    break;
+                case '[':
+                    ParseGroupObject(reader);
+                    break;
+                case '<':
+                    ParseGroupScenario(reader);
+                    break;
+                case '\r':
+                case '\n':
+                    break;
+                default:
+                    ParseString(reader);
+                    break;
             }
             SkipToEndOfLine(reader);
             SkipNewLine(reader);
         }
     }
 
-    void ParseGroupObject(IStringReader * reader)
+    void ParseGroupObject(IStringReader* reader)
     {
         auto sb = StringBuilder();
         codepoint_t codepoint;
@@ -370,7 +372,8 @@ private:
         bool closedCorrectly = false;
         while (reader->TryPeek(&codepoint))
         {
-            if (IsNewLine(codepoint)) break;
+            if (IsNewLine(codepoint))
+                break;
 
             reader->Skip();
             if (codepoint == ']')
@@ -407,7 +410,7 @@ private:
         }
     }
 
-    void ParseGroupScenario(IStringReader * reader)
+    void ParseGroupScenario(IStringReader* reader)
     {
         auto sb = StringBuilder();
         codepoint_t codepoint;
@@ -419,7 +422,8 @@ private:
         bool closedCorrectly = false;
         while (reader->TryPeek(&codepoint))
         {
-            if (IsNewLine(codepoint)) break;
+            if (IsNewLine(codepoint))
+                break;
 
             reader->Skip();
             if (codepoint == '>')
@@ -449,7 +453,7 @@ private:
         }
     }
 
-    void ParseString(IStringReader *reader)
+    void ParseString(IStringReader* reader)
     {
         auto sb = StringBuilder();
         codepoint_t codepoint;
@@ -484,7 +488,7 @@ private:
         reader->Skip();
 
         // Validate identifier
-        const utf8 * identifier = sb.GetBuffer();
+        const utf8* identifier = sb.GetBuffer();
 
         int32_t stringId;
         if (_currentGroup.empty())
@@ -497,14 +501,33 @@ private:
         }
         else
         {
-            if (String::Equals(identifier, "STR_NAME")) { stringId = 0; }
-            else if (String::Equals(identifier, "STR_DESC")) { stringId = 1; }
-            else if (String::Equals(identifier, "STR_CPTY")) { stringId = 2; }
+            if (String::Equals(identifier, "STR_NAME"))
+            {
+                stringId = 0;
+            }
+            else if (String::Equals(identifier, "STR_DESC"))
+            {
+                stringId = 1;
+            }
+            else if (String::Equals(identifier, "STR_CPTY"))
+            {
+                stringId = 2;
+            }
 
-            else if (String::Equals(identifier, "STR_SCNR")) { stringId = 0; }
-            else if (String::Equals(identifier, "STR_PARK")) { stringId = 1; }
-            else if (String::Equals(identifier, "STR_DTLS")) { stringId = 2; }
-            else {
+            else if (String::Equals(identifier, "STR_SCNR"))
+            {
+                stringId = 0;
+            }
+            else if (String::Equals(identifier, "STR_PARK"))
+            {
+                stringId = 1;
+            }
+            else if (String::Equals(identifier, "STR_DTLS"))
+            {
+                stringId = 2;
+            }
+            else
+            {
                 // Ignore line entirely
                 return;
             }
@@ -565,7 +588,7 @@ private:
         }
     }
 
-    bool ParseToken(IStringReader * reader, uint32_t * token, bool * isByte)
+    bool ParseToken(IStringReader* reader, uint32_t* token, bool* isByte)
     {
         auto sb = StringBuilder();
         codepoint_t codepoint;
@@ -575,17 +598,20 @@ private:
 
         while (reader->TryPeek(&codepoint))
         {
-            if (IsNewLine(codepoint)) return false;
-            if (IsWhitespace(codepoint)) return false;
+            if (IsNewLine(codepoint))
+                return false;
+            if (IsWhitespace(codepoint))
+                return false;
 
             reader->Skip();
 
-            if (codepoint == '}') break;
+            if (codepoint == '}')
+                break;
 
             sb.Append(codepoint);
         }
 
-        const utf8 * tokenName = sb.GetBuffer();
+        const utf8* tokenName = sb.GetBuffer();
         *token = format_get_code(tokenName);
         *isByte = false;
 
@@ -606,13 +632,13 @@ private:
 
 namespace LanguagePackFactory
 {
-    ILanguagePack * FromFile(uint16_t id, const utf8 * path)
+    ILanguagePack* FromFile(uint16_t id, const utf8* path)
     {
         auto languagePack = LanguagePack::FromFile(id, path);
         return languagePack;
     }
 
-    ILanguagePack * FromText(uint16_t id, const utf8 * text)
+    ILanguagePack* FromText(uint16_t id, const utf8* text)
     {
         auto languagePack = LanguagePack::FromText(id, text);
         return languagePack;

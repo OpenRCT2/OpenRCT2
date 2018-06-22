@@ -7,17 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <stack>
 #include "../Context.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../interface/Fonts.h"
 #include "../interface/FontFamilies.h"
+#include "../interface/Fonts.h"
 #include "../object/ObjectManager.h"
 #include "../platform/platform.h"
 #include "LanguagePack.h"
 #include "Localisation.h"
 #include "LocalisationService.h"
+
+#include <stack>
 
 // clang-format off
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
@@ -56,10 +57,10 @@ const utf8 BlackRightArrowString[] =    { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x
 const utf8 CheckBoxMarkString[] =       { (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x9C, (utf8)(uint8_t)0x93, (utf8)(uint8_t)0x00 };
 // clang-format on
 
-void utf8_remove_format_codes(utf8 * text, bool allowcolours)
+void utf8_remove_format_codes(utf8* text, bool allowcolours)
 {
-    const utf8 * ch = text;
-    utf8 * dstCh = text;
+    const utf8* ch = text;
+    utf8* dstCh = text;
     int32_t codepoint;
     while ((codepoint = String::GetNextCodepoint(ch, &ch)) != 0)
     {
@@ -71,10 +72,10 @@ void utf8_remove_format_codes(utf8 * text, bool allowcolours)
     *dstCh = 0;
 }
 
-uint8_t language_get_id_from_locale(const char * locale)
+uint8_t language_get_id_from_locale(const char* locale)
 {
     uint8_t i = 0;
-    for (const auto &langDesc : LanguagesDescriptors)
+    for (const auto& langDesc : LanguagesDescriptors)
     {
         if (String::Equals(locale, langDesc.locale))
         {
@@ -85,7 +86,7 @@ uint8_t language_get_id_from_locale(const char * locale)
     return LANGUAGE_UNDEFINED;
 }
 
-const char * language_get_string(rct_string_id id)
+const char* language_get_string(rct_string_id id)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.GetString(id);
@@ -107,17 +108,14 @@ bool language_open(int32_t id)
     }
 }
 
-bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
+bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     auto result = localisationService.GetLocalisedScenarioStrings(scenarioFilename);
     outStringIds[0] = std::get<0>(result);
     outStringIds[1] = std::get<1>(result);
     outStringIds[2] = std::get<2>(result);
-    return
-        outStringIds[0] != STR_NONE ||
-        outStringIds[1] != STR_NONE ||
-        outStringIds[2] != STR_NONE;
+    return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
 }
 
 void language_free_object_string(rct_string_id stringId)
@@ -126,13 +124,13 @@ void language_free_object_string(rct_string_id stringId)
     localisationService.FreeObjectString(stringId);
 }
 
-rct_string_id language_get_object_override_string_id(const char * identifier, uint8_t index)
+rct_string_id language_get_object_override_string_id(const char* identifier, uint8_t index)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.GetObjectOverrideStringId(identifier, index);
 }
 
-rct_string_id language_allocate_object_string(const std::string &target)
+rct_string_id language_allocate_object_string(const std::string& target)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.AllocateObjectString(target);
