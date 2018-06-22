@@ -14,41 +14,44 @@
 #include <stdio.h>
 
 #if defined(_WIN32)
-    #include <breakpad/client/windows/handler/exception_handler.h>
-    #include <string>
-    #include <ShlObj.h>
+#include <ShlObj.h>
+#include <breakpad/client/windows/handler/exception_handler.h>
+#include <string>
 #else
-    #error Breakpad support not implemented yet for this platform
+#error Breakpad support not implemented yet for this platform
 #endif
 
+#include "../Version.h"
 #include "../core/Console.hpp"
 #include "../localisation/Language.h"
 #include "../rct2/S6Exporter.h"
 #include "../scenario/Scenario.h"
-#include "../Version.h"
 #include "platform.h"
 
 #define WSZ(x) L"" x
 
 #ifdef OPENRCT2_COMMIT_SHA1_SHORT
-    const wchar_t *_wszCommitSha1Short = WSZ(OPENRCT2_COMMIT_SHA1_SHORT);
+const wchar_t* _wszCommitSha1Short = WSZ(OPENRCT2_COMMIT_SHA1_SHORT);
 #else
-    const wchar_t *_wszCommitSha1Short = WSZ("");
+const wchar_t* _wszCommitSha1Short = WSZ("");
 #endif
 
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
-const wchar_t *_wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
+const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
-static bool OnCrash(const wchar_t * dumpPath,
-                    const wchar_t * miniDumpId,
-                    void * context,
-                    EXCEPTION_POINTERS * exinfo,
-                    MDRawAssertionInfo * assertion,
-                    bool succeeded)
+static bool OnCrash(
+    const wchar_t* dumpPath,
+    const wchar_t* miniDumpId,
+    void* context,
+    EXCEPTION_POINTERS* exinfo,
+    MDRawAssertionInfo* assertion,
+    bool succeeded)
 {
     if (!succeeded)
     {
-        constexpr const char * DumpFailedMessage = "Failed to create the dump. Please file an issue with OpenRCT2 on GitHub and provide latest save, and provide information about what you did before the crash occurred.";
+        constexpr const char* DumpFailedMessage
+            = "Failed to create the dump. Please file an issue with OpenRCT2 on GitHub and provide latest save, and provide "
+              "information about what you did before the crash occurred.";
         printf("%s\n", DumpFailedMessage);
         if (!gOpenRCT2SilentBreakpad)
         {
@@ -65,7 +68,14 @@ static bool OnCrash(const wchar_t * dumpPath,
 
     // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
-    swprintf_s(dumpFilePathNew, sizeof(dumpFilePathNew), L"%s%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short, _wszArchitecture);
+    swprintf_s(
+        dumpFilePathNew,
+        sizeof(dumpFilePathNew),
+        L"%s%s(%s_%s).dmp",
+        dumpPath,
+        miniDumpId,
+        _wszCommitSha1Short,
+        _wszArchitecture);
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
         std::wcscpy(dumpFilePath, dumpFilePathNew);
@@ -79,7 +89,7 @@ static bool OnCrash(const wchar_t * dumpPath,
     wprintf(L"Commit: %s\n", _wszCommitSha1Short);
 
     bool savedGameDumped = false;
-    utf8 * saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
+    utf8* saveFilePathUTF8 = widechar_to_utf8(saveFilePath);
     try
     {
         auto exporter = std::make_unique<S6Exporter>();
@@ -87,7 +97,7 @@ static bool OnCrash(const wchar_t * dumpPath,
         exporter->SaveGame(saveFilePathUTF8);
         savedGameDumped = true;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
     }
     free(saveFilePathUTF8);
@@ -97,13 +107,11 @@ static bool OnCrash(const wchar_t * dumpPath,
         return succeeded;
     }
 
-    constexpr const wchar_t * MessageFormat = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue with OpenRCT2 on GitHub, and provide the dump and saved game there.\n\nVersion: %s\nCommit: %s";
+    constexpr const wchar_t* MessageFormat
+        = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue with OpenRCT2 on GitHub, and provide "
+          L"the dump and saved game there.\n\nVersion: %s\nCommit: %s";
     wchar_t message[MAX_PATH * 2];
-    swprintf_s(message,
-               MessageFormat,
-               dumpFilePath,
-               WSZ(OPENRCT2_VERSION),
-               _wszCommitSha1Short);
+    swprintf_s(message, MessageFormat, dumpFilePath, WSZ(OPENRCT2_VERSION), _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
     MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
@@ -119,8 +127,9 @@ static bool OnCrash(const wchar_t * dumpPath,
         {
             files[numFiles++] = ILCreateFromPathW(saveFilePath);
         }
-        if (pidl != nullptr) {
-            SHOpenFolderAndSelectItems(pidl, numFiles, (LPCITEMIDLIST *)files, 0);
+        if (pidl != nullptr)
+        {
+            SHOpenFolderAndSelectItems(pidl, numFiles, (LPCITEMIDLIST*)files, 0);
             ILFree(pidl);
             for (uint32_t i = 0; i < numFiles; i++)
             {
@@ -139,7 +148,7 @@ static std::wstring GetDumpDirectory()
     char userDirectory[MAX_PATH];
     platform_get_user_directory(userDirectory, nullptr, sizeof(userDirectory));
 
-    wchar_t * userDirectoryW = utf8_to_widechar(userDirectory);
+    wchar_t* userDirectoryW = utf8_to_widechar(userDirectory);
     auto result = std::wstring(userDirectoryW);
     free(userDirectoryW);
 
@@ -147,7 +156,7 @@ static std::wstring GetDumpDirectory()
 }
 
 // Using non-null pipe name here lets breakpad try setting OOP crash handling
-constexpr const wchar_t * PipeName = L"openrct2-bpad";
+constexpr const wchar_t* PipeName = L"openrct2-bpad";
 
 #endif // USE_BREAKPAD
 
@@ -156,16 +165,9 @@ CExceptionHandler crash_init()
 #ifdef USE_BREAKPAD
     // Path must exist and be RW!
     auto exHandler = new google_breakpad::ExceptionHandler(
-        GetDumpDirectory(),
-        0,
-        OnCrash,
-        0,
-        google_breakpad::ExceptionHandler::HANDLER_ALL,
-        MiniDumpWithDataSegs,
-        PipeName,
-        0);
+        GetDumpDirectory(), 0, OnCrash, 0, google_breakpad::ExceptionHandler::HANDLER_ALL, MiniDumpWithDataSegs, PipeName, 0);
     return reinterpret_cast<CExceptionHandler>(exHandler);
-#else // USE_BREAKPAD
+#else  // USE_BREAKPAD
     return nullptr;
 #endif // USE_BREAKPAD
 }
