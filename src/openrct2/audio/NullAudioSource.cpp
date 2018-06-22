@@ -28,7 +28,7 @@ namespace OpenRCT2::Audio
         }
     };
 
-    IAudioSource * AudioSource::CreateNull()
+    IAudioSource* AudioSource::CreateNull()
     {
         return new NullAudioSource();
     }
