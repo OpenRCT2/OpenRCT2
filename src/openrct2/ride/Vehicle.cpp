@@ -4630,8 +4630,7 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
     uint8_t curDirection  = ((vehicle->sprite_direction + 19) >> 3) & 3;
     uint8_t randDirection = scenario_rand() & 3;
 
-    rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_WANDERING) || vehicle->lost_time_out > 1920)
+    if (vehicle->lost_time_out > 1920)
     {
         if (scenario_rand() & 1)
         {

@@ -624,14 +624,14 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "noInversions", RIDE_ENTRY_FLAG_NO_INVERSIONS },
         { "noBanking", RIDE_ENTRY_FLAG_NO_BANKED_TRACK },
         { "playDepartSound", RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND },
-        { "disableWandering", RIDE_ENTRY_FLAG_DISABLE_WANDERING },
+        // Skipping "disallowWandering", no vehicle sets this flag.
         { "playSplashSound", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND },
         { "playSplashSoundSlide", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE },
         { "hasShelter", RIDE_ENTRY_FLAG_COVERED_RIDE },
         { "limitAirTimeBonus", RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS },
         { "disableBreakdown", RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN },
-        { "disableDoorConstruction", RIDE_ENTRY_FLAG_DISABLE_DOOR_CONSTRUCTION },
-        { "disableCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
+        // Skipping noDoorsOverTrack, moved to ride groups.
+        { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
         { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB } });
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());

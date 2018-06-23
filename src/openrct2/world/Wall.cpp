@@ -26,6 +26,7 @@
 #include "SmallScenery.h"
 #include "Surface.h"
 #include "Wall.h"
+#include "../ride/RideGroupManager.h"
 
 /**
  * Gets whether the given track type can have a wall placed on the edge of the given direction.
@@ -78,14 +79,15 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
         return false;
     }
 
-    // The following code checks if a door is allowed on the track
-    if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
+    if (RideGroupManager::RideTypeHasRideGroups(ride->type))
     {
-        return false;
+        auto rideGroup = RideGroupManager::GetRideGroup(ride->type, get_ride_entry(ride->subtype));
+        if (!(rideGroup->Flags & RIDE_GROUP_FLAG_ALLOW_DOORS_ON_TRACK))
+        {
+            return false;
+        }
     }
-
-    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_DOOR_CONSTRUCTION)
+    else if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
     {
         return false;
     }
