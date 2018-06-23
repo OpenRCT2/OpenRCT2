@@ -6631,6 +6631,20 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
 void Vehicle::UpdateVelocity()
 {
     int32_t nextVelocity = acceleration + velocity;
+    auto trackType = GetTrackType();
+    if (trackType == TrackElemType::Brakes)
+    {
+        auto targetVelocity = brake_speed << 16;
+        if (nextVelocity < 0 && velocity < 0)
+        {
+            targetVelocity = -targetVelocity;
+        }
+        if ((nextVelocity < targetVelocity && velocity > targetVelocity)
+            || (nextVelocity > targetVelocity && velocity < targetVelocity))
+        {
+            nextVelocity = targetVelocity;
+        }
+    }
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY))
     {
         nextVelocity = 0;
