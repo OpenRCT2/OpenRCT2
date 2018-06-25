@@ -624,14 +624,14 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "noInversions", RIDE_ENTRY_FLAG_NO_INVERSIONS },
         { "noBanking", RIDE_ENTRY_FLAG_NO_BANKED_TRACK },
         { "playDepartSound", RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND },
-        { "RIDE_ENTRY_FLAG_7", RIDE_ENTRY_FLAG_7 },
+        // Skipping "disallowWandering", no vehicle sets this flag.
         { "playSplashSound", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND },
         { "playSplashSoundSlide", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE },
         { "hasShelter", RIDE_ENTRY_FLAG_COVERED_RIDE },
         { "limitAirTimeBonus", RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS },
         { "disableBreakdown", RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN },
-        { "RIDE_ENTRY_FLAG_16", RIDE_ENTRY_FLAG_16 },
-        { "RIDE_ENTRY_FLAG_18", RIDE_ENTRY_FLAG_18 },
+        // Skipping noDoorsOverTrack, moved to ride groups.
+        { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
         { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB } });
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
@@ -831,7 +831,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
         { "VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
         { "VEHICLE_ENTRY_FLAG_13", VEHICLE_ENTRY_FLAG_13 },
         { "VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
-        { "VEHICLE_ENTRY_FLAG_15", VEHICLE_ENTRY_FLAG_15 },
+        { "VEHICLE_ENTRY_FLAG_LIFT", VEHICLE_ENTRY_FLAG_LIFT },
         { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 },
         { "VEHICLE_ENTRY_FLAG_SWINGING", VEHICLE_ENTRY_FLAG_SWINGING },
         { "VEHICLE_ENTRY_FLAG_SPINNING", VEHICLE_ENTRY_FLAG_SPINNING },

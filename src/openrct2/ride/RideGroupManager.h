@@ -24,6 +24,7 @@ struct RideGroup
     uint16_t MaximumHeight;
     uint64_t AvailableTrackPieces;
     rct_ride_name Naming;
+    uint8_t Flags;
 
     bool Equals(const RideGroup* otherRideGroup) const;
     bool IsInvented() const;
@@ -39,4 +40,9 @@ public:
     static const std::vector<const char *> GetPreferredRideEntryOrder(const uint8_t rideType);
     static int32_t VehiclePreferenceCompare(const uint8_t rideType, const char * a, const char * b);
     static bool RideTypeIsIndependent(const uint8_t rideType);
+};
+
+enum RideGroupFlags : uint8_t
+{
+    RIDE_GROUP_FLAG_ALLOW_DOORS_ON_TRACK = 0b00000001,
 };
