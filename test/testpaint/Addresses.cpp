@@ -48,6 +48,7 @@ int32_t DISABLE_OPT RCT2_CALLPROC_X(
         mov result, eax
     }
 #else
+    // clang-format off
     __asm__ volatile("\
         \n\
         push %%ebx \n\
@@ -67,19 +68,11 @@ int32_t DISABLE_OPT RCT2_CALLPROC_X(
         pop %%ebx \n\
         /* Load result with flags */ \n\
         mov %%eax, %[result] \n\
-        "
-                     : [address] "+m"(address),
-                       [eax] "+m"(_eax),
-                       [ebx] "+m"(_ebx),
-                       [ecx] "+m"(_ecx),
-                       [edx] "+m"(_edx),
-                       [esi] "+m"(_esi),
-                       [edi] "+m"(_edi),
-                       [ebp] "+m"(_ebp),
-                       [result] "+m"(result)
-                     :
-                     : "eax", "ecx", "edx", "esi", "edi", "memory");
-#endif
+        " : [address] "+m" (address), [eax] "+m" (_eax), [ebx] "+m" (_ebx), [ecx] "+m" (_ecx), [edx] "+m" (_edx), [esi] "+m" (_esi), [edi] "+m" (_edi), [ebp] "+m" (_ebp), [result] "+m" (result)
+        :
+        : "eax","ecx","edx","esi","edi","memory");
+    // clang-format on
+#endif // _MSC_VER
 #endif // PLATFORM_X86
     _originalAddress = 0;
     // lahf only modifies ah, zero out the rest
