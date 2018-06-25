@@ -36,11 +36,29 @@ uint32_t gCurrentViewportFlags;
 uint32_t gScenarioTicks;
 uint8_t gCurrentRotation;
 
-const CoordsXY CoordsDirectionDelta[]
-    = { { -32, 0 }, { 0, +32 }, { +32, 0 }, { 0, -32 }, { -32, +32 }, { +32, +32 }, { +32, -32 }, { -32, -32 } };
+// clang-format off
+const CoordsXY CoordsDirectionDelta[] = {
+    { -32, 0 },
+    { 0, +32 },
+    { +32, 0 },
+    { 0, -32 },
+    { -32, +32 },
+    { +32, +32 },
+    { +32, -32 },
+    { -32, -32 },
+};
 
-const TileCoordsXY TileDirectionDelta[]
-    = { { -1, 0 }, { 0, +1 }, { +1, 0 }, { 0, -1 }, { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 } };
+const TileCoordsXY TileDirectionDelta[] = {
+    { -1, 0 },
+    { 0, +1 },
+    { +1, 0 },
+    { 0, -1 },
+    { -1, +1 },
+    { +1, +1 },
+    { +1, -1 },
+    { -1, -1 },
+};
+// clang-format on
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex);
 TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex);

@@ -60,9 +60,11 @@ TEST_F(CryptTests, SHA1_Basic)
 
 TEST_F(CryptTests, SHA1_Multiple)
 {
-    std::string input[] = { "Merry-go-round 2 looks too intense for me",
-                            "This park is really clean and tidy",
-                            "This balloon from Balloon Stall 1 is really good value" };
+    std::string input[] = {
+        "Merry-go-round 2 looks too intense for me",
+        "This park is really clean and tidy",
+        "This balloon from Balloon Stall 1 is really good value",
+    };
 
     auto alg = Crypt::CreateSHA1();
     for (auto s : input)
@@ -91,9 +93,11 @@ TEST_F(CryptTests, SHA1_Many)
     auto alg = Crypt::CreateSHA1();
 
     // First digest
-    std::string inputA[] = { "Merry-go-round 2 looks too intense for me",
-                             "This park is really clean and tidy",
-                             "This balloon from Balloon Stall 1 is really good value" };
+    std::string inputA[] = {
+        "Merry-go-round 2 looks too intense for me",
+        "This park is really clean and tidy",
+        "This balloon from Balloon Stall 1 is really good value",
+    };
     for (auto s : inputA)
     {
         alg->Update(s.data(), s.size());
