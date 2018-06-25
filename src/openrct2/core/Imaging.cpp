@@ -309,7 +309,12 @@ namespace Imaging
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
+#if _WIN32
+                auto pathW = String::ToUtf16(path);
+                std::ifstream fs(pathW, std::ios::binary);
+#else
                 std::ifstream fs(path.data(), std::ios::binary);
+#endif
                 return ReadFromStream(fs, format);
             }
         }
@@ -330,7 +335,12 @@ namespace Imaging
                 break;
             case IMAGE_FORMAT::PNG:
             {
+#ifdef _WIN32
+                auto pathW = String::ToUtf16(path);
+                std::ofstream fs(pathW, std::ios::binary);
+#else
                 std::ofstream fs(path.data(), std::ios::binary);
+#endif
                 WritePng(fs, image);
                 break;
             }
