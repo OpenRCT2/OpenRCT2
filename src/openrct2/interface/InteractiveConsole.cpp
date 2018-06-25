@@ -1067,8 +1067,11 @@ static int32_t cc_load_object(InteractiveConsole& console, const utf8** argv, in
 
 static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
 {
-    const utf8* object_type_names[] = { "Rides", "Small scenery",  "Large scenery",  "Walls",          "Banners",
-                                        "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water" };
+    const utf8* object_type_names[] = {
+        "Rides", "Small scenery",  "Large scenery",  "Walls",          "Banners",
+        "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water",
+    };
+
     for (int32_t i = 0; i < 10; i++)
     {
         int32_t entryGroupIndex = 0;

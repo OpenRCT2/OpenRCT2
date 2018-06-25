@@ -55,11 +55,27 @@ colour_t gCurrentWindowColours[4];
 
 // converted from uint16_t values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to centre to, if a window is obscuring a location, the next is tried
+// clang-format off
 static constexpr const float window_scroll_locations[][2] = {
-    { 0.5f, 0.5f },   { 0.75f, 0.5f },    { 0.25f, 0.5f },    { 0.5f, 0.75f },    { 0.5f, 0.25f },    { 0.75f, 0.75f },
-    { 0.75f, 0.25f }, { 0.25f, 0.75f },   { 0.25f, 0.25f },   { 0.125f, 0.5f },   { 0.875f, 0.5f },   { 0.5f, 0.125f },
-    { 0.5f, 0.875f }, { 0.875f, 0.125f }, { 0.875f, 0.875f }, { 0.125f, 0.875f }, { 0.125f, 0.125f },
+    { 0.5f, 0.5f },
+    { 0.75f, 0.5f },
+    { 0.25f, 0.5f },
+    { 0.5f, 0.75f },
+    { 0.5f, 0.25f },
+    { 0.75f, 0.75f },
+    { 0.75f, 0.25f },
+    { 0.25f, 0.75f },
+    { 0.25f, 0.25f },
+    { 0.125f, 0.5f },
+    { 0.875f, 0.5f },
+    { 0.5f, 0.125f },
+    { 0.5f, 0.875f },
+    { 0.875f, 0.125f },
+    { 0.875f, 0.875f },
+    { 0.125f, 0.875f },
+    { 0.125f, 0.125f },
 };
+// clang-format on
 
 static int32_t
     window_draw_split(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
@@ -839,9 +855,7 @@ void window_set_location(rct_window* w, int32_t x, int32_t y, int32_t z)
  */
 void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
 {
-    LocationXYZ16 location_3d = { /* .x = */ (int16_t)x,
-                                  /* .y = */ (int16_t)y,
-                                  /* .z = */ (int16_t)z };
+    LocationXYZ16 location_3d = { (int16_t)x, (int16_t)y, (int16_t)z };
 
     assert(w != nullptr);
 

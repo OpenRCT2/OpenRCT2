@@ -47,13 +47,15 @@ static void
 void scrolling_text_initialise_bitmaps()
 {
     uint8_t drawingSurface[64];
-    rct_drawpixelinfo dpi = { /* .bits = */ (uint8_t*)&drawingSurface,
-                              /* .x = */ 0,
-                              /* .y = */ 0,
-                              /* .width = */ 8,
-                              /* .height = */ 8,
-                              /* .pitch = */ 0,
-                              /* .zoom_level = */ 0 };
+    rct_drawpixelinfo dpi = {
+        /* .bits = */ (uint8_t*)&drawingSurface,
+        /* .x = */ 0,
+        /* .y = */ 0,
+        /* .width = */ 8,
+        /* .height = */ 8,
+        /* .pitch = */ 0,
+        /* .zoom_level = */ 0,
+    };
 
     for (int32_t i = 0; i < FONT_SPRITE_GLYPH_COUNT; i++)
     {

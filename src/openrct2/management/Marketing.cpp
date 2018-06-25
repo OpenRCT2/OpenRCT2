@@ -28,10 +28,12 @@ const money16 AdvertisingCampaignPricePerWeek[] = {
     MONEY(50, 00),  // PARK_ENTRY_HALF_PRICE
     MONEY(50, 00),  // FOOD_OR_DRINK_FREE
     MONEY(350, 00), // PARK
-    MONEY(200, 00)  // RIDE
+    MONEY(200, 00), // RIDE
 };
 
-static constexpr const int32_t AdvertisingCampaignGuestGenerationProbabilities[] = { 400, 300, 200, 200, 250, 200 };
+static constexpr const int32_t AdvertisingCampaignGuestGenerationProbabilities[] = {
+    400, 300, 200, 200, 250, 200,
+};
 
 uint8_t gMarketingCampaignDaysLeft[20];
 uint8_t gMarketingCampaignRideIndex[22];

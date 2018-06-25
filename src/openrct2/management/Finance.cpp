@@ -32,7 +32,7 @@ const money32 wage_table[STAFF_TYPE_COUNT] = {
     MONEY(50, 00), // Handyman
     MONEY(80, 00), // Mechanic
     MONEY(60, 00), // Security guard
-    MONEY(55, 00)  // Entertainer
+    MONEY(55, 00), // Entertainer
 };
 
 // Monthly research funding costs
@@ -40,10 +40,12 @@ const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
     MONEY(0, 00),   // No funding
     MONEY(100, 00), // Minimum funding
     MONEY(200, 00), // Normal funding
-    MONEY(400, 00)  // Maximum funding
+    MONEY(400, 00), // Maximum funding
 };
 
-static constexpr const int32_t dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
+static constexpr const int32_t dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {
+    1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
+};
 
 money32 gInitialCash;
 money32 gCash;
