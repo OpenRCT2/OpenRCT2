@@ -266,8 +266,15 @@ void lightfx_prepare_light_list()
         }
 
         int32_t mapFrontDiv = 1 << _current_view_zoom_front;
-        static int16_t offsetPattern[26]
-            = { 0, 0, -4, 0, 0, -3, 4, 0, 0, 3, -2, -1, -1, -1, 2, 1, 1, 1, -3, -2, -3, 2, 3, -2, 3, 2 };
+
+        // clang-format off
+        static int16_t offsetPattern[26] = {
+            0, 0,
+            -4, 0, 0, -3, 4, 0, 0, 3,
+            -2, -1, -1, -1, 2, 1, 1, 1,
+            -3, -2, -3, 2, 3, -2, 3, 2,
+        };
+        // clang-format on
 #endif // LIGHTFX_UNKNOWN_PART_1
 
         if (true)
@@ -774,9 +781,10 @@ void lightfx_add_lights_magic_vehicles()
             place_y = vehicle->y;
             place_z = vehicle->z;
 
-            static constexpr const int16_t offsetLookup[32]
-                = { 10,  10,  9,  8,  7,  6,  4,  2,  0, -2, -4, -6, -7, -8, -9, -10,
-                    -10, -10, -9, -8, -7, -6, -4, -2, 0, 2,  4,  6,  7,  8,  9,  10 };
+            static constexpr const int16_t offsetLookup[] = {
+                10,  10,  9,  8,  7,  6,  4,  2,  0, -2, -4, -6, -7, -8, -9, -10,
+                -10, -10, -9, -8, -7, -6, -4, -2, 0, 2,  4,  6,  7,  8,  9,  10,
+            };
 
             Ride* ride = get_ride(vehicle->ride);
             switch (ride->type)

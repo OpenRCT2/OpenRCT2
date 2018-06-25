@@ -28,7 +28,11 @@ static void DrawHeavyRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, in
  *
  *  rct2: 0x009AC058
  */
-const DrawRainFunc DrawRainFunctions[] = { nullptr, &DrawLightRain, &DrawHeavyRain };
+const DrawRainFunc DrawRainFunctions[] = {
+    nullptr,
+    &DrawLightRain,
+    &DrawHeavyRain,
+};
 
 /**
  *

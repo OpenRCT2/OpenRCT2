@@ -21,7 +21,11 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-static rct_string_id _StatusErrorTitles[] = { STR_CANT_CLOSE, STR_CANT_OPEN, STR_CANT_TEST };
+static rct_string_id _StatusErrorTitles[] = {
+    STR_CANT_CLOSE,
+    STR_CANT_OPEN,
+    STR_CANT_TEST,
+};
 
 struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GameActionResult>
 {

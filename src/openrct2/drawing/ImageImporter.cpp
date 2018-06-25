@@ -637,5 +637,5 @@ const PaletteBGRA ImageImporter::StandardPalette[256] = {
     { 75, 207, 255, 255 },
 
     // 255 (unused?)
-    { 0, 0, 0, 255 }
+    { 0, 0, 0, 255 },
 };

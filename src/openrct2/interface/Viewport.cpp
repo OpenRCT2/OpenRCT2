@@ -110,9 +110,7 @@ void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t* out_x, int3
 {
     int32_t start_x = x;
 
-    LocationXYZ16 coord_3d = { /* .x = */ (int16_t)x,
-                               /* .y = */ (int16_t)y,
-                               /* .z = */ (int16_t)z };
+    LocationXYZ16 coord_3d = { (int16_t)x, (int16_t)y, (int16_t)z };
 
     LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
 
@@ -1381,13 +1379,15 @@ static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16
         if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
         {
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
-            rct_drawpixelinfo zoomed_dpi = { /* .bits = */ dpi->bits,
-                                             /* .x = */ (int16_t)(dpi->x >> 1),
-                                             /* .y = */ (int16_t)(dpi->y >> 1),
-                                             /* .height = */ dpi->height,
-                                             /* .width = */ dpi->width,
-                                             /* .pitch = */ dpi->pitch,
-                                             /* .zoom_level = */ (uint16_t)(dpi->zoom_level - 1) };
+            rct_drawpixelinfo zoomed_dpi = {
+                /* .bits = */ dpi->bits,
+                /* .x = */ (int16_t)(dpi->x >> 1),
+                /* .y = */ (int16_t)(dpi->y >> 1),
+                /* .height = */ dpi->height,
+                /* .width = */ dpi->width,
+                /* .pitch = */ dpi->pitch,
+                /* .zoom_level = */ (uint16_t)(dpi->zoom_level - 1),
+            };
 
             return sub_679074(&zoomed_dpi, imageId - g1->zoomed_offset, x / 2, y / 2, palette);
         }

@@ -635,23 +635,25 @@ static bool award_is_deserved_best_gentle_rides([[maybe_unused]] int32_t activeA
 
 using award_deserved_check = bool (*)(int32_t);
 
-static constexpr const award_deserved_check _awardChecks[] = { award_is_deserved_most_untidy,
-                                                               award_is_deserved_most_tidy,
-                                                               award_is_deserved_best_rollercoasters,
-                                                               award_is_deserved_best_value,
-                                                               award_is_deserved_most_beautiful,
-                                                               award_is_deserved_worst_value,
-                                                               award_is_deserved_safest,
-                                                               award_is_deserved_best_staff,
-                                                               award_is_deserved_best_food,
-                                                               award_is_deserved_worst_food,
-                                                               award_is_deserved_best_restrooms,
-                                                               award_is_deserved_most_disappointing,
-                                                               award_is_deserved_best_water_rides,
-                                                               award_is_deserved_best_custom_designed_rides,
-                                                               award_is_deserved_most_dazzling_ride_colours,
-                                                               award_is_deserved_most_confusing_layout,
-                                                               award_is_deserved_best_gentle_rides };
+static constexpr const award_deserved_check _awardChecks[] = {
+    award_is_deserved_most_untidy,
+    award_is_deserved_most_tidy,
+    award_is_deserved_best_rollercoasters,
+    award_is_deserved_best_value,
+    award_is_deserved_most_beautiful,
+    award_is_deserved_worst_value,
+    award_is_deserved_safest,
+    award_is_deserved_best_staff,
+    award_is_deserved_best_food,
+    award_is_deserved_worst_food,
+    award_is_deserved_best_restrooms,
+    award_is_deserved_most_disappointing,
+    award_is_deserved_best_water_rides,
+    award_is_deserved_best_custom_designed_rides,
+    award_is_deserved_most_dazzling_ride_colours,
+    award_is_deserved_most_confusing_layout,
+    award_is_deserved_best_gentle_rides,
+};
 
 static bool award_is_deserved(int32_t awardType, int32_t activeAwardTypes)
 {
