@@ -309,7 +309,7 @@ namespace Imaging
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
-#if _WIN32
+#if defined(_WIN32) && !defined(__MINGW32__)
                 auto pathW = String::ToUtf16(path);
                 std::ifstream fs(pathW, std::ios::binary);
 #else
@@ -335,7 +335,7 @@ namespace Imaging
                 break;
             case IMAGE_FORMAT::PNG:
             {
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__MINGW32__)
                 auto pathW = String::ToUtf16(path);
                 std::ofstream fs(pathW, std::ios::binary);
 #else
