@@ -309,7 +309,7 @@ namespace Imaging
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
-#if _WIN32
+#ifdef _WIN32
                 auto pathW = String::ToUtf16(path);
                 std::ifstream fs(pathW, std::ios::binary);
 #else
