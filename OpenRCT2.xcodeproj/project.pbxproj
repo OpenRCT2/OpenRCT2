@@ -3497,7 +3497,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"0.2.0\"\nzipname=\"title-sequence-v$version.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/title\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/title\" ]]; then rm -r \"${SRCROOT}/data/title\"; fi\nmkdir -p \"${SRCROOT}/data/title\"\n\ncurl -L -o \"${SRCROOT}/data/title/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/title\" \"${SRCROOT}/data/title/$zipname\"\nrm \"${SRCROOT}/data/title/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi";
+			shellScript = "version=\"0.1.2\"\nzipname=\"title-sequence-v$version.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/title\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/title\" ]]; then rm -r \"${SRCROOT}/data/title\"; fi\nmkdir -p \"${SRCROOT}/data/title\"\n\ncurl -L -o \"${SRCROOT}/data/title/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/title\" \"${SRCROOT}/data/title/$zipname\"\nrm \"${SRCROOT}/data/title/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
