@@ -78,11 +78,11 @@ money32 gScenarioObjectiveCurrency;
 uint16_t gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
-sint16 gScenarioCompletedDays;
-sint16 gScenarioDaysRecord;
+int16_t gScenarioCompletedDays;
+int16_t gScenarioDaysRecord;
 
 bool gScenarioEndedInSession = false;
-sint16 gScenarioDaysToComplete;
+int16_t gScenarioDaysToComplete;
 
 char gScenarioFileName[MAX_PATH];
 
@@ -222,7 +222,7 @@ void scenario_failure()
 void scenario_success()
 {
     const money32 companyValue = gCompanyValue;
-    const sint16 daysRecord = gScenarioDaysToComplete;
+    const int16_t daysRecord = gScenarioDaysToComplete;
 
     gScenarioCompletedCompanyValue = companyValue;
     gScenarioCompletedDays = daysRecord;

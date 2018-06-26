@@ -375,10 +375,14 @@ extern char gScenarioExpansionPacks[3256];
 extern bool gFirstTimeSaving;
 extern uint16_t gSavedAge;
 extern uint32_t gLastAutoSaveUpdate;
-
+extern bool gScenarioEndedInSession;
+extern int16_t gScenarioDaysToComplete;
 extern char gScenarioFileName[260];
 
 void load_from_sc6(const char *path);
+
+ParkLoadResult * load_from_sc6(const char *path);
+
 void scenario_begin();
 void scenario_update();
 

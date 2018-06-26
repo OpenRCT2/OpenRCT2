@@ -29,6 +29,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/scenario/Scenario.h>
 #include "../interface/Theme.h"
+#include <openrct2/localisation/Date.h>
 
 // clang-format off
 enum WINDOW_PARK_PAGE {
@@ -1565,8 +1566,13 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left_wrapped(dpi, nullptr, x, y, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
         } else {
             // Objective completed
-            if (gConfigGeneral.allow_early_completion) {
-                set_format_arg(0, uint16, gScenarioDaysElapsed);
+            if ((gConfigGeneral.allow_early_completion || gScenarioObjectiveType == OBJECTIVE_10_ROLLERCOASTERS ||
+                gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING || gScenarioObjectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME ||
+                gScenarioObjectiveType == OBJECTIVE_10_ROLLERCOASTERS_LENGTH || gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS ||
+                gScenarioObjectiveType == OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE || gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) && 
+                gScenarioEndedInSession)
+            {
+                set_format_arg(0, int16_t, gScenarioDaysToComplete);
                 set_format_arg(2, money32, gScenarioCompletedCompanyValue);
                 gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_OBJECTIVE_ACHIEVED_WITH_DAYS, COLOUR_BLACK);
             }

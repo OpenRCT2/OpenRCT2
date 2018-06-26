@@ -47,9 +47,11 @@ extern uint16_t gDateMonthsElapsed;
 
 extern openrct_timeofday gRealTimeOfDay;
 
+int32_t date_get_day_of_month(int32_t month);
 int32_t date_get_month(int32_t months);
 int32_t date_get_year(int32_t months);
 int32_t date_get_total_months(int32_t month, int32_t year);
+int32_t date_get_elapsed_days(int32_t months, int32_t days);
 void date_reset();
 void date_update();
 void date_set(int32_t year, int32_t month, int32_t day);

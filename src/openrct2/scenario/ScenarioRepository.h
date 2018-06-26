@@ -14,11 +14,20 @@
 
 struct rct_object_entry;
 
-struct scenario_highscore_entry
+struct scenario_highscore_entry_v1
 {
     utf8 *      fileName;
     utf8 *      name;
     money32     company_value;
+    datetime64  timestamp;
+};
+
+struct scenario_highscore_entry_v2
+{
+    utf8 *      fileName;
+    utf8 *      name;
+    money32     company_value;
+    int16_t     days_record;
     datetime64  timestamp;
 };
 
@@ -77,5 +86,5 @@ IScenarioRepository * GetScenarioRepository();
 void    scenario_repository_scan();
 size_t  scenario_repository_get_count();
 const   scenario_index_entry *scenario_repository_get_by_index(size_t index);
-bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name);
+bool    scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, uint32_t days, const utf8 * name);
 void    scenario_translate(scenario_index_entry * scenarioEntry, const struct rct_object_entry * stexObjectEntry);

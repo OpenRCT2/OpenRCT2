@@ -41,7 +41,7 @@
 
 using namespace OpenRCT2;
 
-static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
+static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
 {
     if (categoryA == categoryB) return 0;
     if (categoryA == SCENARIO_CATEGORY_DLC) return -1;
@@ -51,7 +51,7 @@ static sint32 ScenarioCategoryCompare(sint32 categoryA, sint32 categoryB)
     return Math::Sign(categoryA - categoryB);
 }
 
-static sint32 scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
+static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry &entryA,
                                                   const scenario_index_entry &entryB)
 {
     // Order by category
@@ -74,7 +74,7 @@ static sint32 scenario_index_entry_CompareByCategory(const scenario_index_entry 
     }
 }
 
-static sint32 scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
+static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry &entryA,
                                                const scenario_index_entry &entryB)
 {
     // Order by source game
@@ -84,7 +84,7 @@ static sint32 scenario_index_entry_CompareByIndex(const scenario_index_entry &en
     }
 
     // Then by index / category / name
-    uint8 sourceGame = entryA.source_game;
+    uint8_t sourceGame = entryA.source_game;
     switch (sourceGame) {
     default:
         if (entryA.source_index == -1 && entryB.source_index == -1)
@@ -589,22 +589,22 @@ private:
         try
         {
             auto fsRead = FileStream(path, FILE_MODE_OPEN);
-            uint32 fileVersion = fsRead.ReadValue<uint32>();
+            uint32_t fileVersion = fsRead.ReadValue<uint32_t>();
             
             if (fileVersion == 1)
             {
                 Console::Error::WriteLine("Found old highscores file, converting");
                 // Old highscores file doesn't contain days value, need to transfer values
-                uint32 numHighscores = fsRead.ReadValue<uint32>();
+                uint32_t numHighscores = fsRead.ReadValue<uint32_t>();
 
                 // Start over and overwrite old data
                 auto fsWrite = FileStream(path, FILE_MODE_WRITE);
-                fsWrite.WriteValue<uint32>(2);
-                fsWrite.WriteValue<uint32>(numHighscores);
+                fsWrite.WriteValue<uint32_t>(2);
+                fsWrite.WriteValue<uint32_t>(numHighscores);
 
                 Console::Error::WriteLine("Saving old values", numHighscores);
 
-                for (uint32 i = 0; i < numHighscores; i++)
+                for (uint32_t i = 0; i < numHighscores; i++)
                 {
                     scenario_highscore_entry_v1 * highscore = InsertV1Highscore();
                     highscore->fileName = fsRead.ReadString();
@@ -663,14 +663,14 @@ private:
             {
                 ClearHighscoresV2();
 
-                uint32 numHighscores = fsRead.ReadValue<uint32>();
-                for (uint32 i = 0; i < numHighscores; i++)
+                uint32_t numHighscores = fsRead.ReadValue<uint32_t>();
+                for (uint32_t i = 0; i < numHighscores; i++)
                 {
                     scenario_highscore_entry_v2 * highscore = InsertV2Highscore();
                     highscore->fileName = fsRead.ReadString();
                     highscore->name = fsRead.ReadString();
                     highscore->company_value = fsRead.ReadValue<money32>();
-                    highscore->days_record = fsRead.ReadValue<sint16>();
+                    highscore->days_record = fsRead.ReadValue<int16_t>();
                     highscore->timestamp = fsRead.ReadValue<datetime64>();
                 }
             }
@@ -784,7 +784,7 @@ private:
         {
             scenario_highscore_free(highscore);
         }
-        _highscores.clear();
+        _highscoresV2.clear();
     }
 
     scenario_highscore_entry * InsertHighscore()
@@ -822,8 +822,8 @@ private:
         {
             auto fs = FileStream(path, FILE_MODE_WRITE);
             fs.WriteValue<uint32_t>(HighscoreFileVersion);
-            fs.WriteValue<uint32_t>((uint32_t)_highscores.size());
-            for (size_t i = 0; i < _highscores.size(); i++)
+            fs.WriteValue<uint32_t>((uint32_t)_highscoresV2.size());
+            for (size_t i = 0; i < _highscoresV2.size(); i++)
             {
                 const scenario_highscore_entry * highscore = _highscores[i];
                 fs.WriteString(highscore->fileName);

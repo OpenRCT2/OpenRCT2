@@ -43,6 +43,7 @@ int32_t date_get_month(int32_t months)
     return ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 }
 
+int32_t date_get_month(int32_t months)
 {
     return months % MONTH_COUNT;
 }
@@ -57,8 +58,8 @@ int32_t date_get_total_months(int32_t month, int32_t year)
     return (year - 1) * MONTH_COUNT + month;
 }
 
-sint32 date_get_elapsed_days(sint32 months, sint32 days) {
-    sint32 sum = 0;
+int32_t date_get_elapsed_days(int32_t months, int32_t days) {
+    int32_t sum = 0;
     for (int i = 0; i < months; i++) {
         sum += days_in_month[i % MONTH_COUNT];
     }
