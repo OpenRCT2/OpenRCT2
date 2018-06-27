@@ -687,10 +687,11 @@ void window_guest_overview_viewport_rotate(rct_window *w)
 void window_guest_viewport_init(rct_window* w){
     if (w->page != WINDOW_GUEST_OVERVIEW) return;
 
-    union{
+    struct
+    {
         sprite_focus sprite;
         coordinate_focus coordinate;
-    } focus = {}; // The focus will be either a sprite or a coordinate.
+    } focus = {}; // The focus will be both a sprite and a coordinate.
 
     focus.sprite.sprite_id = w->number;
 
