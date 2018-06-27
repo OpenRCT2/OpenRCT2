@@ -655,11 +655,11 @@ void viewport_update_smart_sprite_follow(rct_window * window)
 
 void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
 {
-    struct
+    union
     {
         sprite_focus sprite;
         coordinate_focus coordinate;
-    } focus = {}; // The focus will be both a sprite and a coordinate.
+    } focus = {}; // The focus will be either a sprite or a coordinate.
 
     focus.sprite.sprite_id = window->viewport_smart_follow_sprite;
 
