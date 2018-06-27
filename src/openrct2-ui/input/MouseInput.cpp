@@ -1257,6 +1257,8 @@ void input_state_widget_pressed(int32_t x, int32_t y, int32_t state, rct_widgeti
         {
             if (w)
             {
+                auto wClass = w->classification;
+                auto wNumber = w->number;
                 int32_t dropdown_index = 0;
 
                 if (w->classification == WC_DROPDOWN)
@@ -1315,9 +1317,11 @@ void input_state_widget_pressed(int32_t x, int32_t y, int32_t state, rct_widgeti
                     }
                 }
                 window_event_dropdown_call(cursor_w, cursor_widgetIndex, dropdown_index);
-            }
         dropdown_cleanup:
-            window_close_by_class(WC_DROPDOWN);
+                window_close_by_class(WC_DROPDOWN);
+                // Update w as it will be invalid after closing the dropdown window
+                w = window_find_by_number(wClass, wNumber);
+            }
         }
 
         _inputState = INPUT_STATE_NORMAL;
