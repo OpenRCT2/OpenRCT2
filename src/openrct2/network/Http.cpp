@@ -101,10 +101,10 @@ Response Do(const Request & req)
         std::runtime_error("Failed to initialize curl");
 
     Response res;
+    WriteThis wt;
 
     if (req.method == Method::POST || req.method == Method::PUT)
     {
-        WriteThis wt;
         wt.readptr  = req.body.c_str();
         wt.sizeleft = req.body.size();
 
