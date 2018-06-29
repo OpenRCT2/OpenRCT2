@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
+    <GtestDir Condition="'$(GtestDir)'==''">$(SolutionDir)lib\googletest\googletest</GtestDir>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{62B020FA-E4FB-4C6E-B32A-DC999470F155}</ProjectGuid>
+    <RootNamespace>tests</RootNamespace>
+    <ProjectName>tests</ProjectName>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="..\..\openrct2.common.props" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <IncludePath>$(GtestDir);$(GtestDir)\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)bin;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>GTEST_LANG_CXX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libopenrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /EIY "$(ProjectDir)testdata" "$(OutputPath)testdata"</Command>
+      <Message>Copies test data to output directory.</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <!-- Files -->
+  <ItemGroup>
+    <ClInclude Include="AssertHelpers.hpp" />
+    <ClInclude Include="helpers\StringHelpers.hpp" />
+    <ClInclude Include="TestData.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CryptTests.cpp" />
+    <ClCompile Include="LanguagePackTest.cpp" />
+    <ClCompile Include="ImageImporterTests.cpp" />
+    <ClCompile Include="IniReaderTest.cpp" />
+    <ClCompile Include="IniWriterTest.cpp" />
+    <ClCompile Include="Localisation.cpp" />
+    <ClCompile Include="MultiLaunch.cpp" />
+    <ClCompile Include="RideRatings.cpp" />
+    <ClCompile Include="sawyercoding_test.cpp" />
+    <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
+    <ClCompile Include="TestData.cpp" />
+    <ClCompile Include="tests.cpp" />
+    <ClCompile Include="StringTest.cpp" />
+    <ClCompile Include="TileElements.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

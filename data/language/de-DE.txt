@@ -604,170 +604,170 @@ STR_0599    :Eine kompakte Achterbahn mit unabhängigen Wagen und gemäßigten, 
 STR_0600    :Angetriebene Minenzüge fahren auf einer gemäßigten und verwundenen Strecke
 STR_0601    :
 STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induktionsmotoren beschleunigt und rasen durch gewundene Überkopfteile
-STR_0603    :Besucher {INT32}
-STR_0604    :Besucher {INT32}
-STR_0605    :Besucher {INT32}
-STR_0606    :Besucher {INT32}
-STR_0607    :Besucher {INT32}
-STR_0608    :Besucher {INT32}
-STR_0609    :Besucher {INT32}
-STR_0610    :Besucher {INT32}
-STR_0611    :Besucher {INT32}
-STR_0612    :Besucher {INT32}
-STR_0613    :Besucher {INT32}
-STR_0614    :Besucher {INT32}
-STR_0615    :Besucher {INT32}
-STR_0616    :Besucher {INT32}
-STR_0617    :Besucher {INT32}
-STR_0618    :Besucher {INT32}
-STR_0619    :Besucher {INT32}
-STR_0620    :Besucher {INT32}
-STR_0621    :Besucher {INT32}
-STR_0622    :Besucher {INT32}
-STR_0623    :Besucher {INT32}
-STR_0624    :Besucher {INT32}
-STR_0625    :Besucher {INT32}
-STR_0626    :Besucher {INT32}
-STR_0627    :Besucher {INT32}
-STR_0628    :Besucher {INT32}
-STR_0629    :Besucher {INT32}
-STR_0630    :Besucher {INT32}
-STR_0631    :Besucher {INT32}
-STR_0632    :Besucher {INT32}
-STR_0633    :Besucher {INT32}
-STR_0634    :Besucher {INT32}
-STR_0635    :Besucher {INT32}
-STR_0636    :Besucher {INT32}
-STR_0637    :Besucher {INT32}
-STR_0638    :Besucher {INT32}
-STR_0639    :Besucher {INT32}
-STR_0640    :Besucher {INT32}
-STR_0641    :Besucher {INT32}
-STR_0642    :Besucher {INT32}
-STR_0643    :Besucher {INT32}
-STR_0644    :Besucher {INT32}
-STR_0645    :Besucher {INT32}
-STR_0646    :Besucher {INT32}
-STR_0647    :Besucher {INT32}
-STR_0648    :Besucher {INT32}
-STR_0649    :Besucher {INT32}
-STR_0650    :Besucher {INT32}
-STR_0651    :Besucher {INT32}
-STR_0652    :Besucher {INT32}
-STR_0653    :Besucher {INT32}
-STR_0654    :Besucher {INT32}
-STR_0655    :Besucher {INT32}
-STR_0656    :Besucher {INT32}
-STR_0657    :Besucher {INT32}
-STR_0658    :Besucher {INT32}
-STR_0659    :Besucher {INT32}
-STR_0660    :Besucher {INT32}
-STR_0661    :Besucher {INT32}
-STR_0662    :Besucher {INT32}
-STR_0663    :Besucher {INT32}
-STR_0664    :Besucher {INT32}
-STR_0665    :Besucher {INT32}
-STR_0666    :Besucher {INT32}
-STR_0667    :Besucher {INT32}
-STR_0668    :Besucher {INT32}
-STR_0669    :Besucher {INT32}
-STR_0670    :Besucher {INT32}
-STR_0671    :Besucher {INT32}
-STR_0672    :Besucher {INT32}
-STR_0673    :Besucher {INT32}
-STR_0674    :Besucher {INT32}
-STR_0675    :Besucher {INT32}
-STR_0676    :Besucher {INT32}
-STR_0677    :Besucher {INT32}
-STR_0678    :Besucher {INT32}
-STR_0679    :Besucher {INT32}
-STR_0680    :Besucher {INT32}
-STR_0681    :Besucher {INT32}
-STR_0682    :Besucher {INT32}
-STR_0683    :Besucher {INT32}
-STR_0684    :Besucher {INT32}
-STR_0685    :Besucher {INT32}
-STR_0686    :Besucher {INT32}
-STR_0687    :Besucher {INT32}
-STR_0688    :Besucher {INT32}
-STR_0689    :Besucher {INT32}
-STR_0690    :Besucher {INT32}
-STR_0691    :Besucher {INT32}
-STR_0692    :Besucher {INT32}
-STR_0693    :Besucher {INT32}
-STR_0694    :Besucher {INT32}
-STR_0695    :Besucher {INT32}
-STR_0696    :Besucher {INT32}
-STR_0697    :Besucher {INT32}
-STR_0698    :Besucher {INT32}
-STR_0699    :Besucher {INT32}
-STR_0700    :Besucher {INT32}
-STR_0701    :Besucher {INT32}
-STR_0702    :Besucher {INT32}
-STR_0703    :Besucher {INT32}
-STR_0704    :Besucher {INT32}
-STR_0705    :Besucher {INT32}
-STR_0706    :Besucher {INT32}
-STR_0707    :Besucher {INT32}
-STR_0708    :Besucher {INT32}
-STR_0709    :Besucher {INT32}
-STR_0710    :Besucher {INT32}
-STR_0711    :Besucher {INT32}
-STR_0712    :Besucher {INT32}
-STR_0713    :Besucher {INT32}
-STR_0714    :Besucher {INT32}
-STR_0715    :Besucher {INT32}
-STR_0716    :Besucher {INT32}
-STR_0717    :Besucher {INT32}
-STR_0718    :Besucher {INT32}
-STR_0719    :Besucher {INT32}
-STR_0720    :Besucher {INT32}
-STR_0721    :Besucher {INT32}
-STR_0722    :Besucher {INT32}
-STR_0723    :Besucher {INT32}
-STR_0724    :Besucher {INT32}
-STR_0725    :Besucher {INT32}
-STR_0726    :Besucher {INT32}
-STR_0727    :Besucher {INT32}
-STR_0728    :Besucher {INT32}
-STR_0729    :Besucher {INT32}
-STR_0730    :Besucher {INT32}
-STR_0731    :Besucher {INT32}
-STR_0732    :Besucher {INT32}
-STR_0733    :Besucher {INT32}
-STR_0734    :Besucher {INT32}
-STR_0735    :Besucher {INT32}
-STR_0736    :Besucher {INT32}
-STR_0737    :Besucher {INT32}
-STR_0738    :Besucher {INT32}
-STR_0739    :Besucher {INT32}
-STR_0740    :Besucher {INT32}
-STR_0741    :Besucher {INT32}
-STR_0742    :Besucher {INT32}
-STR_0743    :Besucher {INT32}
-STR_0744    :Besucher {INT32}
-STR_0745    :Besucher {INT32}
-STR_0746    :Besucher {INT32}
-STR_0747    :Besucher {INT32}
-STR_0748    :Besucher {INT32}
-STR_0749    :Besucher {INT32}
-STR_0750    :Besucher {INT32}
-STR_0751    :Besucher {INT32}
-STR_0752    :Besucher {INT32}
-STR_0753    :Besucher {INT32}
-STR_0754    :Besucher {INT32}
-STR_0755    :Besucher {INT32}
-STR_0756    :Besucher {INT32}
-STR_0757    :Besucher {INT32}
-STR_0758    :Besucher {INT32}
-STR_0759    :Besucher {INT32}
-STR_0760    :Besucher {INT32}
-STR_0761    :Besucher {INT32}
-STR_0762    :Besucher {INT32}
-STR_0763    :Besucher {INT32}
-STR_0764    :Besucher {INT32}
-STR_0765    :Besucher {INT32}
-STR_0766    :Besucher {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -850,7 +850,7 @@ STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
 STR_0847    :Über `OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.032
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle Rechte vorbehalten
 STR_0851    :{WINDOW_COLOUR_2}Entworfen und programmiert von Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafik von Simon Foster
@@ -859,13 +859,13 @@ STR_0854    :{WINDOW_COLOUR_2}Zusätzliche Sounds aufgenommen von David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Repräsentation von Jacqui Lyons bei Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Dank gilt:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth und John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -889,7 +889,7 @@ STR_0884    :Landschaft laden
 STR_0885    :Landschaft speichern
 STR_0886    :Spiel beenden
 STR_0887    :Szenario-Editor beenden
-STR_0888    :Achterbahn-Designer beenden
+STR_0888    :Streckenentwurf-Designer beenden
 STR_0889    :Streckenentwurf-Manager beenden
 STR_0890    :<removed string - do not use>
 STR_0891    :Screenshot
@@ -1219,8 +1219,8 @@ STR_1214    :{SMALLFONT}{BLACK}Wählen Sie die Höchstwartezeit{NEWLINE}vor der 
 STR_1215    :{WINDOW_COLOUR_2}Mit benachbarten Stationen synchronisieren
 STR_1216    :{SMALLFONT}{BLACK}Auswählen, ob Abfahrt mit allen benachbarten Stationen (für `Rennen') synchronisiert werden soll
 STR_1217    :{COMMA16} Sekunden
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Nur Ausgang
 STR_1221    :Kein Eingang
 STR_1222    :Kein Ausgang
@@ -1777,8 +1777,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Nur ein Fahrtfoto-Bereich pro Bahn erlaubt
 STR_1774    :Nur ein Kabellifthügel pro Bahn erlaubt
-STR_1775    :Aus
-STR_1776    :Ein
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Attraktionsmusik
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandakostüm
@@ -1925,7 +1925,7 @@ STR_1919    :Nicht genügend Geld verfügbar!
 STR_1920    :Darlehen kann nicht zurückgezahlt werden!
 STR_1921    :{SMALLFONT}{BLACK}Neues Spiel beginnen
 STR_1922    :{SMALLFONT}{BLACK}Gespeichertes Spiel fortsetzen
-STR_1923    :{SMALLFONT}{BLACK}Lehrgang zeigen
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Beenden
 STR_1925    :Person kann hier nicht platziert werden...
 STR_1926    :{SMALLFONT}
@@ -2395,7 +2395,7 @@ STR_2389    :{BLACK}Bauen Sie Ihre(n) beste(n) {STRINGID}!
 STR_2390    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder einen Nervenkitzelwert von mindestens 6,00 aufweisen muss
 STR_2391    :{BLACK}Mindestens {COMMA16} Parkbesucher zu erreichen. Die Parkbewertung darf zu keinem Zeitpunkt unter 700 fallen!
 STR_2392    :{BLACK}Monatliche Einkünfte durch Fahrttickets von mindestens {POP16}{POP16}{CURRENCY} zu erreichen
-STR_2393    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder eine Mindestlänge von {LENGTH} und einen Nervenkitzelwert von mindestens 7.00 aufweisen muss
+STR_2393    :{BLACK}Mindestens 10 verschiedene Achterbahntypen in Ihrem Park zu betreiben, wobei jeder eine Mindestlänge von {LENGTH} und einen Nervenkitzelwert von mindestens 7,00 aufweisen muss
 STR_2394    :{BLACK}Alle 5 bereits teilweise gebauten Achterbahnen fertigzustellen, damit sie jeweils einen Nervenkitzelwert von {POP16}{POP16}{COMMA2DP32} erzielen
 STR_2395    :{BLACK}Ihr Darlehen zurückzuzahlen und einen Verkehrswert von mindestens {POP16}{POP16}{CURRENCY} zu erreichen
 STR_2396    :{BLACK}Einen monatlichen Gewinn durch Speisen, Getränke und Werbeartikeln von mindestens {POP16}{POP16}{CURRENCY} zu erzielen
@@ -2690,14 +2690,14 @@ STR_2682    :{MEDIUMFONT}{BLACK}Zw. freiem und kostenpfl. Eintritt umsch.
 STR_2683    :{MEDIUMFONT}{BLACK}Erhöht das Vergnügen der Besucher maximal
 STR_2684    :{SMALLFONT}{BLACK}Eine große Gruppe von Besuchern tritt ein
 STR_2685    :`Simplex Noise' Param.
-STR_2686    :{WINDOW_COLOUR_2}Niedrig:
-STR_2687    :{WINDOW_COLOUR_2}Hoch:
-STR_2688    :{WINDOW_COLOUR_2}Basisfrequenz:
-STR_2689    :{WINDOW_COLOUR_2}Oktaven:
+STR_2686    :Niedrig:
+STR_2687    :Hoch:
+STR_2688    :Basisfrequenz:
+STR_2689    :Oktaven:
 STR_2690    :Kartengenerierung
-STR_2691    :{WINDOW_COLOUR_2}Basishöhe:
-STR_2692    :{WINDOW_COLOUR_2}Wasserhöhe:
-STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2691    :Basishöhe:
+STR_2692    :Wasserhöhe:
+STR_2693    :Terrain:
 STR_2694    :Generieren
 STR_2695    :Zufälliges Terrain
 STR_2696    :Bäume platzieren
@@ -2747,7 +2747,7 @@ STR_2739    :Keine
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nicht gefunden
-STR_2743    :Kopieren Sie data\css17.dat aus Ihrem RCT1-Verzeichnis nach data\css50.dat in Ihrem RCT2-Verzeichnis.
+STR_2743    :Kopieren Sie 'data/css17.dat' aus Ihrem RCT1-Verzeichnis nach 'data/css50.dat' in Ihrem RCT2-Verzeichnis oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2766,8 +2766,8 @@ STR_2757    :<not used anymore>
 STR_2758    :<not used anymore>
 STR_2759    :Höhen auf Null
 STR_2760    :+{CURRENCY}
-STR_2761    :Bezahlen für Eintritt
-STR_2762    :Bezahlen für Bahnen
+STR_2761    :Für Eintritt bezahlen
+STR_2762    :Für Bahnen bezahlen
 STR_2763    :???
 STR_2764    :Glückliche Gäste
 STR_2765    :Große Straßenbahn
@@ -2862,17 +2862,17 @@ STR_2852    :Streckenentwurf bereits installiert
 STR_2853    :Von der örtlichen Behörde verboten!
 STR_2854    :{RED}Besucher gelangen nicht zum Eingang von {STRINGID}!{NEWLINE}Bauen Sie einen Fußweg zum Eingang
 STR_2855    :{RED}{STRINGID} hat keinen Fußweg, der vom Ausgang wegführt!{NEWLINE}Legen Sie einen Fußweg an, der vom Bahnausgang wegführt
-STR_2856    :{WINDOW_COLOUR_2}Lehrgang
-STR_2857    :{WINDOW_COLOUR_2}(Drücken Sie eine Taste oder klicken Sie mit der Maus, um die Kontrolle zu übernehmen)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :Marketingkampage kann nicht gestartet werden...
 STR_2859    :OpenRCT2 läuft bereits
-STR_2860    :Infogrames Interactive Credits...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Lizenziert für Infogrames Interactive Inc.
 STR_2862    :Musik...
 STR_2863    :Musik
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) kein Copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Komponist unbekannt) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole (Die schöne Spanierin):   (Robert Vollstedt) kein Copyright
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditionell)
 STR_2868    :{WINDOW_COLOUR_2}Geschichten aus dem Wiener Wald:   (Johann Strauss) kein Copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditionell)
@@ -2914,29 +2914,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) Copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Produktmanager:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}V.P. Produktentwicklung:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Direktor Qualitätssicherung (Q.A.):  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A.-Zertifizierungsmanager:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A.-Zertifizierungsleitung:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Tester:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Marketingdirektor:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Creative Services Manager:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Redaktions- & Dokumentationsmanager:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Grafikdesigner:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Besonderer Dank geht an:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Technischer Spezialist:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Manager Technikabteilung:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Leitung Kompatibilätsanalyse:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Kompatibilätsanalyse:  Jason Cordero, Burke McQuinn, Kim Jardin
-STR_2929    :{WINDOW_COLOUR_2}Leitender Tester:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3061,9 +3061,9 @@ STR_3051    :Golfloch C
 STR_3052    :Golfloch D
 STR_3053    :Golfloch E
 STR_3054    :Lädt...
-STR_3055    :Weiß
-STR_3056    :Durchsichtig
-STR_3057    :{WINDOW_COLOUR_2}Baumarkierung:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Ziegelmauern
 STR_3059    :Hecken
 STR_3060    :Eisblöcke
@@ -3213,11 +3213,11 @@ STR_3203    :Einrichtung der Erfindungsliste
 STR_3204    :Optionsauswahl
 STR_3205    :Zielauswahl
 STR_3206    :Szenario speichern
-STR_3207    :Achterbahn-Designer
+STR_3207    :Streckenentwurf-Designer
 STR_3208    :Streckenentwurf-Manager
 STR_3209    :Zurück zum vorherigen Schritt:
 STR_3210    :Weiter zum nächsten Schritt:
-STR_3211    :{WINDOW_COLOUR_2}Kartengröße:
+STR_3211    :Kartengröße:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Kartengröße kann nicht mehr verkleinert werden
 STR_3214    :Kartengröße kann nicht mehr vergrößert werden
@@ -3285,8 +3285,8 @@ STR_3275    :Höherer Schwierigkeitsgrad für Besuchergewinnung
 STR_3276    :{SMALLFONT}{BLACK}Machen Sie das Anlocken von{NEWLINE}Besuchern schwieriger
 STR_3277    :{WINDOW_COLOUR_2}Kosten für Landkauf:
 STR_3278    :{WINDOW_COLOUR_2}Kosten für Erwerb v. Baurechten:
-STR_3279    :Freier Eintritt/Bezahlen pro Fahrt
-STR_3280    :Bezahlen für Eintritt/Gratis fahren
+STR_3279    :Freier Eintritt/Pro Fahrt bezahlen
+STR_3280    :Für Eintritt bezahlen/Gratis fahren
 STR_3281    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_3282    :{SMALLFONT}{BLACK}Ziel und Parkname auswählen
 STR_3283    :{SMALLFONT}{BLACK}Bahnen auswählen, die beibehalten werden sollen
@@ -3341,7 +3341,7 @@ STR_3331    :Fußweg vom Parkeingang zum Kartenrand entweder nicht vollständig 
 STR_3332    :Parkeingang liegt verkehrt herum oder besitzt keinen Fußweg zum Kartenrand
 STR_3333    :Zusatzobjekte bei gespeich. Spielen exportieren
 STR_3334    :{SMALLFONT}{BLACK}Wählen Sie aus, ob zusätzliche Plugin-Objektdaten (Zusatzdaten, die nicht zum Hauptprodukt gehören) in Spielständen oder Szenariodateien gespeichert werden sollen, damit jemand, der nicht über die zusätzlichen Objektdaten verfügt, die gespeicherten Daten laden kann
-STR_3335    :Achterbahn-Designer - Bahnarten & Fahrzeuge auswählen
+STR_3335    :Streckenentwurf-Designer - Bahnarten & Fahrzeuge auswählen
 STR_3336    :Streckenentwurf-Manager - Bahnart auswählen
 STR_3337    :Six Flags-Park
 STR_3338    :{BLACK}Eigenes Layout entwerfen
@@ -3350,7 +3350,7 @@ STR_3340    :{BLACK}{COMMA16} Entwürfe verfügbar oder eigenes Layout entwerfen
 STR_3341    :{SMALLFONT}{BLACK}Spielwerkzeuge
 STR_3342    :Szenario-Editor
 STR_3343    :Gespeichertes Spiel in Szenario umwandeln
-STR_3344    :Achterbahn-Designer
+STR_3344    :Streckenentwurf-Designer
 STR_3345    :Streckenentwurf-Manager
 STR_3346    :Streckenentwurf kann nicht gespeichert werden...
 STR_3347    :Bahn ist zu lang, enthält zu viele Elemente oder Szenerie ist zu zerstreut
@@ -3382,7 +3382,7 @@ STR_3372    :{BLACK}= Geldautomat
 STR_3373    :{BLACK}= Toilette
 STR_3374    :Warnung: Zu viele Objekte ausgewählt!
 STR_3375    :Es konnten nicht alle Objekte dieser Szeneriegruppe ausgewählt werden
-STR_3376    :Neuen Streckenentwurf installieren...
+STR_3376    :Installieren...
 STR_3377    :{SMALLFONT}{BLACK}Installieren Sie eine neue Streckenentwurfsdatei
 STR_3378    :Installieren
 STR_3379    :Abbrechen
@@ -3391,58 +3391,58 @@ STR_3381    :Datei ist nicht kompatibel oder enthält ungültige Daten
 STR_3382    :Dateikopie fehlgeschlagen
 STR_3383    :Neuen Namen für Streckenentwurf auswählen
 STR_3384    :Ein bestehender Streckenentwurf hat bereits diesen Namen - Wählen Sie einen neuen Namen für diesen Entwurf:
-STR_3385    :Anfängerlehrgang
-STR_3386    :Lehrgang zu eigenen Bahnen
-STR_3387    :Lehrgang zum Achterbahnbau
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :Es kann nicht zum ausgewählten Modus umgeschaltet werden: DirectX hat einen Fehlercode ausgegeben
 STR_3389    :Zusätzliches Szenerieobjekt kann nicht ausgewählt werden...
 STR_3390    :Zu viele Objekte ausgewählt
-STR_3391    :{SMALLFONT}{BLACK}Das ist unser Park - schauen wir ihn uns einmal an...
-STR_3392    :{SMALLFONT}{BLACK}Wenn Sie die RECHTE Maustaste gedrückt halten und den Zeiger bewegen, können Sie am schnellsten die Ansicht verschieben...
-STR_3393    :{SMALLFONT}{BLACK}Wenn Sie mehr vom Park sehen möchten, können Sie mit Hilfe des Symbols oben auf dem Bildschirm aus der Ansicht wegzoomen...
-STR_3394    :{SMALLFONT}{BLACK}Die Ansicht lässt sich auch in 90-Grad-Schritten drehen...
-STR_3395    :{SMALLFONT}{BLACK}Etwas in diesem Maßstab zu bauen ist schwierig, also zoomen wir die Ansicht wieder näher...
-STR_3396    :{SMALLFONT}{BLACK}Bauen wir einmal eine einfache Bahn, um mit dem Park anzufangen...
-STR_3397    :{SMALLFONT}{BLACK}Das weiße Umrissbild zeigt an, wo die Bahn hingebaut wird. Zuerst wird der Mauszeiger an die gewünschte Position bewegt und dann geklickt um zu bauen...
-STR_3398    :{SMALLFONT}{BLACK}Eine Bahn braucht einen Eingang und einen Ausgang. Der Zeiger wird auf ein Quadrat am Rand der Bahn bewegt. Dann wird geklickt, um zuerst den Eingang und dann den Ausgang zu bauen...
-STR_3399    :{SMALLFONT}{BLACK}Es müssen Fußwege gebaut werden, auf denen die Besucher zu unserer neuen Bahn gehen können...
-STR_3400    :{SMALLFONT}{BLACK}Für den Weg zum Bahneingang verwenden wir einen speziellen `Warteschlangen'-Weg...
-STR_3401    :{SMALLFONT}{BLACK}Für den Weg vom Ausgang genügt ein `gewöhnlicher' Fußweg...
-STR_3402    :{SMALLFONT}{BLACK}OK, jetzt wird die Bahn eröffnet! Hierzu klickt man auf das Fahnensymbol im Bahnfenster und wählt `Öffnen'...
-STR_3403    :{SMALLFONT}{BLACK}Aber wo sind denn die Besucher?
-STR_3404    :{SMALLFONT}{BLACK}Ah - der Park ist ja noch geschlossen! OK, dann eröffnen wir ihn mal...
-STR_3405    :{SMALLFONT}{BLACK}Während wir auf die ersten Besucher warten, bauen wir etwas Szenerie...
-STR_3406    :{SMALLFONT}{BLACK}Das ist unser leerer Park. Wir werden eine einfache selbstentworfene Bahn bauen...
-STR_3407    :{SMALLFONT}{BLACK}Zuerst muss eine Anfangsposition gewählt werden...
-STR_3408    :{SMALLFONT}{BLACK}Der soeben gebaute Streckenbereich ist eine `Stationsplattform', bei der die Besucher für die Fahrt ein- und aussteigen können...
-STR_3409    :{SMALLFONT}{BLACK}Die Plattform wird nun ein wenig erweitert, indem ein paar weitere Stationsplattform-Abschnitte hinzugefügt werden...
-STR_3410    :{SMALLFONT}{BLACK}Mit den Symbolen oben im Konstruktionsfenster können verschiedene Streckenteile hinzugefügt werden...
-STR_3411    :{SMALLFONT}{BLACK}Als Erstes wählen wir eine Linkskurve aus...
-STR_3412    :{SMALLFONT}{BLACK}Die Kurve wurde noch nicht gebaut, aber das weiße Umrissbild zeigt den Bauort an. Erst durch den Klick auf das große Symbol `Dies bauen' wird die Strecke gebaut...
-STR_3413    :{SMALLFONT}{BLACK}Nun wollen wir einen geraden Streckenabschnitt bauen. Hierzu klicken wir auf das entsprechende Symbol...
-STR_3414    :{SMALLFONT}{BLACK}Die Strecke ist nun vollständig, und es muss nur noch der Eingang und Ausgang gebaut werden...
-STR_3415    :{SMALLFONT}{BLACK}Testen wir einmal unsere Bahn, um zu sehen, ob sie auch funktioniert...
-STR_3416    :{SMALLFONT}{BLACK}Während des Tests bauen wir den Wartebereich und den Weg vom Ausgang weg...
-STR_3417    :{SMALLFONT}{BLACK}Gut - jetzt eröffnen wir den Park und die Bahn...
-STR_3418    :{SMALLFONT}{BLACK}Unsere neue Bahn ist nicht besonders aufregend - vielleicht sollten wir etwas Szenerie ins Spiel bringen?
-STR_3419    :{SMALLFONT}{BLACK}Um Szenerie über einer anderen Szenerie oder in der Luft zu bauen, halten Sie die UMSCHALT-Taste gedrückt, und bewegen Sie den Mauszeiger, um die Höhe einzustellen...
-STR_3420    :{SMALLFONT}{BLACK}Einige Szenerietypen können nach dem Bau neu gestrichen werden...
-STR_3421    :{SMALLFONT}{BLACK}Bringen wir doch etwas Musik ins Spiel...
-STR_3422    :{SMALLFONT}{BLACK}Nun bauen wir eine Achterbahn!
-STR_3423    :{SMALLFONT}{BLACK}Es gibt unzählige bereits fertige Achterbahnen, aber wir werden unseren eigenen Entwurf umsetzen...
-STR_3424    :{SMALLFONT}{BLACK}Das ist die fertiggestellte Stationsplattform. Jetzt brauchen wir einen Lifthügel...
-STR_3425    :{SMALLFONT}{BLACK}Achterbahnzüge haben keinen eigenen Antrieb, d.h. wir brauchen einen `Kettenlift', um den Zug auf den ersten Anstieg zu bringen...
-STR_3426    :{SMALLFONT}{BLACK}Der Lifthügel ist fertig - nun kommen wir zum ersten Gefälle...
-STR_3427    :{SMALLFONT}{BLACK}Diese Kurven sind keine gute Idee - die Fahrgäste würden von den seitlichen Beschleunigungskräften auf die Seite geschleudert werden...
-STR_3428    :{SMALLFONT}{BLACK}Ein Kippen der Kurven wird die Fahrt verbessern, da die Fahrgäste in ihre Sitze gedrückt werden und nicht an die Seiten...
-STR_3429    :{SMALLFONT}{BLACK}Nein, das wird nicht funktionieren! Sehen Sie sich die Höhenmarkierungen an - der zweite Hügel ist höher als der Lifthügel...
-STR_3430    :{SMALLFONT}{BLACK}Um sicherzustellen, dass der Zug eine Runde schafft, sollte jeder Hügel etwas kleiner sein als der vorherige...
-STR_3431    :{SMALLFONT}{BLACK}Das ist schon besser. Unser Zug sollte es nun diesen Anstieg hinauf schaffen Probieren wir doch einmal eine geschwungenere Strecke aus...
-STR_3432    :{SMALLFONT}{BLACK}Vor der letzten Kurve und der Station muss der Zug verlangsamt werden. Deshalb werden ein paar Bremsen hinzugefügt...
-STR_3433    :{SMALLFONT}{BLACK}Zum Schluss werden noch `Blockbremsen' hinzugefügt, die zwei Zügen erlauben, sicherer auf der Strecke betrieben zu werden...
-STR_3434    :{SMALLFONT}{BLACK}Testen wir einmal die Bahn, um zu sehen, ob sie funktioniert
-STR_3435    :{SMALLFONT}{BLACK}Super - es hat geklappt! Nun fügen wird die Fußwege hinzu und lassen die Besucher zu unserer neuen Achterbahn kommen...
-STR_3436    :{SMALLFONT}{BLACK}Während wir auf die ersten Fahrgäste warten, können wir die Bahn etwas anpassen...
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Bäume, Mauern und kleinere Szenerieobjekte aus der Landschaft entfernen
 STR_3438    :Es konnten nicht alle Szenerieobjekte entfernt werden...
 STR_3439    :Szenerie entf.
@@ -3458,7 +3458,7 @@ STR_5120    :Finanzen
 STR_5121    :Forschung
 STR_5122    :Bahnen nach Streckentyp auswählen (RCT1-Verhalten)
 STR_5123    :Bahnen erneuern
-STR_5124    :Keine Six Flags
+STR_5124    :<removed string - do not use>
 STR_5125    :Alles zerstörbar
 STR_5126    :Zufällige Titelmusik
 STR_5127    :{SMALLFONT}{BLACK}Während dem Ziehen wird die Landschaft angemalt, ohne die Höhe zu verändern
@@ -3570,8 +3570,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editoren
 STR_5233    :{SMALLFONT}{BLACK}Sonstiges
 STR_5234    :{SMALLFONT}{BLACK}Eingabeaufforderungen
 STR_5235    :{SMALLFONT}{BLACK}Einstellungen
-STR_5236    :Fenster:
-STR_5237    :Farbpalette:
+STR_5236    :Fenster
+STR_5237    :Farbpalette
 STR_5238    :Aktuelles Thema:
 STR_5239    :Duplizieren
 STR_5240    :Namen für Thema eingeben:
@@ -3675,8 +3675,8 @@ STR_5337    :Parkeingang
 STR_5338    :Elementtyp
 STR_5339    :{SMALLFONT}{BLACK}Basishöhe
 STR_5340    :{SMALLFONT}{BLACK}Lichte Höhe
-STR_5341    :Kennzeichen
-STR_5342    :Eine Kachel auf der Karte auswählen
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :Personal automatisch platzieren
 STR_5344    :Changelog
 STR_5345    :Cheats für Finanzen
@@ -3734,7 +3734,7 @@ STR_5396    :{SMALLFONT}{BLACK}Titelsequenz neu laden, falls sie außerhalb des 
 STR_5397    :Kann nur im Titelbildschirm verwendet werden
 STR_5398    :Titelsequenz kann, während sie läuft, nicht geändert werden
 STR_5399    :Titelsequenz stoppen, um das Bearbeiten fortzusetzen
-STR_5400    :Diese Titelsequenz kann nicht geändert werden
+STR_5400    :Diese Titelsequenz kann{NEWLINE}nicht geändert werden
 STR_5401    :Erstellen Sie eine neue Titelsequenz, um sie zu bearbeiten
 STR_5402    :Titelsequenz konnte nicht geladen werden
 STR_5403    :Möglicherweise kein `Laden'-Befehl, `Warten'-Befehl oder ein ungültiger Spielstand vorhanden
@@ -3758,13 +3758,13 @@ STR_5420    :Drehen{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Warten
-STR_5424    :Warten{MOVE_X}{87}{COMMA16}
+STR_5424    :Warten{MOVE_X}{87}{UINT16}
 STR_5425    :Neustart
 STR_5426    :Ende
 STR_5427    :Koordinaten:
 STR_5428    :Drehungen gegen Uhrzeigersinn:
 STR_5429    :Zoomstufe:
-STR_5430    :Zu wartende Sekunden:
+STR_5430    :Zu wartende Millisekunden:
 STR_5431    :Zu ladender Spielstand:
 STR_5432    :Befehl:
 STR_5433    :Titelsequenzen
@@ -3828,10 +3828,10 @@ STR_5490    :Audio deaktivieren, wenn Spiel nicht im Vordergrund
 STR_5491    :Erfindungsliste
 STR_5492    :Szenario-Optionen
 STR_5493    :Nachricht senden
-STR_5494    :<not used anymore>
+STR_5494    :<removed string - do not use>
 STR_5495    :Spielerliste
-STR_5496    :Spieler:
-STR_5497    :Ping:
+STR_5496    :Spieler
+STR_5497    :Ping
 STR_5498    :Serverliste
 STR_5499    :Spielername:
 STR_5500    :Server hinzufügen
@@ -3841,7 +3841,7 @@ STR_5503    :Hostnamen oder IP-Adresse eingeben:
 STR_5504    :{SMALLFONT}{BLACK}Mehrspielerstatus anzeigen
 STR_5505    :Verbindung zum Server konnte nicht hergestellt werden
 STR_5506    :Besucher ignorieren Bahnintensität
-STR_5507    :Parkpfleger mähen standardmäßig Gras
+STR_5507    :<removed string - do not use>
 STR_5508    :Laden von Dateien mit unzul. Prüfsummen erlauben
 STR_5509    :{SMALLFONT}{BLACK}Erlaubt das Laden von Szenarios und gespeicherten Spielständen, die eine unzulässige Prüfsumme haben, wie Szenarios aus der Demo oder fehlerhafte Spielstände
 STR_5510    :Standard Audiogerät
@@ -3964,7 +3964,7 @@ STR_5626    :Sonstige Parks
 STR_5627    :Szenarioliste ordnen nach:
 STR_5628    :Spielherkunft
 STR_5629    :Schwierigkeitsgrad
-STR_5630    :Freispielen der Szenarios aktivieren
+STR_5630    :Fortschreitendes Freispielen aktivieren
 STR_5631    :Originale DLC Parks
 STR_5632    :Bauen Sie Ihren eigenen...
 STR_5633    :CMD + 
@@ -3976,7 +3976,7 @@ STR_5638    :Keine Berechtigung
 STR_5639    :{SMALLFONT}{BLACK}Spielerliste anzeigen
 STR_5640    :{SMALLFONT}{BLACK}Gruppen verwalten
 STR_5641    :Standardgruppe:
-STR_5642    :Gruppe:
+STR_5642    :Gruppe
 STR_5643    :Gruppe hinzuf.
 STR_5644    :Gruppe entf.
 STR_5645    :Chat
@@ -4004,7 +4004,7 @@ STR_5666    :Passwortloser Login
 STR_5701    :{WINDOW_COLOUR_2}Letzte Aktion: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Lokalisiert die letzte Aktion des Spielers
 STR_5703    :Host kann nicht entfernt werden
-STR_5704    :Letzte Aktion:
+STR_5704    :Letzte Aktion
 STR_5705    :Diese Gruppe kann nicht{NEWLINE}eingestellt werden
 STR_5706    :Diese Gruppe kann nicht entfernt werden, solange ihr Spieler angehören
 STR_5707    :Diese Gruppe kann nicht{NEWLINE}angepasst werden
@@ -4027,13 +4027,13 @@ STR_5723    :Starker Regen
 STR_5724    :Gewitter
 STR_5725    :{BLACK}Wetter erzwingen:
 STR_5726    :{SMALLFONT}{BLACK}Stellt das aktuelle Wetter im Park ein
-STR_5727    :Skalierungsmethode:
+STR_5727    :Skalierungsqualität:
 STR_5728    :Setzt Anzeige durch Hardware voraus
 STR_5729    :{SMALLFONT}{BLACK}Setzt Anzeige durch Hardware voraus
-STR_5730    :Pixelwiederholung
+STR_5730    :<removed string - do not use>
 STR_5731    :Linear
-STR_5732    :Anisotrop
-STR_5733    :Pixelwdh. bei ganzzahligem Skalierungsfaktor
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 STR_5734    :{SMALLFONT}{BLACK}Darstellung
 STR_5735    :Netzwerkstatus
 STR_5736    :Spieler
@@ -4110,18 +4110,18 @@ STR_5806    :Fenstermodus ein-/ausschalten
 STR_5807    :{WINDOW_COLOUR_2}Anzahl der Bahnen: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Anzahl der Läden und Stände: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Anzahl der Informationsstände und anderer Einrichtungen: {BLACK}{COMMA16}
-STR_5810    :Zuglängenlimit deaktivieren
-STR_5811    :{SMALLFONT}{BLACK}Dieser Cheat ermöglicht eine Zuglänge{NEWLINE}von bis zu 255 Wagen pro Zug
+STR_5810    :Fahrzeuglimits deaktivieren
+STR_5811    :{SMALLFONT}{BLACK}Dieser Cheat ermöglicht bis zu 255 Wagen{NEWLINE}pro Zug und 31 Züge pro Bahn
 STR_5812    :Mehrspielerstatus anzeigen
 STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}FPS-Zähler im Spiel anzeigen
 STR_5816    :{SMALLFONT}{BLACK}Stellt den Faktor für die Skalierung des{NEWLINE}Spiels ein. Besonders für hohe{NEWLINE}Auflösungen sinnvoll
-STR_5817    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Stellt die Skalierungsmethode ein
-STR_5818    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Benutzt die Pixelwiederholung, wenn der Skalierungsfaktor auf einen ganzzahligen Wert eingestellt{NEWLINE}ist (1, 2, 3 etc.)
+STR_5817    :{SMALLFONT}{BLACK}Stellt den Skalierungstyp der Benutzeroberfläche ein. Benötigt Anzeige durch Hardware.{NEWLINE}Lineares Skalieren ist flüssig, aber unscharf. Das Nächster-Nachbar-{NEWLINE}Glättungsverfahren ist scharf, kann jedoch zu geringen Leistungseinbußen führen.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
 STR_5820    :{SMALLFONT}{BLACK}Minimiert das Spiel, wenn das Spiel{NEWLINE}im Vollbildmodus nicht im{NEWLINE}Vordergrund ist
-STR_5821    :{SMALLFONT}{BLACK}Verändert die Farbe der Baumarkierung, wenn Attraktionen, Wege, Läden, Szenerien etc.++ gebaut werden
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Wechselt zwischen Tag und Nacht.{NEWLINE}Ein kompletter Zyklus dauert einen Monat im Spiel
 STR_5823    :{SMALLFONT}{BLACK}Zeigt Text auf Bannern in Großbuchstaben an (RCT1-Verhalten)
 STR_5824    :{SMALLFONT}{BLACK}Deaktiviert den Blitzeffekt{NEWLINE}während eines Gewitters
@@ -4136,7 +4136,7 @@ STR_5832    :{SMALLFONT}{BLACK}Zeigt Höhen als generische Einheiten,{NEWLINE}an
 STR_5833    :{SMALLFONT}{BLACK}Verändert das verwendete Datumsformat
 STR_5834    :{SMALLFONT}{BLACK}Das zu verwendende Audiogerät auswählen
 STR_5835    :{SMALLFONT}{BLACK}Schaltet das Spiel stumm, wenn das{NEWLINE}Spiel nicht mehr im Vordergrund ist
-STR_5836    :{SMALLFONT}{BLACK}Die im Hauptmenü verwendete{NEWLINE}Musik auswählen.{NEWLINE}{NEWLINE}Die RCT1-Musik erfordert das Kopieren von 'data/css17.dat',{NEWLINE}aus dem RCT1-Ordner, nach 'data/css50.dat' im{NEWLINE}RCT2-Ordner
+STR_5836    :{SMALLFONT}{BLACK}Die im Hauptmenü verwendete{NEWLINE}Musik auswählen.{NEWLINE}{NEWLINE}Die RCT1-Musik erfordert das Kopieren von 'data/css17.dat',{NEWLINE}aus dem RCT1-Ordner, nach 'data/css50.dat' im{NEWLINE}RCT2-Ordner oder versichern Sie sich, dass der Pfad zur RCT1-Installation in den Optionen korrekt angegeben ist.
 STR_5837    :{SMALLFONT}{BLACK}Benutzerdefinierte GUIs{NEWLINE}erstellen und verwalten
 STR_5838    :{SMALLFONT}{BLACK}Zeigt für die Finanzen in der Symbolleiste{NEWLINE}eine gesonderte Schaltfläche an
 STR_5839    :{SMALLFONT}{BLACK}Zeigt für die Forschung & Entwicklung{NEWLINE}in der Symbolleiste eine gesonderte Schaltfläche an
@@ -4148,9 +4148,9 @@ STR_5844    :{SMALLFONT}{BLACK}Mit einem Mehrspielerserver verbunden bleiben, se
 STR_5845    :{SMALLFONT}{BLACK}Zeigt für die Debugging-Tools in{NEWLINE}der Symbolleiste eine gesonderte Schaltfläche an.{NEWLINE}Aktiviert das Tastenkürzel für die Entwicklerkonsole
 STR_5846    :{SMALLFONT}{BLACK}Auswählen, wie oft OpenRCT2{NEWLINE}automatisch speichert
 STR_5847    :{SMALLFONT}{BLACK}Die auf dem Titelbildschirm angezeigte Parksequenz auswählen. Titelsequenzen von RCT1/2 benötigen importierte Szenarien, um zu funktionieren
-STR_5848    :{SMALLFONT}{BLACK}Benutzerdefinierte Titelsequenzen erstellen und verwalten
+STR_5848    :{SMALLFONT}{BLACK}Benutzerdefinierte Titelsequenzen{NEWLINE}erstellen und verwalten
 STR_5849    :{SMALLFONT}{BLACK}Personal wird nach dem Einstellen automatisch platziert
-STR_5850    :{SMALLFONT}{BLACK}Neu eingestellte Parkpfleger{NEWLINE}mähen standardmäßig Gras (RCT1-Verhalten)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stellt die für neu gebaute Attraktionen standardmäßige Inspektionszeit ein
 STR_5852    :{SMALLFONT}{BLACK}Den Namen des TwitchTV-Kanals einstellen, der für die Twitch-Integration{NEWLINE}benutzt wird
 STR_5853    :{SMALLFONT}{BLACK}Soundeffekte aktivieren/deaktivieren
@@ -4160,6 +4160,7 @@ STR_5856    :{SMALLFONT}{BLACK}Die im Vollbildmodus verwendete{NEWLINE}Auflösun
 STR_5857    :{SMALLFONT}{BLACK}Spieloptionen
 STR_5858    :{SMALLFONT}{BLACK}GPU anstelle der CPU für die Anzeige verwenden. Verbessert die Kompatibilität mit Aufnahmeprogrammen. Möglicherweise wird die Leistung geringfügig beeinträchtigt
 STR_5859    :{SMALLFONT}{BLACK}Aktiviert Tweening für ein sichtbar flüssigeres Spielverhalten. Wenn deaktiviert läuft das Spiel mit 40 FPS
+STR_5860    :Umschalten zwischen original und dekompilierten Streckenbau
 STR_5861    :Schlüsselüberprüfung fehlgeschlagen.
 STR_5862    :Blockiere unbekannte Spieler
 STR_5863    :{SMALLFONT}{BLACK}Erlaube nur Spieler, mit bekanntem{NEWLINE}Schlüssel, sich zu verbinden
@@ -4178,7 +4179,7 @@ STR_5875    :Grafikschnittstelle:
 STR_5876    :{SMALLFONT}{BLACK}Die Grafikschnittstelle, die zur Darstellung{NEWLINE}des Spiels verwendet wird
 STR_5877    :Software
 STR_5878    :Software (Anzeige durch Hardware)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (experimentell)
 STR_5880    :Ausgewählte
 STR_5881    :Nicht ausgewählte
 STR_5882    :Benutzerdefinierte Währung
@@ -4196,7 +4197,7 @@ STR_5893    :Wechselkurs
 STR_5894    :Wechselkurs eingeben:
 STR_5895    :Streckenentwurf speichern
 STR_5896    :Streckenentwurf konnte nicht gespeichert werden!
-STR_5897    :Fensterlimit:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Streckenentwurf konnte nicht geladen werden, da die Datei möglicherweise fehlt oder fehlerhaft ist!
 STR_5899    :Zeichen-Debugging-Fenster ein/aus
 STR_5900    :Originalen Zeichen-Code verw.
@@ -4219,6 +4220,347 @@ STR_5916    :{COMMA16} Spieler
 STR_5917    :{COMMA16} Spieler
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
+STR_5920    :Wettereffekte darstellen
+STR_5921    :{SMALLFONT}{BLACK}Wenn aktiviert, werden Regen{NEWLINE}und düstere Farben, während{NEWLINE}eines Sturms, dargestellt
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max. {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max. {COMMA16} {STRINGID} pro Zug
+STR_5924    :Oberflächendetails
+STR_5925    :Wegdetails
+STR_5926    :Streckendetails
+STR_5927    :Szeneriedetails
+STR_5928    :Eingangsdetails
+STR_5929    :Zaundetails
+STR_5930    :Details große Szenerie
+STR_5931    :Bannerdetails
+STR_5932    :Details fehlerhaftes Element
+STR_5933    :Eigenschaften
+STR_5934    :{WINDOW_COLOUR_2}Geländetextur: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Geländekante: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Landbesitz: {BLACK}{STRINGID}
+STR_5937    :Nicht in Besitz und nicht zum Verkauf
+STR_5938    :{WINDOW_COLOUR_2}Wasserhöhe: {BLACK}{COMMA16}
+STR_5939    :Parkzäune entfernen
+STR_5940    :Parkzäune wiederherst.
+STR_5941    :{WINDOW_COLOUR_2}Basishöhe:
+STR_5942    :{WINDOW_COLOUR_2}Wegname: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Zusätze: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Zusätze: {BLACK}Keine
+STR_5945    :{WINDOW_COLOUR_2}Verbundene Kanten:
+STR_5946    :{WINDOW_COLOUR_2}Attraktionstyp: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}Attraktions-ID: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Attraktionsname: {BLACK}{STRINGID}
+STR_5949    :{WINDOW_COLOUR_2}Kettenlift
+STR_5950    :{WINDOW_COLOUR_2}Änderungen auf gesamtes Streckenstück anwenden
+STR_5951    :{WINDOW_COLOUR_2}Streckenstück-ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Reihennummer: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Kartenelemente auf aktueller Kachel{NEWLINE}nach ihrer Basishöhe sortieren
+STR_5954    :{WINDOW_COLOUR_2}Szeneriealter: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Quadrantplatzierung: {BLACK}{STRINGID}
+STR_5956    :Südwest
+STR_5957    :Nordwest
+STR_5958    :Nordost
+STR_5959    :Südost
+STR_5960    :{WINDOW_COLOUR_2}Quadrantplatzierung:
+STR_5961    :{WINDOW_COLOUR_2}Eintragsindex: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Kollisionserkennung:
+STR_5963    :{WINDOW_COLOUR_2}Angehobene Ecken:
+STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5965    :{WINDOW_COLOUR_2}Eingangstyp: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Parkeingangsteil: {BLACK}{STRINGID}
+STR_5967    :Mitte
+STR_5968    :Links
+STR_5969    :Rechts
+STR_5970    :{WINDOW_COLOUR_2}Eingangs-ID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}Ausgangs-ID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}Attraktions-ID: {BLACK}{COMMA16}
+STR_5973    :An nächsten heften
+STR_5974    :{SMALLFONT}{BLACK}Ändert die Basis- und lichte Höhe, sodass{NEWLINE}sie der des nächsten Elements auf der aktuellen Kachel entspricht entspricht
+STR_5975    :Steigung:
+STR_5976    :Flach
+STR_5977    :Rechte Seite hoch
+STR_5978    :Linke Seite hoch
+STR_5979    :{WINDOW_COLOUR_2}Zauntyp: {BLACK}{COMMA16}
+STR_5980    :{WINDOW_COLOUR_2}Bannertext: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}Kein Banner
+STR_5982    :{WINDOW_COLOUR_2}Großer Szenerietyp: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}Großes Szeneriestück-ID: {BLACK}{COMMA16}
+STR_5984    :Blockierte Wege:
+STR_5985    :Neuer Ordner
+STR_5986    :Name des neuen Ordners eingeben:
+STR_5987    :Ordner konnte nicht erstellt werden
+STR_5988    :{SMALLFONT}{BLACK}Keine verbleibenden Landrechte zum Verkauf
+STR_5989    :{SMALLFONT}{BLACK}Keine verbleibenden Baurechte zum Verkauf
+STR_5990    :{SMALLFONT}{BLACK}Keine verbleibenden Land- oder{NEWLINE}Baurechte zum Verkauf
+STR_5991    :Kann Element nicht einfügen...
+STR_5992    :Das Limit der Kartenelemente wurde erreicht
+STR_5993    :{SMALLFONT}{BLACK}Ausgewähltes Element kopieren
+STR_5994    :{SMALLFONT}{BLACK}Kopiertes Element einfügen
+STR_5995    :Zusatzantrieb
+STR_5996    :Antriebsgeschwindigkeit
+STR_5997    :Geld hinzufügen/festlegen
+STR_5998    :Geld hinzufügen
+STR_5999    :Geld festlegen
+STR_6000    :Neuen Wert eingeben:
+STR_6001    :Beleuchtungseffekte aktivieren (experimentell)
+STR_6002    :{SMALLFONT}{BLACK}Lampen und Bahnen werden nachts beleuchtet.{NEWLINE}Die Grafikschnittstelle muss hierfür auf "Anzeige durch Hardware" eingestellt sein.
+STR_6003    :Schnittansicht
+STR_6004    :Schnittansicht
+STR_6005    :Schnittansicht aktivieren
+STR_6006    :{SMALLFONT}{BLACK}Die Schnittansicht zeigt nur Kartenelemente auf oder unterhalb der Schnitthöhe (vertikaler Schnitt) und in dem ausgewählten Bereich (horizontaler Schnitt).
+STR_6007    :Schnitthöhe:
+STR_6008    :{SMALLFONT}{BLACK}Zum Umschalten zwischen Rohwert<->Maßeinheit klicken.
+STR_6009    :{SMALLFONT}{BLACK}Schnitthöhe auswählen
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Gäste zahlen lediglich den Eintritt zum Park.{NEWLINE}Die Attraktionen sind kostenfrei.
+STR_6014    :{SMALLFONT}{BLACK}Gäste zahlen lediglich für Attraktionen und Service.{NEWLINE}Der Eintritt in den Park ist kostenfrei.
+STR_6015    :Geneigt
+STR_6016    :Modifiziere Kachel
+STR_6017    :Bitte verlangsamen Sie Ihr Tempo
+STR_6018    :Streckenbau - Bogen links
+STR_6019    :Streckenbau - Bogen rechts
+STR_6020    :Streckenbau - Verwende Standardabschnitt
+STR_6021    :Streckenbau - Neigung unten
+STR_6022    :Streckenbau - Neigung oben
+STR_6023    :Streckenbau - Umschalten Kettenlift
+STR_6024    :Streckenbau - Überhöhung links
+STR_6025    :Streckenbau - Überhöhung rechts
+STR_6026    :Streckenbau - Vorausgehender Abschnitt
+STR_6027    :Streckenbau - Nächster Abschnitt
+STR_6028    :Streckenbau - Aktuellen Abschnitt platzieren
+STR_6029    :Streckenbau - Aktuellen Abschnitt abreißen
+STR_6030    :{SMALLFONT}{BLACK}Landschaftsauswahl. Wählen Sie ein Landschaftselement auf der Karte aus, und verwenden Sie es zum Platzieren.
+STR_6031    :Serverbeschreibung:
+STR_6032    :Serverbegrüßung:
+STR_6033    :Pfad zur RCT1-Installation:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :Bitte wählen Sie ein RCT1-Verzeichnis
+STR_6036    :{SMALLFONT}{BLACK}Leeren
+STR_6037    :Bitte wählen Sie ein valides RCT1-Verzeichnis
+STR_6038    :{SMALLFONT}{BLACK}Falls Sie RCT1 installiert haben, setzen Sie diese Option zum Laden von Scenarios, Musik, usw. 
+STR_6039    :{SMALLFONT}{BLACK}Schnellabriss
+STR_6040    :Bearbeite Szenariooptionen
+STR_6041    :{BLACK}Es sind keine Mechaniker eingestellt! 
+STR_6042    :Höhenkarte laden
+STR_6043    :Höhenkarte auswählen
+STR_6044    :Höhenkarte glätten
+STR_6045    :Stärke
+STR_6046    :Höhenkarte normalisieren
+STR_6047    :Kacheln glätten
+STR_6048    :Fehler beim Verarbeiten der Höhenkarte
+STR_6049    :Fehler beim Lesen der PNG-Datei
+STR_6050    :Fehler beim Lesen der Bitmap-Datei
+STR_6051    :Die Höhe und Breite müssen übereinstimmen
+STR_6052    :Die Höhenkarte ist zu groß und wird zugeschnitten
+STR_6053    :Die Höhenkarte kann nicht normalisiert werden
+STR_6054    :Es werden nur Bitmaps mit einer Farbtiefe von 24-Bit unterstützt
+STR_6055    :Höhenkarte für OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Ton ein-/ausschalten
+STR_6057    :{SMALLFONT}{BLACK}Zeigt für die Stummschaltung in der Symbolleiste eine gesonderte{NEWLINE}Schaltfläche an
+STR_6058    :Stummschaltung
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Besucherkäufe als Animation anzeigen
+STR_6061    :{SMALLFONT}{BLACK}Ein animierter Geldeffekt wird angezeigt, wenn Besucher Käufe tätigen
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Alles Land besitzen
+STR_6065    :Benutzeraktionen protokollieren
+STR_6066    :{SMALLFONT}{BLACK}Speichert alle Benutzeraktionen in{NEWLINE}Ihrem Benutzerverzeichnis
+STR_6067    :Server gestartet.
+STR_6068    :Server heruntergefahren.
+STR_6069    :{STRING} wurde von {STRING} vom Server gekickt.
+STR_6070    :{STRING} wurde der Gruppe '{STRING}' von {STRING} zugewiesen.
+STR_6071    :{STRING} hat die neue Gruppe '{STRING}' erstellt.
+STR_6072    :{STRING} hat die Gruppe '{String}' gelöscht.
+STR_6073    :{STRING} hat die Berechtigungen der Gruppe '{String}' bearbeitet.
+STR_6074    :{STRING} hat den Namen der Gruppe von '{String}' zu '{String}' geändert.
+STR_6075    :{STRING} hat '{String}' als Standardgruppe festgelegt.
+STR_6076    :{STRING} hat den Cheat '{STRING}' verwendet.
+STR_6077    :Geld hinzufügen
+STR_6078    :{STRING} hat die Attraktion '{STRING}' erstellt.
+STR_6079    :{STRING} hat die Attraktion '{STRING}' abgerissen.
+STR_6080    :{STRING} hat das Aussehen der Attraktion '{STRING}' verändert.
+STR_6081    :{STRING} hat den Status der Attraktion '{STRING}' auf geschlossen geändert.
+STR_6082    :{STRING} hat den Status der Attraktion '{STRING}' auf geöffnet geändert.
+STR_6083    :{STRING} hat den Status der Attraktion '{STRING}' auf testen geändert.
+STR_6084    :{STRING} hat die Fahrzeugeinstellungen der Attraktion '{STRING}' geändert.
+STR_6085    :{STRING} hat die Attraktionseinstellungen der Attraktion '{STRING}' geändert.
+STR_6086    :{STRING} hat die Attraktion '{STRING}' in '{STRING}' umbenannt.
+STR_6087    :{STRING} hat den Preis der Attraktion '{STRING}' auf {STRING} geändert.
+STR_6088    :{STRING} hat den Sekundärpreis der Attraktion '{STRING}' auf {STRING} geändert.
+STR_6089    :{STRING} hat den Park von '{STRING}' in '{STRING}' umbenannt.
+STR_6090    :{STRING} hat den Park geöffnet.
+STR_6091    :{STRING} hat den Park geschlossen.
+STR_6092    :{STRING} hat den Parkeintrittspreis auf {STRING} geändert.
+STR_6093    :{STRING} hat neue Szenerie platziert.
+STR_6094    :{STRING} hat Szenerie entfernt.
+STR_6095    :{STRING} hat Szenerie bearbeitet.
+STR_6096    :{STRING} hat einen Schildnamen auf '{STRING}' festgelegt.
+STR_6097    :{STRING} hat ein Streckenstück der Attraktion '{STRING}' platziert.
+STR_6098    :{STRING} hat ein Streckenstück einer Attraktion entfernt.
+STR_6099    :Sie haben sich mit dem Server verbunden.
+STR_6100    :Sie haben die Verbindung mit dem Server getrennt.
+STR_6101    :Attrakt. verlieren keinen Wert über Zeit
+STR_6102    :{SMALLFONT}{BLACK}Der Wert einer Attraktion wird mit der Zeit nicht sinken, sodass Besucher eine Attraktion nicht mehr plötzlich als{NEWLINE}zu teuer empfinden
+STR_6103    :{SMALLFONT}{BLACK}Diese Option ist im Mehrspielermodus deaktiviert
+STR_6104    :Korkenzieher-Achterbahn
+STR_6105    :Hyper-Achterbahn
+STR_6106    :Wagenbahn
+STR_6107    :Monster-Trucks
+STR_6108    :Stahl-Twister
+STR_6109    :Hyper-Twister
+STR_6110    :Kinder-Achterbahn
+STR_6111    :Klassische Miniachterbahn
+STR_6112    :Eine kompakte Stahlachterbahn, bei der der Zug durch Schrauben und Schleifen fährt
+STR_6113    :Eine große, nicht umgekehrte Achterbahn mit großen Gefällen, hoher Geschwindigkeit und komfortablen Zügen, die lediglich Beckenhalterungen aufweisen
+STR_6114    :Die Passagiere sitzen in langsam angetriebenen Wagen auf einer Schienenstrecke
+STR_6115    :Angetriebene, gigantische Trucks mit Allradantrieb, die steile Hänge bezwingen können
+STR_6116    :Breite Achterbahnzüge gleiten auf glatten Stahlschienen mit verdrehter Streckenführung
+STR_6117    :Die Fahrgäste sitzen in komfortablen Wagen mit einfachen Beckenhalterungen, in denen sie gigantische, gemäßigte Gefälle erleben, aber auch viel Zeit oben `in der Luft' verbringen
+STR_6118    :Eine gemäßigte Achterbahn für Leute, die noch nicht den Mut für längere Bahnen haben
+STR_6119    :Eine günstige und einfach zu bauende Achterbahn, jedoch mit begrenzter Höhe
+STR_6120    :{BABYBLUE}Neues Fahrzeug für {STRINGID} ist jetzt verfügbar:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Erweitert die Landrechte des Parks{NEWLINE}bis zum Rand der Karte
+STR_6122    :Dieses Szenario enthält zu wenige Achterbahnen!
+STR_6124    :Objektname
+STR_6125    :Objekttyp
+STR_6126    :Unbekannter Typ
+STR_6127    :Datei: {STRING}
+STR_6128    :Die Datei konnte aufgrund fehlender oder beschädigter Objekte nicht geladen werden. Eine Liste dieser Elemente ist nachstehend aufgeführt.
+STR_6129    :Ausgewählte Elemente kopieren
+STR_6130    :Vollständige Liste kopieren
+STR_6131    :Objektquelle
+STR_6132    :Forschungsstatus ignorieren
+STR_6133    :{SMALLFONT}{BLACK}Ermöglicht den Zugriff auf Attraktionen und Szenerie, die bisher noch nicht erforscht wurden
+STR_6134    :Szenerie entfernen
+STR_6135    :Ungültige Anfrage durch den Client
+STR_6136    :Ungültige Anfrage durch den Server
+STR_6137    :OpenRCT2, ein freier und quelloffener Klon von RollerCoaster Tycoon 2.
+STR_6138    :OpenRCT2 ist das Werk vieler Autoren, eine vollständige Liste befindet sich in {OPENQUOTES}contributors.md{ENDQUOTES}. Für weitere Informationen, besuche http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Alle Produkt- und Firmennamen sind Eigentum ihrer jeweiligen Inhaber.{NEWLINE}Die Nutzung dieser stellt keine Zugehörigkeit oder Unterstützung dar.
+STR_6140    :Changelog...
+STR_6141    :Untere Symbolleiste im RCT1-Stil
+STR_6142    :{WINDOW_COLOUR_2}Entwurfsname: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Bahntyp: {BLACK}{STRINGID}
+STR_6144    :Neu gezeichnete Kacheln markieren
+STR_6145    :{SMALLFONT}{BLACK}Geschwindigkeitsgrenze{NEWLINE}für Booster einstellen
+STR_6146    :Alle Streckenabschnitte ermöglichen
+STR_6147    :{SMALLFONT}{BLACK}Ermöglicht die Auswahl sämtlicher zum Bahntyp passenden Streckenabschnitte im Konstruktionsfenster unabhängig davon, ob das eingesetzte Fahrzeug diese unterstützt.
+STR_6148    :Verbinden zum Hauptserver...
+STR_6149    :Verbindung zum Hauptserver nicht möglich.
+STR_6150    :Ungültige Antwort vom Hauptserver (keine JSON-Nummer)
+STR_6151    :Hauptserver antwortete nicht mit gültigen Servern
+STR_6152    :Ungültige Antwort vom Hauptserver (kein JSON-Array)
+STR_6153    :Für Eintritt bezahlen/Pro Fahrt bezahlen
+STR_6154    :Aus Sicherheitsgründen wird nicht empfohlen, OpenRCT2 mit erweiterten Benutzerrechten zu starten.
+STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie eins oder konfigurieren Sie es über die Kommandozeile.
+STR_6156    :Name ist reserviert
+STR_6157    :Konsole
+STR_6158    :Laden der Datei fehlgeschlagen...{NEWLINE}Inkompatible RCTC-Version: {COMMA16}
+STR_6159    :Nächster-Nachbar-Glättung
+STR_6160    :{WINDOW_COLOUR_2}Verfügbare Fahrzeuge: {BLACK}{STRING} 
+STR_6161    :Gitternetzlinien ein-/ausblenden
+STR_6162    :Rotierende Wilde Maus
+STR_6163    :Mausförmige Wagen rasen um enge Kurven und kurze Gefälle herunter, wobei sie sich sanft drehen, um die Fahrgäste zu desorientieren
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Vertikale Synchronisation verwenden
+STR_6166    :{SMALLFONT}{BLACK}Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen Tearing
+STR_6167    :{SMALLFONT}{BLACK}Erweitert
+STR_6168    :Titelsequenz
+STR_6169    :Szenarioauswahl
+STR_6170    :Verbesserungen
+STR_6171    :Suchen
+STR_6172    :{SMALLFONT}{BLACK}Suchen
+STR_6173    :Bitte den zu suchenden Namen eingeben:
+STR_6174    :Spielstand laden
+STR_6175    :Szenario laden
+STR_6176    :Szenario laden:
+STR_6177    :Laden{MOVE_X}{87}Kein Szenario ausgewählt
+STR_6178    :Laden{MOVE_X}{87}{RED}Szenario fehlt
+STR_6179    :Auswählen
+STR_6180    :Kein Szenario ausgewählt
+STR_6181    :{RED}Szenario fehlt
+STR_6182    :Folgen{MOVE_X}{87}{STRING}
+STR_6183    :Folgen{MOVE_X}{87}Kein Objekt ausgewählt
+STR_6184    :Objekt folgen 
+STR_6185    :Objekt auswählen
+STR_6186    :Kein Objekt ausgewählt
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Erbrochenes
+STR_6189    :Ente
+STR_6190    :{SMALLFONT}{BLACK}Sie können kein Objekt auswählen, solange Sie sich im Hauptmenü befinden
+STR_6191    :Oberfläche
+STR_6192    :Wand
+STR_6193    :{COMMA16} Besucher
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} Besucher
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} Besucher
+STR_6196    :{BLACK}Jahr:
+STR_6197    :{BLACK}Monat:
+STR_6198    :{BLACK}Tag:
+STR_6199    :Datum setzen
+STR_6200    :Datum zurücksetzen
+STR_6201    :{MONTH}
+STR_6202    :Stil des virtuellen Bodens:
+STR_6203    :{SMALLFONT}{BLACK}Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn Strg oder Shift gehalten wird
+STR_6204    :Ziegelstein
+STR_6205    :Eisen
+STR_6206    :Grauer Stuck
+STR_6207    :Gelber Stuck
+STR_6208    :Roter Stuck
+STR_6209    :Violetter Stuck
+STR_6210    :Grüner Stuck
+STR_6211    :Brauner Sandstein
+STR_6212    :Grauer Sandstein
+STR_6213    :Wolkenkratzer A
+STR_6214    :Wolkenkratzer B
+STR_6215    :Konstruktion
+STR_6216    :Betrieb
+STR_6217    :Bahn- / Streckenverfügbarkeit
+STR_6218    :OpenRCT2 (offiziell)
+STR_6219    :Probleme auf Fußwegen hervorheben
+STR_6220    :Nutzbar machen
+STR_6221    :{SMALLFONT}{BLACK}Dadurch wird der von der Attraktion bekannte Eingang oder Ausgang auf die ausgewählte Kachel festgelegt. Es kann pro Station nur ein Eingang und Ausgang nutzbar gemacht werden.
+STR_6222    :Kann Eingangspunkt für Besucher hier nicht platzieren...
+STR_6223    :Muss außerhalb der Parkgrenzen liegen!
+STR_6224    :{STRING} hat einen Eingangspunkt für Besucher platziert.
+STR_6225    :Wird von OpenGL nicht unterstützt
+STR_6226    :Vorzeitiges Abschließen von Szenarios aktivieren
+STR_6227    :{SMALLFONT}{BLACK}Aktiviert den Abschluss eines Szenarios bei erreichen aller Ziele, auch wenn das Zieldatum noch nicht erreicht wurde.
+STR_6228    :Szenario-Optionen
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Eingefroren
+STR_6233    :Schnittansicht
+STR_6234    :Probleme mit Wegen hervorheben
+STR_6235    :Serverinformationen
+STR_6236    :Spieler
+STR_6237    :Gruppen
+STR_6238    :Mehrspieleroptionen
+STR_6239    :Vertikaler Schnitt
+STR_6240    :Horizontaler Schnitt
+STR_6241    :Bereich auswählen
+STR_6242    :Auswahl aufheben
+STR_6243    :{SMALLFONT}{BLACK}Saniert die Attraktion und macht sie wie neu
+STR_6244    :Kann Attraktion nicht sanieren...
+STR_6245    :{SMALLFONT}{BLACK}Attraktion benötigt keine Sanierung
+STR_6246    :Sanieren
+STR_6247    :Attraktion sanieren
+STR_6248    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} für {CURRENCY} sanieren?
+STR_6249    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} sanieren?
+STR_6250    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} wirklich komplett abreißen und dafür {CURRENCY} erhalten?
+STR_6251    :Attraktion ist noch nicht leer
+STR_6252    :Twitch-API-URL
+STR_6253    :{SMALLFONT}{BLACK}Geben Sie die URL der Twitch-Integrations-API an. Benötigt, um die Twitch-Integration zu aktivieren.
+STR_6254    :URL der Twitch-Integrations-API:
+STR_6255    :URL ist nicht gültig
+STR_6256    :Rendering effects
+STR_6257    :Gläsern (durchsichtig)
+STR_6258    :Klar (transparent)
+STR_6259    :Deaktiviert
+STR_6260    :Blockierte Kacheln anzeigen
+STR_6261    :Breite Wege anzeigen
 
 #############
 # Scenarios #
@@ -4361,9 +4703,9 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :In diesem Park zu beiden Seiten einer Autobahn sind bereits verschiedene Attraktionen in Betrieb.
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :Die örtlichen Behörden haben zugestimmt, dem kleinen Park an der Küste umliegendes Gelände günstig zu verkaufen, unter der Bedingung, dass bestimmte Attraktionen erhalten werden.
 
 <Fun Fortress>
@@ -4661,13 +5003,3 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
-
-#######################
-# Bahnen/Attraktionen # 
-#######################
-
-#WW
-[CONDORRD]
-STR_NAME    :Kondorbahn
-STR_DESC    :Die Passagiere fahren, in speziellen Gurten hängend, unterhalb der Strecke. In den kondorförmigen Wagen erleben sie dabei ein Gefühl des Fliegens.
-STR_CPTY    :4 Fahrgäste pro Wagen

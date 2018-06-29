@@ -1,23 +1,30 @@
 # OPENRCT2
 
-sdl
+/sdl
 
 # Compiled dll
 openrct2.dll
 
-# Compiled linux executable
-openrct2
-
 # Distribution
 distribution/windows/*.exe
+distribution/android/*/external/
 
 # Build artifacts
 artifacts
+bin.*/
 .cache
+.dependencies
+sequencesversion
+objectsversion
 
 #lib
 lib
 libversion
+
+# Downloaded or built data files
+data/g2.dat
+data/title
+data/object
 
 #################
 ## Eclipse
@@ -274,7 +281,6 @@ pip-log.txt
 openrct2.id*
 openrct2.nam
 openrct2.til
-data/g2.dat
 
 #################
 ## Linux
@@ -283,7 +289,22 @@ data/g2.dat
 # KDE folder settings
 .directory
 
+# discord rich presence client library
+discord-rpc
+
 ###############
 ## JetBrains ##
 ###############
 .idea/
+
+#########################
+## Visual Studio Code
+#########################
+.vscode/*
+.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Cmake
+cmake-build-debug/

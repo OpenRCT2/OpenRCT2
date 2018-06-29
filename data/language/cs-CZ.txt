@@ -17,8 +17,8 @@ STR_0012    :Dostihy
 STR_0013    :Autodráha
 STR_0014    :Volný pád
 STR_0015    :Bobová dráha
-STR_0016    :Pozorovací věž
-STR_0017    :Horská dráha s lopinky
+STR_0016    :Vyhlídková věž
+STR_0017    :Horská dráha s loopingy
 STR_0018    :Nafukovací čluny
 STR_0019    :Důlní horská dráha
 STR_0020    :Lanovka
@@ -514,7 +514,7 @@ STR_0509    :
 STR_0510    :
 STR_0511    :
 STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
-STR_0513    :Návštěvníci jedou po horské dráze s lopinky ve stoje
+STR_0513    :Návštěvníci jedou po horské dráze s loopingy ve stoje
 STR_0514    :Vlaky zavěšené pod kolejí se v zatáčkách houpají do stran
 STR_0515    :Ocelová horská dráha s vlaky držícími zespoda trati s mnoha zatáčkami
 STR_0516    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na větší dráhy
@@ -527,8 +527,8 @@ STR_0522    :Menší horská dráha, na které návštěvníci sedí nad dráhou
 STR_0523    :Návštěvníci jedou pomalu ve vozidlech po postavené dráze.
 STR_0524    :Kabina pro volný pád je pneumaticky vystřelena vzhůru po vysoké ocelové věži a následně volně padá k zemi
 STR_0525    :Návštěvníci jedou po propletené bobové dráze
-STR_0526    :Otáčející se pozorovací kabina, která postupně vyjíždí na vysokou věž
-STR_0527    :Plynulá ocelová horská dráha s lopinky
+STR_0526    :Otáčející se vyhlídková kabina, která postupně vyjíždí na vysokou věž
+STR_0527    :Plynulá ocelová horská dráha s loopingy
 STR_0528    :Návštěvníci jedou v nafukovacích člunech po tobogánu
 STR_0529    :Ocelová horská dráha ve stylu důlního vlaku s věrně vypadajícími důlními kolejemi.
 STR_0530    :Kabiny visí na ocelovém laně, které nepřetržitě jede z jednoho konce na druhý a zpět
@@ -586,7 +586,7 @@ STR_0581    :Kruh sedadel je za pomalé rotace vytažen na vrchol vysoké věže
 STR_0582    :
 STR_0583    :
 STR_0584    :Speciální kola jezdí po ocelové koleji, poháněná šlapáním jezdců
-STR_0585    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze lopinky a ostré zatáčky
+STR_0585    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze loopingy a ostré zatáčky
 STR_0586    :Vozy ve tvaru lodí jedou po trati horské dráhy, což umožňuje ostré zatáčky, strmé klesání a cákající zpomalení pro mírnější říční úseky
 STR_0587    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
 STR_0588    :Vozy po jednom jedou pod cik-cak tratí s ostrými zatáčkami a pády
@@ -604,170 +604,170 @@ STR_0599    :Malá horská dráha, na které vozy po jednom projíždí trať s 
 STR_0600    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po hladkých kolejnicích skrze propletenou dráhu
 STR_0601    :
 STR_0602    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
-STR_0603    :Návštěvník {INT32}
-STR_0604    :Návštěvník {INT32}
-STR_0605    :Návštěvník {INT32}
-STR_0606    :Návštěvník {INT32}
-STR_0607    :Návštěvník {INT32}
-STR_0608    :Návštěvník {INT32}
-STR_0609    :Návštěvník {INT32}
-STR_0610    :Návštěvník {INT32}
-STR_0611    :Návštěvník {INT32}
-STR_0612    :Návštěvník {INT32}
-STR_0613    :Návštěvník {INT32}
-STR_0614    :Návštěvník {INT32}
-STR_0615    :Návštěvník {INT32}
-STR_0616    :Návštěvník {INT32}
-STR_0617    :Návštěvník {INT32}
-STR_0618    :Návštěvník {INT32}
-STR_0619    :Návštěvník {INT32}
-STR_0620    :Návštěvník {INT32}
-STR_0621    :Návštěvník {INT32}
-STR_0622    :Návštěvník {INT32}
-STR_0623    :Návštěvník {INT32}
-STR_0624    :Návštěvník {INT32}
-STR_0625    :Návštěvník {INT32}
-STR_0626    :Návštěvník {INT32}
-STR_0627    :Návštěvník {INT32}
-STR_0628    :Návštěvník {INT32}
-STR_0629    :Návštěvník {INT32}
-STR_0630    :Návštěvník {INT32}
-STR_0631    :Návštěvník {INT32}
-STR_0632    :Návštěvník {INT32}
-STR_0633    :Návštěvník {INT32}
-STR_0634    :Návštěvník {INT32}
-STR_0635    :Návštěvník {INT32}
-STR_0636    :Návštěvník {INT32}
-STR_0637    :Návštěvník {INT32}
-STR_0638    :Návštěvník {INT32}
-STR_0639    :Návštěvník {INT32}
-STR_0640    :Návštěvník {INT32}
-STR_0641    :Návštěvník {INT32}
-STR_0642    :Návštěvník {INT32}
-STR_0643    :Návštěvník {INT32}
-STR_0644    :Návštěvník {INT32}
-STR_0645    :Návštěvník {INT32}
-STR_0646    :Návštěvník {INT32}
-STR_0647    :Návštěvník {INT32}
-STR_0648    :Návštěvník {INT32}
-STR_0649    :Návštěvník {INT32}
-STR_0650    :Návštěvník {INT32}
-STR_0651    :Návštěvník {INT32}
-STR_0652    :Návštěvník {INT32}
-STR_0653    :Návštěvník {INT32}
-STR_0654    :Návštěvník {INT32}
-STR_0655    :Návštěvník {INT32}
-STR_0656    :Návštěvník {INT32}
-STR_0657    :Návštěvník {INT32}
-STR_0658    :Návštěvník {INT32}
-STR_0659    :Návštěvník {INT32}
-STR_0660    :Návštěvník {INT32}
-STR_0661    :Návštěvník {INT32}
-STR_0662    :Návštěvník {INT32}
-STR_0663    :Návštěvník {INT32}
-STR_0664    :Návštěvník {INT32}
-STR_0665    :Návštěvník {INT32}
-STR_0666    :Návštěvník {INT32}
-STR_0667    :Návštěvník {INT32}
-STR_0668    :Návštěvník {INT32}
-STR_0669    :Návštěvník {INT32}
-STR_0670    :Návštěvník {INT32}
-STR_0671    :Návštěvník {INT32}
-STR_0672    :Návštěvník {INT32}
-STR_0673    :Návštěvník {INT32}
-STR_0674    :Návštěvník {INT32}
-STR_0675    :Návštěvník {INT32}
-STR_0676    :Návštěvník {INT32}
-STR_0677    :Návštěvník {INT32}
-STR_0678    :Návštěvník {INT32}
-STR_0679    :Návštěvník {INT32}
-STR_0680    :Návštěvník {INT32}
-STR_0681    :Návštěvník {INT32}
-STR_0682    :Návštěvník {INT32}
-STR_0683    :Návštěvník {INT32}
-STR_0684    :Návštěvník {INT32}
-STR_0685    :Návštěvník {INT32}
-STR_0686    :Návštěvník {INT32}
-STR_0687    :Návštěvník {INT32}
-STR_0688    :Návštěvník {INT32}
-STR_0689    :Návštěvník {INT32}
-STR_0690    :Návštěvník {INT32}
-STR_0691    :Návštěvník {INT32}
-STR_0692    :Návštěvník {INT32}
-STR_0693    :Návštěvník {INT32}
-STR_0694    :Návštěvník {INT32}
-STR_0695    :Návštěvník {INT32}
-STR_0696    :Návštěvník {INT32}
-STR_0697    :Návštěvník {INT32}
-STR_0698    :Návštěvník {INT32}
-STR_0699    :Návštěvník {INT32}
-STR_0700    :Návštěvník {INT32}
-STR_0701    :Návštěvník {INT32}
-STR_0702    :Návštěvník {INT32}
-STR_0703    :Návštěvník {INT32}
-STR_0704    :Návštěvník {INT32}
-STR_0705    :Návštěvník {INT32}
-STR_0706    :Návštěvník {INT32}
-STR_0707    :Návštěvník {INT32}
-STR_0708    :Návštěvník {INT32}
-STR_0709    :Návštěvník {INT32}
-STR_0710    :Návštěvník {INT32}
-STR_0711    :Návštěvník {INT32}
-STR_0712    :Návštěvník {INT32}
-STR_0713    :Návštěvník {INT32}
-STR_0714    :Návštěvník {INT32}
-STR_0715    :Návštěvník {INT32}
-STR_0716    :Návštěvník {INT32}
-STR_0717    :Návštěvník {INT32}
-STR_0718    :Návštěvník {INT32}
-STR_0719    :Návštěvník {INT32}
-STR_0720    :Návštěvník {INT32}
-STR_0721    :Návštěvník {INT32}
-STR_0722    :Návštěvník {INT32}
-STR_0723    :Návštěvník {INT32}
-STR_0724    :Návštěvník {INT32}
-STR_0725    :Návštěvník {INT32}
-STR_0726    :Návštěvník {INT32}
-STR_0727    :Návštěvník {INT32}
-STR_0728    :Návštěvník {INT32}
-STR_0729    :Návštěvník {INT32}
-STR_0730    :Návštěvník {INT32}
-STR_0731    :Návštěvník {INT32}
-STR_0732    :Návštěvník {INT32}
-STR_0733    :Návštěvník {INT32}
-STR_0734    :Návštěvník {INT32}
-STR_0735    :Návštěvník {INT32}
-STR_0736    :Návštěvník {INT32}
-STR_0737    :Návštěvník {INT32}
-STR_0738    :Návštěvník {INT32}
-STR_0739    :Návštěvník {INT32}
-STR_0740    :Návštěvník {INT32}
-STR_0741    :Návštěvník {INT32}
-STR_0742    :Návštěvník {INT32}
-STR_0743    :Návštěvník {INT32}
-STR_0744    :Návštěvník {INT32}
-STR_0745    :Návštěvník {INT32}
-STR_0746    :Návštěvník {INT32}
-STR_0747    :Návštěvník {INT32}
-STR_0748    :Návštěvník {INT32}
-STR_0749    :Návštěvník {INT32}
-STR_0750    :Návštěvník {INT32}
-STR_0751    :Návštěvník {INT32}
-STR_0752    :Návštěvník {INT32}
-STR_0753    :Návštěvník {INT32}
-STR_0754    :Návštěvník {INT32}
-STR_0755    :Návštěvník {INT32}
-STR_0756    :Návštěvník {INT32}
-STR_0757    :Návštěvník {INT32}
-STR_0758    :Návštěvník {INT32}
-STR_0759    :Návštěvník {INT32}
-STR_0760    :Návštěvník {INT32}
-STR_0761    :Návštěvník {INT32}
-STR_0762    :Návštěvník {INT32}
-STR_0763    :Návštěvník {INT32}
-STR_0764    :Návštěvník {INT32}
-STR_0765    :Návštěvník {INT32}
-STR_0766    :Návštěvník {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :Návštěvník {INT32}
 STR_0768    :Údržbář {INT32}
 STR_0769    :Mechanik {INT32}
@@ -851,7 +851,7 @@ STR_0845    :<not used anymore>
 STR_0846    :<not used anymore>
 STR_0847    :O hře OpenRCT2
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Verze 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, všechna práva vyhrazena
 STR_0851    :{WINDOW_COLOUR_2}Design a programování - Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafika - Simon Foster
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}Další zvukové nahrávky - David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Poděkování:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, a John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,7 +890,7 @@ STR_0884    :Nahrát krajinu
 STR_0885    :Uložit krajinu
 STR_0886    :Ukončit hru
 STR_0887    :Ukončit editor scénáře
-STR_0888    :Ukončit návrh horské dráhy
+STR_0888    :Ukončit návrhář trati
 STR_0889    :Ukončit správu návrhů tratí
 STR_0890    :<removed string - do not use>
 STR_0891    :Snímek obrazovky
@@ -984,7 +984,7 @@ STR_0978    :Nové mírné atrakce
 STR_0979    :Nové horské dráhy
 STR_0980    :Nové adrenalinové atrakce
 STR_0981    :Nové vodní atrakce
-STR_0982    :Nové obchody & stánky
+STR_0982    :Nové obchody a stánky
 STR_0983    :Výzkum a vývoj
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
@@ -1150,11 +1150,11 @@ STR_1144    :Nelze postavit/přesunout vstup této atrakce...
 STR_1145    :Nelze postavit/přesunout výstup z této atrakce...
 STR_1146    :Vstup ještě není postaven
 STR_1147    :Výstup ještě není postaven
-STR_1148    :naložit na 25%
-STR_1149    :naložit na 50%
-STR_1150    :naložit na 75%
-STR_1151    :plně naložit
-STR_1152    :naložit jakkoliv
+STR_1148    :25% naložení
+STR_1149    :50% naložení
+STR_1150    :75% naložení
+STR_1151    :plné naložení
+STR_1152    :jakkékoliv naložení
 STR_1153    :Výškové popisky atrakcí
 STR_1154    :Výškové popisky krajiny
 STR_1155    :Výškové popisky cest
@@ -1176,7 +1176,7 @@ STR_1170    :{STRING}
 STR_1171    :{RED}Zavřeno - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Nástroj pro cesty a fronty
-STR_1174    :Baner v cestě
+STR_1174    :Banner v cestě
 STR_1175    :Toto nelze postavit na strmé cestě
 STR_1176    :Nelze stavět cestu...
 STR_1177    :Tuto cestu nelze odstranit...
@@ -1209,7 +1209,7 @@ STR_1202    :1 návštěvník ve frontě
 STR_1203    :{COMMA16} návštěvníků ve frontě
 STR_1204    :{COMMA16} minutu čekání ve frontě
 STR_1205    :{COMMA16} minut čekání ve frontě
-STR_1206    :{WINDOW_COLOUR_2}Naložit:
+STR_1206    :{WINDOW_COLOUR_2}Čekat na:
 STR_1207    :{WINDOW_COLOUR_2}Vyjet když jiný vlak přijede do stanice
 STR_1208    :{WINDOW_COLOUR_2}Vyplout když jiná loď přijede do přístavu
 STR_1209    :{SMALLFONT}{BLACK}Vyberte, zda se má čekat na návštěvníky před odjezdem
@@ -1221,8 +1221,8 @@ STR_1214    :{SMALLFONT}{BLACK}Vyberte maximální délku čekání před odjezd
 STR_1215    :{WINDOW_COLOUR_2}Synchronizovat se sousedícími stanicemi
 STR_1216    :{SMALLFONT}{BLACK}Vyberte, zda synchronizovat odjezdy se sousedícími stanicemi (pro "závodění")
 STR_1217    :{COMMA16} sekund
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
 STR_1220    :Jen východ
 STR_1221    :Nemá vchod
 STR_1222    :Chybí východ
@@ -1779,8 +1779,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Je povolena jen jedna fotobuňka na atrakci
 STR_1774    :Je povolen pouze jeden výtah na atrakci
-STR_1775    :Vypnuto
-STR_1776    :Zapnuto
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Hudba atrakcí
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda
@@ -1929,7 +1929,7 @@ STR_1919    :Nedostatek hotovosti!
 STR_1920    :Nelze splatit půjčku!
 STR_1921    :{SMALLFONT}{BLACK}Začít novou hru
 STR_1922    :{SMALLFONT}{BLACK}Nahrát uloženou hru
-STR_1923    :{SMALLFONT}{BLACK}Zobrazit tutoriál
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Ukončit hru
 STR_1925    :Sem tuto osobu nelze umístit...
 STR_1926    :{SMALLFONT}
@@ -1961,11 +1961,11 @@ STR_1951    :Graf hodnoty parku
 STR_1952    :Graf zisku
 STR_1953    :Marketing
 STR_1954    :Financování vývoje
-STR_1955    :{WINDOW_COLOUR_2}Počet koleček:
-STR_1956    :{SMALLFONT}{BLACK}Počet koleček za jednu jízdu
+STR_1955    :{WINDOW_COLOUR_2}Počet kol:
+STR_1956    :{SMALLFONT}{BLACK}Počet kol za jednu jízdu
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Počet koleček nelze změnit...
+STR_1959    :Počet kol nelze změnit...
 STR_1960    :{WINDOW_COLOUR_2}Cena balónku:
 STR_1961    :{WINDOW_COLOUR_2}Cena plyšáka:
 STR_1962    :{WINDOW_COLOUR_2}Cena mapy parku:
@@ -2693,14 +2693,14 @@ STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Dorazí velká skupina návštěvníků
 STR_2685    :Parametry simplex noise
-STR_2686    :{WINDOW_COLOUR_2}Hloubky:
-STR_2687    :{WINDOW_COLOUR_2}Výšky:
-STR_2688    :{WINDOW_COLOUR_2}Základní frekvence:
-STR_2689    :{WINDOW_COLOUR_2}Oktávy:
+STR_2686    :Hloubky:
+STR_2687    :Výšky:
+STR_2688    :Základní frekvence:
+STR_2689    :Oktávy:
 STR_2690    :Generování mapy
-STR_2691    :{WINDOW_COLOUR_2}Výška povrchu:
-STR_2692    :{WINDOW_COLOUR_2}Výška vodní hladiny:
-STR_2693    :{WINDOW_COLOUR_2}Terén:
+STR_2691    :Výška povrchu:
+STR_2692    :Výška vodní hladiny:
+STR_2693    :Terén:
 STR_2694    :Generovat
 STR_2695    :Náhodný terén
 STR_2696    :Umístit stromy
@@ -2750,7 +2750,7 @@ STR_2739    :Žádná
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nenalezen
-STR_2743    :Nakopírujte data\css17.dat z vaší instalace RCT1 do to data\css50.dat ve vaší instalaci RCT2.
+STR_2743    :Nakopírujte 'data/css17.dat' z vaší instalace RCT1 do 'data/css50.dat' ve vaší instalaci RCT2.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2865,17 +2865,17 @@ STR_2852    :Návrh trati už je nainstalován
 STR_2853    :Zakázáno místní správnou!
 STR_2854    :{RED}Návštěvníci nemohou najít vstup do {STRINGID} !{NEWLINE}Postavte cestu k vstupu
 STR_2855    :{RED}{STRINGID} nemá postavenou vestu z východu!{NEWLINE}Postavte cestu z východu atrakce
-STR_2856    :{WINDOW_COLOUR_2}Tutorial
-STR_2857    :{WINDOW_COLOUR_2}(Stiskněte klávesu, nebo klikněte pro převzetí kontroly)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :Nelze zahájit reklamní kampaň...
 STR_2859    :OpenRCT2 už běží
-STR_2860    :Infogrames Interactive poděkování...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licencováno Infogrames Interactive Inc.
 STR_2862    :Poděkování za hudbu...
 STR_2863    :Poděkování za hudbu
-STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
+STR_2864    :{WINDOW_COLOUR_2}Děti pluku - pochod:   (Fučík) non copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) non copyright
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
@@ -2917,29 +2917,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Product Manager:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}V.P. of Product Development:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Director of Quality Assurance:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A. Certification Manager:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A. Certification Lead:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Testers:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Director of Marketing:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Manager of Creative Services:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Manager of Editorial & Documentation Services:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Graphic Designer:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Special Thanks to:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Engineering Specialist:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Engineering Services Manager:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Lead Compatibility Analyst:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Lead Tester:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -2989,15 +2989,15 @@ STR_2976    :{SMALLFONT}{BLACK}Obarvit část atrakce vybranou barevnou kombinac
 STR_2977    :Přejmenovat zaměstnance
 STR_2978    :Zadejte nové jméno tohoto zaměstnance:
 STR_2979    :Nelze přejmenovat zaměstnance...
-STR_2980    :Příliš mnoho banerů ve hře
+STR_2980    :Příliš mnoho bannerů ve hře
 STR_2981    :{RED}Zákaz vstupu - - 
-STR_2982    :Text baneru
-STR_2983    :Zadejte nový text baneru:
-STR_2984    :Nelze změnit text baneru...
-STR_2985    :Baner
-STR_2986    :{SMALLFONT}{BLACK}Změnit text baneru
-STR_2987    :{SMALLFONT}{BLACK}Nastavit tento baner jako "zákaz vstupu" pro návštěvníky
-STR_2988    :{SMALLFONT}{BLACK}Zrušit baner
+STR_2982    :Text banneru
+STR_2983    :Zadejte nový text banneru:
+STR_2984    :Nelze změnit text banneru...
+STR_2985    :Banner
+STR_2986    :{SMALLFONT}{BLACK}Změnit text banneru
+STR_2987    :{SMALLFONT}{BLACK}Nastavit tento banner jako "zákaz vstupu" pro návštěvníky
+STR_2988    :{SMALLFONT}{BLACK}Zrušit banner
 STR_2989    :{SMALLFONT}{BLACK}Vybrat hlavní barvu
 STR_2990    :{SMALLFONT}{BLACK}Vybrat barvu textu
 STR_2991    :Cedule
@@ -3064,9 +3064,9 @@ STR_3051    :Jamka C
 STR_3052    :Jamka D
 STR_3053    :Jamka E
 STR_3054    :Načítání...
-STR_3055    :Bílá
-STR_3056    :Průhledná
-STR_3057    :{WINDOW_COLOUR_2}Barva návrhu výstavby:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Cihlová zeď
 STR_3059    :Živý plot
 STR_3060    :Kusy ledu
@@ -3150,7 +3150,7 @@ STR_3137    :Vyberte okolní kulisy
 STR_3138    :Zrušit výběr
 STR_3139    :Řetězový výtah nefunguje v tomto provozním módu
 STR_3140    :Řetězový výtah musí začít hned za stanicí
-STR_3141    :Více koleček za jízdu není přípustné současně s řetězovým výtahem
+STR_3141    :Více kol za jízdu není přípustné současně s řetězovým výtahem
 STR_3142    :{WINDOW_COLOUR_2}Kapacita: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Zobrazit návštěvníky na mapě
 STR_3144    :{SMALLFONT}{BLACK}Zobrazit atrakce a stánky na mapě
@@ -3169,7 +3169,7 @@ STR_3156    :
 STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
-STR_3160    :Vyberte počet koleček za jednu jízdu
+STR_3160    :Vyberte počet kol za jednu jízdu
 STR_3161    :<not used anymore>
 STR_3162    :Nepodařilo se alokovat dostatek paměti
 STR_3163    :Instaluji nová data: 
@@ -3190,7 +3190,7 @@ STR_3177    :Nelze zrušit výběr objektu
 STR_3178    :Alespoň jeden objekt cesty musí být vybrán
 STR_3179    :Alespoň jeden objekt atrakce musí být vybrán
 STR_3180    :Neplatný výběr objektů
-STR_3181    :Výběr objektu - {STRINGID}
+STR_3181    :Výběr objektů - {STRINGID}
 STR_3182    :Vstup do parku musí být vybraný
 STR_3183    :Typ vodních ploch musí být vybraný
 STR_3184    :Vozy/atrakce
@@ -3216,11 +3216,11 @@ STR_3203    :Nastavení výzkumu
 STR_3204    :Výběr nastavení
 STR_3205    :Výběr cílů
 STR_3206    :Uložit scénář
-STR_3207    :Návrh horské dráhy
+STR_3207    :Návrhář trati
 STR_3208    :Správa návrhů tratí
 STR_3209    :Zpět k předchozímu kroku:
 STR_3210    :Jít na následující krok:
-STR_3211    :{WINDOW_COLOUR_2}Velikost mapy:
+STR_3211    :Velikost mapy:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Mapu nelze více zmenšit
 STR_3214    :Mapu nelze více zvětšit
@@ -3344,7 +3344,7 @@ STR_3331    :Cesta od vstupu do parku k hraně mapy není kompletní, nebo je p�
 STR_3332    :Vstup do parku je špatně otočený, nebo z něj nevede cesta k hraně mapy
 STR_3333    :Exportovat plug-in objekty s uložením hry
 STR_3334    :{SMALLFONT}{BLACK}Vyberte, zda ukládat data plug-in objektů (add-in data nejsou dodána s hlavním produktem) do souborů uložených her a scénářů, což dovolí jejích načítání na těmi, kdo nemají tyto dodatečná data objektů.
-STR_3335    :Návrh horské dráhy - Vyberte typ atrakce a vozů
+STR_3335    :Návrhář trati - Vyberte typ atrakce a vozů
 STR_3336    :Správa návrhu trati - Vyberte typ trati
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Vlastnoručně navržené
@@ -3353,7 +3353,7 @@ STR_3340    :{BLACK}{COMMA16} návrhy dostupné nebo vlastnoručně navržené
 STR_3341    :{SMALLFONT}{BLACK}Herní nástroje
 STR_3342    :Editor scénáře
 STR_3343    :Konvertovat uloženou hru na scénář
-STR_3344    :Návrh horské dráhy
+STR_3344    :Návrhář trati
 STR_3345    :Správa návrhu trati
 STR_3346    :Nelze uložit návrh trati...
 STR_3347    :Trať je příliš velká, obsahuje příliš mnoho prvků, nebo příliš rozsáhlé kulisy
@@ -3385,7 +3385,7 @@ STR_3372    :{BLACK}= Bankomat
 STR_3373    :{BLACK}= Toaleta
 STR_3374    :Pozor: Vybráno příliš mnoho objektů!
 STR_3375    :Ne všechny objekty této skupiny kulis mohou být vybrány
-STR_3376    :Instalace nového návrhu trati...
+STR_3376    :Instalace nového návrhu trati
 STR_3377    :{SMALLFONT}{BLACK}Instalace nového souboru s návrhem trati
 STR_3378    :Instalovat
 STR_3379    :Zrušit
@@ -3394,60 +3394,58 @@ STR_3381    :Soubor není kompatibilní, nebo obsahuje neplatná data
 STR_3382    :Kopírování souboru selhalo
 STR_3383    :Vyberte nový název návrhu trati
 STR_3384    :Existuje návrh trati se stejným názvem - vyberte prosím jiný název:
-STR_3385    :Tutoriál pro začátečníky
-STR_3386    :Tutoriál pro vlastní tratě
-STR_3387    :Tutoriál pro stavbu horských drah
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :Nepodařilo se přepnout do vybraného módu
 STR_3389    :Nepodařilo se vybrat dodatečné kulisy...
 STR_3390    :Vybráno příliš mnoho položek
-# Start of tutorial strings. Not used at the moment, so not necessary to translate.
-STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
-STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
-STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
-STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
-STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
-STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
-STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
-STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
-STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
-STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
-STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
-STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
-STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
-STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
-STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
-STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The sekce of track we've just built is a 'station platform', to allow guests to get on and off the ride...
-STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sekces...
-STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
-STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
-STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
-STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
-STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
-STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
-STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
-STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
-STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
-STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
-STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
-STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the ride...
-STR_3422    :{SMALLFONT}{BLACK}Let's build a roller coaster !
-STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
-STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
-STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
-STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
-STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
-STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
-STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
-STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
-STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
-STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
-STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
-STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
-STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
-STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customise the ride a bit...
-# End of tutorial strings
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Odebrat velkou oblast kulis z krajiny
 STR_3438    :Odsud nelze odebrat všechny kulisy...
 STR_3439    :Odebrat kulisy
@@ -3464,7 +3462,7 @@ STR_5120    :Finance
 STR_5121    :Výzkum
 STR_5122    :Výběr atrakcí podle typu (jako v RCT1)
 STR_5123    :Obnovit atrakce
-STR_5124    :<not used anymore>
+STR_5124    :<removed string - do not use>
 STR_5125    :Vše lze zbourat
 STR_5126    :Náhodná hudba
 STR_5127    :{SMALLFONT}{BLACK}Měnit vzhled země namísto změny výšky terénu
@@ -3491,7 +3489,7 @@ STR_5147    :Cheaty
 STR_5148    :{SMALLFONT}{BLACK}Změnit rychlost hry
 STR_5149    :{SMALLFONT}{BLACK}Zobrazit možnosti cheatů
 STR_5150    :Zapnout debug nástroje
-STR_5151    :
+STR_5151    : 
 STR_5152    :,
 STR_5153    :Upravit motivy...
 STR_5154    :Hardwarové zobrazování
@@ -3511,7 +3509,7 @@ STR_5167    :Sledovat návštěvníky-followery
 STR_5168    :{SMALLFONT}{BLACK}Zapnout sledování návštěvníků{NEWLINE}pojmenovaných po Twitch followerech
 STR_5169    :Pojmenovávat návštěvníky podle lidí v Twitch chatu
 STR_5170    :{SMALLFONT}{BLACK}Pojmenovávat návštěvníky podle{NEWLINE}lidí v Twitch chatu
-STR_5171    :Sledovat návštěvníky z chatu
+STR_5171    :<removed string - do not use>
 STR_5172    :{SMALLFONT}{BLACK}Zapnout sledování návštěvníků{NEWLINE}pojmenovaných po lidech v Twitch chatu
 STR_5173    :Použít Twitch chat jako zprávy
 STR_5174    :{SMALLFONT}{BLACK}Bude používat zprávy z Twitch{NEWLINE}chatu, začínající !news pro herní notifikace
@@ -3549,7 +3547,7 @@ STR_5205    :Návštěvník
 STR_5206    :Seznam návštěvníků
 STR_5207    :Personál
 STR_5208    :Seznam personálu
-STR_5209    :Baner
+STR_5209    :Banner
 STR_5210    :Výběr objektu
 STR_5211    :Seznam vynálezů
 STR_5212    :Nastavení scénáře
@@ -3576,8 +3574,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editory
 STR_5233    :{SMALLFONT}{BLACK}Ostatní
 STR_5234    :{SMALLFONT}{BLACK}Výzvy
 STR_5235    :{SMALLFONT}{BLACK}Nastavení
-STR_5236    :Okno:
-STR_5237    :Paleta:
+STR_5236    :Okno
+STR_5237    :Paleta
 STR_5238    :Aktuální motiv:
 STR_5239    :Duplikovat
 STR_5240    :Zadejte jméno pro tento motiv
@@ -3644,7 +3642,7 @@ STR_5300    :{SMALLFONT}{BLACK}Propustit zaměstnance
 STR_5301    :{MEDIUMFONT}{BLACK}Vyrovnání dluhů
 STR_5302    :Vyrovnat dluh
 STR_5303    :Povolit stavění, když je hra pozastavená
-STR_5304    :Herní sekvence:
+STR_5304    :Úvodní herní sekvence:
 STR_5305    :RollerCoaster Tycoon 1
 STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
@@ -3711,7 +3709,7 @@ STR_5367    :Vysoká
 STR_5368    :Vymazat havárii
 STR_5369    :Parametry parku...
 STR_5370    :{SMALLFONT}{BLACK}Klikněte na toto tlačítko pro   {NEWLINE}úpravy parametrů jako omezení parku,{NEWLINE} generování návštěvníků a peněz.
-STR_5371    :Výběr objektu
+STR_5371    :Výběr objektů
 STR_5372    :Obrátit směr posouvání pohledu pravým tlačítkem
 STR_5373    :Název {STRINGID}
 STR_5374    :Datum {STRINGID}
@@ -3764,13 +3762,13 @@ STR_5420    :Otočit{MOVE_X}{87}{COMMA16}
 STR_5421    :Přiblížit
 STR_5422    :Přiblížit{MOVE_X}{87}{COMMA16}
 STR_5423    :Čekat
-STR_5424    :Čekat{MOVE_X}{87}{COMMA16}
+STR_5424    :Čekat{MOVE_X}{87}{UINT16}
 STR_5425    :Restart
 STR_5426    :Konec
 STR_5427    :Souřadnice:
 STR_5428    :Počet otočení proti směru hod.ruč.:
 STR_5429    :Úroveň přiblížení:
-STR_5430    :Délka čekání (v sekundách):
+STR_5430    :Délka čekání (v milisekundách):
 STR_5431    :Uložená hra k načtení:
 STR_5432    :Příkaz:
 STR_5433    :Herní sekvence
@@ -3814,7 +3812,7 @@ STR_5470    :Posunou mapu vlevo
 STR_5471    :Posunou mapu dolů
 STR_5472    :Posunou mapu vpravo
 STR_5473    :Cyklus dne a noci
-STR_5474    :Zobrazit text na banerech v kapitálkách
+STR_5474    :Zobrazit text na bannerech v kapitálkách
 STR_5475    :{COMMA16} týdnů
 STR_5476    :Hardware
 STR_5477    :Vykreslování mapy
@@ -3834,10 +3832,10 @@ STR_5490    :Vypnout zvuk při přepnutí ze hry
 STR_5491    :Seznam vynálezů
 STR_5492    :Nastavení scénáře
 STR_5493    :Poslat zprávu
-STR_5494    :<not used anymore>
+STR_5494    :<removed string - do not use>
 STR_5495    :Seznam hráčů
-STR_5496    :Hráč:
-STR_5497    :Ping:
+STR_5496    :Hráč
+STR_5497    :Ping
 STR_5498    :Seznam serverů
 STR_5499    :Jméno hráče:
 STR_5500    :Přidat server
@@ -3847,7 +3845,7 @@ STR_5503    :Zadejte hostname, nebo IP adresu:
 STR_5504    :{SMALLFONT}{BLACK}Zobrazit stav hry více hráčů
 STR_5505    :Nelze se připojit k serveru.
 STR_5506    :Návštěvníci ignorují intenzitu atrakcí
-STR_5507    :Údržbáři nyní sekají trávu ve výchozím nastavení
+STR_5507    :<removed string - do not use>
 STR_5508    :Povolit nahrávání souborů s chybným kontrolním součtem
 STR_5509    :{SMALLFONT}{BLACK}Povolit nahrávání scénářů s neplatným{NEWLINE}kontrolním součtem - například{NEWLINE}scénáře demoverze, nebo{NEWLINE}poškozené uložené hry.
 STR_5510    :Výchozí zvukové zařízení
@@ -3970,7 +3968,7 @@ STR_5626    :Ostatní parky
 STR_5627    :Seskupit scénáře podle:
 STR_5628    :Původní hry
 STR_5629    :Obtížnosti
-STR_5630    :Zapnout odemykání scénářů
+STR_5630    :Zapnout progresivní odemykání scénářů
 STR_5631    :Originální DLC parky
 STR_5632    :Postav si vlastní...
 STR_5633    :CMD + 
@@ -3982,7 +3980,7 @@ STR_5638    :Přístup zamítnut
 STR_5639    :{SMALLFONT}{BLACK}Zobrazit seznam hráčů
 STR_5640    :{SMALLFONT}{BLACK}Spravovat skupiny
 STR_5641    :Výchozí skupina:
-STR_5642    :Skupina:
+STR_5642    :Skupina
 STR_5643    :Přidat skupinu
 STR_5644    :Odebrat skupinu
 STR_5645    :Chat
@@ -4010,7 +4008,7 @@ STR_5666    :Přihlášení bez hesla
 STR_5701    :{WINDOW_COLOUR_2}Poslední akce: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Najít hráčovu poslední akci
 STR_5703    :Nelze vyhodit zakladatele hry
-STR_5704    :Poslední akce:
+STR_5704    :Poslední akce
 STR_5705    :Nelze nastavit tuto skupinu
 STR_5706    :Nelze odebrat skupinu, ke které hráč patří
 STR_5707    :Tato skupina nemůže být upravena
@@ -4034,14 +4032,13 @@ STR_5723    :Déšť
 STR_5724    :Bouřka
 STR_5725    :{BLACK}Vynutit počasí:
 STR_5726    :{SMALLFONT}{BLACK}Nastaví momentální počasí v parku
-STR_5727    :Metoda škálování
+STR_5727    :Metoda škálování:
 STR_5728    :Vyžaduje hardwarové zobrazování
 STR_5729    :{SMALLFONT}{BLACK}Vyžaduje hardwarové zobrazování
-STR_5730    :Nejbližší sousedi
+STR_5730    :<removed string - do not use>
 STR_5731    :Lineární
-STR_5732    :Anizotropní
-STR_5733    :U celočíselného škálování používat NS metodu
-# tooltip for tab in options window
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 STR_5734    :{SMALLFONT}{BLACK}Vykreslování
 STR_5735    :Stav připojení
 STR_5736    :Hráč
@@ -4126,13 +4123,13 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Zobrazovat počítadlo FPS ve hře
 STR_5816    :{SMALLFONT}{BLACK}Nastaví poměr stran pro škálování{NEWLINE} velikosti herního okna.{NEWLINE}Nejužitečnější je tato volba při hře ve vysokém rozlišení.
-STR_5817    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Nastaví typ škálování UI prvků
-STR_5818    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Použít škálování pomocí{NEWLINE}algoritmu nejbližších sousedů, v případě,{NEWLINE}že koeficient škálování nabývá celočíselných hodnot (1, 2, 3, atd.)
+STR_5817    :{SMALLFONT}{BLACK}Nastaví typ škálování UI prvků. Vyžaduje hardwarové vykreslování.{NEWLINE}Lineární škálování má hladký, ale rozmazaný obraz. Metoda vyhlazeného nejbližšího souseda má ostrý obraz, ale může způsobovat mírný výkonostní propad.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Pozastavit hru, pokud je {NEWLINE}zapnutý Steam in-game overlay
 STR_5820    :{SMALLFONT}{BLACK}Minimalizovat hru, pokud je v{NEWLINE}režimu celé obrazovky a jiné okno se stane aktivním
-STR_5821    :{SMALLFONT}{BLACK}Mění barvu naznačeného místa stavby pří stavbě atrakcí, cest, kulis{NEWLINE}, obchodů, stánků a dalších
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Zapnout cyklus dne a noci.{NEWLINE}Jeden cyklus trvá jeden herní měsíc
-STR_5823    :{SMALLFONT}{BLACK}Zobrazit banery kapitálkami (RCT1 chování)
+STR_5823    :{SMALLFONT}{BLACK}Zobrazit bannery kapitálkami (RCT1 chování)
 STR_5824    :{SMALLFONT}{BLACK}Zakáže blesky během bouřek
 STR_5825    :{SMALLFONT}{BLACK}Udržet kurzor v okně
 STR_5826    :{SMALLFONT}{BLACK}Obrátit směr posouvání pohledu při držení pravého tlačítka myši
@@ -4145,21 +4142,21 @@ STR_5832    :{SMALLFONT}{BLACK}Výškové jednotky zobrazit pouze číslem, bez 
 STR_5833    :{SMALLFONT}{BLACK}Změní formát data
 STR_5834    :{SMALLFONT}{BLACK}Vyberte zvukové zařízení pro použití v OpenRCT2
 STR_5835    :{SMALLFONT}{BLACK}Zakázat zvuky, pokud herní okno přestane být aktivní
-STR_5836    :{SMALLFONT}{BLACK}Vyberte hudbu, která bude hrát na úvodní obrazovce.{NEWLINE}Výběr RCT1 znělky vyžaduje zkopírování a přejmenování 'data/css17.dat' ze složky RCT1 jako 'data/css50.dat' do vaší RCT2 složky.
+STR_5836    :{SMALLFONT}{BLACK}Vyberte hudbu, která bude hrát na úvodní obrazovce.{NEWLINE}Výběr RCT1 znělky vyžaduje zkopírování a přejmenování 'data/css17.dat' ze složky RCT1 jako 'data/css50.dat' do vaší RCT2 složky, nebo nastavení cesty k RCT1 v nastavení.
 STR_5837    :{SMALLFONT}{BLACK}Vytvořit a spravovat vlastní barevné palety UI
 STR_5838    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro financí na nástrojové liště
 STR_5839    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro výzkum a vývoj na nástrojové liště
 STR_5840    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro cheaty na nástrojové liště
 STR_5841    :{SMALLFONT}{BLACK}Zobrazit samostatné tlačítko pro poslední novinky na nástrojové liště
 STR_5842    :{SMALLFONT}{BLACK}Roztřídit scénáře do záložek podle obtížnosti (RCT2 chování), nebo podle hry, ze které pocházejí (RCT1 chování)
-STR_5843    :{SMALLFONT}{BLACK}Zapnout odemykání scénářů (RCT1 chování)
+STR_5843    :{SMALLFONT}{BLACK}Zapnout progresivní odemykání scénářů (RCT1 chování)
 STR_5844    :{SMALLFONT}{BLACK}Zachovat připojení do hry více hráčů,{NEWLINE}i když dojde k desynchronizaci
 STR_5845    :{SMALLFONT}{BLACK}Přidá tlačítko s vývojářskými nástroji na nástrojovou lištu.{NEWLINE}Povolí klávesovou zkratku pro vývojářskou konzoli
 STR_5846    :{SMALLFONT}{BLACK}Nastavení frekvence automatického ukládání hry
 STR_5847    :{SMALLFONT}{BLACK}Vyberte ukázky parků na hlavní obrazovce. Ukázky parků z her RCT1/2 vyžadují importované scénáře
 STR_5848    :{SMALLFONT}{BLACK}Vytvořit a spravovat vlastní ukázky parků pro hlavní obrazovku
 STR_5849    :{SMALLFONT}{BLACK}Automaticky umisťovat{NEWLINE}nově najatý personál
-STR_5850    :{SMALLFONT}{BLACK}Nově najatí údržbáři{NEWLINE}budou ve výchozím stavu sekat trávu (RCT1 chování)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Nastaví výchozí interval inspekcí{NEWLINE}na nově postavených atrakcích
 STR_5852    :{SMALLFONT}{BLACK}Nastaví název TwitchTV kanálu, který bude použit pro Twitch integraci
 STR_5853    :{SMALLFONT}{BLACK}Povolit/zakázat zvukové efekty
@@ -4169,6 +4166,7 @@ STR_5856    :{SMALLFONT}{BLACK}Nastavit rozlišení hry v režimu celé obrazovk
 STR_5857    :{SMALLFONT}{BLACK}Herní nastavení
 STR_5858    :{SMALLFONT}{BLACK}Použít GPU pro vykreslování místo CPU. Zvyšuje kompatibilitu se softwarem pro nahrávání obrazovky. Může lehce snížit výkonnost hry.
 STR_5859    :{SMALLFONT}{BLACK}Zapnout generování mezilehlých snímků{NEWLINE}pro jemnější obraz. Hra dosahuje{NEWLINE} 40 FPS, když je tato možnost zakázaná.
+STR_5860    :{SMALLFONT}{BLACK}Přepnout vykreslení původní/dekompilované dráhy
 STR_5861    :Selhalo ověření klíče.
 STR_5862    :Blokovat neznámé hráče.
 STR_5863    :{SMALLFONT}{BLACK}Připojit se smí pouze hráči s ověřenými klíči.
@@ -4187,7 +4185,7 @@ STR_5875    :Vykreslovací engine:
 STR_5876    :{SMALLFONT}{BLACK}Engine, který bude použit pro vykreslování hry.
 STR_5877    :Software
 STR_5878    :Software (hardwarové zobrazování)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (experimentální podpora)
 STR_5880    :Pouze vybrané
 STR_5881    :Pouze nevybrané
 STR_5882    :Vlastní měna
@@ -4205,7 +4203,7 @@ STR_5893    :Kurz měny
 STR_5894    :Zadejte kurz měny
 STR_5895    :Uložit trať
 STR_5896    :Nepodařilo se uložit trať!
-STR_5897    :Limit okna:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Nelze načíst trať - soubor neexistuje,{newline}nebo je pravděpodobně poškozen!
 STR_5899    :Přepnout okno debug vykreslování
 STR_5900    :Použít původní vykreslovací kód
@@ -4239,7 +4237,7 @@ STR_5927    :Detail kulis
 STR_5928    :Detaily vstupu
 STR_5929    :Detaily plotu
 STR_5930    :Detaily velkých kulis
-STR_5931    :Detaily baneru
+STR_5931    :Detaily banneru
 STR_5932    :Detaily poškozených elementů
 STR_5933    :Vlastnosti
 STR_5934    :{WINDOW_COLOUR_2}Textura terénu: {BLACK}{STRINGID}
@@ -4288,6660 +4286,288 @@ STR_5976    :Rovina
 STR_5977    :Pravá strana
 STR_5978    :Levá strana
 STR_5979    :{WINDOW_COLOUR_2}Typ plotu: {BLACK}{COMMA16}
-STR_5980    :{WINDOW_COLOUR_2}Text baneru: {BLACK}{STRINGID}
-STR_5981    :{WINDOW_COLOUR_2}To není baner
+STR_5980    :{WINDOW_COLOUR_2}Text banneru: {BLACK}{STRINGID}
+STR_5981    :{WINDOW_COLOUR_2}To není banner
 STR_5982    :{WINDOW_COLOUR_2}Typ velké kulisy: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}ID velké kulisy: {BLACK}{COMMA16}
 STR_5984    :Zablokované cesty:
-
-###############################################################################
-## RCT2 Objects
-###############################################################################
-[AML1]
-STR_NAME    :Americké parní vlaky
-STR_DESC    :Miniaturní replika parní lokomotivy s tendrem táhne dřevěné vagóny s plátěnými střechami
-STR_CPTY    :6 míst v každém vagónu
-
-[CLIFT1]
-STR_NAME    :Kryté sedačkové lanovky
-STR_DESC    :Lanovka se sedačkami se střechou
-STR_CPTY    :2 místa na jedné sedačce
-
-[CLIFT2]
-STR_NAME    :Sedačkové lanovky
-STR_DESC    :Lanovka se sedačkami
-STR_CPTY    :2 místa na jedné sedačce
-
-[LIFT1]
-STR_NAME    :Výtahy
-STR_DESC    :Návštěvníci jezdí ve výtahu nahoru nebo dolů, aby se dostali z jednoho patra do druhého
-STR_CPTY    :16 návštěvníků
-
-[MONO1]
-STR_NAME    :Aerodynamické jednokolejné vlaky
-STR_DESC    :Velkokapacitní jednokolejné vlaky s aerodynamickou přídí a zádí
-STR_CPTY    :5 nebo 10 míst v každém vagónu
-
-[MONO2]
-STR_NAME    :Malé jednokolejné vozy
-STR_DESC    :Malé jednokolejné vozy bez dveří
-STR_CPTY    :4 místa v každém voze
-
-[MONO3]
-STR_NAME    :Retro jednokolejné vlaky
-STR_DESC    :Retro jednokolejné vlaky bez oken
-STR_CPTY    :4 místa v každém voze
-
-[NRL]
-STR_NAME    :Parní vlaky
-STR_DESC    :Miniaturní replika parní lokomotivy s tendrem táhne dřevěné vagóny
-STR_CPTY    :6 míst v každém vagónu
-
-[NRL2]
-STR_NAME    :Parní vlaky s krytými vozy
-STR_DESC    :Miniaturní replika parní lokomotivy s tendrem táhne dřevěné vagóny s plátěnými střechami
-STR_CPTY    :6 míst v každém vagónu
-
-[SMONO]
-STR_NAME    :Zavěšené jednokolejné vlaky
-STR_DESC    :Velkokapacitní jednokolejné vlaky
-STR_CPTY    :8 míst v každém vozu
-
-[TRAM1]
-STR_NAME    :Tramvaje
-STR_DESC    :Retro repliky tramvají
-STR_CPTY    :10 míst v každém vozu
-
-[4X4]
-STR_NAME    :Monster Trucks
-STR_DESC    :Obří auta s pohonem 4x4, které jsou schopna vyjíždět velmi strmé svahy
-STR_CPTY    :2 místa v každém vozu
-
-[CHBUILD]
-STR_NAME    :Křivý dům
-STR_DESC    :Budova s pokřivenými místnostmi a nakloněnými chodbami, které dezorientují návštěvníky
-STR_CPTY    :5 návštěvníků
-
-[CIRCUS1]
-STR_NAME    :Cirkus
-STR_DESC    :Zvířecí představení uvnitř velkého stanu
-STR_CPTY    :30 návštěvníků
-
-[CTCAR]
-STR_NAME    :Autodráha
-STR_DESC    :Malá autíčka jezdí po postavené dráze
-STR_CPTY    :2 místa v každém vozu
-
-[DODG1]
-STR_NAME    :Autodrom
-STR_DESC    :Autodrom s elektrickými autíčky
-STR_CPTY    :1 místo v každém voze
-
-[FSAUC]
-STR_NAME    :Létající talíře
-STR_DESC    :Autodrom se vznášedly
-STR_CPTY    :1 místo v každém voze
-
-[FWH1]
-STR_NAME    :Ruské kolo
-STR_DESC    :Velké otáčející se kolo s otevřenými sedadly
-STR_CPTY    :32 návštěvníků
-
-[GOLF1]
-STR_NAME    :Mini Golf
-STR_DESC    :Příjemná hra miniaturního golfu
-STR_CPTY    : 
-
-[GTC]
-STR_NAME    :Vlak duchů
-STR_DESC    :Vozy ve tvaru příšer jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
-STR_CPTY    :2 místa v každém vozu
-
-[HELICAR]
-STR_NAME    :Mini vrtulníky
-STR_DESC    :Po ocelové kolejnici jezdí miniaturní helikoptéry, ovládané šlapáním návštěvníků
-STR_CPTY    :2 místa v každém vozu
-
-[HHBUILD]
-STR_NAME    :Dům hrůzy
-STR_DESC    :Velká stará budova se strašidelnými chodbami a děsivými pokoji
-STR_CPTY    :15 návštěvníků
-
-[HMAZE]
-STR_NAME    :Bludiště
-STR_DESC    :Bludiště je postavené z 2 metrů vysokého živého plotu, nebo zdí. Návštěvníci v něm bloudí, dokud nenaleznou východ
-STR_CPTY    : 
-
-[HMCAR]
-STR_NAME    :Strašidelná jízda velkým domem
-STR_DESC    :Vozy jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
-STR_CPTY    :2 místa v každém vozu
-
-[HSKELT]
-STR_NAME    :Točitá skluzavka
-STR_DESC    :Dřevěná budova se schodištěm uvnitř a venkovní točitou skluzavkou, na které se jezdí s podložkami
-STR_CPTY    : 
-
-[MGR1]
-STR_NAME    :Kolotoč
-STR_DESC    :Klasický kolotoč s vyřezávanými koníky
-STR_CPTY    :16 návštěvníků
-
-[MONBK]
-STR_NAME    :Jednokolejná jízdní kola
-STR_DESC    :Po ocelové kolejnici jezdí speciální jízdní kola, ovládané šlapáním návštěvníků
-STR_CPTY    :1 místo na každém kole
-
-[OBS1]
-STR_NAME    :Pozorovací věž
-STR_DESC    :Otáčející se pozorovací kabina, která postupně vyjíždí na vysokou věž
-STR_CPTY    :20 návštěvníků
-
-[OBS2]
-STR_NAME    :Dvoupatrová pozorovací věž
-STR_DESC    :Otáčející se dvoupatrová pozorovací věž, která postupně vyjíždí na vysokou věž
-STR_CPTY    :32 návštěvníků
-
-[RCR]
-STR_NAME    :Závodní auta
-STR_DESC    :Vozy ve tvaru závodních aut
-STR_CPTY    :1 místo v každém voze
-
-[SPCAR]
-STR_NAME    :Sportovní auta
-STR_DESC    :Vozy ve tvaru sportovních aut
-STR_CPTY    :2 místa v každém vozu
-
-[SRINGS]
-STR_NAME    :Vesmírné kruhy
-STR_DESC    :Tři v sobě zasazené rotující kruhy dají návštěvníkům možnost volného pohybu ve všech třech rozměrech
-STR_CPTY    :1 místo v každém kruhu
-
-[SUBMAR]
-STR_NAME    :Jízda ponorkou
-STR_DESC    :Návštěvníci vyrazí na podvodní jízdu v ponorce
-STR_CPTY    :4 návštěvníci v každé ponorce
-
-[TRUCK1]
-STR_NAME    :Pickupy
-STR_DESC    :Vozy ve tvaru nákladních aut (pickupů)
-STR_CPTY    :1 místo v každém voze
-
-[VCR]
-STR_NAME    :Veteráni
-STR_DESC    :Vozy ve tvaru veteránů jezdí po postavené dráze
-STR_CPTY    :2 místa v každém vozu
-
-[AMT1]
-STR_NAME    :Důlní horská dráha
-STR_DESC    :Horská dráha ve stylu důlních vlaků jezdí po ocelové horské dráze maskované jako staré koleje
-STR_CPTY    :2 nebo 4 místa v každém voze
-
-[ARRSW1]
-STR_NAME    :Zavěšené houpající se vozy
-STR_DESC    :Zavěšená horská dráha z volné zavěšených vozů, které se naklání při jízdě do zatáček
-STR_CPTY    :4 místa v každém voze
-
-[ARRSW2]
-STR_NAME    :Zavěšené houpající se aeroplány
-STR_DESC    :Zavěšená horská dráha z volné zavěšených vozů ve tvaru aeroplánu, které se naklání při jízdě do zatáček
-STR_CPTY    :4 místa v každém voze
-
-[ARRT1]
-STR_NAME    :Vývrtková horská dráha
-STR_DESC    :Malá ocelová horská dráha, na které vozy jezdí skrze lopinky a jezdí ve vývrtce
-STR_CPTY    :4 místa v každém voze
-
-[ARRT2]
-STR_NAME    :Hyper horská dráha
-STR_DESC    :Vysoká horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně
-STR_CPTY    :6 míst v každém voze
-
-[ARRX]
-STR_NAME    :Vícerozměrná horská dráha
-STR_DESC    :Vozy se sedadly schopny otáčet návštěvníky vzhůru nohama
-STR_CPTY    :4 místa v každém voze
-
-[BATFL]
-STR_NAME    :Houpající se vozy
-STR_DESC    :Malé houpající se vozy zavěšené na kolejnici
-STR_CPTY    :2 místa v každém vozu
-
-[BMAIR]
-STR_NAME    :Létající horská dráha
-STR_DESC    :Návštěvníci sedí v pohodlných sedadlech pod tratí cestující skrze propletenou dráhu, poskytující pocit letu
-STR_CPTY    :4 místa v každém voze
-
-[BMFL]
-STR_NAME    :Horská dráha bez podlahy
-STR_DESC    :Široká horská dráha bez podlahy poskytují návštěvníkům pocit volného vzduchu během jízdy skrze propletenou dráhu
-STR_CPTY    :4 místa v každém voze
-
-[BMRB]
-STR_NAME    :Hyperzakroucená dráha (široké vozy)
-STR_DESC    :Široké 4-místné vozy s vystouplým sezením a jednoduchou opěrkou v klíně
-STR_CPTY    :4 místa v každém voze
-
-[BMSD]
-STR_NAME    :Zakroucená horská dráha
-STR_DESC    :Široká ocelová horská dráha, na které vozy jedou po hladkých kolejnicích skrze propletenou dráhu
-STR_CPTY    :4 místa v každém voze
-
-[BMSU]
-STR_NAME    :Horská dráha "na stojáka"
-STR_DESC    :Návštěvníci jedou ve stoje v širokých vozech se speciálně navrženým držením po propletené dráze s pády
-STR_CPTY    :4 místa v každém voze
-
-[BMVD]
-STR_NAME    :Horská dráha s volným pádem
-STR_DESC    :Extra-široké vozy letí dolů po zcela kolmé dráze a poskytují tím pocit volného pádu
-STR_CPTY    :4 místa v každém voze
-
-[BOB1]
-STR_NAME    :Horská bobová dráha
-STR_DESC    :Návštěvníci jedou po propletené bobové dráze
-STR_CPTY    :2 místa v každém vozu
-
-[GOLTR]
-STR_NAME    :Hyperzakroucená dráha
-STR_DESC    :Prostorné vozy s jednoduchou opěrkou v klíně
-STR_CPTY    :6 míst v každém voze
-
-[INTBOB]
-STR_NAME    :Létající zatáčky
-STR_DESC    :Návštěvníci jedou po propletené bobové dráze
-STR_CPTY    :6 míst v každém voze
-
-[INTINV]
-STR_NAME    :Horská dráha ve tvaru "U"
-STR_DESC    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpátku stanicí a vyletí až na druhý konec trati
-STR_CPTY    :4 místa v každém voze
-
-[INTST]
-STR_NAME    :Giga dráha
-STR_DESC    :Gigantická horská dráha schopna volných pádů a kopců přes 90 metrů dlouhých
-STR_CPTY    :4 místa v každém voze
-
-[IVMC1]
-STR_NAME    :Ostrá zavěšená horská dráha
-STR_DESC    :Vozy jsou zavěšeny na kolejnicích s ostrými zatáčkami a ostrými pády
-STR_CPTY    :4 místa v každém voze
-
-[JSTAR1]
-STR_NAME    :Tobogánová horská dráha
-STR_DESC    :Horská dráha ve stylu tobogánu s vozy se sedačkami za sebou
-STR_CPTY    :4 místa v každém voze
-
-[MFT]
-STR_NAME    :Horská dráha s malými vozy
-STR_DESC    :Horská dráha s dvoumístnými vozy bez předků
-STR_CPTY    :2 místa v každém vozu
-
-[NEMT]
-STR_NAME    :Zavěšená horská dráha
-STR_DESC    :Vozy jsou zavěšeny na kolejnicích se zatáčkami, pády a lopinky
-STR_CPTY    :4 místa v každém voze
-
-[PMT1]
-STR_NAME    :Důlní jízda
-STR_DESC    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po hladkých kolejnicích skrze propletenou dráhu
-STR_CPTY    :2 nebo 4 místa v každém voze
-
-[PREMT1]
-STR_NAME    :Horská dráha s elektromotorem
-STR_DESC    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
-STR_CPTY    :4 místa v každém voze
-
-[PTCT1]
-STR_NAME    :Dřevěná horská dráha
-STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klína
-STR_CPTY    :4 místa v každém voze
-
-[PTCT2]
-STR_NAME    :Dřevěná horská dráha (6 sedadel)
-STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klína
-STR_CPTY    :6 míst v každém voze
-
-[PTCT2R]
-STR_NAME    :Dřevěná horská dráha (6 sedadel, pozpátku)
-STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klína, na které se jezdí pozpátku
-STR_CPTY    :6 míst v každém voze
-
-[RCKC]
-STR_NAME    :Raketová auta
-STR_DESC    :Horská dráha s vozy vypadajícími jako rakety
-STR_CPTY    :4 místa v každém voze
-
-[REVCAR]
-STR_NAME    :Otáčivá horská dráha
-STR_DESC    :Po dřevěné dráze jedou vozy, které se ve speciálních místech se otočí a jedou pozpátku
-STR_CPTY    :6 míst v každém voze
-
-[REVF1]
-STR_NAME    :Volný pád pozpátku
-STR_DESC    :Velká dráha s vozem pro volný pád pozpátku
-STR_CPTY    :8 návštěvníků
-
-[SBOX]
-STR_NAME    :Závodní dřevěné vozy
-STR_DESC    :Návštěvníci jezdí v dřevěných závodních vozech po jednokolejné horské dráze
-STR_CPTY    :4 místa v každém voze
-
-[SCHT1]
-STR_NAME    :Horská dráha
-STR_DESC    :Horská dráha s lopinky, po které jezdí vozy s opěrkou v klíně
-STR_CPTY    :4 místa v každém voze
-
-[SFRIC1]
-STR_NAME    :Horská dráha s bočním uchycením
-STR_DESC    :Po dráze jezdí vozy, které mají kola horizontálně uložená pod podlahou a opírají se jimi o stěny dráhy
-STR_CPTY    :4 místa v každém voze
-
-[SKYTR]
-STR_NAME    :Mini zavěšená létající horská dráha
-STR_DESC    :Návštěvníci jedou na jednokolejné trati vleže hlavou dolů, zavěšeni ve speciálním voze, který se v zatáčkách houpe
-STR_CPTY    :1 místo v každém voze
-
-[SLCFO]
-STR_NAME    :Obrácená zavěšená horská dráha
-STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a vidí dopředu nebo dozadu podle toho, jak zrovna jedou skrze lopinky a ostré zatáčky
-STR_CPTY    :4 místa v každém voze
-
-[SLCT]
-STR_NAME    :Malá zavěšená horská dráha
-STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze lopinky a ostré zatáčky
-STR_CPTY    :2 místa v každém vozu
-
-[SMC1]
-STR_NAME    :Myší vozy
-STR_DESC    :Vozy ve tvaru myší
-STR_CPTY    :4 místa v každém voze
-
-[SMC2]
-STR_NAME    :Důlní vozy
-STR_DESC    :Vozy ve tvaru dřevěných důlních vagónů
-STR_CPTY    :4 místa v každém voze
-
-[SPDRCR]
-STR_NAME    :Spirální horská dráha
-STR_DESC    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
-STR_CPTY    :6 míst v každém voze
-
-[STEEP1]
-STR_NAME    :Dostihy
-STR_DESC    :Vozy ve tvaru koní vozí návštěvníky po jednokolejné trati
-STR_CPTY    :2 místa na každém koni
-
-[STEEP2]
-STR_NAME    :Závody motorek
-STR_DESC    :Vozy ve tvaru motorek vozí návštěvníky po jednokolejné trati
-STR_CPTY    :2 místa na každé motorce
-
-[THCAR]
-STR_NAME    :Svislá dráha na stlačený vzduch
-STR_DESC    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
-STR_CPTY    :2 místa v každém vozu
-
-[TOGST]
-STR_NAME    :Horská dráha "na stojáka"
-STR_DESC    :Návštěvníci jedou po horské dráze ve stoje
-STR_CPTY    :4 místa v každém voze
-
-[UTCAR]
-STR_NAME    :Zatočené vozy
-STR_DESC    :Horská dráha, která se točí dokola tak, že návštěvníci jsou pořád na stejném místě.
-STR_CPTY    :4 místa v každém voze
-
-[UTCARR]
-STR_NAME    :Zatočené vozy (pozpátku)
-STR_DESC    :Horská dráha, která se točí dokola tak, že návštěvníci jsou pořád na stejném místě.
-STR_CPTY    :4 místa v každém voze
-
-[VEKDV]
-STR_NAME    :Zavěšená svislá dráha
-STR_DESC    :Návštěvníci sedí ve vozech zavěšených pod tratí, jedou pozpátku nahoru po svislé dráze, padají dolů a jezdí skrze lopinky s ostrými zatáčkami
-STR_CPTY    :4 místa v každém voze
-
-[VEKST]
-STR_NAME    :Horská dráha "na ležáka"
-STR_DESC    :Návštěvníci jedou v leže zavěšeni do speciálního držení, ve kterém na břiše projedou trať s ostrými zatáčkami
-STR_CPTY    :4 místa v každém voze
-
-[VEKVAMP]
-STR_NAME    :Houpající se vozy bez podlahy
-STR_DESC    :Zavěšená horská dráha připomínající sedačkovou lanovku, houpající se v zatáčkách
-STR_CPTY    :2 místa v každém vozu
-
-[VREEL]
-STR_NAME    :Virginský moták
-STR_DESC    :Kulaté vozy se točí během jízdy po cik-cak dřevěné trati
-STR_CPTY    :4 místa v každém voze
-
-[WCATC]
-STR_NAME    :Automobilové vozy
-STR_DESC    :Horská dráha s vozy, které připomínají automobily
-STR_CPTY    :4 místa v každém voze
-
-[WMMINE]
-STR_NAME    :Dřevěná divoká důlní jízda
-STR_DESC    :Malinké důlní vozy jedou po cik-cak dřevěné trati a silně se naklání v ostrých zatáčkách a drsných pádech
-STR_CPTY    :2 místa v každém vozu
-
-[WMOUSE]
-STR_NAME    :Dřevěná divoká myš
-STR_DESC    :Malé vozy ve tvaru myší jedou po dřevěné trati a silně se naklání v ostrých zatáčkách a drsných pádech
-STR_CPTY    :2 místa v každém vozu
-
-[WMSPIN]
-STR_NAME    :Točící se divoká myš
-STR_DESC    :Vozy ve tvaru myší jedou po dřevěné trati a pro dezorientaci návštěvníků se točí, zatímco se naklání v ostrých zatáčkách a drsných pádech
-STR_CPTY    :4 místa v každém voze
-
-[ZLDB]
-STR_NAME    :Beruščiny vozy
-STR_DESC    :Horská dráha s vozy ve tvaru malých berušek
-STR_CPTY    :2 místa v každém vozu
-
-[ZLOG]
-STR_NAME    :Kládové vozy
-STR_DESC    :Horská dráha s vozy ve tvaru klád
-STR_CPTY    :2 místa v každém vozu
-
-[C3D]
-STR_NAME    :3D Kino
-STR_DESC    :Kin promítající 3D filmy uvnitř duté kulovité konstrukce
-STR_CPTY    :20 návštěvníků
-
-[ENTERP]
-STR_NAME    :Loď Enterprise
-STR_DESC    :Otáčející se kolo se zavěšenými kabinami, které se napřed roztočí a pak se zvedne na pomocné podpěře
-STR_CPTY    :16 návštěvníků
-
-[GDROP1]
-STR_NAME    :Roto-pád
-STR_DESC    :Kruh sedadel je za pomalé rotace vytažen na vrchol vysoké věže, spuštěn volným pádem k zemi a opatrně zastaven pomocí magnetických brzd
-STR_CPTY    :16 návštěvníků
-
-[KART1]
-STR_NAME    :Motokáry
-STR_DESC    :Benzínové ovladatelné motokáry
-STR_CPTY    :1 místo v každém voze
-
-[MCARPET1]
-STR_NAME    :Kouzelný koberec
-STR_DESC    :Velký vůz připomínající koberec se pohybuje krouživými pohyby hýbe nahoru a dolů za pomoci 4 ramen
-STR_CPTY    :12 návštěvníků
-
-[SIMPOD]
-STR_NAME    :Simulátor pohybu
-STR_DESC    :Návštěvníci sledují film uvnitř simulátoru pohybu, zatímco se simulátorem hýbe hydraulika
-STR_CPTY    :8 návštěvníků
-
-[SSC1]
-STR_NAME    :Volný pád
-STR_DESC    :Vůz pro volný pád je pneumaticky vystřeleno vzhůru po vysoké ocelové věži a následně volně padá k zemi
-STR_CPTY    :8 návštěvníků
-
-[SWSH1]
-STR_NAME    :Pirátská loď
-STR_DESC    :Velká houpající se pirátská loď
-STR_CPTY    :16 návštěvníků
-
-[SWSH2]
-STR_NAME    :Houpající se obrácená loď
-STR_DESC    :Loď je připevněna na podpěru, která se chová jako protizávaží a otáčí se o 360 stupňů
-STR_CPTY    :12 návštěvníků
-
-[TOPSP1]
-STR_NAME    :Top Spin
-STR_DESC    :Návštěvníci sedí v gondole zavěšené na podpěrách, otáčející se dopředu a dozadu vzhůru nohama
-STR_CPTY    :8 návštěvníků
-
-[TWIST1]
-STR_NAME    :Twist
-STR_DESC    :Návštěvníci sedí po dvou v jedné ze tří kabin, které kolem sebe rotují
-STR_CPTY    :18 návštěvníků
-
-[TWIST2]
-STR_NAME    :Sněhové kalíšky
-STR_DESC    :Návštěvníci sedí po dvou v kalíšcích, které se otáčejí okolo sněhuláka uprostřed
-STR_CPTY    :18 návštěvníků
-
-[BBOAT]
-STR_NAME    :Malé čluny
-STR_DESC    :Malé čluny s motorovým pohonem ovládaným návštěvníky
-STR_CPTY    :2 místa v každé lodi
-
-[CBOAT]
-STR_NAME    :Kánoe
-STR_DESC    :Dlouhé kánoe, u kterých musí návštěvníci pádlovat
-STR_CPTY    :2 místa v každé lodi
-
-[CSTBOAT]
-STR_NAME    :Lodě horské dráhy
-STR_DESC    :Lodě ve tvaru vozů horské dráhy
-STR_CPTY    :6 míst v každé lodi
-
-[DING1]
-STR_NAME    :Nafukovací čluny
-STR_DESC    :Návštěvníci jedou v nafukovacích člunech po tobogánu
-STR_CPTY    :2 místa v každé lodi
-
-[JSKI]
-STR_NAME    :Vodní lyže
-STR_DESC    :Návštěvníci jezdí na vodních lyžích
-STR_CPTY    :1 místo na každých lyžích
-
-[LFB1]
-STR_NAME    :Divoká řeka
-STR_DESC    :Lodě ve tvaru klád se plaví po vodním kanálu a cákají. Nikdo nezůstane suchý
-STR_CPTY    :4 místa v každé lodi
-
-[RAPBOAT]
-STR_NAME    :Divoká voda
-STR_DESC    :Kulaté lodě se plaví po meandrech na vodním kanále a sjíždějí pěnící peřeje
-STR_CPTY    :8 míst v každé lodi
-
-[RBOAT]
-STR_NAME    :Veslice
-STR_DESC    :Veslice, u kterých musí návštěvníci veslovat
-STR_CPTY    :2 místa v každé lodi
-
-[RFTBOAT]
-STR_NAME    :Říční rafty
-STR_DESC    :Rafty se plaví po meandrech na vodním kanále
-STR_CPTY    :4 místa na každém raftu
-
-[SPBOAT]
-STR_NAME    :Cákající lodě
-STR_DESC    :Velkokapacitní lodě se plaví po vodním kanále, poháněny do pásem do strmých úseků, zrychlují sjížděním svahů a namočí návštěvníky pořádným šplouchnutím
-STR_CPTY    :16 míst na každé lodi
-
-[SWANS]
-STR_NAME    :Labutě
-STR_DESC    :Lodě ve tvaru labutí, ovládané šlapáním návštěvníků
-STR_CPTY    :4 místa na každém raftu
-
-[TRIKE]
-STR_NAME    :Vodní tricykly
-STR_DESC    :Šlapadla ve tvaru tricyklů s velkými plovoucími koly
-STR_CPTY    :2 místa na každém kole
-
-[ATM1]
-STR_NAME    :Bankomat
-STR_DESC    :Bankomat pro návštěvníky, kterým by došla hotovost
-
-[BALLN]
-STR_NAME    :Stánek s balónky
-STR_DESC    :Stánek se suvenýry - balónky, plněnými héliem
-
-[BNOODLES]
-STR_NAME    :Stánek s hovězími nudlemi
-STR_DESC    :Stánek prodávající čínské hovězí nudle
-
-[BURGB]
-STR_NAME    :Stánek s burgery
-STR_DESC    :Stánek ve tvaru burgeru podávající burgery
-
-[CHCKS]
-STR_NAME    :Stánek se smaženým kuřetem
-STR_DESC    :Stánek prodávající kyblíky smaženého kuřete
-
-[CHKNUG]
-STR_NAME    :Stánek s kuřecími nugety
-STR_DESC    :Stánek prodávající kuřecí nugety
-
-[CHPSH]
-STR_NAME    :Stánek s hranolkami
-STR_DESC    :Stánek prodávající hranolky
-
-[CHPSH2]
-STR_NAME    :Stánek s hranolkami
-STR_DESC    :Stánek prodávající hranolky
-
-[CINDR]
-STR_NAME    :Stánek s suzungkwa
-STR_DESC    :Stánek prodávající suzungkwa
-
-[CNDYF]
-STR_NAME    :Stánek s cukrovou vatou
-STR_DESC    :Stánek prodávající cukrovou vatu
-
-[COFFS]
-STR_NAME    :Stánek s kávou
-STR_DESC    :Hezky vypadající stánek prodávající kávu
-
-[COOKST]
-STR_NAME    :Stánek se sušenkami
-STR_DESC    :Stánek prodávající gigantické sušenky
-
-[DOUGH]
-STR_NAME    :Stánek s koblížky
-STR_DESC    :Stánek prodávající americké koblížky
-
-[DRNKS]
-STR_NAME    :Stánek s pitím
-STR_DESC    :Stánek ve tvaru plechovky prodávající perlivé nápoje
-
-[FAID1]
-STR_NAME    :První pomoc
-STR_DESC    :Místo pro návštěvníky, kterým by se udělalo nevolno, které napomáhá brzkému uzdravení
-
-[FRNOOD]
-STR_NAME    :Stánek se smaženými nudlemi
-STR_DESC    :Stánek prodávající čínské rýžové smažené nudle
-
-[FUNCAKE]
-STR_NAME    :Stánek s palačinkami
-STR_DESC    :Stánek prodávající palačinky
-
-[HATST]
-STR_NAME    :Stánek s čepicemi
-STR_DESC    :Stánek se suvenýry - pěnovými čepicemi
-
-[HCHOC]
-STR_NAME    :Stánek s horkou čokoládou
-STR_DESC    :Stánek prodávající horkou čokoládu
-
-[HOTDS]
-STR_NAME    :Stánek s párky v rohlíku
-STR_DESC    :Stánek prodávající párky v rohlíku
-
-[ICECR1]
-STR_NAME    :Stánek s nanuky
-STR_DESC    :Stánek prodávající různé druhy nanuků
-
-[ICECR2]
-STR_NAME    :Stánek se zmrzlinou
-STR_DESC    :Stánek prodávající kornouty zmrzliny
-
-[ICETST]
-STR_NAME    :Stánek s ledovým čajem
-STR_DESC    :Stánek prodávající různé druhy ledového čaje
-
-[INFOK]
-STR_NAME    :Kiosek
-STR_DESC    :Stínek s informacemi o parku, prodávající mapy a deštníky
-
-[LEMST]
-STR_NAME    :Stánek s limonádou
-STR_DESC    :Stánek prodávající osvěžující citronádu
-
-[MBSOUP]
-STR_NAME    :Stánek s polévkou
-STR_DESC    :Stánek prodávající čínskou knedlíčkovou polévku
-
-[PIZZS]
-STR_NAME    :Stánek s pizzou
-STR_DESC    :Stánek prodávající kusy pizzy
-
-[POPCS]
-STR_NAME    :Stánek s popcornem
-STR_DESC    :Stánek prodávající obrovské kelímky popcornu
-
-[PRETST]
-STR_NAME    :Stánek s preclíky
-STR_DESC    :Stánek prodávající křupavé preclíky
-
-[RSAUS]
-STR_NAME    :Stánek s klobásami
-STR_DESC    :Stánek prodávající grilované klobásy
-
-[SOUVS]
-STR_NAME    :Stánek se suvenýry
-STR_DESC    :Stánek prodávající suvenýry - plyšáky a deštníky
-
-[SOYBEAN]
-STR_NAME    :Stánek s mlékem
-STR_DESC    :Stánek prodávající kelímky sojového mléka
-
-[SQDST]
-STR_NAME    :Stánek s plody moře
-STR_DESC    :Stánek prodávající smažená chapadla
-
-[STARFRDR]
-STR_NAME    :Stánek s džusy
-STR_DESC    :Stánek prodávající ovocné nápoje
-
-[SUBSTL]
-STR_NAME    :Stánek se sendviči
-STR_DESC    :Stánek prodávající čerstvé sendviče
-
-[SUNGST]
-STR_NAME    :Stánek s brýlemi
-STR_DESC    :Stánek prodávající mnoho různých druhů slunečních brýlí
-
-[TLT1]
-STR_NAME    :Toalety
-STR_DESC    :Toalety v betonové zástavbě
-
-[TLT2]
-STR_NAME    :Toalety
-STR_DESC    :Toalety v dřevěné zástavbě
-
-[TOFFS]
-STR_NAME    :Stánek s jablky v županu
-STR_DESC    :Stánek prodávající jablka v županu na tyčce
-
-[TSHRT]
-STR_NAME    :Stánek s tričky
-STR_DESC    :Stánek se suvenýry - tričky
-
-[WONTON]
-STR_NAME    :Stánek s čínskou polévkou
-STR_DESC    :Stánek prodávající čínskou knedlíčkovou polévku
-
-[ALLSORT1]
-STR_NAME    :Cukroví
-
-[ALLSORT2]
-STR_NAME    :Cukroví
-
-[BADSHUT]
-STR_NAME    :Pérák
-
-[BADSHUT2]
-STR_NAME    :Pérák
-
-[BALL1]
-STR_NAME    :Americký fotbal
-
-[BALL2]
-STR_NAME    :Americký fotbal
-
-[BALL3]
-STR_NAME    :Fotbal
-
-[BALL4]
-STR_NAME    :Tenisový míček
-
-[BEANST1]
-STR_NAME    :Obrovský stonek
-
-[BEANST2]
-STR_NAME    :Obrovský stonek
-
-[BRBASE]
-STR_NAME    :Základní blok
-
-[BRBASE2]
-STR_NAME    :Základní blok
-
-[BRBASE3]
-STR_NAME    :Základní blok
-
-[BRCRRF1]
-STR_NAME    :Zatočená střecha
-
-[BRCRRF2]
-STR_NAME    :Zatočená střecha
-
-[CARROT]
-STR_NAME    :Obrovská mrkev
-
-[CHBBASE]
-STR_NAME    :Blok šachovnice
-
-[CHEST1]
-STR_NAME    :Truhla s pokladem
-
-[CHEST2]
-STR_NAME    :Truhla s pokladem
-
-[CHOCROOF]
-STR_NAME    :Tabulka čokolády
-
-[CNBALLS]
-STR_NAME    :Kanónové koule
-
-[CNDYRK1]
-STR_NAME    :Sladká tyčinka
-
-[COLAGUM]
-STR_NAME    :Gumové cukrovinky
-
-[CORROOF]
-STR_NAME    :Kovová střecha
-
-[CORROOF2]
-STR_NAME    :Kovová stěna
-
-[CWBCRV32]
-STR_NAME    :Zatočená stěna
-
-[CWBCRV33]
-STR_NAME    :Zatočený blok
-
-[CWFCRV32]
-STR_NAME    :Zatočená stěna
-
-[CWFCRV33]
-STR_NAME    :Zatočený blok
-
-[Tráva1]
-STR_NAME    :Obrovská kapradina
-
-[GGRS1]
-STR_NAME    :Obrovská tráva
-
-[HANG1]
-STR_NAME    :Gilotina
-
-[HELMET1]
-STR_NAME    :Helma na americký fotbal
-
-[ICECUBE]
-STR_NAME    :Kostka ledu
-
-[IGROOF]
-STR_NAME    :Střecha iglú
-
-[JBEAN1]
-STR_NAME    :Lentilka
-
-[JELBAB1]
-STR_NAME    :Želatinový medvídci
-
-[JELDROP1]
-STR_NAME    :Ovocné bonbony
-
-[JELDROP2]
-STR_NAME    :Ovocné bonbony
-
-[JNGROOF1]
-STR_NAME    :Střecha
-
-[LOLLY1]
-STR_NAME    :Lízátko
-
-[MALLOW1]
-STR_NAME    :Maršmeloun
-
-[MALLOW2]
-STR_NAME    :Maršmeloun
-
-[MINROOF1]
-STR_NAME    :Střecha
-
-[MINT1]
-STR_NAME    :Máta
-
-[MMENT1]
-STR_NAME    :Ornament
-
-[MMENT2]
-STR_NAME    :Ornament
-
-[MMENT3]
-STR_NAME    :Ornament
-
-[PAGROOF1]
-STR_NAME    :Střecha
-
-[PIPE32]
-STR_NAME    :Část trubky
-
-[PIPE32J]
-STR_NAME    :Část trubky
-
-[PIPE8]
-STR_NAME    :Část trubky
-
-[PIRFLAG]
-STR_NAME    :Pirátská vlajka
-
-[PIRROOF1]
-STR_NAME    :Střecha
-
-[PIRROOF2]
-STR_NAME    :Střecha
-
-[PRCAN]
-STR_NAME    :Kanón
-
-[ROMROOF1]
-STR_NAME    :Střecha
-
-[ROMROOF2]
-STR_NAME    :Sloup
-
-[ROOF1]
-STR_NAME    :Střecha
-
-[ROOF10]
-STR_NAME    :Střecha
-
-[ROOF11]
-STR_NAME    :Střecha
-
-[ROOF12]
-STR_NAME    :Střecha
-
-[ROOF13]
-STR_NAME    :Střecha
-
-[ROOF14]
-STR_NAME    :Střecha
-
-[ROOF2]
-STR_NAME    :Střecha
-
-[ROOF3]
-STR_NAME    :Střecha
-
-[ROOF4]
-STR_NAME    :Střecha
-
-[ROOF5]
-STR_NAME    :Střecha
-
-[ROOF6]
-STR_NAME    :Střecha
-
-[ROOF7]
-STR_NAME    :Střecha
-
-[ROOF8]
-STR_NAME    :Střecha
-
-[ROOF9]
-STR_NAME    :Střecha
-
-[SKTBASE]
-STR_NAME    :Blok
-
-[SKTBASET]
-STR_NAME    :Blok
-
-[SKTDW]
-STR_NAME    :Stěna
-
-[SKTDW2]
-STR_NAME    :Stěna
-
-[SMSKULL]
-STR_NAME    :Lebka
-
-[SPCROOF1]
-STR_NAME    :Střecha
-
-[STBASE]
-STR_NAME    :Ocelový blok
-
-[STLBASET]
-STR_NAME    :Ocelový blok
-
-[STLDW]
-STR_NAME    :Ocelová stěna
-
-[STLDW2]
-STR_NAME    :Ocelová stěna
-
-[SUMRF]
-STR_NAME    :Střecha
-
-[SUPPLEG1]
-STR_NAME    :Tyč
-
-[SUPPLEG2]
-STR_NAME    :Tyč
-
-[SUPPW1]
-STR_NAME    :Podpěra
-
-[SUPPW2]
-STR_NAME    :Podpěra
-
-[SUPPW3]
-STR_NAME    :Podpěra
-
-[TAC]
-STR_NAME    :Cypřiš
-
-[TAL]
-STR_NAME    :Strom ve tvaru aligátora
-
-[TAP]
-STR_NAME    :Borovice
-
-[TAS]
-STR_NAME    :Osika
-
-[TAS1]
-STR_NAME    :Strom sladkostí
-
-[TAS2]
-STR_NAME    :Strom sladkostí
-
-[TAS3]
-STR_NAME    :Strom sladkostí
-
-[TAS4]
-STR_NAME    :Cukroví
-
-[TB1]
-STR_NAME    :Bílý střelec
-
-[TB2]
-STR_NAME    :Černý střelec
-
-[TBC]
-STR_NAME    :Kaktus
-
-[TBN]
-STR_NAME    :Kost
-
-[TBN1]
-STR_NAME    :Kosti
-
-[TBP]
-STR_NAME    :Topol
-
-[TBR]
-STR_NAME    :Rákos
-
-[TBR1]
-STR_NAME    :Barel
-
-[TBR2]
-STR_NAME    :Barel
-
-[TBR3]
-STR_NAME    :Barel
-
-[TBR4]
-STR_NAME    :Barel
-
-[TBW]
-STR_NAME    :Rozbité kolo
-
-[TCB]
-STR_NAME    :Strom ve tvaru kyje
-
-[TCC]
-STR_NAME    :Cedr
-
-[TCD]
-STR_NAME    :Kotel
-
-[TCE]
-STR_NAME    :Jilm
-
-[TCF]
-STR_NAME    :Jedle
-
-[TCFS]
-STR_NAME    :Zasněžená Jedle
-
-[TCJ]
-STR_NAME    :Jalovec
-
-[TCL]
-STR_NAME    :Libanonský cedr
-
-[TCN]
-STR_NAME    :Kanón
-
-[TCO]
-STR_NAME    :Dub
-
-[TCRP]
-STR_NAME    :Borovice
-
-[TCT]
-STR_NAME    :Zelný strom
-
-[TCT1]
-STR_NAME    :Hradní věž
-
-[TCT2]
-STR_NAME    :Hradní věž
-
-[TCY]
-STR_NAME    :Tis
-
-[TDM]
-STR_NAME    :Strom ve tvaru diamantu
-
-[TDN4]
-STR_NAME    :Dinosaurus
-
-[TDN5]
-STR_NAME    :Dinosaurus
-
-[TDT1]
-STR_NAME    :Uschlý strom
-
-[TDT2]
-STR_NAME    :Uschlý strom
-
-[TDT3]
-STR_NAME    :Uschlý strom
-
-[TEEPEE1]
-STR_NAME    :Týpí
-
-[TEL]
-STR_NAME    :Modřín
-
-[TEN]
-STR_NAME    :Kleopatřina jehla
-
-[TEP]
-STR_NAME    :Egyptský sloup
-
-[TERB]
-STR_NAME    :Kamenný blok
-
-[TERS]
-STR_NAME    :Rozbitá socha
-
-[TES1]
-STR_NAME    :Egyptská socha
-
-[TF1]
-STR_NAME    :Ovocný strom
-
-[TF2]
-STR_NAME    :Ovocný strom
-
-[TGC1]
-STR_NAME    :Socha
-
-[TGC2]
-STR_NAME    :Socha
-
-[TGG]
-STR_NAME    :Gong
-
-[TGHC]
-STR_NAME    :Hinoki cypřiš
-
-[TGHC2]
-STR_NAME    :Maďarský cypřiš
-
-[TGS]
-STR_NAME    :Socha žirafy
-
-[TGS1]
-STR_NAME    :Náhrobek
-
-[TGS2]
-STR_NAME    :Náhrobek
-
-[TGS3]
-STR_NAME    :Náhrobek
-
-[TGS4]
-STR_NAME    :Náhrobek
-
-[TH1]
-STR_NAME    :Palma
-
-[TH2]
-STR_NAME    :Palma
-
-[THL]
-STR_NAME    :Dřezovec trojtrnný
-
-[THRS]
-STR_NAME    :Socha jezdce
-
-[THT]
-STR_NAME    :Strom ve tvaru srdce
-
-[TIC]
-STR_NAME    :Cedr
-
-[TIG]
-STR_NAME    :Iglú
-
-[TITC]
-STR_NAME    :Italský cypřiš
-
-[TJB1]
-STR_NAME    :Křoví
-
-[TJB2]
-STR_NAME    :Křoví
-
-[TJB3]
-STR_NAME    :Křoví
-
-[TJB4]
-STR_NAME    :Křoví
-
-[TJF]
-STR_NAME    :Květina
-
-[TJP1]
-STR_NAME    :Rostlina
-
-[TJP2]
-STR_NAME    :Rostlina
-
-[TJT1]
-STR_NAME    :Strom
-
-[TJT2]
-STR_NAME    :Strom
-
-[TJT3]
-STR_NAME    :Strom
-
-[TJT4]
-STR_NAME    :Strom
-
-[TJT5]
-STR_NAME    :Strom
-
-[TJT6]
-STR_NAME    :Strom
-
-[TK1]
-STR_NAME    :Bílý kůň
-
-[TK2]
-STR_NAME    :Černý kůň
-
-[TK3]
-STR_NAME    :Bílý král
-
-[TK4]
-STR_NAME    :Černý král
-
-[TL0]
-STR_NAME    :Strom
-
-[TL1]
-STR_NAME    :Strom
-
-[TL2]
-STR_NAME    :Strom
-
-[TL3]
-STR_NAME    :Strom
-
-[TLC]
-STR_NAME    :Lawsonův cypřiš
-
-[TLP]
-STR_NAME    :Lombardský topol
-
-[TLY]
-STR_NAME    :Lilie
-
-[TM0]
-STR_NAME    :Strom
-
-[TM1]
-STR_NAME    :Strom
-
-[TM2]
-STR_NAME    :Strom
-
-[TM3]
-STR_NAME    :Strom
-
-[TMBJ]
-STR_NAME    :Modrý jalovec
-
-[TMC]
-STR_NAME    :Montereyův cypřiš
-
-[TMG]
-STR_NAME    :Mongolský strom
-
-[TMJ]
-STR_NAME    :Odpad
-
-[TML]
-STR_NAME    :Polena
-
-[TMM1]
-STR_NAME    :Velký náhrobek
-
-[TMM2]
-STR_NAME    :Velký náhrobek
-
-[TMM3]
-STR_NAME    :Velký náhrobek
-
-[TMO1]
-STR_NAME    :Marťanský objekt
-
-[TMO2]
-STR_NAME    :Marťanský objekt
-
-[TMO3]
-STR_NAME    :Marťanský objekt
-
-[TMO4]
-STR_NAME    :Marťanský objekt
-
-[TMO5]
-STR_NAME    :Marťanský objekt
-
-[TMP]
-STR_NAME    :Blahočet chilský
-
-[TMS1]
-STR_NAME    :Muchomůrka
-
-[TMW]
-STR_NAME    :Kola
-
-[TMZP]
-STR_NAME    :Borovice Montezumova
-
-[TNS]
-STR_NAME    :Smrk ztepilý
-
-[TNSS]
-STR_NAME    :Zasněžený smrk ztepilý
-
-[TNTROOF1]
-STR_NAME    :Plátěná střecha
-
-[TOH1]
-STR_NAME    :Dům
-
-[TOH2]
-STR_NAME    :Dům
-
-[TOH3]
-STR_NAME    :Budova
-
-[TORN1]
-STR_NAME    :Ornamentální strom
-
-[TORN2]
-STR_NAME    :Ornamentální strom
-
-[TOS]
-STR_NAME    :Socha
-
-[TOT1]
-STR_NAME    :Strom
-
-[TOT2]
-STR_NAME    :Strom
-
-[TOT3]
-STR_NAME    :Strom
-
-[TOT4]
-STR_NAME    :Strom
-
-[TOTEM1]
-STR_NAME    :Totem
-
-[TP1]
-STR_NAME    :Bílá pěšák
-
-[TP2]
-STR_NAME    :Černý pěšák
-
-[TPM]
-STR_NAME    :Palma
-
-[TQ1]
-STR_NAME    :Bílá královna
-
-[TQ2]
-STR_NAME    :Černá královna
-
-[TR1]
-STR_NAME    :Bílá věž
-
-[TR2]
-STR_NAME    :Černá věž
-
-[TRC]
-STR_NAME    :Římský sloup
-
-[TRF]
-STR_NAME    :Jedle nádherná
-
-[TRF2]
-STR_NAME    :Jedle nádherná
-
-[TRF3]
-STR_NAME    :Zasněžená jedle nádherná
-
-[TRFS]
-STR_NAME    :Zasněžená jedle nádherná
-
-[TRMS]
-STR_NAME    :Římská socha
-
-[TROPT1]
-STR_NAME    :Strom
-
-[TRWS]
-STR_NAME    :Římská socha
-
-[TS0]
-STR_NAME    :Strom
-
-[TS1]
-STR_NAME    :Strom
-
-[TS2]
-STR_NAME    :Strom
-
-[TS3]
-STR_NAME    :Strom
-
-[TS4]
-STR_NAME    :Ornamentální strom
-
-[TS5]
-STR_NAME    :Ornamentální strom
-
-[TS6]
-STR_NAME    :Ornamentální strom
-
-[TSB]
-STR_NAME    :Bříza bělokorá
-
-[TSC]
-STR_NAME    :Kaktus
-
-[TSC2]
-STR_NAME    :Stavba
-
-[TSCP]
-STR_NAME    :Vesmírná loď
-
-[TSD]
-STR_NAME    :Strom ve tvaru listu
-
-[TSF1]
-STR_NAME    :Obrovská vločka
-
-[TSF2]
-STR_NAME    :Obrovská vločka
-
-[TSF3]
-STR_NAME    :Obrovská vločka
-
-[TSH]
-STR_NAME    :Socha koně
-
-[TSH0]
-STR_NAME    :Křoví
-
-[TSH1]
-STR_NAME    :Keř
-
-[TSH2]
-STR_NAME    :Křoví
-
-[TSH3]
-STR_NAME    :Křoví
-
-[TSH4]
-STR_NAME    :Keř
-
-[TSH5]
-STR_NAME    :Křoví
-
-[TSM]
-STR_NAME    :Sněhulák
-
-[TSNB]
-STR_NAME    :Sněhová koule
-
-[TSNC]
-STR_NAME    :Dřevostavba
-
-[TSP]
-STR_NAME    :Borovice lesní
-
-[TSP1]
-STR_NAME    :Strom
-
-[TSP2]
-STR_NAME    :Strom
-
-[TSPH]
-STR_NAME    :Dům
-
-[TSQ]
-STR_NAME    :Strom ve tvaru veverky
-
-[TST1]
-STR_NAME    :Muchomůrka
-
-[TST2]
-STR_NAME    :Muchomůrka
-
-[TST3]
-STR_NAME    :Muchomůrka
-
-[TST4]
-STR_NAME    :Muchomůrka
-
-[TST5]
-STR_NAME    :Muchomůrka
-
-[TSTD]
-STR_NAME    :Socha delfína
-
-[TT1]
-STR_NAME    :Římský palác
-
-[TTG]
-STR_NAME    :Cíl
-
-[TUS]
-STR_NAME    :Socha jednorožce
-
-[TVL]
-STR_NAME    :Štědřenec
-
-[TWH1]
-STR_NAME    :Dům
-
-[TWH2]
-STR_NAME    :Dýňový dům
-
-[TWN]
-STR_NAME    :Ořešák královský
-
-[TWP]
-STR_NAME    :Topol bílý
-
-[TWW]
-STR_NAME    :Vrba
-
-[WAG1]
-STR_NAME    :Vagón
-
-[WAG2]
-STR_NAME    :Vagón
-
-[WDBASE]
-STR_NAME    :Dřevěný blok
-
-[TDF]
-STR_NAME    :Fontána delfína
-
-[TEF]
-STR_NAME    :Fontána slona
-
-[TQF]
-STR_NAME    :Fontána amorka
-
-[TTF]
-STR_NAME    :Fontána
-
-[TWF]
-STR_NAME    :Geometrická fontána
-
-[TCK]
-STR_NAME    :Hodiny
-
-[TG1]
-STR_NAME    :Zahrady
-
-[TG10]
-STR_NAME    :Zahrady
-
-[TG11]
-STR_NAME    :Zahrady
-
-[TG12]
-STR_NAME    :Zahrady
-
-[TG13]
-STR_NAME    :Zahrady
-
-[TG14]
-STR_NAME    :Zahrady
-
-[TG15]
-STR_NAME    :Zahrady
-
-[TG16]
-STR_NAME    :Zahrady
-
-[TG17]
-STR_NAME    :Zahrady
-
-[TG18]
-STR_NAME    :Zahrady
-
-[TG19]
-STR_NAME    :Zahrady
-
-[TG2]
-STR_NAME    :Zahrady
-
-[TG20]
-STR_NAME    :Zahrady
-
-[TG21]
-STR_NAME    :Zahrady
-
-[TG3]
-STR_NAME    :Zahrady
-
-[TG4]
-STR_NAME    :Zahrady
-
-[TG5]
-STR_NAME    :Zahrady
-
-[TG6]
-STR_NAME    :Zahrady
-
-[TG7]
-STR_NAME    :Zahrady
-
-[TG8]
-STR_NAME    :Zahrady
-
-[TG9]
-STR_NAME    :Zahrady
-
-[BUTTFLY]
-STR_NAME    :Motýl
-
-[COG1]
-STR_NAME    :Ozubené kolo
-
-[COG1R]
-STR_NAME    :Ozubené kolo
-
-[COG1U]
-STR_NAME    :Ozubené kolo
-
-[COG1UR]
-STR_NAME    :Ozubené kolo
-
-[COG2]
-STR_NAME    :Malé ozubené kolo
-
-[COG2R]
-STR_NAME    :Malé ozubené kolo
-
-[COG2U]
-STR_NAME    :Malé ozubené kolo
-
-[COG2UR]
-STR_NAME    :Malé ozubené kolo
-
-[FIRE1]
-STR_NAME    :Plameny
-
-[SNAIL]
-STR_NAME    :Šnek
-
-[SPIDER1]
-STR_NAME    :Pavouk
-
-[TGH1]
-STR_NAME    :Socha
-
-[TGH2]
-STR_NAME    :Socha
-
-[TSG]
-STR_NAME    :Bažina
-
-[TSK]
-STR_NAME    :Lebka
-
-[TSMP]
-STR_NAME    :Dýně
-
-[WASP]
-STR_NAME    :Vosa
-
-[WDIAG]
-STR_NAME    :Fontána
-
-[WHORIZ]
-STR_NAME    :Vodní proud
-
-[WSPOUT]
-STR_NAME    :Vodní chrlič
-
-[GEOROOF1]
-STR_NAME    :Skleněná střecha
-
-[GEOROOF2]
-STR_NAME    :Skleněná střecha
-
-[TGE1]
-STR_NAME    :Geometrická socha
-
-[TGE2]
-STR_NAME    :Geometrická socha
-
-[TGE3]
-STR_NAME    :Geometrická socha
-
-[TGE4]
-STR_NAME    :Geometrická socha
-
-[TGE5]
-STR_NAME    :Geometrická socha
-
-[BADRACK]
-STR_NAME    :Raketa na badminton
-
-[GENSTORE]
-STR_NAME    :Obchod se smíšeným zbožím
-
-[MDSAENT]
-STR_NAME    :'Medúza' cedule
-
-[NITROENT]
-STR_NAME    :'Nitro' cedule
-
-[SAH]
-STR_NAME    :Dům
-
-[SAH2]
-STR_NAME    :Dům
-
-[SAH3]
-STR_NAME    :Činžovní dům
-
-[SALOON]
-STR_NAME    :Salón
-
-[SCLN]
-STR_NAME    :Kolonáda
-
-[SCT]
-STR_NAME    :Stan
-
-[SDN1]
-STR_NAME    :Dinosaurus
-
-[SDN2]
-STR_NAME    :Dinosaurus
-
-[SDN3]
-STR_NAME    :Dinosaurus
-
-[SGP]
-STR_NAME    :Obrovská dýně
-
-[SHS1]
-STR_NAME    :Řadový dům
-
-[SHS2]
-STR_NAME    :Dům
-
-[SMH1]
-STR_NAME    :Hornická chatrč
-
-[SMH2]
-STR_NAME    :Hornická chatrč
-
-[SMN1]
-STR_NAME    :Důlní štola
-
-[SOB]
-STR_NAME    :Kancelářský blok
-
-[SOH1]
-STR_NAME    :Dům
-
-[SOH2]
-STR_NAME    :Dům
-
-[SOH3]
-STR_NAME    :Dům
-
-[SPS]
-STR_NAME    :Čerpací stanice
-
-[SSH]
-STR_NAME    :Vesmírná loď
-
-[SSK1]
-STR_NAME    :Kostlivec
-
-[SST]
-STR_NAME    :Satelit
-
-[STB1]
-STR_NAME    :Hradní věž
-
-[STB2]
-STR_NAME    :Hradní věž
-
-[STG1]
-STR_NAME    :Hradní věž
-
-[STG2]
-STR_NAME    :Hradní věž
-
-[STH]
-STR_NAME    :Radnice
-
-[TAVERN]
-STR_NAME    :Hospoda
-
-[WWBANK]
-STR_NAME    :Banka
-
-[SSIG2]
-STR_NAME    :3D cedule
-
-[SSIG3]
-STR_NAME    :vertikální 3D cedule
-
-[SSIG4]
-STR_NAME    :3D cedule
-
-[SSIG1]
-STR_NAME    :Posuvná cedule
-
-[GLTHENT]
-STR_NAME    :'Goliáš' cedule
-
-[PRSHIP]
-STR_NAME    :Pirátská loď
-
-[SCOL]
-STR_NAME    :Římské koloseum
-
-[SIP]
-STR_NAME    :Ledový palác
-
-[SMB]
-STR_NAME    :Marťanská stavba
-
-[SPG]
-STR_NAME    :Pagoda
-
-[SPYR]
-STR_NAME    :Pyramida
-
-[SSPX]
-STR_NAME    :Sfinga
-
-[SSR]
-STR_NAME    :Vesmírná raketa
-
-[SVLC]
-STR_NAME    :Sopka
-
-[WALLBADM]
-STR_NAME    :Badmintonová raketa
-
-[WALLBB16]
-STR_NAME    :Stěna
-
-[WALLBB32]
-STR_NAME    :Stěna
-
-[WALLBB33]
-STR_NAME    :Stěna
-
-[WALLBB34]
-STR_NAME    :Kamenná stěna
-
-[WALLBB8]
-STR_NAME    :Stěna
-
-[WALLBR16]
-STR_NAME    :Stěna
-
-[WALLBR32]
-STR_NAME    :Stěna
-
-[WALLBR8]
-STR_NAME    :Stěna
-
-[WALLBRWN]
-STR_NAME    :Okno
-
-[WALLCB16]
-STR_NAME    :Stěna
-
-[WALLCB32]
-STR_NAME    :Stěna
-
-[WALLCB8]
-STR_NAME    :Stěna
-
-[WALLCBWN]
-STR_NAME    :Okno
-
-[WALLCF16]
-STR_NAME    :Stěna
-
-[WALLCF32]
-STR_NAME    :Stěna
-
-[WALLCF8]
-STR_NAME    :Stěna
-
-[WALLCFAR]
-STR_NAME    :Stěna
-
-[WALLCFWN]
-STR_NAME    :Okno
-
-[WALLCO16]
-STR_NAME    :Ocelová stěna
-
-[WALLCW32]
-STR_NAME    :Stěna
-
-[WALLCX32]
-STR_NAME    :Stěna
-
-[WALLCY32]
-STR_NAME    :Stěna
-
-[WALLCZ32]
-STR_NAME    :Stěna
-
-[WALLIG16]
-STR_NAME    :Stěna iglú
-
-[WALLIG24]
-STR_NAME    :Stěna iglú
-
-[WALLJB16]
-STR_NAME    :Lentilková stěna
-
-[WALLJN32]
-STR_NAME    :Stěna
-
-[WALLLT32]
-STR_NAME    :Ocelová konstrukce
-
-[WALLMM16]
-STR_NAME    :Zábradlí
-
-[WALLMM17]
-STR_NAME    :Zábradlí
-
-[WALLMN32]
-STR_NAME    :Stěna
-
-[WALLNT32]
-STR_NAME    :Síť na tenis
-
-[WALLNT33]
-STR_NAME    :Síť na tenis
-
-[WALLPG32]
-STR_NAME    :Stěna
-
-[WALLPOST]
-STR_NAME    :Sloup
-
-[WALLPR32]
-STR_NAME    :Lanoví
-
-[WALLPR33]
-STR_NAME    :Stěna
-
-[WALLPR34]
-STR_NAME    :Stěna
-
-[WALLPR35]
-STR_NAME    :Stěna
-
-[WALLRH32]
-STR_NAME    :Stěna
-
-[WALLRK32]
-STR_NAME    :Kamenná stěna
-
-[WALLRS16]
-STR_NAME    :Stěna
-
-[WALLRS32]
-STR_NAME    :Stěna
-
-[WALLRS8]
-STR_NAME    :Stěna
-
-[WALLSC16]
-STR_NAME    :Zábradlí
-
-[WALLSK16]
-STR_NAME    :Stěna
-
-[WALLSK32]
-STR_NAME    :Stěna
-
-[WALLSP32]
-STR_NAME    :Stěna
-
-[WALLST16]
-STR_NAME    :Ocelová stěna
-
-[WALLST32]
-STR_NAME    :Ocelová stěna
-
-[WALLST8]
-STR_NAME    :Ocelová stěna
-
-[WALLSTFN]
-STR_NAME    :Ocelový plot
-
-[WALLSTWN]
-STR_NAME    :Ocelová stěna
-
-[WALLTN32]
-STR_NAME    :Tyče
-
-[WALLTXGT]
-STR_NAME    :'Texas Giant' cedule
-
-[WALLU132]
-STR_NAME    :Stěna
-
-[WALLU232]
-STR_NAME    :Stěna
-
-[WALLWD16]
-STR_NAME    :Dřevěná stěna
-
-[WALLWD32]
-STR_NAME    :Dřevěná stěna
-
-[WALLWD33]
-STR_NAME    :Dřevěná stěna
-
-[WALLWD8]
-STR_NAME    :Dřevěná stěna
-
-[WALLWDPS]
-STR_NAME    :Dřevěný sloup v plotě
-
-[WBR1]
-STR_NAME    :Cihlová stěna
-
-[WBR1A]
-STR_NAME    :Cihlová stěna
-
-[WBR2]
-STR_NAME    :Kamenná stěna
-
-[WBR2A]
-STR_NAME    :Kamenná stěna
-
-[WBR3]
-STR_NAME    :Kamenná stěna
-
-[WBRG]
-STR_NAME    :Cihlová stěna
-
-[WBW]
-STR_NAME    :Plot z kostí
-
-[WC1]
-STR_NAME    :Hradní stěna
-
-[WC10]
-STR_NAME    :Hradní stěna
-
-[WC11]
-STR_NAME    :Hradní stěna
-
-[WC12]
-STR_NAME    :Hradní stěna
-
-[WC13]
-STR_NAME    :Hradní stěna
-
-[WC14]
-STR_NAME    :Stěna
-
-[WC15]
-STR_NAME    :Stěna
-
-[WC16]
-STR_NAME    :Fence
-
-[WC17]
-STR_NAME    :Dřevěný plot
-
-[WC18]
-STR_NAME    :Dřevěný sloup v plotě
-
-[WC2]
-STR_NAME    :Hradní stěna
-
-[WC3]
-STR_NAME    :Stěna římských sloupů
-
-[WC4]
-STR_NAME    :Hradní stěna
-
-[WC5]
-STR_NAME    :Hradní stěna
-
-[WC6]
-STR_NAME    :Hradní stěna
-
-[WC7]
-STR_NAME    :Hradní stěna
-
-[WC8]
-STR_NAME    :Hradní stěna
-
-[WC9]
-STR_NAME    :Hradní stěna
-
-[WCH]
-STR_NAME    :Živý plot
-
-[WCHG]
-STR_NAME    :Živý plot
-
-[WCW1]
-STR_NAME    :Stěna z hracích karet
-
-[WCW2]
-STR_NAME    :Stěna z hracích karet
-
-[WEW]
-STR_NAME    :Egyptská stěna
-
-[WFW1]
-STR_NAME    :Dřevěný plot
-
-[WFWG]
-STR_NAME    :Dřevěný plot
-
-[WHG]
-STR_NAME    :Živý plot
-
-[WHGG]
-STR_NAME    :Živý plot
-
-[WJF]
-STR_NAME    :Jungle plot
-
-[WMF]
-STR_NAME    :Drátěný plot
-
-[WMFG]
-STR_NAME    :Drátěný plot
-
-[WMW]
-STR_NAME    :Marťanská zeď
-
-[WMWW]
-STR_NAME    :Dřevěný plot
-
-[WPF]
-STR_NAME    :Plot
-
-[WPFG]
-STR_NAME    :Plot
-
-[WPW1]
-STR_NAME    :Zeď dřevěných sloupů
-
-[WPW2]
-STR_NAME    :Zeď dřevěných sloupů
-
-[WPW3]
-STR_NAME    :Dřevěný plot
-
-[WRW]
-STR_NAME    :Římská zeď
-
-[WRWA]
-STR_NAME    :Římská zeď
-
-[WSW]
-STR_NAME    :Zábradlí
-
-[WSW1]
-STR_NAME    :Zábradlí
-
-[WSW2]
-STR_NAME    :Zábradlí
-
-[WSWG]
-STR_NAME    :Zábradlí
-
-[WWTW]
-STR_NAME    :Vysoký dřevěný plot
-
-[WWTWA]
-STR_NAME    :Stěna ze dřevěného plotu
-
-[WALLBRDR]
-STR_NAME    :Brána
-
-[WALLCBDR]
-STR_NAME    :Brána
-
-[WALLCBPC]
-STR_NAME    :Padací brána
-
-[WALLCFDR]
-STR_NAME    :Brána
-
-[WALLCFPC]
-STR_NAME    :Padací brána
-
-[WALLWF32]
-STR_NAME    :Vodopád
-
-[WALLGL16]
-STR_NAME    :Skleněná stěna
-
-[WALLGL32]
-STR_NAME    :Skleněná stěna
-
-[WALLGL8]
-STR_NAME    :Skleněná stěna
-
-[WGW2]
-STR_NAME    :Skleněná stěna
-
-[WALLSIGN]
-STR_NAME    :Posuvná cedule
-
-[BN1]
-STR_NAME    :Cedule
-
-[BN2]
-STR_NAME    :Cedule v jungle stylu
-
-[BN3]
-STR_NAME    :Cedule v klasickém stylu
-
-[BN4]
-STR_NAME    :Cedule v egyptském stylu
-
-[BN5]
-STR_NAME    :Dřevěná cedule
-
-[BN6]
-STR_NAME    :Cedule v jurském stylu
-
-[BN7]
-STR_NAME    :Cedule v pagoda stylu
-
-[BN8]
-STR_NAME    :Zasněžená cedule
-
-[BN9]
-STR_NAME    :Cedule ve vesmírném stylu
-
-[PATHASH]
-STR_NAME    :Popelavá cesta
-
-[PATHCRZY]
-STR_NAME    :Šílená cesta
-
-[PATHDIRT]
-STR_NAME    :Blátivá cesta
-
-[PATHSPCE]
-STR_NAME    :Cesta ve vesmírném stylu
-
-[ROAD]
-STR_NAME    :Silnice
-
-[TARMAC]
-STR_NAME    :Asfaltová cesta
-
-[TARMACB]
-STR_NAME    :Hnědá asfaltová cesta
-
-[TARMACG]
-STR_NAME    :Zelená asfaltová cesta
-
-[LAMP1]
-STR_NAME    :Lampa
-
-[LAMP2]
-STR_NAME    :Lampa
-
-[LAMP3]
-STR_NAME    :Lampa
-
-[LAMP4]
-STR_NAME    :Lampa
-
-[LAMPDSY]
-STR_NAME    :Květinová lampa
-
-[LAMPPIR]
-STR_NAME    :Lampa
-
-[LITTER1]
-STR_NAME    :Odpadkový koš
-
-[LITTERMN]
-STR_NAME    :Odpadkový koš
-
-[LITTERSP]
-STR_NAME    :Odpadkový koš
-
-[LITTERWW]
-STR_NAME    :Odpadkový koš
-
-[BENCH1]
-STR_NAME    :Lavička
-
-[BENCHLOG]
-STR_NAME    :Lavička
-
-[BENCHPL]
-STR_NAME    :Sedadla
-
-[BENCHSPC]
-STR_NAME    :Lavička
-
-[BENCHSTN]
-STR_NAME    :Kamenná lavička
-
-[JUMPFNT1]
-STR_NAME    :Skákající fontány
-
-[JUMPSNW1]
-STR_NAME    :Skákající sněhové koule
-
-[QTV1]
-STR_NAME    :TV ve frontě
-
-[SCGABSTR]
-STR_NAME    :Abstraktní kulisy
-
-[SCGCANDY]
-STR_NAME    :Kulisy obrovského cukroví
-
-[SCGCLASS]
-STR_NAME    :Klasické/Římské kulisy
-
-[SCGEGYPT]
-STR_NAME    :Egyptské motivy
-
-[SCGFENCE]
-STR_NAME    :Ploty a stěny
-
-[SCGGARDN]
-STR_NAME    :Zahrady
-
-[SCGGIANT]
-STR_NAME    :Kulisy obrovských zahrad
-
-[SCGHALLO]
-STR_NAME    :Strašidelné kulisy
-
-[SCGINDUS]
-STR_NAME    :Mechanické kulisy
-
-[SCGJUNGL]
-STR_NAME    :Jungle kulisy
-
-[SCGJURAS]
-STR_NAME    :Jurské kulisy
-
-[SCGMART]
-STR_NAME    :Marťanské kulisy
-
-[SCGMEDIE]
-STR_NAME    :Středověké kulisy
-
-[SCGMINE]
-STR_NAME    :Důlní kulisy
-
-[SCGORIEN]
-STR_NAME    :Pagoda kulisy
-
-[SCGPATHX]
-STR_NAME    :Cedule a věci na cesty
-
-[SCGPIRAT]
-STR_NAME    :Pirátské kulisy
-
-[SCGSHRUB]
-STR_NAME    :Keře a ornamenty
-
-[SCGSIXFL]
-STR_NAME    :Six Flags kulisy
-
-[SCGSNOW]
-STR_NAME    :Ledové a sněhové kulisy
-
-[SCGSPACE]
-STR_NAME    :Vesmírné kulisy
-
-[SCGSPOOK]
-STR_NAME    :Strašidelné kulisy
-
-[SCGSPORT]
-STR_NAME    :Sportovní kulisy
-
-[SCGTREES]
-STR_NAME    :Stromy
-
-[SCGURBAN]
-STR_NAME    :Urban kulisy
-
-[SCGWALLS]
-STR_NAME    :Stěny a střechy
-
-[SCGWATER]
-STR_NAME    :Vodní kulisy
-
-[SCGWOND]
-STR_NAME    :Kulisy říše divů
-
-[SCGWWEST]
-STR_NAME    :Kulisy divokého západu
-
-[PKEMM]
-STR_NAME    :Brány pro vstup do parku
-
-[PKENT1]
-STR_NAME    :Tradiční brána pro vstup do parku
-
-[PKESFH]
-STR_NAME    :Budova vstupu do parku
-
-[WTRCYAN]
-STR_NAME    :Obyčejná voda
-
-[WTRGREEN]
-STR_NAME    :Jedovatě zelená voda
-
-[WTRGRN]
-STR_NAME    :Zelená voda
-
-[WTRORNG]
-STR_NAME    :Oranžová voda
-
-###############################################################################
-## Wacky Worlds Objects
-###############################################################################
-[LONDONBS]
-STR_NAME    :Tramvaj ve tvaru Londýnského autobusu
-STR_DESC    :Repliky tramvají
-STR_CPTY    :10 míst v každém voze
-
-[MINELIFT]
-STR_NAME    :Důlní výtah
-STR_DESC    :Návštěvníci jezdí ve výtahu nahoru nebo dolů, aby se dostali z jednoho patra do druhého
-STR_CPTY    :16 návštěvníků
-
-[SANFTRAM]
-STR_NAME    :Tramvaj ze San Francisca
-STR_DESC    :Repliky tramvají
-STR_CPTY    :10 míst v každém voze
-
-[STEAMTRN]
-STR_NAME    :Mahárádžova parní lokomotiva
-STR_DESC    :Miniaturní replika parní lokomotivy s tendrem táhne kryté dřevěné vagóny
-STR_CPTY    :6 míst v každém vagónu
-
-[BLACKCAB]
-STR_NAME    :Autodráha s Londýnskými taxíky
-STR_DESC    :Vozy ve tvaru Londýnských taxíků jezdí po postavené dráze
-STR_CPTY    :2 místa v každém voze
-
-[CRNVBFLY]
-STR_NAME    :Motýlková autodráha
-STR_DESC    :Vozy ve tvaru motýlů jezdí po postavené dráze
-STR_CPTY    :2 místa v každém voze
-
-[CRNVFROG]
-STR_NAME    :Žabí autodráha
-STR_DESC    :Vozy ve tvaru žab jezdí po postavené dráze
-STR_CPTY    :2 místa v každém voze
-
-[CRNVLZRD]
-STR_NAME    :Ještěrčí autodráha
-STR_DESC    :Vozy ve tvaru ještěrek jezdí po postavené dráze
-STR_CPTY    :2 místa v každém voze
-
-[DRAGDODG]
-STR_NAME    :Čínská dračí hlava
-STR_DESC    :Autodrom s vozy ve tvaru dračích hlav
-STR_CPTY    :1 místo v každém voze
-
-[HIPPORID]
-STR_NAME    :Hroší jízda
-STR_DESC    :Návštěvníci vyrazí na podvodní jízdu v ponorce
-STR_CPTY    :5 míst v každé ponorce
-
-[HUSKIE]
-STR_NAME    :Autodráha se saněmi
-STR_DESC    :Vozy ve tvaru sněžných saní jezdí po postavené dráze
-STR_CPTY    :2 místa v každém voze
-
-[KILLWHAL]
-STR_NAME    :Zabijácká velryba
-STR_DESC    :Návštěvníci vyrazí na podvodní jízdu v ponorce
-STR_CPTY    :5 míst v každé ponorce
-
-[SKIDOO]
-STR_NAME    :Sněžné vozy
-STR_DESC    :Autodrom s vozy ve tvaru sněžných vozů
-STR_CPTY    :1 místo v každém voze
-
-[ANACONDA]
-STR_NAME    :Anakonda
-STR_DESC    :Prostorné vozy s opěrkou v klíně
-STR_CPTY    :6 míst v každém voze
-
-[BOMERANG]
-STR_NAME    :Bumerang
-STR_DESC    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
-STR_CPTY    :2 místa v každém voze
-
-[BULLET]
-STR_NAME    :Šinkansen
-STR_DESC    :Horská dráha s vozy, které vypadají jako vozy Šinkansenu
-STR_CPTY    :4 místa v každém voze
-
-[CADDILAC]
-STR_NAME    :Limuzínová horská dráha
-STR_DESC    :Horská dráha s vozy, které vypadají jako limuzíny
-STR_CPTY    :4 místa v každém voze
-
-[CONDORRD]
-STR_NAME    :Jízda kondorů
-STR_DESC    :Návštěvníci jedou na jednokolejné trati vleže hlavou dolů, zavěšeni ve speciálním voze, který se v zatáčkách houpe
-STR_CPTY    :1 místo v každém voze
-
-[CONGAEEL]
-STR_NAME    :Jízda mořského úhoře
-STR_DESC    :Malá ocelová horská dráha, na které vozy připomínající mořské úhoře jezdí skrze lopinky a jezdí ve vývrtce
-STR_CPTY    :4 místa v každém voze
-
-[DRAGON]
-STR_NAME    :Dračí horská dráha
-STR_DESC    :Horská dráha s vozy ve tvaru draků
-STR_CPTY    :4 místa v každém voze
-
-[FOOTBALL]
-STR_NAME    :Fotbalová horská dráha
-STR_DESC    :Zavěšená horská dráha s vozy připomínající fotbalové míče, které se houpají v zatáčkách
-STR_CPTY    :4 místa v každém voze
-
-[GORILLA]
-STR_NAME    :Gorilí horská dráha
-STR_DESC    :Zavěšená horská dráha s vozy připomínající gorily, které se houpají v zatáčkách
-STR_CPTY    :4 místa v každém voze
-
-[GRATWHTE]
-STR_NAME    :Žraločí horská dráha
-STR_DESC    :Prostorné vozy s opěrkou v klíně
-STR_CPTY    :6 míst v každém voze
-
-[JAGUARRD]
-STR_NAME    :Jaguáří horská dráha
-STR_DESC    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
-STR_CPTY    :4 místa v každém voze
-
-[KOLARIDE]
-STR_NAME    :Koalí dráha
-STR_DESC    :Velká dráha s vozem pro volný pád pozpátku
-STR_CPTY    :8 návštěvníků
-
-[LIONRIDE]
-STR_NAME    :Lví horská dráha
-STR_DESC    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
-STR_CPTY    :4 místa v každém voze
-
-[MINECART]
-STR_NAME    :Jízda dolem
-STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klíně
-STR_CPTY    :4 místa v každém voze
-
-[OSTRICH]
-STR_NAME    :Pštrosí jízda
-STR_DESC    :Horská dráha s lopinky, na které se jezdí ve stoje
-STR_CPTY    :4 místa v každém voze
-
-[PENGUINB]
-STR_NAME    :Tučnáčí bobová dráha
-STR_DESC    :Návštěvníci jedou po propletené bobové dráze
-STR_CPTY    :2 místa v každém voze
-
-[POLARBER]
-STR_NAME    :Horská dráha polárního medvěda
-STR_DESC    :Návštěvníci sedí po dvou zavěšení pod tratí a vidí dopředu nebo dozadu podle toho, jak zrovna jedou skrze ostré zatáčky
-STR_CPTY    :4 místa v každém voze
-
-[RHINORID]
-STR_NAME    :Rhino Ride
-STR_DESC    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
-STR_CPTY    :6 míst v každém voze
-
-[ROCKET]
-STR_NAME    :Raketová jízda z 50. let
-STR_DESC    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpátku stanicí a vyletí až na druhý konec trati
-STR_CPTY    :4 místa v každém voze
-
-[RSSNCRRD]
-STR_NAME    :Moskvičová horská dráha
-STR_DESC    :Horská dráha s Ruskými vozy
-STR_CPTY    :4 místa v každém voze
-
-[SEALS]
-STR_NAME    :Tulení horská dráha
-STR_DESC    :Malá ocelová horská dráha, na které vozy připomínající tuleně jezdí skrze lopinky a jezdí ve vývrtce
-STR_CPTY    :4 místa v každém voze
-
-[SLOTH]
-STR_NAME    :Lenochodí jízda
-STR_DESC    :Zavěšená horská dráha s vozy připomínající lenochody, které se houpají v zatáčkách
-STR_CPTY    :4 místa v každém voze
-
-[SPUTNIKR]
-STR_NAME    :Sputnik
-STR_DESC    :Návštěvníci jedou na jednokolejné trati vleže hlavou dolů, zavěšeni ve speciálním voze, který se v zatáčkách houpe
-STR_CPTY    :2 místa v každém voze
-
-[STGCCSTR]
-STR_NAME    :Dostavníková horská dráha
-STR_DESC    :Dřevěná horská dráha s vozy s polstrovanými sedadly a opěrkou v klíně
-STR_CPTY    :4 místa v každém voze
-
-[SURFBRDC]
-STR_NAME    :Surfující horská dráha
-STR_DESC    :Návštěvníci jedou ve stoje v širokých vozech se speciálně navrženým držením po propletené dráze s pády
-STR_CPTY    :4 místa v každém voze
-
-[TAXICSTR]
-STR_NAME    :Taxi horská dráha
-STR_DESC    :Gigantická ocelová horská dráha schopna volných pádů a kopců přes 90 metrů dlouhých
-STR_CPTY    :4 místa v každém voze
-
-[TGVTRAIN]
-STR_NAME    :TGV horská dráha
-STR_DESC    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
-STR_CPTY    :4 místa v každém voze
-
-[TIGRTWST]
-STR_NAME    :Horská dráha bengálských tygrů
-STR_DESC    :Horská dráha, která se točí dokola tak, že návštěvníci jsou pořád na stejném místě
-STR_CPTY    :4 místa v každém voze
-
-[WHICGRUB]
-STR_NAME    :Červí jízda
-STR_DESC    :Horská dráha s vozy ve tvaru červů
-STR_CPTY    :2 místa v každém voze
-
-[COFFEECU]
-STR_NAME    :Jízda v šálku kávy
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo kávomlýnku uprostřed
-STR_CPTY    :18 návštěvníků
-
-[DIAMONDR]
-STR_NAME    :Diamantová jízda
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo diamantu uprostřed
-STR_CPTY    :18 návštěvníků
-
-[FABERGE]
-STR_NAME    :Jízda Fabergého vejce
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo Fabergého vejce uprostřed
-STR_CPTY    :18 návštěvníků
-
-[FIGHTKIT]
-STR_NAME    :Jízda papírového draka
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí
-STR_CPTY    :18 návštěvníků
-
-[FIRECRAK]
-STR_NAME    :Jízda rachejtle
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí
-STR_CPTY    :16 návštěvníků
-
-[ITALYPOR]
-STR_NAME    :Italská policejní jízda
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo italských policistů
-STR_CPTY    :18 návštěvníků
-
-[JUNKSWNG]
-STR_NAME    :Čínská loď
-STR_DESC    :Loď je připevněna na podpěru, která se chová jako protizávaží a otáčí se o 360 stupňů
-STR_CPTY    :12 návštěvníků
-
-[CROCFLUM]
-STR_NAME    :Krokodýlí jízda
-STR_DESC    :Lodě ve tvaru krokodýlů se plaví po vodním kanálu a cákají. Nikdo nezůstane suchý
-STR_CPTY    :4 místa na každé lodi
-
-[DHOWWATR]
-STR_NAME    :Plachetnice
-STR_DESC    :Ozdobné plachetnice, u kterých musí návštěvníci pádlovat
-STR_CPTY    :2 místa na každé lodi
-
-[DOLPHINR]
-STR_NAME    :Delfíní jízda
-STR_DESC    :Lodě ve tvaru delfínů, které mohou návštěvníci ovládat
-STR_CPTY    :1 místo v každé lodi
-
-[MANDARIN]
-STR_NAME    :Čínské kachny
-STR_DESC    :Lodě ve tvaru labutí, ovládané šlapáním návštěvníků
-STR_CPTY    :4 místa na každé lodi
-
-[MANTARAY]
-STR_NAME    :Rejnočí jízda
-STR_DESC    :Velkokapacitní lodě se plaví po vodním kanále, poháněny do pásem do strmých úseků, zrychlují sjížděním svahů a namočí návštěvníky pořádným šplouchnutím
-STR_CPTY    :16 míst na každé lodi
-
-[OUTRIGGR]
-STR_NAME    :Loď s podporami
-STR_DESC    :Dlouhé kánoe s postranními podporami, u kterých musí návštěvníci pádlovat
-STR_CPTY    :2 místa v každé lodi
-
-[TUTLBOAT]
-STR_NAME    :Želví jízda
-STR_DESC    :Malé čluny ve tvaru mořských želv s motorovým pohonem ovládaným návštěvníky
-STR_CPTY    :2 místa v každé lodi
-
-[1X1ATRE2]
-STR_NAME    :Vinná réva
-
-[1X1ATREE]
-STR_NAME    :Nízké křoví
-
-[1X1BRANG]
-STR_NAME    :Bumerang
-
-[1X1DIDGE]
-STR_NAME    :Didgeridoo
-
-[1X1EMUXX]
-STR_NAME    :Emu
-
-[1X1JUGT2]
-STR_NAME    :Strom z deštného pralesa 1
-
-[1X1JUGT3]
-STR_NAME    :Strom z deštného pralesa 2
-
-[1X1KANGA]
-STR_NAME    :Klokat
-
-[1X1TERMM]
-STR_NAME    :Termitiště
-
-[ADPANDA]
-STR_NAME    :Dospělá panda
-
-[ANTILOPF]
-STR_NAME    :Antilopa - samice
-
-[ANTILOPM]
-STR_NAME    :Antilopa - samec
-
-[ANTILOPP]
-STR_NAME    :Antilopí pár
-
-[BABPANDA]
-STR_NAME    :Malá panda
-
-[BABYELE]
-STR_NAME    :Malý slon
-
-[BALLLAN2]
-STR_NAME    :Čínské lampióny
-
-[BALLLANT]
-STR_NAME    :Čínské lampióny
-
-[BambooBs]
-STR_NAME    :Bambus
-
-[BAMBOOPL]
-STR_NAME    :Sloup z bambusu
-
-[BSTATUE1]
-STR_NAME    :Rozbitá socha
-
-[FSTATUE1]
-STR_NAME    :Opravená socha
-
-[JACHTREE]
-STR_NAME    :Sakura
-
-[JAPCHBLO]
-STR_NAME    :Sakura
-
-[JAPPINTR]
-STR_NAME    :Borovice Thunbergova
-
-[JAPSNOTR]
-STR_NAME    :Kalina řasnatá
-
-[ORIEGONG]
-STR_NAME    :Gong
-
-[PCG]
-STR_NAME    :Trubka
-
-[PCO]
-STR_NAME    :Trubka
-
-[POSTBOX]
-STR_NAME    :Britská poštovní schránka
-
-[PST]
-STR_NAME    :Trubka
-
-[PTJ]
-STR_NAME    :Trubka
-
-[PTK]
-STR_NAME    :Trubka
-
-[PVA]
-STR_NAME    :Trubka
-
-[RBRICK01]
-STR_NAME    :Obrácená červená střecha
-
-[RBRICK02]
-STR_NAME    :Rohová červená střecha
-
-[RBRICK03]
-STR_NAME    :Krajní červená střecha
-
-[RBRICK04]
-STR_NAME    :Plochá rohová červená střecha
-
-[RBRICK05]
-STR_NAME    :Červená střecha 2
-
-[RBRICK07]
-STR_NAME    :Červená střecha 3
-
-[RBRICK08]
-STR_NAME    :Červená střecha 1
-
-[RCORR01]
-STR_NAME    :Vlnitá střecha
-
-[RCORR02]
-STR_NAME    :Vlnitá střecha
-
-[RCORR03]
-STR_NAME    :Vlnitá střecha
-
-[RCORR04]
-STR_NAME    :Vlnitá střecha
-
-[RCORR05]
-STR_NAME    :Vlnitá střecha
-
-[RCORR07]
-STR_NAME    :Vlnitá střecha
-
-[RCORR08]
-STR_NAME    :Vlnitá střecha
-
-[RCORR09]
-STR_NAME    :Vlnitá střecha
-
-[RCORR10]
-STR_NAME    :Vlnitá střecha
-
-[RCORR11]
-STR_NAME    :Vlnitá střecha
-
-[RDRAB05]
-STR_NAME    :Základna malého minaretu
-
-[RDRAB06]
-STR_NAME    :Střední část malého minaretu
-
-[RDRAB07]
-STR_NAME    :Základna malé věže
-
-[RDRAB08]
-STR_NAME    :Minaret 1
-
-[RDRAB09]
-STR_NAME    :Minaret 2
-
-[RDRAB10]
-STR_NAME    :Minaret 3
-
-[RDRAB11]
-STR_NAME    :Střecha 1
-
-[RDRAB12]
-STR_NAME    :Střecha 2
-
-[RDRAB13]
-STR_NAME    :Střecha 3
-
-[RDRAB14]
-STR_NAME    :Střecha 4
-
-[RGEORG01]
-STR_NAME    :Gregoriánská střecha 7
-
-[RGEORG02]
-STR_NAME    :Gregoriánská střecha 6
-
-[RGEORG03]
-STR_NAME    :Gregoriánská střecha
-
-[RGEORG04]
-STR_NAME    :Gregoriánská střecha
-
-[RGEORG05]
-STR_NAME    :Gregoriánská střecha
-
-[RGEORG06]
-STR_NAME    :Gregoriánská střecha
-
-[RGEORG07]
-STR_NAME    :Gregoriánská střecha
-
-[RGEORG08]
-STR_NAME    :Gregoriánská stěna přízemí
-
-[RGEORG09]
-STR_NAME    :Gregoriánská střecha
-
-[RGEORG10]
-STR_NAME    :Gregoriánská střecha
-
-[RGEORG11]
-STR_NAME    :Gregoriánská plochá střecha
-
-[RGEORG12]
-STR_NAME    :Gregoriánská střecha
-
-[ROOFICE1]
-STR_NAME    :Ledová střecha
-
-[ROOFICE2]
-STR_NAME    :Ledová střecha
-
-[ROOFICE3]
-STR_NAME    :Ledová střecha
-
-[ROOFICE4]
-STR_NAME    :Ledová střecha
-
-[ROOFICE5]
-STR_NAME    :Ledová střecha
-
-[ROOFICE6]
-STR_NAME    :Ledová střecha
-
-[RKREML01]
-STR_NAME    :Kremlinský Minaret díl 1
-
-[RKREML02]
-STR_NAME    :Kremlinský Minaret díl 2
-
-[RKREML03]
-STR_NAME    :Kremlinský Minaret díl 3
-
-[RKREML04]
-STR_NAME    :Kremlinská střecha díl 1
-
-[RKREML05]
-STR_NAME    :Kremlinská střecha díl 2
-
-[RKREML06]
-STR_NAME    :Kremlinská věž - střed
-
-[RKREML07]
-STR_NAME    :Kremlinská věž - základ
-
-[RKREML11]
-STR_NAME    :Kremlinská věž
-
-[RLOG01]
-STR_NAME    :Střecha důlní chatrče
-
-[RLOG02]
-STR_NAME    :Střecha důlní chatrče
-
-[RLOG03]
-STR_NAME    :Stěna důlní chatrče
-
-[RLOG04]
-STR_NAME    :Stěna důlní chatrče
-
-[RLOG05]
-STR_NAME    :Střecha důlní chatrče
-
-[RMARBLE1]
-STR_NAME    :Mramorová střecha
-
-[RMARBLE2]
-STR_NAME    :Mramorová střecha
-
-[RMARBLE3]
-STR_NAME    :Mramorová střecha
-
-[RMARBLE4]
-STR_NAME    :Mramorová střecha
-
-[RMUD01]
-STR_NAME    :Zaoblená zeď z bahna
-
-[RMUD02]
-STR_NAME    :Zaoblená zeď z bahna
-
-[RMUD03]
-STR_NAME    :Zaoblená zeď z bahna
-
-[RMUD05]
-STR_NAME    :Střecha z bahna
-
-[ROOFIG01]
-STR_NAME    :Stěna iglú
-
-[ROOFIG02]
-STR_NAME    :Stěna iglú
-
-[ROOFIG03]
-STR_NAME    :Stěna iglú
-
-[ROOFIG04]
-STR_NAME    :Stěna iglú
-
-[ROOFIG06]
-STR_NAME    :Stěna iglú
-
-[RSHOGI1]
-STR_NAME    :Čínská střecha
-
-[RSHOGI2]
-STR_NAME    :Čínská střecha
-
-[RSHOGI3]
-STR_NAME    :Čínská střecha
-
-[SMALLGEO]
-STR_NAME    :Malá geosféra
-
-[VERTPIPE]
-STR_NAME    :Ledová trubka
-
-[ICEBARL1]
-STR_NAME    :Ledové barely
-
-[ICEBARL2]
-STR_NAME    :Ledové barely
-
-[ICEBARL3]
-STR_NAME    :Ledové barely
-
-[PIPEVENT]
-STR_NAME    :Výdech ledové trubky
-
-[PIPEBASE]
-STR_NAME    :Ledová trubka
-
-[RTUDOR01]
-STR_NAME    :Tudorská střecha
-
-[RTUDOR02]
-STR_NAME    :Tudorská střecha
-
-[RTUDOR03]
-STR_NAME    :Tudorská střecha
-
-[RWDAUB01]
-STR_NAME    :Hliněná střecha
-
-[RWDAUB02]
-STR_NAME    :Hliněná střecha
-
-[RWDAUB03]
-STR_NAME    :Hliněná střecha
-
-[SB1HSPB1]
-STR_NAME    :Zavěšený most
-
-[SB1HSPB2]
-STR_NAME    :Zavěšený most
-
-[SB1HSPB3]
-STR_NAME    :Zavěšený most
-
-[SB2PALM1]
-STR_NAME    :Veranda
-
-[SB2SKY01]
-STR_NAME    :Kamenné schodiště mrakodrapu
-
-[SBH1TEPE]
-STR_NAME    :Týpí
-
-[SBH1WGWH]
-STR_NAME    :Kolo vagónu
-
-[SBH2SHLT]
-STR_NAME    :Pátrací světlo
-
-[SBH3CAC1]
-STR_NAME    :Kaktus
-
-[SBH3CAC2]
-STR_NAME    :Kaktus
-
-[SBH3CAC3]
-STR_NAME    :Kaktus
-
-[SBH3CSKL]
-STR_NAME    :Zvířecí lebka
-
-[SBH3OSCR]
-STR_NAME    :Ocenění horské dráhy
-
-[SBH3PLM1]
-STR_NAME    :Palma
-
-[SBH3PLM2]
-STR_NAME    :Palma
-
-[SBH3PLM3]
-STR_NAME    :Palma
-
-[SBH3RT66]
-STR_NAME    :Silnice 66
-
-[SBH4TOTM]
-STR_NAME    :Totem
-
-[SBSKYS01]
-STR_NAME    :Zeď kamenného mrakodrapu
-
-[SBSKYS02]
-STR_NAME    :Zeď kamenného mrakodrapu
-
-[SBSKYS03]
-STR_NAME    :Výtah mrakodrapu
-
-[SBSKYS04]
-STR_NAME    :Výtah mrakodrapu
-
-[SBSKYS05]
-STR_NAME    :Kovový set mrakodrapu 1 - konvexní díl
-
-[SBSKYS06]
-STR_NAME    :Kovový set mrakodrapu 1 - konkávní díl
-
-[SBSKYS07]
-STR_NAME    :Kovový set mrakodrapu 2 - konvexní díl
-
-[SBSKYS08]
-STR_NAME    :Kovový set mrakodrapu 2 - konkávní díl
-
-[SBSKYS09]
-STR_NAME    :Kovový set mrakodrapu 2 - konkávní díl
-
-[SBSKYS10]
-STR_NAME    :Konkávní díl mrakodrapu
-
-[SBSKYS11]
-STR_NAME    :Konkávní střecha mrakodrapu
-
-[SBSKYS12]
-STR_NAME    :Konvexní střecha mrakodrapu
-
-[SBSKYS13]
-STR_NAME    :Konvexní střecha mrakodrapu
-
-[SBSKYS14]
-STR_NAME    :Střecha mrakodrapu
-
-[SBSKYS15]
-STR_NAME    :Střecha mrakodrapu
-
-[SBSKYS16]
-STR_NAME    :Střecha mrakodrapu
-
-[SBSKYS17]
-STR_NAME    :Střecha mrakodrapu
-
-[SBSKYS18]
-STR_NAME    :Střecha mrakodrapu
-
-[SBWIND01]
-STR_NAME    :Roh větrem ošlehané stěny
-
-[SBWIND02]
-STR_NAME    :Roh větrem ošlehané střechy
-
-[SBWIND03]
-STR_NAME    :Roh větrem ošlehané stěny
-
-[SBWIND04]
-STR_NAME    :Konvexní roh větrem ošlehané stěny
-
-[SBWIND05]
-STR_NAME    :Konvexní roh větrem ošlehané střechy
-
-[SBWIND06]
-STR_NAME    :Konvexní roh větrem ošlehané stěny
-
-[SBWIND07]
-STR_NAME    :Základna větrem ošlehaného kamene
-
-[SBWIND08]
-STR_NAME    :Základna větrem ošlehaného kamene
-
-[SBWIND09]
-STR_NAME    :Střední část větrem ošlehaného kamene
-
-[SBWIND10]
-STR_NAME    :Střední část větrem ošlehaného kamene
-
-[SBWIND11]
-STR_NAME    :Střední část větrem ošlehaného kamene
-
-[SBWIND12]
-STR_NAME    :Střední část větrem ošlehaného kamene
-
-[SBWIND13]
-STR_NAME    :Vršek větrem ošlehaného kamene
-
-[SBWIND14]
-STR_NAME    :Vršek větrem ošlehaného kamene
-
-[SBWIND15]
-STR_NAME    :Střecha větrem ošlehaného kamene
-
-[SBWIND16]
-STR_NAME    :Střecha větrem ošlehaného kamene
-
-[SBWIND17]
-STR_NAME    :Střecha větrem ošlehaného kamene
-
-[SBWIND18]
-STR_NAME    :Podlaha větrem ošlehaného kamene
-
-[SBWIND19]
-STR_NAME    :Podlaha větrem ošlehaného kamene
-
-[SBWIND20]
-STR_NAME    :Stěna větrem ošlehaného kamene
-
-[SBWIND21]
-STR_NAME    :Stěna větrem ošlehaného kamene
-
-[SBWPLM01]
-STR_NAME    :Vršek chaty
-
-[SBWPLM02]
-STR_NAME    :Veranda u chaty
-
-[SBWPLM03]
-STR_NAME    :Vršek chaty
-
-[SBWPLM04]
-STR_NAME    :Vršek chaty
-
-[SBWPLM05]
-STR_NAME    :Vršek chaty
-
-[SBWPLM06]
-STR_NAME    :Stěna chaty
-
-[SBWPLM07]
-STR_NAME    :Stěna chaty
-
-[SBWPLM08]
-STR_NAME    :Stěna chaty
-
-[TALLLAN1]
-STR_NAME    :Vysoká lucerna
-
-[TALLLAN2]
-STR_NAME    :Vysoká lucerna
-
-[TERRARMY]
-STR_NAME    :Terakotová armáda
-
-[TJBLOCK1]
-STR_NAME    :Mahárádžův palác
-
-[TJBLOCK2]
-STR_NAME    :Mahárádžův palác
-
-[TJBLOCK3]
-STR_NAME    :Mahárádžův palác
-
-[TNT1]
-STR_NAME    :Dynamit
-
-[TNT2]
-STR_NAME    :Barel dynamitu
-
-[TNT3]
-STR_NAME    :Rozbuška
-
-[TNT4]
-STR_NAME    :Bedna dynamitu
-
-[TRCKPRT1]
-STR_NAME    :Diamantový košík
-
-[TRCKPRT2]
-STR_NAME    :Prázdný košík
-
-[TRCKPRT3]
-STR_NAME    :Diamantový sloup
-
-[TRCKPRT4]
-STR_NAME    :Povoz
-
-[TRCKPRT5]
-STR_NAME    :Zatáčka na trati
-
-[TRCKPRT6]
-STR_NAME    :Rozbitá trať
-
-[TRCKPRT7]
-STR_NAME    :Konec tratě
-
-[TRCKPRT8]
-STR_NAME    :Rozpůlení tratě
-
-[TRCKPRT9]
-STR_NAME    :Rovná trať
-
-[UKPHONE]
-STR_NAME    :Britská telefonní budka
-
-[WABORG01]
-STR_NAME    :Umění domorodců
-
-[WABORG02]
-STR_NAME    :Umění domorodců
-
-[WABORG03]
-STR_NAME    :Umění domorodců
-
-[WABORG04]
-STR_NAME    :Umění domorodců
-
-[WABORG05]
-STR_NAME    :Umění domorodců
-
-[WABORG06]
-STR_NAME    :Umění domorodců
-
-[WABORG07]
-STR_NAME    :Umění domorodců
-
-[WABORG08]
-STR_NAME    :Umění domorodců
-
-[WAZTEC01]
-STR_NAME    :Střecha chrámu
-
-[WAZTEC02]
-STR_NAME    :Střecha chrámu
-
-[WAZTEC03]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC04]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC05]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC06]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC07]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC08]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC09]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC10]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC11]
-STR_NAME    :Rohová stěna chrámu
-
-[WAZTEC12]
-STR_NAME    :Rohová stěna chrámu
-
-[WAZTEC13]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC14]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC15]
-STR_NAME    :Střecha chrámu
-
-[WAZTEC16]
-STR_NAME    :Střecha chrámu
-
-[WAZTEC17]
-STR_NAME    :Střecha chrámu
-
-[WAZTEC18]
-STR_NAME    :Střecha chrámu
-
-[WAZTEC19]
-STR_NAME    :Střecha chrámu
-
-[WAZTEC20]
-STR_NAME    :Chrámové schody
-
-[WAZTEC21]
-STR_NAME    :Chrámové schody
-
-[WAZTEC22]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC23]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC24]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC25]
-STR_NAME    :Stěna chrámu
-
-[WAZTEC26]
-STR_NAME    :Rohová stěna chrámu
-
-[WAZTEC27]
-STR_NAME    :Rohová stěna chrámu
-
-[WCUZCO01]
-STR_NAME    :Monumentální stěna
-
-[WCUZCO02]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO03]
-STR_NAME    :Monumentální stěna
-
-[WCUZCO04]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO05]
-STR_NAME    :Monumentální stěna
-
-[WCUZCO06]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO07]
-STR_NAME    :Monumentální stěna
-
-[WCUZCO08]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO09]
-STR_NAME    :Monumentální stěna
-
-[WCUZCO10]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO11]
-STR_NAME    :Monumentální stěna
-
-[WCUZCO12]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO13]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO14]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO15]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO16]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO17]
-STR_NAME    :Monumentální stěna
-
-[WCUZCO18]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WCUZCO19]
-STR_NAME    :Monumentální schodiště
-
-[WCUZCO20]
-STR_NAME    :Monumentální schodiště
-
-[WCUZCO21]
-STR_NAME    :Monumentální rohová stěna
-
-[WCUZCO22]
-STR_NAME    :Monumentální rohová stěna
-
-[WCUZCO23]
-STR_NAME    :Monumentální rohová stěna
-
-[WCUZCO24]
-STR_NAME    :Monumentální rohová stěna
-
-[WCUZCO25]
-STR_NAME    :Monumentální schodiště
-
-[WCUZCO26]
-STR_NAME    :Monumentální schodiště
-
-[WCUZCO27]
-STR_NAME    :Monumentální stěna
-
-[WCUZCO28]
-STR_NAME    :Rozbitá monumentální stěna
-
-[WDRAB09]
-STR_NAME    :Khaki set - část 1
-
-[WDRAB10]
-STR_NAME    :Khaki stěna - část 9
-
-[WDRAB11]
-STR_NAME    :Khaki stěna - část 10
-
-[WDRAB12]
-STR_NAME    :Khaki stěna - část 11
-
-[WDRAB13]
-STR_NAME    :Khaki stěna - část 2
-
-[WGEORG07]
-STR_NAME    :Gregoriánská přízemní stěna - část 4
-
-[WGEORG08]
-STR_NAME    :Gregoriánská přízemní stěna - část 5
-
-[WGEORG09]
-STR_NAME    :Gregoriánská přízemní stěna - část 6
-
-[WGEORG10]
-STR_NAME    :Gregoriánská stěna - část 4
-
-[WGEORG11]
-STR_NAME    :Gregoriánská stěna - část 5
-
-[WGEORG12]
-STR_NAME    :Gregoriánská stěna - část 6
-
-[WKREML01]
-STR_NAME    :Kremlinská stěna - část 1
-
-[WKREML02]
-STR_NAME    :Kremlinská stěna - část 2
-
-[WKREML03]
-STR_NAME    :Kremlinská stěna - část 1
-
-[WKREML04]
-STR_NAME    :Kremlinská stěna - část 2
-
-[WKREML05]
-STR_NAME    :Kremlinská stěna - část 3
-
-[WKREML06]
-STR_NAME    :Kremlinská stěna - část 4
-
-[WMAYAN01]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN02]
-STR_NAME    :Střecha Ztraceného města
-
-[WMAYAN03]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN04]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN05]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN06]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN07]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN08]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN09]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN10]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN11]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN12]
-STR_NAME    :Schodiště Ztraceného města
-
-[WMAYAN13]
-STR_NAME    :Schodiště Ztraceného města
-
-[WMAYAN14]
-STR_NAME    :Schodiště Ztraceného města
-
-[WMAYAN15]
-STR_NAME    :Schodiště Ztraceného města
-
-[WMAYAN16]
-STR_NAME    :Schodiště Ztraceného města
-
-[WMAYAN17]
-STR_NAME    :Sloup Ztraceného města
-
-[WMAYAN18]
-STR_NAME    :Sloup Ztraceného města
-
-[WMAYAN20]
-STR_NAME    :Stěna Ztraceného města
-
-[WMAYAN21]
-STR_NAME    :Střecha Ztraceného města
-
-[WMAYAN22]
-STR_NAME    :Střecha Ztraceného města
-
-[WMAYAN23]
-STR_NAME    :Rohová stěna Ztraceného města
-
-[WMAYAN24]
-STR_NAME    :Rohová stěna Ztraceného města
-
-[WMAYAN25]
-STR_NAME    :Rohová stěna Ztraceného města
-
-[WMAYAN26]
-STR_NAME    :Rohová stěna Ztraceného města
-
-[WNAUTI01]
-STR_NAME    :Mořská střecha
-
-[WNAUTI02]
-STR_NAME    :Mořská střecha
-
-[WNAUTI03]
-STR_NAME    :Mořská střecha
-
-[WNAUTI04]
-STR_NAME    :Mořská střecha
-
-[WNAUTI05]
-STR_NAME    :Mořská střecha
-
-[WTUDOR12]
-STR_NAME    :Tudorská stěna - část 4
-
-[WTUDOR13]
-STR_NAME    :Tudorská stěna
-
-[WTUDOR14]
-STR_NAME    :Tudorská přízemní stěna - část 1
-
-[WTUDOR15]
-STR_NAME    :Tudorská přízemní stěna - část 2
-
-[WTUDOR16]
-STR_NAME    :Tudorská přízemní stěna - část 3
-
-[WTUDOR17]
-STR_NAME    :Tudorská přízemní stěna - část 4
-
-[WTUDOR18]
-STR_NAME    :Tudorská přízemní stěna - část 5
-
-[CAMPFANI]
-STR_NAME    :Animovaný táborák
-
-[CONVEYR1]
-STR_NAME    :Roh dopravního pásu
-
-[CONVEYR2]
-STR_NAME    :Dopravní pás
-
-[CONVEYR3]
-STR_NAME    :Konec dopravního pásu
-
-[CONVEYR4]
-STR_NAME    :Dopravní pás
-
-[CONVEYR5]
-STR_NAME    :Roh dopravního pásu
-
-[FISHHOLE]
-STR_NAME    :Rybí díra
-
-[FLAMNGO1]
-STR_NAME    :Plameňák
-
-[FLAMNGO2]
-STR_NAME    :Plameňák
-
-[FLAMNGO3]
-STR_NAME    :Plameňák
-
-[FOUNTARC]
-STR_NAME    :Australská fontána
-
-[FOUNTROW]
-STR_NAME    :Australská fontána
-
-[G1DANCER]
-STR_NAME    :Mardi Gras tanečnice
-
-[G2DANCER]
-STR_NAME    :Mardi Gras tanečnice
-
-[INUIT]
-STR_NAME    :Eskymák
-
-[INUIT2]
-STR_NAME    :Eskymák
-
-[INFLAG01]
-STR_NAME    :Indická hedvábná vlajka
-
-[INFLAG02]
-STR_NAME    :Indická hedvábná vlajka
-
-[INFLAG03]
-STR_NAME    :Indická hedvábná vlajka
-
-[INFLAG04]
-STR_NAME    :Indická hedvábná vlajka
-
-[INFLAG05]
-STR_NAME    :Indická hedvábná vlajka
-
-[JPFLAG01]
-STR_NAME    :Japonská hedvábná vlajka
-
-[JPFLAG02]
-STR_NAME    :Japonská hedvábná vlajka
-
-[JPFLAG03]
-STR_NAME    :Japonská hedvábná vlajka
-
-[JPFLAG04]
-STR_NAME    :Japonská hedvábná vlajka
-
-[JPFLAG05]
-STR_NAME    :Japonská hedvábná vlajka
-
-[JPFLAG06]
-STR_NAME    :Japonská hedvábná vlajka
-
-[OILPUMP]
-STR_NAME    :Ropné čerpadlo
-
-[SBALLOON]
-STR_NAME    :Animované balónky
-
-[WCUZFOUN]
-STR_NAME    :Monumentální fontána
-
-[WROPECOR]
-STR_NAME    :Mořský roh střechy
-
-[WROPESWA]
-STR_NAME    :Mořské střešní zábradlí
-
-[1X2ABR01]
-STR_NAME    :Domorodecká obyčejná dlaždice
-
-[1X2ABR02]
-STR_NAME    :Domorodecké umění
-
-[1X2ABR03]
-STR_NAME    :Domorodecké umění
-
-[1X2AZT01]
-STR_NAME    :Stěna chrámu s hlavou
-
-[1X2AZT02]
-STR_NAME    :Rozbitá stěna chrámu s hlavou
-
-[1X2LGCHM]
-STR_NAME    :Důlní chatrč s postranním komínem
-
-[AFRCLION]
-STR_NAME    :Lev
-
-[AFRRHINO]
-STR_NAME    :Nosorožec
-
-[ATRACTOR]
-STR_NAME    :Traktor
-
-[AFRZEBRA]
-STR_NAME    :Zebra
-
-[1X4BRG01]
-STR_NAME    :Zavěšený most
-
-[1X4BRG02]
-STR_NAME    :Zavěšený most
-
-[1X4BRG03]
-STR_NAME    :Zavěšený most
-
-[1X4BRG04]
-STR_NAME    :Zavěšený most
-
-[1X4BRG05]
-STR_NAME    :Zavěšený most
-
-[3X3ATRE1]
-STR_NAME    :Jungle strom 2
-
-[3X3MANTR]
-STR_NAME    :Mangrove
-
-[50ROCKET]
-STR_NAME    :Raketa z 50. let
-
-[BamboRf1]
-STR_NAME    :Bambusová střecha
-
-[BAMBORF2]
-STR_NAME    :Bambusová střecha
-
-[BamboRf3]
-STR_NAME    :Bambusová střecha
-
-[BIGGEOSP]
-STR_NAME    :Velká geosféra
-
-[CIRCUS]
-STR_NAME    :Cirkus
-
-[COWBOY01]
-STR_NAME    :Kovboj 1
-
-[COWBOY02]
-STR_NAME    :Kovboj 2
-
-[DAMTOWER]
-STR_NAME    :Přehradní věž
-
-[EIFFEL]
-STR_NAME    :Eiffelova věž
-
-[FATBUDDA]
-STR_NAME    :Buddha
-
-[GIRAFFE1]
-STR_NAME    :Žirafa 1
-
-[GIRAFFE2]
-STR_NAME    :Žirafa 2
-
-[GOLDBUDA]
-STR_NAME    :Zlatý Buddha
-
-[HIPPO01]
-STR_NAME    :Hroch 1
-
-[HIPPO02]
-STR_NAME    :Hroch 2
-
-[INDIANST]
-STR_NAME    :Indián
-
-[LARGEJU1]
-STR_NAME    :Velký strom deštného pralesa
-
-[LINCOLNS]
-STR_NAME    :Socha Washingtona
-
-[RDRAB01]
-STR_NAME    :Velká věž
-
-[RDRAB02]
-STR_NAME    :Velká věž
-
-[RDRAB03]
-STR_NAME    :Velká věž
-
-[RDRAB04]
-STR_NAME    :Velká věž
-
-[REDWOOD]
-STR_NAME    :Sequoioideae
-
-[RKREML08]
-STR_NAME    :Kremlinská věž
-
-[RKREML09]
-STR_NAME    :Kremlinská věž
-
-[RKREML10]
-STR_NAME    :Kremlinská věž
-
-[RTUDOR05]
-STR_NAME    :Tudorská střecha
-
-[RTUDOR06]
-STR_NAME    :Tudorská střecha
-
-[SHIVA]
-STR_NAME    :Shiva
-
-[SOFLIBRT]
-STR_NAME    :Socha svobody
-
-[SPUTNIK]
-STR_NAME    :Sputnik
-
-[TAJMCBSE]
-STR_NAME    :Mahárádžův palác - věž
-
-[TAJMCOLM]
-STR_NAME    :Mahárádžův palác - věž
-
-[TAJMCTOP]
-STR_NAME    :Mahárádžův palác - věž
-
-[1X2GLAMA]
-STR_NAME    :Zlatá lama
-
-[3X3ALTRE]
-STR_NAME    :Strom z jungle s leopardy
-
-[3X3ATRE2]
-STR_NAME    :Strom z jungle
-
-[3X3ATRE3]
-STR_NAME    :Strom z jungle s liánami
-
-[3X3EUCAL]
-STR_NAME    :Eukalyptus
-
-[3X3HMSEN]
-STR_NAME    :HMS Endeavour
-
-[ADULTELE]
-STR_NAME    :Dospělý slon
-
-[ATOMIUM]
-STR_NAME    :Atomium
-
-[BIGBEN]
-STR_NAME    :Big Ben a parlament
-
-[BIGDISH]
-STR_NAME    :Satelit
-
-[CDRAGON]
-STR_NAME    :Čínský drak
-
-[EASERLND]
-STR_NAME    :Socha Velikonočního ostrova
-
-[EVILSAM]
-STR_NAME    :Ďábelský samuraj
-
-[GDSTAUE1]
-STR_NAME    :Zlatá socha 1
-
-[GDSTAUE2]
-STR_NAME    :Zlatá socha 2
-
-[GEISHA]
-STR_NAME    :Gejša
-
-[GOODSAM]
-STR_NAME    :Hodný samuraj
-
-[GWOCTUR1]
-STR_NAME    :Velká čínská zeď - věž
-
-[GWOCTUR2]
-STR_NAME    :Velká čínská zeď - věž
-
-[HELIPAD]
-STR_NAME    :Heliport
-
-[ICEFOR01]
-STR_NAME    :Ledová kreace
-
-[ICEFOR02]
-STR_NAME    :Ledová kreace
-
-[MBSKYR01]
-STR_NAME    :Střecha mrakodrapu
-
-[MBSKYR02]
-STR_NAME    :Vrcholek mrakodrapu
-
-[OVRGRWNT]
-STR_NAME    :Starý přerostlý strom
-
-[POGODAL]
-STR_NAME    :Pagoda
-
-[PAGODAM]
-STR_NAME    :Pagoda
-
-[PAGODAS]
-STR_NAME    :Pagoda
-
-[PAGODATW]
-STR_NAME    :Pagoda - věž
-
-[RADAR]
-STR_NAME    :Radar
-
-[SPACEORB]
-STR_NAME    :Vesmírné objekty
-
-[SUNKEN]
-STR_NAME    :Potopená loď
-
-[TAJMDOME]
-STR_NAME    :Mahárádžův palác
-
-[WINDMILL]
-STR_NAME    :Větrný mlýn
-
-[TMARCH1]
-STR_NAME    :Mahárádžův palác - věžička
-
-[TMARCH2]
-STR_NAME    :Mahárádžův palác - věžička
-
-[W2CORR01]
-STR_NAME    :Vlnitá zeď
-
-[W2CORR02]
-STR_NAME    :Vlnitá zeď
-
-[W2CORR03]
-STR_NAME    :Vlnitá zeď
-
-[W2CORR04]
-STR_NAME    :Vlnitá zeď
-
-[W2CORR05]
-STR_NAME    :Vlnitá zeď
-
-[W2CORR06]
-STR_NAME    :Vlnitá zeď
-
-[W2CORR07]
-STR_NAME    :Vlnitá zeď
-
-[W2CORR08]
-STR_NAME    :Vlnitá zeď
-
-[W3CORR01]
-STR_NAME    :Vlnitá zeď
-
-[W3CORR02]
-STR_NAME    :Vlnitá zeď
-
-[W3CORR03]
-STR_NAME    :Vlnitá zeď
-
-[W3CORR04]
-STR_NAME    :Vlnitá zeď
-
-[W3CORR05]
-STR_NAME    :Vlnitá zeď
-
-[W3CORR06]
-STR_NAME    :Vlnitá zeď
-
-[W3CORR07]
-STR_NAME    :Vlnitá zeď
-
-[W3CORR08]
-STR_NAME    :Vlnitá zeď
-
-[WALLNA01]
-STR_NAME    :Mořská zeď
-
-[WALLNA02]
-STR_NAME    :Mořská zeď
-
-[WALLNA03]
-STR_NAME    :Mořská zeď
-
-[WALLNA04]
-STR_NAME    :Mořská zeď
-
-[WALLNA05]
-STR_NAME    :Mořská zeď
-
-[WALLNA06]
-STR_NAME    :Mořská zeď
-
-[WALLNA07]
-STR_NAME    :Mořská zeď
-
-[WALLNA08]
-STR_NAME    :Mořská zeď
-
-[WALLNA09]
-STR_NAME    :Mořská zeď
-
-[WALLNA10]
-STR_NAME    :Mořská zeď
-
-[WALLNA11]
-STR_NAME    :Mořská zeď
-
-[WALLNA12]
-STR_NAME    :Mořská zeď
-
-[WALLNA13]
-STR_NAME    :Mořská zeď
-
-[WALLNA14]
-STR_NAME    :Mořská zeď
-
-[WWDAUB01]
-STR_NAME    :Hliněná zeď
-
-[WWDAUB02]
-STR_NAME    :Hliněná zeď
-
-[WWDAUB03]
-STR_NAME    :Hliněná zeď
-
-[WWDAUB04]
-STR_NAME    :Hliněná zeď
-
-[WWDAUB05]
-STR_NAME    :Hliněná zeď
-
-[WWDAUB06]
-STR_NAME    :Hliněná zeď
-
-[WWDAUB07]
-STR_NAME    :Hliněná zeď
-
-[WBambo01]
-STR_NAME    :Bambusová zeď
-
-[WBambo02]
-STR_NAME    :Bambusová zeď
-
-[WBambo03]
-STR_NAME    :Bambusová zeď
-
-[WBAMBO04]
-STR_NAME    :Bambusová zeď
-
-[WBambo05]
-STR_NAME    :Bambusová zeď
-
-[WBambo11]
-STR_NAME    :Bambusová zeď
-
-[WBambo12]
-STR_NAME    :Bambusová zeď
-
-[WBambo13]
-STR_NAME    :Bambusová zeď
-
-[WBambo14]
-STR_NAME    :Bambusová zeď
-
-[WBambo15]
-STR_NAME    :Bambusová zeď
-
-[WBambo21]
-STR_NAME    :Bambusová zeď
-
-[WBRICK01]
-STR_NAME    :Zeď z červených cihel 1
-
-[WBRICK02]
-STR_NAME    :Zeď z červených cihel 2
-
-[WBRICK03]
-STR_NAME    :Zeď z červených cihel 3
-
-[WBRICK04]
-STR_NAME    :Zeď z červených cihel 4
-
-[WBRICK05]
-STR_NAME    :Zeď z červených cihel 5
-
-[WBRICK08]
-STR_NAME    :Zeď z červených cihel 8
-
-[WBRICK11]
-STR_NAME    :Zeď z červených cihel 11
-
-[WBRICK12]
-STR_NAME    :Zeď z červených cihel 12
-
-[WBRICK13]
-STR_NAME    :Zeď z červených cihel 13
-
-[WCORR01]
-STR_NAME    :Vlnitá zeď
-
-[WCORR02]
-STR_NAME    :Vlnitá zeď
-
-[WCORR03]
-STR_NAME    :Vlnitá zeď
-
-[WCORR04]
-STR_NAME    :Vlnitá zeď
-
-[WCORR05]
-STR_NAME    :Vlnitá zeď
-
-[WCORR06]
-STR_NAME    :Vlnitá zeď
-
-[WCORR07]
-STR_NAME    :Vlnitá zeď
-
-[WCORR08]
-STR_NAME    :Vlnitá zeď
-
-[WCORR09]
-STR_NAME    :Vlnitá zeď
-
-[WCORR10]
-STR_NAME    :Vlnitá zeď
-
-[WCORR11]
-STR_NAME    :Vlnitá zeď
-
-[WCORR12]
-STR_NAME    :Vlnitá zeď
-
-[WCORR13]
-STR_NAME    :Vlnitá zeď
-
-[WCORR14]
-STR_NAME    :Vlnitá zeď
-
-[WCORR15]
-STR_NAME    :Vlnitá zeď
-
-[WCORR16]
-STR_NAME    :Vlnitá zeď
-
-[WDRAB01]
-STR_NAME    :Khaki stěna - část 1
-
-[WDRAB02]
-STR_NAME    :Khaki stěna - část 2
-
-[WDRAB03]
-STR_NAME    :Khaki stěna - část 3
-
-[WDRAB04]
-STR_NAME    :Khaki stěna - část 4
-
-[WDRAB05]
-STR_NAME    :Khaki stěna - část 5
-
-[WDRAB06]
-STR_NAME    :Khaki stěna - část 6
-
-[WDRAB07]
-STR_NAME    :Khaki stěna - část 7
-
-[WDRAB08]
-STR_NAME    :Khaki stěna - část 8
-
-[WGEORG01]
-STR_NAME    :Gregoriánská stěna - část 1
-
-[WGEORG02]
-STR_NAME    :Gregoriánská přízemní stěna - část 1
-
-[WGEORG03]
-STR_NAME    :Gregoriánská stěna - část 2
-
-[WGEORG04]
-STR_NAME    :Gregoriánská přízemní stěna - část 2
-
-[WGEORG05]
-STR_NAME    :Gregoriánská stěna - část 3
-
-[WGEORG06]
-STR_NAME    :Gregoriánská přízemní stěna - část 3
-
-[WGWOC1]
-STR_NAME    :Velká čínská zeď
-
-[WGWOC2]
-STR_NAME    :Velká čínská zeď
-
-[WGWOC3]
-STR_NAME    :Velká čínská zeď
-
-[WALLICE1]
-STR_NAME    :Ledová stěna
-
-[WALLICE2]
-STR_NAME    :Ledová stěna
-
-[WALLICE3]
-STR_NAME    :Ledová stěna
-
-[WALLICE4]
-STR_NAME    :Ledová stěna
-
-[WALLICE5]
-STR_NAME    :Ledová stěna
-
-[WALLICE6]
-STR_NAME    :Ledová stěna
-
-[WALLICE7]
-STR_NAME    :Ledová stěna
-
-[WALLICE8]
-STR_NAME    :Ledová stěna
-
-[WALLICE9]
-STR_NAME    :Ledová stěna
-
-[WALLIC10]
-STR_NAME    :Ledová stěna
-
-[WIGLOO1]
-STR_NAME    :Stěna iglú
-
-[WIGLOO2]
-STR_NAME    :Stěna iglú
-
-[WKREML07]
-STR_NAME    :Kremlinská stěna - část 5
-
-[WKREML08]
-STR_NAME    :Kremlinská stěna - část 6
-
-[WKREML09]
-STR_NAME    :Kremlinská stěna - část 7
-
-[WKREML10]
-STR_NAME    :Kremlinská stěna - část 8
-
-[WLOG01]
-STR_NAME    :Stěna důlní chatrče
-
-[WLOG02]
-STR_NAME    :Stěna důlní chatrče
-
-[WLOG03]
-STR_NAME    :Stěna důlní chatrče
-
-[WLOG04]
-STR_NAME    :Stěna důlní chatrče
-
-[WLOG05]
-STR_NAME    :Stěna důlní chatrče
-
-[WLOG06]
-STR_NAME    :Stěna důlní chatrče
-
-[WMARBLE1]
-STR_NAME    :Ornamentální mramorová zeď
-
-[WMARBLE2]
-STR_NAME    :Ornamentální mramorová zeď
-
-[WMARBLE3]
-STR_NAME    :Ornamentální mramorová zeď
-
-[WMARBLE4]
-STR_NAME    :Ornamentální mramorová zeď
-
-[WMARBLE5]
-STR_NAME    :Ornamentální mramorová zeď
-
-[WMARBLE6]
-STR_NAME    :Ornamentální mramorová zeď
-
-[WMARBPL1]
-STR_NAME    :Obyčejná mramorová zeď
-
-[WMARBPL2]
-STR_NAME    :Obyčejná mramorová zeď
-
-[WMARBPL3]
-STR_NAME    :Obyčejná mramorová zeď
-
-[WMARBPL4]
-STR_NAME    :Obyčejná mramorová zeď
-
-[WMARBPL5]
-STR_NAME    :Obyčejná mramorová zeď
-
-[WMARBPL6]
-STR_NAME    :Obyčejná mramorová zeď
-
-[WMARBPL7]
-STR_NAME    :Obyčejná mramorová zeď
-
-[WMUD01]
-STR_NAME    :Stěna z bahna
-
-[WMUD02]
-STR_NAME    :Stěna z bahna
-
-[WMUD03]
-STR_NAME    :Stěna z bahna
-
-[WMUD04]
-STR_NAME    :Stěna z bahna
-
-[WMUD05]
-STR_NAME    :Stěna z bahna
-
-[WMUD06]
-STR_NAME    :Stěna z bahna
-
-[WMUD07]
-STR_NAME    :Stěna z bahna
-
-[WMUD08]
-STR_NAME    :Stěna z bahna
-
-[WPALM01]
-STR_NAME    :Stěna chaty
-
-[WPALM02]
-STR_NAME    :Stěna chaty
-
-[WPALM03]
-STR_NAME    :Stěna chaty
-
-[WPALM04]
-STR_NAME    :Stěna chaty
-
-[WPALM05]
-STR_NAME    :Stěna chaty
-
-[WSHOGI01]
-STR_NAME    :Čínská zeď
-
-[WSHOGI02]
-STR_NAME    :Čínská zeď
-
-[WSHOGI03]
-STR_NAME    :Čínská zeď
-
-[WSHOGI04]
-STR_NAME    :Čínská zeď
-
-[WSHOGI05]
-STR_NAME    :Čínská zeď
-
-[WSHOGI06]
-STR_NAME    :Čínská zeď
-
-[WSHOGI07]
-STR_NAME    :Čínská zeď
-
-[WSHOGI08]
-STR_NAME    :Čínská zeď
-
-[WSHOGI09]
-STR_NAME    :Čínská zeď
-
-[WSHOGI10]
-STR_NAME    :Čínská zeď
-
-[WSHOGI11]
-STR_NAME    :Čínská zeď
-
-[WSHOGI12]
-STR_NAME    :Čínská zeď
-
-[WSHOGI13]
-STR_NAME    :Čínská zeď
-
-[WSHOGI14]
-STR_NAME    :Čínská zeď
-
-[WSHOGI15]
-STR_NAME    :Čínská zeď
-
-[WSHOGI16]
-STR_NAME    :Čínská zeď
-
-[WSHOGI17]
-STR_NAME    :Čínská zeď
-
-[WSKYSC01]
-STR_NAME    :Kovový set mrakodrapu 1 - stěna
-
-[WSKYSC02]
-STR_NAME    :Kovový set mrakodrapu 2 - stěna
-
-[WSKYSC03]
-STR_NAME    :Kovový set mrakodrapu 1 - stěna
-
-[WSKYSC04]
-STR_NAME    :Kovový výtah mrakodrapu
-
-[WSKYSC05]
-STR_NAME    :Kovový výtah mrakodrapu
-
-[WSKYSC06]
-STR_NAME    :Kovový mrakodrap - výtah
-
-[WSKYSC07]
-STR_NAME    :Kovový mrakodrap - výtah
-
-[WSKYSC08]
-STR_NAME    :Kovový mrakodrap - stěna
-
-[WSKYSC09]
-STR_NAME    :Kovový mrakodrap - stěna
-
-[WSKYSC10]
-STR_NAME    :Kamenný mrakodrap - stěna
-
-[WSKYSC11]
-STR_NAME    :Kamenný mrakodrap - stěna
-
-[WSKYSC12]
-STR_NAME    :Kamenný mrakodrap - stěna
-
-[WTUDOR01]
-STR_NAME    :Tudorská přízemní stěna - část 1
-
-[WTUDOR02]
-STR_NAME    :Tudorská přízemní stěna - část 2
-
-[WTUDOR03]
-STR_NAME    :Tudorská přízemní stěna - část 3
-
-[WTUDOR04]
-STR_NAME    :Tudorská přízemní stěna - část 4
-
-[WTUDOR05]
-STR_NAME    :Tudorská přízemní stěna - část 5
-
-[WTUDOR06]
-STR_NAME    :Tudorská přízemní stěna - část 6
-
-[WTUDOR07]
-STR_NAME    :Tudorská přízemní stěna - část 7
-
-[WTUDOR08]
-STR_NAME    :Tudorská přízemní stěna - část 8
-
-[WTUDOR09]
-STR_NAME    :Tudorská stěna - část 1
-
-[WTUDOR10]
-STR_NAME    :Tudorská stěna - část 2
-
-[WTUDOR11]
-STR_NAME    :Tudorská stěna - část 3
-
-[WWIND03]
-STR_NAME    :Větrem ošlehaná stěna - část
-
-[WWIND04]
-STR_NAME    :Větrem ošlehaná stěna - část
-
-[WWIND05]
-STR_NAME    :Větrem ošlehaná stěna - část
-
-[WWIND06]
-STR_NAME    :Větrem ošlehaná stěna - část
-
-[WBamboPC]
-STR_NAME    :Bambusová zeď
-
-[SCGAFRIC]
-STR_NAME    : Afrika
-
-[SCGARTIC]
-STR_NAME    : Antarktida
-
-[SCGASIA]
-STR_NAME    : Asie
-
-[SCGAUSTR]
-STR_NAME    : Austrálie
-
-[SCGEUROP]
-STR_NAME    : Evropa
-
-[SCGNAMRC]
-STR_NAME    : Severní Amerika
-
-[SCGSAMER]
-STR_NAME    : Jižní Amerika
-
-[AFRICENT]
-STR_NAME    :Africký vstup do parku
-
-[EUROENT]
-STR_NAME    :Evropský vstup do parku
-
-[ICEENT]
-STR_NAME    :Ledový vstup do parku
-
-[JAPENT]
-STR_NAME    :Japonský vstup do parku
-
-[NAENT]
-STR_NAME    :Vstup do parku ve stylu severní Ameriky
-
-[OZENTRAN]
-STR_NAME    :Australský vstup do parku
-
-[SAMERENT]
-STR_NAME    :Vstup do parku ve stylu jižní Ameriky
-
-###############################################################################
-## Time Twister Objects
-###############################################################################
-[SCHOOLBS]
-STR_NAME    :Školní autobus - tramvaj
-STR_DESC    :Replika amerických žlutých školních autobusů
-STR_CPTY    :10 míst v každém voze
-
-[TELEPTER]
-STR_NAME    :Teleportér
-STR_DESC    :Návštěvníci jsou transportování z jednoho patra do druhého
-STR_CPTY    :16 návštěvníků
-
-[ZEPLELIN]
-STR_NAME    :Jednokolejné vlaky připomínající vzducholoď
-STR_DESC    :Velkokapacitní jednokolejné vlaky s aerodynamickou přídí a zádí
-STR_CPTY    :5 nebo 10 míst v každém vagónu
-
-[BMVOCTPS]
-STR_NAME    :Mimozemská hmota
-STR_DESC    :Tématická pozorovací věž s kabinou, která postupně vyjede až na vrchol a zpět dolů
-STR_CPTY    :20 návštěvníků
-
-[CYCLOPSX]
-STR_NAME    :Kyklopský autodrom
-STR_DESC    :Autodrom s elektrickými autíčky ve tvaru oka gigantického kyklopa
-STR_CPTY    :1 místo v každém voze
-
-[FIGTKNIT]
-STR_NAME    :Rytířský autodrom
-STR_DESC    :Autodrom s elektrickými autíčky ve tvaru koní
-STR_CPTY    :1 místo v každém voze
-
-[FLWRPOWR]
-STR_NAME    :Květinová vznášedla
-STR_DESC    :Autodrom se vznášedly ve tvaru květů květin
-STR_CPTY    :1 místo v každém voze
-
-[FUNHOUSE]
-STR_NAME    :Dům zábavy
-STR_DESC    :Budova s pohybujícími se zdmi a podlahou, což dezorientuje procházející návštěvníky
-STR_CPTY    :5 návštěvníků
-
-[HALOFMRS]
-STR_NAME    :Zrcadlové bludiště
-STR_DESC    :Budova s pokřivenými zrcadly
-STR_CPTY    :5 návštěvníků
-
-[HOVERCAR]
-STR_NAME    :Autodráha se vznášedly
-STR_DESC    :Vozy ve tvaru futuristických vznášedel jezdí po postavené dráze
-STR_CPTY    :2 místa v každém voze
-
-[MGR2]
-STR_NAME    :Dvoupatrový kolotoč
-STR_DESC    :Klasický dvoupatrový kolotoč s vyřezávanými koníky
-STR_CPTY    :32 návštěvníků
-
-[PEGASUSX]
-STR_NAME    :Autodráha s Pegasem
-STR_DESC    :Vozy ve tvaru povozů tažených Pegasem jezdí po postavené dráze
-STR_CPTY    :2 místa v každém voze
-
-[SPOKPRSN]
-STR_NAME    :Strašidelná věznice
-STR_DESC    :Budova s podzemím a figurínami vězňů straší procházející návštěvníky
-STR_CPTY    :16 návštěvníků
-
-[TIMEMACH]
-STR_NAME    :Stroj času
-STR_DESC    :Návštěvníci sedí ve speciálně navržené kruhovité konstrukci a zažívají pocit cestování časem
-STR_CPTY    :1 místo v každém stroji času
-
-[TRICATOP]
-STR_NAME    :Autodrom s Triceratopsem
-STR_DESC    :Autodrom s vozy ve tvaru Triceratopsů
-STR_CPTY    :1 místo v každém voze
-
-[BARNSTRM]
-STR_NAME    :Stodolní střela
-STR_DESC    :Vozy jsou zavěšeny na kolejnicích s ostrými zatáčkami a ostrými pády
-STR_CPTY    :4 místa v každém voze
-
-[BATTRRAM]
-STR_NAME    :Beranidlová horská dráha
-STR_DESC    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
-STR_CPTY    :6 míst v každém voze
-
-[BLCKDETH]
-STR_NAME    :Morová horská dráha
-STR_DESC    :Návštěvníci jedou po propletené bobové dráze
-STR_CPTY    :2 místa v každém voze
-
-[CERBERUS]
-STR_NAME    :Kerberosova horská dráha
-STR_DESC    :Horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně, která přelétává vrcholky kopců
-STR_CPTY    :4 místa v každém voze
-
-[DRAGNFLY]
-STR_NAME    :Šídlí horská dráha
-STR_DESC    :Návštěvníci jedou na jednokolejné trati zavěšeni ve speciálním voze, který se v zatáčkách houpe
-STR_CPTY    :2 místa v každém voze
-
-[GANSTRCR]
-STR_NAME    :Gangsterská horská dráha
-STR_DESC    :Horská dráha s vozy ve stylu gangsterů 20. let, poháněnými elektromotorem, které sviští skrze propletenou dráhu
-STR_CPTY    :4 místa v každém voze
-
-[HARPIESX]
-STR_NAME    :Horská dráha harpyjí
-STR_DESC    :Návštěvníci jedou v leže zavěšeni do speciálního držení, ve kterém na břiše nebo na zádech projedou trať s ostrými zatáčkami
-STR_CPTY    :4 místa v každém voze
-
-[HOTRODXX]
-STR_NAME    :Hot Rod horská dráha
-STR_DESC    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
-STR_CPTY    :2 místa v každém voze
-
-[HOVERBKE]
-STR_NAME    :Vznášedlová moto horská dráha
-STR_DESC    :Návštěvníci sedí na futuristických motorkách, která jedou po jednokolejné dráze
-STR_CPTY    :2 místa na každé motorce
-
-[HOVRBORD]
-STR_NAME    :Vznášedlová horská dráha
-STR_DESC    :Návštěvníci jezdí na futuristických vznášedlech, houpajících se v zatáčkách ze strany na stranu
-STR_CPTY    :2 místa v každém voze
-
-[JETPACKX]
-STR_NAME    :Jet Pack Booster
-STR_DESC    :Návštěvníci sedí ve voze, který je vystřelen po kolmé dráze
-STR_CPTY    :8 míst v každém voze
-
-[JETPLANE]
-STR_NAME    :Stíhačková horské dráha
-STR_DESC    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
-STR_CPTY    :4 místa v každém voze
-
-[JOUSTING]
-STR_NAME    :Turnajová horská dráha
-STR_DESC    :Návštěvníci sedí na zádi vozů ve tvaru koní, které jedou po jednokolejné dráze
-STR_CPTY    :2 místa v každém voze
-
-[POLCHASE]
-STR_NAME    :Policejní honička
-STR_DESC    :Horská dráha s lopinky, na které návštěvníci ve vozech sedí
-STR_CPTY    :4 místa v každém voze
-
-[POLICECR]
-STR_NAME    :Horská dráha policejních vozů
-STR_DESC    :Po dřevěné dráze jedou vozy ve tvaru policejních aut 60. let, které se ve speciálních místech se otočí a jedou pozpátku
-STR_CPTY    :6 míst v každém voze
-
-[PTERODAC]
-STR_NAME    :Pterodaktylská horská dráha
-STR_DESC    :Návštěvníci sedí v pohodlných sedadlech pod tratí cestující skrze propletenou dráhu, poskytující pocit prehistorického letu
-STR_CPTY    :4 místa v každém voze
-
-[RAPTORXX]
-STR_NAME    :Raptorská horská dráha
-STR_DESC    :Návštěvníci sedí na zádi vozů ve tvaru raptorů, které jedou po jednokolejné dráze
-STR_CPTY    :2 místa v každém voze
-
-[SEAPLANE]
-STR_NAME    :Hydroplánská horská dráha
-STR_DESC    :Zavěšená horská dráha z volné zavěšených vozů, které se naklání při jízdě do zatáček
-STR_CPTY    :4 místa v každém voze
-
-[STAMPHRD]
-STR_NAME    :Horská dráha splašeného stáda
-STR_DESC    :Horská dráha s lopinky a vozy ve tvaru splašeného stáda dinosaurů
-STR_CPTY    :4 místa v každém voze
-
-[VALKYRIE]
-STR_NAME    :Valkýrská horská dráha
-STR_DESC    :Extra-široké vozy letí dolů po zcela kolmé dráze a poskytují tím pocit volného pádu
-STR_CPTY    :6 míst v každém voze
-
-[1920RACR]
-STR_NAME    :Motokáry z 20. let
-STR_DESC    :Benzínové ovladatelné motokáry ve stylu 20. let
-STR_CPTY    :1 místo v každém voze
-
-[CAVMNCAR]
-STR_NAME    :Prehistorické motokáry
-STR_DESC    :Benzínové ovladatelné motokáry ve stylu pravěku
-STR_CPTY    :1 místo v každém voze
-
-[DINOEGGS]
-STR_NAME    :Jízda dinsouřích vajec
-STR_DESC    :Návštěvníci sedí po dvou ve vejcích, které se otáčejí okolo dinosauří matky uprostřed
-STR_CPTY    :18 návštěvníků
-
-[FLALMACE]
-STR_NAME    :Palicová jízda
-STR_DESC    :Návštěvníci sedí na židlích připevněných na otáčející se ramena
-STR_CPTY    :1 místo na každé židli
-
-[GINTSPDR]
-STR_NAME    :Béčková pavoučí jízda
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo velkého pavouka z béčkového filmu uprostřed
-STR_CPTY    :18 návštěvníků
-
-[MICROBUS]
-STR_NAME    :Jízda v MicroBusu
-STR_DESC    :Návštěvníci sledují film uvnitř simulátoru pohybu, zatímco se simulátorem hýbe hydraulika
-STR_CPTY    :8 návštěvníků
-
-[NEPTUNEX]
-STR_NAME    :Neptunská jízda
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo suchy Neptuna uprostřed
-STR_CPTY    :18 návštěvníků
-
-[TOMMYGUN]
-STR_NAME    :Jízda s Thompsonem
-STR_DESC    :Návštěvníci sedí po dvou na sedačkách, které se otáčejí okolo velké repliky samopalu Thompson uprostřed
-STR_CPTY    :18 návštěvníků
-
-[TREBUCHT]
-STR_NAME    :Katapultující jízda
-STR_DESC    :Návštěvníci sedí v gondole zavěšené na podpěrách, otáčející se dopředu a dozadu vzhůru nohama, která vypadá jako obléhací zbraň z dávných dob
-STR_CPTY    :8 návštěvníků
-
-[FLYGBOAT]
-STR_NAME    :Létající lodě
-STR_DESC    :Vozy ve tvaru létajících lodí jedou po trati horské dráhy, což umožňuje ostré zatáčky, strmé klesání a cákající zpomalení pro mírnější říční úseky
-STR_CPTY    :16 míst v každé lodi
-
-[OAKBAREL]
-STR_NAME    :Jízda v dubovém sudu
-STR_DESC    :Lodě ve tvaru dubových barelů se plaví po meandrech na vodním kanále a sjíždějí pěnící peřeje
-STR_CPTY    :8 míst v každé lodi
-
-[RIVRSTYX]
-STR_NAME    :Řeka Styx
-STR_DESC    :Rafty se plaví po meandrech na vodním kanále
-STR_CPTY    :4 místa na každém raftu
-
-[TRILOBTE]
-STR_NAME    :Trilobití lodě
-STR_DESC    :Vozy ve tvaru trilobitů jedou po trati horské dráhy, což umožňuje ostré zatáčky, strmé klesání a cákající zpomalení pro mírnější říční úseky
-STR_CPTY    :16 míst v každé lodi
-
-[1920SAND]
-STR_NAME    :Art Deco stánek
-STR_DESC    :Malý stánek s nudlemi a čerstvou limonádou
-
-[1960TSRT]
-STR_NAME    :Hippie trička
-STR_DESC    :Stánek prodávající batikovaná trička s hippie motivy
-
-[MEDISOUP]
-STR_NAME    :Čarodějnický kotlík
-STR_DESC    :Stánek prodávající hustou polévku
-
-[MKTSTAL1]
-STR_NAME    :Jarmarkový stánek s jablky v županu
-STR_DESC    :Stánek prodávající jablka v županu
-
-[MKTSTAL2]
-STR_NAME    :Jarmarkový stánek s citronádou
-STR_DESC    :Stánek prodávající starou dobrou čerstvou citronádu
-
-[MOONJUCE]
-STR_NAME    :Šťáva z Měsíce
-STR_DESC    :Stánek prodávající nejnovější slazené nápoje
-
-[MYTHOSEA]
-STR_NAME    :Neptunův stánek s plody moře
-STR_DESC    :Stánek prodávající Neptunovy mořské dobroty
-
-[SOFTOYST]
-STR_NAME    :Stánek s plyšáky-dinosaury
-STR_DESC    :Stánek prodávající roztomilé plyšáky-dinosaury
-
-[1920SLMP]
-STR_NAME    :Stará pouliční lampa
-
-[ALENTRE1]
-STR_NAME    :Mimozemský strom
-
-[ALENTRE2]
-STR_NAME    :Mimozemský strom
-
-[ARMRBODY]
-STR_NAME    :Magické brnění
-
-[ARMRHELM]
-STR_NAME    :Magická helma
-
-[ARMRSHLD]
-STR_NAME    :Magický štít
-
-[ARMRSWRD]
-STR_NAME    :Magický meč
-
-[ARTDEC01]
-STR_NAME    :Art Deco stěna
-
-[ARTDEC02]
-STR_NAME    :Art Deco roh
-
-[ARTDEC03]
-STR_NAME    :Art Deco dveřní rám
-
-[ARTDEC04]
-STR_NAME    :Art Deco okno
-
-[ARTDEC05]
-STR_NAME    :Art Deco okno
-
-[ARTDEC06]
-STR_NAME    :Art Deco vrchní část
-
-[ARTDEC07]
-STR_NAME    :Art Deco rohová část
-
-[ARTDEC08]
-STR_NAME    :Art Deco vrchní rohová část
-
-[ARTDEC09]
-STR_NAME    :Art Deco stěna
-
-[ARTDEC10]
-STR_NAME    :Art Deco stěna
-
-[ARTDEC11]
-STR_NAME    :Art Deco roh s okny
-
-[ARTDEC12]
-STR_NAME    :Art Deco roh se zábradlím
-
-[ARTDEC13]
-STR_NAME    :Art Deco vrchní rohová část
-
-[ARTDEC14]
-STR_NAME    :Art Deco roh s okny
-
-[ARTDEC15]
-STR_NAME    :Art Deco stěna
-
-[ARTDEC16]
-STR_NAME    :Art Deco stěna
-
-[ARTDEC17]
-STR_NAME    :Art Deco stěna
-
-[ARTDEC18]
-STR_NAME    :Art Deco vrchní část
-
-[ARTDEC19]
-STR_NAME    :Art Deco stěna
-
-[ARTDEC20]
-STR_NAME    :Art Deco stěna
-
-[ARTDEC21]
-STR_NAME    :Art Deco stěna se zábradlím
-
-[ARTDEC22]
-STR_NAME    :Art Deco stěna se zábradlím
-
-[ARTDEC23]
-STR_NAME    :Art Deco stěna se zábradlím
-
-[ARTDEC24]
-STR_NAME    :Art Deco stěna se zábradlím
-
-[ARTDEC28]
-STR_NAME    :Art Deco střešní část
-
-[ARTDEC29]
-STR_NAME    :Art Deco roh
-
-[BIGBASSX]
-STR_NAME    :Obrovská baskytara
-
-[BIGGUTAR]
-STR_NAME    :Obrovská kytara
-
-[CHPRBKE1]
-STR_NAME    :Motorka
-
-[CHPRBKE2]
-STR_NAME    :Motorka
-
-[ELECFEN5]
-STR_NAME    :Elektrický plot - obrácená rohová část
-
-[FIREMANX]
-STR_NAME    :Pohybující se hasič
-
-[FUTSKY16]
-STR_NAME    :Pískovcový mrakodrap - roh
-
-[FUTSKY17]
-STR_NAME    :Pískovcový mrakodrap - výplň
-
-[FUTSKY18]
-STR_NAME    :Pískovcový mrakodrap - dveřní rám
-
-[FUTSKY19]
-STR_NAME    :Pískovcový mrakodrap - dolní roh
-
-[FUTSKY21]
-STR_NAME    :Pískovcový mrakodrap - střední stěna
-
-[FUTSKY23]
-STR_NAME    :Pískovcový mrakodrap - obrácený vrchní roh
-
-[FUTSKY29]
-STR_NAME    :Pískovcový mrakodrap - dolní zaoblená část
-
-[FUTSKY34]
-STR_NAME    :Pískovcový mrakodrap - střecha
-
-[FUTSKY35]
-STR_NAME    :Pískovcový mrakodrap - střední zaoblená část
-
-[FUTSKY42]
-STR_NAME    :Pískovcový mrakodrap - horní zaoblená část
-
-[FUTSKY52]
-STR_NAME    :Pískovcový mrakodrap - dolní obrácený roh
-
-[FUTSKY53]
-STR_NAME    :Pískovcový mrakodrap - střední roh
-
-[FUTSKY54]
-STR_NAME    :Mrakodrap ze sopečného skla - střecha
-
-[GLDCHEST]
-STR_NAME    :Truhla s pokladem
-
-[GOLDFLEC]
-STR_NAME    :Zlatá ovčí vlna
-
-[HAYBAILS]
-STR_NAME    :Kopa sena
-
-[HEVBTH05]
-STR_NAME    :Nebeská koupel - Oblouk
-
-[HEVBTH06]
-STR_NAME    :Nebeská koupel - Oblouk
-
-[HEVBTH07]
-STR_NAME    :Nebeská koupel - Oblouk
-
-[HEVBTH08]
-STR_NAME    :Nebeská koupel - Schodiště
-
-[HEVBTH09]
-STR_NAME    :Nebeská koupel - Schodiště
-
-[HEVBTH10]
-STR_NAME    :Nebeská koupel - Architektura
-
-[HEVBTH11]
-STR_NAME    :Nebeská koupel - Architektura
-
-[HEVBTH12]
-STR_NAME    :Nebeská koupel - Architektura
-
-[HEVBTH13]
-STR_NAME    :Nebeská koupel - Architektura
-
-[HEVBTH14]
-STR_NAME    :Nebeská koupel - Okno
-
-[HEVBTH15]
-STR_NAME    :Nebeská koupel - Podlaha
-
-[HEVROF01]
-STR_NAME    :Nebeská koupel - střecha
-
-[HEVROF02]
-STR_NAME    :Nebeská koupel - střecha
-
-[HEVROF03]
-STR_NAME    :Nebeská koupel - střecha
-
-[HEVROF04]
-STR_NAME    :Nebeská koupel - střecha
-
-[HRBWAL01]
-STR_NAME    :Přístav - stěna
-
-[HRBWAL02]
-STR_NAME    :Přístav - stěna s rybářským náčiním
-
-[HRBWAL03]
-STR_NAME    :Přístav - stěna s vřesem
-
-[HRBWAL04]
-STR_NAME    :Přístav - stěna s vřesem
-
-[HRBWAL05]
-STR_NAME    :Přístav - stěna s vřesem
-
-[HRBWAL06]
-STR_NAME    :Přístav - stěna s vřesem
-
-[HURCLULS]
-STR_NAME    :Herkules
-
-[INDWAL01]
-STR_NAME    :Industriální stěny - set
-
-[INDWAL02]
-STR_NAME    :Industriální stěny - set
-
-[INDWAL03]
-STR_NAME    :Industriální stěny - set
-
-[INDWAL04]
-STR_NAME    :Industriální stěny - set
-
-[INDWAL05]
-STR_NAME    :Industriální střecha
-
-[INDWAL06]
-STR_NAME    :Industriální střecha
-
-[INDWAL07]
-STR_NAME    :Industriální dveřní rám
-
-[INDWAL08]
-STR_NAME    :Industriální dveřní rám
-
-[INDWAL09]
-STR_NAME    :Industriální dveřní rám
-
-[INDWAL10]
-STR_NAME    :Industriální dveřní rám
-
-[INDWAL11]
-STR_NAME    :Industriální dveřní rám
-
-[INDWAL12]
-STR_NAME    :Industriální dveřní rám
-
-[INDWAL13]
-STR_NAME    :Industriální dveřní rám
-
-[INDWAL14]
-STR_NAME    :Industriální roh
-
-[INDWAL15]
-STR_NAME    :Industriální roh
-
-[INDWAL16]
-STR_NAME    :Industriální okno
-
-[INDWAL17]
-STR_NAME    :Industriální okno
-
-[INDWAL18]
-STR_NAME    :Industriální okno
-
-[INDWAL19]
-STR_NAME    :Industriální okno
-
-[INDWAL20]
-STR_NAME    :Industriální střecha
-
-[INDWAL21]
-STR_NAME    :Industriální střecha
-
-[INDWAL22]
-STR_NAME    :Industriální střecha
-
-[INDWAL23]
-STR_NAME    :Industriální střecha
-
-[INDWAL24]
-STR_NAME    :Industriální střecha
-
-[INDWAL25]
-STR_NAME    :Industriální střecha
-
-[INDWAL26]
-STR_NAME    :Industriální střecha
-
-[INDWAL27]
-STR_NAME    :Industriální střecha
-
-[INDWAL28]
-STR_NAME    :Industriální střecha
-
-[INDWAL29]
-STR_NAME    :Industriální střecha
-
-[INDWAL30]
-STR_NAME    :Industriální okno
-
-[INDWAL31]
-STR_NAME    :Industriální okno
-
-[INDWAL32]
-STR_NAME    :Industriální okno
-
-[JAILXX01]
-STR_NAME    :Věznice - stěna
-
-[JAILXX02]
-STR_NAME    :Věznice - stěna
-
-[JAILXX03]
-STR_NAME    :Věznice - stěna
-
-[JAILXX04]
-STR_NAME    :Věznice - stěna
-
-[JAILXX05]
-STR_NAME    :Věznice - stěna
-
-[JAILXX06]
-STR_NAME    :Věznice - stěna
-
-[JAILXX07]
-STR_NAME    :Věznice - střecha
-
-[JAILXX08]
-STR_NAME    :Věznice - obrácená část
-
-[JAILXX09]
-STR_NAME    :Věznice - obrácená část
-
-[JAILXX10]
-STR_NAME    :Věznice - obrácená část
-
-[JAILXX11]
-STR_NAME    :Věznice - obrácená část
-
-[JAILXX12]
-STR_NAME    :Věznice - obrácená část
-
-[JAILXX13]
-STR_NAME    :Věznice - obrácená část
-
-[JAILXX14]
-STR_NAME    :Věznice - schodiště na rozhlednu
-
-[JAILXX15]
-STR_NAME    :Věznice - schodiště na rozhlednu
-
-[JAILXX16]
-STR_NAME    :Věznice - Rozhledna
-
-[JAILXX20]
-STR_NAME    :Věznice - roh
-
-[JAILXX21]
-STR_NAME    :Věznice - roh
-
-[JAZZMBR1]
-STR_NAME    :Člen jazzové kapely
-
-[JAZZMBR2]
-STR_NAME    :Člen jazzové kapely
-
-[JAZZMBR3]
-STR_NAME    :Člen jazzové kapely
-
-[JAZZMBR4]
-STR_NAME    :Člen jazzové kapely
-
-[MAMTHW01]
-STR_NAME    :Velký mamutí plot
-
-[MAMTHW02]
-STR_NAME    :Velký mamutí plot
-
-[MAMTHW03]
-STR_NAME    :Velký nahnutý mamutí plot
-
-[MAMTHW04]
-STR_NAME    :Velký nahnutý mamutí plot
-
-[MAMTHW05]
-STR_NAME    :Malý nahnutý mamutí plot
-
-[MAMTHW06]
-STR_NAME    :Malý nahnutý mamutí plot
-
-[MCASTL02]
-STR_NAME    :Hradní stěna
-
-[MCASTL03]
-STR_NAME    :Hradní stěna
-
-[MCASTL04]
-STR_NAME    :Hradní stěna
-
-[MCASTL05]
-STR_NAME    :Hradní opevnění - roh
-
-[MCASTL06]
-STR_NAME    :Hradní opevnění
-
-[MCASTL07]
-STR_NAME    :Hradní opevnění - roh
-
-[MCASTL08]
-STR_NAME    :Hradní opevnění - obrácený roh
-
-[MCASTL09]
-STR_NAME    :Hradní rohová část
-
-[MCASTL10]
-STR_NAME    :Hradní opevnění - roh
-
-[MCASTL19]
-STR_NAME    :Hradní rohová část
-
-[MDBUCKET]
-STR_NAME    :Kbelík
-
-[MEDSTOOL]
-STR_NAME    :Stolička
-
-[MEDTOOLS]
-STR_NAME    :Farmářské náčiní
-
-[MEDTRGET]
-STR_NAME    :Terč
-
-[METEORCR]
-STR_NAME    :Kráter
-
-[METEORST]
-STR_NAME    :Kráter - stěna
-
-[METRCRS1]
-STR_NAME    :Kráter - stěna s krystaly
-
-[METRCRS2]
-STR_NAME    :Kráter - stěna s krystaly
-
-[MINOTAUR]
-STR_NAME    :Socha minotaura
-
-[OLDNYK01]
-STR_NAME    :New York stěna
-
-[OLDNYK02]
-STR_NAME    :New York stěna
-
-[OLDNYK03]
-STR_NAME    :New York stěna
-
-[OLDNYK04]
-STR_NAME    :New York stěna
-
-[OLDNYK05]
-STR_NAME    :New York střecha
-
-[OLDNYK06]
-STR_NAME    :New York výplň rohu
-
-[OLDNYK07]
-STR_NAME    :New York obrácený roh
-
-[OLDNYK08]
-STR_NAME    :New York obrácený roh
-
-[OLDNYK09]
-STR_NAME    :New York obrácený roh
-
-[OLDNYK10]
-STR_NAME    :New York obrácený roh
-
-[OLDNYK11]
-STR_NAME    :New York stěna s linkou
-
-[OLDNYK12]
-STR_NAME    :New York stěna
-
-[OLDNYK13]
-STR_NAME    :New York stěna s linkou
-
-[OLDNYK14]
-STR_NAME    :New York stěna
-
-[OLDNYK15]
-STR_NAME    :New York stěna
-
-[OLDNYK16]
-STR_NAME    :New York stěna
-
-[OLDNYK17]
-STR_NAME    :New York stěna
-
-[OLDNYK18]
-STR_NAME    :New York stěna
-
-[OLDNYK19]
-STR_NAME    :New York stěna
-
-[OLDNYK31]
-STR_NAME    :New York stěna
-
-[OLDNYK33]
-STR_NAME    :New York stěna
-
-[OLDNYK34]
-STR_NAME    :New York stěna
-
-[OLDNYK35]
-STR_NAME    :New York střecha
-
-[PRIMWAL1]
-STR_NAME    :Dřevěný plot s révou
-
-[PRIMWAL2]
-STR_NAME    :Dřevěný plot s révou
-
-[PRIMWAL3]
-STR_NAME    :Dřevěný plot s révou
-
-[PSNTWL02]
-STR_NAME    :Starodávná vesnice - dolní stěna
-
-[PSNTWL03]
-STR_NAME    :Starodávná vesnice - dolní stěna
-
-[PSNTWL04]
-STR_NAME    :Starodávná vesnice - dolní stěna
-
-[PSNTWL05]
-STR_NAME    :Starodávná vesnice - dolní stěna
-
-[PSNTWL06]
-STR_NAME    :Starodávná vesnice - dolní stěna
-
-[PSNTWL07]
-STR_NAME    :Starodávná vesnice - dolní stěna
-
-[PSNTWL08]
-STR_NAME    :Starodávná vesnice - dolní roh
-
-[PSNTWL09]
-STR_NAME    :Starodávná vesnice - horní stěna
-
-[PSNTWL10]
-STR_NAME    :Starodávná vesnice - horní stěna
-
-[PSNTWL11]
-STR_NAME    :Starodávná vesnice - horní stěna
-
-[PSNTWL12]
-STR_NAME    :Starodávná vesnice - horní stěna
-
-[PSNTWL13]
-STR_NAME    :Starodávná vesnice - horní stěna
-
-[PSNTWL14]
-STR_NAME    :Starodávná vesnice - střecha
-
-[PSNTWL15]
-STR_NAME    :Starodávná vesnice - obrácená střecha
-
-[PSNTWL16]
-STR_NAME    :Starodávná vesnice - střecha
-
-[PSNTWL17]
-STR_NAME    :Starodávná vesnice - střecha
-
-[PSNTWL20]
-STR_NAME    :Starodávná vesnice - střešní okno
-
-[PSNTWL21]
-STR_NAME    :Starodávná vesnice - střešní okno
-
-[PSNTWL23]
-STR_NAME    :Starodávná vesnice - horní roh
-
-[PSNTWL24]
-STR_NAME    :Starodávná vesnice - okno
-
-[PSNTWL25]
-STR_NAME    :Starodávná vesnice - okno
-
-[PSNTWL29]
-STR_NAME    :Starodávná vesnice - střešní okno
-
-[PSNTWL30]
-STR_NAME    :Starodávná vesnice - střešní okno
-
-[PSNTWL31]
-STR_NAME    :Starodávná vesnice - rohová střecha
-
-[RDMETO03]
-STR_NAME    :Kráter - stěna
-
-[RDMETO04]
-STR_NAME    :Kráter - obrácený roh
-
-[RUNWAY01]
-STR_NAME    :Ranvej
-
-[RUNWAY02]
-STR_NAME    :Ranvej
-
-[RUNWAY03]
-STR_NAME    :Ranvej
-[RUNWAY04]
-STR_NAME    :Ranvej
-
-[RUNWAY05]
-STR_NAME    :Ranvej
-
-[RUNWAY06]
-STR_NAME    :Ranvej
-
-[SCHNCRSH]
-STR_NAME    :Rozbitý hydroplán
-
-[SCHNDRUM]
-STR_NAME    :Barel ropy
-
-[SCHNPL05]
-STR_NAME    :Hydroplán
-
-[SCHNPL06]
-STR_NAME    :Hydroplán
-
-[SCHNTNNY]
-STR_NAME    :Závodní tannoy
-
-[SHWDFRST]
-STR_NAME    :Stromy
-
-[SMOKSK02]
-STR_NAME    :Velký kouřící komín
-
-[SMOKSK03]
-STR_NAME    :Velký kouřící komín
-
-[SPCSHP06]
-STR_NAME    :Vesmírná loď - střední část
-
-[SPCSHP09]
-STR_NAME    :Vesmírná loď - dok
-
-[SPCSHP10]
-STR_NAME    :Vesmírná loď - motory
-
-[SPCSHP11]
-STR_NAME    :Vesmírná loď - obývací část
-
-[STNESTA1]
-STR_NAME    :Člověk přeměněný na kámen
-
-[STNESTA2]
-STR_NAME    :Člověk přeměněný na kámen
-
-[STNESTA3]
-STR_NAME    :Člověk přeměněný na kámen
-
-[STNESTA4]
-STR_NAME    :Člověk přeměněný na kámen
-
-[STOOLSET]
-STR_NAME    :Stoličky
-
-[SWAMPLT1]
-STR_NAME    :Bažina - Rostlina
-
-[SWAMPLT2]
-STR_NAME    :Bažina - Tráva
-
-[SWAMPLT3]
-STR_NAME    :Bažina - Tráva
-
-[SWAMPLT4]
-STR_NAME    :Bažina - Rostlina
-
-[SWAMPLT5]
-STR_NAME    :Bažina - Rostlina
-
-[SWAMPLT6]
-STR_NAME    :Bažina - Tráva
-
-[SWAMPLT7]
-STR_NAME    :Bažina - Tráva
-
-[SWAMPLT8]
-STR_NAME    :Bažina - Tráva
-
-[SWAMPLT9]
-STR_NAME    :Bažina - Tráva
-
-[SWRDSTNE]
-STR_NAME    :Meč v kameni
-
-[TARPIT04]
-STR_NAME    :Bublající bažina
-
-[TARPIT05]
-STR_NAME    :Bublající bažina
-
-[TARPIT06]
-STR_NAME    :Bublající bažina
-
-[TARPIT07]
-STR_NAME    :Bublající bažina
-
-[TARPIT08]
-STR_NAME    :Bublající bažina
-
-[TARPIT09]
-STR_NAME    :Bublající bažina
-
-[TARPIT10]
-STR_NAME    :Bublající bažina
-
-[TARPIT11]
-STR_NAME    :Bublající bažina
-
-[TARPIT12]
-STR_NAME    :Bublající bažina
-
-[TARPIT13]
-STR_NAME    :Bublající bažina
-
-[TARPIT14]
-STR_NAME    :Bublající bažina
-
-[VALKRI01]
-STR_NAME    :Valkýra
-
-[VALKRI02]
-STR_NAME    :Valkýra
-
-[WDNCART2]
-STR_NAME    :Dřevěný povoz
-
-[WEPNRACK]
-STR_NAME    :Set zbraní
-
-[WISKYBL1]
-STR_NAME    :Whisky barel
-
-[WISKYBL2]
-STR_NAME    :Whisky barely
-
-[YEWTREEX]
-STR_NAME    :Tis
-
-[ZEUSSTAT]
-STR_NAME    :Socha Dia
-
-[ALENPLT1]
-STR_NAME    :Mimozemská Rostlina
-
-[ALENPLT2]
-STR_NAME    :Mimozemská Rostlina
-
-[ALLSEEYE]
-STR_NAME    :Pohybující se vše-vidící oko
-
-[ALNSTR01]
-STR_NAME    :Mimozemská stavba
-
-[ALNSTR02]
-STR_NAME    :Mimozemská stavba
-
-[ALNSTR03]
-STR_NAME    :Mimozemská stavba
-
-[ALNSTR04]
-STR_NAME    :Mimozemské světlo
-
-[ALNSTR05]
-STR_NAME    :Mimozemská věž - dolní díl
-
-[ALNSTR06]
-STR_NAME    :Mimozemská věž - střední díl
-
-[ALNSTR07]
-STR_NAME    :Mimozemská věž - vrchní díl
-
-[ARGONAU1]
-STR_NAME    :Pohyblivá chobotnice
-
-[ARGONAU2]
-STR_NAME    :Pohyblivá chobotnice
-
-[ARGONAU3]
-STR_NAME    :Pohyblivá chobotnice
-
-[ASTRONGT]
-STR_NAME    :Pohyblivý astronaut
-
-[BKRGANG1]
-STR_NAME    :Cyklista
-
-[BOLPOT01]
-STR_NAME    :Hrnec s horkou vodou
-
-[CAGDSTAT]
-STR_NAME    :Pohybující se orel na kleci
-
-[CAVEMENX]
-STR_NAME    :Pohybující se jeskynní muž zapalující oheň
-
-[CHANMAID]
-STR_NAME    :Pohybující se Andromeda (spoutaná žena)
-
-[CLNSMEN1]
-STR_NAME    :Pohybující se člen klanu
-
-[COMPEYEX]
-STR_NAME    :Super monitor
-
-[COOKSPIT]
-STR_NAME    :Pečeně na rožni
-
-[DINSIGN1]
-STR_NAME    :Neonová cedule jídelny
-
-[DINSIGN2]
-STR_NAME    :Neonová cedule jídelny
-
-[DINSIGN3]
-STR_NAME    :Neonová cedule jídelny
-
-[DINSIGN4]
-STR_NAME    :Neonová cedule jídelny
-
-[DKFIGHT1]
-STR_NAME    :Pohybující se rytíř
-
-[DKFIGHT2]
-STR_NAME    :Pohybující se rytíř
-
-[DRGNATTK]
-STR_NAME    :Útočící drak
-
-[ELECFEN1]
-STR_NAME    :Elektrický ohradník - roh
-
-[ELECFEN2]
-STR_NAME    :Elektrický ohradník
-
-[ELECFEN3]
-STR_NAME    :Elektrický ohradník se světlem
-
-[ELECFEN4]
-STR_NAME    :Elektrický ohradník - rozbitý
-
-[EVALIEN1]
-STR_NAME    :Pohybující se ďábelský mimozemšťan
-
-[EVALIEN2]
-STR_NAME    :Pohybující se ďábelský mimozemšťan
-
-[EVALIEN3]
-STR_NAME    :Pohybující se ďábelský mimozemšťan
-
-[FIRCANON]
-STR_NAME    :Pohybující se vystřelující kanón
-
-[FLTSIGN1]
-STR_NAME    :Antigravitační LCD Billboard
-
-[FLTSIGN2]
-STR_NAME    :Antigravitační LCD Billboard
-
-[FRBEACON]
-STR_NAME    :Pochodeň / svíce
-
-[FUROBOT1]
-STR_NAME    :Robot
-
-[FUROBOT2]
-STR_NAME    :Robot
-
-[FUTSKY01]
-STR_NAME    :Pískovcový mrakodrap - brána
-
-[FUTSKY02]
-STR_NAME    :Pískovcový mrakodrap - výplň
-
-[FUTSKY03]
-STR_NAME    :Pískovcový mrakodrap - dolní roh
-
-[FUTSKY04]
-STR_NAME    :Pískovcový mrakodrap - zaoblený vršek
-
-[FUTSKY05]
-STR_NAME    :Pískovcový mrakodrap - zaoblený vršek
-
-[FUTSKY06]
-STR_NAME    :Pískovcový mrakodrap - zaoblený střed
-
-[FUTSKY07]
-STR_NAME    :Pískovcový mrakodrap - střední stěna
-
-[FUTSKY08]
-STR_NAME    :Pískovcový mrakodrap - střední stěna
-
-[FUTSKY09]
-STR_NAME    :Pískovcový mrakodrap - střední stěna
-
-[FUTSKY10]
-STR_NAME    :Pískovcový mrakodrap - zaoblený spodek
-
-[FUTSKY11]
-STR_NAME    :Pískovcový mrakodrap - střední roh
-
-[FUTSKY12]
-STR_NAME    :Pískovcový mrakodrap - střední stěna
-
-[FUTSKY13]
-STR_NAME    :Pískovcový mrakodrap - střešní díl
-
-[FUTSKY14]
-STR_NAME    :Pískovcový mrakodrap - střešní díl
-
-[FUTSKY15]
-STR_NAME    :Pískovcový mrakodrap - dok
-
-[FUTSKY33]
-STR_NAME    :Pískovcový mrakodrap - brána
-
-[FUTSKY36]
-STR_NAME    :Mrakodrap ze sopečného skla - dveře
-
-[FUTSKY37]
-STR_NAME    :Mrakodrap ze sopečného skla - zaoblený roh
-
-[FUTSKY38]
-STR_NAME    :Mrakodrap ze sopečného skla - nakloněná stěna
-
-[FUTSKY39]
-STR_NAME    :Mrakodrap ze sopečného skla - nakloněný roh
-
-[FUTSKY40]
-STR_NAME    :Mrakodrap ze sopečného skla - nakloněná stěna
-
-[FUTSKY41]
-STR_NAME    :Mrakodrap ze sopečného skla - nakloněná stěna
-
-[FUTSKY44]
-STR_NAME    :Mrakodrap ze sopečného skla - nakloněná stěna
-
-[FUTSKY46]
-STR_NAME    :Mrakodrap ze sopečného skla - nakloněný roh
-
-[FUTSKY47]
-STR_NAME    :Mrakodrap ze sopečného skla - stěna
-
-[FUTSKY48]
-STR_NAME    :Mrakodrap ze sopečného skla - okno
-
-[FWRPRDC1]
-STR_NAME    :Senzační tanečnice
-
-[GANGSTER]
-STR_NAME    :Pohybující se Gangster
-
-[GDALIEN1]
-STR_NAME    :Pohybující se hodný mimozemšťan
-
-[GDALIEN2]
-STR_NAME    :Pohybující se hodný mimozemšťan
-
-[GDALIEN3]
-STR_NAME    :Pohybující se hodný mimozemšťan
-
-[GEYSERXX]
-STR_NAME    :Gejzíry
-
-[GGNTOCTO]
-STR_NAME    :Béčková obrovská chobotnice
-
-[GGNTSPID]
-STR_NAME    :Béčkový obrovský pavouk
-
-[GSCORPO2]
-STR_NAME    :Pohybující se útočící škorpion
-
-[GSCORPON]
-STR_NAME    :Pohybující se útočící škorpion
-
-[GUYQWIFX]
-STR_NAME    :Zpěvák s patkou
-
-[HEVBTH01]
-STR_NAME    :Nebeská koupel - bazén
-
-[HEVBTH02]
-STR_NAME    :Nebeská koupel - roh bazénu
-
-[HEVBTH03]
-STR_NAME    :Nebeská koupel - fontána
-
-[HEVBTH04]
-STR_NAME    :Nebeská koupel - fontána
-
-[HEVBTH16]
-STR_NAME    :Nebeská koupel - schody do bazénu
-
-[HEVBTH17]
-STR_NAME    :Nebeská koupel - hrana bazénu
-
-[HORSECRT]
-STR_NAME    :Kůň
-
-[HOVRCAR1]
-STR_NAME    :Zaparkované vznášedlo
-
-[HOVRCAR2]
-STR_NAME    :Zaparkované vznášedlo
-
-[HOVRCAR3]
-STR_NAME    :Letící vznášedlo
-
-[HOVRCAR4]
-STR_NAME    :Letící vznášedlo
-
-[HVRBIKE1]
-STR_NAME    :Zaparkované vznášedlo
-
-[HVRBIKE2]
-STR_NAME    :Zaparkované vznášedlo
-
-[HVRBIKE3]
-STR_NAME    :Letící vznášedlo
-
-[HVRBIKE4]
-STR_NAME    :Letící vznášedlo
-
-[KILLRVIN]
-STR_NAME    :Vinná réva
-
-[KNFIGHT1]
-STR_NAME    :Pohybující se temný rytíř
-
-[KNFIGHT2]
-STR_NAME    :Pohybující se temný rytíř
-
-[LARGECPU]
-STR_NAME    :Superpočítač
-
-[LASERX01]
-STR_NAME    :Laserový plot
-
-[LASERX02]
-STR_NAME    :Laserový plot - roh
-
-[MDUSASTA]
-STR_NAME    :Pohybující se Medúza
-
-[PDFLAG02]
-STR_NAME    :Stará vlajka
-
-[PDFLAG03]
-STR_NAME    :Stará vlajka
-
-[PDFLAG04]
-STR_NAME    :Stará vlajka
-
-[PDFLAG05]
-STR_NAME    :Stará vlajka
-
-[PDFLAG06]
-STR_NAME    :Stará vlajka
-
-[PDFLAG08]
-STR_NAME    :Stará vlajka
-
-[PDFLAG13]
-STR_NAME    :Stará vlajka
-
-[PDFLAG14]
-STR_NAME    :Stará vlajka
-
-[PDFLAG15]
-STR_NAME    :Stará vlajka
-
-[PDFLAG16]
-STR_NAME    :Stará vlajka
-
-[POLWTBTN]
-STR_NAME    :Pohybující se policista
-
-[PRIMHEAD]
-STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
-
-[PRIMHEAR]
-STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
-
-[PRIMROOR]
-STR_NAME    :Dřevěný plot s vinou révou
-
-[PRIMROOT]
-STR_NAME    :Dřevěný plot s vinou révou
-
-[PRIMSCRN]
-STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
-
-[PRIMST01]
-STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
-
-[PRIMST02]
-STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
-
-[PRIMST03]
-STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
-
-[PRIMTALL]
-STR_NAME    :Dřevěný plot s mužem, který jí rostlinu
-
-[PSNTWL01]
-STR_NAME    :Starodávná vesnice - střecha s komínem
-
-[RCKNROLR]
-STR_NAME    :Frajer
-
-[ROBNHOOD]
-STR_NAME    :Pohybující se Robin Hood
-
-[RSWATRES]
-STR_NAME    :Bruslící číšnice
-
-[SCHNBOST]
-STR_NAME    :Bóje
-
-[SCHNBOUY]
-STR_NAME    :Bóje
-
-[SCHNPL01]
-STR_NAME    :Hydroplán
-
-[SCHNPL02]
-STR_NAME    :Hydroplán
-
-[SCHNPL03]
-STR_NAME    :Hydroplán
-
-[SCHNPL04]
-STR_NAME    :Hydroplán
-
-[SDRAGFLY]
-STR_NAME    :Pohybující se vážky
-
-[SKELETO1]
-STR_NAME    :Pohybující se armáda kostlivců
-
-[SKELETO2]
-STR_NAME    :Pohybující se armáda kostlivců
-
-[SKELETO3]
-STR_NAME    :Pohybující se armáda kostlivců
-
-[SMALLCPU]
-STR_NAME    :Superpočítač
-
-[SMOKSK01]
-STR_NAME    :Velký kouřící komín
-
-[SOUPCRN2]
-STR_NAME    :Prebiotická polévka
-
-[SOUPCRNR]
-STR_NAME    :Prebiotická polévka
-
-[SOUPED01]
-STR_NAME    :Prebiotická polévka
-
-[SOUPED02]
-STR_NAME    :Prebiotická polévka
-
-[SOUPTL01]
-STR_NAME    :Prebiotická polévka
-
-[SOUPTL02]
-STR_NAME    :Prebiotická polévka
-
-[SPACRANG]
-STR_NAME    :Pohybující se Vesmírný kovboj
-
-[SPCSHP01]
-STR_NAME    :Vesmírná loď - nákladní sekce
-
-[SPCSHP02]
-STR_NAME    :Vesmírná loď - komunikační sekce
-
-[SPCSHP03]
-STR_NAME    :Vesmírná loď - solární sekce
-
-[SPCSHP04]
-STR_NAME    :Vesmírná loď - solární panely
-
-[SPCSHP05]
-STR_NAME    :Vesmírná loď - gravitační sekce
-
-[SPCSHP07]
-STR_NAME    :Vesmírná loď - kontrolní panel
-
-[SPCSHP08]
-STR_NAME    :Vesmírná loď - palivová sekce
-
-[SPCSHP12]
-STR_NAME    :Vesmírná loď - vědecká sekce
-
-[SPEAKR01]
-STR_NAME    :Malý reproduktor
-
-[SPEAKR02]
-STR_NAME    :Velký reproduktor
-
-[SPIKTAIL]
-STR_NAME    :Pohybující se stegosaurus
-
-[SPTERDAC]
-STR_NAME    :Pohybující se letící pterodaktyl
-
-[STGBAND1]
-STR_NAME    :Člen kapely
-
-[STGBAND2]
-STR_NAME    :Člen kapely
-
-[STGBAND3]
-STR_NAME    :Člen kapely
-
-[STGBAND4]
-STR_NAME    :Člen kapely
-
-[STMDRAN1]
-STR_NAME    :Kouřící kanály
-
-[STRICTOP]
-STR_NAME    :Pohybující se triceratops
-
-[TARPIT01]
-STR_NAME    :Bublající bažina
-
-[TARPIT02]
-STR_NAME    :Bublající bažina
-
-[TARPIT03]
-STR_NAME    :Bublající bažina
-
-[TITANSTA]
-STR_NAME    :Socha Atlase
-
-[TYRANREX]
-STR_NAME    :Pohybující se T-Rex
-
-[VOLCVENT]
-STR_NAME    :Aktivní sopka
-
-[WAVEKING]
-STR_NAME    :Pohybující se mávající král
-
-[WHCCOLDS]
-STR_NAME    :Čarodějnice s kotlíkem
-
-[ARTDEC25]
-STR_NAME    :Art Deco roh s okny
-
-[ARTDEC26]
-STR_NAME    :Art Deco roh se zábradlím
-
-[ARTDEC27]
-STR_NAME    :Art Deco vrchní rohová část
-
-[FUTSKY20]
-STR_NAME    :Pískovcový mrakodrap - dolní obrácený roh
-
-[FUTSKY22]
-STR_NAME    :Pískovcový mrakodrap - dolní obrácený roh
-
-[FUTSKY24]
-STR_NAME    :Pískovcový mrakodrap - dolní obrácený roh
-
-[FUTSKY25]
-STR_NAME    :Pískovcový mrakodrap - dolní obrácený roh
-
-[FUTSKY26]
-STR_NAME    :Pískovcový mrakodrap - dolní obrácený roh
-
-[FUTSKY28]
-STR_NAME    :Pískovcová brána - T-křižovatka
-
-[FUTSKY30]
-STR_NAME    :Pískovcová brána - roh
-
-[FUTSKY31]
-STR_NAME    :Pískovcová brána - středová část
-
-[FUTSKY32]
-STR_NAME    :Pískovcová brána - koncová sekce
-
-[JAILXX17]
-STR_NAME    :Věznice - dveře
-
-[MAJOROAK]
-STR_NAME    :Velký dub
-
-[MCASTL01]
-STR_NAME    :Hradní obrácený roh
-
-[MCASTL11]
-STR_NAME    :Hradní padací most
-
-[MCASTL12]
-STR_NAME    :Hradní brána
-
-[MELMTREE]
-STR_NAME    :Americký Jilm
-
-[OLDNYK24]
-STR_NAME    :New York - obrácený roh střechy
-
-[OLDNYK25]
-STR_NAME    :New York střecha
-
-[OLDNYK26]
-STR_NAME    :New York vstup
-
-[OLDNYK32]
-STR_NAME    :New York střecha
-
-[1950SCAR]
-STR_NAME    :Auto z 50. let
-
-[4X4DINER]
-STR_NAME    :Stará jídelna
-
-[4X4GMANT]
-STR_NAME    :Mangrove
-
-[4X4STNHN]
-STR_NAME    :Chrám doby kamenné
-
-[4X4TRPIT]
-STR_NAME    :Bublající bažina
-
-[4X4VOLCA]
-STR_NAME    :Sopka s malými stromy
-
-[ALENCRSH]
-STR_NAME    :UFO havárie
-
-[ALNSTR08]
-STR_NAME    :Mimozemská velká struktura
-
-[ALNSTR09]
-STR_NAME    :Mimozemská velká struktura
-
-[ALNSTR10]
-STR_NAME    :Mimozemská velká struktura
-
-[ALNSTR11]
-STR_NAME    :Mimozemské světlo
-
-[ASHNYMPH]
-STR_NAME    :Jasan s bludičkami
-
-[BANDBUSX]
-STR_NAME    :Autobus rokové kapely
-
-[BIGDRUMS]
-STR_NAME    :Obrovské bubny
-
-[CAVENTRA]
-STR_NAME    :Vstup do jeskyně
-
-[CORNS2X2]
-STR_NAME    :Římský palác - roh
-
-[CORVS2X2]
-STR_NAME    :Římský palác - roh
-
-[CRATR2X2]
-STR_NAME    :Malý kráter
-
-[CRATR4X4]
-STR_NAME    :Velký kráter
-
-[CRSSS2X2]
-STR_NAME    :Římský palác - střední sekce
-
-[CRSVS2X2]
-STR_NAME    :Římský palác - střední sekce
-
-[CYCLOPSS]
-STR_NAME    :Socha kyklopa
-
-[FEASTABL]
-STR_NAME    :Stůl (hody)
-
-[FOOTPRNT]
-STR_NAME    :Stopa velkého dinosaura
-
-[FORBIDFT]
-STR_NAME    :Zakázané ovoce
-
-[GBEETLEX]
-STR_NAME    :Auto z 50. let
-
-[GHOTROD1]
-STR_NAME    :Hot Rod auto
-
-[GHOTROD2]
-STR_NAME    :Hot Rod auto
-
-[GSCHLBUS]
-STR_NAME    :Americký školní autobus
-
-[HADESXXX]
-STR_NAME    :Socha Hadese
-
-[HISTFIX1]
-STR_NAME    :Mimozemská historická struktura
-
-[HISTFIX2]
-STR_NAME    :Mimozemská historická struktura
-
-[HODSHUT1]
-STR_NAME    :Chata Robina Hooda
-
-[HODSHUT2]
-STR_NAME    :Chata Robina Hooda
-
-[HRBWAL07]
-STR_NAME    :Přístav - roh
-
-[HRBWAL08]
-STR_NAME    :Přístav - roh
-
-[HRBWAL09]
-STR_NAME    :Přístav - stěna s dokem
-
-[HRBWAL11]
-STR_NAME    :Přístav - dok
-
-[JAILXX18]
-STR_NAME    :Věznice - vodní věž
-
-[JETPLAN1]
-STR_NAME    :Stíhačka
-
-[JETPLAN2]
-STR_NAME    :Stíhačka
-
-[JETPLAN3]
-STR_NAME    :Stíhačka
-
-[MCASTL13]
-STR_NAME    :Hradní věž - roh
-
-[MCASTL14]
-STR_NAME    :Hradní věž - roh
-
-[MCASTL15]
-STR_NAME    :Hradní věž - střední část
-
-[MCASTL16]
-STR_NAME    :Hradní věž - rovná část
-
-[MCASTL17]
-STR_NAME    :Hradní věž - T-křižovatka
-
-[MCASTL18]
-STR_NAME    :Hradní věž - T-křižovatka
-
-[METOAN01]
-STR_NAME    :Roh kráteru
-
-[METOAN02]
-STR_NAME    :Roh kráteru - obrácený
-
-[OLDNYK20]
-STR_NAME    :New York střecha
-
-[OLDNYK21]
-STR_NAME    :New York stěna
-
-[OLDNYK22]
-STR_NAME    :New York stěna
-
-[OLDNYK23]
-STR_NAME    :New York stěna
-
-[OLDNYK27]
-STR_NAME    :New York stěna
-
-[OLDNYK28]
-STR_NAME    :New York stěna
-
-[OLDNYK29]
-STR_NAME    :New York stěna
-
-[OLDNYK30]
-STR_NAME    :New York stěna
-
-[PEASTHUT]
-STR_NAME    :Rolnická chatrč
-
-[PERAMOB1]
-STR_NAME    :Staré auto
-
-[PERAMOB2]
-STR_NAME    :Staré auto
-
-[PERDTK01]
-STR_NAME    :Staré nákladní auto
-
-[PERDTK02]
-STR_NAME    :Staré nákladní auto
-
-[PLOUGHXX]
-STR_NAME    :Pluh
-
-[PRDYACHT]
-STR_NAME    :Stará plachetnice
-
-[PSNTWL26]
-STR_NAME    :Starodávná vesnice - střecha
-
-[PSNTWL27]
-STR_NAME    :Starodávná vesnice - rohová střecha
-
-[PSNTWL28]
-STR_NAME    :Starodávná vesnice - obrácená střecha
-
-[RDMET2X2]
-STR_NAME    :Malý kráter
-
-[RDMET4X4]
-STR_NAME    :Velký kráter
-
-[RDMETO01]
-STR_NAME    :Kráter - roh
-
-[RDMETO02]
-STR_NAME    :Kráter - roh
-
-[ROBNCAMP]
-STR_NAME    :Kemp Robina Hooda
-
-[ROMNC2X2]
-STR_NAME    :Římský palác - roh
-
-[ROMNE2X1]
-STR_NAME    :Římský palác - koncová část
-
-[ROMNM2X2]
-STR_NAME    :Římský palác - střední část
-
-[ROMNS2X2]
-STR_NAME    :Římský palác - rovná část
-
-[ROMVC2X2]
-STR_NAME    :Římský palác - roh
-
-[ROMVE2X1]
-STR_NAME    :Římský palác - koncová část
-
-[ROMVM2X2]
-STR_NAME    :Římský palác - střední část
-
-[ROMVS2X2]
-STR_NAME    :Římský palác - rovná část
-
-[SCHNPIT2]
-STR_NAME    :Hydroplán
-
-[SCHNPITS]
-STR_NAME    :Hydroplán
-
-[SCHNTENT]
-STR_NAME    :Stan
-
-[SHIPB4X4]
-STR_NAME    :Luxusní parník - loďka
-
-[SHIPM4X4]
-STR_NAME    :Luxusní parník - střední část
-
-[SHIPS4X4]
-STR_NAME    :Luxusní parník - záď
-
-[STRGS2X2]
-STR_NAME    :Římský palác - rovná část
-
-[STRVS2X2]
-STR_NAME    :Římský palác - rovná část
-
-[TAVERNXX]
-STR_NAME    :Starodávný hostinec
-
-[TRAVLR01]
-STR_NAME    :Cestovatelský vůz
-
-[TRAVLR02]
-STR_NAME    :Microbus
-
-[JAILXX19]
-STR_NAME    :Věznice - plot
-
-[MSPKWA01]
-STR_NAME    :Ostnatý plot
-
-[1920PATH]
-STR_NAME    :Chodník
-
-[FUTRPAT2]
-STR_NAME    :Sky Walk cesta
-
-[FUTRPATH]
-STR_NAME    :Elektronická cesta
-
-[JURRPATH]
-STR_NAME    :Kamenitá cesta
-
-[MEDIPATH]
-STR_NAME    :Dřevěná cesta
-
-[MYTHPATH]
-STR_NAME    :Mosaická cesta
-
-[RANBPATH]
-STR_NAME    :Duhová cesta
-
-[FIRHYDRT]
-STR_NAME    :Požární hydrant
-
-[MEDBENCH]
-STR_NAME    :Lavičky
-
-[SCG1920S]
-STR_NAME    :  Bouřlivá 20. léta
-
-[SCG1920W]
-STR_NAME    :  Bouřlivá 20. léta - stěny
-
-[SCG1960S]
-STR_NAME    :  Rock 'n' Roll
-
-[SCGFUTUR]
-STR_NAME    :  Budoucnost
-
-[SCGJURRA]
-STR_NAME    :  Pravěk
-
-[SCGMEDIV]
-STR_NAME    :  Starodávné časy
-
-[SCGMYTHO]
-STR_NAME    :  Mytologie
-
-[1920SENT]
-STR_NAME    :Bouřlivá 20. léta - vstup do parku
-
-[FUTURENT]
-STR_NAME    :Futuristický vstup do parku
-
-[GLDYRENT]
-STR_NAME    :Rock 'n' Roll - vstup do parku
-
-[JURASENT]
-STR_NAME    :Pravěký vstup
-
-[MEDIENTR]
-STR_NAME    :Starodávný vstup
-
-[MYTHENTR]
-STR_NAME    :Mytologický vstup
+STR_5985    :Nová složka
+STR_5986    :Napiště název nové složky
+STR_5987    :Nepodařilo se vytvořit složku
+STR_5988    :{SMALLFONT}{BLACK}Žádná další pozemková práva ke koupi
+STR_5989    :{SMALLFONT}{BLACK}Žádná další stavební práva ke koupi
+STR_5990    :{SMALLFONT}{BLACK}Žádná další pozemková ani stavební práva ke koupi
+STR_5991    :Nelze vložit prvek...
+STR_5992    :Dosažen limit prvků mapy
+STR_5993    :{SMALLFONT}{BLACK}Kopírovat prvek
+STR_5994    :{SMALLFONT}{BLACK}Vložit prvek
+STR_5995    :Booster
+STR_5996    :Rychlost boosteru
+STR_5997    :Přidat/nastavit peníze
+STR_5998    :Přidat peníze
+STR_5999    :Nastavit peníze
+STR_6000    :Zadejte novou hodnotu
+STR_6001    :Zapnout efekty osvětlení (experimentalní)
+STR_6002    :{SMALLFONT}{BLACK}Lampy a atrakce budou v noci svítit.{NEWLINE}Vyžaduje nastavení hardwarového vykreslování (GPU).
+STR_6003    :Seříznuté zobrazení
+STR_6004    :Seříznuté zobrazení
+STR_6005    :Povolit seříznuté zobrazení
+STR_6006    :{SMALLFONT}{BLACK}Seříznuté zobrazení vykresluje prvky mapy pouze do dané výšky (vertikální oříznutí) a ve vybrané oblasti (horizontální oříznutí).
+STR_6007    :Výška řezu
+STR_6008    :{SMALLFONT}{BLACK}Přepnout na hodnotu s/bez jednotek
+STR_6009    :{SMALLFONT}{BLACK}Zvolit výšku řezu
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za vstup do parku a služby. Atrakce jsou zdrarma.
+STR_6014    :{SMALLFONT}{BLACK}Návštěvníci platí pouze za služby a atrakce. Vstup do parku je zdarma.
+STR_6015    :Nakloněný
+STR_6016    :Upravit dlaždici
+STR_6017    :Zpomalte prosím
+STR_6018    :Stavba trati - zatáčka vlevo
+STR_6019    :Stavba trati - zatáčka vpravo
+STR_6020    :Stavba trati - použít výchozí díl
+STR_6021    :Stavba trati - svah dolů
+STR_6022    :Stavba trati - svah vzhůru
+STR_6023    :Stavba trati - řetězový vlek
+STR_6024    :Stavba trati - náklon vlevo
+STR_6025    :Stavba trati - náklon vpravo
+STR_6026    :Stavba trati - předchozí díl
+STR_6027    :Stavba trati - následující díl
+STR_6028    :Stavba trati - postavit aktivní část
+STR_6029    :Stavba trati - odebrat aktivní část
+STR_6030    :{SMALLFONT}{BLACK}Výběr kulis. Klikněte na jakoukoliv kulisu na mapě pro postavení její kopie.
+STR_6031    :Popis serveru:
+STR_6032    :Uvítací zpráva serveru:
+STR_6033    :Cesta k RCT1 instalaci:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :Prosím vyberte složku s RCT1
+STR_6036    :{SMALLFONT}{BLACK}Zrušit
+STR_6037    :Prosím vyberte správnou složku s RCT1
+STR_6038    :{SMALLFONT}{BLACK}Pokud máte nainstalovaný RCT1, použijte tuto volbu k nastavení cesty k RCT1 pro možnost nahrání scénářů, hudby a dalších.
+STR_6039    :{SMALLFONT}{BLACK}Rychle odebrat atrakci
+STR_6040    :Upravit nastavení scénáře
+STR_6041    :{BLACK}Nemáte najmuté žádné mechaniky!
+STR_6042    :Načíst výškovou mapu
+STR_6043    :Vybrat výškovou mapu
+STR_6044    :Vyhladit výškovou mapu
+STR_6045    :Síla
+STR_6046    :Normalizovat výškovou mapu
+STR_6047    :Vyhladit dlaždice
+STR_6048    :Chyba výškové mapy
+STR_6049    :Chyba při čtení PNG
+STR_6050    :Chyba při čtení bitmapy
+STR_6051    :Šířka a výška musí být stejné
+STR_6052    :Výšková mapa je moc velká a bude oříznuta
+STR_6053    :Výškovou mapu nelze normalizovat
+STR_6054    :Podporovány jsou pouze 24-bitové bitmapy
+STR_6055    :Soubor výškové mapy OpenRCT2
+STR_6056    :{SMALLFONT}{BLACK}Ztlumit
+STR_6057    :{SMALLFONT}{BLACK}Na nástrojové liště zobrazovat samostatné tlačítko "Ztlumit"
+STR_6058    :Ztlumit
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Povolit animaci při nákupu návštěvníků
+STR_6061    :{SMALLFONT}{BLACK}Zobrazit animovaný efekt peněz, když návštěvníci platí.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Vlastnit všechny pozemky
+STR_6065    :Ukládat aktivitu uživatele
+STR_6066    :{SMALLFONT}{BLACK}Ukládat aktivitu uživatelů do souborů ve Vašem domovském adresáři.
+STR_6067    :Server spuštěn.
+STR_6068    :Server zastaven.
+STR_6069    :Uživatel {STRING} byl vyhozen ze hry uživatelem {STRING}.
+STR_6070    :Uživatel {STRING} byl přidán do skupiny '{STRING}' uživatelem {STRING}.
+STR_6071    :Uživatel {STRING} vytvořil novou skupinu '{STRING}'.
+STR_6072    :Uživatel {STRING} smazal skupinu '{String}'.
+STR_6073    :Uživatel {STRING} upravil oprávnění skupiny '{String}'.
+STR_6074    :Uživatel {STRING} změnil název skupiny z '{String}' na '{String}'.
+STR_6075    :Uživatel {STRING} nastavil výchozí skupinu na '{String}'.
+STR_6076    :Uživatel {STRING} použil/přepnul cheat '{STRING}'.
+STR_6077    :Přidat peníze
+STR_6078    :Uživatel {STRING} vytvořil atrakci '{STRING}'.
+STR_6079    :Uživatel {STRING} zboural atrakci '{STRING}'.
+STR_6080    :Uživatel {STRING} změnil vzhled atrakce '{STRING}'.
+STR_6081    :Uživatel {STRING} nastavil stav atrakce '{STRING}' na zavřeno.
+STR_6082    :Uživatel {STRING} nastavil stav atrakce '{STRING}' na otevřeno.
+STR_6083    :Uživatel {STRING} nastavil stav atrakce '{STRING}' na testování.
+STR_6084    :Uživatel {STRING} změnil nastavení vozů atrakce '{STRING}'.
+STR_6085    :Uživatel {STRING} změnil nastavení jízdy atrakce '{STRING}'.
+STR_6086    :Uživatel {STRING} přejmenoval atrakci '{STRING}' na '{STRING}'.
+STR_6087    :Uživatel {STRING} nastavil cenu vstupenky atrakce '{STRING}' na {STRING}
+STR_6088    :Uživatel {STRING} nastavil sekundární cenu vstupenky atrakce '{STRING}' na {STRING}
+STR_6089    :Uživatel {STRING} přejmenoval park z '{STRING}' na '{STRING}'.
+STR_6090    :Uživatel {STRING} otevřel park.
+STR_6091    :Uživatel {STRING} zavřel park.
+STR_6092    :Uživatel {STRING} nastavil vstupné do parku na {STRING}
+STR_6093    :Uživatel {STRING} umístil novou kulisu.
+STR_6094    :Uživatel {STRING} odstranil kulisu.
+STR_6095    :Uživatel {STRING} upravil krajinu.
+STR_6096    :Uživatel {STRING} nastavil nápis na ceduli na '{STRING}'.
+STR_6097    :Uživatel {STRING} umístil část trati atrakce '{STRING}'.
+STR_6098    :Uživatel {STRING} odebral část trati.
+STR_6099    :Připojili jste se na server.
+STR_6100    :Odpojili jste se od serveru.
+STR_6101    :Hodnota atrakcí časem nedegraduje
+STR_6102    :{SMALLFONT}{BLACK}Hodnota atrakce nebude s postupem času klesat, takže návštěvníci nebudou najednou mít pocit, že je vstupné moc drahé.
+STR_6103    :{SMALLFONT}{BLACK}Tato volba není ve hře více hráčů dostupná.
+STR_6104    :Vývrtková horská dráha
+STR_6105    :Hyper horská dráha
+STR_6106    :Autodráha
+STR_6107    :Monster Trucks
+STR_6108    :Ocelová horská
+STR_6109    :Hyper-Twister
+STR_6110    :Dorostenecká horská dráha
+STR_6111    :Klasická malá horská dráha
+STR_6112    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
+STR_6113    :Vysoká horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně
+STR_6114    :Návštěvníci jedou pomalu ve vozidlech po postavené dráze.
+STR_6115    :Obří auta s pohonem 4x4, které jsou schopna vyjíždět velmi strmé svahy
+STR_6116    :Široká ocelová horská dráha, na které vozy jedou po hladkých kolejnicích skrze propletenou dráhu
+STR_6117    :Horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně, která přelétává vrcholky kopců
+STR_6118    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na větší dráhy
+STR_6119    :Levná horská dráha, kterou lze snadno postavit - má však omezenou maximální výšku
+STR_6120    :{BABYBLUE}Nové vozy dostupné pro {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Zajistí práva pro všechny pozemky na mapě
+STR_6122    :Ve scénáři není dostatečný počet horských drah!
+STR_6123    :Nepodařilo se načíst objekty parku
+STR_6124    :Název objektu
+STR_6125    :Typ objektu
+STR_6126    :Neznámý typ
+STR_6127    :Soubor: {STRING}
+STR_6128    :Soubor se nepodařilo načíst, protože využívá objekty, z nichž některé jsou porušené nebo zcela chybí. Seznam takových objektů je k dispozici níže.
+STR_6129    :Kopírovat vybrané do schránky
+STR_6130    :Kopírovat celý seznam do schránky
+STR_6131    :Zdroj objektu
+STR_6132    :Ignorovat nutnost výzkumu
+STR_6133    :{SMALLFONT}{BLACK}Povolí přístup k atrakcím a kulisám, které ještě nebyly vyzkoumány
+STR_6134    :Odstranit kulisy
+STR_6135    :Klient zaslal neplatný požadavek
+STR_6136    :Server zaslal neplatný požadavek
+STR_6137    :OpenRCT2 je zdarma dostupný open source klon hry Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 je dílem mnoha lidí. Seznam všech přispěvatelů je dostupný v souboru {OPENQUOTES}contributors.md{ENDQUOTES}. Pro více informací navštivte http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Všechny názvy produktů a společností jsou vlastnictvím jejich příslušných vlastníků. Jejich užití neimplikuje vazbu ani podporu příslušných vlastníků a tohoto projektu.
+STR_6140    :Seznam změn...
+STR_6141    :RCT1 dolní nástrojová lišta
+STR_6142    :{WINDOW_COLOUR_2}Název trati: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Název atrakce: {BLACK}{STRINGID}
+STR_6144    :Zvýraznit znevalidované bloky pro vykreslení
+STR_6145    :{SMALLFONT}{BLACK}Nastavit rychlostní limit boosteru
+STR_6146    :Povolit všechny vykreslitelné části trati
+STR_6147    :{SMALLFONT}{BLACK}Povolí všechny části trati, které atrakce podporuje. Nezáleží, jestli je podporují i vozy.
+STR_6148    :Připojování na master server...
+STR_6149    :Nepodařilo se připojit k master serveru
+STR_6150    :Neplatná odpověď master serveru (chybí JSON číslo)
+STR_6151    :Master server neposlal seznam herních serverů
+STR_6152    :Neplatná odpověď master serveru (chybí JSON pole)
+STR_6153    :Zpoplatněné vstupné / Zpoplatněné atrakce
+STR_6154    :Z bezpečnostních důvodů se nedoporučuje spouštět OpenRCT2 v řežimu zvýšených oprávnění.
+STR_6155    :Není nainstalován KDialog ani Zenity. Jeden z nich prosím nainstalujte, nebo konfigurujte z příkazové řádky.
+STR_6156    :Tento název je rezervován a nelze jej použít.
+STR_6157    :Konzole
+STR_6158    :Tento soubor nelze načíst...{NEWLINE}Nekompatibilní verze RCTC: {COMMA16}
+STR_6159    :Vyhlazený nejbližší soused
+STR_6160    :{WINDOW_COLOUR_2}Dostupné vozy: {BLACK}{STRING} 
+STR_6161    :Přepnout vykreslování mřížky
+STR_6162    :Točící se divoká myš
+STR_6163    :Vozy ve tvaru myší jedou po dřevěné trati a pro dezorientaci návštěvníků se točí, zatímco se naklání v ostrých zatáčkách a drsných pádech
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Vertikální synchronizace obrazu
+STR_6166    :{SMALLFONT}{BLACK}Synchonizuje každý zobrazený snímek dle obnovovací frekvence monitoru. Zamezuje trhání obrazu.
+STR_6167    :{SMALLFONT}{BLACK}Pokročilé
+STR_6168    :Úvodní herní sekvence
+STR_6169    :Výběr scénáře
+STR_6170    :Vychytávky
+STR_6171    :Vyhledávání
+STR_6172    :{SMALLFONT}{BLACK}Vyhledávání
+STR_6173    :Zadejte jméno k vyhledání:
+STR_6174    :Načíst uloženou hru
+STR_6175    :Načíst scénář
+STR_6176    :Scénář k načtení:
+STR_6177    :Načíst{MOVE_X}{87}Zvolte scénář
+STR_6178    :Načíst{MOVE_X}{87}{RED}Chybějící scénář
+STR_6179    :Vybrat
+STR_6180    :Zvolte scénář
+STR_6181    :{RED}Chybějící scénář
+STR_6182    :Následovat{MOVE_X}{87}{STRING}
+STR_6183    :Následovat{MOVE_X}{87}Zvolte sprite
+STR_6184    :Následovat sprite
+STR_6185    :Zvolit sprite
+STR_6186    :Nezvolen žádný sprite
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Zvratky
+STR_6189    :Kachna
+STR_6190    :{SMALLFONT}{BLACK}Nelze zvolit sprite, když je aktivní hlavní obrazovka.
+STR_6191    :Povrch
+STR_6192    :Stěna
+STR_6193    :{COMMA16} návštěvník
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} návštěvník
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} návštěvník
+STR_6196    :{BLACK}Rok:
+STR_6197    :{BLACK}Měsíc:
+STR_6198    :{BLACK}Den:
+STR_6199    :Nastavit datum
+STR_6200    :Resetovat datum
+STR_6201    :{MONTH}
+STR_6202    :Styl virtuální mřížky
+STR_6203    :{SMALLFONT}{BLACK}Pro usnadnění vertikálního umisťování objektů můžete podržet klávesu Ctrl nebo Shift a poté bude vykreslena pomocná virtuální mřížka.
+STR_6204    :Cihla
+STR_6205    :Železo
+STR_6206    :Šedý štuk
+STR_6207    :Žlutý štuk
+STR_6208    :Červený štuk
+STR_6209    :Fialový štuk
+STR_6210    :Zelený štuk
+STR_6211    :Hnědý pískovec
+STR_6212    :Šedý pískovec
+STR_6213    :Mrakodrap A
+STR_6214    :Mrakodrap B
+STR_6215    :Budování
+STR_6216    :Provoz
+STR_6217    :Atrakce a tratě
+STR_6218    :OpenRCT2 oficiální
+STR_6219    :Zvýraznit problémy s cestami
+STR_6220    :Zprovoznit
+STR_6221    :{SMALLFONT}{BLACK}Nastaví vstup do/výstup ze stanice na právě vybrané políčko. V jednu chvíli může každá stanice mít v provozu pouze jeden vchod/východ.
+STR_6222    :Sem nelze umístit vstup návštěvníků...
+STR_6223    :Musí být za hranicemi parku!
+STR_6224    :{STRING} umístil/a vstup návštěvníků.
+STR_6225    :Není podporováno společně s OpenGL renderováním
+STR_6226    :Povolit předčasné splnění scénáře
+STR_6227    :{SMALLFONT}{BLACK}Umožní splnit úkoly a ukončit scénář před daným koncem scénáře
+STR_6228    :Nastavení scénáře
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Zmrazený
+STR_6233    :Seříznuté zobrazení
+STR_6234    :Zvýraznit problémy s cestami
+STR_6235    :Informace o serveru
+STR_6236    :Hráči
+STR_6237    :Skupiny
+STR_6238    :Nastavení hry více hráčů
+STR_6239    :Vertikální oříznutí
+STR_6240    :Horizontální oříznutí
+STR_6241    :Vybrat oblast
+STR_6242    :Zrušit výběr
+STR_6243    :{SMALLFONT}{BLACK}Zrenovuje atrakci,{NEWLINE}bude jako nová
+STR_6244    :Atrakci nelze renovovat...
+STR_6245    :{SMALLFONT}{BLACK}Atrakce nepotřebuje renovaci
+STR_6246    :Renovovat
+STR_6247    :Renovovat atrakci
+STR_6248    :{WINDOW_COLOUR_1}Chcete renovovat {STRINGID} za cenu {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Chcete renovovat {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Opravdu chcete zbourat {STRINGID} a tím získat {CURRENCY}?
+STR_6251    :Atrakce ještě není prázdná
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Zadejte URL adresu integračního Twitch API. Je to nutné pro zapnutí Twitch integrace.
+STR_6254    :URL adresa integračního Twitch API:
+STR_6255    :Nevalidní URL adresa
+STR_6256    :Vykreslovací efekty
+STR_6257    :Sklo (poloprůsvitně)
+STR_6258    :Čistě (průhledně)
+STR_6259    :Žádné
+STR_6260    :Zobrazit blokované dlaždice
+STR_6261    :Zobrazit široké cesty
 
 ###############################################################################
 ## RCT2 Scenarios

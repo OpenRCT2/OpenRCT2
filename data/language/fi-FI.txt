@@ -1222,8 +1222,8 @@ STR_1214    :{SMALLFONT}{BLACK}Valitse enimmäisodotusaika ennen lähtöä
 STR_1215    :{WINDOW_COLOUR_2}Synkronoi rinnakkaisasemien kanssa
 STR_1216    :{SMALLFONT}{BLACK}Valitse pitäisikö synkronoida lähtö kaikkien rinnakkaisasemien kanssa ('kilpa-ajoa' varten)
 STR_1217    :{COMMA16} sekuntia
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Vain uloskäynti
 STR_1221    :Ei sisäänkäyntiä
 STR_1222    :Ei uloskäyntiä
@@ -2696,14 +2696,14 @@ STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Suuri kävijäryhmä saapuu
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Matala:
-STR_2687    :{WINDOW_COLOUR_2}Korkea:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2686    :Matala:
+STR_2687    :Korkea:
+STR_2688    :Base Frequency:
+STR_2689    :Octaves:
 STR_2690    :Kartan luonti
-STR_2691    :{WINDOW_COLOUR_2}Peruskorkeus:
-STR_2692    :{WINDOW_COLOUR_2}Vedentaso:
-STR_2693    :{WINDOW_COLOUR_2}Ympäristö:
+STR_2691    :Peruskorkeus:
+STR_2692    :Vedentaso:
+STR_2693    :Ympäristö:
 STR_2694    :Luo
 STR_2695    :Satunnainen ympäristö
 STR_2696    :Aseta puita
@@ -3172,7 +3172,7 @@ STR_3156    :
 STR_3157    :kartta
 STR_3158    :graph
 STR_3159    :lista
-
+STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
 STR_3161    :<not used anymore>
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
@@ -3223,7 +3223,7 @@ STR_3207    :Roller Coaster Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Takaisin edelliseen vaiheeseen:
 STR_3210    :Siirry seuraavaan vaiheeseen:
-STR_3211    :{WINDOW_COLOUR_2}Kartan koko:
+STR_3211    :Kartan koko:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Karttaa ei voi enempää pienentää
 STR_3214    :Karttaa ei voi enempää suurentaa
@@ -3766,7 +3766,7 @@ STR_5420    :Käännä{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Odota
-STR_5424    :Odota{MOVE_X}{87}{COMMA16}
+STR_5424    :Odota{MOVE_X}{87}{UINT16}
 STR_5425    :Uudelleen käynnistä
 STR_5426    :Lopeta
 STR_5427    :Koordinaatit:
@@ -3895,13 +3895,3 @@ STR_5549    :Vuosi/Kuukausi/Päivä
 STR_5550    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Vuosi/Päivä/Kuukausi
 STR_5552    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-
-#########
-# Rides #
-#########
-
-#WW
-[CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 matkustajaa per auto

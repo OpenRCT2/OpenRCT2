@@ -1,27 +1,18 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include <map>
 #include <algorithm>
 
 #include "SegmentSupportHeightCall.hpp"
 
-extern "C" {
-#include "../../src/paint/map_element/map_element.h"
-}
+#include <openrct2/paint/tile_element/Paint.TileElement.h>
 
 static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall rhs)
 {
@@ -36,8 +27,8 @@ static bool SortSegmentSupportCalls(SegmentSupportCall lhs, SegmentSupportCall r
     return lhs.segments < rhs.segments;
 }
 
-std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(support_height *supports, uint8 rotation) {
-    uint16 positionsRemaining = SEGMENTS_ALL;
+std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(support_height *supports, uint8_t rotation) {
+    uint16_t positionsRemaining = SEGMENTS_ALL;
 
     for (int i = 0; i < 9; i++) {
         if (supports[i].height == 0 && supports[i].slope == 0xFF) {
@@ -48,11 +39,11 @@ std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(suppor
     std::vector<SegmentSupportCall> calls;
 
     while (positionsRemaining != 0) {
-        SegmentSupportCall call = {0};
+        SegmentSupportCall call = {};
         call.height = -1;
         call.slope = -1;
 
-        support_height referenceSupport = { 0 };
+        support_height referenceSupport = {};
 
         for (int i = 0; i < 9; i++) {
             if (positionsRemaining & segment_offsets[i]) {
@@ -67,7 +58,7 @@ std::vector<SegmentSupportCall> SegmentSupportHeightCall::getSegmentCalls(suppor
             }
         }
 
-        uint16 positionsMatched = 0;
+        uint16_t positionsMatched = 0;
         for (int i = 0; i < 9; i++) {
             if (supports[i].height == referenceSupport.height && supports[i].slope == referenceSupport.slope) {
                 positionsMatched |= segment_offsets[i];

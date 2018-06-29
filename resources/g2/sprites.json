@@ -1,0 +1,443 @@
+[
+    {
+        "path": "logo.png"
+    },
+    {
+        "path": "logo_text.png"
+    },
+    {
+        "path": "icons/fast_forward.png"
+    },
+    {
+        "path": "icons/game_speed_indicator.png"
+    },
+    {
+        "path": "icons/game_speed_indicator_double.png"
+    },
+    {
+        "path": "icons/twitch.png"
+    },
+    {
+        "path": "icons/map_gen_land.png"
+    },
+    {
+        "path": "7.png"
+    },
+    {
+        "path": "icons/zoom_in.png"
+    },
+    {
+        "path": "icons/zoom_in_background.png"
+    },
+    {
+        "path": "icons/zoom_out.png"
+    },
+    {
+        "path": "icons/zoom_out_background.png"
+    },
+    {
+        "path": "icons/map_gen_trees.png"
+    },
+    {
+        "path": "icons/map_gen_noise.png"
+    },
+    {
+        "path": "icons/large_scenery.png"
+    },
+    {
+        "path": "icons/small_scenery.png"
+    },
+    {
+        "path": "icons/paths.png"
+    },
+    {
+        "path": "icons/rct1_close_off.png"
+    },
+    {
+        "path": "icons/rct1_close_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_close_on.png"
+    },
+    {
+        "path": "icons/rct1_close_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_test_off.png"
+    },
+    {
+        "path": "icons/rct1_test_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_test_on.png"
+    },
+    {
+        "path": "icons/rct1_test_on_pressed.png"
+    },
+    {
+        "path": "icons/rct1_open_off.png"
+    },
+    {
+        "path": "icons/rct1_open_off_pressed.png"
+    },
+    {
+        "path": "icons/rct1_open_on.png"
+    },
+    {
+        "path": "icons/rct1_open_on_pressed.png"
+    },
+    {
+        "path": "icons/29.png"
+    },
+    {
+        "path": "icons/30.png"
+    },
+    {
+        "path": "icons/31.png"
+    },
+    {
+        "path": "icons/32.png"
+    },
+    {
+        "path": "icons/cheats.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_2_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_3_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_4.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_2_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_3_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_2_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_3_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_4.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_2_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_3_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_2_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_3_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_4.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_2_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_lift_3_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_2_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_3_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_4.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_2_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_lift_3_2.png"
+    },
+    {
+        "path": "icons/58.png"
+    },
+    {
+        "path": "icons/server_password.png"
+    },
+    {
+        "path": "icons/multiplayer.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_3.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_4.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_3.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_4.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_lift_1.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_lift_2.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_lift_3.png"
+    },
+    {
+        "path": "track/junior/flat_to_steep_diagonal_lift_4.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_lift_1.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_lift_2.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_lift_3.png"
+    },
+    {
+        "path": "track/junior/steep_to_flat_diagonal_lift_4.png"
+    },
+    {
+        "path": "icons/sort.png"
+    },
+    {
+        "path": "icons/copy.png"
+    },
+    {
+        "path": "icons/paste.png"
+    },
+    {
+        "path": "icons/tab_disabled.png"
+    },
+    {
+        "path": "track/intamin/booster_1.png"
+    },
+    {
+        "path": "track/intamin/booster_2.png"
+    },
+    {
+        "path": "track/bm/booster_1.png"
+    },
+    {
+        "path": "track/bm/booster_2.png"
+    },
+    {
+        "path": "track/junior/booster_1.png"
+    },
+    {
+        "path": "track/junior/booster_2.png"
+    },
+    {
+        "path": "icons/mute.png"
+    },
+    {
+        "path": "icons/mute_pressed.png"
+    },
+    {
+        "path": "icons/unmute.png"
+    },
+    {
+        "path": "icons/unmute_pressed.png"
+    },
+    {
+        "path": "track/mini/booster_1.png"
+    },
+    {
+        "path": "track/mini/booster_2.png"
+    },
+    {
+        "path": "track/railway/quarter_turn_3_tiles_sw_se_part_3.png",
+		"x_offset": -8,
+		"y_offset": 1
+    },
+    {
+        "path": "track/railway/gravel_sw_ne.png",
+		"x_offset": -33,
+		"y_offset": -2
+    },
+    {
+        "path": "track/railway/gravel_nw_se.png",
+		"x_offset": -21,
+		"y_offset": -2
+    },
+    {
+        "path": "track/railway/grooved_sw_ne.png",
+		"x_offset": -28,
+		"y_offset": -1
+    },
+    {
+        "path": "track/railway/grooved_nw_se.png",
+		"x_offset": -14,
+		"y_offset": -2
+    },
+    {
+        "path": "track/railway/grooved_sw_ne_trans.png",
+		"x_offset": -28,
+		"y_offset": -1,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_nw_se_trans.png",
+		"x_offset": -14,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_ne_trans.png",
+		"x_offset": -28,
+		"y_offset": -1,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_se_trans.png",
+		"x_offset": -14,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_nw_trans.png",
+		"x_offset": -14,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_sw_trans.png",
+		"x_offset": -26,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_sw_ne_trans.png",
+		"x_offset": -28,
+		"y_offset": -1,
+		"palette": "keep"
+    },
+    {
+        "path": "track/railway/grooved_end_nw_se_trans.png",
+		"x_offset": -14,
+		"y_offset": -2,
+		"palette": "keep"
+    },
+    {
+        "path": "icons/search.png"
+    },
+    {
+        "path": "surface/glassy_recolourable.png",
+        "x_offset": -32,
+        "y_offset": -1,
+        "palette": "keep"
+    },
+    {
+        "path": "surface/selection_edge_nw.png",
+        "x_offset": -32,
+        "y_offset": -1
+    },
+    {
+        "path": "surface/selection_edge_ne.png",
+        "x_offset": 0,
+        "y_offset": -1
+    },
+    {
+        "path": "surface/selection_edge_sw.png",
+        "x_offset": -32,
+        "y_offset": 15
+    },
+    {
+        "path": "surface/selection_edge_se.png",
+        "x_offset": 0,
+        "y_offset": 15
+    },
+    {
+        "path": "edge/brick.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/rust.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/white_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/yellow_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/red_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/purple_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/green_stucco.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/brown_sandstone.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/grey_sandstone.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/skyscraper_a.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "edge/skyscraper_b.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
+        "path": "icons/eyedropper.png",
+        "x_offset": 5,
+        "y_offset": 5
+    }
+]

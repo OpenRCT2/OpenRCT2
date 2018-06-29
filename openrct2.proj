@@ -5,6 +5,7 @@
        - GIT_TAG
        - GIT_BRANCH
        - GIT_COMMIT_SHA1
+       - GIT_DESCRIBE
        - SIGN_PASSWORD
        - OPENRCT2_ORG_TOKEN
        - NO_NSIS: set to true to prevent the NSIS installer building
@@ -16,21 +17,19 @@
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
     <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
-    <BUILD_SERVER Condition="'$(BUILD_SERVER)'==''">$(COMPUTERNAME)</BUILD_SERVER>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.0.5.0</Version>
+    <Version>0.2.0</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
-    <VersionTag Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(GIT_TAG)', '^v[0-9]'))">$(GIT_TAG)</VersionTag>
-    <VersionExtra Condition="'$(GIT_TAG)'!='' AND '$(VersionTag)'==''">-$(GIT_TAG)</VersionExtra>
-    <TargetLibsVersion>10</TargetLibsVersion>
+    <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
+    <TargetLibsVersion>16</TargetLibsVersion>
 
     <!-- Set dynamic OpenRCT2 #defines -->
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_BRANCH)'!=''">/D "OPENRCT2_BRANCH=\"$(GIT_BRANCH)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1)'!=''">/D "OPENRCT2_COMMIT_SHA1=\"$(GIT_COMMIT_SHA1)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">/D "OPENRCT2_COMMIT_SHA1_SHORT=\"$(GIT_COMMIT_SHA1_SHORT)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
-    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(Configuration)'=='Release'">/D "USE_BREAKPAD" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_DESCRIBE)'!=''">/D "OPENRCT2_VERSION_TAG=\"$(GIT_DESCRIBE)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
 
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DistDir>$(RootDir)distribution\</DistDir>
@@ -40,6 +39,8 @@
     <NsisScript>$(DistDir)windows\install.nsi</NsisScript>
 
     <OutputExe>$(TargetDir)openrct2.exe</OutputExe>
+    <OutputCom>$(TargetDir)openrct2.com</OutputCom>
+    <OutputDll>$(TargetDir)openrct2.dll</OutputDll>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
     <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
@@ -56,33 +57,47 @@
     <UploadFilename>OpenRCT2-$(Version)$(VersionExtra)-windows-$(Platform.ToLower())</UploadFilename>
 
     <!-- Set openrct2.sln properties -->
-    <SlnProperties>Configuration=$(Configuration)</SlnProperties>
     <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
-    <SlnProperties>$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
+    <SlnProperties Condition="'$(BUILD_SERVER)'!=''">$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
   </PropertyGroup>
 
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
-    <LibsUrl>https://github.com/OpenRCT2/Dependencies/releases/download/v$(TargetLibsVersion)/openrct2-libs-vs2015.zip</LibsUrl>
-    <LibsPath>$(RootDir)lib\</LibsPath>
-    <LibsVersionPath>$(LibsPath)libversion</LibsVersionPath>
+    <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v17/openrct2-libs-v17-x86-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">4f9fb5feebe4a4ed461b2a545b2fd1c91ef6527b</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v17/openrct2-libs-v17-x64-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">5aab386f9eeaad102b330fcddea2b4cc9e3c7067</LibsSha1>
+    <GtestVersion>1.8.0</GtestVersion>
+    <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
+    <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
+    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2/title-sequence-v0.1.2.zip</TitleSequencesUrl>
+    <TitleSequencesSha1>1136ef92bfb05cd1cba9831ba6dc4a653d87a246</TitleSequencesSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.3/objects.zip</ObjectsUrl>
+    <ObjectsSha1>254bf83511282bd2fa5d97ddf00b4823009a78d8</ObjectsSha1>
   </PropertyGroup>
 
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
     <SignItems Include="$(OutputExe)" />
+    <SignItems Include="$(OutputCom)" />
+    <SignItems Include="$(OutputDll)" />
   </ItemGroup>
 
   <ItemGroup Label="Symbol Items">
     <SymbolItems Include="$(OutputExe)" />
-    <SymbolItems Include="$([System.IO.Path]::ChangeExtension($(OutputExe), '.pdb'))" />
+    <SymbolItems Include="$(OutputCom)" />
+    <SymbolItems Include="$(OutputDll)" />
+    <SymbolItems Include="$(TargetDir)openrct2-dll.pdb" />
+    <SymbolItems Include="$(TargetDir)openrct2-win.pdb" />
   </ItemGroup>
 
   <ItemGroup Label="Publish Items">
     <PublishItems Include="$(OutputExe)" />
+    <PublishItems Include="$(OutputCom)" />
+    <PublishItems Include="$(OutputDll)" />
     <PublishItems Include="$(TargetDir)data" />
     <PublishItems Include="$(DistDir)changelog.txt" />
-    <PublishItems Include="$(DistDir)known_issues.txt" />
     <PublishItems Include="$(DistDir)readme.txt" />
     <PublishItems Include="$(RootDir)contributors.md" />
     <PublishItems Include="$(RootDir)licence.txt" />
@@ -106,41 +121,33 @@
     </UploadArtifacts>
   </ItemGroup>
 
-  <Target Name="CheckLibs">
-    <!-- Get libversion file and check version -->
-    <Message Text="Checking if libraries need updating..." Importance="high" />
-    <PropertyGroup>
-      <CurrentLibsVersion>0</CurrentLibsVersion>
-      <CurrentLibsVersion Condition="Exists($(LibsVersionPath))">$([System.IO.File]::ReadAllText($(LibsVersionPath)).Trim())</CurrentLibsVersion>
-      <UpdateLibs Condition="$(TargetLibsVersion) &gt; $(CurrentLibsVersion)">true</UpdateLibs>
-    </PropertyGroup>
-
-    <Message Condition="'$(UpdateLibs)'!='true'" Text="Libraries up to date" Importance="high" />
-    <Message Condition="'$(UpdateLibs)'=='true'" Text="Libraries out of date, updating..." Importance="high" />
-    <CallTarget Condition="'$(UpdateLibs)'=='true'" Targets="DownloadLibs" />
-  </Target>
-
   <Target Name="DownloadLibs">
+    <!-- libs -->
+    <DownloadDependency Name="Libs"
+                        Url="$(LibsUrl)"
+                        Sha1="$(LibsSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib\$(Platform)" />
+
+    <!-- googletest -->
+    <DownloadDependency Name="googletest"
+                        Url="$(GtestUrl)"
+                        Sha1="$(GtestSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib" />
     <PropertyGroup>
-      <LibsZipPath>$(LibsPath)openrct2-libs-vs2015.zip</LibsZipPath>
+      <GtestSrc>$(RootDir)lib\googletest-release-$(GtestVersion)</GtestSrc>
+      <GtestDst>$(RootDir)lib\googletest</GtestDst>
     </PropertyGroup>
-
-    <!-- Clean libs directory -->
-    <RemoveDir Directories="$(LibsPath)" />
-    <MakeDir Directories="$(LibsPath)" />
-
-    <Message Text="Downloading libraries..." Importance="normal" />
-    <Exec Command="powershell -ExecutionPolicy Unrestricted -Command &quot;Invoke-WebRequest '$(LibsUrl)' -OutFile '$(LibsZipPath)'&quot;" StandardOutputImportance="low" />
-    <Unzip Input="$(LibsZipPath)" OutputDirectory="$(LibsPath)" />
-    <Delete Files="$(LibsZipPath)" ContinueOnError="true" />
-
-    <!-- Update libversion file -->
-    <WriteLinesToFile Lines="$(TargetLibsVersion)" File="$(LibsVersionPath)" Overwrite="true" />
+    <Exec Command="cmd /c &quot;if exist &quot;$(GtestSrc)&quot; ( rmdir /S /Q &quot;$(GtestDst)&quot; 2> nul &amp; move &quot;$(GtestSrc)&quot; &quot;$(GtestDst)&quot; )&quot;" />
   </Target>
 
   <Target Name="Clean">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <ItemGroup>
-      <CleanItems Condition="'$(Platform)'=='Win32'" Include="$(OutputExe)" />
+      <CleanItems Include="$(OutputCom)" />
       <CleanItems Include="$(g2Output)" />
       <CleanItems Include="$(ArtifactsDir)openrct2-installer-$(Configuration)-$(Platform)*.exe" />
       <CleanItems Include="$(ArtifactsDir)openrct2-portable-$(Configuration)-$(Platform)*.zip" />
@@ -152,47 +159,85 @@
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
   </Target>
 
-  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="CheckLibs">
+  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadLibs">
     <PropertyGroup>
       <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
+      <BuildString Condition="'$(GIT_DESCRIBE)'!=''">$(BuildString) ($(GIT_DESCRIBE))</BuildString>
     </PropertyGroup>
     <ItemGroup>
-      <CopyItems Condition="'$(Platform)'=='Win32'" Include="$(RootDir)openrct2.exe" />
       <DataItems Include="$(RootDir)data\**\*" />
     </ItemGroup>
     <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
     <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(DataItems)" DestinationFolder="$(TargetDir)data\%(RecursiveDir)" SkipUnchangedFiles="true" />
-
-    <!-- tests -->
-    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)testpaint\" />
   </Target>
 
   <Target Name="Build">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
   </Target>
   <Target Name="Rebuild">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
     <Message Text="SlnProperties: $(SlnProperties)" />
     <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
   </Target>
 
-  <Target Name="Test" DependsOnTargets="Build" Condition="'$(PLATFORM)'=='Win32'">
-    <Exec Command="$(TargetDir)testpaint\openrct2.exe" />
+  <Target Name="Test">
+    <!-- Scan repositories prior to running tests as it can take a while -->
+    <Message Text="Building OpenRCT2 repository indexes..." Importance="high" />
+    <Exec Command="$(TargetDir)openrct2.exe scan-objects"
+          WorkingDirectory="$(TargetDir)"
+          StandardOutputImportance="normal" />
+
+    <Message Text="Running tests..." Importance="high" />
+    <Exec Command="$(TargetDir)tests.exe &quot;--gtest_output=xml:$(ArtifactsDir)test-results.xml&quot;"
+          WorkingDirectory="$(TargetDir)" />
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
-  <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)">
-    <Message Text="Building g2.dat..." />
-    <Exec Command="$(OutputExe) sprite build $(g2Output) $(RootDir)resources\g2"
-          StandardOutputImportance="low" />
+  <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
+          Condition="'$(TestConfig)'!='true'">
+    <Message Text="Building g2.dat..." Importance="high" />
+    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
+          StandardOutputImportance="normal" />
+  </Target>
+
+  <!-- Target to create openrct2.exe (windows) and openrct2.com (console) -->
+  <Target Name="CreateGUI" DependsOnTargets="Build" AfterTargets="Build" Inputs="$(OutputExe)" Outputs="$(OutputCom)">
+    <Copy SourceFiles="$(OutputExe)" DestinationFiles="$(OutputCom)" />
+    <Exec Command="editbin /subsystem:console &quot;$(OutputCom)&quot;" />
+    <Exec Command="editbin /subsystem:windows &quot;$(OutputExe)&quot;" />
+  </Target>
+
+  <!-- Target to download the title sequences -->
+  <Target Name="DownloadTitleSequences" AfterTargets="Build">
+    <DownloadDependency Name="TitleSequences"
+                        Url="$(TitleSequencesUrl)"
+                        Sha1="$(TitleSequencesSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data\title" />
+  </Target>
+
+  <!-- Target to download the objects -->
+  <Target Name="DownloadObjects" AfterTargets="Build">
+    <DownloadDependency Name="Objects"
+                        Url="$(ObjectsUrl)"
+                        Sha1="$(ObjectsSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data\object" />
   </Target>
 
   <!-- Target to sign OpenRCT2
        This requires the project parameter SIGN_PASSWORD to be set -->
-  <Target Name="Sign" AfterTargets="Build" Inputs="@(SignItems)" Outputs="%(SignItems.Identity).signed">
-    <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." />
+  <Target Name="Sign" AfterTargets="Build" Inputs="@(SignItems)" Outputs="%(SignItems.Identity).signed"
+          Condition="'$(TestConfig)'!='true'">
+    <!-- <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." /> -->
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
              Importance="high" />
     <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
@@ -204,14 +249,16 @@
   </Target>
 
   <!-- Target to publish OpenRCT2 as a portable zip -->
-  <Target Name="PublishPortable" DependsOnTargets="Build;g2" Inputs="@(PublishItems)" Outputs="$(PublishZip)">
+  <Target Name="PublishPortable" DependsOnTargets="Build;g2" Inputs="@(PublishItems)" Outputs="$(PublishZip)"
+          Condition="'$(TestConfig)'!='true'">
     <MakeDir Directories="$(ArtifactsDir)" />
     <Message Importance="high" Text="Creating $([System.IO.Path]::GetFileName($(PublishZip)))..." />
     <_7z Output="$(PublishZip)" Inputs="@(PublishItems)" />
   </Target>
 
   <!-- Target to publish the OpenRCT2 debug symbols -->
-  <Target Name="PublishSymbols" DependsOnTargets="Build" Inputs="@(SymbolItems)" Outputs="$(PublishSymbolsZip)">
+  <Target Name="PublishSymbols" DependsOnTargets="Build" Inputs="@(SymbolItems)" Outputs="$(PublishSymbolsZip)"
+          Condition="'$(TestConfig)'!='true'">
     <MakeDir Directories="$(ArtifactsDir)" />
     <Message Importance="high" Text="Creating $([System.IO.Path]::GetFileName($(PublishSymbolsZip)))..." />
     <_7z Output="$(PublishSymbolsZip)" Inputs="@(SymbolItems)" />
@@ -222,7 +269,7 @@
           DependsOnTargets="Build;g2"
           Inputs="@(PublishItems);$(NsisScript)"
           Outputs="$(PublishInstallerExe)"
-          Condition="'$(NO_NSIS)'!='true'">
+          Condition="'$(NO_NSIS)'!='true' AND '$(TestConfig)'!='true'">
     <PropertyGroup>
       <PublishInstallerExeName>$([System.IO.Path]::GetFilename($(PublishInstallerExe)))</PublishInstallerExeName>
     </PropertyGroup>
@@ -232,13 +279,14 @@
     <!-- Create the installer -->
     <Message Text="Building Windows Installer (NSIS script)" Importance="high" />
     <Exec Command="makensis /DOUTFILE=$(PublishInstallerExe) ^
+         /DAPPV_MAIN=$(Version) ^
          /DAPPV_EXTRA=$(VersionExtra) ^
          /DPLATFORM=$(Platform) ^
          $(NsisScript)"
           StandardOutputImportance="normal" />
 
     <!-- Sign the installer -->
-    <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." />
+    <!-- <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." /> -->
     <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing $(PublishInstallerExeName)"
              Importance="high" />
     <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
@@ -250,21 +298,23 @@
           DependsOnTargets="PublishSymbols;PublishPortable;PublishInstaller" />
 
   <!-- Target to upload the artifacts to OpenRCT2.org -->
-  <Target Name="UploadArtifacts" DependsOnTargets="PublishAll">
+  <Target Name="UploadArtifacts" DependsOnTargets="PublishAll"
+          Condition="'$(TestConfig)'!='true'">
     <PropertyGroup>
       <UploadLink>https://openrct2.org/altapi/?command=push-build</UploadLink>
       <UploadFileNameShort>%(UploadArtifacts.Filename)%(UploadArtifacts.Extension)</UploadFileNameShort>
+      <UploadGitBranch>master</UploadGitBranch>
+      <UploadGitBranch Condition="'$(GIT_BRANCH)'!=''">$(GIT_BRANCH)</UploadGitBranch>
     </PropertyGroup>
     <Message Text="Uploading $(UploadFileNameShort)" Importance="high" />
     <Error Condition="'$(OPENRCT2_ORG_TOKEN)'==''" Text="OPENRCT2_ORG_TOKEN not set." />
     <Error Condition="'$(GIT_COMMIT_SHA1)'==''" Text="GIT_COMMIT_SHA1 not set." />
-    <Error Condition="'$(GIT_BRANCH)'==''" Text="GIT_BRANCH not set." />
     <Exec EchoOff="true" Command="curl.exe -s -o - ^
          --form &quot;key=$(OPENRCT2_ORG_TOKEN)&quot; ^
          --form &quot;fileName=%(UploadArtifacts.Name)&quot; ^
          --form &quot;version=$(Version)&quot; ^
          --form &quot;gitHash=$(GIT_COMMIT_SHA1)&quot; ^
-         --form &quot;gitBranch=$(GIT_BRANCH)&quot; ^
+         --form &quot;gitBranch=$(UploadGitBranch)&quot; ^
          --form &quot;flavourId=%(UploadArtifacts.FlavourId)&quot; ^
          --form &quot;file=@%(UploadArtifacts.Identity)&quot; ^
          &quot;$(UploadLink)&quot;"

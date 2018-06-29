@@ -11,7 +11,7 @@ STR_0006    :Junior Roller Coaster
 STR_0007    :Miniature Railway
 STR_0008    :Monorail
 STR_0009    :Mini Suspended Coaster
-STR_0010    :Boat Ride
+STR_0010    :Boat Hire
 STR_0011    :Wooden Wild Mouse
 STR_0012    :Steeplechase
 STR_0013    :Car Ride
@@ -29,7 +29,7 @@ STR_0024    :Go Karts
 STR_0025    :Log Flume
 STR_0026    :River Rapids
 STR_0027    :Dodgems
-STR_0028    :Pirate Ship
+STR_0028    :Swinging Ship
 STR_0029    :Swinging Inverter Ship
 STR_0030    :Food Stall
 STR_0031    :Unknown Stall (1D)
@@ -52,12 +52,12 @@ STR_0047    :Cash Machine
 STR_0048    :Twist
 STR_0049    :Haunted House
 STR_0050    :First Aid Room
-STR_0051    :Circus Show
+STR_0051    :Circus
 STR_0052    :Ghost Train
-STR_0053    :Steel Twister Roller Coaster
+STR_0053    :Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
 STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
+STR_0056    :Steel Wild Mouse
 STR_0057    :Multi-Dimension Roller Coaster
 STR_0058    :Unknown Ride (38)
 STR_0059    :Flying Roller Coaster
@@ -553,10 +553,10 @@ STR_0548    :A toilet building
 STR_0549    :Rotating big wheel with open chairs
 STR_0550    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
 STR_0551    :Cinema showing 3D films inside a geodesic sphere shaped building
-STR_0552    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heals
+STR_0552    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
 STR_0553    :Concentric pivoting rings allowing the riders free rotation in all directions
 STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
-STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
+STR_0555    :Guests ride in a lift up or down a vertical tower to get from one level to another
 STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
 STR_0557    :An A.T.M. (Cash Machine) for guests to use if they run low on funds
 STR_0558    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
@@ -604,170 +604,170 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :<removed string - do not use>
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
-STR_0656    :Guest {INT32}
-STR_0657    :Guest {INT32}
-STR_0658    :Guest {INT32}
-STR_0659    :Guest {INT32}
-STR_0660    :Guest {INT32}
-STR_0661    :Guest {INT32}
-STR_0662    :Guest {INT32}
-STR_0663    :Guest {INT32}
-STR_0664    :Guest {INT32}
-STR_0665    :Guest {INT32}
-STR_0666    :Guest {INT32}
-STR_0667    :Guest {INT32}
-STR_0668    :Guest {INT32}
-STR_0669    :Guest {INT32}
-STR_0670    :Guest {INT32}
-STR_0671    :Guest {INT32}
-STR_0672    :Guest {INT32}
-STR_0673    :Guest {INT32}
-STR_0674    :Guest {INT32}
-STR_0675    :Guest {INT32}
-STR_0676    :Guest {INT32}
-STR_0677    :Guest {INT32}
-STR_0678    :Guest {INT32}
-STR_0679    :Guest {INT32}
-STR_0680    :Guest {INT32}
-STR_0681    :Guest {INT32}
-STR_0682    :Guest {INT32}
-STR_0683    :Guest {INT32}
-STR_0684    :Guest {INT32}
-STR_0685    :Guest {INT32}
-STR_0686    :Guest {INT32}
-STR_0687    :Guest {INT32}
-STR_0688    :Guest {INT32}
-STR_0689    :Guest {INT32}
-STR_0690    :Guest {INT32}
-STR_0691    :Guest {INT32}
-STR_0692    :Guest {INT32}
-STR_0693    :Guest {INT32}
-STR_0694    :Guest {INT32}
-STR_0695    :Guest {INT32}
-STR_0696    :Guest {INT32}
-STR_0697    :Guest {INT32}
-STR_0698    :Guest {INT32}
-STR_0699    :Guest {INT32}
-STR_0700    :Guest {INT32}
-STR_0701    :Guest {INT32}
-STR_0702    :Guest {INT32}
-STR_0703    :Guest {INT32}
-STR_0704    :Guest {INT32}
-STR_0705    :Guest {INT32}
-STR_0706    :Guest {INT32}
-STR_0707    :Guest {INT32}
-STR_0708    :Guest {INT32}
-STR_0709    :Guest {INT32}
-STR_0710    :Guest {INT32}
-STR_0711    :Guest {INT32}
-STR_0712    :Guest {INT32}
-STR_0713    :Guest {INT32}
-STR_0714    :Guest {INT32}
-STR_0715    :Guest {INT32}
-STR_0716    :Guest {INT32}
-STR_0717    :Guest {INT32}
-STR_0718    :Guest {INT32}
-STR_0719    :Guest {INT32}
-STR_0720    :Guest {INT32}
-STR_0721    :Guest {INT32}
-STR_0722    :Guest {INT32}
-STR_0723    :Guest {INT32}
-STR_0724    :Guest {INT32}
-STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
@@ -851,7 +851,7 @@ STR_0845    :<removed string - do not use>
 STR_0846    :<removed string - do not use>
 STR_0847    :About 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Thanks to:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,7 +890,7 @@ STR_0884    :Load Landscape
 STR_0885    :Save Landscape
 STR_0886    :<removed string - do not use>
 STR_0887    :Quit Scenario Editor
-STR_0888    :Quit Roller Coaster Designer
+STR_0888    :Quit Track Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :<removed string - do not use>
 STR_0891    :Screenshot
@@ -1093,7 +1093,7 @@ STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
 STR_1088    :Intense mode
 STR_1089    :Berserk mode
 STR_1090    :Haunted house mode
-STR_1091    :Circus show mode
+STR_1091    :Circus mode
 STR_1092    :Downward launch
 STR_1093    :Crooked house mode
 STR_1094    :Freefall drop mode
@@ -1144,8 +1144,8 @@ STR_1138    :{SMALLFONT}{BLACK}Select additional colour 2
 STR_1139    :{SMALLFONT}{BLACK}Select support structure colour
 STR_1140    :{SMALLFONT}{BLACK}Select vehicle colour scheme option
 STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{10}{STRINGID}
 STR_1144    :Can't build/move entrance for this ride/attraction...
 STR_1145    :Can't build/move exit for this ride/attraction...
 STR_1146    :Entrance not yet built
@@ -1158,8 +1158,8 @@ STR_1152    :Any load
 STR_1153    :Height Marks on Ride Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :{TICK}{MOVE_X}{10}{STRINGID}
 STR_1158    :Can't remove this...
 STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
 STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before depa
 STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
 STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronise departure with all adjacent stations (for 'racing')
 STR_1217    :{COMMA16} seconds
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Exit only
 STR_1221    :No entrance
 STR_1222    :No exit
@@ -1600,7 +1600,7 @@ STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really g
 STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
 STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
 STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
+STR_1598    :{SMALLFONT}{OPENQUOTES}This sujeonggwa from {STRINGID} is really good value{ENDQUOTES}
 STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
 STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
 STR_1601    :
@@ -1632,7 +1632,7 @@ STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup fro
 STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
 STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
 STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
+STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujeonggwa from {STRINGID}{ENDQUOTES}
 STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
 STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
 STR_1633    :
@@ -1777,8 +1777,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1775    :Off
-STR_1776    :On
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Ride music
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
@@ -1927,7 +1927,7 @@ STR_1919    :Not enough cash available!
 STR_1920    :Can't pay back loan!
 STR_1921    :{SMALLFONT}{BLACK}Start a new game
 STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
-STR_1923    :{SMALLFONT}{BLACK}Show tutorial
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Exit
 STR_1925    :Can't place person here...
 STR_1926    :{SMALLFONT}
@@ -2118,7 +2118,7 @@ STR_2110    :{WINDOW_COLOUR_2}Wonton Soup price:
 STR_2111    :{WINDOW_COLOUR_2}Meatball Soup price:
 STR_2112    :{WINDOW_COLOUR_2}Fruit Juice price:
 STR_2113    :{WINDOW_COLOUR_2}Soybean Milk price:
-STR_2114    :{WINDOW_COLOUR_2}Sujongkwa price:
+STR_2114    :{WINDOW_COLOUR_2}Sujeonggwa price:
 STR_2115    :{WINDOW_COLOUR_2}Sub Sandwich price:
 STR_2116    :{WINDOW_COLOUR_2}Cookie price:
 STR_2117    :{WINDOW_COLOUR_2}
@@ -2140,7 +2140,7 @@ STR_2132    :Wonton Soup
 STR_2133    :Meatball Soup
 STR_2134    :Fruit Juice
 STR_2135    :Soybean Milk
-STR_2136    :Sujongkwa
+STR_2136    :Sujeonggwa
 STR_2137    :Sub Sandwich
 STR_2138    :Cookie
 STR_2139    :Empty Bowl
@@ -2162,7 +2162,7 @@ STR_2154    :Wonton Soups
 STR_2155    :Meatball Soups
 STR_2156    :Fruit Juices
 STR_2157    :Soybean Milks
-STR_2158    :Sujongkwa
+STR_2158    :Sujeonggwa
 STR_2159    :Sub Sandwiches
 STR_2160    :Cookies
 STR_2161    :Empty Bowls
@@ -2184,7 +2184,7 @@ STR_2176    :some Wonton Soup
 STR_2177    :some Meatball Soup
 STR_2178    :a Fruit Juice
 STR_2179    :some Soybean Milk
-STR_2180    :some Sujongkwa
+STR_2180    :some Sujeonggwa
 STR_2181    :a Sub Sandwich
 STR_2182    :a Cookie
 STR_2183    :an Empty Bowl
@@ -2206,7 +2206,7 @@ STR_2198    :Wonton Soup
 STR_2199    :Meatball Soup
 STR_2200    :Fruit Juice
 STR_2201    :Soybean Milk
-STR_2202    :Sujongkwa
+STR_2202    :Sujeonggwa
 STR_2203    :Sub Sandwich
 STR_2204    :Cookie
 STR_2205    :Empty Bowl
@@ -2691,14 +2691,14 @@ STR_2682    :<removed string - do not use>
 STR_2683    :<removed string - do not use>
 STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
-STR_2686    :{WINDOW_COLOUR_2}Low:
-STR_2687    :{WINDOW_COLOUR_2}High:
-STR_2688    :{WINDOW_COLOUR_2}Base Frequency:
-STR_2689    :{WINDOW_COLOUR_2}Octaves:
+STR_2686    :Low:
+STR_2687    :High:
+STR_2688    :Base Frequency:
+STR_2689    :Octaves:
 STR_2690    :Map Generation
-STR_2691    :{WINDOW_COLOUR_2}Base height:
-STR_2692    :{WINDOW_COLOUR_2}Water level:
-STR_2693    :{WINDOW_COLOUR_2}Terrain:
+STR_2691    :Base height:
+STR_2692    :Water level:
+STR_2693    :Terrain:
 STR_2694    :Generate
 STR_2695    :Random terrain
 STR_2696    :Place trees
@@ -2748,7 +2748,7 @@ STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copy data\css17.dat from your RCT1 installation to data\css50.dat in your RCT2 installation.
+STR_2743    :Copy 'data/css17.dat' from your RCT1 installation to 'data/css50.dat' in your RCT2 installation, or make sure the path to RCT1 in the Miscellaneous tab is correct.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2783,12 +2783,12 @@ STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (borderless window)
 STR_2776    :Language:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{10}{STRING}
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
@@ -2863,17 +2863,17 @@ STR_2852    :Track design already installed
 STR_2853    :Forbidden by the local authority!
 STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
 STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
-STR_2856    :{WINDOW_COLOUR_2}Tutorial
-STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :Can't start marketing campaign...
 STR_2859    :Another instance of OpenRCT2 is already running
-STR_2860    :Infogrames Interactive credits...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements...
 STR_2863    :Music acknowledgements
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) non copyright
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
@@ -2915,29 +2915,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Product Manager:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}V.P. of Product Development:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Director of Quality Assurance:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A. Certification Manager:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A. Certification Lead:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Testers:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Director of Marketing:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Manager of Creative Services:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Manager of Editorial & Documentation Services:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Graphic Designer:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Special Thanks to:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Engineering Specialist:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Engineering Services Manager:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Lead Compatibility Analyst:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Lead Tester:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3062,9 +3062,9 @@ STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
-STR_3055    :White
-STR_3056    :Translucent
-STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
@@ -3214,11 +3214,11 @@ STR_3203    :Invention List Set Up
 STR_3204    :Options Selection
 STR_3205    :Objective Selection
 STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
+STR_3207    :Track Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
-STR_3211    :{WINDOW_COLOUR_2}Map size:
+STR_3211    :Map size:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Can't decrease map size any further
 STR_3214    :Can't increase map size any further
@@ -3280,9 +3280,9 @@ STR_3269    :Forbid landscape changes
 STR_3270    :{SMALLFONT}{BLACK}Forbid any changes to the landscape
 STR_3271    :Forbid high construction
 STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
-STR_3273    :Park rating higher difficult level
+STR_3273    :Park rating is harder to increase and maintain
 STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
-STR_3275    :Guest generation higher difficult level
+STR_3275    :Guests are more difficult to attract
 STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
 STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
 STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
@@ -3342,7 +3342,7 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
+STR_3335    :Track Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Custom-designed layout
@@ -3351,7 +3351,7 @@ STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}Game tools
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Roller Coaster Designer
+STR_3344    :Track Designer
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
@@ -3383,7 +3383,7 @@ STR_3372    :{BLACK}= Cash Machine
 STR_3373    :{BLACK}= Toilet
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
-STR_3376    :Install new track design...
+STR_3376    :Install new
 STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
 STR_3378    :Install
 STR_3379    :Cancel
@@ -3392,60 +3392,58 @@ STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
 STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name - Please select a new name for this design:
-STR_3385    :Beginners Tutorial
-STR_3386    :Custom Rides Tutorial
-STR_3387    :Roller Coaster Building Tutorial
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :Unable to switch to selected mode
 STR_3389    :Unable to select additional item of scenery...
 STR_3390    :Too many items selected
-# Start of tutorial strings. Not used at the moment, so not necessary to translate.
-STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
-STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
-STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
-STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
-STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
-STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
-STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
-STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
-STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
-STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
-STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
-STR_3403    :{SMALLFONT}{BLACK}But where are the guests?
-STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
-STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
-STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
-STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
-STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
-STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
-STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
-STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
-STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
-STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
-STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
-STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
-STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
-STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
-STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
-STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
-STR_3421    :{SMALLFONT}{BLACK}Let's add some music to the ride...
-STR_3422    :{SMALLFONT}{BLACK}Let's build a roller coaster !
-STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
-STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
-STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
-STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
-STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
-STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
-STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
-STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
-STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
-STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
-STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
-STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
-STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
-STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customise the ride a bit...
-# End of tutorial strings
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
 STR_3439    :Clear Scenery
@@ -3462,7 +3460,7 @@ STR_5120    :Finances
 STR_5121    :Research
 STR_5122    :Select rides by track type (like in RCT1)
 STR_5123    :Renew rides
-STR_5124    :<not used anymore>
+STR_5124    :<removed string - do not use>
 STR_5125    :All destructible
 STR_5126    :Random title music
 STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
@@ -3495,7 +3493,7 @@ STR_5153    :Edit Themes...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
-STR_5157    :Unlock all prices
+STR_5157    :<removed string - do not use>
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
@@ -3574,8 +3572,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
+STR_5236    :Window
+STR_5237    :Palette
 STR_5238    :Current Theme:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
@@ -3709,7 +3707,7 @@ STR_5367    :Fast
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
-STR_5371    :Object Selection
+STR_5371    :Object selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Name {STRINGID}
 STR_5374    :Date {STRINGID}
@@ -3762,13 +3760,13 @@ STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
 STR_5421    :Zoom
 STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
 STR_5423    :Wait
-STR_5424    :Wait{MOVE_X}{87}{COMMA16}
+STR_5424    :Wait{MOVE_X}{87}{UINT16}
 STR_5425    :Restart
 STR_5426    :End
 STR_5427    :Coordinates:
 STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
-STR_5430    :Seconds to wait:
+STR_5430    :Milliseconds to wait:
 STR_5431    :Save to load:
 STR_5432    :Command:
 STR_5433    :Title Sequences
@@ -3832,10 +3830,10 @@ STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
 STR_5492    :Scenario options
 STR_5493    :Send Message
-STR_5494    :<not used anymore>
+STR_5494    :<removed string - do not use>
 STR_5495    :Player List
-STR_5496    :Player:
-STR_5497    :Ping:
+STR_5496    :Player
+STR_5497    :Ping
 STR_5498    :Server List
 STR_5499    :Player Name:
 STR_5500    :Add Server
@@ -3845,7 +3843,7 @@ STR_5503    :Enter hostname or IP address:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
-STR_5507    :Handymen mow grass by default
+STR_5507    :<removed string - do not use>
 STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :Default sound device
@@ -3968,7 +3966,7 @@ STR_5626    :Other Parks
 STR_5627    :Group scenario list by:
 STR_5628    :Source game
 STR_5629    :Difficulty level
-STR_5630    :Enable unlocking of scenarios
+STR_5630    :Enable progressive unlocking
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own...
 STR_5633    :CMD + 
@@ -3980,7 +3978,7 @@ STR_5638    :Permission denied
 STR_5639    :{SMALLFONT}{BLACK}Show list of players
 STR_5640    :{SMALLFONT}{BLACK}Manage groups
 STR_5641    :Default Group:
-STR_5642    :Group:
+STR_5642    :Group
 STR_5643    :Add Group
 STR_5644    :Remove Group
 STR_5645    :Chat
@@ -4008,7 +4006,7 @@ STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
-STR_5704    :Last Action:
+STR_5704    :Last Action
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
@@ -4032,13 +4030,13 @@ STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Force weather:
 STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
-STR_5727    :Scaling quality
+STR_5727    :Scaling quality:
 STR_5728    :Requires hardware display option
 STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
-STR_5730    :Nearest neighbour
+STR_5730    :<removed string - do not use>
 STR_5731    :Linear
-STR_5732    :Anisotropic
-STR_5733    :Use NN scaling at integer scales
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Network Status
@@ -4097,7 +4095,7 @@ STR_5787    :{COMMA32} players online
 STR_5788    :Default inspection interval:
 STR_5789    :Disable lightning effect
 STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
-STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
+STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to {OPENQUOTES}this year{ENDQUOTES}
 STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
 STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
 STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
@@ -4125,11 +4123,11 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
 STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5817    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Sets UI scaling type
-STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbour scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
+STR_5817    :{SMALLFONT}{BLACK}Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbour scaling is sharp, but can cause a minor performance hit.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
-STR_5821    :{SMALLFONT}{BLACK}Changes the colour of the construction marker when building rides,{NEWLINE}paths, shops, scenery, etc.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behaviour)
 STR_5824    :{SMALLFONT}{BLACK}Disables lightning effect{NEWLINE}during a thunderstorm
@@ -4140,25 +4138,25 @@ STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for dista
 STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
 STR_5830    :{SMALLFONT}{BLACK}Changes what language is used
 STR_5831    :{SMALLFONT}{BLACK}Changes what format the{NEWLINE}temperature is displayed in
-STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measurement format set under "Distance and Speed"
+STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measurement format set under {OPENQUOTES}Distance and Speed{ENDQUOTES}
 STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
 STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
 STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
-STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder.
+STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder, or set the path to RCT1 in the Miscellaneous tab.
 STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
 STR_5838    :{SMALLFONT}{BLACK}Show a separate button for the finance window in the toolbar
 STR_5839    :{SMALLFONT}{BLACK}Show a separate button for the research and development window in the toolbar
 STR_5840    :{SMALLFONT}{BLACK}Show a separate button for the cheats window in the toolbar
 STR_5841    :{SMALLFONT}{BLACK}Show a separate button for the recent news window in the toolbar
 STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
-STR_5843    :{SMALLFONT}{BLACK}Enable scenario unlocking (RCT1 behaviour)
+STR_5843    :{SMALLFONT}{BLACK}Enables progressive unlocking of scenarios (RCT1 behaviour)
 STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
 STR_5845    :{SMALLFONT}{BLACK}Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
-STR_5846    :{SMALLFONT}{BLACK}Set often OpenRCT2 automatically saves
+STR_5846    :{SMALLFONT}{BLACK}Set how often OpenRCT2 automatically saves
 STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
 STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
-STR_5850    :{SMALLFONT}{BLACK}Newly hired handymen mow{NEWLINE}grass by default (RCT1 behaviour)
+STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
 STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
@@ -4180,14 +4178,14 @@ STR_5868    :{WINDOW_COLOUR_2}Provider E-mail: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Provider Website: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Show server information
 STR_5871    :Plants don't age
-STR_5872    :{SMALLFONT}{BLACK}Disable plant aging such that they don't wilt.
+STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
 STR_5875    :Drawing Engine:
 STR_5876    :{SMALLFONT}{BLACK}The engine to use for drawing the game.
 STR_5877    :Software
 STR_5878    :Software (hardware display)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (experimental)
 STR_5880    :Selected only
 STR_5881    :Non-selected only
 STR_5882    :Custom currency
@@ -4205,7 +4203,7 @@ STR_5893    :Exchange Rate
 STR_5894    :Enter the exchange rate
 STR_5895    :Save Track
 STR_5896    :Track save failed!
-STR_5897    :Window limit:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
 STR_5899    :Toggle paint debug window
 STR_5900    :Use original drawing code
@@ -4237,7 +4235,7 @@ STR_5925    :Path details
 STR_5926    :Track details
 STR_5927    :Scenery details
 STR_5928    :Entrance details
-STR_5929    :Fence details
+STR_5929    :Wall details
 STR_5930    :Large scenery details
 STR_5931    :Banner details
 STR_5932    :Corrupt element details
@@ -4287,7 +4285,7 @@ STR_5975    :Slope:
 STR_5976    :Flat
 STR_5977    :Right side up
 STR_5978    :Left side up
-STR_5979    :{WINDOW_COLOUR_2}Fence type: {BLACK}{COMMA16}
+STR_5979    :{WINDOW_COLOUR_2}Wall type: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Banner text: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Not a banner
 STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
@@ -4296,6 +4294,280 @@ STR_5984    :Blocked paths:
 STR_5985    :New folder
 STR_5986    :Type the name of the new folder.
 STR_5987    :Unable to create folder
+STR_5988    :{SMALLFONT}{BLACK}No remaining land rights for sale
+STR_5989    :{SMALLFONT}{BLACK}No remaining construction rights for sale
+STR_5990    :{SMALLFONT}{BLACK}No remaining land rights or construction rights for sale
+STR_5991    :Can't paste element...
+STR_5992    :The map elements limit has been reached
+STR_5993    :{SMALLFONT}{BLACK}Copy selected element
+STR_5994    :{SMALLFONT}{BLACK}Paste copied element
+STR_5995    :Booster
+STR_5996    :Booster speed
+STR_5997    :Add/set money
+STR_5998    :Add money
+STR_5999    :Set money
+STR_6000    :Enter new value
+STR_6001    :Enable lighting effects (experimental)
+STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
+STR_6003    :Cut-away View
+STR_6004    :Cut-away View
+STR_6005    :Enable cut-away view
+STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height (vertical clipping) and in the selected area (horizontal clipping).
+STR_6007    :Cut height
+STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
+STR_6009    :{SMALLFONT}{BLACK}Select cut height
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
+STR_6014    :{SMALLFONT}{BLACK}Guests will only pay entrance tickets for rides and services.{NEWLINE}They won't pay anything to enter the park.
+STR_6015    :Sloped
+STR_6016    :Modify Tile
+STR_6017    :Please slow down
+STR_6018    :Ride construction - Turn left
+STR_6019    :Ride construction - Turn right
+STR_6020    :Ride construction - Use default track
+STR_6021    :Ride construction - Slope down
+STR_6022    :Ride construction - Slope up
+STR_6023    :Ride construction - Toggle chain lift
+STR_6024    :Ride construction - Bank left
+STR_6025    :Ride construction - Bank right
+STR_6026    :Ride construction - Previous track
+STR_6027    :Ride construction - Next track
+STR_6028    :Ride construction - Build current
+STR_6029    :Ride construction - Demolish current
+STR_6030    :{SMALLFONT}{BLACK}Scenery picker. Click any scenery on the map to select the same piece for construction.
+STR_6031    :Server Description:
+STR_6032    :Server Greeting:
+STR_6033    :Path to RCT1 installation:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :Please select your RCT1 directory
+STR_6036    :{SMALLFONT}{BLACK}Clear
+STR_6037    :Please select a valid RCT1 directory
+STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
+STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
+STR_6040    :Edit Scenario Options
+STR_6041    :{BLACK}No mechanics are hired!
+STR_6042    :Load height map
+STR_6043    :Select height map
+STR_6044    :Smooth height map
+STR_6045    :Strength
+STR_6046    :Normalise height map
+STR_6047    :Smooth tiles
+STR_6048    :Height map error
+STR_6049    :Error reading PNG
+STR_6050    :Error reading bitmap
+STR_6051    :The width and height need to match
+STR_6052    :The heightmap is too big, and will be cut off
+STR_6053    :The heightmap cannot be normalised
+STR_6054    :Only 24-bit bitmaps are supported
+STR_6055    :OpenRCT2 Heightmap File
+STR_6056    :{SMALLFONT}{BLACK}Mute
+STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
+STR_6058    :Mute
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :Show guest purchases as animation
+STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests make purchases.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :Own all land
+STR_6065    :Log user actions
+STR_6066    :{SMALLFONT}{BLACK}Logs all user actions to files in your user directory.
+STR_6067    :Server started.
+STR_6068    :Server shutdown.
+STR_6069    :{STRING} was kicked from the server by {STRING}.
+STR_6070    :{STRING} was set to group '{STRING}' by {STRING}.
+STR_6071    :{STRING} created new player group '{STRING}'.
+STR_6072    :{STRING} deleted player group '{String}'.
+STR_6073    :{STRING} edited permissions for player group '{String}'.
+STR_6074    :{STRING} changed player group name from '{String}' to '{String}'.
+STR_6075    :{STRING} changed the default player group to '{String}'.
+STR_6076    :{STRING} used/toggled cheat '{STRING}'.
+STR_6077    :Add Money
+STR_6078    :{STRING} created ride '{STRING}'.
+STR_6079    :{STRING} demolished ride '{STRING}'.
+STR_6080    :{STRING} changed the appearance of ride '{STRING}'.
+STR_6081    :{STRING} changed the status of ride '{STRING}' to closed.
+STR_6082    :{STRING} changed the status of ride '{STRING}' to open.
+STR_6083    :{STRING} changed the status of ride '{STRING}' to testing.
+STR_6084    :{STRING} changed the vehicle settings of ride '{STRING}'.
+STR_6085    :{STRING} changed the ride settings of ride '{STRING}'.
+STR_6086    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
+STR_6087    :{STRING} changed the price of ride '{STRING}' to {STRING}
+STR_6088    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
+STR_6089    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
+STR_6090    :{STRING} opened the park.
+STR_6091    :{STRING} closed the park.
+STR_6092    :{STRING} changed the park entrance fee to {STRING}
+STR_6093    :{STRING} placed new scenery.
+STR_6094    :{STRING} removed scenery.
+STR_6095    :{STRING} edited scenery.
+STR_6096    :{STRING} set sign name to '{STRING}'.
+STR_6097    :{STRING} placed a track of ride '{STRING}'.
+STR_6098    :{STRING} removed a track of ride.
+STR_6099    :You connected to the server.
+STR_6100    :You disconnected from the server.
+STR_6101    :Rides don't decrease in value over time
+STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over time, so guests will not suddenly think that a ride is too expensive.
+STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
+STR_6104    :Corkscrew Roller Coaster
+STR_6105    :Hypercoaster
+STR_6106    :Car Ride
+STR_6107    :Monster Trucks
+STR_6108    :Steel Twister
+STR_6109    :Hyper-Twister
+STR_6110    :Junior Roller Coaster
+STR_6111    :Classic Mini Roller Coaster
+STR_6112    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
+STR_6114    :Riders travel slowly in powered vehicles along a track-based route
+STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
+STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
+STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
+STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
+STR_6119    :A cheap and easy to build roller coaster, but with a limited height
+STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the edges of the map
+STR_6122    :There are not enough roller coasters in this scenario!
+STR_6123    :Error loading objects for park
+STR_6124    :Object name
+STR_6125    :Object type
+STR_6126    :Unknown type
+STR_6127    :File: {STRING}
+STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
+STR_6129    :Copy selected item to clipboard
+STR_6130    :Copy entire list to clipboard
+STR_6131    :Object source
+STR_6132    :Ignore research status
+STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
+STR_6134    :Clear Scenery
+STR_6135    :Client sent invalid request
+STR_6136    :Server sent invalid request
+STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in {OPENQUOTES}contributors.md{ENDQUOTES}. For more information, visit http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
+STR_6140    :Changelog...
+STR_6141    :RCT1 Bottom Toolbar
+STR_6142    :{WINDOW_COLOUR_2}Track name: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
+STR_6144    :Show dirty visuals
+STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
+STR_6146    :Enable all drawable track pieces
+STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
+STR_6148    :Connecting to master server...
+STR_6149    :Unable to connect to master server
+STR_6150    :Invalid response from master server (no JSON number)
+STR_6151    :Master server failed to return servers
+STR_6152    :Invalid response from master server (no JSON array)
+STR_6153    :Pay to enter park / Pay per ride
+STR_6154    :For security reasons, it is not recommended to run OpenRCT2 with elevated permissions.
+STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or configure from the command line.
+STR_6156    :Name is reserved
+STR_6157    :Console
+STR_6158    :Failed to load this file...{NEWLINE}Incompatible RCTC version: {COMMA16}
+STR_6159    :Smooth Nearest Neighbour
+STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
+STR_6161    :Gridlines display toggle
+STR_6162    :Spinning Wild Mouse
+STR_6163    :Mouse shaped cars speed through tight corners and short drops, gently spinning around to disorientate the riders
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Use vertical sync
+STR_6166    :{SMALLFONT}{BLACK}Synchronises each frame displayed to the monitor's refresh rate, preventing screen tearing.
+STR_6167    :{SMALLFONT}{BLACK}Advanced
+STR_6168    :Title Sequence
+STR_6169    :Scenario selection
+STR_6170    :Interface Tweaks
+STR_6171    :Search
+STR_6172    :{SMALLFONT}{BLACK}Search
+STR_6173    :Please provide the name to search:
+STR_6174    :Load Save
+STR_6175    :Load Scenario
+STR_6176    :Scenario to load:
+STR_6177    :Load{MOVE_X}{87}No scenario selected
+STR_6178    :Load{MOVE_X}{87}{RED}Missing scenario
+STR_6179    :Select
+STR_6180    :No scenario selected
+STR_6181    :{RED}Missing scenario
+STR_6182    :Follow{MOVE_X}{87}{STRING}
+STR_6183    :Follow{MOVE_X}{87}No sprite selected
+STR_6184    :Follow Sprite
+STR_6185    :Select Sprite
+STR_6186    :No sprite selected
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Vomit
+STR_6189    :Duck
+STR_6190    :{SMALLFONT}{BLACK}You cannot select a sprite while the main title screen is active.
+STR_6191    :Surface
+STR_6192    :Wall
+STR_6193    :{COMMA16} guest
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guest
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guest
+STR_6196    :{BLACK}Year:
+STR_6197    :{BLACK}Month:
+STR_6198    :{BLACK}Day:
+STR_6199    :Set date
+STR_6200    :Reset date
+STR_6201    :{MONTH}
+STR_6202    :Virtual floor style:
+STR_6203    :{SMALLFONT}{BLACK}When enabled, a virtual floor will be rendered when holding Ctrl or Shift to ease vertical placement of elements.
+STR_6204    :Brick
+STR_6205    :Iron
+STR_6206    :Grey stucco
+STR_6207    :Yellow stucco
+STR_6208    :Red stucco
+STR_6209    :Purple stucco
+STR_6210    :Green stucco
+STR_6211    :Brown sandstone
+STR_6212    :Grey sandstone
+STR_6213    :Skyscraper A
+STR_6214    :Skyscraper B
+STR_6215    :Construction
+STR_6216    :Operation
+STR_6217    :Ride / track availability
+STR_6218    :OpenRCT2 Official
+STR_6219    :Highlight path issues
+STR_6220    :Make Usable
+STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per stations.
+STR_6222    :Can't place guest entry point here...
+STR_6223    :Must be outside park boundaries!
+STR_6224    :{STRING} placed a guest entry point.
+STR_6225    :Not supported with OpenGL renderer
+STR_6226    :Enable early scenario completion
+STR_6227    :{SMALLFONT}{BLACK}Triggers scenario completion when all scenario goals are met before the target date.
+STR_6228    :Scenario Options
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Frozen
+STR_6233    :Cut-away view
+STR_6234    :Highlight path issues
+STR_6235    :Server Information
+STR_6236    :Players
+STR_6237    :Groups
+STR_6238    :Multiplayer Options
+STR_6239    :Vertical Clipping
+STR_6240    :Horizontal Clipping
+STR_6241    :Select area
+STR_6242    :Clear selection
+STR_6243    :{SMALLFONT}{BLACK}Refurbishes the ride,{NEWLINE}makes it like new
+STR_6244    :Can't refurbish ride...
+STR_6245    :{SMALLFONT}{BLACK}Ride doesn't need refurbishing
+STR_6246    :Refurbish
+STR_6247    :Refurbish ride/attraction
+STR_6248    :{WINDOW_COLOUR_1}Do you want to refurbish {STRINGID} for {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Do you want to refurbish {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID} and gain {CURRENCY}?
+STR_6251    :Ride is not empty yet
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Provide URL of Twitch integration API. Required in order to enable Twitch integration.
+STR_6254    :URL of Twitch integration API:
+STR_6255    :URL is not valid
+STR_6256    :Rendering effects
+STR_6257    :Glassy (translucent)
+STR_6258    :Clear (transparent)
+STR_6259    :Disabled
+STR_6260    :Show blocked tiles
+STR_6261    :Show wide paths
 
 #############
 # Scenarios #
@@ -4438,9 +4710,9 @@ STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
 STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
 
-<Haunted Harbor>
-STR_SCNR    :Haunted Harbor
-STR_PARK    :Haunted Harbor
+<Haunted Harbour>
+STR_SCNR    :Haunted Harbour
+STR_PARK    :Haunted Harbour
 STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
 
 <Fun Fortress>
@@ -4511,7 +4783,7 @@ STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centrepiece
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
@@ -4541,7 +4813,7 @@ STR_DTLS    :The local authority will not allow any kind of advertising or promo
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :A four lane steeplechase ride is the centrepiece of this expanding park
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
@@ -4638,7 +4910,7 @@ STR_DTLS    :This historical park is only allowed to build older-styled rides
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :Develop this alien park to maximise its profit
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
@@ -4739,12 +5011,381 @@ STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
-#####################
-# Rides/attractions #
-#####################
+###########
+# Scenery #
+###########
 
-#WW
-[CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 passengers per car
+## Start OpenRCT2 Official
+[XXBBBR01]
+STR_NAME    :Base Block
+
+[TTRFTL02]
+STR_NAME    :Roof
+
+[TTRFTL03]
+STR_NAME    :Roof
+
+[TTRFTL04]
+STR_NAME    :Roof
+
+[TTRFTL07]
+STR_NAME    :Roof
+
+[TTRFTL08]
+STR_NAME    :Roof
+
+[TTPIRF02]
+STR_NAME    :Roof
+
+[TTPIRF03]
+STR_NAME    :Roof
+
+[TTPIRF04]
+STR_NAME    :Roof
+
+[TTPIRF05]
+STR_NAME    :Roof
+
+[TTPIRF07]
+STR_NAME    :Roof
+
+[TTPIRF08]
+STR_NAME    :Roof
+
+[MG-PRAR]
+STR_NAME    :Wall with Passageway
+
+[TTRFWD01]
+STR_NAME    :Roof
+
+[TTRFWD02]
+STR_NAME    :Roof
+
+[TTRFWD03]
+STR_NAME    :Roof
+
+[TTRFWD04]
+STR_NAME    :Roof
+
+[TTRFWD05]
+STR_NAME    :Roof
+
+[TTRFWD06]
+STR_NAME    :Roof
+
+[TTRFWD07]
+STR_NAME    :Roof
+
+[TTRFWD08]
+STR_NAME    :Roof
+
+[TTRFGL01]
+STR_NAME    :Glass Roof
+
+[TTRFGL02]
+STR_NAME    :Glass Roof
+
+[TTRFGL03]
+STR_NAME    :Glass Roof
+
+[ACWW33]
+STR_NAME    :Wooden Post Wall
+
+[ACWWF32]
+STR_NAME    :Wooden Post Wall
+
+## End OpenRCT2 Official
+
+###############################################################################
+## RCT2 Scenarios
+###############################################################################
+<Alpine Adventures>
+STR_SCNR    :Alpine Adventures
+STR_PARK    :Alpine Adventures
+STR_DTLS    :Convert a small mountain ski resort into a snow-themed amusement park
+
+<Amity Airfield>
+STR_SCNR    :Amity Airfield
+STR_PARK    :Amity Airfield
+STR_DTLS    :Build a flying-themed amusement park in this abandoned airport
+
+<Botany Breakers>
+STR_SCNR    :Botany Breakers
+STR_PARK    :Botany Breakers
+STR_DTLS    :Your challenge is to build a high-profit park on this paradise island
+
+<Build your own Six Flags Belgium>
+STR_SCNR    :Build your own Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Build your own version of this European Six Flags park
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR    :Build your own Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Use your design skills to recreate this Six Flags park
+
+<Build your own Six Flags Holland>
+STR_SCNR    :Build your own Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Build this European Six Flags park the way you want to
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR    :Build your own Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Create your own version of this massive Six Flags park
+
+<Build your own Six Flags over Texas>
+STR_SCNR    :Build your own Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Starting from scratch, build the rides in this Six Flags park
+
+<Build your own Six Flags Park>
+STR_SCNR    :Build your own Six Flags Park
+STR_PARK    :Six Flags
+STR_DTLS    :Build your own design of Six Flags park - Either build rides from other Six Flags parks or design and build your own rides
+
+<Bumbly Bazaar>
+STR_SCNR    :Bumbly Bazaar
+STR_PARK    :Bumbly Bazaar
+STR_DTLS    :Starting with a small market bazaar, your challenge is to increase the profit from shops and stalls by building rides and roller coasters to attract more customers
+
+<Crazy Castle>
+STR_SCNR    :Crazy Castle
+STR_PARK    :Crazy Castle
+STR_DTLS    :You have inherited a large castle - Your job is to convert it into a small theme park.
+
+<Dusty Greens>
+STR_SCNR    :Dusty Greens
+STR_PARK    :Dusty Greens
+STR_DTLS    :Situated near a highway junction in the desert, Dusty Greens is an opportunity to develop a small golf resort into a thriving theme park
+
+<Electric Fields>
+STR_SCNR    :Electric Fields
+STR_PARK    :Electric Fields
+STR_DTLS    :You have inherited a small farm, and your challenge is to build a small theme park amongst the fields and farm buildings
+
+<Extreme Heights>
+STR_SCNR    :Extreme Heights
+STR_PARK    :Extreme Heights
+STR_DTLS    :Free of financial restrictions, your challenge is to expand this desert park to attract people seeking the ultimate thrills
+
+<Factory Capers>
+STR_SCNR    :Factory Capers
+STR_PARK    :Factory Capers
+STR_DTLS    :An abandoned factory complex is an opportunity to build a mechanical-themed amusement park
+
+<Fungus Woods>
+STR_SCNR    :Fungus Woods
+STR_PARK    :Fungus Woods
+STR_DTLS    :Restricted to only older-style wooden rides, your challenge is to build a thriving theme park in Fungus Woods
+
+<Ghost Town>
+STR_SCNR    :Ghost Town
+STR_PARK    :Ghost Town
+STR_DTLS    :Hired by a large amusement park chain, your task is to build them a giant roller coaster park around an abandoned mining town
+
+<Gravity Gardens>
+STR_SCNR    :Gravity Gardens
+STR_PARK    :Gravity Gardens
+STR_DTLS    :Your challenge is to build a roller coaster park in the beautiful Gravity Gardens - No other rides, just roller coasters!
+
+<Infernal Views>
+STR_SCNR    :Infernal Views
+STR_PARK    :Infernal Views
+STR_DTLS    :A park nestled precariously on lava rock with streams of magma
+
+<Lucky Lake>
+STR_SCNR    :Lucky Lake
+STR_PARK    :Lucky Lake
+STR_DTLS    :With unlimited funds but a challenging lake location, this park will be a challenge to expand and manage
+
+<Rainbow Summit>
+STR_SCNR    :Rainbow Summit
+STR_PARK    :Rainbow Summit
+STR_DTLS    :Built on a hillside, this park is forbidden from building anything tall. Can you expand the park and make it successful?
+
+<Six Flags Belgium>
+STR_SCNR    :Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Try your hand at running and improving this Six Flags park
+
+<Six Flags Great Adventure>
+STR_SCNR    :Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+
+<Six Flags Holland>
+STR_SCNR    :Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Try your hand at running and improving this Six Flags park
+
+<Six Flags Magic Mountain>
+STR_SCNR    :Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To repay your loan while keeping the park value up!
+
+<Six Flags over Texas>
+STR_SCNR    :Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+
+###############################################################################
+## Wacky Worlds Scenarios
+###############################################################################
+<Africa - African Diamond Mine>
+STR_SCNR    :Africa - African Diamond Mine
+STR_PARK    :Mines of Africa
+STR_DTLS    :You inherited a disused diamond mine, and find a valuable diamond.  You decide to invest that money to build a world-famous theme park.
+
+<Africa - Oasis>
+STR_SCNR    :Africa - Oasis
+STR_PARK    :Mirage Madness
+STR_DTLS    :A desert Oasis has been discovered and would provide a beautiful location for a park. Transport to the oasis has been provided.
+
+<Africa - Victoria Falls>
+STR_SCNR    :Africa - Victoria Falls
+STR_PARK    :Over The Edge
+STR_DTLS    :A dam has been built offering abundant, cheap hydroelectric power with which to run a park. You need to reach a high park value to help repay the loan for the dam.
+
+<Antarctic - Ecological Salvage>
+STR_SCNR    :Antarctic - Ecological Salvage
+STR_PARK    :Icy Adventures
+STR_DTLS    :The environment agency has turned to you to transform an old oil refinery ecological eyesore into a top tourist attraction. Land is cheap but loan interest is high. You can sell the old buildings for salvage.
+
+<Asia - Great Wall of China Tourism Enhancement>
+STR_SCNR    :Asia - Great Wall of China Tourism Enhancement
+STR_PARK    :Great Wall of China
+STR_DTLS    :The authorities have decided to enhance tourism around the Great Wall by building a theme park on the adjacent land. Money is no object!
+
+<Asia - Japanese Coastal Reclaim>
+STR_SCNR    :Asia - Japanese Coastal Reclaim
+STR_PARK    :Okinawa Coast
+STR_DTLS    :An existing park has run out of space. Your only option is to build out into the sea, and so you have taken out a loan. Height restrictions on your building are enforced due to foundations and earthquake risk.
+
+<Asia - Maharaja Palace>
+STR_SCNR    :Asia - Maharaja Palace
+STR_PARK    :Park Maharaja
+STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja's palace.
+
+<Australasia - Ayers Rock>
+STR_SCNR    :Australasia - Ayers Rock
+STR_PARK    :Ayers Adventure
+STR_DTLS    :You are helping Aboriginal people to build a park as part of a cultural awareness program. You need to get a large number of guests to educate them in the unique heritage of the Aboriginal people.
+
+<Australasia - Fun at the Beach>
+STR_SCNR    :Australasia - Fun at the Beach
+STR_PARK    :Beach Barbecue Blast
+STR_DTLS    :A local entrepreneur's sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
+
+<Europe - European Cultural Festival>
+STR_SCNR    :Europe - European Cultural Festival
+STR_PARK    :European Extravaganza
+STR_DTLS    :You have been brought in to take over a European Cultural Visitor Attraction and must increase the number of guests in order to pay back the EU subsidy by the end of the current European parliament term.
+
+<Europe - Renovation>
+STR_SCNR    :Europe - Renovation
+STR_PARK    :From The Ashes
+STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
+
+<N America - Extreme Hawaiian Island>
+STR_SCNR    :N. America - Extreme Hawaiian Island
+STR_PARK    :Wacky Waikiki
+STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
+
+<North America - Grand Canyon>
+STR_SCNR    :North America - Grand Canyon
+STR_PARK    :Canyon Calamities
+STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
+
+<North America - Rollercoaster Heaven>
+STR_SCNR    :North America - Rollercoaster Heaven
+STR_PARK    :Rollercoaster Heaven
+STR_DTLS    :You are a successful business tycoon on long sabbatical who desires to use this time transforming the city park into Rollercoaster Heaven. Money is no object!
+
+<South America - Inca Lost City>
+STR_SCNR    :South America - Inca Lost City
+STR_PARK    :Lost City Founder
+STR_DTLS    :To further boost local tourism you must construct a park that is in tune with its surroundings, and has height restrictions.
+
+<South America - Rain Forest Plateau>
+STR_SCNR    :South America - Rain Forest Plateau
+STR_PARK    :Rainforest Romp
+STR_DTLS    :Space is limited in the precious rainforest - you must cram as much as possible into the existing clearing, in order to provide a viable alternative to the local timber industry.
+
+<South America - Rio Carnival>
+STR_SCNR    :South America - Rio Carnival
+STR_PARK    :Sugarloaf Shores
+STR_DTLS    :You run a small park near Rio but the bank has called in your loan. You need to quickly increase your earning capacity to repay this unexpected debt.
+
+###############################################################################
+## Time Twister Scenarios
+###############################################################################
+<Dark Age - Castle>
+STR_SCNR    :Dark Age - Castle
+STR_PARK    :Cliffside Castle
+STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They've entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
+
+<Dark Age - Robin Hood>
+STR_SCNR    :Dark Age - Robin Hood
+STR_PARK    :Sherwood Forest
+STR_DTLS    :To liberate wealth from the rich and distribute it to the needy, you and your Merry Men have decided to build a theme park in Sherwood Forest.
+
+<Future - First Encounters>
+STR_SCNR    :Future - First Encounters
+STR_PARK    :Extraterrestrial Extravaganza
+STR_DTLS    :Life has been discovered on a distant planet Build an alien theme park to cash in on the unprecedented wave of interest.
+
+<Future - Future World>
+STR_SCNR    :Future - Future World
+STR_PARK    :Gemini City
+STR_DTLS    :Show off your inventive, utopian vision of the future - come up with a futuristic park design that incorporates state-of-the-art attractions.
+
+<Mythological - Animatronic Film Set>
+STR_SCNR    :Mythological - Animatronic Film Set
+STR_PARK    :Animatronic Antics
+STR_DTLS    :You have been given the task of running and improving an existing theme park, which has been built on an old film set. Build a tribute to the pioneering stop-motion animators who first brought mythical creatures to life on the silver screen.
+
+<Mythological - Cradle of Civilisation>
+STR_SCNR    :Mythological - Cradle of Civilisation
+STR_PARK    :Mythological Madness
+STR_DTLS    :You own an island of particular archaeological value. You've decided to fund its preservation by constructing a theme park based on the area's rich Mythological heritage.
+
+<Prehistoric - After the Asteroid>
+STR_SCNR    :Prehistoric - After the Asteroid
+STR_PARK    :Crater Carnage
+STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you've decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
+
+<Prehistoric - Jurassic Safari>
+STR_SCNR    :Prehistoric - Jurassic Safari
+STR_PARK    :Coastersaurus
+STR_DTLS    :You've been given the task of constructing a Jurassic era theme park. To optimize your visitors' access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
+
+<Prehistoric - Stone Age>
+STR_SCNR    :Prehistoric - Stone Age
+STR_PARK    :Rocky Rambles
+STR_DTLS    :To thwart the highway developers and preserve the mysterious ancient stone circles, you will need to construct a Stone Age theme park and turn a profit. However, attracting visitors may pose a challenge, as the terrain is a tad inhospitable.
+
+<Roaring Twenties - Prison Island>
+STR_SCNR    :Roaring Twenties - Prison Island
+STR_PARK    :Alcatraz
+STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You've decided to convert it into a top tourist attraction, and money is no object
+
+<Roaring Twenties - Schneider Cup>
+STR_SCNR    :Roaring Twenties - Schneider Cup
+STR_PARK    :Schneider Shores
+STR_DTLS    :The 75th anniversary of your grandfather's Schneider Cup victory is coming up in a few years. You're going to honour his achievement by building a theme park based on the famous seaplane race.
+
+<Roaring Twenties - Skyscrapers>
+STR_SCNR    :Roaring Twenties - Skyscrapers
+STR_PARK    :Metropolis
+STR_DTLS    :You own an empty lot near the low-rise part of town. To squeeze the most out of your urban property, build a skyscraper theme park inspired by the soaring art deco architecture of the twenties.
+
+<Rock 'n' Roll - Flower Power>
+STR_SCNR    :Rock 'n' Roll - Flower Power
+STR_PARK    :Woodstock
+STR_DTLS    :A large annual music festival takes place on your land. Build a hip theme park to keep the free-spirited audience entertained.
+
+<Rock 'n' Roll - Rock 'n' Roll>
+STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
+STR_PARK    :Rock 'n' Roll Revival
+STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.

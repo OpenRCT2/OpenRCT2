@@ -19,8 +19,8 @@ STR_0014    :런치드 프리폴
 STR_0015    :봅슬레이 코스터
 STR_0016    :전망탑
 STR_0017    :루핑 롤러코스터
-STR_0018    :미니 슬라이드
-STR_0019    :마인 트레인 코스터
+STR_0018    :보트 슬라이드
+STR_0019    :탄광 열차 코스터
 STR_0020    :체어 리프트
 STR_0021    :나선 롤러코스터
 STR_0022    :미로
@@ -68,7 +68,7 @@ STR_0063    :미니 헬리콥터
 STR_0064    :레이 다운 롤러코스터
 STR_0065    :서스펜디드 모노레일
 STR_0066    :알 수 없는 놀이기구 (40)
-STR_0067    :리버서 롤러코스터
+STR_0067    :반전 롤러코스터
 STR_0068    :하트라인 트위스터 코스터
 STR_0069    :미니 골프
 STR_0070    :기가 코스터
@@ -532,7 +532,7 @@ STR_0527    :수직 루프를 사용할 수 있는 부드러운 철제 트랙의
 STR_0528    :손님들이 공기를 넣은 고무 보트를 타고 반원이나 원형의 튜브 트랙을 따라 이동하는 놀이기구입니다.
 STR_0529    :오래된 기차 선로처럼 보이게 만든 철제 트랙을 따라 움직이는 탄광 열차 테마를 한 롤러코스터 차량입니다.
 STR_0530    :철제 케이블에 달린 차량이 연속적으로 놀이기구의 한쪽 끝에서 다른쪽 끝을 왕복 운행합니다.
-STR_0531    :차량이 코크스크류와 루프를 통과하는 알찬 구성의 철제 트랙 롤러코스터입니다.
+STR_0531    :차량이 나선 트랙과 루프를 통과하는 알찬 구성의 철제 트랙 롤러코스터입니다.
 STR_0532    :
 STR_0533    :
 STR_0534    :패트롤 엔진으로 움직이는 고 카트입니다.
@@ -555,219 +555,219 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :차량이 선형 유도 모터에 의해 긴 평지 트랙을 따라 가속된 뒤, 수직 상승 트랙에 의해 위로 상승한 뒤 다시 뒤로 자유낙하하여 탑승장에 돌아옵니다
-STR_0555    :손님은 엘리베이터에 탑승하여 한쪽에서 다른쪽으로 이동할 수 있습니다
-STR_0556    :폭이 넓은 차량이 수직으로 기울어진 트랙을 따라 내려오면서 극강의 자유 낙하 롤러코스터를 경험하게 해줍니다
+STR_0554    :차량이 선형 유도 모터에 의해 긴 평지 트랙을 따라 가속된 뒤, 수직 상승 트랙에 의해 위로 상승한 뒤 다시 뒤로 자유낙하하여 탑승장에 돌아옵니다.
+STR_0555    :손님은 엘리베이터에 탑승하여 한쪽에서 다른쪽으로 이동할 수 있습니다.
+STR_0556    :폭이 넓은 차량이 수직으로 기울어진 트랙을 따라 내려오면서 극강의 자유 낙하 롤러코스터를 경험하게 해줍니다.
 STR_0557    :
 STR_0558    :
 STR_0559    :
 STR_0560    :
 STR_0561    :
-STR_0562    :무서운 풍경과 특수 효과를 통과하며 여러 높이의 트랙을 따라 이동하는 전동 차량입니다
-STR_0563    :탑승객들은 한 바퀴를 운행하는 편안한 좌석에 앉아 언덕을 오르면서 느낄 수 있는 '무중력 시간'뿐만이 아니라 크고 부드러운 낙하와 꼬인 트랙의 느낌을 즐길 수 있습니다
-STR_0564    :목재 트랙 위를 움직이는 이 롤러코스터는 빠르고, 거칠고, 시끄럽고, 많은 '무중력 시간'과 함께 '제어 불가능할 것 같은' 탑승감을 선사합니다
-STR_0565    :완만한 경사와 커브만을 가진 간단한 목재 롤러코스터로, 이 롤러코스터의 차량은 오직 측면 마찰륜과 중력만으로 트랙 위에 얹혀진 상태로 운행합니다
-STR_0566    :개별적인 롤러코스터 차량이 급커브와 짧고 급한 경사를 가진 지그재그 모양의 트랙을 어지럽게 돌아다닙니다
-STR_0567    :트랙 반대편에 매달린 좌석에 앉아서, 탑승객들은 급강하와 여러 가지 반전 트랙을 통과하면서 거꾸러지는 동안 머리와 다리가 뒤집히게 됩니다
+STR_0562    :무서운 풍경과 특수 효과를 통과하며 여러 높이의 트랙을 따라 이동하는 전동 차량입니다.
+STR_0563    :탑승객들은 한 바퀴를 운행하는 편안한 좌석에 앉아 언덕을 오르면서 느낄 수 있는 '무중력 시간'뿐만이 아니라 크고 부드러운 낙하와 꼬인 트랙의 느낌을 즐길 수 있습니다.
+STR_0564    :목재 트랙 위를 움직이는 이 롤러코스터는 빠르고, 거칠고, 시끄럽고, 많은 '무중력 시간'과 함께 '제어 불가능할 것 같은' 탑승감을 선사합니다.
+STR_0565    :완만한 경사와 커브만을 가진 간단한 목재 롤러코스터로, 이 롤러코스터의 차량은 오직 측면 마찰륜과 중력만으로 트랙 위에 얹혀진 상태로 운행합니다.
+STR_0566    :개별적인 롤러코스터 차량이 급커브와 짧고 급한 경사를 가진 지그재그 모양의 트랙을 어지럽게 돌아다닙니다.
+STR_0567    :트랙 반대편에 매달린 좌석에 앉아서, 탑승객들은 급강하와 여러 가지 반전 트랙을 통과하면서 거꾸러지는 동안 머리와 다리가 뒤집히게 됩니다.
 STR_0568    :
-STR_0569    :차량 밑에 달린 특별한 마차에 탑승하여, 탑승객들은 공중으로 급강하면서 하늘을 나는 기분을 느끼게 만듭니다
+STR_0569    :차량 밑에 달린 특별한 마차에 탑승하여, 탑승객들은 공중으로 급강하면서 하늘을 나는 기분을 느끼게 만듭니다.
 STR_0570    :
-STR_0571    :원형의 차량이 나무 트랙을 지그재그로 이동하면서 회전합니다
-STR_0572    :대형 보트가 넓은 수로를 따라 컨베이어 벨트에 의해 언덕을 올라간 뒤, 급강하하면서 큰 물보라를 일으켜 탑승객을 젖게 만듭니다
-STR_0573    :탑승객이 직접 페달을 밟아 이동하는, 철제 트랙을 달리는 헬리콥터 모양의 전동 차량입니다
-STR_0574    :탑승객은 특수한 마차에 누운 자세로 매달려, 이리 저리 꼬이고 뒤집히는 트랙을 땅을 등지거나 마주보는 자세로 탑승하게 됩니다
-STR_0575    :공원 여기 저기로 사람들을 실어나르는, 단선 레일에 매달린 전동 열차입니다
+STR_0571    :원형의 차량이 나무 트랙을 지그재그로 이동하면서 회전하는 놀이기구입니다.
+STR_0572    :대형 보트가 넓은 수로를 따라 컨베이어 벨트에 의해 언덕을 올라간 뒤, 급강하하면서 큰 물보라를 일으켜 탑승객을 젖게 만듭니다.
+STR_0573    :탑승객이 직접 페달을 밟아 이동하는, 철제 트랙을 달리는 헬리콥터 모양의 전동 차량입니다.
+STR_0574    :탑승객은 특수한 마차에 누운 자세로 매달려, 이리 저리 꼬이고 뒤집히는 트랙을 땅을 등지거나 마주보는 자세로 탑승하게 됩니다.
+STR_0575    :공원 여기 저기로 사람들을 실어나르는, 단선 레일에 매달린 전동 열차입니다.
 STR_0576    :
 STR_0577    :특수한 반전 섹션에서 앞뒤가 바뀌는 목재 트랙을 달리는 보우기 차입니다
 STR_0578    :원형 고리로 둘러싸여 급강하와 하트라인 트위스트를 횡단하는 트랙을 달리는 차량입니다.
 STR_0579    :
-STR_0580    :90m 이상의 언덕을 부드럽게 오르내리는 거대한 철제 롤러코스터입니다
-STR_0581    :원형 모양의 좌석이 맨 위까지 끌어올려진 다음, 자유 낙하하며, 자기장에 의해 부드럽게 바닥에 정지합니다
+STR_0580    :90m 이상의 언덕을 부드럽게 오르내리는 거대한 철제 롤러코스터입니다.
+STR_0581    :원형 모양의 좌석이 맨 위까지 끌어올려진 다음, 자유 낙하하며, 자기장에 의해 부드럽게 바닥에 정지합니다.
 STR_0582    :
 STR_0583    :
-STR_0584    :탑승객이 스스로 페달을 밟아 이동해야 하는, 특별한 철제 모노레일 트랙 위를 이동하는 자전거입니다
-STR_0585    :탑승객은 트랙 밑에 매달린 좌석 한 쌍에 앉아 루프와 트위스트를 급격히 통과합니다
-STR_0586    :보트 모양의 차량이 꼬인 커브와 급강하가 가능한 롤러코스터 트랙을 달리며, 강 섹션의 물에서는 물보라를 일으키며 감속합니다
-STR_0587    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착합니다
-STR_0588    :개별적인 차량이 헤이펀 커브와 급강하를 포함한 지그재그 모양의 트랙 아래를 이동합니다
+STR_0584    :탑승객이 스스로 페달을 밟아 이동해야 하는, 특별한 철제 모노레일 트랙 위를 이동하는 자전거입니다.
+STR_0585    :탑승객은 트랙 밑에 매달린 좌석 한 쌍에 앉아 루프와 트위스트를 급격히 통과합니다.
+STR_0586    :보트 모양의 차량이 꼬인 커브와 급강하가 가능한 롤러코스터 트랙을 달리며, 강 섹션의 물에서는 물보라를 일으키며 감속합니다.
+STR_0587    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착합니다.
+STR_0588    :개별적인 차량이 헤이펀 커브와 급강하를 포함한 지그재그 모양의 트랙 아래를 이동합니다.
 STR_0589    :
-STR_0590    :탑승객들은 잠수가 가능한 잠수함을 타고 수중 코스를 돕니다
-STR_0591    :뗏목 모양의 보트가 강 모양의 트랙을 따라 얌전히 이동합니다
+STR_0590    :탑승객들은 잠수가 가능한 잠수함을 타고 수중 코스를 돕니다.
+STR_0591    :뗏목 모양의 보트가 강 모양의 트랙을 따라 얌전히 이동합니다.
 STR_0592    :
 STR_0593    :
 STR_0594    :
 STR_0595    :
 STR_0596    :
 STR_0597    :
-STR_0598    :뒤집힌 롤러코스터 차량이 탑승장을 나서 가속하여 높이 솟은 수직 트랙으로 솟아오르고, 다시 탑승장으로 후진하여 반대편의 수직 트랙을 향해 다시 솟아오릅니다
+STR_0598    :뒤집힌 롤러코스터 차량이 탑승장을 나서 가속하여 높이 솟은 수직 트랙으로 솟아오르고, 다시 탑승장으로 후진하여 반대편의 수직 트랙을 향해 다시 솟아오릅니다.
 STR_0599    :각각의 차량이 부드럽게 꼬인 채로 낙하하는 알찬 구성의 롤러코스터입니다.
-STR_0600    :부드럽게 꼬인 트랙 구조를 따라 이동하는 탄광 차량입니다
+STR_0600    :부드럽게 꼬인 트랙 구조를 따라 이동하는 탄광 차량입니다.
 STR_0601    :
-STR_0602    :롤러코스터 차량은 탑승장에서 선형 유도 모터에 의해 가속하여 트랙을 돌만한 속도까지 올라갑니다
-STR_0603    :손님 {INT32}
-STR_0604    :손님 {INT32}
-STR_0605    :손님 {INT32}
-STR_0606    :손님 {INT32}
-STR_0607    :손님 {INT32}
-STR_0608    :손님 {INT32}
-STR_0609    :손님 {INT32}
-STR_0610    :손님 {INT32}
-STR_0611    :손님 {INT32}
-STR_0612    :손님 {INT32}
-STR_0613    :손님 {INT32}
-STR_0614    :손님 {INT32}
-STR_0615    :손님 {INT32}
-STR_0616    :손님 {INT32}
-STR_0617    :손님 {INT32}
-STR_0618    :손님 {INT32}
-STR_0619    :손님 {INT32}
-STR_0620    :손님 {INT32}
-STR_0621    :손님 {INT32}
-STR_0622    :손님 {INT32}
-STR_0623    :손님 {INT32}
-STR_0624    :손님 {INT32}
-STR_0625    :손님 {INT32}
-STR_0626    :손님 {INT32}
-STR_0627    :손님 {INT32}
-STR_0628    :손님 {INT32}
-STR_0629    :손님 {INT32}
-STR_0630    :손님 {INT32}
-STR_0631    :손님 {INT32}
-STR_0632    :손님 {INT32}
-STR_0633    :손님 {INT32}
-STR_0634    :손님 {INT32}
-STR_0635    :손님 {INT32}
-STR_0636    :손님 {INT32}
-STR_0637    :손님 {INT32}
-STR_0638    :손님 {INT32}
-STR_0639    :손님 {INT32}
-STR_0640    :손님 {INT32}
-STR_0641    :손님 {INT32}
-STR_0642    :손님 {INT32}
-STR_0643    :손님 {INT32}
-STR_0644    :손님 {INT32}
-STR_0645    :손님 {INT32}
-STR_0646    :손님 {INT32}
-STR_0647    :손님 {INT32}
-STR_0648    :손님 {INT32}
-STR_0649    :손님 {INT32}
-STR_0650    :손님 {INT32}
-STR_0651    :손님 {INT32}
-STR_0652    :손님 {INT32}
-STR_0653    :손님 {INT32}
-STR_0654    :손님 {INT32}
-STR_0655    :손님 {INT32}
-STR_0656    :손님 {INT32}
-STR_0657    :손님 {INT32}
-STR_0658    :손님 {INT32}
-STR_0659    :손님 {INT32}
-STR_0660    :손님 {INT32}
-STR_0661    :손님 {INT32}
-STR_0662    :손님 {INT32}
-STR_0663    :손님 {INT32}
-STR_0664    :손님 {INT32}
-STR_0665    :손님 {INT32}
-STR_0666    :손님 {INT32}
-STR_0667    :손님 {INT32}
-STR_0668    :손님 {INT32}
-STR_0669    :손님 {INT32}
-STR_0670    :손님 {INT32}
-STR_0671    :손님 {INT32}
-STR_0672    :손님 {INT32}
-STR_0673    :손님 {INT32}
-STR_0674    :손님 {INT32}
-STR_0675    :손님 {INT32}
-STR_0676    :손님 {INT32}
-STR_0677    :손님 {INT32}
-STR_0678    :손님 {INT32}
-STR_0679    :손님 {INT32}
-STR_0680    :손님 {INT32}
-STR_0681    :손님 {INT32}
-STR_0682    :손님 {INT32}
-STR_0683    :손님 {INT32}
-STR_0684    :손님 {INT32}
-STR_0685    :손님 {INT32}
-STR_0686    :손님 {INT32}
-STR_0687    :손님 {INT32}
-STR_0688    :손님 {INT32}
-STR_0689    :손님 {INT32}
-STR_0690    :손님 {INT32}
-STR_0691    :손님 {INT32}
-STR_0692    :손님 {INT32}
-STR_0693    :손님 {INT32}
-STR_0694    :손님 {INT32}
-STR_0695    :손님 {INT32}
-STR_0696    :손님 {INT32}
-STR_0697    :손님 {INT32}
-STR_0698    :손님 {INT32}
-STR_0699    :손님 {INT32}
-STR_0700    :손님 {INT32}
-STR_0701    :손님 {INT32}
-STR_0702    :손님 {INT32}
-STR_0703    :손님 {INT32}
-STR_0704    :손님 {INT32}
-STR_0705    :손님 {INT32}
-STR_0706    :손님 {INT32}
-STR_0707    :손님 {INT32}
-STR_0708    :손님 {INT32}
-STR_0709    :손님 {INT32}
-STR_0710    :손님 {INT32}
-STR_0711    :손님 {INT32}
-STR_0712    :손님 {INT32}
-STR_0713    :손님 {INT32}
-STR_0714    :손님 {INT32}
-STR_0715    :손님 {INT32}
-STR_0716    :손님 {INT32}
-STR_0717    :손님 {INT32}
-STR_0718    :손님 {INT32}
-STR_0719    :손님 {INT32}
-STR_0720    :손님 {INT32}
-STR_0721    :손님 {INT32}
-STR_0722    :손님 {INT32}
-STR_0723    :손님 {INT32}
-STR_0724    :손님 {INT32}
-STR_0725    :손님 {INT32}
-STR_0726    :손님 {INT32}
-STR_0727    :손님 {INT32}
-STR_0728    :손님 {INT32}
-STR_0729    :손님 {INT32}
-STR_0730    :손님 {INT32}
-STR_0731    :손님 {INT32}
-STR_0732    :손님 {INT32}
-STR_0733    :손님 {INT32}
-STR_0734    :손님 {INT32}
-STR_0735    :손님 {INT32}
-STR_0736    :손님 {INT32}
-STR_0737    :손님 {INT32}
-STR_0738    :손님 {INT32}
-STR_0739    :손님 {INT32}
-STR_0740    :손님 {INT32}
-STR_0741    :손님 {INT32}
-STR_0742    :손님 {INT32}
-STR_0743    :손님 {INT32}
-STR_0744    :손님 {INT32}
-STR_0745    :손님 {INT32}
-STR_0746    :손님 {INT32}
-STR_0747    :손님 {INT32}
-STR_0748    :손님 {INT32}
-STR_0749    :손님 {INT32}
-STR_0750    :손님 {INT32}
-STR_0751    :손님 {INT32}
-STR_0752    :손님 {INT32}
-STR_0753    :손님 {INT32}
-STR_0754    :손님 {INT32}
-STR_0755    :손님 {INT32}
-STR_0756    :손님 {INT32}
-STR_0757    :손님 {INT32}
-STR_0758    :손님 {INT32}
-STR_0759    :손님 {INT32}
-STR_0760    :손님 {INT32}
-STR_0761    :손님 {INT32}
-STR_0762    :손님 {INT32}
-STR_0763    :손님 {INT32}
-STR_0764    :손님 {INT32}
-STR_0765    :손님 {INT32}
-STR_0766    :손님 {INT32}
+STR_0602    :롤러코스터 차량은 탑승장에서 선형 유도 모터에 의해 가속하여 트랙을 돌만한 속도까지 올라갑니다.
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :손님 {INT32}
 STR_0768    :미화원 {INT32}
 STR_0769    :정비기술자 {INT32}
@@ -851,7 +851,7 @@ STR_0845    :
 STR_0846    :
 STR_0847    :'OpenRCT2'에 대해서
 STR_0848    :롤러코스터 타이쿤 2
-STR_0849    :{WINDOW_COLOUR_2}버전 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}디자인 및 프로그래밍: Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}그래픽: Simon Foster
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}추가 효과음 녹음: David Ellis
 STR_0855    :{WINDOW_COLOUR_2}리프리젠테이션: Marjacq Ltd사의 Jacqui Lyons
 STR_0856    :{WINDOW_COLOUR_2}감사드릴 분들:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth 그리고 John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,8 +890,8 @@ STR_0884    :풍경 불러오기
 STR_0885    :풍경 저장하기
 STR_0886    :게임 종료하기
 STR_0887    :시나리오 에디터 종료하기
-STR_0888    :롤러코스터 디자이너 종료하기
-STR_0889    :트랙 디자인 매니저 종료하기
+STR_0888    :트랙 디자이너 종료하기
+STR_0889    :트랙 디자인 관리자 종료하기
 STR_0890    :<removed string - do not use>
 STR_0891    :스크린 샷
 STR_0892    :스크린 샷이 디스크에 다음 이름으로 저장되었습니다: {STRINGID}
@@ -1053,8 +1053,8 @@ STR_1047    :게임 저장 실패!
 STR_1048    :시나리오 저장 실패
 STR_1049    :풍경 저장 실패!
 STR_1050    :불러오기 실패...{NEWLINE}파일에 유효하지 않은 데이터가 있습니다!
-STR_1051    :트랙 지지대 감추기
-STR_1052    :손님 감추기
+STR_1051    :지지대 감추기
+STR_1052    :사람 감추기
 STR_1053    :{SMALLFONT}{BLACK}공원의 놀이기구나 시설
 STR_1054    :{SMALLFONT}{BLACK}놀이기구/시설 이름
 STR_1055    :{SMALLFONT}{BLACK}손님 이름
@@ -1156,7 +1156,7 @@ STR_1150    :3/4을 태우면
 STR_1151    :모두 태우면
 STR_1152    :한 사람이라도 태우면
 STR_1153    :놀이기구 트랙 높이 표시
-STR_1154    :지형 높이 표시
+STR_1154    :지표면 높이 표시
 STR_1155    :보도 높이 표시
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
@@ -1220,8 +1220,8 @@ STR_1214    :{SMALLFONT}{BLACK}출발하기 전에 최대한 기다릴 시간
 STR_1215    :{WINDOW_COLOUR_2}인접한 탑승장과 같이 출발시킴
 STR_1216    :{SMALLFONT}{BLACK}체크하면 모든 인접한 탑승장의 차량을 동시에 출발시킵니다
 STR_1217    :{COMMA16}초
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
 STR_1220    :출구만 있음
 STR_1221    :입구 없음
 STR_1222    :출구 없음
@@ -1656,14 +1656,14 @@ STR_1650    :{SMALLFONT}{OPENQUOTES}와우! 새 놀이기구가 지어지고 있
 # Two removed inside jokes about Intamin and Phoenix
 STR_1651    :<removed string - do not use>
 STR_1652    :<removed string - do not use>
-STR_1653    :{SMALLFONT}{OPENQUOTES}...그리고 드디어 {STRINGID}에 왔어요!{ENDQUOTES}
+STR_1653    :{SMALLFONT}{OPENQUOTES}...마침내 {STRINGID}에 탔어요!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}최근 생각:
 STR_1655    :{SMALLFONT}{BLACK}땅 위에 보도 건설
 STR_1656    :{SMALLFONT}{BLACK}다리나 터널 보도를 건설
-STR_1657    :{WINDOW_COLOUR_2}좋아하는 놀이기구
-STR_1658    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA16} 이하
+STR_1657    :{WINDOW_COLOUR_2}선호하는 놀이기구의
+STR_1658    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA16} 미만
 STR_1659    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA16}에서 {COMMA16} 사이
-STR_1660    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA16} 이상
+STR_1660    :{WINDOW_COLOUR_2}격렬도: {BLACK}{COMMA16} 초과
 STR_1661    :{WINDOW_COLOUR_2}멀미 참을성: {BLACK}{STRINGID}
 STR_1662    :{WINDOW_COLOUR_2}행복도:
 STR_1663    :{WINDOW_COLOUR_2}멀미도:
@@ -1778,8 +1778,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :한 놀이기구에는 하나의 탑승 사진 섹션만 만들 수 있습니다
 STR_1774    :한 놀이기구에는 하나의 케이블 리프트만 만들 수 있습니다
-STR_1775    :끄기
-STR_1776    :켜기
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}놀이기구 음악
 STR_1778    :{STRINGID} - -
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 팬더 복장
@@ -1832,7 +1832,7 @@ STR_1825    :{SMALLFONT}{BLACK}이 놀이기구/시설에서 기다리고 있는
 STR_1826    :상태
 STR_1827    :인기도
 STR_1828    :만족도
-STR_1829    :수익
+STR_1829    :순익
 STR_1830    :대기 길이
 STR_1831    :대기 시간
 STR_1832    :신뢰도
@@ -1844,14 +1844,14 @@ STR_1837    :만족도: 알 수 없움
 STR_1838    :만족도: {COMMA16}%
 STR_1839    :신뢰도: {COMMA16}%
 STR_1840    :고장률: {COMMA16}%
-STR_1841    :수익: 시간당 {CURRENCY2DP}
+STR_1841    :순익: 시간당 {CURRENCY2DP}
 STR_1842    :좋아하는 손님 수: {COMMA16}명
 STR_1843    :좋아하는 손님 수: {COMMA16}명
 STR_1844    :{SMALLFONT}{BLACK}놀이기구/시설 목록에서 보여줄 정보를 선택하세요
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} 손님
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} 손님
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} 손님
+STR_1846    :손님 {COMMA16}명
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}손님 {COMMA16}명
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}손님 {COMMA16}명
 STR_1849    :{WINDOW_COLOUR_2}음악 재생
 STR_1850    :{SMALLFONT}{BLACK}이 놀이기구에 배경음악을 재생할지를 선택합니다
 STR_1851    :{WINDOW_COLOUR_2}유지비: {BLACK}시간당 {CURRENCY2DP}
@@ -1928,7 +1928,7 @@ STR_1919    :돈이 충분하지 않습니다!
 STR_1920    :대출을 갚을 수 없습니다!
 STR_1921    :{SMALLFONT}{BLACK}새로운 게임을 시작합니다
 STR_1922    :{SMALLFONT}{BLACK}저장된 게임을 계속해서 플레이합니다
-STR_1923    :{SMALLFONT}{BLACK}튜토리얼을 봅니다
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}게임을 종료합니다
 STR_1925    :사람을 여기에 놓을 수 없습니다...
 STR_1926    :{SMALLFONT}
@@ -1943,8 +1943,8 @@ STR_1934    :{STRINGID} - {STRINGID}(을)를 떠났습니다
 STR_1935    :{STRINGID} - 공원을 떠났습니다
 STR_1936    :{STRINGID} - {STRINGID}(을)를 샀습니다
 STR_1937    :{SMALLFONT}{BLACK}이 메시지의 주제에 대한 정보를 보여줍니다
-STR_1938    :{SMALLFONT}{BLACK}손님 주변으로 화면을 이동합니다
-STR_1939    :{SMALLFONT}{BLACK}직원 주변으로 화면을 이동합니다
+STR_1938    :{SMALLFONT}{BLACK}손님 주변의 화면을 보여줍니다.
+STR_1939    :{SMALLFONT}{BLACK}직원 주변의 화면을 보여줍니다.
 STR_1940    :{SMALLFONT}{BLACK}행복도/에너지/배고픔 등의 수치를 보여줍니다
 STR_1941    :{SMALLFONT}{BLACK}이용한 놀이기구를 보여줍니다
 STR_1942    :{SMALLFONT}{BLACK}재정 상황을 보여줍니다
@@ -2233,14 +2233,14 @@ STR_2224    :{WINDOW_COLOUR_2}재정: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}재정: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}공원 가치: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}회사 가치: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}음식/음료수 또는 물건으로 벌어들인 지난달 수익: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}음식/음료/물건으로 번 지난달 수익: {BLACK}{CURRENCY}
 STR_2229    :수직으로 상승
 STR_2230    :수직 트랙
 STR_2231    :낙하 브레이크
 STR_2232    :케이블 리프트 힐
 STR_2233    :{SMALLFONT}{BLACK}공원 정보
 STR_2234    :최근 메시지
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{SMALLFONT}{POP16}{STRINGID} {PUSH16}{PUSH16}{STRINGID}
 STR_2236    :1월
 STR_2237    :2월
 STR_2238    :3월
@@ -2294,22 +2294,22 @@ STR_2285    :초기 연구
 STR_2286    :디자인 중
 STR_2287    :디자인 완성
 STR_2288    :알 수 없음
-STR_2289    :{STRINGID} {STRINGID}
+STR_2289    :{POP16}{STRINGID} {PUSH16}{PUSH16}{STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
 STR_2291    :새 게임을 시작할 시나리오를 선택하세요
-STR_2292    :{WINDOW_COLOUR_2}Rides been on:
+STR_2292    :{WINDOW_COLOUR_2}탑승했던 놀이기구:
 STR_2293    :{BLACK} 없음
 STR_2294    :{SMALLFONT}{BLACK}땅 표면 모양을 변경합니다
 STR_2295    :{SMALLFONT}{BLACK}땅의 벽 모양을 변경합니다
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 공원 입장료로 썼습니다
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 {BLACK}{COMMA16} 놀이기구에 썼습니다
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 {BLACK}{COMMA16} 놀이기구에 썼습니다
-STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 음식 {BLACK}{COMMA16}종류에 썼습니다
-STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 음식 {BLACK}{COMMA16}종류에 썼습니다
-STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 음료수 {BLACK}{COMMA16}종류에 썼습니다
-STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 음료수 {BLACK}{COMMA16}종류에 썼습니다
-STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 기념품 {BLACK}{COMMA16}종류에 썼습니다
-STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 기념품 {BLACK}{COMMA16}종류에 썼습니다
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 {BLACK}{COMMA16}{WINDOW_COLOUR_2}개의 놀이기구에 썼습니다
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 {BLACK}{COMMA16}{WINDOW_COLOUR_2}개의 놀이기구에 썼습니다
+STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 음식 {BLACK}{COMMA16}{WINDOW_COLOUR_2}종류에 썼습니다
+STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 음식 {BLACK}{COMMA16}{WINDOW_COLOUR_2}종류에 썼습니다
+STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 음료수 {BLACK}{COMMA16}{WINDOW_COLOUR_2}종류에 썼습니다
+STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 음료수 {BLACK}{COMMA16}{WINDOW_COLOUR_2}{WINDOW_COLOUR_2}종류에 썼습니다
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 기념품 {BLACK}{COMMA16}{WINDOW_COLOUR_2}종류에 썼습니다
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}을 기념품 {BLACK}{COMMA16}{WINDOW_COLOUR_2}종류에 썼습니다
 STR_2305    :트랙 디자인 파일
 STR_2306    :트랙 디자인 저장
 STR_2307    :{STRINGID} 디자인 선택
@@ -2389,7 +2389,7 @@ STR_2380    :{SMALLFONT}{BLACK}물 편집 크기 줄이기
 STR_2381    :{SMALLFONT}{BLACK}물 편집 크기 늘이기
 STR_2382    :땅
 STR_2383    :물
-STR_2384    :{WINDOW_COLOUR_2}대상:
+STR_2384    :{WINDOW_COLOUR_2}목표:
 STR_2385    :{BLACK}없음
 STR_2386    :{BLACK}공원에 최소 {COMMA16}명 이상의 손님을 {MONTHYEAR}까지 유치하고, 공원 등급을 600 이상으로 유지하세요
 STR_2387    :{BLACK}최소 {POP16}{POP16}{CURRENCY} 이상의 공원 가치를 {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}까지 달성하세요
@@ -2429,12 +2429,12 @@ STR_2420    :{STRINGID} 반값 할인권
 STR_2421    :{STRINGID} 무료 이용권
 STR_2422    :{STRINGID} 광고
 STR_2423    :{STRINGID} 광고
-STR_2424    :{WINDOW_COLOUR_2}공원 무료 입장 쿠폰입니다
-STR_2425    :{WINDOW_COLOUR_2}특정 놀이기구의 무료 탑승 쿠폰입니다
-STR_2426    :{WINDOW_COLOUR_2}공원 입장료 반값 할인 쿠폰입니다
-STR_2427    :{WINDOW_COLOUR_2}음식이나 음료수 무료 이용 쿠폰입니다
-STR_2428    :{WINDOW_COLOUR_2}공원을 광고합니다
-STR_2429    :{WINDOW_COLOUR_2}특정 놀이기구를 광고합니다
+STR_2424    :{WINDOW_COLOUR_2}공원 무료 입장 쿠폰
+STR_2425    :{WINDOW_COLOUR_2}특정 놀이기구의 무료 탑승 쿠폰
+STR_2426    :{WINDOW_COLOUR_2}공원 입장료 반값 할인 쿠폰
+STR_2427    :{WINDOW_COLOUR_2}음식이나 음료수 무료 이용 쿠폰
+STR_2428    :{WINDOW_COLOUR_2}공원 광고
+STR_2429    :{WINDOW_COLOUR_2}특정 놀이기구 광고
 STR_2430    :{BLACK}{STRINGID} 무료 입장권
 STR_2431    :{BLACK}{STRINGID} 무료 탑승 쿠폰
 STR_2432    :{BLACK}{STRINGID} 반값 할인 쿠폰
@@ -2692,14 +2692,14 @@ STR_2682    :
 STR_2683    :
 STR_2684    :{SMALLFONT}{BLACK}손님 대규모로 불러오기
 STR_2685    :단일 노이즈 매개 변수
-STR_2686    :{WINDOW_COLOUR_2}저:
-STR_2687    :{WINDOW_COLOUR_2}고:
-STR_2688    :{WINDOW_COLOUR_2}기본 주파수:
-STR_2689    :{WINDOW_COLOUR_2}옥타브:
+STR_2686    :저:
+STR_2687    :고:
+STR_2688    :기본 주파수:
+STR_2689    :옥타브:
 STR_2690    :지도 생성
-STR_2691    :{WINDOW_COLOUR_2}기본 높이:
-STR_2692    :{WINDOW_COLOUR_2}수면 높이:
-STR_2693    :{WINDOW_COLOUR_2}지형:
+STR_2691    :기본 높이:
+STR_2692    :수면 높이:
+STR_2693    :지형:
 STR_2694    :생성
 STR_2695    :무작위 지형
 STR_2696    :나무 심기
@@ -2724,8 +2724,8 @@ STR_2714    :-
 STR_2715    :.
 STR_2716    :/
 STR_2717    :'
-STR_2718    :(상위 폴더)
-STR_2719    :(새 파일)
+STR_2718    :상위 폴더
+STR_2719    :새 파일
 STR_2720    :{UINT16}초
 STR_2721    :{UINT16}초
 STR_2722    :{UINT16}분 {UINT16}초
@@ -2749,7 +2749,7 @@ STR_2739    :없음
 STR_2740    :롤러코스터 타이쿤 1
 STR_2741    :롤러코스터 타이쿤 2
 STR_2742    :css50.dat 파일을 찾을 수 없습니다
-STR_2743    :data\css17.dat 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 data\css50.dat 이름으로 바꾸어 넣으십시오.
+STR_2743    :'data/css17.dat' 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 'data/css50.dat' 이름으로 바꾸어 넣거나, 기타 탭에서 RCT1의 경로를 올바르게 지정하세요.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2864,17 +2864,17 @@ STR_2852    :트랙 디자인이 이미 설치되어 있습니다
 STR_2853    :지역 당국에 의해 금지된 행위입니다!
 STR_2854    :{RED}{STRINGID}의 입구로 가는 길이 없습니다 !{NEWLINE}입구로 가는 길을 만드세요
 STR_2855    :{RED}{STRINGID}의 출구에서 나오는 길이 없습니다 !{NEWLINE}출구로 가는 길을 만드세요
-STR_2856    :{WINDOW_COLOUR_2}튜토리얼
-STR_2857    :{WINDOW_COLOUR_2}(조작하려면 마우스나 키보드 키를 누르세요)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :광고 이벤트를 시작할 수 없습니다...
 STR_2859    :OpenRCT2 프로그램이 이미 실행 중입니다
-STR_2860    :Infogrames Interactive 제공...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :음악 저작권...
 STR_2863    :음악 저작권
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (푸치크) 저작권 없음
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (작곡가 미상) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) 저작권 없음
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (민요)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (요한 스트라우스) 저작권 없음
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (민요)
@@ -2916,29 +2916,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}수석 프로듀서:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}제작 책임자:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}수석 마케팅 프로덕트 매니저:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}프로덕트 개발 V.P.:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}일반 매니저:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}품질 보증 감독:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A. 인증 매니저:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A. 인증 리드:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}테스터:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}마케팅 감독:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}창조형 서비스 매니저:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}편집 & 문서 서비스 매니저:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}그래픽 디자이너:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}카피라이터:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}감사 인사:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}엔지니어링 스페셜리스트:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}엔지니어링 서비스 매니저:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}리드 적합성 분석:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}적합성 분석:  Jason Cordero, Burke McQuinn, Kim Jardin
-STR_2929    :{WINDOW_COLOUR_2}리드 테스터:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}수석 테스터:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3063,9 +3063,9 @@ STR_3051    :골프 홀 C
 STR_3052    :골프 홀 D
 STR_3053    :골프 홀 E
 STR_3054    :불러오는 중...
-STR_3055    :하얗게
-STR_3056    :반투명으로
-STR_3057    :{WINDOW_COLOUR_2}건설 예정지 표시:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :벽돌 벽
 STR_3059    :생울타리 벽
 STR_3060    :얼음 벽돌 벽
@@ -3215,14 +3215,14 @@ STR_3203    :개발 목록 설정 화면
 STR_3204    :설정 선택
 STR_3205    :목표 선택
 STR_3206    :시나리오 저장
-STR_3207    :롤러코스터 디자이너
-STR_3208    :트랙 디자인 매니저
+STR_3207    :트랙 디자이너
+STR_3208    :트랙 디자인 관리자
 STR_3209    :이전 단계로:
 STR_3210    :다음 단계로:
-STR_3211    :{WINDOW_COLOUR_2}지도 크기:
+STR_3211    :지도 크기:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :더 이상 맵 크기를 줄일 수 없습니다
-STR_3214    :더 이상 맵 크기를 늘일 수 없습니다
+STR_3214    :더 이상 맵 크기를 늘릴 수 없습니다
 STR_3215    :지도 가장자리와 너무 가깝습니다
 STR_3216    :{SMALLFONT}{BLACK}공원 소유지 등을 선택합니다
 STR_3217    :소유한 땅
@@ -3246,8 +3246,8 @@ STR_3234    :설정 - 공원
 STR_3235    :{SMALLFONT}{BLACK}재정 관련 설정을 보여줍니다
 STR_3236    :{SMALLFONT}{BLACK}손님 관련 설정을 보여줍니다
 STR_3237    :{SMALLFONT}{BLACK}공원 관련 설정을 보여줍니다
-STR_3238    :돈 무제한
-STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원의 돈을 '무제한'으로 만듭니다
+STR_3238    :재정 무제한
+STR_3239    :{SMALLFONT}{BLACK}재정적 제한이 없도록 이 공원의 재정을 '무제한'으로 만듭니다
 STR_3240    :{WINDOW_COLOUR_2}초기 재정:
 STR_3241    :{WINDOW_COLOUR_2}초기 대출:
 STR_3242    :{WINDOW_COLOUR_2}최대 대출금:
@@ -3343,8 +3343,8 @@ STR_3331    :공원 입구에서 지도 가장자리로 이어지는 길이 이�
 STR_3332    :공원 입구가 잘못된 방향을 향하고 있거나 지도 가장자리로 가는 길이 없습니다
 STR_3333    :게임 저장시 사용한 오브젝트를 같이 포함하여 저장
 STR_3334    :{SMALLFONT}{BLACK}필요한 경우 내장된 오브젝트(기본 오브젝트가 아닌 사용자가 추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다. 이러면 그 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때 자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일 용량이 늘어납니다
-STR_3335    :롤러코스터 디자이너 - 놀이기구 종류 & 차량을 선택하세요
-STR_3336    :트랙 디자인 매니저 - 놀이기구 종류를 선택하세요
+STR_3335    :트랙 디자이너 - 놀이기구 종류 & 차량을 선택하세요
+STR_3336    :트랙 디자인 관리자 - 놀이기구 종류를 선택하세요
 STR_3337    :
 STR_3338    :{BLACK}커스텀 디자인 구조
 STR_3339    :{BLACK}{COMMA16}개의 디자인, 커스텀 디자인 구조 사용 가능
@@ -3352,8 +3352,8 @@ STR_3340    :{BLACK}{COMMA16}개의 디자인, 커스텀 디자인 구조 사용
 STR_3341    :{SMALLFONT}{BLACK}게임 도구
 STR_3342    :시나리오 에디터
 STR_3343    :저장된 게임을 시나리오로 변환
-STR_3344    :롤러코스터 디자이너
-STR_3345    :트랙 디자인 매니저
+STR_3344    :트랙 디자이너
+STR_3345    :트랙 디자인 관리자
 STR_3346    :트랙 디자인을 저장할 수 없습니다...
 STR_3347    :놀이기구가 너무 큽니다 - 너무 많은 요소를 포함하고 있거나 조형물이 너무 넓게 퍼져 있습니다
 STR_3348    :이름 바꾸기
@@ -3384,7 +3384,7 @@ STR_3372    :{BLACK}= 현금지급기
 STR_3373    :{BLACK}= 화장실
 STR_3374    :경고: 오브젝트를 너무 많이 선택하였습니다
 STR_3375    :이 조형물 그룹의 모든 오브젝트가 선택되지는 않았습니다
-STR_3376    :새 트랙 디자인 설치...
+STR_3376    :새로 설치...
 STR_3377    :{SMALLFONT}{BLACK}새 트랙 디자인 파일 설치
 STR_3378    :설치
 STR_3379    :취소
@@ -3393,58 +3393,58 @@ STR_3381    :파일이 적합하지 않거나 유효하지 않은 데이터를 �
 STR_3382    :파일 복사에 실패하였습니다
 STR_3383    :트랙 디자인에 지정할 새 이름을 선택하세요
 STR_3384    :같은 이름의 트랙 디자인이 이미 존재합니다 이 디자인에 지정할 다른 이름을 입력하세요:
-STR_3385    :초심자 튜토리얼
-STR_3386    :놀이기구 직접 만들기 튜토리얼
-STR_3387    :롤러코스터 만들기 튜토리얼
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :선택한 모드로 바꿀 수 없습니다
 STR_3389    :추가 조형물 항목을 선택할 수 없습니다...
 STR_3390    :항목을 너무 많이 선택하였습니다
-STR_3391    :{SMALLFONT}{BLACK}여기 우리 공원이 있습니다. 한 번 둘러보죠...
-STR_3392    :{SMALLFONT}{BLACK}마우스 오른쪽 버튼을 누른 채로 움직이면 화면을 빠르게 움직일 수 있습니다...
-STR_3393    :{SMALLFONT}{BLACK}공원을 더 많이 보고 싶다면 화면 위쪽에 있는 축소 버튼을 이용하여 화면을 축소할 수 있습니다...
-STR_3394    :{SMALLFONT}{BLACK}또 90도씩 화면을 회전시킬 수도 있습니다...
-STR_3395    :{SMALLFONT}{BLACK}하지만 이 스케일에서 뭔가를 건설하는 건 조금 힘듭니다. 다시 화면을 확대하여 원래대로 돌려놓읍시다...
-STR_3396    :{SMALLFONT}{BLACK}공원의 첫 놀이기구로 간단한 놀이기구를 만들어보죠...
-STR_3397    :{SMALLFONT}{BLACK}'유령'처럼 생긴 하얀 이미지는 놀이기구가 지어질 위치를 나타내는 것입니다. 마우스 커서를 움직여서 설치할 위치를 잡고 클릭하여 건설합니다...
-STR_3398    :{SMALLFONT}{BLACK}놀이기구는 입구와 출구가 필요합니다. 마우스 커서를 놀이기구의 가장자리에 두고 클릭해서 입구를 먼저 만들고, 그 다음으로 출구도 만듭니다...
-STR_3399    :{SMALLFONT}{BLACK}우리가 방금 만든 새 놀이기구에 손님이 접근하기 위해서는 길을 만들어야 합니다...
-STR_3400    :{SMALLFONT}{BLACK}놀이기구 입구에 연결하는 길은 '대기줄' 보도라는 특별한 길을 사용할 것입니다...
-STR_3401    :{SMALLFONT}{BLACK}출구에 연결하는 길은 그냥 '평범한' 보도면 됩니다...
-STR_3402    :{SMALLFONT}{BLACK}좋아요, 놀이기구를 개장해보죠! 놀이기구를 열기 위해서는 놀이기구 창에서 깃발 모양의 아이콘을 클릭하고 '열기'를 선택하세요...
-STR_3403    :{SMALLFONT}{BLACK}그런데 손님은 어디있을까요?
-STR_3404    :{SMALLFONT}{BLACK}이런, 공원이 아직 닫혀있네요! 공원의 문을 활짝 열어보죠...
-STR_3405    :{SMALLFONT}{BLACK}첫 손님이 올 때까지 약간의 조형물을 만들어보죠...
-STR_3406    :{SMALLFONT}{BLACK}여기 빈 공원이 있습니다. 이제 여기에 간단한 커스텀 디자인 놀이기구를 만들어보겠습니다...
-STR_3407    :{SMALLFONT}{BLACK}먼저 시작할 위치를 골라야 합니다...
-STR_3408    :{SMALLFONT}{BLACK}방금 우리가 만든 트랙 섹션은 놀이기구에 손님을 태우고 내리는 '탑승장'입니다...
-STR_3409    :{SMALLFONT}{BLACK}이제 탑증상 섹션을 조금 더 추가하여 승강장을 확장해보죠...
-STR_3410    :{SMALLFONT}{BLACK}건설 창의 가장 위에 있는 아이콘을 보시면 알겠지만 추가할 수 있는 트랙 조각이 여러 가지 있습니다...
-STR_3411    :{SMALLFONT}{BLACK}왼쪽 커브를 선택해보겠습니다...
-STR_3412    :{SMALLFONT}{BLACK}커브는 아직 건설되지 않았지만 하얀 유령 이미지가 어디에 지어질지를 보여주고 있습니다. 커다랗게 생긴 '건설하기' 버튼을 클릭해서 실제로 트랙을 건설합시다...
-STR_3413    :{SMALLFONT}{BLACK}이제 직진 트랙을 만들고 싶습니다. 직진 트랙 아이콘을 클릭합시다...
-STR_3414    :{SMALLFONT}{BLACK}이제 트랙을 완성합시다. 그리고 놀이기구의 입구와 출구를 만들어야 합니다.
-STR_3415    :{SMALLFONT}{BLACK}이제 놀이기구가 제대로 돌아가는지 테스트해보죠...
-STR_3416    :{SMALLFONT}{BLACK}테스트가 진행되는 동안, 대기줄과 출구 보도를 만들도록 하죠...
-STR_3417    :{SMALLFONT}{BLACK}됐습니다. 이제 공원과 놀이기구를 열어보죠...
-STR_3418    :{SMALLFONT}{BLACK}우리가 방금 새로 만든 놀이기구가 별로 재미가 없나봅니다. 조형물을 조금 추가해야할 것 같군요?
-STR_3419    :{SMALLFONT}{BLACK}조형물 위에 조형물을 얹거나 공중에 띄워 설치하려면, SHIFT 키를 누른 채로 마우스를 움직여 원하는 높이에서 클릭하시면 됩니다...
-STR_3420    :{SMALLFONT}{BLACK}일부 조형물은 설치하고 나면 다시 색을 칠할 수 없으니 유의하세요...
-STR_3421    :{SMALLFONT}{BLACK}놀이기구에 음악을 흐르게 만들어봅시다....
-STR_3422    :{SMALLFONT}{BLACK}롤러코스터를 만들어보죠 !
-STR_3423    :{SMALLFONT}{BLACK}미리 디자인된 롤러코스터가 있습니다만, 우리는 스스로 트랙을 디자인해서 만들 것입니다...
-STR_3424    :{SMALLFONT}{BLACK}탑승장이 만들어졌습니다. 이제 리프트 힐이 필요합니다...
-STR_3425    :{SMALLFONT}{BLACK}롤러코스터의 열차에는 동력이 없어서 열차가 첫 번째 언덕을 통과하기 위해서는 '체인 리프트'가 필요합니다...
-STR_3426    :{SMALLFONT}{BLACK}리프트 힐이 완성되었습니다. 이제 첫 번째 낙하 구간을 만들죠...
-STR_3427    :{SMALLFONT}{BLACK}이런 커브는 좋은 생각이 아닙니다. 탑승자는 열차가 달리면서 측면 중력때문에 측면으로 쏠리기 때문입니다...
-STR_3428    :{SMALLFONT}{BLACK}트랙의 커브에 기울임을 주면 탑승자들이 측면으로 쏠리는 대신에 좌석 아래쪽으로 당겨지게 되어 안정적인 탑승감을 선사할 수 있습니다...
-STR_3429    :{SMALLFONT}{BLACK}저런, 그렇게 하면 제대로 굴러가질 않습니다! 높이 고도 표시를 보시면 알겠지만 두 번째 언덕이 첫 번째 언덕보다 높습니다...
-STR_3430    :{SMALLFONT}{BLACK}열차가 제대로 굴러가게 만드려면, 각 언덕은 이전 언덕보다 조금 낮아야 함을 잊지 마세요...
-STR_3431    :{SMALLFONT}{BLACK}훨씬 낫네요. 이제 열차가 언덕을 오를 수 있게 되었습니다! 이제는 몇 개의 특수 트랙을 설치해보겠습니다...
-STR_3432    :{SMALLFONT}{BLACK}마지막 커브를 돌아서 탑승장에 돌아가기 전에 열차의 속력을 늦춰야 합니다. 그러니까 브레이크를 걸어보도록 하죠...
-STR_3433    :{SMALLFONT}{BLACK}이제 마지막으로 두 대의 여열차가 안전하게 서킷을 돌 수 있도록 만들어주는 '블록 브레이크'를 추가해보죠.
-STR_3434    :{SMALLFONT}{BLACK}놀이기구를 테스트하고 제대로 굴러가는 모습을 감상해보도록 하죠!
-STR_3435    :{SMALLFONT}{BLACK}훌륭합니다, 잘 작동하네요! 보도를 추가해서 손님들이 새로 만든 롤러코스터에 접근할 수 있게 만들어 주세요...
-STR_3436    :{SMALLFONT}{BLACK}첫 번째 탑승자를 기다리는 동안, 놀이기구를 조금만 커스터마이징해보죠...
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}조형물을 한꺼번에 제거
 STR_3438    :여기에 있는 모든 조형물을 다 제거하지 못 하였습니다...
 STR_3439    :조형물 제거
@@ -3461,7 +3461,7 @@ STR_5120    :재정
 STR_5121    :연구
 STR_5122    :놀이기구를 (RCT1처럼) 트랙 종류 별로 선택
 STR_5123    :놀이기구 새 걸로
-STR_5124    :
+STR_5124    :<removed string - do not use>
 STR_5125    :모두 파괴 가능
 STR_5126    :무작위 타이틀 음악
 STR_5127    :{SMALLFONT}{BLACK}땅을 올리거나 내리지 않고 지형을 편집합니다
@@ -3494,7 +3494,7 @@ STR_5153    :테마 수정...
 STR_5154    :하드웨어 디스플레이
 STR_5155    :완성되지 않은 트랙의 테스트 허용
 STR_5156    :{SMALLFONT}{BLACK}대부분의 놀이기구 종류에서 트랙을 완성하지 않아도 테스트를 할 수 있도록 허용합니다. 블록 섹션 모드에는 적용되지 않습니다
-STR_5157    :모든 가격 잠금 해제
+STR_5157    :<removed string - do not use>
 STR_5158    :종료하고 메뉴로
 STR_5159    :OpenRCT2 종료
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}{COMMA16}년
@@ -3573,8 +3573,8 @@ STR_5232    :{SMALLFONT}{BLACK}에디터
 STR_5233    :{SMALLFONT}{BLACK}기타
 STR_5234    :{SMALLFONT}{BLACK}확인창
 STR_5235    :{SMALLFONT}{BLACK}설정
-STR_5236    :창:
-STR_5237    :색상표:
+STR_5236    :창
+STR_5237    :색상표
 STR_5238    :현재 테마:
 STR_5239    :복제
 STR_5240    :테마 이름을 입력하세요
@@ -3650,8 +3650,8 @@ STR_5309    :OpenRCT2
 STR_5310    :무작위
 STR_5311    :{SMALLFONT}{BLACK}디버그 도구
 STR_5312    :콘솔 보이기
-STR_5313    :칸 탐색기 열기
-STR_5314    :칸 탐색기
+STR_5313    :칸 조사 창 열기
+STR_5314    :칸 조사 창
 STR_5315    :잔디
 STR_5316    :모래
 STR_5317    :진흙
@@ -3669,8 +3669,8 @@ STR_5328    :모래 (밝음)
 STR_5329    :체스판 (반전)
 STR_5330    :지하 시야
 STR_5331    :바위
-STR_5332    :나무 (빨강)
-STR_5333    :나무 (검정)
+STR_5332    :나무 (붉은색)
+STR_5333    :나무 (검은색)
 STR_5334    :눈
 STR_5335    :놀이기구 입구
 STR_5336    :놀이기구 출구
@@ -3678,8 +3678,8 @@ STR_5337    :공원 입구
 STR_5338    :요소 종류
 STR_5339    :기본 고도
 STR_5340    :최상단 높이
-STR_5341    :<사용 안 함>
-STR_5342    :<사용 안 함>
+STR_5341    :<removed string - do not use>
+STR_5342    :<removed string - do not use>
 STR_5343    :직원 자동 배치
 STR_5344    :변경기록
 STR_5345    :재정 치트
@@ -3707,7 +3707,7 @@ STR_5366    :보통
 STR_5367    :빠름
 STR_5368    :충돌 이력 제거
 STR_5369    :공원 설정...
-STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 돈 등의 공원과 관련된 설정을 수정하려면 이 버튼을 클릭하세요.
+STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 재정 등의 공원과 관련된 설정을 수정하려면 이 버튼을 클릭하세요.
 STR_5371    :오브젝트 선택
 STR_5372    :마우스 오른쪽 드래그시 좌우 반전
 STR_5373    :이름 {STRINGID}
@@ -3761,13 +3761,13 @@ STR_5420    :{MOVE_X}{87}{COMMA16} 회전
 STR_5421    :확대
 STR_5422    :{MOVE_X}{87}{COMMA16} 확대
 STR_5423    :기다림
-STR_5424    :{MOVE_X}{87}{COMMA16} 동안 기다림
+STR_5424    :{MOVE_X}{87}{UINT16} 동안 기다림
 STR_5425    :재시작
 STR_5426    :끝
 STR_5427    :좌표:
 STR_5428    :반시계방향 회전:
 STR_5429    :확대 수준:
-STR_5430    :기다릴 시간:
+STR_5430    :기다릴 시간(밀리초):
 STR_5431    :불러올 세이브 파일:
 STR_5432    :명령:
 STR_5433    :타이틀 시퀀스
@@ -3831,10 +3831,10 @@ STR_5490    :게임 밖으로 커서가 나가면 효과음 끄기
 STR_5491    :개발 목록
 STR_5492    :시나리오 설정
 STR_5493    :메시지 보내기
-STR_5494    :
+STR_5494    :<removed string - do not use>
 STR_5495    :플레이어 목록
-STR_5496    :플레이어:
-STR_5497    :핑:
+STR_5496    :플레이어
+STR_5497    :핑
 STR_5498    :서버 목록
 STR_5499    :플레이어 이름:
 STR_5500    :서버 추가
@@ -3844,7 +3844,7 @@ STR_5503    :호스트네임이나 IP 주소를 입력하세요:
 STR_5504    :{SMALLFONT}{BLACK}접속자 목록 창을 엽니다
 STR_5505    :서버에 접속할 수 없습니다
 STR_5506    :손님이 격렬도를 무시하고 탐
-STR_5507    :미화원이 기본적으로 잔디를 깎음
+STR_5507    :<removed string - do not use>
 STR_5508    :올바르지 않은 검사합을 가진 파일 불러오기 허용
 STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오나 손상된 저장 파일과 같이 올바르지 않은 검사합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
 STR_5510    :기본 사운드 장치
@@ -3979,7 +3979,7 @@ STR_5638    :권한 없음
 STR_5639    :{SMALLFONT}{BLACK}플레이어 목록을 보여줍니다
 STR_5640    :{SMALLFONT}{BLACK}그룹 관리
 STR_5641    :기본 그룹:
-STR_5642    :그룹:
+STR_5642    :그룹
 STR_5643    :그룹 추가
 STR_5644    :그룹 제거
 STR_5645    :대화
@@ -4007,7 +4007,7 @@ STR_5666    :비밀번호 없이 로그인
 STR_5701    :{WINDOW_COLOUR_2}마지막 행동: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}플레이어의 가장 최근 행동 장소로 이동
 STR_5703    :서버를 추방할 수 없습니다
-STR_5704    :마지막 행동:
+STR_5704    :마지막 행동
 STR_5705    :이 그룹으로 설정할 수 없습니다
 STR_5706    :플레이어가 있는 그룹을 제거할 수 없습니다
 STR_5707    :이 그룹을 수정할 수 없습니다
@@ -4031,13 +4031,13 @@ STR_5723    :폭우
 STR_5724    :천둥번개
 STR_5725    :{BLACK}날씨 고정:
 STR_5726    :{SMALLFONT}{BLACK}공원의 현재 날씨를 설정합니다.
-STR_5727    :크기 조절 방식
+STR_5727    :크기 조절 방식:
 STR_5728    :하드웨어 디스플레이 설정 필요
 STR_5729    :{SMALLFONT}{BLACK}하드웨어 디스플레이를 설정해야 합니다.
-STR_5730    :최근접 인접 픽셀 사용
-STR_5731    :선형으로
-STR_5732    :비등방성으로
-STR_5733    :정수배 확대시 NN 스케일링 사용
+STR_5730    :<removed string - do not use>
+STR_5731    :선형
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}렌더링
 STR_5735    :네트워크 상태
@@ -4123,11 +4123,11 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}게임 화면에 FPS를 표시합니다.
 STR_5816    :{SMALLFONT}{BLACK}게임 화면을 조절할 비율을 설정합니다.{NEWLINE}고해상도에서 플레이할 때 사용하면 좋습니다.
-STR_5817    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}게임 UI를 조절할 방식을 선택합니다.
-STR_5818    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}창 크기 조절 배수를 정수 값으로 사용할 경우 최근접 인접 픽셀 방식을 사용하여 UI의 크기를 조절합니다.
+STR_5817    :{SMALLFONT}{BLACK}게임 UI 크기 조절 방식을 설정합니다. 하드웨어 디스플레이로 설정해야 합니다.{NEWLINE}선형은 부드럽지만 흐릿하게 보이고, 부드러운 최근 인접 픽셀은 또렷하지만 약간의 성능 하락이 있습니다.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}스팀 인게임 오버레이가 열려있으면 게임을 일시정지시킵니다.
 STR_5820    :{SMALLFONT}{BLACK}전체 화면 모드에서 커서가 게임 밖으로 나가면 게임을 최소화시킵니다.
-STR_5821    :{SMALLFONT}{BLACK}놀이기구, 보도, 상점, 풍경 등을 건설할 때 건설 예정지를 표시하는 방식을 변경합니다.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}낮밤을 순환하도록 설정합니다.{NEWLINE}낮밤이 바뀌는 데에는 한 달이 걸립니다.
 STR_5823    :{SMALLFONT}{BLACK}팻말의 영문을 대문자로 표시합니다. (RCT1처럼)
 STR_5824    :{SMALLFONT}{BLACK}폭풍이 칠 때 번개가 치는 효과를 끕니다.
@@ -4142,21 +4142,21 @@ STR_5832    :{SMALLFONT}{BLACK}높이를 "거리 및 속력"에 설정된 거리
 STR_5833    :{SMALLFONT}{BLACK}사용할 날짜 형식을 설정합니다.
 STR_5834    :{SMALLFONT}{BLACK}OpenRCT2가 사용할 오디오 장치를 선택합니다.
 STR_5835    :{SMALLFONT}{BLACK}게임 밖으로 커서가 나가면 게임에서 소리가 나지 않도록 만듭니다.
-STR_5836    :{SMALLFONT}{BLACK}첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 'data/css17.dat' 파일을 복사해서 RCT2 폴더에 'data/css50.dat'라는 이름으로 저장해두어야 합니다.
+STR_5836    :{SMALLFONT}{BLACK}첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 'data/css17.dat' 파일을 복사해서 RCT2 폴더에 'data/css50.dat'라는 이름으로 저장해두거나, 기타 탭에서 RCT1의 경로를 지정해야 합니다.
 STR_5837    :{SMALLFONT}{BLACK}사용자 UI 테마를 생성하고 관리합니다.
 STR_5838    :{SMALLFONT}{BLACK}메인 메뉴에 재정 창을 위한 별도의 버튼을 표시합니다.
 STR_5839    :{SMALLFONT}{BLACK}메인 매뉴에 연구 및 개발 창을 위한 별도의 버튼을 표시합니다.
 STR_5840    :{SMALLFONT}{BLACK}메인 메뉴에 치트 창을 위한 별도의 버튼을 표시합니다.
 STR_5841    :{SMALLFONT}{BLACK}메인 메뉴에 최근 메시지 창을 위한 별도의 버튼을 표시합니다.
 STR_5842    :{SMALLFONT}{BLACK}시나리오를 (RCT2처럼) 난이도 별로 정렬하거나 (RCT1처럼) 출신 게임별로 정렬합니다.
-STR_5843    :{SMALLFONT}{BLACK}시나리오 해제 기능을 켭니다. (RCT1처럼)
+STR_5843    :{SMALLFONT}{BLACK}(RCT1 처럼) 시나리오를 클리어하면 다음 시나리오를 해제합니다.
 STR_5844    :{SMALLFONT}{BLACK}멀티 플레이 서버에서 비동기화나 오류가 발생하여도 접속을 유지합니다.
 STR_5845    :{SMALLFONT}{BLACK}메인 메뉴에 디버깅 툴을 위한 버튼을 추가합니다.{NEWLINE}개발자 콘솔을 여는 키보드 단축키가 활성화됩니다.
 STR_5846    :{SMALLFONT}{BLACK}OpenRCT2의 자동 저장 빈도를 설정합니다.
 STR_5847    :{SMALLFONT}{BLACK}타이틀 스크린에서 사용할 공원 시퀀스를 선택합니다. RCT1/2의 타이틀 시퀀스를 사용하기 위해서는 특정 시나리오가 필요합니다.
 STR_5848    :{SMALLFONT}{BLACK}사용자 타이틀 시퀀스를 생성하고 관리합니다.
 STR_5849    :{SMALLFONT}{BLACK}새로 고용한 직원을 자동으로 보도 위에 놓습니다.
-STR_5850    :{SMALLFONT}{BLACK}새로 고용된 미화원이 기본적으로 잔디를 깎습니다. (RCT1처럼)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}새로 만든 놀이기구에 기본적으로 설정할 점검 간격을 설정합니다.
 STR_5852    :{SMALLFONT}{BLACK}트위치 통합에 사용할 트위치TV 채널 명을 설정합니다.
 STR_5853    :{SMALLFONT}{BLACK}효과음 켜기/끄기
@@ -4185,7 +4185,7 @@ STR_5875    :드로잉 엔진:
 STR_5876    :{SMALLFONT}{BLACK}게임 요소를 표시는데 사용할 엔진을 선택합니다.
 STR_5877    :소프트웨어
 STR_5878    :소프트웨어 (하드웨어 디스플레이)
-STR_5879    :OpenGL
+STR_5879    :OpenGL (개발중)
 STR_5880    :선택한 것만
 STR_5881    :선택하지 않은 것만
 STR_5882    :사용자 화폐 단위
@@ -4203,7 +4203,7 @@ STR_5893    :환율
 STR_5894    :환율을 입력하세요
 STR_5895    :트랙 저장
 STR_5896    :트랙 저장에 실패하였습니다!
-STR_5897    :최대 열린 창 개수:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}트랙을 불러올 수 없습니다.{NEWLINE}파일이 망가지거나 깨졌을 수 있습니다!
 STR_5899    :그리기 디버그 창 열기/닫기
 STR_5900    :오리지널 그래픽 코드 사용
@@ -4251,7 +4251,7 @@ STR_5941    :{WINDOW_COLOUR_2}기본 높이:
 STR_5942    :{WINDOW_COLOUR_2}공원 이름: {BLACK}{STRINGID}
 STR_5943    :{WINDOW_COLOUR_2}추가: {BLACK}{STRINGID}
 STR_5944    :{WINDOW_COLOUR_2}추가: {BLACK}없음
-STR_5945    :{WINDOW_COLOUR_2}연결된 모서리:
+STR_5945    :{WINDOW_COLOUR_2}연결된 면:
 STR_5946    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
 STR_5947    :{WINDOW_COLOUR_2}놀이기구 ID: {BLACK}{COMMA16}
 STR_5948    :{WINDOW_COLOUR_2}놀이기구 이름: {BLACK}{STRINGID}
@@ -4269,7 +4269,7 @@ STR_5959    :남동
 STR_5960    :{WINDOW_COLOUR_2}1/4칸 위치:
 STR_5961    :{WINDOW_COLOUR_2}엔트리 인덱스: {BLACK}{COMMA16}
 STR_5962    :{WINDOW_COLOUR_2}겹침 탐지:
-STR_5963    :{WINDOW_COLOUR_2}올라간 코너:
+STR_5963    :{WINDOW_COLOUR_2}올라간 구석:
 STR_5964    :{WINDOW_COLOUR_2}대각선
 STR_5965    :{WINDOW_COLOUR_2}입구 종류: {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}공원 입구 조각: {BLACK}{STRINGID}
@@ -4291,6 +4291,284 @@ STR_5981    :{WINDOW_COLOUR_2}팻말이 아님
 STR_5982    :{WINDOW_COLOUR_2}대형 풍경 종류: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}대형 풍경 조각 ID: {BLACK}{COMMA16}
 STR_5984    :막힌 보도:
+STR_5985    :새 폴더
+STR_5986    :새 폴더의 이름을 입력하세요.
+STR_5987    :폴더를 만들 수 없습니다.
+STR_5988    :{SMALLFONT}{BLACK}판매 중인 땅이 더 이상 없습니다.
+STR_5989    :{SMALLFONT}{BLACK}판매 중인 건설권이 더 이상 없습니다.
+STR_5990    :{SMALLFONT}{BLACK}판매 중인 땅이나 건설권이 더 이상 없습니다.
+STR_5991    :붙여넣을 수 없습니다...
+STR_5992    :맵 요소 제한 개수를 초과했습니다
+STR_5993    :{SMALLFONT}{BLACK}선택한 요소를 복사합니다.
+STR_5994    :{SMALLFONT}{BLACK}복사했던 요소를 붙여넣습니다.
+STR_5995    :부스터
+STR_5996    :부스터 속력
+STR_5997    :재정 추가/설정
+STR_5998    :돈 추가
+STR_5999    :이 값으로 돈 지정
+STR_6000    :새로운 값을 입력하세요
+STR_6001    :가로등 효과 (실험적 기능)
+STR_6002    :{SMALLFONT}{BLACK}가로등과 놀이기구가 밤에 불이 켜지도록 합니다.{NEWLINE}드로잉 엔진 설정을 하드웨어 디스플레이로 설정해야 합니다.
+STR_6003    :특정 높이 잘라 보기
+STR_6004    :특정 높이 잘라 보기
+STR_6005    :잘라 보기 활성화
+STR_6006    :{SMALLFONT}{BLACK}잘라보기 기능을 이용해서 절단할 높이보다 아래에 있는 요소만 표시하거나(상하 잘라보기) 선택한 영역만(영역 잘라보기) 보여줄 수 있습니다.
+STR_6007    :절단할 높이
+STR_6008    :{SMALLFONT}{BLACK}클릭하면 높이 단위를 실제 높이<->유닛 단위로 변경할 수 있습니다.
+STR_6009    :{SMALLFONT}{BLACK}절단할 높이를 선택하세요.
+STR_6010    :{COMMA2DP32}m
+STR_6011    :{COMMA1DP16}ft
+STR_6012    :{COMMA1DP16}
+STR_6013    :{SMALLFONT}{BLACK}손님들이 공원 입장료와 상점/매점에만 돈을 지불합니다.{NEWLINE}놀이기구 탑승료는 무료로 고정됩니다.
+STR_6014    :{SMALLFONT}{BLACK}손님들이 놀이기구 탑승료와 상점/매점에만 돈을 지불합니다.{NEWLINE}공원 입장료로 돈을 지불하지는 않습니다.
+STR_6015    :경사짐
+STR_6016    :칸 편집
+STR_6017    :천천히 하세요
+STR_6018    :놀이기구 건설 - 왼쪽 회전
+STR_6019    :놀이기구 건설 - 오른쪽 회전
+STR_6020    :놀이기구 건설 - 기본 트랙 사용
+STR_6021    :놀이기구 건설 - 하강
+STR_6022    :놀이기구 건설 - 상승
+STR_6023    :놀이기구 건설 - 체인 리프트 켜기/끄기
+STR_6024    :놀이기구 건설 - 왼쪽 뱅크
+STR_6025    :놀이기구 건설 - 오른쪽 뱅크
+STR_6026    :놀이기구 건설 - 이전 트랙
+STR_6027    :놀이기구 건설 - 다음 트랙
+STR_6028    :놀이기구 건설 - 선택한 트랙 건설
+STR_6029    :놀이기구 건설 - 선택한 트랙 제거
+STR_6030    :{SMALLFONT}{BLACK}오브젝트 스포이드 기능입니다. 지도 상의 오브젝트를 선택하면 그 오브젝트를 골라서 설치할 수 있습니다.
+STR_6031    :서버 설명:
+STR_6032    :서버 인사말:
+STR_6033    :RCT1 설치 경로:
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6035    :RCT1이 설치된 폴더를 선택하세요
+STR_6036    :{SMALLFONT}{BLACK}초기화
+STR_6037    :RCT1이 설치된 폴더를 올바르게 선택해주세요
+STR_6038    :{SMALLFONT}{BLACK}RCT1을 설치했다면, 이 설정을 이용해서 시나리오나 음악 등을 불러오기 위해 RCT1이 설치된 폴더를 지정하세요.
+STR_6039    :{SMALLFONT}{BLACK}빠른 놀이기구 파괴
+STR_6040    :시나리오 설정 편집
+STR_6041    :{BLACK}고용된 정비기술자가 없습니다!
+STR_6042    :높이맵 불러오기
+STR_6043    :높이맵 선택하기
+STR_6044    :높이맵 부드럽게
+STR_6045    :강도
+STR_6046    :높이맵 정규화
+STR_6047    :칸을 부드럽게
+STR_6048    :높이맵 오류
+STR_6049    :PNG 읽어오기 오류
+STR_6050    :비트맵 읽어오기 오류
+STR_6051    :이미지의 가로와 세로 길이가 일치해야 합니다
+STR_6052    :높이맵이 너무 커서 일부가 잘릴 것입니다.
+STR_6053    :높이맵을 정규화할 수 없습니다
+STR_6054    :24비트 비트맵만 지원합니다
+STR_6055    :OpenRCT2 높이맵
+STR_6056    :{SMALLFONT}{BLACK}음소거
+STR_6057    :{SMALLFONT}{BLACK}메인 메뉴에 음소거를 설정할 수 있는 별도의 버튼을 표시합니다.
+STR_6058    :음소거
+STR_6059    :{RIGHTGUILLEMET}
+STR_6060    :손님의 돈 사용을 애니메이션 효과로 표시
+STR_6061    :{SMALLFONT}{BLACK}손님들이 돈을 사용하면{NEWLINE}움직이는 효과로 표시해줍니다.
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
+STR_6064    :모든 땅 소유
+STR_6065    :유저 행동 기록
+STR_6066    :{SMALLFONT}{BLACK}모든 유저의 행동을 사용자 폴더에 파일로 기록합니다.
+STR_6067    :서버 시작됨
+STR_6068    :서버가 종료됨
+STR_6069    :{STRING}, {STRING}에 의해 서버에서 추방됨
+STR_6070    :{STRING}, 플레이어 그룹을 '{STRING}'(으)로 변경 (변경자: {STRING})
+STR_6071    :{STRING}, 새 플레이어 그룹 '{STRING}' 생성
+STR_6072    :{STRING}, 플레이어 그룹 '{String}' 삭제
+STR_6073    :{STRING}, 플레이어 그룹 '{String}'의 권한을 수정
+STR_6074    :{STRING}, 플레이어 그룹 '{String}'의 이름을 '{String}'(으)로 변경
+STR_6075    :{STRING}, 기본 플레이어 그룹을 '{String}'(으)로 변경
+STR_6076    :{STRING}, '{STRING}' 치트 사용/토글
+STR_6077    :돈 추가
+STR_6078    :{STRING}, '{STRING}' 놀이기구를 생성
+STR_6079    :{STRING}, '{STRING}' 놀이기구를 파괴
+STR_6080    :{STRING}, '{STRING}' 놀이기구의 외관을 변경.
+STR_6081    :{STRING}, '{STRING}' 놀이기구를 닫음
+STR_6082    :{STRING}, '{STRING}' 놀이기구를 엶
+STR_6083    :{STRING}, '{STRING}' 놀이기구를 테스트함
+STR_6084    :{STRING}, '{STRING}' 놀이기구의 차량 설정을 변경함.
+STR_6085    :{STRING}, '{STRING}' 놀이기구의 설정을 변경함.
+STR_6086    :{STRING}, '{STRING}' 놀이기구의 이름을 '{STRING}'(으)로 변경.
+STR_6087    :{STRING}, '{STRING}' 놀이기구의 가격을 {STRING}(으)로 변경
+STR_6088    :{STRING}, '{STRING}' 놀이기구의 부가격을 {STRING}(으)로 변경
+STR_6089    :{STRING}, 공원 이름을 '{STRING}'에서 '{STRING}'(으)로 변경
+STR_6090    :{STRING}, 공원 문을 엶
+STR_6091    :{STRING}, 공원 문을 닫음
+STR_6092    :{STRING}, 공원 입장료를 {STRING}(으)로 변경
+STR_6093    :{STRING}, 오브젝트를 설치함
+STR_6094    :{STRING}, 오브젝트를 제거함
+STR_6095    :{STRING}, 오브젝트를 수정함
+STR_6096    :{STRING}, 팻말 내용을 '{STRING}'(으)로 설정함
+STR_6097    :{STRING}, '{STRING}' 놀이기구의 트랙을 설치함
+STR_6098    :{STRING}, 놀이기구 트랙을 제거함
+STR_6099    :서버에 접속하였습니다
+STR_6100    :서버와의 접속이 종료되었습니다
+STR_6101    :놀이기구 가치가 떨어지지 않게 만들기
+STR_6102    :{SMALLFONT}{BLACK}놀이기구의 가치가 시간이 지남에 따라 떨어지지 않게 만들어서, 손님들이 갑자기 놀이기구가 너무 비싸다고 생각하지 않도록 만듭니다.
+STR_6103    :{SMALLFONT}{BLACK}이 설정은 멀티 플레이 도중에 변경할 수 없습니다.
+STR_6104    :나선 롤러코스터
+STR_6105    :하이퍼코스터
+STR_6106    :카 라이드
+STR_6107    :몬스터 트럭
+STR_6108    :스틸 트위스터
+STR_6109    :하이퍼 트위스터
+STR_6110    :주니어 롤러코스터
+STR_6111    :클래식 미니 롤러코스터
+STR_6112    :차량이 나선 트랙과 루프를 통과하는 알찬 구성의 철제 트랙 롤러코스터입니다.
+STR_6113    :큰 낙하, 높은 속도, 그리고 무릎 안전바만 있는 편안한 차량을 가진 높고 뒤집어질 수 없는 롤러코스터입니다.
+STR_6114    :정해진 트랙을 따라 천천히 움직이는 놀이기구입니다.
+STR_6115    :급경사를 오를 수 있는 거대한 4 x 4 트럭 차량입니다.
+STR_6116    :여러 가지 반전 트랙을 통과하면서 부드러운 강철 트랙을 따라서 활강하는, 폭이 넓은 롤러코스터입니다.
+STR_6117    :탑승객들은 한 바퀴를 운행하는 편안한 좌석에 앉아 언덕을 오르면서 느낄 수 있는 '무중력 시간'뿐만이 아니라 크고 부드러운 낙하와 꼬인 트랙의 느낌을 즐길 수 있습니다.
+STR_6118    :큰 놀이기구를 탈 용기가 없는 사람들을 위한 얌전한 롤러코스터입니다.
+STR_6119    :높이 제한이 있지만 값 싸고 건설하기 쉬운 롤러코스터입니다.
+STR_6120    :{BABYBLUE}{STRINGID}에 새로운 차량이 추가되었습니다:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}공원이 소유한 땅을 맵 끝까지 모든 방향으로 확장시켜줍니다.
+STR_6122    :이 시나리오에 롤러코스터가 충분히 많이 있지 않습니다!
+STR_6123    :공원에 사용된 오브젝트 불러오기 오류
+STR_6124    :오브젝트 이름
+STR_6125    :오브젝트 종류
+STR_6126    :알 수 없는 종류
+STR_6127    :파일: {STRING}
+STR_6128    :사용된 오브젝트 중에 빠져있거나 손상된 오브젝트를 불러올 수 없습니다. 해당 오브젝트 목록은 아래와 같습니다.
+STR_6129    :선택한 항목을 클립보드에 복사
+STR_6130    :전체 목록을 클립보드에 복사
+STR_6131    :오브젝트 소스
+STR_6132    :연구 상태 무시
+STR_6133    :{SMALLFONT}{BLACK}아직 개발되지 않은 놀이기구와 풍경을 사용할 수 있게 만듭니다.
+STR_6134    :조형물 제거
+STR_6135    :클라이언트에서 잘못된 요청을 보냈습니다
+STR_6136    :서버에서 잘못된 요청을 보냈습니다
+STR_6137    :OpenRCT2 - 롤러코스터 타이쿤 2의 자유 공개 소스 복제품
+STR_6138    :OpenRCT2는 많은 분들이 참여한 작품입니다. 모든 참여자의 목록은 {OPENQUOTES}contributors.md{ENDQUOTES} 파일을 참고하세요. 더 많은 정보를 원하시면 http://github.com/OpenRCT2/OpenRCT2 를 방문해주세요.
+STR_6139    :모든 제품과 회사 이름은 해당 소유자의 것입니다. 이러한 제품이나 이름의 사용은 그러한 것들에 대한 제휴나 지지를 뜻하지 않습니다.
+STR_6140    :변경 기록...
+STR_6141    :RCT1 하단 툴바
+STR_6142    :{WINDOW_COLOUR_2}트랙 이름: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
+STR_6144    :시각적 업데이트 표시
+STR_6145    :{SMALLFONT}{BLACK}부스터 속도 제한 설정
+STR_6146    :모든 표시 가능한 트랙 조각 사용
+STR_6147    :{SMALLFONT}{BLACK}놀이기구 건설 창에서 해당 놀이기구가 지원하는 지의 여부와 관계 없이, 그 놀이기구에서 사용할 수 있는 모든 트랙 조각의 사용을 허용합니다.
+STR_6148    :마스터 서버에 접속 중...
+STR_6149    :마스터 서버에 접속할 수 없습니다
+STR_6150    :마스터 서버에서 잘못된 응답이 왔습니다 (JSON 숫자 데이터 없음)
+STR_6151    :마스터 서버가 서버 목록을 보내주지 못 했습니다
+STR_6152    :마스터 서버에서 잘못된 응답이 왔습니다 (JSON 배열 데이터 없음)
+STR_6153    :모두 받기
+STR_6154    :보안상의 이유로, 높은 권한으로 OpenRCT2를 실행하는 것을 추천하지 않습니다
+STR_6155    :KDialog나 Zenity가 모두 설치되어있지 않으니, 둘 중 하나를 설치하거나 커맨드 라인에서 설정하세요.
+STR_6156    :이미 사용 중인 이름입니다
+STR_6157    :콘솔
+STR_6158    :이 파일을 불러오지 못했습니다...{NEWLINE}호환되지 않는 RCT 클래식 버전: {COMMA16}
+STR_6159    :부드러운 최대인접 픽셀
+STR_6160    :{WINDOW_COLOUR_2}사용할 수 있는 차량: {BLACK}{STRING}
+STR_6161    :땅에 격자선 표시
+STR_6162    :회전 와일드 마우스
+STR_6163    :급격한 코너와 짧은 낙하를 지나면서 속도를 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :수직 동기화 사용
+STR_6166    :{SMALLFONT}{BLACK}게임에 표시되는 각 프레임을 모니터의 갱신 주기에 동기화하여 갈라짐 현상을 방지합니다.
+STR_6167    :{SMALLFONT}{BLACK}고급
+STR_6168    :타이틀 시퀀스
+STR_6169    :시나리오 선택
+STR_6170    :인터페이스 변경
+STR_6171    :검색
+STR_6172    :{SMALLFONT}{BLACK}검색
+STR_6173    :검색할 이름을 입력하세요:
+STR_6174    :세이브 불러오기
+STR_6175    :시나리오 불러오기
+STR_6176    :불러올 시나리오:
+STR_6177    :불러오기{MOVE_X}{87}선택된 시나리오 없음
+STR_6178    :불러오기{MOVE_X}{87}{RED}시나리오 없음
+STR_6179    :선택
+STR_6180    :선택된 시나리오 없음
+STR_6181    :{RED}시나리오 없음
+STR_6182    :따라가기{MOVE_X}{87}{STRING}
+STR_6183    :따라가기{MOVE_X}{87}선택된 스프라이트 없음
+STR_6184    :스프라이트 따라가기
+STR_6185    :스프라이트 선택
+STR_6186    :선택된 스프라이트 없음
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :구토
+STR_6189    :오리
+STR_6190    :{SMALLFONT}{BLACK}메인 타이틀 시퀀스가 활성화되어 있을 때에는 스프라이트를 선택할 수 없습니다.
+STR_6191    :지면
+STR_6192    :벽
+STR_6193    :손님 {COMMA16}명
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}손님 {COMMA16}명
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}손님 {COMMA16}명
+STR_6196    :{BLACK}연:
+STR_6197    :{BLACK}월:
+STR_6198    :{BLACK}일:
+STR_6199    :날짜 설정
+STR_6200    :날짜 초기화
+STR_6201    :{MONTH}
+STR_6202    :가상 지면 표시
+STR_6203    :{SMALLFONT}{BLACK}이 설정을 켜면, Ctrl이나 Shift 키를 누르고 있을 때 오브젝트의 수직 설치에 도움이 되는 가상 지면을 표시해줍니다.
+STR_6204    :벽돌
+STR_6205    :철
+STR_6206    :회색 절벽
+STR_6207    :노란 절벽
+STR_6208    :빨간 절벽
+STR_6209    :보라색 절벽
+STR_6210    :초록색 절벽
+STR_6211    :갈색 사암
+STR_6212    :회색 사암
+STR_6213    :마천루 A
+STR_6214    :마천루 B
+STR_6215    :건설
+STR_6216    :운영 및 운행
+STR_6217    :놀이기구 / 트랙 관련 기능
+STR_6218    :OpenRCT2 공식
+STR_6219    :보도 관련 문제 하이라이트
+STR_6220    :실제 출입구 위치 지정
+STR_6221    :{SMALLFONT}{BLACK}이 버튼을 누르면 놀이기구의 출입구 위치가 현재 선택된 칸으로 인식되도록 만듭니다. 한 정거장에는 반드시 하나의 출입구 위치만을 지정해야 합니다.
+STR_6222    :손님 생성 위치를 여기로 지정할 수 없습니다...
+STR_6223    :공원 경계선 밖에 있어야 합니다!
+STR_6224    :{STRING}, 손님 생성 위치 지정
+STR_6225    :OpenGL 렌더러에서는 미리보기 불가
+STR_6226    :시나리오 조기 클리어 활성화
+STR_6227    :{SMALLFONT}{BLACK}주어진 기간이 되기 전에 모든 시나리오 목표가 달성되면 시나리오를 조기에 클리어합니다.
+STR_6228    :시나리오 설정
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :얼리기
+STR_6233    :특정 높이 잘라 보기
+STR_6234    :보도 관련 문제 하이라이트
+STR_6235    :서버 정보
+STR_6236    :플레이어
+STR_6237    :그룹
+STR_6238    :멀티플레이 설정
+STR_6239    :높이 잘라보기
+STR_6240    :영역 잘라보기
+STR_6241    :영역 선택
+STR_6242    :선택 초기화
+STR_6243    :{SMALLFONT}{BLACK}놀이기구를 재단장하여{NEWLINE}새 놀이기구로 만듭니다.
+STR_6244    :놀이기구를 재단장할 수 없습니다...
+STR_6245    :{SMALLFONT}{BLACK}재단장할 필요가 없는 놀이기구입니다
+STR_6246    :재단장
+STR_6247    :놀이기구 재단장
+STR_6248    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 {CURRENCY}에 재단장하시겠습니까?
+STR_6249    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 재단장하시겠습니까?
+STR_6250    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 완전히 파괴하고 {CURRENCY}만큼을 회수하시겠습니까?
+STR_6251    :놀이기구에 아직 손님이 남아있습니다
+STR_6252    :트위치 API URL
+STR_6253    :{SMALLFONT}{BLACK}트위치 통합 API의 URL을 지정합니다. 트위치 통합 기능을 사용하려면 이 항목을 입력해야 합니다.
+STR_6254    :트위치 통합 API의 URL:
+STR_6255    :URL이 올바르지 않습니다
+STR_6256    :렌더링 효과
+STR_6257    :반투명하게
+STR_6258    :투명하게
+STR_6259    :끄기
+STR_6260    :차단된 칸 표시
+STR_6261    :넓은 보도 표시
+
 
 #############
 # Scenarios #
@@ -4340,12 +4618,12 @@ STR_DTLS    :몇 개의 놀이기구와 확장할 공간이 있는 작은 놀이
 <Pokey Park>
 STR_SCNR    :Pokey Park
 STR_PARK    :비좁은 공원
-STR_DTLS    :대대적인 확장을 해야하는 비좁은 놀이공원
+STR_DTLS    :대대적인 확장을 해야하는 비좁은 놀이공원입니다.
 
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :맑은 물 공원
-STR_DTLS    :훌륭한 물 놀이기구를 몇 개 갖고있지만 확장이 필요한 공원
+STR_DTLS    :훌륭한 물 놀이기구를 몇 개 갖고있지만 확장이 필요한 공원입니다.
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
@@ -4355,7 +4633,7 @@ STR_DTLS    :버려져있는 커다란 탄광을 관광시설에서 놀이공원
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :카트 & 코스터
-STR_DTLS    :몇 개의 고 카트 트랙과 우든 롤러코스터만이 숲 속에 숨겨져 있는 대형 놀이공원
+STR_DTLS    :몇 개의 고 카트 트랙과 우든 롤러코스터만이 숲 속에 숨겨져 있는 대형 놀이공원입니다.
 
 <Mel's World>
 STR_SCNR    :Mel's World
@@ -4390,7 +4668,7 @@ STR_DTLS    :번개치는 산꼭대기의 아름다운 산은 경치를 즐기�
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
 STR_PARK    :상아 탑
-STR_DTLS    :문제가 몇 가지 있지만 잘 구성된 공원
+STR_DTLS    :문제가 몇 가지 있지만 잘 구성된 공원입니다.
 
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
@@ -4441,17 +4719,17 @@ STR_DTLS    :지역 당국은 특정 놀이기구는 파괴할 수 없다는 조
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :즐거운 요새
-STR_DTLS    :이 성은 놀이공원으로 탈바꿈하기 위해 온전히 당신의 소유가 되었습니다.
+STR_DTLS    :이 성은 이제 당신의 소유입니다. 이 성을 놀이공원으로 바꾸어보세요.
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :미래 세계
-STR_DTLS    :이 미래지향적인 공원에는 새로운 놀이기구를 그 외계 지형 위에 지을 많은 공간이 있습니다.
+STR_DTLS    :이 미래지향적인 공원에는 새로운 놀이기구를 그 외계 지형 위에 지을 넓은 공간이 있습니다.
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :얌전한 골짜기
-STR_DTLS    :이 지역의 주민들은 격렬하지 않고 얌전한 놀이기구를 선호하기 때문에 이 공원을 그들의 취향에 맞게 확장하는 것이 여러분의 임무입니다.
+STR_DTLS    :이 지역의 주민들은 격렬하지 않고 얌전한 놀이기구를 선호하기 때문에 이 공원을 그들의 취향에 맞게 확장해보세요.
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
@@ -4491,7 +4769,7 @@ STR_DTLS    :광대한 협곡을 테마파크로 개발할 수 있습니다.
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :폭풍우 공원
-STR_DTLS    :날씨가 너무 습해서 거대한 피라미드를 짓고 몇몇 놀이기구를 그 밑에 두기로 했습니다.
+STR_DTLS    :날씨가 너무 습해서 거대한 피라미드를 짓고 몇몇 놀이기구를 그 속에 두기로 했습니다.
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
@@ -4556,7 +4834,7 @@ STR_DTLS    :이 작은 공원은 이 도시뿐만 아니라 근교 도시의 �
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :제프리의 정원
-STR_DTLS    :대규모의 정원 공원을 북적이는 놀이공원으로 바꿔해야 합니다.
+STR_DTLS    :대규모의 정원 공원을 북적이는 놀이공원으로 바꿔야 합니다.
 
 
 ## Loopy Landscapes
@@ -4583,7 +4861,7 @@ STR_DTLS    :여러분의 임무는 날카로운 바위 사이에 롤러코스�
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :분화구 호수
-STR_DTLS    :이 공원의 부지는 고대 분화구에 만들어진긴 커다란 호수입니다.
+STR_DTLS    :이 공원의 부지는 고대 분화구에 만들어진 커다란 호수입니다.
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
@@ -4724,7 +5002,7 @@ STR_DTLS    :
 
 <Blackpool Pleasure Beach>
 STR_SCNR    :Blackpool Pleasure Beach
-STR_PARK    :블랙풀 플레져 비치
+STR_PARK    :블랙풀 플레저 비치
 STR_DTLS    :
 
 ## Misc parks from RCT1
@@ -4733,6659 +5011,6 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :역사적인 성채
 STR_DTLS    :
-
-###############################################################################
-## RCT2 Objects
-###############################################################################
-[AML1]
-STR_NAME    :미국 스타일 증기 기관차
-STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기 기관차 모형으로 이루어진 모형 증기 기관차 차량
-STR_CPTY    :차량당 6명의 승객
-
-[CLIFT1]
-STR_NAME    :체어 리프트 차량
-STR_DESC    :체어 리프트를 위한 개방형 차량
-STR_CPTY    :차량당 2명의 승객
-
-[CLIFT2]
-STR_NAME    :스키 리프트 의자
-STR_DESC    :체어 리프트를 위한 개방형 차량
-STR_CPTY    :차량당 2명의 승객
-
-[LIFT1]
-STR_NAME    :엘리베이터
-STR_DESC    :손님들이 엘리베이터에 타서 수직 탑을 따라 위나 아래 층으로 이동하는 놀이기구
-STR_CPTY    :승객 16명
-
-[MONO1]
-STR_NAME    :유선형 모노레일 차량
-STR_DESC    :유선형의 전두부와 후두부 차량을 가진 대용량의 모노레일 차량
-STR_CPTY    :차량당 5명 또는 10명의 승객
-
-[MONO2]
-STR_NAME    :소형 모노레일 차량
-STR_DESC    :측면이 개방되어 있는 소형 모노레일 차량
-STR_CPTY    :차량당 4명의 승객
-
-[MONO3]
-STR_NAME    :복고풍 모노레일 차량
-STR_DESC    :개방형 객차를 가진 모노레일 차량
-STR_CPTY    :차량당 4명의 승객
-
-[NRL]
-STR_NAME    :증기 기관차
-STR_DESC    :나무 객차와 증기 기관차 모형으로 이루어진 모형 증기 기관차 차량
-STR_CPTY    :객차당 6명의 승객
-
-[NRL2]
-STR_NAME    :천장이 있는 증기 기관차
-STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기 기관차 모형으로 이루어진 모형 증기 기관차 차량
-STR_CPTY    :객차당 6명의 승객
-
-[SMONO]
-STR_NAME    :서스펜디드 모노레일 차량
-STR_DESC    :대용량의 모노레일 차량
-STR_CPTY    :차량당 8명의 승객
-
-[TRAM1]
-STR_NAME    :전차
-STR_DESC    :옛날 스타일의 전차 모형
-STR_CPTY    :차량당 10명의 승객
-
-[4X4]
-STR_NAME    :몬스터 트럭
-STR_DESC    :급경사를 오를 수 있는 초대형 4 x 4 트럭
-STR_CPTY    :트럭당 2명의 승객
-
-[CHBUILD]
-STR_NAME    :비뚤어진 집
-STR_DESC    :사람들이 비뚤어진 방과 각진 복도를 통과하면서 방향을 헷갈리게 만드는 건물
-STR_CPTY    :손님 5명
-
-[CIRCUS1]
-STR_NAME    :서커스
-STR_DESC    :안에서 서커스 동물 쇼를 진행하는 커다란 텐트
-STR_CPTY    :손님 30명
-
-[CTCAR]
-STR_NAME    :체셔 고양이
-STR_DESC    :트랙을 따라 이동하는 고양이 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[DODG1]
-STR_NAME    :범퍼카
-STR_DESC    :스스로 운전하는 전기 범퍼카 차량
-STR_CPTY    :차량당 1명의 손님
-
-[FSAUC]
-STR_NAME    :비행 접시
-STR_DESC    :스스로 운전하는 호버크래프트 차량
-STR_CPTY    :차량당 1명의 손님
-
-[FWH1]
-STR_NAME    :관람차
-STR_DESC    :개방형 의자를 가진 대형 회전 관람차
-STR_CPTY    :승객 32명
-
-[GOLF1]
-STR_NAME    :미니 골프
-STR_DESC    :모형 골프 게임
-STR_CPTY    :
-
-[GTC]
-STR_NAME    :고스트 트레인
-STR_DESC    :으스스한 풍경과 특별한 효과 주변을 지나며 여러 높낮이를 오르내리는 괴물 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[HELICAR]
-STR_NAME    :미니 헬리콥터
-STR_DESC    :탑승자가 페달을 밟아서 철제 트랙을 따라 움직이는 헬리콥터 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[HHBUILD]
-STR_NAME    :귀신의 집
-STR_DESC    :무서운 복도와 으스스한 방이 있는 대형 테마 건물
-STR_CPTY    :손님 15명
-
-[HMAZE]
-STR_NAME    :미로
-STR_DESC    :1.8m 높이의 울타리나 벽으로 구성되어 있고, 손님들이 출구를 찾을 때까지 돌아다녀야 하는 미로
-STR_CPTY    :
-
-[HMCAR]
-STR_NAME    :귀신의 집 차량
-STR_DESC    :으스스한 풍경과 특별한 효과 주변을 지나며 여러 높낮이를 오르내리는 괴물 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[HSKELT]
-STR_NAME    :나선 미끄럼틀
-STR_DESC    :내부의 계단을 타고 올라가서 외부의 나선형 미끄럼틀을 매트를 타고 내려오는 목재 건물
-STR_CPTY    :
-
-[MGR1]
-STR_NAME    :회전목마
-STR_DESC    :나무로 조각된 말이 있는 전통적인 회전 목마
-STR_CPTY    :승객 16명
-
-[MONBK]
-STR_NAME    :모노레일 자전거
-STR_DESC    :탑승자가 직접 페달을 밟으면 강철 모노레일 트랙 위를 움직이는 특별한 자전거
-STR_CPTY    :자전거 당 1명의 탑승객
-
-[OBS1]
-STR_NAME    :전망탑
-STR_DESC    :높은 탑을 따라 올라가면서 회전하는 전망대 객실
-STR_CPTY    :승객 20명
-
-[OBS2]
-STR_NAME    :2층 전망탑
-STR_DESC    :높은 탑을 따라 올라가면서 회전하는 2층 전망대 객실
-STR_CPTY    :승객 32명
-
-[RCR]
-STR_NAME    :레이싱 카
-STR_DESC    :레이싱 카 모양의 차량
-STR_CPTY    :차량당 승객 1명
-
-[SPCAR]
-STR_NAME    :스포츠 카
-STR_DESC    :스포츠 카 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[SRINGS]
-STR_NAME    :스페이스 링
-STR_DESC    :동심원 모양의 고리가 탑승자를 어느 방향이든 회전시킬 수 있는 놀이기구
-STR_CPTY    :각 1명
-
-[SUBMAR]
-STR_NAME    :잠수함
-STR_DESC    :수면 아래 코스를 이동하는 잠수함에 탑승하는 놀이기구
-STR_CPTY    :잠수함당 4명의 승객
-
-[TRUCK1]
-STR_NAME    :소형 트럭
-STR_DESC    :소형 트럭 모양의 차량
-STR_CPTY    :트럭당 승객 1명
-
-[VCR]
-STR_NAME    :빈티지 차량
-STR_DESC    :트랙을 따라 이동하는 빈티지 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[AMT1]
-STR_NAME    :탄광 열차 코스터
-STR_DESC    :오래된 선로 트랙처럼 보이지만 튼튼한 강철로 만든 롤러코스터 트랙을 따라 달리는, 광산 차량을 테마로 한 롤러코스터 차량
-STR_CPTY    :차량당 2명 또는 4명의 승객
-
-[ARRSW1]
-STR_NAME    :서스펜디드 스윙잉 차량
-STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 서스펜디드 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[ARRSW2]
-STR_NAME    :서스펜디드 스윙잉 에어로플레인 차량
-STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 비행기 모양의 서스펜디드 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[ARRT1]
-STR_NAME    :나선 롤러코스터
-STR_DESC    :나선 모양 트랙과 루프를 도는 구성을 지닌 강철 트랙의 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[ARRT2]
-STR_NAME    :하이퍼코스터
-STR_DESC    :무릎 안전바만 채운 채로, 뒤집어지지는 않지만 큰 낙하와 빠른 속도, 편안한 승차감을 자랑하는 롤러코스터
-STR_CPTY    :차량당 6명의 승객
-
-[ARRX]
-STR_NAME    :멀티 디멘션 코스터 차량
-STR_DESC    :탑승객의 머리와 발을 뒤집어버리는 등의 회전 좌석을 가진 차량
-STR_CPTY    :차량당 4명의 승객
-
-[BATFL]
-STR_NAME    :스윙잉 차량
-STR_DESC    :레일을 따라 흔들거리는 작은 차량
-STR_CPTY    :차량당 2명의 승객
-
-[BMAIR]
-STR_NAME    :플라잉 롤러코스터
-STR_DESC    :탑승객에게 정말로 나는 듯한 경험을 주기 위해, 트랙 밑에 달린 편안한 좌석에 앉아서 꼬여있는 트랙을 따라 움직이는 놀이기구
-STR_CPTY    :차량당 4명의 승객
-
-[BMFL]
-STR_NAME    :플로어리스 롤러 코스터
-STR_DESC    :꼬여있는 트랙과 여러 전이를 미끄러지듯 통과하면서 승객들에게 광활한 허공을 느끼게 해주는, 바닥이 없는 넓은 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[BMRB]
-STR_NAME    :하이퍼 트위스터 차량 (광폭형)
-STR_DESC    :향상된 탑승감과 간단한 무릎 안전바를 갖고 있는 넓은 4인승 차량
-STR_CPTY    :차량당 4명의 승객
-
-[BMSD]
-STR_NAME    :트위스터 롤러코스터
-STR_DESC    :여러 종류의 루프를 돌면서 부드러운 강철 트랙을 달리는 넓은 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[BMSU]
-STR_NAME    :스탠드 업 트위스터 코스터
-STR_DESC    :탑승자들이 선 자세로 낙하와 여러 특수 트랙을 즐길 수 있도록 특수하게 디자인된 안전바가 있는 넓은 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[BMVD]
-STR_NAME    :수직 낙하 롤러코스터
-STR_DESC    :자유 낙하의 극한 경험을 선사하기 위해 완전히 수직 경사 트랙을 따라 하강하는 아주 폭이 넓은 차량
-STR_CPTY    :차량당 6명의 승객
-
-[BOB1]
-STR_NAME    :봅슬레이 코스터
-STR_DESC    :반원형 트랙의 커브와 뱅킹만을 따라 이동하는 봅슬레이 모양의 차량을 타고 이리 저리 꼬여있는 트랙을 따라 내려오는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[GOLTR]
-STR_NAME    :하이퍼 트위스터 차량
-STR_DESC    :간단한 무릎 안전바를 가진 널찍한 차량
-STR_CPTY    :차량당 6명의 승객
-
-[INTBOB]
-STR_NAME    :플라잉 턴
-STR_DESC    :반원형 트랙의 커브와 뱅킹만을 따라 이동하는 봅슬레이 모양의 차량을 타고 이리 저리 꼬여있는 트랙을 따라 내려오는 놀이기구
-STR_CPTY    :차량당 6명의 승객
-
-[INTINV]
-STR_NAME    :인버티드 임펄스 코스터
-STR_DESC    :수직으로 솟은 트랙을 오르기 위해 역에서 급가속한 뒤, 다시 역방향으로 되돌아와 역을 통과해서 뒷쪽의 또다른 수직 트랙을 올라가는 인버티드 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[INTST]
-STR_NAME    :기가 코스터
-STR_DESC    :90m 이상의 부드러운 낙하와 상승이 가능한 거대한 강철 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[IVMC1]
-STR_NAME    :인버티드 헤어핀 코스터
-STR_DESC    :급회전과 급경사를 가진 지그재그 모양의 트랙 아래를 달리는 개별 차량
-STR_CPTY    :차량당 4명의 승객
-
-[JSTAR1]
-STR_NAME    :터보건 썰매 차량
-STR_DESC    :한 줄로 탑승하는 터보건 썰매 모양의 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[MFT]
-STR_NAME    :연결식 롤러코스터 차량
-STR_DESC    :하나의 열로 된 짧은 차량과 개방된 전면부를 가진 롤러코스터 차량
-STR_CPTY    :차량당 2명의 승객
-
-[NEMT]
-STR_NAME    :인버티드 롤러코스터
-STR_DESC    :거대한 루프, 트위스트와 급격한 낙하 트랙을 따라 이동하며, 탑승객이 트랙 아래에 매달린 좌석에 앉는 차량
-STR_CPTY    :차량당 4명의 승객
-
-[PMT1]
-STR_NAME    :탄광 차량
-STR_DESC    :부드럽게 꼬인 트랙 구조를 따라 달리는 탄광 차량
-STR_CPTY    :차량당 2명 또는 4명의 승객
-
-[PREMT1]
-STR_NAME    :LIM 발진 롤러코스터
-STR_DESC    :역에서 선형 유도 모터에 의해 가속되어 꼬여있는 트랙을 빠른 속도로 통과하는 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[PTCT1]
-STR_NAME    :우든 롤러코스터 차량
-STR_DESC    :푹신한 좌석과 무릎 안전바가 있는 나무 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[PTCT2]
-STR_NAME    :우든 롤러코스터 차량 (6인승)
-STR_DESC    :푹신한 좌석과 무릎 안전바가 있는 나무 롤러코스터 차량
-STR_CPTY    :차량당 6명의 승객
-
-[PTCT2R]
-STR_NAME    :우든 롤러코스터 차량 (6인승, 역방향)
-STR_DESC    :푹신한 좌석과 무릎 안전바가 있고, 뒤쪽을 본 채로 앉아서 달리는 나무 롤러코스터 차량
-STR_CPTY    :차량당 6명의 승객
-
-[RCKC]
-STR_NAME    :로켓 차량
-STR_DESC    :로켓처럼 꾸며져 있는 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[REVCAR]
-STR_NAME    :반전 롤러코스터
-STR_DESC    :특수한 반전 섹션 위에서 앞뒤가 뒤집히는 나무 트랙 위를 운행하는 불안한 차량
-STR_CPTY    :차량당 6명의 승객
-
-[REVF1]
-STR_NAME    :역방향 자유낙하 차량
-STR_DESC    :역방향 자유낙하 코스터를 위한 대형 코스터 차량
-STR_CPTY    :승객 8명
-
-[SBOX]
-STR_NAME    :조립 경주차 경주 레이서
-STR_DESC    :하나의 레일로 이루어진 롤러코스터 트랙을 이동하는 조립 경주차 모양의 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SCHT1]
-STR_NAME    :롤러코스터 차량
-STR_DESC    :무릎 안전바가 있으며 수직 루프를 돌 수 있는 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SFRIC1]
-STR_NAME    :우든 사이드 프릭션 차량
-STR_DESC    :사이드 프릭션 롤러코스터를 위한 기본 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SKYTR]
-STR_NAME    :미니 서스펜디드 플라잉 코스터
-STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 특수 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
-STR_CPTY    :차량당 승객 1명
-
-[SLCFO]
-STR_NAME    :인버티드 셔틀 코스터
-STR_DESC    :앞쪽이나 뒤쪽을 보고 2명씩 마주보고 짝지어 앉아 루프와 트위스트와 급격한 전이 트랙을 지나는 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SLCT]
-STR_NAME    :컴팩트 인버티드 코스터
-STR_DESC    :트랙 밑에 매달린 좌석에 2명씩 마주보고 짝지어 앉아 루프와 트위스트와 급격한 전이 트랙을 지나는 차량
-STR_CPTY    :차량당 2명의 승객
-
-[SMC1]
-STR_NAME    :쥐 차량
-STR_DESC    :쥐처럼 생긴 개별 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SMC2]
-STR_NAME    :탄광 차량
-STR_DESC    :나무 탄광 트럭처럼 생긴 개별 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SPDRCR]
-STR_NAME    :스파이럴 롤러코스터
-STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
-STR_CPTY    :차량당 6명의 승객
-
-[STEEP1]
-STR_NAME    :스티플체이스
-STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 말 모양의 차량에 탑승하는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[STEEP2]
-STR_NAME    :모터바이크 레이스
-STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 오토바이 모양의 차량에 탑승하는 놀이기구
-STR_CPTY    :자전거당 2명의 승객
-
-[THCAR]
-STR_NAME    :에어 파워드 버티컬 코스터
-STR_DESC    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착하는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[TOGST]
-STR_NAME    :스탠드 업 롤러코스터
-STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[UTCAR]
-STR_NAME    :트위스터 차량
-STR_DESC    :하트라인 트위스트에 적합한 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[UTCARR]
-STR_NAME    :트위스터 차량 (역방향)
-STR_DESC    :하트라인 트위스트에 적합한 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[VEKDV]
-STR_NAME    :인버티드 버티컬 셔틀
-STR_DESC    :트랙 밑에 매달린 차량에 앉아서, 수직 트랙을 따라 뒤쪽 방향으로 올라간 다음 루프와 트위스트를 향해 낙하하는 놀이기구
-STR_CPTY    :차량당 4명의 승객
-
-[VEKST]
-STR_NAME    :레이 다운 롤러코스터
-STR_DESC    :누운 자세로 탑승하는 특수 차량에 탑승하여 꼬인 트랙과 전이를 앞이나 뒤로 누운 자세로 즐기는 놀이기구
-STR_CPTY    :차량당 4명의 승객
-
-[VEKVAMP]
-STR_NAME    :스윙잉 플로어리스 차량
-STR_DESC    :코너를 돌면 차량이 자유롭게 흔들리고, 체어 리프트 스타일의 좌석이 있는 매달린 롤러코스터 차량
-STR_CPTY    :차량당 2명의 승객
-
-[VREEL]
-STR_NAME    :버지니아 릴
-STR_DESC    :나무 트랙을 이리 저리 따라 이동함에 따라 빙글빙글 돌아가는 원형 차량
-STR_CPTY    :차량당 4명의 승객
-
-[WCATC]
-STR_NAME    :자동차 차량
-STR_DESC    :자동차 모양의 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[WMMINE]
-STR_NAME    :우든 와일드 광산 차량
-STR_DESC    :지그재그 모양의 나무 트랙을 달리면서 급격한 커브와 낙하를 통과하면 트랙을 벗어날 듯 위태롭게 기울어지는 작은 광산 트럭.
-STR_CPTY    :차량당 2명의 승객
-
-[WMOUSE]
-STR_NAME    :우든 와일드 마우스
-STR_DESC    :나무 트랙 위를 달리면서 급격한 헤어핀 코너와 급등·급락을 지나면서 트랙을 벗어날 듯 위태롭게 기울어지는 작은 쥐 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[WMSPIN]
-STR_NAME    :회전 와일드 마우스
-STR_DESC    :급격한 코너와 짧은 낙하를 지나면서 속도를 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
-STR_CPTY    :차량당 4명의 승객
-
-[ZLDB]
-STR_NAME    :무당벌레 차량
-STR_DESC    :작은 무당벌레 모양의 롤러코스터 차량
-STR_CPTY    :차량당 2명의 승객
-
-[ZLOG]
-STR_NAME    :통나무 차량
-STR_DESC    :작은 통나무 모양의 롤러코스터 차량
-STR_CPTY    :차량당 2명의 승객
-
-[C3D]
-STR_NAME    :3D 영화관
-STR_DESC    :둥근 구 모양의 건물 안에서 3D 영화를 상영하는 영화관
-STR_CPTY    :손님 20명
-
-[ENTERP]
-STR_NAME    :엔터프라이즈
-STR_DESC    :원형 놀이기구에 매달린 객실에 탑승하면 처음에 회전하기 시작하여 이후에 지지대에 의해 기울어진 채로 회전하는 놀이기구
-STR_CPTY    :승객 16명
-
-[GDROP1]
-STR_NAME    :자이로드롭
-STR_DESC    :고리 모양의 좌석이 부드럽게 회전하면서 탑 꼭대기로 들어올려진 뒤에 자유낙하하고, 자기 제동에 의해 바닥에 부드럽게 정지하는 놀이기구
-STR_CPTY    :승객 16명
-
-[KART1]
-STR_NAME    :고 카트
-STR_DESC    :스스로 운전하는 페트롤 엔진의 고 카트
-STR_CPTY    :1인승
-
-[MCARPET1]
-STR_NAME    :마법의 양탄자
-STR_DESC    :양쪽 끝에 있는 4개의 관절 구조에 의해 원형으로 오르락 내리락하는 커다란 마법 양탄자 테마의 차량
-STR_CPTY    :승객 12명
-
-[SIMPOD]
-STR_NAME    :모션 시뮬레이터
-STR_DESC    :수압식 관절에 의해 흔들리고 움직이는 모션 시뮬레이터 안에서 영화를 보는 놀이기구
-STR_CPTY    :승객 8명
-
-[SSC1]
-STR_NAME    :런치드 프리폴
-STR_DESC    :압축 공기에 의해 높은 철제 탑을 향해 쏘아올려진 다음 자유 낙하하는 자유 낙하 차량
-STR_CPTY    :승객 8명
-
-[SWSH1]
-STR_NAME    :바이킹
-STR_DESC    :흔들리는 거대한 해적선
-STR_CPTY    :승객 16명
-
-[SWSH2]
-STR_NAME    :360도 바이킹
-STR_DESC    :반대편에 균형추가 있는 지지대에 달려있어 완전히 360도로 회전하는 배 모양의 놀이기구
-STR_CPTY    :승객 12명
-
-[TOPSP1]
-STR_NAME    :톱 스핀
-STR_DESC    :대형 회전 팔 구조에 매달려있고 앞뒤로 공중제비를 도는 곤돌라에 탑승하는 놀이기구
-STR_CPTY    :승객 8명
-
-[TWIST1]
-STR_NAME    :트위스트
-STR_DESC    :탑승객이 세 개의 긴 회전 팔 구조 끝에 있는 좌석에 짝지어 앉아 빙글빙글 도는 놀이기구
-STR_CPTY    :승객 18명
-
-[TWIST2]
-STR_NAME    :스노우 컵
-STR_DESC    :탑승객이 짝지어 좌석에 앉아 눈사람을 기준으로 빙글빙글 도는 놀이기구
-STR_CPTY    :승객 18명
-
-[BBOAT]
-STR_NAME    :범퍼 보트
-STR_DESC    :중앙 모터에 의해 움직이며 탑승객이 조종할 수 있는 원형의 작은 보트
-STR_CPTY    :보트당 2명의 승객
-
-[CBOAT]
-STR_NAME    :카누
-STR_DESC    :탑승객이 스스로 페달을 밟는 긴 카누
-STR_CPTY    :카누당 2명의 승객
-
-[CSTBOAT]
-STR_NAME    :코스터 보트
-STR_DESC    :보트 모양의 롤러코스터 차량
-STR_CPTY    :보트당 6명의 승객
-
-[DING1]
-STR_NAME    :보트 슬라이드
-STR_DESC    :반원형 또는 밀폐형 원형 튜브 트랙을 따라 이동하는 공기 주입식 고무 보트
-STR_CPTY    :보트당 2명의 승객
-
-[JSKI]
-STR_NAME    :제트 스키
-STR_DESC    :탑승객이 스스로 운전할 수 있는 단일 좌석의 제트 스키
-STR_CPTY    :차량당 1명의 탑승자
-
-[LFB1]
-STR_NAME    :통나무 수로
-STR_DESC    :수로를 따라 이동하다가 긴 낙하를 지나며 물을 튀겨 탑승객을 홀딱 젖게 만드는 통나무 모양의 보트
-STR_CPTY    :보트당 4명의 승객
-
-[RAPBOAT]
-STR_NAME    :리버 래피드
-STR_DESC    :구불구불한 광폭형 수로를 따라 이동하다가 폭포를 통과하면서 탑승객을 젖게 만들고, 거품 급류를 지나며 스릴을 선사하는 원형 보트
-STR_CPTY    :보트당 8명의 승객
-
-[RBOAT]
-STR_NAME    :보트 대여
-STR_DESC    :탑승객들이 스스로 노를 저을 수 있는 보트
-STR_CPTY    :보트당 2명의 승객
-
-[RFTBOAT]
-STR_NAME    :리버 래프트
-STR_DESC    :구불구불한 강 모양의 트랙을 따라 얌전히 이동하는 뗏목 모양의 보트
-STR_CPTY    :래프트당 4명의 승객
-
-[SPBOAT]
-STR_NAME    :스플래시 보트
-STR_DESC    :광폭형 수로를 따라 이동하며 컨베이어 벨트로 경사를 오른 다음, 급경사로 가속하여 탑승객을 커다란 물보라로 홀딱 젖게 만드는 대용량의 보트
-STR_CPTY    :보트당 16명의 승객
-
-[SWANS]
-STR_NAME    :백조 보트
-STR_DESC    :앞쪽 좌석의 탑승객이 페달을 직접 밟아 움직이는 백조 모양의 보트
-STR_CPTY    :보트당 4명의 승객
-
-[TRIKE]
-STR_NAME    :수중 세발자전거
-STR_DESC    :물에 뜨는 바퀴를 가진 페달 달린 세발자전거
-STR_CPTY    :세발자전거당 2명의 승객
-
-[ATM1]
-STR_NAME    :ATM 기기
-STR_DESC    :손님들이 가진 돈이 떨어졌을 때 돈을 찾을 수 있는 ATM 기기
-
-[BALLN]
-STR_NAME    :풍선 가게
-STR_DESC    :헬륨이 든 풍선을 파는 기념품 가게
-
-[BNOODLES]
-STR_NAME    :고기 국수 가게
-STR_DESC    :중국식 고기 국수를 파는 가게
-
-[BURGB]
-STR_NAME    :햄버거 가게
-STR_DESC    :햄버거를 파는 햄버거 모양의 건물
-
-[CHCKS]
-STR_NAME    :프라이드 치킨 가게
-STR_DESC    :프라이드 치킨 한 통을 파는 가게
-
-[CHKNUG]
-STR_NAME    :치킨 너겟 가게
-STR_DESC    :프라이드 치킨 너겟을 파는 가게
-
-[CHPSH]
-STR_NAME    :감자칩 가게
-STR_DESC    :감자칩을 파는 가게
-
-[CHPSH2]
-STR_NAME    :감자튀김 가게
-STR_DESC    :감자튀김을 파는 가게
-
-[CINDR]
-STR_NAME    :수정과 가게
-STR_DESC    :한국식 수정과를 파는 가게
-
-[CNDYF]
-STR_NAME    :솜사탕 가게
-STR_DESC    :분홍색 솜사탕을 파는 솜사탕 모양의 건물
-
-[COFFS]
-STR_NAME    :커피 가게
-STR_DESC    :커피 한 잔을 파는 예술적인 모습의 상점
-
-[COOKST]
-STR_NAME    :쿠키 가게
-STR_DESC    :커다란 쿠키를 파는 가게
-
-[DOUGH]
-STR_NAME    :도넛 가게
-STR_DESC    :도넛을 파는 가게
-
-[DRNKS]
-STR_NAME    :음료수 가게
-STR_DESC    :탄산음료를 파는 캔 모양의 상점
-
-[FAID1]
-STR_NAME    :응급 치료소
-STR_DESC    :속이 메스꺼운 손님들이 빨리 회복할 수 있는 장소
-
-[FRNOOD]
-STR_NAME    :튀김 쌀국수 가게
-STR_DESC    :중국식 튀김 쌀국수를 파는 가게
-
-[FUNCAKE]
-STR_NAME    :휜넬 케이크 가게
-STR_DESC    :휜넬 케이크를 파는 가게
-
-[HATST]
-STR_NAME    :모자 가게
-STR_DESC    :품이 큰 모자를 파는 기념품 가게
-
-[HCHOC]
-STR_NAME    :핫초코 가게
-STR_DESC    :핫초코 음료를 파는 가게
-
-[HOTDS]
-STR_NAME    :핫도그 가게
-STR_DESC    :핫도그를 파는 가게
-
-[ICECR1]
-STR_NAME    :과일 아이스크림 가게
-STR_DESC    :과일 아이스크림을 파는 가게
-
-[ICECR2]
-STR_NAME    :아이스크림 콘 가게
-STR_DESC    :아이스크림 콘을 파는 가게
-
-[ICETST]
-STR_NAME    :아이스티 가게
-STR_DESC    :아이스티 음료를 파는 가게
-
-[INFOK]
-STR_NAME    :안내소
-STR_DESC    :손님들이 공원 지도를 얻거나 우산을 살 수 있는 상점
-
-[LEMST]
-STR_NAME    :레모네이드 가게
-STR_DESC    :신선한 레모네이드 음료를 파는 가게
-
-[MBSOUP]
-STR_NAME    :고기 완자탕 가게
-STR_DESC    :중국식 고기 완자탕을 파는 가게
-
-[PIZZS]
-STR_NAME    :피자 가게
-STR_DESC    :피자 조각을 파는 가게
-
-[POPCS]
-STR_NAME    :팝콘 가게
-STR_DESC    :팝콘 한 바구니를 가득 채워 파는 가게
-
-[PRETST]
-STR_NAME    :프레첼 가게
-STR_DESC    :바삭한 프레첼을 파는 가게
-
-[RSAUS]
-STR_NAME    :구운 소시지 가게
-STR_DESC    :중국식 구운 소시지를 파는 가게
-
-[SOUVS]
-STR_NAME    :기념품 상점
-STR_DESC    :귀여운 장난감 기념품과 우산을 파는 가게
-
-[SOYBEAN]
-STR_NAME    :두유 가게
-STR_DESC    :두유 곽을 파는 가게
-
-[SQDST]
-STR_NAME    :해산물 가게
-STR_DESC    :구운 문어 다리를 파는 가게
-
-[STARFRDR]
-STR_NAME    :스타프루트 음료 가게
-STR_DESC    :스타푸르트 음료를 파는 가게
-
-[SUBSTL]
-STR_NAME    :샌드위치 가게
-STR_DESC    :신선한 서브마린 샌드위치를 파는 가게
-
-[SUNGST]
-STR_NAME    :선글라스 가게
-STR_DESC    :다양한 종류의 선글라스를 파는 가게
-
-[TLT1]
-STR_NAME    :화장실
-STR_DESC    :조립식 콘크리트 건물 안에 있는 기본형 화장실
-
-[TLT2]
-STR_NAME    :화장실
-STR_DESC    :통나무 객실 형 건물 안에 있는 화장실
-
-[TOFFS]
-STR_NAME    :사과 토피 사탕 가게
-STR_DESC    :사과 토피 사탕을 막대기에 꽂아 파는 사과 모양의 가게
-
-[TSHRT]
-STR_NAME    :티셔츠 가게
-STR_DESC    :티셔츠 기념품을 판매하는 가게
-
-[WONTON]
-STR_NAME    :만둣국 가게
-STR_DESC    :만둣국을 파는 가게
-
-[ALLSORT1]
-STR_NAME    :사탕
-
-[ALLSORT2]
-STR_NAME    :사탕
-
-[BADSHUT]
-STR_NAME    :셔틀콕
-
-[BADSHUT2]
-STR_NAME    :셔틀콕
-
-[BALL1]
-STR_NAME    :미식축구
-
-[BALL2]
-STR_NAME    :미식축구
-
-[BALL3]
-STR_NAME    :축구
-
-[BALL4]
-STR_NAME    :테니스 공
-
-[BEANST1]
-STR_NAME    :대형 강낭콩 줄기
-
-[BEANST2]
-STR_NAME    :대형 강낭콩 줄기
-
-[BRBASE]
-STR_NAME    :기본 블록
-
-[BRBASE2]
-STR_NAME    :기본 블록
-
-[BRBASE3]
-STR_NAME    :기본 블록
-
-[BRCRRF1]
-STR_NAME    :곡선형 지붕
-
-[BRCRRF2]
-STR_NAME    :곡선형 지붕
-
-[CARROT]
-STR_NAME    :대형 당근
-
-[CHBBASE]
-STR_NAME    :체스판 블록
-
-[CHEST1]
-STR_NAME    :보물 상자
-
-[CHEST2]
-STR_NAME    :보물 상자
-
-[CHOCROOF]
-STR_NAME    :초콜릿 바
-
-[CNBALLS]
-STR_NAME    :대포알
-
-[CNDYRK1]
-STR_NAME    :사탕 스틱
-
-[COLAGUM]
-STR_NAME    :콜라 사탕
-
-[CORROOF]
-STR_NAME    :물결 무늬 강철 지붕
-
-[CORROOF2]
-STR_NAME    :물결 무늬 강철 기반
-
-[CWBCRV32]
-STR_NAME    :곡선형 벽
-
-[CWBCRV33]
-STR_NAME    :곡선형 블록
-
-[CWFCRV32]
-STR_NAME    :곡선형 벽
-
-[CWFCRV33]
-STR_NAME    :곡선형 블록
-
-[FERN1]
-STR_NAME    :대형 양치식물
-
-[GGRS1]
-STR_NAME    :대형 풀
-
-[HANG1]
-STR_NAME    :교수대
-
-[HELMET1]
-STR_NAME    :아메리칸 풋볼 헬멧
-
-[ICECUBE]
-STR_NAME    :얼음 큐브
-
-[IGROOF]
-STR_NAME    :이글루 천장
-
-[JBEAN1]
-STR_NAME    :젤리빈
-
-[JELBAB1]
-STR_NAME    :젤리빈
-
-[JELDROP1]
-STR_NAME    :떨어진 젤리
-
-[JELDROP2]
-STR_NAME    :떨어진 젤리
-
-[JNGROOF1]
-STR_NAME    :천장
-
-[LOLLY1]
-STR_NAME    :막대 사탕
-
-[MALLOW1]
-STR_NAME    :마시멜로
-
-[MALLOW2]
-STR_NAME    :마시멜로
-
-[MINROOF1]
-STR_NAME    :천장
-
-[MINT1]
-STR_NAME    :민트
-
-[MMENT1]
-STR_NAME    :장식용 구조물
-
-[MMENT2]
-STR_NAME    :장식용 구조물
-
-[MMENT3]
-STR_NAME    :장식용 구조물
-
-[PAGROOF1]
-STR_NAME    :천장
-
-[PIPE32]
-STR_NAME    :파이프 섹션
-
-[PIPE32J]
-STR_NAME    :파이프 섹션
-
-[PIPE8]
-STR_NAME    :파이프 섹션
-
-[PIRFLAG]
-STR_NAME    :해적 깃발
-
-[PIRROOF1]
-STR_NAME    :천장
-
-[PIRROOF2]
-STR_NAME    :천장
-
-[PRCAN]
-STR_NAME    :대포
-
-[ROMROOF1]
-STR_NAME    :천장
-
-[ROMROOF2]
-STR_NAME    :주춧돌
-
-[ROOF1]
-STR_NAME    :천장
-
-[ROOF10]
-STR_NAME    :천장
-
-[ROOF11]
-STR_NAME    :천장
-
-[ROOF12]
-STR_NAME    :천장
-
-[ROOF13]
-STR_NAME    :천장
-
-[ROOF14]
-STR_NAME    :천장
-
-[ROOF2]
-STR_NAME    :천장
-
-[ROOF3]
-STR_NAME    :천장
-
-[ROOF4]
-STR_NAME    :천장
-
-[ROOF5]
-STR_NAME    :천장
-
-[ROOF6]
-STR_NAME    :천장
-
-[ROOF7]
-STR_NAME    :천장
-
-[ROOF8]
-STR_NAME    :천장
-
-[ROOF9]
-STR_NAME    :천장
-
-[SKTBASE]
-STR_NAME    :블록
-
-[SKTBASET]
-STR_NAME    :블록
-
-[SKTDW]
-STR_NAME    :벽
-
-[SKTDW2]
-STR_NAME    :벽
-
-[SMSKULL]
-STR_NAME    :뼈
-
-[SPCROOF1]
-STR_NAME    :천장
-
-[STBASE]
-STR_NAME    :강철 블록
-
-[STLBASET]
-STR_NAME    :강철 블록
-
-[STLDW]
-STR_NAME    :강철 벽
-
-[STLDW2]
-STR_NAME    :강철 벽
-
-[SUMRF]
-STR_NAME    :천장
-
-[SUPPLEG1]
-STR_NAME    :막대기
-
-[SUPPLEG2]
-STR_NAME    :막대기
-
-[SUPPW1]
-STR_NAME    :지지대 구조물
-
-[SUPPW2]
-STR_NAME    :지지대 구조물
-
-[SUPPW3]
-STR_NAME    :지지대 구조물
-
-[TAC]
-STR_NAME    :애리조나삼목
-
-[TAL]
-STR_NAME    :악어 모양의 나무
-
-[TAP]
-STR_NAME    :알레포 파인 나무
-
-[TAS]
-STR_NAME    :사시나무
-
-[TAS1]
-STR_NAME    :사탕 나무
-
-[TAS2]
-STR_NAME    :사탕 나무
-
-[TAS3]
-STR_NAME    :사탕 나무
-
-[TAS4]
-STR_NAME    :사탕
-
-[TB1]
-STR_NAME    :흰색 비숍
-
-[TB2]
-STR_NAME    :검은색 비숍
-
-[TBC]
-STR_NAME    :선인장
-
-[TBN]
-STR_NAME    :뼈
-
-[TBN1]
-STR_NAME    :뼈
-
-[TBP]
-STR_NAME    :흑양목
-
-[TBR]
-STR_NAME    :부들
-
-[TBR1]
-STR_NAME    :통
-
-[TBR2]
-STR_NAME    :통
-
-[TBR3]
-STR_NAME    :통
-
-[TBR4]
-STR_NAME    :통
-
-[TBW]
-STR_NAME    :부서진 바퀴
-
-[TCB]
-STR_NAME    :클럽스 모양 나무
-
-[TCC]
-STR_NAME    :중국 삼나무
-
-[TCD]
-STR_NAME    :가마솥
-
-[TCE]
-STR_NAME    :캠퍼다운 느릅나무
-
-[TCF]
-STR_NAME    :코카시안 전나무
-
-[TCFS]
-STR_NAME    :눈 쌓인 코카시안 전나무
-
-[TCJ]
-STR_NAME    :노간주나무
-
-[TCL]
-STR_NAME    :레바논삼목
-
-[TCN]
-STR_NAME    :대포
-
-[TCO]
-STR_NAME    :참나무
-
-[TCRP]
-STR_NAME    :코르시카 소나무
-
-[TCT]
-STR_NAME    :캐비지 야자
-
-[TCT1]
-STR_NAME    :성 탑
-
-[TCT2]
-STR_NAME    :성 탑
-
-[TCY]
-STR_NAME    :주목
-
-[TDM]
-STR_NAME    :다이아몬드 모양 나무
-
-[TDN4]
-STR_NAME    :공룡
-
-[TDN5]
-STR_NAME    :공룡
-
-[TDT1]
-STR_NAME    :죽은 나무
-
-[TDT2]
-STR_NAME    :죽은 나무
-
-[TDT3]
-STR_NAME    :죽은 나무
-
-[TEEPEE1]
-STR_NAME    :원뿔형 천막
-
-[TEL]
-STR_NAME    :유럽 낙엽송
-
-[TEN]
-STR_NAME    :클레오파트라의 바늘
-
-[TEP]
-STR_NAME    :이집트식 기둥
-
-[TERB]
-STR_NAME    :돌 블록
-
-[TERS]
-STR_NAME    :부서진 동상
-
-[TES1]
-STR_NAME    :이집트 동상
-
-[TF1]
-STR_NAME    :과일 나무
-
-[TF2]
-STR_NAME    :과일 나무
-
-[TGC1]
-STR_NAME    :조각품
-
-[TGC2]
-STR_NAME    :조각품
-
-[TGG]
-STR_NAME    :징
-
-[TGHC]
-STR_NAME    :골든 노송나무
-
-[TGHC2]
-STR_NAME    :히바
-
-[TGS]
-STR_NAME    :기린 동상
-
-[TGS1]
-STR_NAME    :묘비
-
-[TGS2]
-STR_NAME    :묘비
-
-[TGS3]
-STR_NAME    :묘비
-
-[TGS4]
-STR_NAME    :묘비
-
-[TH1]
-STR_NAME    :카나리아 야자수
-
-[TH2]
-STR_NAME    :야자수
-
-[THL]
-STR_NAME    :수엽나무
-
-[THRS]
-STR_NAME    :말을 탄 사람 동상
-
-[THT]
-STR_NAME    :하트 모양 나무
-
-[TIC]
-STR_NAME    :미국 삼나무
-
-[TIG]
-STR_NAME    :이글루
-
-[TITC]
-STR_NAME    :서양노송나무
-
-[TJB1]
-STR_NAME    :수풀
-
-[TJB2]
-STR_NAME    :수풀
-
-[TJB3]
-STR_NAME    :수풀
-
-[TJB4]
-STR_NAME    :수풀
-
-[TJF]
-STR_NAME    :꽃
-
-[TJP1]
-STR_NAME    :잡초
-
-[TJP2]
-STR_NAME    :잡초
-
-[TJT1]
-STR_NAME    :나무
-
-[TJT2]
-STR_NAME    :나무
-
-[TJT3]
-STR_NAME    :나무
-
-[TJT4]
-STR_NAME    :나무
-
-[TJT5]
-STR_NAME    :나무
-
-[TJT6]
-STR_NAME    :나무
-
-[TK1]
-STR_NAME    :흰색 나이트
-
-[TK2]
-STR_NAME    :검은색 나이트
-
-[TK3]
-STR_NAME    :흰색 킹
-
-[TK4]
-STR_NAME    :검은색 킹
-
-[TL0]
-STR_NAME    :나무
-
-[TL1]
-STR_NAME    :나무
-
-[TL2]
-STR_NAME    :나무
-
-[TL3]
-STR_NAME    :나무
-
-[TLC]
-STR_NAME    :로슨 노송나무
-
-[TLP]
-STR_NAME    :양버들
-
-[TLY]
-STR_NAME    :백합
-
-[TM0]
-STR_NAME    :나무
-
-[TM1]
-STR_NAME    :나무
-
-[TM2]
-STR_NAME    :나무
-
-[TM3]
-STR_NAME    :나무
-
-[TMBJ]
-STR_NAME    :메이어 향나무
-
-[TMC]
-STR_NAME    :왕느릅나무
-
-[TMG]
-STR_NAME    :목련
-
-[TMJ]
-STR_NAME    :잔해
-
-[TML]
-STR_NAME    :나무
-
-[TMM1]
-STR_NAME    :묘지 기념물
-
-[TMM2]
-STR_NAME    :묘지 기념비
-
-[TMM3]
-STR_NAME    :묘지 기념비
-
-[TMO1]
-STR_NAME    :화성 물체
-
-[TMO2]
-STR_NAME    :화성 물체
-
-[TMO3]
-STR_NAME    :화성 물체
-
-[TMO4]
-STR_NAME    :화성 물체
-
-[TMO5]
-STR_NAME    :화성 물체
-
-[TMP]
-STR_NAME    :칠레삼나무
-
-[TMS1]
-STR_NAME    :독버섯
-
-[TMW]
-STR_NAME    :바퀴
-
-[TMZP]
-STR_NAME    :몬테수마 소나무
-
-[TNS]
-STR_NAME    :노르웨이 가문비나무
-
-[TNSS]
-STR_NAME    :눈 덮인 노르웨이 가문비나무
-
-[TNTROOF1]
-STR_NAME    :천막 지붕
-
-[TOH1]
-STR_NAME    :집
-
-[TOH2]
-STR_NAME    :집
-
-[TOH3]
-STR_NAME    :건물
-
-[TORN1]
-STR_NAME    :장식용 나무
-
-[TORN2]
-STR_NAME    :장식용 나무
-
-[TOS]
-STR_NAME    :동상
-
-[TOT1]
-STR_NAME    :나무
-
-[TOT2]
-STR_NAME    :나무
-
-[TOT3]
-STR_NAME    :나무
-
-[TOT4]
-STR_NAME    :나무
-
-[TOTEM1]
-STR_NAME    :토템 폴
-
-[TP1]
-STR_NAME    :흰색 폰
-
-[TP2]
-STR_NAME    :검은색 폰
-
-[TPM]
-STR_NAME    :야자수
-
-[TQ1]
-STR_NAME    :흰색 퀸
-
-[TQ2]
-STR_NAME    :검은색 퀸
-
-[TR1]
-STR_NAME    :하얀색 룩
-
-[TR2]
-STR_NAME    :검은색 룩
-
-[TRC]
-STR_NAME    :로마식 기둥
-
-[TRF]
-STR_NAME    :붉은잣나무
-
-[TRF2]
-STR_NAME    :붉은잣나무
-
-[TRF3]
-STR_NAME    :눈 쌓인 붉은잣나무
-
-[TRFS]
-STR_NAME    :눈 쌓인 붉은잣나무
-
-[TRMS]
-STR_NAME    :로마식 동상
-
-[TROPT1]
-STR_NAME    :나무
-
-[TRWS]
-STR_NAME    :로마식 동상
-
-[TS0]
-STR_NAME    :나무
-
-[TS1]
-STR_NAME    :나무
-
-[TS2]
-STR_NAME    :나무
-
-[TS3]
-STR_NAME    :나무
-
-[TS4]
-STR_NAME    :장식용 나무
-
-[TS5]
-STR_NAME    :장식용 나무
-
-[TS6]
-STR_NAME    :장식용 나무
-
-[TSB]
-STR_NAME    :자작나무
-
-[TSC]
-STR_NAME    :선인장
-
-[TSC2]
-STR_NAME    :건물
-
-[TSCP]
-STR_NAME    :우주 캡슐
-
-[TSD]
-STR_NAME    :스페이드 모양의 나무
-
-[TSF1]
-STR_NAME    :대형 눈송이
-
-[TSF2]
-STR_NAME    :대형 눈송이
-
-[TSF3]
-STR_NAME    :대형 눈송이
-
-[TSH]
-STR_NAME    :말 동상
-
-[TSH0]
-STR_NAME    :수풀
-
-[TSH1]
-STR_NAME    :관목
-
-[TSH2]
-STR_NAME    :수풀
-
-[TSH3]
-STR_NAME    :수풀
-
-[TSH4]
-STR_NAME    :관목
-
-[TSH5]
-STR_NAME    :수풀
-
-[TSM]
-STR_NAME    :눈사람
-
-[TSNB]
-STR_NAME    :눈덩이
-
-[TSNC]
-STR_NAME    :통나무 집
-
-[TSP]
-STR_NAME    :스코틀랜드 소나무
-
-[TSP1]
-STR_NAME    :나무
-
-[TSP2]
-STR_NAME    :나무
-
-[TSPH]
-STR_NAME    :집
-
-[TSQ]
-STR_NAME    :다람쥐 모양의 나무
-
-[TST1]
-STR_NAME    :독버섯
-
-[TST2]
-STR_NAME    :독버섯
-
-[TST3]
-STR_NAME    :독버섯
-
-[TST4]
-STR_NAME    :독버섯
-
-[TST5]
-STR_NAME    :독버섯
-
-[TSTD]
-STR_NAME    :돌고래 동상
-
-[TT1]
-STR_NAME    :로마 사원
-
-[TTG]
-STR_NAME    :과녁
-
-[TUS]
-STR_NAME    :유니콘 동상
-
-[TVL]
-STR_NAME    :나도싸리
-
-[TWH1]
-STR_NAME    :집
-
-[TWH2]
-STR_NAME    :호박 집
-
-[TWN]
-STR_NAME    :호두나무
-
-[TWP]
-STR_NAME    :사시나무
-
-[TWW]
-STR_NAME    :수양버들
-
-[WAG1]
-STR_NAME    :마차
-
-[WAG2]
-STR_NAME    :마차
-
-[WDBASE]
-STR_NAME    :나무 블록
-
-[TDF]
-STR_NAME    :돌고래 분수
-
-[TEF]
-STR_NAME    :코끼리 분수
-
-[TQF]
-STR_NAME    :큐피드 분수
-
-[TTF]
-STR_NAME    :분수
-
-[TWF]
-STR_NAME    :기하학적인 분수
-
-[TCK]
-STR_NAME    :시계
-
-[TG1]
-STR_NAME    :꽃
-
-[TG10]
-STR_NAME    :꽃
-
-[TG11]
-STR_NAME    :꽃
-
-[TG12]
-STR_NAME    :꽃
-
-[TG13]
-STR_NAME    :꽃
-
-[TG14]
-STR_NAME    :꽃
-
-[TG15]
-STR_NAME    :꽃
-
-[TG16]
-STR_NAME    :꽃
-
-[TG17]
-STR_NAME    :꽃
-
-[TG18]
-STR_NAME    :꽃
-
-[TG19]
-STR_NAME    :꽃
-
-[TG2]
-STR_NAME    :꽃
-
-[TG20]
-STR_NAME    :꽃
-
-[TG21]
-STR_NAME    :꽃
-
-[TG3]
-STR_NAME    :꽃
-
-[TG4]
-STR_NAME    :꽃
-
-[TG5]
-STR_NAME    :꽃
-
-[TG6]
-STR_NAME    :꽃
-
-[TG7]
-STR_NAME    :꽃
-
-[TG8]
-STR_NAME    :꽃
-
-[TG9]
-STR_NAME    :꽃
-
-[BUTTFLY]
-STR_NAME    :나비
-
-[COG1]
-STR_NAME    :톱니바퀴
-
-[COG1R]
-STR_NAME    :톱니바퀴
-
-[COG1U]
-STR_NAME    :톱니바퀴
-
-[COG1UR]
-STR_NAME    :톱니바퀴
-
-[COG2]
-STR_NAME    :작은 톱니바퀴
-
-[COG2R]
-STR_NAME    :작은 톱니바퀴
-
-[COG2U]
-STR_NAME    :작은 톱니바퀴
-
-[COG2UR]
-STR_NAME    :작은 톱니바퀴
-
-[FIRE1]
-STR_NAME    :불꽃
-
-[SNAIL]
-STR_NAME    :달팽이
-
-[SPIDER1]
-STR_NAME    :거미
-
-[TGH1]
-STR_NAME    :동상
-
-[TGH2]
-STR_NAME    :동상
-
-[TSG]
-STR_NAME    :늪지대
-
-[TSK]
-STR_NAME    :해골
-
-[TSMP]
-STR_NAME    :호박
-
-[WASP]
-STR_NAME    :말벌
-
-[WDIAG]
-STR_NAME    :분수
-
-[WHORIZ]
-STR_NAME    :물 분사
-
-[WSPOUT]
-STR_NAME    :물 분출
-
-[GEOROOF1]
-STR_NAME    :유리 지붕
-
-[GEOROOF2]
-STR_NAME    :유리 지붕
-
-[TGE1]
-STR_NAME    :기하학적인 조형물
-
-[TGE2]
-STR_NAME    :기하학적인 조형물
-
-[TGE3]
-STR_NAME    :기하학적인 조형물
-
-[TGE4]
-STR_NAME    :기하학적인 조형물
-
-[TGE5]
-STR_NAME    :기하학적인 조형물
-
-[BADRACK]
-STR_NAME    :배드민턴 라켓
-
-[GENSTORE]
-STR_NAME    :일반 상점
-
-[MDSAENT]
-STR_NAME    :'메두사' 팻말
-
-[NITROENT]
-STR_NAME    :'니트로' 팻말
-
-[SAH]
-STR_NAME    :집
-
-[SAH2]
-STR_NAME    :집
-
-[SAH3]
-STR_NAME    :다세대 주택
-
-[SALOON]
-STR_NAME    :주점
-
-[SCLN]
-STR_NAME    :콜로네이드
-
-[SCT]
-STR_NAME    :텐트
-
-[SDN1]
-STR_NAME    :공룡
-
-[SDN2]
-STR_NAME    :공룡
-
-[SDN3]
-STR_NAME    :공룡
-
-[SGP]
-STR_NAME    :대형 호박
-
-[SHS1]
-STR_NAME    :테라스 하우스
-
-[SHS2]
-STR_NAME    :집
-
-[SMH1]
-STR_NAME    :탄광 건물
-
-[SMH2]
-STR_NAME    :탄광 건물
-
-[SMN1]
-STR_NAME    :갱도
-
-[SOB]
-STR_NAME    :사무 빌딩
-
-[SOH1]
-STR_NAME    :집
-
-[SOH2]
-STR_NAME    :집
-
-[SOH3]
-STR_NAME    :집
-
-[SPS]
-STR_NAME    :주유소
-
-[SSH]
-STR_NAME    :우주 캡슐
-
-[SSK1]
-STR_NAME    :해골
-
-[SST]
-STR_NAME    :위성
-
-[STB1]
-STR_NAME    :성탑
-
-[STB2]
-STR_NAME    :성탑
-
-[STG1]
-STR_NAME    :성탑
-
-[STG2]
-STR_NAME    :성탑
-
-[STH]
-STR_NAME    :시청
-
-[TAVERN]
-STR_NAME    :터번
-
-[WWBANK]
-STR_NAME    :은행
-
-[SSIG2]
-STR_NAME    :3D 팻말
-
-[SSIG3]
-STR_NAME    :수직 3D 팻말
-
-[SSIG4]
-STR_NAME    :3D 팻말
-
-[SSIG1]
-STR_NAME    :스크롤링 전광판
-
-[GLTHENT]
-STR_NAME    :'골리앗' 팻말
-
-[PRSHIP]
-STR_NAME    :해적선
-
-[SCOL]
-STR_NAME    :로마 콜로세움
-
-[SIP]
-STR_NAME    :얼음성
-
-[SMB]
-STR_NAME    :화성 건물
-
-[SPG]
-STR_NAME    :탑
-
-[SPYR]
-STR_NAME    :피라미드
-
-[SSPX]
-STR_NAME    :스핑크스
-
-[SSR]
-STR_NAME    :우주 로켓
-
-[SVLC]
-STR_NAME    :화산
-
-[WALLBADM]
-STR_NAME    :배드민턴 라켓
-
-[WALLBB16]
-STR_NAME    :벽
-
-[WALLBB32]
-STR_NAME    :벽
-
-[WALLBB33]
-STR_NAME    :벽
-
-[WALLBB34]
-STR_NAME    :돌 벽
-
-[WALLBB8]
-STR_NAME    :벽
-
-[WALLBR16]
-STR_NAME    :벽
-
-[WALLBR32]
-STR_NAME    :벽
-
-[WALLBR8]
-STR_NAME    :벽
-
-[WALLBRWN]
-STR_NAME    :창문
-
-[WALLCB16]
-STR_NAME    :벽
-
-[WALLCB32]
-STR_NAME    :벽
-
-[WALLCB8]
-STR_NAME    :벽
-
-[WALLCBWN]
-STR_NAME    :창문
-
-[WALLCF16]
-STR_NAME    :벽
-
-[WALLCF32]
-STR_NAME    :벽
-
-[WALLCF8]
-STR_NAME    :벽
-
-[WALLCFAR]
-STR_NAME    :벽 아치
-
-[WALLCFWN]
-STR_NAME    :창문
-
-[WALLCO16]
-STR_NAME    :물결 무늬 강철 벽
-
-[WALLCW32]
-STR_NAME    :벽
-
-[WALLCX32]
-STR_NAME    :벽
-
-[WALLCY32]
-STR_NAME    :벽
-
-[WALLCZ32]
-STR_NAME    :벽
-
-[WALLIG16]
-STR_NAME    :이글루 벽
-
-[WALLIG24]
-STR_NAME    :이글루 벽
-
-[WALLJB16]
-STR_NAME    :젤리빈 벽
-
-[WALLJN32]
-STR_NAME    :벽
-
-[WALLLT32]
-STR_NAME    :강철 격자
-
-[WALLMM16]
-STR_NAME    :철책
-
-[WALLMM17]
-STR_NAME    :철책
-
-[WALLMN32]
-STR_NAME    :벽
-
-[WALLNT32]
-STR_NAME    :테니스 네트 벽
-
-[WALLNT33]
-STR_NAME    :테니스 네트 벽
-
-[WALLPG32]
-STR_NAME    :벽
-
-[WALLPOST]
-STR_NAME    :기둥
-
-[WALLPR32]
-STR_NAME    :지붕
-
-[WALLPR33]
-STR_NAME    :벽
-
-[WALLPR34]
-STR_NAME    :벽
-
-[WALLPR35]
-STR_NAME    :벽
-
-[WALLRH32]
-STR_NAME    :벽
-
-[WALLRK32]
-STR_NAME    :바위 벽
-
-[WALLRS16]
-STR_NAME    :벽
-
-[WALLRS32]
-STR_NAME    :벽
-
-[WALLRS8]
-STR_NAME    :벽
-
-[WALLSC16]
-STR_NAME    :철책
-
-[WALLSK16]
-STR_NAME    :벽
-
-[WALLSK32]
-STR_NAME    :벽
-
-[WALLSP32]
-STR_NAME    :벽
-
-[WALLST16]
-STR_NAME    :강철 벽
-
-[WALLST32]
-STR_NAME    :강철 벽
-
-[WALLST8]
-STR_NAME    :강철 벽
-
-[WALLSTFN]
-STR_NAME    :강철 울타리
-
-[WALLSTWN]
-STR_NAME    :강철 벽
-
-[WALLTN32]
-STR_NAME    :기둥
-
-[WALLTXGT]
-STR_NAME    :'텍사스 자이언트' 팻말
-
-[WALLU132]
-STR_NAME    :벽
-
-[WALLU232]
-STR_NAME    :벽
-
-[WALLWD16]
-STR_NAME    :나무 벽
-
-[WALLWD32]
-STR_NAME    :나무 벽
-
-[WALLWD33]
-STR_NAME    :나무 벽
-
-[WALLWD8]
-STR_NAME    :나무 벽
-
-[WALLWDPS]
-STR_NAME    :나무 울타리
-
-[WBR1]
-STR_NAME    :벽돌 벽
-
-[WBR1A]
-STR_NAME    :벽돌 벽
-
-[WBR2]
-STR_NAME    :돌 벽
-
-[WBR2A]
-STR_NAME    :돌 벽
-
-[WBR3]
-STR_NAME    :돌 벽
-
-[WBRG]
-STR_NAME    :벽돌 벽
-
-[WBW]
-STR_NAME    :뼈 울타리
-
-[WC1]
-STR_NAME    :성벽
-
-[WC10]
-STR_NAME    :성벽
-
-[WC11]
-STR_NAME    :성벽
-
-[WC12]
-STR_NAME    :성벽
-
-[WC13]
-STR_NAME    :성벽
-
-[WC14]
-STR_NAME    :벽
-
-[WC15]
-STR_NAME    :벽
-
-[WC16]
-STR_NAME    :울타리
-
-[WC17]
-STR_NAME    :나무 울타리
-
-[WC18]
-STR_NAME    :나무 울타리
-
-[WC2]
-STR_NAME    :성벽
-
-[WC3]
-STR_NAME    :로마식 기둥 벽
-
-[WC4]
-STR_NAME    :성벽
-
-[WC5]
-STR_NAME    :성벽
-
-[WC6]
-STR_NAME    :성벽
-
-[WC7]
-STR_NAME    :성벽
-
-[WC8]
-STR_NAME    :성벽
-
-[WC9]
-STR_NAME    :성벽
-
-[WCH]
-STR_NAME    :침엽수 생울타리
-
-[WCHG]
-STR_NAME    :침엽수 생울타리
-
-[WCW1]
-STR_NAME    :트럼프 벽
-
-[WCW2]
-STR_NAME    :트럼프 벽
-
-[WEW]
-STR_NAME    :이집트 벽
-
-[WFW1]
-STR_NAME    :나무 울타리
-
-[WFWG]
-STR_NAME    :나무 울타리
-
-[WHG]
-STR_NAME    :생울타리
-
-[WHGG]
-STR_NAME    :생울타리
-
-[WJF]
-STR_NAME    :정글 울타리
-
-[WMF]
-STR_NAME    :그물 철책
-
-[WMFG]
-STR_NAME    :그물 철책
-
-[WMW]
-STR_NAME    :화성식 벽
-
-[WMWW]
-STR_NAME    :나무 울타리
-
-[WPF]
-STR_NAME    :울타리
-
-[WPFG]
-STR_NAME    :울타리
-
-[WPW1]
-STR_NAME    :나무 울타리
-
-[WPW2]
-STR_NAME    :나무 울타리
-
-[WPW3]
-STR_NAME    :나무 울타리
-
-[WRW]
-STR_NAME    :로마식 벽
-
-[WRWA]
-STR_NAME    :로마식 벽
-
-[WSW]
-STR_NAME    :철책
-
-[WSW1]
-STR_NAME    :철책
-
-[WSW2]
-STR_NAME    :철책
-
-[WSWG]
-STR_NAME    :철책
-
-[WWTW]
-STR_NAME    :키 큰 나무 울타리
-
-[WWTWA]
-STR_NAME    :나무 울타리 벽
-
-[WALLBRDR]
-STR_NAME    :출입구
-
-[WALLCBDR]
-STR_NAME    :출입구
-
-[WALLCBPC]
-STR_NAME    :성문
-
-[WALLCFDR]
-STR_NAME    :출입구
-
-[WALLCFPC]
-STR_NAME    :성문
-
-[WALLWF32]
-STR_NAME    :폭포
-
-[WALLGL16]
-STR_NAME    :유리 벽
-
-[WALLGL32]
-STR_NAME    :유리 벽
-
-[WALLGL8]
-STR_NAME    :유리 벽
-
-[WGW2]
-STR_NAME    :유리 벽
-
-[WALLSIGN]
-STR_NAME    :전광판
-
-[BN1]
-STR_NAME    :팻말
-
-[BN2]
-STR_NAME    :정글 스타일 팻말
-
-[BN3]
-STR_NAME    :고전 스타일 팻말
-
-[BN4]
-STR_NAME    :이집트 스타일 팻말
-
-[BN5]
-STR_NAME    :나무 팻말
-
-[BN6]
-STR_NAME    :쥐라기 스타일 팻말
-
-[BN7]
-STR_NAME    :탑 스타일 팻말
-
-[BN8]
-STR_NAME    :눈 쌓인 팻말
-
-[BN9]
-STR_NAME    :우주 스타일 팻말
-
-[PATHASH]
-STR_NAME    :잿더미 보도
-
-[PATHCRZY]
-STR_NAME    :벽돌 보도
-
-[PATHDIRT]
-STR_NAME    :지저분한 보도
-
-[PATHSPCE]
-STR_NAME    :우주 스타일 보도
-
-[ROAD]
-STR_NAME    :도로
-
-[TARMAC]
-STR_NAME    :타맥 보도
-
-[TARMACB]
-STR_NAME    :갈색 타맥 보도
-
-[TARMACG]
-STR_NAME    :녹색 타맥 보도
-
-[LAMP1]
-STR_NAME    :가로등
-
-[LAMP2]
-STR_NAME    :가로등
-
-[LAMP3]
-STR_NAME    :가로등
-
-[LAMP4]
-STR_NAME    :가로등
-
-[LAMPDSY]
-STR_NAME    :데이지 가로등
-
-[LAMPPIR]
-STR_NAME    :가로등
-
-[LITTER1]
-STR_NAME    :쓰레기통
-
-[LITTERMN]
-STR_NAME    :쓰레기통
-
-[LITTERSP]
-STR_NAME    :쓰레기통
-
-[LITTERWW]
-STR_NAME    :쓰레기통
-
-[BENCH1]
-STR_NAME    :의자
-
-[BENCHLOG]
-STR_NAME    :나무 의자
-
-[BENCHPL]
-STR_NAME    :의자
-
-[BENCHSPC]
-STR_NAME    :의자
-
-[BENCHSTN]
-STR_NAME    :석재 의자
-
-[JUMPFNT1]
-STR_NAME    :도약하는 분수
-
-[JUMPSNW1]
-STR_NAME    :도약하는 눈덩이
-
-[QTV1]
-STR_NAME    :대기줄 TV
-
-[SCGABSTR]
-STR_NAME    :추상적인 테마
-
-[SCGCANDY]
-STR_NAME    :대형 사탕 테마
-
-[SCGCLASS]
-STR_NAME    :클래식/로마 테마
-
-[SCGEGYPT]
-STR_NAME    :이집트 테마
-
-[SCGFENCE]
-STR_NAME    :울타리와 벽
-
-[SCGGARDN]
-STR_NAME    :정원
-
-[SCGGIANT]
-STR_NAME    :대형 정원 테마
-
-[SCGHALLO]
-STR_NAME    :오싹한 테마
-
-[SCGINDUS]
-STR_NAME    :기계 테마
-
-[SCGJUNGL]
-STR_NAME    :정글 테마
-
-[SCGJURAS]
-STR_NAME    :쥐라기 테마
-
-[SCGMART]
-STR_NAME    :화성 테마
-
-[SCGMEDIE]
-STR_NAME    :중세 테마
-
-[SCGMINE]
-STR_NAME    :광산 테마
-
-[SCGORIEN]
-STR_NAME    :탑 테마
-
-[SCGPATHX]
-STR_NAME    :팻말과 보도 아이템
-
-[SCGPIRAT]
-STR_NAME    :해적 테마
-
-[SCGSHRUB]
-STR_NAME    :관목과 장식품
-
-[SCGSIXFL]
-STR_NAME    :식스 플래그 테마
-
-[SCGSNOW]
-STR_NAME    :눈과 얼음 테마
-
-[SCGSPACE]
-STR_NAME    :우주 테마
-
-[SCGSPOOK]
-STR_NAME    :으스스한 테마
-
-[SCGSPORT]
-STR_NAME    :스포츠 테마
-
-[SCGTREES]
-STR_NAME    :나무
-
-[SCGURBAN]
-STR_NAME    :도시 테마
-
-[SCGWALLS]
-STR_NAME    :벽과 지붕
-
-[SCGWATER]
-STR_NAME    :인공 폭포 테마
-
-[SCGWOND]
-STR_NAME    :동화나라 테마
-
-[SCGWWEST]
-STR_NAME    :황량한 서부 테마
-
-[PKEMM]
-STR_NAME    :공원 출입구
-
-[PKENT1]
-STR_NAME    :기본 공원 입구
-
-[PKESFH]
-STR_NAME    :공원 입구 건물
-
-[WTRCYAN]
-STR_NAME    :기본 물
-
-[WTRGREEN]
-STR_NAME    :독성 녹색 물
-
-[WTRGRN]
-STR_NAME    :녹색 물
-
-[WTRORNG]
-STR_NAME    :오렌지색 물
-
-###############################################################################
-## Wacky Worlds Objects
-###############################################################################
-[LONDONBS]
-STR_NAME    :런던 버스 전차
-STR_DESC    :전차 모형
-STR_CPTY    :차량당 10명의 승객
-
-[MINELIFT]
-STR_NAME    :탄광 엘리베이터
-STR_DESC    :탑승객들은 수직 탑을 따라 이동하는 엘리베이터에 올라타 여러 높이를 손쉽게 이동할 수 있습니다.
-STR_CPTY    :승객 16명
-
-[SANFTRAM]
-STR_NAME    :샌프란시스코 전차
-STR_DESC    :전차 모형
-STR_CPTY    :차량당 10명의 승객
-
-[STEAMTRN]
-STR_NAME    :마하라자 증기 기관차
-STR_DESC    :부드러운 천으로 된 지붕을 가진 나무 객차와 증기 기관차 모형으로 이루어진 모형 증기 기관차 차량
-STR_CPTY    :객차당 6명의 승객
-
-[BLACKCAB]
-STR_NAME    :런던 택시 블랙 캡 라이드
-STR_DESC    :런던 택시 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[CRNVBFLY]
-STR_NAME    :카니발 플로트 라이드 - 나비 차량
-STR_DESC    :나비 퍼레이드 차량 모양의 롤러코스터 차량
-STR_CPTY    :차량당 2명의 승객
-
-[CRNVFROG]
-STR_NAME    :카니발 플로트 라이드 - 개구리 차량
-STR_DESC    :개구리 퍼레이드 차량 모양의 롤러코스터 차량
-STR_CPTY    :차량당 2명의 승객
-
-[CRNVLZRD]
-STR_NAME    :카니발 플로트 라이드 - 도마뱀 차량
-STR_DESC    :도마뱀 퍼레이드 차량 모양의 롤러코스터 차량
-STR_CPTY    :차량당 2명의 승객
-
-[DRAGDODG]
-STR_NAME    :차이니즈 드래곤헤드 라이드
-STR_DESC    :스스로 운전하는 전기 범퍼카 차량
-STR_CPTY    :차량당 1명의 손님
-
-[HIPPORID]
-STR_NAME    :히포 라이드
-STR_DESC    :수면 아래 코스를 이동하는 잠수함에 탑승하는 놀이기구
-STR_CPTY    :차량당 5명의 승객
-
-[HUSKIE]
-STR_NAME    :허스키 카
-STR_DESC    :트랙을 따라 이동하는 허스키 썰매 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[KILLWHAL]
-STR_NAME    :범고래
-STR_DESC    :수면 아래 코스를 이동하는 잠수함에 탑승하는 놀이기구
-STR_CPTY    :차량당 5명의 승객
-
-[SKIDOO]
-STR_NAME    :설상 스쿠터 범퍼카
-STR_DESC    :스스로 운전하는 전기 범퍼카 차량
-STR_CPTY    :차량당 1명의 승객
-
-[ANACONDA]
-STR_NAME    :아나콘다 라이드
-STR_DESC    :간단한 안전바가 있는 널찍한 차량
-STR_CPTY    :차량당 6명의 승객
-
-[BOMERANG]
-STR_NAME    :부메랑 코스터
-STR_DESC    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착하는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[BULLET]
-STR_NAME    :신칸센 코스터
-STR_DESC    :일본 신칸센 테마의 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[CADDILAC]
-STR_NAME    :리무진 롤러코스터
-STR_DESC    :리무진 테마의 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[CONDORRD]
-STR_NAME    :콘도르 라이드
-STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 콘도르 모양의 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
-STR_CPTY    :차량당 승객 1명
-
-[CONGAEEL]
-STR_NAME    :콩가 뱀장어 코스터
-STR_DESC    :뱀장어 모양의 차량이 나선과 루프를 통과하는 강철 트랙 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[DRAGON]
-STR_NAME    :드래곤 코스터
-STR_DESC    :드래곤 테마의 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[FOOTBALL]
-STR_NAME    :풋볼 라이드
-STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 풋볼 모양의 서스펜디드 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[GORILLA]
-STR_NAME    :고릴라 라이드
-STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 고릴라 모양의 서스펜디드 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[GRATWHTE]
-STR_NAME    :대백상어 라이드
-STR_DESC    :간단한 안전바가 있는 널찍한 차량
-STR_CPTY    :차량당 6명의 승객
-
-[JAGUARRD]
-STR_NAME    :재규어 라이드
-STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임새 있게 내려오는 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[KOLARIDE]
-STR_NAME    :코알라 라이드
-STR_DESC    :역방향 자유낙하 코스터를 위한 대형 코스터 차량
-STR_CPTY    :차량당 8명의 승객
-
-[LIONRIDE]
-STR_NAME    :사자 라이드
-STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임새 있게 내려오는 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[MINECART]
-STR_NAME    :탄광 카트 라이드
-STR_DESC    :푹신한 좌석과 무릎 안전바가 있는 나무 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[OSTRICH]
-STR_NAME    :타조 라이드
-STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[PENGUINB]
-STR_NAME    :펭귄 봅슬레이
-STR_DESC    :반원형 트랙의 커브와 뱅킹만을 따라 이동하는 봅슬레이 모양의 차량을 타고 이리 저리 꼬여있는 트랙을 따라 내려오는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[POLARBER]
-STR_NAME    :북극곰 롤러코스터
-STR_DESC    :앞쪽이나 뒤쪽을 보고 2명씩 마주보고 짝지어 앉아 루프와 트위스트와 급격한 전이 트랙을 지나는 차량
-STR_CPTY    :차량당 4명의 승객
-
-[RHINORID]
-STR_NAME    :코뿔소 라이드
-STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
-STR_CPTY    :차량당 6명의 승객
-
-[ROCKET]
-STR_NAME    :1950년대 로켓 라이드
-STR_DESC    :수직으로 솟은 트랙을 오르기 위해 역에서 급가속한 뒤, 다시 역방향으로 되돌아와 역을 통과해서 뒷쪽의 또다른 수직 트랙을 올라가는 인버티드 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[RSSNCRRD]
-STR_NAME    :러시아 차량
-STR_DESC    :자동차 모양의 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SEALS]
-STR_NAME    :물개 롤러코스터
-STR_DESC    :나선 모양 트랙과 루프를 도는 구성을 지닌 강철 트랙의 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[SLOTH]
-STR_NAME    :나무늘보 라이드
-STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 나무늘보 모양의 서스펜디드 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SPUTNIKR]
-STR_NAME    :스푸트니크 서스펜디드 플라잉 코스터
-STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 특수 차량에 얼굴을 아래로 한 자세로 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
-STR_CPTY    :차량당 승객 2명
-
-[STGCCSTR]
-STR_NAME    :역마차 롤러코스터
-STR_DESC    :좌석이 넓고 무릎에만 안전바가 있는 우든 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[SURFBRDC]
-STR_NAME    :서핑 코스터
-STR_DESC    :탑승자들이 선 자세로 낙하와 여러 특수 트랙을 즐길 수 있도록 특수하게 디자인된 안전바가 있는 넓은 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[TAXICSTR]
-STR_NAME    :옐로 택시 코스터
-STR_DESC    :90m 이상의 부드러운 낙하와 상승이 가능한 거대한 강철 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[TGVTRAIN]
-STR_NAME    :TGV 트레인 롤러코스터
-STR_DESC    :역에서 선형 유도 모터에 의해 가속되어 꼬여있는 트랙을 빠른 속도로 통과하는 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[TIGRTWST]
-STR_NAME    :뱅갈 호랑이 롤러코스터
-STR_DESC    :하트라인 트위스트에서 사용할 수 있는 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[WHICGRUB]
-STR_NAME    :애벌레 라이드
-STR_DESC    :작은 유충 모양의 차량이 있는 롤러코스터 차량
-STR_CPTY    :차량당 2명의 승객
-
-[COFFEECU]
-STR_NAME    :커피 컵 라이드
-STR_DESC    :탑승객이 세 개의 긴 회전 팔 구조 끝에 있는 좌석에 짝지어 앉아 빙글빙글 도는 놀이기구
-STR_CPTY    :승객 18명
-
-[DIAMONDR]
-STR_NAME    :다이아몬드 라이드
-STR_DESC    :탑승객이 세 개의 긴 회전 팔 구조 끝에 있는 좌석에 짝지어 앉아 빙글빙글 도는 놀이기구
-STR_CPTY    :승객 18명
-
-[FABERGE]
-STR_NAME    :파베르의 달걀 라이드
-STR_DESC    :탑승객이 세 개의 긴 회전 팔 구조 끝에 있는 좌석에 짝지어 앉아 빙글빙글 도는 놀이기구
-STR_CPTY    :승객 18명
-
-[FIGHTKIT]
-STR_NAME    :파이팅 카이트 라이드
-STR_DESC    :탑승객이 세 개의 긴 회전 팔 구조 끝에 있는 좌석에 짝지어 앉아 빙글빙글 도는 놀이기구
-STR_CPTY    :승객 18명
-
-[FIRECRAK]
-STR_NAME    :파이어 크래커 라이드
-STR_DESC    :원형 놀이기구에 매달린 객실에 탑승하면 처음에 회전하기 시작하여 이후에 지지대에 의해 기울어진 채로 회전하는 놀이기구
-STR_CPTY    :승객 16명
-
-[ITALYPOR]
-STR_NAME    :이탈리안 폴리스 라이드
-STR_DESC    :탑승객이 세 개의 긴 회전 팔 구조 끝에 있는 좌석에 짝지어 앉아 빙글빙글 도는 놀이기구
-STR_CPTY    :승객 18명
-
-[JUNKSWNG]
-STR_NAME    :차이니즈 정크 스윙 라이드
-STR_DESC    :반대편에 균형추가 있는 지지대에 달려있어 완전히 360도로 회전하는 배 모양의 놀이기구
-STR_CPTY    :승객 12명
-
-[CROCFLUM]
-STR_NAME    :악어 라이드
-STR_DESC    :수로를 따라 이동하다가 긴 낙하를 지나며 물을 튀겨 탑승객을 홀딱 젖게 만드는 악어 모양의 보트
-STR_CPTY    :보트당 4명의 승객
-
-[DHOWWATR]
-STR_NAME    :다우 워터 라이드
-STR_DESC    :탑승객이 스스로 페달을 밟는, 장식된 낚시 배
-STR_CPTY    :보트당 2명의 승객
-
-[DOLPHINR]
-STR_NAME    :돌고래 라이드
-STR_DESC    :탑승객이 스스로 운전할 수 있는 돌고래 모양 단일 좌석의 제트 스키
-STR_CPTY    :차량당 1명의 탑승객
-
-[MANDARIN]
-STR_NAME    :원앙새 워터 라이드
-STR_DESC    :앞쪽 좌석의 탑승객이 페달을 직접 밟아 움직이는 백조 모양의 보트
-STR_CPTY    :보트당 4명의 승객
-
-[MANTARAY]
-STR_NAME    :쥐가오리 라이드
-STR_DESC    :광폭형 수로를 따라 이동하며 컨베이어 벨트로 경사를 오른 다음, 급경사로 가속하여 탑승객을 커다란 물보라로 홀딱 젖게 만드는 대용량의 보트
-STR_CPTY    :보트당 16명의 승객
-
-[OUTRIGGR]
-STR_NAME    :아웃리거 라이드
-STR_DESC    :탑승객들이 스스로 페달을 밟는 긴 카누
-STR_CPTY    :카누당 2명의 승객
-
-[TUTLBOAT]
-STR_NAME    :거북이 워터 라이드
-STR_DESC    :중앙 모터에 의해 움직이며 탑승객이 조종할 수 있는 원형의 작은 보트
-STR_CPTY    :보트당 2명의 승객
-
-[WILTLP]
-STR_NAME    :시들지 않는 튤립
-
-[1X1ATRE2]
-STR_NAME    :덩굴
-
-[1X1ATREE]
-STR_NAME    :키 작은 수풀
-
-[1X1BRANG]
-STR_NAME    :부메랑
-
-[1X1DIDGE]
-STR_NAME    :디제리두
-
-[1X1EMUXX]
-STR_NAME    :에뮤
-
-[1X1JUGT2]
-STR_NAME    :작은 열대우림 나무 1
-
-[1X1JUGT3]
-STR_NAME    :작은 열대우림 나무 2
-
-[1X1KANGA]
-STR_NAME    :캥거루
-
-[1X1TERMM]
-STR_NAME    :흰개미 언덕
-
-[ADPANDA]
-STR_NAME    :어른 팬더
-
-[ANTILOPF]
-STR_NAME    :암컷 영양
-
-[ANTILOPM]
-STR_NAME    :수컷 영양
-
-[ANTILOPP]
-STR_NAME    :영양 한 쌍
-
-[BABPANDA]
-STR_NAME    :아기 팬더
-
-[BABYELE]
-STR_NAME    :아기 인도 코끼리
-
-[BALLLAN2]
-STR_NAME    :공 모양 초롱
-
-[BALLLANT]
-STR_NAME    :공 모양 초롱
-
-[BambooBs]
-STR_NAME    :대나무 수풀
-
-[BAMBOOPL]
-STR_NAME    :대나무 주추
-
-[BSTATUE1]
-STR_NAME    :부서진 동상
-
-[FSTATUE1]
-STR_NAME    :고정된 동상
-
-[JACHTREE]
-STR_NAME    :벚나무
-
-[JAPCHBLO]
-STR_NAME    :벚나무
-
-[JAPPINTR]
-STR_NAME    :일본 소나무
-
-[JAPSNOTR]
-STR_NAME    :까마귀밥나무
-
-[ORIEGONG]
-STR_NAME    :징
-
-[PCG]
-STR_NAME    :파이프
-
-[PCO]
-STR_NAME    :파이프
-
-[POSTBOX]
-STR_NAME    :영국식 우편함
-
-[PST]
-STR_NAME    :파이프
-
-[PTJ]
-STR_NAME    :파이프
-
-[PTK]
-STR_NAME    :파이프
-
-[PVA]
-STR_NAME    :파이프
-
-[RBRICK01]
-STR_NAME    :붉은 벽돌 뒤집한 지붕 조각
-
-[RBRICK02]
-STR_NAME    :붉은 벽돌 구석 지붕 조각
-
-[RBRICK03]
-STR_NAME    :붉은 벽돌 평평한 지붕 가장자리 조각
-
-[RBRICK04]
-STR_NAME    :붉은 벽돌 평평한 지붕 구석
-
-[RBRICK05]
-STR_NAME    :붉은 벽돌 지붕 조각 2
-
-[RBRICK07]
-STR_NAME    :붉은 벽돌 지붕 조각 3
-
-[RBRICK08]
-STR_NAME    :붉은 벽돌 지붕 조각 1
-
-[RCORR01]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR02]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR03]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR04]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR05]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR07]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR08]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR09]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR10]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RCORR11]
-STR_NAME    :물결 무늬 지붕 조각
-
-[RDRAB05]
-STR_NAME    :칙칙하고 작은 뾰족탑 기본
-
-[RDRAB06]
-STR_NAME    :칙칙하고 작은 탑 상단 또는 중간 섹션
-
-[RDRAB07]
-STR_NAME    :칙칙하고 작은 탑 기본
-
-[RDRAB08]
-STR_NAME    :칙칙한 뾰족탑 조각 1
-
-[RDRAB09]
-STR_NAME    :칙칙한 뾰족탑 조각 2
-
-[RDRAB10]
-STR_NAME    :칙칙한 뾰족탑 조각 3
-
-[RDRAB11]
-STR_NAME    :칙칙한 지붕 조각 1
-
-[RDRAB12]
-STR_NAME    :칙칙한 지붕 조각 2
-
-[RDRAB13]
-STR_NAME    :칙칙한 지붕 조각 3
-
-[RDRAB14]
-STR_NAME    :칙칙한 지붕 조각 4
-
-[RGEORG01]
-STR_NAME    :조지아식 지붕 끄트머리 조각 1
-
-[RGEORG02]
-STR_NAME    :조지아식 지붕 끄트머리 조각 2
-
-[RGEORG03]
-STR_NAME    :조지아식 지붕 조각 1
-
-[RGEORG04]
-STR_NAME    :조지아식 지붕 조각 2
-
-[RGEORG05]
-STR_NAME    :조지아식 지붕 조각 3
-
-[RGEORG06]
-STR_NAME    :조지아식 지붕 조각 4
-
-[RGEORG07]
-STR_NAME    :조지아식 지붕 조각 5
-
-[RGEORG08]
-STR_NAME    :조지아식 현관문 벽 조각 7
-
-[RGEORG09]
-STR_NAME    :조지아식 평평한 지붕 가장자리 1
-
-[RGEORG10]
-STR_NAME    :조지아식 평평한 지붕 가장자리 2
-
-[RGEORG11]
-STR_NAME    :조지아식 평평한 지붕 구석
-
-[RGEORG12]
-STR_NAME    :조지아식 지붕 조각 7
-
-[ROOFICE1]
-STR_NAME    :눈 지붕
-
-[ROOFICE2]
-STR_NAME    :눈 지붕
-
-[ROOFICE3]
-STR_NAME    :눈 지붕
-
-[ROOFICE4]
-STR_NAME    :눈 지붕
-
-[ROOFICE5]
-STR_NAME    :눈 지붕
-
-[ROOFICE6]
-STR_NAME    :눈 지붕
-
-[RKREML01]
-STR_NAME    :크렘린 성탑 조각 1
-
-[RKREML02]
-STR_NAME    :크렘린 성탑 조각 2
-
-[RKREML03]
-STR_NAME    :크렘린 성탑 조각 3
-
-[RKREML04]
-STR_NAME    :크렘린 지붕 조각 1
-
-[RKREML05]
-STR_NAME    :크렘린 지붕 조각 2
-
-[RKREML06]
-STR_NAME    :크렘린 작은 탑 중간 섹션
-
-[RKREML07]
-STR_NAME    :크렘린 작은 탑 기본
-
-[RKREML11]
-STR_NAME    :크렘린 작은 뾰족탑 기본
-
-[RLOG01]
-STR_NAME    :통나무집 지붕 조각
-
-[RLOG02]
-STR_NAME    :통나무집 지붕 조각
-
-[RLOG03]
-STR_NAME    :통나무집 벽 조각
-
-[RLOG04]
-STR_NAME    :통나무집 벽 조각
-
-[RLOG05]
-STR_NAME    :통나무집 지붕 조각
-
-[RMARBLE1]
-STR_NAME    :대리석 지붕
-
-[RMARBLE2]
-STR_NAME    :대리석 지붕
-
-[RMARBLE3]
-STR_NAME    :대리석 지붕
-
-[RMARBLE4]
-STR_NAME    :대리석 지붕
-
-[RMUD01]
-STR_NAME    :곡선형 진흙 벽 조각
-
-[RMUD02]
-STR_NAME    :곡선형 진흙 벽 조각
-
-[RMUD03]
-STR_NAME    :곡선형 진흙 벽 조각
-
-[RMUD05]
-STR_NAME    :진흙 지붕 조각
-
-[ROOFIG01]
-STR_NAME    :이글루 벽
-
-[ROOFIG02]
-STR_NAME    :이글루 벽
-
-[ROOFIG03]
-STR_NAME    :이글루 벽
-
-[ROOFIG04]
-STR_NAME    :이글루 벽
-
-[ROOFIG06]
-STR_NAME    :이글루 벽
-
-[RSHOGI1]
-STR_NAME    :장기 지붕
-
-[RSHOGI2]
-STR_NAME    :장기 지붕
-
-[RSHOGI3]
-STR_NAME    :장기 지붕
-
-[SMALLGEO]
-STR_NAME    :작은 지오스피어
-
-[VERTPIPE]
-STR_NAME    :얼음 파이프 섹션
-
-[ICEBARL1]
-STR_NAME    :눈 덮인 통
-
-[ICEBARL2]
-STR_NAME    :눈 덮인 통
-
-[ICEBARL3]
-STR_NAME    :눈 덮인 통
-
-[PIPEVENT]
-STR_NAME    :얼음 배기관
-
-[PIPEBASE]
-STR_NAME    :얼음 파이프 기본
-
-[RTUDOR01]
-STR_NAME    :튜더식 지붕 조각 1
-
-[RTUDOR02]
-STR_NAME    :튜더식 지붕 조각 1 확장 조각
-
-[RTUDOR03]
-STR_NAME    :튜더식 지붕 조각 2
-
-[RWDAUB01]
-STR_NAME    :초벽 지붕
-
-[RWDAUB02]
-STR_NAME    :초벽 지붕
-
-[RWDAUB03]
-STR_NAME    :초벽 지붕
-
-[SB1HSPB1]
-STR_NAME    :현수교 기본 조각
-
-[SB1HSPB2]
-STR_NAME    :현수교 기본 간격 조각
-
-[SB1HSPB3]
-STR_NAME    :현수교 중간 섹션 조각
-
-[SB2PALM1]
-STR_NAME    :탈의실 베란다
-
-[SB2SKY01]
-STR_NAME    :석재 마천루 계단 기본
-
-[SBH1TEPE]
-STR_NAME    :원뿔형 천막
-
-[SBH1WGWH]
-STR_NAME    :수레바퀴
-
-[SBH2SHLT]
-STR_NAME    :서치라이트
-
-[SBH3CAC1]
-STR_NAME    :선인장
-
-[SBH3CAC2]
-STR_NAME    :선인장
-
-[SBH3CAC3]
-STR_NAME    :선인장
-
-[SBH3CSKL]
-STR_NAME    :소 두개골
-
-[SBH3OSCR]
-STR_NAME    :롤러코스터 어워드 상
-
-[SBH3PLM1]
-STR_NAME    :야자수
-
-[SBH3PLM2]
-STR_NAME    :야자수
-
-[SBH3PLM3]
-STR_NAME    :야자수
-
-[SBH3RT66]
-STR_NAME    :66번도 팻말
-
-[SBH4TOTM]
-STR_NAME    :커다란 토템 기둥
-
-[SBSKYS01]
-STR_NAME    :석재 마천루 벽 조각
-
-[SBSKYS02]
-STR_NAME    :석재 마천루 벽 조각
-
-[SBSKYS03]
-STR_NAME    :마천루 엘리베이터 조각
-
-[SBSKYS04]
-STR_NAME    :마천루 엘리베이터 조각
-
-[SBSKYS05]
-STR_NAME    :마천루 철제 세트 1 볼록한 조각
-
-[SBSKYS06]
-STR_NAME    :마천루 철제 세트 1 오목한 조각
-
-[SBSKYS07]
-STR_NAME    :마천루 철제 세트 2 볼록한 조각
-
-[SBSKYS08]
-STR_NAME    :마천루 철제 세트 2 오목한 조각
-
-[SBSKYS09]
-STR_NAME    :마천루 철제 세트 2 오목한 조각
-
-[SBSKYS10]
-STR_NAME    :마천루 오목한 조각
-
-[SBSKYS11]
-STR_NAME    :마천루 오목한 지붕
-
-[SBSKYS12]
-STR_NAME    :마천루 볼록한 조각
-
-[SBSKYS13]
-STR_NAME    :마천루 볼록한 지붕
-
-[SBSKYS14]
-STR_NAME    :마천루 지붕 조각
-
-[SBSKYS15]
-STR_NAME    :마천루 지붕 조각
-
-[SBSKYS16]
-STR_NAME    :마천루 지붕 조각
-
-[SBSKYS17]
-STR_NAME    :마천루 지붕 조각
-
-[SBSKYS18]
-STR_NAME    :마천루 지붕 조각
-
-[SBWIND01]
-STR_NAME    :풍화된 오목한 벽 구석
-
-[SBWIND02]
-STR_NAME    :풍화된 오목한 지붕 구석
-
-[SBWIND03]
-STR_NAME    :풍화된 오목한 벽 구석
-
-[SBWIND04]
-STR_NAME    :풍화된 볼록한 벽 구석
-
-[SBWIND05]
-STR_NAME    :풍화된 볼록한 지붕 구석
-
-[SBWIND06]
-STR_NAME    :풍화된 볼록한 벽 구석
-
-[SBWIND07]
-STR_NAME    :풍화된 바위 층 기반
-
-[SBWIND08]
-STR_NAME    :풍화된 바위 층 기반
-
-[SBWIND09]
-STR_NAME    :풍화된 바위 층 중간 섹션
-
-[SBWIND10]
-STR_NAME    :풍화된 바위 층 중간 섹션
-
-[SBWIND11]
-STR_NAME    :풍화된 바위 층 중간 섹션
-
-[SBWIND12]
-STR_NAME    :풍화된 바위 층 중간 섹션
-
-[SBWIND13]
-STR_NAME    :풍화된 바위 층 꼭대기
-
-[SBWIND14]
-STR_NAME    :풍화된 바위 층 꼭대기
-
-[SBWIND15]
-STR_NAME    :풍화된 지붕 평평한 지붕 조각
-
-[SBWIND16]
-STR_NAME    :풍화된 지붕 평평한 지붕 조각
-
-[SBWIND17]
-STR_NAME    :풍화된 지붕 평평한 지붕 조각
-
-[SBWIND18]
-STR_NAME    :풍화된 바닥 조각
-
-[SBWIND19]
-STR_NAME    :풍화된 바닥 조각
-
-[SBWIND20]
-STR_NAME    :풍화된 벽 기본
-
-[SBWIND21]
-STR_NAME    :풍화된 벽 기본
-
-[SBWPLM01]
-STR_NAME    :탈의실 파라솔
-
-[SBWPLM02]
-STR_NAME    :탈의실 베란다
-
-[SBWPLM03]
-STR_NAME    :탈의실 지붕 조각
-
-[SBWPLM04]
-STR_NAME    :탈의실 지붕 조각
-
-[SBWPLM05]
-STR_NAME    :탈의실 지붕 조각
-
-[SBWPLM06]
-STR_NAME    :탈의실 벽 조각
-
-[SBWPLM07]
-STR_NAME    :탈의실 벽 조각
-
-[SBWPLM08]
-STR_NAME    :탈의실 벽 조각
-
-[TALLLAN1]
-STR_NAME    :키 큰 초롱
-
-[TALLLAN2]
-STR_NAME    :키 큰 초롱
-
-[TERRARMY]
-STR_NAME    :병마용
-
-[TJBLOCK1]
-STR_NAME    :마하라자 궁전 조각
-
-[TJBLOCK2]
-STR_NAME    :마하라자 궁전 조각
-
-[TJBLOCK3]
-STR_NAME    :마하라자 궁전 조각
-
-[TNT1]
-STR_NAME    :TNT 무더기
-
-[TNT2]
-STR_NAME    :TNT 통
-
-[TNT3]
-STR_NAME    :TNT 기폭장치
-
-[TNT4]
-STR_NAME    :TNT 상자
-
-[TRCKPRT1]
-STR_NAME    :다이아몬드 카트
-
-[TRCKPRT2]
-STR_NAME    :빈 카트
-
-[TRCKPRT3]
-STR_NAME    :다이아몬드 수갱
-
-[TRCKPRT4]
-STR_NAME    :카트 수갱
-
-[TRCKPRT5]
-STR_NAME    :굽은 트랙
-
-[TRCKPRT6]
-STR_NAME    :끊어진 트랙
-
-[TRCKPRT7]
-STR_NAME    :끄트머리 트랙
-
-[TRCKPRT8]
-STR_NAME    :분기 트랙
-
-[TRCKPRT9]
-STR_NAME    :직선 트랙
-
-[UKPHONE]
-STR_NAME    :영국 공중전화 박스
-
-[WABORG01]
-STR_NAME    :호주 원주민 토착 예술 세트 조각
-
-[WABORG02]
-STR_NAME    :호주 원주민 토착 예술 세트 조각
-
-[WABORG03]
-STR_NAME    :호주 원주민 토착 예술 세트 조각
-
-[WABORG04]
-STR_NAME    :호주 원주민 토착 예술 세트 조각
-
-[WABORG05]
-STR_NAME    :호주 원주민 토착 예술 세트 조각
-
-[WABORG06]
-STR_NAME    :호주 원주민 토착 예술 세트 조각
-
-[WABORG07]
-STR_NAME    :호주 원주민 토착 예술 세트 조각
-
-[WABORG08]
-STR_NAME    :호주 원주민 토착 예술 세트 조각
-
-[WAZTEC01]
-STR_NAME    :사원 지붕 조각
-
-[WAZTEC02]
-STR_NAME    :사원 지붕 조각
-
-[WAZTEC03]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC04]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC05]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC06]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC07]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC08]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC09]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC10]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC11]
-STR_NAME    :사원 벽 구석 조각
-
-[WAZTEC12]
-STR_NAME    :사원 벽 구석 조각
-
-[WAZTEC13]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC14]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC15]
-STR_NAME    :사원 지붕 조각
-
-[WAZTEC16]
-STR_NAME    :사원 지붕 조각
-
-[WAZTEC17]
-STR_NAME    :사원 지붕 조각
-
-[WAZTEC18]
-STR_NAME    :사원 지붕 조각
-
-[WAZTEC19]
-STR_NAME    :사원 지붕 조각
-
-[WAZTEC20]
-STR_NAME    :사원 계단 조각
-
-[WAZTEC21]
-STR_NAME    :사원 계단 조각
-
-[WAZTEC22]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC23]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC24]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC25]
-STR_NAME    :사원 벽 조각
-
-[WAZTEC26]
-STR_NAME    :사원 벽 구석 조각
-
-[WAZTEC27]
-STR_NAME    :사원 벽 구석 조각
-
-[WCUZCO01]
-STR_NAME    :기념물 벽 조각
-
-[WCUZCO02]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO03]
-STR_NAME    :기념물 벽 조각
-
-[WCUZCO04]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO05]
-STR_NAME    :기념물 벽 조각
-
-[WCUZCO06]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO07]
-STR_NAME    :기념물 벽 조각
-
-[WCUZCO08]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO09]
-STR_NAME    :기념물 벽 조각
-
-[WCUZCO10]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO11]
-STR_NAME    :기념물 벽 조각
-
-[WCUZCO12]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO13]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO14]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO15]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO16]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO17]
-STR_NAME    :기념물 벽 조각
-
-[WCUZCO18]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WCUZCO19]
-STR_NAME    :기념물 계단 조각
-
-[WCUZCO20]
-STR_NAME    :기념물 계단 조각
-
-[WCUZCO21]
-STR_NAME    :기념물 벽 구석 조각
-
-[WCUZCO22]
-STR_NAME    :기념물 벽 구석 조각
-
-[WCUZCO23]
-STR_NAME    :기념물 벽 구석 조각
-
-[WCUZCO24]
-STR_NAME    :기념물 벽 구석 조각
-
-[WCUZCO25]
-STR_NAME    :기념물 계단 조각
-
-[WCUZCO26]
-STR_NAME    :기념물 계단 조각
-
-[WCUZCO27]
-STR_NAME    :기념물 벽 조각
-
-[WCUZCO28]
-STR_NAME    :기념물 부서진 벽 조각
-
-[WDRAB09]
-STR_NAME    :칙칙한 계단 조각 1
-
-[WDRAB10]
-STR_NAME    :칙칙한 벽 조각 9
-
-[WDRAB11]
-STR_NAME    :칙칙한 벽 조각 10
-
-[WDRAB12]
-STR_NAME    :칙칙한 벽 조각 11
-
-[WDRAB13]
-STR_NAME    :칙칙하고 점진적인 조각 2
-
-[WGEORG07]
-STR_NAME    :조지아식 지면 바닥 벽 조각 4
-
-[WGEORG08]
-STR_NAME    :조지아식 지면 바닥 벽 조각 5
-
-[WGEORG09]
-STR_NAME    :조지아식 지면 바닥 벽 조각 6
-
-[WGEORG10]
-STR_NAME    :조지아식 벽 조각 4
-
-[WGEORG11]
-STR_NAME    :조지아식 벽 조각 5
-
-[WGEORG12]
-STR_NAME    :조지아식 벽 조각 6
-
-[WKREML01]
-STR_NAME    :크렘린 점진적 벽 조각 1
-
-[WKREML02]
-STR_NAME    :크렘린 점진적 벽 조각 2
-
-[WKREML03]
-STR_NAME    :크렘린 벽 조각 1
-
-[WKREML04]
-STR_NAME    :크렘린 벽 조각 2
-
-[WKREML05]
-STR_NAME    :크렘린 벽 조각 3
-
-[WKREML06]
-STR_NAME    :크렘린 벽 조각 4
-
-[WMAYAN01]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN02]
-STR_NAME    :잃어버린 도시 평평한 지붕 조각
-
-[WMAYAN03]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN04]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN05]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN06]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN07]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN08]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN09]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN10]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN11]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN12]
-STR_NAME    :잃어버린 도시 계단 조각
-
-[WMAYAN13]
-STR_NAME    :잃어버린 도시 계단 조각
-
-[WMAYAN14]
-STR_NAME    :잃어버린 도시 계단 조각
-
-[WMAYAN15]
-STR_NAME    :잃어버린 도시 계단 조각
-
-[WMAYAN16]
-STR_NAME    :잃어버린 도시 계단 조각
-
-[WMAYAN17]
-STR_NAME    :잃어버린 도시 기둥 조각
-
-[WMAYAN18]
-STR_NAME    :잃어버린 도시 기둥 조각
-
-[WMAYAN20]
-STR_NAME    :잃어버린 도시 벽 조각
-
-[WMAYAN21]
-STR_NAME    :잃어버린 도시 평평한 지붕 조각
-
-[WMAYAN22]
-STR_NAME    :잃어버린 도시 평평한 지붕 조각
-
-[WMAYAN23]
-STR_NAME    :잃어버린 도시 벽 구석 조각
-
-[WMAYAN24]
-STR_NAME    :잃어버린 도시 벽 구석 조각
-
-[WMAYAN25]
-STR_NAME    :잃어버린 도시 벽 구석 조각
-
-[WMAYAN26]
-STR_NAME    :잃어버린 도시 벽 구석 조각
-
-[WNAUTI01]
-STR_NAME    :해상 지붕 조각
-
-[WNAUTI02]
-STR_NAME    :해상 지붕 조각
-
-[WNAUTI03]
-STR_NAME    :해상 지붕 조각
-
-[WNAUTI04]
-STR_NAME    :해상 지붕 조각
-
-[WNAUTI05]
-STR_NAME    :해상 지붕 조각
-
-[WTUDOR12]
-STR_NAME    :튜더식 벽 조각 4
-
-[WTUDOR13]
-STR_NAME    :튜더식 지면 바닥 벽 조각
-
-[WTUDOR14]
-STR_NAME    :튜더식 지면 바닥 벽 조각 1
-
-[WTUDOR15]
-STR_NAME    :튜더식 지면 바닥 벽 조각 2
-
-[WTUDOR16]
-STR_NAME    :튜더식 지면 바닥 벽 조각 3
-
-[WTUDOR17]
-STR_NAME    :튜더식 지면 바닥 벽 조각 4
-
-[WTUDOR18]
-STR_NAME    :튜더식 지면 바닥 벽 조각 5
-
-[CAMPFANI]
-STR_NAME    :캠프 파이어
-
-[CONVEYR1]
-STR_NAME    :컨베이어 벨트 구석
-
-[CONVEYR2]
-STR_NAME    :컨베이어 벨트 상승
-
-[CONVEYR3]
-STR_NAME    :컨베이어 벨트 끄트머리
-
-[CONVEYR4]
-STR_NAME    :곧은 컨베이어 벨트
-
-[CONVEYR5]
-STR_NAME    :컨베이어 벨트 구석 역방향
-
-[FISHHOLE]
-STR_NAME    :낚시 구멍
-
-[FLAMNGO1]
-STR_NAME    :먹이를 먹는 홍학
-
-[FLAMNGO2]
-STR_NAME    :쳐다보는 홍학
-
-[FLAMNGO3]
-STR_NAME    :몸치장을 하는 홍학
-
-[FOUNTARC]
-STR_NAME    :오스트레일리아 분수 세트 2
-
-[FOUNTROW]
-STR_NAME    :오스트레일리아 분수 세트 2
-
-[G1DANCER]
-STR_NAME    :마디 그라 댄서
-
-[G2DANCER]
-STR_NAME    :마디 그라 댄서
-
-[INUIT]
-STR_NAME    :이누이트
-
-[INUIT2]
-STR_NAME    :이누이트
-
-[INFLAG01]
-STR_NAME    :인디언 실크 깃발
-
-[INFLAG02]
-STR_NAME    :인디언 실크 깃발
-
-[INFLAG03]
-STR_NAME    :인디언 실크 깃발
-
-[INFLAG04]
-STR_NAME    :인디언 실크 깃발
-
-[INFLAG05]
-STR_NAME    :인디언 실크 깃발
-
-[JPFLAG01]
-STR_NAME    :일본식 실크 깃발
-
-[JPFLAG02]
-STR_NAME    :일본식 실크 깃발
-
-[JPFLAG03]
-STR_NAME    :일본식 실크 깃발
-
-[JPFLAG04]
-STR_NAME    :일본식 실크 깃발
-
-[JPFLAG05]
-STR_NAME    :일본식 실크 깃발
-
-[JPFLAG06]
-STR_NAME    :일본식 실크 깃발
-
-[OILPUMP]
-STR_NAME    :오일 펌프
-
-[SBALLOON]
-STR_NAME    :움직이는 풍선
-
-[WCUZFOUN]
-STR_NAME    :기념물 분수
-
-[WROPECOR]
-STR_NAME    :해상 구석 지붕 울타리
-
-[WROPESWA]
-STR_NAME    :해상 지붕 울타리
-
-[1X2ABR01]
-STR_NAME    :원주민 평면 타일
-
-[1X2ABR02]
-STR_NAME    :원주민 뱀 예술작품
-
-[1X2ABR03]
-STR_NAME    :원주민의 혼이 담긴 예수랒ㄱ품
-
-[1X2AZT01]
-STR_NAME    :머리가 있는 사원 벽 조각
-
-[1X2AZT02]
-STR_NAME    :머리가 있는 사원의 부서진 벽 조각
-
-[1X2LGCHM]
-STR_NAME    :통나무집 측면 굴뚝
-
-[AFRCLION]
-STR_NAME    :사자
-
-[AFRRHINO]
-STR_NAME    :코뿔소
-
-[ATRACTOR]
-STR_NAME    :트랙터
-
-[AFRZEBRA]
-STR_NAME    :얼룩말
-
-[1X4BRG01]
-STR_NAME    :현수교 시작 측면 1
-
-[1X4BRG02]
-STR_NAME    :현수교 시작 측면 2
-
-[1X4BRG03]
-STR_NAME    :현수교 탑 측면 1
-
-[1X4BRG04]
-STR_NAME    :현수교 탑 측면 2
-
-[1X4BRG05]
-STR_NAME    :현수교 케이블 조각
-
-[3X3ATRE1]
-STR_NAME    :정글 나무 2
-
-[3X3MANTR]
-STR_NAME    :맹그로브 나무
-
-[50ROCKET]
-STR_NAME    :1950년대 로켓
-
-[BamboRf1]
-STR_NAME    :대나무 지붕
-
-[BAMBORF2]
-STR_NAME    :대나무 지붕
-
-[BamboRf3]
-STR_NAME    :대나무 지붕
-
-[BIGGEOSP]
-STR_NAME    :대형 구
-
-[CIRCUS]
-STR_NAME    :서커스
-
-[COWBOY01]
-STR_NAME    :카우보이 1
-
-[COWBOY02]
-STR_NAME    :카우보이 2
-
-[DAMTOWER]
-STR_NAME    :댐 타워
-
-[EIFFEL]
-STR_NAME    :에펠 탑
-
-[FATBUDDA]
-STR_NAME    :살찐 부처상
-
-[GIRAFFE1]
-STR_NAME    :기린 1
-
-[GIRAFFE2]
-STR_NAME    :기린 2
-
-[GOLDBUDA]
-STR_NAME    :금부처상
-
-[HIPPO01]
-STR_NAME    :하마 1
-
-[HIPPO02]
-STR_NAME    :하마 2
-
-[INDIANST]
-STR_NAME    :아메리카 원주민
-
-[LARGEJU1]
-STR_NAME    :큰 열대우림 속 나무
-
-[LINCOLNS]
-STR_NAME    :워싱턴 동상
-
-[RDRAB01]
-STR_NAME    :칙칙한 대형 탑 중간 조각
-
-[RDRAB02]
-STR_NAME    :칙칙한 대형 탑 기본
-
-[RDRAB03]
-STR_NAME    :칙칙한 대형 탑 상단
-
-[RDRAB04]
-STR_NAME    :칙칙한 대형 탑 부서진 기본
-
-[REDWOOD]
-STR_NAME    :삼나무
-
-[RKREML08]
-STR_NAME    :크렘린 대형 탑 기본
-
-[RKREML09]
-STR_NAME    :크렘린 대형 탑 상단
-
-[RKREML10]
-STR_NAME    :크렘린 대형 탑 중간 조각
-
-[RTUDOR05]
-STR_NAME    :튜더식 지붕 조각 3
-
-[RTUDOR06]
-STR_NAME    :튜더식 지붕 조각 4
-
-[SHIVA]
-STR_NAME    :시바
-
-[SOFLIBRT]
-STR_NAME    :자유의 여신상
-
-[SPUTNIK]
-STR_NAME    :스푸트니크
-
-[TAJMCBSE]
-STR_NAME    :마하라자 궁전 탑 기본
-
-[TAJMCOLM]
-STR_NAME    :마하라자 궁전 탑 기둥
-
-[TAJMCTOP]
-STR_NAME    :마하라자 궁전 탑 상단
-
-[1X2GLAMA]
-STR_NAME    :황금 라마
-
-[3X3ALTRE]
-STR_NAME    :표범이 있는 정글의 나무
-
-[3X3ATRE2]
-STR_NAME    :정글의 나무 1
-
-[3X3ATRE3]
-STR_NAME    :포도가 열린 정글의 나무
-
-[3X3EUCAL]
-STR_NAME    :유칼립투스 나무
-
-[3X3HMSEN]
-STR_NAME    :HMS 인데버
-
-[ADULTELE]
-STR_NAME    :인도 코끼리 성체
-
-[ATOMIUM]
-STR_NAME    :아토미움
-
-[BIGBEN]
-STR_NAME    :빅벤과 영국 국회 의사당
-
-[BIGDISH]
-STR_NAME    :위성 접시
-
-[CDRAGON]
-STR_NAME    :용
-
-[EASERLND]
-STR_NAME    :이스터 섬 조각상
-
-[EVILSAM]
-STR_NAME    :나쁜 사무라이
-
-[GDSTAUE1]
-STR_NAME    :황금 조각상 1
-
-[GDSTAUE2]
-STR_NAME    :황금 조각상 2
-
-[GEISHA]
-STR_NAME    :게이샤
-
-[GOODSAM]
-STR_NAME    :좋은 사무라이
-
-[GWOCTUR1]
-STR_NAME    :중국 만리장성 직선 탑
-
-[GWOCTUR2]
-STR_NAME    :중국 만리장성 구석 탑
-
-[HELIPAD]
-STR_NAME    :헬리패드
-
-[ICEFOR01]
-STR_NAME    :결빙
-
-[ICEFOR02]
-STR_NAME    :결빙
-
-[MBSKYR01]
-STR_NAME    :마천루 지붕 조각
-
-[MBSKYR02]
-STR_NAME    :마천루 끝
-
-[OVRGRWNT]
-STR_NAME    :오래된 잡초 나무
-
-[POGODAL]
-STR_NAME    :탑
-
-[PAGODAM]
-STR_NAME    :탑
-
-[PAGODAS]
-STR_NAME    :탑
-
-[PAGODATW]
-STR_NAME    :탑
-
-[RADAR]
-STR_NAME    :레이더 접시
-
-[SPACEORB]
-STR_NAME    :천체
-
-[SUNKEN]
-STR_NAME    :침몰선
-
-[TAJMDOME]
-STR_NAME    :마하라자 궁전 돔
-
-[WINDMILL]
-STR_NAME    :풍차
-
-[TMARCH1]
-STR_NAME    :마하라자 궁전 아치 1
-
-[TMARCH2]
-STR_NAME    :마하라자 궁전 아치 2
-
-[W2CORR01]
-STR_NAME    :물결 무늬 벽 조각
-
-[W2CORR02]
-STR_NAME    :물결 무늬 벽 조각
-
-[W2CORR03]
-STR_NAME    :물결 무늬 벽 조각
-
-[W2CORR04]
-STR_NAME    :물결 무늬 벽 조각
-
-[W2CORR05]
-STR_NAME    :물결 무늬 벽 조각
-
-[W2CORR06]
-STR_NAME    :물결 무늬 벽 조각
-
-[W2CORR07]
-STR_NAME    :물결 무늬 벽 조각
-
-[W2CORR08]
-STR_NAME    :물결 무늬 벽 조각
-
-[W3CORR01]
-STR_NAME    :물결 무늬 벽 조각
-
-[W3CORR02]
-STR_NAME    :물결 무늬 벽 조각
-
-[W3CORR03]
-STR_NAME    :물결 무늬 벽 조각
-
-[W3CORR04]
-STR_NAME    :물결 무늬 벽 조각
-
-[W3CORR05]
-STR_NAME    :물결 무늬 벽 조각
-
-[W3CORR06]
-STR_NAME    :물결 무늬 벽 조각
-
-[W3CORR07]
-STR_NAME    :물결 무늬 벽 조각
-
-[W3CORR08]
-STR_NAME    :물결 무늬 벽 조각
-
-[WALLNA01]
-STR_NAME    :해상 벽 조각
-
-[WALLNA02]
-STR_NAME    :해상 벽 조각
-
-[WALLNA03]
-STR_NAME    :해상 벽 조각
-
-[WALLNA04]
-STR_NAME    :해상 벽 조각
-
-[WALLNA05]
-STR_NAME    :해상 벽 조각
-
-[WALLNA06]
-STR_NAME    :해상 벽 조각
-
-[WALLNA07]
-STR_NAME    :해상 벽 조각
-
-[WALLNA08]
-STR_NAME    :해상 벽 조각
-
-[WALLNA09]
-STR_NAME    :해상 벽 조각
-
-[WALLNA10]
-STR_NAME    :해상 벽 조각
-
-[WALLNA11]
-STR_NAME    :해상 벽 조각
-
-[WALLNA12]
-STR_NAME    :해상 벽 조각
-
-[WALLNA13]
-STR_NAME    :해상 벽 조각
-
-[WALLNA14]
-STR_NAME    :해상 벽 조각
-
-[WWDAUB01]
-STR_NAME    :초벽 벽
-
-[WWDAUB02]
-STR_NAME    :초벽 벽
-
-[WWDAUB03]
-STR_NAME    :초벽 벽
-
-[WWDAUB04]
-STR_NAME    :초벽 벽
-
-[WWDAUB05]
-STR_NAME    :초벽 벽
-
-[WWDAUB06]
-STR_NAME    :초벽 벽
-
-[WWDAUB07]
-STR_NAME    :초벽 벽
-
-[WBambo01]
-STR_NAME    :대나무 벽
-
-[WBambo02]
-STR_NAME    :대나무 벽
-
-[WBambo03]
-STR_NAME    :대나무 벽
-
-[WBAMBO04]
-STR_NAME    :대나무 벽
-
-[WBambo05]
-STR_NAME    :대나무 벽
-
-[WBambo11]
-STR_NAME    :대나무 벽
-
-[WBambo12]
-STR_NAME    :대나무 벽
-
-[WBambo13]
-STR_NAME    :대나무 벽
-
-[WBambo14]
-STR_NAME    :대나무 벽
-
-[WBambo15]
-STR_NAME    :대나무 벽
-
-[WBambo21]
-STR_NAME    :대나무 벽
-
-[WBRICK01]
-STR_NAME    :붉은 벽돌 벽 조각 1
-
-[WBRICK02]
-STR_NAME    :붉은 벽돌 벽 조각 2
-
-[WBRICK03]
-STR_NAME    :붉은 벽돌 벽 조각 3
-
-[WBRICK04]
-STR_NAME    :붉은 벽돌 벽 조각 4
-
-[WBRICK05]
-STR_NAME    :붉은 벽돌 벽 조각 5
-
-[WBRICK08]
-STR_NAME    :붉은 벽돌 벽 조각 8
-
-[WBRICK11]
-STR_NAME    :붉은 벽돌 벽 조각 11
-
-[WBRICK12]
-STR_NAME    :붉은 벽돌 벽 조각 12
-
-[WBRICK13]
-STR_NAME    :붉은 벽돌 벽 조각 13
-
-[WCORR01]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR02]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR03]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR04]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR05]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR06]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR07]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR08]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR09]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR10]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR11]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR12]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR13]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR14]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR15]
-STR_NAME    :물결 무늬 벽 조각
-
-[WCORR16]
-STR_NAME    :물결 무늬 벽 조각
-
-[WDRAB01]
-STR_NAME    :칙칙한 벽 조각 1
-
-[WDRAB02]
-STR_NAME    :칙칙한 벽 조각 2
-
-[WDRAB03]
-STR_NAME    :칙칙한 벽 조각 3
-
-[WDRAB04]
-STR_NAME    :칙칙한 벽 조각 4
-
-[WDRAB05]
-STR_NAME    :칙칙한 벽 조각 5
-
-[WDRAB06]
-STR_NAME    :칙칙한 벽 조각 6
-
-[WDRAB07]
-STR_NAME    :칙칙한 벽 조각 7
-
-[WDRAB08]
-STR_NAME    :칙칙한 벽 조각 8
-
-[WGEORG01]
-STR_NAME    :조지아식 벽 조각 1
-
-[WGEORG02]
-STR_NAME    :조지아식 지면 바닥 벽 조각 1
-
-[WGEORG03]
-STR_NAME    :조지아식 벽 조각 2
-
-[WGEORG04]
-STR_NAME    :조지아식 지면 바닥 벽 조각 2
-
-[WGEORG05]
-STR_NAME    :조지아식 벽 조각 3
-
-[WGEORG06]
-STR_NAME    :조지아식 지면 바닥 벽 조각 3
-
-[WGWOC1]
-STR_NAME    :중국 만리장성 앞쪽 벽 조각
-
-[WGWOC2]
-STR_NAME    :중국 만리장성 뒤쪽 벽 조각
-
-[WGWOC3]
-STR_NAME    :중국 만리장성 중간 벽 조각
-
-[WALLICE1]
-STR_NAME    :얼음 벽
-
-[WALLICE2]
-STR_NAME    :얼음 벽
-
-[WALLICE3]
-STR_NAME    :얼음 벽
-
-[WALLICE4]
-STR_NAME    :얼음 벽
-
-[WALLICE5]
-STR_NAME    :얼음 벽
-
-[WALLICE6]
-STR_NAME    :얼음 벽
-
-[WALLICE7]
-STR_NAME    :얼음 벽
-
-[WALLICE8]
-STR_NAME    :얼음 벽
-
-[WALLICE9]
-STR_NAME    :얼음 벽
-
-[WALLIC10]
-STR_NAME    :얼음 벽
-
-[WIGLOO1]
-STR_NAME    :이글루 벽
-
-[WIGLOO2]
-STR_NAME    :이글루 벽
-
-[WKREML07]
-STR_NAME    :크렘린 벽 조각 5
-
-[WKREML08]
-STR_NAME    :크렘린 벽 조각 6
-
-[WKREML09]
-STR_NAME    :크렘린 벽 조각 7
-
-[WKREML10]
-STR_NAME    :크렘린 벽 조각 8
-
-[WLOG01]
-STR_NAME    :통나무집 벽 조각
-
-[WLOG02]
-STR_NAME    :통나무집 벽 조각
-
-[WLOG03]
-STR_NAME    :통나무집 벽 조각
-
-[WLOG04]
-STR_NAME    :통나무집 벽 조각
-
-[WLOG05]
-STR_NAME    :통나무집 벽 조각
-
-[WLOG06]
-STR_NAME    :통나무집 벽 조각
-
-[WMARBLE1]
-STR_NAME    :화려하게 장식된 대리석 벽
-
-[WMARBLE2]
-STR_NAME    :화려하게 장식된 대리석 벽
-
-[WMARBLE3]
-STR_NAME    :화려하게 장식된 대리석 벽
-
-[WMARBLE4]
-STR_NAME    :화려하게 장식된 대리석 벽
-
-[WMARBLE5]
-STR_NAME    :화려하게 장식된 대리석 벽
-
-[WMARBLE6]
-STR_NAME    :화려하게 장식된 대리석 벽
-
-[WMARBPL1]
-STR_NAME    :평탄한 대리석 벽
-
-[WMARBPL2]
-STR_NAME    :평탄한 대리석 벽
-
-[WMARBPL3]
-STR_NAME    :평탄한 대리석 벽
-
-[WMARBPL4]
-STR_NAME    :평탄한 대리석 벽
-
-[WMARBPL5]
-STR_NAME    :평탄한 대리석 벽
-
-[WMARBPL6]
-STR_NAME    :평탄한 대리석 벽
-
-[WMARBPL7]
-STR_NAME    :평탄한 대리석 벽
-
-[WMUD01]
-STR_NAME    :진흙 벽 조각
-
-[WMUD02]
-STR_NAME    :진흙 벽 조각
-
-[WMUD03]
-STR_NAME    :진흙 벽 조각
-
-[WMUD04]
-STR_NAME    :진흙 벽 조각
-
-[WMUD05]
-STR_NAME    :진흙 벽 조각
-
-[WMUD06]
-STR_NAME    :진흙 벽 조각
-
-[WMUD07]
-STR_NAME    :진흙 벽 조각
-
-[WMUD08]
-STR_NAME    :진흙 벽 조각
-
-[WPALM01]
-STR_NAME    :탈의실 벽 조각
-
-[WPALM02]
-STR_NAME    :탈의실 벽 조각
-
-[WPALM03]
-STR_NAME    :탈의실 벽 조각
-
-[WPALM04]
-STR_NAME    :탈의실 벽 조각
-
-[WPALM05]
-STR_NAME    :탈의실 벽 조각
-
-[WSHOGI01]
-STR_NAME    :쇼기 벽
-
-[WSHOGI02]
-STR_NAME    :쇼기 벽
-
-[WSHOGI03]
-STR_NAME    :쇼기 벽
-
-[WSHOGI04]
-STR_NAME    :쇼기 벽
-
-[WSHOGI05]
-STR_NAME    :쇼기 벽
-
-[WSHOGI06]
-STR_NAME    :쇼기 벽
-
-[WSHOGI07]
-STR_NAME    :쇼기 벽
-
-[WSHOGI08]
-STR_NAME    :쇼기 벽
-
-[WSHOGI09]
-STR_NAME    :쇼기 벽
-
-[WSHOGI10]
-STR_NAME    :쇼기 벽
-
-[WSHOGI11]
-STR_NAME    :쇼기 벽
-
-[WSHOGI12]
-STR_NAME    :쇼기 벽
-
-[WSHOGI13]
-STR_NAME    :쇼기 벽
-
-[WSHOGI14]
-STR_NAME    :쇼기 벽
-
-[WSHOGI15]
-STR_NAME    :쇼기 벽
-
-[WSHOGI16]
-STR_NAME    :쇼기 벽
-
-[WSHOGI17]
-STR_NAME    :쇼기 벽
-
-[WSKYSC01]
-STR_NAME    :마천루 철제 세트 2 벽 조각
-
-[WSKYSC02]
-STR_NAME    :마천루 철제 세트 2 벽 조각
-
-[WSKYSC03]
-STR_NAME    :마천루 철제 세트 1 벽 조각
-
-[WSKYSC04]
-STR_NAME    :마천루 리프트 조각 조각
-
-[WSKYSC05]
-STR_NAME    :마천루 리프트 조각 조각
-
-[WSKYSC06]
-STR_NAME    :마천루 벽 조각
-
-[WSKYSC07]
-STR_NAME    :마천루 리프트 조각 조각
-
-[WSKYSC08]
-STR_NAME    :마천루 벽 조각
-
-[WSKYSC09]
-STR_NAME    :마천루 벽 조각
-
-[WSKYSC10]
-STR_NAME    :석재 마천루 벽 조각
-
-[WSKYSC11]
-STR_NAME    :석재 마천루 벽 조각
-
-[WSKYSC12]
-STR_NAME    :석재 마천루 벽 조각
-
-[WTUDOR01]
-STR_NAME    :튜더식 지면 바닥 벽 조각 1
-
-[WTUDOR02]
-STR_NAME    :튜더식 지면 바닥 벽 조각 2
-
-[WTUDOR03]
-STR_NAME    :튜더식 지면 바닥 벽 조각 3
-
-[WTUDOR04]
-STR_NAME    :튜더식 지면 바닥 벽 조각 4
-
-[WTUDOR05]
-STR_NAME    :튜더식 지면 바닥 벽 조각 5
-
-[WTUDOR06]
-STR_NAME    :튜더식 지면 바닥 벽 조각 6
-
-[WTUDOR07]
-STR_NAME    :튜더식 지면 바닥 벽 조각 7
-
-[WTUDOR08]
-STR_NAME    :튜더식 지면 바닥 벽 조각 8
-
-[WTUDOR09]
-STR_NAME    :튜더식 벽 조각 1
-
-[WTUDOR10]
-STR_NAME    :튜더식 벽 조각 2
-
-[WTUDOR11]
-STR_NAME    :튜더식 벽 조각 3
-
-[WWIND03]
-STR_NAME    :풍화된 벽 조각
-
-[WWIND04]
-STR_NAME    :풍화된 벽 조각
-
-[WWIND05]
-STR_NAME    :풍화된 벽 조각
-
-[WWIND06]
-STR_NAME    :풍화된 벽 조각
-
-[WBamboPC]
-STR_NAME    :대나무 벽
-
-[SCGAFRIC]
-STR_NAME    :아프리카 테마
-
-[SCGARTIC]
-STR_NAME    :남극 테마
-
-[SCGASIA]
-STR_NAME    :아시아 테마
-
-[SCGAUSTR]
-STR_NAME    :오스트레일리아 테마
-
-[SCGEUROP]
-STR_NAME    :유럽 테마
-
-[SCGNAMRC]
-STR_NAME    :북아메리카 테마
-
-[SCGSAMER]
-STR_NAME    :남아메리카 테마
-
-[AFRICENT]
-STR_NAME    :아프리카식 공원 입구
-
-[EUROENT]
-STR_NAME    :유럽식 공원 입구
-
-[ICEENT]
-STR_NAME    :얼음 공원 입구
-
-[JAPENT]
-STR_NAME    :일본식 공원 입구
-
-[NAENT]
-STR_NAME    :북아메리카식 공원 입구
-
-[OZENTRAN]
-STR_NAME    :오스트레일리아식 공원 입구
-
-[SAMERENT]
-STR_NAME    :남아메리카식 공원 입구
-
-###############################################################################
-## Time Twister Objects
-###############################################################################
-[SCHOOLBS]
-STR_NAME    :스쿨 버스 라이드
-STR_DESC    :노란 버스 테마의 모형 전차
-STR_CPTY    :차량당 10명의 승객
-
-[TELEPTER]
-STR_NAME    :텔레포터
-STR_DESC    :탑승객이 수직 탑을 따라 이동하는 엘리베이터에 올라타 여러 높이를 손쉽게 이동하는 놀이기구
-STR_CPTY    :승객 16명
-
-[ZEPLELIN]
-STR_NAME    :비행선 모노레일 차량
-STR_DESC    :유선형의 전두부와 후두부 차량을 가진 대용량의 모노레일 차량
-STR_CPTY    :차량당 승객 5명 또는 10명
-
-[BMVOCTPS]
-STR_NAME    :외계 전망탑
-STR_DESC    :높은 탑을 따라 올라가면서 회전하는 전망대 객실
-STR_CPTY    :승객 20명
-
-[CYCLOPSX]
-STR_NAME    :사이클롭스 라이드
-STR_DESC    :대형 사이클롭스의 눈을 운전하는 놀이기구
-STR_CPTY    :차량당 1명의 손님
-
-[FIGTKNIT]
-STR_NAME    :파이팅 나이트 범퍼카
-STR_DESC    :말 테마의 범퍼카에서 마상 창 시합을 하는 느낌을 받게 해주는 놀이기구
-STR_CPTY    :차량당 1명의 손님
-
-[FLWRPOWR]
-STR_NAME    :가든 파워 라이드
-STR_DESC    :중앙 모터에 의해 움직이며 탑승객이 조종할 수 있는 꽃 모양의 작은 보트
-STR_CPTY    :차량당 승객 1명
-
-[FUNHOUSE]
-STR_NAME    :펀 하우스
-STR_DESC    :움직이는 벽과 바닥이 지나가는 탑승객들의 방향을 헷갈리게 만드는 건물
-STR_CPTY    :손님 5명
-
-[HALOFMRS]
-STR_NAME    :거울의 방
-STR_DESC    :보는 사람의 상을 왜곡시키는, 휘어진 거울이 있는 건물
-STR_CPTY    :손님 5명
-
-[HOVERCAR]
-STR_NAME    :호버 카 라이드
-STR_DESC    :미래의 호버 차량같은 느낌을 주기 위해 자기 부상 기술이 탑재된 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[MGR2]
-STR_NAME    :2층 회전목마
-STR_DESC    :나무로 조각된 말이 있는 전통적인 회전 목마
-STR_CPTY    :승객 32명
-
-[PEGASUSX]
-STR_NAME    :페가수스 라이드
-STR_DESC    :트랙을 따라 이동하는 페가수스가 끄는 수레 모양의 차량
-STR_CPTY    :차량당 2명의 승객
-
-[SPOKPRSN]
-STR_NAME    :유령의 감옥
-STR_DESC    :지나가는 사람들을 겁주기 위해 지하 감옥에 감금된 마네킹 인형이 있는 건물
-STR_CPTY    :손님 16명
-
-[TIMEMACH]
-STR_NAME    :타임 머신
-STR_DESC    :특수하게 고안된 구에 앉아, 시간 여행의 환상을 경험하는 놀이기구
-STR_CPTY    :손님 1명
-
-[TRICATOP]
-STR_NAME    :트리케라톱스 범퍼카
-STR_DESC    :트리케라톱스 모양의 범퍼카에 타고 서로 함께 부딛히는 차량
-STR_CPTY    :차량당 1명의 손님
-
-[BARNSTRM]
-STR_NAME    :곡예 비행기 코스터
-STR_DESC    :거대한 루프, 트위스트와 급격한 낙하 트랙을 따라 이동하며, 탑승객이 트랙 아래에 매달린 좌석에 앉는 차량
-STR_CPTY    :차량당 4명의 승객
-
-[BATTRRAM]
-STR_NAME    :공성 망치 코스터
-STR_DESC    :한 줄로 된 좌석과 나선형 리프트 힐이 있는 강철 트랙 롤러코스터
-STR_CPTY    :차량당 6명의 승객
-
-[BLCKDETH]
-STR_NAME    :블랙 데스 라이드
-STR_DESC    :반원형 트랙의 커브와 뱅킹만을 따라 이동하는 봅슬레이 모양의 차량을 타고 이리 저리 꼬여있는 트랙을 따라 내려오는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[CERBERUS]
-STR_NAME    :케르베로스 코스터
-STR_DESC    :탑승객들이 간단한 무릎 안전바만 있는 부드러운 열차에 타고 언덕을 넘으며, 많은 무중력 시간과 함께 크고 부드러운 낙하와 꼬여있는 트랙을 즐기는 놀이기구
-STR_CPTY    :차량당 4명의 승객
-
-[DRAGNFLY]
-STR_NAME    :잠자리 코스터
-STR_DESC    :하나의 레일로 이루어진 트랙에 매달린 특수 차량에 타고 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
-STR_CPTY    :차량당 승객 2명
-
-[GANSTRCR]
-STR_NAME    :갱스터 카 코스터
-STR_DESC    :역에서 선형 유도 모터에 의해 가속되어 꼬여있는 트랙을 빠른 속도로 통과하는 1920년대 테마의 갱스터 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[HARPIESX]
-STR_NAME    :하피 코스터
-STR_DESC    :누운 자세로 탑승하는 특수 차량에 탑승하여 꼬인 트랙과 전이를 앞이나 뒤로 누운 자세로 즐기는 놀이기구
-STR_CPTY    :차량당 4명의 승객
-
-[HOTRODXX]
-STR_NAME    :개조 자동차 코스터
-STR_DESC    :아주 짜릿한 공기 압축 방식으로 발진하여 차량이 수직 트랙을 향해 속력을 높인 뒤, 꼭대기에 다다르면 다시 수직으로 하강하며 다시 탑승장에 도착하는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[HOVERBKE]
-STR_NAME    :호버 바이크 라이드
-STR_DESC    :탑승객들이 미래에서 볼 만한 자전거 모양의 차량에 타고 단일 레일 트랙을 따라 이동하는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[HOVRBORD]
-STR_NAME    :호버보드 코스터
-STR_DESC    :탑승객이 미래에서 볼 만한 호버보드 위에 올라타 코너를 돌 때마다 이리 저리 자유롭게 흔들리는 차량
-STR_CPTY    :차량당 승객 2명
-
-[JETPACKX]
-STR_NAME    :제트 팩 부스터
-STR_DESC    :탑승객이 트랙의 수직 섹션을 따라 발사되는 차량에 탑승하는 놀이기구
-STR_CPTY    :차량당 8명의 승객
-
-[JETPLANE]
-STR_NAME    :제트여객기 코스터
-STR_DESC    :개별적인 차량이 부드러운 트위스트 낙하를 짜임새 있게 내려오는 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[JOUSTING]
-STR_NAME    :저스팅 나이트 코스터
-STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 말 모양의 차량에 탑승하는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[POLCHASE]
-STR_NAME    :폴리스 체이스 코스터
-STR_DESC    :손님이 일어선 자세로 탑승하는 루핑 롤러코스터
-STR_CPTY    :차량당 4명의 승객
-
-[POLICECR]
-STR_NAME    :폴리스 카 코스터
-STR_DESC    :특수한 반전 섹션 위에서 앞뒤가 뒤집히는 나무 트랙 위를 운행하는 1960년대 테마의 경찰 차량
-STR_CPTY    :차량당 6명의 승객
-
-[PTERODAC]
-STR_NAME    :익룡 코스터
-STR_DESC    :탑승객에게 정말로 선사 시대를 나는 듯한 경험을 주기 위해, 트랙 밑에 달린 편안한 좌석에 앉아서 꼬여있는 트랙을 따라 움직이는 놀이기구
-STR_CPTY    :차량당 4명의 승객
-
-[RAPTORXX]
-STR_NAME    :랩터 레이서 코스터
-STR_DESC    :단선 롤러코스터 트랙을 따라 달리는 랩터 모양의 차량에 탑승하는 놀이기구
-STR_CPTY    :차량당 2명의 승객
-
-[SEAPLANE]
-STR_NAME    :수상비행기 라이드
-STR_DESC    :차량이 코너를 돌면 자유롭게 흔들거리게 만들어진 서스펜디드 롤러코스터 차량
-STR_CPTY    :차량당 4명의 승객
-
-[STAMPHRD]
-STR_NAME    :공룡 무리 코스터
-STR_DESC    :질주하는 공룡 무리 모습의 차량을 타고 가는 루핑 롤러 코스터
-STR_CPTY    :차량당 4명의 승객
-
-[VALKYRIE]
-STR_NAME    :발키리 코스터
-STR_DESC    :자유 낙하의 극한 경험을 선사하기 위해 완전히 수직 경사 트랙을 따라 하강하는 아주 폭이 넓은 차량
-STR_CPTY    :차량당 6명의 승객
-
-[1920RACR]
-STR_NAME    :1920년대 레이싱 카
-STR_DESC    :1920년대 레이싱 카 테마의 고 카트에 타고 레이스를 펼치는 놀이기구
-STR_CPTY    :1인승
-
-[CAVMNCAR]
-STR_NAME    :석기시대 차
-STR_DESC    :석기시대의 고 카트에 타고 레이스를 펼치는 놀이기구
-STR_CPTY    :1인승
-
-[DINOEGGS]
-STR_NAME    :공룡 알 라이드
-STR_DESC    :탑승객 두 명이 움직이는 어미 공룡 주위를 도는 좌석에 앉아 즐기는 놀이기구
-STR_CPTY    :승객 18명
-
-[FLALMACE]
-STR_NAME    :메이스 라이드
-STR_DESC    :탑승객이 모터에 의해 회전하는 팔에 달린 의자에 앉아서 즐기는 놀이기구
-STR_CPTY    :의자당 1명의 승객
-
-[GINTSPDR]
-STR_NAME    :B급 영화 자이언트 스파이더 라이드
-STR_DESC    :거대한 B급 영화에서 나오는 거미 주변을 회전하는 좌석에 손님이 짝을 지어 타는 놀이기구
-STR_CPTY    :승객 18명
-
-[MICROBUS]
-STR_NAME    :마이크로버스 라이드
-STR_DESC    :수압식 관절에 의해 흔들리고 움직이는 모션 시뮬레이터 안에서 영화를 보는 놀이기구
-STR_CPTY    :승객 8명
-
-[NEPTUNEX]
-STR_NAME    :넵튠 라이드
-STR_DESC    :탑승객 두 명이 움직이는 포세이돈 동상 주위를 도는 좌석에 앉아 즐기는 놀이기구
-STR_CPTY    :승객 18명
-
-[TOMMYGUN]
-STR_NAME    :기관 단총 라이드
-STR_DESC    :거대한 기관 단총 모형 주변을 회전하는 좌석에 손님이 짝을 지어 타는 놀이기구
-STR_CPTY    :승객 18명
-
-[TREBUCHT]
-STR_NAME    :투석기 라이드
-STR_DESC    :승객들이 암흑 시대의 공성 병기를 기반으로 한 두 개의 거대한 팔에 달린 차량에 타는 놀이기구
-STR_CPTY    :승객 8명
-
-[FLYGBOAT]
-STR_NAME    :플라잉 보트 라이드
-STR_DESC    :비행정 모양의 차량이 꼬인 커브와 낙하로 구성된 롤러코스터 트랙을 따라 내려온 뒤 물보라를 일으키며 부드럽게 강 섹션으로 내려오는 놀이기구
-STR_CPTY    :보트당 16명의 승객
-
-[OAKBAREL]
-STR_NAME    :참나무 통 라이드
-STR_DESC    :구불구불한 광폭형 수로를 따라 이동하다가 폭포를 통과하면서 탑승객을 젖게 만들고, 거품 급류를 지나며 스릴을 선사하는 참나무 통 모양의 보트
-STR_CPTY    :보트당 8명의 승객
-
-[RIVRSTYX]
-STR_NAME    :스틱스 강
-STR_DESC    :강 모양의 트랙을 따라 조용히 흘러가는 보트
-STR_CPTY    :보트당 4명의 승객
-
-[TRILOBTE]
-STR_NAME    :삼엽충 보트
-STR_DESC    :삼엽충 모양의 차량이 꼬인 커브와 낙하로 구성된 롤러코스터 트랙을 따라 내려온 뒤 물보라를 일으키며 부드럽게 강 섹션으로 내려오는 놀이기구
-STR_CPTY    :보트당 16명의 승객
-
-[1920SAND]
-STR_NAME    :아르데코 음식 상점
-STR_DESC    :국수와 신선한 레모네이드를 파는 가게
-
-[1960TSRT]
-STR_NAME    :사랑과 평화 티셔츠
-STR_DESC    :꽃무늬 티셔츠를 파는 상점
-
-[MEDISOUP]
-STR_NAME    :마녀의 비약 수프
-STR_DESC    :걸쭉한 죽 스타일의 수프를 파는 가게
-
-[MKTSTAL1]
-STR_NAME    :사과 토피 사탕 시장 상점
-STR_DESC    :끈적거리는 사과 토피 사탕을 파는 가게
-
-[MKTSTAL2]
-STR_NAME    :레모네이드 시장 상점
-STR_DESC    :신선한 레모네이드를 파는 오래된 테마의 가게
-
-[MOONJUCE]
-STR_NAME    :달빛 주스
-STR_DESC    :최신 청량음료를 파는 가게
-
-[MYTHOSEA]
-STR_NAME    :포세이돈의 해산물 가게
-STR_DESC    :포세이돈의 짭짤한 음식을 파는 가게
-
-[SOFTOYST]
-STR_NAME    :봉제인형 가게
-STR_DESC    :귀엽고 부드러운 공룡 인형을 파는 가게
-
-[1920SLMP]
-STR_NAME    :기간 가로등
-
-[ALENTRE1]
-STR_NAME    :외계 나무
-
-[ALENTRE2]
-STR_NAME    :외계 나무
-
-[ARMRBODY]
-STR_NAME    :마법 아머
-
-[ARMRHELM]
-STR_NAME    :마법 헬멧
-
-[ARMRSHLD]
-STR_NAME    :마법 방패
-
-[ARMRSWRD]
-STR_NAME    :마법 검
-
-[ARTDEC01]
-STR_NAME    :아트 데코 벽 조각
-
-[ARTDEC02]
-STR_NAME    :아트 데코 반전된 구석 조각
-
-[ARTDEC03]
-STR_NAME    :문이 있는 아트 데코 벽
-
-[ARTDEC04]
-STR_NAME    :창문이 있는 아트 데코 벽
-
-[ARTDEC05]
-STR_NAME    :창문이 있는 아트 데코 벽
-
-[ARTDEC06]
-STR_NAME    :아트 데코 상단 조각
-
-[ARTDEC07]
-STR_NAME    :아트 데코 구석 조각
-
-[ARTDEC08]
-STR_NAME    :아트 데코 상단 구석 조각
-
-[ARTDEC09]
-STR_NAME    :아트 데코 벽 조각
-
-[ARTDEC10]
-STR_NAME    :아트 데코 벽 조각
-
-[ARTDEC11]
-STR_NAME    :창문이 있는 아트 데코 구석
-
-[ARTDEC12]
-STR_NAME    :철책이 있는 아트 데코 구석
-
-[ARTDEC13]
-STR_NAME    :아트 데코 상단 구석 조각
-
-[ARTDEC14]
-STR_NAME    :창문이 있는 아트 데코 구석
-
-[ARTDEC15]
-STR_NAME    :아트 데코 벽 조각
-
-[ARTDEC16]
-STR_NAME    :아트 데코 벽 조각
-
-[ARTDEC17]
-STR_NAME    :아트 데코 벽 조각
-
-[ARTDEC18]
-STR_NAME    :아트 데코 상단 조각
-
-[ARTDEC19]
-STR_NAME    :아트 데코 벽 조각
-
-[ARTDEC20]
-STR_NAME    :아트 데코 벽 조각
-
-[ARTDEC21]
-STR_NAME    :철책이 있는 아트 데코 벽
-
-[ARTDEC22]
-STR_NAME    :철책이 있는 아트 데코 벽
-
-[ARTDEC23]
-STR_NAME    :철책이 있는 아트 데코 벽
-
-[ARTDEC24]
-STR_NAME    :철책이 있는 아트 데코 벽
-
-[ARTDEC28]
-STR_NAME    :아트 데코 지붕 조각
-
-[ARTDEC29]
-STR_NAME    :아트 데코 반전된 구석 조각
-
-[BIGBASSX]
-STR_NAME    :대형 베이스 기타
-
-[BIGGUTAR]
-STR_NAME    :대형 기타
-
-[CHPRBKE1]
-STR_NAME    :오토바이
-
-[CHPRBKE2]
-STR_NAME    :오토바이
-
-[ELECFEN5]
-STR_NAME    :반전된 전기 울타리 구석 조각
-
-[FIREMANX]
-STR_NAME    :움직이는 소방관
-
-[FUTSKY16]
-STR_NAME    :사암 마천루 중간 경사 구석
-
-[FUTSKY17]
-STR_NAME    :사암 마천루 필러
-
-[FUTSKY18]
-STR_NAME    :사암 마천루 출입문
-
-[FUTSKY19]
-STR_NAME    :사암 마천루 하단 구석
-
-[FUTSKY21]
-STR_NAME    :사암 마천루 중간 벽 조각
-
-[FUTSKY23]
-STR_NAME    :반전된 사암 마천루 구석 상단
-
-[FUTSKY29]
-STR_NAME    :사암 마천루 바닥 곡선형 경사
-
-[FUTSKY34]
-STR_NAME    :사암 마천루 지붕
-
-[FUTSKY35]
-STR_NAME    :사암 마천루 중간 곡선형 경사
-
-[FUTSKY42]
-STR_NAME    :사암 마천루 곡선형 경사 상단
-
-[FUTSKY52]
-STR_NAME    :반전된 사암 마천루 바닥 구석
-
-[FUTSKY53]
-STR_NAME    :사암 마천루 중간 구석
-
-[FUTSKY54]
-STR_NAME    :흑요석 마천루 지붕 조각
-
-[GLDCHEST]
-STR_NAME    :보물 상자
-
-[GOLDFLEC]
-STR_NAME    :황금 양모
-
-[HAYBAILS]
-STR_NAME    :건초
-
-[HEVBTH05]
-STR_NAME    :천상의 욕실 아치형 구조물
-
-[HEVBTH06]
-STR_NAME    :천상의 욕실 아치형 구조물
-
-[HEVBTH07]
-STR_NAME    :천상의 욕실 아치형 구조물
-
-[HEVBTH08]
-STR_NAME    :천상의 욕실 계단
-
-[HEVBTH09]
-STR_NAME    :천상의 욕실 계단
-
-[HEVBTH10]
-STR_NAME    :천상의 욕실 건축물
-
-[HEVBTH11]
-STR_NAME    :천상의 욕실 건축물
-
-[HEVBTH12]
-STR_NAME    :천상의 욕실 건축물
-
-[HEVBTH13]
-STR_NAME    :천상의 욕실 건축물
-
-[HEVBTH14]
-STR_NAME    :천상의 욕실 창문
-
-[HEVBTH15]
-STR_NAME    :천상의 욕실 바닥
-
-[HEVROF01]
-STR_NAME    :천상의 욕실 지붕
-
-[HEVROF02]
-STR_NAME    :천상의 욕실 지붕
-
-[HEVROF03]
-STR_NAME    :천상의 욕실 지붕
-
-[HEVROF04]
-STR_NAME    :천상의 욕실 지붕
-
-[HRBWAL01]
-STR_NAME    :항구 벽
-
-[HRBWAL02]
-STR_NAME    :항구 벽과 낚시 도구
-
-[HRBWAL03]
-STR_NAME    :항구 벽과 정박소
-
-[HRBWAL04]
-STR_NAME    :항구 벽과 정박소
-
-[HRBWAL05]
-STR_NAME    :항구 벽과 정박소
-
-[HRBWAL06]
-STR_NAME    :항구 벽과 정박소
-
-[HURCLULS]
-STR_NAME    :헤라클레스
-
-[INDWAL01]
-STR_NAME    :산업 벽 세트
-
-[INDWAL02]
-STR_NAME    :산업 벽 세트
-
-[INDWAL03]
-STR_NAME    :산업 벽 세트
-
-[INDWAL04]
-STR_NAME    :산업 벽 세트
-
-[INDWAL05]
-STR_NAME    :산업 지붕 구석 조각
-
-[INDWAL06]
-STR_NAME    :산업 지붕 구석 조각
-
-[INDWAL07]
-STR_NAME    :출입구가 있는 산업 벽
-
-[INDWAL08]
-STR_NAME    :출입구가 있는 산업 벽
-
-[INDWAL09]
-STR_NAME    :출입구가 있는 산업 벽
-
-[INDWAL10]
-STR_NAME    :출입구가 있는 산업 벽
-
-[INDWAL11]
-STR_NAME    :출입구가 있는 산업 벽
-
-[INDWAL12]
-STR_NAME    :출입구가 있는 산업 벽
-
-[INDWAL13]
-STR_NAME    :출입구가 있는 산업 벽
-
-[INDWAL14]
-STR_NAME    :산업 벽 구석 조각
-
-[INDWAL15]
-STR_NAME    :산업 벽 구석 조각
-
-[INDWAL16]
-STR_NAME    :창문이 있는 산업 벽
-
-[INDWAL17]
-STR_NAME    :창문이 있는 산업 벽
-
-[INDWAL18]
-STR_NAME    :창문이 있는 산업 벽
-
-[INDWAL19]
-STR_NAME    :창문이 있는 산업 벽
-
-[INDWAL20]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL21]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL22]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL23]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL24]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL25]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL26]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL27]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL28]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL29]
-STR_NAME    :산업 지붕 조각
-
-[INDWAL30]
-STR_NAME    :창문이 있는 산업 벽
-
-[INDWAL31]
-STR_NAME    :창문이 있는 산업 벽
-
-[INDWAL32]
-STR_NAME    :창문이 있는 산업 벽
-
-[JAILXX01]
-STR_NAME    :감옥 벽 조각
-
-[JAILXX02]
-STR_NAME    :감옥 벽 조각
-
-[JAILXX03]
-STR_NAME    :감옥 벽 조각
-
-[JAILXX04]
-STR_NAME    :감옥 벽 조각
-
-[JAILXX05]
-STR_NAME    :감옥 벽 조각
-
-[JAILXX06]
-STR_NAME    :감옥 벽 조각
-
-[JAILXX07]
-STR_NAME    :감옥 벽 지붕
-
-[JAILXX08]
-STR_NAME    :반전된 감옥 조각
-
-[JAILXX09]
-STR_NAME    :반전된 감옥 조각
-
-[JAILXX10]
-STR_NAME    :반전된 감옥 조각
-
-[JAILXX11]
-STR_NAME    :반전된 감옥 조각
-
-[JAILXX12]
-STR_NAME    :반전된 감옥 조각
-
-[JAILXX13]
-STR_NAME    :반전된 감옥 조각
-
-[JAILXX14]
-STR_NAME    :감옥 감시탑 계단
-
-[JAILXX15]
-STR_NAME    :감옥 감시탑 계단
-
-[JAILXX16]
-STR_NAME    :감옥 감시탑
-
-[JAILXX20]
-STR_NAME    :감옥 벽 구석
-
-[JAILXX21]
-STR_NAME    :감옥 벽 구석
-
-[JAZZMBR1]
-STR_NAME    :재즈 밴드 멤버
-
-[JAZZMBR2]
-STR_NAME    :재즈 밴드 멤버
-
-[JAZZMBR3]
-STR_NAME    :재즈 밴드 멤버
-
-[JAZZMBR4]
-STR_NAME    :재즈 밴드 멤버
-
-[MAMTHW01]
-STR_NAME    :대형 매머드 울타리
-
-[MAMTHW02]
-STR_NAME    :대형 매머드 울타리
-
-[MAMTHW03]
-STR_NAME    :크게 각진 매머드 울타리
-
-[MAMTHW04]
-STR_NAME    :크게 각진 매머드 울타리
-
-[MAMTHW05]
-STR_NAME    :작게 각진 매머드 울타리
-
-[MAMTHW06]
-STR_NAME    :작게 각진 매머드 울타리
-
-[MCASTL02]
-STR_NAME    :성벽
-
-[MCASTL03]
-STR_NAME    :성벽
-
-[MCASTL04]
-STR_NAME    :성벽
-
-[MCASTL05]
-STR_NAME    :성벽 구석
-
-[MCASTL06]
-STR_NAME    :성벽
-
-[MCASTL07]
-STR_NAME    :성벽 구석
-
-[MCASTL08]
-STR_NAME    :반전된 성벽 구석
-
-[MCASTL09]
-STR_NAME    :성 구석 조각
-
-[MCASTL10]
-STR_NAME    :성벽 구석
-
-[MCASTL19]
-STR_NAME    :성 구석 조각
-
-[MDBUCKET]
-STR_NAME    :바구니
-
-[MEDSTOOL]
-STR_NAME    :변
-
-[MEDTOOLS]
-STR_NAME    :농기구
-
-[MEDTRGET]
-STR_NAME    :화살 과녁
-
-[METEORCR]
-STR_NAME    :운석 크레이터 구석
-
-[METEORST]
-STR_NAME    :운석 크레이터 벽
-
-[METRCRS1]
-STR_NAME    :수정이 있는 운석 크레이터 벽
-
-[METRCRS2]
-STR_NAME    :수정이 있는 운석 크레이터 벽
-
-[MINOTAUR]
-STR_NAME    :미노타우로스 상
-
-[OLDNYK01]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK02]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK03]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK04]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK05]
-STR_NAME    :뉴욕 지붕 조각
-
-[OLDNYK06]
-STR_NAME    :뉴욕 구석 충전제
-
-[OLDNYK07]
-STR_NAME    :반전된 뉴욕 구석 조각
-
-[OLDNYK08]
-STR_NAME    :반전된 뉴욕 구석 조각
-
-[OLDNYK09]
-STR_NAME    :반전된 뉴욕 구석 조각
-
-[OLDNYK10]
-STR_NAME    :반전된 뉴욕 구석 조각
-
-[OLDNYK11]
-STR_NAME    :선이 있는 뉴욕 벽
-
-[OLDNYK12]
-STR_NAME    :뉴욕 빨랫줄
-
-[OLDNYK13]
-STR_NAME    :선이 있는 뉴욕 벽
-
-[OLDNYK14]
-STR_NAME    :뉴욕 빨랫줄
-
-[OLDNYK15]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK16]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK17]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK18]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK19]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK31]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK33]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK34]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK35]
-STR_NAME    :뉴욕 지붕 조각
-
-[PRIMWAL1]
-STR_NAME    :죽은 넝쿨이 있는 나무 울타리
-
-[PRIMWAL2]
-STR_NAME    :죽은 넝쿨이 있는 나무 울타리
-
-[PRIMWAL3]
-STR_NAME    :죽은 넝쿨이 있는 나무 울타리
-
-[PSNTWL02]
-STR_NAME    :암흑 시대 마을 하단 벽 조각
-
-[PSNTWL03]
-STR_NAME    :암흑 시대 마을 하단 벽 조각
-
-[PSNTWL04]
-STR_NAME    :암흑 시대 마을 하단 벽 조각
-
-[PSNTWL05]
-STR_NAME    :암흑 시대 마을 하단 벽 조각
-
-[PSNTWL06]
-STR_NAME    :암흑 시대 마을 하단 벽 조각
-
-[PSNTWL07]
-STR_NAME    :암흑 시대 마을 하단 벽 조각
-
-[PSNTWL08]
-STR_NAME    :암흑 시대 마을 하단 구석 조각
-
-[PSNTWL09]
-STR_NAME    :암흑 시대 마을 상단 벽 조각
-
-[PSNTWL10]
-STR_NAME    :암흑 시대 마을 상단 벽 조각
-
-[PSNTWL11]
-STR_NAME    :암흑 시대 마을 상단 벽 조각
-
-[PSNTWL12]
-STR_NAME    :암흑 시대 마을 상단 벽 조각
-
-[PSNTWL13]
-STR_NAME    :암흑 시대 마을 상단 벽 조각
-
-[PSNTWL14]
-STR_NAME    :암흑 시대 마을 지붕 조각
-
-[PSNTWL15]
-STR_NAME    :반전된 암흑 시대 마을 지붕 조각
-
-[PSNTWL16]
-STR_NAME    :암흑 시대 마을 지붕 조각
-
-[PSNTWL17]
-STR_NAME    :암흑 시대 마을 지붕 조각
-
-[PSNTWL20]
-STR_NAME    :암흑 시대 마을 창가 화단 지붕
-
-[PSNTWL21]
-STR_NAME    :암흑 시대 마을 창가 화단 지붕
-
-[PSNTWL23]
-STR_NAME    :암흑 시대 마을 상단 구석 조각
-
-[PSNTWL24]
-STR_NAME    :암흑 시대 마을 창가 화단
-
-[PSNTWL25]
-STR_NAME    :암흑 시대 마을 창가 화단
-
-[PSNTWL29]
-STR_NAME    :암흑 시대 마을 창가 화단 지붕
-
-[PSNTWL30]
-STR_NAME    :암흑 시대 마을 창가 화단 지붕
-
-[PSNTWL31]
-STR_NAME    :암흑 시대 마을 구석 지붕 조각
-
-[RDMETO03]
-STR_NAME    :붉은 유성 크레이터 벽
-
-[RDMETO04]
-STR_NAME    :반전된 붉은 유성 크레이터 구석
-
-[RUNWAY01]
-STR_NAME    :활주로 조각
-
-[RUNWAY02]
-STR_NAME    :활주로 조각
-
-[RUNWAY03]
-STR_NAME    :활주로 구석 조각
-
-[RUNWAY04]
-STR_NAME    :활주로 가장자리 조각
-
-[RUNWAY05]
-STR_NAME    :활주로 조각
-
-[RUNWAY06]
-STR_NAME    :반전된 활주로 구석 조각
-
-[SCHNCRSH]
-STR_NAME    :난파된 수상비행기
-
-[SCHNDRUM]
-STR_NAME    :기름통
-
-[SCHNPL05]
-STR_NAME    :수상비행기
-
-[SCHNPL06]
-STR_NAME    :수상비행기
-
-[SCHNTNNY]
-STR_NAME    :레이싱 스피커 장치
-
-[SHWDFRST]
-STR_NAME    :숲 속 나무
-
-[SMOKSK02]
-STR_NAME    :굴뚝 중간
-
-[SMOKSK03]
-STR_NAME    :굴뚝 기본
-
-[SPCSHP06]
-STR_NAME    :우주선 교차 섹션
-
-[SPCSHP09]
-STR_NAME    :우주선 도킹 섹션
-
-[SPCSHP10]
-STR_NAME    :우주선 엔진 섹션
-
-[SPCSHP11]
-STR_NAME    :우주선 거주 섹션
-
-[STNESTA1]
-STR_NAME    :돌이 된 사람
-
-[STNESTA2]
-STR_NAME    :돌이 된 사람
-
-[STNESTA3]
-STR_NAME    :돌이 된 사람
-
-[STNESTA4]
-STR_NAME    :돌이 된 사람
-
-[STOOLSET]
-STR_NAME    :의자
-
-[SWAMPLT1]
-STR_NAME    :슾지 식물
-
-[SWAMPLT2]
-STR_NAME    :슾지 양치식물
-
-[SWAMPLT3]
-STR_NAME    :슾지 양치식물
-
-[SWAMPLT4]
-STR_NAME    :슾지 식물
-
-[SWAMPLT5]
-STR_NAME    :슾지 식물
-
-[SWAMPLT6]
-STR_NAME    :슾지 양치식물
-
-[SWAMPLT7]
-STR_NAME    :슾지 양치식물
-
-[SWAMPLT8]
-STR_NAME    :슾지 양치식물
-
-[SWAMPLT9]
-STR_NAME    :슾지 양치식물
-
-[SWRDSTNE]
-STR_NAME    :돌에 꽂힌 검
-
-[TARPIT04]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT05]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT06]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT07]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT08]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT09]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT10]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT11]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT12]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT13]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT14]
-STR_NAME    :거품이 이는 타르갱
-
-[VALKRI01]
-STR_NAME    :발키리
-
-[VALKRI02]
-STR_NAME    :발키리
-
-[WDNCART2]
-STR_NAME    :나무 수레
-
-[WEPNRACK]
-STR_NAME    :무기 세트
-
-[WISKYBL1]
-STR_NAME    :위스키 통
-
-[WISKYBL2]
-STR_NAME    :위스키 통
-
-[YEWTREEX]
-STR_NAME    :주목나무
-
-[ZEUSSTAT]
-STR_NAME    :제우드 동상
-
-[ALENPLT1]
-STR_NAME    :외계 식물
-
-[ALENPLT2]
-STR_NAME    :외계 식물
-
-[ALLSEEYE]
-STR_NAME    :움직이는 천리안
-
-[ALNSTR01]
-STR_NAME    :소형 외계 구조물
-
-[ALNSTR02]
-STR_NAME    :소형 외계 구조물
-
-[ALNSTR03]
-STR_NAME    :소형 외계 구조물
-
-[ALNSTR04]
-STR_NAME    :소형 외계 채광창
-
-[ALNSTR05]
-STR_NAME    :외계 탑 하단
-
-[ALNSTR06]
-STR_NAME    :외계 탑 중간
-
-[ALNSTR07]
-STR_NAME    :외계 탑 상단
-
-[ARGONAU1]
-STR_NAME    :움직이는 아르고호 승무원
-
-[ARGONAU2]
-STR_NAME    :움직이는 아르고호 승무원
-
-[ARGONAU3]
-STR_NAME    :움직이는 아르고호 승무원
-
-[ASTRONGT]
-STR_NAME    :움직이는 우주비행사
-
-[BKRGANG1]
-STR_NAME    :자전거를 타는 사람
-
-[BOLPOT01]
-STR_NAME    :끓고 있는 솥
-
-[CAGDSTAT]
-STR_NAME    :움직이는 새장 안의 독수리
-
-[CAVEMENX]
-STR_NAME    :움직이며 불을 밝히는 혈거인
-
-[CHANMAID]
-STR_NAME    :움직이는 체인 소녀
-
-[CLNSMEN1]
-STR_NAME    :움직이는 문중 사람
-
-[COMPEYEX]
-STR_NAME    :수퍼 컴퓨터 모니터
-
-[COOKSPIT]
-STR_NAME    :꼬치에 꽂힌 동물 요리
-
-[DINSIGN1]
-STR_NAME    :식당 네온 사인
-
-[DINSIGN2]
-STR_NAME    :식당 네온 사인
-
-[DINSIGN3]
-STR_NAME    :식당 네온 사인
-
-[DINSIGN4]
-STR_NAME    :식당 네온 사인
-
-[DKFIGHT1]
-STR_NAME    :움직이는 기사
-
-[DKFIGHT2]
-STR_NAME    :움직이는 기사
-
-[DRGNATTK]
-STR_NAME    :드래곤 공격
-
-[ELECFEN1]
-STR_NAME    :전기 울타리 구석 조각
-
-[ELECFEN2]
-STR_NAME    :전기 울타리
-
-[ELECFEN3]
-STR_NAME    :전등이 달린 전기 울타리
-
-[ELECFEN4]
-STR_NAME    :부서진 전기 울타리
-
-[EVALIEN1]
-STR_NAME    :움직이는 나쁜 외계인
-
-[EVALIEN2]
-STR_NAME    :움직이는 나쁜 외계인
-
-[EVALIEN3]
-STR_NAME    :움직이는 나쁜 외계인
-
-[FIRCANON]
-STR_NAME    :움직이는 대포
-
-[FLTSIGN1]
-STR_NAME    :반중력 LCD 광고판
-
-[FLTSIGN2]
-STR_NAME    :반중력 LCD 광고판
-
-[FRBEACON]
-STR_NAME    :불타는 신호
-
-[FUROBOT1]
-STR_NAME    :로봇
-
-[FUROBOT2]
-STR_NAME    :로봇
-
-[FUTSKY01]
-STR_NAME    :사암 마천루 보도
-
-[FUTSKY02]
-STR_NAME    :사암 마천루 충전재
-
-[FUTSKY03]
-STR_NAME    :사암 마천루 바닥 구석
-
-[FUTSKY04]
-STR_NAME    :사암 마천루 곡선형 경사 꼭대기
-
-[FUTSKY05]
-STR_NAME    :사암 마천루 구석 꼭대기
-
-[FUTSKY06]
-STR_NAME    :사암 마천루 중앙 곡선형 경사
-
-[FUTSKY07]
-STR_NAME    :사암 마천루 중앙 벽 조각
-
-[FUTSKY08]
-STR_NAME    :사암 마천루 중앙 벽 조각
-
-[FUTSKY09]
-STR_NAME    :사암 마천루 중앙 벽 조각
-
-[FUTSKY10]
-STR_NAME    :사암 마천루 바닥 경사 기본
-
-[FUTSKY11]
-STR_NAME    :사암 마천루 중앙 구석
-
-[FUTSKY12]
-STR_NAME    :사암 마천루 중앙 벽 섹션
-
-[FUTSKY13]
-STR_NAME    :사암 마천루 지붕 첨탑
-
-[FUTSKY14]
-STR_NAME    :사암 마천루 지붕 첨탑
-
-[FUTSKY15]
-STR_NAME    :사암 마천루 도킹 베이
-
-[FUTSKY33]
-STR_NAME    :사암 마천루 보도
-
-[FUTSKY36]
-STR_NAME    :흑요석 마천루 문 조각
-
-[FUTSKY37]
-STR_NAME    :흑요석 마천루 앝은 경사 구석
-
-[FUTSKY38]
-STR_NAME    :흑요석 마천루 얕은 경사 벽
-
-[FUTSKY39]
-STR_NAME    :흑요석 마천루 얕은 경사 구석
-
-[FUTSKY40]
-STR_NAME    :흑요석 마천루 급한 경사 벽
-
-[FUTSKY41]
-STR_NAME    :흑요석 마천루 급한 경사 벽
-
-[FUTSKY44]
-STR_NAME    :흑요석 마천루 급한 경사 벽
-
-[FUTSKY46]
-STR_NAME    :흑요석 마천루 급한 경사 구석
-
-[FUTSKY47]
-STR_NAME    :흑요석 마천루 벽
-
-[FUTSKY48]
-STR_NAME    :창문이 있는 흑요석 마천루 벽
-
-[FWRPRDC1]
-STR_NAME    :근사한 춤꾼
-
-[GANGSTER]
-STR_NAME    :움직이는 폭력배
-
-[GDALIEN1]
-STR_NAME    :움직이는 착한 외계인
-
-[GDALIEN2]
-STR_NAME    :움직이는 착한 외계인
-
-[GDALIEN3]
-STR_NAME    :움직이는 착한 외계인
-
-[GEYSERXX]
-STR_NAME    :간헐천
-
-[GGNTOCTO]
-STR_NAME    :B급 영화 대형 문어
-
-[GGNTSPID]
-STR_NAME    :B급 영화 대형 거미
-
-[GSCORPO2]
-STR_NAME    :움직이는 전갈
-
-[GSCORPON]
-STR_NAME    :움직이는 전갈
-
-[GUYQWIFX]
-STR_NAME    :밤 무대 가수
-
-[HEVBTH01]
-STR_NAME    :천상의 욕실 풀
-
-[HEVBTH02]
-STR_NAME    :천상의 욕실 풀 구석
-
-[HEVBTH03]
-STR_NAME    :천상의 욕실 분수
-
-[HEVBTH04]
-STR_NAME    :천상의 욕실 분수
-
-[HEVBTH16]
-STR_NAME    :천상의 욕실 풀 계단
-
-[HEVBTH17]
-STR_NAME    :천상의 욕실 풀 가장자리
-
-[HORSECRT]
-STR_NAME    :말
-
-[HOVRCAR1]
-STR_NAME    :서 있는 호버카
-
-[HOVRCAR2]
-STR_NAME    :서 있는 호버카
-
-[HOVRCAR3]
-STR_NAME    :나는 호버카
-
-[HOVRCAR4]
-STR_NAME    :나는 호버카
-
-[HVRBIKE1]
-STR_NAME    :서 있는 호버바이크
-
-[HVRBIKE2]
-STR_NAME    :서 있는 호버바이크
-
-[HVRBIKE3]
-STR_NAME    :나는 호버바이크
-
-[HVRBIKE4]
-STR_NAME    :나는 호버바이크
-
-[KILLRVIN]
-STR_NAME    :넝쿨 나무
-
-[KNFIGHT1]
-STR_NAME    :움직이는 흑기사
-
-[KNFIGHT2]
-STR_NAME    :움직이는 흑기사
-
-[LARGECPU]
-STR_NAME    :수퍼 컴퓨터 대형 CPU
-
-[LASERX01]
-STR_NAME    :레이저 울타리
-
-[LASERX02]
-STR_NAME    :레이저 울타리 구석
-
-[MDUSASTA]
-STR_NAME    :움직이는 메두사
-
-[PDFLAG02]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG03]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG04]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG05]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG06]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG08]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG13]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG14]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG15]
-STR_NAME    :시대적인 깃발
-
-[PDFLAG16]
-STR_NAME    :시대적인 깃발
-
-[POLWTBTN]
-STR_NAME    :움직이는 경찰관
-
-[PRIMHEAD]
-STR_NAME    :식인 식물 나무 울타리
-
-[PRIMHEAR]
-STR_NAME    :식인 식물 나무 울타리
-
-[PRIMROOR]
-STR_NAME    :넝쿨이 자란 나무 울타리
-
-[PRIMROOT]
-STR_NAME    :넝쿨이 자란 나무 울타리
-
-[PRIMSCRN]
-STR_NAME    :식인 식물 나무 울타리
-
-[PRIMST01]
-STR_NAME    :식인 식물 나무 울타리
-
-[PRIMST02]
-STR_NAME    :식인 식물 나무 울타리
-
-[PRIMST03]
-STR_NAME    :식인 식물 나무 울타리
-
-[PRIMTALL]
-STR_NAME    :식인 식물 나무 울타리
-
-[PSNTWL01]
-STR_NAME    :굴뚝이 있는 암흑 시대 마을 지붕
-
-[RCKNROLR]
-STR_NAME    :멋진 녀석
-
-[ROBNHOOD]
-STR_NAME    :움직이는 로빈 후드
-
-[RSWATRES]
-STR_NAME    :롤러스케이팅 웨이트리스
-
-[SCHNBOST]
-STR_NAME    :부표
-
-[SCHNBOUY]
-STR_NAME    :부표
-
-[SCHNPL01]
-STR_NAME    :수상비행기
-
-[SCHNPL02]
-STR_NAME    :수상비행기
-
-[SCHNPL03]
-STR_NAME    :수상비행기
-
-[SCHNPL04]
-STR_NAME    :수상비행기
-
-[SDRAGFLY]
-STR_NAME    :움직이는 잠자리
-
-[SKELETO1]
-STR_NAME    :움직이는 해골 군대
-
-[SKELETO2]
-STR_NAME    :움직이는 해골 군대
-
-[SKELETO3]
-STR_NAME    :움직이는 해골 군대
-
-[SMALLCPU]
-STR_NAME    :수퍼 컴퓨터 소형 CPU
-
-[SMOKSK01]
-STR_NAME    :연기 나는 대형 굴뚝
-
-[SOUPCRN2]
-STR_NAME    :원생액
-
-[SOUPCRNR]
-STR_NAME    :원생액
-
-[SOUPED01]
-STR_NAME    :원생액
-
-[SOUPED02]
-STR_NAME    :원생액
-
-[SOUPTL01]
-STR_NAME    :원생액
-
-[SOUPTL02]
-STR_NAME    :원생액
-
-[SPACRANG]
-STR_NAME    :움직이는 우주 전사
-
-[SPCSHP01]
-STR_NAME    :우주선 화물 섹션
-
-[SPCSHP02]
-STR_NAME    :우주선 통신 섹션
-
-[SPCSHP03]
-STR_NAME    :우주선 태양열 섹션
-
-[SPCSHP04]
-STR_NAME    :우주선 태양열 판넬
-
-[SPCSHP05]
-STR_NAME    :우주선 중력 섹션
-
-[SPCSHP07]
-STR_NAME    :우주선 컨트롤 덱
-
-[SPCSHP08]
-STR_NAME    :우주선 연료 섹션
-
-[SPCSHP12]
-STR_NAME    :우주선 과학 섹션
-
-[SPEAKR01]
-STR_NAME    :소형 스피커
-
-[SPEAKR02]
-STR_NAME    :대형 스피커
-
-[SPIKTAIL]
-STR_NAME    :움직이는 스테고사우르스
-
-[SPTERDAC]
-STR_NAME    :날개를 움직이는 익룡
-
-[STGBAND1]
-STR_NAME    :밴드 멤버
-
-[STGBAND2]
-STR_NAME    :밴드 멤버
-
-[STGBAND3]
-STR_NAME    :밴드 멤버
-
-[STGBAND4]
-STR_NAME    :밴드 멤버
-
-[STMDRAN1]
-STR_NAME    :증기 배출
-
-[STRICTOP]
-STR_NAME    :움직이는 트리케라톱스
-
-[TARPIT01]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT02]
-STR_NAME    :거품이 이는 타르갱
-
-[TARPIT03]
-STR_NAME    :거품이 이는 타르갱
-
-[TITANSTA]
-STR_NAME    :아틀라스 동상
-
-[TYRANREX]
-STR_NAME    :움직이는 티라노사우르스
-
-[VOLCVENT]
-STR_NAME    :활화도
-
-[WAVEKING]
-STR_NAME    :움직이는 파도 왕
-
-[WHCCOLDS]
-STR_NAME    :가마솥 근처의 마녀
-
-[ARTDEC25]
-STR_NAME    :창문이 있는 아트 데코 구석
-
-[ARTDEC26]
-STR_NAME    :울타리가 있는 아트 데코 구석
-
-[ARTDEC27]
-STR_NAME    :아트 데코 상단 구석 조각
-
-[FUTSKY20]
-STR_NAME    :반전된 사암 마천루 바닥 구석
-
-[FUTSKY22]
-STR_NAME    :반전된 사암 마천루 바닥 구석
-
-[FUTSKY24]
-STR_NAME    :반전된 사암 마천루 바닥 구석
-
-[FUTSKY25]
-STR_NAME    :반전된 사암 마천루 바닥 구석
-
-[FUTSKY26]
-STR_NAME    :반전된 사암 마천루 바닥 구석
-
-[FUTSKY28]
-STR_NAME    :사암 도보 T자형 교차로
-
-[FUTSKY30]
-STR_NAME    :사암 도보 구석
-
-[FUTSKY31]
-STR_NAME    :사암 도보 교차 조각
-
-[FUTSKY32]
-STR_NAME    :사암 도보 끝 조각
-
-[JAILXX17]
-STR_NAME    :감옥 문
-
-[MAJOROAK]
-STR_NAME    :대형 오크
-
-[MCASTL01]
-STR_NAME    :반전된 성 구석
-
-[MCASTL11]
-STR_NAME    :성 내리닫이 쇠창살문
-
-[MCASTL12]
-STR_NAME    :성 입구
-
-[MELMTREE]
-STR_NAME    :대형 느릅나무
-
-[OLDNYK24]
-STR_NAME    :반전된 뉴욕 구석 지붕
-
-[OLDNYK25]
-STR_NAME    :뉴욕 지붕 조각
-
-[OLDNYK26]
-STR_NAME    :뉴욕식 입구
-
-[OLDNYK32]
-STR_NAME    :뉴욕 지붕 조각
-
-[1950SCAR]
-STR_NAME    :1950년대 자동차
-
-[4X4DINER]
-STR_NAME    :시대적인 식당차
-
-[4X4GMANT]
-STR_NAME    :대형 맹그로브 나무
-
-[4X4STNHN]
-STR_NAME    :석기시대 사원
-
-[4X4TRPIT]
-STR_NAME    :거품이 이는 타르갱
-
-[4X4VOLCA]
-STR_NAME    :작은 나무가 있는 화산
-
-[ALENCRSH]
-STR_NAME    :UFO 추락 현장
-
-[ALNSTR08]
-STR_NAME    :대형 외계 구조물
-
-[ALNSTR09]
-STR_NAME    :대형 외계 구조물
-
-[ALNSTR10]
-STR_NAME    :대형 외계 구조물
-
-[ALNSTR11]
-STR_NAME    :대형 외계 채광창
-
-[ASHNYMPH]
-STR_NAME    :정령이 있는 물푸레나무
-
-[BANDBUSX]
-STR_NAME    :록 밴드 관광 버스
-
-[BIGDRUMS]
-STR_NAME    :대형 드럼 키트
-
-[CAVENTRA]
-STR_NAME    :동굴 입구
-
-[CORNS2X2]
-STR_NAME    :로마궁 구석 조각
-
-[CORVS2X2]
-STR_NAME    :로마궁 구석 조각
-
-[CRATR2X2]
-STR_NAME    :소형 운석 크레이터
-
-[CRATR4X4]
-STR_NAME    :대형 운석 크레이터
-
-[CRSSS2X2]
-STR_NAME    :로마궁 교차 조각
-
-[CRSVS2X2]
-STR_NAME    :로마궁 교차 조각
-
-[CYCLOPSS]
-STR_NAME    :사이클롭스 동상
-
-[FEASTABL]
-STR_NAME    :잔칫상
-
-[FOOTPRNT]
-STR_NAME    :대형 공룡 발자국
-
-[FORBIDFT]
-STR_NAME    :선악과 나무
-
-[GBEETLEX]
-STR_NAME    :1950년대 자동차
-
-[GHOTROD1]
-STR_NAME    :개조된 자동차
-
-[GHOTROD2]
-STR_NAME    :개조된 자동차
-
-[GSCHLBUS]
-STR_NAME    :스쿨 버스
-
-[HADESXXX]
-STR_NAME    :하데스 동상
-
-[HISTFIX1]
-STR_NAME    :외계인의 역사적 구조물
-
-[HISTFIX2]
-STR_NAME    :외계인의 역사적 구조물
-
-[HODSHUT1]
-STR_NAME    :로빈 후드의 막사
-
-[HODSHUT2]
-STR_NAME    :로빈 후드의 막사
-
-[HRBWAL07]
-STR_NAME    :항구 벽 구석 조각
-
-[HRBWAL08]
-STR_NAME    :항구 벽 구석 조각
-
-[HRBWAL09]
-STR_NAME    :항구 벽
-
-[HRBWAL11]
-STR_NAME    :항구
-
-[JAILXX18]
-STR_NAME    :감옥 급수탑
-
-[JETPLAN1]
-STR_NAME    :제트 항공기
-
-[JETPLAN2]
-STR_NAME    :제트 항공기
-
-[JETPLAN3]
-STR_NAME    :제트 항공기
-
-[MCASTL13]
-STR_NAME    :성탑 구석 조각
-
-[MCASTL14]
-STR_NAME    :성탑 구석 조각
-
-[MCASTL15]
-STR_NAME    :성탑 구석 조각
-
-[MCASTL16]
-STR_NAME    :성탑 직선 조각
-
-[MCASTL17]
-STR_NAME    :성탑 T 조각
-
-[MCASTL18]
-STR_NAME    :성탑 T 조각
-
-[METOAN01]
-STR_NAME    :운석 크레이터 구석
-
-[METOAN02]
-STR_NAME    :운석 크레이터 반전된 구석
-
-[OLDNYK20]
-STR_NAME    :뉴욕 지붕 조각
-
-[OLDNYK21]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK22]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK23]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK27]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK28]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK29]
-STR_NAME    :뉴욕 벽 조각
-
-[OLDNYK30]
-STR_NAME    :뉴욕 벽 조각
-
-[PEASTHUT]
-STR_NAME    :소작농 막사
-
-[PERAMOB1]
-STR_NAME    :시대적인 자동차
-
-[PERAMOB2]
-STR_NAME    :시대적인 자동차
-
-[PERDTK01]
-STR_NAME    :시대적인 트럭
-
-[PERDTK02]
-STR_NAME    :시대적인 트럭
-
-[PLOUGHXX]
-STR_NAME    :쟁기
-
-[PRDYACHT]
-STR_NAME    :기간 항해 요트
-
-[PSNTWL26]
-STR_NAME    :암흑 시대 마을 지붕 조각
-
-[PSNTWL27]
-STR_NAME    :암흑 시대 마을 구석 지붕 조각
-
-[PSNTWL28]
-STR_NAME    :반전된 암흑 시대 마을 지붕 조각
-
-[RDMET2X2]
-STR_NAME    :소형 붉은색 크레이터
-
-[RDMET4X4]
-STR_NAME    :대형 붉은색 크레이터
-
-[RDMETO01]
-STR_NAME    :붉은색 운석 크레이터 구석
-
-[RDMETO02]
-STR_NAME    :붉은색 운석 크레이터 구석
-
-[ROBNCAMP]
-STR_NAME    :로빈 후드의 캠프
-
-[ROMNC2X2]
-STR_NAME    :로마궁 구석 조각
-
-[ROMNE2X1]
-STR_NAME    :로마궁 End 조각
-
-[ROMNM2X2]
-STR_NAME    :로마궁 교차 조각
-
-[ROMNS2X2]
-STR_NAME    :로마궁 직선 조각
-
-[ROMVC2X2]
-STR_NAME    :로마궁 구석 조각
-
-[ROMVE2X1]
-STR_NAME    :로마궁 끝 조각
-
-[ROMVM2X2]
-STR_NAME    :로마궁 교차 조각
-
-[ROMVS2X2]
-STR_NAME    :로마궁 직선 조각
-
-[SCHNPIT2]
-STR_NAME    :수상기 피트
-
-[SCHNPITS]
-STR_NAME    :수상기 피트
-
-[SCHNTENT]
-STR_NAME    :대형 천막
-
-[SHIPB4X4]
-STR_NAME    :호화 여객선 선두
-
-[SHIPM4X4]
-STR_NAME    :호화 여객선 중간 섹션
-
-[SHIPS4X4]
-STR_NAME    :호화 여객선 선미
-
-[STRGS2X2]
-STR_NAME    :로마 궁 직선 조각
-
-[STRVS2X2]
-STR_NAME    :로마 궁 직선 조각
-
-[TAVERNXX]
-STR_NAME    :암흑 시대 터번
-
-[TRAVLR01]
-STR_NAME    :여행자 밴
-
-[TRAVLR02]
-STR_NAME    :마이크로버스
-
-[JAILXX19]
-STR_NAME    :감옥 울타리
-
-[MSPKWA01]
-STR_NAME    :침 달린 울타리
-
-[1920PATH]
-STR_NAME    :포장 보도
-
-[FUTRPAT2]
-STR_NAME    :공중 보도
-
-[FUTRPATH]
-STR_NAME    :서킷 보도
-
-[JURRPATH]
-STR_NAME    :돌무더기 보도
-
-[MEDIPATH]
-STR_NAME    :나무 보도
-
-[MYTHPATH]
-STR_NAME    :모자이크 보도
-
-[RANBPATH]
-STR_NAME    :무지개 보도
-
-[FIRHYDRT]
-STR_NAME    :소화전
-
-[MEDBENCH]
-STR_NAME    :벤치
-
-[SCG1920S]
-STR_NAME    :광란의 20년대 테마
-
-[SCG1920W]
-STR_NAME    :광란의 20년대 벽 세트
-
-[SCG1960S]
-STR_NAME    :로큰롤 테마
-
-[SCGFUTUR]
-STR_NAME    :미래 테마
-
-[SCGJURRA]
-STR_NAME    :선사시대 테마
-
-[SCGMEDIV]
-STR_NAME    :암흑시대 테마
-
-[SCGMYTHO]
-STR_NAME    :신화 테마
-
-[1920SENT]
-STR_NAME    :광란의 20년대 공원 입구
-
-[FUTURENT]
-STR_NAME    :초현대적 공원 입구
-
-[GLDYRENT]
-STR_NAME    :로큰롤 공원 입구
-
-[JURASENT]
-STR_NAME    :선사시대 공원 입구
-
-[MEDIENTR]
-STR_NAME    :암흑시대 공원 입구
-
-[MYTHENTR]
-STR_NAME    :신화 공원 입구
 
 ###############################################################################
 ## RCT2 Scenarios
@@ -11463,7 +5088,7 @@ STR_DTLS    :재정적 제한이 없는 이 사막 공원을 사람들이 극한
 <Factory Capers>
 STR_SCNR    :공장 놀이터
 STR_PARK    :공장 놀이터
-STR_DTLS    :버려진 공장 지대에 기계를 주제로 한 놀이공원을 만들어보세요
+STR_DTLS    :버려진 공장 지대에 기계를 주제로 한 놀이공원을 만들어보세요.
 
 <Fungus Woods>
 STR_SCNR    :버섯 숲
@@ -11483,7 +5108,7 @@ STR_DTLS    :당신의 목표는 아름다운 그래비티 정원에 롤러코�
 <Infernal Views>
 STR_SCNR    :지옥 풍경
 STR_PARK    :지옥 풍경
-STR_DTLS    :마그마 강이 흐르는 용암으로 위태롭게 둘러싸인 공원
+STR_DTLS    :마그마 강이 흐르는 용암으로 위태롭게 둘러싸인 공원입니다.
 
 <Lucky Lake>
 STR_SCNR    :행운의 호수
@@ -11513,7 +5138,7 @@ STR_DTLS    :직접 팔을 걷어붙이고 이 식스 플래그 공원을 개선
 <Six Flags Magic Mountain>
 STR_SCNR    :식스 플래그 매직 마운틴
 STR_PARK    :매직 마운틴
-STR_DTLS    :식스 플래그의 빠진 놀이기구를 건설해보거나, 공원을 개선하기 위해 자신만의 놀이기구를 건설해보세요! 하지만 대출을 갚고 공원 가치를 높여야 한다는 궁극적인 목표를 잊어서는 안됩니다!
+STR_DTLS    :식스 플래그의 빠진 놀이기구를 건설해보거나, 공원을 개선하기 위해 자신만의 놀이기구를 건설해보세요! 하지만 대출을 갚고 공원 가치를 높여야 한다는 궁극적인 목표를 잊으면 안됩니다!
 
 <Six Flags over Texas>
 STR_SCNR    :식스 플래그 오버 텍사스
@@ -11561,7 +5186,7 @@ STR_DTLS    :인도의 왕에게서 국민들에게 즐길 거리를 만들어�
 <Australasia - Ayers Rock>
 STR_SCNR    :오스트레일리아 - 에어즈 록
 STR_PARK    :에어즈 어드벤처
-STR_DTLS    :오스트레일리아 원주민들을 도와 공원을 문화 인식 프로그램의 일환으로 개발하려 합니다. 원주민들의 독특한 문화유산을 알리기 위해 많은 관광객을 모아야 합니다.
+STR_DTLS    :문화 인식 프로그램의 일환으로, 오스트레일리아 원주민들을 도와서 공원을 개발하려 합니다. 원주민들의 독특한 문화유산을 알리기 위해 많은 관광객을 모아야 합니다.
 
 <Australasia - Fun at the Beach>
 STR_SCNR    :오스트레일리아 - 해변의 즐거움
@@ -11594,8 +5219,8 @@ STR_PARK    :롤러코스터 천국
 STR_DTLS    :당신은 긴 휴식기를 가지는 동안 이 도시 공원을 롤러코스터 천국으로 바꾸고자 하는 성공한 사업 거물입니다. 돈은 문제가 되지 않는군요!
 
 <South America - Inca Lost City>
-STR_SCNR    :남 아메리카 - 잃어버린 도시 잉카
-STR_PARK    :잃어버린 도시를 세운 자
+STR_SCNR    :남 아메리카 - 잉카의 잊혀진 도시
+STR_PARK    :잊혀진 도시의 발견자
 STR_DTLS    :이 지역의 관광산업을 보다 활기차게 만들기 위해서는 주변 환경과 잘 어울리는 공원을 지어야 합니다. 높이 제한이 있습니다.
 
 <South America - Rain Forest Plateau>
@@ -11680,3 +5305,11 @@ STR_DTLS    :매년 열리는 대형 음악 축제가 당신의 땅에서 열립
 STR_SCNR    :로큰롤 - 로큰롤
 STR_PARK    :로큰롤 부흥
 STR_DTLS    :이 오래된 놀이공원은 더 나은 미래를 기대하고 있습니다. 소유자를 도와 이 공원을 복고풍의 로큰롤 공원으로 바꾸어 성공적인 장소로 변모시켜보세요.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :판다 월드
+STR_PARK    :판다 월드
+STR_DTLS    :이 판다 테마의 공원에 놀이기구를 더 지어서 손님들을 더 끌어모으세요.

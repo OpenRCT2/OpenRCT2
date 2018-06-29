@@ -1,20 +1,15 @@
-#pragma region Copyright (c) 2014-2016 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "FunctionCall.hpp"
+
+#include <openrct2/sprites.h>
 
 enum SpriteGroup {
     SPRITEGROUP_NONE,
@@ -27,7 +22,7 @@ enum SpriteGroup {
 };
 
 static void canonicalizeFunctionCall(function_call *call);
-static SpriteGroup getSpriteGroup(uint16 spriteIndex);
+static SpriteGroup getSpriteGroup(uint16_t spriteIndex);
 
 bool FunctionCall::AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual) {
     if (expected.size() != actual.size()) {
@@ -54,13 +49,20 @@ bool FunctionCall::AssertsEquals(function_call expected, function_call actual) {
         return false;
     }
 
-    uint8 function = expected.function;
+    uint8_t function = expected.function;
 
     if (function == SUPPORTS_WOOD_A || function == SUPPORTS_WOOD_B) {
         if (expected.supports.type != actual.supports.type) return false;
         if (expected.supports.special != actual.supports.special) return false;
         if (expected.supports.height != actual.supports.height) return false;
         if (expected.supports.colour_flags != actual.supports.colour_flags) return false;
+
+        if (expected.supports.special == 14 || expected.supports.special == 15 ||
+            expected.supports.special == 18 || expected.supports.special == 19 ||
+            expected.supports.special == 22 || expected.supports.special == 23)
+        {
+            if (expected.supports.prepend_to != actual.supports.prepend_to) return false;
+        }
 
         return true;
     }
@@ -115,7 +117,7 @@ static void canonicalizeFunctionCall(function_call *call) {
     call->function = PAINT_98196C;
 }
 
-static SpriteGroup getSpriteGroup(uint16 spriteIndex) {
+static SpriteGroup getSpriteGroup(uint16_t spriteIndex) {
     if (spriteIndex >= 14568 && spriteIndex <= 14571) {
         return SPRITEGROUP_FENCE_METAL_A;
     }
