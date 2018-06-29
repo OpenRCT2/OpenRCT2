@@ -177,9 +177,6 @@ protected:
     std::string GetString(int32_t language, uint8_t index) const;
 
     void SetSourceGame(const uint8_t sourceGame);
-    bool IsRCT1Object();
-    bool IsAAObject();
-    bool IsLLObject();
     bool IsOpenRCT2OfficialObject();
 
 public:
