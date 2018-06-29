@@ -6585,7 +6585,7 @@ static int32_t loc_6CD18E(int16_t mapX, int16_t mapY, int16_t entranceMinX, int1
  */
 void ride_get_entrance_or_exit_position_from_screen_position(int32_t screenX, int32_t screenY, int32_t * outX, int32_t * outY, int32_t * outDirection)
 {
-    int16_t            mapX, mapY;
+    LocationXY16       mapCoords = {};
     int16_t            entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
     int32_t            interactionType, direction, stationHeight, stationDirection;
     rct_tile_element * tileElement;
@@ -6593,7 +6593,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(int32_t screenX, in
     Ride            * ride;
 
     gRideEntranceExitPlaceDirection = 255;
-    get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, &mapX, &mapY, &interactionType, &tileElement, &viewport);
+
+    get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, &mapCoords, &interactionType, &tileElement, &viewport);
     if (interactionType != 0)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
@@ -6618,17 +6619,17 @@ void ride_get_entrance_or_exit_position_from_screen_position(int32_t screenX, in
     ride          = get_ride(gRideEntranceExitPlaceRideIndex);
     stationHeight = ride->station_heights[gRideEntranceExitPlaceStationIndex];
 
-    screen_get_map_xy_with_z(screenX, screenY, stationHeight * 8, &mapX, &mapY);
-    if (mapX == LOCATION_NULL)
+    screen_get_map_xy_with_z(screenX, screenY, stationHeight * 8, &mapCoords.x, &mapCoords.y);
+    if (mapCoords.x == LOCATION_NULL)
     {
         *outX = 0x8000;
         return;
     }
 
-    word_F4418C = mapX;
-    word_F4418E = mapY;
-    _unkF44188.x = floor2(mapX, 32);
-    _unkF44188.y = floor2(mapY, 32);
+    word_F4418C = mapCoords.x;
+    word_F4418E = mapCoords.y;
+    _unkF44188.x = floor2(mapCoords.x, 32);
+    _unkF44188.y = floor2(mapCoords.y, 32);
     *outX = _unkF44188.x;
     *outY = _unkF44188.y;
 
@@ -6643,24 +6644,24 @@ void ride_get_entrance_or_exit_position_from_screen_position(int32_t screenX, in
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
-        mapX = (word_F4418C & 0x1F) - 16;
-        mapY = (word_F4418E & 0x1F) - 16;
-        if (std::abs(mapX) < std::abs(mapY))
+        mapCoords.x = (word_F4418C & 0x1F) - 16;
+        mapCoords.y = (word_F4418E & 0x1F) - 16;
+        if (std::abs(mapCoords.x) < std::abs(mapCoords.y))
         {
-            direction = mapY < 0 ? 3 : 1;
+            direction = mapCoords.y < 0 ? 3 : 1;
         }
         else
         {
-            direction = mapX < 0 ? 0 : 2;
+            direction = mapCoords.x < 0 ? 0 : 2;
         }
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
-            mapX = _unkF44188.x + CoordsDirectionDelta[direction].x;
-            mapY = _unkF44188.y + CoordsDirectionDelta[direction].y;
-            if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32))
+            mapCoords.x = _unkF44188.x + CoordsDirectionDelta[direction].x;
+            mapCoords.y = _unkF44188.y + CoordsDirectionDelta[direction].y;
+            if (mapCoords.x >= 0 && mapCoords.y >= 0 && mapCoords.x < (256 * 32) && mapCoords.y < (256 * 32))
             {
-                tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+                tileElement = map_get_first_element_at(mapCoords.x >> 5, mapCoords.y >> 5);
                 do
                 {
                     if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -6694,10 +6695,10 @@ void ride_get_entrance_or_exit_position_from_screen_position(int32_t screenX, in
     }
     else
     {
-        mapX         = stationStart.x * 32;
-        mapY         = stationStart.y * 32;
-        entranceMinX = mapX;
-        entranceMinY = mapY;
+        mapCoords.x = stationStart.x * 32;
+        mapCoords.y = stationStart.y * 32;
+        entranceMinX = mapCoords.x;
+        entranceMinY = mapCoords.y;
 
         tileElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
         if (tileElement == nullptr)
@@ -6710,11 +6711,11 @@ void ride_get_entrance_or_exit_position_from_screen_position(int32_t screenX, in
 
         while (true)
         {
-            entranceMaxX = mapX;
-            entranceMaxY = mapY;
-            mapX -= CoordsDirectionDelta[direction].x;
-            mapY -= CoordsDirectionDelta[direction].y;
-            tileElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+            entranceMaxX = mapCoords.x;
+            entranceMaxY = mapCoords.y;
+            mapCoords.x -= CoordsDirectionDelta[direction].x;
+            mapCoords.y -= CoordsDirectionDelta[direction].y;
+            tileElement = map_get_first_element_at(mapCoords.x >> 5, mapCoords.y >> 5);
             bool goToNextTile = false;
 
             do
@@ -6740,18 +6741,18 @@ void ride_get_entrance_or_exit_position_from_screen_position(int32_t screenX, in
                 break;
         }
 
-        mapX = entranceMinX;
-        if (mapX > entranceMaxX)
+        mapCoords.x = entranceMinX;
+        if (mapCoords.x > entranceMaxX)
         {
             entranceMinX = entranceMaxX;
-            entranceMaxX = mapX;
+            entranceMaxX = mapCoords.x;
         }
 
-        mapY = entranceMinY;
-        if (mapY > entranceMaxY)
+        mapCoords.y = entranceMinY;
+        if (mapCoords.y > entranceMaxY)
         {
             entranceMinY = entranceMaxY;
-            entranceMaxY = mapY;
+            entranceMaxY = mapCoords.y;
         }
 
         direction = loc_6CD18E(*outX, *outY, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32, entranceMaxY + 32);

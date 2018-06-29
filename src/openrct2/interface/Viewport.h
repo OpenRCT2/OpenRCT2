@@ -138,9 +138,23 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8_t mode);
 
-void get_map_coordinates_from_pos(int32_t screenX, int32_t screenY, int32_t flags, int16_t *x, int16_t *y, int32_t *interactionType, rct_tile_element **tileElement, rct_viewport **viewport);
-void get_map_coordinates_from_pos_window(rct_window * window, int32_t screenX, int32_t screenY, int32_t flags, int16_t * x, int16_t * y,
-    int32_t * interactionType, rct_tile_element ** tileElement, rct_viewport ** viewport);
+void get_map_coordinates_from_pos(
+    int32_t screenX,
+    int32_t screenY,
+    int32_t flags,
+    LocationXY16* pos,
+    int32_t* interactionType,
+    rct_tile_element** tileElement,
+    rct_viewport** viewport);
+void get_map_coordinates_from_pos_window(
+    rct_window* window,
+    int32_t screenX,
+    int32_t screenY,
+    int32_t flags,
+    LocationXY16* pos,
+    int32_t* interactionType,
+    rct_tile_element** tileElement,
+    rct_viewport** viewport);
 
 int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info *info);
 int32_t viewport_interaction_left_over(int32_t x, int32_t y);

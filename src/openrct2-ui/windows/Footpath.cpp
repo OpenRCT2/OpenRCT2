@@ -751,9 +751,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     rct_tile_element * tileElement;
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
-                                 &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
-    x = mapCoord.x;
-    y = mapCoord.y;
+                                 &mapCoord, &interactionType, &tileElement, nullptr);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
@@ -763,12 +761,10 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     else
     {
         // Check for change
-        if (
-            (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) &&
-            gFootpathProvisionalPosition.x == x &&
-            gFootpathProvisionalPosition.y == y &&
-            gFootpathProvisionalPosition.z == tileElement->base_height
-            )
+        if ((gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) &&
+            gFootpathProvisionalPosition.x == mapCoord.x &&
+            gFootpathProvisionalPosition.y == mapCoord.y &&
+            gFootpathProvisionalPosition.z == tileElement->base_height)
         {
             return;
         }
@@ -776,10 +772,10 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
         // Set map selection
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        gMapSelectPositionA.x = x;
-        gMapSelectPositionA.y = y;
-        gMapSelectPositionB.x = x;
-        gMapSelectPositionB.y = y;
+        gMapSelectPositionA.x = mapCoord.x;
+        gMapSelectPositionA.y = mapCoord.y;
+        gMapSelectPositionB.x = mapCoord.x;
+        gMapSelectPositionB.y = mapCoord.y;
 
         footpath_provisional_update();
 
@@ -796,7 +792,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
         }
         int32_t pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
-        _window_footpath_cost = footpath_provisional_set(pathType, x, y, tileElement->base_height, slope);
+        _window_footpath_cost = footpath_provisional_set(pathType, mapCoord.x, mapCoord.y, tileElement->base_height, slope);
         window_invalidate_by_class(WC_FOOTPATH);
     }
 }
@@ -868,9 +864,7 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
-                                 &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
-    x = mapCoord.x;
-    y = mapCoord.y;
+                                 &mapCoord, &interactionType, &tileElement, nullptr);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
@@ -893,7 +887,7 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    cost                   = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY);
+    cost                   = footpath_place(selectedType, mapCoord.x, mapCoord.y, z, presentType, GAME_COMMAND_FLAG_APPLY);
 
     if (cost == MONEY32_UNDEFINED)
     {

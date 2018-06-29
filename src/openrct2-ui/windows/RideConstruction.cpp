@@ -1977,14 +1977,15 @@ static void window_ride_construction_update(rct_window *w)
  */
 static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_t screenY, int32_t *outX, int32_t *outY)
 {
-    int16_t mapX, mapY, mapZ;
+    LocationXY16 mapCoords;
+    int16_t mapZ;
     int32_t interactionType, direction;
     rct_tile_element *tileElement;
     rct_viewport *viewport;
 
     if (!_trackPlaceCtrlState) {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z) {
-            get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &tileElement, &viewport);
+            get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapCoords, &interactionType, &tileElement, &viewport);
             if (interactionType != 0) {
                 _trackPlaceCtrlZ = tileElement->base_height * 8;
                 _trackPlaceCtrlState = true;
@@ -2014,13 +2015,13 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
     }
 
     if (!_trackPlaceCtrlState) {
-        sub_68A15E(screenX, screenY, &mapX, &mapY, &direction, &tileElement);
-        if (mapX == LOCATION_NULL)
+        sub_68A15E(screenX, screenY, &mapCoords.x, &mapCoords.y, &direction, &tileElement);
+        if (mapCoords.x == LOCATION_NULL)
             return false;
 
         _trackPlaceZ = 0;
         if (_trackPlaceShiftState) {
-            tileElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+            tileElement = map_get_surface_element_at(mapCoords.x >> 5, mapCoords.y >> 5);
             mapZ = floor2(tileElement->base_height * 8, 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = std::max<int16_t>(mapZ, 16);
@@ -2028,18 +2029,19 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
         }
     } else {
         mapZ = _trackPlaceCtrlZ;
-        screen_get_map_xy_with_z(screenX, screenY, mapZ, &mapX, &mapY);
+        screen_get_map_xy_with_z(screenX, screenY, mapZ, &mapCoords.x, &mapCoords.y);
         if (_trackPlaceShiftState != 0) {
             mapZ += _trackPlaceShiftZ;
         }
         _trackPlaceZ = std::max<int32_t>(mapZ, 16);
     }
 
-    if (mapX == LOCATION_NULL)
+    if (mapCoords.x == LOCATION_NULL)
         return false;
 
-    *outX = floor2(mapX, 32);
-    *outY = floor2(mapY, 32);
+    *outX = floor2(mapCoords.x, 32);
+    *outY = floor2(mapCoords.y, 32);
+
     return true;
 }
 
