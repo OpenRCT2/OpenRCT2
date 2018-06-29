@@ -34,6 +34,7 @@
 #include "StexObject.h"
 #include "WallObject.h"
 #include "WaterObject.h"
+#include <unordered_map>
 
 interface IFileDataRetriever
 {
@@ -153,7 +154,30 @@ namespace ObjectFactory
     static Object* CreateObjectFromJson(
         IObjectRepository& objectRepository, const json_t* jRoot, const IFileDataRetriever* fileRetriever);
 
+<<<<<<< HEAD
     static void ReadObjectLegacy(Object* object, IReadObjectContext* context, IStream* stream)
+=======
+    static uint8_t ParseSourceGame(const std::string &s)
+    {
+        static const std::unordered_map<std::string, uint8_t> LookupTable
+        {
+            { "rct1",        OBJECT_SOURCE_RCT1 },
+            { "rct1aa",      OBJECT_SOURCE_ADDED_ATTRACTIONS },
+            { "rct1ll",      OBJECT_SOURCE_LOOPY_LANDSCAPES },
+            { "rct2",        OBJECT_SOURCE_RCT2 },
+            { "rct2ww",      OBJECT_SOURCE_WACKY_WORLDS },
+            { "rct2tt",      OBJECT_SOURCE_TIME_TWISTER },
+            { "official",    OBJECT_SOURCE_OPENRCT2_OFFICIAL },
+            { "custom",      OBJECT_SOURCE_CUSTOM },
+        };
+        auto result = LookupTable.find(s);
+        return (result != LookupTable.end()) ?
+               result->second :
+               OBJECT_SOURCE_CUSTOM;
+    }
+
+    static void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
+>>>>>>> e280f8972... Attempt at showing secondary source game
     {
         try
         {
@@ -387,6 +411,12 @@ namespace ObjectFactory
                 if (readContext.WasError())
                 {
                     throw std::runtime_error("Object has errors");
+                }
+                auto sourceGames = json_object_get(jRoot, "sourceGame");
+                if (json_is_array(sourceGames))
+                {
+                    auto secondSourceGame = json_string_value(json_array_get(sourceGames, 1));
+                    result->SetSecondSourceGame(ParseSourceGame(secondSourceGame));
                 }
             }
         }

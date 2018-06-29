@@ -157,6 +157,7 @@ private:
     rct_object_entry _objectEntry{};
     StringTable _stringTable;
     ImageTable _imageTable;
+    uint8_t _secondSourceGame;
 
 protected:
     StringTable& GetStringTable()
@@ -215,6 +216,8 @@ public:
     virtual void SetRepositoryItem(ObjectRepositoryItem* /*item*/) const
     {
     }
+    const uint8_t GetSecondSourceGame();
+    void SetSecondSourceGame(uint8_t sourceGame);
 
     const ImageTable& GetImageTable() const
     {

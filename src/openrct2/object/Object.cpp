@@ -24,6 +24,7 @@ Object::Object(const rct_object_entry& entry)
     char name[DAT_NAME_LENGTH + 1] = { 0 };
     std::copy_n(entry.name, DAT_NAME_LENGTH, name);
     _identifier = String::Duplicate(name);
+    _secondSourceGame = OBJECT_SOURCE_CUSTOM;
 
     if (IsOpenRCT2OfficialObject())
     {
@@ -88,6 +89,16 @@ void Object::SetSourceGame(const uint8_t sourceGame)
     // FIXME: Temporary disabled because it breaks exporting to vanilla.
     /*_objectEntry.flags &= 0x0F;
     _objectEntry.flags |= (sourceGame << 4);*/
+}
+
+const uint8_t Object::GetSecondSourceGame()
+{
+    return _secondSourceGame;
+}
+
+void Object::SetSecondSourceGame(const uint8_t sourceGame)
+{
+    _secondSourceGame = sourceGame;
 }
 
 bool Object::IsOpenRCT2OfficialObject()
