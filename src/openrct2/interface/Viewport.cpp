@@ -655,10 +655,13 @@ void viewport_update_smart_sprite_follow(rct_window * window)
 
 void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
 {
-    sprite_focus sprite = {};
-    coordinate_focus coordinate = {};
+    union
+    {
+        sprite_focus sprite;
+        coordinate_focus coordinate;
+    } focus = {}; // The focus will be either a sprite or a coordinate.
 
-    sprite.sprite_id = window->viewport_smart_follow_sprite;
+    focus.sprite.sprite_id = window->viewport_smart_follow_sprite;
 
     if (peep->state == PEEP_STATE_PICKED)
     {
@@ -686,7 +689,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
                     train = GET_VEHICLE(train->next_vehicle_on_train);
                 }
 
-                sprite.sprite_id = train->sprite_index;
+                focus.sprite.sprite_id = train->sprite_index;
                 final_check = 0;
             }
         }
@@ -697,20 +700,20 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
             int32_t y = ride->overall_view.y * 32 + 16;
             int32_t height = tile_element_height(x, y);
             height += 32;
-            coordinate.x = x;
-            coordinate.y = y;
-            coordinate.z = height;
-            sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            focus.coordinate.x = x;
+            focus.coordinate.y = y;
+            focus.coordinate.z = height;
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
         }
         else
         {
-            sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-            sprite.pad_486 &= 0xFFFF;
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+            focus.sprite.pad_486 &= 0xFFFF;
         }
-        coordinate.rotation = get_current_rotation();
+        focus.coordinate.rotation = get_current_rotation();
     }
 
-    window->viewport_focus_sprite = sprite;
+    window->viewport_focus_sprite = focus.sprite;
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
 }
 
