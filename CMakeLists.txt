@@ -1,5 +1,5 @@
 # CMAKE project for openrct2
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.8)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
@@ -11,6 +11,9 @@ if (NOT MSVC)
 endif ()
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 set(CMAKE_MACOSX_RPATH 1)
