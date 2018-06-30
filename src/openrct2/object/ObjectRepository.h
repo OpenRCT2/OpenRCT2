@@ -36,6 +36,7 @@ struct ObjectRepositoryItem
     rct_object_entry ObjectEntry;
     std::string Path;
     std::string Name;
+    uint8_t Source;
     Object* LoadedObject{};
     struct
     {

@@ -91,7 +91,7 @@ void Object::SetSourceGame(const uint8_t sourceGame)
     _objectEntry.flags |= (sourceGame << 4);*/
 }
 
-const uint8_t Object::GetSecondSourceGame()
+uint8_t Object::GetSecondSourceGame()
 {
     return _secondSourceGame;
 }

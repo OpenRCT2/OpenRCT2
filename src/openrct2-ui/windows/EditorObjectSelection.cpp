@@ -1435,34 +1435,7 @@ static bool filter_source(const ObjectRepositoryItem* item, bool selected)
     if (_FILTER_ALL)
         return true;
 
-    uint8_t source = object_entry_get_source_game(&item->ObjectEntry);
-    uint8_t secondSource = OBJECT_SOURCE_CUSTOM;
-
-    _loadedObject = item->LoadedObject;
-    if (_loadedObject == nullptr)
-    {
-        _loadedObject = object_manager_get_loaded_object(&item->ObjectEntry);
-    }
-    if (_loadedObject == nullptr)
-    {
-        _loadedObject = object_manager_load_object(&item->ObjectEntry);
-    }
-    if (_loadedObject != nullptr)
-    {
-        secondSource = ((Object*)_loadedObject)->GetSecondSourceGame();
-    }
-
-    if (!selected && _loadedObject != nullptr)
-    {
-        uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
-
-        if (objectType != OBJECT_TYPE_PARK_ENTRANCE && objectType != OBJECT_TYPE_SCENARIO_TEXT && objectType != OBJECT_TYPE_WATER && objectType != OBJECT_TYPE_SCENERY_GROUP)
-        {
-            ((Object*)_loadedObject)->Unload();
-        }
-    }
-
-    return sources_match(source) || (secondSource != OBJECT_SOURCE_CUSTOM && sources_match(secondSource));
+    return sources_match(item->Source);
 }
 
 static bool filter_chunks(const ObjectRepositoryItem* item)
