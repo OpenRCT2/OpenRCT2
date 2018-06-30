@@ -335,7 +335,8 @@ private:
     std::shared_ptr<IPlatformEnvironment> const _env;
     ScenarioFileIndex const _fileIndex;
     std::vector<scenario_index_entry> _scenarios;
-    std::vector<scenario_highscore_entry*> _highscores;
+    std::vector<scenario_highscore_entry_v1*> _highscoresV1;
+    std::vector<scenario_highscore_entry_v2*> _highscoresV2;
 
 public:
     explicit ScenarioRepository(const std::shared_ptr<IPlatformEnvironment>& env)
@@ -435,13 +436,13 @@ public:
         if (scenario != nullptr)
         {
             // Check if record company value has been broken or the highscore is the same but no name is registered
-            scenario_highscore_entry * highscore = scenario->highscore;
+            scenario_highscore_entry_v2 * highscore = scenario->highscore;
             if (highscore == nullptr || companyValue > highscore->company_value ||
                 (String::IsNullOrEmpty(highscore->name) && companyValue == highscore->company_value))
             {
                 if (highscore == nullptr)
                 {
-                    highscore = InsertHighscore();
+                    highscore = InsertV2Highscore();
                     highscore->timestamp = platform_get_datetime_now_utc();
                     highscore->days_record = MAXINT16;
                     scenario->highscore = highscore;
@@ -603,7 +604,7 @@ private:
 
                 // Start over and overwrite old data
                 auto fsWrite = FileStream(path, FILE_MODE_WRITE);
-                fsWrite.WriteValue<uint32_t>(2);
+                fsWrite.WriteValue<uint32_t>(HighscoreFileVersion);
                 fsWrite.WriteValue<uint32_t>(numHighscores);
 
                 for (uint32_t i = 0; i < numHighscores; i++)
@@ -700,7 +701,7 @@ private:
                 if (scBasic.Flags & SCENARIO_FLAGS_COMPLETED)
                 {
                     bool notFound = true;
-                    for (auto &highscore : _highscores)
+                    for (auto &highscore : _highscoresV2)
                     {
                         if (String::Equals(scBasic.Path, highscore->fileName, true))
                         {
@@ -721,7 +722,7 @@ private:
                     }
                     if (notFound)
                     {
-                        scenario_highscore_entry * highscore = InsertHighscore();
+                        scenario_highscore_entry_v2 * highscore = InsertV2Highscore();
                         highscore->fileName = String::Duplicate(scBasic.Path);
                         std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
                         highscore->name = String::Duplicate(name.c_str());
@@ -761,14 +762,6 @@ private:
         _highscoresV2.clear();
     }
 
-    scenario_highscore_entry * InsertHighscore()
-    {
-        auto highscore = new scenario_highscore_entry();
-        memset(highscore, 0, sizeof(scenario_highscore_entry));
-        _highscores.push_back(highscore);
-        return highscore;
-    }
-
     scenario_highscore_entry_v1 * InsertV1Highscore()
     {
         auto highscore = new scenario_highscore_entry_v1();
@@ -777,9 +770,17 @@ private:
         return highscore;
     }
 
+    scenario_highscore_entry_v2 * InsertV2Highscore()
+    {
+        auto highscore = new scenario_highscore_entry_v2();
+        memset(highscore, 0, sizeof(scenario_highscore_entry_v2));
+        _highscoresV2.push_back(highscore);
+        return highscore;
+    }
+
     void AttachHighscores()
     {
-        for (auto &highscore : _highscores)
+        for (auto &highscore : _highscoresV2)
         {
             scenario_index_entry * scenario = GetByFilename(highscore->fileName);
             if (scenario != nullptr)
@@ -799,7 +800,7 @@ private:
             fs.WriteValue<uint32_t>((uint32_t)_highscoresV2.size());
             for (size_t i = 0; i < _highscoresV2.size(); i++)
             {
-                const scenario_highscore_entry * highscore = _highscores[i];
+                const scenario_highscore_entry_v2 * highscore = _highscoresV2[i];
                 fs.WriteString(highscore->fileName);
                 fs.WriteString(highscore->name);
                 fs.WriteValue<money32>(highscore->company_value);

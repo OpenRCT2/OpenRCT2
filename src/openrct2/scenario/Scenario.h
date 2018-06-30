@@ -381,8 +381,6 @@ extern char gScenarioFileName[260];
 
 void load_from_sc6(const char *path);
 
-ParkLoadResult * load_from_sc6(const char *path);
-
 void scenario_begin();
 void scenario_update();
 

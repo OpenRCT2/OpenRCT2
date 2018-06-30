@@ -37,8 +37,7 @@ const rct_string_id DateFormatStringFormatIds[] = {
 
 openrct_timeofday gRealTimeOfDay;
 
-sint32 date_get_day_of_month(sint32 month)
-int32_t date_get_month(int32_t months)
+int32_t date_get_day_of_month(int32_t month)
 {
     return ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 }

@@ -47,7 +47,7 @@ struct scenario_index_entry
     uint8_t   objective_arg_1;
     int32_t  objective_arg_2;
     int16_t  objective_arg_3;
-    scenario_highscore_entry * highscore;
+    scenario_highscore_entry_v2 * highscore;
     
     utf8 internal_name[64]; // Untranslated name
     utf8 name[64];          // Translated name
