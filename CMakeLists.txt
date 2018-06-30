@@ -1,5 +1,5 @@
 # CMAKE project for openrct2
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.8)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
@@ -11,6 +11,9 @@ if (NOT MSVC)
 endif ()
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 set(CMAKE_MACOSX_RPATH 1)
@@ -85,7 +88,7 @@ function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
 endfunction ()
 
 if (MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8 /std:c++latest /permissive- /Zc:externConstexpr /WX")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /utf-8 /permissive- /Zc:externConstexpr /WX")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244") # C4244: 'conversion_type': conversion from 'type1' to 'type2', possible loss of data
 
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -135,16 +138,14 @@ else ()
 
     # On mingw all code is already PIC, this will avoid compiler error on redefining this option
     if (NOT MINGW)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+        set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif ()
 
     if (APPLE AND NOT USE_MMAP)
-        set(PIE_FLAG "-fno-pie")
+        set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
     else ()
-        set(PIE_FLAG "-fpie")
+        set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif ()
-
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17")
 endif ()
 
 # Defines
