@@ -138,13 +138,13 @@ else ()
 
     # On mingw all code is already PIC, this will avoid compiler error on redefining this option
     if (NOT MINGW)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+        set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif ()
 
     if (APPLE AND NOT USE_MMAP)
-        set(PIE_FLAG "-fno-pie")
+        set(CMAKE_POSITION_INDEPENDENT_CODE OFF)
     else ()
-        set(PIE_FLAG "-fpie")
+        set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif ()
 endif ()
 
