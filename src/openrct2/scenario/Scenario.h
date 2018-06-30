@@ -365,6 +365,7 @@ extern money32 gScenarioObjectiveCurrency;
 extern uint16_t gScenarioParkRatingWarningDays;
 extern money32 gScenarioCompletedCompanyValue;
 extern money32 gScenarioCompanyValueRecord;
+extern int16_t gScenarioDaysRecord;
 
 extern rct_s6_info gS6Info;
 extern char gScenarioName[64];
