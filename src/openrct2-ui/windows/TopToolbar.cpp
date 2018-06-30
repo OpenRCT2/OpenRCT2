@@ -1465,7 +1465,11 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
         // Large scenery
         // If CTRL not pressed
         if (!gSceneryCtrlPressed) {
-            sub_68A15E(x, y, grid_x, grid_y, nullptr, nullptr);
+
+            LocationXY16 gridCoords = {};
+            sub_68A15E(x, y, gridCoords, nullptr, nullptr);
+            *grid_x = gridCoords.x;
+            *grid_y = gridCoords.y;
 
             if (*grid_x == LOCATION_NULL)
                 return;

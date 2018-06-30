@@ -2015,7 +2015,7 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
     }
 
     if (!_trackPlaceCtrlState) {
-        sub_68A15E(screenX, screenY, &mapCoords.x, &mapCoords.y, &direction, &tileElement);
+        sub_68A15E(screenX, screenY, mapCoords, &direction, &tileElement);
         if (mapCoords.x == LOCATION_NULL)
             return false;
 

@@ -588,11 +588,11 @@ static rct_peep *viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t *x, int16_t *y, int32_t *direction, rct_tile_element **tileElement)
+void sub_68A15E(int32_t screenX, int32_t screenY, LocationXY16& pos, int32_t *direction, rct_tile_element **tileElement)
 {
     int32_t interactionType;
-    rct_tile_element *myTileElement;
-    rct_viewport *viewport;
+    rct_tile_element* myTileElement;
+    rct_viewport* viewport;
 
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
@@ -607,13 +607,15 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t *x, int16_t *y, int32_
     mapCoord.x += 16;
     mapCoord.y += 16;
 
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
-        *x = LOCATION_NULL;
+    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    {
+        pos.x = LOCATION_NULL;
         return;
     }
 
     int16_t originalZ = 0;
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
+    if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER)
+    {
         originalZ = surface_get_water_height(myTileElement) << 4;
     }
 
@@ -659,8 +661,8 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t *x, int16_t *y, int32_
         }
     }
 
-    *x = map_pos.x & ~0x1F;
-    *y = map_pos.y & ~0x1F;
+    pos.x = map_pos.x & ~0x1F;
+    pos.y = map_pos.y & ~0x1F;
 
     if (direction != nullptr)
         *direction = myDirection;
