@@ -687,18 +687,15 @@ void window_guest_overview_viewport_rotate(rct_window *w)
 void window_guest_viewport_init(rct_window* w){
     if (w->page != WINDOW_GUEST_OVERVIEW) return;
 
-    struct
-    {
-        sprite_focus sprite;
-        coordinate_focus coordinate;
-    } focus = {}; // The focus will be both a sprite and a coordinate.
+    sprite_focus sprite = {};
+    coordinate_focus coordinate = {};
 
-    focus.sprite.sprite_id = w->number;
+    sprite.sprite_id = w->number;
 
     rct_peep* peep = GET_PEEP(w->number);
 
     if (peep->state == PEEP_STATE_PICKED){
-        focus.sprite.sprite_id = SPRITE_INDEX_NULL;
+        sprite.sprite_id = SPRITE_INDEX_NULL;
     }
     else{
         uint8_t final_check = 1;
@@ -715,7 +712,7 @@ void window_guest_viewport_init(rct_window* w){
                     train = GET_VEHICLE(train->next_vehicle_on_train);
                 }
 
-                focus.sprite.sprite_id = train->sprite_index;
+                sprite.sprite_id = train->sprite_index;
                 final_check = 0;
             }
         }
@@ -725,26 +722,26 @@ void window_guest_viewport_init(rct_window* w){
             int32_t y = ride->overall_view.y * 32 + 16;
             int32_t height = tile_element_height(x, y);
             height += 32;
-            focus.coordinate.x = x;
-            focus.coordinate.y = y;
-            focus.coordinate.z = height;
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            coordinate.x = x;
+            coordinate.y = y;
+            coordinate.z = height;
+            sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
         }
         else{
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-            focus.sprite.pad_486 &= 0xFFFF;
+            sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+            sprite.pad_486 &= 0xFFFF;
         }
-        focus.coordinate.rotation = get_current_rotation();
+        coordinate.rotation = get_current_rotation();
     }
 
     uint16_t viewport_flags;
 
     if (w->viewport){
         // Check all combos, for now skipping y and rot
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x &&
-            focus.coordinate.y == w->viewport_focus_coordinates.y &&
-            focus.coordinate.z == w->viewport_focus_coordinates.z &&
-            focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
+        if (coordinate.x == w->viewport_focus_coordinates.x &&
+            coordinate.y == w->viewport_focus_coordinates.y &&
+            coordinate.z == w->viewport_focus_coordinates.z &&
+            coordinate.rotation == w->viewport_focus_coordinates.rotation)
             return;
 
         viewport_flags = w->viewport->flags;
@@ -760,10 +757,10 @@ void window_guest_viewport_init(rct_window* w){
 
     window_event_invalidate_call(w);
 
-    w->viewport_focus_coordinates.x = focus.coordinate.x;
-    w->viewport_focus_coordinates.y = focus.coordinate.y;
-    w->viewport_focus_coordinates.z = focus.coordinate.z;
-    w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
+    w->viewport_focus_coordinates.x = coordinate.x;
+    w->viewport_focus_coordinates.y = coordinate.y;
+    w->viewport_focus_coordinates.z = coordinate.z;
+    w->viewport_focus_coordinates.rotation = coordinate.rotation;
 
     if (peep->state != PEEP_STATE_PICKED){
         if (!(w->viewport)){
@@ -774,7 +771,7 @@ void window_guest_viewport_init(rct_window* w){
             int32_t width = view_widget->right - view_widget->left - 1;
             int32_t height = view_widget->bottom - view_widget->top - 1;
 
-            viewport_create(w, x, y, width, height, 0, focus.coordinate.x, focus.coordinate.y, focus.coordinate.z, focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+            viewport_create(w, x, y, width, height, 0, coordinate.x, coordinate.y, coordinate.z, sprite.type & VIEWPORT_FOCUS_TYPE_MASK, sprite.sprite_id);
             w->flags |= WF_NO_SCROLLING;
             window_invalidate(w);
         }
