@@ -655,13 +655,34 @@ void viewport_update_smart_sprite_follow(rct_window * window)
 
 void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
     union
     {
         sprite_focus sprite;
         coordinate_focus coordinate;
     } focus = {}; // The focus will be either a sprite or a coordinate.
+=======
+    struct
+    {
+        sprite_focus sprite;
+        coordinate_focus coordinate;
+    } focus = {}; // The focus will be both a sprite and a coordinate.
+>>>>>>> parent of 2a6fe9cae... Cleanup Viewport.cpp
+=======
+    sprite_focus sprite = {};
+    coordinate_focus coordinate = {};
+>>>>>>> parent of b71392b33... Revert Viewport.cpp
+=======
+    union
+    {
+        sprite_focus sprite;
+        coordinate_focus coordinate;
+    } focus = {}; // The focus will be either a sprite or a coordinate.
+>>>>>>> parent of 059353f41... fix #7462: Guest window goes beyond the map edge on a spiral slide.
 
-    focus.sprite.sprite_id = window->viewport_smart_follow_sprite;
+    sprite.sprite_id = window->viewport_smart_follow_sprite;
 
     if (peep->state == PEEP_STATE_PICKED)
     {
@@ -689,7 +710,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
                     train = GET_VEHICLE(train->next_vehicle_on_train);
                 }
 
-                focus.sprite.sprite_id = train->sprite_index;
+                sprite.sprite_id = train->sprite_index;
                 final_check = 0;
             }
         }
@@ -700,20 +721,20 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
             int32_t y = ride->overall_view.y * 32 + 16;
             int32_t height = tile_element_height(x, y);
             height += 32;
-            focus.coordinate.x = x;
-            focus.coordinate.y = y;
-            focus.coordinate.z = height;
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+            coordinate.x = x;
+            coordinate.y = y;
+            coordinate.z = height;
+            sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
         }
         else
         {
-            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
-            focus.sprite.pad_486 &= 0xFFFF;
+            sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+            sprite.pad_486 &= 0xFFFF;
         }
-        focus.coordinate.rotation = get_current_rotation();
+        coordinate.rotation = get_current_rotation();
     }
 
-    window->viewport_focus_sprite = focus.sprite;
+    window->viewport_focus_sprite = sprite;
     window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
 }
 
