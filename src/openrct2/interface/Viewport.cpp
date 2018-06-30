@@ -657,6 +657,7 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     union
     {
         sprite_focus sprite;
@@ -673,6 +674,13 @@ void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
     sprite_focus sprite = {};
     coordinate_focus coordinate = {};
 >>>>>>> parent of b71392b33... Revert Viewport.cpp
+=======
+    union
+    {
+        sprite_focus sprite;
+        coordinate_focus coordinate;
+    } focus = {}; // The focus will be either a sprite or a coordinate.
+>>>>>>> parent of 059353f41... fix #7462: Guest window goes beyond the map edge on a spiral slide.
 
     sprite.sprite_id = window->viewport_smart_follow_sprite;
 

@@ -687,8 +687,15 @@ void window_guest_overview_viewport_rotate(rct_window *w)
 void window_guest_viewport_init(rct_window* w){
     if (w->page != WINDOW_GUEST_OVERVIEW) return;
 
+<<<<<<< HEAD
     sprite_focus sprite = {};
     coordinate_focus coordinate = {};
+=======
+    union{
+        sprite_focus sprite;
+        coordinate_focus coordinate;
+    } focus = {}; // The focus will be either a sprite or a coordinate.
+>>>>>>> parent of 059353f41... fix #7462: Guest window goes beyond the map edge on a spiral slide.
 
     sprite.sprite_id = w->number;
 
