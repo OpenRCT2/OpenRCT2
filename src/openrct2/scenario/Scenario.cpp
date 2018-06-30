@@ -78,7 +78,6 @@ money32 gScenarioObjectiveCurrency;
 uint16_t gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
-int16_t gScenarioCompletedDays;
 int16_t gScenarioDaysRecord;
 
 bool gScenarioEndedInSession = false;
@@ -199,7 +198,6 @@ void scenario_begin()
 static void scenario_end()
 {
     gScenarioEndedInSession = true;
-    gScenarioDaysToComplete = date_get_elapsed_days(gDateMonthsElapsed, date_get_day_of_month(gDateMonthsElapsed & 7));
     window_close_by_class(WC_DROPDOWN);
     window_close_all_except_flags(WF_STICK_TO_BACK | WF_STICK_TO_FRONT);
     context_open_window_view(WV_PARK_OBJECTIVE);
@@ -222,10 +220,10 @@ void scenario_failure()
 void scenario_success()
 {
     const money32 companyValue = gCompanyValue;
-    const int16_t daysRecord = gScenarioDaysToComplete;
-
     gScenarioCompletedCompanyValue = companyValue;
-    gScenarioCompletedDays = daysRecord;
+
+    gScenarioDaysToComplete = date_get_elapsed_days(gDateMonthsElapsed, date_get_day_of_month(gDateMonthsElapsed & 7));
+    const int16_t daysRecord = gScenarioDaysToComplete;
 
     peep_applause();
 

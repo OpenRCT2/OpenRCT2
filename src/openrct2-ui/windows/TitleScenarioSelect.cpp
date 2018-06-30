@@ -496,8 +496,13 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
             scenario->objective_type == OBJECTIVE_10_ROLLERCOASTERS_LENGTH || scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS ||
             scenario->objective_type == OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE || scenario->objective_type == OBJECTIVE_MONTHLY_FOOD_INCOME)
         {
-            set_format_arg(6 + sizeof(const char *), money32, scenario->highscore->days_record);
-            y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE_AND_DAYS, COLOUR_BLACK);
+            if (scenario->highscore->days_record == INT16_MAX) {
+                y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE_AND_NA_DAYS, COLOUR_BLACK);
+            }
+            else {
+                set_format_arg(6 + sizeof(const char *), int16_t, scenario->highscore->days_record);
+                y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE_AND_DAYS, COLOUR_BLACK);
+            }
         }
         else {
             y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);

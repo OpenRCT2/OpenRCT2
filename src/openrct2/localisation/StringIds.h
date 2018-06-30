@@ -3926,6 +3926,10 @@ enum {
     STR_DEBUG_PAINT_SHOW_BLOCKED_TILES = 6260,
     STR_DEBUG_PAINT_SHOW_WIDE_PATHS = 6261,
 
+    STR_OBJECTIVE_ACHIEVED_WITH_DAYS = 6262,
+    STR_COMPLETED_BY_WITH_COMPANY_VALUE_AND_DAYS = 6263,
+    STR_COMPLETED_BY_WITH_COMPANY_VALUE_AND_NA_DAYS = 6264,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

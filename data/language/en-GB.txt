@@ -2801,7 +2801,7 @@ STR_2790    :Enter name into scenario chart
 STR_2791    :Enter name
 STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
-STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
+STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2}Company value: {BLACK}{CURRENCY}
 STR_2795    :Sort
 STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
@@ -4568,6 +4568,9 @@ STR_6258    :Clear (transparent)
 STR_6259    :Disabled
 STR_6260    :Show blocked tiles
 STR_6261    :Show wide paths
+STR_6262    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective in {COMMA16} days with a company value of {CURRENCY} !
+STR_6263    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2}Company value: {BLACK}{CURRENCY}{NEWLINE}{WINDOW_COLOUR_2}Days: {BLACK}{COMMA16}
+STR_6264    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2}Company value: {BLACK}{CURRENCY}{NEWLINE}{WINDOW_COLOUR_2}Days: {BLACK}N/A
 
 #############
 # Scenarios #

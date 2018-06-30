@@ -33,6 +33,7 @@
 #include "ScenarioSources.h"
 
 #include "../config/Config.h"
+#include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/platform.h"
@@ -424,7 +425,7 @@ public:
         return nullptr;
     }
 
-    bool TryRecordHighscore(int32_t language, const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) override
+    bool TryRecordHighscore(int32_t language, const utf8 * scenarioFileName, money32 companyValue, int16_t days, const utf8 * name) override
     {
         // Scan the scenarios so we have a fresh list to query. This is to prevent the issue of scenario completions
         // not getting recorded, see #4951.
@@ -594,6 +595,9 @@ private:
             if (fileVersion == 1)
             {
                 Console::Error::WriteLine("Found old highscores file, converting");
+
+                ClearHighscoresV1();
+
                 // Old highscores file doesn't contain days value, need to transfer values
                 uint32_t numHighscores = fsRead.ReadValue<uint32_t>();
 
@@ -601,8 +605,6 @@ private:
                 auto fsWrite = FileStream(path, FILE_MODE_WRITE);
                 fsWrite.WriteValue<uint32_t>(2);
                 fsWrite.WriteValue<uint32_t>(numHighscores);
-
-                Console::Error::WriteLine("Saving old values", numHighscores);
 
                 for (uint32_t i = 0; i < numHighscores; i++)
                 {
@@ -612,8 +614,6 @@ private:
                     highscore->company_value = fsRead.ReadValue<money32>();
                     highscore->timestamp = fsRead.ReadValue<datetime64>();
                 }
-
-                Console::Error::WriteLine("Writing new values", numHighscores);
 
                 for (std::vector<scenario_highscore_entry_v1*>::iterator it = _highscoresV1.begin(); it != _highscoresV1.end(); ++it)
                 {
@@ -626,38 +626,12 @@ private:
                     highscore->days_record = MAXINT16;
                     highscore->timestamp = (*it)->timestamp;
 
-                    Console::Error::WriteLine("Writing file name to highscores file");
-                    fsWrite.WriteValue(highscore->fileName);
-                    Console::Error::WriteLine("Writing player name to highscores file");
-                    fsWrite.WriteValue(highscore->name);
-                    Console::Error::WriteLine("Writing company value to highscores file");
-                    fsWrite.WriteValue(highscore->company_value);
-                    Console::Error::WriteLine("Writing days default to highscores file");
-                    fsWrite.WriteValue(MAXINT16);
-                    Console::Error::WriteLine("Writing timestamp to highscores file");
+                    fsWrite.WriteString(highscore->fileName);
+                    fsWrite.WriteString(highscore->name);
+                    fsWrite.WriteValue<money32>(highscore->company_value);
+                    fsWrite.WriteValue<int16_t>(MAXINT16);
                     fsWrite.WriteValue<datetime64>(highscore->timestamp);
                 }
-
-                ClearHighscoresV1();
-
-                //for (uint32 i = 0; i < numHighscores; i++)
-                //{
-                //    scenario_highscore_entry_v1 * old_highscore = InsertV1Highscore();
-                //    //scenario_highscore_entry_v2 * new_highscore = InsertV2Highscore();
-                //    old_highscore->fileName = fs.ReadString();
-                //    fs_new.WriteValue(old_highscore->fileName);
-                //    old_highscore->name = fs.ReadString();
-                //    fs_new.WriteValue(old_highscore->name);
-                //    old_highscore->company_value = fs.ReadValue<money32>();
-                //    fs_new.WriteValue(old_highscore->company_value);
-                //    fs_new.WriteValue(MAXINT16);
-                //    old_highscore->timestamp = fs.ReadValue<datetime64>();
-                //    fs_new.WriteValue<datetime64>(old_highscore->timestamp);
-                //}
-
-                //File::Delete(path);
-                //File::Copy(path + "_v2", path, true);
-                //File::Delete(path + "_v2");
             }
             else if (fileVersion == 2) 
             {
@@ -828,9 +802,9 @@ private:
                 const scenario_highscore_entry * highscore = _highscores[i];
                 fs.WriteString(highscore->fileName);
                 fs.WriteString(highscore->name);
-                fs.WriteValue(highscore->company_value);
-                fs.WriteValue(highscore->days_record);
-                fs.WriteValue(highscore->timestamp);
+                fs.WriteValue<money32>(highscore->company_value);
+                fs.WriteValue<int16_t>(highscore->days_record);
+                fs.WriteValue<datetime64>(highscore->timestamp);
             }
         }
         catch (const std::exception &)
@@ -868,9 +842,9 @@ const scenario_index_entry *scenario_repository_get_by_index(size_t index)
     return repo->GetByIndex(index);
 }
 
-bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name)
+bool scenario_repository_try_record_highscore(const utf8 * scenarioFileName, money32 companyValue, int16_t days, const utf8 * name)
 {
     IScenarioRepository * repo = GetScenarioRepository();
-    return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);
+    return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, days, name);
 }
 
