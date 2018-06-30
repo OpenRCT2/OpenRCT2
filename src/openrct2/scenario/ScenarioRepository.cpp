@@ -444,7 +444,7 @@ public:
                 {
                     highscore = InsertV2Highscore();
                     highscore->timestamp = platform_get_datetime_now_utc();
-                    highscore->days_record = MAXINT16;
+                    highscore->days_record = INT16_MAX;
                     scenario->highscore = highscore;
                 }
                 else
@@ -624,13 +624,13 @@ private:
                     highscore->fileName = (*it)->fileName;
                     highscore->name = (*it)->name;
                     highscore->company_value = (*it)->company_value;
-                    highscore->days_record = MAXINT16;
+                    highscore->days_record = INT16_MAX;
                     highscore->timestamp = (*it)->timestamp;
 
                     fsWrite.WriteString(highscore->fileName);
                     fsWrite.WriteString(highscore->name);
                     fsWrite.WriteValue<money32>(highscore->company_value);
-                    fsWrite.WriteValue<int16_t>(MAXINT16);
+                    fsWrite.WriteValue<int16_t>(INT16_MAX);
                     fsWrite.WriteValue<datetime64>(highscore->timestamp);
                 }
             }
@@ -714,7 +714,7 @@ private:
                                 std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
                                 highscore->name = String::Duplicate(name.c_str());
                                 highscore->company_value = scBasic.CompanyValue;
-                                highscore->days_record = MAXINT16;
+                                highscore->days_record = INT16_MAX;
                                 highscore->timestamp = DATETIME64_MIN;
                                 break;
                             }
@@ -727,7 +727,7 @@ private:
                         std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
                         highscore->name = String::Duplicate(name.c_str());
                         highscore->company_value = scBasic.CompanyValue;
-                        highscore->days_record = MAXINT16;
+                        highscore->days_record = INT16_MAX;
                         highscore->timestamp = DATETIME64_MIN;
                     }
                 }
