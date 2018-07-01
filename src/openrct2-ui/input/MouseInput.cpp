@@ -1106,7 +1106,7 @@ void process_mouse_over(int32_t x, int32_t y)
             case WWT_VIEWPORT:
                 if (!(_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                 {
-                    if (viewport_interaction_left_over(x, y))
+                    if (viewport_interaction_left_over({x, y}))
                     {
                         set_cursor(CURSOR_HAND_POINT);
                         return;
