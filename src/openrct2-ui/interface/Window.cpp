@@ -500,7 +500,7 @@ void window_all_wheel_input()
 
     // Check window cursor is over
     if (!(input_test_flag(INPUT_FLAG_5))) {
-        rct_window *w = window_find_from_point(cursorState->x, cursorState->y);
+        rct_window *w = window_find_from_point({cursorState->x, cursorState->y});
         if (w != nullptr) {
             // Check if main window
             if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
@@ -509,7 +509,7 @@ void window_all_wheel_input()
             }
 
             // Check scroll view, cursor is over
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->x, cursorState->y);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(w, {cursorState->x, cursorState->y});
             if (widgetIndex != -1) {
                 rct_widget *widget = &w->widgets[widgetIndex];
                 if (widget->type == WWT_SCROLL) {

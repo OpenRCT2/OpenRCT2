@@ -1491,7 +1491,7 @@ void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
  */
 void get_map_coordinates_from_pos(int32_t screenX, int32_t screenY, int32_t flags, LocationXY16* pos, int32_t *interactionType, rct_tile_element **tileElement, rct_viewport **viewport)
 {
-    rct_window* window = window_find_from_point(screenX, screenY);
+    rct_window* window = window_find_from_point({screenX, screenY});
     get_map_coordinates_from_pos_window(window, screenX, screenY, flags, pos, interactionType, tileElement, viewport);
 }
 
@@ -1603,7 +1603,7 @@ void viewport_invalidate(rct_viewport *viewport, int32_t left, int32_t top, int3
 
 static rct_viewport *viewport_find_from_point(int32_t screenX, int32_t screenY)
 {
-    rct_window *w = window_find_from_point(screenX, screenY);
+    rct_window *w = window_find_from_point({screenX, screenY});
     if (w == nullptr)
         return nullptr;
 

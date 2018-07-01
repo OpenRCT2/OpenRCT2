@@ -385,17 +385,17 @@ void window_close_all_except_flags(uint16_t flags)
  *
  *  rct2: 0x006EA845
  */
-rct_window *window_find_from_point(int32_t x, int32_t y)
+rct_window *window_find_from_point(const LocationXY32& pos)
 {
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
         auto& w = **it;
-        if (x < w.x || x >= w.x + w.width || y < w.y || y >= w.y + w.height)
+        if (pos.x < w.x || pos.x >= w.x + w.width || pos.y < w.y || pos.y >= w.y + w.height)
             continue;
 
         if (w.flags & WF_NO_BACKGROUND)
         {
-            auto widgetIndex = window_find_widget_from_point(&w, x, y);
+            auto widgetIndex = window_find_widget_from_point(&w, pos);
             if (widgetIndex == -1)
                 continue;
         }
@@ -414,7 +414,7 @@ rct_window *window_find_from_point(int32_t x, int32_t y)
  * returns widget_index (edx)
  * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
  */
-rct_widgetindex window_find_widget_from_point(rct_window *w, int32_t x, int32_t y)
+rct_widgetindex window_find_widget_from_point(rct_window* w, const LocationXY32& pos)
 {
     // Invalidate the window
     window_event_invalidate_call(w);
@@ -426,8 +426,8 @@ rct_widgetindex window_find_widget_from_point(rct_window *w, int32_t x, int32_t 
         if (widget->type == WWT_LAST) {
             break;
         } else if (widget->type != WWT_EMPTY) {
-            if (x >= w->x + widget->left && x <= w->x + widget->right &&
-                y >= w->y + widget->top && y <= w->y + widget->bottom
+            if (pos.x >= w->x + widget->left && pos.x <= w->x + widget->right &&
+                pos.y >= w->y + widget->top && pos.y <= w->y + widget->bottom
             ) {
                 widget_index = i;
             }

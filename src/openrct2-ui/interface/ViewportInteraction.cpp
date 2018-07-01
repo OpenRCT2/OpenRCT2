@@ -552,7 +552,7 @@ static rct_peep *viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
     rct_viewport *viewport;
     rct_peep *peep, *closestPeep;
 
-    w = window_find_from_point(x, y);
+    w = window_find_from_point({x, y});
     if (w == nullptr)
         return nullptr;
 
