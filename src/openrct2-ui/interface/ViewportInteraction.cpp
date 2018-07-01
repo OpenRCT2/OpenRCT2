@@ -186,7 +186,7 @@ int32_t viewport_interaction_left_click(const LocationXY32& pos)
  *
  *  rct2: 0x006EDE88
  */
-int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_interaction_info *info)
+int32_t viewport_interaction_get_item_right(const LocationXY32& pos, viewport_interaction_info* info)
 {
     rct_tile_element *tileElement;
     rct_scenery_entry *sceneryEntry;
@@ -203,7 +203,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
-    get_map_coordinates_from_pos({x, y}, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord, &info->type, &info->tileElement, nullptr);
+    get_map_coordinates_from_pos(pos, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -369,7 +369,7 @@ int32_t viewport_interaction_right_over(int32_t x, int32_t y)
 {
     viewport_interaction_info info;
 
-    return viewport_interaction_get_item_right(x, y, &info) != 0;
+    return viewport_interaction_get_item_right({x, y}, &info) != 0;
 }
 
 /**
@@ -381,7 +381,7 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
     CoordsXYE tileElement;
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_right(x, y, &info)) {
+    switch (viewport_interaction_get_item_right({x, y}, &info)) {
     case VIEWPORT_INTERACTION_ITEM_NONE:
         return 0;
 
