@@ -139,8 +139,7 @@ void hide_construction_rights();
 void viewport_set_visibility(uint8_t mode);
 
 void get_map_coordinates_from_pos(
-    int32_t screenX,
-    int32_t screenY,
+    const LocationXY32& screenPos,
     int32_t flags,
     LocationXY16* pos,
     int32_t* interactionType,
@@ -148,8 +147,7 @@ void get_map_coordinates_from_pos(
     rct_viewport** viewport);
 void get_map_coordinates_from_pos_window(
     rct_window* window,
-    int32_t screenX,
-    int32_t screenY,
+    LocationXY32 screenPos,
     int32_t flags,
     LocationXY16* pos,
     int32_t* interactionType,

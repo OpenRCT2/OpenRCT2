@@ -956,7 +956,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
     // not used
     rct_viewport* viewport;
-    get_map_coordinates_from_pos(x, y, flags, &gridCoords, &type, &tile_element, &viewport);
+    get_map_coordinates_from_pos({x, y}, flags, &gridCoords, &type, &tile_element, &viewport);
 
     switch (type){
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
@@ -1054,7 +1054,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
     int32_t type;
     rct_tile_element* tileElement;
     rct_viewport * viewport;
-    get_map_coordinates_from_pos(x, y, flags, nullptr, &type, &tileElement, &viewport);
+    get_map_coordinates_from_pos({x, y}, flags, nullptr, &type, &tileElement, &viewport);
 
     switch (type) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
@@ -1186,7 +1186,7 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
                     VIEWPORT_INTERACTION_MASK_WALL &
                     VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
                 int32_t interaction_type;
-                get_map_coordinates_from_pos(x, y, flags, nullptr, &interaction_type, &tile_element, nullptr);
+                get_map_coordinates_from_pos({x, y}, flags, nullptr, &interaction_type, &tile_element, nullptr);
 
                 if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE) {
                     gSceneryCtrlPressed = true;
@@ -1309,7 +1309,7 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
             int32_t interaction_type = 0;
             rct_tile_element* tile_element;
             LocationXY16 gridCoords = {};
-            get_map_coordinates_from_pos(x, y, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
+            get_map_coordinates_from_pos({x, y}, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
 
             *grid_x = gridCoords.x;
             *grid_y = gridCoords.y;
@@ -1387,7 +1387,7 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
         rct_tile_element* tile_element;
 
         LocationXY16 gridCoords = {};
-        get_map_coordinates_from_pos(x, y, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
+        get_map_coordinates_from_pos({x, y}, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
         *grid_x = gridCoords.x;
         *grid_y = gridCoords.y;
 
@@ -1532,7 +1532,7 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
         rct_tile_element* tile_element;
 
         LocationXY16 gridCoords = {};
-        get_map_coordinates_from_pos(x, y, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
+        get_map_coordinates_from_pos({x, y}, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
         *grid_x = gridCoords.x;
         *grid_y = gridCoords.y;
 
@@ -2213,8 +2213,7 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y){
     LocationXY16 mapTile = {};
     int32_t interaction_type = 0;
     get_map_coordinates_from_pos(
-        x,
-        y,
+        { x, y },
         VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER,
         &mapTile,
         &interaction_type,

@@ -196,7 +196,15 @@ static LocationXY16 get_location()
         int32_t interactionType;
         rct_tile_element * tileElement;
 
-        get_map_coordinates_from_pos_window(w, w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord, &interactionType, &tileElement, nullptr);
+        get_map_coordinates_from_pos_window(
+            w,
+            { w->viewport->view_width / 2, w->viewport->view_height / 2 },
+            VIEWPORT_INTERACTION_MASK_TERRAIN,
+            &mapCoord,
+            &interactionType,
+            &tileElement,
+            nullptr);
+
         mapCoord.x -= 16;
         mapCoord.x /= 32;
         mapCoord.y -= 16;

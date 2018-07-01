@@ -59,7 +59,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord, &info->type, &info->tileElement, nullptr);
+    get_map_coordinates_from_pos({x, y}, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -192,7 +192,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
-    get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord, &info->type, &info->tileElement, nullptr);
+    get_map_coordinates_from_pos({x, y}, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -596,8 +596,7 @@ void sub_68A15E(int32_t screenX, int32_t screenY, LocationXY16& pos, int32_t *di
 
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
-        screenX,
-        screenY,
+        {screenX, screenY},
         VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER,
         &mapCoord,
         &interactionType,

@@ -6594,7 +6594,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(int32_t screenX, in
 
     gRideEntranceExitPlaceDirection = 255;
 
-    get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, &mapCoords, &interactionType, &tileElement, &viewport);
+    get_map_coordinates_from_pos({screenX, screenY}, 0xFFFB, &mapCoords, &interactionType, &tileElement, &viewport);
     if (interactionType != 0)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)

@@ -974,7 +974,7 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, int16_t *map_x, int
 
     // Compute map coordinate by mouse position.
     LocationXY16 mapCoords = {};
-    get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, &mapCoords, nullptr, nullptr, nullptr);
+    get_map_coordinates_from_pos({ mouse_x, mouse_y }, VIEWPORT_INTERACTION_MASK_NONE, &mapCoords, nullptr, nullptr, nullptr);
 
     // Get viewport coordinates centring around the tile.
     int32_t base_height = tile_element_height(mapCoords.x, mapCoords.y);

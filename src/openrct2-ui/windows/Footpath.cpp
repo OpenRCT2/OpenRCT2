@@ -750,7 +750,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     int32_t interactionType;
     rct_tile_element * tileElement;
     LocationXY16 mapCoord = {};
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
+    get_map_coordinates_from_pos({x, y}, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
                                  &mapCoord, &interactionType, &tileElement, nullptr);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -863,7 +863,7 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
     footpath_provisional_update();
 
     LocationXY16 mapCoord = {};
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
+    get_map_coordinates_from_pos({x, y}, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
                                  &mapCoord, &interactionType, &tileElement, nullptr);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)

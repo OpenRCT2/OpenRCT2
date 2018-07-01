@@ -1319,7 +1319,7 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     rct_tile_element* clickedElement = nullptr;
     if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
     {
-        get_map_coordinates_from_pos(x, y, ViewportInteractionFlags, &mapCoords, nullptr, &clickedElement, nullptr);
+        get_map_coordinates_from_pos({x, y}, ViewportInteractionFlags, &mapCoords, nullptr, &clickedElement, nullptr);
     }
 
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
@@ -1366,7 +1366,7 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x,
     rct_tile_element* clickedElement = nullptr;
     if (ctrlIsHeldDown)
     {
-        get_map_coordinates_from_pos(x, y, ViewportInteractionFlags, &mapCoords, nullptr, &clickedElement, nullptr);
+        get_map_coordinates_from_pos({x, y}, ViewportInteractionFlags, &mapCoords, nullptr, &clickedElement, nullptr);
     }
 
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor

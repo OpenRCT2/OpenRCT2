@@ -1985,7 +1985,7 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
 
     if (!_trackPlaceCtrlState) {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z) {
-            get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapCoords, &interactionType, &tileElement, &viewport);
+            get_map_coordinates_from_pos({screenX, screenY}, 0xFCCA, &mapCoords, &interactionType, &tileElement, &viewport);
             if (interactionType != 0) {
                 _trackPlaceCtrlZ = tileElement->base_height * 8;
                 _trackPlaceCtrlState = true;
