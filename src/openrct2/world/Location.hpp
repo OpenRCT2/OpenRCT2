@@ -16,31 +16,128 @@
 #define MakeXY16(x, y)    {(int16_t)(x), (int16_t)(y)}
 
 #pragma pack(push, 1)
-struct LocationXY8 {
-    union {
-        struct {
-            uint8_t x, y;
-        };
-        uint16_t xy;
-    };
+
+template<size_t N> struct _LocationFieldCombine {};
+template<> struct _LocationFieldCombine<1> { typedef uint8_t type; };
+template<> struct _LocationFieldCombine<2> { typedef uint16_t type; }; // xy8
+template<> struct _LocationFieldCombine<4> { typedef uint32_t type; }; // xy16
+template<> struct _LocationFieldCombine<8> { typedef uint64_t type; }; // xy32
+template<> struct _LocationFieldCombine<6> // xyz16
+{
+    struct LocationFieldCombineStub {uint8_t dummy[6];};
+    typedef LocationFieldCombineStub type;
 };
+
+template<> struct _LocationFieldCombine<12> // xyz32
+{
+    struct LocationFieldCombineStub { uint8_t dummy[12]; };
+    typedef LocationFieldCombineStub type;
+};
+
+template<typename T> struct _LocationBaseXY
+{
+    union
+    {
+        struct
+        {
+            T x, y;
+        };
+        typename _LocationFieldCombine<sizeof(T) * 2>::type xy;
+    };
+
+    _LocationBaseXY<T>& operator+=(const _LocationBaseXY<T> rhs)
+    {
+        x += rhs.x;
+        y += rhs.y;
+        return *this;
+    }
+
+    _LocationBaseXY<T>& operator-=(const _LocationBaseXY<T> rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        return *this;
+    }
+
+    _LocationBaseXY<T>& operator/=(const T val)
+    {
+        x /= val;
+        y /= val;
+        return *this;
+    }
+
+    _LocationBaseXY<T>& operator*=(const T val)
+    {
+        x *= val;
+        y *= val;
+        return *this;
+    }
+};
+
+template<typename T> struct _LocationBaseXYZ
+{
+    union
+    {
+        struct
+        {
+            T x, y, z;
+        };
+        typename _LocationFieldCombine<sizeof(T) * 3>::type xyz;
+    };
+
+    _LocationBaseXY<T>& getXY()
+    {
+        return reinterpret_cast<_LocationBaseXY<T>&>(*this);
+    }
+
+    _LocationBaseXYZ<T>& operator+=(const _LocationBaseXYZ<T> rhs)
+    {
+        x += rhs.x;
+        y += rhs.y;
+        z += rhs.z;
+        return *this;
+    }
+
+    _LocationBaseXYZ<T>& operator-=(const _LocationBaseXYZ<T> rhs)
+    {
+        x -= rhs.x;
+        y -= rhs.y;
+        z -= rhs.z;
+        return *this;
+    }
+
+    _LocationBaseXYZ<T>& operator/=(const T val)
+    {
+        x /= val;
+        y /= val;
+        z /= val;
+        return *this;
+    }
+
+    _LocationBaseXYZ<T>& operator*=(const T val)
+    {
+        x *= val;
+        y *= val;
+        z *= val;
+        return *this;
+    }
+};
+
+struct LocationXY8 : _LocationBaseXY<uint8_t> {};
 assert_struct_size(LocationXY8, 2);
 
-struct sLocationXY8 {
-    int8_t x, y;
-};
+struct sLocationXY8 : _LocationBaseXY<int8_t> {};
 assert_struct_size(sLocationXY8, 2);
 
-struct LocationXY16 {
-    int16_t x, y;
-};
+struct LocationXY16 : _LocationBaseXY<int16_t> {};
 assert_struct_size(LocationXY16, 4);
 
+struct LocationXY32 : _LocationBaseXY<int32_t> {};
+assert_struct_size(LocationXY32, 8);
 
-struct LocationXYZ16 {
-    int16_t x, y, z;
-};
+struct LocationXYZ16 : _LocationBaseXYZ<int16_t> {};
 assert_struct_size(LocationXYZ16, 6);
+
 #pragma pack(pop)
 
 constexpr int32_t COORDS_NULL = -1;
