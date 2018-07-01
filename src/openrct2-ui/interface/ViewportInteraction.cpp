@@ -44,7 +44,7 @@ static rct_peep *viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
  *
  *  rct2: 0x006ED9D0
  */
-int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info *info)
+int32_t viewport_interaction_get_item_left(const LocationXY32& pos, viewport_interaction_info* info)
 {
     rct_tile_element *tileElement;
     rct_sprite *sprite;
@@ -59,7 +59,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
-    get_map_coordinates_from_pos({x, y}, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord, &info->type, &info->tileElement, nullptr);
+    get_map_coordinates_from_pos(pos, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -94,7 +94,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
 
     // If nothing is under cursor, find a close by peep
     if (info->type == VIEWPORT_INTERACTION_ITEM_NONE) {
-        info->peep = viewport_interaction_get_closest_peep(x, y, 32);
+        info->peep = viewport_interaction_get_closest_peep(pos.x, pos.y, 32);
         if (info->peep == nullptr)
             return VIEWPORT_INTERACTION_ITEM_NONE;
 
@@ -111,13 +111,14 @@ int32_t viewport_interaction_left_over(int32_t x, int32_t y)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left(x, y, &info)) {
-    case VIEWPORT_INTERACTION_ITEM_SPRITE:
-    case VIEWPORT_INTERACTION_ITEM_RIDE:
-    case VIEWPORT_INTERACTION_ITEM_PARK:
-        return 1;
-    default:
-        return 0;
+    switch (viewport_interaction_get_item_left({ x, y }, &info))
+    {
+        case VIEWPORT_INTERACTION_ITEM_SPRITE:
+        case VIEWPORT_INTERACTION_ITEM_RIDE:
+        case VIEWPORT_INTERACTION_ITEM_PARK:
+            return 1;
+        default:
+            return 0;
     }
 }
 
@@ -125,49 +126,59 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left(x, y, &info)) {
-    case VIEWPORT_INTERACTION_ITEM_SPRITE:
-        switch (info.sprite->unknown.sprite_identifier) {
-        case SPRITE_IDENTIFIER_VEHICLE:
-        {
-            auto intent = Intent(WD_VEHICLE);
-            intent.putExtra(INTENT_EXTRA_VEHICLE, info.vehicle);
-            context_open_intent(&intent);
-            break;
-        }
-        case SPRITE_IDENTIFIER_PEEP:
-        {
-            auto intent = Intent(WC_PEEP);
-            intent.putExtra(INTENT_EXTRA_PEEP, info.peep);
-            context_open_intent(&intent);
-            break;
-        }
-        case SPRITE_IDENTIFIER_MISC:
-            if (game_is_not_paused()) {
-                switch (info.sprite->unknown.misc_identifier) {
-                case SPRITE_MISC_BALLOON:
-                    game_do_command(info.sprite->balloon.sprite_index, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_BALLOON_PRESS, 0, 0);
-                    break;
-                case SPRITE_MISC_DUCK:
-                    duck_press(&info.sprite->duck);
+    switch (viewport_interaction_get_item_left({ x, y }, &info))
+    {
+        case VIEWPORT_INTERACTION_ITEM_SPRITE:
+            switch (info.sprite->unknown.sprite_identifier)
+            {
+                case SPRITE_IDENTIFIER_VEHICLE:
+                {
+                    auto intent = Intent(WD_VEHICLE);
+                    intent.putExtra(INTENT_EXTRA_VEHICLE, info.vehicle);
+                    context_open_intent(&intent);
                     break;
                 }
+                case SPRITE_IDENTIFIER_PEEP:
+                {
+                    auto intent = Intent(WC_PEEP);
+                    intent.putExtra(INTENT_EXTRA_PEEP, info.peep);
+                    context_open_intent(&intent);
+                    break;
+                }
+                case SPRITE_IDENTIFIER_MISC:
+                    if (game_is_not_paused())
+                    {
+                        switch (info.sprite->unknown.misc_identifier)
+                        {
+                            case SPRITE_MISC_BALLOON:
+                                game_do_command(
+                                    info.sprite->balloon.sprite_index,
+                                    GAME_COMMAND_FLAG_APPLY,
+                                    0,
+                                    0,
+                                    GAME_COMMAND_BALLOON_PRESS,
+                                    0,
+                                    0);
+                                break;
+                            case SPRITE_MISC_DUCK:
+                                duck_press(&info.sprite->duck);
+                                break;
+                        }
+                    }
+                    break;
             }
-            break;
+            return 1;
+        case VIEWPORT_INTERACTION_ITEM_RIDE:
+        {
+            auto intent = Intent(WD_TRACK);
+            intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.tileElement);
+            context_open_intent(&intent);
+            return true;
         }
-        return 1;
-    case VIEWPORT_INTERACTION_ITEM_RIDE:
-    {
-        auto intent = Intent(WD_TRACK);
-        intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.tileElement);
-        context_open_intent(&intent);
-        return true;
-    }
-    case VIEWPORT_INTERACTION_ITEM_PARK:
-        context_open_window(WC_PARK_INFORMATION);
-        return 1;
-    default:
-        return 0;
+        case VIEWPORT_INTERACTION_ITEM_PARK:
+            context_open_window(WC_PARK_INFORMATION); return 1;
+        default:
+            return 0;
     }
 }
 

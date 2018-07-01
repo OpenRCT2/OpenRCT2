@@ -644,7 +644,7 @@ static void window_title_command_editor_update(rct_window * w)
 static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     viewport_interaction_info info;
-    viewport_interaction_get_item_left(x, y, &info);
+    viewport_interaction_get_item_left({x, y}, &info);
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
