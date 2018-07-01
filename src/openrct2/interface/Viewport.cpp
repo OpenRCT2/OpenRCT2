@@ -914,39 +914,53 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
  *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(int16_t *x, int16_t *y, int32_t *direction)
+LocationXY16 screen_pos_to_map_pos(LocationXY16 pos, int32_t* direction)
 {
-    screen_get_map_xy(*x, *y, x, y, nullptr);
-    if (*x == LOCATION_NULL)
-        return;
+    screen_get_map_xy(pos.x, pos.y, &pos.x, &pos.y, nullptr);
+    if (pos.x == LOCATION_NULL)
+        return pos;
 
     int32_t my_direction;
-    int32_t dist_from_centre_x = abs(*x % 32);
-    int32_t dist_from_centre_y = abs(*y % 32);
-    if (dist_from_centre_x > 8 && dist_from_centre_x < 24 &&
-        dist_from_centre_y > 8 && dist_from_centre_y < 24) {
+    int32_t dist_from_centre_x = abs(pos.x % 32);
+    int32_t dist_from_centre_y = abs(pos.y % 32);
+    if (dist_from_centre_x > 8 && dist_from_centre_x < 24 && dist_from_centre_y > 8 && dist_from_centre_y < 24)
+    {
         my_direction = 4;
-    } else {
-        int16_t mod_x = *x & 0x1F;
-        int16_t mod_y = *y & 0x1F;
-        if (mod_x <= 16) {
-            if (mod_y < 16) {
+    }
+    else
+    {
+        int16_t mod_x = pos.x & 0x1F;
+        int16_t mod_y = pos.y & 0x1F;
+        if (mod_x <= 16)
+        {
+            if (mod_y < 16)
+            {
                 my_direction = 2;
-            } else {
+            }
+            else
+            {
                 my_direction = 3;
             }
-        } else {
-            if (mod_y < 16) {
+        }
+        else
+        {
+            if (mod_y < 16)
+            {
                 my_direction = 1;
-            } else {
+            }
+            else
+            {
                 my_direction = 0;
             }
         }
     }
 
-    *x = *x & ~0x1F;
-    *y = *y & ~0x1F;
-    if (direction != nullptr) *direction = my_direction;
+    pos.x = pos.x & ~0x1F;
+    pos.y = pos.y & ~0x1F;
+    if (direction != nullptr)
+        *direction = my_direction;
+
+    return pos;
 }
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16_t x, uint16_t y)

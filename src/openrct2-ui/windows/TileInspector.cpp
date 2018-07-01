@@ -1325,7 +1325,7 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
     if (clickedElement == nullptr)
     {
-        screen_pos_to_map_pos(&mapCoords.x, &mapCoords.y, nullptr);
+        mapCoords = screen_pos_to_map_pos(mapCoords, nullptr);
     }
 
     if (mapCoords.x != LOCATION_NULL)
@@ -1372,7 +1372,7 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, int32_t x,
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
     if (clickedElement == nullptr)
     {
-        screen_pos_to_map_pos(&mapCoords.x, &mapCoords.y, nullptr);
+        mapCoords = screen_pos_to_map_pos(mapCoords, nullptr);
 
         if (mapCoords.x == LOCATION_NULL)
         {

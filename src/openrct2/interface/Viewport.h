@@ -128,7 +128,7 @@ void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t *z);
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16_t x, uint16_t y);
 LocationXY16 viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);
-void screen_pos_to_map_pos(int16_t *x, int16_t *y, int32_t *direction);
+LocationXY16 screen_pos_to_map_pos(LocationXY16 pos, int32_t* direction);
 
 void show_gridlines();
 void hide_gridlines();
@@ -167,7 +167,7 @@ void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps);
 
 void viewport_invalidate(rct_viewport *viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
-void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t *x, int16_t *y, rct_viewport **viewport);
+void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, rct_viewport** viewpor);
 void screen_get_map_xy_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t *mapX, int16_t *mapY);
 void screen_get_map_xy_quadrant(int16_t screenX, int16_t screenY, int16_t *mapX, int16_t *mapY, uint8_t *quadrant);
 void screen_get_map_xy_quadrant_with_z(int16_t screenX, int16_t screenY, int16_t z, int16_t *mapX, int16_t *mapY, uint8_t *quadrant);

@@ -1975,8 +1975,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     {
         int32_t selectionType;
         // Get selection type and map coordinates from mouse x,y position
-        mapTile = { x, y };
-        screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &selectionType);
+        mapTile = screen_pos_to_map_pos({ x, y }, &selectionType);
         screen_get_map_xy_side(x, y, &mapTile.x, &mapTile.y, &side);
 
         if (mapTile.x == LOCATION_NULL)
