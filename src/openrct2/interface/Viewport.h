@@ -156,7 +156,7 @@ void get_map_coordinates_from_pos_window(
 
 int32_t viewport_interaction_get_item_left(const LocationXY32& pos, viewport_interaction_info *info);
 int32_t viewport_interaction_left_over(const LocationXY32& pos);
-int32_t viewport_interaction_left_click(int32_t x, int32_t y);
+int32_t viewport_interaction_left_click(const LocationXY32& pos);
 int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_interaction_info *info);
 int32_t viewport_interaction_right_over(int32_t x, int32_t y);
 int32_t viewport_interaction_right_click(int32_t x, int32_t y);

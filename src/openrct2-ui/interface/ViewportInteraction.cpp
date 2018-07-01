@@ -122,11 +122,11 @@ int32_t viewport_interaction_left_over(const LocationXY32& pos)
     }
 }
 
-int32_t viewport_interaction_left_click(int32_t x, int32_t y)
+int32_t viewport_interaction_left_click(const LocationXY32& pos)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left({ x, y }, &info))
+    switch (viewport_interaction_get_item_left(pos, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
             switch (info.sprite->unknown.sprite_identifier)

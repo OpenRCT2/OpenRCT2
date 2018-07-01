@@ -410,7 +410,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
                 }
                 else if (!(_inputFlags & INPUT_FLAG_4))
                 {
-                    viewport_interaction_left_click(x, y);
+                    viewport_interaction_left_click({x, y});
                 }
             }
             break;
