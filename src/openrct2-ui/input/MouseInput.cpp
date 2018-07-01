@@ -1174,7 +1174,7 @@ void process_mouse_over(int32_t x, int32_t y)
         }
     }
 
-    viewport_interaction_right_over(x, y);
+    viewport_interaction_right_over({x, y});
     set_cursor(cursorId);
 }
 

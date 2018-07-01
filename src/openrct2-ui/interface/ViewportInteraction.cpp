@@ -365,11 +365,11 @@ int32_t viewport_interaction_get_item_right(const LocationXY32& pos, viewport_in
     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 }
 
-int32_t viewport_interaction_right_over(int32_t x, int32_t y)
+int32_t viewport_interaction_right_over(const LocationXY32& pos)
 {
     viewport_interaction_info info;
 
-    return viewport_interaction_get_item_right({x, y}, &info) != 0;
+    return viewport_interaction_get_item_right(pos, &info) != 0;
 }
 
 /**
