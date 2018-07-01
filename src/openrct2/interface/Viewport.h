@@ -159,7 +159,7 @@ int32_t viewport_interaction_left_over(const LocationXY32& pos);
 int32_t viewport_interaction_left_click(const LocationXY32& pos);
 int32_t viewport_interaction_get_item_right(const LocationXY32& pos, viewport_interaction_info* info);
 int32_t viewport_interaction_right_over(const LocationXY32& pos);
-int32_t viewport_interaction_right_click(int32_t x, int32_t y);
+int32_t viewport_interaction_right_click(const LocationXY32& pos);
 void sub_68A15E(int32_t screenX, int32_t screenY, LocationXY16& pos, int32_t *direction, rct_tile_element **tileElement);
 
 void sub_68B2B7(paint_session * session, int32_t x, int32_t y);

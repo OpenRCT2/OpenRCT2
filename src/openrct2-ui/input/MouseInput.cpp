@@ -358,7 +358,7 @@ static void game_handle_input_mouse(int32_t x, int32_t y, int32_t state)
             if (_ticksSinceDragStart < 500)
             {
                 // If the user pressed the right mouse button for less than 500 ticks, interpret as right click
-                viewport_interaction_right_click(x, y);
+                viewport_interaction_right_click({x, y});
             }
         }
         break;

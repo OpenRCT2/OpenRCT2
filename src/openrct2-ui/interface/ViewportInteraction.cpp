@@ -376,12 +376,12 @@ int32_t viewport_interaction_right_over(const LocationXY32& pos)
  *
  *  rct2: 0x006E8A62
  */
-int32_t viewport_interaction_right_click(int32_t x, int32_t y)
+int32_t viewport_interaction_right_click(const LocationXY32& pos)
 {
     CoordsXYE tileElement;
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_right({x, y}, &info)) {
+    switch (viewport_interaction_get_item_right(pos, &info)) {
     case VIEWPORT_INTERACTION_ITEM_NONE:
         return 0;
 
