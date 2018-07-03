@@ -51,7 +51,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     auto item = objectRepository.FindObject(identifier);
     if (item != nullptr)
     {
-        auto sourceGame = object_entry_get_source_game(&item->ObjectEntry);
+        auto sourceGame = item->Sources[0];
         if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS || sourceGame == OBJECT_SOURCE_TIME_TWISTER
             || sourceGame == OBJECT_SOURCE_CUSTOM)
         {

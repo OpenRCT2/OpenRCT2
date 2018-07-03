@@ -218,9 +218,9 @@ public:
         // loaded RCT1 and RCT2 save files.
     }
 
-    static rct_string_id GetObjectSourceGameString(const rct_object_entry* entry)
+    static rct_string_id GetObjectSourceGameString(const uint8_t sourceGame)
     {
-        switch (object_entry_get_source_game(entry))
+        switch (sourceGame)
         {
             case OBJECT_SOURCE_RCT1:
                 return STR_SCENARIO_CATEGORY_RCT1;
@@ -675,7 +675,7 @@ void object_manager_unload_all_objects()
     }
 }
 
-rct_string_id object_manager_get_source_game_string(const rct_object_entry* entry)
+rct_string_id object_manager_get_source_game_string(const uint8_t sourceGame)
 {
-    return ObjectManager::GetObjectSourceGameString(entry);
+    return ObjectManager::GetObjectSourceGameString(sourceGame);
 }

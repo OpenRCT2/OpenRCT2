@@ -84,11 +84,14 @@ rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint
     return header;
 }
 
+uint8_t Object::GetSourceGame()
+{
+    return _sourceGame;
+}
+
 void Object::SetSourceGame(const uint8_t sourceGame)
 {
-    // FIXME: Temporary disabled because it breaks exporting to vanilla.
-    /*_objectEntry.flags &= 0x0F;
-    _objectEntry.flags |= (sourceGame << 4);*/
+    _sourceGame = sourceGame;
 }
 
 uint8_t Object::GetSecondSourceGame()

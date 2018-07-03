@@ -157,6 +157,7 @@ private:
     rct_object_entry _objectEntry{};
     StringTable _stringTable;
     ImageTable _imageTable;
+    uint8_t _sourceGame = OBJECT_SOURCE_CUSTOM;
     uint8_t _secondSourceGame = OBJECT_SOURCE_CUSTOM;
 
 protected:
@@ -177,7 +178,6 @@ protected:
     std::string GetString(uint8_t index) const;
     std::string GetString(int32_t language, uint8_t index) const;
 
-    void SetSourceGame(const uint8_t sourceGame);
     bool IsOpenRCT2OfficialObject();
 
 public:
@@ -216,6 +216,8 @@ public:
     virtual void SetRepositoryItem(ObjectRepositoryItem* /*item*/) const
     {
     }
+    uint8_t GetSourceGame();
+    void SetSourceGame(uint8_t sourceGame);
     uint8_t GetSecondSourceGame();
     void SetSecondSourceGame(uint8_t sourceGame);
 

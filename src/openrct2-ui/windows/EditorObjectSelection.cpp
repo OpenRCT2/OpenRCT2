@@ -951,7 +951,6 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 {
     int32_t i, x, y, width;
     rct_widget* widget;
-    rct_object_entry* highlightedEntry;
     rct_string_id stringId;
 
     window_draw_widgets(w, dpi);
@@ -1043,8 +1042,6 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
     list_item* listItem = &_listItems[w->selected_list_item];
 
-    highlightedEntry = w->object_entry;
-
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
     {
@@ -1093,7 +1090,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     y += 12;
 
     // Draw object source
-    stringId = object_manager_get_source_game_string(highlightedEntry);
+    stringId = object_manager_get_source_game_string(listItem->repositoryItem->Sources[0]);
     gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
     y += 12;
 
@@ -1434,8 +1431,8 @@ static bool filter_source(const ObjectRepositoryItem * item)
     if (_FILTER_ALL)
         return true;
 
-    uint8_t source = object_entry_get_source_game(&item->ObjectEntry);
-    uint8_t secondSource = item->Source;
+    uint8_t source = item->Sources[0];
+    uint8_t secondSource = item->Sources[1];
 
     return sources_match(source) || (secondSource != OBJECT_SOURCE_CUSTOM && sources_match(secondSource));
 }

@@ -221,6 +221,7 @@ namespace ObjectFactory
             {
                 throw std::runtime_error("Object has errors");
             }
+            result->SetSourceGame(object_entry_get_source_game_legacy(&entry));
         }
         catch (const std::exception&)
         {
@@ -250,6 +251,10 @@ namespace ObjectFactory
             {
                 delete result;
                 result = nullptr;
+            }
+            else
+            {
+                result->SetSourceGame(object_entry_get_source_game_legacy(entry));
             }
         }
         return result;
@@ -415,8 +420,19 @@ namespace ObjectFactory
                 auto sourceGames = json_object_get(jRoot, "sourceGame");
                 if (json_is_array(sourceGames))
                 {
+                    auto sourceGame = json_string_value(json_array_get(sourceGames, 0));
                     auto secondSourceGame = json_string_value(json_array_get(sourceGames, 1));
+                    result->SetSourceGame(ParseSourceGame(sourceGame));
                     result->SetSecondSourceGame(ParseSourceGame(secondSourceGame));
+                }
+                else if (json_is_string(sourceGames))
+                {
+                    auto sourceGame = json_string_value(sourceGames);
+                    result->SetSourceGame(ParseSourceGame(sourceGame));
+                }
+                else
+                {
+                    log_error("Object %s has an incorrect sourceGame parameter.", id);
                 }
             }
         }
