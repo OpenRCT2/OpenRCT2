@@ -153,7 +153,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
     if (homeDir != NULL)
     {
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
-        safe_strcat_path(steamPath, "Library/Application Support/Steam/steamapps/common", sizeof(steamPath));
+        safe_strcat_path(steamPath, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps", sizeof(steamPath));
         if (platform_directory_exists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);

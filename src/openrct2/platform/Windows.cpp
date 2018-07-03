@@ -224,6 +224,11 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
     return result == ERROR_SUCCESS;
 }
 
+std::string platform_get_rct2_steam_dir()
+{
+    return "Rollercoaster Tycoon 2";
+}
+
 uint16_t platform_get_locale_language()
 {
     CHAR langCode[4];

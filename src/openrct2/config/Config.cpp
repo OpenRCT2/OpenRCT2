@@ -634,7 +634,7 @@ namespace Config
         utf8 steamPath[2048] = { 0 };
         if (platform_get_steam_path(steamPath, sizeof(steamPath)))
         {
-            std::string location = Path::Combine(steamPath, "Rollercoaster Tycoon 2");
+            std::string location = Path::Combine(steamPath, platform_get_rct2_steam_dir());
             if (platform_original_game_data_exists(location.c_str()))
             {
                 return location;
