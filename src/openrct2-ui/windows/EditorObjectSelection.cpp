@@ -222,7 +222,7 @@ static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
 static bool filter_selected(uint8_t objectFlags);
 static bool filter_string(const ObjectRepositoryItem* item);
-static bool filter_source(const ObjectRepositoryItem* item, bool selected);
+static bool filter_source(const ObjectRepositoryItem* item);
 static bool filter_chunks(const ObjectRepositoryItem* item);
 static void filter_update_counts();
 
@@ -302,8 +302,7 @@ static void visible_list_refresh(rct_window* w)
         const ObjectRepositoryItem* item = &items[i];
         uint8_t objectType = item->ObjectEntry.flags & 0x0F;
         if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6)
-            && filter_source(item, (selectionFlags & OBJECT_SELECTION_FLAG_SELECTED))
-            && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
+            && filter_source(item) && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
         {
             rct_object_filters* filter = new rct_object_filters;
             filter->ride.category[0] = 0;
@@ -1430,12 +1429,15 @@ static bool sources_match(uint8_t source)
     // clang-format on
 }
 
-static bool filter_source(const ObjectRepositoryItem* item, bool selected)
+static bool filter_source(const ObjectRepositoryItem * item)
 {
     if (_FILTER_ALL)
         return true;
 
-    return sources_match(item->Source);
+    uint8_t source = object_entry_get_source_game(&item->ObjectEntry);
+    uint8_t secondSource = item->Source;
+
+    return sources_match(source) || (secondSource != OBJECT_SOURCE_CUSTOM && sources_match(secondSource));
 }
 
 static bool filter_chunks(const ObjectRepositoryItem* item)
@@ -1475,8 +1477,7 @@ static void filter_update_counts()
         const ObjectRepositoryItem* items = object_repository_get_items();
         for (size_t i = 0; i < numObjects; i++) {
             const ObjectRepositoryItem * item = &items[i];
-            if (filter_source(item, (selectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)) && filter_string(item)
-                && filter_chunks(item) && filter_selected(selectionFlags[i]))
+            if (filter_source(item) && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags[i]))
             {
                 uint8_t objectType = item->ObjectEntry.flags & 0xF;
                 _filter_object_counts[objectType]++;
