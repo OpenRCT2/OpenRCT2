@@ -151,7 +151,7 @@ std::string KeyboardShortcuts::GetShortcutString(int32_t shortcut) const
         format_string(formatBuffer, sizeof(formatBuffer), STR_CMD_PLUS, nullptr);
         String::Append(buffer, sizeof(buffer), formatBuffer);
     }
-    String::Append(buffer, sizeof(buffer), SDL_GetScancodeName((SDL_Scancode)(shortcutKey & 0xFF)));
+    String::Append(buffer, sizeof(buffer), SDL_GetKeyName(SDL_GetKeyFromScancode((SDL_Scancode)(shortcutKey & 0xFF))));
     return std::string(buffer);
 }
 
