@@ -433,4 +433,9 @@ bool platform_process_is_elevated()
 #endif // __EMSCRIPTEN__
 }
 
+std::string platform_get_rct2_steam_dir()
+{
+    return "app_285330" PATH_SEPARATOR "depot_285331";
+}
+
 #endif
