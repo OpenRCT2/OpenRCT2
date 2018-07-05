@@ -131,7 +131,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
     if (steamRoot != nullptr)
     {
         safe_strcpy(outPath, steamRoot, outSize);
-        safe_strcat_path(outPath, "steamapps/common", outSize);
+        safe_strcat_path(outPath, "ubuntu12_32/steamapps/content", outSize);
         return true;
     }
 
@@ -140,7 +140,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
     if (localSharePath != nullptr)
     {
         safe_strcpy(steamPath, localSharePath, sizeof(steamPath));
-        safe_strcat_path(steamPath, "Steam/steamapps/common", sizeof(steamPath));
+        safe_strcat_path(steamPath, "Steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
         if (platform_directory_exists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);
@@ -152,7 +152,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
     if (homeDir != nullptr)
     {
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
-        safe_strcat_path(steamPath, ".local/share/Steam/steamapps/common", sizeof(steamPath));
+        safe_strcat_path(steamPath, ".local/share/Steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
         if (platform_directory_exists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);
@@ -161,7 +161,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 
         memset(steamPath, 0, sizeof(steamPath));
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
-        safe_strcat_path(steamPath, ".steam/steam/steamapps/common", sizeof(steamPath));
+        safe_strcat_path(steamPath, ".steam/steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
         if (platform_directory_exists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);
