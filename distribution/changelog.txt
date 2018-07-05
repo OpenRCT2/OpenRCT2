@@ -15,6 +15,7 @@
 - Fix: [#7697] Some scenery groups in RCT1 saves are never invented.
 - Fix: [#7711] Inverted Hairpin Coaster allows building invisible banked pieces.
 - Fix: [#7734] Title sequence not included in macOS builds as of 0.2.0 release.
+- Fix: [#7756] Steam RCT2 path not correctly checked on macOS and Linux.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
