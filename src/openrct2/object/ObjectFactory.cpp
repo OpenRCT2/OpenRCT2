@@ -221,7 +221,7 @@ namespace ObjectFactory
             {
                 throw std::runtime_error("Object has errors");
             }
-            result->SetSourceGame(object_entry_get_source_game_legacy(&entry));
+            result->SetSourceGames({ object_entry_get_source_game_legacy(&entry) });
         }
         catch (const std::exception&)
         {
@@ -254,7 +254,7 @@ namespace ObjectFactory
             }
             else
             {
-                result->SetSourceGame(object_entry_get_source_game_legacy(entry));
+                result->SetSourceGames({ object_entry_get_source_game_legacy(entry) });
             }
         }
         return result;
@@ -420,19 +420,23 @@ namespace ObjectFactory
                 auto sourceGames = json_object_get(jRoot, "sourceGame");
                 if (json_is_array(sourceGames))
                 {
-                    auto sourceGame = json_string_value(json_array_get(sourceGames, 0));
-                    auto secondSourceGame = json_string_value(json_array_get(sourceGames, 1));
-                    result->SetSourceGame(ParseSourceGame(sourceGame));
-                    result->SetSecondSourceGame(ParseSourceGame(secondSourceGame));
+                    std::vector<uint8_t> sourceGameVector;
+                    for (size_t j = 0; j < json_array_size(sourceGames); j++)
+                    {
+                        sourceGameVector.push_back(
+                            ParseSourceGame(json_string_value(json_array_get(sourceGames, j))));
+                    }
+                    result->SetSourceGames(sourceGameVector);
                 }
                 else if (json_is_string(sourceGames))
                 {
                     auto sourceGame = json_string_value(sourceGames);
-                    result->SetSourceGame(ParseSourceGame(sourceGame));
+                    result->SetSourceGames({ ParseSourceGame(sourceGame) });
                 }
                 else
                 {
                     log_error("Object %s has an incorrect sourceGame parameter.", id);
+                    result->SetSourceGames({ OBJECT_SOURCE_CUSTOM });
                 }
             }
         }

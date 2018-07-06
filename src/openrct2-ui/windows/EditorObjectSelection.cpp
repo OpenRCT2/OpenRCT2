@@ -1431,10 +1431,13 @@ static bool filter_source(const ObjectRepositoryItem * item)
     if (_FILTER_ALL)
         return true;
 
-    uint8_t source = item->Sources[0];
-    uint8_t secondSource = item->Sources[1];
+    for (auto source: item->Sources)
+    {
+        if (sources_match(source))
+            return true;
+    }
 
-    return sources_match(source) || (secondSource != OBJECT_SOURCE_CUSTOM && sources_match(secondSource));
+    return false;
 }
 
 static bool filter_chunks(const ObjectRepositoryItem* item)

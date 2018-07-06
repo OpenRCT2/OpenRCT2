@@ -24,11 +24,10 @@ Object::Object(const rct_object_entry& entry)
     char name[DAT_NAME_LENGTH + 1] = { 0 };
     std::copy_n(entry.name, DAT_NAME_LENGTH, name);
     _identifier = String::Duplicate(name);
-    _secondSourceGame = OBJECT_SOURCE_CUSTOM;
 
     if (IsOpenRCT2OfficialObject())
     {
-        SetSourceGame(OBJECT_SOURCE_OPENRCT2_OFFICIAL);
+        SetSourceGames({ OBJECT_SOURCE_OPENRCT2_OFFICIAL });
     }
 }
 
@@ -84,24 +83,14 @@ rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint
     return header;
 }
 
-uint8_t Object::GetSourceGame()
+std::vector<uint8_t> Object::GetSourceGames()
 {
-    return _sourceGame;
+    return _sourceGames;
 }
 
-void Object::SetSourceGame(const uint8_t sourceGame)
+void Object::SetSourceGames(std::vector<uint8_t> sourceGames)
 {
-    _sourceGame = sourceGame;
-}
-
-uint8_t Object::GetSecondSourceGame()
-{
-    return _secondSourceGame;
-}
-
-void Object::SetSecondSourceGame(const uint8_t sourceGame)
-{
-    _secondSourceGame = sourceGame;
+    _sourceGames = sourceGames;
 }
 
 bool Object::IsOpenRCT2OfficialObject()

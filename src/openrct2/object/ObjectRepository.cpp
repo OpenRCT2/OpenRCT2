@@ -112,8 +112,7 @@ public:
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
-            item.Sources[0] = object->GetSourceGame();
-            item.Sources[1] = object->GetSecondSourceGame();
+            item.Sources = object->GetSourceGames();
             object->SetRepositoryItem(&item);
             delete object;
             return std::make_tuple(true, item);
@@ -127,7 +126,12 @@ protected:
         stream->WriteValue(item.ObjectEntry);
         stream->WriteString(item.Path);
         stream->WriteString(item.Name);
-        stream->WriteArray(item.Sources, 2);
+        uint8_t sourceLength = (uint8_t)item.Sources.size();
+        stream->WriteValue(sourceLength);
+        for (auto source : item.Sources)
+        {
+            stream->WriteValue(source);
+        }
 
         switch (object_entry_get_type(&item.ObjectEntry))
         {
@@ -160,10 +164,12 @@ protected:
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
         item.Path = stream->ReadStdString();
         item.Name = stream->ReadStdString();
-        auto sources = stream->ReadArray<uint8_t>(2);
-        item.Sources[0] = sources[0];
-        item.Sources[1] = sources[1];
-        Memory::Free(sources);
+        auto sourceLength = stream->ReadValue<uint8_t>();
+        for (size_t i = 0; i < sourceLength; i++)
+        {
+            auto value = stream->ReadValue<uint8_t>();
+            item.Sources.push_back(value);
+        }
 
         switch (object_entry_get_type(&item.ObjectEntry))
         {
