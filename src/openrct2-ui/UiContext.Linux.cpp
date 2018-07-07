@@ -243,12 +243,15 @@ namespace OpenRCT2::Ui
         static DIALOG_TYPE GetDialogApp(std::string * executablePath)
         {
             // Prefer zenity as it offers more required features, e.g., overwrite
-            // confirmation and selecting only existing files
-            if (Execute("which zenity", executablePath) == 0)
+            // confirmation and selecting only existing files.
+            // Silence error output with 2> /dev/null to avoid confusion in the
+            // case where a user does not have zenity and/or kdialog.
+            // OpenRCT2 will fall back to an SDL pop-up if the user has neither.
+            if (Execute("which zenity 2> /dev/null", executablePath) == 0)
             {
                 return DIALOG_TYPE::ZENITY;
             }
-            if (Execute("which kdialog", executablePath) == 0)
+            if (Execute("which kdialog 2> /dev/null", executablePath) == 0)
             {
                 return DIALOG_TYPE::KDIALOG;
             }
