@@ -88,7 +88,7 @@ std::vector<uint8_t> Object::GetSourceGames()
     return _sourceGames;
 }
 
-void Object::SetSourceGames(std::vector<uint8_t> sourceGames)
+void Object::SetSourceGames(const std::vector<uint8_t>& sourceGames)
 {
     _sourceGames = sourceGames;
 }

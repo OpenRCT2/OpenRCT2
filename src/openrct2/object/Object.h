@@ -153,7 +153,6 @@ interface IReadObjectContext
 class Object
 {
 private:
-<<<<<<< HEAD
     char* _identifier;
     rct_object_entry _objectEntry{};
     StringTable _stringTable;
@@ -217,7 +216,7 @@ public:
     {
     }
     std::vector<uint8_t> GetSourceGames();
-    void SetSourceGames(std::vector<uint8_t> sourceGames);
+    void SetSourceGames(const std::vector<uint8_t>& sourceGames);
 
     const ImageTable& GetImageTable() const
     {
