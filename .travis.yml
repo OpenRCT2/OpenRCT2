@@ -167,7 +167,7 @@ matrix:
           services:
             - docker
           script:
-            - docker run --rm -w /openrct2 -v $(pwd):/openrct2 openrct2/openrct2:format ./scripts/run-clang-format.py -r src test
+            - docker run --rm -w /openrct2 -v $(pwd):/openrct2 openrct2/openrct2:format ./scripts/run-clang-format.py -r src test --exclude src/openrct2/thirdparty
         # Following entries used to be included in testing, but they only proved useful while changing things in CMake setup.
         # They are meant to be used when there are changes to CMakeLists.txt
         # - os: linux
