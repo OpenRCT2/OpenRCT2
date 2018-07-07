@@ -566,28 +566,60 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo* dpi, paint_str
     const uint8_t colour = BoundBoxDebugColours[ps->sprite_type];
     const uint8_t rotation = get_current_rotation();
 
-    const LocationXYZ16 frontTop = { (int16_t)ps->bounds.x_end, (int16_t)ps->bounds.y_end, (int16_t)ps->bounds.z_end };
+    const LocationXYZ16 frontTop = {
+        (int16_t)ps->bounds.x_end,
+        (int16_t)ps->bounds.y_end,
+        (int16_t)ps->bounds.z_end,
+    };
     const LocationXY16 screenCoordFrontTop = coordinate_3d_to_2d(&frontTop, rotation);
 
-    const LocationXYZ16 frontBottom = { (int16_t)ps->bounds.x_end, (int16_t)ps->bounds.y_end, (int16_t)ps->bounds.z };
+    const LocationXYZ16 frontBottom = {
+        (int16_t)ps->bounds.x_end,
+        (int16_t)ps->bounds.y_end,
+        (int16_t)ps->bounds.z,
+    };
     const LocationXY16 screenCoordFrontBottom = coordinate_3d_to_2d(&frontBottom, rotation);
 
-    const LocationXYZ16 leftTop = { (int16_t)ps->bounds.x, (int16_t)ps->bounds.y_end, (int16_t)ps->bounds.z_end };
+    const LocationXYZ16 leftTop = {
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y_end,
+        (int16_t)ps->bounds.z_end,
+    };
     const LocationXY16 screenCoordLeftTop = coordinate_3d_to_2d(&leftTop, rotation);
 
-    const LocationXYZ16 leftBottom = { (int16_t)ps->bounds.x, (int16_t)ps->bounds.y_end, (int16_t)ps->bounds.z };
+    const LocationXYZ16 leftBottom = {
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y_end,
+        (int16_t)ps->bounds.z,
+    };
     const LocationXY16 screenCoordLeftBottom = coordinate_3d_to_2d(&leftBottom, rotation);
 
-    const LocationXYZ16 rightTop = { (int16_t)ps->bounds.x_end, (int16_t)ps->bounds.y, (int16_t)ps->bounds.z_end };
+    const LocationXYZ16 rightTop = {
+        (int16_t)ps->bounds.x_end,
+        (int16_t)ps->bounds.y,
+        (int16_t)ps->bounds.z_end,
+    };
     const LocationXY16 screenCoordRightTop = coordinate_3d_to_2d(&rightTop, rotation);
 
-    const LocationXYZ16 rightBottom = { (int16_t)ps->bounds.x_end, (int16_t)ps->bounds.y, (int16_t)ps->bounds.z };
+    const LocationXYZ16 rightBottom = {
+        (int16_t)ps->bounds.x_end,
+        (int16_t)ps->bounds.y,
+        (int16_t)ps->bounds.z,
+    };
     const LocationXY16 screenCoordRightBottom = coordinate_3d_to_2d(&rightBottom, rotation);
 
-    const LocationXYZ16 backTop = { (int16_t)ps->bounds.x, (int16_t)ps->bounds.y, (int16_t)ps->bounds.z_end };
+    const LocationXYZ16 backTop = {
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y,
+        (int16_t)ps->bounds.z_end,
+    };
     const LocationXY16 screenCoordBackTop = coordinate_3d_to_2d(&backTop, rotation);
 
-    const LocationXYZ16 backBottom = { (int16_t)ps->bounds.x, (int16_t)ps->bounds.y, (int16_t)ps->bounds.z };
+    const LocationXYZ16 backBottom = {
+        (int16_t)ps->bounds.x,
+        (int16_t)ps->bounds.y,
+        (int16_t)ps->bounds.z,
+    };
     const LocationXY16 screenCoordBackBottom = coordinate_3d_to_2d(&backBottom, rotation);
 
     // bottom square
@@ -748,9 +780,11 @@ paint_struct* sub_98196C(
     paint_struct* ps = &session->NextFreePaintStruct->basic;
     ps->image_id = image_id;
 
-    LocationXYZ16 coord_3d = { x_offset, // ax
-                               y_offset, // cx
-                               z_offset };
+    LocationXYZ16 coord_3d = {
+        x_offset, // ax
+        y_offset, // cx
+        z_offset,
+    };
 
     LocationXYZ16 boundBox = {
         bound_box_length_x, // di
@@ -1149,7 +1183,11 @@ void paint_floating_money_effect(
     ps->args[3] = 0;
     ps->y_offsets = (uint8_t*)y_offsets;
 
-    const LocationXYZ16 position = { session->SpritePosition.x, session->SpritePosition.y, z };
+    const LocationXYZ16 position = {
+        session->SpritePosition.x,
+        session->SpritePosition.y,
+        z,
+    };
     const LocationXY16 coord = coordinate_3d_to_2d(&position, rotation);
 
     ps->x = coord.x + offset_x;

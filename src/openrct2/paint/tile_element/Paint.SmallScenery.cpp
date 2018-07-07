@@ -19,7 +19,12 @@
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
-static constexpr const LocationXY16 lengths[] = { { 12, 26 }, { 26, 12 }, { 12, 26 }, { 26, 12 } };
+static constexpr const LocationXY16 lengths[] = {
+    { 12, 26 },
+    { 26, 12 },
+    { 12, 26 },
+    { 26, 12 },
+};
 
 /**
  *
@@ -71,7 +76,12 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HALF_SPACE))
         {
             // 6DFFE3:
-            static constexpr const LocationXY16 scenery_half_tile_offsets[] = { { 3, 3 }, { 3, 17 }, { 17, 3 }, { 3, 3 } };
+            static constexpr const LocationXY16 scenery_half_tile_offsets[] = {
+                { 3, 3 },
+                { 3, 17 },
+                { 17, 3 },
+                { 3, 3 },
+            };
             boxoffset.x = scenery_half_tile_offsets[direction].x;
             boxoffset.y = scenery_half_tile_offsets[direction].y;
             boxlength.x = lengths[direction].x;

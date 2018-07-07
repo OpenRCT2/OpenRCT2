@@ -90,8 +90,11 @@ void BannerObject::ReadJson(IReadObjectContext* context, const json_t* root)
 
     _legacyType.banner.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
     _legacyType.banner.price = json_integer_value(json_object_get(properties, "price"));
-    _legacyType.banner.flags
-        = ObjectJsonHelpers::GetFlags<uint8_t>(properties, { { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR } });
+    _legacyType.banner.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
+        properties,
+        {
+            { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR },
+        });
 
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
 

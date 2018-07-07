@@ -112,13 +112,15 @@ void FootpathItemObject::ReadJson(IReadObjectContext* context, const json_t* roo
     // Flags
     _legacyType.path_bit.flags = ObjectJsonHelpers::GetFlags<uint16_t>(
         properties,
-        { { "isBin", PATH_BIT_FLAG_IS_BIN },
-          { "isBench", PATH_BIT_FLAG_IS_BENCH },
-          { "isBreakable", PATH_BIT_FLAG_BREAKABLE },
-          { "isLamp", PATH_BIT_FLAG_LAMP },
-          { "isJumpingFountainWater", PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER },
-          { "isJumpingFountainSnow", PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW },
-          { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN } });
+        {
+            { "isBin", PATH_BIT_FLAG_IS_BIN },
+            { "isBench", PATH_BIT_FLAG_IS_BENCH },
+            { "isBreakable", PATH_BIT_FLAG_BREAKABLE },
+            { "isLamp", PATH_BIT_FLAG_LAMP },
+            { "isJumpingFountainWater", PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER },
+            { "isJumpingFountainSnow", PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW },
+            { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN },
+        });
 
     // HACK To avoid 'negated' properties in JSON, handle these separately until
     //      flags are inverted in this code base.

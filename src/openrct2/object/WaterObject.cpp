@@ -58,13 +58,18 @@ void WaterObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t hei
 void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
-    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint16_t>(properties, { { "allowDucks", WATER_FLAGS_ALLOW_DUCKS } });
+    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint16_t>(
+        properties,
+        {
+            { "allowDucks", WATER_FLAGS_ALLOW_DUCKS },
+        });
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
 
     // Images which are actually palette data
-    static const char* paletteNames[]
-        = { "general", "waves-0", "waves-1", "waves-2", "sparkles-0", "sparkles-1", "sparkles-2" };
+    static const char* paletteNames[] = {
+        "general", "waves-0", "waves-1", "waves-2", "sparkles-0", "sparkles-1", "sparkles-2",
+    };
     for (auto paletteName : paletteNames)
     {
         auto jPalettes = json_object_get(properties, "palettes");
