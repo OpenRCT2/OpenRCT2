@@ -1366,7 +1366,12 @@ void path_paint_pole_support(
         ax = 8;
     }
 
-    uint8_t supports[] = { 6, 8, 7, 5 };
+    uint8_t supports[] = {
+        6,
+        8,
+        7,
+        5,
+    };
 
     for (int8_t i = 3; i > -1; --i)
     {

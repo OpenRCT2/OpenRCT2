@@ -1068,16 +1068,18 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     const LocationXY16& base = session->SpritePosition;
     const corner_height& cornerHeights = corner_heights[surfaceShape];
 
-    tile_descriptor selfDescriptor = { { base.x / 32, base.y / 32 },
-                                       tileElement,
-                                       (uint8_t)terrain_type,
-                                       surfaceShape,
-                                       {
-                                           (uint8_t)(height / 16 + cornerHeights.top),
-                                           (uint8_t)(height / 16 + cornerHeights.right),
-                                           (uint8_t)(height / 16 + cornerHeights.bottom),
-                                           (uint8_t)(height / 16 + cornerHeights.left),
-                                       } };
+    tile_descriptor selfDescriptor = {
+        { base.x / 32, base.y / 32 },
+        tileElement,
+        (uint8_t)terrain_type,
+        surfaceShape,
+        {
+            (uint8_t)(height / 16 + cornerHeights.top),
+            (uint8_t)(height / 16 + cornerHeights.right),
+            (uint8_t)(height / 16 + cornerHeights.bottom),
+            (uint8_t)(height / 16 + cornerHeights.left),
+        },
+    };
 
     tile_descriptor tileDescriptors[5];
     tileDescriptors[0] = selfDescriptor;
@@ -1085,7 +1087,10 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     for (int32_t i = 0; i < 4; i++)
     {
         const LocationXY16& offset = viewport_surface_paint_data[i][rotation];
-        const CoordsXY position = { (int32_t)(base.x + offset.x), (int32_t)(base.y + offset.y) };
+        const CoordsXY position = {
+            (int32_t)(base.x + offset.x),
+            (int32_t)(base.y + offset.y),
+        };
 
         tile_descriptor& descriptor = tileDescriptors[i + 1];
 

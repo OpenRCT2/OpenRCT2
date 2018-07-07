@@ -15,11 +15,15 @@
 #include "Paint.Sprite.h"
 
 /** rct2: 0x0097EDA4 */
-static constexpr const int8_t money_wave[] = { 0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
-                                               0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1 };
+static constexpr const int8_t money_wave[] = {
+    0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
+    0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
+};
 
 /** rct2: 0x0097ED90 */
-const uint32_t vehicle_particle_base_sprites[] = { 22577, 22589, 22601, 22613, 22625 };
+const uint32_t vehicle_particle_base_sprites[] = {
+    22577, 22589, 22601, 22613, 22625,
+};
 
 /**
  * rct2: 0x00672AC9

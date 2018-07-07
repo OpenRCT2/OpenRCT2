@@ -169,7 +169,8 @@ void RideObject::Load()
             // RCT2 calculates num_vertical_frames and num_horizontal_frames and overwrites these properties on the vehicle
             // entry. Immediately afterwards, the two were multiplied in order to calculate base_num_frames and were never used
             // again. This has been changed to use the calculation results directly - num_vertical_frames and
-            // num_horizontal_frames are no longer set on the vehicle entry. 0x6DE946
+            // num_horizontal_frames are no longer set on the vehicle entry.
+            // 0x6DE946
             vehicleEntry->base_num_frames
                 = CalculateNumVerticalFrames(vehicleEntry) * CalculateNumHorizontalFrames(vehicleEntry);
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
@@ -806,22 +807,24 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t* jCar)
     auto jFrames = json_object_get(jCar, "frames");
     car.sprite_flags = ObjectJsonHelpers::GetFlags<uint16_t>(
         jFrames,
-        { { "flat", VEHICLE_SPRITE_FLAG_FLAT },
-          { "gentleSlopes", VEHICLE_SPRITE_FLAG_GENTLE_SLOPES },
-          { "steepSlopes", VEHICLE_SPRITE_FLAG_STEEP_SLOPES },
-          { "verticalSlopes", VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES },
-          { "diagonalSlopes", VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES },
-          { "flatBanked", VEHICLE_SPRITE_FLAG_FLAT_BANKED },
-          { "inlineTwists", VEHICLE_SPRITE_FLAG_INLINE_TWISTS },
-          { "flatToGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS },
-          { "diagonalGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS },
-          { "gentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS },
-          { "gentleSlopeBankedTurns", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS },
-          { "flatToGentleSlopeWhileBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS },
-          { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
-          { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
-          { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
-          { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 } });
+        {
+            { "flat", VEHICLE_SPRITE_FLAG_FLAT },
+            { "gentleSlopes", VEHICLE_SPRITE_FLAG_GENTLE_SLOPES },
+            { "steepSlopes", VEHICLE_SPRITE_FLAG_STEEP_SLOPES },
+            { "verticalSlopes", VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES },
+            { "diagonalSlopes", VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES },
+            { "flatBanked", VEHICLE_SPRITE_FLAG_FLAT_BANKED },
+            { "inlineTwists", VEHICLE_SPRITE_FLAG_INLINE_TWISTS },
+            { "flatToGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS },
+            { "diagonalGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS },
+            { "gentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS },
+            { "gentleSlopeBankedTurns", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS },
+            { "flatToGentleSlopeWhileBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS },
+            { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
+            { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
+            { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
+            { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 },
+        });
 
     car.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(
         jCar,

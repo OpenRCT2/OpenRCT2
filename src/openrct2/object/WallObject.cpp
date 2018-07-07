@@ -101,15 +101,21 @@ void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
     // Flags
     _legacyType.wall.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
         properties,
-        { { "hasPrimaryColour", WALL_SCENERY_HAS_PRIMARY_COLOUR },
-          { "hasSecondaryColour", WALL_SCENERY_HAS_SECONDARY_COLOUR },
-          { "hasTernaryColour", WALL_SCENERY_HAS_TERNARY_COLOUR },
-          { "hasGlass", WALL_SCENERY_HAS_GLASS },
-          { "isBanner", WALL_SCENERY_IS_BANNER },
-          { "isDoor", WALL_SCENERY_IS_DOOR },
-          { "isLongDoorAnimation", WALL_SCENERY_LONG_DOOR_ANIMATION } });
+        {
+            { "hasPrimaryColour", WALL_SCENERY_HAS_PRIMARY_COLOUR },
+            { "hasSecondaryColour", WALL_SCENERY_HAS_SECONDARY_COLOUR },
+            { "hasTernaryColour", WALL_SCENERY_HAS_TERNARY_COLOUR },
+            { "hasGlass", WALL_SCENERY_HAS_GLASS },
+            { "isBanner", WALL_SCENERY_IS_BANNER },
+            { "isDoor", WALL_SCENERY_IS_DOOR },
+            { "isLongDoorAnimation", WALL_SCENERY_LONG_DOOR_ANIMATION },
+        });
     _legacyType.wall.flags2 = ObjectJsonHelpers::GetFlags<uint8_t>(
-        properties, { { "isOpaque", WALL_SCENERY_2_IS_OPAQUE }, { "isAnimated", WALL_SCENERY_2_ANIMATED } });
+        properties,
+        {
+            { "isOpaque", WALL_SCENERY_2_IS_OPAQUE },
+            { "isAnimated", WALL_SCENERY_2_ANIMATED },
+        });
 
     // HACK To avoid 'negated' properties in JSON, handle this separately until
     //      flag is inverted in this code base.

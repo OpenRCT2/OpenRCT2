@@ -1692,8 +1692,10 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
     if (connection_player)
     {
         char text[256];
-        const char* has_disconnected_args[2]
-            = { (char*)connection_player->Name.c_str(), connection->GetLastDisconnectReason() };
+        const char* has_disconnected_args[2] = {
+            connection_player->Name.c_str(),
+            connection->GetLastDisconnectReason(),
+        };
         if (has_disconnected_args[1])
         {
             format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, has_disconnected_args);
@@ -2178,7 +2180,10 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         chunk_buffer.resize(size);
     }
     char str_downloading_map[256];
-    uint32_t downloading_map_args[2] = { (offset + chunksize) / 1024, size / 1024 };
+    uint32_t downloading_map_args[2] = {
+        (offset + chunksize) / 1024,
+        size / 1024,
+    };
     format_string(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
 
     auto intent = Intent(WC_NETWORK_STATUS);
@@ -3046,9 +3051,11 @@ void game_command_set_player_group(
         NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(game_command_playerid);
         NetworkGroup* new_player_group = gNetwork.GetGroupByID(groupid);
         char log_msg[256];
-        const char* args[3] = { (char*)player->Name.c_str(),
-                                (char*)new_player_group->GetName().c_str(),
-                                (char*)game_command_player->Name.c_str() };
+        const char* args[3] = {
+            player->Name.c_str(),
+            new_player_group->GetName().c_str(),
+            game_command_player->Name.c_str(),
+        };
         format_string(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
         network_append_server_log(log_msg);
     }
@@ -3082,7 +3089,10 @@ void game_command_modify_groups(
                 if (game_command_player)
                 {
                     char log_msg[256];
-                    const char* args[2] = { (char*)game_command_player->Name.c_str(), (char*)newgroup->GetName().c_str() };
+                    const char* args[2] = {
+                        game_command_player->Name.c_str(),
+                        newgroup->GetName().c_str(),
+                    };
                     format_string(log_msg, 256, STR_LOG_ADD_PLAYER_GROUP, args);
                     network_append_server_log(log_msg);
                 }
@@ -3115,9 +3125,11 @@ void game_command_modify_groups(
                 NetworkGroup* group = gNetwork.GetGroupByID(groupid);
                 if (game_command_player && group)
                 {
-                    char* groupName = (char*)group->GetName().c_str();
                     char log_msg[256];
-                    const char* args[2] = { (char*)game_command_player->Name.c_str(), groupName };
+                    const char* args[2] = {
+                        game_command_player->Name.c_str(),
+                        group->GetName().c_str(),
+                    };
                     format_string(log_msg, 256, STR_LOG_REMOVE_PLAYER_GROUP, args);
                     network_append_server_log(log_msg);
                 }
@@ -3178,7 +3190,10 @@ void game_command_modify_groups(
 
                 // Log edit player group permissions event
                 char log_msg[256];
-                const char* args[2] = { (char*)player->Name.c_str(), (char*)group->GetName().c_str() };
+                const char* args[2] = {
+                    player->Name.c_str(),
+                    group->GetName().c_str(),
+                };
                 format_string(log_msg, 256, STR_LOG_EDIT_PLAYER_GROUP_PERMISSIONS, args);
                 network_append_server_log(log_msg);
             }
@@ -3226,7 +3241,11 @@ void game_command_modify_groups(
                     // Log edit player group name event
                     NetworkPlayer* player = gNetwork.GetPlayerByID(game_command_playerid);
                     char log_msg[256];
-                    const char* args[3] = { (char*)player->Name.c_str(), oldName, newName };
+                    const char* args[3] = {
+                        player->Name.c_str(),
+                        oldName,
+                        newName,
+                    };
                     format_string(log_msg, 256, STR_LOG_EDIT_PLAYER_GROUP_NAME, args);
                     network_append_server_log(log_msg);
 
@@ -3252,7 +3271,10 @@ void game_command_modify_groups(
                 NetworkPlayer* player = gNetwork.GetPlayerByID(game_command_playerid);
                 NetworkGroup* group = gNetwork.GetGroupByID(groupid);
                 char log_msg[256];
-                const char* args[2] = { (char*)player->Name.c_str(), (char*)group->GetName().c_str() };
+                const char* args[2] = {
+                    player->Name.c_str(),
+                    group->GetName().c_str(),
+                };
                 format_string(log_msg, 256, STR_LOG_EDIT_DEFAULT_PLAYER_GROUP, args);
                 network_append_server_log(log_msg);
             }
@@ -3308,8 +3330,8 @@ void game_command_kick_player(
             // Log kick player event
             char log_msg[256];
             const char* args[2] = {
-                (char*)player->Name.c_str(),
-                (char*)kicker->Name.c_str(),
+                player->Name.c_str(),
+                kicker->Name.c_str(),
             };
             format_string(log_msg, 256, STR_LOG_PLAYER_KICKED, args);
             network_append_server_log(log_msg);

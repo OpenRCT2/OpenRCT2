@@ -136,10 +136,12 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, const json_t* roo
     // Flags
     _legacyType.large_scenery.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
         properties,
-        { { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
-          { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
-          { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
-          { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC } });
+        {
+            { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
+            { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+            { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
+            { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC },
+        });
 
     // Tiles
     auto jTiles = json_object_get(properties, "tiles");
@@ -220,7 +222,11 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const
     font->max_width = json_integer_value(json_object_get(j3dFont, "maxWidth"));
     font->num_images = json_integer_value(json_object_get(j3dFont, "numImages"));
     font->flags = ObjectJsonHelpers::GetFlags<uint8_t>(
-        j3dFont, { { "isVertical", LARGE_SCENERY_TEXT_FLAG_VERTICAL }, { "isTwoLine", LARGE_SCENERY_TEXT_FLAG_TWO_LINE } });
+        j3dFont,
+        {
+            { "isVertical", LARGE_SCENERY_TEXT_FLAG_VERTICAL },
+            { "isTwoLine", LARGE_SCENERY_TEXT_FLAG_TWO_LINE },
+        });
 
     auto jGlyphs = json_object_get(j3dFont, "glyphs");
     if (jGlyphs != nullptr)

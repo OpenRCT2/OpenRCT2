@@ -85,8 +85,10 @@ public:
               VERSION,
               env.GetFilePath(PATHID::CACHE_OBJECTS),
               std::string(PATTERN),
-              std::vector<std::string>({ env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                                         env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) }))
+              std::vector<std::string>{
+                  env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
+                  env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
+              })
         , _objectRepository(objectRepository)
     {
     }
