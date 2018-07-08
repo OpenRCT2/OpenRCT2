@@ -162,6 +162,9 @@ if (NOT DISABLE_TTF)
         target_include_directories(${PROJECT} PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
     endif ()
 endif ()
+if (NOT MINGW AND NOT MSVC)
+    target_include_directories(${PROJECT} SYSTEM PRIVATE ${ICU_INCLUDE_DIRS})
+endif ()
 
 # To avoid unnecessary rebuilds set the current branch and
 # short sha1 only for the two files that use these
