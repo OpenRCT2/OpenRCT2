@@ -898,9 +898,11 @@ void rct_peep::UpdateSitting()
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        LocationXYZ16 loc = { (int16_t)((x & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].x),
-                              (int16_t)((y & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].y),
-                              z };
+        LocationXYZ16 loc = {
+            (int16_t)((x & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].x),
+            (int16_t)((y & 0xFFE0) + BenchUseOffsets[var_37 & 0x7].y),
+            z,
+        };
 
         Invalidate();
         MoveTo(loc.x, loc.y, loc.z);

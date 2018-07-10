@@ -1839,15 +1839,17 @@ private:
         LoadObjects(OBJECT_TYPE_SCENERY_GROUP, _sceneryGroupEntries);
         LoadObjects(
             OBJECT_TYPE_BANNERS,
-            std::vector<const char*>({ "BN1     ",
-                                       "BN2     ",
-                                       "BN3     ",
-                                       "BN4     ",
-                                       "BN5     ",
-                                       "BN6     ",
-                                       "BN7     ",
-                                       "BN8     ",
-                                       "BN9     " }));
+            std::vector<const char*>({
+                "BN1     ",
+                "BN2     ",
+                "BN3     ",
+                "BN4     ",
+                "BN5     ",
+                "BN6     ",
+                "BN7     ",
+                "BN8     ",
+                "BN9     ",
+            }));
         LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
         LoadObjects(OBJECT_TYPE_WATER, _waterEntry);
     }
@@ -1910,15 +1912,17 @@ private:
         AppendRequiredObjects(
             result,
             OBJECT_TYPE_BANNERS,
-            std::vector<const char*>({ "BN1     ",
-                                       "BN2     ",
-                                       "BN3     ",
-                                       "BN4     ",
-                                       "BN5     ",
-                                       "BN6     ",
-                                       "BN7     ",
-                                       "BN8     ",
-                                       "BN9     " }));
+            std::vector<const char*>({
+                "BN1     ",
+                "BN2     ",
+                "BN3     ",
+                "BN4     ",
+                "BN5     ",
+                "BN6     ",
+                "BN7     ",
+                "BN8     ",
+                "BN9     ",
+            }));
         AppendRequiredObjects(result, OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
         AppendRequiredObjects(result, OBJECT_TYPE_WATER, _waterEntry);
         return result;
