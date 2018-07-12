@@ -246,12 +246,18 @@ static bool sprite_file_export(int32_t spriteIndex, const char *outPath)
     }
 }
 
-static bool sprite_file_import(const char *path, int16_t x_offset, int16_t y_offset, bool keep_palette, rct_g1_element *outElement, uint8_t **outBuffer, int *outBufferLength, int32_t mode)
+static bool sprite_file_import(const char *path, int16_t x_offset, int16_t y_offset, bool keep_palette, bool forceBmp, rct_g1_element *outElement, uint8_t **outBuffer, int *outBufferLength, int32_t mode)
 {
     try
     {
         auto format = IMAGE_FORMAT::PNG_32;
-        auto flags = ImageImporter::IMPORT_FLAGS::RLE;
+        auto flags = ImageImporter::IMPORT_FLAGS::NONE;
+
+        if (!forceBmp)
+        {
+            flags = (ImageImporter::IMPORT_FLAGS)ImageImporter::IMPORT_FLAGS::RLE;
+        }
+
         if (keep_palette)
         {
             format = IMAGE_FORMAT::PNG;
@@ -464,7 +470,7 @@ int32_t cmdline_for_sprite(const char **argv, int32_t argc)
         uint8_t *buffer;
 
         int32_t bufferLength;
-        if (!sprite_file_import(imagePath, x_offset, y_offset, false, &spriteElement, &buffer, &bufferLength, gSpriteMode))
+        if (!sprite_file_import(imagePath, x_offset, y_offset, false, false, &spriteElement, &buffer, &bufferLength, gSpriteMode))
             return -1;
 
         if (!sprite_file_open(spriteFilePath)) {
@@ -558,6 +564,14 @@ int32_t cmdline_for_sprite(const char **argv, int32_t argc)
                 }
             }
 
+            // Get forcebmp option, if present
+            bool forceBmp = false;
+            json_t* forceBmpObject = json_object_get(sprite_description, "forceBmp");
+            if (palette && json_is_boolean(forceBmpObject))
+            {
+                forceBmp = json_boolean_value(forceBmpObject);
+            }
+
             // Resolve absolute sprite path
             char *imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
 
@@ -568,7 +582,7 @@ int32_t cmdline_for_sprite(const char **argv, int32_t argc)
             if (!sprite_file_import(imagePath,
                                     x_offset == nullptr ? 0 : json_integer_value(x_offset),
                                     y_offset == nullptr ? 0 : json_integer_value(y_offset),
-                                    keep_palette, &spriteElement, &buffer, &bufferLength, gSpriteMode))
+                                    keep_palette, forceBmp, &spriteElement, &buffer, &bufferLength, gSpriteMode))
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
                 json_decref(sprite_list);
