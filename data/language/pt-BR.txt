@@ -3037,7 +3037,7 @@ STR_3026    :Estilo Água
 STR_3027    :Estilo Oeste Selvagem
 STR_3028    :Estilo Jurássico
 STR_3029    :Estilo Rock
-STR_3030    :Estilo Reggae
+STR_3030    :Estilo Ragtime
 STR_3031    :Estilo Fantasia
 STR_3032    :Estilo Rock 2
 STR_3033    :Estilo Gelo
