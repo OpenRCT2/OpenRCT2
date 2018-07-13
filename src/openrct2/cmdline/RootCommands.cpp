@@ -181,7 +181,7 @@ exitcode_t CommandLine::HandleCommandDefault()
         }
     }
 
-    if (_help)
+    if (_help || _all)
     {
         CommandLine::PrintHelp(_all);
         result = EXITCODE_OK;
