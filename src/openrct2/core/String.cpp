@@ -703,7 +703,7 @@ namespace String
 
         // Measure how long the destination needs to be
         auto requiredSize = LCMapStringEx(
-            LOCALE_NAME_INVARIANT,
+            LOCALE_NAME_USER_DEFAULT,
             LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
             srcW.c_str(),
             (int)srcW.length(),
@@ -718,7 +718,7 @@ namespace String
 
         // Transform the string
         auto result = LCMapStringEx(
-            LOCALE_NAME_INVARIANT,
+            LOCALE_NAME_USER_DEFAULT,
             LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
             srcW.c_str(),
             (int)srcW.length(),
