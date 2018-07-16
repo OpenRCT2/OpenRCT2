@@ -372,7 +372,7 @@ uint8_t platform_get_locale_date_format()
     //
     wchar_t first[sizeof(dateFormat)];
     wchar_t second[sizeof(dateFormat)];
-    if (swscanf(dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, second) != 2) {
+    if (swscanf_s(dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, (uint32_t)Util::CountOf(first), second, (uint32_t)Util::CountOf(second)) != 2) {
         return DATE_FORMAT_DAY_MONTH_YEAR;
     }
 
