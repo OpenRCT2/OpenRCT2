@@ -29,7 +29,7 @@ STR_0024    :Kàrting
 STR_0025    :Tobogan de troncs
 STR_0026    :Ràpids amb bots inflables
 STR_0027    :Cotxes de xoc
-STR_0028    :Vaixell pirata
+STR_0028    :Vaixell amb balanceig
 STR_0029    :Vaixell amb balanceig i inversió
 STR_0030    :Estand de menjar
 STR_0031    :Estand desconegut (1D)
@@ -54,10 +54,10 @@ STR_0049    :Casa encantada
 STR_0050    :Sala de primers auxilis
 STR_0051    :Circ
 STR_0052    :Tren fantasma
-STR_0053    :Muntanya russa Tornado d'acer
+STR_0053    :Muntanya russa Tornado
 STR_0054    :Muntanya russa de fusta
 STR_0055    :Muntanya russa de fricció lateral
-STR_0056    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET}
+STR_0056    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET} d'acer
 STR_0057    :Muntanya russa multidimensió
 STR_0058    :Atracció desconeguda (38)
 STR_0059    :Muntanya russa voladora
@@ -1093,7 +1093,7 @@ STR_1087    :Pel·lícula 3D: {ENDQUOTES}Invasors de l'espai{ENDQUOTES}
 STR_1088    :Mode intens
 STR_1089    :Mode berserker
 STR_1090    :Mode casa encantada
-STR_1091    :Mode espectacle de circ
+STR_1091    :Mode de circ
 STR_1092    :Llançament cap abaix
 STR_1093    :Mode casa deforme
 STR_1094    :Mode caiguda lliure
@@ -1144,8 +1144,8 @@ STR_1138    :{SMALLFONT}{BLACK}Seleccioneu el 2n color addicional
 STR_1139    :{SMALLFONT}{BLACK}Seleccioneu el color dels suports
 STR_1140    :{SMALLFONT}{BLACK}Seleccioneu l'esquema de colors dels vagons
 STR_1141    :{SMALLFONT}{BLACK}Seleccioneu quin vehicle o tren s'ha de modificar
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{10}{STRINGID}
 STR_1144    :No es pot construir/moure l'entrada d'aquesta atracció...
 STR_1145    :No es pot construir/moure la sortida d'aquesta atracció...
 STR_1146    :Encara no se n'ha construït l'entrada
@@ -1158,8 +1158,8 @@ STR_1152    :Qualsevol
 STR_1153    :Marques d'alçada en les vies de les atraccions
 STR_1154    :Marques d'alçada al terreny
 STR_1155    :Marques d'alçada als camins
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :{TICK}{MOVE_X}{10}{STRINGID}
 STR_1158    :Això no es pot treure...
 STR_1159    :{SMALLFONT}{BLACK}Afegeix decoracions, jardins i altres accessoris.
 STR_1160    :{SMALLFONT}{BLACK}Crea i ajusta llacs i zones d'aigua.
@@ -1218,7 +1218,7 @@ STR_1212    :{WINDOW_COLOUR_2}Temps d'espera màxim:
 STR_1213    :{SMALLFONT}{BLACK}Seleccioneu el temps d'espera mínim abans d'arrencar.
 STR_1214    :{SMALLFONT}{BLACK}Seleccioneu el temps d'espera màxim abans d'arrencar.
 STR_1215    :{WINDOW_COLOUR_2}Sincronitza l'arrencada amb les estacions adjacents.
-STR_1216    :{SMALLFONT}{BLACK}Seleccioneu si cal sincronitzar la posada en marxa dels vehicles de l'estació ambs els d'estacions adjacents.
+STR_1216    :{SMALLFONT}{BLACK}Seleccioneu si cal sincronitzar la posada en marxa dels vehicles de l'estació amb els d'estacions adjacents.
 STR_1217    :{COMMA16} segons
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
@@ -1600,7 +1600,7 @@ STR_1594    :{SMALLFONT}{OPENQUOTES}Aquesta sopa de wonton de {STRINGID} està b
 STR_1595    :{SMALLFONT}{OPENQUOTES}Aquesta sopa de mandonguilles de {STRINGID} està bé de preu{ENDQUOTES}.
 STR_1596    :{SMALLFONT}{OPENQUOTES}Aquest suc de fruita de {STRINGID} està bé de preu{ENDQUOTES}.
 STR_1597    :{SMALLFONT}{OPENQUOTES}Aquesta llet de soia de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1598    :{SMALLFONT}{OPENQUOTES}Aquest sujongkwa de {STRINGID} està bé de preu{ENDQUOTES}.
+STR_1598    :{SMALLFONT}{OPENQUOTES}Aquest sujeonggwa de {STRINGID} està bé de preu{ENDQUOTES}.
 STR_1599    :{SMALLFONT}{OPENQUOTES}Aquest sandvitx submarí de {STRINGID} està bé de preu{ENDQUOTES}.
 STR_1600    :{SMALLFONT}{OPENQUOTES}Aquesta galeta de {STRINGID} està bé de preu{ENDQUOTES}.
 STR_1601    :
@@ -1632,7 +1632,7 @@ STR_1626    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una sopa wonton de {
 STR_1627    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una sopa de mandonguilles de {STRINGID}{ENDQUOTES}.
 STR_1628    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un suc de fruita de {STRINGID}{ENDQUOTES}.
 STR_1629    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per la llet de soia de {STRINGID}{ENDQUOTES}.
-STR_1630    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un sujongkwa de {STRINGID}{ENDQUOTES}.
+STR_1630    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un sujeonggwa de {STRINGID}{ENDQUOTES}.
 STR_1631    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un sandvitx submarí de {STRINGID}{ENDQUOTES}.
 STR_1632    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una galeta de {STRINGID}{ENDQUOTES}
 STR_1633    :
@@ -1777,8 +1777,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :Només es permet una secció de fotos de record per atracció.
 STR_1774    :Només es permet un cable d'elevació per atracció.
-STR_1775    :Off
-STR_1776    :On
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}Música de l'atracció
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Disfressa de panda
@@ -2118,7 +2118,7 @@ STR_2110    :{WINDOW_COLOUR_2}Preu de la sopa wonton:
 STR_2111    :{WINDOW_COLOUR_2}Preu de la sopa de mandonguilles:
 STR_2112    :{WINDOW_COLOUR_2}Preu del suc de fruita:
 STR_2113    :{WINDOW_COLOUR_2}Preu de la llet de soia:
-STR_2114    :{WINDOW_COLOUR_2}Preu del sujongkwa:
+STR_2114    :{WINDOW_COLOUR_2}Preu del sujeonggwa:
 STR_2115    :{WINDOW_COLOUR_2}Preu del sandvitx submarí:
 STR_2116    :{WINDOW_COLOUR_2}Preu de la galeta:
 STR_2117    :{WINDOW_COLOUR_2}
@@ -2184,7 +2184,7 @@ STR_2176    :una ració de sopa wonton
 STR_2177    :una ració de sopa de mandonguilles
 STR_2178    :un suc de fruita
 STR_2179    :una beguda de llet de soia
-STR_2180    :una ració de sujongkwa
+STR_2180    :una ració de sujeonggwa
 STR_2181    :un sandvitx submarí
 STR_2182    :una galeta
 STR_2183    :un bol buit
@@ -2206,7 +2206,7 @@ STR_2198    :Una ració de sopa wonton
 STR_2199    :Una ració de sopa de mandonguilles
 STR_2200    :Un suc de fruita
 STR_2201    :Una beguda de llet de soia
-STR_2202    :Un sujongkwa
+STR_2202    :Un sujeonggwa
 STR_2203    :Sandvitx submarí
 STR_2204    :Galeta
 STR_2205    :Bol buit
@@ -2873,7 +2873,7 @@ STR_2862    :Agraïments per la música...
 STR_2863    :Agraïments per la música
 STR_2864    :{WINDOW_COLOUR_2}Marxa - Children of the Regiment:   (Fucik) sense copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (compositor desconegut) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) sense copyright
 STR_2867    :{WINDOW_COLOUR_2}Viatge de bodes:   (tradicional)
 STR_2868    :{WINDOW_COLOUR_2}Contes dels boscos de Viena:   (Johann Strauss) sense copyright
 STR_2869    :{WINDOW_COLOUR_2}Dansa eslava:   (tradicional)
@@ -3574,8 +3574,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Altres
 STR_5234    :{SMALLFONT}{BLACK}Avisos
 STR_5235    :{SMALLFONT}{BLACK}Configuració
-STR_5236    :Finestra:
-STR_5237    :Paleta:
+STR_5236    :Finestra
+STR_5237    :Paleta
 STR_5238    :Tema actual:
 STR_5239    :Duplica
 STR_5240    :Escriviu un nom per al tema
@@ -3834,8 +3834,8 @@ STR_5492    :Opcions d'escenari
 STR_5493    :Envia missatge
 STR_5494    :<removed string - do not use>
 STR_5495    :Llista de jugadors
-STR_5496    :Jugador:
-STR_5497    :Ping:
+STR_5496    :Jugador
+STR_5497    :Ping
 STR_5498    :Llista de servidors
 STR_5499    :Nom del jugador:
 STR_5500    :Afegeix servidor
@@ -3968,7 +3968,7 @@ STR_5626    :Altres parcs
 STR_5627    :Agrupa la llista d'escenaris per:
 STR_5628    :Joc original
 STR_5629    :Nivell de dificultat
-STR_5630    :Activa el desbloqueig d'escenaris
+STR_5630    :Activa el desbloqueig progressiu
 STR_5631    :Parcs originals DLC
 STR_5632    :Construïu el vostre...
 STR_5633    :CMD + 
@@ -3980,7 +3980,7 @@ STR_5638    :S'ha denegat el permís.
 STR_5639    :{SMALLFONT}{BLACK}Mostra la llista de jugadors
 STR_5640    :{SMALLFONT}{BLACK}Administra grups
 STR_5641    :Grup per defecte:
-STR_5642    :Grup:
+STR_5642    :Grup
 STR_5643    :Afegeix grup
 STR_5644    :Treu grup
 STR_5645    :Xat
@@ -4008,7 +4008,7 @@ STR_5666    :Inici sense contrasenya
 STR_5701    :{WINDOW_COLOUR_2}Última acció: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Localitza l'acció més recent del jugador.
 STR_5703    :No es pot expulsar l'amfitrió.
-STR_5704    :Última acció:
+STR_5704    :Última acció
 STR_5705    :No es pot afegir a aquest grup.
 STR_5706    :No es pot esborrar el grup mentre tingui jugadors.
 STR_5707    :Aquest grup no es pot modificar.
@@ -4032,13 +4032,13 @@ STR_5723    :Pluja forta
 STR_5724    :Tempesta
 STR_5725    :{BLACK}Força el clima:
 STR_5726    :{SMALLFONT}{BLACK}Escolliu el temps que farà al parc.
-STR_5727    :Qualitat d'escalat
+STR_5727    :Qualitat d'escalat:
 STR_5728    :Requereix l'opció de renderitzat amb maquinari
 STR_5729    :{SMALLFONT}{BLACK}Requereix que s'activi l'opció per realitzar el renderitzat via maquinari gràfic.
-STR_5730    :{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET}
+STR_5730    :<removed string - do not use>
 STR_5731    :Lineal
-STR_5732    :Anisotròpic
-STR_5733    :Empra l'escalat pròxim per escales enteres
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Renderitzat
 STR_5735    :Estat de la xarxa
@@ -4125,8 +4125,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra el comptador de FPS del joc.
 STR_5816    :{SMALLFONT}{BLACK}Estableix la relació d'escala del joc.{NEWLINE}Sol ser útil quan es juga amb{NEWLINE}pantalles d'alta resolució.
-STR_5817    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Estableix el tipus d'escalat de la interfície gràfica.{NEWLINE}{NEWLINE}El mètode {LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} crea imatges nítides però les distorsiona  en escales no enteres.{NEWLINE}Lineal i anisotròpic són més suaus però la imatge pot semblar borrosa.{NEWLINE}{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} suau genera imatges nítides, fins i tot amb escales no enteres (pot causar problemes de rendiment).
-STR_5818    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Usa el mètode {LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET}{NEWLINE}quan s'estableix l'escalat de finestres{NEWLINE}a valors enters (1, 2, 3...).
+STR_5817    :{SMALLFONT}{BLACK}Estableix el tipus d'escalat de la interfície gràfica. Requereix renderitzat per maquinari.{NEWLINE}El mètode lineal és més suau, però la imatge pot semblar borrosa. El mètode {LEFTGUILLEMET}Nearest Neighbour suau{RIGHTGUILLEMET} crea imatges nítides, però pot causar problemes de rendiment.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s'activa l'Steam.
 STR_5820    :{SMALLFONT}{BLACK}Minimitza el joc si es perd el focus{NEWLINE}mentre s'està en mode de pantalla completa.
 STR_5821    :<removed string - do not use>
@@ -4140,7 +4140,7 @@ STR_5828    :{SMALLFONT}{BLACK}Canvia les unitats que s'usen per mesurar distàn
 STR_5829    :{SMALLFONT}{BLACK}Canvia el format de moneda. Els efectes són només visuals, ja que no s'aplica cap tipus de canvi.
 STR_5830    :{SMALLFONT}{BLACK}Canvia l'idioma de la interfície.
 STR_5831    :{SMALLFONT}{BLACK}Canvia la unitat de mesura{NEWLINE}de la temperatura.
-STR_5832    :{SMALLFONT}{BLACK}Mostra les alçades com a unitats genèriques (-2, -1, 0, +1, +2...){NEWLINE}en lloc d'emprar unitats de distància (-10 m, +7 ft...).
+STR_5832    :{SMALLFONT}{BLACK}Mostra les alçades com a unitats genèriques (-2, -1, 0, +1, +2...){NEWLINE}en lloc d'emprar unitats de distància especificades en {LEFTGUILLEMET}Longitud i velocitat{RIGHTGUILLEMET}.
 STR_5833    :{SMALLFONT}{BLACK}Canvia el format de les dates.
 STR_5834    :{SMALLFONT}{BLACK}Trieu quin dispositiu de so ha de fer servir l'OpenRCT2.
 STR_5835    :{SMALLFONT}{BLACK}Silencia el joc si la finestra perd el focus.
@@ -4151,7 +4151,7 @@ STR_5839    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de recerques a 
 STR_5840    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de trampes a la barra d'eines.
 STR_5841    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de notícies recents a la barra d'eines.
 STR_5842    :{SMALLFONT}{BLACK}Ordena els escenaris en pestanyes segons la seva dificultat (com al RCT2) o pel seu origen (com al RCT1).
-STR_5843    :{SMALLFONT}{BLACK}Activa el desbloqueig d'escenaris (com al RCT1).
+STR_5843    :{SMALLFONT}{BLACK}Activa el desbloqueig progressiu d'escenaris (com al RCT1).
 STR_5844    :{SMALLFONT}{BLACK}Mantén la connexió al servidor multijugador{NEWLINE}fins i tot si es produeix un error de dessincronització.
 STR_5845    :{SMALLFONT}{BLACK}Afegeix un botó a la barra d'eines{NEWLINE}per a les eines de depuració.{NEWLINE}Permet usar la drecera de teclat per a la consola de desenvolupament.
 STR_5846    :{SMALLFONT}{BLACK}Estableix el període de desades automàtiques de l'OpenRCT2.
@@ -4314,7 +4314,7 @@ STR_6002    :{SMALLFONT}{BLACK}Els fanals i atraccions encendran els seus llums 
 STR_6003    :Vista retallada
 STR_6004    :Vista retallada
 STR_6005    :Activa la vista retallada
-STR_6006    :{SMALLFONT}{BLACK}La vista retallada només mostra els elements del mapa que estan a l'alçada de tall o per baix d'aquesta.
+STR_6006    :{SMALLFONT}{BLACK}La vista retallada només mostra els elements del mapa que estan a l'alçada de tall o per baix d'aquesta (retallat vertical) i dins de l'àrea seleccionada (retallat horitzontal).
 STR_6007    :Alçada de tall
 STR_6008    :{SMALLFONT}{BLACK}Feu clic per alternar entre el valor sense format i el valor amb unitats de mesura.
 STR_6009    :{SMALLFONT}{BLACK}Escolliu l'alçada de tall
@@ -4396,7 +4396,7 @@ STR_6084    :El/la {STRING} ha modificat les opcions dels vehicles de l'atracci�
 STR_6085    :El/la {STRING} ha modificat les opcions d'atracció de {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
 STR_6086    :El/la {STRING} ha canviat el nom de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
 STR_6087    :El/la {STRING} ha canviat el preu de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {STRING}
-STR_6088    :El/la {STRING} ha canviat el preu secunadri de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {STRING}.
+STR_6088    :El/la {STRING} ha canviat el preu secundari de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {STRING}.
 STR_6089    :El/la {STRING} ha canviat el nom del parc {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
 STR_6090    :El/la {STRING} ha obert el parc.
 STR_6091    :El/la {STRING} ha tancat el parc.
@@ -4462,7 +4462,7 @@ STR_6150    :Resposta del servidor mestre no vàlida (sense número JSON)
 STR_6151    :El servidor mestre no ha retornat una llista de servidors
 STR_6152    :Resposta del servidor mestre no vàlida (sense taula JSON)
 STR_6153    :Paga per entrar al parc / Paga per atracció
-STR_6154    :No es recomana executar l'OpenRCT2 amb privilegis elevats.
+STR_6154    :Per motius de seguretat, no es recomana executar l'OpenRCT2 amb privilegis elevats.
 STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·leu-ne un o configureu-los des de la línia d'ordres.
 STR_6156    :El nom està reservat.
 STR_6157    :Consola
@@ -4473,6 +4473,103 @@ STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET} giratori
 STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument per desorientar els passatgers.
 STR_6164    :{WHITE}{CROSS}
+STR_6165    :Sincronització vertical
+STR_6166    :{SMALLFONT}{BLACK}Sincronitza cada fotograma anb la freqüència del monitor, evitant l'efecte de pantalla partida.
+STR_6167    :{SMALLFONT}{BLACK}Avançat
+STR_6168    :Seqüència inicial
+STR_6169    :Selecció d'escenari
+STR_6170    :Ajustaments de la interfície
+STR_6171    :Cerca
+STR_6172    :{SMALLFONT}{BLACK}Cerca
+STR_6173    :Si us plau, introduïu el nom que cal buscar:
+STR_6174    :Carrega una partida
+STR_6175    :Carrega un escenari
+STR_6176    :Escenari a carregar:
+STR_6177    :Carrega{MOVE_X}{87}No s'ha seleccionat cap escenari
+STR_6178    :Carrega{MOVE_X}{87}{RED}No s'ha trobat l'escenari
+STR_6179    :Selecciona
+STR_6180    :No s'ha seleccionat cap escenari
+STR_6181    :{RED}No s'ha trobat l'escenari
+STR_6182    :Segueix{MOVE_X}{87}{STRING}
+STR_6183    :Segueix{MOVE_X}{87}No s'ha seleccionat cap sprite
+STR_6184    :Segueix sprite
+STR_6185    :Selecciona sprite
+STR_6186    :No s'ha seleccionat cap sprite
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Vòmit
+STR_6189    :Ànec
+STR_6190    :{SMALLFONT}{BLACK}No podeu seleccionar cap sprite mentre la pantalla del menú de presentació estigui activa.
+STR_6191    :Superfície
+STR_6192    :Paret
+STR_6193    :{COMMA16} visitant
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitant
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitant
+STR_6196    :{BLACK}Any:
+STR_6197    :{BLACK}Mes:
+STR_6198    :{BLACK}Dia:
+STR_6199    :Estableix data
+STR_6200    :Restableix data
+STR_6201    :{MONTH}
+STR_6202    :Estil del terra virtual:
+STR_6203    :{SMALLFONT}{BLACK}Quan està activat, es dibuixarà un terra virtual mentre es prem Ctrl o Maj per facilitar el posicionament d'elements.
+STR_6204    :Maó
+STR_6205    :Ferro
+STR_6206    :Estuc gris
+STR_6207    :Estuc groc
+STR_6208    :Estuc vermell
+STR_6209    :Estuc morat
+STR_6210    :Estuc verd
+STR_6211    :Arenisca marró
+STR_6212    :Arenisca gris
+STR_6213    :Gratacel A
+STR_6214    :Gratacel B
+STR_6215    :Construcció
+STR_6216    :Funcionament
+STR_6217    :Disponibilitat d'atraccions i tipus de via
+STR_6218    :Oficial de l'OpenRCT2
+STR_6219    :Ressalta problemes dels camins
+STR_6220    :Fes utilitzable
+STR_6221    :{SMALLFONT}{BLACK}Establirà la casella actualment seleccionada com a entrada o sortida d'aquesta atracció. Només es poden establir una entrada i una sortida com a utilitzables.
+STR_6222    :No es pot situar aquest punt com a entrada dels visitants...
+STR_6223    :Ha d'estar fora dels límits del parc!
+STR_6224    :{STRING} ha situat un punt d'entrada dels visitants.
+STR_6225    :Funció no soportada amb l'OpenGL com a renderitzador
+STR_6226    :Activa la finalització avançada de l'escenari
+STR_6227    :{SMALLFONT}{BLACK}Permet completar l'escenari abans de la data límit si es compleixen tots els objectius.
+STR_6228    :Opcions d'escenari
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Congelats
+STR_6233    :Vista retallada
+STR_6234    :Ressalta problemes dels camins
+STR_6235    :Informació del servidor
+STR_6236    :Jugadors
+STR_6237    :Grups
+STR_6238    :Opcions multijugador
+STR_6239    :Retallat vertical
+STR_6240    :Retallat horitzontal
+STR_6241    :Seleccioneu una àrea
+STR_6242    :Esborra la selecció
+STR_6243    :{SMALLFONT}{BLACK}Retoca l'atracció,{NEWLINE}fent-la parèixer nova
+STR_6244    :No es pot retocar l'atracció...
+STR_6245    :{SMALLFONT}{BLACK}L'atracció no necessita retocs
+STR_6246    :Retoca
+STR_6247    :Retoca l'atracció
+STR_6248    :{WINDOW_COLOUR_1}Voleu retocar {STRINGID} per {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Voleu retocar {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Esteu segurs que voleu demolir completament {STRINGID} i recuperar {CURRENCY}?
+STR_6251    :Encara hi ha persones a l'atracció
+STR_6252    :URL de l'API del Twitch
+STR_6253    :{SMALLFONT}{BLACK}Doneu la URL de l'API d'integració del Twitch. Cal aquesta URL per tal d'activar la integració del Twitch.
+STR_6254    :URL de l'API d'integració del Twitch:
+STR_6255    :La URL no és vàlida
+STR_6256    :Efectes de renderitzat
+STR_6257    :Cristal·lí (translúcid)
+STR_6258    :Net (transparent)
+STR_6259    :Desactivat
+STR_6260    :Mostra les caselles blocades
+STR_6261    :Mostra els camins amples
 
 #############
 # Scenarios #
@@ -4487,7 +4584,7 @@ STR_DTLS    :Construïu un parc pròsper a l'àrea que s'ha netejat ben endins d
 <Dynamite Dunes>
 STR_SCNR    :Les dunes Dinamita
 STR_PARK    :Les dunes Dinamita
-STR_DTLS    :Construït al bell mig del desert, aquest parc temàtic npmés té una muntanya russa però disposa d'espai per expandir-se.
+STR_DTLS    :Construït al bell mig del desert, aquest parc temàtic només té una muntanya russa però disposa d'espai per expandir-se.
 
 <Leafy Lake>
 STR_SCNR    :El llac frondós
@@ -4502,7 +4599,7 @@ STR_DTLS    :{LEFTGUILLEMET}Els cims diamantins{RIGHTGUILLEMET} ja és un parc e
 <Evergreen Gardens>
 STR_SCNR    :Els jardins perennes
 STR_PARK    :Els jardins perennes
-STR_DTLS    :Convertïu aquests preciosos jardins perennes en un parc temàtic pròsper.
+STR_DTLS    :Convertiu aquests preciosos jardins perennes en un parc temàtic pròsper.
 
 <Bumbly Beach>
 STR_SCNR    :La platja Bumbly
