@@ -111,6 +111,7 @@ The following people are not part of the development team, but have been contrib
 * Toby Hinloopen (tobyhinloopen)
 * Patrick Martinez (martip23)
 * Andy Ford (AndyTWF)
+* Matthew Beaudin (mattbeaudin)
 
 ## Toolchain
 * (Balletie) - macOS
