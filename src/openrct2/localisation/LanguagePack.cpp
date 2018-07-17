@@ -389,7 +389,7 @@ private:
             }
             if (sb.GetLength() == 8)
             {
-                _currentGroup = sb.GetString();
+                _currentGroup = sb.GetStdString();
                 _currentObjectOverride = GetObjectOverride(_currentGroup);
                 _currentScenarioOverride = nullptr;
                 if (_currentObjectOverride == nullptr)
@@ -432,7 +432,7 @@ private:
 
         if (closedCorrectly)
         {
-            _currentGroup = sb.GetString();
+            _currentGroup = sb.GetStdString();
             _currentObjectOverride = nullptr;
             _currentScenarioOverride = GetScenarioOverride(_currentGroup);
             if (_currentScenarioOverride == nullptr)
