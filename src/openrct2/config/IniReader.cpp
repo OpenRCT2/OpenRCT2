@@ -354,7 +354,7 @@ private:
                 sb.Append(&c, 1);
             }
         }
-        return std::string(sb.GetString());
+        return sb.GetStdString();
     }
 
     std::string GetLine(size_t index)
