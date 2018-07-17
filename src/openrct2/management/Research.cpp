@@ -373,6 +373,9 @@ void research_update()
             research_update_uncompleted_types();
             research_invalidate_related_windows();
             break;
+        case RESEARCH_STAGE_FINISHED_ALL:
+            gResearchFundingLevel = RESEARCH_FUNDING_NONE;
+            break;
         }
     }
 }
