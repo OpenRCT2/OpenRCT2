@@ -156,8 +156,8 @@ protected:
         ObjectRepositoryItem item;
 
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
-        item.Path = stream->ReadString();
-        item.Name = stream->ReadString();
+        item.Path = stream->ReadStdString();
+        item.Name = stream->ReadStdString();
 
         switch (object_entry_get_type(&item.ObjectEntry)) {
         case OBJECT_TYPE_RIDE:
