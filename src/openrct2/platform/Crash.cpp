@@ -15,7 +15,7 @@
 
 #    if defined(_WIN32)
 #        include <ShlObj.h>
-#        include <breakpad/client/windows/handler/exception_handler.h>
+#        include <client/windows/handler/exception_handler.h>
 #        include <string>
 #    else
 #        error Breakpad support not implemented yet for this platform
