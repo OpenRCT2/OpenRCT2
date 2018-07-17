@@ -10,6 +10,7 @@
 #pragma once
 
 #include <algorithm>
+#include <string>
 #include "../common.h"
 
 #include "Math.hpp"
@@ -129,6 +130,20 @@ public:
         utf8 * result = Memory::AllocateArray<utf8>(_length + 1);
         std::copy_n(_buffer, _length, result);
         result[_length] = 0;
+        return result;
+    }
+
+    /**
+     * Returns the current string buffer as a standard string.
+     */
+    std::string GetStdString() const
+    {
+        std::string result;
+        result.reserve(_length);
+        for (std::size_t i = 0U; i < _length; i++)
+        {
+            result.push_back(_buffer[i]);
+        }
         return result;
     }
 
