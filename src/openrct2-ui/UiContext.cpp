@@ -71,7 +71,6 @@ private:
     int32_t          _height = 0;
     int32_t          _scaleQuality = 0;
 
-    bool _resolutionsAllowAnyAspectRatio = false;
     std::vector<Resolution> _fsResolutions;
 
     bool _steamOverlayActive = false;
@@ -699,7 +698,7 @@ private:
             if (mode.w > 0 && mode.h > 0)
             {
                 float aspectRatio = (float)mode.w / mode.h;
-                if (_resolutionsAllowAnyAspectRatio || std::fabs(desktopAspectRatio - aspectRatio) < 0.0001f)
+                if (std::fabs(desktopAspectRatio - aspectRatio) < 0.1f)
                 {
                     resolutions.push_back({ mode.w, mode.h });
                 }
