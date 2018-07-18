@@ -256,7 +256,8 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // 0x006D3CF1 -- 0x006d3d71 missing
 
     // Track design name & type
-    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &_trackName, COLOUR_BLACK, x-1, y);
+    auto trackName = _trackName.c_str();
+    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &trackName, COLOUR_BLACK, x-1, y);
     y += LIST_ROW_HEIGHT;
 
     rct_ride_name rideName;

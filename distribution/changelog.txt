@@ -18,6 +18,7 @@
 - Fix: [#7756] Steam RCT2 path not correctly checked on macOS and Linux.
 - Fix: [#7765] Crash when opening ride list window on Windows Vista.
 - Fix: [#7773] Once research has been completed, player is still charged for research.
+- Fix: [#7786] Crash when importing a track design.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
