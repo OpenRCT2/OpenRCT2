@@ -138,13 +138,7 @@ public:
      */
     std::string GetStdString() const
     {
-        std::string result;
-        result.reserve(_length);
-        for (std::size_t i = 0U; i < _length; i++)
-        {
-            result.push_back(_buffer[i]);
-        }
-        return result;
+        return std::string(_buffer, _length);
     }
 
     /**
