@@ -129,7 +129,7 @@ bool NetworkKey::SavePublic(IStream * stream)
         {
             throw std::runtime_error("No key loaded");
         }
-        auto pem = _key->GetPrivate();
+        auto pem = _key->GetPublic();
         stream->Write(pem.data(), pem.size());
         return true;
     }
