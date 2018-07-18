@@ -2870,7 +2870,7 @@ STR_2862    :Agradecimientos musicales...
 STR_2863    :Agradecimientos musicales
 STR_2864    :{WINDOW_COLOUR_2}Marcha - Children of the Regiment:   (Fucik) sin copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Compositor desconocido) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Bella Española:   (Robert Vollstedt) Copyright Control
 STR_2867    :{WINDOW_COLOUR_2}Viaje de bodas:   (Tradicional)
 STR_2868    :{WINDOW_COLOUR_2}Cuentos de los bosques de Viena:   (Johann Strauss) sin copyright
 STR_2869    :{WINDOW_COLOUR_2}Danza Slava:   (Tradicional)
@@ -3571,8 +3571,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editores
 STR_5233    :{SMALLFONT}{BLACK}Misceláneos
 STR_5234    :{SMALLFONT}{BLACK}Avisos
 STR_5235    :{SMALLFONT}{BLACK}Configuraciones
-STR_5236    :Ventana:
-STR_5237    :Paleta:
+STR_5236    :Ventana
+STR_5237    :Paleta
 STR_5238    :Tema actual:
 STR_5239    :Duplicar
 STR_5240    :Escribir nombre del tema
@@ -3831,8 +3831,8 @@ STR_5492    :Opciones de escenario
 STR_5493    :Enviar mensaje
 STR_5494    :<removed string - do not use>
 STR_5495    :Lista de jugadores
-STR_5496    :Jugador:
-STR_5497    :Ping:
+STR_5496    :Jugador
+STR_5497    :Ping
 STR_5498    :Lista de servidores
 STR_5499    :Nombre Jugador:
 STR_5500    :Añadir servidor
@@ -3965,7 +3965,7 @@ STR_5626    :Otros parques
 STR_5627    :Agrupar lista de escenarios:
 STR_5628    :Juego original
 STR_5629    :Nivel de dificultad
-STR_5630    :Activa el desbloqueo de escenarios
+STR_5630    :Activa el desbloqueo progresivo
 STR_5631    :DLC de parques originales
 STR_5632    :Construye tu propio...
 STR_5633    :CMD + 
@@ -3977,7 +3977,7 @@ STR_5638    :Permiso denegado
 STR_5639    :{SMALLFONT}{BLACK}Mostrar lista de jugadores
 STR_5640    :{SMALLFONT}{BLACK}Administrar grupos
 STR_5641    :Grupo por defecto:
-STR_5642    :Grupo:
+STR_5642    :Grupo
 STR_5643    :Añadir Grupo
 STR_5644    :Remover Grupo
 STR_5645    :Chat
@@ -4005,7 +4005,7 @@ STR_5666    :Inicio de sesión sin contraseña
 STR_5701    :{WINDOW_COLOUR_2}Ultima acción: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Ir a la última acción del jugador.
 STR_5703    :No puedes expulsar al anfitrión.
-STR_5704    :Ultima acción:
+STR_5704    :Ultima acción
 STR_5705    :No se puede cambiar a este grupo.
 STR_5706    :No se puede eliminar el grupo, hay jugadores en él.
 STR_5707    :Este grupo no puede ser modificado.
@@ -4029,13 +4029,13 @@ STR_5723    :Lluvia
 STR_5724    :Tormenta
 STR_5725    :{BLACK}Forzar clima:
 STR_5726    :{SMALLFONT}{BLACK}Establecer el clima actual en el parque
-STR_5727    :Calidad de escalado
+STR_5727    :Calidad de escalado:
 STR_5728    :Requiere Renderizado por Hardware
 STR_5729    :{SMALLFONT}{BLACK}Requiere Renderizado por Hardware
-STR_5730    :Próximo
+STR_5730    :<removed string - do not use>
 STR_5731    :Lineal
-STR_5732    :Anisotrópico
-STR_5733    :Usar escala NN en escalas numéricas
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Renderizado
 STR_5735    :Estado de la red
@@ -4122,7 +4122,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}Muestra la cantidad de FPS en el juego.
 STR_5816    :{SMALLFONT}{BLACK}Establece la relación de escala del juego.{NEWLINE}Suele ser util cuando se juega en pantallas con resoluciones altas.
 STR_5817    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Establecer tipo de escalado de UI{NEWLINE}{NEWLINE}"Escalado Próximo": Nítido pero causa distorsión en escalas no enteras.{NEWLINE}"Escalado Lineal y Anisotrópico": son suaves pero borrosos.{NEWLINE}"Escalado Próximo Suave": nítido incluso en escalas no enteras, pero puede causar un golpe de rendimiento menor.
-STR_5818    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Usar escala "vecino próximo" (nearest-neighbour) si el coeficiente de la escala toma valores enteros.
+STR_5817    :{SMALLFONT}{BLACK}Tipo de escalado para UI. Requiere renderiz por Hardware.{NEWLINE}Escalado lineal es suave, pero borrozo. Suavizar vecino cercano es mas nítido, pero puede causar un mínimo golpe a los FPS.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Pausa el juego si Steam se superpone durante el juego.
 STR_5820    :{SMALLFONT}{BLACK}Minimizar el juego si se pierde el foco en el modo de pantalla completa.
 STR_5821    :<removed string - do not use>
@@ -4147,7 +4148,7 @@ STR_5839    :{SMALLFONT}{BLACK}Mostrar un botón separado para la investigación
 STR_5840    :{SMALLFONT}{BLACK}Mostrar un botón separado para los trucos en la barra de herramienta superior.
 STR_5841    :{SMALLFONT}{BLACK}Mostrar un botón separado para los mensajes recientes en la barra de herramienta superior.
 STR_5842    :{SMALLFONT}{BLACK}Ordenar las pestañas de los escenarios por su dificultad (como en RCT2) o por su origen (como en RCT1)
-STR_5843    :{SMALLFONT}{BLACK}Habilitar desbloqueo de escenarios (como en RCT1)
+STR_5843    :{SMALLFONT}{BLACK}Habilitar desbloqueo progresivo de escenarios (como en RCT1)
 STR_5844    :{SMALLFONT}{BLACK}Mantenerse conectado en el servidor multijugador incluso si ocurre un error de desincronización.
 STR_5845    :{SMALLFONT}{BLACK}Añadir un botón para las herramientas de depuración en la barra de herramienta superior. Con esto se permite el atajo del teclado para abrir la consola de desarrollo.
 STR_5846    :{SMALLFONT}{BLACK}Establece con cuanta frecuencia OpenRCT2 guarda la partida automáticamente.
@@ -4310,7 +4311,7 @@ STR_6002    :{SMALLFONT}{BLACK}Las lámparas y atracciones se iluminarán por la
 STR_6003    :Vista recortada
 STR_6004    :Vista recortada
 STR_6005    :Habilitar vista recortada
-STR_6006    :{SMALLFONT}{BLACK}La vista recortada sólo mostrará los elementos del mapa que estén en o por debajo de la altura de corte.
+STR_6006    :{SMALLFONT}{BLACK}La vista aislada sólo mostrará los elementos igual o menor que la altura de corte Vertical y dentro del corte Horizontal del area seleccionada
 STR_6007    :Altura de corte
 STR_6008    :{SMALLFONT}{BLACK}Da clic para alternar entre el valor sin formato y el valor en unidades de medida.
 STR_6009    :{SMALLFONT}{BLACK}Selecciona la altura de corte
@@ -4458,7 +4459,7 @@ STR_6150    :Respuesta no valida desde Servidor Maestro (no JSON number)
 STR_6151    :Servidor Maestro no devolvió Lista de Servidores
 STR_6152    :Respuesta no validad de Servidor Maestro (no JSON array)
 STR_6153    :Pagar por entrada / Pagar por atracción
-STR_6154    :No es recomendable iniciar OpenRCT2 con privilegios elevados.
+STR_6154    :Por razones de seguridad, No es recomendable iniciar OpenRCT2 con privilegios elevados.
 STR_6155    :Ni KDialog ni Zenity están instalados. Instale uno o configure uno desde la línea de comando.
 STR_6156    :El nombre está reservado
 STR_6157    :Consola
@@ -4466,6 +4467,108 @@ STR_6158    :No se pudo cargar este archivo...{NEWLINE}Version RCT incompatible:
 STR_6159    :Próximo Suave
 STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
 STR_6161    :Alternar Líneas de Cuadrícula
+STR_6162    :Ratón Giratorio Salvaje
+STR_6163    :Carros con forma de ratón atraviesan giros cerrados y caidas cortas, mientras giran gentilmente para desorientar a los pasajeros.
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Usar sincronización vertical
+STR_6166    :{SMALLFONT}{BLACK}Sincroniza cada cuadro mostrado a la tasa de refresco del monitor, evitando la imagen distorsionada.
+STR_6167    :{SMALLFONT}{BLACK}Avanzado
+STR_6168    :Secuencia de Título
+STR_6169    :Selección de escenario
+STR_6170    :Ajustecitos interfaz
+STR_6171    :Buscar
+STR_6172    :{SMALLFONT}{BLACK}Buscar
+STR_6173    :Introduzca el nombre a buscar:
+STR_6174    :Cargar partida
+STR_6175    :Cargar escenario
+STR_6176    :Escenario a cargar:
+STR_6177    :Cargar{MOVE_X}{87}No se eligió escenario
+STR_6178    :Cargar{MOVE_X}{87}{RED}Escenario Faltante
+STR_6179    :Elegir
+STR_6180    :No se eligió escenario
+STR_6181    :{RED}Escenario faltante
+STR_6182    :Seguir{MOVE_X}{87}{STRING}
+STR_6183    :Seguir{MOVE_X}{87}No se eligió figura
+STR_6184    :Seguir figura
+STR_6185    :Elegir figura
+STR_6186    :No se eligió figura
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Vomito
+STR_6189    :Pato
+STR_6190    :{SMALLFONT}{BLACK}No puedes elegir una figura mientras la ventana principal está activa
+STR_6191    :Superficie
+STR_6192    :Pared
+STR_6193    :{COMMA16} huésped
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} huésped
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} huésped
+STR_6196    :{BLACK}Año:
+STR_6197    :{BLACK}Mes:
+STR_6198    :{BLACK}Día:
+STR_6199    :Establecer fecha
+STR_6200    :Restablecer fecha
+STR_6201    :{MONTH}
+STR_6202    :Estilo del piso virtual:
+STR_6203    :{SMALLFONT}{BLACK}Si está habilitado, un piso virtual será renderizado al mantener CTRL o SHIFT para facilitar la colocación vertical de elementos.
+STR_6204    :Ladrillo
+STR_6205    :Hierro
+STR_6206    :Estuco gris
+STR_6207    :Estuco amarillo
+STR_6208    :Estuco rojo
+STR_6209    :Estuco violeta
+STR_6210    :Estuco verde
+STR_6211    :Arenisca marrón
+STR_6212    :Arenisca gris
+STR_6213    :Rascacielos A
+STR_6214    :Rascacielos B
+STR_6215    :Consctrucción
+STR_6216    :Operación
+STR_6217    :Atracción / pista disponibilidad
+STR_6218    :OpenRCT2 Oficial
+STR_6219    :Resaltar problemas de pathfinding
+STR_6220    :Hacer utilizable
+STR_6221    :{SMALLFONT}{BLACK}Esto establecerá la conocida salida o entrada de la atracción en la casilla seleccionada. Sólo una entrada y salida puede ser usada por estación.
+STR_6222    :No se puede colocar entrada de visitantes aquí...
+STR_6223    :¡Debe estar fuera de los límites del parque!
+STR_6224    :{STRING} se colocó un punto de entrada de visitantes
+STR_6225    :No está soportado con el renderizador OpenGL
+STR_6226    :Habilitar victoria temprana.
+STR_6227    :{SMALLFONT}{BLACK}Hace que se dé el escenario por terminado si todos los objetivos están cumplidos antes de la fecha que lanza la condicion de victoria.
+STR_6228    :Opciones de escenario.
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Congelado
+STR_6233    :Vista aislada
+STR_6234    :Resaltar problemas de pathfinding
+STR_6235    :Información del Servidor
+STR_6236    :Jugadores
+STR_6237    :Grupos
+STR_6238    :Opciones Multijugador
+STR_6239    :Corte Vertical
+STR_6240    :Corte Horizontal
+STR_6241    :Seleccionar Área
+STR_6242    :Limpiar Selección
+STR_6243    :{SMALLFONT}{BLACK}Renueva la atracción,{NEWLINE}la deja como nueva!
+STR_6244    :No se puede renovar
+STR_6245    :{SMALLFONT}{BLACK}la atracción no necesita renovación
+STR_6246    :Renovar
+STR_6247    :Renovar atracción
+STR_6248    :{WINDOW_COLOUR_1}¿Quieres renovar {STRINGID} por {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}¿Quieres renovar {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}¿Seguro quieres demoler {STRINGID} y ganar {CURRENCY}?
+STR_6251    :La atracción aún no está vacía
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Brindar URL de la API de integración de Twitch. Requerida para habilitar la integración de Twitch.
+STR_6254    :URL de la API de Twitch:
+STR_6255    :URL inválida.
+STR_6256    :Efectos al renderizar
+STR_6257    :Translúcido
+STR_6258    :Transparente
+STR_6259    :Deshabilitado
+STR_6260    :Mostrar casillas bloqueadas
+STR_6261    :Mostrar caminos anchos
+
+
 
 ##############
 # Escenarios #
