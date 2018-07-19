@@ -279,6 +279,10 @@ uint16_t platform_get_locale_language()
     else if (strcmp(langCode, "NOR") == 0){
         return LANGUAGE_NORWEGIAN;
     }
+    else if (strcmp(langCode, "DAN") == 0)
+    {
+        return LANGUAGE_DANISH;
+    }
     return LANGUAGE_UNDEFINED;
 }
 

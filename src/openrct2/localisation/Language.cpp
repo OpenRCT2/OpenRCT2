@@ -28,6 +28,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "zh-CN", "Chinese (Simplified)",  "Chinese (Simplified)",  FAMILY(&TTFFamilyChineseSimplified),   RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED },  // LANGUAGE_CHINESE_SIMPLIFIED
     { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", FAMILY(&TTFFamilyChineseTraditional),  RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL }, // LANGUAGE_CHINESE_TRADITIONAL
     { "cs-CZ", "Czech",                 "Czech",                 FAMILY(&TTFFamilySansSerif),           RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
+    { "da-DK", "Danish",                "Dansk",                 FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_DANISH
     { "de-DE", "German",                "Deutsch",               FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_GERMAN },              // LANGUAGE_GERMAN
     { "en-GB", "English (UK)",          "English (UK)",          FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_ENGLISH_UK
     { "en-US", "English (US)",          "English (US)",          FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_US },          // LANGUAGE_ENGLISH_US
