@@ -112,8 +112,8 @@ namespace OpenRCT2
         uint32_t _lastUpdateTick = 0;
         bool _variableFrame = false;
 
-        /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
-         * false. */
+        // If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
+        // false.
         bool _finished = false;
 
     public:
@@ -232,14 +232,15 @@ namespace OpenRCT2
 
         std::string GetPathLegacy(int32_t pathId) override
         {
-            static constexpr const char* const LegacyFileNames[PATH_ID_END]
-                = { nullptr,       nullptr,     "css1.dat",  "css2.dat",  "css4.dat",  "css5.dat",  "css6.dat",  "css7.dat",
-                    "css8.dat",    "css9.dat",  "css11.dat", "css12.dat", "css13.dat", "css14.dat", "css15.dat", "css3.dat",
-                    "css17.dat",   "css18.dat", "css19.dat", "css20.dat", "css21.dat", "css22.dat", nullptr,     "css23.dat",
-                    "css24.dat",   "css25.dat", "css26.dat", "css27.dat", "css28.dat", "css29.dat", "css30.dat", "css31.dat",
-                    "css32.dat",   "css33.dat", "css34.dat", "css35.dat", "css36.dat", "css37.dat", "css38.dat", "CUSTOM1.WAV",
-                    "CUSTOM2.WAV", "css39.dat", "css40.dat", "css41.dat", nullptr,     "css42.dat", "css43.dat", "css44.dat",
-                    "css45.dat",   "css46.dat", "css50.dat" };
+            static constexpr const char* const LegacyFileNames[PATH_ID_END] = {
+                nullptr,       nullptr,     "css1.dat",  "css2.dat",  "css4.dat",  "css5.dat",  "css6.dat",  "css7.dat",
+                "css8.dat",    "css9.dat",  "css11.dat", "css12.dat", "css13.dat", "css14.dat", "css15.dat", "css3.dat",
+                "css17.dat",   "css18.dat", "css19.dat", "css20.dat", "css21.dat", "css22.dat", nullptr,     "css23.dat",
+                "css24.dat",   "css25.dat", "css26.dat", "css27.dat", "css28.dat", "css29.dat", "css30.dat", "css31.dat",
+                "css32.dat",   "css33.dat", "css34.dat", "css35.dat", "css36.dat", "css37.dat", "css38.dat", "CUSTOM1.WAV",
+                "CUSTOM2.WAV", "css39.dat", "css40.dat", "css41.dat", nullptr,     "css42.dat", "css43.dat", "css44.dat",
+                "css45.dat",   "css46.dat", "css50.dat",
+            };
 
             std::string result;
             if (pathId == PATH_ID_CSS50)
