@@ -179,6 +179,14 @@ enum UnicodeGerman
     UNICODE_CAPITAL_SHARP_S = 0x1E9E,
 };
 
+enum UnicodeNorwegianDanish
+{
+    UNICODE_AE_UC = 198,
+    UNICODE_O_STROKE_UC = 216,
+    UNICODE_AE = 230,
+    UNICODE_O_STROKE = 248,
+};
+
 enum UnicodeDingbats
 {
     UNICODE_DINGBATS_PLUS = 0x2795,

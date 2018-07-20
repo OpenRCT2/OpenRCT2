@@ -19,6 +19,7 @@
 static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
 
 static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT][FONT_SPRITE_GLYPH_COUNT];
+static uint8_t _additionalSpriteFontCharacterWidth[FONT_SIZE_COUNT][SPR_G2_GLYPH_COUNT] = {};
 
 #ifndef NO_TTF
 TTFFontSetDescriptor *gCurrentTTFFontSet;
@@ -43,6 +44,22 @@ void font_sprite_initialise_characters()
             }
 
             _spriteFontCharacterWidths[fontSize][glyphIndex] = (uint8_t)width;
+        }
+    }
+
+    for (uint8_t fontSize : { FONT_SIZE_SMALL, FONT_SIZE_MEDIUM, FONT_SIZE_TINY })
+    {
+        int32_t glyphOffset = fontSize * SPR_G2_GLYPH_COUNT;
+        for (int32_t glyphIndex = 0; glyphIndex < SPR_G2_GLYPH_COUNT; glyphIndex++)
+        {
+            const rct_g1_element * g1 = gfx_get_g1_element(glyphIndex + SPR_G2_CHAR_BEGIN + glyphOffset);
+            int32_t width = 0;
+            if (g1 != nullptr)
+            {
+                width = g1->width + (2 * g1->x_offset) - 1;
+            }
+
+            _additionalSpriteFontCharacterWidth[fontSize][glyphIndex] = (uint8_t)width;
         }
     }
 
@@ -107,6 +124,15 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
     // Render capital sharp-S (ẞ) with lowercase sprite (ß)
     case UNICODE_CAPITAL_SHARP_S: return 223 - 32;
 
+    case UNICODE_AE_UC:
+        return SPR_G2_AE_UPPER - SPR_CHAR_START;
+    case UNICODE_O_STROKE_UC:
+        return SPR_G2_O_STROKE_UPPER - SPR_CHAR_START;
+    case UNICODE_AE:
+        return SPR_G2_AE_LOWER - SPR_CHAR_START;
+    case UNICODE_O_STROKE:
+        return SPR_G2_O_STROKE_LOWER - SPR_CHAR_START;
+
     case UNICODE_DINGBATS_PLUS: return 11;
     case UNICODE_DINGBATS_MINUS: return 13;
 
@@ -126,7 +152,18 @@ int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoi
 
     int32_t glyphIndex = font_sprite_get_codepoint_offset(codepoint);
     int32_t baseFontIndex = font_get_font_index_from_sprite_base(fontSpriteBase);
-    if (glyphIndex < 0 || glyphIndex >= (int32_t)FONT_SPRITE_GLYPH_COUNT)
+    if (glyphIndex >= FONT_SPRITE_GLYPH_COUNT)
+    {
+        glyphIndex = (SPR_CHAR_START + glyphIndex) - SPR_G2_CHAR_BEGIN;
+
+        if (glyphIndex >= (int32_t)Util::CountOf(_additionalSpriteFontCharacterWidth[baseFontIndex]))
+        {
+            log_warning("Invalid glyph index %u", glyphIndex);
+            glyphIndex = 0;
+        }
+        return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
+    }
+    else if (glyphIndex < 0 || glyphIndex >= (int32_t)FONT_SPRITE_GLYPH_COUNT)
     {
         log_warning("Invalid glyph index %u", glyphIndex);
         glyphIndex = 0;
@@ -136,7 +173,13 @@ int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoi
 
 int32_t font_sprite_get_codepoint_sprite(int32_t fontSpriteBase, int32_t codepoint)
 {
-    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
+    auto codePointOffset = font_sprite_get_codepoint_offset(codepoint);
+    if (codePointOffset > FONT_SPRITE_GLYPH_COUNT)
+    {
+        fontSpriteBase = font_get_font_index_from_sprite_base(fontSpriteBase) * SPR_G2_GLYPH_COUNT;
+    }
+
+    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + codePointOffset));
 }
 
 int32_t font_get_font_index_from_sprite_base(uint16_t spriteBase)
