@@ -16,7 +16,7 @@
 #include "Font.h"
 #include "TTF.h"
 
-static constexpr const int32_t SpriteFontLineHeight[] = { 6, 10, 10, 18 };
+static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
 
 static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT * FONT_SPRITE_GLYPH_COUNT];
 
@@ -38,7 +38,7 @@ void font_sprite_initialise_characters()
             if (g1 != nullptr)
             {
                 int32_t width = g1->width + 2 * g1->x_offset;
-                width += fontSize == FONT_SIZE_BIG ? 1 : -1;
+                width -= 1;
                 if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
                     width = 0;
                 }
@@ -149,8 +149,6 @@ int32_t font_get_size_from_sprite_base(uint16_t spriteBase)
     default:
     case FONT_SPRITE_BASE_MEDIUM:
         return 2;
-    case FONT_SPRITE_BASE_BIG:
-        return 3;
     }
 }
 
