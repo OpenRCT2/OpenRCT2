@@ -18,7 +18,7 @@
 
 static constexpr const int32_t SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
-static uint8_t _spriteFontCharacterWidths[896];
+static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT * FONT_SPRITE_GLYPH_COUNT];
 
 #ifndef NO_TTF
 TTFFontSetDescriptor *gCurrentTTFFontSet;
