@@ -332,9 +332,6 @@ int32_t string_get_height_raw(char *buffer)
         case FORMAT_TINYFONT:
             fontBase = FONT_SPRITE_BASE_TINY;
             break;
-        case FORMAT_BIGFONT:
-            fontBase = FONT_SPRITE_BASE_BIG;
-            break;
         case FORMAT_MEDIUMFONT:
             fontBase = FONT_SPRITE_BASE_MEDIUM;
             break;
@@ -639,9 +636,6 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         break;
     case FORMAT_MEDIUMFONT:
         info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
-        break;
-    case FORMAT_BIGFONT:
-        info->font_sprite_base = 672;
         break;
     case FORMAT_OUTLINE:
         info->flags |= TEXT_DRAW_FLAG_OUTLINE;
