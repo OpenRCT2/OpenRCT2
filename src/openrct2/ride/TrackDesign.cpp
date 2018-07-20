@@ -607,7 +607,9 @@ static void track_design_mirror_ride(rct_track_td6* td6)
 }
 
 /** rct2: 0x00993EDC */
-static constexpr const uint8_t maze_segment_mirror_map[] = { 5, 4, 2, 7, 1, 0, 14, 3, 13, 12, 10, 15, 9, 8, 6, 11 };
+static constexpr const uint8_t maze_segment_mirror_map[] = {
+    5, 4, 2, 7, 1, 0, 14, 3, 13, 12, 10, 15, 9, 8, 6, 11,
+};
 
 /**
  *
@@ -1591,8 +1593,10 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
 
                 if (_trackDesignPlaceOperation != PTD_OPERATION_1)
                 {
-                    LocationXY16 tile
-                        = { (int16_t)(x + CoordsDirectionDelta[rotation].x), (int16_t)(y + CoordsDirectionDelta[rotation].y) };
+                    LocationXY16 tile = {
+                        (int16_t)(x + CoordsDirectionDelta[rotation].x),
+                        (int16_t)(y + CoordsDirectionDelta[rotation].y),
+                    };
                     rct_tile_element* tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                     z = gTrackPreviewOrigin.z / 8;
                     z += (entrance->z == (int8_t)(uint8_t)0x80) ? -1 : entrance->z;

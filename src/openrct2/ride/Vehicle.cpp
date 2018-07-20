@@ -4603,8 +4603,10 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
     LocationXY8 returnPosition = ride->boat_hire_return_position;
     uint8_t returnDirection = ride->boat_hire_return_direction & 3;
 
-    LocationXY8 location = { static_cast<uint8_t>((vehicle->x + CoordsDirectionDelta[returnDirection].x) / 32),
-                             static_cast<uint8_t>((vehicle->y + CoordsDirectionDelta[returnDirection].y) / 32) };
+    LocationXY8 location = {
+        static_cast<uint8_t>((vehicle->x + CoordsDirectionDelta[returnDirection].x) / 32),
+        static_cast<uint8_t>((vehicle->y + CoordsDirectionDelta[returnDirection].y) / 32),
+    };
 
     if (location.xy == returnPosition.xy)
     {
@@ -4621,9 +4623,10 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
     {
         if (scenario_rand() & 1)
         {
-            LocationXY16 destLocation
-                = { static_cast<int16_t>(returnPosition.x * 32 - CoordsDirectionDelta[returnDirection].x + 16),
-                    static_cast<int16_t>(returnPosition.y * 32 - CoordsDirectionDelta[returnDirection].y + 16) };
+            LocationXY16 destLocation = {
+                static_cast<int16_t>(returnPosition.x * 32 - CoordsDirectionDelta[returnDirection].x + 16),
+                static_cast<int16_t>(returnPosition.y * 32 - CoordsDirectionDelta[returnDirection].y + 16),
+            };
 
             destLocation.x -= vehicle->x;
             destLocation.y -= vehicle->y;
