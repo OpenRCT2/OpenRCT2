@@ -16,8 +16,7 @@ enum {
     FONT_SIZE_TINY = 2,
     FONT_SIZE_SMALL = 0,
     FONT_SIZE_MEDIUM = 1,
-    FONT_SIZE_BIG = 3,
-    FONT_SIZE_COUNT = 4
+    FONT_SIZE_COUNT = 3
 };
 
 enum {
@@ -25,10 +24,9 @@ enum {
     FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK = -2,
     FONT_SPRITE_BASE_MEDIUM_DARK = -1,
 
-    FONT_SPRITE_BASE_TINY = 448,
-    FONT_SPRITE_BASE_SMALL = 0,
-    FONT_SPRITE_BASE_MEDIUM = 224,
-    FONT_SPRITE_BASE_BIG = 672
+    FONT_SPRITE_BASE_TINY = FONT_SIZE_TINY * FONT_SPRITE_GLYPH_COUNT,
+    FONT_SPRITE_BASE_SMALL = FONT_SIZE_SMALL * FONT_SPRITE_GLYPH_COUNT,
+    FONT_SPRITE_BASE_MEDIUM = FONT_SIZE_MEDIUM * FONT_SPRITE_GLYPH_COUNT,
 };
 
 #ifndef NO_TTF
@@ -58,6 +56,7 @@ void font_sprite_initialise_characters();
 int32_t font_sprite_get_codepoint_offset(int32_t codepoint);
 int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoint);
 int32_t font_sprite_get_codepoint_sprite(int32_t fontSpriteBase, int32_t codepoint);
+int32_t font_get_font_index_from_sprite_base(uint16_t spriteBase);
 int32_t font_get_size_from_sprite_base(uint16_t spriteBase);
 int32_t font_get_line_height(int32_t fontSpriteBase);
 int32_t font_get_line_height_small(int32_t fontSpriteBase);
