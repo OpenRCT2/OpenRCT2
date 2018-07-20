@@ -68,7 +68,9 @@ void diagnostic_log_with_location(
 
 #else
 
-static constexpr const char* _level_strings[] = { "FATAL", "ERROR", "WARNING", "VERBOSE", "INFO" };
+static constexpr const char* _level_strings[] = {
+    "FATAL", "ERROR", "WARNING", "VERBOSE", "INFO",
+};
 
 void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char* format, ...)
 {

@@ -208,7 +208,12 @@ public:
             colour.a = i == 0 ? 0 : 255;
 
             Palette[i] = colour;
-            GLPalette[i] = { colour.r / 255.0f, colour.g / 255.0f, colour.b / 255.0f, colour.a / 255.0f };
+            GLPalette[i] = {
+                colour.r / 255.0f,
+                colour.g / 255.0f,
+                colour.b / 255.0f,
+                colour.a / 255.0f,
+            };
         }
 
         _applyPaletteShader->Use();
