@@ -18,7 +18,7 @@
 
 static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
 
-static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT * FONT_SPRITE_GLYPH_COUNT];
+static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT][FONT_SPRITE_GLYPH_COUNT];
 
 #ifndef NO_TTF
 TTFFontSetDescriptor *gCurrentTTFFontSet;
@@ -30,20 +30,19 @@ TTFFontSetDescriptor *gCurrentTTFFontSet;
  */
 void font_sprite_initialise_characters()
 {
-    uint8_t* pCharacterWidth = _spriteFontCharacterWidths;
     for (int32_t fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++) {
         int32_t glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
         for (uint8_t glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++) {
             const rct_g1_element * g1 = gfx_get_g1_element(glyphIndex + SPR_CHAR_START + glyphOffset);
+            int32_t width = 0;
             if (g1 != nullptr)
             {
-                int32_t width = g1->width + 2 * g1->x_offset;
-                width -= 1;
-                if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
-                    width = 0;
+                if (glyphIndex < (FORMAT_ARGUMENT_CODE_START - 32) || glyphIndex >= (FORMAT_COLOUR_CODE_END - 32)) {
+                    width = (g1->width + 2 * g1->x_offset) - 1;
                 }
-                *pCharacterWidth++ = (uint8_t)width;
             }
+
+            _spriteFontCharacterWidths[fontSize][glyphIndex] = (uint8_t)width;
         }
     }
 
@@ -125,18 +124,32 @@ int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoi
         fontSpriteBase = (uint16_t)FONT_SPRITE_BASE_MEDIUM;
     }
 
-    int32_t spriteFontIdx = fontSpriteBase + font_sprite_get_codepoint_offset(codepoint);
-    if (spriteFontIdx < 0 || spriteFontIdx >= (int32_t)Util::CountOf(_spriteFontCharacterWidths))
+    int32_t glyphIndex = font_sprite_get_codepoint_offset(codepoint);
+    int32_t baseFontIndex = font_get_font_index_from_sprite_base(fontSpriteBase);
+    if (glyphIndex < 0 || glyphIndex >= (int32_t)FONT_SPRITE_GLYPH_COUNT)
     {
-        log_warning("Invalid font index %u", spriteFontIdx);
-        spriteFontIdx = 0;
+        log_warning("Invalid glyph index %u", glyphIndex);
+        glyphIndex = 0;
     }
-    return _spriteFontCharacterWidths[spriteFontIdx];
+    return _spriteFontCharacterWidths[baseFontIndex][glyphIndex];
 }
 
 int32_t font_sprite_get_codepoint_sprite(int32_t fontSpriteBase, int32_t codepoint)
 {
     return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
+}
+
+int32_t font_get_font_index_from_sprite_base(uint16_t spriteBase)
+{
+    switch (spriteBase) {
+        case FONT_SPRITE_BASE_TINY:
+            return FONT_SIZE_TINY;
+        case FONT_SPRITE_BASE_SMALL:
+            return FONT_SIZE_SMALL;
+        default:
+        case FONT_SPRITE_BASE_MEDIUM:
+            return FONT_SIZE_MEDIUM;
+    }
 }
 
 int32_t font_get_size_from_sprite_base(uint16_t spriteBase)

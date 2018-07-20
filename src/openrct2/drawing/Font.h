@@ -56,6 +56,7 @@ void font_sprite_initialise_characters();
 int32_t font_sprite_get_codepoint_offset(int32_t codepoint);
 int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoint);
 int32_t font_sprite_get_codepoint_sprite(int32_t fontSpriteBase, int32_t codepoint);
+int32_t font_get_font_index_from_sprite_base(uint16_t spriteBase);
 int32_t font_get_size_from_sprite_base(uint16_t spriteBase);
 int32_t font_get_line_height(int32_t fontSpriteBase);
 int32_t font_get_line_height_small(int32_t fontSpriteBase);
