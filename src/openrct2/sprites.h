@@ -840,6 +840,16 @@ enum {
     
     SPR_G2_EYEDROPPER = SPR_G2_BEGIN + 123,
 
+    SPR_G2_CHAR_BEGIN = SPR_G2_BEGIN + 124,
+
+    SPR_G2_AE_UPPER = SPR_G2_CHAR_BEGIN,
+    SPR_G2_AE_LOWER = SPR_G2_CHAR_BEGIN + 1,
+    SPR_G2_O_STROKE_UPPER = SPR_G2_CHAR_BEGIN + 2,
+    SPR_G2_O_STROKE_LOWER = SPR_G2_CHAR_BEGIN + 3,
+
+    SPR_G2_CHAR_END = SPR_G2_O_STROKE_LOWER,
+    SPR_G2_GLYPH_COUNT = (SPR_G2_CHAR_END - SPR_G2_CHAR_BEGIN) + 1,
+
     // 0x60000, chosen because it's a round hex number
     // of the last possible range of image ID values that is large enough to fit all csg1 sprites.
     SPR_CSG_BEGIN = 393216,
