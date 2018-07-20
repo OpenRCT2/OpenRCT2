@@ -68,9 +68,11 @@ public:
               VERSION,
               env.GetFilePath(PATHID::CACHE_TRACKS),
               std::string(PATTERN),
-              std::vector<std::string>({ env.GetDirectoryPath(DIRBASE::RCT1, DIRID::TRACK),
-                                         env.GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK),
-                                         env.GetDirectoryPath(DIRBASE::USER, DIRID::TRACK) }))
+              std::vector<std::string>({
+                  env.GetDirectoryPath(DIRBASE::RCT1, DIRID::TRACK),
+                  env.GetDirectoryPath(DIRBASE::RCT2, DIRID::TRACK),
+                  env.GetDirectoryPath(DIRBASE::USER, DIRID::TRACK),
+              }))
     {
     }
 

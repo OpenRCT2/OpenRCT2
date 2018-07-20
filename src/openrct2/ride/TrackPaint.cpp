@@ -1469,7 +1469,9 @@ void track_paint_util_diag_tiles_paint(
         height + boundsOffset.z);
 }
 
-const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = { 6, 4, 5, 3, 1, 2, 0 };
+const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
+    6, 4, 5, 3, 1, 2, 0,
+};
 
 const LocationXY16 defaultRightQuarterTurn5TilesOffsets[4][5] = {
     {
@@ -1564,7 +1566,10 @@ const LocationXY16 defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
     },
 };
 
-static constexpr const int8_t right_quarter_turn_5_tiles_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
+static constexpr const int8_t right_quarter_turn_5_tiles_sprite_map[] = {
+    0, -1, 1, 2, -1, 3, 4,
+};
+
 void track_paint_util_right_quarter_turn_5_tiles_paint(
     paint_session* session,
     int8_t thickness,
@@ -1697,7 +1702,12 @@ void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(
     }
 }
 
-const uint8_t mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = { 3, 1, 2, 0 };
+const uint8_t mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {
+    3,
+    1,
+    2,
+    0,
+};
 
 const LocationXY16 defaultRightQuarterTurn3TilesOffsets[4][3] = {
     {
@@ -1768,7 +1778,13 @@ const LocationXY16 defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
     },
 };
 
-static constexpr const int8_t right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
+static constexpr const int8_t right_quarter_turn_3_tiles_sprite_map[] = {
+    0,
+    -1,
+    1,
+    2,
+};
+
 void track_paint_util_right_quarter_turn_3_tiles_paint(
     paint_session* session,
     int8_t thickness,
@@ -2023,7 +2039,13 @@ void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(
     }
 }
 
-static constexpr const int8_t left_quarter_turn_3_tiles_sprite_map[] = { 2, -1, 1, 0 };
+static constexpr const int8_t left_quarter_turn_3_tiles_sprite_map[] = {
+    2,
+    -1,
+    1,
+    0,
+};
+
 void track_paint_util_left_quarter_turn_3_tiles_paint(
     paint_session* session,
     int8_t thickness,

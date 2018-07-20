@@ -139,16 +139,26 @@ static constexpr const RideGroup ride_group_spinning_wild_mouse = {
     /*.Flags =*/0,
 };
 
-static constexpr const RideGroup corkscrew_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE]
-    = { ride_group_corkscrew_rc, ride_group_hypercoaster };
-static constexpr const RideGroup junior_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE]
-    = { ride_group_junior_rc, ride_group_classic_mini_coaster };
-static constexpr const RideGroup car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE]
-    = { ride_group_car_ride, ride_group_monster_trucks };
-static constexpr const RideGroup twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE]
-    = { ride_group_steel_twister_rc, ride_group_hyper_twister };
-static constexpr const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE]
-    = { ride_group_steel_wild_mouse, ride_group_spinning_wild_mouse };
+static constexpr const RideGroup corkscrew_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = {
+    ride_group_corkscrew_rc,
+    ride_group_hypercoaster,
+};
+static constexpr const RideGroup junior_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = {
+    ride_group_junior_rc,
+    ride_group_classic_mini_coaster,
+};
+static constexpr const RideGroup car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = {
+    ride_group_car_ride,
+    ride_group_monster_trucks,
+};
+static constexpr const RideGroup twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = {
+    ride_group_steel_twister_rc,
+    ride_group_hyper_twister,
+};
+static constexpr const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = {
+    ride_group_steel_wild_mouse,
+    ride_group_spinning_wild_mouse,
+};
 
 bool RideGroup::Equals(const RideGroup* otherRideGroup) const
 {

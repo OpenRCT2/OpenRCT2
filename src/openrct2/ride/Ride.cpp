@@ -138,7 +138,9 @@ uint8_t gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
 
 #pragma endregion
 
-static constexpr const int32_t RideInspectionInterval[] = { 10, 20, 30, 45, 60, 120, 0, 0 };
+static constexpr const int32_t RideInspectionInterval[] = {
+    10, 20, 30, 45, 60, 120, 0, 0,
+};
 
 Ride gRideList[MAX_RIDES];
 
@@ -4805,9 +4807,19 @@ static constexpr const LocationXY16 word_9A3AB4[4] = {
     { -96, 0 },
 };
 
+// clang-format off
 static constexpr const LocationXY16 word_9A2A60[] = {
-    { 0, 16 }, { 16, 31 }, { 31, 16 }, { 16, 0 }, { 16, 16 }, { 64, 64 }, { 64, -32 }, { -32, -32 }, { -32, 64 },
+    { 0, 16 },
+    { 16, 31 },
+    { 31, 16 },
+    { 16, 0 },
+    { 16, 16 },
+    { 64, 64 },
+    { 64, -32 },
+    { -32, -32 },
+    { -32, 64 },
 };
+// clang-format on
 
 /**
  *
@@ -5927,9 +5939,11 @@ void ride_get_start_of_track(CoordsXYE* output)
         bool moveSlowIt = true;
         do
         {
-            CoordsXYE lastGood = { /* .x = */ trackBeginEnd.begin_x,
-                                   /* .y = */ trackBeginEnd.begin_y,
-                                   /* .element = */ trackBeginEnd.begin_element };
+            CoordsXYE lastGood = {
+                /* .x = */ trackBeginEnd.begin_x,
+                /* .y = */ trackBeginEnd.begin_y,
+                /* .element = */ trackBeginEnd.begin_element,
+            };
 
             if (!track_block_get_previous(
                     trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element, &trackBeginEnd))
@@ -6974,13 +6988,15 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int3
 {
     uint8_t bitmap[200][200] = { 0 };
 
-    rct_drawpixelinfo dpi = { /*.bits = */ (uint8_t*)bitmap,
-                              /*.x = */ -100,
-                              /*.y = */ -100,
-                              /*.width = */ 200,
-                              /*.height = */ 200,
-                              /*.pitch = */ 0,
-                              /*.zoom_level = */ 0 };
+    rct_drawpixelinfo dpi = {
+        /*.bits = */ (uint8_t*)bitmap,
+        /*.x = */ -100,
+        /*.y = */ -100,
+        /*.width = */ 200,
+        /*.height = */ 200,
+        /*.pitch = */ 0,
+        /*.zoom_level = */ 0,
+    };
 
     for (int32_t i = 0; i < num_images; ++i)
     {
@@ -7537,12 +7553,13 @@ uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCa
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
 {
     uint64_t supportedPieces = 0xFFFFFFFFFFFFFFFFULL;
-    uint16_t trackPieceRequiredSprites[55]
-        = { 0x0001u, 0x0001u, 0x0001u, 0x0000u, 0x0006u, 0x0002u, 0x0020u, 0x000E,  0x0003u, 0x0006u, 0x0007u,
-            0x0002u, 0x0004u, 0x0001u, 0x0001u, 0x0001u, 0x0001u, 0x0061u, 0x000E,  0x1081u, 0x0001u, 0x0020u,
-            0x0020u, 0x0001u, 0x0001u, 0x0000u, 0x0001u, 0x0001u, 0x000C,  0x0061u, 0x0002u, 0x000E,  0x0480u,
-            0x0001u, 0x0061u, 0x0001u, 0x0001u, 0x000Fu, 0x0001u, 0x0200u, 0x0007u, 0x0008u, 0x0000u, 0x0000u,
-            0x4000u, 0x0008u, 0x0001u, 0x0001u, 0x0061u, 0x0061u, 0x0008u, 0x0008u, 0x0001u, 0x000Eu, 0x000Eu };
+    uint16_t trackPieceRequiredSprites[55] = {
+        0x0001u, 0x0001u, 0x0001u, 0x0000u, 0x0006u, 0x0002u, 0x0020u, 0x000E,  0x0003u, 0x0006u, 0x0007u,
+        0x0002u, 0x0004u, 0x0001u, 0x0001u, 0x0001u, 0x0001u, 0x0061u, 0x000E,  0x1081u, 0x0001u, 0x0020u,
+        0x0020u, 0x0001u, 0x0001u, 0x0000u, 0x0001u, 0x0001u, 0x000C,  0x0061u, 0x0002u, 0x000E,  0x0480u,
+        0x0001u, 0x0061u, 0x0001u, 0x0001u, 0x000Fu, 0x0001u, 0x0200u, 0x0007u, 0x0008u, 0x0000u, 0x0000u,
+        0x4000u, 0x0008u, 0x0001u, 0x0001u, 0x0061u, 0x0061u, 0x0008u, 0x0008u, 0x0001u, 0x000Eu, 0x000Eu,
+    };
 
     // Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an
     // exception, at least)
@@ -8051,9 +8068,11 @@ void sub_6CB945(int32_t rideIndex)
             if (ride->station_starts[stationId].xy == RCT_XY8_UNDEFINED)
                 continue;
 
-            LocationXYZ16 location = { (int16_t)(ride->station_starts[stationId].x * 32),
-                                       (int16_t)(ride->station_starts[stationId].y * 32),
-                                       (ride->station_heights[stationId]) };
+            LocationXYZ16 location = {
+                (int16_t)(ride->station_starts[stationId].x * 32),
+                (int16_t)(ride->station_starts[stationId].y * 32),
+                (ride->station_heights[stationId]),
+            };
             uint8_t direction = 0xFF;
 
             bool specialTrack = false;
@@ -8241,13 +8260,13 @@ void sub_6CB945(int32_t rideIndex)
                     if (!ride_get_entrance_location(ride, stationId).isNull())
                         break;
 
-                    ride_set_entrance_location(
-                        ride,
-                        stationId,
-                        { location.x / 32,
-                          location.y / 32,
-                          ride->station_heights[stationId],
-                          (uint8_t)tile_element_get_direction(tileElement) });
+                    TileCoordsXYZD entranceLocation = {
+                        location.x / 32,
+                        location.y / 32,
+                        ride->station_heights[stationId],
+                        (uint8_t)tile_element_get_direction(tileElement),
+                    };
+                    ride_set_entrance_location(ride, stationId, entranceLocation);
                 }
 
                 tileElement->properties.entrance.index &= 0x8F;
@@ -8919,10 +8938,13 @@ void determine_ride_entrance_and_exit_locations()
                                 }
 
                                 // Found our entrance
-                                ride_set_entrance_location(
-                                    ride,
-                                    stationIndex,
-                                    { x, y, tileElement->base_height, (uint8_t)tile_element_get_direction(tileElement) });
+                                TileCoordsXYZD newEntranceLoc = {
+                                    x,
+                                    y,
+                                    tileElement->base_height,
+                                    (uint8_t)tile_element_get_direction(tileElement),
+                                };
+                                ride_set_entrance_location(ride, stationIndex, newEntranceLoc);
                                 alreadyFoundEntrance = true;
 
                                 log_verbose(

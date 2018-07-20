@@ -225,9 +225,11 @@ static void ride_ratings_update_state_2()
 
             ride_ratings_score_close_proximity(tileElement);
 
-            CoordsXYE trackElement = { /* .x = */ gRideRatingsCalcData.proximity_x,
-                                       /* .y = */ gRideRatingsCalcData.proximity_y,
-                                       /* .element = */ tileElement };
+            CoordsXYE trackElement = {
+                /* .x = */ gRideRatingsCalcData.proximity_x,
+                /* .y = */ gRideRatingsCalcData.proximity_y,
+                /* .element = */ tileElement,
+            };
             CoordsXYE nextTrackElement;
             if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL))
             {
@@ -1315,9 +1317,11 @@ static rating_tuple ride_ratings_get_sheltered_ratings(Ride* ride)
  */
 static rating_tuple ride_ratings_get_gforce_ratings(Ride* ride)
 {
-    rating_tuple result = { /* .excitement = */ 0,
-                            /* .intensity = */ 0,
-                            /* .nausea = */ 0 };
+    rating_tuple result = {
+        /* .excitement = */ 0,
+        /* .intensity = */ 0,
+        /* .nausea = */ 0,
+    };
 
     // Apply maximum positive G force factor
     result.excitement += (ride->max_positive_vertical_g * 5242) >> 16;
@@ -1359,9 +1363,11 @@ static rating_tuple ride_ratings_get_gforce_ratings(Ride* ride)
  */
 static rating_tuple ride_ratings_get_drop_ratings(Ride* ride)
 {
-    rating_tuple result = { /* .excitement = */ 0,
-                            /* .intensity = */ 0,
-                            /* .nausea = */ 0 };
+    rating_tuple result = {
+        /* .excitement = */ 0,
+        /* .intensity = */ 0,
+        /* .nausea = */ 0,
+    };
 
     // Apply number of drops factor
     int32_t drops = ride->drops & 0x3F;
@@ -3114,9 +3120,11 @@ static void ride_ratings_calculate_haunted_house(Ride* ride)
     ride->unreliability_factor = 8;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings = { /* .excitement =  */ RIDE_RATING(3, 41),
-                             /* .intensity =  */ RIDE_RATING(1, 53),
-                             /* .nausea =  */ RIDE_RATING(0, 10) };
+    rating_tuple ratings = {
+        /* .excitement =  */ RIDE_RATING(3, 41),
+        /* .intensity =  */ RIDE_RATING(1, 53),
+        /* .nausea =  */ RIDE_RATING(0, 10),
+    };
 
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
@@ -3511,9 +3519,11 @@ static void ride_ratings_calculate_circus_show(Ride* ride)
     ride->unreliability_factor = 9;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings = { /* .excitement = */ RIDE_RATING(2, 10),
-                             /* .intensity  = */ RIDE_RATING(0, 30),
-                             /* .nausea     = */ RIDE_RATING(0, 0) };
+    rating_tuple ratings = {
+        /* .excitement = */ RIDE_RATING(2, 10),
+        /* .intensity  = */ RIDE_RATING(0, 30),
+        /* .nausea     = */ RIDE_RATING(0, 0),
+    };
 
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
@@ -3859,9 +3869,11 @@ static void ride_ratings_calculate_flying_saucers(Ride* ride)
     ride->unreliability_factor = 32;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings = { /* .excitement = */ RIDE_RATING(2, 40),
-                             /* .intensity =  */ RIDE_RATING(0, 55),
-                             /* .nausea =     */ RIDE_RATING(0, 39) };
+    rating_tuple ratings = {
+        /* .excitement = */ RIDE_RATING(2, 40),
+        /* .intensity =  */ RIDE_RATING(0, 55),
+        /* .nausea =     */ RIDE_RATING(0, 39),
+    };
 
     if (ride->num_vehicles >= 4)
     {
@@ -3896,9 +3908,11 @@ static void ride_ratings_calculate_crooked_house(Ride* ride)
     ride->unreliability_factor = 5;
     set_unreliability_factor(ride);
 
-    rating_tuple ratings = { /* .excitement = */ RIDE_RATING(2, 15),
-                             /* .intensity  = */ RIDE_RATING(0, 62),
-                             /* .nausea     = */ RIDE_RATING(0, 34) };
+    rating_tuple ratings = {
+        /* .excitement = */ RIDE_RATING(2, 15),
+        /* .intensity  = */ RIDE_RATING(0, 62),
+        /* .nausea     = */ RIDE_RATING(0, 34),
+    };
 
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
@@ -4197,9 +4211,11 @@ static void ride_ratings_calculate_enterprise(Ride* ride)
     set_unreliability_factor(ride);
 
     // Base ratings
-    rating_tuple ratings = { /* .excitement = */ RIDE_RATING(3, 60),
-                             /* .intensity  = */ RIDE_RATING(4, 55),
-                             /* .nausea     = */ RIDE_RATING(5, 72) };
+    rating_tuple ratings = {
+        /* .excitement = */ RIDE_RATING(3, 60),
+        /* .intensity  = */ RIDE_RATING(4, 55),
+        /* .nausea     = */ RIDE_RATING(5, 72),
+    };
 
     ride_ratings_add(&ratings, ride->operation_option, ride->operation_option * 16, ride->operation_option * 16);
 
