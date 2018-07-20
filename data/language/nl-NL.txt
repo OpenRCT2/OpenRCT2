@@ -4503,7 +4503,7 @@ STR_6198    :{BLACK}Dag:
 STR_6199    :Datum instellen
 STR_6200    :Datum resetten
 STR_6201    :{MONTH}
-STR_6202    :Hulpraster inschakelen
+STR_6202    :Stijl hulpraster:
 STR_6203    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal er een hulpraster worden weergegeven als je CTRL of SHIFT ingedrukt houdt, om het plaatsen van elementen gemakkelijker te maken.
 STR_6204    :Stenen
 STR_6205    :IJzer
@@ -4557,6 +4557,12 @@ STR_6252    :Twitch-API-URL
 STR_6253    :{SMALLFONT}{BLACK}Voer de URL van de Twitch-integratie-API in. Vereist voor het inschakelen van Twitch-integratie.
 STR_6254    :URL van de Twitch-integratie-API:
 STR_6255    :URL is niet geldig
+STR_6256    :Renderingeffecten
+STR_6257    :Glas (doorschijnend)
+STR_6258    :Doorzichtig
+STR_6259    :Uitgeschakeld
+STR_6260    :Geblokkeerde vakjes tonen
+STR_6261    :Brede paden tonen
 
 #############
 # Scenarios #
