@@ -78,16 +78,20 @@ void scrolling_text_initialise_bitmaps()
         }
     }
 
-    for (int32_t i = 0; i < SPR_G2_GLYPH_COUNT; i++) {
+    for (int32_t i = 0; i < SPR_G2_GLYPH_COUNT; i++)
+    {
         memset(drawingSurface, 0, sizeof(drawingSurface));
         gfx_draw_sprite_software(&dpi, SPR_G2_CHAR_BEGIN + (FONT_SIZE_TINY * SPR_G2_GLYPH_COUNT) + i, -1, 0, 0);
 
-        for (int32_t x = 0; x < 8; x++) {
+        for (int32_t x = 0; x < 8; x++)
+        {
             uint8_t val = 0;
-            for (int32_t y = 0; y < 8; y++) {
+            for (int32_t y = 0; y < 8; y++)
+            {
                 val >>= 1;
                 uint8_t pixel = dpi.bits[x + y * 8];
-                if (pixel == 1 || (gTinyFontAntiAliased && pixel == 2)) {
+                if (pixel == 1 || (gTinyFontAntiAliased && pixel == 2))
+                {
                     val |= 0x80;
                 }
             }
