@@ -5424,6 +5424,679 @@ static void hybrid_rc_track_right_quarter_turn_1_90_deg_down(paint_session * ses
 
 
 
+static void hybrid_rc_track_25_deg_up_to_left_banked_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                             uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+0), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+1), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+2), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+3), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+4), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
+}
+
+static void hybrid_rc_track_25_deg_up_to_right_banked_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                              uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+5), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+6), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+7), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+8), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+9), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
+}
+
+static void hybrid_rc_track_left_banked_25_deg_up_to_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                             uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+10), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+11), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+12), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+13), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+14), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
+}
+
+static void hybrid_rc_track_right_banked_25_deg_up_to_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                              uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+15), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+16), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+17), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+18), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+19), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
+}
+
+static void hybrid_rc_track_left_banked_25_deg_down_to_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                                 uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_25_deg_up_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
+                                                      tileElement);
+}
+
+static void hybrid_rc_track_right_banked_25_deg_down_to_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                                  uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_25_deg_up_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
+                                                     tileElement);
+}
+
+static void hybrid_rc_track_25_deg_down_to_left_banked_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                                 uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_right_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
+                                                      tileElement);
+}
+
+static void hybrid_rc_track_25_deg_down_to_right_banked_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                                  uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_left_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
+                                                     tileElement);
+}
+
+static void hybrid_rc_track_left_banked_flat_to_left_banked_25_deg_up(paint_session * session, uint16_t rideIndex,
+                                                                    uint8_t trackSequence, uint8_t direction, int32_t height,
+                                                                    const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+20), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+21), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+22), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+23), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
+}
+
+static void hybrid_rc_track_right_banked_flat_to_right_banked_25_deg_up(paint_session * session, uint16_t rideIndex,
+                                                                      uint8_t trackSequence, uint8_t direction, int32_t height,
+                                                                      const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+24), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+25), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+26), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+27), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
+}
+
+static void hybrid_rc_track_left_banked_25_deg_up_to_left_banked_flat(paint_session * session, uint16_t rideIndex,
+                                                                    uint8_t trackSequence, uint8_t direction, int32_t height,
+                                                                    const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+28), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+29), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+30), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+31), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
+}
+
+static void hybrid_rc_track_right_banked_25_deg_up_to_right_banked_flat(paint_session * session, uint16_t rideIndex,
+                                                                      uint8_t trackSequence, uint8_t direction, int32_t height,
+                                                                      const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+32), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+33), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+34), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+35), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
+}
+
+static void hybrid_rc_track_left_banked_flat_to_left_banked_25_deg_down(paint_session * session, uint16_t rideIndex,
+                                                                      uint8_t trackSequence, uint8_t direction, int32_t height,
+                                                                      const TileElement * tileElement)
+{
+    hybrid_rc_track_right_banked_25_deg_up_to_right_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
+                                                              tileElement);
+}
+
+static void hybrid_rc_track_right_banked_flat_to_right_banked_25_deg_down(paint_session * session, uint16_t rideIndex,
+                                                                        uint8_t trackSequence, uint8_t direction, int32_t height,
+                                                                        const TileElement * tileElement)
+{
+    hybrid_rc_track_left_banked_25_deg_up_to_left_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
+                                                            tileElement);
+}
+
+static void hybrid_rc_track_left_banked_25_deg_down_to_left_banked_flat(paint_session * session, uint16_t rideIndex,
+                                                                      uint8_t trackSequence, uint8_t direction, int32_t height,
+                                                                      const TileElement * tileElement)
+{
+    hybrid_rc_track_right_banked_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
+                                                              tileElement);
+}
+
+static void hybrid_rc_track_right_banked_25_deg_down_to_right_banked_flat(paint_session * session, uint16_t rideIndex,
+                                                                        uint8_t trackSequence, uint8_t direction, int32_t height,
+                                                                        const TileElement * tileElement)
+{
+    hybrid_rc_track_left_banked_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
+                                                            tileElement);
+}
+
+static void hybrid_rc_track_25_deg_up_left_banked(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction,
+                                                int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+36), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+37), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+38), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+39), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
+}
+
+static void hybrid_rc_track_25_deg_up_right_banked(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction,
+                                                 int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+40), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+41), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+42), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+43), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
+}
+
+static void hybrid_rc_track_25_deg_down_left_banked(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                  uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_25_deg_up_right_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+}
+
+static void hybrid_rc_track_25_deg_down_right_banked(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                   uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_25_deg_up_left_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+}
+
+static void hybrid_rc_track_flat_to_left_banked_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                        uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+44), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+45), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+46), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+47), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+48), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
+}
+
+static void hybrid_rc_track_flat_to_right_banked_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                         uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+49), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+50), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+51), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+52), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+53), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
+}
+
+static void hybrid_rc_track_left_banked_25_deg_up_to_flat(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                        uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+54), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+55), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+56), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+57), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+58), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
+}
+
+static void hybrid_rc_track_right_banked_25_deg_up_to_flat(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                         uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+59), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 1:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+60), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    case 2:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+61), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+62), 0, 0, 32, 1, 34, height, 0, 27,
+                           height);
+        break;
+    case 3:
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+63), 0, 0, 32, 20, 3, height, 0, 6,
+                           height);
+        break;
+    }
+    if (track_paint_util_should_paint_supports(session->MapPosition))
+    {
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+    }
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
+    }
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+                                          0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
+}
+
+static void hybrid_rc_track_flat_to_left_banked_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                          uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_right_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+}
+
+static void hybrid_rc_track_flat_to_right_banked_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                           uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_left_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+}
+
+static void hybrid_rc_track_left_banked_25_deg_down_to_flat(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                          uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+}
+
+static void hybrid_rc_track_right_banked_25_deg_down_to_flat(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
+                                                           uint8_t direction, int32_t height, const TileElement * tileElement)
+{
+    hybrid_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /** rct2: 0x008AD8A4 */
@@ -5673,19 +6346,6 @@ static void hybrid_rc_track_s_bend_right(paint_session * session, uint16_t rideI
         break;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -6803,86 +7463,6 @@ static void hybrid_rc_track_brakes(paint_session * session, uint16_t rideIndex, 
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-/** rct2: 0x008ADC84 */
-static void hybrid_rc_track_25_deg_up_left_banked(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction,
-                                                int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18560, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18561, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18562, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18563, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
-}
-
-/** rct2: 0x008ADC94 */
-static void hybrid_rc_track_25_deg_up_right_banked(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction,
-                                                 int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18564, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18565, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18566, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18567, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
-}
-
 /** rct2: 0x008ADA44 */
 static void hybrid_rc_track_on_ride_photo(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction,
                                         int32_t height, const TileElement * tileElement)
@@ -6922,20 +7502,6 @@ static void hybrid_rc_track_on_ride_photo(paint_session * session, uint16_t ride
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
-}
-
-/** rct2: 0x008ADCA4 */
-static void hybrid_rc_track_25_deg_down_left_banked(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                  uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_25_deg_up_right_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
-}
-
-/** rct2: 0x008ADCB4 */
-static void hybrid_rc_track_25_deg_down_right_banked(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                   uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_25_deg_up_left_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADED4 */
@@ -8022,602 +8588,6 @@ static void hybrid_rc_track_right_banked_quarter_turn_5_25_deg_down(paint_sessio
                                                        tileElement);
 }
 
-/** rct2: 0x008ADD44 */
-static void hybrid_rc_track_25_deg_up_to_left_banked_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                             uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18568, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18569, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18576, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18570, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18571, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
-}
-
-/** rct2: 0x008ADD54 */
-static void hybrid_rc_track_25_deg_up_to_right_banked_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                              uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18572, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18573, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18574, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18577, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18575, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
-}
-
-/** rct2: 0x008ADD64 */
-static void hybrid_rc_track_left_banked_25_deg_up_to_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                             uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18578, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18579, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18586, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18580, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18581, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
-}
-
-/** rct2: 0x008ADD74 */
-static void hybrid_rc_track_right_banked_25_deg_up_to_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                              uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18582, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18583, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18584, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18587, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18585, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 56, 0x20);
-}
-
-/** rct2: 0x008ADD84 */
-static void hybrid_rc_track_25_deg_down_to_left_banked_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                                 uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_right_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                      tileElement);
-}
-
-/** rct2: 0x008ADD94 */
-static void hybrid_rc_track_25_deg_down_to_right_banked_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                                  uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_left_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                     tileElement);
-}
-
-/** rct2: 0x008ADDA4 */
-static void hybrid_rc_track_left_banked_25_deg_down_to_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                                 uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_25_deg_up_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                      tileElement);
-}
-
-/** rct2: 0x008ADDB4 */
-static void hybrid_rc_track_right_banked_25_deg_down_to_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                                  uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_25_deg_up_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                     tileElement);
-}
-
-/** rct2: 0x008ADDC4 */
-static void hybrid_rc_track_left_banked_flat_to_left_banked_25_deg_up(paint_session * session, uint16_t rideIndex,
-                                                                    uint8_t trackSequence, uint8_t direction, int32_t height,
-                                                                    const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18588, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18589, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18590, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18591, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
-}
-
-/** rct2: 0x008ADDD4 */
-static void hybrid_rc_track_right_banked_flat_to_right_banked_25_deg_up(paint_session * session, uint16_t rideIndex,
-                                                                      uint8_t trackSequence, uint8_t direction, int32_t height,
-                                                                      const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18592, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18593, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18594, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18595, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
-}
-
-/** rct2: 0x008ADE04 */
-static void hybrid_rc_track_left_banked_25_deg_up_to_left_banked_flat(paint_session * session, uint16_t rideIndex,
-                                                                    uint8_t trackSequence, uint8_t direction, int32_t height,
-                                                                    const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18596, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18597, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18598, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18599, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
-}
-
-/** rct2: 0x008ADE14 */
-static void hybrid_rc_track_right_banked_25_deg_up_to_right_banked_flat(paint_session * session, uint16_t rideIndex,
-                                                                      uint8_t trackSequence, uint8_t direction, int32_t height,
-                                                                      const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18600, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18601, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18602, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18603, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
-}
-
-/** rct2: 0x008ADE24 */
-static void hybrid_rc_track_left_banked_flat_to_left_banked_25_deg_down(paint_session * session, uint16_t rideIndex,
-                                                                      uint8_t trackSequence, uint8_t direction, int32_t height,
-                                                                      const TileElement * tileElement)
-{
-    hybrid_rc_track_right_banked_25_deg_up_to_right_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                              tileElement);
-}
-
-/** rct2: 0x008ADE34 */
-static void hybrid_rc_track_right_banked_flat_to_right_banked_25_deg_down(paint_session * session, uint16_t rideIndex,
-                                                                        uint8_t trackSequence, uint8_t direction, int32_t height,
-                                                                        const TileElement * tileElement)
-{
-    hybrid_rc_track_left_banked_25_deg_up_to_left_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                            tileElement);
-}
-
-/** rct2: 0x008ADDE4 */
-static void hybrid_rc_track_left_banked_25_deg_down_to_left_banked_flat(paint_session * session, uint16_t rideIndex,
-                                                                      uint8_t trackSequence, uint8_t direction, int32_t height,
-                                                                      const TileElement * tileElement)
-{
-    hybrid_rc_track_right_banked_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                              tileElement);
-}
-
-/** rct2: 0x008ADDF4 */
-static void hybrid_rc_track_right_banked_25_deg_down_to_right_banked_flat(paint_session * session, uint16_t rideIndex,
-                                                                        uint8_t trackSequence, uint8_t direction, int32_t height,
-                                                                        const TileElement * tileElement)
-{
-    hybrid_rc_track_left_banked_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                            tileElement);
-}
-
-/** rct2: 0x008ADE44 */
-static void hybrid_rc_track_flat_to_left_banked_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                        uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18540, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18541, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18548, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18542, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18543, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
-}
-
-/** rct2: 0x008ADE54 */
-static void hybrid_rc_track_flat_to_right_banked_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                         uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18544, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18545, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18546, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18549, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18547, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 48, 0x20);
-}
-
-/** rct2: 0x008ADE64 */
-static void hybrid_rc_track_left_banked_25_deg_up_to_flat(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                        uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18550, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18551, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18558, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18552, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18553, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
-}
-
-/** rct2: 0x008ADE74 */
-static void hybrid_rc_track_right_banked_25_deg_up_to_flat(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                         uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    switch (direction)
-    {
-    case 0:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18554, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 1:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18555, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18556, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18559, 0, 0, 32, 1, 34, height, 0, 27,
-                           height);
-        break;
-    case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18557, 0, 0, 32, 20, 3, height, 0, 6,
-                           height);
-        break;
-    }
-    if (track_paint_util_should_paint_supports(session->MapPosition))
-    {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
-    }
-    if (direction == 0 || direction == 3)
-    {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
-    }
-    else
-    {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
-    }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
-                                          0xFFFF, 0);
-    paint_util_set_general_support_height(session, height + 40, 0x20);
-}
-
-/** rct2: 0x008ADE84 */
-static void hybrid_rc_track_flat_to_left_banked_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                          uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_right_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
-}
-
-/** rct2: 0x008ADE94 */
-static void hybrid_rc_track_flat_to_right_banked_25_deg_down(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                           uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_left_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
-}
-
-/** rct2: 0x008ADEA4 */
-static void hybrid_rc_track_left_banked_25_deg_down_to_flat(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                          uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
-}
-
-/** rct2: 0x008ADEB4 */
-static void hybrid_rc_track_right_banked_25_deg_down_to_flat(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
-                                                           uint8_t direction, int32_t height, const TileElement * tileElement)
-{
-    hybrid_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
-}
-
 static void hybrid_rc_track_booster(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
                                   const TileElement * tileElement)
 {
@@ -8942,13 +8912,13 @@ TRACK_PAINT_FUNCTION get_track_paint_function_hybrid_rc(int32_t trackType)
         return hybrid_rc_track_left_banked_25_deg_down_to_flat;
     case TrackElemType::RightBankedDown25ToFlat:
         return hybrid_rc_track_right_banked_25_deg_down_to_flat;
-    case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP:
+    case TrackElemType::LeftQuarterTurn1TileUp90:
         return hybrid_rc_track_left_quarter_turn_1_90_deg_up;
-    case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP:
+    case TrackElemType::RightQuarterTurn1TileUp90:
         return hybrid_rc_track_right_quarter_turn_1_90_deg_up;
-    case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
+    case TrackElemType::LeftQuarterTurn1TileDown90:
         return hybrid_rc_track_left_quarter_turn_1_90_deg_down;
-    case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
+    case TrackElemType::RightQuarterTurn1TileDown90:
         return hybrid_rc_track_right_quarter_turn_1_90_deg_down;
 
     case TrackElemType::Booster:
