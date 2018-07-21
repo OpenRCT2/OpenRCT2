@@ -9,11 +9,11 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkPlayer.h"
+#    include "NetworkPlayer.h"
 
-#include "../interface/Window.h"
-#include "../localisation/Localisation.h"
-#include "NetworkPacket.h"
+#    include "../interface/Window.h"
+#    include "../localisation/Localisation.h"
+#    include "NetworkPacket.h"
 
 void NetworkPlayer::SetName(const std::string& name)
 {

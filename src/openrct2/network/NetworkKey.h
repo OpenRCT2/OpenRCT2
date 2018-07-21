@@ -12,10 +12,10 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "../common.h"
+#    include "../common.h"
 
-#include <memory>
-#include <string>
+#    include <memory>
+#    include <string>
 
 interface IStream;
 

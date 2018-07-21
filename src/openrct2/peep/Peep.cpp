@@ -3829,7 +3829,7 @@ void peep_handle_easteregg_name(rct_peep* peep)
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 void pathfind_logging_enable([[maybe_unused]] rct_peep* peep)
 {
-#if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
     /* Determine if the pathfinding debugging is wanted for this peep. */
     format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->id));
 
@@ -3847,14 +3847,14 @@ void pathfind_logging_enable([[maybe_unused]] rct_peep* peep)
     {
         gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
     }
-#endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
 }
 
 void pathfind_logging_disable()
 {
-#if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
     gPathFindDebug = false;
-#endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 

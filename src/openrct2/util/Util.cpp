@@ -167,7 +167,7 @@ int32_t bitscanforward(int32_t source)
     int32_t success = __builtin_ffs(source);
     return success - 1;
 #else
-#pragma message "Falling back to iterative bitscan forward, consider using intrinsics"
+#    pragma message "Falling back to iterative bitscan forward, consider using intrinsics"
     // This is a low-hanging optimisation boost, check if your compiler offers
     // any intrinsic.
     // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
@@ -180,26 +180,26 @@ int32_t bitscanforward(int32_t source)
 }
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
-#include <cpuid.h>
-#define OpenRCT2_CPUID_GNUC_X86
+#    include <cpuid.h>
+#    define OpenRCT2_CPUID_GNUC_X86
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
-#include <intrin.h>
-#include <nmmintrin.h>
-#define OpenRCT2_CPUID_MSVC_X86
+#    include <intrin.h>
+#    include <nmmintrin.h>
+#    define OpenRCT2_CPUID_MSVC_X86
 #endif
 
 #ifdef OPENRCT2_X86
 static bool cpuid_x86(uint32_t* cpuid_outdata, int32_t eax)
 {
-#if defined(OpenRCT2_CPUID_GNUC_X86)
+#    if defined(OpenRCT2_CPUID_GNUC_X86)
     int ret = __get_cpuid(eax, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
     return ret == 1;
-#elif defined(OpenRCT2_CPUID_MSVC_X86)
+#    elif defined(OpenRCT2_CPUID_MSVC_X86)
     __cpuid((int*)cpuid_outdata, (int)eax);
     return true;
-#else
+#    else
     return false;
-#endif
+#    endif
 }
 #endif // OPENRCT2_X86
 
@@ -223,16 +223,16 @@ bool avx2_available()
 // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
 // which causes it to ignore subleafs, but the new function is unavailable on Ubuntu's
 // prehistoric toolchains
-#if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
+#    if defined(OpenRCT2_CPUID_GNUC_X86) && (!defined(__FreeBSD__) || (__FreeBSD__ > 10))
     return __builtin_cpu_supports("avx2");
-#else
+#    else
     // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7, ECX = 0).
     uint32_t regs[4] = { 0 };
     if (cpuid_x86(regs, 7))
     {
         return (regs[1] & (1 << 5));
     }
-#endif
+#    endif
 #endif
     return false;
 }

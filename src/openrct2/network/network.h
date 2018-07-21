@@ -52,26 +52,26 @@ namespace OpenRCT2
 
 #ifndef DISABLE_NETWORK
 
-#include "../actions/GameAction.h"
-#include "../core/Json.hpp"
-#include "../core/MemoryStream.h"
-#include "../core/Nullable.hpp"
-#include "NetworkConnection.h"
-#include "NetworkGroup.h"
-#include "NetworkKey.h"
-#include "NetworkPacket.h"
-#include "NetworkPlayer.h"
-#include "NetworkServerAdvertiser.h"
-#include "NetworkUser.h"
-#include "TcpSocket.h"
+#    include "../actions/GameAction.h"
+#    include "../core/Json.hpp"
+#    include "../core/MemoryStream.h"
+#    include "../core/Nullable.hpp"
+#    include "NetworkConnection.h"
+#    include "NetworkGroup.h"
+#    include "NetworkKey.h"
+#    include "NetworkPacket.h"
+#    include "NetworkPlayer.h"
+#    include "NetworkServerAdvertiser.h"
+#    include "NetworkUser.h"
+#    include "TcpSocket.h"
 
-#include <array>
-#include <fstream>
-#include <functional>
-#include <list>
-#include <map>
-#include <set>
-#include <vector>
+#    include <array>
+#    include <fstream>
+#    include <functional>
+#    include <list>
+#    include <map>
+#    include <set>
+#    include <vector>
 
 enum
 {

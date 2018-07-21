@@ -12,7 +12,7 @@
 #include <string>
 
 #ifdef OPENRCT2_BUILD_INFO_HEADER
-#include OPENRCT2_BUILD_INFO_HEADER
+#    include OPENRCT2_BUILD_INFO_HEADER
 #endif
 
 const char gVersionInfoFull[] = OPENRCT2_NAME ", "
@@ -23,16 +23,16 @@ const char gVersionInfoFull[] = OPENRCT2_NAME ", "
 #endif
 #if defined(OPENRCT2_BRANCH) || defined(OPENRCT2_COMMIT_SHA1_SHORT) || !defined(NDEBUG)
                                               " ("
-#if defined(OPENRCT2_BRANCH) && defined(OPENRCT2_COMMIT_SHA1_SHORT)
+#    if defined(OPENRCT2_BRANCH) && defined(OPENRCT2_COMMIT_SHA1_SHORT)
     OPENRCT2_COMMIT_SHA1_SHORT " on " OPENRCT2_BRANCH
-#elif defined(OPENRCT2_COMMIT_SHA1_SHORT)
+#    elif defined(OPENRCT2_COMMIT_SHA1_SHORT)
     OPENRCT2_COMMIT_SHA1_SHORT
-#elif defined(OPENRCT2_BRANCH)
+#    elif defined(OPENRCT2_BRANCH)
     OPENRCT2_BRANCH
-#endif
-#ifndef NDEBUG
+#    endif
+#    ifndef NDEBUG
                                               ", DEBUG"
-#endif
+#    endif
                                               ")"
 #endif
 #ifdef OPENRCT2_BUILD_SERVER

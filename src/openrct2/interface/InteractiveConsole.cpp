@@ -49,7 +49,7 @@
 #include <thread>
 
 #ifndef NO_TTF
-#include "../drawing/TTF.h"
+#    include "../drawing/TTF.h"
 
 #endif
 

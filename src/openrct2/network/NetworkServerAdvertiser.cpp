@@ -9,25 +9,25 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkServerAdvertiser.h"
+#    include "NetworkServerAdvertiser.h"
 
-#include "../config/Config.h"
-#include "../core/Console.hpp"
-#include "../core/String.hpp"
-#include "../core/Util.hpp"
-#include "../localisation/Date.h"
-#include "../management/Finance.h"
-#include "../peep/Peep.h"
-#include "../platform/platform.h"
-#include "../util/Util.h"
-#include "../world/Map.h"
-#include "../world/Park.h"
-#include "Http.h"
-#include "network.h"
+#    include "../config/Config.h"
+#    include "../core/Console.hpp"
+#    include "../core/String.hpp"
+#    include "../core/Util.hpp"
+#    include "../localisation/Date.h"
+#    include "../management/Finance.h"
+#    include "../peep/Peep.h"
+#    include "../platform/platform.h"
+#    include "../util/Util.h"
+#    include "../world/Map.h"
+#    include "../world/Park.h"
+#    include "Http.h"
+#    include "network.h"
 
-#include <string>
+#    include <string>
 
-#ifndef DISABLE_HTTP
+#    ifndef DISABLE_HTTP
 
 using namespace OpenRCT2::Network;
 
@@ -260,7 +260,7 @@ INetworkServerAdvertiser* CreateServerAdvertiser(uint16_t port)
     return new NetworkServerAdvertiser(port);
 }
 
-#else // DISABLE_HTTP
+#    else // DISABLE_HTTP
 
 class DummyNetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
@@ -277,6 +277,6 @@ INetworkServerAdvertiser* CreateServerAdvertiser(uint16_t port)
     return new DummyNetworkServerAdvertiser();
 }
 
-#endif // DISABLE_HTTP
+#    endif // DISABLE_HTTP
 
 #endif // DISABLE_NETWORK

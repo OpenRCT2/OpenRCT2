@@ -11,11 +11,11 @@
 
 #ifndef DISABLE_HTTP
 
-#include "../common.h"
+#    include "../common.h"
 
-#include <functional>
-#include <map>
-#include <string>
+#    include <functional>
+#    include <map>
+#    include <string>
 
 namespace OpenRCT2::Network::Http
 {

@@ -35,38 +35,38 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 
 #ifndef DISABLE_NETWORK
 
-#include "../Cheats.h"
-#include "../Game.h"
-#include "../ParkImporter.h"
-#include "../actions/GameAction.h"
-#include "../config/Config.h"
-#include "../core/Console.hpp"
-#include "../core/FileStream.hpp"
-#include "../core/Json.hpp"
-#include "../core/Math.hpp"
-#include "../core/MemoryStream.h"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../core/Util.hpp"
-#include "../interface/Chat.h"
-#include "../interface/Window.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
-#include "../object/ObjectManager.h"
-#include "../object/ObjectRepository.h"
-#include "../rct2/S6Exporter.h"
-#include "../scenario/Scenario.h"
-#include "../util/Util.h"
-#include "../world/Park.h"
-#include "NetworkAction.h"
+#    include "../Cheats.h"
+#    include "../Game.h"
+#    include "../ParkImporter.h"
+#    include "../actions/GameAction.h"
+#    include "../config/Config.h"
+#    include "../core/Console.hpp"
+#    include "../core/FileStream.hpp"
+#    include "../core/Json.hpp"
+#    include "../core/Math.hpp"
+#    include "../core/MemoryStream.h"
+#    include "../core/Path.hpp"
+#    include "../core/String.hpp"
+#    include "../core/Util.hpp"
+#    include "../interface/Chat.h"
+#    include "../interface/Window.h"
+#    include "../localisation/Date.h"
+#    include "../localisation/Localisation.h"
+#    include "../object/ObjectManager.h"
+#    include "../object/ObjectRepository.h"
+#    include "../rct2/S6Exporter.h"
+#    include "../scenario/Scenario.h"
+#    include "../util/Util.h"
+#    include "../world/Park.h"
+#    include "NetworkAction.h"
 
-#include <algorithm>
-#include <cerrno>
-#include <cmath>
-#include <set>
-#include <string>
+#    include <algorithm>
+#    include <cerrno>
+#    include <cmath>
+#    include <set>
+#    include <string>
 
-#pragma comment(lib, "Ws2_32.lib")
+#    pragma comment(lib, "Ws2_32.lib")
 
 using namespace OpenRCT2;
 
@@ -699,9 +699,9 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch)
         {
-#ifdef DEBUG_DESYNC
+#    ifdef DEBUG_DESYNC
             dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash.c_str());
-#endif
+#    endif
             return false;
         }
     }
@@ -1019,12 +1019,12 @@ void Network::BeginChatLog()
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
 
-#if defined(_WIN32) && !defined(__MINGW32__)
+#    if defined(_WIN32) && !defined(__MINGW32__)
     auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_chatLogPath.c_str()));
     _chat_log_fs.open(pathW.get(), std::ios::out | std::ios::app);
-#else
+#    else
     _chat_log_fs.open(_chatLogPath, std::ios::out | std::ios::app);
-#endif
+#    endif
 }
 
 void Network::AppendChatLog(const std::string& s)
@@ -1045,12 +1045,12 @@ void Network::BeginServerLog()
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
 
-#if defined(_WIN32) && !defined(__MINGW32__)
+#    if defined(_WIN32) && !defined(__MINGW32__)
     auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_serverLogPath.c_str()));
     _server_log_fs.open(pathW.get(), std::ios::out | std::ios::app);
-#else
+#    else
     _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app);
-#endif
+#    endif
 
     // Log server start event
     utf8 logMessage[256];
@@ -1424,7 +1424,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_GAMEINFO;
-#ifndef DISABLE_HTTP
+#    ifndef DISABLE_HTTP
     json_t* obj = json_object();
     json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name));
     json_object_set_new(obj, "requiresPassword", json_boolean(_password.size() > 0));
@@ -1444,7 +1444,7 @@ void Network::Server_Send_GAMEINFO(NetworkConnection& connection)
 
     packet->WriteString(json_dumps(obj, 0));
     json_decref(obj);
-#endif
+#    endif
     connection.QueuePacket(std::move(packet));
 }
 

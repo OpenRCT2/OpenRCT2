@@ -986,9 +986,9 @@ bool is_valid_path_z_and_direction(rct_tile_element* tileElement, int32_t curren
 int32_t guest_path_finding(rct_peep* peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-#define PATHFIND_DEBUG                                                                                                         \
-    0 // Set to 0 to disable pathfinding debugging;
-      // Set to 1 to enable pathfinding debugging.
+#    define PATHFIND_DEBUG                                                                                                     \
+        0 // Set to 0 to disable pathfinding debugging;
+          // Set to 1 to enable pathfinding debugging.
 // Some variables used for the path finding debugging.
 extern bool gPathFindDebug;              // Use to guard calls to log messages
 extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log message

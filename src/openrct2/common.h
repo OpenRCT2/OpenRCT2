@@ -11,12 +11,12 @@
 #define _COMMON_H_
 
 #ifndef _USE_MATH_DEFINES
-#define _USE_MATH_DEFINES
+#    define _USE_MATH_DEFINES
 #endif
 #undef M_PI
 
 #ifdef _MSC_VER
-#include <ctime>
+#    include <ctime>
 #endif
 
 #include "Diagnostic.h"
@@ -35,7 +35,7 @@ using utf16string = utf16*;
 // Define MAX_PATH for various headers that don't want to include system headers
 // just for MAX_PATH
 #ifndef MAX_PATH
-#define MAX_PATH 260
+#    define MAX_PATH 260
 #endif
 
 using codepoint_t = uint32_t;
@@ -60,22 +60,22 @@ using colour_t = uint8_t;
 #define nameof(symbol) #symbol
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#include <unistd.h>
-#define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
-#define _strcmpi _stricmp
-#define _stricmp(x, y) strcasecmp((x), (y))
-#define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
-#define _strdup(x) strdup((x))
+#    include <unistd.h>
+#    define STUB() log_warning("Function %s at %s:%d is a stub.\n", __PRETTY_FUNCTION__, __FILE__, __LINE__)
+#    define _strcmpi _stricmp
+#    define _stricmp(x, y) strcasecmp((x), (y))
+#    define _strnicmp(x, y, n) strncasecmp((x), (y), (n))
+#    define _strdup(x) strdup((x))
 
-#if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
-#define LOBYTE(w) ((uint8_t)(w))
-#define HIBYTE(w) ((uint8_t)(((uint16_t)(w) >> 8) & 0xFF))
-#endif // __BYTE_ORDER__
+#    if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#        define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
+#        define LOBYTE(w) ((uint8_t)(w))
+#        define HIBYTE(w) ((uint8_t)(((uint16_t)(w) >> 8) & 0xFF))
+#    endif // __BYTE_ORDER__
 
-#ifndef RCT2_ENDIANESS
-#error Unknown endianess!
-#endif // RCT2_ENDIANESS
+#    ifndef RCT2_ENDIANESS
+#        error Unknown endianess!
+#    endif // RCT2_ENDIANESS
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
@@ -87,7 +87,7 @@ char* strndup(const char* src, size_t size);
 
 // BSD and macOS have MAP_ANON instead of MAP_ANONYMOUS
 #ifndef MAP_ANONYMOUS
-#define MAP_ANONYMOUS MAP_ANON
+#    define MAP_ANONYMOUS MAP_ANON
 #endif
 
 #define OPENRCT2_MASTER_SERVER_URL "https://servers.openrct2.io"
@@ -151,24 +151,24 @@ using rct_string_id = uint16_t;
     } while (false)
 
 #ifndef interface
-#define interface struct
+#    define interface struct
 #endif
 #define abstract = 0
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
-#define OPENRCT2_X86
+#    define OPENRCT2_X86
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
-#define OPENRCT2_X86
+#    define OPENRCT2_X86
 #endif
 
 #if defined(__i386__) || defined(_M_IX86)
-#define PLATFORM_X86
+#    define PLATFORM_X86
 #endif
 
 #if defined(__LP64__) || defined(_WIN64)
-#define PLATFORM_64BIT
+#    define PLATFORM_64BIT
 #else
-#define PLATFORM_32BIT
+#    define PLATFORM_32BIT
 #endif
 
 // C99's restrict keywords guarantees the pointer in question, for the whole of its lifetime,
@@ -176,26 +176,26 @@ using rct_string_id = uint16_t;
 // aliasing the same memory area. Using it lets compiler generate better code. If your compiler
 // does not support it, feel free to drop it, at some performance hit.
 #ifdef _MSC_VER
-#define RESTRICT __restrict
+#    define RESTRICT __restrict
 #else
-#define RESTRICT __restrict__
+#    define RESTRICT __restrict__
 #endif
 
 #define assert_struct_size(x, y) static_assert(sizeof(x) == (y), "Improper struct size")
 
 #ifdef PLATFORM_X86
-#ifndef FASTCALL
-#ifdef __GNUC__
-#define FASTCALL __attribute__((fastcall))
-#elif defined(_MSC_VER)
-#define FASTCALL __fastcall
-#else
-#pragma message "Not using fastcall calling convention, please check your compiler support"
-#define FASTCALL
-#endif
-#endif // FASTCALL
-#else  // PLATFORM_X86
-#define FASTCALL
+#    ifndef FASTCALL
+#        ifdef __GNUC__
+#            define FASTCALL __attribute__((fastcall))
+#        elif defined(_MSC_VER)
+#            define FASTCALL __fastcall
+#        else
+#            pragma message "Not using fastcall calling convention, please check your compiler support"
+#            define FASTCALL
+#        endif
+#    endif // FASTCALL
+#else      // PLATFORM_X86
+#    define FASTCALL
 #endif // PLATFORM_X86
 
 /**

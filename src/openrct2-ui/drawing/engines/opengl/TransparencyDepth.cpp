@@ -9,11 +9,11 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "TransparencyDepth.h"
+#    include "TransparencyDepth.h"
 
-#include <algorithm>
-#include <map>
-#include <vector>
+#    include <algorithm>
+#    include <map>
+#    include <vector>
 
 /*
  * Structure to store locations of vertical bounding box edge.

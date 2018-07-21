@@ -12,14 +12,14 @@
 #include <limits.h>
 
 #ifdef _WIN32
-#include <windows.h>
+#    include <windows.h>
 #elif defined(__ANDROID__)
-#include <SDL.h>
-#include <jni.h>
+#    include <SDL.h>
+#    include <jni.h>
 
 #else
-#include <errno.h>
-#include <iconv.h>
+#    include <errno.h>
+#    include <iconv.h>
 #endif // _WIN32
 
 #include "../Game.h"

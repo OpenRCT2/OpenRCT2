@@ -14,7 +14,7 @@
 
 #ifndef NO_TTF
 
-#include <vector>
+#    include <vector>
 
 struct TTFFontSetDescriptor;
 
@@ -26,11 +26,11 @@ extern TTFontFamily const TTFFamilyJapanese;
 extern TTFontFamily const TTFFamilyKorean;
 extern TTFontFamily const TTFFamilySansSerif;
 
-#define FAMILY(x) x
+#    define FAMILY(x) x
 
 #else // NO_TTF
 
-#define FAMILY(x) FAMILY_OPENRCT2_SPRITE
+#    define FAMILY(x) FAMILY_OPENRCT2_SPRITE
 
 #endif // NO_TTF
 

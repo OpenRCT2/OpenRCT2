@@ -9,13 +9,13 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "Crypt.h"
+#    include "Crypt.h"
 
-#include <openssl/evp.h>
-#include <openssl/pem.h>
-#include <stdexcept>
-#include <string>
-#include <vector>
+#    include <openssl/evp.h>
+#    include <openssl/pem.h>
+#    include <stdexcept>
+#    include <string>
+#    include <vector>
 
 using namespace Crypt;
 

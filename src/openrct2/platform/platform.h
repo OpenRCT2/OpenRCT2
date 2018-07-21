@@ -19,17 +19,17 @@ struct TTFFontDescriptor;
 struct rct2_install_info;
 
 #ifndef MAX_PATH
-#define MAX_PATH 260
+#    define MAX_PATH 260
 #endif
 
 #define INVALID_HANDLE (-1)
 
 #ifdef _WIN32
-#define PATH_SEPARATOR "\\"
-#define PLATFORM_NEWLINE "\r\n"
+#    define PATH_SEPARATOR "\\"
+#    define PLATFORM_NEWLINE "\r\n"
 #else
-#define PATH_SEPARATOR "/"
-#define PLATFORM_NEWLINE "\n"
+#    define PATH_SEPARATOR "/"
+#    define PLATFORM_NEWLINE "\n"
 #endif
 
 struct resolution_t
@@ -134,16 +134,16 @@ void core_init();
 
 // Windows specific definitions
 #ifdef _WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#undef CreateDirectory
-#undef CreateWindow
-#undef GetMessage
+#    ifndef NOMINMAX
+#        define NOMINMAX
+#    endif
+#    ifndef WIN32_LEAN_AND_MEAN
+#        define WIN32_LEAN_AND_MEAN
+#    endif
+#    include <windows.h>
+#    undef CreateDirectory
+#    undef CreateWindow
+#    undef GetMessage
 
 void platform_setup_file_associations();
 void platform_remove_file_associations();

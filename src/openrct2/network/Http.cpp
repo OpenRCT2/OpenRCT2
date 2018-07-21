@@ -16,16 +16,16 @@
 
 #ifndef DISABLE_HTTP
 
-#include "../Version.h"
-#include "../core/Console.hpp"
+#    include "../Version.h"
+#    include "../core/Console.hpp"
 
-#ifdef _WIN32
+#    ifdef _WIN32
 // cURL includes windows.h, but we don't need all of it.
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <curl/curl.h>
+#        define WIN32_LEAN_AND_MEAN
+#    endif
+#    include <curl/curl.h>
 
-#define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+#    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
 
 namespace OpenRCT2::Network::Http
 {

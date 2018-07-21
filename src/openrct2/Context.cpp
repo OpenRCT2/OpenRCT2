@@ -13,7 +13,7 @@
 #include <memory>
 #include <string>
 #ifdef __EMSCRIPTEN__
-#include <emscripten.h>
+#    include <emscripten.h>
 #endif // __EMSCRIPTEN__
 #include "Context.h"
 #include "Editor.h"

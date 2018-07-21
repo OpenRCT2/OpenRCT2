@@ -24,7 +24,7 @@ struct rct_vehicle_colour
 };
 
 #ifdef __TESTPAINT__
-#pragma pack(push, 1)
+#    pragma pack(push, 1)
 #endif // __TESTPAINT__
 /**
  * Ride type vehicle structure.
@@ -88,7 +88,7 @@ struct rct_ride_entry_vehicle
     std::vector<int8_t> peep_loading_positions = {}; // previously 0x61 , 0x7B
 };
 #ifdef __TESTPAINT__
-#pragma pack(pop)
+#    pragma pack(pop)
 #endif // __TESTPAINT__
 #ifdef PLATFORM_32BIT
 static_assert(offsetof(rct_ride_entry_vehicle, peep_loading_positions) % 4 == 0, "Invalid struct layout");

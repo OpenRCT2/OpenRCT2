@@ -9,23 +9,23 @@
 
 #ifdef __ENABLE_LIGHTFX__
 
-#include "LightFX.h"
+#    include "LightFX.h"
 
-#include "../Game.h"
-#include "../common.h"
-#include "../config/Config.h"
-#include "../interface/Viewport.h"
-#include "../interface/Window.h"
-#include "../ride/Ride.h"
-#include "../util/Util.h"
-#include "../world/Climate.h"
-#include "../world/Map.h"
-#include "../world/Sprite.h"
-#include "Drawing.h"
+#    include "../Game.h"
+#    include "../common.h"
+#    include "../config/Config.h"
+#    include "../interface/Viewport.h"
+#    include "../interface/Window.h"
+#    include "../ride/Ride.h"
+#    include "../util/Util.h"
+#    include "../world/Climate.h"
+#    include "../world/Map.h"
+#    include "../world/Sprite.h"
+#    include "Drawing.h"
 
-#include <algorithm>
-#include <cmath>
-#include <cstring>
+#    include <algorithm>
+#    include <cmath>
+#    include <cstring>
 
 static uint8_t _bakedLightTexture_lantern_0[32 * 32];
 static uint8_t _bakedLightTexture_lantern_1[64 * 64];
@@ -242,7 +242,7 @@ void lightfx_prepare_light_list()
                 break;
         }
 
-#ifdef LIGHTFX_UNKNOWN_PART_1
+#    ifdef LIGHTFX_UNKNOWN_PART_1
         int32_t tileOffsetX = 0;
         int32_t tileOffsetY = 0;
         switch (_current_view_rotation_front)
@@ -275,7 +275,7 @@ void lightfx_prepare_light_list()
             -3, -2, -3, 2, 3, -2, 3, 2,
         };
         // clang-format on
-#endif // LIGHTFX_UNKNOWN_PART_1
+#    endif // LIGHTFX_UNKNOWN_PART_1
 
         if (true)
         {
@@ -304,7 +304,7 @@ void lightfx_prepare_light_list()
                     //  offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y,
                     //  &interactionType, &tileElement, NULL);
 
-#ifdef LIGHTFX_UNKNOWN_PART_1
+#    ifdef LIGHTFX_UNKNOWN_PART_1
                     _unk9AC154 = ~VIEWPORT_INTERACTION_MASK_SPRITE & 0xFFFF;
                     _viewportDpi1.zoom = _current_view_zoom_front;
                     _viewportDpi1.x = entry->x + offsetPattern[0 + pat * 2] / mapFrontDiv;
@@ -328,7 +328,7 @@ void lightfx_prepare_light_list()
                     mapCoord.y = _interactionMapY + tileOffsetY;
                     interactionType = _interactionSpriteType;
                     tileElement = RCT2_GLOBAL(0x9AC150, rct_tile_element*);
-#endif // LIGHTFX_UNKNOWN_PART_1
+#    endif // LIGHTFX_UNKNOWN_PART_1
 
                     // RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;
                     // RCT2_GLOBAL(0x9AC148, uint8_t) = 0;
@@ -933,9 +933,9 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 
     float overExpose = 0.0f;
     float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
-#ifdef LIGHTFX_UNKNOWN_PART_2
+#    ifdef LIGHTFX_UNKNOWN_PART_2
     float lightMax = (natLightR + natLightG + natLightB) / 3.0f;
-#endif // LIGHTFX_UNKNOWN_PART_2
+#    endif // LIGHTFX_UNKNOWN_PART_2
 
     //  overExpose += ((lightMax - lightAvg) / lightMax) * 0.01f;
 
@@ -947,9 +947,9 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
         //      overExpose += offset * 0.1f;
     }
 
-#ifdef LIGHTFX_UNKNOWN_PART_2
+#    ifdef LIGHTFX_UNKNOWN_PART_2
     lightAvg += (lightMax - lightAvg) * 0.6f;
-#endif // LIGHTFX_UNKNOWN_PART_2
+#    endif // LIGHTFX_UNKNOWN_PART_2
 
     if (lightAvg > 1.0f)
     {

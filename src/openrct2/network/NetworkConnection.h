@@ -10,14 +10,14 @@
 #pragma once
 
 #ifndef DISABLE_NETWORK
-#include "../common.h"
-#include "NetworkKey.h"
-#include "NetworkPacket.h"
-#include "NetworkTypes.h"
+#    include "../common.h"
+#    include "NetworkKey.h"
+#    include "NetworkPacket.h"
+#    include "NetworkTypes.h"
 
-#include <list>
-#include <memory>
-#include <vector>
+#    include <list>
+#    include <memory>
+#    include <vector>
 
 interface ITcpSocket;
 class NetworkPlayer;

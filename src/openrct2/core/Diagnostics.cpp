@@ -8,8 +8,8 @@
  *****************************************************************************/
 
 #if defined(DEBUG) && defined(_WIN32)
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #endif
 
 #include "Diagnostics.hpp"
@@ -19,12 +19,12 @@ namespace Debug
     void Break()
     {
 #if defined(DEBUG)
-#if defined(_WIN32)
+#    if defined(_WIN32)
         if (IsDebuggerPresent())
         {
             DebugBreak();
         }
-#endif
+#    endif
 #endif
     }
 } // namespace Debug

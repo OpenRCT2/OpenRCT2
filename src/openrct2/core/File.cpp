@@ -8,10 +8,10 @@
  *****************************************************************************/
 
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #else
-#include <sys/stat.h>
+#    include <sys/stat.h>
 #endif
 
 #include "../platform/platform.h"

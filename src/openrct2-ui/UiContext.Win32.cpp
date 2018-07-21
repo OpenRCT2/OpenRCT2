@@ -9,31 +9,31 @@
 
 #ifdef _WIN32
 
-#ifdef __MINGW32__
+#    ifdef __MINGW32__
 // 0x0600 == vista
-#define WINVER 0x0600
-#define _WIN32_WINNT 0x0600
-#endif // __MINGW32__
+#        define WINVER 0x0600
+#        define _WIN32_WINNT 0x0600
+#    endif // __MINGW32__
 
 // Windows.h needs to be included first
-#include <windows.h>
-#undef CreateWindow
+#    include <windows.h>
+#    undef CreateWindow
 
 // Then the rest
-#include "UiContext.h"
+#    include "UiContext.h"
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_syswm.h>
-#include <openrct2/common.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/core/Path.hpp>
-#include <openrct2/core/String.hpp>
-#include <openrct2/ui/UiContext.h>
-#include <shlobj.h>
-#include <sstream>
+#    include <SDL2/SDL.h>
+#    include <SDL2/SDL_syswm.h>
+#    include <openrct2/common.h>
+#    include <openrct2/core/Math.hpp>
+#    include <openrct2/core/Path.hpp>
+#    include <openrct2/core/String.hpp>
+#    include <openrct2/ui/UiContext.h>
+#    include <shlobj.h>
+#    include <sstream>
 
 // Native resource IDs
-#include "../../resources/resource.h"
+#    include "../../resources/resource.h"
 
 static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
 {

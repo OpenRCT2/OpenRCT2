@@ -238,9 +238,9 @@ void testpaint_ignore(uint8_t direction, uint8_t trackSequence);
 void testpaint_ignore_all();
 bool testpaint_is_ignored(uint8_t direction, uint8_t trackSequence);
 
-#define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
-#define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()
+#    define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
+#    define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()
 #else
-#define TESTPAINT_IGNORE(direction, trackSequence)
-#define TESTPAINT_IGNORE_ALL()
+#    define TESTPAINT_IGNORE(direction, trackSequence)
+#    define TESTPAINT_IGNORE_ALL()
 #endif

@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #ifndef __ANDROID__
-#include "Zip.h"
+#    include "Zip.h"
 
-#include "IStream.hpp"
+#    include "IStream.hpp"
 
-#include <zip.h>
+#    include <zip.h>
 
 class ZipArchive final : public IZipArchive
 {

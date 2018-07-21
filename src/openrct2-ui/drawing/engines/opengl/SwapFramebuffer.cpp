@@ -9,9 +9,9 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "SwapFramebuffer.h"
+#    include "SwapFramebuffer.h"
 
-#include "OpenGLFramebuffer.h"
+#    include "OpenGLFramebuffer.h"
 
 constexpr GLfloat depthValue[1] = { 1.0f };
 constexpr GLfloat depthValueTransparent[1] = { 0.0f };

@@ -9,23 +9,23 @@
 
 #ifndef NO_TTF
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#pragma clang diagnostic pop
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdocumentation"
+#    include <ft2build.h>
+#    include FT_FREETYPE_H
+#    pragma clang diagnostic pop
 
-#include "../OpenRCT2.h"
-#include "../config/Config.h"
-#include "../localisation/Localisation.h"
-#include "../localisation/LocalisationService.h"
-#include "../platform/platform.h"
-#include "TTF.h"
+#    include "../OpenRCT2.h"
+#    include "../config/Config.h"
+#    include "../localisation/Localisation.h"
+#    include "../localisation/LocalisationService.h"
+#    include "../platform/platform.h"
+#    include "TTF.h"
 
 static bool _ttfInitialised = false;
 
-#define TTF_SURFACE_CACHE_SIZE 256
-#define TTF_GETWIDTH_CACHE_SIZE 1024
+#    define TTF_SURFACE_CACHE_SIZE 256
+#    define TTF_GETWIDTH_CACHE_SIZE 1024
 
 struct ttf_cache_entry
 {
@@ -337,7 +337,7 @@ void ttf_free_surface(TTFSurface* surface)
 
 #else
 
-#include "TTF.h"
+#    include "TTF.h"
 
 bool ttf_initialise()
 {

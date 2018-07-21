@@ -10,18 +10,18 @@
 #include "../common.h"
 
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #endif
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
-#include <dirent.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
+#    include <dirent.h>
+#    include <sys/stat.h>
+#    include <sys/types.h>
+#    include <unistd.h>
 #elif defined(_WIN32)
 // Windows needs this for widechar <-> utf8 conversion utils
-#include "../localisation/Language.h"
+#    include "../localisation/Language.h"
 #endif
 
 #include "FileScanner.h"

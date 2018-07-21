@@ -10,10 +10,10 @@
 #include "../common.h"
 
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #else
-#include <unistd.h>
+#    include <unistd.h>
 #endif
 
 #include "../Context.h"
@@ -32,11 +32,11 @@
 #include <time.h>
 
 #ifdef __APPLE__
-#include <AvailabilityMacros.h>
-#include <mach/mach_time.h>
-#ifndef __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
-#error Missing __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ define
-#endif
+#    include <AvailabilityMacros.h>
+#    include <mach/mach_time.h>
+#    ifndef __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
+#        error Missing __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ define
+#    endif
 #endif
 
 #if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)

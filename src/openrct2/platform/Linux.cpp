@@ -13,28 +13,28 @@
 // Otherwise, they should be spun off into their own files.
 #if (defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)) && !defined(__ANDROID__)
 
-#ifdef __FreeBSD__
-#include <sys/sysctl.h>
-#endif
+#    ifdef __FreeBSD__
+#        include <sys/sysctl.h>
+#    endif
 
-#define OPENRCT2_MAX_COMMAND_LENGTH (2 * MAX_PATH)
+#    define OPENRCT2_MAX_COMMAND_LENGTH (2 * MAX_PATH)
 
-#include <cstring>
-#include <ctype.h>
-#include <dlfcn.h>
-#include <errno.h>
-#ifndef NO_TTF
-#include <fontconfig/fontconfig.h>
-#endif // NO_TTF
-#include "../config/Config.h"
-#include "../localisation/Language.h"
-#include "../localisation/StringIds.h"
-#include "../util/Util.h"
-#include "platform.h"
+#    include <cstring>
+#    include <ctype.h>
+#    include <dlfcn.h>
+#    include <errno.h>
+#    ifndef NO_TTF
+#        include <fontconfig/fontconfig.h>
+#    endif // NO_TTF
+#    include "../config/Config.h"
+#    include "../localisation/Language.h"
+#    include "../localisation/StringIds.h"
+#    include "../util/Util.h"
+#    include "platform.h"
 
-#include <fnmatch.h>
-#include <locale.h>
-#include <pwd.h>
+#    include <fnmatch.h>
+#    include <locale.h>
+#    include <pwd.h>
 
 uint16_t platform_get_locale_language()
 {
@@ -126,11 +126,11 @@ uint8_t platform_get_locale_currency()
 uint8_t platform_get_locale_measurement_format()
 {
 // LC_MEASUREMENT is GNU specific.
-#ifdef LC_MEASUREMENT
+#    ifdef LC_MEASUREMENT
     const char* langstring = setlocale(LC_MEASUREMENT, "");
-#else
+#    else
     const char* langstring = setlocale(LC_ALL, "");
-#endif
+#    endif
 
     if (langstring != nullptr)
     {
@@ -189,7 +189,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
     return false;
 }
 
-#ifndef NO_TTF
+#    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {
     assert(buffer != nullptr);
@@ -250,6 +250,6 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
     FcFini();
     return found;
 }
-#endif // NO_TTF
+#    endif // NO_TTF
 
 #endif

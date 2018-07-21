@@ -60,8 +60,8 @@ namespace OpenRCT2
         };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
 #endif
         class X8DrawingEngine : public IDrawingEngine
         {
@@ -116,7 +116,7 @@ namespace OpenRCT2
             void DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
         };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
 
         class X8DrawingContext final : public IDrawingContext

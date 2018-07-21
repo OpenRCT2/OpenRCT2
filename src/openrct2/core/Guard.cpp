@@ -8,8 +8,8 @@
  *****************************************************************************/
 
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #endif
 
 #include "../Version.h"
@@ -142,12 +142,12 @@ namespace Guard
 
     static void ForceCrash()
     {
-#ifdef USE_BREAKPAD
+#    ifdef USE_BREAKPAD
         // Force a crash that breakpad will handle allowing us to get a dump
         *((void**)0) = 0;
-#else
+#    else
         assert(false);
-#endif
+#    endif
     }
 #endif
 } // namespace Guard

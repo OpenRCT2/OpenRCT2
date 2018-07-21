@@ -76,7 +76,7 @@ static FILE* fopen_utf8(const char* path, const char* mode)
     return file;
 }
 
-#define fopen fopen_utf8
+#    define fopen fopen_utf8
 
 #endif
 
