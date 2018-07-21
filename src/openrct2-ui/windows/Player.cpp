@@ -236,14 +236,8 @@ static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget
     numItems = network_get_num_groups();
 
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left,
-        w->y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1],
-        0,
-        0,
-        numItems,
-        widget->right - dropdownWidget->left);
+        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+        w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
@@ -371,13 +365,8 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         set_format_arg(0, const char*, buffer);
 
         gfx_draw_string_centred_clipped(
-            dpi,
-            STR_STRING,
-            gCommonFormatArgs,
-            COLOUR_BLACK,
-            w->x + (widget->left + widget->right - 11) / 2,
-            w->y + widget->top,
-            widget->right - widget->left - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + (widget->left + widget->right - 11) / 2,
+            w->y + widget->top, widget->right - widget->left - 8);
     }
 
     // Draw ping

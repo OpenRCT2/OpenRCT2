@@ -118,13 +118,8 @@ void park_set_open(int32_t open)
  *  rct2: 0x00669D4A
  */
 void game_command_set_park_open(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
     {

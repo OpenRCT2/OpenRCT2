@@ -499,12 +499,7 @@ static void cheat_own_all_land()
 #pragma endregion
 
 void game_command_cheat(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     int32_t cheat = *ecx;

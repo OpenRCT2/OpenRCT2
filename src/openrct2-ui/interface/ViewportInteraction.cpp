@@ -61,14 +61,8 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
 
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
-        x,
-        y,
-        VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK,
-        &mapCoord.x,
-        &mapCoord.y,
-        &info->type,
-        &info->tileElement,
-        nullptr);
+        x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x,
+        &mapCoord.y, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -164,13 +158,8 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
                         {
                             case SPRITE_MISC_BALLOON:
                                 game_do_command(
-                                    info.sprite->balloon.sprite_index,
-                                    GAME_COMMAND_FLAG_APPLY,
-                                    0,
-                                    0,
-                                    GAME_COMMAND_BALLOON_PRESS,
-                                    0,
-                                    0);
+                                    info.sprite->balloon.sprite_index, GAME_COMMAND_FLAG_APPLY, 0, 0,
+                                    GAME_COMMAND_BALLOON_PRESS, 0, 0);
                                 break;
                             case SPRITE_MISC_DUCK:
                                 duck_press(&info.sprite->duck);
@@ -217,14 +206,8 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
 
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
-        x,
-        y,
-        ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER),
-        &mapCoord.x,
-        &mapCoord.y,
-        &info->type,
-        &info->tileElement,
-        nullptr);
+        x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type,
+        &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -480,13 +463,8 @@ static void viewport_interaction_remove_scenery(rct_tile_element* tileElement, i
 {
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
     game_do_command(
-        x,
-        (tileElement->type << 8) | 1,
-        y,
-        (tileElement->properties.scenery.type << 8) | tileElement->base_height,
-        GAME_COMMAND_REMOVE_SCENERY,
-        0,
-        0);
+        x, (tileElement->type << 8) | 1, y, (tileElement->properties.scenery.type << 8) | tileElement->base_height,
+        GAME_COMMAND_REMOVE_SCENERY, 0, 0);
 }
 
 /**
@@ -531,13 +509,8 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElem
 
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
     game_do_command(
-        x,
-        ((tileElement->properties.path.type & 7) << 8) | 1,
-        y,
-        (type << 8) | tileElement->base_height,
-        GAME_COMMAND_PLACE_PATH,
-        0,
-        0);
+        x, ((tileElement->properties.path.type & 7) << 8) | 1, y, (type << 8) | tileElement->base_height,
+        GAME_COMMAND_PLACE_PATH, 0, 0);
 }
 
 /**
@@ -598,13 +571,8 @@ static void viewport_interaction_remove_large_scenery(rct_tile_element* tileElem
     {
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
-            x,
-            1 | (tile_element_get_direction(tileElement) << 8),
-            y,
-            tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8),
-            GAME_COMMAND_REMOVE_LARGE_SCENERY,
-            0,
-            0);
+            x, 1 | (tile_element_get_direction(tileElement) << 8), y,
+            tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
     }
 }
 
@@ -660,14 +628,8 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
     rct_tile_element* myTileElement;
     rct_viewport* viewport;
     get_map_coordinates_from_pos(
-        screenX,
-        screenY,
-        VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER,
-        &my_x,
-        &my_y,
-        &interactionType,
-        &myTileElement,
-        &viewport);
+        screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType,
+        &myTileElement, &viewport);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {

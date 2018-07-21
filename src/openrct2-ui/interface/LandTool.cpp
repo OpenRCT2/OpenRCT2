@@ -99,14 +99,7 @@ void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, ui
     }
 
     window_dropdown_show_image(
-        w->x + widget->left,
-        w->y + widget->top,
-        widget->bottom - widget->top,
-        w->colours[2],
-        0,
-        TERRAIN_COUNT_REGULAR,
-        47,
-        36,
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[2], 0, TERRAIN_COUNT_REGULAR, 47, 36,
         gAppropriateImageDropdownItemsPerRow[TERRAIN_COUNT_REGULAR]);
 
     gDropdownDefaultIndex = defaultIndex;
@@ -127,14 +120,7 @@ void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8
     }
 
     window_dropdown_show_image(
-        w->x + widget->left,
-        w->y + widget->top,
-        widget->bottom - widget->top,
-        w->colours[2],
-        0,
-        edgeCount,
-        47,
-        36,
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[2], 0, edgeCount, 47, 36,
         gAppropriateImageDropdownItemsPerRow[edgeCount]);
 
     gDropdownDefaultIndex = defaultIndex;

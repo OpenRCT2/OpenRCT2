@@ -116,15 +116,6 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
     sub_98199C(
-        session,
-        scrolling_text_setup(session, string_id, scroll, scrollingMode),
-        0,
-        0,
-        1,
-        1,
-        0x15,
-        height + 22,
-        boundBoxOffsetX,
-        boundBoxOffsetY,
-        boundBoxOffsetZ);
+        session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22,
+        boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 }

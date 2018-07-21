@@ -418,13 +418,7 @@ int32_t string_get_height_raw(char* buffer)
  * ticks    : ebp >> 16
  */
 void gfx_draw_string_centred_wrapped_partial(
-    rct_drawpixelinfo* dpi,
-    int32_t x,
-    int32_t y,
-    int32_t width,
-    int32_t colour,
-    rct_string_id format,
-    void* args,
+    rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t colour, rct_string_id format, void* args,
     int32_t ticks)
 {
     int32_t numLines, fontSpriteBase, lineHeight, lineY;
@@ -972,12 +966,7 @@ static int32_t ttf_get_string_width(const utf8* text)
  *  rct2: 0x00682F28
  */
 void gfx_draw_string_with_y_offsets(
-    rct_drawpixelinfo* dpi,
-    const utf8* text,
-    int32_t colour,
-    int32_t x,
-    int32_t y,
-    const int8_t* yOffsets,
+    rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, int32_t x, int32_t y, const int8_t* yOffsets,
     bool forceSpriteFont)
 {
     text_draw_info info;

@@ -111,14 +111,8 @@ static money32 SmallSceneryRemove(
 }
 
 static money32 SmallScenerySetColour(
-    int16_t x,
-    int16_t y,
-    uint8_t baseHeight,
-    uint8_t quadrant,
-    uint8_t sceneryType,
-    uint8_t primaryColour,
-    uint8_t secondaryColour,
-    uint8_t flags)
+    int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour,
+    uint8_t secondaryColour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     int32_t z = baseHeight * 8;
@@ -158,15 +152,8 @@ static money32 SmallScenerySetColour(
 }
 
 static money32 SmallSceneryPlace(
-    int16_t x,
-    int16_t y,
-    int16_t targetHeight,
-    uint8_t quadrant,
-    uint8_t rotation,
-    uint8_t sceneryType,
-    uint8_t primaryColour,
-    uint8_t secondaryColour,
-    uint8_t flags)
+    int16_t x, int16_t y, int16_t targetHeight, uint8_t quadrant, uint8_t rotation, uint8_t sceneryType, uint8_t primaryColour,
+    uint8_t secondaryColour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
@@ -362,14 +349,7 @@ static money32 SmallSceneryPlace(
 
     if (!gCheatsDisableClearanceChecks
         && !map_can_construct_with_clear_at(
-               x,
-               y,
-               zLow,
-               zHigh,
-               &map_place_scenery_clear_func,
-               blSupports | collisionQuadrants,
-               flags,
-               &clearCost,
+               x, y, zLow, zHigh, &map_place_scenery_clear_func, blSupports | collisionQuadrants, flags, &clearCost,
                CREATE_CROSSING_MODE_NONE))
     {
         return MONEY32_UNDEFINED;
@@ -434,12 +414,7 @@ static money32 SmallSceneryPlace(
  *  rct2: 0x006E0E01
  */
 void game_command_remove_scenery(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = SmallSceneryRemove(
@@ -451,23 +426,12 @@ void game_command_remove_scenery(
  *  rct2: 0x006E0F26
  */
 void game_command_set_scenery_colour(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     int32_t* ebp)
 {
     *ebx = SmallScenerySetColour(
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        *edx & 0xFF,
-        ((*ebx >> 8) & 0xFF) >> 6,
-        (*edx >> 8) & 0xFF,
-        *ebp & 0xFF,
-        (*ebp >> 8) & 0xFF,
-        *ebx & 0xFF);
+        *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 8) & 0xFF) >> 6, (*edx >> 8) & 0xFF, *ebp & 0xFF,
+        (*ebp >> 8) & 0xFF, *ebx & 0xFF);
 }
 
 /**
@@ -549,15 +513,8 @@ void game_command_place_scenery(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = SmallSceneryPlace(
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        *ebp & 0xFFFF,
-        *edx & 0xFF,
-        *edi & 0xFF,
-        (*ebx >> 8) & 0xFF,
-        (*edx >> 8) & 0xFF,
-        (*edi >> 16) & 0xFF,
-        *ebx & 0xFF);
+        *eax & 0xFFFF, *ecx & 0xFFFF, *ebp & 0xFFFF, *edx & 0xFF, *edi & 0xFF, (*ebx >> 8) & 0xFF, (*edx >> 8) & 0xFF,
+        (*edi >> 16) & 0xFF, *ebx & 0xFF);
 }
 
 int32_t scenery_small_get_primary_colour(const rct_tile_element* tileElement)

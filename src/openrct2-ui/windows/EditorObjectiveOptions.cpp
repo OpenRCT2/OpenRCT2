@@ -487,14 +487,8 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     numItems++;
 
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left,
-        w->y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1],
-        0,
-        DROPDOWN_FLAG_STAY_OPEN,
-        numItems,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, dropdownWidget->right - dropdownWidget->left - 3);
 
     objectiveType = gScenarioObjectiveType;
     for (int32_t j = 0; j < numItems; j++)
@@ -520,14 +514,8 @@ static void window_editor_objective_options_show_climate_dropdown(rct_window* w)
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left,
-        w->y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1],
-        0,
-        DROPDOWN_FLAG_STAY_OPEN,
-        4,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, dropdownWidget->right - dropdownWidget->left - 3);
     dropdown_set_checked(gClimate, true);
 }
 
@@ -544,14 +532,8 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
         gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
     }
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left,
-        w->y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1],
-        0,
-        DROPDOWN_FLAG_STAY_OPEN,
-        5,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5, dropdownWidget->right - dropdownWidget->left - 3);
     dropdown_set_checked(gS6Info.category, true);
 }
 

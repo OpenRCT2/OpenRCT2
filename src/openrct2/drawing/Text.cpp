@@ -113,13 +113,7 @@ static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* pa
 }
 
 static void DrawTextCompat(
-    rct_drawpixelinfo* dpi,
-    int32_t x,
-    int32_t y,
-    rct_string_id format,
-    void* args,
-    uint8_t colour,
-    TextAlignment alignment,
+    rct_drawpixelinfo* dpi, int32_t x, int32_t y, rct_string_id format, void* args, uint8_t colour, TextAlignment alignment,
     bool underline = false)
 {
     _legacyPaint.UnderlineText = underline;
@@ -131,15 +125,8 @@ static void DrawTextCompat(
 }
 
 static void DrawTextEllipsisedCompat(
-    rct_drawpixelinfo* dpi,
-    int32_t x,
-    int32_t y,
-    int32_t width,
-    rct_string_id format,
-    void* args,
-    uint8_t colour,
-    TextAlignment alignment,
-    bool underline = false)
+    rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, rct_string_id format, void* args, uint8_t colour,
+    TextAlignment alignment, bool underline = false)
 {
     _legacyPaint.UnderlineText = underline;
     _legacyPaint.Colour = colour;

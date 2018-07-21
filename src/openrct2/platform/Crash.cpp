@@ -40,12 +40,8 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
 static bool OnCrash(
-    const wchar_t* dumpPath,
-    const wchar_t* miniDumpId,
-    void* context,
-    EXCEPTION_POINTERS* exinfo,
-    MDRawAssertionInfo* assertion,
-    bool succeeded)
+    const wchar_t* dumpPath, const wchar_t* miniDumpId, void* context, EXCEPTION_POINTERS* exinfo,
+    MDRawAssertionInfo* assertion, bool succeeded)
 {
     if (!succeeded)
     {
@@ -69,12 +65,7 @@ static bool OnCrash(
     // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
-        dumpFilePathNew,
-        sizeof(dumpFilePathNew),
-        L"%s%s(%s_%s).dmp",
-        dumpPath,
-        miniDumpId,
-        _wszCommitSha1Short,
+        dumpFilePathNew, sizeof(dumpFilePathNew), L"%s%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short,
         _wszArchitecture);
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {

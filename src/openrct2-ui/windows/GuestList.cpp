@@ -334,13 +334,8 @@ static void window_guest_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             else
             {
                 window_text_input_open(
-                    w,
-                    WIDX_FILTER_BY_NAME,
-                    STR_GUESTS_FILTER_BY_NAME,
-                    STR_GUESTS_ENTER_NAME_TO_SEARCH,
-                    STR_STRING,
-                    (uintptr_t)&_window_guest_list_filter_name,
-                    sizeof(_window_guest_list_filter_name));
+                    w, WIDX_FILTER_BY_NAME, STR_GUESTS_FILTER_BY_NAME, STR_GUESTS_ENTER_NAME_TO_SEARCH, STR_STRING,
+                    (uintptr_t)&_window_guest_list_filter_name, sizeof(_window_guest_list_filter_name));
             }
             break;
     }
@@ -401,14 +396,8 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             widget = &w->widgets[widgetIndex - 1];
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left,
-                w->y + widget->top,
-                widget->bottom - widget->top + 1,
-                w->colours[1],
-                0,
-                DROPDOWN_FLAG_STAY_OPEN,
-                _window_guest_list_num_pages,
-                widget->right - widget->left - 3);
+                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, _window_guest_list_num_pages, widget->right - widget->left - 3);
 
             for (i = 0; i < _window_guest_list_num_pages; i++)
             {
@@ -427,14 +416,8 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left,
-                w->y + widget->top,
-                widget->bottom - widget->top + 1,
-                w->colours[1],
-                0,
-                DROPDOWN_FLAG_STAY_OPEN,
-                2,
-                widget->right - widget->left - 3);
+                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
 
             dropdown_set_checked(_window_guest_list_selected_view, true);
             break;
@@ -690,20 +673,14 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_NORMAL].sprite_animation->base_image + 1;
     i |= 0xA1600000;
     gfx_draw_sprite(
-        dpi,
-        i,
-        (window_guest_list_widgets[WIDX_TAB_1].left + window_guest_list_widgets[WIDX_TAB_1].right) / 2 + w->x,
-        window_guest_list_widgets[WIDX_TAB_1].bottom - 6 + w->y,
-        0);
+        dpi, i, (window_guest_list_widgets[WIDX_TAB_1].left + window_guest_list_widgets[WIDX_TAB_1].right) / 2 + w->x,
+        window_guest_list_widgets[WIDX_TAB_1].bottom - 6 + w->y, 0);
 
     // Tab 2 image
     i = (_window_guest_list_selected_tab == 1 ? w->list_information_type / 4 : 0);
     gfx_draw_sprite(
-        dpi,
-        SPR_TAB_GUESTS_0 + i,
-        window_guest_list_widgets[WIDX_TAB_2].left + w->x,
-        window_guest_list_widgets[WIDX_TAB_2].top + w->y,
-        0);
+        dpi, SPR_TAB_GUESTS_0 + i, window_guest_list_widgets[WIDX_TAB_2].left + w->x,
+        window_guest_list_widgets[WIDX_TAB_2].top + w->y, 0);
 
     // Filter description
     x = w->x + 6;
@@ -739,12 +716,8 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         y = w->y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
         set_format_arg(0, int16_t, w->var_492);
         gfx_draw_string_left(
-            dpi,
-            (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL),
-            gCommonFormatArgs,
-            COLOUR_BLACK,
-            x,
-            y);
+            dpi, (w->var_492 == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
+            COLOUR_BLACK, x, y);
     }
 }
 
@@ -870,11 +843,8 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     numGuests = _window_guest_list_groups_num_guests[i];
                     for (j = 0; j < 56 && j < numGuests; j++)
                         gfx_draw_sprite(
-                            dpi,
-                            _window_guest_list_groups_guest_faces[i * 56 + j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY,
-                            j * 8,
-                            y + 12,
-                            0);
+                            dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY,
+                            j * 8, y + 12, 0);
 
                     // Draw action
                     set_format_arg(0, uint32_t, _window_guest_list_groups_argument_1[i]);
@@ -1093,8 +1063,7 @@ static void window_guest_list_find_groups()
             memcpy(temp_faces, &(_window_guest_list_groups_guest_faces[groupIndex * 56]), 56);
             memcpy(
                 &(_window_guest_list_groups_guest_faces[groupIndex * 56]),
-                &(_window_guest_list_groups_guest_faces[swap_position * 56]),
-                56);
+                &(_window_guest_list_groups_guest_faces[swap_position * 56]), 56);
             memcpy(&(_window_guest_list_groups_guest_faces[swap_position * 56]), temp_faces, 56);
 
             temp = _window_guest_list_group_index[swap_position];

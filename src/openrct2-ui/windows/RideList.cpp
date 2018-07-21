@@ -354,14 +354,8 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
         }
 
         window_dropdown_show_text_custom_width(
-            w->x + widget->left,
-            w->y + widget->top,
-            widget->bottom - widget->top,
-            w->colours[1],
-            0,
-            DROPDOWN_FLAG_STAY_OPEN,
-            numItems,
-            widget->right - widget->left - 3);
+            w->x + widget->left, w->y + widget->top, widget->bottom - widget->top, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN,
+            numItems, widget->right - widget->left - 3);
         if (selectedIndex != -1)
         {
             dropdown_set_checked(selectedIndex, true);
@@ -591,11 +585,7 @@ static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw number of attractions on bottom
     gfx_draw_string_left(
-        dpi,
-        ride_list_statusbar_count_strings[w->page],
-        &w->no_list_items,
-        COLOUR_BLACK,
-        w->x + 4,
+        dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK, w->x + 4,
         w->widgets[WIDX_LIST].bottom + w->y + 2);
 }
 

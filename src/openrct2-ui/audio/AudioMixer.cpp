@@ -272,12 +272,7 @@ namespace OpenRCT2::Audio
             if (streamformat != _format)
             {
                 if (SDL_BuildAudioCVT(
-                        &cvt,
-                        streamformat.format,
-                        streamformat.channels,
-                        streamformat.freq,
-                        _format.format,
-                        _format.channels,
+                        &cvt, streamformat.format, streamformat.channels, streamformat.freq, _format.format, _format.channels,
                         _format.freq)
                     == -1)
                 {
@@ -345,11 +340,7 @@ namespace OpenRCT2::Audio
          * Assumes that srcBuffer is the same format as _format.
          */
         size_t ApplyResample(
-            ISDLAudioChannel* channel,
-            const void* srcBuffer,
-            int32_t srcSamples,
-            int32_t dstSamples,
-            int32_t inRate,
+            ISDLAudioChannel* channel, const void* srcBuffer, int32_t srcSamples, int32_t dstSamples, int32_t inRate,
             int32_t outRate)
         {
             int32_t byteRate = _format.GetByteRate();

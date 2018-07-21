@@ -466,14 +466,8 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
 // clang-format on
 
 void (*mask_fn)(
-    int32_t width,
-    int32_t height,
-    const uint8_t* RESTRICT maskSrc,
-    const uint8_t* RESTRICT colourSrc,
-    uint8_t* RESTRICT dst,
-    int32_t maskWrap,
-    int32_t colourWrap,
-    int32_t dstWrap)
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
     = nullptr;
 
 void mask_init()

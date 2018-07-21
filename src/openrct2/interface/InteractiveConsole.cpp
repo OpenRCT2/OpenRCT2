@@ -127,12 +127,8 @@ static int32_t cc_rides(InteractiveConsole& console, const utf8** argv, int32_t 
                 char name[128];
                 format_string(name, 128, ride->name, &ride->name_arguments);
                 console.WriteFormatLine(
-                    "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s",
-                    i,
-                    ride->type,
-                    ride->subtype,
-                    ride->mode,
-                    name);
+                    "ride: %03d type: %02u subtype %03u operating mode: %02u name: %s", i, ride->type, ride->subtype,
+                    ride->mode, name);
             }
         }
         else if (strcmp(argv[0], "set") == 0)
@@ -592,14 +588,8 @@ static int32_t cc_get(InteractiveConsole& console, const utf8** argv, int32_t ar
                 LocationXY16 mapCoord = {};
                 rct_viewport* viewport = window_get_viewport(w);
                 get_map_coordinates_from_pos(
-                    viewport->view_width / 2,
-                    viewport->view_height / 2,
-                    VIEWPORT_INTERACTION_MASK_TERRAIN,
-                    &mapCoord.x,
-                    &mapCoord.y,
-                    &interactionType,
-                    &tileElement,
-                    nullptr);
+                    viewport->view_width / 2, viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,
+                    &mapCoord.y, &interactionType, &tileElement, nullptr);
                 mapCoord.x -= 16;
                 mapCoord.x /= 32;
                 mapCoord.y -= 16;

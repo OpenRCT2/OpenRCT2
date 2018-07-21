@@ -61,13 +61,8 @@ rct_window* window_editor_main_open()
     window_editor_main_widgets[0].right = context_get_width();
     window_editor_main_widgets[0].bottom = context_get_height();
     rct_window* window = window_create(
-        0,
-        0,
-        window_editor_main_widgets[0].right,
-        window_editor_main_widgets[0].bottom,
-        &window_editor_main_events,
-        WC_MAIN_WINDOW,
-        WF_STICK_TO_BACK);
+        0, 0, window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom, &window_editor_main_events,
+        WC_MAIN_WINDOW, WF_STICK_TO_BACK);
     window->widgets = window_editor_main_widgets;
 
     viewport_create(window, window->x, window->y, window->width, window->height, 0, 0x0FFF, 0x0FFF, 0, 0x1, -1);

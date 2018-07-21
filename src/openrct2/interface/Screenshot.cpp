@@ -140,16 +140,8 @@ static int32_t screenshot_get_next_path(char* path, size_t size)
     }
     const size_t leftBytes = size - strlen(path);
     snprintf(
-        fileNameCh,
-        leftBytes,
-        "%s %d-%02d-%02d %02d-%02d-%02d.png",
-        park_name,
-        currentDate.year,
-        currentDate.month,
-        currentDate.day,
-        currentTime.hour,
-        currentTime.minute,
-        currentTime.second);
+        fileNameCh, leftBytes, "%s %d-%02d-%02d %02d-%02d-%02d.png", park_name, currentDate.year, currentDate.month,
+        currentDate.day, currentTime.hour, currentTime.minute, currentTime.second);
 
     if (!platform_file_exists(path))
     {
@@ -167,17 +159,8 @@ static int32_t screenshot_get_next_path(char* path, size_t size)
     {
         // Glue together path and filename
         snprintf(
-            fileNameCh,
-            leftBytes,
-            "%s %d-%02d-%02d %02d-%02d-%02d (%d).png",
-            park_name,
-            currentDate.year,
-            currentDate.month,
-            currentDate.day,
-            currentTime.hour,
-            currentTime.minute,
-            currentTime.second,
-            i);
+            fileNameCh, leftBytes, "%s %d-%02d-%02d %02d-%02d-%02d (%d).png", park_name, currentDate.year, currentDate.month,
+            currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, i);
 
         if (!platform_file_exists(path))
         {

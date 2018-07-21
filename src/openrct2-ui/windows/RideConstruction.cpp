@@ -459,23 +459,11 @@ static void window_ride_construction_entrance_click(rct_window* w);
 static void window_ride_construction_exit_click(rct_window* w);
 
 static void window_ride_construction_draw_track_piece(
-    rct_window* w,
-    rct_drawpixelinfo* dpi,
-    int32_t rideIndex,
-    int32_t trackType,
-    int32_t trackDirection,
-    int32_t unknown,
-    int32_t width,
-    int32_t height);
+    rct_window* w, rct_drawpixelinfo* dpi, int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
+    int32_t width, int32_t height);
 static void sub_6CBCE2(
-    rct_drawpixelinfo* dpi,
-    int32_t rideIndex,
-    int32_t trackType,
-    int32_t trackDirection,
-    int32_t edx,
-    int32_t originX,
-    int32_t originY,
-    int32_t originZ);
+    rct_drawpixelinfo* dpi, int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, int32_t originX,
+    int32_t originY, int32_t originZ);
 static void window_ride_construction_update_map_selection();
 static void window_ride_construction_update_possible_ride_configurations();
 static void window_ride_construction_update_widgets(rct_window* w);
@@ -1693,12 +1681,8 @@ static void window_ride_construction_construct(rct_window* w)
 
     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
     _trackPlaceCost = game_do_command(
-        x,
-        (GAME_COMMAND_FLAG_APPLY) | (trackDirection << 8),
-        y,
-        rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16),
-        GAME_COMMAND_PLACE_TRACK,
-        z | (properties << 16),
+        x, (GAME_COMMAND_FLAG_APPLY) | (trackDirection << 8), y,
+        rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16), GAME_COMMAND_PLACE_TRACK, z | (properties << 16),
         0);
     if (_trackPlaceCost == MONEY32_UNDEFINED)
     {
@@ -1886,11 +1870,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     }
 
     money32 cost = ride_remove_track_piece(
-        _currentTrackBeginX,
-        _currentTrackBeginY,
-        _currentTrackBeginZ,
-        _currentTrackPieceDirection,
-        _currentTrackPieceType,
+        _currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, _currentTrackPieceDirection, _currentTrackPieceType,
         GAME_COMMAND_FLAG_APPLY);
     if (cost == MONEY32_UNDEFINED)
     {
@@ -2258,14 +2238,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
 }
 
 static void window_ride_construction_draw_track_piece(
-    rct_window* w,
-    rct_drawpixelinfo* dpi,
-    int32_t rideIndex,
-    int32_t trackType,
-    int32_t trackDirection,
-    int32_t unknown,
-    int32_t width,
-    int32_t height)
+    rct_window* w, rct_drawpixelinfo* dpi, int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
+    int32_t width, int32_t height)
 {
     const rct_preview_track* trackBlock;
     Ride* ride;
@@ -2340,14 +2314,8 @@ static rct_tile_element* _backupTileElementArrays[5];
  * dh: trackType
  */
 static void sub_6CBCE2(
-    rct_drawpixelinfo* dpi,
-    int32_t rideIndex,
-    int32_t trackType,
-    int32_t trackDirection,
-    int32_t edx,
-    int32_t originX,
-    int32_t originY,
-    int32_t originZ)
+    rct_drawpixelinfo* dpi, int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, int32_t originX,
+    int32_t originY, int32_t originZ)
 {
     Ride* ride;
     const rct_preview_track* trackBlock;
@@ -3391,14 +3359,8 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
     }
 
     window_dropdown_show_text_custom_width(
-        w->x + widget->left,
-        w->y + widget->top,
-        widget->bottom - widget->top + 1,
-        w->colours[1],
-        0,
-        0,
-        _numCurrentPossibleRideConfigurations,
-        widget->right - widget->left);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, 0,
+        _numCurrentPossibleRideConfigurations, widget->right - widget->left);
 
     for (int32_t i = 0; i < 32; i++)
     {
@@ -3457,13 +3419,8 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
     if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &tileElement, 0))
     {
         game_do_command(
-            _currentTrackBeginX,
-            GAME_COMMAND_FLAG_APPLY | ((brakesSpeed) << 8),
-            _currentTrackBeginY,
-            track_element_get_type(tileElement),
-            GAME_COMMAND_SET_BRAKES_SPEED,
-            _currentTrackBeginZ,
-            0);
+            _currentTrackBeginX, GAME_COMMAND_FLAG_APPLY | ((brakesSpeed) << 8), _currentTrackBeginY,
+            track_element_get_type(tileElement), GAME_COMMAND_SET_BRAKES_SPEED, _currentTrackBeginZ, 0);
     }
     window_ride_construction_update_active_elements();
 }
@@ -3818,14 +3775,8 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
             gDisableErrorWindowSound = true;
 
             _trackPlaceCost = maze_set_track(
-                _currentTrackBeginX,
-                _currentTrackBeginY,
-                _currentTrackBeginZ,
-                GAME_COMMAND_FLAG_APPLY,
-                true,
-                0,
-                _currentRideIndex,
-                GC_SET_MAZE_TRACK_BUILD);
+                _currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, GAME_COMMAND_FLAG_APPLY, true, 0,
+                _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
 
             gDisableErrorWindowSound = false;
 
@@ -3968,13 +3919,9 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
 
     game_command_callback = game_command_callback_place_ride_entrance_or_exit;
     game_do_command(
-        _unkF44188.x,
-        (GAME_COMMAND_FLAG_APPLY) | ((gRideEntranceExitPlaceDirection ^ 2) << 8),
-        _unkF44188.y,
-        gRideEntranceExitPlaceRideIndex | (gRideEntranceExitPlaceType << 8),
-        GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-        gRideEntranceExitPlaceStationIndex,
-        0);
+        _unkF44188.x, (GAME_COMMAND_FLAG_APPLY) | ((gRideEntranceExitPlaceDirection ^ 2) << 8), _unkF44188.y,
+        gRideEntranceExitPlaceRideIndex | (gRideEntranceExitPlaceType << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
+        gRideEntranceExitPlaceStationIndex, 0);
 }
 
 void window_ride_construction_keyboard_shortcut_turn_left()

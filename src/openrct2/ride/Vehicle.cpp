@@ -908,8 +908,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
     rct_vehicle_sound_params* soundParam;
     // Find a sound param of lower priority to use
     for (soundParam = &gVehicleSoundParamsList[0];
-         soundParam < gVehicleSoundParamsListEnd && sound_priority <= soundParam->priority;
-         soundParam++)
+         soundParam < gVehicleSoundParamsListEnd && sound_priority <= soundParam->priority; soundParam++)
         ;
 
     if (soundParam >= &gVehicleSoundParamsList[Util::CountOf(gVehicleSoundParamsList)])
@@ -1146,12 +1145,8 @@ static void vehicle_sounds_update_sound_1(
         uint8_t looping = _soundParams[vehicle->sound1_id][0];
         int32_t pan = sound_params->pan_x;
         sound->sound1_channel = Mixer_Play_Effect(
-            vehicle->sound1_id,
-            looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE,
-            DStoMixerVolume(volume),
-            DStoMixerPan(pan),
-            DStoMixerRate(frequency),
-            0);
+            vehicle->sound1_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan),
+            DStoMixerRate(frequency), 0);
         return;
     }
     if (volume != sound->sound1_volume)
@@ -1216,12 +1211,8 @@ static void vehicle_sounds_update_sound_2(
         uint8_t looping = _soundParams[vehicle->sound2_id][0];
         int32_t pan = sound_params->pan_x;
         sound->sound2_channel = Mixer_Play_Effect(
-            vehicle->sound2_id,
-            looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE,
-            DStoMixerVolume(volume),
-            DStoMixerPan(pan),
-            DStoMixerRate(frequency),
-            0);
+            vehicle->sound2_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan),
+            DStoMixerRate(frequency), 0);
         return;
     }
     if (volume != sound->sound2_volume)
@@ -1273,8 +1264,7 @@ void vehicle_sounds_update()
         {
             bool keepPlaying = false;
             for (rct_vehicle_sound_params* vehicle_sound_params = &gVehicleSoundParamsList[0];
-                 vehicle_sound_params != gVehicleSoundParamsListEnd;
-                 vehicle_sound_params++)
+                 vehicle_sound_params != gVehicleSoundParamsListEnd; vehicle_sound_params++)
             {
                 if (vehicle_sound.id == vehicle_sound_params->id)
                 {
@@ -1299,8 +1289,7 @@ void vehicle_sounds_update()
     }
 
     for (rct_vehicle_sound_params* vehicleSoundParams = &gVehicleSoundParamsList[0];
-         vehicleSoundParams < gVehicleSoundParamsListEnd;
-         vehicleSoundParams++)
+         vehicleSoundParams < gVehicleSoundParamsListEnd; vehicleSoundParams++)
     {
         uint8_t panVol = vehicle_sounds_update_get_pan_volume(vehicleSoundParams);
 
@@ -2573,15 +2562,8 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
         int32_t direction;
 
         if (track_block_get_next_from_zero(
-                vehicle->track_x,
-                vehicle->track_y,
-                vehicle->track_z,
-                vehicle->ride,
-                (uint8_t)(vehicle->track_direction & 0x3),
-                &track,
-                &z,
-                &direction,
-                false))
+                vehicle->track_x, vehicle->track_y, vehicle->track_z, vehicle->ride, (uint8_t)(vehicle->track_direction & 0x3),
+                &track, &z, &direction, false))
         {
             if (track_element_is_cable_lift(track.element))
             {
@@ -5408,8 +5390,7 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
                 if ((scenario_rand() & 0xFFFF) <= 0x1555)
                 {
                     sprite_misc_explosion_cloud_create(
-                        curVehicle->x + ((scenario_rand() & 2) - 1),
-                        curVehicle->y + ((scenario_rand() & 2) - 1),
+                        curVehicle->x + ((scenario_rand() & 2) - 1), curVehicle->y + ((scenario_rand() & 2) - 1),
                         curVehicle->z);
                 }
             }
@@ -7304,8 +7285,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                             index += 32;
                         }
                         steam_particle_create(
-                            vehicle->x + SteamParticleOffsets[index].x,
-                            vehicle->y + SteamParticleOffsets[index].y,
+                            vehicle->x + SteamParticleOffsets[index].x, vehicle->y + SteamParticleOffsets[index].y,
                             vehicle->z + SteamParticleOffsets[index].z);
                     }
                 }
@@ -9438,8 +9418,7 @@ loc_6DCEFF:
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
     {
         vehicle->spin_speed = Math::Clamp(
-            static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE),
-            vehicle->spin_speed,
+            static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), vehicle->spin_speed,
             static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
     }
 
@@ -9559,8 +9538,7 @@ static void vehicle_update_track_motion_powered_ride_acceleration(
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
             vehicle->spin_speed = Math::Clamp(
-                static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE),
-                vehicle->spin_speed,
+                static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), vehicle->spin_speed,
                 static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
         }
 

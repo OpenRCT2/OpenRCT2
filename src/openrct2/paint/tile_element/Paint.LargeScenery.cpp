@@ -25,11 +25,7 @@
 
 // 6B8172:
 static void large_scenery_paint_supports(
-    paint_session* session,
-    uint8_t direction,
-    uint16_t height,
-    const rct_tile_element* tileElement,
-    uint32_t dword_F4387C,
+    paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement, uint32_t dword_F4387C,
     rct_large_scenery_tile* tile)
 {
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
@@ -128,13 +124,8 @@ static int32_t div_to_minus_infinity(int32_t a, int32_t b)
 }
 
 static void large_scenery_sign_paint_line(
-    paint_session* session,
-    const utf8* str,
-    rct_large_scenery_text* text,
-    int32_t textImage,
-    int32_t textColour,
-    uint8_t direction,
-    int32_t y_offset)
+    paint_session* session, const utf8* str, rct_large_scenery_text* text, int32_t textImage, int32_t textColour,
+    uint8_t direction, int32_t y_offset)
 {
     const utf8* fitStr = large_scenery_sign_fit_text(str, text, false);
     int32_t width = large_scenery_sign_text_width(fitStr, text);
@@ -344,12 +335,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
                 utf8 str[5] = { 0 };
                 utf8_write_codepoint(str, codepoint);
                 large_scenery_sign_paint_line(
-                    session,
-                    str,
-                    entry->large_scenery.text,
-                    entry->large_scenery.text_image,
-                    textColour,
-                    direction,
+                    session, str, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
                     y_offset - height2);
                 y_offset += large_scenery_sign_get_glyph(text, codepoint)->height * 2;
             }
@@ -391,12 +377,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
                             src = spacesrc;
                         }
                         large_scenery_sign_paint_line(
-                            session,
-                            str1,
-                            entry->large_scenery.text,
-                            entry->large_scenery.text_image,
-                            textColour,
-                            direction,
+                            session, str1, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
                             y_offset);
                         y_offset += (large_scenery_sign_get_glyph(text, 'A')->height + 1) * 2;
                     }
@@ -404,12 +385,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
                 else
                 {
                     large_scenery_sign_paint_line(
-                        session,
-                        signString,
-                        entry->large_scenery.text,
-                        entry->large_scenery.text_image,
-                        textColour,
-                        direction,
+                        session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
                         y_offset);
                 }
             }
@@ -417,12 +393,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
             {
                 // Draw one-line sign:
                 large_scenery_sign_paint_line(
-                    session,
-                    signString,
-                    entry->large_scenery.text,
-                    entry->large_scenery.text_image,
-                    textColour,
-                    direction,
+                    session, signString, entry->large_scenery.text, entry->large_scenery.text_image, textColour, direction,
                     y_offset);
             }
         }
@@ -480,17 +451,8 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     uint16_t string_width = gfx_get_string_width(signString);
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
     sub_98199C(
-        session,
-        scrolling_text_setup(session, stringId, scroll, scrollMode),
-        0,
-        0,
-        1,
-        1,
-        21,
-        height + 25,
-        boxoffset.x,
-        boxoffset.y,
-        boxoffset.z);
+        session, scrolling_text_setup(session, stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x,
+        boxoffset.y, boxoffset.z);
 
     large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
 }

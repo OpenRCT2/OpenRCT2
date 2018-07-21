@@ -947,17 +947,8 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
 }
 
 static money32 track_place(
-    int32_t rideIndex,
-    int32_t type,
-    int32_t originX,
-    int32_t originY,
-    int32_t originZ,
-    int32_t direction,
-    int32_t brakeSpeed,
-    int32_t colour,
-    int32_t seatRotation,
-    int32_t liftHillAndAlternativeState,
-    int32_t flags)
+    int32_t rideIndex, int32_t type, int32_t originX, int32_t originY, int32_t originZ, int32_t direction, int32_t brakeSpeed,
+    int32_t colour, int32_t seatRotation, int32_t liftHillAndAlternativeState, int32_t flags)
 {
     Ride* ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -1568,26 +1559,12 @@ static money32 track_place(
  *  rct2: 0x006C511D
  */
 void game_command_place_track(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = track_place(
-        *edx & 0xFF,
-        (*edx >> 8) & 0xFF,
-        (int16_t)(*eax & 0xFFFF),
-        (int16_t)(*ecx & 0xFFFF),
-        (int16_t)(*edi & 0xFFFF),
-        (*ebx >> 8) & 0xFF,
-        (*edi >> 16) & 0xFF,
-        (*edi >> 24) & 0x0F,
-        (*edi >> 28) & 0x0F,
-        (*edx >> 16),
-        *ebx & 0xFF);
+        *edx & 0xFF, (*edx >> 8) & 0xFF, (int16_t)(*eax & 0xFFFF), (int16_t)(*ecx & 0xFFFF), (int16_t)(*edi & 0xFFFF),
+        (*ebx >> 8) & 0xFF, (*edi >> 16) & 0xFF, (*edi >> 24) & 0x0F, (*edi >> 28) & 0x0F, (*edx >> 16), *ebx & 0xFF);
 }
 
 static money32 track_remove(
@@ -1901,12 +1878,7 @@ static money32 track_remove(
  *  rct2: 0x006C5B69
  */
 void game_command_remove_track(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = track_remove(
@@ -1918,12 +1890,7 @@ void game_command_remove_track(
  *  rct2: 0x006C5AE9
  */
 void game_command_set_brakes_speed(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     int32_t x = (*eax & 0xFFFF);

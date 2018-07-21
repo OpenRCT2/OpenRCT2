@@ -705,11 +705,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
         money32 lastMonthProfit = finance_get_last_month_shop_profit();
         set_format_arg(0, money32, lastMonthProfit);
         gfx_draw_string_left(
-            dpi,
-            STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL,
-            gCommonFormatArgs,
-            COLOUR_BLACK,
-            w->x + 280,
+            dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->x + 280,
             w->y + 279);
     }
     else
@@ -753,12 +749,8 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         set_format_arg(0, rct_string_id, STR_FINANCES_SUMMARY_MONTH_HEADING);
         set_format_arg(2, uint16_t, monthyear);
         draw_string_right_underline(
-            dpi,
-            monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING,
-            gCommonFormatArgs,
-            COLOUR_BLACK,
-            x + EXPENDITURE_COLUMN_WIDTH,
-            y);
+            dpi, monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, gCommonFormatArgs,
+            COLOUR_BLACK, x + EXPENDITURE_COLUMN_WIDTH, y);
         y += 14;
 
         // Month expenditures
@@ -770,12 +762,8 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
             {
                 profit += expenditure;
                 gfx_draw_string_right(
-                    dpi,
-                    expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE,
-                    &expenditure,
-                    COLOUR_BLACK,
-                    x + EXPENDITURE_COLUMN_WIDTH,
-                    y);
+                    dpi, expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE,
+                    &expenditure, COLOUR_BLACK, x + EXPENDITURE_COLUMN_WIDTH, y);
             }
             y += TABLE_CELL_HEIGHT;
         }
@@ -783,12 +771,8 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
 
         // Month profit
         gfx_draw_string_right(
-            dpi,
-            profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE,
-            &profit,
-            COLOUR_BLACK,
-            x + EXPENDITURE_COLUMN_WIDTH,
-            y);
+            dpi, profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE, &profit, COLOUR_BLACK,
+            x + EXPENDITURE_COLUMN_WIDTH, y);
         gfx_fill_rect(dpi, x + 10, y - 2, x + EXPENDITURE_COLUMN_WIDTH, y - 2, PALETTE_INDEX_10);
 
         x += EXPENDITURE_COLUMN_WIDTH;
@@ -864,10 +848,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
         dpi,
         cashLessLoan >= 0 ? STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_POSITIVE
                           : STR_FINANCES_FINANCIAL_GRAPH_CASH_LESS_LOAN_NEGATIVE,
-        &cashLessLoan,
-        COLOUR_BLACK,
-        graphLeft,
-        graphTop - 11);
+        &cashLessLoan, COLOUR_BLACK, graphLeft, graphTop - 11);
 
     // Graph
     gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
@@ -1070,12 +1051,8 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     // Weekly profit
     money32 weeklyPofit = gCurrentProfit;
     gfx_draw_string_left(
-        dpi,
-        weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS,
-        &weeklyPofit,
-        COLOUR_BLACK,
-        graphLeft,
-        graphTop - 11);
+        dpi, weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, &weeklyPofit,
+        COLOUR_BLACK, graphLeft, graphTop - 11);
 
     // Graph
     gfx_fill_rect_inset(dpi, graphLeft, graphTop, graphRight, graphBottom, w->colours[1], INSET_RECT_F_30);
@@ -1329,14 +1306,8 @@ static void window_finances_research_mousedown(rct_window* w, rct_widgetindex wi
         gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
     }
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left,
-        w->y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1],
-        0,
-        DROPDOWN_FLAG_STAY_OPEN,
-        4,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, dropdownWidget->right - dropdownWidget->left - 3);
 
     int32_t currentResearchLevel = gResearchFundingLevel;
     dropdown_set_checked(currentResearchLevel, true);

@@ -169,12 +169,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep* newPeep)
 }
 
 static money32 staff_hire_new_staff_member(
-    uint8_t staff_type,
-    uint8_t flags,
-    int16_t command_x,
-    int16_t command_y,
-    int16_t command_z,
-    int32_t autoposition,
+    uint8_t staff_type, uint8_t flags, int16_t command_x, int16_t command_y, int16_t command_z, int32_t autoposition,
     int32_t* newPeep_sprite_index)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
@@ -372,12 +367,7 @@ static money32 staff_hire_new_staff_member(
  *  rct2: 0x006BEFA1
  */
 void game_command_hire_new_staff_member(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = staff_hire_new_staff_member(
@@ -409,13 +399,8 @@ static constexpr const bool peep_slow_walking_types[] = {
  *  rct2: 0x006C0BB5
  */
 void game_command_set_staff_order(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
     uint8_t order_id = *ebx >> 8;
@@ -466,12 +451,7 @@ void game_command_set_staff_order(
  *  rct2: 0x006C09D1
  */
 void game_command_set_staff_patrol(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
@@ -526,13 +506,8 @@ void game_command_set_staff_patrol(
  *  rct2: 0x006C0B83
  */
 void game_command_fire_staff_member(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
@@ -590,13 +565,8 @@ uint16_t hire_new_staff_member(uint8_t staffType)
         rct_peep* newPeep = GET_PEEP(new_sprite_index);
         uint8_t new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
         game_do_command(
-            newPeep->x,
-            ((int32_t)new_orders << 8) | GAME_COMMAND_FLAG_APPLY,
-            newPeep->y,
-            new_sprite_index,
-            GAME_COMMAND_SET_STAFF_ORDER,
-            0,
-            0);
+            newPeep->x, ((int32_t)new_orders << 8) | GAME_COMMAND_FLAG_APPLY, newPeep->y, new_sprite_index,
+            GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
     }
 
     return new_sprite_index;

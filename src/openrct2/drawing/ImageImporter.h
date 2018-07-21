@@ -45,10 +45,7 @@ namespace OpenRCT2::Drawing
         };
 
         ImportResult Import(
-            const Image& image,
-            int32_t offsetX = 0,
-            int32_t offsetY = 0,
-            IMPORT_FLAGS flags = IMPORT_FLAGS::NONE,
+            const Image& image, int32_t offsetX = 0, int32_t offsetY = 0, IMPORT_FLAGS flags = IMPORT_FLAGS::NONE,
             IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
 
     private:

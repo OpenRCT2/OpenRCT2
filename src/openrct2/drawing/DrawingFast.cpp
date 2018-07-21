@@ -15,14 +15,8 @@
 
 template<int32_t image_type, int32_t zoom_level>
 static void FASTCALL DrawRLESprite2(
-    const uint8_t* RESTRICT source_bits_pointer,
-    uint8_t* RESTRICT dest_bits_pointer,
-    const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi,
-    int32_t source_y_start,
-    int32_t height,
-    int32_t source_x_start,
-    int32_t width)
+    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
+    const rct_drawpixelinfo* RESTRICT dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
     // The distance between two samples in the source image.
     // We draw the image at 1 / (2^zoom_level) scale.
@@ -149,14 +143,8 @@ static void FASTCALL DrawRLESprite2(
 
 template<int32_t image_type>
 static void FASTCALL DrawRLESprite1(
-    const uint8_t* source_bits_pointer,
-    uint8_t* dest_bits_pointer,
-    const uint8_t* palette_pointer,
-    const rct_drawpixelinfo* dpi,
-    int32_t source_y_start,
-    int32_t height,
-    int32_t source_x_start,
-    int32_t width)
+    const uint8_t* source_bits_pointer, uint8_t* dest_bits_pointer, const uint8_t* palette_pointer,
+    const rct_drawpixelinfo* dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
 {
     int32_t zoom_level = dpi->zoom_level;
     switch (zoom_level)
@@ -189,14 +177,8 @@ static void FASTCALL DrawRLESprite1(
  *  rct2: 0x0067AA18
  */
 void FASTCALL gfx_rle_sprite_to_buffer(
-    const uint8_t* RESTRICT source_bits_pointer,
-    uint8_t* RESTRICT dest_bits_pointer,
-    const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi,
-    int32_t image_type,
-    int32_t source_y_start,
-    int32_t height,
-    int32_t source_x_start,
+    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
+    const rct_drawpixelinfo* RESTRICT dpi, int32_t image_type, int32_t source_y_start, int32_t height, int32_t source_x_start,
     int32_t width)
 {
     if (image_type & IMAGE_TYPE_REMAP)

@@ -702,12 +702,7 @@ static void widget_hscrollbar_draw(
 
     // Thumb
     gfx_fill_rect_inset(
-        dpi,
-        std::max(l + 10, l + scroll->h_thumb_left - 1),
-        t,
-        std::min(r - 10, l + scroll->h_thumb_right - 1),
-        b,
-        colour,
+        dpi, std::max(l + 10, l + scroll->h_thumb_left - 1), t, std::min(r - 10, l + scroll->h_thumb_right - 1), b, colour,
         ((scroll->flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Right button
@@ -735,12 +730,7 @@ static void widget_vscrollbar_draw(
 
     // Thumb
     gfx_fill_rect_inset(
-        dpi,
-        l,
-        std::max(t + 10, t + scroll->v_thumb_top - 1),
-        r,
-        std::min(b - 10, t + scroll->v_thumb_bottom - 1),
-        colour,
+        dpi, l, std::max(t + 10, t + scroll->v_thumb_top - 1), r, std::min(b - 10, t + scroll->v_thumb_bottom - 1), colour,
         ((scroll->flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
@@ -869,13 +859,7 @@ bool widget_is_active_tool(rct_window* w, rct_widgetindex widgetIndex)
  *  edi: widget
  */
 void widget_scroll_get_part(
-    rct_window* w,
-    rct_widget* widget,
-    int32_t x,
-    int32_t y,
-    int32_t* output_x,
-    int32_t* output_y,
-    int32_t* output_scroll_area,
+    rct_window* w, rct_widget* widget, int32_t x, int32_t y, int32_t* output_x, int32_t* output_y, int32_t* output_scroll_area,
     int32_t* scroll_id)
 {
     rct_widget* iterator = w->widgets;

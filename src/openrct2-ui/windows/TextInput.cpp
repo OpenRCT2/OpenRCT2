@@ -95,13 +95,8 @@ static int32_t calling_widget = 0;
 static int32_t _maxInputLength;
 
 void window_text_input_open(
-    rct_window* call_w,
-    rct_widgetindex call_widget,
-    rct_string_id title,
-    rct_string_id description,
-    rct_string_id existing_text,
-    uintptr_t existing_args,
-    int32_t maxLength)
+    rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
+    rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     // Get the raw string
     utf8 buffer[Util::CountOf(text_input)]{};
@@ -113,12 +108,8 @@ void window_text_input_open(
 }
 
 void window_text_input_raw_open(
-    rct_window* call_w,
-    rct_widgetindex call_widget,
-    rct_string_id title,
-    rct_string_id description,
-    const_utf8string existing_text,
-    int32_t maxLength)
+    rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
+    const_utf8string existing_text, int32_t maxLength)
 {
     _maxInputLength = maxLength;
 

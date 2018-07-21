@@ -152,17 +152,8 @@ rct_window* window_banner_open(rct_windownumber number)
     // Create viewport
     viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w,
-        w->x + viewportWidget->left + 1,
-        w->y + viewportWidget->top + 1,
-        (viewportWidget->right - viewportWidget->left) - 2,
-        (viewportWidget->bottom - viewportWidget->top) - 2,
-        0,
-        view_x,
-        view_y,
-        view_z,
-        0,
-        -1);
+        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 2,
+        (viewportWidget->bottom - viewportWidget->top) - 2, 0, view_x, view_y, view_z, 0, -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
@@ -196,13 +187,8 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_BANNER_DEMOLISH:
             game_do_command(
-                x,
-                1,
-                y,
-                tile_element->base_height | (tile_element->properties.banner.position << 8),
-                GAME_COMMAND_REMOVE_BANNER,
-                0,
-                0);
+                x, 1, y, tile_element->base_height | (tile_element->properties.banner.position << 8),
+                GAME_COMMAND_REMOVE_BANNER, 0, 0);
             break;
         case WIDX_BANNER_TEXT:
             window_text_input_open(
@@ -211,12 +197,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_BANNER_NO_ENTRY:
             textinput_cancel();
             game_do_command(
-                1,
-                GAME_COMMAND_FLAG_APPLY,
-                w->number,
-                banner->colour,
-                GAME_COMMAND_SET_BANNER_STYLE,
-                banner->text_colour,
+                1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour,
                 banner->flags ^ BANNER_FLAG_NO_ENTRY);
             break;
     }
@@ -247,14 +228,8 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             widget--;
 
             window_dropdown_show_text_custom_width(
-                widget->left + w->x,
-                widget->top + w->y,
-                widget->bottom - widget->top + 1,
-                w->colours[1],
-                0,
-                DROPDOWN_FLAG_STAY_OPEN,
-                13,
-                widget->right - widget->left - 3);
+                widget->left + w->x, widget->top + w->y, widget->bottom - widget->top + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, 13, widget->right - widget->left - 3);
 
             dropdown_set_checked(banner->text_colour - 1, true);
             break;
@@ -276,12 +251,7 @@ static void window_banner_dropdown(rct_window* w, rct_widgetindex widgetIndex, i
                 break;
 
             game_do_command(
-                1,
-                GAME_COMMAND_FLAG_APPLY,
-                w->number,
-                dropdownIndex,
-                GAME_COMMAND_SET_BANNER_STYLE,
-                banner->text_colour,
+                1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_BANNER_STYLE, banner->text_colour,
                 banner->flags);
             break;
         case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
@@ -289,12 +259,7 @@ static void window_banner_dropdown(rct_window* w, rct_widgetindex widgetIndex, i
                 break;
 
             game_do_command(
-                1,
-                GAME_COMMAND_FLAG_APPLY,
-                w->number,
-                banner->colour,
-                GAME_COMMAND_SET_BANNER_STYLE,
-                dropdownIndex + 1,
+                1, GAME_COMMAND_FLAG_APPLY, w->number, banner->colour, GAME_COMMAND_SET_BANNER_STYLE, dropdownIndex + 1,
                 banner->flags);
             break;
     }
@@ -379,17 +344,8 @@ static void window_banner_viewport_rotate(rct_window* w)
     // Create viewport
     rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w,
-        w->x + viewportWidget->left + 1,
-        w->y + viewportWidget->top + 1,
-        (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1,
-        0,
-        view_x,
-        view_y,
-        view_z,
-        0,
-        -1);
+        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
+        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);

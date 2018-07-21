@@ -23,11 +23,7 @@
  *  rct2: 0x007630DE
  */
 static void facility_paint_setup(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     bool hasSupports = wooden_a_supports_paint_setup(
@@ -60,16 +56,7 @@ static void facility_paint_setup(
         uint32_t foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS)
             | session->TrackColours[SCHEME_3];
         sub_98197C(
-            session,
-            foundationImageId,
-            0,
-            0,
-            lengthX,
-            lengthY,
-            29,
-            height,
-            direction == 3 ? 28 : 2,
-            direction == 0 ? 28 : 2,
+            session, foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2,
             height);
 
         // Door image or base

@@ -301,13 +301,8 @@ void virtual_floor_paint(paint_session* session)
     uint8_t litEdges = 0;
 
     virtual_floor_get_tile_properties(
-        session->MapPosition.x,
-        session->MapPosition.y,
-        virtualFloorClipHeight,
-        &weAreOccupied,
-        &occupiedEdges,
-        &weAreBelowGround,
-        &weAreLit);
+        session->MapPosition.x, session->MapPosition.y, virtualFloorClipHeight, &weAreOccupied, &occupiedEdges,
+        &weAreBelowGround, &weAreLit);
 
     // Move the bits around to match the current rotation
     occupiedEdges |= occupiedEdges << 4;
@@ -328,12 +323,7 @@ void virtual_floor_paint(paint_session* session)
         bool theyAreLit;
 
         virtual_floor_get_tile_properties(
-            theirLocationX,
-            theirLocationY,
-            virtualFloorClipHeight,
-            &theyAreOccupied,
-            &theirOccupiedEdges,
-            &theyAreBelowGround,
+            theirLocationX, theirLocationY, virtualFloorClipHeight, &theyAreOccupied, &theirOccupiedEdges, &theyAreBelowGround,
             &theyAreLit);
 
         if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % 4)))
@@ -363,61 +353,29 @@ void virtual_floor_paint(paint_session* session)
     {
         sub_98197C(
             session,
-            SPR_G2_SELECTION_EDGE_NE | (!(occupiedEdges & 0x1) ? ((litEdges & 0x1) ? remap_lit : remap_base) : remap_edge),
-            0,
-            0,
-            0,
-            0,
-            1,
-            _virtualFloorHeight,
-            5,
-            5,
-            _virtualFloorHeight + ((dullEdges & 0x1) ? -2 : 0));
+            SPR_G2_SELECTION_EDGE_NE | (!(occupiedEdges & 0x1) ? ((litEdges & 0x1) ? remap_lit : remap_base) : remap_edge), 0,
+            0, 0, 0, 1, _virtualFloorHeight, 5, 5, _virtualFloorHeight + ((dullEdges & 0x1) ? -2 : 0));
     }
     if (paintEdges & 0x2)
     {
         sub_98197C(
             session,
-            SPR_G2_SELECTION_EDGE_SE | (!(occupiedEdges & 0x2) ? ((litEdges & 0x2) ? remap_lit : remap_base) : remap_edge),
-            0,
-            0,
-            1,
-            1,
-            1,
-            _virtualFloorHeight,
-            16,
-            27,
-            _virtualFloorHeight + ((dullEdges & 0x2) ? -2 : 0));
+            SPR_G2_SELECTION_EDGE_SE | (!(occupiedEdges & 0x2) ? ((litEdges & 0x2) ? remap_lit : remap_base) : remap_edge), 0,
+            0, 1, 1, 1, _virtualFloorHeight, 16, 27, _virtualFloorHeight + ((dullEdges & 0x2) ? -2 : 0));
     }
     if (paintEdges & 0x4)
     {
         sub_98197C(
             session,
-            SPR_G2_SELECTION_EDGE_SW | (!(occupiedEdges & 0x4) ? ((litEdges & 0x4) ? remap_lit : remap_base) : remap_edge),
-            0,
-            0,
-            1,
-            1,
-            1,
-            _virtualFloorHeight,
-            27,
-            16,
-            _virtualFloorHeight + ((dullEdges & 0x4) ? -2 : 0));
+            SPR_G2_SELECTION_EDGE_SW | (!(occupiedEdges & 0x4) ? ((litEdges & 0x4) ? remap_lit : remap_base) : remap_edge), 0,
+            0, 1, 1, 1, _virtualFloorHeight, 27, 16, _virtualFloorHeight + ((dullEdges & 0x4) ? -2 : 0));
     }
     if (paintEdges & 0x8)
     {
         sub_98197C(
             session,
-            SPR_G2_SELECTION_EDGE_NW | (!(occupiedEdges & 0x8) ? ((litEdges & 0x8) ? remap_lit : remap_base) : remap_edge),
-            0,
-            0,
-            0,
-            0,
-            1,
-            _virtualFloorHeight,
-            5,
-            5,
-            _virtualFloorHeight + ((dullEdges & 0x8) ? -2 : 0));
+            SPR_G2_SELECTION_EDGE_NW | (!(occupiedEdges & 0x8) ? ((litEdges & 0x8) ? remap_lit : remap_base) : remap_edge), 0,
+            0, 0, 0, 1, _virtualFloorHeight, 5, 5, _virtualFloorHeight + ((dullEdges & 0x8) ? -2 : 0));
     }
 
     if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_GLASSY)

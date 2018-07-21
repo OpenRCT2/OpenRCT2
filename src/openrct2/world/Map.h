@@ -171,14 +171,7 @@ using CLEAR_FUNC = int32_t (*)(rct_tile_element** tile_element, int32_t x, int32
 int32_t map_place_non_scenery_clear_func(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
 int32_t map_place_scenery_clear_func(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
 bool map_can_construct_with_clear_at(
-    int32_t x,
-    int32_t y,
-    int32_t zLow,
-    int32_t zHigh,
-    CLEAR_FUNC clearFunc,
-    uint8_t bl,
-    uint8_t flags,
-    money32* price,
+    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, uint8_t bl, uint8_t flags, money32* price,
     uint8_t crossingMode);
 int32_t map_can_construct_at(int32_t x, int32_t y, int32_t zLow, int32_t zHigh, uint8_t bl);
 void rotate_map_coordinates(int16_t* x, int16_t* y, int32_t rotation);
@@ -187,15 +180,8 @@ money32 map_clear_scenery(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_
 money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flags);
 money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flags);
 money32 wall_place(
-    int32_t type,
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t edge,
-    int32_t primaryColour,
-    int32_t secondaryColour,
-    int32_t tertiaryColour,
-    int32_t flags);
+    int32_t type, int32_t x, int32_t y, int32_t z, int32_t edge, int32_t primaryColour, int32_t secondaryColour,
+    int32_t tertiaryColour, int32_t flags);
 
 void game_command_set_land_height(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
@@ -285,14 +271,7 @@ void map_clear_all_elements();
 
 rct_tile_element* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence);
 bool map_large_scenery_get_origin(
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t direction,
-    int32_t sequence,
-    int32_t* outX,
-    int32_t* outY,
-    int32_t* outZ,
+    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
     rct_tile_element** outElement);
 
 void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t offsetY, uint8_t rotation);

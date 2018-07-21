@@ -296,12 +296,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 // TODO: This should probably be 'NEW'
                 window_text_input_open(
-                    w,
-                    widgetIndex,
-                    STR_TITLE_EDITOR_ACTION_DUPLICATE,
-                    STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE,
-                    STR_NONE,
-                    0,
+                    w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_NONE, 0,
                     64);
             }
             break;
@@ -309,13 +304,8 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (!commandEditorOpen && _editingTitleSequence != nullptr)
             {
                 window_text_input_open(
-                    w,
-                    widgetIndex,
-                    STR_TITLE_EDITOR_ACTION_DUPLICATE,
-                    STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE,
-                    STR_STRING,
-                    (uintptr_t)_sequenceName,
-                    64);
+                    w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING,
+                    (uintptr_t)_sequenceName, 64);
             }
             break;
         case WIDX_TITLE_EDITOR_DELETE_BUTTON:
@@ -329,13 +319,8 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit() && _editingTitleSequence != nullptr)
             {
                 window_text_input_open(
-                    w,
-                    widgetIndex,
-                    STR_TRACK_MANAGE_RENAME,
-                    STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE,
-                    STR_STRING,
-                    (uintptr_t)_sequenceName,
-                    64);
+                    w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_STRING,
+                    (uintptr_t)_sequenceName, 64);
             }
             break;
 
@@ -370,13 +355,8 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 if (w->selected_list_item != -1)
                 {
                     window_text_input_open(
-                        w,
-                        widgetIndex,
-                        STR_FILEBROWSER_RENAME_SAVE_TITLE,
-                        STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE,
-                        STR_STRING,
-                        (uintptr_t)_editingTitleSequence->Saves[w->selected_list_item],
-                        52 - 1);
+                        w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING,
+                        (uintptr_t)_editingTitleSequence->Saves[w->selected_list_item], 52 - 1);
                 }
             }
             break;
@@ -572,14 +552,8 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
 
                 widget--;
                 window_dropdown_show_text_custom_width(
-                    w->x + widget->left,
-                    w->y + widget->top,
-                    widget->bottom - widget->top + 1,
-                    w->colours[1],
-                    0,
-                    DROPDOWN_FLAG_STAY_OPEN,
-                    numItems,
-                    widget->right - widget->left - 3);
+                    w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
                 dropdown_set_checked((int32_t)_selectedTitleSequence, true);
             }
             break;
@@ -855,17 +829,10 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
             set_format_arg(0, uintptr_t, _sequenceName);
             gfx_draw_string_left(
-                dpi,
-                STR_TITLE_SEQUENCE,
-                nullptr,
-                w->colours[1],
-                w->x + 10,
+                dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1], w->x + 10,
                 w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1);
             gfx_draw_string_left_clipped(
-                dpi,
-                STR_STRING,
-                gCommonFormatArgs,
-                w->colours[1],
+                dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
                 w->x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
                 w->y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top,
                 w->x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
@@ -921,11 +888,7 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
         else if (i & 1)
         {
             gfx_fill_rect(
-                dpi,
-                x,
-                y,
-                x + SCROLL_WIDTH + 100,
-                y + SCROLLABLE_ROW_HEIGHT - 1,
+                dpi, x, y, x + SCROLL_WIDTH + 100, y + SCROLLABLE_ROW_HEIGHT - 1,
                 ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
@@ -975,11 +938,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
         else if (i & 1)
         {
             gfx_fill_rect(
-                dpi,
-                x,
-                y,
-                x + SCROLL_WIDTH + 100,
-                y + SCROLLABLE_ROW_HEIGHT - 1,
+                dpi, x, y, x + SCROLL_WIDTH + 100, y + SCROLLABLE_ROW_HEIGHT - 1,
                 ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
@@ -1107,11 +1066,8 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo* dpi, rct_wind
             y = 1;
         }
         gfx_draw_sprite(
-            dpi,
-            spriteId,
-            w->x + w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].left + x,
-            w->y + w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].top + y,
-            0);
+            dpi, spriteId, w->x + w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].left + x,
+            w->y + w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].top + y, 0);
     }
 }
 
@@ -1186,13 +1142,8 @@ static void window_title_editor_add_park_callback(int32_t result, const utf8* pa
         // set_format_arg(0, intptr_t, (intptr_t)&_renameSavePath);
         rct_window* w = window_find_by_class(WC_TITLE_EDITOR);
         window_text_input_open(
-            w,
-            WIDX_TITLE_EDITOR_RENAME_SAVE,
-            STR_FILEBROWSER_RENAME_SAVE_TITLE,
-            STR_ERROR_EXISTING_NAME,
-            STR_STRING,
-            (uintptr_t)_renameSavePath,
-            52 - 1);
+            w, WIDX_TITLE_EDITOR_RENAME_SAVE, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, STR_STRING,
+            (uintptr_t)_renameSavePath, 52 - 1);
         return;
     }
 

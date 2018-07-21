@@ -42,8 +42,7 @@ void currency_load_custom_currency_config()
     if (gConfigGeneral.custom_currency_symbol != nullptr)
     {
         safe_strcpy(
-            CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
-            gConfigGeneral.custom_currency_symbol,
+            CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol,
             CURRENCY_SYMBOL_MAX_SIZE);
     }
 }

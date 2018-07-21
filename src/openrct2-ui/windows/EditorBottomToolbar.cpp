@@ -129,12 +129,7 @@ static constexpr const rct_string_id EditorStepNames[] = {
 rct_window* window_editor_bottom_toolbar_open()
 {
     rct_window* window = window_create(
-        0,
-        context_get_height() - 32,
-        context_get_width(),
-        32,
-        &window_editor_bottom_toolbar_events,
-        WC_BOTTOM_TOOLBAR,
+        0, context_get_height() - 32, context_get_width(), 32, &window_editor_bottom_toolbar_events, WC_BOTTOM_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_editor_bottom_toolbar_widgets;
 
@@ -424,23 +419,19 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (drawPreviousButton)
         {
             gfx_filter_rect(
-                dpi,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + w->x,
+                dpi, window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + w->x,
                 window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + w->y,
                 window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right + w->x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->y,
-                PALETTE_51);
+                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom + w->y, PALETTE_51);
         }
 
         if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         {
             gfx_filter_rect(
-                dpi,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + w->x,
+                dpi, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + w->x,
                 window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + w->y,
                 window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right + w->x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom + w->y,
-                PALETTE_51);
+                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom + w->y, PALETTE_51);
         }
     }
 
@@ -451,25 +442,19 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (drawPreviousButton)
         {
             gfx_fill_rect_inset(
-                dpi,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1 + w->x,
+                dpi, window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1 + w->x,
                 window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 1 + w->y,
                 window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right - 1 + w->x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 + w->y,
-                w->colours[1],
-                INSET_RECT_F_30);
+                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 + w->y, w->colours[1], INSET_RECT_F_30);
         }
 
         if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         {
             gfx_fill_rect_inset(
-                dpi,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + 1 + w->x,
+                dpi, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + 1 + w->x,
                 window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 1 + w->y,
                 window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 1 + w->x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom - 1 + w->y,
-                w->colours[1],
-                INSET_RECT_F_30);
+                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom - 1 + w->y, w->colours[1], INSET_RECT_F_30);
         }
 
         int16_t stateX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right
@@ -478,21 +463,14 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + w->x;
         int16_t stateY = w->height - 0x0C + w->y;
         gfx_draw_string_centred(
-            dpi,
-            EditorStepNames[gS6Info.editor_step],
-            stateX,
-            stateY,
-            NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE,
+            dpi, EditorStepNames[gS6Info.editor_step], stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE,
             nullptr);
 
         if (drawPreviousButton)
         {
             gfx_draw_sprite(
-                dpi,
-                SPR_PREVIOUS,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6 + w->x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y,
-                0);
+                dpi, SPR_PREVIOUS, window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6 + w->x,
+                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->y, 0);
 
             int32_t textColour = NOT_TRANSLUCENT(w->colours[1]);
             if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR
@@ -518,11 +496,8 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         {
             gfx_draw_sprite(
-                dpi,
-                SPR_NEXT,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29 + w->x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y,
-                0);
+                dpi, SPR_NEXT, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29 + w->x,
+                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->y, 0);
 
             int32_t textColour = NOT_TRANSLUCENT(w->colours[1]);
 

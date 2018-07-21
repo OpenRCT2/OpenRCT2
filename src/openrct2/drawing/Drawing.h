@@ -304,23 +304,11 @@ uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count
 void gfx_object_free_images(uint32_t baseImageId, uint32_t count);
 void gfx_object_check_all_images_freed();
 void FASTCALL gfx_bmp_sprite_to_buffer(
-    const uint8_t* palette_pointer,
-    uint8_t* source_pointer,
-    uint8_t* dest_pointer,
-    const rct_g1_element* source_image,
-    rct_drawpixelinfo* dest_dpi,
-    int32_t height,
-    int32_t width,
-    int32_t image_type);
+    const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
+    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, int32_t image_type);
 void FASTCALL gfx_rle_sprite_to_buffer(
-    const uint8_t* RESTRICT source_bits_pointer,
-    uint8_t* RESTRICT dest_bits_pointer,
-    const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi,
-    int32_t image_type,
-    int32_t source_y_start,
-    int32_t height,
-    int32_t source_x_start,
+    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
+    const rct_drawpixelinfo* RESTRICT dpi, int32_t image_type, int32_t source_y_start, int32_t height, int32_t source_x_start,
     int32_t width);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour);
 void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint8_t* palette);
@@ -364,21 +352,10 @@ void gfx_draw_string_left_centred(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, int32_t x, int32_t y);
 void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t numLines, char* text);
 void gfx_draw_string_centred_wrapped_partial(
-    rct_drawpixelinfo* dpi,
-    int32_t x,
-    int32_t y,
-    int32_t width,
-    int32_t colour,
-    rct_string_id format,
-    void* args,
+    rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t colour, rct_string_id format, void* args,
     int32_t ticks);
 void gfx_draw_string_with_y_offsets(
-    rct_drawpixelinfo* dpi,
-    const utf8* text,
-    int32_t colour,
-    int32_t x,
-    int32_t y,
-    const int8_t* yOffsets,
+    rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, int32_t x, int32_t y, const int8_t* yOffsets,
     bool forceSpriteFont);
 
 int32_t gfx_wrap_string(char* buffer, int32_t width, int32_t* num_lines, int32_t* font_height);
@@ -397,43 +374,19 @@ rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id);
 size_t g1_calculate_data_size(const rct_g1_element* g1);
 
 void mask_scalar(
-    int32_t width,
-    int32_t height,
-    const uint8_t* RESTRICT maskSrc,
-    const uint8_t* RESTRICT colourSrc,
-    uint8_t* RESTRICT dst,
-    int32_t maskWrap,
-    int32_t colourWrap,
-    int32_t dstWrap);
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 void mask_sse4_1(
-    int32_t width,
-    int32_t height,
-    const uint8_t* RESTRICT maskSrc,
-    const uint8_t* RESTRICT colourSrc,
-    uint8_t* RESTRICT dst,
-    int32_t maskWrap,
-    int32_t colourWrap,
-    int32_t dstWrap);
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 void mask_avx2(
-    int32_t width,
-    int32_t height,
-    const uint8_t* RESTRICT maskSrc,
-    const uint8_t* RESTRICT colourSrc,
-    uint8_t* RESTRICT dst,
-    int32_t maskWrap,
-    int32_t colourWrap,
-    int32_t dstWrap);
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 void mask_init();
 
 extern void (*mask_fn)(
-    int32_t width,
-    int32_t height,
-    const uint8_t* RESTRICT maskSrc,
-    const uint8_t* RESTRICT colourSrc,
-    uint8_t* RESTRICT dst,
-    int32_t maskWrap,
-    int32_t colourWrap,
-    int32_t dstWrap);
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap);
 
 #include "NewDrawing.h"
 

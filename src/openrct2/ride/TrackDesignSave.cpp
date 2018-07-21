@@ -276,12 +276,7 @@ static void track_design_save_push_tile_element(int32_t x, int32_t y, rct_tile_e
  *  rct2: 0x006D2FA7
  */
 static void track_design_save_push_tile_element_desc(
-    const rct_object_entry* entry,
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    uint8_t flags,
-    uint8_t primaryColour,
+    const rct_object_entry* entry, int32_t x, int32_t y, int32_t z, uint8_t flags, uint8_t primaryColour,
     uint8_t secondaryColour)
 {
     rct_td6_scenery_element* item = &_trackSavedTileElementsDesc[_trackSavedTileElementsDescCount++];
@@ -442,8 +437,7 @@ static void track_design_save_pop_tile_element(int32_t x, int32_t y, rct_tile_el
         if (remainingNumItems > 0)
         {
             memmove(
-                &_trackSavedTileElements[removeIndex],
-                &_trackSavedTileElements[removeIndex + 1],
+                &_trackSavedTileElements[removeIndex], &_trackSavedTileElements[removeIndex + 1],
                 remainingNumItems * sizeof(rct_tile_element*));
         }
         _trackSavedTileElementsCount--;
@@ -482,8 +476,7 @@ static void track_design_save_pop_tile_element_desc(
         if (remainingNumItems > 0)
         {
             memmove(
-                &_trackSavedTileElementsDesc[removeIndex],
-                &_trackSavedTileElementsDesc[removeIndex + 1],
+                &_trackSavedTileElementsDesc[removeIndex], &_trackSavedTileElementsDesc[removeIndex + 1],
                 remainingNumItems * sizeof(rct_td6_scenery_element));
         }
         _trackSavedTileElementsDescCount--;
@@ -1298,8 +1291,7 @@ bool track_design_save_to_file(const utf8* path)
             &td6Buffer, td6->track_elements, track_design_get_track_elements_count(td6) * sizeof(rct_td6_track_element));
         auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
         auto_buffer_write(
-            &td6Buffer,
-            td6->entrance_elements,
+            &td6Buffer, td6->entrance_elements,
             track_design_get_entrance_elements_count(td6) * sizeof(rct_td6_entrance_element));
         auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
     }

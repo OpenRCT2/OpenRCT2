@@ -194,11 +194,7 @@ static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical_suppor
 };
 
 static void paint_reverse_freefall_rc_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (direction & 1)
@@ -220,11 +216,7 @@ static void paint_reverse_freefall_rc_flat(
 }
 
 static void paint_reverse_freefall_rc_station(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     Ride* ride = get_ride(rideIndex);
@@ -266,11 +258,7 @@ static void paint_reverse_freefall_rc_station(
 }
 
 static void paint_reverse_freefall_rc_slope(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     TESTPAINT_IGNORE_ALL();
@@ -335,34 +323,14 @@ static void paint_reverse_freefall_rc_slope(
                 }
                 sub_98197C(session, floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
                 sub_98199C_rotated(
-                    session,
-                    direction,
-                    supportsImageId,
-                    0,
-                    0,
-                    isDirection03 ? 26 : 18,
-                    26,
-                    126,
-                    height,
-                    isDirection03 ? 3 : 11,
-                    3,
-                    height);
+                    session, direction, supportsImageId, 0, 0, isDirection03 ? 26 : 18, 26, 126, height, isDirection03 ? 3 : 11,
+                    3, height);
             }
             else
             {
                 sub_98197C_rotated(
-                    session,
-                    direction,
-                    supportsImageId,
-                    0,
-                    0,
-                    isDirection03 ? 26 : 18,
-                    26,
-                    126,
-                    height,
-                    isDirection03 ? 3 : 11,
-                    3,
-                    height);
+                    session, direction, supportsImageId, 0, 0, isDirection03 ? 26 : 18, 26, 126, height, isDirection03 ? 3 : 11,
+                    3, height);
             }
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
@@ -386,11 +354,7 @@ static void paint_reverse_freefall_rc_slope(
 }
 
 static void paint_reverse_freefall_rc_vertical(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint32_t supportsImageId, trackImageId;

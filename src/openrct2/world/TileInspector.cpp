@@ -676,14 +676,12 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
         {
             case ENTRANCE_TYPE_RIDE_ENTRANCE:
                 ride_set_entrance_location(
-                    ride,
-                    stationIndex,
+                    ride, stationIndex,
                     { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
                 break;
             case ENTRANCE_TYPE_RIDE_EXIT:
                 ride_set_exit_location(
-                    ride,
-                    stationIndex,
+                    ride, stationIndex,
                     { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
                 break;
         }

@@ -183,11 +183,7 @@ static void window_track_manage_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_RENAME:
             window_text_input_raw_open(
-                w,
-                widgetIndex,
-                STR_TRACK_DESIGN_RENAME_TITLE,
-                STR_TRACK_DESIGN_RENAME_DESC,
-                _trackDesignFileReference->name,
+                w, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, _trackDesignFileReference->name,
                 127);
             break;
         case WIDX_DELETE:
@@ -252,13 +248,8 @@ static void window_track_delete_prompt_open()
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
     rct_window* w = window_create(
-        std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2),
-        (screenHeight - 44) / 2,
-        250,
-        74,
-        &window_track_delete_prompt_events,
-        WC_TRACK_DELETE_PROMPT,
-        WF_STICK_TO_FRONT);
+        std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2), (screenHeight - 44) / 2, 250, 74,
+        &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_track_delete_prompt_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RENAME) | (1 << WIDX_DELETE);
     window_init_scroll_widgets(w);
@@ -301,13 +292,8 @@ static void window_track_delete_prompt_paint(rct_window* w, rct_drawpixelinfo* d
     window_draw_widgets(w, dpi);
 
     gfx_draw_string_centred_wrapped(
-        dpi,
-        &_trackDesignFileReference->name,
-        w->x + 125,
-        w->y + 28,
-        246,
-        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK,
-        COLOUR_BLACK);
+        dpi, &_trackDesignFileReference->name, w->x + 125, w->y + 28, 246,
+        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, COLOUR_BLACK);
 }
 
 static void window_track_design_list_reload_tracks()

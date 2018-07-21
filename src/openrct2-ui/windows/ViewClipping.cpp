@@ -427,11 +427,7 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Height label is Units.
                 clipHeightValueInUnits = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
                 gfx_draw_string_left(
-                    dpi,
-                    STR_UNIT1DP_NO_SUFFIX,
-                    &clipHeightValueInUnits,
-                    w->colours[0],
-                    x,
+                    dpi, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits, w->colours[0], x,
                     y); // Printing the value in Height Units.
             }
             else

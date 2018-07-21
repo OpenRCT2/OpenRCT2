@@ -188,100 +188,39 @@ extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
 paint_struct* sub_98196C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset);
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset);
 paint_struct* sub_98197C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z);
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 paint_struct* sub_98198C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z);
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 paint_struct* sub_98199C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z);
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 
 paint_struct* sub_98196C_rotated(
-    paint_session* session,
-    uint8_t direction,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset);
+    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset);
 paint_struct* sub_98197C_rotated(
-    paint_session* session,
-    uint8_t direction,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z);
+    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 paint_struct* sub_98199C_rotated(
-    paint_session* session,
-    uint8_t direction,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z);
+    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z);
 
 void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type);
 
 bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y);
 bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y);
 void paint_floating_money_effect(
-    paint_session* session,
-    money32 amount,
-    rct_string_id string_id,
-    int16_t y,
-    int16_t z,
-    int8_t y_offsets[],
-    int16_t offset_x,
+    paint_session* session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
     uint32_t rotation);
 
 paint_session* paint_session_alloc(rct_drawpixelinfo* dpi);

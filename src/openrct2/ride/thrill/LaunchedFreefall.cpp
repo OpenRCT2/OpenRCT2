@@ -24,21 +24,15 @@ enum
     SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP = 14566,
 };
 
-static constexpr const uint32_t launched_freefall_fence_sprites[] = {
-    SPR_FENCE_METAL_NE, SPR_FENCE_METAL_SE, SPR_FENCE_METAL_SW, SPR_FENCE_METAL_NW
-};
+static constexpr const uint32_t launched_freefall_fence_sprites[] = { SPR_FENCE_METAL_NE, SPR_FENCE_METAL_SE,
+                                                                      SPR_FENCE_METAL_SW, SPR_FENCE_METAL_NW };
 
 /**
  *
  *  rct2: 0x006D5FAB
  */
 void vehicle_visual_launched_freefall(
-    paint_session* session,
-    int32_t x,
-    int32_t imageDirection,
-    int32_t y,
-    int32_t z,
-    const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     int32_t image_id;
@@ -91,11 +85,7 @@ void vehicle_visual_launched_freefall(
 
 /** rct2: 0x006FD1F8 */
 static void paint_launched_freefall_base(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -110,15 +100,8 @@ static void paint_launched_freefall_base(
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(
-        session,
-        edges,
-        position,
-        tileElement,
-        ride,
-        session->TrackColours[SCHEME_TRACK],
-        height,
-        launched_freefall_fence_sprites,
-        session->CurrentRotation);
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
+        launched_freefall_fence_sprites, session->CurrentRotation);
 
     if (trackSequence == 0)
     {
@@ -176,11 +159,7 @@ static void paint_launched_freefall_base(
 
 /** rct2: 0x006FD208 */
 static void paint_launched_freefall_tower_section(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (trackSequence == 1)

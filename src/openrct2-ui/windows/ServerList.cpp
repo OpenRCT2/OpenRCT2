@@ -541,9 +541,8 @@ static void server_list_save_server_entries()
     // Save just favourite servers
     std::vector<server_entry> favouriteServers;
     std::copy_if(
-        _serverEntries.begin(), _serverEntries.end(), std::back_inserter(favouriteServers), [](const server_entry& entry) {
-            return entry.favourite;
-        });
+        _serverEntries.begin(), _serverEntries.end(), std::back_inserter(favouriteServers),
+        [](const server_entry& entry) { return entry.favourite; });
     server_list_write(favouriteServers);
 }
 

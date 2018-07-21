@@ -226,13 +226,8 @@ void scenery_remove_ghost_tool_placement()
                 continue;
 
             game_do_command(
-                x,
-                233 | (gSceneryPlacePathSlope << 8),
-                y,
-                z | (gSceneryPlacePathType << 8),
-                GAME_COMMAND_PLACE_PATH,
-                gSceneryGhostPathObjectType & 0xFFFF0000,
-                0);
+                x, 233 | (gSceneryPlacePathSlope << 8), y, z | (gSceneryPlacePathType << 8), GAME_COMMAND_PLACE_PATH,
+                gSceneryGhostPathObjectType & 0xFFFF0000, 0);
             break;
         } while (!(tileElement++)->IsLastForTile());
     }

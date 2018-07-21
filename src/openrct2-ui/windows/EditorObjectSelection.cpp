@@ -606,12 +606,8 @@ void window_editor_object_selection_mousedown(rct_window* w, rct_widgetindex wid
             }
 
             window_dropdown_show_text(
-                w->x + widget->left,
-                w->y + widget->top,
-                widget->bottom - widget->top + 1,
-                w->colours[widget->colour],
-                DROPDOWN_FLAG_STAY_OPEN,
-                _numSourceGameItems + numSelectionItems);
+                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[widget->colour],
+                DROPDOWN_FLAG_STAY_OPEN, _numSourceGameItems + numSelectionItems);
 
             for (int32_t i = 0; i < _numSourceGameItems; i++)
             {
@@ -1005,11 +1001,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
     gfx_fill_rect(
-        dpi,
-        w->x + widget->left + 1,
-        w->y + widget->top + 1,
-        w->x + widget->right - 1,
-        w->y + widget->bottom - 1,
+        dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1,
         ColourMapA[w->colours[1]].darkest);
 
     // Draw number of selected items
@@ -1034,12 +1026,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         stringId = _listSortType == RIDE_SORT_TYPE ? (_listSortDescending ? STR_DOWN : STR_UP) : STR_NONE;
         gfx_draw_string_left_clipped(
-            dpi,
-            STR_OBJECTS_SORT_TYPE,
-            &stringId,
-            w->colours[1],
-            w->x + widget->left + 1,
-            w->y + widget->top + 1,
+            dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1,
             widget->right - widget->left);
     }
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
@@ -1047,12 +1034,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         stringId = _listSortType == RIDE_SORT_RIDE ? (_listSortDescending ? STR_DOWN : STR_UP) : STR_NONE;
         gfx_draw_string_left_clipped(
-            dpi,
-            STR_OBJECTS_SORT_RIDE,
-            &stringId,
-            w->colours[1],
-            w->x + widget->left + 1,
-            w->y + widget->top + 1,
+            dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], w->x + widget->left + 1, w->y + widget->top + 1,
             widget->right - widget->left);
     }
 

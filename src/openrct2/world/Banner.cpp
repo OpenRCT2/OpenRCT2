@@ -165,13 +165,7 @@ static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t
 }
 
 static money32 BannerPlace(
-    int16_t x,
-    int16_t y,
-    uint8_t pathBaseHeight,
-    uint8_t direction,
-    uint8_t colour,
-    uint8_t type,
-    BannerIndex* bannerIndex,
+    int16_t x, int16_t y, uint8_t pathBaseHeight, uint8_t direction, uint8_t colour, uint8_t type, BannerIndex* bannerIndex,
     uint8_t flags)
 {
     gCommandPosition.x = x + 16;
@@ -492,10 +486,7 @@ void fix_duplicated_banners()
                     if (activeBanners[bannerIndex])
                     {
                         log_info(
-                            "Duplicated banner with index %d found at x = %d, y = %d and z = %d.",
-                            bannerIndex,
-                            x,
-                            y,
+                            "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
                             tileElement->base_height);
 
                         // Banner index is already in use by another banner, so duplicate it
@@ -544,12 +535,7 @@ void fix_duplicated_banners()
  *  rct2: 0x006BA058
  */
 void game_command_remove_banner(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = BannerRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebx & 0xFF);
@@ -560,12 +546,7 @@ void game_command_remove_banner(
  *  rct2: 0x006BA16A
  */
 void game_command_set_banner_colour(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     int32_t* ebp)
 {
     *ebx = BannerSetColour(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF, *ebx & 0xFF);
@@ -579,23 +560,12 @@ void game_command_place_banner(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = BannerPlace(
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        *edx & 0xFF,
-        (*edx >> 8) & 0xFF,
-        *ebp & 0xFF,
-        (*ebx >> 8) & 0xFF,
-        (BannerIndex*)edi,
+        *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF, (*ebx >> 8) & 0xFF, (BannerIndex*)edi,
         *ebx & 0xFF);
 }
 
 void game_command_set_banner_style(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     int32_t* ebp)
 {
     *ebx = BannerSetStyle(*ecx & 0xFF, *edx & 0xFF, *edi & 0xFF, *ebp & 0xFF, *ebx & 0xFF);

@@ -509,8 +509,7 @@ private:
                         func(i);
                     }
                 },
-                begin,
-                end);
+                begin, end);
         }
         for (auto& t : threads)
         {

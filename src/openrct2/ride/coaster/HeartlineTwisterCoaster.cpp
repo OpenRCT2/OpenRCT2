@@ -21,11 +21,7 @@
 
 /** rct2: 0x0087694C */
 static void heartline_twister_rc_track_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -90,11 +86,7 @@ static void heartline_twister_rc_track_flat(
 }
 
 static void heartline_twister_rc_track_station(
-    paint_session* session,
-    uint8_t rideIndex,
-    [[maybe_unused]] uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
@@ -105,17 +97,7 @@ static void heartline_twister_rc_track_station(
     };
 
     sub_98197C_rotated(
-        session,
-        direction,
-        imageIds[direction][0] | session->TrackColours[SCHEME_TRACK],
-        0,
-        0,
-        32,
-        20,
-        1,
-        height,
-        0,
-        6,
+        session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
         height + 3);
     sub_98196C_rotated(
         session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
@@ -128,11 +110,7 @@ static void heartline_twister_rc_track_station(
 
 /** rct2: 0x0087695C */
 static void heartline_twister_rc_track_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -217,11 +195,7 @@ static void heartline_twister_rc_track_25_deg_up(
 
 /** rct2: 0x008769FC */
 static void heartline_twister_rc_track_60_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -306,11 +280,7 @@ static void heartline_twister_rc_track_60_deg_up(
 
 /** rct2: 0x0087696C */
 static void heartline_twister_rc_track_flat_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -395,11 +365,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(
 
 /** rct2: 0x008769BC */
 static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -484,11 +450,7 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(
 
 /** rct2: 0x008769CC */
 static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -573,11 +535,7 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(
 
 /** rct2: 0x0087697C */
 static void heartline_twister_rc_track_25_deg_up_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -662,11 +620,7 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(
 
 /** rct2: 0x0087698C */
 static void heartline_twister_rc_track_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     heartline_twister_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -674,11 +628,7 @@ static void heartline_twister_rc_track_25_deg_down(
 
 /** rct2: 0x00876A0C */
 static void heartline_twister_rc_track_60_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     heartline_twister_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -686,11 +636,7 @@ static void heartline_twister_rc_track_60_deg_down(
 
 /** rct2: 0x0087699C */
 static void heartline_twister_rc_track_flat_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     heartline_twister_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -698,11 +644,7 @@ static void heartline_twister_rc_track_flat_to_25_deg_down(
 
 /** rct2: 0x008769DC */
 static void heartline_twister_rc_track_25_deg_down_to_60_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     heartline_twister_rc_track_60_deg_up_to_25_deg_up(
@@ -711,11 +653,7 @@ static void heartline_twister_rc_track_25_deg_down_to_60_deg_down(
 
 /** rct2: 0x008769EC */
 static void heartline_twister_rc_track_60_deg_down_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     heartline_twister_rc_track_25_deg_up_to_60_deg_up(
@@ -724,11 +662,7 @@ static void heartline_twister_rc_track_60_deg_down_to_25_deg_down(
 
 /** rct2: 0x008769AC */
 static void heartline_twister_rc_track_25_deg_down_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     heartline_twister_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -736,11 +670,7 @@ static void heartline_twister_rc_track_25_deg_down_to_flat(
 
 /** rct2: 0x00876A6C */
 static void heartline_twister_rc_track_heartline_transfer_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -752,17 +682,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21306, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21310,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21310, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 23);
                     wooden_a_supports_paint_setup(session, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -770,17 +690,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21307, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21311,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21311, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 23);
                     wooden_a_supports_paint_setup(session, 7, 2, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -788,17 +698,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21308, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21312,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21312, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 23);
                     wooden_a_supports_paint_setup(session, 6, 3, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -806,17 +706,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21309, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21313,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21313, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 23);
                     wooden_a_supports_paint_setup(session, 7, 4, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -837,221 +727,61 @@ static void heartline_twister_rc_track_heartline_transfer_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21314,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21314, 0, 0, 32, 20, 2, height + 8, 0, 6,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21308,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 16,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21308, 0, 0, 32, 20, 2, height + 16, 0, 6,
                         height + 16);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21318,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21318, 0, 0, 32, 1, 34, height + 8, 0, 27,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21312,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 16,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21312, 0, 0, 32, 1, 34, height + 16, 0, 27,
                         height + 16);
                     wooden_a_supports_paint_setup(session, 6, 5, height + 8, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21315,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21315, 0, 0, 32, 20, 2, height + 8, 0, 6,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21309,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 16,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21309, 0, 0, 32, 20, 2, height + 16, 0, 6,
                         height + 16);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21319,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21319, 0, 0, 32, 1, 34, height + 8, 0, 27,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21313,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 16,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21313, 0, 0, 32, 1, 34, height + 16, 0, 27,
                         height + 16);
                     wooden_a_supports_paint_setup(session, 7, 6, height + 8, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21316,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21316, 0, 0, 32, 20, 2, height + 8, 0, 6,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21306,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 16,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21306, 0, 0, 32, 20, 2, height + 16, 0, 6,
                         height + 16);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21320,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21320, 0, 0, 32, 1, 34, height + 8, 0, 27,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21310,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 16,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21310, 0, 0, 32, 1, 34, height + 16, 0, 27,
                         height + 16);
                     wooden_a_supports_paint_setup(session, 6, 7, height + 8, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21317,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21317, 0, 0, 32, 20, 2, height + 8, 0, 6,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21307,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 16,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21307, 0, 0, 32, 20, 2, height + 16, 0, 6,
                         height + 16);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21321,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21321, 0, 0, 32, 1, 34, height + 8, 0, 27,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21311,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 16,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21311, 0, 0, 32, 1, 34, height + 16, 0, 27,
                         height + 16);
                     wooden_a_supports_paint_setup(session, 7, 8, height + 8, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1066,17 +796,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21298, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21302,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21302, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1084,17 +804,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21299, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21303,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21303, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1102,17 +812,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21300, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21304,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21304, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1120,17 +820,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21301, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21305,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21305, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1143,114 +833,34 @@ static void heartline_twister_rc_track_heartline_transfer_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21316,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height - 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21316, 0, 0, 32, 20, 2, height - 8, 0, 6,
                         height - 7);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21320,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height - 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21320, 0, 0, 32, 1, 34, height - 8, 0, 27,
                         height - 8);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21317,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height - 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21317, 0, 0, 32, 20, 2, height - 8, 0, 6,
                         height - 7);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21321,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height - 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21321, 0, 0, 32, 1, 34, height - 8, 0, 27,
                         height - 8);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21314,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height - 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21314, 0, 0, 32, 20, 2, height - 8, 0, 6,
                         height - 7);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21318,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height - 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21318, 0, 0, 32, 1, 34, height - 8, 0, 27,
                         height - 8);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21315,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height - 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21315, 0, 0, 32, 20, 2, height - 8, 0, 6,
                         height - 7);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21319,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height - 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21319, 0, 0, 32, 1, 34, height - 8, 0, 27,
                         height - 8);
                     break;
             }
@@ -1270,11 +880,7 @@ static void heartline_twister_rc_track_heartline_transfer_up(
 
 /** rct2: 0x00876A7C */
 static void heartline_twister_rc_track_heartline_transfer_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -1284,114 +890,34 @@ static void heartline_twister_rc_track_heartline_transfer_down(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21316,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height - 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21316, 0, 0, 32, 20, 2, height - 8, 0, 6,
                         height - 7);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21320,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height - 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21320, 0, 0, 32, 1, 34, height - 8, 0, 27,
                         height - 8);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21317,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height - 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21317, 0, 0, 32, 20, 2, height - 8, 0, 6,
                         height - 7);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21321,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height - 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21321, 0, 0, 32, 1, 34, height - 8, 0, 27,
                         height - 8);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21314,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height - 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21314, 0, 0, 32, 20, 2, height - 8, 0, 6,
                         height - 7);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21318,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height - 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21318, 0, 0, 32, 1, 34, height - 8, 0, 27,
                         height - 8);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21315,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height - 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21315, 0, 0, 32, 20, 2, height - 8, 0, 6,
                         height - 7);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21319,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height - 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21319, 0, 0, 32, 1, 34, height - 8, 0, 27,
                         height - 8);
                     break;
             }
@@ -1411,221 +937,61 @@ static void heartline_twister_rc_track_heartline_transfer_down(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21314,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21314, 0, 0, 32, 20, 2, height + 8, 0, 6,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21308,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 16,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21308, 0, 0, 32, 20, 2, height + 16, 0, 6,
                         height + 16);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21318,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21318, 0, 0, 32, 1, 34, height + 8, 0, 27,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21312,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 16,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21312, 0, 0, 32, 1, 34, height + 16, 0, 27,
                         height + 16);
                     wooden_a_supports_paint_setup(session, 6, 5, height + 8, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21315,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21315, 0, 0, 32, 20, 2, height + 8, 0, 6,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21309,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 16,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21309, 0, 0, 32, 20, 2, height + 16, 0, 6,
                         height + 16);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21319,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21319, 0, 0, 32, 1, 34, height + 8, 0, 27,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21313,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 16,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21313, 0, 0, 32, 1, 34, height + 16, 0, 27,
                         height + 16);
                     wooden_a_supports_paint_setup(session, 7, 6, height + 8, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21316,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21316, 0, 0, 32, 20, 2, height + 8, 0, 6,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21306,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 16,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21306, 0, 0, 32, 20, 2, height + 16, 0, 6,
                         height + 16);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21320,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21320, 0, 0, 32, 1, 34, height + 8, 0, 27,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21310,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 16,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21310, 0, 0, 32, 1, 34, height + 16, 0, 27,
                         height + 16);
                     wooden_a_supports_paint_setup(session, 6, 7, height + 8, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21317,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 8,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21317, 0, 0, 32, 20, 2, height + 8, 0, 6,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21307,
-                        0,
-                        0,
-                        32,
-                        20,
-                        2,
-                        height + 16,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21307, 0, 0, 32, 20, 2, height + 16, 0, 6,
                         height + 16);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21321,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 8,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21321, 0, 0, 32, 1, 34, height + 8, 0, 27,
                         height + 8);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21311,
-                        0,
-                        0,
-                        32,
-                        1,
-                        34,
-                        height + 16,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21311, 0, 0, 32, 1, 34, height + 16, 0, 27,
                         height + 16);
                     wooden_a_supports_paint_setup(session, 7, 8, height + 8, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1640,17 +1006,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21298, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21302,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21302, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1658,17 +1014,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21299, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21303,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21303, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1676,17 +1022,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21300, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21304,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21304, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1694,17 +1030,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21301, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21305,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21305, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1719,17 +1045,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21306, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21310,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21310, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 23);
                     wooden_a_supports_paint_setup(session, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1737,17 +1053,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21307, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21311,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21311, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 23);
                     wooden_a_supports_paint_setup(session, 7, 2, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1755,17 +1061,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21308, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21312,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21312, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 23);
                     wooden_a_supports_paint_setup(session, 6, 3, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1773,17 +1069,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21309, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21313,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21313, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 23);
                     wooden_a_supports_paint_setup(session, 7, 4, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1804,11 +1090,7 @@ static void heartline_twister_rc_track_heartline_transfer_down(
 
 /** rct2: 0x00876A4C */
 static void heartline_twister_rc_track_left_heartline_roll(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -1820,17 +1102,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21410, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21422,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21422, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1838,17 +1110,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21413, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21425,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21425, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1856,17 +1118,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21416, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21428,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21428, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1874,17 +1126,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21419, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21431,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21431, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1900,17 +1142,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21411, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21423,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21423, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1918,17 +1150,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21414, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21426,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21426, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1936,17 +1158,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21417, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21429,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21429, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1954,17 +1166,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21420, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21432,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21432, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1979,17 +1181,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21412, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21424,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21424, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1997,17 +1189,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21415, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21427,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21427, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2015,17 +1197,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21418, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21430,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21430, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2033,17 +1205,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21421, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21433,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21433, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2058,17 +1220,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21418, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21430,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21430, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2076,17 +1228,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21421, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21433,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21433, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2094,17 +1236,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21412, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21424,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21424, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2112,17 +1244,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21415, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21427,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21427, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2137,17 +1259,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21417, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21429,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21429, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2155,17 +1267,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21420, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21432,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21432, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2173,17 +1275,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21411, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21423,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21423, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2191,17 +1283,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21414, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21426,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21426, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2216,17 +1298,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21416, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21428,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21428, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2234,17 +1306,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21419, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21431,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21431, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2252,17 +1314,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21410, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21422,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21422, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2270,17 +1322,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21413, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21425,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21425, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2294,11 +1336,7 @@ static void heartline_twister_rc_track_left_heartline_roll(
 
 /** rct2: 0x00876A5C */
 static void heartline_twister_rc_track_right_heartline_roll(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -2310,17 +1348,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21434, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21446,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21446, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2328,17 +1356,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21437, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21449,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21449, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2346,17 +1364,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21440, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21452,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21452, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2364,17 +1372,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21443, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21455,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21455, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2390,17 +1388,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21435, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21447,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21447, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2408,17 +1396,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21438, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21450,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21450, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2426,17 +1404,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21441, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21453,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21453, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2444,17 +1412,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21444, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21456,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21456, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2469,17 +1427,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21436, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21448,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21448, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2487,17 +1435,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21439, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21451,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21451, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2505,17 +1443,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21442, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21454,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21454, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2523,17 +1451,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21445, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21457,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21457, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2548,17 +1466,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21442, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21454,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21454, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2566,17 +1474,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21445, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21457,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21457, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2584,17 +1482,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21436, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21448,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21448, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2602,17 +1490,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21439, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21451,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21451, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2627,17 +1505,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21441, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21453,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21453, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2645,17 +1513,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21444, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21456,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21456, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2663,17 +1521,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21435, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21447,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21447, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2681,17 +1529,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21438, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21450,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21450, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2706,17 +1544,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21440, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21452,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21452, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2724,17 +1552,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21443, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21455,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21455, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2742,17 +1560,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21434, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21446,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21446, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2760,17 +1568,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
                     sub_98197C_rotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21437, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 21449,
-                        0,
-                        0,
-                        32,
-                        1,
-                        26,
-                        height,
-                        0,
-                        27,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 21449, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
                     wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;

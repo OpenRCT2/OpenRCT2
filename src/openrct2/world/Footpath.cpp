@@ -412,14 +412,7 @@ static money32 footpath_element_update(
 }
 
 static money32 footpath_place_real(
-    int32_t type,
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t slope,
-    int32_t flags,
-    uint8_t pathItemType,
-    bool clearDirection,
+    int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags, uint8_t pathItemType, bool clearDirection,
     int32_t direction)
 {
     rct_tile_element* tileElement;
@@ -610,15 +603,8 @@ void game_command_place_footpath(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = footpath_place_real(
-        (*edx >> 8) & 0xFF,
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        *edx & 0xFF,
-        (*ebx >> 8) & 0xFF,
-        *ebx & 0xFF,
-        *edi & 0xFF,
-        (*ebp & FOOTPATH_CLEAR_DIRECTIONAL) >> 8,
-        *ebp & 0xFF);
+        (*edx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebx & 0xFF, *edi & 0xFF,
+        (*ebp & FOOTPATH_CLEAR_DIRECTIONAL) >> 8, *ebp & 0xFF);
 }
 
 static money32 footpath_place_from_track(
@@ -764,22 +750,12 @@ static money32 footpath_place_from_track(
  *  rct2: 0x006A68AE
  */
 void game_command_place_footpath_from_track(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = footpath_place_from_track(
-        (*edx >> 8) & 0xFF,
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        *edx & 0xFF,
-        ((*ebx >> 13) & 0x3) | ((*ebx >> 10) & 0x4),
-        (*ebx >> 8) & 0xF,
-        *ebx & 0xFF);
+        (*edx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 13) & 0x3) | ((*ebx >> 10) & 0x4),
+        (*ebx >> 8) & 0xF, *ebx & 0xFF);
 }
 
 /**
@@ -787,12 +763,7 @@ void game_command_place_footpath_from_track(
  *  rct2: 0x006A67C0
  */
 void game_command_remove_footpath(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = footpath_remove_real((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edx & 0xFF), (*ebx & 0xFF));
@@ -826,11 +797,7 @@ money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, 
     footpath_provisional_remove();
 
     cost = footpath_place(
-        type,
-        x,
-        y,
-        z,
-        slope,
+        type, x, y, z, slope,
         GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_4 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
             | GAME_COMMAND_FLAG_APPLY);
     if (cost != MONEY32_UNDEFINED)
@@ -890,9 +857,7 @@ void footpath_provisional_remove()
         gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
 
         footpath_remove(
-            gFootpathProvisionalPosition.x,
-            gFootpathProvisionalPosition.y,
-            gFootpathProvisionalPosition.z,
+            gFootpathProvisionalPosition.x, gFootpathProvisionalPosition.y, gFootpathProvisionalPosition.z,
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
     }
 }
@@ -936,26 +901,14 @@ void footpath_get_coordinates_from_pos(
     LocationXY16 position = {};
 
     get_map_coordinates_from_pos(
-        screenX,
-        screenY,
-        VIEWPORT_INTERACTION_MASK_FOOTPATH,
-        &position.x,
-        &position.y,
-        &interactionType,
-        &myTileElement,
+        screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, &position.x, &position.y, &interactionType, &myTileElement,
         &viewport);
     if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
         get_map_coordinates_from_pos(
-            screenX,
-            screenY,
-            VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
-            &position.x,
-            &position.y,
-            &interactionType,
-            &myTileElement,
-            &viewport);
+            screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &position.x, &position.y,
+            &interactionType, &myTileElement, &viewport);
         if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         {
             if (x != nullptr)
@@ -1068,14 +1021,9 @@ void footpath_bridge_get_info_from_pos(
     }
 
     get_map_coordinates_from_pos(
-        screenX,
-        screenY,
-        VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
-        &map_pos.x,
-        &map_pos.y,
-        &interactionType,
-        tileElement,
-        &viewport);
+        screenX, screenY,
+        VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &map_pos.x,
+        &map_pos.y, &interactionType, tileElement, &viewport);
     *x = map_pos.x;
     *y = map_pos.y;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
@@ -1453,14 +1401,8 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, rct_tile_e
  *  rct2: 0x006A6D7E
  */
 static void loc_6A6D7E(
-    int32_t initialX,
-    int32_t initialY,
-    int32_t z,
-    int32_t direction,
-    rct_tile_element* initialTileElement,
-    int32_t flags,
-    bool query,
-    rct_neighbour_list* neighbourList)
+    int32_t initialX, int32_t initialY, int32_t z, int32_t direction, rct_tile_element* initialTileElement, int32_t flags,
+    bool query, rct_neighbour_list* neighbourList)
 {
     int32_t x = initialX + CoordsDirectionDelta[direction].x;
     int32_t y = initialY + CoordsDirectionDelta[direction].y;
@@ -1536,10 +1478,7 @@ static void loc_6A6D7E(
                             if (query)
                             {
                                 neighbour_list_push(
-                                    neighbourList,
-                                    8,
-                                    direction,
-                                    tileElement->properties.entrance.ride_index,
+                                    neighbourList, 8, direction, tileElement->properties.entrance.ride_index,
                                     tileElement->properties.entrance.index);
                             }
                             else
@@ -1569,10 +1508,7 @@ static void loc_6A6D7E(
                 if (connected_path_count[tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK] < 2)
                 {
                     neighbour_list_push(
-                        neighbourList,
-                        4,
-                        direction,
-                        tileElement->properties.path.ride_index,
+                        neighbourList, 4, direction, tileElement->properties.path.ride_index,
                         tileElement->properties.entrance.index);
                 }
                 else
@@ -1583,10 +1519,7 @@ static void loc_6A6D7E(
                         if (footpath_disconnect_queue_from_path(x, y, tileElement, 0))
                         {
                             neighbour_list_push(
-                                neighbourList,
-                                3,
-                                direction,
-                                tileElement->properties.path.ride_index,
+                                neighbourList, 3, direction, tileElement->properties.path.ride_index,
                                 tileElement->properties.entrance.index);
                         }
                     }
@@ -1625,12 +1558,7 @@ loc_6A6FD2:
 }
 
 static void loc_6A6C85(
-    int32_t x,
-    int32_t y,
-    int32_t direction,
-    rct_tile_element* tileElement,
-    int32_t flags,
-    bool query,
+    int32_t x, int32_t y, int32_t direction, rct_tile_element* tileElement, int32_t flags, bool query,
     rct_neighbour_list* neighbourList)
 {
     if (query && fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
@@ -1973,13 +1901,7 @@ static bool get_next_direction(int32_t edges, int32_t* direction)
  *              (1 << 7): Ignore no entry signs
  */
 static int32_t footpath_is_connected_to_map_edge_recurse(
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t direction,
-    int32_t flags,
-    int32_t level,
-    int32_t distanceFromJunction,
+    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags, int32_t level, int32_t distanceFromJunction,
     int32_t junctionTolerance)
 {
     rct_tile_element* tileElement;
@@ -2749,11 +2671,7 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
         {
             int32_t z0 = z1 - 2;
             footpath_remove_edges_towards(
-                x + CoordsDirectionDelta[direction].x,
-                y + CoordsDirectionDelta[direction].y,
-                z0,
-                z1,
-                direction,
+                x + CoordsDirectionDelta[direction].x, y + CoordsDirectionDelta[direction].y, z0, z1, direction,
                 footpath_element_is_queue(tileElement));
         }
         else

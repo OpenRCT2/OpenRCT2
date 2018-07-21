@@ -1045,14 +1045,8 @@ int32_t ride_is_valid_for_test(int32_t rideIndex, int32_t goingToBeOpen, int32_t
 int32_t ride_initialise_construction_window(int32_t rideIndex);
 void ride_construction_invalidate_current_track();
 int32_t sub_6C683D(
-    int32_t* x,
-    int32_t* y,
-    int32_t* z,
-    int32_t direction,
-    int32_t type,
-    uint16_t extra_params,
-    rct_tile_element** output_element,
-    uint16_t flags);
+    int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params,
+    rct_tile_element** output_element, uint16_t flags);
 void ride_set_map_tooltip(rct_tile_element* tileElement);
 int32_t ride_music_params_update(
     int16_t x, int16_t y, int16_t z, uint8_t rideIndex, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
@@ -1130,15 +1124,8 @@ void ride_construction_set_default_next_piece();
 
 bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction);
 bool track_block_get_next_from_zero(
-    int16_t x,
-    int16_t y,
-    int16_t z_start,
-    uint8_t rideIndex,
-    uint8_t direction_start,
-    CoordsXYE* output,
-    int32_t* z,
-    int32_t* direction,
-    bool isGhost);
+    int16_t x, int16_t y, int16_t z_start, uint8_t rideIndex, uint8_t direction_start, CoordsXYE* output, int32_t* z,
+    int32_t* direction, bool isGhost);
 
 bool track_block_get_previous(int32_t x, int32_t y, rct_tile_element* tileElement, track_begin_end* outTrackBeginEnd);
 bool track_block_get_previous_from_zero(

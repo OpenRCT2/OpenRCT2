@@ -139,14 +139,7 @@ public:
     void Client_Send_GAMECMD(
         uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp, uint8_t callback);
     void Server_Send_GAMECMD(
-        uint32_t eax,
-        uint32_t ebx,
-        uint32_t ecx,
-        uint32_t edx,
-        uint32_t esi,
-        uint32_t edi,
-        uint32_t ebp,
-        uint8_t playerid,
+        uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp, uint8_t playerid,
         uint8_t callback);
     void Client_Send_GAME_ACTION(const GameAction* action);
     void Server_Send_GAME_ACTION(const GameAction* action);

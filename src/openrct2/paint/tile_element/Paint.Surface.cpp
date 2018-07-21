@@ -633,13 +633,8 @@ static bool tile_is_inside_clip_view(const tile_descriptor& tile)
 }
 
 static void viewport_surface_draw_tile_side_bottom(
-    paint_session* session,
-    enum edge_t edge,
-    uint8_t height,
-    uint8_t edgeStyle,
-    struct tile_descriptor self,
-    struct tile_descriptor neighbour,
-    bool isWater)
+    paint_session* session, enum edge_t edge, uint8_t height, uint8_t edgeStyle, struct tile_descriptor self,
+    struct tile_descriptor neighbour, bool isWater)
 {
     int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
 
@@ -809,16 +804,7 @@ static void viewport_surface_draw_tile_side_bottom(
 
         uint32_t image_id = get_tunnel_image(edgeStyle, tunnelType) + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
         sub_98197C(
-            session,
-            image_id,
-            offset.x,
-            offset.y,
-            tunnelBounds.x,
-            tunnelBounds.y,
-            boundBoxLength - 1,
-            zOffset,
-            0,
-            0,
+            session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0,
             boundBoxOffsetZ);
 
         boundBoxOffsetZ = curHeight * 16;
@@ -832,17 +818,8 @@ static void viewport_surface_draw_tile_side_bottom(
 
         image_id = get_tunnel_image(edgeStyle, tunnelType) + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
         sub_98197C(
-            session,
-            image_id,
-            offset.x,
-            offset.y,
-            tunnelBounds.x,
-            tunnelBounds.y,
-            boundBoxLength - 1,
-            curHeight * 16,
-            tunnelTopBoundBoxOffset.x,
-            tunnelTopBoundBoxOffset.y,
-            boundBoxOffsetZ);
+            session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16,
+            tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ);
 
         curHeight += _tunnelHeights[tunnelType][0];
         tunnelIndex++;
@@ -853,11 +830,7 @@ static void viewport_surface_draw_tile_side_bottom(
  *  rct2: 0x0065EB7D, 0x0065F0D8
  */
 static void viewport_surface_draw_land_side_bottom(
-    paint_session* session,
-    enum edge_t edge,
-    uint8_t height,
-    uint8_t edgeStyle,
-    struct tile_descriptor self,
+    paint_session* session, enum edge_t edge, uint8_t height, uint8_t edgeStyle, struct tile_descriptor self,
     struct tile_descriptor neighbour)
 {
     viewport_surface_draw_tile_side_bottom(session, edge, height, edgeStyle, self, neighbour, false);
@@ -867,24 +840,15 @@ static void viewport_surface_draw_land_side_bottom(
  *  rct2: 0x0065F8B9, 0x0065FE26
  */
 static void viewport_surface_draw_water_side_bottom(
-    paint_session* session,
-    enum edge_t edge,
-    uint8_t height,
-    uint8_t edgeStyle,
-    struct tile_descriptor self,
+    paint_session* session, enum edge_t edge, uint8_t height, uint8_t edgeStyle, struct tile_descriptor self,
     struct tile_descriptor neighbour)
 {
     viewport_surface_draw_tile_side_bottom(session, edge, height, edgeStyle, self, neighbour, true);
 }
 
 static void viewport_surface_draw_tile_side_top(
-    paint_session* session,
-    enum edge_t edge,
-    uint8_t height,
-    uint8_t terrain,
-    struct tile_descriptor self,
-    struct tile_descriptor neighbour,
-    bool isWater)
+    paint_session* session, enum edge_t edge, uint8_t height, uint8_t terrain, struct tile_descriptor self,
+    struct tile_descriptor neighbour, bool isWater)
 {
     if (!is_csg_loaded() && terrain >= TERRAIN_EDGE_RCT2_COUNT)
         terrain = TERRAIN_EDGE_ROCK;
@@ -1027,11 +991,7 @@ static void viewport_surface_draw_tile_side_top(
  *  rct2: 0x0065F63B, 0x0065F77D
  */
 static void viewport_surface_draw_land_side_top(
-    paint_session* session,
-    enum edge_t edge,
-    uint8_t height,
-    uint8_t terrain,
-    struct tile_descriptor self,
+    paint_session* session, enum edge_t edge, uint8_t height, uint8_t terrain, struct tile_descriptor self,
     struct tile_descriptor neighbour)
 {
     viewport_surface_draw_tile_side_top(session, edge, height, terrain, self, neighbour, false);
@@ -1041,11 +1001,7 @@ static void viewport_surface_draw_land_side_top(
  *  rct2: 0x0066039B, 0x006604F1
  */
 static void viewport_surface_draw_water_side_top(
-    paint_session* session,
-    enum edge_t edge,
-    uint8_t height,
-    uint8_t terrain,
-    struct tile_descriptor self,
+    paint_session* session, enum edge_t edge, uint8_t height, uint8_t terrain, struct tile_descriptor self,
     struct tile_descriptor neighbour)
 {
     viewport_surface_draw_tile_side_top(session, edge, height, terrain, self, neighbour, true);
@@ -1569,17 +1525,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             }
 
             sub_98197C(
-                session,
-                image_id,
-                fenceData.offset.x,
-                fenceData.offset.y,
-                fenceData.box_size.x,
-                fenceData.box_size.y,
-                9,
-                local_height,
-                fenceData.box_offset.x,
-                fenceData.box_offset.y,
-                local_height + 1);
+                session, image_id, fenceData.offset.x, fenceData.offset.y, fenceData.box_size.x, fenceData.box_size.y, 9,
+                local_height, fenceData.box_offset.x, fenceData.box_offset.y, local_height + 1);
         }
     }
 
@@ -1599,8 +1546,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 session,
                 SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0
                     | SEGMENT_D4,
-                height,
-                0);
+                height, 0);
             paint_util_force_set_general_support_height(session, height, 0);
             break;
 

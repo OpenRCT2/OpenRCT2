@@ -68,11 +68,7 @@ static rct_vehicle* get_first_vehicle(Ride* ride)
 }
 
 static void paint_magic_carpet_frame(
-    paint_session* session,
-    uint8_t plane,
-    uint8_t direction,
-    LocationXYZ16 offset,
-    LocationXYZ16 bbOffset,
+    paint_session* session, uint8_t plane, uint8_t direction, LocationXYZ16 offset, LocationXYZ16 bbOffset,
     LocationXYZ16 bbSize)
 {
     uint32_t imageId;
@@ -88,43 +84,20 @@ static void paint_magic_carpet_frame(
     if (plane == PLANE_BACK)
     {
         sub_98197C(
-            session,
-            imageId,
-            (int8_t)offset.x,
-            (int8_t)offset.y,
-            bbSize.x,
-            bbSize.y,
-            127,
-            offset.z,
-            bbOffset.x,
-            bbOffset.y,
+            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y,
             bbOffset.z);
     }
     else
     {
         sub_98199C(
-            session,
-            imageId,
-            (int8_t)offset.x,
-            (int8_t)offset.y,
-            bbSize.x,
-            bbSize.y,
-            127,
-            offset.z,
-            bbOffset.x,
-            bbOffset.y,
+            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y,
             bbOffset.z);
     }
 }
 
 static void paint_magic_carpet_pendulum(
-    paint_session* session,
-    uint8_t plane,
-    uint32_t swingImageId,
-    uint8_t direction,
-    LocationXYZ16 offset,
-    LocationXYZ16 bbOffset,
-    LocationXYZ16 bbSize)
+    paint_session* session, uint8_t plane, uint32_t swingImageId, uint8_t direction, LocationXYZ16 offset,
+    LocationXYZ16 bbOffset, LocationXYZ16 bbSize)
 {
     uint32_t imageId = swingImageId;
     if (direction & 2)
@@ -141,26 +114,12 @@ static void paint_magic_carpet_pendulum(
     }
     imageId |= session->TrackColours[SCHEME_TRACK];
     sub_98199C(
-        session,
-        imageId,
-        (int8_t)offset.x,
-        (int8_t)offset.y,
-        bbSize.x,
-        bbSize.y,
-        127,
-        offset.z,
-        bbOffset.x,
-        bbOffset.y,
+        session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y,
         bbOffset.z);
 }
 
 static void paint_magic_carpet_vehicle(
-    paint_session* session,
-    Ride* ride,
-    uint8_t direction,
-    uint32_t swingImageId,
-    LocationXYZ16 offset,
-    LocationXYZ16 bbOffset,
+    paint_session* session, Ride* ride, uint8_t direction, uint32_t swingImageId, LocationXYZ16 offset, LocationXYZ16 bbOffset,
     LocationXYZ16 bbSize)
 {
     rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
@@ -193,17 +152,8 @@ static void paint_magic_carpet_vehicle(
     offset.z += MagicCarpetOscillationZ[swingImageId];
 
     sub_98199C(
-        session,
-        vehicleImageId | imageColourFlags,
-        (int8_t)offset.x,
-        (int8_t)offset.y,
-        bbSize.x,
-        bbSize.y,
-        127,
-        offset.z,
-        bbOffset.x,
-        bbOffset.y,
-        bbOffset.z);
+        session, vehicleImageId | imageColourFlags, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z,
+        bbOffset.x, bbOffset.y, bbOffset.z);
 
     // Riders
     rct_drawpixelinfo* dpi = session->DPI;
@@ -219,17 +169,8 @@ static void paint_magic_carpet_vehicle(
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 1] << 24);
                 sub_98199C(
-                    session,
-                    imageId,
-                    (int8_t)offset.x,
-                    (int8_t)offset.y,
-                    bbSize.x,
-                    bbSize.y,
-                    127,
-                    offset.z,
-                    bbOffset.x,
-                    bbOffset.y,
-                    bbOffset.z);
+                    session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x,
+                    bbOffset.y, bbOffset.z);
             }
         }
     }
@@ -274,11 +215,7 @@ static void paint_magic_carpet_structure(
 
 /** rct2: 0x00898514 */
 static void paint_magic_carpet(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];

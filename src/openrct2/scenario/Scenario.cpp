@@ -566,14 +566,8 @@ void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, c
         const bool sprites_mismatch = serverHash[0] != '\0' && strcmp(clientHash, serverHash);
 
         fprintf(
-            fp,
-            "[%s] !! DESYNC !! Tick: %d, Client Hash: %s, Server Hash: %s, Client Rand: %08X, Server Rand: %08X - %s\n",
-            realm,
-            tick,
-            clientHash,
-            ((serverHash[0] != '\0') ? serverHash : "<NONE:0>"),
-            srand0,
-            server_srand0,
+            fp, "[%s] !! DESYNC !! Tick: %d, Client Hash: %s, Server Hash: %s, Client Rand: %08X, Server Rand: %08X - %s\n",
+            realm, tick, clientHash, ((serverHash[0] != '\0') ? serverHash : "<NONE:0>"), srand0, server_srand0,
             (sprites_mismatch ? "Sprite hash mismatch" : "scenario rand mismatch"));
     }
 }

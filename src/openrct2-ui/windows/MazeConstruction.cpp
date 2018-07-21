@@ -376,13 +376,8 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
     }
 
     money32 cost = game_do_command(
-        x,
-        GAME_COMMAND_FLAG_APPLY | ((direction ^ 2) << 8),
-        y,
-        rideIndex | (entranceExitType << 8),
-        GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-        gRideEntranceExitPlaceStationIndex,
-        0);
+        x, GAME_COMMAND_FLAG_APPLY | ((direction ^ 2) << 8), y, rideIndex | (entranceExitType << 8),
+        GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, gRideEntranceExitPlaceStationIndex, 0);
 
     if (cost == MONEY32_UNDEFINED)
         return;

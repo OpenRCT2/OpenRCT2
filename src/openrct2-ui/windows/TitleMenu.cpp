@@ -82,12 +82,7 @@ rct_window* window_title_menu_open()
     rct_window* window;
 
     window = window_create(
-        0,
-        context_get_height() - 142,
-        0,
-        100,
-        &window_title_menu_events,
-        WC_TITLE_MENU,
+        0, context_get_height() - 142, 0, 100, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_title_menu_widgets;
     window->enabled_widgets
@@ -184,12 +179,8 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
         window_dropdown_show_text(
-            w->x + widget->left,
-            w->y + widget->top,
-            widget->bottom - widget->top + 1,
-            TRANSLUCENT(w->colours[0]),
-            DROPDOWN_FLAG_STAY_OPEN,
-            4);
+            w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, TRANSLUCENT(w->colours[0]),
+            DROPDOWN_FLAG_STAY_OPEN, 4);
     }
 }
 

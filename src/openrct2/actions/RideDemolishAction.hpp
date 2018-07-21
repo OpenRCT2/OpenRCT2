@@ -67,8 +67,7 @@ public:
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE && _modifyType == RIDE_MODIFY_DEMOLISH)
         {
             return std::make_unique<GameActionResult>(
-                GA_ERROR::NO_CLEARANCE,
-                STR_CANT_DEMOLISH_RIDE,
+                GA_ERROR::NO_CLEARANCE, STR_CANT_DEMOLISH_RIDE,
                 STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         }
 
@@ -305,13 +304,8 @@ private:
             if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
             {
                 money32 removePrice = game_do_command(
-                    x,
-                    GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8),
-                    y,
-                    type | (tile_element_get_track_sequence(it.element) << 8),
-                    GAME_COMMAND_REMOVE_TRACK,
-                    z,
-                    0);
+                    x, GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8), y,
+                    type | (tile_element_get_track_sequence(it.element) << 8), GAME_COMMAND_REMOVE_TRACK, z, 0);
 
                 if (removePrice == MONEY32_UNDEFINED)
                     tile_element_remove(it.element);

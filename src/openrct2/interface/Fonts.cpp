@@ -109,30 +109,12 @@ static bool LoadFont(LocalisationService& localisationService, TTFFontSetDescrip
 static bool LoadCustomConfigFont(LocalisationService& localisationService)
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
-        { gConfigFonts.file_name,
-          gConfigFonts.font_name,
-          gConfigFonts.size_tiny,
-          gConfigFonts.x_offset,
-          gConfigFonts.y_offset,
-          gConfigFonts.height_tiny,
-          gConfigFonts.hinting_threshold,
-          nullptr },
-        { gConfigFonts.file_name,
-          gConfigFonts.font_name,
-          gConfigFonts.size_small,
-          gConfigFonts.x_offset,
-          gConfigFonts.y_offset,
-          gConfigFonts.height_small,
-          gConfigFonts.hinting_threshold,
-          nullptr },
-        { gConfigFonts.file_name,
-          gConfigFonts.font_name,
-          gConfigFonts.size_medium,
-          gConfigFonts.x_offset,
-          gConfigFonts.y_offset,
-          gConfigFonts.height_medium,
-          gConfigFonts.hinting_threshold,
-          nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny, gConfigFonts.x_offset, gConfigFonts.y_offset,
+          gConfigFonts.height_tiny, gConfigFonts.hinting_threshold, nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_small, gConfigFonts.x_offset, gConfigFonts.y_offset,
+          gConfigFonts.height_small, gConfigFonts.hinting_threshold, nullptr },
+        { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_medium, gConfigFonts.x_offset,
+          gConfigFonts.y_offset, gConfigFonts.height_medium, gConfigFonts.hinting_threshold, nullptr },
     } };
 
     ttf_dispose();

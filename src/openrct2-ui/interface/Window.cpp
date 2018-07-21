@@ -85,12 +85,7 @@ static bool window_fits_on_screen(int32_t x, int32_t y, int32_t width, int32_t h
 }
 
 rct_window* window_create(
-    int32_t x,
-    int32_t y,
-    int32_t width,
-    int32_t height,
-    rct_window_event_list* event_handlers,
-    rct_windowclass cls,
+    int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
     uint16_t flags)
 {
     // Check if there are any window slots left

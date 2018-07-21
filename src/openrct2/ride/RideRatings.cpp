@@ -929,8 +929,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, rating_tuple* ratings)
 
     // Apply ride entry multipliers
     ride_ratings_add(
-        ratings,
-        (((int32_t)ratings->excitement * rideEntry->excitement_multiplier) >> 7),
+        ratings, (((int32_t)ratings->excitement * rideEntry->excitement_multiplier) >> 7),
         (((int32_t)ratings->intensity * rideEntry->intensity_multiplier) >> 7),
         (((int32_t)ratings->nausea * rideEntry->nausea_multiplier) >> 7));
 
@@ -1377,9 +1376,7 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride* ride)
 
     // Apply highest drop factor
     ride_ratings_add(
-        &result,
-        ((ride->highest_drop_height * 2) * 16000) >> 16,
-        ((ride->highest_drop_height * 2) * 32000) >> 16,
+        &result, ((ride->highest_drop_height * 2) * 16000) >> 16, ((ride->highest_drop_height * 2) * 32000) >> 16,
         ((ride->highest_drop_height * 2) * 10240) >> 16);
 
     return result;
@@ -1489,9 +1486,7 @@ static void ride_ratings_apply_max_speed(
 {
     int32_t modifier = ride->max_speed >> 16;
     ride_ratings_add(
-        ratings,
-        (modifier * excitementMultiplier) >> 16,
-        (modifier * intensityMultiplier) >> 16,
+        ratings, (modifier * excitementMultiplier) >> 16, (modifier * intensityMultiplier) >> 16,
         (modifier * nauseaMultiplier) >> 16);
 }
 
@@ -1512,9 +1507,7 @@ static void ride_ratings_apply_gforces(
 {
     rating_tuple subRating = ride_ratings_get_gforce_ratings(ride);
     ride_ratings_add(
-        ratings,
-        (subRating.excitement * excitementMultiplier) >> 16,
-        (subRating.intensity * intensityMultiplier) >> 16,
+        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
         (subRating.nausea * nauseaMultiplier) >> 16);
 }
 
@@ -1523,9 +1516,7 @@ static void ride_ratings_apply_turns(
 {
     rating_tuple subRating = ride_ratings_get_turns_ratings(ride);
     ride_ratings_add(
-        ratings,
-        (subRating.excitement * excitementMultiplier) >> 16,
-        (subRating.intensity * intensityMultiplier) >> 16,
+        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
         (subRating.nausea * nauseaMultiplier) >> 16);
 }
 
@@ -1534,9 +1525,7 @@ static void ride_ratings_apply_drops(
 {
     rating_tuple subRating = ride_ratings_get_drop_ratings(ride);
     ride_ratings_add(
-        ratings,
-        (subRating.excitement * excitementMultiplier) >> 16,
-        (subRating.intensity * intensityMultiplier) >> 16,
+        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
         (subRating.nausea * nauseaMultiplier) >> 16);
 }
 
@@ -1545,9 +1534,7 @@ static void ride_ratings_apply_sheltered_ratings(
 {
     rating_tuple subRating = ride_ratings_get_sheltered_ratings(ride);
     ride_ratings_add(
-        ratings,
-        (subRating.excitement * excitementMultiplier) >> 16,
-        (subRating.intensity * intensityMultiplier) >> 16,
+        ratings, (subRating.excitement * excitementMultiplier) >> 16, (subRating.intensity * intensityMultiplier) >> 16,
         (subRating.nausea * nauseaMultiplier) >> 16);
 }
 
@@ -1555,9 +1542,7 @@ static void ride_ratings_apply_operation_option(
     rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     ride_ratings_add(
-        ratings,
-        (ride->operation_option * excitementMultiplier) >> 16,
-        (ride->operation_option * intensityMultiplier) >> 16,
+        ratings, (ride->operation_option * excitementMultiplier) >> 16, (ride->operation_option * intensityMultiplier) >> 16,
         (ride->operation_option * nauseaMultiplier) >> 16);
 }
 
@@ -1565,9 +1550,7 @@ static void ride_ratings_apply_rotations(
     rating_tuple* ratings, Ride* ride, int32_t excitementMultiplier, int32_t intensityMultiplier, int32_t nauseaMultiplier)
 {
     ride_ratings_add(
-        ratings,
-        ride->rotations * excitementMultiplier,
-        ride->rotations * intensityMultiplier,
+        ratings, ride->rotations * excitementMultiplier, ride->rotations * intensityMultiplier,
         ride->rotations * nauseaMultiplier);
 }
 
@@ -1582,11 +1565,7 @@ static void ride_ratings_apply_scenery(rating_tuple* ratings, Ride* ride, int32_
 }
 
 static void ride_ratings_apply_highest_drop_height_penalty(
-    rating_tuple* ratings,
-    Ride* ride,
-    int32_t minHighestDropHeight,
-    int32_t excitementPenalty,
-    int32_t intensityPenalty,
+    rating_tuple* ratings, Ride* ride, int32_t minHighestDropHeight, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->highest_drop_height < minHighestDropHeight)
@@ -1598,11 +1577,7 @@ static void ride_ratings_apply_highest_drop_height_penalty(
 }
 
 static void ride_ratings_apply_max_speed_penalty(
-    rating_tuple* ratings,
-    Ride* ride,
-    int32_t minMaxSpeed,
-    int32_t excitementPenalty,
-    int32_t intensityPenalty,
+    rating_tuple* ratings, Ride* ride, int32_t minMaxSpeed, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->max_speed < minMaxSpeed)
@@ -1614,11 +1589,7 @@ static void ride_ratings_apply_max_speed_penalty(
 }
 
 static void ride_ratings_apply_num_drops_penalty(
-    rating_tuple* ratings,
-    Ride* ride,
-    int32_t minNumDrops,
-    int32_t excitementPenalty,
-    int32_t intensityPenalty,
+    rating_tuple* ratings, Ride* ride, int32_t minNumDrops, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if ((ride->drops & 0x3F) < minNumDrops)
@@ -1630,11 +1601,7 @@ static void ride_ratings_apply_num_drops_penalty(
 }
 
 static void ride_ratings_apply_max_negative_g_penalty(
-    rating_tuple* ratings,
-    Ride* ride,
-    int32_t maxMaxNegativeVerticalG,
-    int32_t excitementPenalty,
-    int32_t intensityPenalty,
+    rating_tuple* ratings, Ride* ride, int32_t maxMaxNegativeVerticalG, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->max_negative_vertical_g >= maxMaxNegativeVerticalG)
@@ -1646,11 +1613,7 @@ static void ride_ratings_apply_max_negative_g_penalty(
 }
 
 static void ride_ratings_apply_max_lateral_g_penalty(
-    rating_tuple* ratings,
-    Ride* ride,
-    int32_t minMaxLateralG,
-    int32_t excitementPenalty,
-    int32_t intensityPenalty,
+    rating_tuple* ratings, Ride* ride, int32_t minMaxLateralG, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->max_lateral_g < minMaxLateralG)
@@ -1677,11 +1640,7 @@ static void ride_ratings_apply_excessive_lateral_g_penalty(rating_tuple* ratings
 }
 
 static void ride_ratings_apply_first_length_penalty(
-    rating_tuple* ratings,
-    Ride* ride,
-    int32_t minFirstLength,
-    int32_t excitementPenalty,
-    int32_t intensityPenalty,
+    rating_tuple* ratings, Ride* ride, int32_t minFirstLength, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
     if (ride->length[0] < minFirstLength)

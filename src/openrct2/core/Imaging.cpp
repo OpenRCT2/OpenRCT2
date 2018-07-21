@@ -219,14 +219,7 @@ namespace Imaging
                 colourType = PNG_COLOR_TYPE_PALETTE;
             }
             png_set_IHDR(
-                png_ptr,
-                info_ptr,
-                image.Width,
-                image.Height,
-                8,
-                colourType,
-                PNG_INTERLACE_NONE,
-                PNG_COMPRESSION_TYPE_DEFAULT,
+                png_ptr, info_ptr, image.Width, image.Height, 8, colourType, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
                 PNG_FILTER_TYPE_DEFAULT);
             png_write_info(png_ptr, info_ptr);
 

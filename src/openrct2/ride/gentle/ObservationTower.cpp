@@ -28,12 +28,7 @@ enum
  *  rct2: 0x006D6258
  */
 void vehicle_visual_observation_tower(
-    paint_session* session,
-    int32_t x,
-    int32_t imageDirection,
-    int32_t y,
-    int32_t z,
-    const rct_vehicle* vehicle,
+    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     int32_t image_id;
@@ -80,11 +75,7 @@ void vehicle_visual_observation_tower(
 
 /** rct2: 0x0070DD6C */
 static void paint_observation_tower_base(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -99,14 +90,7 @@ static void paint_observation_tower_base(
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(
-        session,
-        edges,
-        position,
-        tileElement,
-        ride,
-        session->TrackColours[SCHEME_TRACK],
-        height,
-        fenceSpritesMetalB,
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
         session->CurrentRotation);
 
     if (trackSequence == 0)
@@ -166,11 +150,7 @@ static void paint_observation_tower_base(
 
 /** rct2: 0x0070DD7C */
 static void paint_observation_tower_section(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (trackSequence == 1)

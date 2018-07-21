@@ -134,12 +134,7 @@ rct_window* window_game_bottom_toolbar_open()
     uint32_t toolbar_height = line_height * 2 + 12;
 
     rct_window* window = window_create(
-        0,
-        screenHeight - toolbar_height,
-        screenWidth,
-        toolbar_height,
-        &window_game_bottom_toolbar_events,
-        WC_BOTTOM_TOOLBAR,
+        0, screenHeight - toolbar_height, screenWidth, toolbar_height, &window_game_bottom_toolbar_events, WC_BOTTOM_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
     window->enabled_widgets |= (1 << WIDX_LEFT_OUTSET) | (1 << WIDX_MONEY) | (1 << WIDX_GUESTS) | (1 << WIDX_PARK_RATING)
@@ -379,30 +374,24 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
 {
     // Draw panel grey backgrounds
     gfx_filter_rect(
-        dpi,
-        w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
+        dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
         w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top,
         w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom,
-        PALETTE_51);
+        w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, PALETTE_51);
     gfx_filter_rect(
-        dpi,
-        w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
+        dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
         w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top,
         w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom,
-        PALETTE_51);
+        w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, PALETTE_51);
 
     if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
         gfx_filter_rect(
-            dpi,
-            w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
+            dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
             w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top,
             w->x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right,
-            w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom,
-            PALETTE_51);
+            w->y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, PALETTE_51);
     }
 
     window_draw_widgets(w, dpi);
@@ -424,13 +413,10 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
 {
     // Draw green inset rectangle on panel
     gfx_fill_rect_inset(
-        dpi,
-        w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
+        dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + 1,
         w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + 1,
         w->x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right - 1,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1,
-        w->colours[1],
-        INSET_RECT_F_30);
+        w->y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
@@ -444,10 +430,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
 
         set_format_arg(0, money32, gCash);
         gfx_draw_string_centred(
-            dpi,
-            (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH),
-            x,
-            y,
+            dpi, (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH), x, y,
             (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
                  ? COLOUR_WHITE
                  : NOT_TRANSLUCENT(w->colours[0])),
@@ -475,8 +458,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         gfx_draw_string_centred(
             dpi,
             gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier] : guestCountFormats[gGuestChangeModifier],
-            x,
-            y,
+            x, y,
             (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
                  ? COLOUR_WHITE
                  : NOT_TRANSLUCENT(w->colours[0])),
@@ -519,13 +501,10 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
 {
     // Draw green inset rectangle on panel
     gfx_fill_rect_inset(
-        dpi,
-        w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
+        dpi, w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 1,
         w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + 1,
         w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 1,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1,
-        w->colours[1],
-        INSET_RECT_F_30);
+        w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     int32_t x = (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left
                  + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right)
@@ -543,10 +522,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     set_format_arg(2, int16_t, month);
     set_format_arg(4, int16_t, year);
     gfx_draw_string_centred(
-        dpi,
-        stringId,
-        x,
-        y,
+        dpi, stringId, x, y,
         (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
              ? COLOUR_WHITE
              : NOT_TRANSLUCENT(w->colours[0])),
@@ -601,13 +577,8 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
 
     // Current news item
     gfx_fill_rect_inset(
-        dpi,
-        w->x + middleOutsetWidget->left + 1,
-        w->y + middleOutsetWidget->top + 1,
-        w->x + middleOutsetWidget->right - 1,
-        w->y + middleOutsetWidget->bottom - 1,
-        w->colours[2],
-        INSET_RECT_F_30);
+        dpi, w->x + middleOutsetWidget->left + 1, w->y + middleOutsetWidget->top + 1, w->x + middleOutsetWidget->right - 1,
+        w->y + middleOutsetWidget->bottom - 1, w->colours[2], INSET_RECT_F_30);
 
     // Text
     utf8* newsItemText = newsItem->Text;
@@ -699,13 +670,8 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     rct_widget* middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 
     gfx_fill_rect_inset(
-        dpi,
-        w->x + middleOutsetWidget->left + 1,
-        w->y + middleOutsetWidget->top + 1,
-        w->x + middleOutsetWidget->right - 1,
-        w->y + middleOutsetWidget->bottom - 1,
-        w->colours[1],
-        INSET_RECT_F_30);
+        dpi, w->x + middleOutsetWidget->left + 1, w->y + middleOutsetWidget->top + 1, w->x + middleOutsetWidget->right - 1,
+        w->y + middleOutsetWidget->bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);

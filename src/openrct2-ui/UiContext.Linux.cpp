@@ -125,12 +125,8 @@ namespace OpenRCT2::Ui
                     std::string action = (desc.Type == FILE_DIALOG_TYPE::OPEN) ? "--getopenfilename" : "--getsavefilename";
                     std::string filter = GetKDialogFilterString(desc.Filters);
                     std::string cmd = String::StdFormat(
-                        "%s --title '%s' %s '%s' '%s'",
-                        executablePath.c_str(),
-                        desc.Title.c_str(),
-                        action.c_str(),
-                        desc.InitialDirectory.c_str(),
-                        filter.c_str());
+                        "%s --title '%s' %s '%s' '%s'", executablePath.c_str(), desc.Title.c_str(), action.c_str(),
+                        desc.InitialDirectory.c_str(), filter.c_str());
                     std::string output;
                     if (Execute(cmd, &output) == 0)
                     {
@@ -148,13 +144,8 @@ namespace OpenRCT2::Ui
                     }
                     std::string filters = GetZenityFilterString(desc.Filters);
                     std::string cmd = String::StdFormat(
-                        "%s %s --filename='%s/' %s --title='%s' / %s",
-                        executablePath.c_str(),
-                        action.c_str(),
-                        desc.InitialDirectory.c_str(),
-                        flags.c_str(),
-                        desc.Title.c_str(),
-                        filters.c_str());
+                        "%s %s --filename='%s/' %s --title='%s' / %s", executablePath.c_str(), action.c_str(),
+                        desc.InitialDirectory.c_str(), flags.c_str(), desc.Title.c_str(), filters.c_str());
                     std::string output;
                     if (Execute(cmd, &output) == 0)
                     {

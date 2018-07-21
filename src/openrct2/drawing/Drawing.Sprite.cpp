@@ -169,14 +169,8 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 }
 
 void mask_scalar(
-    int32_t width,
-    int32_t height,
-    const uint8_t* RESTRICT maskSrc,
-    const uint8_t* RESTRICT colourSrc,
-    uint8_t* RESTRICT dst,
-    int32_t maskWrap,
-    int32_t colourWrap,
-    int32_t dstWrap)
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
 {
     for (int32_t yy = 0; yy < height; yy++)
     {
@@ -408,14 +402,8 @@ bool gfx_load_csg()
  *  rct2: 0x0067A690
  */
 void FASTCALL gfx_bmp_sprite_to_buffer(
-    const uint8_t* palette_pointer,
-    uint8_t* source_pointer,
-    uint8_t* dest_pointer,
-    const rct_g1_element* source_image,
-    rct_drawpixelinfo* dest_dpi,
-    int32_t height,
-    int32_t width,
-    int32_t image_type)
+    const uint8_t* palette_pointer, uint8_t* source_pointer, uint8_t* dest_pointer, const rct_g1_element* source_image,
+    rct_drawpixelinfo* dest_dpi, int32_t height, int32_t width, int32_t image_type)
 {
     uint16_t zoom_level = dest_dpi->zoom_level;
     uint8_t zoom_amount = 1 << zoom_level;

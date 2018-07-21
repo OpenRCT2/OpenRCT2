@@ -401,13 +401,8 @@ static void window_track_place_clear_provisional()
     if (_window_track_place_last_was_valid)
     {
         place_virtual_track(
-            _trackDesign,
-            PTD_OPERATION_CLEAR_OUTLINES,
-            true,
-            _window_track_place_ride_index,
-            _window_track_place_last_valid_x,
-            _window_track_place_last_valid_y,
-            _window_track_place_last_valid_z);
+            _trackDesign, PTD_OPERATION_CLEAR_OUTLINES, true, _window_track_place_ride_index, _window_track_place_last_valid_x,
+            _window_track_place_last_valid_y, _window_track_place_last_valid_z);
         _window_track_place_last_was_valid = false;
     }
 }

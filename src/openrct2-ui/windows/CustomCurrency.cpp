@@ -138,14 +138,8 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
             gDropdownItemsArgs[1] = STR_SUFFIX;
 
             window_dropdown_show_text_custom_width(
-                w->x + widget->left,
-                w->y + widget->top,
-                widget->bottom - widget->top + 1,
-                w->colours[1],
-                0,
-                DROPDOWN_FLAG_STAY_OPEN,
-                2,
-                widget->right - widget->left - 3);
+                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, 2, widget->right - widget->left - 3);
 
             if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
             {
@@ -160,12 +154,8 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
 
         case WIDX_SYMBOL_TEXT:
             window_text_input_raw_open(
-                w,
-                WIDX_SYMBOL_TEXT,
-                STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE,
-                STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
-                CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
-                CURRENCY_SYMBOL_MAX_SIZE);
+                w, WIDX_SYMBOL_TEXT, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_TITLE, STR_CUSTOM_CURRENCY_SYMBOL_INPUT_DESC,
+                CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, CURRENCY_SYMBOL_MAX_SIZE);
             break;
     }
 }
@@ -176,13 +166,8 @@ static void custom_currency_window_mouseup(rct_window* w, rct_widgetindex widget
     {
         case WIDX_RATE:
             window_text_input_open(
-                w,
-                WIDX_RATE,
-                STR_RATE_INPUT_TITLE,
-                STR_RATE_INPUT_DESC,
-                STR_FORMAT_INTEGER,
-                (uint32_t)CurrencyDescriptors[CURRENCY_CUSTOM].rate,
-                CURRENCY_RATE_MAX_NUM_DIGITS);
+                w, WIDX_RATE, STR_RATE_INPUT_TITLE, STR_RATE_INPUT_DESC, STR_FORMAT_INTEGER,
+                (uint32_t)CurrencyDescriptors[CURRENCY_CUSTOM].rate, CURRENCY_RATE_MAX_NUM_DIGITS);
             break;
     }
 }
@@ -224,8 +209,7 @@ static void custom_currency_window_text_input([[maybe_unused]] struct rct_window
             safe_strcpy(CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, text, CURRENCY_SYMBOL_MAX_SIZE);
 
             safe_strcpy(
-                gConfigGeneral.custom_currency_symbol,
-                CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
+                gConfigGeneral.custom_currency_symbol, CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
                 CURRENCY_SYMBOL_MAX_SIZE);
 
             config_save_default();
@@ -267,30 +251,20 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_CURRENCY_SYMBOL_TEXT, nullptr, w->colours[1], x, y);
 
     gfx_draw_string(
-        dpi,
-        CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode,
-        w->colours[1],
+        dpi, CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, w->colours[1],
         w->x + window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
         w->y + window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top);
 
     if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
     {
         gfx_draw_string_left(
-            dpi,
-            STR_PREFIX,
-            w,
-            w->colours[1],
-            w->x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+            dpi, STR_PREFIX, w, w->colours[1], w->x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
             w->y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top);
     }
     else
     {
         gfx_draw_string_left(
-            dpi,
-            STR_SUFFIX,
-            w,
-            w->colours[1],
-            w->x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+            dpi, STR_SUFFIX, w, w->colours[1], w->x + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
             w->y + window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top);
     }
 }
