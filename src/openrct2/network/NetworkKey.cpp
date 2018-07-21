@@ -9,13 +9,13 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkKey.h"
+#    include "NetworkKey.h"
 
-#include "../Diagnostic.h"
-#include "../core/Crypt.h"
-#include "../core/IStream.hpp"
+#    include "../Diagnostic.h"
+#    include "../core/Crypt.h"
+#    include "../core/IStream.hpp"
 
-#include <vector>
+#    include <vector>
 
 NetworkKey::NetworkKey()
 {

@@ -13,7 +13,7 @@
 
 #ifdef __SSE4_1__
 
-#include <immintrin.h>
+#    include <immintrin.h>
 
 void mask_sse4_1(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
@@ -58,9 +58,9 @@ void mask_sse4_1(
 
 #else
 
-#ifdef OPENRCT2_X86
-#error You have to compile this file with SSE4.1 enabled, when targetting x86!
-#endif
+#    ifdef OPENRCT2_X86
+#        error You have to compile this file with SSE4.1 enabled, when targetting x86!
+#    endif
 
 void mask_sse4_1(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,

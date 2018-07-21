@@ -9,7 +9,7 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "DrawRectShader.h"
+#    include "DrawRectShader.h"
 
 namespace
 {

@@ -9,19 +9,19 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
-#include "../config/Config.h"
-#include "../localisation/Language.h"
-#include "../util/Util.h"
-#include "platform.h"
+#    include "../config/Config.h"
+#    include "../localisation/Language.h"
+#    include "../util/Util.h"
+#    include "platform.h"
 
 // undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
-#undef interface
-#undef abstract
+#    undef interface
+#    undef abstract
 
-#import <AppKit/AppKit.h>
-#import <Foundation/Foundation.h>
-#include <mach-o/dyld.h>
-#include <pwd.h>
+#    import <AppKit/AppKit.h>
+#    import <Foundation/Foundation.h>
+#    include <mach-o/dyld.h>
+#    include <pwd.h>
 
 void macos_disallow_automatic_window_tabbing()
 {
@@ -46,7 +46,7 @@ utf8* macos_str_decomp_to_precomp(utf8* input)
     }
 }
 
-#ifndef NO_TTF
+#    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {
     @autoreleasepool {
@@ -65,7 +65,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         }
     }
 }
-#endif // NO_TTF
+#    endif // NO_TTF
 
 bool platform_has_matching_language(NSString* preferredLocale, uint16_t* languageIdentifier)
 {

@@ -9,10 +9,10 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkGroup.h"
+#    include "NetworkGroup.h"
 
-#include "NetworkAction.h"
-#include "NetworkTypes.h"
+#    include "NetworkAction.h"
+#    include "NetworkTypes.h"
 
 NetworkGroup NetworkGroup::FromJson(const json_t* json)
 {

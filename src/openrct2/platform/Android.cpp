@@ -9,22 +9,22 @@
 
 #ifdef __ANDROID__
 
-#include "../config/Config.h"
-#include "../localisation/Language.h"
-#include "../util/Util.h"
-#include "platform.h"
+#    include "../config/Config.h"
+#    include "../localisation/Language.h"
+#    include "../util/Util.h"
+#    include "platform.h"
 
-#include <SDL.h>
-#include <jni.h>
-#include <wchar.h>
+#    include <SDL.h>
+#    include <jni.h>
+#    include <wchar.h>
 
-#ifndef NO_TTF
+#    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {
     STUB();
     return false;
 }
-#endif
+#    endif
 
 uint16_t platform_get_locale_language()
 {

@@ -9,12 +9,12 @@
 
 #ifndef DISABLE_NETWORK
 
-#include <chrono>
-#include <cmath>
-#include <cstring>
-#include <future>
-#include <string>
-#include <thread>
+#    include <chrono>
+#    include <cmath>
+#    include <cstring>
+#    include <future>
+#    include <string>
+#    include <thread>
 
 // clang-format off
 // MSVC: include <math.h> here otherwise PI gets defined twice
@@ -58,13 +58,13 @@
 #endif // _WIN32
 // clang-format on
 
-#include "TcpSocket.h"
+#    include "TcpSocket.h"
 
 constexpr auto CONNECT_TIMEOUT = std::chrono::milliseconds(3000);
 
-#ifdef _WIN32
+#    ifdef _WIN32
 static bool _wsaInitialised = false;
-#endif
+#    endif
 
 class TcpSocket;
 
@@ -279,10 +279,10 @@ public:
 
                 fd_set writeFD;
                 FD_ZERO(&writeFD);
-#pragma warning(push)
-#pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
+#    pragma warning(push)
+#    pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
                 FD_SET(_socket, &writeFD);
-#pragma warning(pop)
+#    pragma warning(pop)
                 timeval timeout{};
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
@@ -384,7 +384,7 @@ public:
         else if (readBytes == SOCKET_ERROR)
         {
             *sizeReceived = 0;
-#ifndef _WIN32
+#    ifndef _WIN32
             // Removing the check for EAGAIN and instead relying on the values being the same allows turning on of
             // -Wlogical-op warning.
             // This is not true on Windows, see:
@@ -395,7 +395,7 @@ public:
                 EWOULDBLOCK == EAGAIN,
                 "Portability note: your system has different values for EWOULDBLOCK "
                 "and EAGAIN, please extend the condition below");
-#endif // _WIN32
+#    endif // _WIN32
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
                 return NETWORK_READPACKET_DISCONNECTED;
@@ -477,13 +477,13 @@ private:
 
     static bool SetNonBlocking(SOCKET socket, bool on)
     {
-#ifdef _WIN32
+#    ifdef _WIN32
         u_long nonBlocking = on;
         return ioctlsocket(socket, FIONBIO, &nonBlocking) == 0;
-#else
+#    else
         int32_t flags = fcntl(socket, F_GETFL, 0);
         return fcntl(socket, F_SETFL, on ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK)) == 0;
-#endif
+#    endif
     }
 
     static bool SetTCPNoDelay(SOCKET socket, bool enabled)
@@ -499,7 +499,7 @@ ITcpSocket* CreateTcpSocket()
 
 bool InitialiseWSA()
 {
-#ifdef _WIN32
+#    ifdef _WIN32
     if (!_wsaInitialised)
     {
         log_verbose("Initialising WSA");
@@ -512,20 +512,20 @@ bool InitialiseWSA()
         _wsaInitialised = true;
     }
     return _wsaInitialised;
-#else
+#    else
     return true;
-#endif
+#    endif
 }
 
 void DisposeWSA()
 {
-#ifdef _WIN32
+#    ifdef _WIN32
     if (_wsaInitialised)
     {
         WSACleanup();
         _wsaInitialised = false;
     }
-#endif
+#    endif
 }
 
 namespace Convert

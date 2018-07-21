@@ -10,31 +10,31 @@
 #include "Crash.h"
 
 #ifdef USE_BREAKPAD
-#include <memory>
-#include <stdio.h>
+#    include <memory>
+#    include <stdio.h>
 
-#if defined(_WIN32)
-#include <ShlObj.h>
-#include <breakpad/client/windows/handler/exception_handler.h>
-#include <string>
-#else
-#error Breakpad support not implemented yet for this platform
-#endif
+#    if defined(_WIN32)
+#        include <ShlObj.h>
+#        include <breakpad/client/windows/handler/exception_handler.h>
+#        include <string>
+#    else
+#        error Breakpad support not implemented yet for this platform
+#    endif
 
-#include "../Version.h"
-#include "../core/Console.hpp"
-#include "../localisation/Language.h"
-#include "../rct2/S6Exporter.h"
-#include "../scenario/Scenario.h"
-#include "platform.h"
+#    include "../Version.h"
+#    include "../core/Console.hpp"
+#    include "../localisation/Language.h"
+#    include "../rct2/S6Exporter.h"
+#    include "../scenario/Scenario.h"
+#    include "platform.h"
 
-#define WSZ(x) L"" x
+#    define WSZ(x) L"" x
 
-#ifdef OPENRCT2_COMMIT_SHA1_SHORT
+#    ifdef OPENRCT2_COMMIT_SHA1_SHORT
 const wchar_t* _wszCommitSha1Short = WSZ(OPENRCT2_COMMIT_SHA1_SHORT);
-#else
+#    else
 const wchar_t* _wszCommitSha1Short = WSZ("");
-#endif
+#    endif
 
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);

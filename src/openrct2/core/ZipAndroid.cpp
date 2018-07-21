@@ -9,11 +9,11 @@
 
 #ifdef __ANDROID__
 
-#include "IStream.hpp"
-#include "Zip.h"
+#    include "IStream.hpp"
+#    include "Zip.h"
 
-#include <SDL.h>
-#include <jni.h>
+#    include <SDL.h>
+#    include <jni.h>
 
 class ZipArchive final : public IZipArchive
 {

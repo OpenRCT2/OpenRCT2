@@ -9,17 +9,17 @@
 
 #ifdef __ENABLE_DISCORD__
 
-#include "DiscordService.h"
+#    include "DiscordService.h"
 
-#include "../Context.h"
-#include "../OpenRCT2.h"
-#include "../core/Console.hpp"
-#include "../core/String.hpp"
-#include "../localisation/Localisation.h"
-#include "../world/Park.h"
-#include "network.h"
+#    include "../Context.h"
+#    include "../OpenRCT2.h"
+#    include "../core/Console.hpp"
+#    include "../core/String.hpp"
+#    include "../localisation/Localisation.h"
+#    include "../world/Park.h"
+#    include "network.h"
 
-#include <discord_rpc.h>
+#    include <discord_rpc.h>
 
 constexpr const char* APPLICATION_ID = "378612438200877056";
 constexpr const char* STEAM_APP_ID = nullptr;

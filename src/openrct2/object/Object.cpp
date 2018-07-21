@@ -697,8 +697,8 @@ bool Object::IsOpenRCT2OfficialObject()
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
 std::string Object::GetName() const
@@ -712,5 +712,5 @@ std::string Object::GetName(int32_t language) const
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif

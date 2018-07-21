@@ -9,43 +9,43 @@
 
 #ifdef __MINGW32__
 // 0x0600 == vista
-#define WINVER 0x0600
-#define _WIN32_WINNT 0x0600
+#    define WINVER 0x0600
+#    define _WIN32_WINNT 0x0600
 #endif // __MINGW32__
 
 #ifdef _WIN32
 
 // Windows.h needs to be included first
-#include <windows.h>
+#    include <windows.h>
 
 // Then the rest
-#include "../OpenRCT2.h"
-#include "../Version.h"
-#include "../config/Config.h"
-#include "../core/Util.hpp"
-#include "../localisation/Date.h"
-#include "../localisation/Language.h"
-#include "../rct2/RCT2.h"
-#include "../util/Util.h"
-#include "platform.h"
+#    include "../OpenRCT2.h"
+#    include "../Version.h"
+#    include "../config/Config.h"
+#    include "../core/Util.hpp"
+#    include "../localisation/Date.h"
+#    include "../localisation/Language.h"
+#    include "../rct2/RCT2.h"
+#    include "../util/Util.h"
+#    include "platform.h"
 
-#include <lmcons.h>
-#include <psapi.h>
-#include <shlobj.h>
-#include <sys/stat.h>
+#    include <lmcons.h>
+#    include <psapi.h>
+#    include <shlobj.h>
+#    include <sys/stat.h>
 
 // Native resource IDs
-#include "../../../resources/resource.h"
+#    include "../../../resources/resource.h"
 
 // Enable visual styles
-#pragma comment(                                                                                                               \
-    linker,                                                                                                                    \
-    "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#    pragma comment(                                                                                                           \
+        linker,                                                                                                                \
+        "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 // The name of the mutex used to prevent multiple instances of the game from running
-#define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
+#    define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
-#define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
+#    define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
 static HMODULE _dllModule = nullptr;
 
@@ -423,10 +423,11 @@ uint8_t platform_get_locale_date_format()
     return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
-#ifndef NO_TTF
+#    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {
-#if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
+#        if !defined(__MINGW32__)                                                                                              \
+            && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
     wchar_t* fontFolder;
     if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &fontFolder)))
     {
@@ -445,14 +446,14 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
     {
         return false;
     }
-#else
+#        else
     log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
     safe_strcpy(buffer, "C:\\Windows\\Fonts\\", size);
     safe_strcat_path(buffer, font->filename, size);
     return true;
-#endif
+#        endif
 }
-#endif // NO_TTF
+#    endif // NO_TTF
 
 utf8* platform_get_absolute_path(const utf8* relativePath, const utf8* basePath)
 {
@@ -524,8 +525,8 @@ bool platform_process_is_elevated()
 // File association setup
 ///////////////////////////////////////////////////////////////////////////////
 
-#define SOFTWARE_CLASSES L"Software\\Classes"
-#define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
+#    define SOFTWARE_CLASSES L"Software\\Classes"
+#    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
 
 static void get_progIdName(wchar_t* dst, const utf8* extension)
 {

@@ -35,8 +35,8 @@ static std::list<ImageList> _allocatedLists;
 // MSVC's compiler doesn't support the [[maybe_unused]] attribute for unused static functions. Until this has been resolved, we
 // need to explicitly tell the compiler to temporarily disable the warning.
 // See discussion at https://github.com/OpenRCT2/OpenRCT2/pull/7617
-#pragma warning(push)
-#pragma warning(disable : 4505) // unreferenced local function has been removed
+#    pragma warning(push)
+#    pragma warning(disable : 4505) // unreferenced local function has been removed
 
 [[maybe_unused]] static bool AllocatedListContains(uint32_t baseImageId, uint32_t count)
 {
@@ -47,7 +47,7 @@ static std::list<ImageList> _allocatedLists;
     return contains;
 }
 
-#pragma warning(pop)
+#    pragma warning(pop)
 
 static bool AllocatedListRemove(uint32_t baseImageId, uint32_t count)
 {

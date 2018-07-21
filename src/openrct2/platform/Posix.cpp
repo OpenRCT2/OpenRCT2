@@ -9,35 +9,35 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
-#include <cstring>
-#include <ctype.h>
-#include <dirent.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <fnmatch.h>
-#ifndef __EMSCRIPTEN__
-#include <fts.h>
-#endif
-#include "../OpenRCT2.h"
-#include "../config/Config.h"
-#include "../localisation/Date.h"
-#include "../localisation/Language.h"
-#include "../util/Util.h"
-#include "platform.h"
+#    include <cstring>
+#    include <ctype.h>
+#    include <dirent.h>
+#    include <errno.h>
+#    include <fcntl.h>
+#    include <fnmatch.h>
+#    ifndef __EMSCRIPTEN__
+#        include <fts.h>
+#    endif
+#    include "../OpenRCT2.h"
+#    include "../config/Config.h"
+#    include "../localisation/Date.h"
+#    include "../localisation/Language.h"
+#    include "../util/Util.h"
+#    include "platform.h"
 
-#include <libgen.h>
-#include <locale.h>
-#include <pwd.h>
-#include <stdlib.h>
-#include <sys/file.h>
-#include <sys/stat.h>
-#include <sys/time.h>
-#include <time.h>
-#include <unistd.h>
+#    include <libgen.h>
+#    include <locale.h>
+#    include <pwd.h>
+#    include <stdlib.h>
+#    include <sys/file.h>
+#    include <sys/stat.h>
+#    include <sys/time.h>
+#    include <time.h>
+#    include <unistd.h>
 // The name of the mutex used to prevent multiple instances of the game from running
-#define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"
+#    define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"
 
-#define FILE_BUFFER_SIZE 4096
+#    define FILE_BUFFER_SIZE 4096
 
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 
@@ -195,7 +195,7 @@ bool platform_ensure_directory_exists(const utf8* path)
 
 bool platform_directory_delete(const utf8* path)
 {
-#ifdef _FTS_H
+#    ifdef _FTS_H
     log_verbose("Recursively deleting directory %s", path);
 
     FTS* ftsp;
@@ -251,9 +251,9 @@ bool platform_directory_delete(const utf8* path)
     free(ourPath);
     fts_close(ftsp);
 
-#else
+#    else
     log_warning("OpenRCT2 was compiled without fts.h, deleting '%s' not done.", path);
-#endif // _FTS_H
+#    endif // _FTS_H
     return true;
 }
 
@@ -402,11 +402,11 @@ time_t platform_file_get_modified_time(const utf8* path)
 uint8_t platform_get_locale_temperature_format()
 {
 // LC_MEASUREMENT is GNU specific.
-#ifdef LC_MEASUREMENT
+#    ifdef LC_MEASUREMENT
     const char* langstring = setlocale(LC_MEASUREMENT, "");
-#else
+#    else
     const char* langstring = setlocale(LC_ALL, "");
-#endif
+#    endif
 
     if (langstring != nullptr)
     {
@@ -454,11 +454,11 @@ utf8* platform_get_username()
 
 bool platform_process_is_elevated()
 {
-#ifndef __EMSCRIPTEN__
+#    ifndef __EMSCRIPTEN__
     return (geteuid() == 0);
-#else
+#    else
     return false;
-#endif // __EMSCRIPTEN__
+#    endif // __EMSCRIPTEN__
 }
 
 std::string platform_get_rct2_steam_dir()

@@ -11,9 +11,9 @@
 
 #ifdef __ENABLE_DISCORD__
 
-#include "../common.h"
+#    include "../common.h"
 
-#include <limits>
+#    include <limits>
 
 class DiscordService final
 {

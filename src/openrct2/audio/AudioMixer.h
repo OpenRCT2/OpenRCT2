@@ -49,10 +49,10 @@ namespace OpenRCT2::Audio
 } // namespace OpenRCT2::Audio
 
 #ifndef DSBPAN_LEFT
-#define DSBPAN_LEFT (-10000)
+#    define DSBPAN_LEFT (-10000)
 #endif
 #ifndef DSBPAN_RIGHT
-#define DSBPAN_RIGHT 10000
+#    define DSBPAN_RIGHT 10000
 #endif
 
 void Mixer_Init(const char* device);

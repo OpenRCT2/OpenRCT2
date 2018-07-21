@@ -9,12 +9,12 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "OpenGLFramebuffer.h"
+#    include "OpenGLFramebuffer.h"
 
-#include <SDL2/SDL_video.h>
-#include <algorithm>
-#include <memory>
-#include <openrct2/common.h>
+#    include <SDL2/SDL_video.h>
+#    include <algorithm>
+#    include <memory>
+#    include <openrct2/common.h>
 
 constexpr GLuint BACKBUFFER_ID = 0;
 

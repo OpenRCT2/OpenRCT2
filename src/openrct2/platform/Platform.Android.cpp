@@ -9,8 +9,8 @@
 
 #ifdef __ANDROID__
 
-#include "../core/Guard.hpp"
-#include "Platform2.h"
+#    include "../core/Guard.hpp"
+#    include "Platform2.h"
 
 namespace Platform
 {

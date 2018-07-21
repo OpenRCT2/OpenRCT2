@@ -395,8 +395,8 @@ void scenario_update();
 
 #ifdef DEBUG_DESYNC
 uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data);
-#define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
-#define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
+#    define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
+#    define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
 void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char* clientHash, const char* serverHash);
 #else
 uint32_t scenario_rand();

@@ -52,9 +52,9 @@ namespace GA_FLAGS
 } // namespace GA_FLAGS
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-#pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
 #endif
 
 /**
@@ -190,7 +190,7 @@ public:
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
 
 template<uint32_t TType, typename TResultType> struct GameActionBase : GameAction

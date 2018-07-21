@@ -12,7 +12,7 @@
 
 #ifdef __ENABLE_LIGHTFX__
 
-#include "../common.h"
+#    include "../common.h"
 
 struct LocationXY16;
 struct rct_drawpixelinfo;

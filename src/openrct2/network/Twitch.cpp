@@ -9,7 +9,7 @@
 
 #ifdef DISABLE_TWITCH
 
-#include "twitch.h"
+#    include "twitch.h"
 
 void twitch_update()
 {
@@ -17,31 +17,31 @@ void twitch_update()
 
 #else
 
-#ifdef DISABLE_HTTP
-#error HTTP must be enabled to use the TWITCH functionality.
-#endif
+#    ifdef DISABLE_HTTP
+#        error HTTP must be enabled to use the TWITCH functionality.
+#    endif
 
-#include "../Context.h"
-#include "../Game.h"
-#include "../OpenRCT2.h"
-#include "../config/Config.h"
-#include "../core/Json.hpp"
-#include "../core/Math.hpp"
-#include "../core/String.hpp"
-#include "../drawing/Drawing.h"
-#include "../interface/InteractiveConsole.h"
-#include "../localisation/Localisation.h"
-#include "../management/NewsItem.h"
-#include "../peep/Peep.h"
-#include "../platform/platform.h"
-#include "../util/Util.h"
-#include "../world/Sprite.h"
-#include "Http.h"
-#include "twitch.h"
+#    include "../Context.h"
+#    include "../Game.h"
+#    include "../OpenRCT2.h"
+#    include "../config/Config.h"
+#    include "../core/Json.hpp"
+#    include "../core/Math.hpp"
+#    include "../core/String.hpp"
+#    include "../drawing/Drawing.h"
+#    include "../interface/InteractiveConsole.h"
+#    include "../localisation/Localisation.h"
+#    include "../management/NewsItem.h"
+#    include "../peep/Peep.h"
+#    include "../platform/platform.h"
+#    include "../util/Util.h"
+#    include "../world/Sprite.h"
+#    include "Http.h"
+#    include "twitch.h"
 
-#include <jansson.h>
-#include <memory>
-#include <vector>
+#    include <jansson.h>
+#    include <memory>
+#    include <vector>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Network;

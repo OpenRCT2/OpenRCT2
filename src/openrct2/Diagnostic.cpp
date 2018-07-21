@@ -15,7 +15,7 @@
 #include <cstdio>
 
 #ifdef __ANDROID__
-#include <android/log.h>
+#    include <android/log.h>
 #endif
 
 [[maybe_unused]] static bool _log_location_enabled = true;

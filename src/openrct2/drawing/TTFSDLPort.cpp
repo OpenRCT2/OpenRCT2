@@ -27,54 +27,54 @@ misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <cmath>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#    include <cmath>
+#    include <stdio.h>
+#    include <stdlib.h>
+#    include <string.h>
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdocumentation"
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_OUTLINE_H
-#include FT_STROKER_H
-#include FT_GLYPH_H
-#include FT_TRUETYPE_IDS_H
-#pragma clang diagnostic pop
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wdocumentation"
+#    include <ft2build.h>
+#    include FT_FREETYPE_H
+#    include FT_OUTLINE_H
+#    include FT_STROKER_H
+#    include FT_GLYPH_H
+#    include FT_TRUETYPE_IDS_H
+#    pragma clang diagnostic pop
 
-#include "TTF.h"
+#    include "TTF.h"
 
-#pragma warning(disable : 4018) // '<': signed / unsigned mismatch
+#    pragma warning(disable : 4018) // '<': signed / unsigned mismatch
 
 /* ZERO WIDTH NO-BREAKSPACE (Unicode byte order mark) */
-#define UNICODE_BOM_NATIVE 0xFEFF
-#define UNICODE_BOM_SWAPPED 0xFFFE
+#    define UNICODE_BOM_NATIVE 0xFEFF
+#    define UNICODE_BOM_SWAPPED 0xFFFE
 
 /* Set and retrieve the font style */
-#define TTF_STYLE_NORMAL 0x00
-#define TTF_STYLE_BOLD 0x01
-#define TTF_STYLE_ITALIC 0x02
-#define TTF_STYLE_UNDERLINE 0x04
-#define TTF_STYLE_STRIKETHROUGH 0x08
+#    define TTF_STYLE_NORMAL 0x00
+#    define TTF_STYLE_BOLD 0x01
+#    define TTF_STYLE_ITALIC 0x02
+#    define TTF_STYLE_UNDERLINE 0x04
+#    define TTF_STYLE_STRIKETHROUGH 0x08
 
 /* Set and retrieve FreeType hinter settings */
-#define TTF_HINTING_NORMAL 0
-#define TTF_HINTING_LIGHT 1
-#define TTF_HINTING_MONO 2
-#define TTF_HINTING_NONE 3
+#    define TTF_HINTING_NORMAL 0
+#    define TTF_HINTING_LIGHT 1
+#    define TTF_HINTING_MONO 2
+#    define TTF_HINTING_NONE 3
 
 /* FIXME: Right now we assume the gray-scale renderer Freetype is using
 supports 256 shades of gray, but we should instead key off of num_grays
 in the result FT_Bitmap after the FT_Render_Glyph() call. */
-#define NUM_GRAYS 256
+#    define NUM_GRAYS 256
 
 /* Handy routines for converting from fixed point */
-#define FT_FLOOR(X) (((X) & -64) / 64)
-#define FT_CEIL(X) ((((X) + 63) & -64) / 64)
+#    define FT_FLOOR(X) (((X) & -64) / 64)
+#    define FT_CEIL(X) ((((X) + 63) & -64) / 64)
 
-#define CACHED_METRICS 0x10
-#define CACHED_BITMAP 0x01
-#define CACHED_PIXMAP 0x02
+#    define CACHED_METRICS 0x10
+#    define CACHED_BITMAP 0x01
+#    define CACHED_PIXMAP 0x02
 
 /* Cached glyph information */
 struct c_glyph
@@ -137,31 +137,31 @@ struct _TTF_Font
 };
 
 /* Handle a style only if the font does not already handle it */
-#define TTF_HANDLE_STYLE_BOLD(font) (((font)->style & TTF_STYLE_BOLD) && !((font)->face_style & TTF_STYLE_BOLD))
-#define TTF_HANDLE_STYLE_ITALIC(font) (((font)->style & TTF_STYLE_ITALIC) && !((font)->face_style & TTF_STYLE_ITALIC))
-#define TTF_HANDLE_STYLE_UNDERLINE(font) ((font)->style & TTF_STYLE_UNDERLINE)
-#define TTF_HANDLE_STYLE_STRIKETHROUGH(font) ((font)->style & TTF_STYLE_STRIKETHROUGH)
+#    define TTF_HANDLE_STYLE_BOLD(font) (((font)->style & TTF_STYLE_BOLD) && !((font)->face_style & TTF_STYLE_BOLD))
+#    define TTF_HANDLE_STYLE_ITALIC(font) (((font)->style & TTF_STYLE_ITALIC) && !((font)->face_style & TTF_STYLE_ITALIC))
+#    define TTF_HANDLE_STYLE_UNDERLINE(font) ((font)->style & TTF_STYLE_UNDERLINE)
+#    define TTF_HANDLE_STYLE_STRIKETHROUGH(font) ((font)->style & TTF_STYLE_STRIKETHROUGH)
 
 /* Font styles that does not impact glyph drawing */
-#define TTF_STYLE_NO_GLYPH_CHANGE (TTF_STYLE_UNDERLINE | TTF_STYLE_STRIKETHROUGH)
+#    define TTF_STYLE_NO_GLYPH_CHANGE (TTF_STYLE_UNDERLINE | TTF_STYLE_STRIKETHROUGH)
 
 /* The FreeType font engine/library */
 static FT_Library library;
 static int TTF_initialized = 0;
 
-#define TTF_SetError log_error
+#    define TTF_SetError log_error
 
-#define TTF_CHECKPOINTER(p, errval)                                                                                            \
-    if (!TTF_initialized)                                                                                                      \
-    {                                                                                                                          \
-        TTF_SetError("Library not initialized");                                                                               \
-        return errval;                                                                                                         \
-    }                                                                                                                          \
-    if (!(p))                                                                                                                  \
-    {                                                                                                                          \
-        TTF_SetError("Passed a NULL pointer");                                                                                 \
-        return errval;                                                                                                         \
-    }
+#    define TTF_CHECKPOINTER(p, errval)                                                                                        \
+        if (!TTF_initialized)                                                                                                  \
+        {                                                                                                                      \
+            TTF_SetError("Library not initialized");                                                                           \
+            return errval;                                                                                                     \
+        }                                                                                                                      \
+        if (!(p))                                                                                                              \
+        {                                                                                                                      \
+            TTF_SetError("Passed a NULL pointer");                                                                             \
+            return errval;                                                                                                     \
+        }
 
 /* Gets the top row of the underline. The outline
 is taken into account.
@@ -264,15 +264,15 @@ static void TTF_drawLine_Shaded(const TTF_Font* font, const TTFSurface* textbuf,
 
 static void TTF_SetFTError(const char* msg, [[maybe_unused]] FT_Error error)
 {
-#ifdef USE_FREETYPE_ERRORS
-#undef FTERRORS_H
-#define FT_ERRORDEF(e, v, s) { e, s },
+#    ifdef USE_FREETYPE_ERRORS
+#        undef FTERRORS_H
+#        define FT_ERRORDEF(e, v, s) { e, s },
     static const struct
     {
         int err_code;
         const char* err_msg;
     } ft_errors[] = {
-#include <freetype/fterrors.h>
+#        include <freetype/fterrors.h>
     };
     int i;
     const char* err_msg;
@@ -292,9 +292,9 @@ static void TTF_SetFTError(const char* msg, [[maybe_unused]] FT_Error error)
         err_msg = "unknown FreeType error";
     }
     TTF_SetError("%s: %s", msg, err_msg);
-#else
+#    else
     TTF_SetError("%s", msg);
-#endif /* USE_FREETYPE_ERRORS */
+#    endif /* USE_FREETYPE_ERRORS */
 }
 
 int TTF_Init(void)
@@ -489,14 +489,14 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         font->underline_height = 1;
     }
 
-#ifdef DEBUG_FONTS
+#    ifdef DEBUG_FONTS
     printf("Font metrics:\n");
     printf("\tascent = %d, descent = %d\n", font->ascent, font->descent);
     printf("\theight = %d, lineskip = %d\n", font->height, font->lineskip);
     printf("\tunderline_offset = %d, underline_height = %d\n", font->underline_offset, font->underline_height);
     printf(
         "\tunderline_top_row = %d, strikethrough_top_row = %d\n", TTF_underline_top_row(font), TTF_strikethrough_top_row(font));
-#endif
+#    endif
 
     /* Initialize the font face style */
     font->face_style = TTF_STYLE_NORMAL;
@@ -997,7 +997,7 @@ void TTF_CloseFont(TTF_Font* font)
 }
 
 /* Gets a unicode value from a UTF-8 encoded string and advance the string */
-#define UNKNOWN_UNICODE 0xFFFD
+#    define UNKNOWN_UNICODE 0xFFFD
 static uint32_t UTF8_getch(const char** src, size_t* srclen)
 {
     const uint8_t* p = *(const uint8_t**)src;
@@ -1172,7 +1172,7 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
             x += delta.x >> 6;
         }
 
-#if 0
+#    if 0
         if ((ch == text) && (glyph->minx < 0)) {
             /* Fixes the texture wrapping bug when the first letter
             * has a negative minx value or horibearing value.  The entire
@@ -1189,7 +1189,7 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
             * */
             z -= glyph->minx;
         }
-#endif
+#    endif
 
         z = x + glyph->minx;
         if (minx > z)

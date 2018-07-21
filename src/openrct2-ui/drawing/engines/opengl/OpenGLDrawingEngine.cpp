@@ -9,33 +9,33 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "../DrawingEngineFactory.hpp"
-#include "ApplyPaletteShader.h"
-#include "DrawCommands.h"
-#include "DrawLineShader.h"
-#include "DrawRectShader.h"
-#include "GLSLTypes.h"
-#include "OpenGLAPI.h"
-#include "OpenGLFramebuffer.h"
-#include "SwapFramebuffer.h"
-#include "TextureCache.h"
-#include "TransparencyDepth.h"
+#    include "../DrawingEngineFactory.hpp"
+#    include "ApplyPaletteShader.h"
+#    include "DrawCommands.h"
+#    include "DrawLineShader.h"
+#    include "DrawRectShader.h"
+#    include "GLSLTypes.h"
+#    include "OpenGLAPI.h"
+#    include "OpenGLFramebuffer.h"
+#    include "SwapFramebuffer.h"
+#    include "TextureCache.h"
+#    include "TransparencyDepth.h"
 
-#include <SDL2/SDL.h>
-#include <algorithm>
-#include <cmath>
-#include <openrct2-ui/interface/Window.h>
-#include <openrct2/Intro.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/core/Console.hpp>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2/drawing/IDrawingContext.h>
-#include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/drawing/LightFX.h>
-#include <openrct2/drawing/Rain.h>
-#include <openrct2/interface/Screenshot.h>
-#include <openrct2/ui/UiContext.h>
-#include <unordered_map>
+#    include <SDL2/SDL.h>
+#    include <algorithm>
+#    include <cmath>
+#    include <openrct2-ui/interface/Window.h>
+#    include <openrct2/Intro.h>
+#    include <openrct2/config/Config.h>
+#    include <openrct2/core/Console.hpp>
+#    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/drawing/IDrawingContext.h>
+#    include <openrct2/drawing/IDrawingEngine.h>
+#    include <openrct2/drawing/LightFX.h>
+#    include <openrct2/drawing/Rain.h>
+#    include <openrct2/interface/Screenshot.h>
+#    include <openrct2/ui/UiContext.h>
+#    include <unordered_map>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -148,9 +148,9 @@ public:
     {
         _window = (SDL_Window*)_uiContext->GetWindow();
         _drawingContext = new OpenGLDrawingContext(this);
-#ifdef __ENABLE_LIGHTFX__
+#    ifdef __ENABLE_LIGHTFX__
         lightfx_set_available(false);
-#endif
+#    endif
     }
 
     ~OpenGLDrawingEngine() override
@@ -941,9 +941,9 @@ void OpenGLDrawingContext::HandleTransparency()
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo* dpi)
 {
     rct_drawpixelinfo* screenDPI = _engine->GetDPI();
-#ifndef NDEBUG
+#    ifndef NDEBUG
     size_t bitsSize = (size_t)screenDPI->height * (size_t)(screenDPI->width + screenDPI->pitch);
-#endif
+#    endif
     size_t bitsOffset = (size_t)(dpi->bits - screenDPI->bits);
 
     assert(bitsOffset < bitsSize);

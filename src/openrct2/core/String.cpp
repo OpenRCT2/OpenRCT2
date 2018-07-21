@@ -9,25 +9,25 @@
 
 #ifdef __MINGW32__
 // 0x0600 == vista
-#define WINVER 0x0600
-#define _WIN32_WINNT 0x0600
+#    define WINVER 0x0600
+#    define _WIN32_WINNT 0x0600
 #endif // __MINGW32__
 
 #include <cwctype>
 #include <stdexcept>
 #include <vector>
 #ifndef _WIN32
-#include <unicode/ucnv.h>
-#include <unicode/unistr.h>
-#include <unicode/utypes.h>
+#    include <unicode/ucnv.h>
+#    include <unicode/unistr.h>
+#    include <unicode/utypes.h>
 #endif
 
 #ifdef _WIN32
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#    ifndef NOMINMAX
+#        define NOMINMAX
+#    endif
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #endif
 
 #include "../common.h"
@@ -80,14 +80,14 @@ namespace String
 // Which constructor to use depends on the size of wchar_t...
 // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
 // Unfortunately, we'll have to help the compiler here.
-#if U_SIZEOF_WCHAR_T == 4
+#    if U_SIZEOF_WCHAR_T == 4
         icu::UnicodeString str = icu::UnicodeString::fromUTF32((const UChar32*)src.data(), src.length());
-#elif U_SIZEOF_WCHAR_T == 2
+#    elif U_SIZEOF_WCHAR_T == 2
         std::wstring wstr = std::wstring(src);
         icu::UnicodeString str = icu::UnicodeString((const wchar_t*)wstr.c_str());
-#else
-#error Unsupported U_SIZEOF_WCHAR_T size
-#endif
+#    else
+#        error Unsupported U_SIZEOF_WCHAR_T size
+#    endif
 
         std::string result;
         str.toUTF8String(result);
@@ -110,20 +110,20 @@ namespace String
 // Which constructor to use depends on the size of wchar_t...
 // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
 // Unfortunately, we'll have to help the compiler here.
-#if U_SIZEOF_WCHAR_T == 4
+#    if U_SIZEOF_WCHAR_T == 4
         size_t length = (size_t)str.length();
         std::wstring result(length, '\0');
 
         UErrorCode status = U_ZERO_ERROR;
         str.toUTF32((UChar32*)&result[0], str.length(), status);
 
-#elif U_SIZEOF_WCHAR_T == 2
+#    elif U_SIZEOF_WCHAR_T == 2
         const char16_t* buffer = str.getBuffer();
         std::wstring result = (wchar_t*)buffer;
 
-#else
-#error Unsupported U_SIZEOF_WCHAR_T size
-#endif
+#    else
+#        error Unsupported U_SIZEOF_WCHAR_T size
+#    endif
 
         return result;
 #endif

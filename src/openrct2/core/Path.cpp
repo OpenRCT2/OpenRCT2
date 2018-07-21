@@ -9,7 +9,7 @@
 
 #include <algorithm>
 #ifndef _WIN32
-#include <dirent.h>
+#    include <dirent.h>
 #endif
 
 #include "../localisation/Language.h"

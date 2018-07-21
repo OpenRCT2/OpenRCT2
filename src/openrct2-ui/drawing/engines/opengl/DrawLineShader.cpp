@@ -9,9 +9,9 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "DrawLineShader.h"
+#    include "DrawLineShader.h"
 
-#include "OpenGLFramebuffer.h"
+#    include "OpenGLFramebuffer.h"
 
 namespace
 {

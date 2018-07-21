@@ -9,15 +9,15 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkUser.h"
+#    include "NetworkUser.h"
 
-#include "../core/Console.hpp"
-#include "../core/Json.hpp"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../platform/platform.h"
+#    include "../core/Console.hpp"
+#    include "../core/Json.hpp"
+#    include "../core/Path.hpp"
+#    include "../core/String.hpp"
+#    include "../platform/platform.h"
 
-#include <unordered_set>
+#    include <unordered_set>
 
 constexpr const utf8* USER_STORE_FILENAME = "users.json";
 

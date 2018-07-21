@@ -10,35 +10,35 @@
 #ifdef _WIN32
 
 // Windows.h needs to be included first
-#include <windows.h>
+#    include <windows.h>
 
 // Then the rest
-#include <datetimeapi.h>
-#include <memory>
-#include <shlobj.h>
-#undef GetEnvironmentVariable
+#    include <datetimeapi.h>
+#    include <memory>
+#    include <shlobj.h>
+#    undef GetEnvironmentVariable
 
-#if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
-#define __USE_SHGETKNOWNFOLDERPATH__
-#define __USE_GETDATEFORMATEX__
-#else
-#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
-#endif
+#    if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
+#        define __USE_SHGETKNOWNFOLDERPATH__
+#        define __USE_GETDATEFORMATEX__
+#    else
+#        define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#    endif
 
-#include "../OpenRCT2.h"
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../core/Util.hpp"
-#include "Platform2.h"
-#include "platform.h"
+#    include "../OpenRCT2.h"
+#    include "../core/Path.hpp"
+#    include "../core/String.hpp"
+#    include "../core/Util.hpp"
+#    include "Platform2.h"
+#    include "platform.h"
 
 namespace Platform
 {
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
-#else
+#    else
     static std::string WIN32_GetFolderPath(int nFolder);
-#endif
+#    endif
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
 
     uint32_t GetTicks()
@@ -87,11 +87,11 @@ namespace Platform
             case SPECIAL_FOLDER::USER_CONFIG:
             case SPECIAL_FOLDER::USER_DATA:
             {
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Documents);
-#else
+#    else
                 auto path = WIN32_GetFolderPath(CSIDL_PERSONAL);
-#endif
+#    endif
                 if (path.empty())
                 {
                     path = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
@@ -100,11 +100,11 @@ namespace Platform
             }
             case SPECIAL_FOLDER::USER_HOME:
             {
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Profile);
-#else
+#    else
                 auto path = WIN32_GetFolderPath(CSIDL_PROFILE);
-#endif
+#    endif
                 if (path.empty())
                 {
                     path = GetHomePathViaEnvironment();
@@ -163,15 +163,15 @@ namespace Platform
     {
         SYSTEMTIME st = TimeToSystemTime(timestamp);
 
-#ifdef __USE_GETDATEFORMATEX__
+#    ifdef __USE_GETDATEFORMATEX__
         wchar_t date[20];
         GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date), nullptr);
         std::string result = String::ToUtf8(std::wstring(date));
-#else
+#    else
         char date[20];
         GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date));
         std::string result(date);
-#endif
+#    endif
 
         return result;
     }
@@ -180,15 +180,15 @@ namespace Platform
     {
         SYSTEMTIME st = TimeToSystemTime(timestamp);
 
-#ifdef __USE_GETDATEFORMATEX__
+#    ifdef __USE_GETDATEFORMATEX__
         wchar_t time[20];
         GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
         std::string result = String::ToUtf8(std::wstring(time));
-#else
+#    else
         char time[20];
         GetTimeFormat(LOCALE_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
         std::string result(time);
-#endif
+#    endif
 
         return result;
     }
@@ -263,7 +263,7 @@ namespace Platform
         return isSupported;
     }
 
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
     {
         std::string path;
@@ -275,7 +275,7 @@ namespace Platform
         CoTaskMemFree(wpath);
         return path;
     }
-#else
+#    else
     static std::string WIN32_GetFolderPath(int nFolder)
     {
         std::string path;
@@ -286,7 +286,7 @@ namespace Platform
         }
         return path;
     }
-#endif
+#    endif
 
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule)
     {

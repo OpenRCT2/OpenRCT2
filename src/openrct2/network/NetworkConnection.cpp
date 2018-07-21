@@ -9,12 +9,12 @@
 
 #ifndef DISABLE_NETWORK
 
-#include "NetworkConnection.h"
+#    include "NetworkConnection.h"
 
-#include "../core/String.hpp"
-#include "../localisation/Localisation.h"
-#include "../platform/platform.h"
-#include "network.h"
+#    include "../core/String.hpp"
+#    include "../localisation/Localisation.h"
+#    include "../platform/platform.h"
+#    include "network.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
 
@@ -138,12 +138,12 @@ void NetworkConnection::ResetLastPacketTime()
 
 bool NetworkConnection::ReceivedPacketRecently()
 {
-#ifndef DEBUG
+#    ifndef DEBUG
     if (platform_get_ticks() > _lastPacketTime + 7000)
     {
         return false;
     }
-#endif
+#    endif
     return true;
 }
 

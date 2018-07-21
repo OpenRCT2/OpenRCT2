@@ -29,9 +29,9 @@
 #include <memory>
 
 #ifdef USE_BREAKPAD
-#define IMPLIES_SILENT_BREAKPAD ", implies --silent-breakpad"
+#    define IMPLIES_SILENT_BREAKPAD ", implies --silent-breakpad"
 #else
-#define IMPLIES_SILENT_BREAKPAD
+#    define IMPLIES_SILENT_BREAKPAD
 #endif // USE_BREAKPAD
 
 #ifndef DISABLE_NETWORK

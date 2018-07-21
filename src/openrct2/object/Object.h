@@ -146,9 +146,9 @@ interface IReadObjectContext
 };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 class Object
 {
@@ -229,7 +229,7 @@ public:
     rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
 
 enum OBJECT_ERROR : uint32_t

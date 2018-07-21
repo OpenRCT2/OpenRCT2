@@ -9,12 +9,12 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "TextureCache.h"
+#    include "TextureCache.h"
 
-#include <algorithm>
-#include <openrct2/drawing/Drawing.h>
-#include <stdexcept>
-#include <vector>
+#    include <algorithm>
+#    include <openrct2/drawing/Drawing.h>
+#    include <stdexcept>
+#    include <vector>
 
 constexpr uint32_t UNUSED_INDEX = 0xFFFFFFFF;
 
@@ -245,9 +245,9 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     int32_t atlasIndex = (int32_t)_atlases.size();
     int32_t atlasSize = (int32_t)powf(2, (float)Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
 
-#ifdef DEBUG
+#    ifdef DEBUG
     log_verbose("new texture atlas #%d (size %d) allocated\n", atlasIndex, atlasSize);
-#endif
+#    endif
 
     _atlases.emplace_back(atlasIndex, atlasSize);
     _atlases.back().Initialise(_atlasesTextureDimensions, _atlasesTextureDimensions);

@@ -9,15 +9,15 @@
 
 #ifdef __ANDROID__
 
-#include "UiContext.h"
+#    include "UiContext.h"
 
-#include <SDL.h>
-#include <dlfcn.h>
-#include <openrct2/common.h>
-#include <openrct2/core/String.hpp>
-#include <openrct2/ui/UiContext.h>
-#include <sstream>
-#include <stdexcept>
+#    include <SDL.h>
+#    include <dlfcn.h>
+#    include <openrct2/common.h>
+#    include <openrct2/core/String.hpp>
+#    include <openrct2/ui/UiContext.h>
+#    include <sstream>
+#    include <stdexcept>
 
 namespace OpenRCT2::Ui
 {

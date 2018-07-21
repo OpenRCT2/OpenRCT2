@@ -9,17 +9,17 @@
 
 #if (defined(__linux__) || defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__)
 
-#include "UiContext.h"
+#    include "UiContext.h"
 
-#include <SDL.h>
-#include <dlfcn.h>
-#include <openrct2/common.h>
-#include <openrct2/core/Path.hpp>
-#include <openrct2/core/String.hpp>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/ui/UiContext.h>
-#include <sstream>
-#include <stdexcept>
+#    include <SDL.h>
+#    include <dlfcn.h>
+#    include <openrct2/common.h>
+#    include <openrct2/core/Path.hpp>
+#    include <openrct2/core/String.hpp>
+#    include <openrct2/localisation/Localisation.h>
+#    include <openrct2/ui/UiContext.h>
+#    include <sstream>
+#    include <stdexcept>
 
 namespace OpenRCT2::Ui
 {
@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui
 
         bool IsSteamOverlayAttached() override
         {
-#ifdef __linux__
+#    ifdef __linux__
             // See http://syprog.blogspot.ru/2011/12/listing-loaded-shared-objects-in-linux.html
             struct lmap
             {
@@ -79,9 +79,9 @@ namespace OpenRCT2::Ui
                 dlclose(processHandle);
             }
             return result;
-#else
+#    else
             return false; // Needed for OpenBSD, likely all other Unixes.
-#endif
+#    endif
         }
 
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
@@ -258,7 +258,7 @@ namespace OpenRCT2::Ui
 
         static int32_t Execute(const std::string& command, std::string* output = nullptr)
         {
-#ifndef __EMSCRIPTEN__
+#    ifndef __EMSCRIPTEN__
             log_verbose("executing \"%s\"...\n", command.c_str());
             FILE* fpipe = popen(command.c_str(), "r");
             if (fpipe == nullptr)
@@ -301,10 +301,10 @@ namespace OpenRCT2::Ui
 
             // Return exit code
             return pclose(fpipe);
-#else
+#    else
             log_warning("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
             return -1;
-#endif // __EMSCRIPTEN__
+#    endif // __EMSCRIPTEN__
         }
 
         static std::string GetKDialogFilterString(const std::vector<FileDialogDesc::Filter> filters)
