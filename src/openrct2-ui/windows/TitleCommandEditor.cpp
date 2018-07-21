@@ -244,8 +244,8 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr)
         return;
 
-    rct_window* window
-        = window_create_centred(WW, WH, &window_title_command_editor_events, WC_TITLE_COMMAND_EDITOR, WF_STICK_TO_FRONT);
+    rct_window* window = window_create_centred(
+        WW, WH, &window_title_command_editor_events, WC_TITLE_COMMAND_EDITOR, WF_STICK_TO_FRONT);
     window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].string = textbox1Buffer;
     window_title_command_editor_widgets[WIDX_TEXTBOX_X].string = textbox1Buffer;
     window_title_command_editor_widgets[WIDX_TEXTBOX_Y].string = textbox2Buffer;

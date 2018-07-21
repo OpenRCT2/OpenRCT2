@@ -39,10 +39,10 @@ static rct_draw_scroll_text _drawScrollTextList[MAX_SCROLLING_TEXT_ENTRIES];
 static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 
-static void
-    scrolling_text_set_bitmap_for_sprite(utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets);
-static void
-    scrolling_text_set_bitmap_for_ttf(utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets);
+static void scrolling_text_set_bitmap_for_sprite(
+    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets);
+static void scrolling_text_set_bitmap_for_ttf(
+    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets);
 
 void scrolling_text_initialise_bitmaps()
 {
@@ -1508,8 +1508,8 @@ int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uin
     return imageId;
 }
 
-static void
-    scrolling_text_set_bitmap_for_sprite(utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets)
+static void scrolling_text_set_bitmap_for_sprite(
+    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets)
 {
     uint8_t characterColour = scrolling_text_get_colour(gCommonFormatArgs[7]);
 

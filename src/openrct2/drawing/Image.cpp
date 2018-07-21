@@ -40,10 +40,10 @@ static std::list<ImageList> _allocatedLists;
 
 [[maybe_unused]] static bool AllocatedListContains(uint32_t baseImageId, uint32_t count)
 {
-    bool contains
-        = std::any_of(_allocatedLists.begin(), _allocatedLists.end(), [baseImageId, count](const ImageList& imageList) -> bool {
-              return imageList.BaseId == baseImageId && imageList.Count == count;
-          });
+    bool contains = std::any_of(
+        _allocatedLists.begin(), _allocatedLists.end(), [baseImageId, count](const ImageList& imageList) -> bool {
+            return imageList.BaseId == baseImageId && imageList.Count == count;
+        });
     return contains;
 }
 

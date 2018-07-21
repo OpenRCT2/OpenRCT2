@@ -77,8 +77,8 @@ static constexpr const float window_scroll_locations[][2] = {
 };
 // clang-format on
 
-static int32_t
-    window_draw_split(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static int32_t window_draw_split(
+    rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 size_t window_get_index(const rct_window* w)
@@ -1167,8 +1167,8 @@ void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t to
  * Splits a drawing of a window into regions that can be seen and are not hidden
  * by other opaque overlapping windows.
  */
-static int32_t
-    window_draw_split(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static int32_t window_draw_split(
+    rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Divide the draws up for only the visible regions of the window recursively
     for (auto i = window_get_index(w) + 1; i < g_window_list.size(); i++)

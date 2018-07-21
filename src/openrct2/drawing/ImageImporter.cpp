@@ -20,8 +20,8 @@ using ImportResult = ImageImporter::ImportResult;
 
 constexpr int32_t PALETTE_TRANSPARENT = -1;
 
-ImportResult
-    ImageImporter::Import(const Image& image, int32_t offsetX, int32_t offsetY, IMPORT_FLAGS flags, IMPORT_MODE mode) const
+ImportResult ImageImporter::Import(
+    const Image& image, int32_t offsetX, int32_t offsetY, IMPORT_FLAGS flags, IMPORT_MODE mode) const
 {
     if (image.Width > 256 || image.Height > 256)
     {
@@ -37,8 +37,8 @@ ImportResult
     const auto height = image.Height;
 
     auto pixels = GetPixels(image.Pixels.data(), width, height, flags, mode);
-    auto [buffer, bufferLength]
-        = flags & IMPORT_FLAGS::RLE ? EncodeRLE(pixels.data(), width, height) : EncodeRaw(pixels.data(), width, height);
+    auto [buffer, bufferLength] = flags & IMPORT_FLAGS::RLE ? EncodeRLE(pixels.data(), width, height)
+                                                            : EncodeRaw(pixels.data(), width, height);
 
     rct_g1_element outElement;
     outElement.offset = (uint8_t*)buffer;
@@ -56,8 +56,8 @@ ImportResult
     return result;
 }
 
-std::vector<int32_t>
-    ImageImporter::GetPixels(const uint8_t* pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode)
+std::vector<int32_t> ImageImporter::GetPixels(
+    const uint8_t* pixels, uint32_t width, uint32_t height, IMPORT_FLAGS flags, IMPORT_MODE mode)
 {
     std::vector<int32_t> buffer;
     buffer.reserve(width * height);

@@ -895,8 +895,9 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
             break;
     }
 
-    window_editor_objective_options_main_widgets[WIDX_CLOSE].type
-        = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
+    window_editor_objective_options_main_widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        ? WWT_EMPTY
+        : WWT_CLOSEBOX;
 
     window_editor_objective_options_anchor_border_widgets(w);
 }
@@ -1140,8 +1141,8 @@ static void window_editor_objective_options_rides_update(rct_window* w)
  *
  *  rct2: 0x006724BF
  */
-static void
-    window_editor_objective_options_rides_scrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void window_editor_objective_options_rides_scrollgetheight(
+    rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *height = w->no_list_items * 12;
 }
@@ -1200,8 +1201,9 @@ static void window_editor_objective_options_rides_invalidate(rct_window* w)
 
     window_editor_objective_options_set_pressed_tab(w);
 
-    window_editor_objective_options_main_widgets[WIDX_CLOSE].type
-        = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
+    window_editor_objective_options_main_widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        ? WWT_EMPTY
+        : WWT_CLOSEBOX;
 
     window_editor_objective_options_anchor_border_widgets(w);
 }
@@ -1256,8 +1258,8 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         ride = get_ride(w->list_item_positions[i]);
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
         {
-            gCurrentFontSpriteBase
-                = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK : FONT_SPRITE_BASE_MEDIUM_DARK;
+            gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
+                                                                              : FONT_SPRITE_BASE_MEDIUM_DARK;
             gfx_draw_string(dpi, (char*)CheckBoxMarkString, w->colours[1] & 0x7F, 2, y);
         }
 

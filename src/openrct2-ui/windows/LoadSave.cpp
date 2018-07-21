@@ -245,8 +245,8 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName)
             break;
 
         case LOADSAVETYPE_TRACK:
-            w->widgets[WIDX_TITLE].text
-                = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
+            w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK
+                                                 : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
             if (window_loadsave_get_dir(gConfigGeneral.last_save_track_directory, path, "track", sizeof(path)))
             {
                 window_loadsave_populate_list(w, isSave, path, isSave ? ".td6" : ".td6;.td4");
@@ -1092,20 +1092,21 @@ enum
     WIDX_OVERWRITE_CANCEL
 };
 
-static rct_widget window_overwrite_prompt_widgets[]
-    = { { WWT_FRAME, 0, 0, OVERWRITE_WW - 1, 0, OVERWRITE_WH - 1, STR_NONE, STR_NONE },
-        { WWT_CAPTION, 0, 1, OVERWRITE_WW - 2, 1, 14, STR_FILEBROWSER_OVERWRITE_TITLE, STR_WINDOW_TITLE_TIP },
-        { WWT_CLOSEBOX, 0, OVERWRITE_WW - 13, OVERWRITE_WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
-        { WWT_BUTTON, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
-        { WWT_BUTTON,
-          0,
-          OVERWRITE_WW - 95,
-          OVERWRITE_WW - 11,
-          OVERWRITE_WH - 20,
-          OVERWRITE_WH - 9,
-          STR_SAVE_PROMPT_CANCEL,
-          STR_NONE },
-        { WIDGETS_END } };
+static rct_widget window_overwrite_prompt_widgets[] = {
+    { WWT_FRAME, 0, 0, OVERWRITE_WW - 1, 0, OVERWRITE_WH - 1, STR_NONE, STR_NONE },
+    { WWT_CAPTION, 0, 1, OVERWRITE_WW - 2, 1, 14, STR_FILEBROWSER_OVERWRITE_TITLE, STR_WINDOW_TITLE_TIP },
+    { WWT_CLOSEBOX, 0, OVERWRITE_WW - 13, OVERWRITE_WW - 3, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP },
+    { WWT_BUTTON, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
+    { WWT_BUTTON,
+      0,
+      OVERWRITE_WW - 95,
+      OVERWRITE_WW - 11,
+      OVERWRITE_WH - 20,
+      OVERWRITE_WH - 9,
+      STR_SAVE_PROMPT_CANCEL,
+      STR_NONE },
+    { WIDGETS_END }
+};
 
 static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi);

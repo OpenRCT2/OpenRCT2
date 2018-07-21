@@ -434,8 +434,8 @@ void lightfx_prepare_light_list()
 
             //  log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded / totalSamplePoints);
 
-            entry->lightIntensity
-                = std::min<uint32_t>(0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
+            entry->lightIntensity = std::min<uint32_t>(
+                0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
             entry->lightIntensity = std::max<uint32_t>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
         }
 

@@ -765,64 +765,66 @@ static void dinghy_slide_track_right_quarter_turn_5(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    static constexpr const sprite_bb imageIds[4][5]
-        = { {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_0, { 0, 2, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_1, { 0, 16, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_2, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_3, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_4, { 2, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_0, { 2, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_1, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 34, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_2, { 0, 16, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_3, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_4, { 0, 2, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_0, { 0, 2, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_2, { 16, 16, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_3, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_4, { 2, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_0, { 2, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_2, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_3, { 0, 16, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_4, { 0, 2, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-            } };
-    static constexpr const sprite_bb frontImageIds[4][5]
-        = { {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_0, { 0, 2, 0 }, { 0, 6, 27 }, { 32, 30, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_1, { 0, 16, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_2, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_3, { 16, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_4, { 2, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_0, { 2, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_1, { 16, 0, 0 }, { 16, 0, 27 }, { 16, 34, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_2, { 0, 16, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_3, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_4, { 0, 2, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_0, { 0, 2, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_2, { 16, 16, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_3, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_4, { 2, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_0, { 2, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_2, { 16, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_3, { 0, 16, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_4, { 0, 2, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-            } };
+    static constexpr const sprite_bb imageIds[4][5] = {
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_0, { 0, 2, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_1, { 0, 16, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_2, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_3, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SW_SE_PART_4, { 2, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_0, { 2, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_1, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 34, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_2, { 0, 16, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_3, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NW_SW_PART_4, { 0, 2, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_0, { 0, 2, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_2, { 16, 16, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_3, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_NE_NW_PART_4, { 2, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_0, { 2, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_2, { 16, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_3, { 0, 16, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_SE_NE_PART_4, { 0, 2, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+        }
+    };
+    static constexpr const sprite_bb frontImageIds[4][5] = {
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_0, { 0, 2, 0 }, { 0, 6, 27 }, { 32, 30, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_1, { 0, 16, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_2, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_3, { 16, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SW_SE_PART_4, { 2, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_0, { 2, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_1, { 16, 0, 0 }, { 16, 0, 27 }, { 16, 34, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_2, { 0, 16, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_3, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NW_SW_PART_4, { 0, 2, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_0, { 0, 2, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_2, { 16, 16, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_3, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_NE_NW_PART_4, { 2, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_0, { 2, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_2, { 16, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_3, { 0, 16, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_FRONT_SE_NE_PART_4, { 0, 2, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+        }
+    };
 
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
         session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
@@ -1128,48 +1130,50 @@ static void dinghy_slide_track_right_quarter_turn_3(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    static constexpr const sprite_bb imageIds[4][3]
-        = { {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SW_SE_PART_2, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NW_SW_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NE_NW_PART_2, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-            } };
-    static constexpr const sprite_bb frontImageIds[4][3]
-        = { {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SW_SE_PART_2, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NW_SW_PART_2, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NE_NW_PART_2, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-            } };
+    static constexpr const sprite_bb imageIds[4][3] = {
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SW_SE_PART_2, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NW_SW_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_NE_NW_PART_2, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+        }
+    };
+    static constexpr const sprite_bb frontImageIds[4][3] = {
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SW_SE_PART_2, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NW_SW_PART_2, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_NE_NW_PART_2, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_FRONT_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+        }
+    };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_3(
         session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
@@ -1552,64 +1556,66 @@ static void dinghy_slide_track_right_quarter_turn_5_covered(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    static constexpr const sprite_bb imageIds[4][5]
-        = { {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_2, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_3, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_4, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 34, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_2, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_3, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_4, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_2, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_3, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_4, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_2, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_3, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_4, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-            } };
-    static constexpr const sprite_bb frontImageIds[4][5]
-        = { {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 30, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_1, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_2, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_3, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_4, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 34, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_2, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_3, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_4, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_2, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_3, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_4, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_2, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_3, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_4, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-            } };
+    static constexpr const sprite_bb imageIds[4][5] = {
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_2, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_3, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SW_SE_PART_4, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 34, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_2, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_3, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NW_SW_PART_4, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 32, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_2, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_3, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_NE_NW_PART_4, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_2, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_3, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_SE_NE_PART_4, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+        }
+    };
+    static constexpr const sprite_bb frontImageIds[4][5] = {
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 30, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_1, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_2, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_3, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SW_SE_PART_4, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 34, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_2, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_3, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NW_SW_PART_4, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 32, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_2, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_3, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_NE_NW_PART_4, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_2, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_3, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_5_COVERED_FRONT_SE_NE_PART_4, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+        }
+    };
 
     track_paint_util_right_quarter_turn_5_tiles_paint_2(
         session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
@@ -1905,48 +1911,50 @@ static void dinghy_slide_track_right_quarter_turn_3_covered(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    static constexpr const sprite_bb imageIds[4][3]
-        = { {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_2, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_2, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
-            } };
-    static constexpr const sprite_bb frontImageIds[4][3]
-        = { {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_2, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_2, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_2, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-            },
-            {
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
-                { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
-            } };
+    static constexpr const sprite_bb imageIds[4][3] = {
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SW_SE_PART_2, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NW_SW_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_NE_NW_PART_2, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 0 }, { 20, 32, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 0 }, { 16, 16, 2 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 2 } },
+        }
+    };
+    static constexpr const sprite_bb frontImageIds[4][3] = {
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SW_SE_PART_2, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_1, { 0, 0, 0 }, { 16, 0, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NW_SW_PART_2, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_0, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_NE_NW_PART_2, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+        },
+        {
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_0, { 0, 0, 0 }, { 6, 0, 27 }, { 20, 32, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_1, { 0, 0, 0 }, { 0, 16, 27 }, { 16, 16, 0 } },
+            { SPR_DINGHY_SLIDE_QUARTER_TURN_3_COVERED_FRONT_SE_NE_PART_2, { 0, 0, 0 }, { 0, 6, 27 }, { 32, 20, 0 } },
+        }
+    };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_3(
         session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);

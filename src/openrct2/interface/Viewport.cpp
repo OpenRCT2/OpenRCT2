@@ -253,8 +253,8 @@ void viewport_adjust_for_map_height(int16_t* x, int16_t* y, int16_t* z)
 /*
  *  rct2: 0x006E7FF3
  */
-static void
-    viewport_redraw_after_shift(rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x, int32_t y)
+static void viewport_redraw_after_shift(
+    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x, int32_t y)
 {
     // sub-divide by intersecting windows
     if (window != nullptr)
@@ -375,8 +375,8 @@ static void
     }
 }
 
-static void
-    viewport_shift_pixels(rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int16_t x_diff, int16_t y_diff)
+static void viewport_shift_pixels(
+    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int16_t x_diff, int16_t y_diff)
 {
     for (auto i = window_get_index(window); i < g_window_list.size(); i++)
     {

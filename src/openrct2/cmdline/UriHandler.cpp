@@ -17,8 +17,8 @@ static exitcode_t HandleUri(const std::string& uri);
 
 #ifndef DISABLE_NETWORK
 static exitcode_t HandleUriJoin(const std::vector<std::string>& args);
-static bool
-    TryParseHostnamePort(const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
+static bool TryParseHostnamePort(
+    const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
 #endif
 
 exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)
@@ -75,8 +75,8 @@ static exitcode_t HandleUriJoin(const std::vector<std::string>& args)
     }
 }
 
-static bool
-    TryParseHostnamePort(const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort)
+static bool TryParseHostnamePort(
+    const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort)
 {
     try
     {

@@ -215,8 +215,8 @@ namespace ObjectJsonHelpers
         return objectPath;
     }
 
-    static std::vector<rct_g1_element>
-        LoadObjectImages(IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range)
+    static std::vector<rct_g1_element> LoadObjectImages(
+        IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range)
     {
         std::vector<rct_g1_element> result;
         auto objectPath = FindLegacyObject(name);

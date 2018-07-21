@@ -269,8 +269,8 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window* w
 static void window_new_ride_paint_ride_information(
     rct_window* w, rct_drawpixelinfo* dpi, ride_list_item item, int32_t x, int32_t y, int32_t width);
 static void window_new_ride_select(rct_window* w);
-static ride_list_item*
-    window_new_ride_iterate_over_ride_group(uint8_t rideType, uint8_t rideGroupIndex, ride_list_item* nextListItem);
+static ride_list_item* window_new_ride_iterate_over_ride_group(
+    uint8_t rideType, uint8_t rideGroupIndex, ride_list_item* nextListItem);
 
 static ride_list_item _lastTrackDesignCountRideType;
 static int32_t _lastTrackDesignCount;
@@ -342,8 +342,8 @@ static void window_new_ride_populate_list()
     nextListItem->entry_index = RIDE_ENTRY_INDEX_NULL;
 }
 
-static ride_list_item*
-    window_new_ride_iterate_over_ride_group(uint8_t rideType, uint8_t rideGroupIndex, ride_list_item* nextListItem)
+static ride_list_item* window_new_ride_iterate_over_ride_group(
+    uint8_t rideType, uint8_t rideGroupIndex, ride_list_item* nextListItem)
 {
     bool buttonForRideTypeCreated = false;
     bool allowDrawingOverLastButton = false;
@@ -661,8 +661,8 @@ static void window_new_ride_set_pressed_tab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + _windowNewRideCurrentTab);
 }
 
-static constexpr const int32_t ThrillRidesTabAnimationSequence[]
-    = { 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0 };
+static constexpr const int32_t ThrillRidesTabAnimationSequence[] = { 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0,
+                                                                     0, 0, 0, 1, 2, 3, 4, 0, 0, 0 };
 
 static void window_new_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
 {
@@ -830,8 +830,8 @@ static void window_new_ride_invalidate(rct_window* w)
         {
             uint8_t type = gResearchLastItem.type;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image
-                = (type == RESEARCH_ENTRY_TYPE_RIDE) ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == RESEARCH_ENTRY_TYPE_RIDE) ? SPR_NEW_RIDE
+                                                                                                             : SPR_NEW_SCENERY;
         }
     }
 }

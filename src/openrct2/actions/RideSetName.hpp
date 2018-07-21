@@ -65,8 +65,8 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_INVALID_RIDE_ATTRACTION_NAME);
         }
 
-        rct_string_id newUserStringId
-            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId = user_string_allocate(
+            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
@@ -79,8 +79,8 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId
-            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId = user_string_allocate(
+            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
 
         Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)

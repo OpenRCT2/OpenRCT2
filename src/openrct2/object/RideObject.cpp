@@ -171,8 +171,8 @@ void RideObject::Load()
             // again. This has been changed to use the calculation results directly - num_vertical_frames and
             // num_horizontal_frames are no longer set on the vehicle entry.
             // 0x6DE946
-            vehicleEntry->base_num_frames
-                = CalculateNumVerticalFrames(vehicleEntry) * CalculateNumHorizontalFrames(vehicleEntry);
+            vehicleEntry->base_num_frames = CalculateNumVerticalFrames(vehicleEntry)
+                * CalculateNumHorizontalFrames(vehicleEntry);
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
             int32_t image_index = vehicleEntry->base_image_id;
 

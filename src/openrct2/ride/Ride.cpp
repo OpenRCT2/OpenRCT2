@@ -457,8 +457,8 @@ static money32 ride_calculate_income_per_hour(Ride* ride)
         priceMinusCost -= get_shop_item_cost(currentShopItem);
     }
 
-    currentShopItem
-        = (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RidePhotoItems[ride->type] : entry->shop_item_secondary;
+    currentShopItem = (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RidePhotoItems[ride->type]
+                                                                             : entry->shop_item_secondary;
 
     if (currentShopItem != SHOP_ITEM_NONE)
     {
@@ -1440,8 +1440,8 @@ void ride_restore_provisional_track_piece()
         }
         else
         {
-            _currentTrackPrice
-                = place_provisional_track_piece(rideIndex, type, direction, liftHillAndAlternativeState, x, y, z);
+            _currentTrackPrice = place_provisional_track_piece(
+                rideIndex, type, direction, liftHillAndAlternativeState, x, y, z);
             window_ride_construction_update_active_elements();
         }
     }
@@ -1465,8 +1465,8 @@ void ride_remove_provisional_track_piece()
     ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        int32_t flags
-            = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
+        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+            | GAME_COMMAND_FLAG_GHOST;
         maze_set_track(x, y, z, flags, false, 0, rideIndex, GC_SET_MAZE_TRACK_FILL);
         maze_set_track(x, y + 16, z, flags, false, 1, rideIndex, GC_SET_MAZE_TRACK_FILL);
         maze_set_track(x + 16, y + 16, z, flags, false, 2, rideIndex, GC_SET_MAZE_TRACK_FILL);
@@ -1668,8 +1668,8 @@ void ride_construction_set_default_next_piece()
             // Set track slope and lift hill
             _currentTrackSlopeEnd = slope;
             _previousTrackSlopeEnd = slope;
-            _currentTrackLiftHill
-                = track_element_is_lift_hill(tileElement) && slope != TRACK_SLOPE_DOWN_25 && slope != TRACK_SLOPE_DOWN_60;
+            _currentTrackLiftHill = track_element_is_lift_hill(tileElement) && slope != TRACK_SLOPE_DOWN_25
+                && slope != TRACK_SLOPE_DOWN_60;
             break;
         case RIDE_CONSTRUCTION_STATE_BACK:
             rideIndex = _currentRideIndex;
@@ -2740,8 +2740,8 @@ static void ride_mechanic_status_update(int32_t rideIndex, int32_t mechanicStatu
             || breakdownReason == BREAKDOWN_CONTROL_FAILURE)
         {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
-            ride->window_invalidate_flags
-                |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAIN;
+            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_LIST
+                | RIDE_INVALIDATE_RIDE_MAIN;
             ride->breakdown_reason = breakdownReason;
             ride_breakdown_add_news_item(rideIndex);
         }
@@ -2757,8 +2757,8 @@ static void ride_mechanic_status_update(int32_t rideIndex, int32_t mechanicStatu
         case RIDE_MECHANIC_STATUS_CALLING:
             if (RideAvailableBreakdowns[ride->type] == 0)
             {
-                ride->lifecycle_flags
-                    &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION);
+                ride->lifecycle_flags &= ~(
+                    RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION);
                 break;
             }
 
@@ -5042,8 +5042,8 @@ static train_ref vehicle_create_train(
     for (int32_t carIndex = 0; carIndex < ride->num_cars_per_train; carIndex++)
     {
         const uint8_t vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, carIndex);
-        rct_vehicle* car
-            = vehicle_create_car(rideIndex, vehicle, carIndex, vehicleIndex, x, y, z, remainingDistance, tileElement);
+        rct_vehicle* car = vehicle_create_car(
+            rideIndex, vehicle, carIndex, vehicleIndex, x, y, z, remainingDistance, tileElement);
         if (carIndex == 0)
         {
             train.head = car;
@@ -5165,8 +5165,8 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
                 if (track_element_is_lift_hill(trackElement))
                 {
-                    rct_tile_element* tileElement
-                        = map_get_first_element_at(trackBeginEnd.begin_x >> 5, trackBeginEnd.begin_y >> 5);
+                    rct_tile_element* tileElement = map_get_first_element_at(
+                        trackBeginEnd.begin_x >> 5, trackBeginEnd.begin_y >> 5);
                     do
                     {
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -7766,8 +7766,8 @@ void ride_update_max_vehicles(int32_t rideIndex)
                     int32_t totalSpacing = 0;
                     for (int32_t i = 0; i < newCarsPerTrain; i++)
                     {
-                        vehicleEntry
-                            = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, i)];
+                        vehicleEntry = &rideEntry
+                                            ->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, i)];
                         totalSpacing += vehicleEntry->spacing;
                     }
 
@@ -8228,8 +8228,8 @@ void sub_6CB945(int32_t rideIndex)
                 uint8_t trackType = track_element_get_type(trackElement);
                 uint8_t trackSequence = tile_element_get_track_sequence(trackElement);
 
-                uint8_t direction
-                    = (tile_element_get_direction(tileElement) - tile_element_get_direction(trackElement) + 2) & 3;
+                uint8_t direction = (tile_element_get_direction(tileElement) - tile_element_get_direction(trackElement) + 2)
+                    & 3;
 
                 if (!(TrackSequenceProperties[trackType][trackSequence] & (1 << direction)))
                 {

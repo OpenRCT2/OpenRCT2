@@ -191,8 +191,8 @@ static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     int32_t b = w->y + widget->bottom;
 
     // Check if the button is pressed down
-    uint8_t press
-        = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+    uint8_t press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
+                                                                                               : 0;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -312,8 +312,8 @@ static void widget_text_button(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     uint8_t colour = w->colours[widget->colour];
 
     // Border
-    uint8_t press
-        = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+    uint8_t press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
+                                                                                               : 0;
     gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
     // Button caption

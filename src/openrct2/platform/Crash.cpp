@@ -49,9 +49,9 @@ static bool OnCrash(
 {
     if (!succeeded)
     {
-        constexpr const char* DumpFailedMessage
-            = "Failed to create the dump. Please file an issue with OpenRCT2 on GitHub and provide latest save, and provide "
-              "information about what you did before the crash occurred.";
+        constexpr const char* DumpFailedMessage = "Failed to create the dump. Please file an issue with OpenRCT2 on GitHub and "
+                                                  "provide latest save, and provide "
+                                                  "information about what you did before the crash occurred.";
         printf("%s\n", DumpFailedMessage);
         if (!gOpenRCT2SilentBreakpad)
         {
@@ -107,9 +107,9 @@ static bool OnCrash(
         return succeeded;
     }
 
-    constexpr const wchar_t* MessageFormat
-        = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue with OpenRCT2 on GitHub, and provide "
-          L"the dump and saved game there.\n\nVersion: %s\nCommit: %s";
+    constexpr const wchar_t* MessageFormat = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue "
+                                             L"with OpenRCT2 on GitHub, and provide "
+                                             L"the dump and saved game there.\n\nVersion: %s\nCommit: %s";
     wchar_t message[MAX_PATH * 2];
     swprintf_s(message, MessageFormat, dumpFilePath, WSZ(OPENRCT2_VERSION), _wszCommitSha1Short);
 

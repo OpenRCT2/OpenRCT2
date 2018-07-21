@@ -50,8 +50,8 @@ bool gPaintBlockedTiles;
 
 static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi);
 static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
-static void
-    paint_ps_image_with_bounding_boxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
+static void paint_ps_image_with_bounding_boxes(
+    rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
 static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
 static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags);
 
@@ -474,8 +474,8 @@ paint_struct paint_session_arrange(paint_session* session)
             }
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
-        paint_struct* ps_cache
-            = paint_arrange_structs_helper(&psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, rotation);
+        paint_struct* ps_cache = paint_arrange_structs_helper(
+            &psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, rotation);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)

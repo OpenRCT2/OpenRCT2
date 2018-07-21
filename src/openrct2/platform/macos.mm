@@ -50,8 +50,8 @@ utf8* macos_str_decomp_to_precomp(utf8* input)
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {
     @autoreleasepool {
-        CTFontDescriptorRef fontRef
-            = CTFontDescriptorCreateWithNameAndSize((CFStringRef)[NSString stringWithUTF8String:font->font_name], 0.0);
+        CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize(
+            (CFStringRef)[NSString stringWithUTF8String:font->font_name], 0.0);
         CFURLRef url = (CFURLRef)CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute);
         if (url)
         {
@@ -102,8 +102,8 @@ bool platform_has_matching_language(NSString* preferredLocale, uint16_t* languag
         NSString* languageCode = [[preferredLocale componentsSeparatedByString:@"-"] firstObject];
         for (int i = 1; i < LANGUAGE_COUNT; i++)
         {
-            NSString* optionLanguageCode =
-                [[[NSString stringWithUTF8String:LanguagesDescriptors[i].locale] componentsSeparatedByString:@"-"] firstObject];
+            NSString* optionLanguageCode = [
+                [[NSString stringWithUTF8String:LanguagesDescriptors[i].locale] componentsSeparatedByString:@"-"] firstObject];
             if ([languageCode isEqualToString:optionLanguageCode])
             {
                 *languageIdentifier = i;
@@ -168,7 +168,8 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
     if (homeDir != NULL)
     {
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
-        safe_strcat_path(steamPath, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps", sizeof(steamPath));
+        safe_strcat_path(
+            steamPath, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps", sizeof(steamPath));
         if (platform_directory_exists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);

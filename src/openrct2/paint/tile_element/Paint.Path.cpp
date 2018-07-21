@@ -466,8 +466,9 @@ static void sub_6A4101(
         direction += session->CurrentRotation;
         direction &= 3;
 
-        LocationXYZ16 boundBoxOffsets
-            = { BannerBoundBoxes[direction][0].x, BannerBoundBoxes[direction][0].y, static_cast<int16_t>(height + 2) };
+        LocationXYZ16 boundBoxOffsets = { BannerBoundBoxes[direction][0].x,
+                                          BannerBoundBoxes[direction][0].y,
+                                          static_cast<int16_t>(height + 2) };
 
         uint32_t imageId = (direction << 1) + base_image_id + 101;
 
@@ -769,8 +770,8 @@ static void sub_6A3F61(
                 }
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
-                rct_scenery_entry* sceneryEntry
-                    = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+                rct_scenery_entry* sceneryEntry = get_footpath_item_entry(
+                    footpath_element_get_path_scenery_index(tile_element));
 
                 if ((gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
                     && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)

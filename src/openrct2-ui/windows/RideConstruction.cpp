@@ -479,8 +479,8 @@ static void sub_6CBCE2(
 static void window_ride_construction_update_map_selection();
 static void window_ride_construction_update_possible_ride_configurations();
 static void window_ride_construction_update_widgets(rct_window* w);
-static void
-    window_ride_construction_select_map_tiles(Ride* ride, int32_t trackType, int32_t trackDirection, int32_t x, int32_t y);
+static void window_ride_construction_select_map_tiles(
+    Ride* ride, int32_t trackType, int32_t trackDirection, int32_t x, int32_t y);
 static void window_ride_construction_show_special_track_dropdown(rct_window* w, rct_widget* widget);
 static void ride_selected_track_set_seat_rotation(int32_t seatRotation);
 static void loc_6C7502(int32_t al);
@@ -1879,8 +1879,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
             return;
         }
 
-        const rct_preview_track* trackBlock
-            = get_track_def_from_ride_index(_currentRideIndex, track_element_get_type(tileElement));
+        const rct_preview_track* trackBlock = get_track_def_from_ride_index(
+            _currentRideIndex, track_element_get_type(tileElement));
         z = (tileElement->base_height * 8) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
@@ -2204,8 +2204,8 @@ static void window_ride_construction_invalidate(rct_window* w)
         set_format_arg(2, uint16_t, brakeSpeed2);
     }
 
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text
-        = RideConstructionSeatAngleRotationStrings[_currentSeatRotationAngle];
+    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings
+        [_currentSeatRotationAngle];
 
     // Set window title arguments
     set_format_arg(4, rct_string_id, ride->name);
@@ -2517,8 +2517,8 @@ void window_ride_construction_update_enabled_track_pieces()
 {
     Ride* ride = get_ride(_currentRideIndex);
     rct_ride_entry* rideEntry = get_ride_entry_by_ride(ride);
-    int32_t rideType
-        = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type : ride->type;
+    int32_t rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type
+                                                                                     : ride->type;
 
     if (rideEntry == nullptr)
         return;
@@ -2569,8 +2569,8 @@ void sub_6C94D8()
                 }
                 else
                 {
-                    _currentTrackPrice
-                        = place_provisional_track_piece(rideIndex, type, direction, liftHillAndAlternativeState, x, y, z);
+                    _currentTrackPrice = place_provisional_track_piece(
+                        rideIndex, type, direction, liftHillAndAlternativeState, x, y, z);
                     window_ride_construction_update_active_elements();
                 }
             }
@@ -3313,8 +3313,8 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_invalidate(w);
 }
 
-static void
-    window_ride_construction_select_map_tiles(Ride* ride, int32_t trackType, int32_t trackDirection, int32_t x, int32_t y)
+static void window_ride_construction_select_map_tiles(
+    Ride* ride, int32_t trackType, int32_t trackDirection, int32_t x, int32_t y)
 {
     // If the scenery tool is active, we do not display our tiles as it
     // will conflict with larger scenery objects selecting tiles
@@ -3574,8 +3574,8 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
         {
             window_ride_construction_update_state(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, nullptr);
-            _currentTrackPrice
-                = place_provisional_track_piece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, x, y, z);
+            _currentTrackPrice = place_provisional_track_piece(
+                rideIndex, trackType, trackDirection, liftHillAndAlternativeState, x, y, z);
             if (_currentTrackPrice != MONEY32_UNDEFINED)
                 break;
 
@@ -3601,8 +3601,8 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
     {
         window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &x, &y, &z, nullptr);
-        _currentTrackPrice
-            = place_provisional_track_piece(rideIndex, trackType, trackDirection, liftHillAndAlternativeState, x, y, z);
+        _currentTrackPrice = place_provisional_track_piece(
+            rideIndex, trackType, trackDirection, liftHillAndAlternativeState, x, y, z);
         if (_currentTrackPrice != MONEY32_UNDEFINED)
             break;
 
@@ -3721,8 +3721,8 @@ void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY
         || y != gRideEntranceExitGhostPosition.y || direction != gRideEntranceExitGhostPosition.direction
         || stationNum != gRideEntranceExitGhostStationIndex)
     {
-        _currentTrackPrice
-            = ride_entrance_exit_place_ghost(_currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, stationNum);
+        _currentTrackPrice = ride_entrance_exit_place_ghost(
+            _currentRideIndex, x, y, direction, gRideEntranceExitPlaceType, stationNum);
         window_ride_construction_update_active_elements();
     }
 }

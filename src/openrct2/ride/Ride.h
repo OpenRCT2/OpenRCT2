@@ -797,8 +797,8 @@ enum ride_type_flags : uint32_t
     RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
     RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = 1 << 6, // used only by boat Hire and submarine ride
     RIDE_TYPE_FLAG_HAS_G_FORCES = 1 << 7,
-    RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS
-    = 1 << 8, // used by rides that can't have gaps, like those with a vertical tower, such as the observation tower
+    RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS = 1
+        << 8, // used by rides that can't have gaps, like those with a vertical tower, such as the observation tower
     RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
     RIDE_TYPE_FLAG_HAS_DROPS = 1 << 10,
     RIDE_TYPE_FLAG_NO_TEST_MODE = 1 << 11,

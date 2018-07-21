@@ -127,8 +127,8 @@ static void window_view_clipping_set_clipheight(rct_window* w, const uint8_t cli
     gClipHeight = clipheight;
     rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
     const float clip_height_ratio = (float)gClipHeight / 255;
-    w->scrolls[0].h_left
-        = (int16_t)std::ceil(clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+    w->scrolls[0].h_left = (int16_t)std::ceil(
+        clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
 }
 
 rct_window* window_view_clipping_open()

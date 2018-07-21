@@ -419,8 +419,8 @@ static int32_t cc_staff(InteractiveConsole& console, const utf8** argv, int32_t 
                     return 1;
                 }
                 peep = GET_PEEP(int_val[0]);
-                bool is_entertainer
-                    = peep != nullptr && peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER;
+                bool is_entertainer = peep != nullptr && peep->type == PEEP_TYPE_STAFF
+                    && peep->staff_type == STAFF_TYPE_ENTERTAINER;
                 if (!is_entertainer)
                 {
                     console.WriteLineError("Specified staff is not entertainer");
@@ -976,8 +976,8 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
     return 0;
 }
 
-static int32_t
-    cc_twitch([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
+static int32_t cc_twitch(
+    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
 {
 #ifdef DISABLE_TWITCH
     console.WriteLineError("OpenRCT2 build not compiled with Twitch integration.");
@@ -1139,16 +1139,16 @@ static int32_t cc_open(InteractiveConsole& console, const utf8** argv, int32_t a
     return 0;
 }
 
-static int32_t
-    cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
+static int32_t cc_remove_unused_objects(
+    InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
 {
     int32_t result = editor_remove_unused_objects();
     console.WriteFormatLine("%d unused object entries have been removed.", result);
     return 0;
 }
 
-static int32_t
-    cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
+static int32_t cc_remove_park_fences(
+    InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
 {
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
@@ -1212,8 +1212,8 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     return 0;
 }
 
-static int32_t
-    cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
+static int32_t cc_for_date(
+    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
 {
     int32_t year = 0;
     int32_t month = 0;

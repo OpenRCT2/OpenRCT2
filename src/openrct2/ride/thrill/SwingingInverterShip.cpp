@@ -29,8 +29,9 @@ struct swinging_inverter_ship_bound_box
 };
 
 /** rct2: 0x01428020 */
-static constexpr const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[]
-    = { { 32, 16, 0, 8 }, { 16, 32, 8, 0 }, { 32, 16, 0, 8 }, { 16, 32, 8, 0 } };
+static constexpr const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[] = {
+    { 32, 16, 0, 8 }, { 16, 32, 8, 0 }, { 32, 16, 0, 8 }, { 16, 32, 8, 0 }
+};
 
 enum
 {
@@ -70,8 +71,8 @@ static void paint_swinging_inverter_ship_structure(
         int32_t rotation = (int8_t)vehicle->vehicle_sprite_type;
         if (rotation != 0)
         {
-            vehicleImageId
-                = rideEntry->vehicles[0].base_image_id + swinging_inverter_ship_animating_base_sprite_offset[direction];
+            vehicleImageId = rideEntry->vehicles[0].base_image_id
+                + swinging_inverter_ship_animating_base_sprite_offset[direction];
 
             if (direction & 2)
             {

@@ -357,13 +357,13 @@ enum PEEP_FLAGS : uint32_t
     PEEP_FLAGS_CONTAGIOUS = (1 << 22), // Makes any peeps in surrounding tiles sick
     PEEP_FLAGS_JOY = (1 << 23),        // Makes the peep jump in joy
     PEEP_FLAGS_ANGRY = (1 << 24),
-    PEEP_FLAGS_ICE_CREAM = (1 << 25), // Gives passing peeps ice cream and they wave back
-    PEEP_FLAGS_NICE_RIDE_DEPRECATED
-    = (1 << 26), // Used to make the peep think "Nice ride! But not as good as the Phoenix..." on exiting a ride
-    PEEP_FLAGS_INTAMIN_DEPRECATED
-    = (1 << 27), // Used to make the peep think "I'm so excited - It's an Intamin ride!" while riding on a Intamin ride.
-    PEEP_FLAGS_HERE_WE_ARE = (1 << 28), // Makes the peep think  "...and here we are on X!" while riding a ride
-    PEEP_FLAGS_TWITCH = (1u << 31),     // Added for twitch integration
+    PEEP_FLAGS_ICE_CREAM = (1 << 25),            // Gives passing peeps ice cream and they wave back
+    PEEP_FLAGS_NICE_RIDE_DEPRECATED = (1 << 26), // Used to make the peep think "Nice ride! But not as good as the Phoenix..."
+                                                 // on exiting a ride
+    PEEP_FLAGS_INTAMIN_DEPRECATED = (1 << 27),   // Used to make the peep think "I'm so excited - It's an Intamin ride!" while
+                                                 // riding on a Intamin ride.
+    PEEP_FLAGS_HERE_WE_ARE = (1 << 28),          // Makes the peep think  "...and here we are on X!" while riding a ride
+    PEEP_FLAGS_TWITCH = (1u << 31),              // Added for twitch integration
 };
 
 enum PEEP_NEXT_FLAGS

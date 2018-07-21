@@ -2299,11 +2299,11 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
             return;
 
-        money32 lower_cost
-            = lower_water(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+        money32 lower_cost = lower_water(
+            gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
 
-        money32 raise_cost
-            = raise_water(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+        money32 raise_cost = raise_water(
+            gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
 
         if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost)
         {
@@ -2396,11 +2396,11 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
     if (!state_changed)
         return;
 
-    money32 lower_cost
-        = lower_water(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+    money32 lower_cost = lower_water(
+        gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
 
-    money32 raise_cost
-        = raise_water(gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
+    money32 raise_cost = raise_water(
+        gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y, 0);
 
     if (gWaterToolRaiseCost != raise_cost || gWaterToolLowerCost != lower_cost)
     {

@@ -234,8 +234,8 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, const json_t* roo
     auto properties = json_object_get(root, "properties");
 
     _legacyType.small_scenery.height = json_integer_value(json_object_get(properties, "height"));
-    _legacyType.small_scenery.tool_id
-        = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
+    _legacyType.small_scenery.tool_id = ObjectJsonHelpers::ParseCursor(
+        ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
     _legacyType.small_scenery.price = json_integer_value(json_object_get(properties, "price"));
     _legacyType.small_scenery.removal_price = json_integer_value(json_object_get(properties, "removalPrice"));
     _legacyType.small_scenery.animation_delay = json_integer_value(json_object_get(properties, "animationDelay"));

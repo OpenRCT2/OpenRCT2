@@ -455,8 +455,8 @@ static void track_design_save_pop_tile_element(int32_t x, int32_t y, rct_tile_el
  *
  *  rct2: 0x006D2FDD
  */
-static void
-    track_design_save_pop_tile_element_desc(const rct_object_entry* entry, int32_t x, int32_t y, int32_t z, uint8_t flags)
+static void track_design_save_pop_tile_element_desc(
+    const rct_object_entry* entry, int32_t x, int32_t y, int32_t z, uint8_t flags)
 {
     size_t removeIndex = SIZE_MAX;
     for (size_t i = 0; i < _trackSavedTileElementsDescCount; i++)
@@ -1095,8 +1095,8 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         }
     } while (trackElement.element != initialMap);
 
-    td6->track_elements
-        = (rct_td6_track_element*)realloc(td6->track_elements, numTrackElements * sizeof(rct_td6_track_element) + 1);
+    td6->track_elements = (rct_td6_track_element*)realloc(
+        td6->track_elements, numTrackElements * sizeof(rct_td6_track_element) + 1);
     *((uint8_t*)&td6->track_elements[numTrackElements]) = 0xFF;
 
     size_t numEntranceElements = 0;

@@ -43,8 +43,8 @@ namespace OpenRCT2::Audio
         {
             return nullptr;
         }
-        IAudioChannel*
-            PlaySoundPanned(int32_t /*soundId*/, int32_t /*pan*/, int16_t /*x*/, int16_t /*y*/, int16_t /*z*/) override
+        IAudioChannel* PlaySoundPanned(
+            int32_t /*soundId*/, int32_t /*pan*/, int16_t /*x*/, int16_t /*y*/, int16_t /*z*/) override
         {
             return nullptr;
         }

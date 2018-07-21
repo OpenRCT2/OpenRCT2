@@ -564,8 +564,8 @@ static void window_editor_inventions_list_tooltip(rct_window* w, rct_widgetindex
  *
  *  rct2: 0x00685291
  */
-static void
-    window_editor_inventions_list_cursor(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t* cursorId)
+static void window_editor_inventions_list_cursor(
+    rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t* cursorId)
 {
     rct_research_item* researchItem;
     int32_t scrollIndex;
@@ -815,8 +815,9 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
             && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
         {
-            const rct_string_id rideGroupName
-                = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+            const rct_string_id rideGroupName = get_ride_naming(
+                                                    researchItem->baseRideType, get_ride_entry(researchItem->entryIndex))
+                                                    .name;
             format_string(
                 groupNamePtr, Util::CountOf(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*)&rideGroupName);
             format_string(vehicleNamePtr, Util::CountOf(vehicleNameBuffer), itemNameId, nullptr);
@@ -859,8 +860,9 @@ static void window_editor_inventions_list_drag_open(rct_research_item* researchI
     ptr = buffer;
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
     {
-        const rct_string_id rideGroupName
-            = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+        const rct_string_id rideGroupName = get_ride_naming(
+                                                researchItem->baseRideType, get_ride_entry(researchItem->entryIndex))
+                                                .name;
         rct_string_id args[] = { rideGroupName, stringId };
         format_string(ptr, 256, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, &args);
     }
@@ -951,8 +953,8 @@ static rct_string_id window_editor_inventions_list_prepare_name(const rct_resear
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE && !RideGroupManager::RideTypeIsIndependent(researchItem->baseRideType))
     {
         drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-        rct_string_id rideGroupName
-            = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).name;
+        rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex))
+                                          .name;
         set_format_arg(0, rct_string_id, rideGroupName);
         set_format_arg(2, rct_string_id, stringId);
     }

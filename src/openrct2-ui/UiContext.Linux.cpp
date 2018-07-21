@@ -95,8 +95,8 @@ namespace OpenRCT2::Ui
             {
                 case DIALOG_TYPE::KDIALOG:
                 {
-                    std::string cmd
-                        = String::Format("%s --title \"OpenRCT2\" --msgbox \"%s\"", executablePath.c_str(), message.c_str());
+                    std::string cmd = String::Format(
+                        "%s --title \"OpenRCT2\" --msgbox \"%s\"", executablePath.c_str(), message.c_str());
                     Execute(cmd);
                     break;
                 }
@@ -220,8 +220,8 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::KDIALOG:
                 {
                     std::string output;
-                    std::string cmd
-                        = String::Format("%s --title '%s' --getexistingdirectory /", executablePath.c_str(), title.c_str());
+                    std::string cmd = String::Format(
+                        "%s --title '%s' --getexistingdirectory /", executablePath.c_str(), title.c_str());
                     if (Execute(cmd, &output) == 0)
                     {
                         result = output;

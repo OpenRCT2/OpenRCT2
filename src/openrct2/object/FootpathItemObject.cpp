@@ -103,8 +103,8 @@ void FootpathItemObject::ReadJson(IReadObjectContext* context, const json_t* roo
 {
     auto properties = json_object_get(root, "properties");
     _legacyType.path_bit.draw_type = ParseDrawType(ObjectJsonHelpers::GetString(properties, "renderAs"));
-    _legacyType.path_bit.tool_id
-        = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_LAMPPOST_DOWN);
+    _legacyType.path_bit.tool_id = ObjectJsonHelpers::ParseCursor(
+        ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_LAMPPOST_DOWN);
     _legacyType.path_bit.price = json_integer_value(json_object_get(properties, "price"));
 
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));

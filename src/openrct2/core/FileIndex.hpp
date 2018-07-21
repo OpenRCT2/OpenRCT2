@@ -163,8 +163,8 @@ private:
 
                 stats.TotalFiles++;
                 stats.TotalFileSize += fileInfo->Size;
-                stats.FileDateModifiedChecksum
-                    ^= (uint32_t)(fileInfo->LastModified >> 32) ^ (uint32_t)(fileInfo->LastModified & 0xFFFFFFFF);
+                stats.FileDateModifiedChecksum ^= (uint32_t)(fileInfo->LastModified >> 32)
+                    ^ (uint32_t)(fileInfo->LastModified & 0xFFFFFFFF);
                 stats.FileDateModifiedChecksum = ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
             }

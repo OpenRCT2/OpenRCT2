@@ -71,8 +71,8 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
-        rct_string_id newUserStringId
-            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId = user_string_allocate(
+            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
@@ -86,8 +86,8 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId
-            = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId = user_string_allocate(
+            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.

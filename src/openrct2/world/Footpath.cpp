@@ -191,8 +191,8 @@ static void loc_6A6620(int32_t flags, int32_t x, int32_t y, rct_tile_element* ti
 /** rct2: 0x0098D7EC */
 static constexpr const uint8_t byte_98D7EC[] = { 207, 159, 63, 111 };
 
-static money32
-    footpath_element_insert(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags, uint8_t pathItemType)
+static money32 footpath_element_insert(
+    int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags, uint8_t pathItemType)
 {
     rct_tile_element *tileElement, *entranceElement;
     int32_t bl, zHigh;
@@ -621,8 +621,8 @@ void game_command_place_footpath(
         *ebp & 0xFF);
 }
 
-static money32
-    footpath_place_from_track(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t edges, int32_t flags)
+static money32 footpath_place_from_track(
+    int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t edges, int32_t flags)
 {
     rct_tile_element *tileElement, *entranceElement;
     bool entrancePath = false, entranceIsSamePath = false;

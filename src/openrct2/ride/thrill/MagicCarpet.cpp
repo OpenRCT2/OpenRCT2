@@ -45,13 +45,14 @@ static constexpr const int16_t MagicCarpetOscillationZ[] = { -2, -1, 1,  5,  10,
                                                              77, 76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5,  1,  -1 };
 
 /** rct2: 0x01428260 */
-static constexpr const int8_t MagicCarpetOscillationXY[]
-    = { 0, 6,  12,  18,  23,  27,  30,  31,  32,  31,  30,  27,  23,  18,  12,  6,
-        0, -5, -11, -17, -22, -26, -29, -30, -31, -30, -29, -26, -22, -17, -11, -5 };
+static constexpr const int8_t MagicCarpetOscillationXY[] = { 0,   6,   12,  18,  23,  27,  30,  31,  32,  31,  30,
+                                                             27,  23,  18,  12,  6,   0,   -5,  -11, -17, -22, -26,
+                                                             -29, -30, -31, -30, -29, -26, -22, -17, -11, -5 };
 
 /** rct2: 0x014281F0 */
-static constexpr const bound_box MagicCarpetBounds[]
-    = { { 0, 8, 32, 16 }, { 8, 0, 16, 32 }, { 0, 8, 32, 16 }, { 8, 0, 16, 32 } };
+static constexpr const bound_box MagicCarpetBounds[] = {
+    { 0, 8, 32, 16 }, { 8, 0, 16, 32 }, { 0, 8, 32, 16 }, { 8, 0, 16, 32 }
+};
 
 static rct_vehicle* get_first_vehicle(Ride* ride)
 {
@@ -169,8 +170,8 @@ static void paint_magic_carpet_vehicle(
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
-        imageColourFlags
-            = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
+            ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     int8_t directionalOffset = MagicCarpetOscillationXY[swingImageId];
@@ -235,8 +236,8 @@ static void paint_magic_carpet_vehicle(
 }
 
 /** rct2: 0x00899104 */
-static void
-    paint_magic_carpet_structure(paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+static void paint_magic_carpet_structure(
+    paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
     rct_vehicle* vehicle = get_first_vehicle(ride);

@@ -21,10 +21,11 @@
 
 #ifndef NO_VEHICLES
 // 0x0099279E:
-static constexpr const vehicle_boundbox _riverRapidsBoundbox[]
-    = { { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
-        { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
-        { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 } };
+static constexpr const vehicle_boundbox _riverRapidsBoundbox[] = { { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
+                                                                   { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
+                                                                   { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
+                                                                   { -13, -13, 1, 26, 26, 13 }, { -13, -13, 1, 26, 26, 13 },
+                                                                   { -13, -13, 1, 26, 26, 13 } };
 #endif
 
 enum
@@ -362,8 +363,8 @@ static void paint_river_rapids_station(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static void
-    paint_river_rapids_track_25_deg(paint_session* session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
+static void paint_river_rapids_track_25_deg(
+    paint_session* session, uint8_t direction, int32_t height, const uint32_t sprites[4][2])
 {
     uint32_t imageId;
     paint_struct* ps;

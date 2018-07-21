@@ -33,8 +33,8 @@ uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr)
     }
     else if ((char_ptr[0] & 0xF8) == 0xF0)
     {
-        result
-            = ((char_ptr[0] & 0x07) << 18) | ((char_ptr[1] & 0x3F) << 12) | ((char_ptr[1] & 0x3F) << 6) | (char_ptr[2] & 0x3F);
+        result = ((char_ptr[0] & 0x07) << 18) | ((char_ptr[1] & 0x3F) << 12) | ((char_ptr[1] & 0x3F) << 6)
+            | (char_ptr[2] & 0x3F);
         numBytes = 4;
     }
     else

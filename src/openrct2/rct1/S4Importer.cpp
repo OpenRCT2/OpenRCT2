@@ -167,8 +167,8 @@ public:
         return result;
     }
 
-    ParkLoadResult
-        LoadFromStream(IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const utf8* path) override
+    ParkLoadResult LoadFromStream(
+        IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const utf8* path) override
     {
         _s4 = *ReadAndDecodeS4(stream, isScenario);
         _s4Path = path;
@@ -999,8 +999,8 @@ private:
             for (int i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
             {
                 // RCT1 had no third colour
-                RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor
-                    = RCT1::GetColourSchemeCopyDescriptor(src->vehicle_type);
+                RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
+                    src->vehicle_type);
                 if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                 {
                     dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].body);
@@ -1235,8 +1235,8 @@ private:
     {
         rct1_ride* srcRide = &_s4.rides[src->ride];
         uint8_t vehicleTypeIndex = srcRide->vehicle_type;
-        RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor
-            = RCT1::GetColourSchemeCopyDescriptor(vehicleTypeIndex);
+        RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
+            vehicleTypeIndex);
 
         // RCT1 had no third colour
         if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
@@ -1758,8 +1758,9 @@ private:
     {
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            gPeepSpawns[i]
-                = { _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z * 16, _s4.peep_spawn[i].direction };
+            gPeepSpawns[i] = {
+                _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z * 16, _s4.peep_spawn[i].direction
+            };
         }
 
         for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)

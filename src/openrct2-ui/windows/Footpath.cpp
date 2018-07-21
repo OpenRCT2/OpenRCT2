@@ -568,12 +568,13 @@ static void window_footpath_invalidate(rct_window* w)
     // Press / unpress footpath and queue type buttons
     w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);
     w->pressed_widgets &= ~(1 << WIDX_QUEUELINE_TYPE);
-    w->pressed_widgets
-        |= gFootpathSelectedType == SELECTED_PATH_TYPE_NORMAL ? (1 << WIDX_FOOTPATH_TYPE) : (1 << WIDX_QUEUELINE_TYPE);
+    w->pressed_widgets |= gFootpathSelectedType == SELECTED_PATH_TYPE_NORMAL ? (1 << WIDX_FOOTPATH_TYPE)
+                                                                             : (1 << WIDX_QUEUELINE_TYPE);
 
     // Enable / disable construct button
-    window_footpath_widgets[WIDX_CONSTRUCT].type
-        = gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL ? WWT_IMGBTN : WWT_EMPTY;
+    window_footpath_widgets[WIDX_CONSTRUCT].type = gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
+        ? WWT_IMGBTN
+        : WWT_EMPTY;
 
     // Set footpath and queue type button images
     selectedPath = gFootpathSelectedId;
@@ -969,8 +970,8 @@ static void window_footpath_construct()
     footpath_get_next_path_info(&type, &x, &y, &z, &slope);
 
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    money32 cost
-        = footpath_place_remove_intersecting(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, gFootpathConstructDirection);
+    money32 cost = footpath_place_remove_intersecting(
+        type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, gFootpathConstructDirection);
 
     if (cost != MONEY32_UNDEFINED)
     {
@@ -1194,8 +1195,8 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         direction = gFootpathConstructValidDirections;
         if (direction != 255)
         {
-            disabledWidgets
-                |= (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW) | (1 << WIDX_DIRECTION_SE);
+            disabledWidgets |= (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW)
+                | (1 << WIDX_DIRECTION_SE);
 
             direction = (direction + currentRotation) & 3;
             disabledWidgets &= ~(1 << (WIDX_DIRECTION_NW + direction));

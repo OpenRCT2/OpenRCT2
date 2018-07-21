@@ -331,14 +331,14 @@ static void window_banner_invalidate(rct_window* w)
     }
 
     w->pressed_widgets &= ~(1ULL << WIDX_BANNER_NO_ENTRY);
-    w->disabled_widgets
-        &= ~((1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
+    w->disabled_widgets &= ~(
+        (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON));
 
     if (banner->flags & BANNER_FLAG_NO_ENTRY)
     {
         w->pressed_widgets |= (1ULL << WIDX_BANNER_NO_ENTRY);
-        w->disabled_widgets
-            |= (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
+        w->disabled_widgets |= (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
+            | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
     }
 
     colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(banner->colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;

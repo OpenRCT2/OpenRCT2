@@ -275,8 +275,8 @@ static void wooden_wild_mouse_track_60_deg_up(
     }
     else
     {
-        session->WoodenSupportsPrependTo
-            = sub_98197C_rotated(session, direction, imageId, 0, 6, 2, 24, 93, height, 28, 4, height - 16);
+        session->WoodenSupportsPrependTo = sub_98197C_rotated(
+            session, direction, imageId, 0, 6, 2, 24, 93, height, 28, 4, height - 16);
     }
 
     wooden_a_supports_paint_setup(
@@ -373,8 +373,8 @@ static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(
     else
     {
         imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
-        session->WoodenSupportsPrependTo
-            = sub_98197C_rotated(session, direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+        session->WoodenSupportsPrependTo = sub_98197C_rotated(
+            session, direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
         imageId = imageIds[isChained][direction][1] | session->TrackColours[SCHEME_TRACK];
         sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
     }
@@ -428,8 +428,8 @@ static void wooden_wild_mouse_track_60_deg_to_25_deg_up(
     else
     {
         imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
-        session->WoodenSupportsPrependTo
-            = sub_98197C_rotated(session, direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+        session->WoodenSupportsPrependTo = sub_98197C_rotated(
+            session, direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
         imageId = imageIds[isChained][direction][1] | session->TrackColours[SCHEME_TRACK];
         sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
     }
@@ -574,27 +574,28 @@ static void wooden_wild_mouse_track_right_quarter_turn_3(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    static constexpr const sprite_bb imageIds[4][3]
-        = { {
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_0, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_1, { 16, 16, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_2, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
-            },
-            {
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_0, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_1, { 16, 0, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_2, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
-            },
-            {
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_0, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_2, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
-            },
-            {
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_0, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_1, { 0, 16, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
-                { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_2, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
-            } };
+    static constexpr const sprite_bb imageIds[4][3] = {
+        {
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_0, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_1, { 16, 16, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_2, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
+        },
+        {
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_0, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_1, { 16, 0, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NW_SW_PART_2, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
+        },
+        {
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_0, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_1, { 0, 0, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_NE_NW_PART_2, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
+        },
+        {
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_0, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 1 } },
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_1, { 0, 16, 0 }, { 0, 0, 0 }, { 16, 16, 1 } },
+            { SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_3_SE_NE_PART_2, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 1 } },
+        }
+    };
     static uint8_t supportType[] = { 4, 5, 2, 3 };
 
     track_paint_util_right_quarter_turn_3_tiles_paint_4(

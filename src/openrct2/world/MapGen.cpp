@@ -339,8 +339,8 @@ static void mapgen_place_trees()
 
     // Place trees
     float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
-    int32_t numTrees
-        = std::min(std::max(4, (int32_t)(availablePositions.size() * treeToLandRatio)), (int32_t)availablePositions.size());
+    int32_t numTrees = std::min(
+        std::max(4, (int32_t)(availablePositions.size() * treeToLandRatio)), (int32_t)availablePositions.size());
 
     for (int32_t i = 0; i < numTrees; i++)
     {

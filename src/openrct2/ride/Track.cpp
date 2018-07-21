@@ -2192,8 +2192,8 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
 
 int32_t track_get_actual_bank_3(rct_vehicle* vehicle, rct_tile_element* tileElement)
 {
-    bool isInverted
-        = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0) ^ track_element_is_inverted(tileElement);
+    bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
+        ^ track_element_is_inverted(tileElement);
     int32_t trackType = track_element_get_type(tileElement);
     int32_t rideType = get_ride(track_element_get_ride_index(tileElement))->type;
     int32_t bankStart = TrackDefinitions[trackType].bank_start;

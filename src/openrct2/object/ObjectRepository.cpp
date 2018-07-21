@@ -443,8 +443,8 @@ private:
         }
     }
 
-    static void
-        SaveObject(const utf8* path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
+    static void SaveObject(
+        const utf8* path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
     {
         if (fixChecksum)
         {

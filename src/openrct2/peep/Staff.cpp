@@ -921,8 +921,8 @@ static uint8_t staff_handyman_direction_to_nearest_litter(rct_peep* peep)
         return 0xFF;
     }
 
-    LocationXY16 litterTile
-        = { static_cast<int16_t>(nearestLitter->x & 0xFFE0), static_cast<int16_t>(nearestLitter->y & 0xFFE0) };
+    LocationXY16 litterTile = { static_cast<int16_t>(nearestLitter->x & 0xFFE0),
+                                static_cast<int16_t>(nearestLitter->y & 0xFFE0) };
 
     if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y))
     {
@@ -1324,8 +1324,8 @@ static uint8_t staff_mechanic_direction_path(rct_peep* peep, uint8_t validDirect
         pathfind_logging_enable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        int32_t pathfindDirection
-            = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
+        int32_t pathfindDirection = peep_pathfind_choose_direction(
+            { peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         pathfind_logging_disable();
@@ -1637,8 +1637,8 @@ uint32_t staff_get_available_entertainer_costumes()
     entertainerCostumes >>= 4;
 
     // Fix #6593: force enable the default costumes, which normally get enabled through the default scenery groups.
-    entertainerCostumes
-        |= (1 << ENTERTAINER_COSTUME_PANDA) | (1 << ENTERTAINER_COSTUME_TIGER) | (1 << ENTERTAINER_COSTUME_ELEPHANT);
+    entertainerCostumes |= (1 << ENTERTAINER_COSTUME_PANDA) | (1 << ENTERTAINER_COSTUME_TIGER)
+        | (1 << ENTERTAINER_COSTUME_ELEPHANT);
 
     return entertainerCostumes;
 }

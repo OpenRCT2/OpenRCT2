@@ -826,8 +826,8 @@ static void window_scenery_update(rct_window* w)
             }
             else if (tabSelectedSceneryId >= 0x300)
             { // large scenery
-                gCurrentToolId
-                    = static_cast<TOOL_IDX>(get_large_scenery_entry(tabSelectedSceneryId - 0x300)->large_scenery.tool_id);
+                gCurrentToolId = static_cast<TOOL_IDX>(
+                    get_large_scenery_entry(tabSelectedSceneryId - 0x300)->large_scenery.tool_id);
             }
             else if (tabSelectedSceneryId >= 0x200)
             { // wall
@@ -1006,12 +1006,13 @@ void window_scenery_invalidate(rct_window* w)
         }
     }
 
-    window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image
-        = SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryPrimaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-    window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image
-        = SPRITE_ID_PALETTE_COLOUR_1(gWindowScenerySecondaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-    window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image
-        = SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryTertiaryColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryPrimaryColour)
+        | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(
+                                                                             gWindowScenerySecondaryColour)
+        | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+    window_scenery_widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryTertiaryColour)
+        | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 
     window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_EMPTY;
     window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_EMPTY;

@@ -1761,8 +1761,8 @@ static int32_t guest_path_find_park_entrance(rct_peep* peep, [[maybe_unused]] rc
             if (gParkEntrances[entranceNum].x == LOCATION_NULL)
                 continue;
 
-            uint16_t dist
-                = abs(gParkEntrances[entranceNum].x - peep->next_x) + abs(gParkEntrances[entranceNum].y - peep->next_y);
+            uint16_t dist = abs(gParkEntrances[entranceNum].x - peep->next_x)
+                + abs(gParkEntrances[entranceNum].y - peep->next_y);
 
             if (dist >= nearestDist)
                 continue;

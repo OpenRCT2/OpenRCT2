@@ -86,8 +86,8 @@ void LocalisationService::OpenLanguage(int32_t id, IObjectManager& objectManager
     if (id != LANGUAGE_ENGLISH_UK)
     {
         filename = GetLanguagePath(LANGUAGE_ENGLISH_UK);
-        _languageFallback
-            = std::unique_ptr<ILanguagePack>(LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename.c_str()));
+        _languageFallback = std::unique_ptr<ILanguagePack>(
+            LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename.c_str()));
     }
 
     filename = GetLanguagePath(id);
@@ -113,8 +113,8 @@ void LocalisationService::CloseLanguages()
     _currentLanguage = LANGUAGE_UNDEFINED;
 }
 
-std::tuple<rct_string_id, rct_string_id, rct_string_id>
-    LocalisationService::GetLocalisedScenarioStrings(const std::string& scenarioFilename) const
+std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::GetLocalisedScenarioStrings(
+    const std::string& scenarioFilename) const
 {
     auto result0 = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename.c_str(), 0);
     auto result1 = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename.c_str(), 1);

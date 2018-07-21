@@ -530,8 +530,9 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     rct_string_id highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
         ? STR_WHITE_STRING
         : STR_WINDOW_COLOUR_2_STRINGID;
-    rct_string_id unhighlighted_format
-        = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_WHITE_STRING : STR_BLACK_STRING;
+    rct_string_id unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
+        ? STR_WHITE_STRING
+        : STR_BLACK_STRING;
 
     bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor;
 
@@ -614,8 +615,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     }
 }
 
-static void
-    draw_category_heading(rct_window* w, rct_drawpixelinfo* dpi, int32_t left, int32_t right, int32_t y, rct_string_id stringId)
+static void draw_category_heading(
+    rct_window* w, rct_drawpixelinfo* dpi, int32_t left, int32_t right, int32_t y, rct_string_id stringId)
 {
     uint8_t baseColour = w->colours[1];
     uint8_t lightColour = ColourMapA[baseColour].lighter;

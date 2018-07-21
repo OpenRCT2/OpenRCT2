@@ -30,8 +30,8 @@ namespace OpenRCT2
         class DrawingEngineFactory final : public IDrawingEngineFactory
         {
         public:
-            std::unique_ptr<IDrawingEngine>
-                Create(DRAWING_ENGINE_TYPE type, const std::shared_ptr<IUiContext>& uiContext) override
+            std::unique_ptr<IDrawingEngine> Create(
+                DRAWING_ENGINE_TYPE type, const std::shared_ptr<IUiContext>& uiContext) override
             {
                 switch ((int32_t)type)
                 {

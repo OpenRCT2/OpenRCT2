@@ -589,31 +589,32 @@ static void wooden_rc_track_25_deg_up(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    static constexpr const uint32_t imageIds[2][4][4]
-        = { {
-                { SPR_WOODEN_RC_25_DEG_SW_NE, SPR_WOODEN_RC_25_DEG_RAILS_SW_NE, 0, 0 },
-                { SPR_WOODEN_RC_25_DEG_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_RAILS_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_FRONT_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NW_SE },
-                { SPR_WOODEN_RC_25_DEG_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_RAILS_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_FRONT_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NE_SW },
-                { SPR_WOODEN_RC_25_DEG_SE_NW, SPR_WOODEN_RC_25_DEG_RAILS_SE_NW, 0, 0 },
-            },
-            {
-                { SPR_WOODEN_RC_25_DEG_CHAIN_SW_NE, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SW_NE, 0, 0 },
-                { SPR_WOODEN_RC_25_DEG_CHAIN_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NW_SE },
-                { SPR_WOODEN_RC_25_DEG_CHAIN_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NE_SW },
-                { SPR_WOODEN_RC_25_DEG_CHAIN_SE_NW, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SE_NW, 0, 0 },
-            } };
+    static constexpr const uint32_t imageIds[2][4][4] = {
+        {
+            { SPR_WOODEN_RC_25_DEG_SW_NE, SPR_WOODEN_RC_25_DEG_RAILS_SW_NE, 0, 0 },
+            { SPR_WOODEN_RC_25_DEG_NW_SE,
+              SPR_WOODEN_RC_25_DEG_RAILS_NW_SE,
+              SPR_WOODEN_RC_25_DEG_FRONT_NW_SE,
+              SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_25_DEG_NE_SW,
+              SPR_WOODEN_RC_25_DEG_RAILS_NE_SW,
+              SPR_WOODEN_RC_25_DEG_FRONT_NE_SW,
+              SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_25_DEG_SE_NW, SPR_WOODEN_RC_25_DEG_RAILS_SE_NW, 0, 0 },
+        },
+        {
+            { SPR_WOODEN_RC_25_DEG_CHAIN_SW_NE, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SW_NE, 0, 0 },
+            { SPR_WOODEN_RC_25_DEG_CHAIN_NW_SE,
+              SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NW_SE,
+              SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NW_SE,
+              SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_25_DEG_CHAIN_NE_SW,
+              SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NE_SW,
+              SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NE_SW,
+              SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_25_DEG_CHAIN_SE_NW, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SE_NW, 0, 0 },
+        }
+    };
 
     uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(
@@ -714,31 +715,32 @@ static void wooden_rc_track_flat_to_25_deg_up(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    static constexpr const uint32_t imageIds[2][4][4]
-        = { {
-                { SPR_WOODEN_RC_FLAT_TO_25_DEG_SW_NE, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_SW_NE, 0, 0 },
-                { SPR_WOODEN_RC_FLAT_TO_25_DEG_NW_SE,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NW_SE,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NW_SE,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_FRONT_NW_SE },
-                { SPR_WOODEN_RC_FLAT_TO_25_DEG_NE_SW,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NE_SW,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NE_SW,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_FRONT_NE_SW },
-                { SPR_WOODEN_RC_FLAT_TO_25_DEG_SE_NW, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_SE_NW, 0, 0 },
-            },
-            {
-                { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_SW_NE, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_SW_NE, 0, 0 },
-                { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NW_SE,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_NW_SE,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NW_SE,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_FRONT_NW_SE },
-                { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NE_SW,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_NE_SW,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NE_SW,
-                  SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_FRONT_NE_SW },
-                { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_SE_NW, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_SE_NW, 0, 0 },
-            } };
+    static constexpr const uint32_t imageIds[2][4][4] = {
+        {
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_SW_NE, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_SW_NE, 0, 0 },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_NW_SE,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NW_SE,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NW_SE,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_NE_SW,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NE_SW,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NE_SW,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_SE_NW, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_SE_NW, 0, 0 },
+        },
+        {
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_SW_NE, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_SW_NE, 0, 0 },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NW_SE,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_NW_SE,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NW_SE,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NE_SW,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_NE_SW,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NE_SW,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_SE_NW, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_SE_NW, 0, 0 },
+        }
+    };
 
     uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(
@@ -897,31 +899,32 @@ static void wooden_rc_track_25_deg_up_to_flat(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    static constexpr const uint32_t imageIds[2][4][4]
-        = { {
-                { SPR_WOODEN_RC_25_DEG_TO_FLAT_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SW_NE, 0, 0 },
-                { SPR_WOODEN_RC_25_DEG_TO_FLAT_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NW_SE },
-                { SPR_WOODEN_RC_25_DEG_TO_FLAT_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NE_SW },
-                { SPR_WOODEN_RC_25_DEG_TO_FLAT_SE_NW, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SE_NW, 0, 0 },
-            },
-            {
-                { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SW_NE, 0, 0 },
-                { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NW_SE,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NW_SE },
-                { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NE_SW,
-                  SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NE_SW },
-                { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SE_NW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SE_NW, 0, 0 },
-            } };
+    static constexpr const uint32_t imageIds[2][4][4] = {
+        {
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SW_NE, 0, 0 },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_NW_SE,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NW_SE,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NW_SE,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_NE_SW,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NE_SW,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NE_SW,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_SE_NW, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SE_NW, 0, 0 },
+        },
+        {
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SW_NE, 0, 0 },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NW_SE,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NW_SE,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NW_SE,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NE_SW,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NE_SW,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NE_SW,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SE_NW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SE_NW, 0, 0 },
+        }
+    };
 
     uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(
@@ -1275,8 +1278,8 @@ static void wooden_rc_track_right_quarter_turn_5(
             blockedSegments = SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
             break;
         case 3:
-            blockedSegments
-                = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
+            blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0
+                | SEGMENT_D4;
             break;
         case 4:
             blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
@@ -1631,8 +1634,8 @@ static void wooden_rc_track_banked_right_quarter_turn_5(
             blockedSegments = SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
             break;
         case 3:
-            blockedSegments
-                = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
+            blockedSegments = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0
+                | SEGMENT_D4;
             break;
         case 4:
             blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;

@@ -71,6 +71,6 @@ int32_t tile_inspector_scenery_set_quarter_location(
     int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags);
 int32_t tile_inspector_scenery_set_quarter_collision(
     int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags);
-int32_t
-    tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags);
+int32_t tile_inspector_banner_toggle_blocking_edge(
+    int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags);
 int32_t tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);

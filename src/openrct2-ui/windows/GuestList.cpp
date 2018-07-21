@@ -1018,8 +1018,8 @@ static void window_guest_list_find_groups()
 
         _window_guest_list_group_index[groupIndex] = groupIndex;
         faceIndex = groupIndex * 56;
-        _window_guest_list_groups_guest_faces[faceIndex++]
-            = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
+        _window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep)
+            - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 
         // Find more peeps that belong to same group
         FOR_ALL_GUESTS (spriteIndex2, peep2)
@@ -1041,8 +1041,8 @@ static void window_guest_list_find_groups()
             // Add face sprite, cap at 56 though
             if (_window_guest_list_groups_num_guests[groupIndex] >= 56)
                 continue;
-            _window_guest_list_groups_guest_faces[faceIndex++]
-                = get_peep_face_sprite_small(peep2) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
+            _window_guest_list_groups_guest_faces[faceIndex++] = get_peep_face_sprite_small(peep2)
+                - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
         }
 
         if (_window_guest_list_filter_arguments[0] == 0)

@@ -48,11 +48,11 @@
 /**
  * Replaces 0x00993CCC, 0x00993CCE
  */
-const CoordsXY CoordsDirectionDelta[]
-    = { { -32, 0 }, { 0, +32 }, { +32, 0 }, { 0, -32 }, { -32, +32 }, { +32, +32 }, { +32, -32 }, { -32, -32 } };
+const CoordsXY CoordsDirectionDelta[] = { { -32, 0 },   { 0, +32 },   { +32, 0 },   { 0, -32 },
+                                          { -32, +32 }, { +32, +32 }, { +32, -32 }, { -32, -32 } };
 
-const TileCoordsXY TileDirectionDelta[]
-    = { { -1, 0 }, { 0, +1 }, { +1, 0 }, { 0, -1 }, { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 } };
+const TileCoordsXY TileDirectionDelta[] = { { -1, 0 },  { 0, +1 },  { +1, 0 },  { 0, -1 },
+                                            { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 } };
 
 /** rct2: 0x0097B8B8 */
 const money32 TerrainPricing[] = {
@@ -877,10 +877,10 @@ void game_command_remove_large_scenery(
     }
 
     rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tileElement));
-    LocationXYZ16 firstTile
-        = { scenery_entry->large_scenery.tiles[tileIndex].x_offset,
-            scenery_entry->large_scenery.tiles[tileIndex].y_offset,
-            static_cast<int16_t>((base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset) };
+    LocationXYZ16 firstTile = { scenery_entry->large_scenery.tiles[tileIndex].x_offset,
+                                scenery_entry->large_scenery.tiles[tileIndex].y_offset,
+                                static_cast<int16_t>(
+                                    (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset) };
 
     rotate_map_coordinates(&firstTile.x, &firstTile.y, tile_element_direction);
 
@@ -1013,10 +1013,10 @@ void game_command_set_large_scenery_colour(
     rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
 
     // Work out the base tile coordinates (Tile with index 0)
-    LocationXYZ16 baseTile
-        = { scenery_entry->large_scenery.tiles[tileIndex].x_offset,
-            scenery_entry->large_scenery.tiles[tileIndex].y_offset,
-            static_cast<int16_t>((base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset) };
+    LocationXYZ16 baseTile = { scenery_entry->large_scenery.tiles[tileIndex].x_offset,
+                               scenery_entry->large_scenery.tiles[tileIndex].y_offset,
+                               static_cast<int16_t>(
+                                   (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset) };
     rotate_map_coordinates(&baseTile.x, &baseTile.y, tile_element_direction);
     baseTile.x = x - baseTile.x;
     baseTile.y = y - baseTile.y;
@@ -1045,8 +1045,8 @@ void game_command_set_large_scenery_colour(
 
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            rct_tile_element* tileElement
-                = map_get_large_scenery_segment(currentTile.x, currentTile.y, base_height, tile_element_direction, i);
+            rct_tile_element* tileElement = map_get_large_scenery_segment(
+                currentTile.x, currentTile.y, base_height, tile_element_direction, i);
 
             scenery_large_set_primary_colour(tileElement, colour1);
             scenery_large_set_secondary_colour(tileElement, colour2);
@@ -1316,8 +1316,8 @@ static money32 map_change_surface_style(
 
             if (surfaceStyle != 0xFF)
             {
-                uint8_t cur_terrain
-                    = (tile_element_get_direction(tileElement) << 3) | (tileElement->properties.surface.terrain >> 5);
+                uint8_t cur_terrain = (tile_element_get_direction(tileElement) << 3)
+                    | (tileElement->properties.surface.terrain >> 5);
 
                 if (surfaceStyle != cur_terrain)
                 {
@@ -2073,8 +2073,8 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
                         height = tile_element->base_height + 2;
                     }
 
-                    money32 tileCost
-                        = game_do_command(xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
+                    money32 tileCost = game_do_command(
+                        xi, flags, yi, (max_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
                     if (tileCost == MONEY32_UNDEFINED)
                         return MONEY32_UNDEFINED;
 
@@ -2161,8 +2161,8 @@ money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
                     if (height < min_height)
                         continue;
                     height -= 2;
-                    int32_t tileCost
-                        = game_do_command(xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
+                    int32_t tileCost = game_do_command(
+                        xi, flags, yi, (min_height << 8) + height, GAME_COMMAND_SET_WATER_HEIGHT, 0, 0);
                     if (tileCost == MONEY32_UNDEFINED)
                         return MONEY32_UNDEFINED;
                     cost += tileCost;
@@ -2242,8 +2242,8 @@ void game_command_lower_land(
         *edi & 0xFFFF);
 }
 
-static money32
-    smooth_land_tile(int32_t direction, uint8_t flags, int32_t x, int32_t y, rct_tile_element* tileElement, bool raiseLand)
+static money32 smooth_land_tile(
+    int32_t direction, uint8_t flags, int32_t x, int32_t y, rct_tile_element* tileElement, bool raiseLand)
 {
     int32_t targetBaseZ = tileElement->base_height;
     int32_t slope = tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
@@ -3378,8 +3378,8 @@ void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
 
-    rct_tile_element* new_tile_elements
-        = (rct_tile_element*)malloc(3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(rct_tile_element));
+    rct_tile_element* new_tile_elements = (rct_tile_element*)malloc(
+        3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(rct_tile_element));
     rct_tile_element* new_elements_pointer = new_tile_elements;
 
     if (new_tile_elements == nullptr)
@@ -3979,8 +3979,8 @@ void map_extend_boundary_surface()
         newTileElement = map_get_surface_element_at(x, y);
 
         newTileElement->type = (newTileElement->type & 0x7C) | (existingTileElement->type & 0x83);
-        newTileElement->properties.surface.slope
-            = existingTileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
+        newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope
+            & TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
         newTileElement->properties.surface.terrain = existingTileElement->properties.surface.terrain;
         newTileElement->properties.surface.grass_length = existingTileElement->properties.surface.grass_length;
         newTileElement->properties.surface.ownership = 0;
@@ -4023,8 +4023,8 @@ void map_extend_boundary_surface()
         newTileElement = map_get_surface_element_at(x, y);
 
         newTileElement->type = (newTileElement->type & 0x7C) | (existingTileElement->type & 0x83);
-        newTileElement->properties.surface.slope
-            = existingTileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
+        newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope
+            & TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
         newTileElement->properties.surface.terrain = existingTileElement->properties.surface.terrain;
         newTileElement->properties.surface.grass_length = existingTileElement->properties.surface.grass_length;
         newTileElement->properties.surface.ownership = 0;
@@ -4942,8 +4942,8 @@ rct_tile_element* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int
  * @param y y units, not tiles.
  * @param z Base height.
  */
-rct_tile_element*
-    map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t rideIndex)
+rct_tile_element* map_get_track_element_at_of_type_from_ride(
+    int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t rideIndex)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -4994,8 +4994,8 @@ rct_tile_element* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32
  * @param z Base height.
  * @param direction The direction (0 - 3).
  */
-rct_tile_element*
-    map_get_track_element_at_with_direction_from_ride(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex)
+rct_tile_element* map_get_track_element_at_with_direction_from_ride(
+    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do

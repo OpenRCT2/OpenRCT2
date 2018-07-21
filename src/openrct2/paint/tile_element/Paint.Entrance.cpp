@@ -27,8 +27,8 @@ static uint32_t _unk9E32BC;
  *
  *  rct2: 0x0066508C, 0x00665540
  */
-static void
-    ride_entrance_exit_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element)
+static void ride_entrance_exit_paint(
+    paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element)
 {
     uint8_t is_exit = tile_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
