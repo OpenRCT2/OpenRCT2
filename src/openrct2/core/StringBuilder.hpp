@@ -10,6 +10,7 @@
 #pragma once
 
 #include <algorithm>
+#include <string>
 #include "../common.h"
 
 #include "Math.hpp"
@@ -130,6 +131,14 @@ public:
         std::copy_n(_buffer, _length, result);
         result[_length] = 0;
         return result;
+    }
+
+    /**
+     * Returns the current string buffer as a standard string.
+     */
+    std::string GetStdString() const
+    {
+        return std::string(_buffer, _length);
     }
 
     /**
