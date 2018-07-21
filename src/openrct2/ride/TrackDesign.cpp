@@ -836,13 +836,8 @@ static int32_t track_design_place_scenery(
                     case OBJECT_TYPE_LARGE_SCENERY:
                         z = (scenery->z * 8 + originZ) / 8;
                         game_do_command(
-                            mapCoord.x,
-                            flags | (((rotation + scenery->flags) & 0x3) << 8),
-                            mapCoord.y,
-                            z,
-                            GAME_COMMAND_REMOVE_LARGE_SCENERY,
-                            0,
-                            0);
+                            mapCoord.x, flags | (((rotation + scenery->flags) & 0x3) << 8), mapCoord.y, z,
+                            GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
                         break;
                     case OBJECT_TYPE_WALLS:
                     {
@@ -954,13 +949,8 @@ static int32_t track_design_place_scenery(
                         gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
                         cost = game_do_command(
-                            mapCoord.x,
-                            bl | (entry_index << 8),
-                            mapCoord.y,
-                            quadrant | (scenery->primary_colour << 8),
-                            GAME_COMMAND_PLACE_SCENERY,
-                            rotation | (scenery->secondary_colour << 16),
-                            z);
+                            mapCoord.x, bl | (entry_index << 8), mapCoord.y, quadrant | (scenery->primary_colour << 8),
+                            GAME_COMMAND_PLACE_SCENERY, rotation | (scenery->secondary_colour << 16), z);
 
                         if (cost == MONEY32_UNDEFINED)
                         {
@@ -997,13 +987,9 @@ static int32_t track_design_place_scenery(
                         }
 
                         cost = game_do_command(
-                            mapCoord.x,
-                            bl | (rotation << 8),
-                            mapCoord.y,
-                            scenery->primary_colour | (scenery->secondary_colour << 8),
-                            GAME_COMMAND_PLACE_LARGE_SCENERY,
-                            entry_index,
-                            z);
+                            mapCoord.x, bl | (rotation << 8), mapCoord.y,
+                            scenery->primary_colour | (scenery->secondary_colour << 8), GAME_COMMAND_PLACE_LARGE_SCENERY,
+                            entry_index, z);
 
                         if (cost == MONEY32_UNDEFINED)
                         {
@@ -1041,13 +1027,8 @@ static int32_t track_design_place_scenery(
                         gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 
                         cost = game_do_command(
-                            mapCoord.x,
-                            bl | (entry_index << 8),
-                            mapCoord.y,
-                            rotation | (scenery->primary_colour << 8),
-                            GAME_COMMAND_PLACE_WALL,
-                            z,
-                            scenery->secondary_colour | ((scenery->flags & 0xFC) << 6));
+                            mapCoord.x, bl | (entry_index << 8), mapCoord.y, rotation | (scenery->primary_colour << 8),
+                            GAME_COMMAND_PLACE_WALL, z, scenery->secondary_colour | ((scenery->flags & 0xFC) << 6));
 
                         if (cost == MONEY32_UNDEFINED)
                         {
@@ -1093,13 +1074,8 @@ static int32_t track_design_place_scenery(
 
                             gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                             cost = game_do_command(
-                                mapCoord.x,
-                                bl | (bh << 8),
-                                mapCoord.y,
-                                z | (entry_index << 8),
-                                GAME_COMMAND_PLACE_PATH_FROM_TRACK,
-                                0,
-                                0);
+                                mapCoord.x, bl | (bh << 8), mapCoord.y, z | (entry_index << 8),
+                                GAME_COMMAND_PLACE_PATH_FROM_TRACK, 0, 0);
                         }
                         else
                         {
@@ -1211,13 +1187,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                     {
                         cost = game_do_command(
-                            mapCoord.x,
-                            0 | rotation << 8,
-                            mapCoord.y,
-                            (z / 16) & 0xFF,
-                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-                            -1,
-                            0);
+                            mapCoord.x, 0 | rotation << 8, mapCoord.y, (z / 16) & 0xFF,
+                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
                     }
                     else
                     {
@@ -1231,13 +1202,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
                         cost = game_do_command(
-                            mapCoord.x,
-                            flags | rotation << 8,
-                            mapCoord.y,
-                            rideIndex,
-                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-                            0,
-                            0);
+                            mapCoord.x, flags | rotation << 8, mapCoord.y, rideIndex, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
+                            0, 0);
                     }
                     if (cost != MONEY32_UNDEFINED)
                     {
@@ -1255,13 +1221,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                     {
                         cost = game_do_command(
-                            mapCoord.x,
-                            0 | rotation << 8,
-                            mapCoord.y,
-                            ((z / 16) & 0xFF) | (1 << 8),
-                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-                            -1,
-                            0);
+                            mapCoord.x, 0 | rotation << 8, mapCoord.y, ((z / 16) & 0xFF) | (1 << 8),
+                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, -1, 0);
                     }
                     else
                     {
@@ -1275,13 +1236,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                                 | GAME_COMMAND_FLAG_GHOST;
                         }
                         cost = game_do_command(
-                            mapCoord.x,
-                            flags | rotation << 8,
-                            mapCoord.y,
-                            rideIndex | (1 << 8),
-                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-                            0,
-                            0);
+                            mapCoord.x, flags | rotation << 8, mapCoord.y, rideIndex | (1 << 8),
+                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, 0, 0);
                     }
                     if (cost != MONEY32_UNDEFINED)
                     {
@@ -1312,13 +1268,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
                     cost = game_do_command(
-                        mapCoord.x,
-                        flags | (maze_entry & 0xFF) << 8,
-                        mapCoord.y,
-                        rideIndex | (maze_entry & 0xFF00),
-                        GAME_COMMAND_PLACE_MAZE_DESIGN,
-                        z,
-                        0);
+                        mapCoord.x, flags | (maze_entry & 0xFF) << 8, mapCoord.y, rideIndex | (maze_entry & 0xFF00),
+                        GAME_COMMAND_PLACE_MAZE_DESIGN, z, 0);
                     break;
             }
 
@@ -1382,8 +1333,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
     if (_trackDesignPlaceOperation == PTD_OPERATION_CLEAR_OUTLINES)
     {
         ride_action_modify(
-            rideIndex,
-            RIDE_MODIFY_DEMOLISH,
+            rideIndex, RIDE_MODIFY_DEMOLISH,
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
     }
 
@@ -1629,13 +1579,8 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
 
                         gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                         money32 cost = game_do_command(
-                            x,
-                            bl | (rotation << 8),
-                            y,
-                            rideIndex | (isExit << 8),
-                            GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-                            stationIndex,
-                            0);
+                            x, bl | (rotation << 8), y, rideIndex | (isExit << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
+                            stationIndex, 0);
                         _trackDesignPlaceCost += cost;
 
                         if (cost == MONEY32_UNDEFINED)
@@ -1988,55 +1933,25 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     game_do_command(
         0, GAME_COMMAND_FLAG_APPLY | (td6->ride_mode << 8), 0, rideIndex | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | (0 << 8),
-        0,
-        rideIndex | (td6->number_of_trains << 8),
-        GAME_COMMAND_SET_RIDE_VEHICLES,
-        0,
+        0, GAME_COMMAND_FLAG_APPLY | (0 << 8), 0, rideIndex | (td6->number_of_trains << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0,
         0);
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | (1 << 8),
-        0,
-        rideIndex | (td6->number_of_cars_per_train << 8),
-        GAME_COMMAND_SET_RIDE_VEHICLES,
-        0,
-        0);
+        0, GAME_COMMAND_FLAG_APPLY | (1 << 8), 0, rideIndex | (td6->number_of_cars_per_train << 8),
+        GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
     game_do_command(
         0, GAME_COMMAND_FLAG_APPLY | (td6->depart_flags << 8), 0, rideIndex | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | (td6->min_waiting_time << 8),
-        0,
-        rideIndex | (2 << 8),
-        GAME_COMMAND_SET_RIDE_SETTING,
-        0,
+        0, GAME_COMMAND_FLAG_APPLY | (td6->min_waiting_time << 8), 0, rideIndex | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0,
         0);
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | (td6->max_waiting_time << 8),
-        0,
-        rideIndex | (3 << 8),
-        GAME_COMMAND_SET_RIDE_SETTING,
-        0,
+        0, GAME_COMMAND_FLAG_APPLY | (td6->max_waiting_time << 8), 0, rideIndex | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0,
         0);
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | (td6->operation_setting << 8),
-        0,
-        rideIndex | (4 << 8),
-        GAME_COMMAND_SET_RIDE_SETTING,
-        0,
+        0, GAME_COMMAND_FLAG_APPLY | (td6->operation_setting << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0,
         0);
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8),
-        0,
-        rideIndex | (8 << 8),
-        GAME_COMMAND_SET_RIDE_SETTING,
-        0,
-        0);
+        0, GAME_COMMAND_FLAG_APPLY | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8), 0, rideIndex | (8 << 8),
+        GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 
     uint8_t num_circuits = td6->lift_hill_speed_num_circuits >> 5;
     if (num_circuits == 0)
@@ -2218,12 +2133,7 @@ static money32 place_maze_design(uint8_t flags, uint8_t rideIndex, uint16_t maze
  *  rct2: 0x006D13FE
  */
 void game_command_place_track_design(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, [[maybe_unused]] int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     int16_t x = *eax & 0xFFFF;
@@ -2240,20 +2150,11 @@ void game_command_place_track_design(
  *  rct2: 0x006CDEE4
  */
 void game_command_place_maze_design(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = place_maze_design(
-        *ebx & 0xFF,
-        *edx & 0xFF,
-        ((*ebx >> 8) & 0xFF) | (((*edx >> 8) & 0xFF) << 8),
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
+        *ebx & 0xFF, *edx & 0xFF, ((*ebx >> 8) & 0xFF) | (((*edx >> 8) & 0xFF) << 8), *eax & 0xFFFF, *ecx & 0xFFFF,
         *edi & 0xFFFF);
 }
 

@@ -132,11 +132,7 @@ private:
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
         : FileIndex(
-              "scenario index",
-              MAGIC_NUMBER,
-              VERSION,
-              env.GetFilePath(PATHID::CACHE_SCENARIOS),
-              std::string(PATTERN),
+              "scenario index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_SCENARIOS), std::string(PATTERN),
               std::vector<std::string>({
                   env.GetDirectoryPath(DIRBASE::RCT1, DIRID::SCENARIO),
                   env.GetDirectoryPath(DIRBASE::RCT2, DIRID::SCENARIO),

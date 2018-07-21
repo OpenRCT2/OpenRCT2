@@ -709,30 +709,16 @@ namespace String
 
         // Measure how long the destination needs to be
         auto requiredSize = LCMapStringEx(
-            LOCALE_NAME_USER_DEFAULT,
-            LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
-            srcW.c_str(),
-            (int)srcW.length(),
-            nullptr,
-            0,
-            nullptr,
-            nullptr,
-            0);
+            LOCALE_NAME_USER_DEFAULT, LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING, srcW.c_str(), (int)srcW.length(), nullptr, 0,
+            nullptr, nullptr, 0);
 
         auto dstW = std::wstring();
         dstW.resize(requiredSize);
 
         // Transform the string
         auto result = LCMapStringEx(
-            LOCALE_NAME_USER_DEFAULT,
-            LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING,
-            srcW.c_str(),
-            (int)srcW.length(),
-            dstW.data(),
-            (int)dstW.length(),
-            nullptr,
-            nullptr,
-            0);
+            LOCALE_NAME_USER_DEFAULT, LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING, srcW.c_str(), (int)srcW.length(), dstW.data(),
+            (int)dstW.length(), nullptr, nullptr, 0);
         if (result == 0)
         {
             // Check the error

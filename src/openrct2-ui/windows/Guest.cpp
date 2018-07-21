@@ -799,17 +799,8 @@ void window_guest_viewport_init(rct_window* w)
             int32_t height = view_widget->bottom - view_widget->top - 1;
 
             viewport_create(
-                w,
-                x,
-                y,
-                width,
-                height,
-                0,
-                focus.coordinate.x,
-                focus.coordinate.y,
-                focus.coordinate.z,
-                focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK,
-                focus.sprite.sprite_id);
+                w, x, y, width, height, 0, focus.coordinate.x, focus.coordinate.y, focus.coordinate.z,
+                focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
             w->flags |= WF_NO_SCROLLING;
             window_invalidate(w);
         }

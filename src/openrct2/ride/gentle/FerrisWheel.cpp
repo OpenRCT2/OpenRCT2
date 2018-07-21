@@ -90,31 +90,13 @@ static void paint_ferris_wheel_structure(
 
     imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
     sub_98197C(
-        session,
-        imageId,
-        xOffset,
-        yOffset,
-        boundBox.length_x,
-        boundBox.length_y,
-        127,
-        height,
-        boundBox.offset_x,
-        boundBox.offset_y,
-        height);
+        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+        boundBox.offset_y, height);
 
     imageId = (baseImageId + direction * 8 + imageOffset) | imageColourFlags;
     sub_98199C(
-        session,
-        imageId,
-        xOffset,
-        yOffset,
-        boundBox.length_x,
-        boundBox.length_y,
-        127,
-        height,
-        boundBox.offset_x,
-        boundBox.offset_y,
-        height);
+        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+        boundBox.offset_y, height);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
@@ -136,33 +118,15 @@ static void paint_ferris_wheel_structure(
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
             imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
             sub_98199C(
-                session,
-                imageId,
-                xOffset,
-                yOffset,
-                boundBox.length_x,
-                boundBox.length_y,
-                127,
-                height,
-                boundBox.offset_x,
-                boundBox.offset_y,
-                height);
+                session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+                boundBox.offset_y, height);
         }
     }
 
     imageId = (22150 + (direction & 1) * 2 + 1) | session->TrackColours[SCHEME_TRACK];
     sub_98199C(
-        session,
-        imageId,
-        xOffset,
-        yOffset,
-        boundBox.length_x,
-        boundBox.length_y,
-        127,
-        height,
-        boundBox.offset_x,
-        boundBox.offset_y,
-        height);
+        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+        boundBox.offset_y, height);
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
@@ -172,11 +136,7 @@ static void paint_ferris_wheel_structure(
  * rct2: 0x008A8EC4
  */
 static void paint_ferris_wheel(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];

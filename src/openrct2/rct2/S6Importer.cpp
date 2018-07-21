@@ -104,9 +104,7 @@ public:
     }
 
     ParkLoadResult LoadFromStream(
-        IStream* stream,
-        bool isScenario,
-        [[maybe_unused]] bool skipObjectCheck = false,
+        IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck = false,
         const utf8* path = String::Empty) override
     {
         if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))
@@ -805,9 +803,8 @@ public:
 
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            gPeepSpawns[i] = {
-                _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z * 16, _s6.peep_spawns[i].direction
-            };
+            gPeepSpawns[i] = { _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z * 16,
+                               _s6.peep_spawns[i].direction };
         }
 
         for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)

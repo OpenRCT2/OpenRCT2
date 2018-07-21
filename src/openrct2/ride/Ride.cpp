@@ -532,15 +532,8 @@ bool ride_try_get_origin_element(int32_t rideIndex, CoordsXYE* output)
  * on the first element of a track block
  */
 bool track_block_get_next_from_zero(
-    int16_t x,
-    int16_t y,
-    int16_t z_start,
-    uint8_t rideIndex,
-    uint8_t direction_start,
-    CoordsXYE* output,
-    int32_t* z,
-    int32_t* direction,
-    bool isGhost)
+    int16_t x, int16_t y, int16_t z_start, uint8_t rideIndex, uint8_t direction_start, CoordsXYE* output, int32_t* z,
+    int32_t* direction, bool isGhost)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -1277,14 +1270,8 @@ void ride_clear_blocked_tiles(int32_t rideIndex)
  * bp : flags
  */
 int32_t sub_6C683D(
-    int32_t* x,
-    int32_t* y,
-    int32_t* z,
-    int32_t direction,
-    int32_t type,
-    uint16_t extra_params,
-    rct_tile_element** output_element,
-    uint16_t flags)
+    int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params,
+    rct_tile_element** output_element, uint16_t flags)
 {
     rct_tile_element* tileElement = map_get_first_element_at(*x / 32, *y / 32);
     rct_tile_element* successTileElement = nullptr;
@@ -1488,13 +1475,8 @@ void ride_remove_provisional_track_piece()
             uint8_t trackType = track_element_get_type(next_track.element);
             int32_t trackSequence = tile_element_get_track_sequence(next_track.element);
             game_do_command(
-                next_track.x,
-                flags | ((direction & 3) << 8),
-                next_track.y,
-                trackType | (trackSequence << 8),
-                GAME_COMMAND_REMOVE_TRACK,
-                z,
-                0);
+                next_track.x, flags | ((direction & 3) << 8), next_track.y, trackType | (trackSequence << 8),
+                GAME_COMMAND_REMOVE_TRACK, z, 0);
         }
     }
 }
@@ -1936,13 +1918,8 @@ static int32_t ride_modify_entrance_or_exit(rct_tile_element* tileElement, int32
     {
         // Remove entrance / exit
         game_do_command(
-            x,
-            (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
-            y,
-            rideIndex,
-            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
-            bl,
-            0);
+            x, (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY), y, rideIndex,
+            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, bl, 0);
         gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                       : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
         gRideEntranceExitPlaceType = entranceType;
@@ -3926,8 +3903,7 @@ void ride_music_update_final()
             } while (channel < AUDIO_MAX_RIDE_MUSIC);
 
             for (rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
-                 ride_music_params < gRideMusicParamsListEnd;
-                 ride_music_params++)
+                 ride_music_params < gRideMusicParamsListEnd; ride_music_params++)
             {
                 if (ride_music_params->ride_id != RIDE_ID_NULL)
                 {
@@ -4236,13 +4212,8 @@ static money32 ride_set_setting(uint8_t rideIndex, uint8_t setting, uint8_t valu
  *  rct2: 0x006B5559
  */
 void game_command_set_ride_setting(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     uint8_t rideIndex = *edx & 0xFF;
     uint8_t setting = (*edx >> 8) & 0xFF;
@@ -4826,15 +4797,8 @@ static constexpr const LocationXY16 word_9A2A60[] = {
  *  rct2: 0x006DD90D
  */
 static rct_vehicle* vehicle_create_car(
-    int32_t rideIndex,
-    int32_t vehicleEntryIndex,
-    int32_t carIndex,
-    int32_t vehicleIndex,
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t* remainingDistance,
-    rct_tile_element* tileElement)
+    int32_t rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, int32_t x, int32_t y, int32_t z,
+    int32_t* remainingDistance, rct_tile_element* tileElement)
 {
     Ride* ride = get_ride(rideIndex);
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -5028,12 +4992,7 @@ static rct_vehicle* vehicle_create_car(
  *  rct2: 0x006DD84C
  */
 static train_ref vehicle_create_train(
-    int32_t rideIndex,
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t vehicleIndex,
-    int32_t* remainingDistance,
+    int32_t rideIndex, int32_t x, int32_t y, int32_t z, int32_t vehicleIndex, int32_t* remainingDistance,
     rct_tile_element* tileElement)
 {
     Ride* ride = get_ride(rideIndex);
@@ -5996,13 +5955,9 @@ int32_t ride_get_refund_price(int32_t ride_id)
     do
     {
         addedcost = game_do_command(
-            trackElement.x,
-            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | (direction << 8),
-            trackElement.y,
+            trackElement.x, GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | (direction << 8), trackElement.y,
             trackElement.element->properties.track.type | ((trackElement.element->properties.track.sequence & 0xF) << 8),
-            GAME_COMMAND_REMOVE_TRACK,
-            trackElement.element->base_height * 8,
-            0);
+            GAME_COMMAND_REMOVE_TRACK, trackElement.element->base_height * 8, 0);
 
         cost += (addedcost == MONEY32_UNDEFINED) ? 0 : addedcost;
 
@@ -6283,13 +6238,8 @@ rct_ride_name get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
  */
 
 void game_command_callback_ride_construct_placed_back(
-    [[maybe_unused]] int32_t eax,
-    [[maybe_unused]] int32_t ebx,
-    [[maybe_unused]] int32_t ecx,
-    [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi,
-    [[maybe_unused]] int32_t ebp)
+    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi, [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
 {
     int32_t trackDirection, x, y, z;
     track_begin_end trackBeginEnd;
@@ -6326,13 +6276,8 @@ void game_command_callback_ride_construct_placed_back(
 }
 
 void game_command_callback_ride_construct_placed_front(
-    [[maybe_unused]] int32_t eax,
-    [[maybe_unused]] int32_t ebx,
-    [[maybe_unused]] int32_t ecx,
-    [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi,
-    [[maybe_unused]] int32_t ebp)
+    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi, [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
 {
     int32_t trackDirection, x, y, z;
 
@@ -6378,13 +6323,8 @@ void game_command_callback_ride_construct_placed_front(
  */
 
 void game_command_callback_ride_remove_track_piece(
-    [[maybe_unused]] int32_t eax,
-    [[maybe_unused]] int32_t ebx,
-    [[maybe_unused]] int32_t ecx,
-    [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi,
-    [[maybe_unused]] int32_t ebp)
+    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi, [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
 {
     int32_t x, y, z, direction, type;
 
@@ -6402,13 +6342,8 @@ void game_command_callback_ride_remove_track_piece(
  *  rct2: 0x006B2FC5
  */
 void game_command_set_ride_appearance(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     bool apply = (*ebx & GAME_COMMAND_FLAG_APPLY);
 
@@ -6564,13 +6499,8 @@ void game_command_set_ride_appearance(
  *  rct2: 0x006B53E9
  */
 void game_command_set_ride_price(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     uint32_t flags = *ebx;
     uint8_t ride_number = (*edx & 0xFF);
@@ -7309,11 +7239,7 @@ bool ride_select_backwards_from_front()
 
     ride_construction_invalidate_current_track();
     if (track_block_get_previous_from_zero(
-            _currentTrackBeginX,
-            _currentTrackBeginY,
-            _currentTrackBeginZ,
-            _currentRideIndex,
-            _currentTrackPieceDirection,
+            _currentTrackBeginX, _currentTrackBeginY, _currentTrackBeginZ, _currentRideIndex, _currentTrackPieceDirection,
             &trackBeginEnd))
     {
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
@@ -7821,39 +7747,24 @@ void ride_set_ride_entry(int32_t rideIndex, int32_t rideEntry)
 {
     gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_TYPE_FAIL;
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY << 8),
-        0,
-        (rideEntry << 8) | rideIndex,
-        GAME_COMMAND_SET_RIDE_VEHICLES,
-        0,
-        0);
+        0, GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_RIDE_ENTRY << 8), 0, (rideEntry << 8) | rideIndex,
+        GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 }
 
 void ride_set_num_vehicles(int32_t rideIndex, int32_t numVehicles)
 {
     gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL;
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS << 8),
-        0,
-        (numVehicles << 8) | rideIndex,
-        GAME_COMMAND_SET_RIDE_VEHICLES,
-        0,
-        0);
+        0, GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS << 8), 0, (numVehicles << 8) | rideIndex,
+        GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 }
 
 void ride_set_num_cars_per_vehicle(int32_t rideIndex, int32_t numCarsPerVehicle)
 {
     gGameCommandErrorTitle = STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL;
     game_do_command(
-        0,
-        GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN << 8),
-        0,
-        (numCarsPerVehicle << 8) | rideIndex,
-        GAME_COMMAND_SET_RIDE_VEHICLES,
-        0,
-        0);
+        0, GAME_COMMAND_FLAG_APPLY | (RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_CARS_PER_TRAIN << 8), 0,
+        (numCarsPerVehicle << 8) | rideIndex, GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
 }
 
 static bool ride_is_vehicle_type_valid(Ride* ride, uint8_t inputRideEntryIndex)
@@ -8038,13 +7949,8 @@ static money32 ride_set_vehicles(uint8_t rideIndex, uint8_t setting, uint8_t val
  *  rct2: 0x006B52D4
  */
 void game_command_set_ride_vehicles(
-    int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     uint8_t rideIndex = *edx & 0xFF;
     uint8_t setting = (*ebx >> 8) & 0xFF;
@@ -8248,11 +8154,8 @@ void sub_6CB945(int32_t rideIndex)
                         break;
 
                     ride_set_exit_location(
-                        ride,
-                        stationId,
-                        { location.x / 32,
-                          location.y / 32,
-                          ride->station_heights[stationId],
+                        ride, stationId,
+                        { location.x / 32, location.y / 32, ride->station_heights[stationId],
                           (uint8_t)tile_element_get_direction(tileElement) });
                 }
                 else
@@ -8949,11 +8852,7 @@ void determine_ride_entrance_and_exit_locations()
 
                                 log_verbose(
                                     "Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.",
-                                    rideIndex,
-                                    stationIndex,
-                                    x,
-                                    y,
-                                    tileElement->base_height);
+                                    rideIndex, stationIndex, x, y, tileElement->base_height);
                             }
                             else if (fixExit && tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
                             {
@@ -8967,18 +8866,13 @@ void determine_ride_entrance_and_exit_locations()
 
                                 // Found our exit
                                 ride_set_exit_location(
-                                    ride,
-                                    stationIndex,
+                                    ride, stationIndex,
                                     { x, y, tileElement->base_height, (uint8_t)tile_element_get_direction(tileElement) });
                                 alreadyFoundExit = true;
 
                                 log_verbose(
-                                    "Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.",
-                                    rideIndex,
-                                    stationIndex,
-                                    x,
-                                    y,
-                                    tileElement->base_height);
+                                    "Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex,
+                                    stationIndex, x, y, tileElement->base_height);
                             }
                         } while (!(tileElement++)->IsLastForTile());
                     }

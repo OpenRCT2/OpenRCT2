@@ -146,17 +146,8 @@ void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t* out_x, int3
  *  w:      esi
  */
 void viewport_create(
-    rct_window* w,
-    int32_t x,
-    int32_t y,
-    int32_t width,
-    int32_t height,
-    int32_t zoom,
-    int32_t centre_x,
-    int32_t centre_y,
-    int32_t centre_z,
-    char flags,
-    int16_t sprite)
+    rct_window* w, int32_t x, int32_t y, int32_t width, int32_t height, int32_t zoom, int32_t centre_x, int32_t centre_y,
+    int32_t centre_z, char flags, int16_t sprite)
 {
     rct_viewport* viewport = nullptr;
     for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
@@ -1614,29 +1605,16 @@ void sub_68862C(rct_drawpixelinfo* dpi, paint_struct* ps)
  * viewport: edi
  */
 void get_map_coordinates_from_pos(
-    int32_t screenX,
-    int32_t screenY,
-    int32_t flags,
-    int16_t* x,
-    int16_t* y,
-    int32_t* interactionType,
-    rct_tile_element** tileElement,
-    rct_viewport** viewport)
+    int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
+    rct_tile_element** tileElement, rct_viewport** viewport)
 {
     rct_window* window = window_find_from_point(screenX, screenY);
     get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, tileElement, viewport);
 }
 
 void get_map_coordinates_from_pos_window(
-    rct_window* window,
-    int32_t screenX,
-    int32_t screenY,
-    int32_t flags,
-    int16_t* x,
-    int16_t* y,
-    int32_t* interactionType,
-    rct_tile_element** tileElement,
-    rct_viewport** viewport)
+    rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
+    rct_tile_element** tileElement, rct_viewport** viewport)
 {
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;

@@ -24,9 +24,8 @@ enum
     SPR_DODGEMS_FENCE_TOP_LEFT = 21937
 };
 
-static constexpr const uint32_t dodgems_fence_sprites[] = {
-    SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_LEFT, SPR_DODGEMS_FENCE_TOP_LEFT
-};
+static constexpr const uint32_t dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TOP_RIGHT, SPR_DODGEMS_FENCE_BOTTOM_RIGHT,
+                                                            SPR_DODGEMS_FENCE_BOTTOM_LEFT, SPR_DODGEMS_FENCE_TOP_LEFT };
 
 static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t offset)
 {
@@ -38,11 +37,7 @@ static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t o
 }
 
 static void paint_dodgems(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
@@ -57,14 +52,7 @@ static void paint_dodgems(
     sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
     track_paint_util_paint_fences(
-        session,
-        edges,
-        position,
-        tileElement,
-        ride,
-        session->TrackColours[SCHEME_SUPPORTS],
-        height,
-        dodgems_fence_sprites,
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, dodgems_fence_sprites,
         session->CurrentRotation);
 
     switch (direction)

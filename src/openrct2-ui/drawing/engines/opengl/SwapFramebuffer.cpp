@@ -33,11 +33,8 @@ void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader& shader, GLuint 
     glDisable(GL_DEPTH_TEST);
     shader.Use();
     shader.SetTextures(
-        _opaqueFramebuffer.GetTexture(),
-        _opaqueFramebuffer.GetDepthTexture(),
-        _transparentFramebuffer.GetTexture(),
-        _transparentFramebuffer.GetDepthTexture(),
-        paletteTex);
+        _opaqueFramebuffer.GetTexture(), _opaqueFramebuffer.GetDepthTexture(), _transparentFramebuffer.GetTexture(),
+        _transparentFramebuffer.GetDepthTexture(), paletteTex);
     shader.Draw();
 
     _backDepth = _transparentFramebuffer.SwapDepthTexture(_backDepth);

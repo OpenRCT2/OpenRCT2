@@ -100,56 +100,20 @@ static void paint_swinging_inverter_ship_structure(
     if (direction & 2)
     {
         sub_98197C(
-            session,
-            vehicleImageId,
-            xOffset,
-            yOffset,
-            boundBox.length_x,
-            boundBox.length_y,
-            127,
-            height,
-            boundBox.offset_x,
-            boundBox.offset_y,
-            height);
+            session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+            boundBox.offset_y, height);
         sub_98199C(
-            session,
-            frameImageId,
-            xOffset,
-            yOffset,
-            boundBox.length_x,
-            boundBox.length_y,
-            127,
-            height,
-            boundBox.offset_x,
-            boundBox.offset_y,
-            height);
+            session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+            boundBox.offset_y, height);
     }
     else
     {
         sub_98197C(
-            session,
-            frameImageId,
-            xOffset,
-            yOffset,
-            boundBox.length_x,
-            boundBox.length_y,
-            127,
-            height,
-            boundBox.offset_x,
-            boundBox.offset_y,
-            height);
+            session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+            boundBox.offset_y, height);
         sub_98199C(
-            session,
-            vehicleImageId,
-            xOffset,
-            yOffset,
-            boundBox.length_x,
-            boundBox.length_y,
-            127,
-            height,
-            boundBox.offset_x,
-            boundBox.offset_y,
-            height);
+            session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+            boundBox.offset_y, height);
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
@@ -158,11 +122,7 @@ static void paint_swinging_inverter_ship_structure(
 
 /** rct2: 0x00760260 */
 static void paint_swinging_inverter_ship(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];

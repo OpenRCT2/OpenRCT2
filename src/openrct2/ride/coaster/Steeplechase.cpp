@@ -21,11 +21,7 @@
 
 /** rct2: 0x008A59A8 */
 static void steeplechase_track_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -71,11 +67,7 @@ static void steeplechase_track_flat(
 }
 
 static void steeplechase_track_station(
-    paint_session* session,
-    uint8_t rideIndex,
-    [[maybe_unused]] uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
@@ -86,30 +78,10 @@ static void steeplechase_track_station(
     };
 
     sub_98197C_rotated(
-        session,
-        direction,
-        imageIds[direction][1] | session->TrackColours[SCHEME_MISC],
-        0,
-        0,
-        32,
-        28,
-        3,
-        height - 2,
-        0,
-        2,
+        session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 3, height - 2, 0, 2,
         height);
     sub_98199C_rotated(
-        session,
-        direction,
-        imageIds[direction][0] | session->TrackColours[SCHEME_TRACK],
-        0,
-        6,
-        32,
-        20,
-        3,
-        height,
-        0,
-        0,
+        session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 6, 32, 20, 3, height, 0, 0,
         height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 3);
     track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
@@ -120,11 +92,7 @@ static void steeplechase_track_station(
 
 /** rct2: 0x008A59B8 */
 static void steeplechase_track_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -194,11 +162,7 @@ static void steeplechase_track_25_deg_up(
 
 /** rct2: 0x008A59C8 */
 static void steeplechase_track_flat_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -268,11 +232,7 @@ static void steeplechase_track_flat_to_25_deg_up(
 
 /** rct2: 0x008A59D8 */
 static void steeplechase_track_25_deg_up_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (track_element_is_lift_hill(tileElement))
@@ -342,11 +302,7 @@ static void steeplechase_track_25_deg_up_to_flat(
 
 /** rct2: 0x008A59E8 */
 static void steeplechase_track_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     steeplechase_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -354,11 +310,7 @@ static void steeplechase_track_25_deg_down(
 
 /** rct2: 0x008A59F8 */
 static void steeplechase_track_flat_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     steeplechase_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -366,11 +318,7 @@ static void steeplechase_track_flat_to_25_deg_down(
 
 /** rct2: 0x008A5A08 */
 static void steeplechase_track_25_deg_down_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     steeplechase_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -378,11 +326,7 @@ static void steeplechase_track_25_deg_down_to_flat(
 
 /** rct2: 0x008A5A18 */
 static void steeplechase_track_left_quarter_turn_5(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -450,8 +394,7 @@ static void steeplechase_track_left_quarter_turn_5(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -505,8 +448,7 @@ static void steeplechase_track_left_quarter_turn_5(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 6:
@@ -555,11 +497,7 @@ static void steeplechase_track_left_quarter_turn_5(
 
 /** rct2: 0x008A5A28 */
 static void steeplechase_track_right_quarter_turn_5(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -568,11 +506,7 @@ static void steeplechase_track_right_quarter_turn_5(
 
 /** rct2: 0x008A5A38 */
 static void steeplechase_track_s_bend_left(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -641,8 +575,7 @@ static void steeplechase_track_s_bend_left(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 2:
@@ -673,8 +606,7 @@ static void steeplechase_track_s_bend_left(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -723,11 +655,7 @@ static void steeplechase_track_s_bend_left(
 
 /** rct2: 0x008A5A48 */
 static void steeplechase_track_s_bend_right(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -796,8 +724,7 @@ static void steeplechase_track_s_bend_right(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 2:
@@ -828,8 +755,7 @@ static void steeplechase_track_s_bend_right(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -878,11 +804,7 @@ static void steeplechase_track_s_bend_right(
 
 /** rct2: 0x008A5A88 */
 static void steeplechase_track_left_quarter_turn_3(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -996,11 +918,7 @@ static void steeplechase_track_left_quarter_turn_3(
 
 /** rct2: 0x008A5A98 */
 static void steeplechase_track_right_quarter_turn_3(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -1009,11 +927,7 @@ static void steeplechase_track_right_quarter_turn_3(
 
 /** rct2: 0x008A5AA8 */
 static void steeplechase_track_brakes(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -1038,11 +952,7 @@ static void steeplechase_track_brakes(
 
 /** rct2: 0x008A5AD8 */
 static void steeplechase_track_left_eighth_to_diag(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -1096,32 +1006,12 @@ static void steeplechase_track_left_eighth_to_diag(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28734,
-                        0,
-                        0,
-                        32,
-                        16,
-                        3,
-                        height,
-                        0,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28734, 0, 0, 32, 16, 3, height, 0, 16,
                         height);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28738,
-                        0,
-                        0,
-                        32,
-                        16,
-                        3,
-                        height,
-                        0,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28738, 0, 0, 32, 16, 3, height, 0, 16,
                         height);
                     break;
             }
@@ -1129,8 +1019,7 @@ static void steeplechase_track_left_eighth_to_diag(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 2:
@@ -1138,47 +1027,17 @@ static void steeplechase_track_left_eighth_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28727,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        0,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28727, 0, 0, 16, 16, 3, height, 0, 16,
                         height);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28731,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        16,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28731, 0, 0, 16, 16, 3, height, 16, 16,
                         height);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28735,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        16,
-                        0,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28735, 0, 0, 16, 16, 3, height, 16, 0,
                         height);
                     break;
                 case 3:
@@ -1187,10 +1046,8 @@ static void steeplechase_track_left_eighth_to_diag(
                     break;
             }
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -1203,34 +1060,14 @@ static void steeplechase_track_left_eighth_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28728,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        16,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28728, 0, 0, 16, 16, 3, height, 16, 16,
                         height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_STICK, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28732,
-                        0,
-                        0,
-                        16,
-                        18,
-                        3,
-                        height,
-                        0,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28732, 0, 0, 16, 18, 3, height, 0, 16,
                         height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_STICK_ALT, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -1243,17 +1080,7 @@ static void steeplechase_track_left_eighth_to_diag(
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28740,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        16,
-                        0,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28740, 0, 0, 16, 16, 3, height, 16, 0,
                         height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_STICK_ALT, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -1263,8 +1090,7 @@ static void steeplechase_track_left_eighth_to_diag(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
     }
@@ -1272,11 +1098,7 @@ static void steeplechase_track_left_eighth_to_diag(
 
 /** rct2: 0x008A5AE8 */
 static void steeplechase_track_right_eighth_to_diag(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -1322,32 +1144,12 @@ static void steeplechase_track_right_eighth_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28710,
-                        0,
-                        0,
-                        32,
-                        16,
-                        3,
-                        height,
-                        0,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28710, 0, 0, 32, 16, 3, height, 0, 16,
                         height);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28714,
-                        0,
-                        0,
-                        32,
-                        16,
-                        3,
-                        height,
-                        0,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28714, 0, 0, 32, 16, 3, height, 0, 16,
                         height);
                     break;
                 case 2:
@@ -1363,8 +1165,7 @@ static void steeplechase_track_right_eighth_to_diag(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 2:
@@ -1376,17 +1177,7 @@ static void steeplechase_track_right_eighth_to_diag(
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28715,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        16,
-                        0,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28715, 0, 0, 16, 16, 3, height, 16, 0,
                         height);
                     break;
                 case 2:
@@ -1395,25 +1186,13 @@ static void steeplechase_track_right_eighth_to_diag(
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28723,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        0,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28723, 0, 0, 16, 16, 3, height, 0, 16,
                         height);
                     break;
             }
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -1426,17 +1205,7 @@ static void steeplechase_track_right_eighth_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28712,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        16,
-                        0,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28712, 0, 0, 16, 16, 3, height, 16, 0,
                         height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_STICK, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -1449,34 +1218,14 @@ static void steeplechase_track_right_eighth_to_diag(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28720,
-                        0,
-                        0,
-                        16,
-                        18,
-                        3,
-                        height,
-                        0,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28720, 0, 0, 16, 18, 3, height, 0, 16,
                         height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_STICK, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_TRACK] | 28724,
-                        0,
-                        0,
-                        16,
-                        16,
-                        3,
-                        height,
-                        16,
-                        16,
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 28724, 0, 0, 16, 16, 3, height, 16, 16,
                         height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_STICK_ALT, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -1486,8 +1235,7 @@ static void steeplechase_track_right_eighth_to_diag(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
     }
@@ -1495,11 +1243,7 @@ static void steeplechase_track_right_eighth_to_diag(
 
 /** rct2: 0x008A5AF8 */
 static void steeplechase_track_left_eighth_to_orthogonal(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1508,11 +1252,7 @@ static void steeplechase_track_left_eighth_to_orthogonal(
 
 /** rct2: 0x008A5B08 */
 static void steeplechase_track_right_eighth_to_orthogonal(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1521,11 +1261,7 @@ static void steeplechase_track_right_eighth_to_orthogonal(
 
 /** rct2: 0x008A5AC8 */
 static void steeplechase_track_diag_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -1537,18 +1273,8 @@ static void steeplechase_track_diag_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28760,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28760, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1558,18 +1284,8 @@ static void steeplechase_track_diag_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28744,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28744, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1584,18 +1300,8 @@ static void steeplechase_track_diag_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28757,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28757, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1605,18 +1311,8 @@ static void steeplechase_track_diag_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28741,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28741, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1631,18 +1327,8 @@ static void steeplechase_track_diag_flat(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28759,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28759, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1652,18 +1338,8 @@ static void steeplechase_track_diag_flat(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28743,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28743, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1682,18 +1358,8 @@ static void steeplechase_track_diag_flat(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28758,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28758, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1717,18 +1383,8 @@ static void steeplechase_track_diag_flat(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28742,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28742, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1751,11 +1407,7 @@ static void steeplechase_track_diag_flat(
 
 /** rct2: 0x008A5B38 */
 static void steeplechase_track_diag_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -1767,18 +1419,8 @@ static void steeplechase_track_diag_25_deg_up(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28772,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28772, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1788,18 +1430,8 @@ static void steeplechase_track_diag_25_deg_up(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28756,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28756, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1814,18 +1446,8 @@ static void steeplechase_track_diag_25_deg_up(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28769,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28769, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1835,18 +1457,8 @@ static void steeplechase_track_diag_25_deg_up(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28753,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28753, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1861,18 +1473,8 @@ static void steeplechase_track_diag_25_deg_up(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28771,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28771, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1882,18 +1484,8 @@ static void steeplechase_track_diag_25_deg_up(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28755,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28755, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -1912,18 +1504,8 @@ static void steeplechase_track_diag_25_deg_up(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28770,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28770, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1947,18 +1529,8 @@ static void steeplechase_track_diag_25_deg_up(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28754,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28754, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -1981,11 +1553,7 @@ static void steeplechase_track_diag_25_deg_up(
 
 /** rct2: 0x008A5B18 */
 static void steeplechase_track_diag_flat_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -1997,18 +1565,8 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28764,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28764, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2018,18 +1576,8 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28748,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28748, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2044,18 +1592,8 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28761,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28761, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2065,18 +1603,8 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28745,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28745, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2091,18 +1619,8 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28763,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28763, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2112,18 +1630,8 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28747,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28747, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2142,18 +1650,8 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28762,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28762, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2177,18 +1675,8 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28746,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28746, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2211,11 +1699,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
 
 /** rct2: 0x008A5B28 */
 static void steeplechase_track_diag_25_deg_up_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -2227,18 +1711,8 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28768,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28768, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2248,18 +1722,8 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28752,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28752, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2274,18 +1738,8 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28765,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28765, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2295,18 +1749,8 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28749,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28749, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2321,18 +1765,8 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28767,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28767, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2342,18 +1776,8 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28751,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28751, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2372,18 +1796,8 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28766,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28766, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 4, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2407,18 +1821,8 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28750,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28750, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 4, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2441,11 +1845,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
 
 /** rct2: 0x008A5B68 */
 static void steeplechase_track_diag_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -2457,18 +1857,8 @@ static void steeplechase_track_diag_25_deg_down(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28770,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28770, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2478,18 +1868,8 @@ static void steeplechase_track_diag_25_deg_down(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28754,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28754, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2504,18 +1884,8 @@ static void steeplechase_track_diag_25_deg_down(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28771,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28771, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2525,18 +1895,8 @@ static void steeplechase_track_diag_25_deg_down(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28755,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28755, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2551,18 +1911,8 @@ static void steeplechase_track_diag_25_deg_down(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28769,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28769, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2572,18 +1922,8 @@ static void steeplechase_track_diag_25_deg_down(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28753,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28753, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2602,18 +1942,8 @@ static void steeplechase_track_diag_25_deg_down(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28772,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28772, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2637,18 +1967,8 @@ static void steeplechase_track_diag_25_deg_down(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28756,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28756, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2671,11 +1991,7 @@ static void steeplechase_track_diag_25_deg_down(
 
 /** rct2: 0x008A5B48 */
 static void steeplechase_track_diag_flat_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -2687,18 +2003,8 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28766,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28766, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2708,18 +2014,8 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28750,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28750, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2733,18 +2029,8 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28767,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28767, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2754,18 +2040,8 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28751,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28751, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2779,18 +2055,8 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28765,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28765, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2800,18 +2066,8 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28749,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28749, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2829,18 +2085,8 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28768,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28768, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 4, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2864,18 +2110,8 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28752,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28752, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 4, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2899,11 +2135,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
 
 /** rct2: 0x008A5B58 */
 static void steeplechase_track_diag_25_deg_down_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -2915,18 +2147,8 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28762,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28762, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2936,18 +2158,8 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28746,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28746, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2962,18 +2174,8 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28763,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28763, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -2983,18 +2185,8 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28747,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28747, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -3009,18 +2201,8 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28761,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28761, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -3030,18 +2212,8 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                 {
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28745,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28745, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -3060,18 +2232,8 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28764,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28764, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -3095,18 +2257,8 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            session->TrackColours[SCHEME_TRACK] | 28748,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            3,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 28748, -16, -16, 32, 32, 3, height, -16,
+                            -16, height);
                         metal_b_supports_paint_setup(
                             session, METAL_SUPPORTS_STICK_ALT, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -3129,11 +2281,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
 
 /** rct2: 0x008A5AB8 */
 static void steeplechase_track_block_brakes(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)

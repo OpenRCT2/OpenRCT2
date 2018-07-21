@@ -751,14 +751,8 @@ void paint_session_free([[maybe_unused]] paint_session* session)
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
 paint_struct* sub_98196C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
 {
     assert((uint16_t)bound_box_length_x == (int16_t)bound_box_length_x);
     assert((uint16_t)bound_box_length_y == (int16_t)bound_box_length_y);
@@ -907,17 +901,9 @@ paint_struct* sub_98196C(
  */
 // Track Pieces, Shops.
 paint_struct* sub_98197C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;
@@ -974,17 +960,9 @@ paint_struct* sub_98197C(
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
 paint_struct* sub_98198C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     assert((uint16_t)bound_box_length_x == bound_box_length_x);
     assert((uint16_t)bound_box_length_y == bound_box_length_y);
@@ -1024,17 +1002,9 @@ paint_struct* sub_98198C(
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
 paint_struct* sub_98199C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     assert((uint16_t)bound_box_length_x == (int16_t)bound_box_length_x);
     assert((uint16_t)bound_box_length_y == (int16_t)bound_box_length_y);
@@ -1042,17 +1012,8 @@ paint_struct* sub_98199C(
     if (session->UnkF1AD28 == nullptr)
     {
         return sub_98197C(
-            session,
-            image_id,
-            x_offset,
-            y_offset,
-            bound_box_length_x,
-            bound_box_length_y,
-            bound_box_length_z,
-            z_offset,
-            bound_box_offset_x,
-            bound_box_offset_y,
-            bound_box_offset_z);
+            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
     }
 
     LocationXYZ16 offset = { x_offset, y_offset, z_offset };
@@ -1160,13 +1121,7 @@ bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, uint
  * @param rotation (ebp)
  */
 void paint_floating_money_effect(
-    paint_session* session,
-    money32 amount,
-    rct_string_id string_id,
-    int16_t y,
-    int16_t z,
-    int8_t y_offsets[],
-    int16_t offset_x,
+    paint_session* session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
     uint32_t rotation)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)

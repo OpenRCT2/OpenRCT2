@@ -256,15 +256,8 @@ void track_paint_util_paint_floor(
 }
 
 void track_paint_util_paint_fences(
-    paint_session* session,
-    uint8_t edges,
-    LocationXY16 position,
-    const rct_tile_element* tileElement,
-    Ride* ride,
-    uint32_t colourFlags,
-    uint16_t height,
-    const uint32_t fenceSprites[4],
-    uint8_t rotation)
+    paint_session* session, uint8_t edges, LocationXY16 position, const rct_tile_element* tileElement, Ride* ride,
+    uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
 {
     uint32_t imageId;
 
@@ -303,14 +296,8 @@ bool track_paint_util_should_paint_supports(LocationXY16 position)
 }
 
 static void track_paint_util_draw_station_impl(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t direction,
-    uint16_t height,
-    uint16_t coverHeight,
-    const rct_tile_element* tileElement,
-    int32_t fenceOffsetA,
-    int32_t fenceOffsetB);
+    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
+    const rct_tile_element* tileElement, int32_t fenceOffsetA, int32_t fenceOffsetB);
 
 void track_paint_util_draw_station(
     paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, const rct_tile_element* tileElement)
@@ -319,37 +306,22 @@ void track_paint_util_draw_station(
 }
 
 void track_paint_util_draw_station_2(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t direction,
-    uint16_t height,
-    const rct_tile_element* tileElement,
-    int32_t fenceOffsetA,
-    int32_t fenceOffsetB)
+    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, const rct_tile_element* tileElement,
+    int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
     track_paint_util_draw_station_impl(session, rideIndex, direction, height, height, tileElement, fenceOffsetA, fenceOffsetB);
 }
 
 void track_paint_util_draw_station_3(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t direction,
-    uint16_t height,
-    uint16_t coverHeight,
+    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
     const rct_tile_element* tileElement)
 {
     track_paint_util_draw_station_impl(session, rideIndex, direction, height, coverHeight, tileElement, 5, 7);
 }
 
 static void track_paint_util_draw_station_impl(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t direction,
-    uint16_t height,
-    uint16_t coverHeight,
-    const rct_tile_element* tileElement,
-    int32_t fenceOffsetA,
-    int32_t fenceOffsetB)
+    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
+    const rct_tile_element* tileElement, int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
     LocationXY16 position = session->MapPosition;
     Ride* ride = get_ride(rideIndex);
@@ -553,11 +525,7 @@ static void track_paint_util_draw_station_impl(
 }
 
 void track_paint_util_draw_station_inverted(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t direction,
-    int32_t height,
-    const rct_tile_element* tileElement,
+    paint_session* session, uint8_t rideIndex, uint8_t direction, int32_t height, const rct_tile_element* tileElement,
     uint8_t stationVariant)
 {
     LocationXY16 position = session->MapPosition;
@@ -768,11 +736,7 @@ bool track_paint_util_draw_station_covers(
 }
 
 bool track_paint_util_draw_station_covers_2(
-    paint_session* session,
-    enum edge_t edge,
-    bool hasFence,
-    const rct_ride_entrance_definition* entranceStyle,
-    uint16_t height,
+    paint_session* session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition* entranceStyle, uint16_t height,
     uint8_t stationVariant)
 {
     if (!(session->Unk141E9DB & (G141E9DB_FLAG_1 | G141E9DB_FLAG_2)))
@@ -835,50 +799,23 @@ bool track_paint_util_draw_station_covers_2(
     {
         imageId = (baseImageId & ~IMAGE_TYPE_TRANSPARENT) + imageOffset;
         sub_98197C(
-            session,
-            imageId,
-            (int8_t)offset.x,
-            (int8_t)offset.y,
-            bounds.x,
-            bounds.y,
-            (int8_t)bounds.z,
-            offset.z,
-            boundsOffset.x,
-            boundsOffset.y,
-            boundsOffset.z);
+            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z,
+            boundsOffset.x, boundsOffset.y, boundsOffset.z);
 
         uint32_t edi = session->TrackColours[SCHEME_TRACK] & (0b11111 << 19);
 
         // weird jump
         imageId = (baseImageId | edi) + ((1 << 23) | (1 << 24) | (1 << 25)) + imageOffset + 12;
         sub_98199C(
-            session,
-            imageId,
-            (int8_t)offset.x,
-            (int8_t)offset.y,
-            bounds.x,
-            bounds.y,
-            (int8_t)bounds.z,
-            offset.z,
-            boundsOffset.x,
-            boundsOffset.y,
-            boundsOffset.z);
+            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z,
+            boundsOffset.x, boundsOffset.y, boundsOffset.z);
         return true;
     }
 
     imageId = (baseImageId + imageOffset) | session->TrackColours[SCHEME_TRACK];
     sub_98197C(
-        session,
-        imageId,
-        (int8_t)offset.x,
-        (int8_t)offset.y,
-        bounds.x,
-        bounds.y,
-        (int8_t)bounds.z,
-        offset.z,
-        boundsOffset.x,
-        boundsOffset.y,
-        boundsOffset.z);
+        session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z, boundsOffset.x,
+        boundsOffset.y, boundsOffset.z);
     return true;
 }
 
@@ -928,14 +865,8 @@ void track_paint_util_draw_station_platform(
 }
 
 void track_paint_util_draw_pier(
-    paint_session* session,
-    Ride* ride,
-    const rct_ride_entrance_definition* entranceStyle,
-    LocationXY16 position,
-    uint8_t direction,
-    int32_t height,
-    const rct_tile_element* tileElement,
-    uint8_t rotation)
+    paint_session* session, Ride* ride, const rct_ride_entrance_definition* entranceStyle, LocationXY16 position,
+    uint8_t direction, int32_t height, const rct_tile_element* tileElement, uint8_t rotation)
 {
     bool hasFence;
     uint32_t imageId;
@@ -1049,16 +980,9 @@ const LocationXYZ16 defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
 static constexpr const int8_t right_helix_up_small_quarter_tiles_sprite_map[] = { 0, -1, 1, 2 };
 
 void track_paint_util_right_helix_up_small_quarter_tiles_paint(
-    paint_session* session,
-    const int8_t thickness[2],
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
-    const uint32_t sprites[4][3][2],
-    const LocationXY16 offsets[4][3][2],
-    const LocationXY16 boundsLengths[4][3][2],
-    const LocationXYZ16 boundsOffsets[4][3][2])
+    paint_session* session, const int8_t thickness[2], int16_t height, int32_t direction, uint8_t trackSequence,
+    uint32_t colourFlags, const uint32_t sprites[4][3][2], const LocationXY16 offsets[4][3][2],
+    const LocationXY16 boundsLengths[4][3][2], const LocationXYZ16 boundsOffsets[4][3][2])
 {
     int32_t index = right_helix_up_small_quarter_tiles_sprite_map[trackSequence];
     if (index < 0)
@@ -1075,17 +999,8 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
             = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index][0]);
 
         sub_98197C(
-            session,
-            imageId,
-            (int8_t)offset.x,
-            (int8_t)offset.y,
-            boundsLength.x,
-            boundsLength.y,
-            thickness[0],
-            height,
-            boundsOffset.x,
-            boundsOffset.y,
-            height + boundsOffset.z);
+            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[0], height,
+            boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
     }
     if (sprites[direction][index][1] != 0)
     {
@@ -1096,17 +1011,8 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
             = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index][1]);
 
         sub_98197C(
-            session,
-            imageId,
-            (int8_t)offset.x,
-            (int8_t)offset.y,
-            boundsLength.x,
-            boundsLength.y,
-            thickness[1],
-            height,
-            boundsOffset.x,
-            boundsOffset.y,
-            height + boundsOffset.z);
+            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[1], height,
+            boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
     }
 }
 
@@ -1174,16 +1080,9 @@ const LocationXY16 defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
 
 static constexpr const int8_t right_helix_up_large_quarter_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
 void track_paint_util_right_helix_up_large_quarter_tiles_paint(
-    paint_session* session,
-    const int8_t thickness[2],
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
-    const uint32_t sprites[4][5][2],
-    const LocationXY16 offsets[4][5][2],
-    const LocationXY16 boundsLengths[4][5][2],
-    const LocationXYZ16 boundsOffsets[4][5][2])
+    paint_session* session, const int8_t thickness[2], int16_t height, int32_t direction, uint8_t trackSequence,
+    uint32_t colourFlags, const uint32_t sprites[4][5][2], const LocationXY16 offsets[4][5][2],
+    const LocationXY16 boundsLengths[4][5][2], const LocationXYZ16 boundsOffsets[4][5][2])
 {
     int32_t index = right_helix_up_large_quarter_sprite_map[trackSequence];
     if (index < 0)
@@ -1200,17 +1099,8 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
             = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index][0]);
 
         sub_98197C(
-            session,
-            imageId,
-            (int8_t)offset.x,
-            (int8_t)offset.y,
-            boundsLength.x,
-            boundsLength.y,
-            thickness[0],
-            height,
-            boundsOffset.x,
-            boundsOffset.y,
-            height + boundsOffset.z);
+            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[0], height,
+            boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
     }
     if (sprites[direction][index][1] != 0)
     {
@@ -1221,17 +1111,8 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(
             = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index][1]);
 
         sub_98197C(
-            session,
-            imageId,
-            (int8_t)offset.x,
-            (int8_t)offset.y,
-            boundsLength.x,
-            boundsLength.y,
-            thickness[1],
-            height,
-            boundsOffset.x,
-            boundsOffset.y,
-            height + boundsOffset.z);
+            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[1], height,
+            boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
     }
 }
 
@@ -1374,16 +1255,9 @@ const uint8_t mapLeftEighthTurnToOrthogonal[] = { 4, 2, 3, 1, 0 };
 
 static constexpr const int8_t eighth_to_diag_sprite_map[] = { 0, 1, 2, -1, 3 };
 void track_paint_util_eighth_to_diag_tiles_paint(
-    paint_session* session,
-    const int8_t thickness[4][4],
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
-    const uint32_t sprites[4][4],
-    const LocationXY16 offsets[4][4],
-    const LocationXY16 boundsLengths[4][4],
-    const LocationXYZ16 boundsOffsets[4][4])
+    paint_session* session, const int8_t thickness[4][4], int16_t height, int32_t direction, uint8_t trackSequence,
+    uint32_t colourFlags, const uint32_t sprites[4][4], const LocationXY16 offsets[4][4],
+    const LocationXY16 boundsLengths[4][4], const LocationXYZ16 boundsOffsets[4][4])
 {
     int32_t index = eighth_to_diag_sprite_map[trackSequence];
     if (index < 0)
@@ -1398,17 +1272,8 @@ void track_paint_util_eighth_to_diag_tiles_paint(
         = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
 
     sub_98197C(
-        session,
-        imageId,
-        (int8_t)offset.x,
-        (int8_t)offset.y,
-        boundsLength.x,
-        boundsLength.y,
-        thickness[direction][index],
-        height,
-        boundsOffset.x,
-        boundsOffset.y,
-        height + boundsOffset.z);
+        session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness[direction][index],
+        height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z);
 }
 
 const LocationXY16 defaultDiagTileOffsets[4] = {
@@ -1433,15 +1298,8 @@ static constexpr const int8_t diag_sprite_map[4][4] = {
 };
 
 void track_paint_util_diag_tiles_paint(
-    paint_session* session,
-    int8_t thickness,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
-    const uint32_t sprites[4],
-    const LocationXY16 offsets[4],
-    const LocationXY16 boundsLengths[4],
+    paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
+    const uint32_t sprites[4], const LocationXY16 offsets[4], const LocationXY16 boundsLengths[4],
     const LocationXYZ16 boundsOffsets[4])
 {
     int32_t index = diag_sprite_map[direction][trackSequence];
@@ -1456,17 +1314,8 @@ void track_paint_util_diag_tiles_paint(
     LocationXYZ16 boundsOffset = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction]);
 
     sub_98197C(
-        session,
-        imageId,
-        (int8_t)offset.x,
-        (int8_t)offset.y,
-        boundsLength.x,
-        boundsLength.y,
-        thickness,
-        height,
-        boundsOffset.x,
-        boundsOffset.y,
-        height + boundsOffset.z);
+        session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x,
+        boundsOffset.y, height + boundsOffset.z);
 }
 
 const uint8_t mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {
@@ -1571,15 +1420,8 @@ static constexpr const int8_t right_quarter_turn_5_tiles_sprite_map[] = {
 };
 
 void track_paint_util_right_quarter_turn_5_tiles_paint(
-    paint_session* session,
-    int8_t thickness,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
-    const uint32_t sprites[4][5],
-    const LocationXY16 offsets[4][5],
-    const LocationXY16 boundsLengths[4][5],
+    paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
+    const uint32_t sprites[4][5], const LocationXY16 offsets[4][5], const LocationXY16 boundsLengths[4][5],
     const LocationXYZ16 boundsOffsets[4][5])
 {
     int32_t index = right_quarter_turn_5_tiles_sprite_map[trackSequence];
@@ -1595,25 +1437,12 @@ void track_paint_util_right_quarter_turn_5_tiles_paint(
         = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
 
     sub_98197C(
-        session,
-        imageId,
-        (int8_t)offset.x,
-        (int8_t)offset.y,
-        boundsLength.x,
-        boundsLength.y,
-        thickness,
-        height,
-        boundsOffset.x,
-        boundsOffset.y,
-        height + boundsOffset.z);
+        session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x,
+        boundsOffset.y, height + boundsOffset.z);
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_paint_2(
-    paint_session* session,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
+    paint_session* session, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
     const sprite_bb sprites[][5])
 {
     int8_t sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
@@ -1625,25 +1454,13 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_2(
     const sprite_bb* spriteBB = &sprites[direction][sprite];
     uint32_t imageId = spriteBB->sprite_id | colourFlags;
     sub_98197C(
-        session,
-        imageId,
-        (int8_t)spriteBB->offset.x,
-        (int8_t)spriteBB->offset.y,
-        spriteBB->bb_size.x,
-        spriteBB->bb_size.y,
-        (int8_t)spriteBB->bb_size.z,
-        height + spriteBB->offset.z,
-        spriteBB->bb_offset.x,
-        spriteBB->bb_offset.y,
+        session, imageId, (int8_t)spriteBB->offset.x, (int8_t)spriteBB->offset.y, spriteBB->bb_size.x, spriteBB->bb_size.y,
+        (int8_t)spriteBB->bb_size.z, height + spriteBB->offset.z, spriteBB->bb_offset.x, spriteBB->bb_offset.y,
         height + spriteBB->bb_offset.z);
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_paint_3(
-    paint_session* session,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
+    paint_session* session, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
     const sprite_bb sprites[][5])
 {
     int8_t sprite = right_quarter_turn_5_tiles_sprite_map[trackSequence];
@@ -1655,14 +1472,8 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_3(
     const sprite_bb* spriteBB = &sprites[direction][sprite];
     uint32_t imageId = spriteBB->sprite_id | colourFlags;
     sub_98196C(
-        session,
-        imageId,
-        (int8_t)spriteBB->offset.x,
-        (int8_t)spriteBB->offset.y,
-        spriteBB->bb_size.x,
-        spriteBB->bb_size.y,
-        (int8_t)spriteBB->bb_size.z,
-        height + spriteBB->offset.z);
+        session, imageId, (int8_t)spriteBB->offset.x, (int8_t)spriteBB->offset.y, spriteBB->bb_size.x, spriteBB->bb_size.y,
+        (int8_t)spriteBB->bb_size.z, height + spriteBB->offset.z);
 }
 
 void track_paint_util_right_quarter_turn_5_tiles_tunnel(
@@ -1786,15 +1597,8 @@ static constexpr const int8_t right_quarter_turn_3_tiles_sprite_map[] = {
 };
 
 void track_paint_util_right_quarter_turn_3_tiles_paint(
-    paint_session* session,
-    int8_t thickness,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
-    const uint32_t sprites[4][3],
-    const LocationXY16 offsets[4][3],
-    const LocationXY16 boundsLengths[4][3],
+    paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
+    const uint32_t sprites[4][3], const LocationXY16 offsets[4][3], const LocationXY16 boundsLengths[4][3],
     const LocationXYZ16 boundsOffsets[4][3])
 {
     int32_t index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
@@ -1810,26 +1614,12 @@ void track_paint_util_right_quarter_turn_3_tiles_paint(
         = (boundsOffsets == nullptr ? LocationXYZ16{ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
 
     sub_98197C(
-        session,
-        imageId,
-        (int8_t)offset.x,
-        (int8_t)offset.y,
-        boundsLength.x,
-        boundsLength.y,
-        thickness,
-        height,
-        boundsOffset.x,
-        boundsOffset.y,
-        height + boundsOffset.z);
+        session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsLength.x, boundsLength.y, thickness, height, boundsOffset.x,
+        boundsOffset.y, height + boundsOffset.z);
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_2(
-    paint_session* session,
-    int8_t thickness,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
+    paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
     const uint32_t sprites[4][3])
 {
     track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
@@ -1837,14 +1627,8 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2(
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
-    paint_session* session,
-    int8_t thickness,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
-    const uint32_t sprites[4][3],
-    int32_t heightOffset)
+    paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
+    const uint32_t sprites[4][3], int32_t heightOffset)
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -1919,11 +1703,7 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_3(
-    paint_session* session,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
+    paint_session* session, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
     const sprite_bb sprites[4][3])
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
@@ -1933,25 +1713,13 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_3(
     }
     const sprite_bb* spriteBB = &sprites[direction][sprite];
     sub_98197C(
-        session,
-        spriteBB->sprite_id | colourFlags,
-        (int8_t)spriteBB->offset.x,
-        (int8_t)spriteBB->offset.y,
-        spriteBB->bb_size.x,
-        spriteBB->bb_size.y,
-        (int8_t)spriteBB->bb_size.z,
-        spriteBB->offset.z + height,
-        spriteBB->bb_offset.x,
-        spriteBB->bb_offset.y,
-        height + spriteBB->bb_offset.z);
+        session, spriteBB->sprite_id | colourFlags, (int8_t)spriteBB->offset.x, (int8_t)spriteBB->offset.y, spriteBB->bb_size.x,
+        spriteBB->bb_size.y, (int8_t)spriteBB->bb_size.z, spriteBB->offset.z + height, spriteBB->bb_offset.x,
+        spriteBB->bb_offset.y, height + spriteBB->bb_offset.z);
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_paint_4(
-    paint_session* session,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
+    paint_session* session, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
     const sprite_bb sprites[4][3])
 {
     int8_t sprite = right_quarter_turn_3_tiles_sprite_map[trackSequence];
@@ -1963,14 +1731,8 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_4(
     const sprite_bb* spriteBB = &sprites[direction][sprite];
     uint32_t imageId = spriteBB->sprite_id | colourFlags;
     sub_98196C(
-        session,
-        imageId,
-        (int8_t)spriteBB->offset.x,
-        (int8_t)spriteBB->offset.y,
-        spriteBB->bb_size.x,
-        spriteBB->bb_size.y,
-        (int8_t)spriteBB->bb_size.z,
-        height + spriteBB->offset.z);
+        session, imageId, (int8_t)spriteBB->offset.x, (int8_t)spriteBB->offset.y, spriteBB->bb_size.x, spriteBB->bb_size.y,
+        (int8_t)spriteBB->bb_size.z, height + spriteBB->offset.z);
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_tunnel(
@@ -2047,12 +1809,7 @@ static constexpr const int8_t left_quarter_turn_3_tiles_sprite_map[] = {
 };
 
 void track_paint_util_left_quarter_turn_3_tiles_paint(
-    paint_session* session,
-    int8_t thickness,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
+    paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
     const uint32_t sprites[4][3])
 {
     track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
@@ -2060,14 +1817,8 @@ void track_paint_util_left_quarter_turn_3_tiles_paint(
 }
 
 void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(
-    paint_session* session,
-    int8_t thickness,
-    int16_t height,
-    int32_t direction,
-    uint8_t trackSequence,
-    uint32_t colourFlags,
-    const uint32_t sprites[4][3],
-    int32_t heightOffset)
+    paint_session* session, int8_t thickness, int16_t height, int32_t direction, uint8_t trackSequence, uint32_t colourFlags,
+    const uint32_t sprites[4][3], int32_t heightOffset)
 {
     int8_t sprite = left_quarter_turn_3_tiles_sprite_map[trackSequence];
     if (sprite < 0)
@@ -2184,12 +1935,7 @@ void track_paint_util_left_quarter_turn_3_tiles_tunnel(
 }
 
 void track_paint_util_left_quarter_turn_1_tile_paint(
-    paint_session* session,
-    int8_t thickness,
-    int16_t height,
-    int16_t boundBoxZOffset,
-    int32_t direction,
-    uint32_t colourFlags,
+    paint_session* session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, int32_t direction, uint32_t colourFlags,
     const uint32_t* sprites)
 {
     uint32_t imageId = sprites[direction] | colourFlags;
@@ -2212,12 +1958,7 @@ void track_paint_util_left_quarter_turn_1_tile_paint(
 }
 
 void track_paint_util_right_quarter_turn_1_tile_tunnel(
-    paint_session* session,
-    uint8_t direction,
-    uint16_t baseHeight,
-    int8_t startOffset,
-    uint8_t startTunnel,
-    int8_t endOffset,
+    paint_session* session, uint8_t direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
     uint8_t endTunnel)
 {
     track_paint_util_left_quarter_turn_1_tile_tunnel(
@@ -2225,12 +1966,7 @@ void track_paint_util_right_quarter_turn_1_tile_tunnel(
 }
 
 void track_paint_util_left_quarter_turn_1_tile_tunnel(
-    paint_session* session,
-    uint8_t direction,
-    uint16_t baseHeight,
-    int8_t startOffset,
-    uint8_t startTunnel,
-    int8_t endOffset,
+    paint_session* session, uint8_t direction, uint16_t baseHeight, int8_t startOffset, uint8_t startTunnel, int8_t endOffset,
     uint8_t endTunnel)
 {
     switch (direction)
@@ -2387,19 +2123,15 @@ void track_paint_util_left_corkscrew_up_supports(paint_session* session, uint8_t
     if (direction == 2)
     {
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-            0xFFFF,
-            0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            0xFFFF, 0);
     }
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     if (direction != 2)
     {
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-            0xFFFF,
-            0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            0xFFFF, 0);
     }
 }
 

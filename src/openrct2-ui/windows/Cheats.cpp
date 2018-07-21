@@ -718,14 +718,8 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsArgs[i] = WeatherTypes[i];
             }
             window_dropdown_show_text_custom_width(
-                w->x + dropdownWidget->left,
-                w->y + dropdownWidget->top,
-                dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1],
-                0,
-                DROPDOWN_FLAG_STAY_OPEN,
-                6,
-                dropdownWidget->right - dropdownWidget->left - 3);
+                w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 6, dropdownWidget->right - dropdownWidget->left - 3);
 
             currentWeather = gClimateCurrent.Weather;
             dropdown_set_checked(currentWeather, true);
@@ -744,14 +738,8 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text_custom_width(
-                w->x + dropdownWidget->left,
-                w->y + dropdownWidget->top,
-                dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1],
-                0,
-                DROPDOWN_FLAG_STAY_OPEN,
-                3,
-                dropdownWidget->right - dropdownWidget->left - 3);
+                w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3, dropdownWidget->right - dropdownWidget->left - 3);
             dropdown_set_checked(_selectedStaffSpeed, true);
         }
     }
@@ -830,13 +818,8 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_GUEST_HAPPINESS_MAX:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SETGUESTPARAMETER,
-                GUEST_PARAMETER_HAPPINESS,
-                GAME_COMMAND_CHEAT,
-                PEEP_MAX_HAPPINESS,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_HAPPINESS, GAME_COMMAND_CHEAT,
+                PEEP_MAX_HAPPINESS, 0);
             break;
         case WIDX_GUEST_HAPPINESS_MIN:
             game_do_command(
@@ -844,23 +827,13 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_GUEST_ENERGY_MAX:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SETGUESTPARAMETER,
-                GUEST_PARAMETER_ENERGY,
-                GAME_COMMAND_CHEAT,
-                PEEP_MAX_ENERGY,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_ENERGY, GAME_COMMAND_CHEAT,
+                PEEP_MAX_ENERGY, 0);
             break;
         case WIDX_GUEST_ENERGY_MIN:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SETGUESTPARAMETER,
-                GUEST_PARAMETER_ENERGY,
-                GAME_COMMAND_CHEAT,
-                PEEP_MIN_ENERGY,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_ENERGY, GAME_COMMAND_CHEAT,
+                PEEP_MIN_ENERGY, 0);
             break;
         case WIDX_GUEST_HUNGER_MAX:
             game_do_command(
@@ -888,23 +861,13 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_GUEST_NAUSEA_TOLERANCE_MAX:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SETGUESTPARAMETER,
-                GUEST_PARAMETER_NAUSEA_TOLERANCE,
-                GAME_COMMAND_CHEAT,
-                PEEP_NAUSEA_TOLERANCE_HIGH,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_NAUSEA_TOLERANCE, GAME_COMMAND_CHEAT,
+                PEEP_NAUSEA_TOLERANCE_HIGH, 0);
             break;
         case WIDX_GUEST_NAUSEA_TOLERANCE_MIN:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SETGUESTPARAMETER,
-                GUEST_PARAMETER_NAUSEA_TOLERANCE,
-                GAME_COMMAND_CHEAT,
-                PEEP_NAUSEA_TOLERANCE_NONE,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_NAUSEA_TOLERANCE, GAME_COMMAND_CHEAT,
+                PEEP_NAUSEA_TOLERANCE_NONE, 0);
             break;
         case WIDX_GUEST_BATHROOM_MAX:
             game_do_command(
@@ -916,23 +879,13 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SETGUESTPARAMETER,
-                GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY,
-                GAME_COMMAND_CHEAT,
-                1,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY,
+                GAME_COMMAND_CHEAT, 1, 0);
             break;
         case WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SETGUESTPARAMETER,
-                GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY,
-                GAME_COMMAND_CHEAT,
-                0,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGUESTPARAMETER, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY,
+                GAME_COMMAND_CHEAT, 0, 0);
             break;
         case WIDX_TRAM_GUESTS:
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_GENERATEGUESTS, CHEATS_TRAM_INCREMENT, GAME_COMMAND_CHEAT, 0, 0);
@@ -1091,12 +1044,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_SHOW_ALL_OPERATING_MODES:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SHOWALLOPERATINGMODES,
-                !gCheatsShowAllOperatingModes,
-                GAME_COMMAND_CHEAT,
-                0,
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWALLOPERATINGMODES, !gCheatsShowAllOperatingModes, GAME_COMMAND_CHEAT, 0,
                 0);
             if (gCheatsShowAllOperatingModes)
             {
@@ -1105,13 +1053,8 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES,
-                !gCheatsShowVehiclesFromOtherTrackTypes,
-                GAME_COMMAND_CHEAT,
-                0,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES, !gCheatsShowVehiclesFromOtherTrackTypes,
+                GAME_COMMAND_CHEAT, 0, 0);
             if (gCheatsShowVehiclesFromOtherTrackTypes)
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
@@ -1119,13 +1062,8 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_DISABLE_TRAIN_LENGTH_LIMITS:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_DISABLETRAINLENGTHLIMIT,
-                !gCheatsDisableTrainLengthLimit,
-                GAME_COMMAND_CHEAT,
-                0,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLETRAINLENGTHLIMIT, !gCheatsDisableTrainLengthLimit, GAME_COMMAND_CHEAT,
+                0, 0);
             if (gCheatsDisableTrainLengthLimit)
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
@@ -1133,23 +1071,13 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_ENABLECHAINLIFTONALLTRACK,
-                !gCheatsEnableChainLiftOnAllTrack,
-                GAME_COMMAND_CHEAT,
-                0,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_ENABLECHAINLIFTONALLTRACK, !gCheatsEnableChainLiftOnAllTrack,
+                GAME_COMMAND_CHEAT, 0, 0);
             break;
         case WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,
-                !gCheatsAllowArbitraryRideTypeChanges,
-                GAME_COMMAND_CHEAT,
-                0,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES, !gCheatsAllowArbitraryRideTypeChanges,
+                GAME_COMMAND_CHEAT, 0, 0);
             if (gCheatsAllowArbitraryRideTypeChanges)
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
@@ -1157,12 +1085,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_DISABLE_RIDE_VALUE_AGING:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_DISABLERIDEVALUEAGING,
-                !gCheatsDisableRideValueAging,
-                GAME_COMMAND_CHEAT,
-                0,
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLERIDEVALUEAGING, !gCheatsDisableRideValueAging, GAME_COMMAND_CHEAT, 0,
                 0);
             break;
         case WIDX_IGNORE_RESEARCH_STATUS:
@@ -1171,13 +1094,8 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES:
             game_do_command(
-                0,
-                GAME_COMMAND_FLAG_APPLY,
-                CHEAT_ENABLEALLDRAWABLETRACKPIECES,
-                !gCheatsEnableAllDrawableTrackPieces,
-                GAME_COMMAND_CHEAT,
-                0,
-                0);
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_ENABLEALLDRAWABLETRACKPIECES, !gCheatsEnableAllDrawableTrackPieces,
+                GAME_COMMAND_CHEAT, 0, 0);
             break;
     }
 }
@@ -1314,11 +1232,7 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(17) + TXTO);
         gfx_draw_string_left(dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(10) + TXTO);
         gfx_draw_string_right(
-            dpi,
-            STR_FORMAT_INTEGER,
-            &park_rating_spinner_value,
-            w->colours[1],
-            w->x + WPL(1) - 34 - TXTO,
+            dpi, STR_FORMAT_INTEGER, &park_rating_spinner_value, w->colours[1], w->x + WPL(1) - 34 - TXTO,
             w->y + YPL(5) + TXTO);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)

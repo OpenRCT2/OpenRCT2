@@ -391,11 +391,7 @@ uint8_t platform_get_locale_date_format()
     wchar_t first[sizeof(dateFormat)];
     wchar_t second[sizeof(dateFormat)];
     if (swscanf_s(
-            dateFormat,
-            L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]",
-            first,
-            (uint32_t)Util::CountOf(first),
-            second,
+            dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, (uint32_t)Util::CountOf(first), second,
             (uint32_t)Util::CountOf(second))
         != 2)
     {

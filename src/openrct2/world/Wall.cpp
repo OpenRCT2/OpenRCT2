@@ -295,15 +295,8 @@ static constexpr const uint8_t EdgeSlopes[][4] = {
 #pragma endregion
 
 static money32 WallPlace(
-    uint8_t wallType,
-    int16_t x,
-    int16_t y,
-    int16_t z,
-    uint8_t edge,
-    uint8_t primaryColour,
-    uint8_t secondaryColour,
-    uint8_t tertiaryColour,
-    uint8_t flags)
+    uint8_t wallType, int16_t x, int16_t y, int16_t z, uint8_t edge, uint8_t primaryColour, uint8_t secondaryColour,
+    uint8_t tertiaryColour, uint8_t flags)
 {
     LocationXYZ16 position = { x, y, z };
 
@@ -562,14 +555,8 @@ static money32 WallPlace(
 }
 
 static money32 WallSetColour(
-    int16_t x,
-    int16_t y,
-    uint8_t baseHeight,
-    uint8_t direction,
-    uint8_t primaryColour,
-    uint8_t secondaryColour,
-    uint8_t tertiaryColour,
-    uint8_t flags)
+    int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t primaryColour, uint8_t secondaryColour,
+    uint8_t tertiaryColour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     int32_t z = baseHeight * 8;
@@ -732,27 +719,13 @@ void game_command_place_wall(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = WallPlace(
-        (*ebx >> 8) & 0xFF,
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        *edi & 0xFFFF,
-        *edx & 0xFF,
-        (*edx >> 8) & 0xFF,
-        *ebp & 0xFF,
-        (*ebp >> 8) & 0xFF,
-        *ebx & 0xFF);
+        (*ebx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edi & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF,
+        (*ebp >> 8) & 0xFF, *ebx & 0xFF);
 }
 
 money32 wall_place(
-    int32_t type,
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t edge,
-    int32_t primaryColour,
-    int32_t secondaryColour,
-    int32_t tertiaryColour,
-    int32_t flags)
+    int32_t type, int32_t x, int32_t y, int32_t z, int32_t edge, int32_t primaryColour, int32_t secondaryColour,
+    int32_t tertiaryColour, int32_t flags)
 {
     int32_t eax = x;
     int32_t ebx = flags | (type << 8);
@@ -770,21 +743,10 @@ money32 wall_place(
  *  rct2: 0x006E56B5
  */
 void game_command_set_wall_colour(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     int32_t* ebp)
 {
     *ebx = WallSetColour(
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        (*edx >> 8) & 0xFF,
-        *edx & 0xFF,
-        (*ebx >> 8) & 0xFF,
-        *ebp & 0xFF,
-        (*ebp >> 8) & 0xFF,
+        *eax & 0xFFFF, *ecx & 0xFFFF, (*edx >> 8) & 0xFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebp & 0xFF, (*ebp >> 8) & 0xFF,
         *ebx & 0xFF);
 }

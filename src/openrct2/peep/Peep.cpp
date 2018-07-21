@@ -524,8 +524,7 @@ uint8_t rct_peep::GetActionSpriteType()
     else
     {
         openrct2_assert(
-            action >= Util::CountOf(PeepActionToSpriteTypeMap) && action < PEEP_ACTION_NONE_1,
-            "Invalid peep action %u",
+            action >= Util::CountOf(PeepActionToSpriteTypeMap) && action < PEEP_ACTION_NONE_1, "Invalid peep action %u",
             action);
         return 0;
     }

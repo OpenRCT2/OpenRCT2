@@ -40,13 +40,8 @@ money32 place_park_entrance(int16_t x, int16_t y, int16_t z, uint8_t direction)
  *  rct2: 0x006666E7
  */
 void game_command_place_park_entrance(
-    [[maybe_unused]] int32_t* eax,
-    [[maybe_unused]] int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     Guard::Assert(false, "GAME_COMMAND_PLACE_PARK_ENTRANCE DEPRECATED");
 }
@@ -83,13 +78,8 @@ void park_set_entrance_fee(money32 fee)
 }
 
 void game_command_set_park_entrance_fee(
-    [[maybe_unused]] int* eax,
-    [[maybe_unused]] int* ebx,
-    [[maybe_unused]] int* ecx,
-    [[maybe_unused]] int* edx,
-    [[maybe_unused]] int* esi,
-    int* edi,
-    [[maybe_unused]] int* ebp)
+    [[maybe_unused]] int* eax, [[maybe_unused]] int* ebx, [[maybe_unused]] int* ecx, [[maybe_unused]] int* edx,
+    [[maybe_unused]] int* esi, int* edi, [[maybe_unused]] int* ebp)
 {
     money16 fee = (money16)(*edi & 0xFFFF);
     auto gameAction = SetParkEntranceFeeAction(fee);
@@ -143,13 +133,8 @@ money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, uint8_
  *  rct2: 0x006B3F0F
  */
 void game_command_create_ride(
-    [[maybe_unused]] int32_t* eax,
-    [[maybe_unused]] int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     Guard::Assert(false, "GAME_COMMAND_CREATE_RIDE DEPRECATED");
 }
@@ -169,13 +154,8 @@ void ride_set_status(int32_t rideIndex, int32_t status)
  *  rct2: 0x006B4EA6
  */
 void game_command_set_ride_status(
-    [[maybe_unused]] int32_t* eax,
-    [[maybe_unused]] int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     Guard::Assert(false, "GAME_COMMAND_SET_RIDE_STATUS DEPRECATED");
 }
@@ -194,13 +174,8 @@ void ride_set_name(int32_t rideIndex, const char* name)
  *  rct2: 0x006B578B
  */
 void game_command_set_ride_name(
-    [[maybe_unused]] int32_t* eax,
-    [[maybe_unused]] int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     Guard::Assert(false, "GAME_COMMAND_SET_RIDE_NAME DEPRECATED");
 }
@@ -220,13 +195,8 @@ void ride_action_modify(int32_t rideIndex, int32_t modifyType, int32_t flags)
  *  rct2: 0x006B49D9
  */
 void game_command_demolish_ride(
-    [[maybe_unused]] int32_t* eax,
-    [[maybe_unused]] int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     Guard::Assert(false, "GAME_COMMAND_DEMOLISH_RIDE DEPRECATED");
 }
@@ -245,13 +215,8 @@ void guest_set_name(uint16_t spriteIndex, const char* name)
  *  rct2: 0x00698D6C
  */
 void game_command_set_guest_name(
-    [[maybe_unused]] int32_t* eax,
-    [[maybe_unused]] int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     Guard::Assert(false, "GAME_COMMAND_SET_GUEST_NAME DEPRECATED");
 }
@@ -267,13 +232,8 @@ void staff_set_name(uint16_t spriteIndex, const char* name)
 }
 
 void game_command_set_staff_name(
-    [[maybe_unused]] int32_t* eax,
-    [[maybe_unused]] int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     Guard::Assert(false, "GAME_COMMAND_SET_STAFF_NAME DEPRECATED");
 }
@@ -297,13 +257,7 @@ bool place_peep_spawn(CoordsXYZD location)
 
 #pragma region MazeSetTrack
 money32 maze_set_track(
-    uint16_t x,
-    uint16_t y,
-    uint16_t z,
-    uint8_t flags,
-    bool initialPlacement,
-    uint8_t direction,
-    uint8_t rideIndex,
+    uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, uint8_t rideIndex,
     uint8_t mode)
 {
     auto gameAction = MazeSetTrackAction(x, y, z, initialPlacement, direction, rideIndex, mode);
@@ -334,13 +288,8 @@ money32 maze_set_track(
  *  rct2: 0x006CD8CE
  */
 void game_command_set_maze_track(
-    [[maybe_unused]] int32_t* eax,
-    [[maybe_unused]] int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, [[maybe_unused]] int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     Guard::Assert(false, "GAME_COMMAND_SET_MAZE_TRACK DEPRECATED");
 }

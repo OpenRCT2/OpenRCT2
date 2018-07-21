@@ -401,49 +401,19 @@ static uint32_t wooden_rc_get_rails_colour(paint_session* session)
 }
 
 static paint_struct* wooden_rc_track_paint(
-    paint_session* session,
-    uint32_t imageIdTrack,
-    uint32_t imageIdRails,
-    uint8_t direction,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z)
+    paint_session* session, uint32_t imageIdTrack, uint32_t imageIdRails, uint8_t direction, int8_t x_offset, int8_t y_offset,
+    int16_t bound_box_length_x, int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset,
+    int16_t bound_box_offset_x, int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     uint32_t imageId = imageIdTrack | wooden_rc_get_track_colour(session);
     uint32_t railsImageId = imageIdRails | wooden_rc_get_rails_colour(session);
 
     sub_98197C_rotated(
-        session,
-        direction,
-        imageId,
-        x_offset,
-        y_offset,
-        bound_box_length_x,
-        bound_box_length_y,
-        bound_box_length_z,
-        z_offset,
-        bound_box_offset_x,
-        bound_box_offset_y,
-        bound_box_offset_z);
+        session, direction, imageId, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+        bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
     return sub_98199C_rotated(
-        session,
-        direction,
-        railsImageId,
-        x_offset,
-        y_offset,
-        bound_box_length_x,
-        bound_box_length_y,
-        bound_box_length_z,
-        z_offset,
-        bound_box_offset_x,
-        bound_box_offset_y,
-        bound_box_offset_z);
+        session, direction, railsImageId, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z,
+        z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
 }
 
 static void wooden_rc_track_paint_bb(paint_session* session, const sprite_bb_2* bb, int16_t height)
@@ -455,38 +425,16 @@ static void wooden_rc_track_paint_bb(paint_session* session, const sprite_bb_2* 
     uint32_t railsImageId = bb->sprite_id_b | wooden_rc_get_rails_colour(session);
 
     sub_98197C(
-        session,
-        imageId,
-        (int8_t)bb->offset.x,
-        (int8_t)bb->offset.y,
-        bb->bb_size.x,
-        bb->bb_size.y,
-        (int8_t)bb->bb_size.z,
-        height + bb->offset.z,
-        bb->bb_offset.x,
-        bb->bb_offset.y,
-        height + bb->bb_offset.z);
+        session, imageId, (int8_t)bb->offset.x, (int8_t)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (int8_t)bb->bb_size.z,
+        height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z);
     sub_98199C(
-        session,
-        railsImageId,
-        (int8_t)bb->offset.x,
-        (int8_t)bb->offset.y,
-        bb->bb_size.x,
-        bb->bb_size.y,
-        (int8_t)bb->bb_size.z,
-        height + bb->offset.z,
-        bb->bb_offset.x,
-        bb->bb_offset.y,
-        height + bb->bb_offset.z);
+        session, railsImageId, (int8_t)bb->offset.x, (int8_t)bb->offset.y, bb->bb_size.x, bb->bb_size.y, (int8_t)bb->bb_size.z,
+        height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z);
 }
 
 /** rct2: 0x008AC568 */
 static void wooden_rc_track_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
@@ -504,18 +452,7 @@ static void wooden_rc_track_flat(
 
     uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(
-        session,
-        imageIds[direction][isChained],
-        railsImageIds[direction][isChained],
-        direction,
-        0,
-        2,
-        32,
-        25,
-        2,
-        height,
-        0,
-        3,
+        session, imageIds[direction][isChained], railsImageIds[direction][isChained], direction, 0, 2, 32, 25, 2, height, 0, 3,
         height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
@@ -524,11 +461,7 @@ static void wooden_rc_track_flat(
 }
 
 static void wooden_rc_track_station(
-    paint_session* session,
-    uint8_t rideIndex,
-    [[maybe_unused]] uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t stationImageIds[4][2] = {
@@ -542,35 +475,13 @@ static void wooden_rc_track_station(
     if (trackType == TRACK_ELEM_END_STATION)
     {
         wooden_rc_track_paint(
-            session,
-            _wooden_rc_block_brakes_image_ids[direction][0],
-            _wooden_rc_block_brakes_image_ids[direction][1],
-            direction,
-            0,
-            2,
-            32,
-            27,
-            2,
-            height,
-            0,
-            2,
-            height);
+            session, _wooden_rc_block_brakes_image_ids[direction][0], _wooden_rc_block_brakes_image_ids[direction][1],
+            direction, 0, 2, 32, 27, 2, height, 0, 2, height);
     }
     else
     {
         wooden_rc_track_paint(
-            session,
-            stationImageIds[direction][0],
-            stationImageIds[direction][1],
-            direction,
-            0,
-            2,
-            32,
-            27,
-            2,
-            height,
-            0,
-            2,
+            session, stationImageIds[direction][0], stationImageIds[direction][1], direction, 0, 2, 32, 27, 2, height, 0, 2,
             height);
     }
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -582,35 +493,23 @@ static void wooden_rc_track_station(
 
 /** rct2: 0x008AC578 */
 static void wooden_rc_track_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[2][4][4] = {
         {
             { SPR_WOODEN_RC_25_DEG_SW_NE, SPR_WOODEN_RC_25_DEG_RAILS_SW_NE, 0, 0 },
-            { SPR_WOODEN_RC_25_DEG_NW_SE,
-              SPR_WOODEN_RC_25_DEG_RAILS_NW_SE,
-              SPR_WOODEN_RC_25_DEG_FRONT_NW_SE,
+            { SPR_WOODEN_RC_25_DEG_NW_SE, SPR_WOODEN_RC_25_DEG_RAILS_NW_SE, SPR_WOODEN_RC_25_DEG_FRONT_NW_SE,
               SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NW_SE },
-            { SPR_WOODEN_RC_25_DEG_NE_SW,
-              SPR_WOODEN_RC_25_DEG_RAILS_NE_SW,
-              SPR_WOODEN_RC_25_DEG_FRONT_NE_SW,
+            { SPR_WOODEN_RC_25_DEG_NE_SW, SPR_WOODEN_RC_25_DEG_RAILS_NE_SW, SPR_WOODEN_RC_25_DEG_FRONT_NE_SW,
               SPR_WOODEN_RC_25_DEG_RAILS_FRONT_NE_SW },
             { SPR_WOODEN_RC_25_DEG_SE_NW, SPR_WOODEN_RC_25_DEG_RAILS_SE_NW, 0, 0 },
         },
         {
             { SPR_WOODEN_RC_25_DEG_CHAIN_SW_NE, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SW_NE, 0, 0 },
-            { SPR_WOODEN_RC_25_DEG_CHAIN_NW_SE,
-              SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NW_SE,
-              SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NW_SE,
+            { SPR_WOODEN_RC_25_DEG_CHAIN_NW_SE, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NW_SE, SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NW_SE,
               SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NW_SE },
-            { SPR_WOODEN_RC_25_DEG_CHAIN_NE_SW,
-              SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NE_SW,
-              SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NE_SW,
+            { SPR_WOODEN_RC_25_DEG_CHAIN_NE_SW, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_NE_SW, SPR_WOODEN_RC_25_DEG_CHAIN_FRONT_NE_SW,
               SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_FRONT_NE_SW },
             { SPR_WOODEN_RC_25_DEG_CHAIN_SE_NW, SPR_WOODEN_RC_25_DEG_CHAIN_RAILS_SE_NW, 0, 0 },
         }
@@ -618,35 +517,13 @@ static void wooden_rc_track_25_deg_up(
 
     uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(
-        session,
-        imageIds[isChained][direction][0],
-        imageIds[isChained][direction][1],
-        direction,
-        0,
-        0,
-        32,
-        25,
-        2,
-        height,
-        0,
-        3,
+        session, imageIds[isChained][direction][0], imageIds[isChained][direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3,
         height);
     if (direction == 1 || direction == 2)
     {
         wooden_rc_track_paint(
-            session,
-            imageIds[isChained][direction][2],
-            imageIds[isChained][direction][3],
-            direction,
-            0,
-            0,
-            32,
-            1,
-            9,
-            height,
-            0,
-            26,
-            height + 5);
+            session, imageIds[isChained][direction][2], imageIds[isChained][direction][3], direction, 0, 0, 32, 1, 9, height, 0,
+            26, height + 5);
     }
     wooden_a_supports_paint_setup(
         session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -666,11 +543,7 @@ static void wooden_rc_track_25_deg_up(
 
 /** rct2: 0x008AC588 */
 static void wooden_rc_track_60_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
@@ -708,71 +581,37 @@ static void wooden_rc_track_60_deg_up(
 
 /** rct2: 0x008AC598 */
 static void wooden_rc_track_flat_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[2][4][4] = {
         {
             { SPR_WOODEN_RC_FLAT_TO_25_DEG_SW_NE, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_SW_NE, 0, 0 },
-            { SPR_WOODEN_RC_FLAT_TO_25_DEG_NW_SE,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NW_SE,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NW_SE,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_FRONT_NW_SE },
-            { SPR_WOODEN_RC_FLAT_TO_25_DEG_NE_SW,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NE_SW,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NE_SW,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_NW_SE, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NW_SE,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_NE_SW, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_NE_SW,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_FRONT_NE_SW, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_FRONT_NE_SW },
             { SPR_WOODEN_RC_FLAT_TO_25_DEG_SE_NW, SPR_WOODEN_RC_FLAT_TO_25_DEG_RAILS_SE_NW, 0, 0 },
         },
         {
             { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_SW_NE, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_SW_NE, 0, 0 },
-            { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NW_SE,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_NW_SE,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NW_SE,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_FRONT_NW_SE },
-            { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NE_SW,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_NE_SW,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NE_SW,
-              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NW_SE, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_NW_SE,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NW_SE, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_NE_SW, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_NE_SW,
+              SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_FRONT_NE_SW, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_FRONT_NE_SW },
             { SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_SE_NW, SPR_WOODEN_RC_FLAT_TO_25_DEG_CHAIN_RAILS_SE_NW, 0, 0 },
         }
     };
 
     uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(
-        session,
-        imageIds[isChained][direction][0],
-        imageIds[isChained][direction][1],
-        direction,
-        0,
-        0,
-        32,
-        25,
-        2,
-        height,
-        0,
-        3,
+        session, imageIds[isChained][direction][0], imageIds[isChained][direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3,
         height);
     if (direction == 1 || direction == 2)
     {
         wooden_rc_track_paint(
-            session,
-            imageIds[isChained][direction][2],
-            imageIds[isChained][direction][3],
-            direction,
-            0,
-            0,
-            32,
-            1,
-            9,
-            height,
-            0,
-            26,
-            height + 5);
+            session, imageIds[isChained][direction][2], imageIds[isChained][direction][3], direction, 0, 0, 32, 1, 9, height, 0,
+            26, height + 5);
     }
     wooden_a_supports_paint_setup(
         session, direction & 1, 1 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -792,23 +631,15 @@ static void wooden_rc_track_flat_to_25_deg_up(
 
 /** rct2: 0x008AC5A8 */
 static void wooden_rc_track_25_deg_up_to_60_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_25_DEG_TO_60_DEG_SW_NE, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_SW_NE, 0, 0 },
-        { SPR_WOODEN_RC_25_DEG_TO_60_DEG_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_60_DEG_FRONT_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NW_SE },
-        { SPR_WOODEN_RC_25_DEG_TO_60_DEG_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_60_DEG_FRONT_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NE_SW },
+        { SPR_WOODEN_RC_25_DEG_TO_60_DEG_NW_SE, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NW_SE,
+          SPR_WOODEN_RC_25_DEG_TO_60_DEG_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NW_SE },
+        { SPR_WOODEN_RC_25_DEG_TO_60_DEG_NE_SW, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_NE_SW,
+          SPR_WOODEN_RC_25_DEG_TO_60_DEG_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_FRONT_NE_SW },
         { SPR_WOODEN_RC_25_DEG_TO_60_DEG_SE_NW, SPR_WOODEN_RC_25_DEG_TO_60_DEG_RAILS_SE_NW, 0, 0 },
     };
 
@@ -842,23 +673,15 @@ static void wooden_rc_track_25_deg_up_to_60_deg_up(
 
 /** rct2: 0x008AC5B8 */
 static void wooden_rc_track_60_deg_up_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_60_DEG_TO_25_DEG_SW_NE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SW_NE, 0, 0 },
-        { SPR_WOODEN_RC_60_DEG_TO_25_DEG_NW_SE,
-          SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NW_SE,
-          SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NW_SE,
-          SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NW_SE },
-        { SPR_WOODEN_RC_60_DEG_TO_25_DEG_NE_SW,
-          SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NE_SW,
-          SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NE_SW,
-          SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NE_SW },
+        { SPR_WOODEN_RC_60_DEG_TO_25_DEG_NW_SE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NW_SE,
+          SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NW_SE },
+        { SPR_WOODEN_RC_60_DEG_TO_25_DEG_NE_SW, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_NE_SW,
+          SPR_WOODEN_RC_60_DEG_TO_25_DEG_FRONT_NE_SW, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_FRONT_NE_SW },
         { SPR_WOODEN_RC_60_DEG_TO_25_DEG_SE_NW, SPR_WOODEN_RC_60_DEG_TO_25_DEG_RAILS_SE_NW, 0, 0 },
     };
 
@@ -892,71 +715,37 @@ static void wooden_rc_track_60_deg_up_to_25_deg_up(
 
 /** rct2: 0x008AC5C8 */
 static void wooden_rc_track_25_deg_up_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[2][4][4] = {
         {
             { SPR_WOODEN_RC_25_DEG_TO_FLAT_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SW_NE, 0, 0 },
-            { SPR_WOODEN_RC_25_DEG_TO_FLAT_NW_SE,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NW_SE,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NW_SE,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NW_SE },
-            { SPR_WOODEN_RC_25_DEG_TO_FLAT_NE_SW,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NE_SW,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NE_SW,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NW_SE,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_NE_SW,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_FRONT_NE_SW },
             { SPR_WOODEN_RC_25_DEG_TO_FLAT_SE_NW, SPR_WOODEN_RC_25_DEG_TO_FLAT_RAILS_SE_NW, 0, 0 },
         },
         {
             { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SW_NE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SW_NE, 0, 0 },
-            { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NW_SE,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NW_SE,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NW_SE,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NW_SE },
-            { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NE_SW,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NE_SW,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NE_SW,
-              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NE_SW },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NW_SE,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NW_SE },
+            { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_NE_SW,
+              SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_FRONT_NE_SW },
             { SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_SE_NW, SPR_WOODEN_RC_25_DEG_TO_FLAT_CHAIN_RAILS_SE_NW, 0, 0 },
         }
     };
 
     uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
     wooden_rc_track_paint(
-        session,
-        imageIds[isChained][direction][0],
-        imageIds[isChained][direction][1],
-        direction,
-        0,
-        0,
-        32,
-        25,
-        2,
-        height,
-        0,
-        3,
+        session, imageIds[isChained][direction][0], imageIds[isChained][direction][1], direction, 0, 0, 32, 25, 2, height, 0, 3,
         height);
     if (direction == 1 || direction == 2)
     {
         wooden_rc_track_paint(
-            session,
-            imageIds[isChained][direction][2],
-            imageIds[isChained][direction][3],
-            direction,
-            0,
-            0,
-            32,
-            1,
-            9,
-            height,
-            0,
-            26,
-            height + 5);
+            session, imageIds[isChained][direction][2], imageIds[isChained][direction][3], direction, 0, 0, 32, 1, 9, height, 0,
+            26, height + 5);
     }
     wooden_a_supports_paint_setup(
         session, direction & 1, 5 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -976,11 +765,7 @@ static void wooden_rc_track_25_deg_up_to_flat(
 
 /** rct2: 0x008AC5D8 */
 static void wooden_rc_track_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -988,11 +773,7 @@ static void wooden_rc_track_25_deg_down(
 
 /** rct2: 0x008AC5E8 */
 static void wooden_rc_track_60_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1000,11 +781,7 @@ static void wooden_rc_track_60_deg_down(
 
 /** rct2: 0x008AC5F8 */
 static void wooden_rc_track_flat_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1012,11 +789,7 @@ static void wooden_rc_track_flat_to_25_deg_down(
 
 /** rct2: 0x008AC608 */
 static void wooden_rc_track_25_deg_down_to_60_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1024,11 +797,7 @@ static void wooden_rc_track_25_deg_down_to_60_deg_down(
 
 /** rct2: 0x008AC618 */
 static void wooden_rc_track_60_deg_down_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1036,22 +805,14 @@ static void wooden_rc_track_60_deg_down_to_25_deg_down(
 
 /** rct2: 0x008AC628 */
 static void wooden_rc_track_25_deg_down_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 static void wooden_rc_track_right_quarter_turn_5(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const sprite_bb_2 imageIds[2][4][7] = {
@@ -1297,11 +1058,7 @@ static void wooden_rc_track_right_quarter_turn_5(
 }
 
 static void wooden_rc_track_left_quarter_turn_5(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1310,24 +1067,16 @@ static void wooden_rc_track_left_quarter_turn_5(
 
 /** rct2: 0x008AC658 */
 static void wooden_rc_track_flat_to_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SW_NE, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SW_NE, 0, 0 },
-        { SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_NW_SE,
-          SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NW_SE,
-          SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE,
-          SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_NW_SE },
+        { SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_NW_SE, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NW_SE,
+          SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_NW_SE, SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_NW_SE },
         { SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_NE_SW, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_NE_SW, 0, 0 },
-        { SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SE_NW,
-          SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SE_NW,
-          SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW,
-          SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_SE_NW },
+        { SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_SE_NW, SPR_WOODEN_RC_FLAT_TO_LEFT_BANK_RAILS_SE_NW,
+          SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_FRONT_SE_NW, SPR_WOODEN_RC_RC_FLAT_TO_LEFT_BANK_RAILS_FRONT_SE_NW },
     };
 
     wooden_rc_track_paint(
@@ -1345,23 +1094,15 @@ static void wooden_rc_track_flat_to_left_bank(
 
 /** rct2: 0x008AC668 */
 static void wooden_rc_track_flat_to_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][4] = {
-        { SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE,
-          SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SW_NE,
-          SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_SW_NE,
-          SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_SW_NE },
+        { SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SW_NE, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SW_NE,
+          SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_SW_NE, SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_SW_NE },
         { SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_NW_SE, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_NW_SE, 0, 0 },
-        { SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_NE_SW,
-          SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_NE_SW,
-          SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_NE_SW,
-          SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_NE_SW },
+        { SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_NE_SW, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_NE_SW,
+          SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_FRONT_NE_SW, SPR_WOODEN_RC_RC_FLAT_TO_RIGHT_BANK_RAILS_FRONT_NE_SW },
         { SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_SE_NW, SPR_WOODEN_RC_FLAT_TO_RIGHT_BANK_RAILS_SE_NW, 0, 0 },
     };
 
@@ -1380,11 +1121,7 @@ static void wooden_rc_track_flat_to_right_bank(
 
 /** rct2: 0x008AC678 */
 static void wooden_rc_track_left_bank_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_flat_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1392,22 +1129,14 @@ static void wooden_rc_track_left_bank_to_flat(
 
 /** rct2: 0x008AC688 */
 static void wooden_rc_track_right_bank_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_flat_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 static void wooden_rc_track_banked_right_quarter_turn_5(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const sprite_bb_2 imageIds[2][4][7] = {
@@ -1653,11 +1382,7 @@ static void wooden_rc_track_banked_right_quarter_turn_5(
 }
 
 static void wooden_rc_track_banked_left_quarter_turn_5(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -1666,23 +1391,15 @@ static void wooden_rc_track_banked_left_quarter_turn_5(
 
 /** rct2: 0x008AC6B8 */
 static void wooden_rc_track_left_bank_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_SW_NE, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_SW_NE, 0, 0 },
-        { SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_NW_SE,
-          SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_NW_SE,
-          SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_FRONT_NW_SE,
-          SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_FRONT_NW_SE },
-        { SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_NE_SW,
-          SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_NE_SW,
-          SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_FRONT_NE_SW,
-          SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_FRONT_NE_SW },
+        { SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_NW_SE, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_NW_SE,
+          SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_FRONT_NW_SE },
+        { SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_NE_SW, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_NE_SW,
+          SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_FRONT_NE_SW, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_FRONT_NE_SW },
         { SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_SE_NW, SPR_WOODEN_RC_LEFT_BANK_TO_25_DEG_RAILS_SE_NW, 0, 0 },
     };
 
@@ -1709,23 +1426,15 @@ static void wooden_rc_track_left_bank_to_25_deg_up(
 
 /** rct2: 0x008AC6C8 */
 static void wooden_rc_track_right_bank_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_SW_NE, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_SW_NE, 0, 0 },
-        { SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_NW_SE,
-          SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_NW_SE,
-          SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_FRONT_NW_SE,
-          SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_FRONT_NW_SE },
-        { SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_NE_SW,
-          SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_NE_SW,
-          SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_FRONT_NE_SW,
-          SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_FRONT_NE_SW },
+        { SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_NW_SE, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_NW_SE,
+          SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_FRONT_NW_SE, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_FRONT_NW_SE },
+        { SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_NE_SW, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_NE_SW,
+          SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_FRONT_NE_SW, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_FRONT_NE_SW },
         { SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_SE_NW, SPR_WOODEN_RC_RIGHT_BANK_TO_25_DEG_RAILS_SE_NW, 0, 0 },
     };
 
@@ -1752,23 +1461,15 @@ static void wooden_rc_track_right_bank_to_25_deg_up(
 
 /** rct2: 0x008AC6D8 */
 static void wooden_rc_track_25_deg_up_to_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_SW_NE, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_SW_NE, 0, 0 },
-        { SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_FRONT_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_FRONT_NW_SE },
-        { SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_FRONT_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_FRONT_NE_SW },
+        { SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_NW_SE, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_NW_SE,
+          SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_FRONT_NW_SE },
+        { SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_NE_SW, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_NE_SW,
+          SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_FRONT_NE_SW },
         { SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_SE_NW, SPR_WOODEN_RC_25_DEG_TO_LEFT_BANK_RAILS_SE_NW, 0, 0 },
     };
 
@@ -1795,23 +1496,15 @@ static void wooden_rc_track_25_deg_up_to_left_bank(
 
 /** rct2: 0x008AC6E8 */
 static void wooden_rc_track_25_deg_up_to_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][4] = {
         { SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_SW_NE, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_SW_NE, 0, 0 },
-        { SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_FRONT_NW_SE,
-          SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_FRONT_NW_SE },
-        { SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_FRONT_NE_SW,
-          SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_FRONT_NE_SW },
+        { SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_NW_SE, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_NW_SE,
+          SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_FRONT_NW_SE, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_FRONT_NW_SE },
+        { SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_NE_SW, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_NE_SW,
+          SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_FRONT_NE_SW, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_FRONT_NE_SW },
         { SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_SE_NW, SPR_WOODEN_RC_25_DEG_TO_RIGHT_BANK_RAILS_SE_NW, 0, 0 },
     };
 
@@ -1838,11 +1531,7 @@ static void wooden_rc_track_25_deg_up_to_right_bank(
 
 /** rct2: 0x008AC6F8 */
 static void wooden_rc_track_left_bank_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1850,11 +1539,7 @@ static void wooden_rc_track_left_bank_to_25_deg_down(
 
 /** rct2: 0x008AC708 */
 static void wooden_rc_track_right_bank_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1862,11 +1547,7 @@ static void wooden_rc_track_right_bank_to_25_deg_down(
 
 /** rct2: 0x008AC718 */
 static void wooden_rc_track_25_deg_down_to_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_right_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1874,11 +1555,7 @@ static void wooden_rc_track_25_deg_down_to_left_bank(
 
 /** rct2: 0x008AC728 */
 static void wooden_rc_track_25_deg_down_to_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_left_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1886,11 +1563,7 @@ static void wooden_rc_track_25_deg_down_to_right_bank(
 
 /** rct2: 0x008AC738 */
 static void wooden_rc_track_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
@@ -1910,11 +1583,7 @@ static void wooden_rc_track_left_bank(
 
 /** rct2: 0x008AC748 */
 static void wooden_rc_track_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -1922,11 +1591,7 @@ static void wooden_rc_track_right_bank(
 
 /** rct2: 0x008AC758 */
 static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -1947,30 +1612,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24652, 0, 0, 32, 27, 2, height, 0, 2, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23812,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 23812, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24678,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24678, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2017,114 +1662,34 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24653, 0, 0, 32, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23813,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23813, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24679,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24679, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23792,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23792, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24658,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24658, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23797,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23797, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24663,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24663, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23819,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23819, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24685,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24685, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2133,8 +1698,7 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 3:
@@ -2142,114 +1706,34 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23783,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23783, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24649,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24649, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23788,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23788, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24654,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24654, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23814,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23814, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24680,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24680, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 59);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23793,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23793, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24659,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24659, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2259,30 +1743,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24664, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23820,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23820, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24686,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24686, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 59);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2292,8 +1756,7 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                     direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 4:
@@ -2306,30 +1769,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23784,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23784, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24650,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24650, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2339,30 +1782,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24655, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23815,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23815, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24681,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24681, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2372,85 +1795,25 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24660, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23817,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23817, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24683,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24683, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23799,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23799, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24665,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24665, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23821,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23821, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24687,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24687, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2459,8 +1822,7 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 6:
@@ -2479,30 +1841,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24656, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23816,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23816, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24682,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24682, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2512,30 +1854,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24661, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23818,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23818, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24684,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24684, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2545,30 +1867,10 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24666, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23822,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23822, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24688,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24688, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2590,11 +1892,7 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
 
 /** rct2: 0x008AC768 */
 static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -2622,30 +1920,10 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24637, 0, 0, 32, 27, 2, height, 0, 2, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23807,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 23807, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24673,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24673, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2674,85 +1952,25 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23762,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23762, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24628,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24628, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23801,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23801, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24667,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24667, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23767,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23767, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24633,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24633, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2762,30 +1980,10 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24638, 0, 0, 32, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23808,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23808, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24674,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24674, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2801,8 +1999,7 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 3:
@@ -2814,143 +2011,43 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24629, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23802,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23802, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24668,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24668, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 59);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23768,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23768, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24634,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24634, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23773,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23773, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24639,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24639, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23809,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23809, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24675,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24675, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 59);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23778,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23778, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24644,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24644, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -2960,8 +2057,7 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                     direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 4:
@@ -2974,56 +2070,16 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23764,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23764, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24630,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24630, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23803,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23803, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24669,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24669, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3033,30 +2089,10 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24635, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23805,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23805, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24671,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24671, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3066,59 +2102,19 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24640, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23810,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23810, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24676,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24676, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23779,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23779, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24645,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24645, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3127,8 +2123,7 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 6:
@@ -3140,30 +2135,10 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24631, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23804,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23804, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24670,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24670, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3173,30 +2148,10 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24636, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23806,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23806, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24672,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24672, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3206,30 +2161,10 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24641, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23811,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23811, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24677,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24677, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3258,11 +2193,7 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
 
 /** rct2: 0x008AC778 */
 static void wooden_rc_track_left_quarter_turn_5_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -3271,11 +2202,7 @@ static void wooden_rc_track_left_quarter_turn_5_25_deg_down(
 
 /** rct2: 0x008AC788 */
 static void wooden_rc_track_right_quarter_turn_5_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -3284,11 +2211,7 @@ static void wooden_rc_track_right_quarter_turn_5_25_deg_down(
 
 /** rct2: 0x008AC798 */
 static void wooden_rc_track_s_bend_left(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -3309,30 +2232,10 @@ static void wooden_rc_track_s_bend_left(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24595, 0, 0, 32, 25, 2, height, 0, 3, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23741,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_track_colour(session) | 23741, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24607,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24607, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3349,30 +2252,10 @@ static void wooden_rc_track_s_bend_left(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24598, 0, 0, 32, 25, 2, height, 0, 3, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23744,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 23744, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24610,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24610, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3400,30 +2283,10 @@ static void wooden_rc_track_s_bend_left(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24596, 0, 0, 32, 26, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23742,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23742, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24608,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24608, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3440,30 +2303,10 @@ static void wooden_rc_track_s_bend_left(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24597, 0, 0, 32, 26, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23743,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23743, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24609,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24609, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3472,8 +2315,7 @@ static void wooden_rc_track_s_bend_left(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 2:
@@ -3492,30 +2334,10 @@ static void wooden_rc_track_s_bend_left(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24597, 0, 0, 32, 26, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23743,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23743, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24609,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24609, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3532,30 +2354,10 @@ static void wooden_rc_track_s_bend_left(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24596, 0, 0, 32, 26, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23742,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23742, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24608,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24608, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3564,8 +2366,7 @@ static void wooden_rc_track_s_bend_left(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -3584,30 +2385,10 @@ static void wooden_rc_track_s_bend_left(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24598, 0, 0, 32, 25, 2, height, 0, 3, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23744,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 23744, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24610,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24610, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3624,30 +2405,10 @@ static void wooden_rc_track_s_bend_left(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24595, 0, 0, 32, 25, 2, height, 0, 3, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23741,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_track_colour(session) | 23741, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24607,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24607, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3669,11 +2430,7 @@ static void wooden_rc_track_s_bend_left(
 
 /** rct2: 0x008AC7A8 */
 static void wooden_rc_track_s_bend_right(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -3687,30 +2444,10 @@ static void wooden_rc_track_s_bend_right(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24599, 0, 0, 32, 25, 2, height, 0, 3, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23745,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_track_colour(session) | 23745, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24611,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24611, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3727,30 +2464,10 @@ static void wooden_rc_track_s_bend_right(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24602, 0, 0, 32, 25, 2, height, 0, 3, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23748,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_track_colour(session) | 23748, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24614,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24614, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3778,30 +2495,10 @@ static void wooden_rc_track_s_bend_right(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24600, 0, 0, 32, 26, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23746,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23746, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24612,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24612, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3818,30 +2515,10 @@ static void wooden_rc_track_s_bend_right(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24601, 0, 0, 32, 26, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23747,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23747, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24613,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24613, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3857,8 +2534,7 @@ static void wooden_rc_track_s_bend_right(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 2:
@@ -3870,30 +2546,10 @@ static void wooden_rc_track_s_bend_right(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24601, 0, 0, 32, 26, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23747,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23747, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24613,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24613, 0, 0, 32, 26, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3910,30 +2566,10 @@ static void wooden_rc_track_s_bend_right(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24600, 0, 0, 32, 26, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23746,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23746, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24612,
-                        0,
-                        0,
-                        32,
-                        26,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24612, 0, 0, 32, 26, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -3949,8 +2585,7 @@ static void wooden_rc_track_s_bend_right(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -3962,30 +2597,10 @@ static void wooden_rc_track_s_bend_right(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24602, 0, 0, 32, 25, 2, height, 0, 3, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23748,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_track_colour(session) | 23748, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24614,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24614, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -4002,30 +2617,10 @@ static void wooden_rc_track_s_bend_right(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24599, 0, 0, 32, 25, 2, height, 0, 3, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23745,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_track_colour(session) | 23745, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24611,
-                        0,
-                        0,
-                        32,
-                        25,
-                        0,
-                        height,
-                        0,
-                        3,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24611, 0, 0, 32, 25, 0, height, 0, 3,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -4054,11 +2649,7 @@ static void wooden_rc_track_s_bend_right(
 
 /** rct2: 0x008ACE18 */
 static void wooden_rc_track_left_vertical_loop(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -4092,8 +2683,7 @@ static void wooden_rc_track_left_vertical_loop(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 1:
@@ -4128,8 +2718,7 @@ static void wooden_rc_track_left_vertical_loop(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 2:
@@ -4180,8 +2769,7 @@ static void wooden_rc_track_left_vertical_loop(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 4:
@@ -4214,8 +2802,7 @@ static void wooden_rc_track_left_vertical_loop(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 7:
@@ -4274,8 +2861,7 @@ static void wooden_rc_track_left_vertical_loop(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 9:
@@ -4312,8 +2898,7 @@ static void wooden_rc_track_left_vertical_loop(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
     }
@@ -4321,11 +2906,7 @@ static void wooden_rc_track_left_vertical_loop(
 
 /** rct2: 0x008ACE28 */
 static void wooden_rc_track_right_vertical_loop(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -4550,11 +3131,7 @@ static void wooden_rc_track_right_vertical_loop(
 
 /** rct2: 0x008AC7E8 */
 static void wooden_rc_track_left_quarter_turn_3(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -4575,30 +3152,10 @@ static void wooden_rc_track_left_quarter_turn_3(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24697, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23840,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23840, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24706,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24706, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -4615,30 +3172,10 @@ static void wooden_rc_track_left_quarter_turn_3(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24691, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23837,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23837, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24703,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24703, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -4658,30 +3195,10 @@ static void wooden_rc_track_left_quarter_turn_3(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23827,
-                        16,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23827, 16, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24693,
-                        16,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24693, 16, 0, 16, 16, 2, height, 16, 0,
                         height);
                     break;
                 case 1:
@@ -4690,112 +3207,32 @@ static void wooden_rc_track_left_quarter_turn_3(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24696, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23839,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23839, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24705,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24705, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23833,
-                        0,
-                        16,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23833, 0, 16, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24699,
-                        0,
-                        16,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24699, 0, 16, 16, 16, 2, height, 0, 16,
                         height);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23824,
-                        16,
-                        16,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23824, 16, 16, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24690,
-                        16,
-                        16,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24690, 16, 16, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23836,
-                        16,
-                        16,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23836, 16, 16, 16, 16, 0, height, 16, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24702,
-                        16,
-                        16,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24702, 16, 16, 16, 16, 0, height, 16, 16,
                         height + 27);
                     break;
             }
@@ -4819,30 +3256,10 @@ static void wooden_rc_track_left_quarter_turn_3(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24695, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23838,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23838, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24704,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24704, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -4859,30 +3276,10 @@ static void wooden_rc_track_left_quarter_turn_3(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24689, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23835,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23835, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24701,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24701, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -4904,11 +3301,7 @@ static void wooden_rc_track_left_quarter_turn_3(
 
 /** rct2: 0x008AC7F8 */
 static void wooden_rc_track_right_quarter_turn_3(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -4917,11 +3310,7 @@ static void wooden_rc_track_right_quarter_turn_3(
 
 /** rct2: 0x008AC808 */
 static void wooden_rc_track_left_quarter_turn_3_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -4942,30 +3331,10 @@ static void wooden_rc_track_left_quarter_turn_3_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24715, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23858,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23858, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24724,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24724, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -4982,30 +3351,10 @@ static void wooden_rc_track_left_quarter_turn_3_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24709, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23855,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23855, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24721,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24721, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5025,30 +3374,10 @@ static void wooden_rc_track_left_quarter_turn_3_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23845,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23845, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24711,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24711, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     break;
                 case 1:
@@ -5057,112 +3386,32 @@ static void wooden_rc_track_left_quarter_turn_3_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24714, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23857,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23857, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24723,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24723, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23851,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23851, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24717,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24717, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23842,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23842, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24708,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24708, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23854,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23854, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24720,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24720, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     break;
             }
@@ -5186,30 +3435,10 @@ static void wooden_rc_track_left_quarter_turn_3_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24713, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23856,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23856, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24722,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24722, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5226,30 +3455,10 @@ static void wooden_rc_track_left_quarter_turn_3_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24707, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23853,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23853, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24719,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24719, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5271,11 +3480,7 @@ static void wooden_rc_track_left_quarter_turn_3_bank(
 
 /** rct2: 0x008AC818 */
 static void wooden_rc_track_right_quarter_turn_3_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -5284,11 +3489,7 @@ static void wooden_rc_track_right_quarter_turn_3_bank(
 
 /** rct2: 0x008AC828 */
 static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -5309,30 +3510,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24774, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23919,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23919, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24785,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24785, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5349,30 +3530,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24770, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23917,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23917, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24783,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24783, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5408,30 +3569,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24773, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23918,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23918, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24784,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24784, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5441,30 +3582,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24775, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23920,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23920, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24786,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24786, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5474,30 +3595,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24769, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23916,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23916, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24782,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24782, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5519,11 +3620,7 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_up(
 
 /** rct2: 0x008AC838 */
 static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -5537,30 +3634,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24761, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23911,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23911, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24777,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24777, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5577,30 +3654,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24765, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23914,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23914, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24780,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24780, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5636,30 +3693,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24762, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23912,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23912, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24778,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24778, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5669,30 +3706,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24764, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23913,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23913, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24779,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24779, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5702,30 +3719,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24766, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23915,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23915, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24781,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24781, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5754,11 +3751,7 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_up(
 
 /** rct2: 0x008AC848 */
 static void wooden_rc_track_left_quarter_turn_3_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -5767,11 +3760,7 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x008AC858 */
 static void wooden_rc_track_right_quarter_turn_3_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -5780,11 +3769,7 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x008ACAB8 */
 static void wooden_rc_track_left_half_banked_helix_up_small(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -5805,30 +3790,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24751, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23894,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23894, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24760,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24760, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5845,30 +3810,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24745, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23891,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23891, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24757,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24757, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -5880,10 +3825,8 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_D4, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 1:
@@ -5909,30 +3852,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23881,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23881, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24747,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24747, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     break;
                 case 1:
@@ -5941,112 +3864,32 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24750, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23893,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23893, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24759,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24759, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23887,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23887, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24753,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24753, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23878,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23878, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24744,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24744, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23890,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23890, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24756,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24756, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     break;
             }
@@ -6070,30 +3913,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24749, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23892,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23892, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24758,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24758, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6110,30 +3933,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24743, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23889,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23889, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24755,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24755, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6150,10 +3953,8 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_CC, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 4:
@@ -6165,30 +3966,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24745, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23891,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23891, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24757,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24757, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6205,30 +3986,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24751, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23894,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23894, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24760,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24760, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6252,10 +4013,8 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 5:
@@ -6281,84 +4040,24 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23878,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23878, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24744,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24744, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23890,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23890, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24756,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24756, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23881,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23881, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24747,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24747, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     break;
                 case 2:
@@ -6367,58 +4066,18 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24750, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23893,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23893, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24759,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24759, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23887,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23887, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24753,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24753, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     break;
             }
@@ -6435,30 +4094,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24743, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23889,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23889, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24755,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24755, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6475,30 +4114,10 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24749, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23892,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23892, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24758,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24758, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6517,10 +4136,8 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
     }
@@ -6528,11 +4145,7 @@ static void wooden_rc_track_left_half_banked_helix_up_small(
 
 /** rct2: 0x008ACAC8 */
 static void wooden_rc_track_right_half_banked_helix_up_small(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -6546,30 +4159,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24725, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23871,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23871, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24737,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24737, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6586,30 +4179,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24731, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23874,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23874, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24740,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24740, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6628,10 +4201,8 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 1:
@@ -6657,84 +4228,24 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23860,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23860, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24726,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24726, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23872,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23872, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24738,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24738, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23863,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23863, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24729,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24729, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     break;
                 case 2:
@@ -6743,58 +4254,18 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24732, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23875,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23875, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24741,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24741, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23869,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23869, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24735,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24735, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     break;
             }
@@ -6811,30 +4282,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24727, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23873,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23873, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24739,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24739, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6851,30 +4302,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24733, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23876,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23876, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24742,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24742, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6898,10 +4329,8 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 4:
@@ -6920,30 +4349,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24731, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23874,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23874, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24740,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24740, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -6960,30 +4369,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24725, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23871,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23871, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24737,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24737, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7000,10 +4389,8 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_CC, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 5:
@@ -7029,30 +4416,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23863,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23863, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24729,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24729, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     break;
                 case 1:
@@ -7061,112 +4428,32 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24732, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23875,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23875, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24741,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24741, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23869,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23869, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24735,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24735, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23860,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23860, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24726,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24726, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23872,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23872, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24738,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24738, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     break;
             }
@@ -7190,30 +4477,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24733, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23876,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23876, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24742,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24742, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7230,30 +4497,10 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24727, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23873,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23873, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24739,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24739, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7265,10 +4512,8 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_D4, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
     }
@@ -7276,11 +4521,7 @@ static void wooden_rc_track_right_half_banked_helix_up_small(
 
 /** rct2: 0x008ACAD8 */
 static void wooden_rc_track_left_half_banked_helix_down_small(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (trackSequence >= 4)
@@ -7295,11 +4536,7 @@ static void wooden_rc_track_left_half_banked_helix_down_small(
 
 /** rct2: 0x008ACAE8 */
 static void wooden_rc_track_right_half_banked_helix_down_small(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (trackSequence >= 4)
@@ -7314,11 +4551,7 @@ static void wooden_rc_track_right_half_banked_helix_down_small(
 
 /** rct2: 0x008ACAF8 */
 static void wooden_rc_track_left_half_banked_helix_up_large(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -7339,30 +4572,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24575, 0, 0, 32, 27, 2, height, 0, 2, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23724,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 23724, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24590,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24590, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7379,30 +4592,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24565, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23719,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23719, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24585,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24585, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7414,10 +4607,8 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_D4, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 1:
@@ -7441,114 +4632,34 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24574, 0, 0, 32, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23723,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23723, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24589,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24589, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23713,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23713, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24579,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24579, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23698,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23698, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24564,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24564, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23718,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23718, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24584,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24584, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7557,8 +4668,7 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -7566,114 +4676,34 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23702,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23702, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24568,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24568, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23707,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23707, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24573,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24573, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23722,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23722, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 29);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24588,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24588, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 29);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23712,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23712, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24578,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24578, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7683,30 +4713,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24563, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23717,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23717, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24583,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24583, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7727,30 +4737,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23701,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23701, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24567,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24567, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7760,30 +4750,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24572, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23721,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23721, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 33);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24587,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24587, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 33);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7796,56 +4766,16 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23696,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23696, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24562,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24562, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23716,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23716, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24582,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24582, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7854,8 +4784,7 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 6:
@@ -7874,30 +4803,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24571, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23720,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23720, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 33);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24586,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24586, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 33);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7914,30 +4823,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24561, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23715,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23715, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24581,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24581, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -7954,10 +4843,8 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_CC, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 7:
@@ -7969,30 +4856,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24565, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23719,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23719, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24585,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24585, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8009,30 +4876,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24575, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23724,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23724, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24590,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24590, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8056,10 +4903,8 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 8:
@@ -8072,56 +4917,16 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23698,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23698, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24564,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24564, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23718,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23718, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24584,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24584, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8138,59 +4943,19 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24574, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23723,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23723, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24589,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24589, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23713,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23713, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24579,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24579, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8199,8 +4964,7 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 10:
@@ -8212,143 +4976,43 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24563, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23717,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23717, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24583,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24583, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23702,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23702, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24568,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24568, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23707,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23707, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24573,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24573, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23722,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23722, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 29);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24588,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24588, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 29);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23712,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23712, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24578,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24578, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8369,85 +5033,25 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23696,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23696, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24562,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24562, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23716,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23716, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24582,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24582, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23701,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23701, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24567,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24567, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8457,30 +5061,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24572, 0, 0, 32, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23721,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23721, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 33);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24587,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24587, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 33);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8496,8 +5080,7 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 13:
@@ -8509,30 +5092,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24561, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23715,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23715, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24581,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24581, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8549,30 +5112,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24571, 0, 0, 32, 27, 2, height, 0, 2, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23720,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 23720, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 33);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24586,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24586, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 33);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8591,10 +5134,8 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
     }
@@ -8602,11 +5143,7 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
 
 /** rct2: 0x008ACB08 */
 static void wooden_rc_track_right_half_banked_helix_up_large(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -8620,30 +5157,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24531, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23685,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23685, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24551,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24551, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8660,30 +5177,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24541, 0, 0, 32, 27, 2, height, 0, 2, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23690,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 23690, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24556,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24556, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8702,10 +5199,8 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 1:
@@ -8718,85 +5213,25 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23666,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23666, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24532,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24532, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23686,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23686, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24552,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24552, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23671,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23671, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24537,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24537, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8806,30 +5241,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24542, 0, 0, 32, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23691,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23691, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24557,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24557, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -8845,8 +5260,7 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
@@ -8858,143 +5272,43 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24533, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23687,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23687, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24553,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24553, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23672,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23672, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24538,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24538, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23677,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23677, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24543,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24543, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23692,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23692, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 29);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24558,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24558, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 29);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23682,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23682, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24548,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24548, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9015,56 +5329,16 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23668,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23668, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24534,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24534, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23688,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23688, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24554,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24554, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9081,59 +5355,19 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24544, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23693,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23693, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 33);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24559,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24559, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 33);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23683,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23683, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24549,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24549, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9142,8 +5376,7 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 6:
@@ -9155,30 +5388,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24535, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23689,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23689, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24555,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24555, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9195,30 +5408,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24545, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23694,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23694, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 33);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24560,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24560, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 33);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9242,10 +5435,8 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 7:
@@ -9264,30 +5455,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24541, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23690,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23690, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24556,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24556, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9304,30 +5475,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24531, 0, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23685,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23685, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24551,
-                        0,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24551, 0, 0, 20, 32, 0, height, 6, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9344,10 +5495,8 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_CC, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 8:
@@ -9360,30 +5509,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23671,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23671, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24537,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24537, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9393,30 +5522,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24542, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23691,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23691, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24557,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24557, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9429,56 +5538,16 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23666,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23666, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24532,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24532, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23686,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23686, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24552,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24552, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9487,8 +5556,7 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 10:
@@ -9496,114 +5564,34 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23672,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23672, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24538,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24538, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23677,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23677, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24543,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24543, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23692,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23692, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 29);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24558,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24558, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 29);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23682,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23682, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24548,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24548, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9613,30 +5601,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24533, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23687,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23687, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24553,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24553, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9668,114 +5636,34 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24544, 0, 0, 32, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23693,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23693, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 33);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24559,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24559, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 33);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23683,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23683, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24549,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24549, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23668,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23668, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24534,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24534, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23688,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 23688, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24554,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24554, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9784,8 +5672,7 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 13:
@@ -9804,30 +5691,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24545, 0, 0, 32, 27, 2, height, 0, 2, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23694,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 23694, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 33);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24560,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24560, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 33);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9844,30 +5711,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24535, 0, 0, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23689,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23689, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24555,
-                        0,
-                        0,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24555, 0, 0, 32, 20, 0, height, 0, 6,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -9879,10 +5726,8 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_D4, direction), 48, 0x20);
             paint_util_set_segment_support_height(
-                session,
-                paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
     }
@@ -9890,11 +5735,7 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
 
 /** rct2: 0x008ACB18 */
 static void wooden_rc_track_left_half_banked_helix_down_large(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (trackSequence >= 7)
@@ -9909,11 +5750,7 @@ static void wooden_rc_track_left_half_banked_helix_down_large(
 
 /** rct2: 0x008ACB28 */
 static void wooden_rc_track_right_half_banked_helix_down_large(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     if (trackSequence >= 7)
@@ -9928,11 +5765,7 @@ static void wooden_rc_track_right_half_banked_helix_down_large(
 
 /** rct2: 0x008ACB98 */
 static void wooden_rc_track_left_quarter_turn_1_60_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -9985,11 +5818,7 @@ static void wooden_rc_track_left_quarter_turn_1_60_deg_up(
 
 /** rct2: 0x008ACB78 */
 static void wooden_rc_track_right_quarter_turn_1_60_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -10042,11 +5871,7 @@ static void wooden_rc_track_right_quarter_turn_1_60_deg_up(
 
 /** rct2: 0x008ACB88 */
 static void wooden_rc_track_left_quarter_turn_1_60_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_right_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
@@ -10054,11 +5879,7 @@ static void wooden_rc_track_left_quarter_turn_1_60_deg_down(
 
 /** rct2: 0x008ACBA8 */
 static void wooden_rc_track_right_quarter_turn_1_60_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_left_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
@@ -10066,11 +5887,7 @@ static void wooden_rc_track_right_quarter_turn_1_60_deg_down(
 
 /** rct2: 0x008AC868 */
 static void wooden_rc_track_brakes(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     static constexpr const uint32_t imageIds[4][2] = {
@@ -10090,11 +5907,7 @@ static void wooden_rc_track_brakes(
 
 /** rct2: 0x008ACC78 */
 static void wooden_rc_track_25_deg_up_left_banked(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -10150,11 +5963,7 @@ static void wooden_rc_track_25_deg_up_left_banked(
 
 /** rct2: 0x008ACC88 */
 static void wooden_rc_track_25_deg_up_right_banked(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -10210,11 +6019,7 @@ static void wooden_rc_track_25_deg_up_right_banked(
 
 /** rct2: 0x008AC878 */
 static void wooden_rc_track_on_ride_photo(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -10253,11 +6058,7 @@ static void wooden_rc_track_on_ride_photo(
 
 /** rct2: 0x008ACC98 */
 static void wooden_rc_track_25_deg_down_left_banked(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up_right_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -10265,11 +6066,7 @@ static void wooden_rc_track_25_deg_down_left_banked(
 
 /** rct2: 0x008ACCA8 */
 static void wooden_rc_track_25_deg_down_right_banked(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up_left_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -10277,11 +6074,7 @@ static void wooden_rc_track_25_deg_down_right_banked(
 
 /** rct2: 0x008ACE08 */
 static void wooden_rc_track_water_splash(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -10297,30 +6090,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23997,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23997, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24863,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24863, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23993, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10335,30 +6108,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23998,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23998, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24864,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24864, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23994, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10373,30 +6126,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23995,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23995, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24861,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24861, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23991, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10411,30 +6144,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23996,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23996, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24862,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24862, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23992, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10458,30 +6171,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23985,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23985, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24851,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24851, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23981, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10496,30 +6189,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23986,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23986, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24852,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24852, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23982, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10534,30 +6207,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23983,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23983, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24849,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24849, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23979, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10572,30 +6225,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23984,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23984, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24850,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24850, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23980, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10619,30 +6252,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24003,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24003, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24869,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24869, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 24001, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10658,30 +6271,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24004,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24004, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24870,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24870, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 24002, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10704,30 +6297,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23983,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23983, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24849,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24849, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23979, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10742,30 +6315,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23984,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23984, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24850,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24850, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23980, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10780,30 +6333,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23985,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23985, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24851,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24851, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23981, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10818,30 +6351,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23986,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23986, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24852,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24852, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23982, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10864,30 +6377,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23995,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23995, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24861,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24861, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23991, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10902,30 +6395,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23996,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23996, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24862,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24862, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23992, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10940,30 +6413,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23997,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23997, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24863,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24863, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23993, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -10978,30 +6431,10 @@ static void wooden_rc_track_water_splash(
                     sub_98199C_rotated(session, direction, 0x61000000 | 5048, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(session, direction, 0x00000000 | 5053, 0, 0, 32, 25, 2, height + 16, 0, 3, height + 16);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 23998,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 23998, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        session->TrackColours[SCHEME_SUPPORTS] | 24864,
-                        0,
-                        0,
-                        32,
-                        25,
-                        2,
-                        height,
-                        0,
-                        3,
+                        session, direction, session->TrackColours[SCHEME_SUPPORTS] | 24864, 0, 0, 32, 25, 2, height, 0, 3,
                         height);
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23994, 0, 0, 32, 25, 2, height, 0, 3, height);
@@ -11019,11 +6452,7 @@ static void wooden_rc_track_water_splash(
 
 /** rct2: 0x008AC958 */
 static void wooden_rc_track_left_eighth_to_diag(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -11044,30 +6473,10 @@ static void wooden_rc_track_left_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25007, 0, 0, 32, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24153,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24153, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25019,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25019, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11084,30 +6493,10 @@ static void wooden_rc_track_left_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25015, 0, 0, 32, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24157,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24157, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25023,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25023, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11135,114 +6524,34 @@ static void wooden_rc_track_left_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25008, 0, 0, 34, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24154,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24154, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25020,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25020, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24146,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24146, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25012,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25012, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24150,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24150, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25016,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25016, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24158,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24158, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25024,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25024, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11255,114 +6564,34 @@ static void wooden_rc_track_left_eighth_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24139,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24139, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25005,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25005, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24143,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24143, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25009,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25009, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24155,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24155, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25021,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25021, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24147,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24147, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25013,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25013, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11372,30 +6601,10 @@ static void wooden_rc_track_left_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25017, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24159,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24159, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25025,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25025, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11427,84 +6636,24 @@ static void wooden_rc_track_left_eighth_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24140,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24140, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25006,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25006, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24144,
-                        0,
-                        0,
-                        16,
-                        18,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24144, 0, 0, 16, 18, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25010,
-                        0,
-                        0,
-                        16,
-                        18,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25010, 0, 0, 16, 18, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24156,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24156, 0, 0, 16, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25022,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25022, 0, 0, 16, 16, 0, height, 0, 16,
                         height + 27);
                     break;
                 case 2:
@@ -11515,56 +6664,16 @@ static void wooden_rc_track_left_eighth_to_diag(
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24152,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24152, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25018,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25018, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24160,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24160, 0, 0, 16, 16, 0, height, 16, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25026,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25026, 0, 0, 16, 16, 0, height, 16, 0,
                         height + 27);
                     break;
             }
@@ -11576,11 +6685,7 @@ static void wooden_rc_track_left_eighth_to_diag(
 
 /** rct2: 0x008AC968 */
 static void wooden_rc_track_right_eighth_to_diag(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -11594,30 +6699,10 @@ static void wooden_rc_track_right_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24979, 0, 0, 32, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24129,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24129, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24995,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24995, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11634,30 +6719,10 @@ static void wooden_rc_track_right_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24987, 0, 0, 32, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24133,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24133, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24999,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24999, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11681,85 +6746,25 @@ static void wooden_rc_track_right_eighth_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24114,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24114, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24980,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24980, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24130,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24130, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24996,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24996, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24118,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24118, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24984,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24984, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11769,30 +6774,10 @@ static void wooden_rc_track_right_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24988, 0, 0, 34, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24134,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24134, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25000,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25000, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11816,59 +6801,19 @@ static void wooden_rc_track_right_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24981, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24131,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24131, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24997,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24997, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24119,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24119, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24985,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24985, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11878,59 +6823,19 @@ static void wooden_rc_track_right_eighth_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24989, 0, 0, 28, 28, 2, height, 4, 4, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24135,
-                        0,
-                        0,
-                        28,
-                        28,
-                        0,
-                        height,
-                        4,
-                        4,
+                        session, direction, wooden_rc_get_track_colour(session) | 24135, 0, 0, 28, 28, 0, height, 4, 4,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25001,
-                        0,
-                        0,
-                        28,
-                        28,
-                        0,
-                        height,
-                        4,
-                        4,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25001, 0, 0, 28, 28, 0, height, 4, 4,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24127,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24127, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24993,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24993, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -11962,56 +6867,16 @@ static void wooden_rc_track_right_eighth_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24116,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24116, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24982,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24982, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24132,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24132, 0, 0, 16, 16, 0, height, 16, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24998,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24998, 0, 0, 16, 16, 0, height, 16, 0,
                         height + 27);
                     break;
                 case 1:
@@ -12022,84 +6887,24 @@ static void wooden_rc_track_right_eighth_to_diag(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24124,
-                        0,
-                        0,
-                        16,
-                        18,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24124, 0, 0, 16, 18, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24990,
-                        0,
-                        0,
-                        16,
-                        18,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24990, 0, 0, 16, 18, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24136,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24136, 0, 0, 16, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25002,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25002, 0, 0, 16, 16, 0, height, 0, 16,
                         height + 27);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24128,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24128, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24994,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24994, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     break;
             }
@@ -12111,11 +6916,7 @@ static void wooden_rc_track_right_eighth_to_diag(
 
 /** rct2: 0x008AC978 */
 static void wooden_rc_track_left_eighth_to_orthogonal(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -12124,11 +6925,7 @@ static void wooden_rc_track_left_eighth_to_orthogonal(
 
 /** rct2: 0x008AC988 */
 static void wooden_rc_track_right_eighth_to_orthogonal(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -12137,11 +6934,7 @@ static void wooden_rc_track_right_eighth_to_orthogonal(
 
 /** rct2: 0x008AC998 */
 static void wooden_rc_track_left_eighth_bank_to_diag(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -12162,30 +6955,10 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25055, 0, 0, 32, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24201,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24201, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25067,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25067, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12202,30 +6975,10 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25063, 0, 0, 32, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24205,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24205, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25071,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25071, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12253,114 +7006,34 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25056, 0, 0, 34, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24202,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24202, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25068,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25068, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24194,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24194, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25060,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25060, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24198,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24198, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25064,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25064, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24206,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24206, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25072,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25072, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12373,114 +7046,34 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24187,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24187, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25053,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25053, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24191,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24191, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25057,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25057, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24203,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24203, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25069,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25069, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24195,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24195, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25061,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25061, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12490,30 +7083,10 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25065, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24207,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24207, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25073,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25073, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12545,84 +7118,24 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24188,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24188, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25054,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25054, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24192,
-                        0,
-                        0,
-                        16,
-                        18,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24192, 0, 0, 16, 18, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25058,
-                        0,
-                        0,
-                        16,
-                        18,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25058, 0, 0, 16, 18, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24204,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24204, 0, 0, 16, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25070,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25070, 0, 0, 16, 16, 0, height, 0, 16,
                         height + 27);
                     break;
                 case 2:
@@ -12633,56 +7146,16 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24200,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24200, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25066,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25066, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24208,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24208, 0, 0, 16, 16, 0, height, 16, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25074,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25074, 0, 0, 16, 16, 0, height, 16, 0,
                         height + 27);
                     break;
             }
@@ -12694,11 +7167,7 @@ static void wooden_rc_track_left_eighth_bank_to_diag(
 
 /** rct2: 0x008AC9A8 */
 static void wooden_rc_track_right_eighth_bank_to_diag(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -12712,30 +7181,10 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25027, 0, 0, 32, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24177,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24177, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25043,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25043, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12752,30 +7201,10 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25035, 0, 0, 32, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24181,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24181, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25047,
-                        0,
-                        0,
-                        32,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25047, 0, 0, 32, 32, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12799,85 +7228,25 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24162,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24162, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25028,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25028, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24178,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24178, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25044,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25044, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24166,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24166, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25032,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25032, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12887,30 +7256,10 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25036, 0, 0, 34, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24182,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24182, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25048,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25048, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12934,59 +7283,19 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25029, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24179,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24179, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25045,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25045, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24167,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24167, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25033,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25033, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -12996,59 +7305,19 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25037, 0, 0, 28, 28, 2, height, 4, 4, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24183,
-                        0,
-                        0,
-                        28,
-                        28,
-                        0,
-                        height,
-                        4,
-                        4,
+                        session, direction, wooden_rc_get_track_colour(session) | 24183, 0, 0, 28, 28, 0, height, 4, 4,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25049,
-                        0,
-                        0,
-                        28,
-                        28,
-                        0,
-                        height,
-                        4,
-                        4,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25049, 0, 0, 28, 28, 0, height, 4, 4,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24175,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24175, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25041,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25041, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -13080,56 +7349,16 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24164,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24164, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25030,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25030, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24180,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24180, 0, 0, 16, 16, 0, height, 16, 0,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25046,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25046, 0, 0, 16, 16, 0, height, 16, 0,
                         height + 27);
                     break;
                 case 1:
@@ -13140,84 +7369,24 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24172,
-                        0,
-                        0,
-                        16,
-                        18,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24172, 0, 0, 16, 18, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25038,
-                        0,
-                        0,
-                        16,
-                        18,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25038, 0, 0, 16, 18, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24184,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24184, 0, 0, 16, 16, 0, height, 0, 16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25050,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25050, 0, 0, 16, 16, 0, height, 0, 16,
                         height + 27);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24176,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24176, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25042,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25042, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     break;
             }
@@ -13229,11 +7398,7 @@ static void wooden_rc_track_right_eighth_bank_to_diag(
 
 /** rct2: 0x008AC9B8 */
 static void wooden_rc_track_left_eighth_bank_to_orthogonal(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -13242,11 +7407,7 @@ static void wooden_rc_track_left_eighth_bank_to_orthogonal(
 
 /** rct2: 0x008AC9C8 */
 static void wooden_rc_track_right_eighth_bank_to_orthogonal(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -13255,11 +7416,7 @@ static void wooden_rc_track_right_eighth_bank_to_orthogonal(
 
 /** rct2: 0x008AC888 */
 static void wooden_rc_track_diag_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -13271,31 +7428,11 @@ static void wooden_rc_track_diag_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24050,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24050, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24916,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24916, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -13305,31 +7442,11 @@ static void wooden_rc_track_diag_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24008,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24008, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24874,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24874, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -13343,57 +7460,17 @@ static void wooden_rc_track_diag_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24047,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24047, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24913,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24913, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24051,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 27);
+                            session, direction, wooden_rc_get_track_colour(session) | 24051, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 27);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24917,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 27);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24917, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 27);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 1:
@@ -13413,57 +7490,17 @@ static void wooden_rc_track_diag_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24005,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24005, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24871,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24871, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24009,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 27);
+                            session, direction, wooden_rc_get_track_colour(session) | 24009, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 27);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24875,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 27);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24875, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 27);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 1:
@@ -13493,57 +7530,17 @@ static void wooden_rc_track_diag_flat(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24049,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24049, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24915,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24915, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24052,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 27);
+                            session, direction, wooden_rc_get_track_colour(session) | 24052, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 27);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24918,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 27);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24918, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 27);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 3:
@@ -13563,57 +7560,17 @@ static void wooden_rc_track_diag_flat(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24007,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24007, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24873,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24873, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24010,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 27);
+                            session, direction, wooden_rc_get_track_colour(session) | 24010, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 27);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24876,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 27);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24876, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 27);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 3:
@@ -13631,31 +7588,11 @@ static void wooden_rc_track_diag_flat(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24048,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24048, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24914,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24914, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -13665,31 +7602,11 @@ static void wooden_rc_track_diag_flat(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24006,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24006, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24872,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24872, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -13701,11 +7618,7 @@ static void wooden_rc_track_diag_flat(
 
 /** rct2: 0x008AC8B8 */
 static void wooden_rc_track_diag_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -13717,31 +7630,11 @@ static void wooden_rc_track_diag_25_deg_up(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24068,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24068, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24934,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24934, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -13751,31 +7644,11 @@ static void wooden_rc_track_diag_25_deg_up(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24026,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24026, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24892,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24892, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -13789,57 +7662,17 @@ static void wooden_rc_track_diag_25_deg_up(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24065,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24065, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24931,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24931, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24069,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_track_colour(session) | 24069, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24935,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24935, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -13863,57 +7696,17 @@ static void wooden_rc_track_diag_25_deg_up(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24023,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24023, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24889,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24889, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24027,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_track_colour(session) | 24027, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24893,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24893, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -13949,57 +7742,17 @@ static void wooden_rc_track_diag_25_deg_up(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24067,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24067, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24933,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24933, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24070,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_track_colour(session) | 24070, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24936,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24936, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -14023,57 +7776,17 @@ static void wooden_rc_track_diag_25_deg_up(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24025,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24025, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24891,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24891, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24028,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_track_colour(session) | 24028, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24894,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24894, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -14093,31 +7806,11 @@ static void wooden_rc_track_diag_25_deg_up(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24066,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24066, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24932,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24932, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -14127,31 +7820,11 @@ static void wooden_rc_track_diag_25_deg_up(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24024,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24024, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24890,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24890, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -14163,11 +7836,7 @@ static void wooden_rc_track_diag_25_deg_up(
 
 /** rct2: 0x008AC8E8 */
 static void wooden_rc_track_diag_60_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -14177,30 +7846,10 @@ static void wooden_rc_track_diag_60_deg_up(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24044,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24044, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24910,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24910, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -14212,56 +7861,16 @@ static void wooden_rc_track_diag_60_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24041,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24041, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24907,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24907, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24045,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24045, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 91);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24911,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24911, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 91);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -14289,56 +7898,16 @@ static void wooden_rc_track_diag_60_deg_up(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24043,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24043, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24909,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24909, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24046,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24046, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 91);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24912,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24912, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 91);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -14354,30 +7923,10 @@ static void wooden_rc_track_diag_60_deg_up(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24042,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24042, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24908,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24908, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -14389,11 +7938,7 @@ static void wooden_rc_track_diag_60_deg_up(
 
 /** rct2: 0x008AC898 */
 static void wooden_rc_track_diag_flat_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -14405,31 +7950,11 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24056,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24056, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24922,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24922, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -14439,31 +7964,11 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24014,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24014, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24880,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24880, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -14477,57 +7982,17 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24053,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24053, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24919,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24919, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24057,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24057, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24923,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24923, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 1:
@@ -14547,57 +8012,17 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24011,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24011, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24877,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24877, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24015,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24015, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24881,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24881, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 1:
@@ -14627,57 +8052,17 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24055,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24055, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24921,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24921, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24058,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24058, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24924,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24924, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 3:
@@ -14697,57 +8082,17 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24013,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24013, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24879,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24879, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24016,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24016, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24882,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24882, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 3:
@@ -14765,31 +8110,11 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24054,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24054, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24920,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24920, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -14799,31 +8124,11 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24012,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24012, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24878,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24878, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -14835,11 +8140,7 @@ static void wooden_rc_track_diag_flat_to_25_deg_up(
 
 /** rct2: 0x008AC8C8 */
 static void wooden_rc_track_diag_25_deg_up_to_60_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -14849,30 +8150,10 @@ static void wooden_rc_track_diag_25_deg_up_to_60_deg_up(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24032,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24032, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24898,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24898, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -14884,56 +8165,16 @@ static void wooden_rc_track_diag_25_deg_up_to_60_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24029,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24029, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24895,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24895, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24033,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24033, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24899,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24899, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -14961,56 +8202,16 @@ static void wooden_rc_track_diag_25_deg_up_to_60_deg_up(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24031,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24031, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24897,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24897, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24034,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24034, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24900,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24900, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -15026,30 +8227,10 @@ static void wooden_rc_track_diag_25_deg_up_to_60_deg_up(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24030,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24030, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24896,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24896, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -15061,11 +8242,7 @@ static void wooden_rc_track_diag_25_deg_up_to_60_deg_up(
 
 /** rct2: 0x008AC8D8 */
 static void wooden_rc_track_diag_60_deg_up_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -15075,30 +8252,10 @@ static void wooden_rc_track_diag_60_deg_up_to_25_deg_up(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24038,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24038, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24904,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24904, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -15110,56 +8267,16 @@ static void wooden_rc_track_diag_60_deg_up_to_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24035,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24035, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24901,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24901, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24039,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24039, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24905,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24905, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -15187,56 +8304,16 @@ static void wooden_rc_track_diag_60_deg_up_to_25_deg_up(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24037,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24037, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24903,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24903, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24040,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24040, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24906,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24906, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -15252,30 +8329,10 @@ static void wooden_rc_track_diag_60_deg_up_to_25_deg_up(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24036,
-                        -16,
-                        -16,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24036, -16, -16, 16, 16, 2, height, 0, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24902,
-                        -16,
-                        -16,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24902, -16, -16, 16, 16, 2, height, 0, 0,
                         height);
                     break;
             }
@@ -15287,11 +8344,7 @@ static void wooden_rc_track_diag_60_deg_up_to_25_deg_up(
 
 /** rct2: 0x008AC8A8 */
 static void wooden_rc_track_diag_25_deg_up_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -15303,31 +8356,11 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24062,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24062, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24928,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24928, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -15337,31 +8370,11 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24020,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24020, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24886,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24886, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -15375,57 +8388,17 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24059,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24059, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24925,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24925, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24063,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24063, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24929,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24929, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -15449,57 +8422,17 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24017,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24017, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24883,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24883, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24021,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24021, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24887,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24887, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -15535,57 +8468,17 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24061,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24061, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24927,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24927, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24064,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24064, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24930,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24930, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -15609,57 +8502,17 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24019,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24019, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24885,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24885, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24022,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24022, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24888,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24888, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -15679,31 +8532,11 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24060,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24060, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24926,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24926, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -15713,31 +8546,11 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24018,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24018, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24884,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24884, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -15749,11 +8562,7 @@ static void wooden_rc_track_diag_25_deg_up_to_flat(
 
 /** rct2: 0x008AC918 */
 static void wooden_rc_track_diag_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -15765,31 +8574,11 @@ static void wooden_rc_track_diag_25_deg_down(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24066,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24066, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24932,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24932, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -15799,31 +8588,11 @@ static void wooden_rc_track_diag_25_deg_down(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24024,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24024, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24890,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24890, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -15837,57 +8606,17 @@ static void wooden_rc_track_diag_25_deg_down(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24067,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24067, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24933,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24933, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24070,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_track_colour(session) | 24070, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24936,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24936, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -15911,57 +8640,17 @@ static void wooden_rc_track_diag_25_deg_down(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24025,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24025, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24891,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24891, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24028,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_track_colour(session) | 24028, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24894,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24894, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -15997,57 +8686,17 @@ static void wooden_rc_track_diag_25_deg_down(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24065,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24065, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24931,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24931, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24069,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_track_colour(session) | 24069, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24935,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24935, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -16071,57 +8720,17 @@ static void wooden_rc_track_diag_25_deg_down(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24023,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24023, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24889,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24889, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24027,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_track_colour(session) | 24027, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24893,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 43);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24893, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 43);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -16141,31 +8750,11 @@ static void wooden_rc_track_diag_25_deg_down(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24068,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24068, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24934,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24934, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -16175,31 +8764,11 @@ static void wooden_rc_track_diag_25_deg_down(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24026,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24026, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24892,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24892, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -16211,11 +8780,7 @@ static void wooden_rc_track_diag_25_deg_down(
 
 /** rct2: 0x008AC948 */
 static void wooden_rc_track_diag_60_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -16225,30 +8790,10 @@ static void wooden_rc_track_diag_60_deg_down(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24042,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24042, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24908,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24908, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -16260,56 +8805,16 @@ static void wooden_rc_track_diag_60_deg_down(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24043,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24043, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24909,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24909, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24046,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24046, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 91);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24912,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24912, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 91);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -16337,56 +8842,16 @@ static void wooden_rc_track_diag_60_deg_down(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24041,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24041, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24907,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24907, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24045,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24045, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 91);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24911,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24911, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 91);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -16402,30 +8867,10 @@ static void wooden_rc_track_diag_60_deg_down(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24044,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24044, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24910,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24910, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -16437,11 +8882,7 @@ static void wooden_rc_track_diag_60_deg_down(
 
 /** rct2: 0x008AC8F8 */
 static void wooden_rc_track_diag_flat_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -16453,31 +8894,11 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24060,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24060, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24926,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24926, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -16487,31 +8908,11 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24018,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24018, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24884,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24884, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -16523,57 +8924,17 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24061,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24061, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24927,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24927, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24064,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24064, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24930,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24930, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -16597,57 +8958,17 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24019,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24019, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24885,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24885, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24022,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24022, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24888,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24888, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -16681,57 +9002,17 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24059,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24059, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24925,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24925, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24063,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24063, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24929,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24929, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -16755,57 +9036,17 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24017,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24017, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24883,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24883, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24021,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24021, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24887,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24887, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_b_supports_paint_setup(
                             session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
@@ -16823,31 +9064,11 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24062,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24062, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24928,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24928, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -16857,31 +9078,11 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24020,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24020, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24886,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24886, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -16894,11 +9095,7 @@ static void wooden_rc_track_diag_flat_to_25_deg_down(
 
 /** rct2: 0x008AC928 */
 static void wooden_rc_track_diag_25_deg_down_to_60_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -16908,30 +9105,10 @@ static void wooden_rc_track_diag_25_deg_down_to_60_deg_down(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24036,
-                        -16,
-                        -16,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24036, -16, -16, 16, 16, 2, height, 0, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24902,
-                        -16,
-                        -16,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24902, -16, -16, 16, 16, 2, height, 0, 0,
                         height);
                     break;
             }
@@ -16943,56 +9120,16 @@ static void wooden_rc_track_diag_25_deg_down_to_60_deg_down(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24037,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24037, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24903,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24903, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24040,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24040, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24906,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24906, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -17020,56 +9157,16 @@ static void wooden_rc_track_diag_25_deg_down_to_60_deg_down(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24035,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24035, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24901,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24901, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24039,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24039, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24905,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24905, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -17085,30 +9182,10 @@ static void wooden_rc_track_diag_25_deg_down_to_60_deg_down(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24038,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24038, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24904,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24904, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -17120,11 +9197,7 @@ static void wooden_rc_track_diag_25_deg_down_to_60_deg_down(
 
 /** rct2: 0x008AC938 */
 static void wooden_rc_track_diag_60_deg_down_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -17134,30 +9207,10 @@ static void wooden_rc_track_diag_60_deg_down_to_25_deg_down(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24030,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24030, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24896,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24896, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -17169,56 +9222,16 @@ static void wooden_rc_track_diag_60_deg_down_to_25_deg_down(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24031,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24031, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24897,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24897, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24034,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24034, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24900,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24900, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -17246,56 +9259,16 @@ static void wooden_rc_track_diag_60_deg_down_to_25_deg_down(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24029,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24029, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24895,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24895, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24033,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24033, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24899,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24899, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 59);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -17311,30 +9284,10 @@ static void wooden_rc_track_diag_60_deg_down_to_25_deg_down(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24032,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24032, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24898,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24898, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -17346,11 +9299,7 @@ static void wooden_rc_track_diag_60_deg_down_to_25_deg_down(
 
 /** rct2: 0x008AC908 */
 static void wooden_rc_track_diag_25_deg_down_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -17362,31 +9311,11 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24054,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24054, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24920,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24920, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -17396,31 +9325,11 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
                 {
                     case 3:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24012,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24012, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24878,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24878, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -17434,57 +9343,17 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24055,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24055, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24921,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24921, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24058,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24058, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24924,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24924, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 1:
@@ -17504,57 +9373,17 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24013,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24013, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24879,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24879, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24016,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24016, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24882,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24882, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 1:
@@ -17584,57 +9413,17 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24053,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24053, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24919,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24919, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24057,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24057, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24923,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24923, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 3:
@@ -17654,57 +9443,17 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24011,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24011, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24877,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24877, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24015,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_track_colour(session) | 24015, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24881,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            0,
-                            height,
-                            -16,
-                            -16,
-                            height + 35);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24881, -16, -16, 32, 32, 0, height, -16,
+                            -16, height + 35);
                         wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                         break;
                     case 3:
@@ -17722,31 +9471,11 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24056,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24056, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24922,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24922, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -17756,31 +9485,11 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
                 {
                     case 1:
                         sub_98197C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_track_colour(session) | 24014,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_track_colour(session) | 24014, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         sub_98199C_rotated(
-                            session,
-                            direction,
-                            wooden_rc_get_rails_colour(session) | 24880,
-                            -16,
-                            -16,
-                            32,
-                            32,
-                            2,
-                            height,
-                            -16,
-                            -16,
-                            height);
+                            session, direction, wooden_rc_get_rails_colour(session) | 24880, -16, -16, 32, 32, 2, height, -16,
+                            -16, height);
                         break;
                 }
             }
@@ -17792,11 +9501,7 @@ static void wooden_rc_track_diag_25_deg_down_to_flat(
 
 /** rct2: 0x008ACA18 */
 static void wooden_rc_track_diag_flat_to_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -17806,30 +9511,10 @@ static void wooden_rc_track_diag_flat_to_left_bank(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24080,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24080, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24946,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24946, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -17841,56 +9526,16 @@ static void wooden_rc_track_diag_flat_to_left_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24077,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24077, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24943,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24943, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24081,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24081, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24947,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24947, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -17918,56 +9563,16 @@ static void wooden_rc_track_diag_flat_to_left_bank(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24079,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24079, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24945,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24945, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24082,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24082, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24948,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24948, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -17983,30 +9588,10 @@ static void wooden_rc_track_diag_flat_to_left_bank(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24078,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24078, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24944,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24944, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18018,11 +9603,7 @@ static void wooden_rc_track_diag_flat_to_left_bank(
 
 /** rct2: 0x008AC9F8 */
 static void wooden_rc_track_diag_flat_to_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -18032,30 +9613,10 @@ static void wooden_rc_track_diag_flat_to_right_bank(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24086,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24086, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24952,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24952, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18067,56 +9628,16 @@ static void wooden_rc_track_diag_flat_to_right_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24083,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24083, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24949,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24949, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24087,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24087, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24953,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24953, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -18144,56 +9665,16 @@ static void wooden_rc_track_diag_flat_to_right_bank(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24085,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24085, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24951,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24951, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24088,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24088, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24954,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24954, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -18209,30 +9690,10 @@ static void wooden_rc_track_diag_flat_to_right_bank(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24084,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24084, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24950,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24950, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18244,11 +9705,7 @@ static void wooden_rc_track_diag_flat_to_right_bank(
 
 /** rct2: 0x008ACA08 */
 static void wooden_rc_track_diag_left_bank_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -18258,30 +9715,10 @@ static void wooden_rc_track_diag_left_bank_to_flat(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24084,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24084, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24950,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24950, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18293,56 +9730,16 @@ static void wooden_rc_track_diag_left_bank_to_flat(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24085,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24085, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24951,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24951, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24088,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24088, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24954,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24954, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -18370,56 +9767,16 @@ static void wooden_rc_track_diag_left_bank_to_flat(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24083,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24083, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24949,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24949, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24087,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24087, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24953,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24953, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -18435,30 +9792,10 @@ static void wooden_rc_track_diag_left_bank_to_flat(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24086,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24086, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24952,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24952, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18470,11 +9807,7 @@ static void wooden_rc_track_diag_left_bank_to_flat(
 
 /** rct2: 0x008ACA28 */
 static void wooden_rc_track_diag_right_bank_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -18484,30 +9817,10 @@ static void wooden_rc_track_diag_right_bank_to_flat(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24078,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24078, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24944,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24944, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18519,56 +9832,16 @@ static void wooden_rc_track_diag_right_bank_to_flat(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24079,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24079, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24945,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24945, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24082,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24082, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24948,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24948, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -18596,56 +9869,16 @@ static void wooden_rc_track_diag_right_bank_to_flat(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24077,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24077, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24943,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24943, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24081,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24081, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24947,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24947, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -18661,30 +9894,10 @@ static void wooden_rc_track_diag_right_bank_to_flat(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24080,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24080, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24946,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24946, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18696,11 +9909,7 @@ static void wooden_rc_track_diag_right_bank_to_flat(
 
 /** rct2: 0x008ACA58 */
 static void wooden_rc_track_diag_left_bank_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -18710,30 +9919,10 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_up(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24104,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24104, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24970,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24970, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18745,56 +9934,16 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24101,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24101, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24967,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24967, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24105,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24105, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24971,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24971, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -18822,56 +9971,16 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_up(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24103,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24103, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24969,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24969, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24106,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24106, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24972,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24972, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -18887,30 +9996,10 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_up(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24102,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24102, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24968,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24968, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18922,11 +10011,7 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_up(
 
 /** rct2: 0x008ACA68 */
 static void wooden_rc_track_diag_right_bank_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -18936,30 +10021,10 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_up(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24110,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24110, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24976,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24976, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -18971,56 +10036,16 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24107,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24107, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24973,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24973, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24111,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24111, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24977,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24977, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19048,56 +10073,16 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_up(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24109,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24109, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24975,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24975, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24112,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24112, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24978,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24978, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19113,30 +10098,10 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_up(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24108,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24108, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24974,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24974, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -19148,11 +10113,7 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_up(
 
 /** rct2: 0x008ACA38 */
 static void wooden_rc_track_diag_25_deg_up_to_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -19162,30 +10123,10 @@ static void wooden_rc_track_diag_25_deg_up_to_left_bank(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24092,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24092, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24958,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24958, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -19197,56 +10138,16 @@ static void wooden_rc_track_diag_25_deg_up_to_left_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24089,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24089, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24955,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24955, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24093,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24093, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24959,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24959, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19274,56 +10175,16 @@ static void wooden_rc_track_diag_25_deg_up_to_left_bank(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24091,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24091, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24957,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24957, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24094,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24094, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24960,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24960, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19339,30 +10200,10 @@ static void wooden_rc_track_diag_25_deg_up_to_left_bank(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24090,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24090, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24956,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24956, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -19374,11 +10215,7 @@ static void wooden_rc_track_diag_25_deg_up_to_left_bank(
 
 /** rct2: 0x008ACA48 */
 static void wooden_rc_track_diag_25_deg_up_to_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -19388,30 +10225,10 @@ static void wooden_rc_track_diag_25_deg_up_to_right_bank(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24098,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24098, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24964,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24964, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -19423,56 +10240,16 @@ static void wooden_rc_track_diag_25_deg_up_to_right_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24095,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24095, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24961,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24961, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24099,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24099, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24965,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24965, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19500,56 +10277,16 @@ static void wooden_rc_track_diag_25_deg_up_to_right_bank(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24097,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24097, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24963,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24963, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24100,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24100, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24966,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24966, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19565,30 +10302,10 @@ static void wooden_rc_track_diag_25_deg_up_to_right_bank(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24096,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24096, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24962,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24962, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -19600,11 +10317,7 @@ static void wooden_rc_track_diag_25_deg_up_to_right_bank(
 
 /** rct2: 0x008ACA78 */
 static void wooden_rc_track_diag_left_bank_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -19614,30 +10327,10 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_down(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24096,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24096, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24962,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24962, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -19647,56 +10340,16 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_down(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24097,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24097, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24963,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24963, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24100,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24100, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24966,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24966, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19722,56 +10375,16 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_down(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24095,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24095, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24961,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24961, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24099,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24099, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24965,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24965, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19785,30 +10398,10 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_down(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24098,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24098, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24964,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24964, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -19821,11 +10414,7 @@ static void wooden_rc_track_diag_left_bank_to_25_deg_down(
 
 /** rct2: 0x008ACA88 */
 static void wooden_rc_track_diag_right_bank_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -19835,30 +10424,10 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_down(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24090,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24090, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24956,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24956, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -19868,56 +10437,16 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_down(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24091,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24091, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24957,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24957, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24094,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24094, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24960,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24960, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -19943,56 +10472,16 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_down(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24089,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24089, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24955,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24955, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24093,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24093, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24959,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24959, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20006,30 +10495,10 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_down(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24092,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24092, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24958,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24958, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20042,11 +10511,7 @@ static void wooden_rc_track_diag_right_bank_to_25_deg_down(
 
 /** rct2: 0x008ACA98 */
 static void wooden_rc_track_diag_25_deg_down_to_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -20056,30 +10521,10 @@ static void wooden_rc_track_diag_25_deg_down_to_left_bank(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24108,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24108, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24974,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24974, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20091,56 +10536,16 @@ static void wooden_rc_track_diag_25_deg_down_to_left_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24109,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24109, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24975,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24975, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24112,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24112, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24978,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24978, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20168,56 +10573,16 @@ static void wooden_rc_track_diag_25_deg_down_to_left_bank(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24107,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24107, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24973,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24973, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24111,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24111, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24977,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24977, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20233,30 +10598,10 @@ static void wooden_rc_track_diag_25_deg_down_to_left_bank(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24110,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24110, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24976,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24976, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20268,11 +10613,7 @@ static void wooden_rc_track_diag_25_deg_down_to_left_bank(
 
 /** rct2: 0x008ACAA8 */
 static void wooden_rc_track_diag_25_deg_down_to_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -20282,30 +10623,10 @@ static void wooden_rc_track_diag_25_deg_down_to_right_bank(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24102,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24102, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24968,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24968, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20317,56 +10638,16 @@ static void wooden_rc_track_diag_25_deg_down_to_right_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24103,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24103, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24969,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24969, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24106,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24106, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24972,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24972, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20394,56 +10675,16 @@ static void wooden_rc_track_diag_25_deg_down_to_right_bank(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24101,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24101, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24967,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24967, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24105,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24105, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24971,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24971, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 35);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20459,30 +10700,10 @@ static void wooden_rc_track_diag_25_deg_down_to_right_bank(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24104,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24104, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24970,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24970, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20494,11 +10715,7 @@ static void wooden_rc_track_diag_25_deg_down_to_right_bank(
 
 /** rct2: 0x008AC9D8 */
 static void wooden_rc_track_diag_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -20508,30 +10725,10 @@ static void wooden_rc_track_diag_left_bank(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24074,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24074, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24940,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24940, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20543,56 +10740,16 @@ static void wooden_rc_track_diag_left_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24071,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24071, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24937,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24937, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24075,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24075, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24941,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24941, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20620,56 +10777,16 @@ static void wooden_rc_track_diag_left_bank(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24073,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24073, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24939,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24939, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24076,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24076, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24942,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24942, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20685,30 +10802,10 @@ static void wooden_rc_track_diag_left_bank(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24072,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24072, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24938,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24938, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20720,11 +10817,7 @@ static void wooden_rc_track_diag_left_bank(
 
 /** rct2: 0x008AC9E8 */
 static void wooden_rc_track_diag_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -20734,30 +10827,10 @@ static void wooden_rc_track_diag_right_bank(
             {
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24072,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24072, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24938,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24938, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20769,56 +10842,16 @@ static void wooden_rc_track_diag_right_bank(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24073,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24073, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24939,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24939, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24076,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24076, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24942,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24942, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20846,56 +10879,16 @@ static void wooden_rc_track_diag_right_bank(
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24071,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24071, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24937,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24937, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24075,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24075, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24941,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        0,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24941, -16, -16, 32, 32, 0, height, -16, -16,
                         height + 27);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -20911,30 +10904,10 @@ static void wooden_rc_track_diag_right_bank(
             {
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24074,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24074, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24940,
-                        -16,
-                        -16,
-                        32,
-                        32,
-                        2,
-                        height,
-                        -16,
-                        -16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24940, -16, -16, 32, 32, 2, height, -16, -16,
                         height);
                     break;
             }
@@ -20946,11 +10919,7 @@ static void wooden_rc_track_diag_right_bank(
 
 /** rct2: 0x008ACB38 */
 static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -20971,30 +10940,10 @@ static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24826, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23971,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23971, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24837,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24837, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21011,30 +10960,10 @@ static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24822, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23969,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23969, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24835,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24835, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21070,30 +10999,10 @@ static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24825, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23970,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23970, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24836,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24836, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21103,30 +11012,10 @@ static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24827, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23972,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23972, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24838,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24838, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21136,30 +11025,10 @@ static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24821, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23968,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23968, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24834,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24834, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21181,11 +11050,7 @@ static void wooden_rc_track_left_bank_to_left_quarter_turn_3_25_deg_up(
 
 /** rct2: 0x008ACB48 */
 static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -21199,30 +11064,10 @@ static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24813, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23963,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23963, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24829,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24829, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21239,30 +11084,10 @@ static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24817, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23966,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23966, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24832,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24832, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21298,30 +11123,10 @@ static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24814, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23964,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23964, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24830,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24830, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21331,30 +11136,10 @@ static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24816, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23965,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23965, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24831,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24831, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21364,30 +11149,10 @@ static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24818, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23967,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23967, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24833,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24833, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21416,11 +11181,7 @@ static void wooden_rc_track_right_bank_to_right_quarter_turn_3_25_deg_up(
 
 /** rct2: 0x008ACB58 */
 static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -21434,30 +11195,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24816, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23965,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23965, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24831,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24831, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21467,30 +11208,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24818, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23967,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23967, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24833,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24833, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21507,30 +11228,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24814, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23964,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23964, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24830,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24830, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21566,30 +11267,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24817, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23966,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23966, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24832,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24832, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21606,30 +11287,10 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24813, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23963,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23963, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24829,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24829, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21651,11 +11312,7 @@ static void wooden_rc_track_left_quarter_turn_3_25_deg_down_to_left_bank(
 
 /** rct2: 0x008ACB68 */
 static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -21669,30 +11326,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24821, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23968,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23968, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24834,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24834, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21709,30 +11346,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24825, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23970,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23970, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24836,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24836, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21742,30 +11359,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24827, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23972,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23972, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24838,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24838, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21794,30 +11391,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24822, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23969,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23969, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24835,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24835, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21834,30 +11411,10 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24826, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23971,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23971, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24837,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24837, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21886,27 +11443,12 @@ static void wooden_rc_track_right_quarter_turn_3_25_deg_down_to_right_bank(
 
 /** rct2: 0x008ACDF8 */
 static void wooden_rc_track_block_brakes(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_paint(
-        session,
-        _wooden_rc_block_brakes_image_ids[direction][0],
-        _wooden_rc_block_brakes_image_ids[direction][1],
-        direction,
-        0,
-        2,
-        32,
-        25,
-        2,
-        height,
-        0,
-        3,
-        height);
+        session, _wooden_rc_block_brakes_image_ids[direction][0], _wooden_rc_block_brakes_image_ids[direction][1], direction, 0,
+        2, 32, 25, 2, height, 0, 3, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -21915,11 +11457,7 @@ static void wooden_rc_track_block_brakes(
 
 /** rct2: 0x008ACCB8 */
 static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -21940,30 +11478,10 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24800, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23945,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23945, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24811,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24811, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -21980,30 +11498,10 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24796, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23943,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23943, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24809,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24809, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22039,30 +11537,10 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24799, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23944,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23944, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24810,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24810, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22072,30 +11550,10 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24801, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23946,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23946, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24812,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24812, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22105,30 +11563,10 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24795, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23942,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23942, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24808,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24808, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22150,11 +11588,7 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_up(
 
 /** rct2: 0x008ACCC8 */
 static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -22168,30 +11602,10 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24787, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23937,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23937, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24803,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24803, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22208,30 +11622,10 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24791, 0, 6, 32, 20, 2, height, 0, 6, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23940,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_track_colour(session) | 23940, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24806,
-                        0,
-                        6,
-                        32,
-                        20,
-                        0,
-                        height,
-                        0,
-                        6,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24806, 0, 6, 32, 20, 0, height, 0, 6,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22267,30 +11661,10 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24788, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23938,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23938, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24804,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24804, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22300,30 +11674,10 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24790, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23939,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23939, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24805,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24805, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22333,30 +11687,10 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24792, 6, 0, 20, 32, 2, height, 6, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 23941,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 23941, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 24807,
-                        6,
-                        0,
-                        20,
-                        32,
-                        0,
-                        height,
-                        6,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 24807, 6, 0, 20, 32, 0, height, 6, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22385,11 +11719,7 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_up(
 
 /** rct2: 0x008ACCD8 */
 static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -22399,11 +11729,7 @@ static void wooden_rc_track_left_banked_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x008ACCE8 */
 static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -22413,11 +11739,7 @@ static void wooden_rc_track_right_banked_quarter_turn_3_25_deg_down(
 
 /** rct2: 0x008ACC38 */
 static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -22438,30 +11760,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25192, 0, 0, 32, 27, 2, height, 0, 2, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24352,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 24352, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25218,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25218, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22508,114 +11810,34 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25193, 0, 0, 32, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24353,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24353, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25219,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25219, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24332,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24332, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25198,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25198, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24337,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24337, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25203,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25203, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24359,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24359, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25225,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25225, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22624,8 +11846,7 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 3:
@@ -22633,114 +11854,34 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24323,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24323, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25189,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25189, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24328,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24328, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25194,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25194, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24354,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24354, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25220,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25220, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 59);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24333,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24333, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25199,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25199, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22750,30 +11891,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25204, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24360,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24360, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25226,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25226, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 59);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22783,8 +11904,7 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                     direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 4:
@@ -22797,30 +11917,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24324,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24324, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25190,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25190, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22830,30 +11930,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25195, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24355,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24355, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25221,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25221, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22863,85 +11943,25 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25200, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24357,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24357, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25223,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25223, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24339,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24339, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25205,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25205, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24361,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24361, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25227,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25227, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -22950,8 +11970,7 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 6:
@@ -22970,30 +11989,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25196, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24356,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24356, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25222,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25222, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23003,30 +12002,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25201, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24358,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24358, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25224,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25224, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23036,30 +12015,10 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25206, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24362,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24362, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25228,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25228, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23081,11 +12040,7 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_up(
 
 /** rct2: 0x008ACC48 */
 static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (trackSequence)
@@ -23113,30 +12068,10 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25177, 0, 0, 32, 27, 2, height, 0, 2, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24347,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_track_colour(session) | 24347, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25213,
-                        0,
-                        0,
-                        32,
-                        27,
-                        0,
-                        height,
-                        0,
-                        2,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25213, 0, 0, 32, 27, 0, height, 0, 2,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23165,85 +12100,25 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24302,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24302, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25168,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25168, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24341,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24341, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25207,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25207, 0, 0, 32, 16, 0, height, 0, 16,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24307,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24307, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25173,
-                        0,
-                        0,
-                        32,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25173, 0, 0, 32, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23253,30 +12128,10 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25178, 0, 0, 32, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24348,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24348, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25214,
-                        0,
-                        0,
-                        32,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25214, 0, 0, 32, 16, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23292,8 +12147,7 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 3:
@@ -23305,143 +12159,43 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25169, 0, 0, 16, 16, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24342,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24342, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25208,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25208, 0, 0, 16, 16, 0, height, 0, 0,
                         height + 59);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24308,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24308, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25174,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25174, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24313,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24313, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25179,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25179, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24349,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24349, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 59);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25215,
-                        0,
-                        0,
-                        16,
-                        16,
-                        0,
-                        height,
-                        16,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25215, 0, 0, 16, 16, 0, height, 16, 16,
                         height + 59);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24318,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_track_colour(session) | 24318, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25184,
-                        0,
-                        0,
-                        16,
-                        16,
-                        2,
-                        height,
-                        0,
-                        16,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25184, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23451,8 +12205,7 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                 paint_util_rotate_segments(
                     SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
                     direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 4:
@@ -23465,56 +12218,16 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
             {
                 case 0:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24304,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24304, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25170,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25170, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24343,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24343, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25209,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25209, 0, 0, 16, 32, 0, height, 16, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23524,30 +12237,10 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25175, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24345,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24345, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25211,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25211, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23557,59 +12250,19 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25180, 0, 0, 16, 32, 2, height, 0, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24350,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24350, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25216,
-                        0,
-                        0,
-                        16,
-                        32,
-                        0,
-                        height,
-                        0,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25216, 0, 0, 16, 32, 0, height, 0, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24319,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24319, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25185,
-                        0,
-                        0,
-                        16,
-                        32,
-                        2,
-                        height,
-                        16,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25185, 0, 0, 16, 32, 2, height, 16, 0,
                         height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23618,8 +12271,7 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                 session,
                 paint_util_rotate_segments(
                     SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-                0xFFFF,
-                0);
+                0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 6:
@@ -23631,30 +12283,10 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25171, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24344,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24344, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25210,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25210, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23664,30 +12296,10 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25176, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24346,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24346, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25212,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25212, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23697,30 +12309,10 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     sub_98199C_rotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 25181, 0, 0, 27, 32, 2, height, 2, 0, height);
                     sub_98197C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_track_colour(session) | 24351,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_track_colour(session) | 24351, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     sub_98199C_rotated(
-                        session,
-                        direction,
-                        wooden_rc_get_rails_colour(session) | 25217,
-                        0,
-                        0,
-                        27,
-                        32,
-                        0,
-                        height,
-                        2,
-                        0,
+                        session, direction, wooden_rc_get_rails_colour(session) | 25217, 0, 0, 27, 32, 0, height, 2, 0,
                         height + 67);
                     wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -23749,11 +12341,7 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_up(
 
 /** rct2: 0x008ACC58 */
 static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -23763,11 +12351,7 @@ static void wooden_rc_track_left_banked_quarter_turn_5_25_deg_down(
 
 /** rct2: 0x008ACC68 */
 static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -23777,11 +12361,7 @@ static void wooden_rc_track_right_banked_quarter_turn_5_25_deg_down(
 
 /** rct2: 0x008ACCF8 */
 static void wooden_rc_track_25_deg_up_to_left_banked_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -23829,11 +12409,7 @@ static void wooden_rc_track_25_deg_up_to_left_banked_25_deg_up(
 
 /** rct2: 0x008ACD08 */
 static void wooden_rc_track_25_deg_up_to_right_banked_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -23881,11 +12457,7 @@ static void wooden_rc_track_25_deg_up_to_right_banked_25_deg_up(
 
 /** rct2: 0x008ACD18 */
 static void wooden_rc_track_left_banked_25_deg_up_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -23933,11 +12505,7 @@ static void wooden_rc_track_left_banked_25_deg_up_to_25_deg_up(
 
 /** rct2: 0x008ACD28 */
 static void wooden_rc_track_right_banked_25_deg_up_to_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -23985,11 +12553,7 @@ static void wooden_rc_track_right_banked_25_deg_up_to_25_deg_up(
 
 /** rct2: 0x008ACD38 */
 static void wooden_rc_track_25_deg_down_to_left_banked_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_right_banked_25_deg_up_to_25_deg_up(
@@ -23998,11 +12562,7 @@ static void wooden_rc_track_25_deg_down_to_left_banked_25_deg_down(
 
 /** rct2: 0x008ACD48 */
 static void wooden_rc_track_25_deg_down_to_right_banked_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_left_banked_25_deg_up_to_25_deg_up(
@@ -24011,11 +12571,7 @@ static void wooden_rc_track_25_deg_down_to_right_banked_25_deg_down(
 
 /** rct2: 0x008ACD58 */
 static void wooden_rc_track_left_banked_25_deg_down_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up_to_right_banked_25_deg_up(
@@ -24024,11 +12580,7 @@ static void wooden_rc_track_left_banked_25_deg_down_to_25_deg_down(
 
 /** rct2: 0x008ACD68 */
 static void wooden_rc_track_right_banked_25_deg_down_to_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_25_deg_up_to_left_banked_25_deg_up(
@@ -24037,11 +12589,7 @@ static void wooden_rc_track_right_banked_25_deg_down_to_25_deg_down(
 
 /** rct2: 0x008ACD78 */
 static void wooden_rc_track_left_banked_flat_to_left_banked_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -24097,11 +12645,7 @@ static void wooden_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 
 /** rct2: 0x008ACD88 */
 static void wooden_rc_track_right_banked_flat_to_right_banked_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -24157,11 +12701,7 @@ static void wooden_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 
 /** rct2: 0x008ACD98 */
 static void wooden_rc_track_left_banked_25_deg_up_to_left_banked_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -24217,11 +12757,7 @@ static void wooden_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 
 /** rct2: 0x008ACDA8 */
 static void wooden_rc_track_right_banked_25_deg_up_to_right_banked_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -24277,11 +12813,7 @@ static void wooden_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 
 /** rct2: 0x008ACDB8 */
 static void wooden_rc_track_left_banked_flat_to_left_banked_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_right_banked_25_deg_up_to_right_banked_flat(
@@ -24290,11 +12822,7 @@ static void wooden_rc_track_left_banked_flat_to_left_banked_25_deg_down(
 
 /** rct2: 0x008ACDC8 */
 static void wooden_rc_track_right_banked_flat_to_right_banked_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_left_banked_25_deg_up_to_left_banked_flat(
@@ -24303,11 +12831,7 @@ static void wooden_rc_track_right_banked_flat_to_right_banked_25_deg_down(
 
 /** rct2: 0x008ACDD8 */
 static void wooden_rc_track_left_banked_25_deg_down_to_left_banked_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_right_banked_flat_to_right_banked_25_deg_up(
@@ -24316,11 +12840,7 @@ static void wooden_rc_track_left_banked_25_deg_down_to_left_banked_flat(
 
 /** rct2: 0x008ACDE8 */
 static void wooden_rc_track_right_banked_25_deg_down_to_right_banked_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_left_banked_flat_to_left_banked_25_deg_up(
@@ -24329,11 +12849,7 @@ static void wooden_rc_track_right_banked_25_deg_down_to_right_banked_flat(
 
 /** rct2: 0x008ACBB8 */
 static void wooden_rc_track_flat_to_left_banked_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -24389,11 +12905,7 @@ static void wooden_rc_track_flat_to_left_banked_25_deg_up(
 
 /** rct2: 0x008ACBC8 */
 static void wooden_rc_track_flat_to_right_banked_25_deg_up(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -24449,11 +12961,7 @@ static void wooden_rc_track_flat_to_right_banked_25_deg_up(
 
 /** rct2: 0x008ACBD8 */
 static void wooden_rc_track_left_banked_25_deg_up_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -24509,11 +13017,7 @@ static void wooden_rc_track_left_banked_25_deg_up_to_flat(
 
 /** rct2: 0x008ACBE8 */
 static void wooden_rc_track_right_banked_25_deg_up_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     switch (direction)
@@ -24569,11 +13073,7 @@ static void wooden_rc_track_right_banked_25_deg_up_to_flat(
 
 /** rct2: 0x008ACBF8 */
 static void wooden_rc_track_flat_to_left_banked_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_right_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -24581,11 +13081,7 @@ static void wooden_rc_track_flat_to_left_banked_25_deg_down(
 
 /** rct2: 0x008ACC08 */
 static void wooden_rc_track_flat_to_right_banked_25_deg_down(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_left_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -24593,11 +13089,7 @@ static void wooden_rc_track_flat_to_right_banked_25_deg_down(
 
 /** rct2: 0x008ACC18 */
 static void wooden_rc_track_left_banked_25_deg_down_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -24605,11 +13097,7 @@ static void wooden_rc_track_left_banked_25_deg_down_to_flat(
 
 /** rct2: 0x008ACC28 */
 static void wooden_rc_track_right_banked_25_deg_down_to_flat(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     wooden_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);

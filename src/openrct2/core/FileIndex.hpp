@@ -80,11 +80,7 @@ public:
      * @param paths A list of search directories.
      */
     FileIndex(
-        std::string name,
-        uint32_t magicNumber,
-        uint8_t version,
-        std::string indexPath,
-        std::string pattern,
+        std::string name, uint32_t magicNumber, uint8_t version, std::string indexPath, std::string pattern,
         std::vector<std::string> paths)
         : _name(name)
         , _magicNumber(magicNumber)
@@ -174,13 +170,8 @@ private:
     }
 
     void BuildRange(
-        int32_t language,
-        const ScanResult& scanResult,
-        size_t rangeStart,
-        size_t rangeEnd,
-        std::vector<TItem>& items,
-        std::atomic<size_t>& processed,
-        std::mutex& printLock) const
+        int32_t language, const ScanResult& scanResult, size_t rangeStart, size_t rangeEnd, std::vector<TItem>& items,
+        std::atomic<size_t>& processed, std::mutex& printLock) const
     {
         items.reserve(rangeEnd - rangeStart);
         for (size_t i = rangeStart; i < rangeEnd; i++)
@@ -237,15 +228,8 @@ private:
                 auto& items = containers.emplace_back();
 
                 jobPool.AddTask(std::bind(
-                    &FileIndex<TItem>::BuildRange,
-                    this,
-                    language,
-                    std::cref(scanResult),
-                    rangeStart,
-                    rangeStart + stepSize,
-                    std::ref(items),
-                    std::ref(processed),
-                    std::ref(printLock)));
+                    &FileIndex<TItem>::BuildRange, this, language, std::cref(scanResult), rangeStart, rangeStart + stepSize,
+                    std::ref(items), std::ref(processed), std::ref(printLock)));
 
                 reportProgress();
             }

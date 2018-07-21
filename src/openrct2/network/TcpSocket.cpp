@@ -207,12 +207,7 @@ public:
             {
                 char hostName[NI_MAXHOST];
                 int32_t rc = getnameinfo(
-                    (struct sockaddr*)&client_addr,
-                    client_len,
-                    hostName,
-                    sizeof(hostName),
-                    nullptr,
-                    0,
+                    (struct sockaddr*)&client_addr, client_len, hostName, sizeof(hostName), nullptr, 0,
                     NI_NUMERICHOST | NI_NUMERICSERV);
                 SetTCPNoDelay(socket, true);
                 tcpSocket = new TcpSocket(socket);

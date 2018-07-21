@@ -575,12 +575,7 @@ void window_update_all();
 void window_set_window_limit(int32_t value);
 
 rct_window* window_create(
-    int32_t x,
-    int32_t y,
-    int32_t width,
-    int32_t height,
-    rct_window_event_list* event_handlers,
-    rct_windowclass cls,
+    int32_t x, int32_t y, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
     uint16_t flags);
 rct_window* window_create_auto_pos(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
@@ -740,21 +735,10 @@ void window_follow_sprite(rct_window* w, size_t spriteIndex);
 void window_unfollow_sprite(rct_window* w);
 
 bool window_ride_construction_update_state(
-    int32_t* trackType,
-    int32_t* trackDirection,
-    int32_t* rideIndex,
-    int32_t* _liftHillAndAlternativeState,
-    int32_t* x,
-    int32_t* y,
-    int32_t* z,
-    int32_t* properties);
+    int32_t* trackType, int32_t* trackDirection, int32_t* rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* x,
+    int32_t* y, int32_t* z, int32_t* properties);
 money32 place_provisional_track_piece(
-    int32_t rideIndex,
-    int32_t trackType,
-    int32_t trackDirection,
-    int32_t liftHillAndAlternativeState,
-    int32_t x,
-    int32_t y,
+    int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
     int32_t z);
 
 extern uint64_t _enabledRidePieces;

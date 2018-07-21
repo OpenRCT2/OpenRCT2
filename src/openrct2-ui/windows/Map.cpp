@@ -508,13 +508,8 @@ static void window_map_tooldrag(rct_window* w, rct_widgetindex widgetIndex, int3
             {
                 gGameCommandErrorTitle = 0;
                 game_do_command(
-                    gMapSelectPositionA.x,
-                    GAME_COMMAND_FLAG_APPLY,
-                    gMapSelectPositionA.y,
-                    _activeTool,
-                    GAME_COMMAND_SET_LAND_OWNERSHIP,
-                    gMapSelectPositionB.x,
-                    gMapSelectPositionB.y);
+                    gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y, _activeTool,
+                    GAME_COMMAND_SET_LAND_OWNERSHIP, gMapSelectPositionB.x, gMapSelectPositionB.y);
             }
             break;
     }
@@ -599,12 +594,8 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
 
         gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
         game_do_command(
-            gMapSelectPositionA.x,
-            GAME_COMMAND_FLAG_APPLY,
-            gMapSelectPositionA.y,
-            gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-            GAME_COMMAND_CHANGE_SURFACE_STYLE,
-            gMapSelectPositionB.x,
+            gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y,
+            gLandToolTerrainSurface | (gLandToolTerrainEdge << 8), GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x,
             gMapSelectPositionB.y);
     }
     else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
@@ -627,13 +618,8 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32
 
         gGameCommandErrorTitle = 0;
         game_do_command(
-            gMapSelectPositionA.x,
-            GAME_COMMAND_FLAG_APPLY,
-            gMapSelectPositionA.y,
-            _activeTool,
-            GAME_COMMAND_SET_LAND_OWNERSHIP,
-            gMapSelectPositionB.x,
-            gMapSelectPositionB.y);
+            gMapSelectPositionA.x, GAME_COMMAND_FLAG_APPLY, gMapSelectPositionA.y, _activeTool, GAME_COMMAND_SET_LAND_OWNERSHIP,
+            gMapSelectPositionB.x, gMapSelectPositionB.y);
     }
 }
 
@@ -850,11 +836,8 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         x = w->x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12;
         y = w->y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18;
         gfx_draw_sprite(
-            dpi,
-            IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
-            x,
-            y,
-            0);
+            dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
+            x, y, 0);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)

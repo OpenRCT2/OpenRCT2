@@ -178,30 +178,13 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexImage3D(
-        GL_TEXTURE_2D_ARRAY,
-        0,
-        GL_R8UI,
-        _atlasesTextureDimensions,
-        _atlasesTextureDimensions,
-        newIndices,
-        0,
-        GL_RED_INTEGER,
-        GL_UNSIGNED_BYTE,
-        nullptr);
+        GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, newIndices, 0, GL_RED_INTEGER,
+        GL_UNSIGNED_BYTE, nullptr);
 
     // Restore old data
     glTexSubImage3D(
-        GL_TEXTURE_2D_ARRAY,
-        0,
-        0,
-        0,
-        0,
-        _atlasesTextureDimensions,
-        _atlasesTextureDimensions,
-        _atlasesTextureIndices,
-        GL_RED_INTEGER,
-        GL_UNSIGNED_BYTE,
-        oldPixels.data());
+        GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,
+        GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
 
     _atlasesTextureIndices = newIndices;
 }
@@ -215,17 +198,8 @@ AtlasTextureInfo TextureCache::LoadImageTexture(uint32_t image)
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(
-        GL_TEXTURE_2D_ARRAY,
-        0,
-        cacheInfo.bounds.x,
-        cacheInfo.bounds.y,
-        cacheInfo.index,
-        dpi.width,
-        dpi.height,
-        1,
-        GL_RED_INTEGER,
-        GL_UNSIGNED_BYTE,
-        dpi.bits);
+        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1,
+        GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
 
     DeleteDPI(dpi);
 
@@ -241,17 +215,8 @@ AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, uint8_t* palette
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(
-        GL_TEXTURE_2D_ARRAY,
-        0,
-        cacheInfo.bounds.x,
-        cacheInfo.bounds.y,
-        cacheInfo.index,
-        dpi.width,
-        dpi.height,
-        1,
-        GL_RED_INTEGER,
-        GL_UNSIGNED_BYTE,
-        dpi.bits);
+        GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1,
+        GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
 
     DeleteDPI(dpi);
 

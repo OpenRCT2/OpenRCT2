@@ -29,13 +29,8 @@
 bool gDisableErrorWindowSound = false;
 
 void game_command_callback_pickup_guest(
-    int32_t eax,
-    int32_t ebx,
-    int32_t ecx,
-    [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi,
-    [[maybe_unused]] int32_t ebp)
+    int32_t eax, int32_t ebx, int32_t ecx, [[maybe_unused]] int32_t edx, [[maybe_unused]] int32_t esi,
+    [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
 {
     switch (ecx)
     {
@@ -60,13 +55,8 @@ void game_command_callback_pickup_guest(
 }
 
 void game_command_callback_hire_new_staff_member(
-    [[maybe_unused]] int32_t eax,
-    [[maybe_unused]] int32_t ebx,
-    [[maybe_unused]] int32_t ecx,
-    [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi,
-    int32_t edi,
-    [[maybe_unused]] int32_t ebp)
+    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi, int32_t edi, [[maybe_unused]] int32_t ebp)
 {
     int32_t sprite_index = edi;
     if (sprite_index == SPRITE_INDEX_NULL)
@@ -84,13 +74,8 @@ void game_command_callback_hire_new_staff_member(
 }
 
 void game_command_callback_pickup_staff(
-    int32_t eax,
-    int32_t ebx,
-    int32_t ecx,
-    [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi,
-    [[maybe_unused]] int32_t ebp)
+    int32_t eax, int32_t ebx, int32_t ecx, [[maybe_unused]] int32_t edx, [[maybe_unused]] int32_t esi,
+    [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
 {
     switch (ecx)
     {
@@ -123,13 +108,8 @@ bool _stationConstructed;
 bool _deferClose;
 
 void game_command_callback_place_ride_entrance_or_exit(
-    [[maybe_unused]] int32_t eax,
-    [[maybe_unused]] int32_t ebx,
-    [[maybe_unused]] int32_t ecx,
-    [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi,
-    [[maybe_unused]] int32_t edi,
-    [[maybe_unused]] int32_t ebp)
+    [[maybe_unused]] int32_t eax, [[maybe_unused]] int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi, [[maybe_unused]] int32_t edi, [[maybe_unused]] int32_t ebp)
 {
     audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
 
@@ -156,12 +136,7 @@ void game_command_callback_place_ride_entrance_or_exit(
  *  rct2: 0x006CA162
  */
 money32 place_provisional_track_piece(
-    int32_t rideIndex,
-    int32_t trackType,
-    int32_t trackDirection,
-    int32_t liftHillAndAlternativeState,
-    int32_t x,
-    int32_t y,
+    int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
     int32_t z)
 {
     Ride* ride;
@@ -200,13 +175,8 @@ money32 place_provisional_track_piece(
     else
     {
         result = game_do_command(
-            x,
-            105 | (trackDirection << 8),
-            y,
-            rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16),
-            GAME_COMMAND_PLACE_TRACK,
-            z,
-            0);
+            x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16),
+            GAME_COMMAND_PLACE_TRACK, z, 0);
         if (result == MONEY32_UNDEFINED)
             return result;
 
@@ -364,14 +334,8 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
  * @return (CF)
  */
 bool window_ride_construction_update_state(
-    int32_t* _trackType,
-    int32_t* _trackDirection,
-    int32_t* _rideIndex,
-    int32_t* _liftHillAndAlternativeState,
-    int32_t* _x,
-    int32_t* _y,
-    int32_t* _z,
-    int32_t* _properties)
+    int32_t* _trackType, int32_t* _trackDirection, int32_t* _rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* _x,
+    int32_t* _y, int32_t* _z, int32_t* _properties)
 {
     uint8_t trackType, trackDirection, rideIndex;
     uint16_t z, x, y, liftHillAndAlternativeState, properties;
@@ -665,13 +629,8 @@ void window_ride_construction_update_active_elements()
 }
 
 void game_command_callback_place_banner(
-    [[maybe_unused]] int32_t eax,
-    int32_t ebx,
-    [[maybe_unused]] int32_t ecx,
-    [[maybe_unused]] int32_t edx,
-    [[maybe_unused]] int32_t esi,
-    int32_t edi,
-    [[maybe_unused]] int32_t ebp)
+    [[maybe_unused]] int32_t eax, int32_t ebx, [[maybe_unused]] int32_t ecx, [[maybe_unused]] int32_t edx,
+    [[maybe_unused]] int32_t esi, int32_t edi, [[maybe_unused]] int32_t ebp)
 {
     if (ebx != MONEY32_UNDEFINED)
     {

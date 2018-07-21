@@ -128,12 +128,7 @@ static void window_map_tooltip_open()
     if (w == nullptr)
     {
         w = window_create(
-            x,
-            y,
-            width,
-            height,
-            &window_map_tooltip_events,
-            WC_MAP_TOOLTIP,
+            x, y, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
         w->widgets = window_map_tooltip_widgets;
     }
@@ -170,11 +165,6 @@ static void window_map_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     gfx_draw_string_centred_wrapped(
-        dpi,
-        gMapTooltipFormatArgs,
-        w->x + (w->width / 2),
-        w->y + (w->height / 2),
-        w->width,
-        STR_MAP_TOOLTIP_STRINGID,
+        dpi, gMapTooltipFormatArgs, w->x + (w->width / 2), w->y + (w->height / 2), w->width, STR_MAP_TOOLTIP_STRINGID,
         COLOUR_BLACK);
 }

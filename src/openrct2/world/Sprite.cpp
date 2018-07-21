@@ -87,10 +87,7 @@ static void invalidate_sprite_max_zoom(rct_sprite* sprite, int32_t maxZoom)
         if (viewport->width != 0 && viewport->zoom <= maxZoom)
         {
             viewport_invalidate(
-                viewport,
-                sprite->unknown.sprite_left,
-                sprite->unknown.sprite_top,
-                sprite->unknown.sprite_right,
+                viewport, sprite->unknown.sprite_left, sprite->unknown.sprite_top, sprite->unknown.sprite_right,
                 sprite->unknown.sprite_bottom);
         }
     }
@@ -844,10 +841,8 @@ void sprite_position_tween_all(float alpha)
                 continue;
             }
             sprite_set_coordinates(
-                std::round(posB.x * alpha + posA.x * inv),
-                std::round(posB.y * alpha + posA.y * inv),
-                std::round(posB.z * alpha + posA.z * inv),
-                sprite);
+                std::round(posB.x * alpha + posA.x * inv), std::round(posB.y * alpha + posA.y * inv),
+                std::round(posB.z * alpha + posA.z * inv), sprite);
             invalidate_sprite_2(sprite);
         }
     }

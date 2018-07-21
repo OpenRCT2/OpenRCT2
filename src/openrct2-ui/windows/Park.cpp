@@ -861,13 +861,8 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
     gfx_draw_string_centred_clipped(
-        dpi,
-        STR_BLACK_STRING,
-        gCommonFormatArgs,
-        COLOUR_BLACK,
-        w->x + (labelWidget->left + labelWidget->right) / 2,
-        w->y + labelWidget->top,
-        labelWidget->right - labelWidget->left);
+        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + (labelWidget->left + labelWidget->right) / 2,
+        w->y + labelWidget->top, labelWidget->right - labelWidget->left);
 }
 
 /**
@@ -929,17 +924,9 @@ static void window_park_init_viewport(rct_window* w)
         {
             rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
             viewport_create(
-                w,
-                w->x + viewportWidget->left + 1,
-                w->y + viewportWidget->top + 1,
-                (viewportWidget->right - viewportWidget->left) - 1,
-                (viewportWidget->bottom - viewportWidget->top) - 1,
-                0,
-                x,
-                y,
-                z,
-                w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK,
-                -1);
+                w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1,
+                (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0, x, y,
+                z, w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, -1);
             w->flags |= (1 << 2);
             window_invalidate(w);
         }
@@ -1061,12 +1048,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Graph border
     gfx_fill_rect_inset(
-        dpi,
-        x + widget->left + 4,
-        y + widget->top + 15,
-        x + widget->right - 4,
-        y + widget->bottom - 4,
-        w->colours[1],
+        dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1],
         INSET_RECT_F_30);
 
     // Graph
@@ -1189,12 +1171,7 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Graph border
     gfx_fill_rect_inset(
-        dpi,
-        x + widget->left + 4,
-        y + widget->top + 15,
-        x + widget->right - 4,
-        y + widget->bottom - 4,
-        w->colours[1],
+        dpi, x + widget->left + 4, y + widget->top + 15, x + widget->right - 4, y + widget->bottom - 4, w->colours[1],
         INSET_RECT_F_30);
 
     // Graph
@@ -1836,11 +1813,8 @@ static void window_park_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 
         sprite_idx |= 0xA9E00000;
         gfx_draw_sprite(
-            dpi,
-            sprite_idx,
-            w->x + (w->widgets[WIDX_TAB_3].left + w->widgets[WIDX_TAB_3].right) / 2,
-            w->y + w->widgets[WIDX_TAB_3].bottom - 9,
-            0);
+            dpi, sprite_idx, w->x + (w->widgets[WIDX_TAB_3].left + w->widgets[WIDX_TAB_3].right) / 2,
+            w->y + w->widgets[WIDX_TAB_3].bottom - 9, 0);
     }
 
     // Price tab

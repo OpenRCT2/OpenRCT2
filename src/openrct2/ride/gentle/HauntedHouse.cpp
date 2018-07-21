@@ -53,17 +53,8 @@ static void paint_haunted_house_structure(
     uint32_t imageId = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
     haunted_house_bound_box boundBox = haunted_house_data[part];
     sub_98197C(
-        session,
-        imageId,
-        xOffset,
-        yOffset,
-        boundBox.length_x,
-        boundBox.length_y,
-        127,
-        height,
-        boundBox.offset_x,
-        boundBox.offset_y,
-        height);
+        session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+        boundBox.offset_y, height);
 
     rct_drawpixelinfo* dpi = session->DPI;
     if (dpi->zoom_level == 0 && frameNum != 0)
@@ -85,17 +76,8 @@ static void paint_haunted_house_structure(
         }
         imageId = imageId | session->TrackColours[SCHEME_MISC];
         sub_98199C(
-            session,
-            imageId,
-            xOffset,
-            yOffset,
-            boundBox.length_x,
-            boundBox.length_y,
-            127,
-            height,
-            boundBox.offset_x,
-            boundBox.offset_y,
-            height);
+            session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+            boundBox.offset_y, height);
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
@@ -106,11 +88,7 @@ static void paint_haunted_house_structure(
  * rct2: 0x0076E9B0
  */
 static void paint_haunted_house(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -124,14 +102,7 @@ static void paint_haunted_house(
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
 
     track_paint_util_paint_fences(
-        session,
-        edges,
-        position,
-        tileElement,
-        ride,
-        session->TrackColours[SCHEME_MISC],
-        height,
-        fenceSpritesRope,
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
         session->CurrentRotation);
 
     switch (trackSequence)

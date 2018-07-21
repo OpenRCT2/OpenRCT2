@@ -808,12 +808,7 @@ bool map_is_location_owned_or_has_rights(int32_t x, int32_t y)
  *  rct2: 0x006B8E1B
  */
 void game_command_remove_large_scenery(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     uint8_t base_height = *edx;
@@ -877,10 +872,10 @@ void game_command_remove_large_scenery(
     }
 
     rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tileElement));
-    LocationXYZ16 firstTile = { scenery_entry->large_scenery.tiles[tileIndex].x_offset,
-                                scenery_entry->large_scenery.tiles[tileIndex].y_offset,
-                                static_cast<int16_t>(
-                                    (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset) };
+    LocationXYZ16 firstTile = {
+        scenery_entry->large_scenery.tiles[tileIndex].x_offset, scenery_entry->large_scenery.tiles[tileIndex].y_offset,
+        static_cast<int16_t>((base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset)
+    };
 
     rotate_map_coordinates(&firstTile.x, &firstTile.y, tile_element_direction);
 
@@ -974,12 +969,7 @@ void game_command_remove_large_scenery(
  *  rct2: 0x006B909A
  */
 void game_command_set_large_scenery_colour(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     int32_t* ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
@@ -1013,10 +1003,10 @@ void game_command_set_large_scenery_colour(
     rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
 
     // Work out the base tile coordinates (Tile with index 0)
-    LocationXYZ16 baseTile = { scenery_entry->large_scenery.tiles[tileIndex].x_offset,
-                               scenery_entry->large_scenery.tiles[tileIndex].y_offset,
-                               static_cast<int16_t>(
-                                   (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset) };
+    LocationXYZ16 baseTile = {
+        scenery_entry->large_scenery.tiles[tileIndex].x_offset, scenery_entry->large_scenery.tiles[tileIndex].y_offset,
+        static_cast<int16_t>((base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset)
+    };
     rotate_map_coordinates(&baseTile.x, &baseTile.y, tile_element_direction);
     baseTile.x = x - baseTile.x;
     baseTile.y = y - baseTile.y;
@@ -1249,11 +1239,7 @@ void game_command_clear_scenery(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = map_clear_scenery(
-        (int16_t)(*eax & 0xFFFF),
-        (int16_t)(*ecx & 0xFFFF),
-        (int16_t)(*edi & 0xFFFF),
-        (int16_t)(*ebp & 0xFFFF),
-        *edx,
+        (int16_t)(*eax & 0xFFFF), (int16_t)(*ecx & 0xFFFF), (int16_t)(*edi & 0xFFFF), (int16_t)(*ebp & 0xFFFF), *edx,
         *ebx & 0xFF);
 }
 
@@ -1407,13 +1393,8 @@ void game_command_change_surface_style(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = map_change_surface_style(
-        (int16_t)(*eax & 0xFFFF),
-        (int16_t)(*ecx & 0xFFFF),
-        (int16_t)(*edi & 0xFFFF),
-        (int16_t)(*ebp & 0xFFFF),
-        *edx & 0xFF,
-        (*edx & 0xFF00) >> 8,
-        *ebx & 0xFF);
+        (int16_t)(*eax & 0xFFFF), (int16_t)(*ecx & 0xFFFF), (int16_t)(*edi & 0xFFFF), (int16_t)(*ebp & 0xFFFF), *edx & 0xFF,
+        (*edx & 0xFF00) >> 8, *ebx & 0xFF);
 }
 
 // 0x00981A1E
@@ -1473,10 +1454,7 @@ static constexpr const uint8_t tile_element_lower_styles[9][32] = {
  *  rct2: 0x00663CB9
  */
 static int32_t map_set_land_height_clear_func(
-    rct_tile_element** tile_element,
-    [[maybe_unused]] int32_t x,
-    [[maybe_unused]] int32_t y,
-    [[maybe_unused]] uint8_t flags,
+    rct_tile_element** tile_element, [[maybe_unused]] int32_t x, [[maybe_unused]] int32_t y, [[maybe_unused]] uint8_t flags,
     [[maybe_unused]] money32* price)
 {
     if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
@@ -1773,12 +1751,7 @@ static money32 map_set_land_height(int32_t flags, int32_t x, int32_t y, int32_t 
 }
 
 void game_command_set_land_height(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = map_set_land_height(*ebx & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF);
@@ -1881,14 +1854,7 @@ static uint8_t map_get_highest_land_height(int32_t xMin, int32_t xMax, int32_t y
 }
 
 static money32 raise_land(
-    int32_t flags,
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t point_a_x,
-    int32_t point_a_y,
-    int32_t point_b_x,
-    int32_t point_b_y,
+    int32_t flags, int32_t x, int32_t y, int32_t z, int32_t point_a_x, int32_t point_a_y, int32_t point_b_x, int32_t point_b_y,
     int32_t selectionType)
 {
     money32 cost = 0;
@@ -1950,14 +1916,7 @@ static money32 raise_land(
 }
 
 static money32 lower_land(
-    int32_t flags,
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t point_a_x,
-    int32_t point_a_y,
-    int32_t point_b_x,
-    int32_t point_b_y,
+    int32_t flags, int32_t x, int32_t y, int32_t z, int32_t point_a_x, int32_t point_a_y, int32_t point_b_x, int32_t point_b_y,
     int32_t selectionType)
 {
     money32 cost = 0;
@@ -2212,15 +2171,8 @@ void game_command_raise_land(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = raise_land(
-        *ebx,
-        *eax,
-        *ecx,
-        tile_element_height(*eax, *ecx),
-        (int16_t)(*edx & 0xFFFF),
-        (int16_t)(*ebp & 0xFFFF),
-        *edx >> 16,
-        *ebp >> 16,
-        *edi & 0xFFFF);
+        *ebx, *eax, *ecx, tile_element_height(*eax, *ecx), (int16_t)(*edx & 0xFFFF), (int16_t)(*ebp & 0xFFFF), *edx >> 16,
+        *ebp >> 16, *edi & 0xFFFF);
 }
 
 /**
@@ -2231,15 +2183,8 @@ void game_command_lower_land(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = lower_land(
-        *ebx,
-        *eax,
-        *ecx,
-        tile_element_height(*eax, *ecx),
-        (int16_t)(*edx & 0xFFFF),
-        (int16_t)(*ebp & 0xFFFF),
-        *edx >> 16,
-        *ebp >> 16,
-        *edi & 0xFFFF);
+        *ebx, *eax, *ecx, tile_element_height(*eax, *ecx), (int16_t)(*edx & 0xFFFF), (int16_t)(*ebp & 0xFFFF), *edx >> 16,
+        *ebp >> 16, *edi & 0xFFFF);
 }
 
 static money32 smooth_land_tile(
@@ -2269,18 +2214,8 @@ static money32 smooth_land_tile(
 }
 
 static money32 smooth_land_row_by_edge(
-    int32_t flags,
-    int32_t x,
-    int32_t y,
-    int32_t expectedLandHeight1,
-    int32_t expectedLandHeight2,
-    int32_t stepX,
-    int32_t stepY,
-    int32_t direction1,
-    int32_t direction2,
-    int32_t checkDirection1,
-    int32_t checkDirection2,
-    bool raiseLand)
+    int32_t flags, int32_t x, int32_t y, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX, int32_t stepY,
+    int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2, bool raiseLand)
 {
     uint8_t shouldContinue = 0xF;
     int32_t landChangePerTile = raiseLand ? -2 : 2;
@@ -2421,15 +2356,8 @@ static money32 smooth_land_row_by_edge(
 }
 
 static money32 smooth_land_row_by_corner(
-    int32_t flags,
-    int32_t x,
-    int32_t y,
-    int32_t expectedLandHeight,
-    int32_t stepX,
-    int32_t stepY,
-    int32_t direction,
-    int32_t checkDirection,
-    bool raiseLand)
+    int32_t flags, int32_t x, int32_t y, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
+    int32_t checkDirection, bool raiseLand)
 {
     bool shouldContinue = true;
     rct_tile_element *tileElement, *nextTileElement;
@@ -2514,13 +2442,7 @@ static money32 smooth_land_row_by_corner(
 }
 
 static money32 smooth_land(
-    int32_t flags,
-    int32_t centreX,
-    int32_t centreY,
-    int32_t mapLeft,
-    int32_t mapTop,
-    int32_t mapRight,
-    int32_t mapBottom,
+    int32_t flags, int32_t centreX, int32_t centreY, int32_t mapLeft, int32_t mapTop, int32_t mapRight, int32_t mapBottom,
     int32_t command)
 {
     // break up information in command
@@ -2809,12 +2731,7 @@ void game_command_smooth_land(
  *  rct2: 0x006E66A0
  */
 void game_command_raise_water(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, [[maybe_unused]] int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     int32_t* ebp)
 {
     *ebx = raise_water(
@@ -2826,12 +2743,7 @@ void game_command_raise_water(
  *  rct2: 0x006E6878
  */
 void game_command_lower_water(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, [[maybe_unused]] int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     int32_t* ebp)
 {
     *ebx = lower_water(
@@ -2843,12 +2755,7 @@ void game_command_lower_water(
  *  rct2: 0x006E650F
  */
 void game_command_set_water_height(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     int32_t x = *eax;
@@ -3104,14 +3011,7 @@ void game_command_place_large_scenery(
 
         if (!gCheatsDisableClearanceChecks
             && !map_can_construct_with_clear_at(
-                   curTile.x,
-                   curTile.y,
-                   zLow,
-                   zHigh,
-                   &map_place_scenery_clear_func,
-                   bl,
-                   flags,
-                   &supportsCost,
+                   curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost,
                    CREATE_CROSSING_MODE_NONE))
         {
             *ebx = MONEY32_UNDEFINED;
@@ -3408,8 +3308,7 @@ void map_reorganise_elements()
     num_elements = (uint32_t)(new_elements_pointer - new_tile_elements);
     memcpy(gTileElements, new_tile_elements, num_elements * sizeof(rct_tile_element));
     memset(
-        gTileElements + num_elements,
-        0,
+        gTileElements + num_elements, 0,
         (3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) - num_elements) * sizeof(rct_tile_element));
 
     free(new_tile_elements);
@@ -3582,14 +3481,7 @@ void map_obstruction_set_error_text(rct_tile_element* tileElement)
  *  bl = bl
  */
 bool map_can_construct_with_clear_at(
-    int32_t x,
-    int32_t y,
-    int32_t zLow,
-    int32_t zHigh,
-    CLEAR_FUNC clearFunc,
-    uint8_t bl,
-    uint8_t flags,
-    money32* price,
+    int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, uint8_t bl, uint8_t flags, money32* price,
     uint8_t crossingMode)
 {
     int32_t al, ah, bh, cl, ch, water_height;
@@ -3929,11 +3821,8 @@ void map_restore_provisional_elements()
     {
         gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
         footpath_provisional_set(
-            gFootpathProvisionalType,
-            gFootpathProvisionalPosition.x,
-            gFootpathProvisionalPosition.y,
-            gFootpathProvisionalPosition.z,
-            gFootpathProvisionalSlope);
+            gFootpathProvisionalType, gFootpathProvisionalPosition.x, gFootpathProvisionalPosition.y,
+            gFootpathProvisionalPosition.z, gFootpathProvisionalSlope);
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {
@@ -4109,24 +3998,14 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
             game_do_command(
-                x,
-                (GAME_COMMAND_FLAG_APPLY) | (tile_element_get_direction(element) << 8),
-                y,
-                (element->base_height) | (scenery_large_get_sequence(element) << 8),
-                GAME_COMMAND_REMOVE_LARGE_SCENERY,
-                0,
-                0);
+                x, (GAME_COMMAND_FLAG_APPLY) | (tile_element_get_direction(element) << 8), y,
+                (element->base_height) | (scenery_large_get_sequence(element) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
             game_do_command(
-                x,
-                GAME_COMMAND_FLAG_APPLY,
-                y,
-                (element->base_height) | ((element->properties.banner.position & 3) << 8),
-                GAME_COMMAND_REMOVE_BANNER,
-                0,
-                0);
+                x, GAME_COMMAND_FLAG_APPLY, y, (element->base_height) | ((element->properties.banner.position & 3) << 8),
+                GAME_COMMAND_REMOVE_BANNER, 0, 0);
             break;
         default:
             tile_element_remove(element);
@@ -4302,14 +4181,7 @@ rct_tile_element* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t
 }
 
 bool map_large_scenery_get_origin(
-    int32_t x,
-    int32_t y,
-    int32_t z,
-    int32_t direction,
-    int32_t sequence,
-    int32_t* outX,
-    int32_t* outY,
-    int32_t* outZ,
+    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
     rct_tile_element** outElement)
 {
     rct_tile_element* tileElement;
@@ -4610,12 +4482,7 @@ void map_clear_all_elements()
 }
 
 void game_command_set_sign_style(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     int32_t* ebp)
 {
     BannerIndex bannerId = *ecx & 0xFF;
@@ -4683,13 +4550,8 @@ void game_command_set_sign_style(
         }
 
         if (!sign_set_colour(
-                banner->x * 32,
-                banner->y * 32,
-                tileElement->base_height,
-                tile_element_get_direction(tileElement),
-                scenery_large_get_sequence(tileElement),
-                mainColour,
-                textColour))
+                banner->x * 32, banner->y * 32, tileElement->base_height, tile_element_get_direction(tileElement),
+                scenery_large_get_sequence(tileElement), mainColour, textColour))
         {
             *ebx = MONEY32_UNDEFINED;
             return;

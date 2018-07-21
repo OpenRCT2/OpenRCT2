@@ -239,27 +239,14 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION)
     {
         gfx_rle_sprite_to_buffer(
-            spriteHeader->offset,
-            pixels,
-            (uint8_t*)spriteFilePalette,
-            &dpi,
-            IMAGE_TYPE_DEFAULT,
-            0,
-            spriteHeader->height,
-            0,
+            spriteHeader->offset, pixels, (uint8_t*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0,
             spriteHeader->width);
     }
     else
     {
         gfx_bmp_sprite_to_buffer(
-            (uint8_t*)spriteFilePalette,
-            spriteHeader->offset,
-            pixels,
-            spriteHeader,
-            &dpi,
-            spriteHeader->height,
-            spriteHeader->width,
-            IMAGE_TYPE_DEFAULT);
+            (uint8_t*)spriteFilePalette, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height,
+            spriteHeader->width, IMAGE_TYPE_DEFAULT);
     }
 
     auto const pixels8 = dpi.bits;
@@ -284,15 +271,8 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
 }
 
 static bool sprite_file_import(
-    const char* path,
-    int16_t x_offset,
-    int16_t y_offset,
-    bool keep_palette,
-    bool forceBmp,
-    rct_g1_element* outElement,
-    uint8_t** outBuffer,
-    int* outBufferLength,
-    int32_t mode)
+    const char* path, int16_t x_offset, int16_t y_offset, bool keep_palette, bool forceBmp, rct_g1_element* outElement,
+    uint8_t** outBuffer, int* outBufferLength, int32_t mode)
 {
     try
     {
@@ -589,10 +569,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         if (sprite_list == nullptr)
         {
             fprintf(
-                stderr,
-                "Error parsing sprite description file: %s at line %d column %d\n",
-                error.text,
-                error.line,
+                stderr, "Error parsing sprite description file: %s at line %d column %d\n", error.text, error.line,
                 error.column);
             return -1;
         }
@@ -663,15 +640,9 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             int bufferLength;
 
             if (!sprite_file_import(
-                    imagePath,
-                    x_offset == nullptr ? 0 : json_integer_value(x_offset),
-                    y_offset == nullptr ? 0 : json_integer_value(y_offset),
-                    keep_palette,
-                    forceBmp,
-                    &spriteElement,
-                    &buffer,
-                    &bufferLength,
-                    gSpriteMode))
+                    imagePath, x_offset == nullptr ? 0 : json_integer_value(x_offset),
+                    y_offset == nullptr ? 0 : json_integer_value(y_offset), keep_palette, forceBmp, &spriteElement, &buffer,
+                    &bufferLength, gSpriteMode))
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
                 json_decref(sprite_list);

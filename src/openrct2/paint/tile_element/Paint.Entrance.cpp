@@ -142,17 +142,8 @@ static void ride_entrance_exit_paint(
     {
         transparant_image_id += 4;
         sub_98199C(
-            session,
-            transparant_image_id,
-            0,
-            0,
-            lengthX,
-            lengthY,
-            ah,
-            height,
-            (direction & 1) ? 28 : 2,
-            (direction & 1) ? 2 : 28,
-            height);
+            session, transparant_image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2,
+            (direction & 1) ? 2 : 28, height);
     }
 
     if (direction & 1)
@@ -195,17 +186,8 @@ static void ride_entrance_exit_paint(
         uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
         sub_98199C(
-            session,
-            scrolling_text_setup(session, string_id, scroll, style->scrolling_mode),
-            0,
-            0,
-            0x1C,
-            0x1C,
-            0x33,
-            height + style->height,
-            2,
-            2,
-            height + style->height);
+            session, scrolling_text_setup(session, string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33,
+            height + style->height, 2, 2, height + style->height);
     }
 
     image_id = _unk9E32BC;

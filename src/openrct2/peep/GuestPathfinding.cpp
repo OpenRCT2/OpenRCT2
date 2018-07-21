@@ -275,10 +275,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, rct_tile_el
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
 static uint8_t footpath_element_dest_in_dir(
-    TileCoordsXYZ loc,
-    [[maybe_unused]] rct_tile_element* inputTileElement,
-    uint8_t chosenDirection,
-    uint8_t* outRideIndex,
+    TileCoordsXYZ loc, [[maybe_unused]] rct_tile_element* inputTileElement, uint8_t chosenDirection, uint8_t* outRideIndex,
     int32_t level)
 {
     rct_tile_element* tileElement;
@@ -585,18 +582,9 @@ static bool path_is_thin_junction(rct_tile_element* path, TileCoordsXYZ loc)
  *  rct2: 0x0069A997
  */
 static void peep_pathfind_heuristic_search(
-    TileCoordsXYZ loc,
-    rct_peep* peep,
-    rct_tile_element* currentTileElement,
-    bool inPatrolArea,
-    uint8_t counter,
-    uint16_t* endScore,
-    int32_t test_edge,
-    uint8_t* endJunctions,
-    TileCoordsXYZ junctionList[16],
-    uint8_t directionList[16],
-    TileCoordsXYZ* endXYZ,
-    uint8_t* endSteps)
+    TileCoordsXYZ loc, rct_peep* peep, rct_tile_element* currentTileElement, bool inPatrolArea, uint8_t counter,
+    uint16_t* endScore, int32_t test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
+    TileCoordsXYZ* endXYZ, uint8_t* endSteps)
 {
     uint8_t searchResult = PATH_SEARCH_FAILED;
 
@@ -787,11 +775,7 @@ static void peep_pathfind_heuristic_search(
         if (gPathFindDebug)
         {
             log_info(
-                "[%03d] Checking map element at %d,%d,%d; Type: %s",
-                counter,
-                x >> 5,
-                y >> 5,
-                z,
+                "[%03d] Checking map element at %d,%d,%d; Type: %s", counter, x >> 5, y >> 5, z,
                 gPathFindSearchText[searchResult]);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -914,16 +898,8 @@ static void peep_pathfind_heuristic_search(
         if (gPathFindDebug)
         {
             log_info(
-                "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d",
-                counter,
-                x >> 5,
-                y >> 5,
-                z,
-                edges & 1,
-                (edges & 2) >> 1,
-                (edges & 4) >> 2,
-                (edges & 8) >> 3,
-                test_edge ^ 2);
+                "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1,
+                (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -975,11 +951,7 @@ static void peep_pathfind_heuristic_search(
             if (gPathFindDebug)
             {
                 log_info(
-                    "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d",
-                    counter,
-                    x >> 5,
-                    y >> 5,
-                    z,
+                    "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", counter, x >> 5, y >> 5, z,
                     new_score);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1089,11 +1061,7 @@ static void peep_pathfind_heuristic_search(
                     if (gPathFindDebug)
                     {
                         log_info(
-                            "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d",
-                            counter,
-                            x >> 5,
-                            y >> 5,
-                            z,
+                            "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z,
                             new_score);
                     }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1149,18 +1117,8 @@ static void peep_pathfind_heuristic_search(
             }
 
             peep_pathfind_heuristic_search(
-                { loc.x, loc.y, height },
-                peep,
-                tileElement,
-                nextInPatrolArea,
-                counter,
-                endScore,
-                next_test_edge,
-                endJunctions,
-                junctionList,
-                directionList,
-                endXYZ,
-                endSteps);
+                { loc.x, loc.y, height }, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge, endJunctions,
+                junctionList, directionList, endXYZ, endSteps);
             _peepPathFindNumJunctions = savedNumJunctions;
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1220,14 +1178,8 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
     if (gPathFindDebug)
     {
         log_verbose(
-            "Choose direction for %s for goal %d,%d,%d from %d,%d,%d",
-            gPathFindDebugPeepName,
-            goal.x,
-            goal.y,
-            goal.z,
-            loc.x,
-            loc.y,
-            loc.z);
+            "Choose direction for %s for goal %d,%d,%d from %d,%d,%d", gPathFindDebugPeepName, goal.x, goal.y, goal.z, loc.x,
+            loc.y, loc.z);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -1317,14 +1269,8 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
                 if (gPathFindDebug)
                 {
                     log_verbose(
-                        "Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s",
-                        loc.x,
-                        loc.y,
-                        loc.z,
-                        (edges & 1) ? "0" : "-",
-                        (edges & 2) ? "1" : "-",
-                        (edges & 4) ? "2" : "-",
-                        (edges & 8) ? "3" : "-");
+                        "Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", loc.x, loc.y, loc.z,
+                        (edges & 1) ? "0" : "-", (edges & 2) ? "1" : "-", (edges & 4) ? "2" : "-", (edges & 8) ? "3" : "-");
                 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -1469,40 +1415,20 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
             peep_pathfind_heuristic_search(
-                { loc.x, loc.y, height },
-                peep,
-                first_tile_element,
-                inPatrolArea,
-                0,
-                &score,
-                test_edge,
-                &endJunctions,
-                endJunctionList,
-                endDirectionList,
-                &endXYZ,
-                &endSteps);
+                { loc.x, loc.y, height }, peep, first_tile_element, inPatrolArea, 0, &score, test_edge, &endJunctions,
+                endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
             if (gPathFindDebug)
             {
                 log_verbose(
-                    "Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d",
-                    test_edge,
-                    score,
-                    endSteps,
-                    endXYZ.x,
-                    endXYZ.y,
-                    endXYZ.z,
-                    endJunctions);
+                    "Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", test_edge, score, endSteps,
+                    endXYZ.x, endXYZ.y, endXYZ.z, endJunctions);
                 for (uint8_t listIdx = 0; listIdx < endJunctions; listIdx++)
                 {
                     log_info(
-                        "Junction#%d %d,%d,%d Direction %d",
-                        listIdx + 1,
-                        endJunctionList[listIdx].x,
-                        endJunctionList[listIdx].y,
-                        endJunctionList[listIdx].z,
-                        endDirectionList[listIdx]);
+                        "Junction#%d %d,%d,%d Direction %d", listIdx + 1, endJunctionList[listIdx].x,
+                        endJunctionList[listIdx].y, endJunctionList[listIdx].z, endDirectionList[listIdx]);
                 }
             }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -1548,12 +1474,8 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
             for (uint8_t listIdx = 0; listIdx < bestJunctions; listIdx++)
             {
                 log_verbose(
-                    "Junction#%d %d,%d,%d Direction %d",
-                    listIdx + 1,
-                    bestJunctionList[listIdx].x,
-                    bestJunctionList[listIdx].y,
-                    bestJunctionList[listIdx].z,
-                    bestDirectionList[listIdx]);
+                    "Junction#%d %d,%d,%d Direction %d", listIdx + 1, bestJunctionList[listIdx].x, bestJunctionList[listIdx].y,
+                    bestJunctionList[listIdx].z, bestDirectionList[listIdx]);
             }
             log_verbose("End at %d,%d,%d", bestXYZ.x, bestXYZ.y, bestXYZ.z);
         }
@@ -1577,13 +1499,8 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
                 if (gPathFindDebug)
                 {
                     log_verbose(
-                        "Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.",
-                        i,
-                        loc.x,
-                        loc.y,
-                        loc.z,
-                        peep->direction ^ 2,
-                        chosen_edge);
+                        "Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i,
+                        loc.x, loc.y, loc.z, peep->direction ^ 2, chosen_edge);
                 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 return chosen_edge;
@@ -1607,13 +1524,8 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
         if (gPathFindDebug)
         {
             log_verbose(
-                "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.",
-                i,
-                loc.x,
-                loc.y,
-                loc.z,
-                peep->direction ^ 2,
-                chosen_edge);
+                "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x, loc.y,
+                loc.z, peep->direction ^ 2, chosen_edge);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
@@ -2027,8 +1939,7 @@ int32_t guest_path_finding(rct_peep* peep)
         if (gPathFindDebug)
         {
             log_info(
-                "Completed guest_path_finding for %s - taking only direction available: %d.",
-                gPathFindDebugPeepName,
+                "Completed guest_path_finding for %s - taking only direction available: %d.", gPathFindDebugPeepName,
                 direction);
         }
         pathfind_logging_disable();

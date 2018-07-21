@@ -46,11 +46,7 @@ enum
 };
 
 static void spiral_slide_paint_tile_right(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint32_t image_id = 0;
@@ -68,11 +64,7 @@ static void spiral_slide_paint_tile_right(
 }
 
 static void spiral_slide_paint_tile_left(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint32_t image_id = 0;
@@ -90,11 +82,7 @@ static void spiral_slide_paint_tile_left(
 }
 
 static void spiral_slide_paint_tile_front(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint32_t image_id = 0;
@@ -185,17 +173,8 @@ static void spiral_slide_paint_tile_front(
             image_id = (offset + slide_progress) | (ride->slide_peep_t_shirt_colour << 19) | (1 << 29);
 
             sub_98199C(
-                session,
-                image_id,
-                16,
-                16,
-                boundingBox.x,
-                boundingBox.y,
-                boundingBox.z,
-                height,
-                boundingBoxOffset.x,
-                boundingBoxOffset.y,
-                boundingBoxOffset.z);
+                session, image_id, 16, 16, boundingBox.x, boundingBox.y, boundingBox.z, height, boundingBoxOffset.x,
+                boundingBoxOffset.y, boundingBoxOffset.z);
         }
     }
 }
@@ -211,11 +190,7 @@ static constexpr const uint32_t spiral_slide_fence_sprites[] = {
  * rct: 0x007485C8
  */
 static void paint_spiral_slide(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
@@ -231,14 +206,7 @@ static void paint_spiral_slide(
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(
-        session,
-        edges,
-        position,
-        tileElement,
-        ride,
-        session->TrackColours[SCHEME_TRACK],
-        height,
-        spiral_slide_fence_sprites,
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height, spiral_slide_fence_sprites,
         session->CurrentRotation);
 
     switch (trackSequence)

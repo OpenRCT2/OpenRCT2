@@ -92,40 +92,16 @@ typedef void(APIENTRYP PFNGLPIXELSTOREIPROC)(GLenum pname, GLint param);
 typedef void(APIENTRYP PFNGLREADPIXELSPROC)(
     GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid* pixels);
 typedef void(APIENTRYP PFNGLTEXIMAGE2DPROC)(
-    GLenum target,
-    GLint level,
-    GLint internalFormat,
-    GLsizei width,
-    GLsizei height,
-    GLint border,
-    GLenum format,
-    GLenum type,
+    GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type,
     const GLvoid* pixels);
 typedef void(APIENTRYP PFNGLTEXPARAMETERIPROC)(GLenum target, GLenum pname, GLint param);
 typedef void(APIENTRYP PFNGLVIEWPORTPROC)(GLint x, GLint y, GLsizei width, GLsizei height);
 typedef void(APIENTRYP PFNGLTEXSUBIMAGE3DPROC)(
-    GLenum target,
-    GLint level,
-    GLint xoffset,
-    GLint yoffset,
-    GLint zoffset,
-    GLsizei width,
-    GLsizei height,
-    GLsizei depth,
-    GLenum format,
-    GLenum type,
-    const GLvoid* data);
+    GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth,
+    GLenum format, GLenum type, const GLvoid* data);
 typedef void(APIENTRYP PFNGLTEXIMAGE3DPROC)(
-    GLenum target,
-    GLint level,
-    GLint internalFormat,
-    GLsizei width,
-    GLsizei height,
-    GLsizei depth,
-    GLint border,
-    GLenum format,
-    GLenum type,
-    const GLvoid* data);
+    GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format,
+    GLenum type, const GLvoid* data);
 typedef void(APIENTRYP PFNGLGETINTERGERVPROC)(GLenum pname, GLint* data);
 typedef void(APIENTRYP PFNGLGETTEXIMAGEPROC)(GLenum target, GLint level, GLenum format, GLenum type, GLvoid* img);
 

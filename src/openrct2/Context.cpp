@@ -124,8 +124,7 @@ namespace OpenRCT2
 
     public:
         Context(
-            const std::shared_ptr<IPlatformEnvironment>& env,
-            const std::shared_ptr<IAudioContext>& audioContext,
+            const std::shared_ptr<IPlatformEnvironment>& env, const std::shared_ptr<IAudioContext>& audioContext,
             const std::shared_ptr<IUiContext>& uiContext)
             : _env(env)
             , _audioContext(audioContext)
@@ -794,9 +793,7 @@ namespace OpenRCT2
                     auto ctx = reinterpret_cast<Context*>(vctx);
                     ctx->RunFrame();
                 },
-                this,
-                0,
-                1);
+                this, 0, 1);
 #endif // __EMSCRIPTEN__
             log_verbose("finish openrct2 loop");
         }
@@ -1000,8 +997,7 @@ namespace OpenRCT2
     }
 
     std::unique_ptr<IContext> CreateContext(
-        const std::shared_ptr<IPlatformEnvironment>& env,
-        const std::shared_ptr<Audio::IAudioContext>& audioContext,
+        const std::shared_ptr<IPlatformEnvironment>& env, const std::shared_ptr<Audio::IAudioContext>& audioContext,
         const std::shared_ptr<IUiContext>& uiContext)
     {
         return std::make_unique<Context>(env, audioContext, uiContext);

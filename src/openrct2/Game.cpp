@@ -839,13 +839,8 @@ bool game_is_not_paused()
  *  rct2: 0x00667C15
  */
 void game_pause_toggle(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx,
+    [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
         pause_toggle();
@@ -858,13 +853,8 @@ void game_pause_toggle(
  *  rct2: 0x0066DB5F
  */
 static void game_load_or_quit(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {
@@ -1323,16 +1313,8 @@ void game_autosave()
 
     utf8 timeName[44];
     snprintf(
-        timeName,
-        sizeof(timeName),
-        "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s",
-        currentDate.year,
-        currentDate.month,
-        currentDate.day,
-        currentTime.hour,
-        currentTime.minute,
-        currentTime.second,
-        fileExtension);
+        timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s", currentDate.year, currentDate.month,
+        currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
     limit_autosave_count(NUMBER_OF_AUTOSAVES_TO_KEEP, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 

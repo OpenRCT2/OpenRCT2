@@ -305,12 +305,7 @@ static colour_t _tertiaryColour;
 rct_window* window_top_toolbar_open()
 {
     rct_window* window = window_create(
-        0,
-        0,
-        context_get_width(),
-        TOP_TOOLBAR_HEIGHT + 1,
-        &window_top_toolbar_events,
-        WC_TOP_TOOLBAR,
+        0, 0, context_get_width(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WC_TOP_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_top_toolbar_widgets;
 
@@ -461,12 +456,8 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
 #endif
             }
             window_dropdown_show_text(
-                w->x + widget->left,
-                w->y + widget->top,
-                widget->bottom - widget->top + 1,
-                w->colours[0] | 0x80,
-                DROPDOWN_FLAG_STAY_OPEN,
-                numItems);
+                w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
+                DROPDOWN_FLAG_STAY_OPEN, numItems);
 
 #ifndef DISABLE_TWITCH
             if (_menuDropdownIncludesTwitch && gTwitchEnable)
@@ -633,23 +624,13 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     break;
                 case DDIDX_DISABLE_CLEARANCE_CHECKS:
                     game_do_command(
-                        0,
-                        GAME_COMMAND_FLAG_APPLY,
-                        CHEAT_DISABLECLEARANCECHECKS,
-                        !gCheatsDisableClearanceChecks,
-                        GAME_COMMAND_CHEAT,
-                        0,
-                        0);
+                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLECLEARANCECHECKS, !gCheatsDisableClearanceChecks,
+                        GAME_COMMAND_CHEAT, 0, 0);
                     break;
                 case DDIDX_DISABLE_SUPPORT_LIMITS:
                     game_do_command(
-                        0,
-                        GAME_COMMAND_FLAG_APPLY,
-                        CHEAT_DISABLESUPPORTLIMITS,
-                        !gCheatsDisableSupportLimits,
-                        GAME_COMMAND_CHEAT,
-                        0,
-                        0);
+                        0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLESUPPORTLIMITS, !gCheatsDisableSupportLimits,
+                        GAME_COMMAND_CHEAT, 0, 0);
                     break;
             }
             break;
@@ -1012,12 +993,8 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
-                grid_x,
-                1 | (tile_element->type << 8),
-                grid_y,
-                tile_element->base_height | (tile_element->properties.scenery.type << 8),
-                GAME_COMMAND_SET_SCENERY_COLOUR,
-                0,
+                grid_x, 1 | (tile_element->type << 8), grid_y,
+                tile_element->base_height | (tile_element->properties.scenery.type << 8), GAME_COMMAND_SET_SCENERY_COLOUR, 0,
                 gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
             break;
         }
@@ -1031,13 +1008,9 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
-                grid_x,
-                1 | (gWindowSceneryPrimaryColour << 8),
-                grid_y,
+                grid_x, 1 | (gWindowSceneryPrimaryColour << 8), grid_y,
                 (tile_element->type & TILE_ELEMENT_DIRECTION_MASK) | (tile_element->base_height << 8),
-                GAME_COMMAND_SET_WALL_COLOUR,
-                0,
-                gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
+                GAME_COMMAND_SET_WALL_COLOUR, 0, gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
@@ -1050,13 +1023,9 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
-                grid_x,
-                1 | (tile_element->GetDirection() << 8),
-                grid_y,
+                grid_x, 1 | (tile_element->GetDirection() << 8), grid_y,
                 tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
-                GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
-                0,
-                gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+                GAME_COMMAND_SET_LARGE_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
@@ -1067,13 +1036,8 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             {
                 gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
                 game_do_command(
-                    grid_x,
-                    1,
-                    grid_y,
-                    tile_element->base_height | ((tile_element->properties.banner.position & 0x3) << 8),
-                    GAME_COMMAND_SET_BANNER_COLOUR,
-                    0,
-                    gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+                    grid_x, 1, grid_y, tile_element->base_height | ((tile_element->properties.banner.position & 0x3) << 8),
+                    GAME_COMMAND_SET_BANNER_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
             }
             break;
         }
@@ -1189,14 +1153,8 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
  * edi : parameter_3
  */
 static void sub_6E1F34(
-    int16_t x,
-    int16_t y,
-    uint16_t selected_scenery,
-    int16_t* grid_x,
-    int16_t* grid_y,
-    uint32_t* parameter_1,
-    uint32_t* parameter_2,
-    uint32_t* parameter_3)
+    int16_t x, int16_t y, uint16_t selected_scenery, int16_t* grid_x, int16_t* grid_y, uint32_t* parameter_1,
+    uint32_t* parameter_2, uint32_t* parameter_3)
 {
     rct_window* w = window_find_by_class(WC_SCENERY);
 
@@ -1726,13 +1684,8 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     gDisableErrorWindowSound = true;
                     gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
                     int32_t cost = game_do_command(
-                        cur_grid_x,
-                        flags,
-                        cur_grid_y,
-                        parameter_2,
-                        GAME_COMMAND_PLACE_SCENERY,
-                        gSceneryPlaceRotation | (parameter_3 & 0xFFFF0000),
-                        gSceneryPlaceZ);
+                        cur_grid_x, flags, cur_grid_y, parameter_2, GAME_COMMAND_PLACE_SCENERY,
+                        gSceneryPlaceRotation | (parameter_3 & 0xFFFF0000), gSceneryPlaceZ);
                     gDisableErrorWindowSound = false;
 
                     if (cost != MONEY32_UNDEFINED)
@@ -1804,12 +1757,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 gDisableErrorWindowSound = true;
                 gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
                 int32_t cost = game_do_command(
-                    gridX,
-                    flags,
-                    gridY,
-                    parameter_2,
-                    GAME_COMMAND_PLACE_WALL,
-                    gSceneryPlaceZ,
+                    gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ,
                     _secondaryColour | (_tertiaryColour << 8));
                 gDisableErrorWindowSound = false;
 
@@ -2319,14 +2267,8 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y)
     LocationXY16 mapTile = {};
     int32_t interaction_type = 0;
     get_map_coordinates_from_pos(
-        x,
-        y,
-        VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER,
-        &mapTile.x,
-        &mapTile.y,
-        &interaction_type,
-        nullptr,
-        nullptr);
+        x, y, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &mapTile.x, &mapTile.y, &interaction_type,
+        nullptr, nullptr);
 
     if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
     {
@@ -2431,12 +2373,7 @@ static money32 try_place_ghost_scenery(
             // Small Scenery
             // 6e252b
             cost = game_do_command(
-                map_tile.x,
-                parameter_1 | 0x69,
-                map_tile.y,
-                parameter_2,
-                GAME_COMMAND_PLACE_SCENERY,
-                parameter_3,
+                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_SCENERY, parameter_3,
                 gSceneryPlaceZ);
 
             if (cost == MONEY32_UNDEFINED)
@@ -2471,11 +2408,7 @@ static money32 try_place_ghost_scenery(
                 (parameter_1 & 0xFF00)
                     | (GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
                        | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY),
-                map_tile.y,
-                parameter_2,
-                GAME_COMMAND_PLACE_PATH,
-                parameter_3,
-                0);
+                map_tile.y, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
 
             if (cost == MONEY32_UNDEFINED)
                 return cost;
@@ -2493,12 +2426,7 @@ static money32 try_place_ghost_scenery(
             // Walls
             // 6e26b0
             cost = game_do_command(
-                map_tile.x,
-                parameter_1 | 0x69,
-                map_tile.y,
-                parameter_2,
-                GAME_COMMAND_PLACE_WALL,
-                gSceneryPlaceZ,
+                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_WALL, gSceneryPlaceZ,
                 _secondaryColour | (_tertiaryColour << 8));
 
             if (cost == MONEY32_UNDEFINED)
@@ -2517,12 +2445,7 @@ static money32 try_place_ghost_scenery(
             // Large Scenery
             // 6e25a7
             cost = game_do_command(
-                map_tile.x,
-                parameter_1 | 0x69,
-                map_tile.y,
-                parameter_2,
-                GAME_COMMAND_PLACE_LARGE_SCENERY,
-                parameter_3,
+                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3,
                 gSceneryPlaceZ);
 
             if (cost == MONEY32_UNDEFINED)
@@ -2862,13 +2785,9 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
             gGameCommandErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
 
             game_do_command(
-                gMapSelectPositionA.x,
-                1,
-                gMapSelectPositionA.y,
+                gMapSelectPositionA.x, 1, gMapSelectPositionA.y,
                 ((gClearSmallScenery ? 1 : 0) | (gClearLargeScenery ? 1 : 0) << 1 | (gClearFootpath ? 1 : 0) << 2),
-                GAME_COMMAND_CLEAR_SCENERY,
-                gMapSelectPositionB.x,
-                gMapSelectPositionB.y);
+                GAME_COMMAND_CLEAR_SCENERY, gMapSelectPositionB.x, gMapSelectPositionB.y);
             gCurrentToolId = TOOL_CROSSHAIR;
             break;
         case WIDX_LAND:
@@ -2876,13 +2795,8 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
             {
                 gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
                 game_do_command(
-                    gMapSelectPositionA.x,
-                    1,
-                    gMapSelectPositionA.y,
-                    gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-                    GAME_COMMAND_CHANGE_SURFACE_STYLE,
-                    gMapSelectPositionB.x,
-                    gMapSelectPositionB.y);
+                    gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
+                    GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
                 gCurrentToolId = TOOL_UP_DOWN_ARROW;
             }
             break;
@@ -3023,12 +2937,7 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
         gGameCommandErrorTitle = STR_CANT_RAISE_WATER_LEVEL_HERE;
 
         game_do_command(
-            gMapSelectPositionA.x,
-            1,
-            gMapSelectPositionA.y,
-            dx,
-            GAME_COMMAND_RAISE_WATER,
-            gMapSelectPositionB.x,
+            gMapSelectPositionA.x, 1, gMapSelectPositionA.y, dx, GAME_COMMAND_RAISE_WATER, gMapSelectPositionB.x,
             gMapSelectPositionB.y);
         gWaterToolRaiseCost = MONEY32_UNDEFINED;
         gWaterToolLowerCost = MONEY32_UNDEFINED;
@@ -3045,12 +2954,7 @@ static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
         gGameCommandErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
 
         game_do_command(
-            gMapSelectPositionA.x,
-            1,
-            gMapSelectPositionA.y,
-            dx,
-            GAME_COMMAND_LOWER_WATER,
-            gMapSelectPositionB.x,
+            gMapSelectPositionA.x, 1, gMapSelectPositionA.y, dx, GAME_COMMAND_LOWER_WATER, gMapSelectPositionB.x,
             gMapSelectPositionB.y);
         gWaterToolRaiseCost = MONEY32_UNDEFINED;
         gWaterToolLowerCost = MONEY32_UNDEFINED;
@@ -3077,13 +2981,9 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             gGameCommandErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
 
             game_do_command(
-                gMapSelectPositionA.x,
-                1,
-                gMapSelectPositionA.y,
+                gMapSelectPositionA.x, 1, gMapSelectPositionA.y,
                 ((gClearSmallScenery ? 1 : 0) | (gClearLargeScenery ? 1 : 0) << 1 | (gClearFootpath ? 1 : 0) << 2),
-                GAME_COMMAND_CLEAR_SCENERY,
-                gMapSelectPositionB.x,
-                gMapSelectPositionB.y);
+                GAME_COMMAND_CLEAR_SCENERY, gMapSelectPositionB.x, gMapSelectPositionB.y);
             gCurrentToolId = TOOL_CROSSHAIR;
             break;
         case WIDX_LAND:
@@ -3094,13 +2994,8 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
                 {
                     gGameCommandErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
                     game_do_command(
-                        gMapSelectPositionA.x,
-                        1,
-                        gMapSelectPositionA.y,
-                        gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
-                        GAME_COMMAND_CHANGE_SURFACE_STYLE,
-                        gMapSelectPositionB.x,
-                        gMapSelectPositionB.y);
+                        gMapSelectPositionA.x, 1, gMapSelectPositionA.y, gLandToolTerrainSurface | (gLandToolTerrainEdge << 8),
+                        GAME_COMMAND_CHANGE_SURFACE_STYLE, gMapSelectPositionB.x, gMapSelectPositionB.y);
                     // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change cursor
                     gCurrentToolId = TOOL_CROSSHAIR;
                 }
@@ -3271,12 +3166,8 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
 
     window_dropdown_show_text(
-        w->x + widget->left,
-        w->y + widget->top,
-        widget->bottom - widget->top + 1,
-        w->colours[0] | 0x80,
-        DROPDOWN_FLAG_STAY_OPEN,
-        TOP_TOOLBAR_DEBUG_COUNT);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
+        DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
 
     // Disable items that are not yet available in multiplayer
     if (network_get_mode() != NETWORK_MODE_NONE)
@@ -3391,11 +3282,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_HIGHLIGHT_PATH_ISSUES_MENU;
 
     window_dropdown_show_text(
-        w->x + widget->left,
-        w->y + widget->top,
-        widget->bottom - widget->top + 1,
-        w->colours[1] | 0x80,
-        0,
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1] | 0x80, 0,
         TOP_TOOLBAR_VIEW_MENU_COUNT);
 
     // Set checkmarks

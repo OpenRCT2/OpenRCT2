@@ -185,17 +185,8 @@ rct_window* window_sign_open(rct_windownumber number)
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w,
-        w->x + viewportWidget->left + 1,
-        w->y + viewportWidget->top + 1,
-        (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1,
-        0,
-        view_x,
-        view_y,
-        view_z,
-        0,
-        -1);
+        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
+        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
@@ -238,13 +229,9 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 tile_element++;
             }
             game_do_command(
-                x,
-                1 | (tile_element->GetDirection() << 8),
-                y,
-                tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
-                GAME_COMMAND_REMOVE_LARGE_SCENERY,
-                0,
-                0);
+                x, 1 | (tile_element->GetDirection() << 8), y,
+                tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY,
+                0, 0);
             break;
         case WIDX_SIGN_TEXT:
             if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
@@ -382,17 +369,8 @@ static void window_sign_viewport_rotate(rct_window* w)
     // Create viewport
     rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w,
-        w->x + viewportWidget->left + 1,
-        w->y + viewportWidget->top + 1,
-        (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1,
-        0,
-        view_x,
-        view_y,
-        view_z,
-        0,
-        -1);
+        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
+        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
@@ -455,17 +433,8 @@ rct_window* window_sign_small_open(rct_windownumber number)
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w,
-        w->x + viewportWidget->left + 1,
-        w->y + viewportWidget->top + 1,
-        (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1,
-        0,
-        view_x,
-        view_y,
-        view_z,
-        0,
-        -1);
+        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
+        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->flags |= WF_NO_SCROLLING;

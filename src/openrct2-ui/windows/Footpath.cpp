@@ -680,14 +680,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
     }
 
     window_dropdown_show_image(
-        w->x + widget->left,
-        w->y + widget->top,
-        widget->bottom - widget->top + 1,
-        w->colours[1],
-        0,
-        numPathTypes,
-        47,
-        36,
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0, numPathTypes, 47, 36,
         gAppropriateImageDropdownItemsPerRow[numPathTypes]);
 }
 
@@ -728,14 +721,8 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     rct_tile_element* tileElement;
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
-        x,
-        y,
-        VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
-        &mapCoord.x,
-        &mapCoord.y,
-        &interactionType,
-        &tileElement,
-        nullptr);
+        x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
+        &interactionType, &tileElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
 
@@ -849,14 +836,8 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
-        x,
-        y,
-        VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
-        &mapCoord.x,
-        &mapCoord.y,
-        &interactionType,
-        &tileElement,
-        nullptr);
+        x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
+        &interactionType, &tileElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
 
@@ -976,9 +957,7 @@ static void window_footpath_construct()
     if (cost != MONEY32_UNDEFINED)
     {
         audio_play_sound_at_location(
-            SOUND_PLACE_ITEM,
-            gFootpathConstructFromPosition.x,
-            gFootpathConstructFromPosition.y,
+            SOUND_PLACE_ITEM, gFootpathConstructFromPosition.x, gFootpathConstructFromPosition.y,
             gFootpathConstructFromPosition.z);
 
         if (gFootpathConstructSlope == 0)

@@ -421,11 +421,7 @@ static money32 RideEntranceExitPlaceGhost(
         x,
         (GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST)
             | (direction << 8),
-        y,
-        rideIndex | (placeType << 8),
-        GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-        stationNum,
-        0);
+        y, rideIndex | (placeType << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, stationNum, 0);
 }
 
 /**
@@ -433,12 +429,7 @@ static money32 RideEntranceExitPlaceGhost(
  *  rct2: 0x00666A63
  */
 void game_command_remove_park_entrance(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = ParkEntranceRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, *ebx & 0xFF);
@@ -454,13 +445,8 @@ void park_entrance_remove_ghost()
     {
         gParkEntranceGhostExists = false;
         game_do_command(
-            gParkEntranceGhostPosition.x,
-            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY,
-            gParkEntranceGhostPosition.y,
-            gParkEntranceGhostPosition.z,
-            GAME_COMMAND_REMOVE_PARK_ENTRANCE,
-            0,
-            0);
+            gParkEntranceGhostPosition.x, GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY,
+            gParkEntranceGhostPosition.y, gParkEntranceGhostPosition.z, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
     }
 }
 
@@ -492,12 +478,8 @@ void ride_entrance_exit_place_provisional_ghost()
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT)
     {
         RideEntranceExitPlaceGhost(
-            _currentRideIndex,
-            gRideEntranceExitGhostPosition.x,
-            gRideEntranceExitGhostPosition.y,
-            gRideEntranceExitGhostPosition.direction,
-            gRideEntranceExitPlaceType,
-            gRideEntranceExitGhostStationIndex);
+            _currentRideIndex, gRideEntranceExitGhostPosition.x, gRideEntranceExitGhostPosition.y,
+            gRideEntranceExitGhostPosition.direction, gRideEntranceExitPlaceType, gRideEntranceExitGhostStationIndex);
     }
 }
 
@@ -508,11 +490,8 @@ void ride_entrance_exit_remove_ghost()
         game_do_command(
             gRideEntranceExitGhostPosition.x,
             (GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
-            gRideEntranceExitGhostPosition.y,
-            _currentRideIndex,
-            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
-            gRideEntranceExitGhostStationIndex,
-            0);
+            gRideEntranceExitGhostPosition.y, _currentRideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
+            gRideEntranceExitGhostStationIndex, 0);
     }
 }
 
@@ -542,22 +521,11 @@ money32 ride_entrance_exit_place_ghost(
  *  rct2: 0x006660A8
  */
 void game_command_place_ride_entrance_or_exit(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = RideEntranceExitPlace(
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        *edx & 0xFF,
-        (*ebx >> 8) & 0xFF,
-        *ebx & 0xFF,
-        *edx & 0xFF,
-        *edi & 0xFF,
+        *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebx & 0xFF, *edx & 0xFF, *edi & 0xFF,
         ((*edx >> 8) & 0xFF) != 0);
 }
 
@@ -566,12 +534,7 @@ void game_command_place_ride_entrance_or_exit(
  *  rct2: 0x0066640B
  */
 void game_command_remove_ride_entrance_or_exit(
-    int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    int32_t* edi,
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
     *ebx = RideEntranceExitRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, *edi & 0xFF, *ebx & 0xFF);

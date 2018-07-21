@@ -130,20 +130,10 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         gfx_fill_rect_inset(
             dpi, _chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5, chatBackgroundColor, INSET_RECT_FLAG_FILL_NONE);
         gfx_fill_rect_inset(
-            dpi,
-            _chatLeft + 1,
-            _chatTop - 4,
-            _chatRight - 1,
-            _chatBottom - inputLineHeight - 6,
-            chatBackgroundColor,
+            dpi, _chatLeft + 1, _chatTop - 4, _chatRight - 1, _chatBottom - inputLineHeight - 6, chatBackgroundColor,
             INSET_RECT_FLAG_BORDER_INSET);
         gfx_fill_rect_inset(
-            dpi,
-            _chatLeft + 1,
-            _chatBottom - inputLineHeight - 5,
-            _chatRight - 1,
-            _chatBottom + 4,
-            chatBackgroundColor,
+            dpi, _chatLeft + 1, _chatBottom - inputLineHeight - 5, _chatRight - 1, _chatBottom + 4, chatBackgroundColor,
             INSET_RECT_FLAG_BORDER_INSET); // Textbox
     }
 

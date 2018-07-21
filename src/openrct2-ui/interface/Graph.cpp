@@ -127,12 +127,7 @@ static void graph_draw_months_money32(
 }
 
 static void graph_draw_line_a_money32(
-    rct_drawpixelinfo* dpi,
-    const money32* history,
-    int32_t count,
-    int32_t baseX,
-    int32_t baseY,
-    int32_t modifier,
+    rct_drawpixelinfo* dpi, const money32* history, int32_t count, int32_t baseX, int32_t baseY, int32_t modifier,
     int32_t offset)
 {
     int32_t i, x, y, lastX, lastY;
@@ -161,12 +156,7 @@ static void graph_draw_line_a_money32(
 }
 
 static void graph_draw_line_b_money32(
-    rct_drawpixelinfo* dpi,
-    const money32* history,
-    int32_t count,
-    int32_t baseX,
-    int32_t baseY,
-    int32_t modifier,
+    rct_drawpixelinfo* dpi, const money32* history, int32_t count, int32_t baseX, int32_t baseY, int32_t modifier,
     int32_t offset)
 {
     int32_t i, x, y, lastX, lastY;

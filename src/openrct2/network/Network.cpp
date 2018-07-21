@@ -795,8 +795,7 @@ NetworkGroup* Network::AddGroup()
     for (int32_t id = 0; id < 255; id++)
     {
         if (std::find_if(
-                group_list.begin(),
-                group_list.end(),
+                group_list.begin(), group_list.end(),
                 [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; })
             == group_list.end())
         {
@@ -845,9 +844,7 @@ uint8_t Network::GetGroupIDByHash(const std::string& keyhash)
         else
         {
             log_warning(
-                "User %s is assigned to non-existent group %u. Assigning to default group (%u)",
-                keyhash.c_str(),
-                assignedGroup,
+                "User %s is assigned to non-existent group %u. Assigning to default group (%u)", keyhash.c_str(), assignedGroup,
                 groupId);
         }
     }
@@ -1297,14 +1294,7 @@ void Network::Client_Send_GAMECMD(
 }
 
 void Network::Server_Send_GAMECMD(
-    uint32_t eax,
-    uint32_t ebx,
-    uint32_t ecx,
-    uint32_t edx,
-    uint32_t esi,
-    uint32_t edi,
-    uint32_t ebp,
-    uint8_t playerid,
+    uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp, uint8_t playerid,
     uint8_t callback)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
@@ -1583,9 +1573,7 @@ void Network::ProcessGameCommandQueue()
 
                 log_warning(
                     "Discarding game command from tick behind current tick, CMD: %08X, CMD Tick: %08X, Current Tick: %08X\n",
-                    gc.esi,
-                    gc.tick,
-                    gCurrentTicks);
+                    gc.esi, gc.tick, gCurrentTicks);
 
                 // At this point we should not return, would add the possibility to skip commands this tick.
                 continue;
@@ -1711,13 +1699,9 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
         {
             game_command_playerid = connection_player->Id;
             game_do_command(
-                pickup_peep->sprite_index,
-                GAME_COMMAND_FLAG_APPLY,
-                1,
-                0,
+                pickup_peep->sprite_index, GAME_COMMAND_FLAG_APPLY, 1, 0,
                 pickup_peep->type == PEEP_TYPE_GUEST ? GAME_COMMAND_PICKUP_GUEST : GAME_COMMAND_PICKUP_STAFF,
-                network_get_pickup_peep_old_x(connection_player->Id),
-                0);
+                network_get_pickup_peep_old_x(connection_player->Id), 0);
         }
         gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED(
             (char*)connection_player->Name.c_str(), connection->GetLastDisconnectReason());
@@ -1727,8 +1711,7 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
     }
     player_list.erase(
         std::remove_if(
-            player_list.begin(),
-            player_list.end(),
+            player_list.begin(), player_list.end(),
             [connection_player](std::unique_ptr<NetworkPlayer>& player) { return player.get() == connection_player; }),
         player_list.end());
     client_connection_list.remove(connection);
@@ -1749,8 +1732,7 @@ NetworkPlayer* Network::AddPlayer(const utf8* name, const std::string& keyhash)
         for (int32_t id = 0; id < 255; id++)
         {
             if (std::find_if(
-                    player_list.begin(),
-                    player_list.end(),
+                    player_list.begin(), player_list.end(),
                     [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->Id == id; })
                 == player_list.end())
             {
@@ -2008,12 +1990,8 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         else if (ori->ObjectEntry.checksum != checksum || ori->ObjectEntry.flags != flags)
         {
             log_warning(
-                "Object %s has different checksum/flags (%x/%x) than server (%x/%x).",
-                s.c_str(),
-                ori->ObjectEntry.checksum,
-                ori->ObjectEntry.flags,
-                checksum,
-                flags);
+                "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", s.c_str(), ori->ObjectEntry.checksum,
+                ori->ObjectEntry.flags, checksum, flags);
         }
     }
     Client_Send_OBJECTS(requested_objects);
@@ -2991,13 +2969,8 @@ void network_chat_show_server_greeting()
 }
 
 void game_command_set_player_group(
-    [[maybe_unused]] int32_t* eax,
-    int32_t* ebx,
-    int32_t* ecx,
-    int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     uint8_t playerid = (uint8_t)*ecx;
     uint8_t groupid = (uint8_t)*edx;
@@ -3288,13 +3261,8 @@ void game_command_modify_groups(
 }
 
 void game_command_kick_player(
-    int32_t* eax,
-    int32_t* ebx,
-    [[maybe_unused]] int32_t* ecx,
-    [[maybe_unused]] int32_t* edx,
-    [[maybe_unused]] int32_t* esi,
-    [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
+    int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     uint8_t playerid = (uint8_t)*eax;
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);

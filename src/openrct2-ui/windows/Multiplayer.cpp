@@ -365,14 +365,8 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_wid
     numItems = network_get_num_groups();
 
     window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left,
-        w->y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1],
-        0,
-        0,
-        numItems,
-        widget->right - dropdownWidget->left);
+        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+        w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
@@ -766,12 +760,7 @@ static void window_multiplayer_groups_dropdown(rct_window* w, rct_widgetindex wi
     {
         case WIDX_DEFAULT_GROUP_DROPDOWN:
             game_do_command(
-                4 | (network_get_group_id(dropdownIndex) << 8),
-                GAME_COMMAND_FLAG_APPLY,
-                0,
-                0,
-                GAME_COMMAND_MODIFY_GROUPS,
-                0,
+                4 | (network_get_group_id(dropdownIndex) << 8), GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_MODIFY_GROUPS, 0,
                 0);
             break;
         case WIDX_SELECTED_GROUP_DROPDOWN:
@@ -844,29 +833,14 @@ static void window_multiplayer_groups_text_input(rct_window* w, rct_widgetindex 
         return;
 
     game_do_command(
-        3 | (_selectedGroup << 8) | (1 << 16),
-        GAME_COMMAND_FLAG_APPLY,
-        w->number,
-        *((int32_t*)(text + 0)),
-        GAME_COMMAND_MODIFY_GROUPS,
-        *((int32_t*)(text + 8)),
-        *((int32_t*)(text + 4)));
+        3 | (_selectedGroup << 8) | (1 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 0)),
+        GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 8)), *((int32_t*)(text + 4)));
     game_do_command(
-        3 | (_selectedGroup << 8) | (2 << 16),
-        GAME_COMMAND_FLAG_APPLY,
-        w->number,
-        *((int32_t*)(text + 12)),
-        GAME_COMMAND_MODIFY_GROUPS,
-        *((int32_t*)(text + 20)),
-        *((int32_t*)(text + 16)));
+        3 | (_selectedGroup << 8) | (2 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 12)),
+        GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 20)), *((int32_t*)(text + 16)));
     game_do_command(
-        3 | (_selectedGroup << 8) | (0 << 16),
-        GAME_COMMAND_FLAG_APPLY,
-        w->number,
-        *((int32_t*)(text + 24)),
-        GAME_COMMAND_MODIFY_GROUPS,
-        *((int32_t*)(text + 32)),
-        *((int32_t*)(text + 28)));
+        3 | (_selectedGroup << 8) | (0 << 16), GAME_COMMAND_FLAG_APPLY, w->number, *((int32_t*)(text + 24)),
+        GAME_COMMAND_MODIFY_GROUPS, *((int32_t*)(text + 32)), *((int32_t*)(text + 28)));
 }
 
 static void window_multiplayer_groups_invalidate(rct_window* w)
@@ -900,13 +874,8 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
         set_format_arg(0, const char*, buffer);
         gfx_draw_string_centred_clipped(
-            dpi,
-            STR_STRING,
-            gCommonFormatArgs,
-            COLOUR_BLACK,
-            w->x + (widget->left + widget->right - 11) / 2,
-            w->y + widget->top,
-            widget->right - widget->left - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + (widget->left + widget->right - 11) / 2,
+            w->y + widget->top, widget->right - widget->left - 8);
     }
 
     int32_t x = w->x + window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4;
@@ -929,13 +898,8 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
         set_format_arg(0, const char*, buffer);
         gfx_draw_string_centred_clipped(
-            dpi,
-            STR_STRING,
-            gCommonFormatArgs,
-            COLOUR_BLACK,
-            w->x + (widget->left + widget->right - 11) / 2,
-            w->y + widget->top,
-            widget->right - widget->left - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + (widget->left + widget->right - 11) / 2,
+            w->y + widget->top, widget->right - widget->left - 8);
     }
 }
 

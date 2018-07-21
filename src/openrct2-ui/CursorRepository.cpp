@@ -98,12 +98,8 @@ SDL_Cursor* CursorRepository::Create(const CursorData* cursorInfo, uint8_t scale
     auto mask = scaleDataArray(cursorInfo->Mask, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
 
     cursor = SDL_CreateCursor(
-        data,
-        mask,
-        BASE_CURSOR_WIDTH * integer_scale,
-        BASE_CURSOR_HEIGHT * integer_scale,
-        cursorInfo->HotSpot.X * integer_scale,
-        cursorInfo->HotSpot.Y * integer_scale);
+        data, mask, BASE_CURSOR_WIDTH * integer_scale, BASE_CURSOR_HEIGHT * integer_scale,
+        cursorInfo->HotSpot.X * integer_scale, cursorInfo->HotSpot.Y * integer_scale);
 
     free(data);
     free(mask);

@@ -767,12 +767,7 @@ private:
     }
 
     static void DrawRainWindow(
-        IRainDrawer* rainDrawer,
-        rct_window* original_w,
-        int16_t left,
-        int16_t right,
-        int16_t top,
-        int16_t bottom,
+        IRainDrawer* rainDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top, int16_t bottom,
         DrawRainFunc drawFunc)
     {
         rct_window* w{};

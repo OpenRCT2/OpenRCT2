@@ -68,12 +68,7 @@ uint32_t lightfx_get_light_polution();
 
 void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b);
 void lightfx_render_to_texture(
-    void* dstPixels,
-    uint32_t dstPitch,
-    uint8_t* bits,
-    uint32_t width,
-    uint32_t height,
-    const uint32_t* palette,
+    void* dstPixels, uint32_t dstPitch, uint8_t* bits, uint32_t width, uint32_t height, const uint32_t* palette,
     const uint32_t* lightPalette);
 
 #endif // __ENABLE_LIGHTFX__

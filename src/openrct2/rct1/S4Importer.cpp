@@ -1758,9 +1758,8 @@ private:
     {
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            gPeepSpawns[i] = {
-                _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z * 16, _s4.peep_spawn[i].direction
-            };
+            gPeepSpawns[i] = { _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z * 16,
+                               _s4.peep_spawn[i].direction };
         }
 
         for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
@@ -1911,8 +1910,7 @@ private:
         AppendRequiredObjects(result, OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
         AppendRequiredObjects(result, OBJECT_TYPE_SCENERY_GROUP, _sceneryGroupEntries);
         AppendRequiredObjects(
-            result,
-            OBJECT_TYPE_BANNERS,
+            result, OBJECT_TYPE_BANNERS,
             std::vector<const char*>({
                 "BN1     ",
                 "BN2     ",

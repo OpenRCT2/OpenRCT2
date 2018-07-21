@@ -125,8 +125,7 @@ namespace OpenRCT2
 
     std::unique_ptr<IContext> CreateContext();
     std::unique_ptr<IContext> CreateContext(
-        const std::shared_ptr<IPlatformEnvironment>& env,
-        const std::shared_ptr<Audio::IAudioContext>& audioContext,
+        const std::shared_ptr<IPlatformEnvironment>& env, const std::shared_ptr<Audio::IAudioContext>& audioContext,
         const std::shared_ptr<Ui::IUiContext>& uiContext);
     IContext* GetContext();
 } // namespace OpenRCT2

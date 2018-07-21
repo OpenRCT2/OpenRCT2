@@ -14,8 +14,7 @@ static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator);
 
 const CommandLineCommand CommandLine::BenchGfxCommands[]{
     // Main commands
-    DefineCommand("", "<file> [iterations count]", nullptr, HandleBenchGfx),
-    CommandTableEnd
+    DefineCommand("", "<file> [iterations count]", nullptr, HandleBenchGfx), CommandTableEnd
 };
 
 static exitcode_t HandleBenchGfx(CommandLineArgEnumerator* argEnumerator)

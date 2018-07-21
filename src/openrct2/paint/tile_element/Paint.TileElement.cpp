@@ -371,16 +371,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             int32_t xOffset = sy * 10;
             int32_t yOffset = -22 + sx * 10;
             paint_struct* ps = sub_98197C(
-                session,
-                5504 | imageColourFlats,
-                xOffset,
-                yOffset,
-                10,
-                10,
-                1,
-                segmentHeight,
-                xOffset + 1,
-                yOffset + 16,
+                session, 5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16,
                 segmentHeight);
             if (ps != nullptr)
             {

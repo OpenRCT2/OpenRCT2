@@ -78,29 +78,15 @@ static constexpr const uint8_t byte_98D8A4[] = {
 // clang-format on
 
 void path_paint_box_support(
-    paint_session* session,
-    const rct_tile_element* tileElement,
-    int32_t height,
-    rct_footpath_entry* footpathEntry,
-    bool hasFences,
-    uint32_t imageFlags,
-    uint32_t sceneryImageFlags);
+    paint_session* session, const rct_tile_element* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
+    bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags);
 void path_paint_pole_support(
-    paint_session* session,
-    const rct_tile_element* tileElement,
-    int16_t height,
-    rct_footpath_entry* footpathEntry,
-    bool hasFences,
-    uint32_t imageFlags,
-    uint32_t sceneryImageFlags);
+    paint_session* session, const rct_tile_element* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
+    bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
-    paint_session* session,
-    rct_scenery_entry* pathBitEntry,
-    const rct_tile_element* tileElement,
-    int32_t height,
-    uint8_t edges,
+    paint_session* session, rct_scenery_entry* pathBitEntry, const rct_tile_element* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     if (footpath_element_is_sloped(tileElement))
@@ -158,11 +144,7 @@ static void path_bit_lights_paint(
 
 /* rct2: 0x006A5C94 */
 static void path_bit_bins_paint(
-    paint_session* session,
-    rct_scenery_entry* pathBitEntry,
-    const rct_tile_element* tileElement,
-    int32_t height,
-    uint8_t edges,
+    paint_session* session, rct_scenery_entry* pathBitEntry, const rct_tile_element* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     if (footpath_element_is_sloped(tileElement))
@@ -261,11 +243,7 @@ static void path_bit_bins_paint(
 
 /* rct2: 0x006A5E81 */
 static void path_bit_benches_paint(
-    paint_session* session,
-    rct_scenery_entry* pathBitEntry,
-    const rct_tile_element* tileElement,
-    int32_t height,
-    uint8_t edges,
+    paint_session* session, rct_scenery_entry* pathBitEntry, const rct_tile_element* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
     uint32_t imageId;
@@ -339,14 +317,8 @@ static void path_bit_jumping_fountains_paint(
  * @param tile_element (esi)
  */
 static void sub_6A4101(
-    paint_session* session,
-    const rct_tile_element* tile_element,
-    uint16_t height,
-    uint32_t ebp,
-    bool word_F3F038,
-    rct_footpath_entry* footpathEntry,
-    uint32_t base_image_id,
-    uint32_t imageFlags)
+    paint_session* session, const rct_tile_element* tile_element, uint16_t height, uint32_t ebp, bool word_F3F038,
+    rct_footpath_entry* footpathEntry, uint32_t base_image_id, uint32_t imageFlags)
 {
     if (footpath_element_is_queue(tile_element))
     {
@@ -389,16 +361,7 @@ static void sub_6A4101(
                 case 3:
                     sub_98197C(session, 90 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
                     sub_98197C(
-                        session,
-                        91 + base_image_id,
-                        28,
-                        0,
-                        1,
-                        28,
-                        7,
-                        height,
-                        28,
-                        4,
+                        session, 91 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
                         height + 2); // bound_box_offset_y seems to be a bug
                     sub_98197C(session, 98 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2);
                     break;
@@ -431,16 +394,7 @@ static void sub_6A4101(
                 case 12:
                     sub_98197C(session, 89 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
                     sub_98197C(
-                        session,
-                        92 + base_image_id,
-                        0,
-                        28,
-                        28,
-                        1,
-                        7,
-                        height,
-                        4,
-                        28,
+                        session, 92 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
                         height + 2); // bound_box_offset_x seems to be a bug
                     sub_98197C(session, 100 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2);
                     break;
@@ -466,8 +420,7 @@ static void sub_6A4101(
         direction += session->CurrentRotation;
         direction &= 3;
 
-        LocationXYZ16 boundBoxOffsets = { BannerBoundBoxes[direction][0].x,
-                                          BannerBoundBoxes[direction][0].y,
+        LocationXYZ16 boundBoxOffsets = { BannerBoundBoxes[direction][0].x, BannerBoundBoxes[direction][0].y,
                                           static_cast<int16_t>(height + 2) };
 
         uint32_t imageId = (direction << 1) + base_image_id + 101;
@@ -514,17 +467,8 @@ static void sub_6A4101(
             uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
             sub_98199C(
-                session,
-                scrolling_text_setup(session, string_id, scroll, scrollingMode),
-                0,
-                0,
-                1,
-                1,
-                21,
-                height + 7,
-                boundBoxOffsets.x,
-                boundBoxOffsets.y,
-                boundBoxOffsets.z);
+                session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,
+                boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
@@ -606,16 +550,7 @@ static void sub_6A4101(
             case 3:
                 sub_98197C(session, 76 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2);
                 sub_98197C(
-                    session,
-                    77 + base_image_id,
-                    28,
-                    0,
-                    1,
-                    28,
-                    7,
-                    height,
-                    28,
-                    4,
+                    session, 77 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4,
                     height + 2); // bound_box_offset_y seems to be a bug
                 if (!(dword_F3EF80 & 0x10))
                 {
@@ -641,16 +576,7 @@ static void sub_6A4101(
             case 12:
                 sub_98197C(session, 75 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2);
                 sub_98197C(
-                    session,
-                    78 + base_image_id,
-                    0,
-                    28,
-                    28,
-                    1,
-                    7,
-                    height,
-                    4,
-                    28,
+                    session, 78 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28,
                     height + 2); // bound_box_offset_x seems to be a bug
                 if (!(dword_F3EF80 & 0x40))
                 {
@@ -735,14 +661,8 @@ static void sub_6A4101(
  * @param sceneryImageFlags (0x00F3EF74)
  */
 static void sub_6A3F61(
-    paint_session* session,
-    const rct_tile_element* tile_element,
-    uint16_t connectedEdges,
-    uint16_t height,
-    rct_footpath_entry* footpathEntry,
-    uint32_t imageFlags,
-    uint32_t sceneryImageFlags,
-    bool word_F3F038)
+    paint_session* session, const rct_tile_element* tile_element, uint16_t connectedEdges, uint16_t height,
+    rct_footpath_entry* footpathEntry, uint32_t imageFlags, uint32_t sceneryImageFlags, bool word_F3F038)
 {
     // eax --
     // ebx --
@@ -811,13 +731,7 @@ static void sub_6A3F61(
         // Redundant zoom-level check removed
 
         sub_6A4101(
-            session,
-            tile_element,
-            height,
-            connectedEdges,
-            word_F3F038,
-            footpathEntry,
-            footpathEntry->image | imageFlags,
+            session, tile_element, height, connectedEdges, word_F3F038, footpathEntry, footpathEntry->image | imageFlags,
             imageFlags);
     }
 
@@ -1057,13 +971,8 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
 }
 
 void path_paint_box_support(
-    paint_session* session,
-    const rct_tile_element* tileElement,
-    int32_t height,
-    rct_footpath_entry* footpathEntry,
-    bool hasFences,
-    uint32_t imageFlags,
-    uint32_t sceneryImageFlags)
+    paint_session* session, const rct_tile_element* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
+    bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     // Rol edges around rotation
     uint8_t edges = ((tileElement->properties.path.edges << session->CurrentRotation) & 0xF)
@@ -1119,16 +1028,7 @@ void path_paint_box_support(
     if (!hasFences || !session->DidPassSurface)
     {
         sub_98197C(
-            session,
-            imageId | imageFlags,
-            0,
-            0,
-            boundBoxSize.x,
-            boundBoxSize.y,
-            0,
-            height,
-            boundBoxOffset.x,
-            boundBoxOffset.y,
+            session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
             height + boundingBoxZOffset);
     }
     else
@@ -1146,16 +1046,7 @@ void path_paint_box_support(
         }
 
         sub_98197C(
-            session,
-            image_id | imageFlags,
-            0,
-            0,
-            boundBoxSize.x,
-            boundBoxSize.y,
-            0,
-            height,
-            boundBoxOffset.x,
-            boundBoxOffset.y,
+            session, image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
             height + boundingBoxZOffset);
 
         if (!footpath_element_is_queue(tileElement) && !(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
@@ -1165,17 +1056,8 @@ void path_paint_box_support(
         else
         {
             sub_98199C(
-                session,
-                imageId | imageFlags,
-                0,
-                0,
-                boundBoxSize.x,
-                boundBoxSize.y,
-                0,
-                height,
-                boundBoxOffset.x,
-                boundBoxOffset.y,
-                height + boundingBoxZOffset);
+                session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
+                boundBoxOffset.y, height + boundingBoxZOffset);
         }
     }
 
@@ -1240,13 +1122,8 @@ void path_paint_box_support(
 }
 
 void path_paint_pole_support(
-    paint_session* session,
-    const rct_tile_element* tileElement,
-    int16_t height,
-    rct_footpath_entry* footpathEntry,
-    bool hasFences,
-    uint32_t imageFlags,
-    uint32_t sceneryImageFlags)
+    paint_session* session, const rct_tile_element* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
+    bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     // Rol edges around rotation
     uint8_t edges = ((tileElement->properties.path.edges << session->CurrentRotation) & 0xF)
@@ -1302,16 +1179,7 @@ void path_paint_pole_support(
     if (!hasFences || !session->DidPassSurface)
     {
         sub_98197C(
-            session,
-            imageId | imageFlags,
-            0,
-            0,
-            boundBoxSize.x,
-            boundBoxSize.y,
-            0,
-            height,
-            boundBoxOffset.x,
-            boundBoxOffset.y,
+            session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
             height + boundingBoxZOffset);
     }
     else
@@ -1330,32 +1198,14 @@ void path_paint_pole_support(
         }
 
         sub_98197C(
-            session,
-            bridgeImage | imageFlags,
-            0,
-            0,
-            boundBoxSize.x,
-            boundBoxSize.y,
-            0,
-            height,
-            boundBoxOffset.x,
-            boundBoxOffset.y,
-            height + boundingBoxZOffset);
+            session, bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
+            boundBoxOffset.y, height + boundingBoxZOffset);
 
         if (footpath_element_is_queue(tileElement) || (footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
         {
             sub_98199C(
-                session,
-                imageId | imageFlags,
-                0,
-                0,
-                boundBoxSize.x,
-                boundBoxSize.y,
-                0,
-                height,
-                boundBoxOffset.x,
-                boundBoxOffset.y,
-                height + boundingBoxZOffset);
+                session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
+                boundBoxOffset.y, height + boundingBoxZOffset);
         }
     }
 

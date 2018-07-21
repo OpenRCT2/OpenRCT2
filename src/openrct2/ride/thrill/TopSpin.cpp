@@ -41,12 +41,7 @@ static int8_t TopSpinSeatPositionOffset[] = {
  *  rct2: 0x0076750D
  */
 static void top_spin_paint_vehicle(
-    paint_session* session,
-    int8_t al,
-    int8_t cl,
-    uint8_t rideIndex,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, int8_t al, int8_t cl, uint8_t rideIndex, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
@@ -168,17 +163,8 @@ static void top_spin_paint_vehicle(
     }
 
     sub_98199C(
-        session,
-        image_id,
-        (int8_t)seatCoords.x,
-        (int8_t)seatCoords.y,
-        lengthX,
-        lengthY,
-        90,
-        seatCoords.z,
-        boundBoxOffsetX,
-        boundBoxOffsetY,
-        boundBoxOffsetZ);
+        session, image_id, (int8_t)seatCoords.x, (int8_t)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX,
+        boundBoxOffsetY, boundBoxOffsetZ);
 
     rct_drawpixelinfo* dpi = session->DPI;
     if (dpi->zoom_level < 2 && vehicle != nullptr && vehicle->num_peeps != 0)
@@ -187,17 +173,8 @@ static void top_spin_paint_vehicle(
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
 
         sub_98199C(
-            session,
-            image_id,
-            (int8_t)seatCoords.x,
-            (int8_t)seatCoords.y,
-            lengthX,
-            lengthY,
-            90,
-            seatCoords.z,
-            boundBoxOffsetX,
-            boundBoxOffsetY,
-            boundBoxOffsetZ);
+            session, image_id, (int8_t)seatCoords.x, (int8_t)seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX,
+            boundBoxOffsetY, boundBoxOffsetZ);
 
         if (vehicle->num_peeps > 2)
         {
@@ -205,17 +182,8 @@ static void top_spin_paint_vehicle(
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
 
             sub_98199C(
-                session,
-                image_id,
-                (int8_t)seatCoords.x,
-                (int8_t)seatCoords.y,
-                lengthX,
-                lengthY,
-                90,
-                seatCoords.z,
-                boundBoxOffsetX,
-                boundBoxOffsetY,
-                boundBoxOffsetZ);
+                session, image_id, (int8_t)seatCoords.x, (int8_t)seatCoords.y, lengthX, lengthY, 90, seatCoords.z,
+                boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
         }
 
         if (vehicle->num_peeps > 4)
@@ -224,17 +192,8 @@ static void top_spin_paint_vehicle(
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
 
             sub_98199C(
-                session,
-                image_id,
-                (int8_t)seatCoords.x,
-                (int8_t)seatCoords.y,
-                lengthX,
-                lengthY,
-                90,
-                seatCoords.z,
-                boundBoxOffsetX,
-                boundBoxOffsetY,
-                boundBoxOffsetZ);
+                session, image_id, (int8_t)seatCoords.x, (int8_t)seatCoords.y, lengthX, lengthY, 90, seatCoords.z,
+                boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
         }
 
         if (vehicle->num_peeps > 6)
@@ -243,17 +202,8 @@ static void top_spin_paint_vehicle(
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
 
             sub_98199C(
-                session,
-                image_id,
-                (int8_t)seatCoords.x,
-                (int8_t)seatCoords.y,
-                lengthX,
-                lengthY,
-                90,
-                seatCoords.z,
-                boundBoxOffsetX,
-                boundBoxOffsetY,
-                boundBoxOffsetZ);
+                session, image_id, (int8_t)seatCoords.x, (int8_t)seatCoords.y, lengthX, lengthY, 90, seatCoords.z,
+                boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
         }
     }
 
@@ -292,11 +242,7 @@ static void top_spin_paint_vehicle(
  * rct2: 0x0076679C
  */
 static void paint_top_spin(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -310,14 +256,7 @@ static void paint_top_spin(
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
 
     track_paint_util_paint_fences(
-        session,
-        edges,
-        position,
-        tileElement,
-        ride,
-        session->TrackColours[SCHEME_MISC],
-        height,
-        fenceSpritesRope,
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
         session->CurrentRotation);
 
     switch (trackSequence)

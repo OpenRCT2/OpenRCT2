@@ -444,13 +444,8 @@ rct_window* window_scenery_open()
     window_scenery_init();
 
     window = window_create(
-        context_get_width() - WINDOW_SCENERY_WIDTH,
-        0x1D,
-        WINDOW_SCENERY_WIDTH,
-        WINDOW_SCENERY_HEIGHT,
-        &window_scenery_events,
-        WC_SCENERY,
-        WF_NO_SCROLLING);
+        context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D, WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT, &window_scenery_events,
+        WC_SCENERY, WF_NO_SCROLLING);
     window->widgets = window_scenery_widgets;
 
     window->enabled_widgets = (1 << WIDX_SCENERY_CLOSE) | (1 << WIDX_SCENERY_ROTATE_OBJECTS_BUTTON) | (1 << WIDX_SCENERY_TAB_1)
@@ -1119,10 +1114,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     uint32_t imageId = ((w->colours[1] << 19) | window_scenery_widgets[selectedWidgetId].image) + 1ul;
 
     gfx_draw_sprite(
-        dpi,
-        imageId,
-        w->x + window_scenery_widgets[selectedWidgetId].left,
-        w->y + window_scenery_widgets[selectedWidgetId].top,
+        dpi, imageId, w->x + window_scenery_widgets[selectedWidgetId].left, w->y + window_scenery_widgets[selectedWidgetId].top,
         selectedWidgetId);
 
     int16_t selectedSceneryEntryId = w->scenery.selected_scenery_id;
@@ -1210,12 +1202,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             if (w->scenery.selected_scenery_id == currentSceneryGlobalId)
             {
                 gfx_fill_rect_inset(
-                    dpi,
-                    left,
-                    top,
-                    left + SCENERY_BUTTON_WIDTH - 1,
-                    top + SCENERY_BUTTON_HEIGHT - 1,
-                    w->colours[1],
+                    dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1, top + SCENERY_BUTTON_HEIGHT - 1, w->colours[1],
                     INSET_RECT_FLAG_FILL_MID_LIGHT);
             }
         }
@@ -1224,23 +1211,13 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             if (tabSelectedSceneryId == currentSceneryGlobalId)
             {
                 gfx_fill_rect_inset(
-                    dpi,
-                    left,
-                    top,
-                    left + SCENERY_BUTTON_WIDTH - 1,
-                    top + SCENERY_BUTTON_HEIGHT - 1,
-                    w->colours[1],
+                    dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1, top + SCENERY_BUTTON_HEIGHT - 1, w->colours[1],
                     (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
             }
             else if (w->scenery.selected_scenery_id == currentSceneryGlobalId)
             {
                 gfx_fill_rect_inset(
-                    dpi,
-                    left,
-                    top,
-                    left + SCENERY_BUTTON_WIDTH - 1,
-                    top + SCENERY_BUTTON_HEIGHT - 1,
-                    w->colours[1],
+                    dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1, top + SCENERY_BUTTON_HEIGHT - 1, w->colours[1],
                     INSET_RECT_FLAG_FILL_MID_LIGHT);
             }
         }

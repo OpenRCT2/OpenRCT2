@@ -84,11 +84,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
 
 /** rct2: 0x00767C40 */
 static void paint_space_rings(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -119,15 +115,8 @@ static void paint_space_rings(
             break;
         default:
             track_paint_util_paint_fences(
-                session,
-                edges,
-                position,
-                tileElement,
-                ride,
-                session->TrackColours[SCHEME_MISC],
-                height,
-                space_rings_fence_sprites,
-                session->CurrentRotation);
+                session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
+                space_rings_fence_sprites, session->CurrentRotation);
             break;
     }
 

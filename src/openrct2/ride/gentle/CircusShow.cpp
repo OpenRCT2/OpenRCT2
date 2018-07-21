@@ -49,11 +49,7 @@ static void paint_circus_show_tent(
  * rct2: 0x0076FAD4
  */
 static void paint_circus_show(
-    paint_session* session,
-    uint8_t rideIndex,
-    uint8_t trackSequence,
-    uint8_t direction,
-    int32_t height,
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -67,14 +63,7 @@ static void paint_circus_show(
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
 
     track_paint_util_paint_fences(
-        session,
-        edges,
-        position,
-        tileElement,
-        ride,
-        session->TrackColours[SCHEME_SUPPORTS],
-        height,
-        fenceSpritesRope,
+        session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope,
         session->CurrentRotation);
 
     switch (trackSequence)

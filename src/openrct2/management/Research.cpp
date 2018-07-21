@@ -224,8 +224,7 @@ void research_finish_item(rct_research_item* researchItem)
 
             ride_type_set_invented(base_ride_type);
             openrct2_assert(
-                base_ride_type < Util::CountOf(RideTypePossibleTrackConfigurations),
-                "Invalid base_ride_type = %d",
+                base_ride_type < Util::CountOf(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d",
                 base_ride_type);
 
             ride_entry_set_invented(rideEntryIndex);

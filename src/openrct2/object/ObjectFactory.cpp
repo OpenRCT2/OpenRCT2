@@ -99,9 +99,7 @@ public:
     }
 
     ReadObjectContext(
-        IObjectRepository& objectRepository,
-        const std::string& objectName,
-        bool loadImages,
+        IObjectRepository& objectRepository, const std::string& objectName, bool loadImages,
         const IFileDataRetriever* fileDataRetriever)
         : _objectRepository(objectRepository)
         , _fileDataRetriever(fileDataRetriever)
