@@ -6567,17 +6567,6 @@ static void hybrid_rc_track_right_banked_quarter_turn_5_25_deg_down(paint_sessio
                                                        tileElement);
 }
 
-
-
-
-
-
-
-
-
-
-
-/** rct2: 0x008AD8A4 */
 static void hybrid_rc_track_s_bend_left(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction,
                                       int32_t height, const TileElement * tileElement)
 {
@@ -6587,19 +6576,19 @@ static void hybrid_rc_track_s_bend_left(paint_session * session, uint16_t rideIn
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18238, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+0), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18242, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+4), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18241, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+3), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18245, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+7), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         }
@@ -6616,19 +6605,19 @@ static void hybrid_rc_track_s_bend_left(paint_session * session, uint16_t rideIn
         switch (direction)
         {
         case 0:
-            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18239, 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+1), 0, 0, 32, 26, 3, height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
-            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18243, 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+5), 0, 0, 32, 26, 3, height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18240, 0, 0, 32, 26, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+2), 0, 0, 32, 26, 3, height, 0, 6,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18244, 0, 0, 32, 26, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+6), 0, 0, 32, 26, 3, height, 0, 6,
                                height);
             break;
         }
@@ -6642,19 +6631,19 @@ static void hybrid_rc_track_s_bend_left(paint_session * session, uint16_t rideIn
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18240, 0, 0, 32, 26, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+2), 0, 0, 32, 26, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18244, 0, 0, 32, 26, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+6), 0, 0, 32, 26, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18239, 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+1), 0, 0, 32, 26, 3, height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18243, 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+5), 0, 0, 32, 26, 3, height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         }
@@ -6668,19 +6657,19 @@ static void hybrid_rc_track_s_bend_left(paint_session * session, uint16_t rideIn
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18241, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+3), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18245, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+7), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18238, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+0), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18242, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+4), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         }
@@ -6701,7 +6690,6 @@ static void hybrid_rc_track_s_bend_left(paint_session * session, uint16_t rideIn
     }
 }
 
-/** rct2: 0x008AD8B4 */
 static void hybrid_rc_track_s_bend_right(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction,
                                        int32_t height, const TileElement * tileElement)
 {
@@ -6711,19 +6699,19 @@ static void hybrid_rc_track_s_bend_right(paint_session * session, uint16_t rideI
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18246, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+8), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18250, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+12), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18249, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+11), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18253, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+15), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         }
@@ -6740,20 +6728,20 @@ static void hybrid_rc_track_s_bend_right(paint_session * session, uint16_t rideI
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18247, 0, 0, 32, 26, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+9), 0, 0, 32, 26, 3, height, 0, 6,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18251, 0, 0, 32, 26, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+13), 0, 0, 32, 26, 3, height, 0, 6,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18248, 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+10), 0, 0, 32, 26, 3, height);
             break;
         case 3:
-            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18252, 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+14), 0, 0, 32, 26, 3, height);
             break;
         }
         paint_util_set_segment_support_height(
@@ -6766,18 +6754,18 @@ static void hybrid_rc_track_s_bend_right(paint_session * session, uint16_t rideI
         switch (direction)
         {
         case 0:
-            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18248, 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+10), 0, 0, 32, 26, 3, height);
             break;
         case 1:
-            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18252, 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+14), 0, 0, 32, 26, 3, height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18247, 0, 0, 32, 26, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+9), 0, 0, 32, 26, 3, height, 0, 6,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18251, 0, 0, 32, 26, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+13), 0, 0, 32, 26, 3, height, 0, 6,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
@@ -6792,19 +6780,19 @@ static void hybrid_rc_track_s_bend_right(paint_session * session, uint16_t rideI
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18249, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+11), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18253, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+15), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18246, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+8), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18250, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_S_BEND+12), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         }
