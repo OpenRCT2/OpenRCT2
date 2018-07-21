@@ -307,8 +307,8 @@ void TextComposition::Delete()
     size_t bytesToSkip = selectionOffset - _session.SelectionStart;
 
     // std::min() is used to ensure that shiftSize doesn't underflow; it should be between 0 and _session.Size
-    size_t shiftSize
-        = _session.Size - std::min(_session.Size, (_session.SelectionStart - _session.SelectionSize + bytesToSkip));
+    size_t shiftSize = _session.Size
+        - std::min(_session.Size, (_session.SelectionStart - _session.SelectionSize + bytesToSkip));
     memmove(targetShiftPtr, sourceShiftPtr, shiftSize);
     _session.SelectionSize = 0;
     RecalculateLength();

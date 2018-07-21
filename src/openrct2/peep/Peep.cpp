@@ -1022,8 +1022,8 @@ void rct_peep::UpdateFalling()
             // If a path check if we are on it
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
-                int32_t height
-                    = map_height_from_slope(x, y, tile_element->properties.surface.slope) + tile_element->base_height * 8;
+                int32_t height = map_height_from_slope(x, y, tile_element->properties.surface.slope)
+                    + tile_element->base_height * 8;
 
                 if (height < z - 1 || height > z + 4)
                     continue;
@@ -2427,8 +2427,8 @@ static void peep_return_to_centre_of_tile(rct_peep* peep)
  *
  *  rct2: 0x00693f2C
  */
-static void
-    peep_interact_with_entrance(rct_peep* peep, int16_t x, int16_t y, rct_tile_element* tile_element, uint8_t& pathing_result)
+static void peep_interact_with_entrance(
+    rct_peep* peep, int16_t x, int16_t y, rct_tile_element* tile_element, uint8_t& pathing_result)
 {
     uint8_t entranceType = tile_element->properties.entrance.type;
     uint8_t rideIndex = tile_element->properties.entrance.ride_index;

@@ -30,8 +30,8 @@ static void facility_paint_setup(
     int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool hasSupports
-        = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
+    bool hasSupports = wooden_a_supports_paint_setup(
+        session, direction & 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
 
     Ride* ride = get_ride(rideIndex);
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -57,8 +57,8 @@ static void facility_paint_setup(
     int32_t lengthY = (direction & 1) == 0 ? 2 : 28;
     if (hasSupports)
     {
-        uint32_t foundationImageId
-            = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_3];
+        uint32_t foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS)
+            | session->TrackColours[SCHEME_3];
         sub_98197C(
             session,
             foundationImageId,

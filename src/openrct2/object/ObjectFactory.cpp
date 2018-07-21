@@ -152,8 +152,8 @@ public:
 
 namespace ObjectFactory
 {
-    static Object*
-        CreateObjectFromJson(IObjectRepository& objectRepository, const json_t* jRoot, const IFileDataRetriever* fileRetriever);
+    static Object* CreateObjectFromJson(
+        IObjectRepository& objectRepository, const json_t* jRoot, const IFileDataRetriever* fileRetriever);
 
     static void ReadObjectLegacy(Object* object, IReadObjectContext* context, IStream* stream)
     {
@@ -357,8 +357,8 @@ namespace ObjectFactory
         return result;
     }
 
-    Object*
-        CreateObjectFromJson(IObjectRepository& objectRepository, const json_t* jRoot, const IFileDataRetriever* fileRetriever)
+    Object* CreateObjectFromJson(
+        IObjectRepository& objectRepository, const json_t* jRoot, const IFileDataRetriever* fileRetriever)
     {
         log_verbose("CreateObjectFromJson(...)");
 

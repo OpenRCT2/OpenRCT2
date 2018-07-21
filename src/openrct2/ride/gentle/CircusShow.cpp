@@ -17,8 +17,8 @@
 /**
  * rct2: 0x0077084A
  */
-static void
-    paint_circus_show_tent(paint_session* session, uint8_t rideIndex, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
+static void paint_circus_show_tent(
+    paint_session* session, uint8_t rideIndex, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
 {
     const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
 
@@ -35,8 +35,8 @@ static void
     uint32_t imageId = rideEntry->vehicles[0].base_image_id;
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
-        imageColourFlags
-            = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
+            ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
         imageId += direction;
     }
 

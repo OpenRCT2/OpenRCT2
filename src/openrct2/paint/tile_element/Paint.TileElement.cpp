@@ -38,8 +38,8 @@ uint16_t testPaintVerticalTunnelHeight;
 static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y);
 static void sub_68B3FB(paint_session* session, int32_t x, int32_t y);
 
-const int32_t SEGMENTS_ALL
-    = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4;
+const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC
+    | SEGMENT_D0 | SEGMENT_D4;
 
 /**
  *
@@ -435,8 +435,8 @@ void paint_util_force_set_general_support_height(paint_session* session, int16_t
     session->Support.slope = slope;
 }
 
-const uint16_t segment_offsets[9]
-    = { SEGMENT_B4, SEGMENT_B8, SEGMENT_BC, SEGMENT_C0, SEGMENT_C4, SEGMENT_C8, SEGMENT_CC, SEGMENT_D0, SEGMENT_D4 };
+const uint16_t segment_offsets[9] = { SEGMENT_B4, SEGMENT_B8, SEGMENT_BC, SEGMENT_C0, SEGMENT_C4,
+                                      SEGMENT_C8, SEGMENT_CC, SEGMENT_D0, SEGMENT_D4 };
 
 void paint_util_set_segment_support_height(paint_session* session, int32_t segments, uint16_t height, uint8_t slope)
 {

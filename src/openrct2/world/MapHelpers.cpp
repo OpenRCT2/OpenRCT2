@@ -239,8 +239,8 @@ int32_t tile_smooth(int32_t x, int32_t y)
 
             // Get neighbour height. If the element is not valid (outside of map) assume the same height
             rct_tile_element* neighbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
-            neighbourHeightOffset.baseheight[index]
-                = neighbour_element ? neighbour_element->base_height : surfaceElement->base_height;
+            neighbourHeightOffset.baseheight[index] = neighbour_element ? neighbour_element->base_height
+                                                                        : surfaceElement->base_height;
 
             // Make the height relative to the current surface element
             neighbourHeightOffset.baseheight[index] -= surfaceElement->base_height;

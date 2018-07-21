@@ -59,8 +59,8 @@ static rct_window_event_list window_title_logo_events = {
  */
 rct_window* window_title_logo_open()
 {
-    rct_window* window
-        = window_create(0, 0, 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+    rct_window* window = window_create(
+        0, 0, 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
     window_init_scroll_widgets(window);
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);

@@ -265,8 +265,8 @@ private:
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
             result.Size = ((uint64_t)child->nFileSizeHigh << 32ULL) | (uint64_t)child->nFileSizeLow;
-            result.LastModified
-                = ((uint64_t)child->ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64_t)child->ftLastWriteTime.dwLowDateTime;
+            result.LastModified = ((uint64_t)child->ftLastWriteTime.dwHighDateTime << 32ULL)
+                | (uint64_t)child->ftLastWriteTime.dwLowDateTime;
         }
         return result;
     }
@@ -370,8 +370,8 @@ void Path::QueryDirectory(QueryDirectoryResult* result, const std::string& patte
 
         result->TotalFiles++;
         result->TotalFileSize += fileInfo->Size;
-        result->FileDateModifiedChecksum
-            ^= (uint32_t)(fileInfo->LastModified >> 32) ^ (uint32_t)(fileInfo->LastModified & 0xFFFFFFFF);
+        result->FileDateModifiedChecksum ^= (uint32_t)(fileInfo->LastModified >> 32)
+            ^ (uint32_t)(fileInfo->LastModified & 0xFFFFFFFF);
         result->FileDateModifiedChecksum = ror32(result->FileDateModifiedChecksum, 5);
         result->PathChecksum += GetPathChecksum(path);
     }

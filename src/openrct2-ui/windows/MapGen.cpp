@@ -652,8 +652,8 @@ static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetInd
             if (dropdownIndex == -1)
                 dropdownIndex = gDropdownHighlightedIndex;
 
-            type
-                = (dropdownIndex == -1) ? _floorTexture : (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+            type = (dropdownIndex == -1) ? _floorTexture
+                                         : (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
             if (gLandToolTerrainSurface == type)
             {
@@ -977,8 +977,8 @@ static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widget
             if (dropdownIndex == -1)
                 dropdownIndex = gDropdownHighlightedIndex;
 
-            type
-                = (dropdownIndex == -1) ? _floorTexture : (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+            type = (dropdownIndex == -1) ? _floorTexture
+                                         : (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
             if (gLandToolTerrainSurface == type)
             {

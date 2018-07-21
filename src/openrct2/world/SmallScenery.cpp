@@ -21,8 +21,8 @@
 #include "Scenery.h"
 #include "Surface.h"
 
-static money32
-    SmallSceneryRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType, uint8_t flags)
+static money32 SmallSceneryRemove(
+    int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType, uint8_t flags)
 {
     if (!map_is_location_valid({ x, y }))
     {

@@ -316,8 +316,9 @@ static void window_research_development_invalidate(rct_window* w)
     {
         uint8_t type = gResearchLastItem.type;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image
-            = type == RESEARCH_ENTRY_TYPE_RIDE ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == RESEARCH_ENTRY_TYPE_RIDE
+            ? SPR_NEW_RIDE
+            : SPR_NEW_SCENERY;
     }
 }
 

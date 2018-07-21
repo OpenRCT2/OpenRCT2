@@ -143,14 +143,14 @@ void climate_update()
                     }
                     else if (gClimateNext.RainLevel <= RAIN_LEVEL_HEAVY)
                     {
-                        gClimateCurrent.RainLevel
-                            = climate_step_weather_level(gClimateCurrent.RainLevel, gClimateNext.RainLevel);
+                        gClimateCurrent.RainLevel = climate_step_weather_level(
+                            gClimateCurrent.RainLevel, gClimateNext.RainLevel);
                     }
                 }
                 else
                 {
-                    gClimateCurrent.WeatherGloom
-                        = climate_step_weather_level(gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
+                    gClimateCurrent.WeatherGloom = climate_step_weather_level(
+                        gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
                     gfx_invalidate_screen();
                 }
             }
@@ -392,8 +392,8 @@ static void climate_update_thunder()
 
 static void climate_play_thunder(int32_t instanceIndex, int32_t soundId, int32_t volume, int32_t pan)
 {
-    _thunderSoundChannels[instanceIndex]
-        = Mixer_Play_Effect(soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);
+    _thunderSoundChannels[instanceIndex] = Mixer_Play_Effect(
+        soundId, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan), 1, 0);
     if (_thunderSoundChannels[instanceIndex] != nullptr)
     {
         _thunderStatus[instanceIndex] = THUNDER_STATUS::PLAYING;

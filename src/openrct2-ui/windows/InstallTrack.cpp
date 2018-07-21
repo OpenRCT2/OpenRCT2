@@ -136,8 +136,8 @@ rct_window* window_install_track_open(const utf8* path)
 
     rct_window* w = window_create(x, y, WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
-    w->enabled_widgets
-        = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL) | (1 << WIDX_CANCEL);
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL)
+        | (1 << WIDX_CANCEL);
     window_init_scroll_widgets(w);
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);

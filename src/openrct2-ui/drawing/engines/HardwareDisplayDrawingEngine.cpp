@@ -141,8 +141,8 @@ public:
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
             uint32_t scale = std::ceil(gConfigGeneral.window_scale);
-            _scaledScreenTexture
-                = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
+            _scaledScreenTexture = SDL_CreateTexture(
+                _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
         }
         else
         {

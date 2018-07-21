@@ -26,8 +26,8 @@ namespace OpenRCT2
     {
         interface IDrawingEngineFactory;
         interface IRainDrawer;
-        using DrawRainFunc
-            = void (*)(OpenRCT2::Drawing::IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+        using DrawRainFunc = void (*)(
+            OpenRCT2::Drawing::IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
     } // namespace Drawing
 
     namespace Ui

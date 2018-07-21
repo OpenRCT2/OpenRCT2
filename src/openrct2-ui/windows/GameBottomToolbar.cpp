@@ -745,8 +745,8 @@ static void window_game_bottom_toolbar_update(rct_window* w)
  *
  *  rct2: 0x0066C644
  */
-static void
-    window_game_bottom_toolbar_cursor(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t* cursorId)
+static void window_game_bottom_toolbar_cursor(
+    rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y, int32_t* cursorId)
 {
     switch (widgetIndex)
     {

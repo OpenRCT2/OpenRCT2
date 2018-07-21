@@ -410,8 +410,8 @@ static bool map_animation_invalidate_track_spinningtunnel(int32_t x, int32_t y, 
  *
  *  rct2: 0x0068DF8F
  */
-static bool
-    map_animation_invalidate_remove([[maybe_unused]] int32_t x, [[maybe_unused]] int32_t y, [[maybe_unused]] int32_t baseZ)
+static bool map_animation_invalidate_remove(
+    [[maybe_unused]] int32_t x, [[maybe_unused]] int32_t y, [[maybe_unused]] int32_t baseZ)
 {
     return true;
 }
@@ -568,21 +568,22 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
  *
  *  rct2: 0x009819DC
  */
-static constexpr const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT]
-    = { map_animation_invalidate_ride_entrance,
-        map_animation_invalidate_queue_banner,
-        map_animation_invalidate_small_scenery,
-        map_animation_invalidate_park_entrance,
-        map_animation_invalidate_track_waterfall,
-        map_animation_invalidate_track_rapids,
-        map_animation_invalidate_track_onridephoto,
-        map_animation_invalidate_track_whirlpool,
-        map_animation_invalidate_track_spinningtunnel,
-        map_animation_invalidate_remove,
-        map_animation_invalidate_banner,
-        map_animation_invalidate_large_scenery,
-        map_animation_invalidate_wall_door,
-        map_animation_invalidate_wall };
+static constexpr const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
+    map_animation_invalidate_ride_entrance,
+    map_animation_invalidate_queue_banner,
+    map_animation_invalidate_small_scenery,
+    map_animation_invalidate_park_entrance,
+    map_animation_invalidate_track_waterfall,
+    map_animation_invalidate_track_rapids,
+    map_animation_invalidate_track_onridephoto,
+    map_animation_invalidate_track_whirlpool,
+    map_animation_invalidate_track_spinningtunnel,
+    map_animation_invalidate_remove,
+    map_animation_invalidate_banner,
+    map_animation_invalidate_large_scenery,
+    map_animation_invalidate_wall_door,
+    map_animation_invalidate_wall
+};
 
 /**
  * @returns true if the animation should be removed.

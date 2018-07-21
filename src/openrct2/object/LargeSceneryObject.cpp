@@ -125,8 +125,8 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, const json_t* roo
 {
     auto properties = json_object_get(root, "properties");
 
-    _legacyType.large_scenery.tool_id
-        = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
+    _legacyType.large_scenery.tool_id = ObjectJsonHelpers::ParseCursor(
+        ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
     _legacyType.large_scenery.price = json_integer_value(json_object_get(properties, "price"));
     _legacyType.large_scenery.removal_price = json_integer_value(json_object_get(properties, "removalPrice"));
 

@@ -109,8 +109,8 @@ static void chairlift_paint_util_draw_supports(paint_session* session, int32_t s
     }
 }
 
-static const rct_tile_element*
-    chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(int32_t x, int32_t y, int32_t z, int32_t rideIndex)
+static const rct_tile_element* chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(
+    int32_t x, int32_t y, int32_t z, int32_t rideIndex)
 {
     const rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement == nullptr)

@@ -92,8 +92,8 @@ void intro_update()
                 }
 
                 // Play the track friction sound
-                _soundChannel
-                    = Mixer_Play_Effect(SOUND_TRACK_FRICTION_3, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.25f, 0.75, true);
+                _soundChannel = Mixer_Play_Effect(
+                    SOUND_TRACK_FRICTION_3, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.25f, 0.75, true);
             }
 
             // Check if logo is off the screen...ish

@@ -910,8 +910,8 @@ static void vehicle_sprite_paint(
     {
         baseImage_id += vehicle->animation_frame;
     }
-    int32_t image_id
-        = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+    int32_t image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24)
+        | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct* ps = sub_98197C(
         session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z);
     if (ps != nullptr)
@@ -1588,8 +1588,8 @@ static void vehicle_sprite_1_4(
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
     {
         int32_t ecx = imageDirection / 2;
-        int32_t ebx
-            = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->flat_bank_to_gentle_slope_image_id;
+        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+            + vehicleEntry->flat_bank_to_gentle_slope_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
     else
@@ -1762,8 +1762,8 @@ static void vehicle_sprite_2_3(
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
         int32_t ecx = (imageDirection / 2) + 16;
-        int32_t ebx
-            = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_to_bank_image_id;
+        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+            + vehicleEntry->gentle_slope_to_bank_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
     else
@@ -1786,15 +1786,15 @@ static void vehicle_sprite_2_4(
         if (vehicleEntry->draw_order < 5)
         {
             ecx = (ecx ^ 8) + 108;
-            int32_t ebx
-                = ((imageDirection + 32) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_bank_turn_image_id;
+            int32_t ebx = ((imageDirection + 32) * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_bank_turn_image_id;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
         else
         {
             ecx += 16;
-            int32_t ebx
-                = ((imageDirection + 32) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_bank_turn_image_id;
+            int32_t ebx = ((imageDirection + 32) * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_bank_turn_image_id;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     }
@@ -1969,8 +1969,8 @@ static void vehicle_sprite_5_2(
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
     {
         int32_t ecx = imageDirection / 2;
-        int32_t ebx
-            = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->flat_bank_to_gentle_slope_image_id;
+        int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+            + vehicleEntry->flat_bank_to_gentle_slope_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
     else
@@ -2010,8 +2010,8 @@ static void vehicle_sprite_5_4(
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
     {
         int32_t ecx = imageDirection / 2;
-        int32_t ebx
-            = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->flat_bank_to_gentle_slope_image_id;
+        int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+            + vehicleEntry->flat_bank_to_gentle_slope_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
     else
@@ -2134,8 +2134,8 @@ static void vehicle_sprite_6_1(
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
         int32_t ecx = ((imageDirection / 2) ^ 8) + 16;
-        int32_t ebx
-            = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_to_bank_image_id;
+        int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+            + vehicleEntry->gentle_slope_to_bank_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
     else
@@ -2158,15 +2158,15 @@ static void vehicle_sprite_6_2(
         if (vehicleEntry->draw_order < 5)
         {
             ecx += 108;
-            int32_t ebx
-                = ((imageDirection + 64) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_bank_turn_image_id;
+            int32_t ebx = ((imageDirection + 64) * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_bank_turn_image_id;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
         else
         {
             ecx = (ecx ^ 8) + 16;
-            int32_t ebx
-                = ((imageDirection + 64) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_bank_turn_image_id;
+            int32_t ebx = ((imageDirection + 64) * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_bank_turn_image_id;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     }
@@ -2187,8 +2187,8 @@ static void vehicle_sprite_6_3(
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
         int32_t ecx = ((imageDirection / 2) ^ 8) + 16;
-        int32_t ebx
-            = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_to_bank_image_id;
+        int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+            + vehicleEntry->gentle_slope_to_bank_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
     else
@@ -2211,15 +2211,15 @@ static void vehicle_sprite_6_4(
         if (vehicleEntry->draw_order < 5)
         {
             ecx = (ecx ^ 8) + 108;
-            int32_t ebx
-                = ((imageDirection + 96) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_bank_turn_image_id;
+            int32_t ebx = ((imageDirection + 96) * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_bank_turn_image_id;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
         else
         {
             ecx = (ecx ^ 8) + 16;
-            int32_t ebx
-                = ((imageDirection + 96) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_bank_turn_image_id;
+            int32_t ebx = ((imageDirection + 96) * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_bank_turn_image_id;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     }
@@ -2736,8 +2736,8 @@ static void vehicle_sprite_50_1(
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
         int32_t ecx = imageDirection / 2;
-        int32_t ebx
-            = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
+        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames)
+            + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
     else
@@ -3226,8 +3226,8 @@ static void vehicle_visual_splash1_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    int32_t image_id
-        = 29014 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+    int32_t image_id = 29014 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8)
+        + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
@@ -3249,8 +3249,8 @@ static void vehicle_visual_splash2_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    int32_t image_id
-        = 29046 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+    int32_t image_id = 29046 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8)
+        + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
@@ -3272,8 +3272,8 @@ static void vehicle_visual_splash3_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    int32_t image_id
-        = 29014 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+    int32_t image_id = 29014 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8)
+        + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
 
@@ -3296,8 +3296,8 @@ static void vehicle_visual_splash4_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    int32_t image_id
-        = 29078 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+    int32_t image_id = 29078 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8)
+        + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z);
 }
 
@@ -3324,8 +3324,8 @@ static void vehicle_visual_splash5_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    int32_t image_id
-        = 29078 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8) + ((gCurrentTicks / 2) & 7);
+    int32_t image_id = 29078 + ((((vehicle->sprite_direction / 8) + session->CurrentRotation) & 3) * 8)
+        + ((gCurrentTicks / 2) & 7);
     sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z);
 }
 

@@ -135,8 +135,8 @@ namespace OpenRCT2::Ui
 
         class X8DrawingEngineFactory final : public IDrawingEngineFactory
         {
-            std::unique_ptr<IDrawingEngine>
-                Create([[maybe_unused]] DRAWING_ENGINE_TYPE type, const std::shared_ptr<IUiContext>& uiContext) override
+            std::unique_ptr<IDrawingEngine> Create(
+                [[maybe_unused]] DRAWING_ENGINE_TYPE type, const std::shared_ptr<IUiContext>& uiContext) override
             {
                 return std::make_unique<X8DrawingEngine>(uiContext);
             }

@@ -280,10 +280,10 @@ static void paint_reverse_freefall_rc_slope(
     static constexpr const int32_t supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
     static constexpr const int32_t tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
 
-    uint32_t supportsImageId
-        = reverse_freefall_rc_track_pieces_slope_supports[trackSequence][direction] | session->TrackColours[SCHEME_SUPPORTS];
-    uint32_t trackImageId
-        = reverse_freefall_rc_track_pieces_slope[trackSequence][direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t supportsImageId = reverse_freefall_rc_track_pieces_slope_supports[trackSequence][direction]
+        | session->TrackColours[SCHEME_SUPPORTS];
+    uint32_t trackImageId = reverse_freefall_rc_track_pieces_slope[trackSequence][direction]
+        | session->TrackColours[SCHEME_TRACK];
     int8_t bbHeight;
     bool isDirection03 = (direction == 0 || direction == 3);
     switch (trackSequence)
@@ -397,8 +397,8 @@ static void paint_reverse_freefall_rc_vertical(
     switch (trackSequence)
     {
         case 0:
-            supportsImageId
-                = reverse_freefall_rc_track_pieces_vertical_supports[direction] | session->TrackColours[SCHEME_SUPPORTS];
+            supportsImageId = reverse_freefall_rc_track_pieces_vertical_supports[direction]
+                | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, supportsImageId, 0, 0, 26, 26, 79, height, 3, 3, height);
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 80, 0x20);

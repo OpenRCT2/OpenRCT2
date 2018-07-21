@@ -524,8 +524,9 @@ void window_staff_list_invalidate(rct_window* w)
     if (tabIndex < 3)
     {
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
-        window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image
-            = SPRITE_ID_PALETTE_COLOUR_1((uint32_t)staff_get_colour(tabIndex)) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = SPRITE_ID_PALETTE_COLOUR_1(
+                                                                                     (uint32_t)staff_get_colour(tabIndex))
+            | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     }
     if (_quick_fire_mode)
         w->pressed_widgets |= (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);

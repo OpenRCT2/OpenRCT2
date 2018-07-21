@@ -65,8 +65,8 @@ static int16_t _clickRepeatTicks;
 
 static int32_t game_get_next_input(int32_t* x, int32_t* y);
 static void input_widget_over(int32_t x, int32_t y, rct_window* w, rct_widgetindex widgetIndex);
-static void
-    input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex);
+static void input_widget_over_change_check(
+    rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex);
 static void input_widget_over_flatbutton_invalidate();
 void process_mouse_over(int32_t x, int32_t y);
 void process_mouse_tool(int32_t x, int32_t y);
@@ -949,8 +949,8 @@ static void input_widget_over(int32_t x, int32_t y, rct_window* w, rct_widgetind
  *
  *  rct2: 0x006E9269
  */
-static void
-    input_widget_over_change_check(rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex)
+static void input_widget_over_change_check(
+    rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex)
 {
     // Prevents invalid widgets being clicked source of bug is elsewhere
     if (widgetIndex == -1)
@@ -1113,8 +1113,8 @@ void process_mouse_over(int32_t x, int32_t y)
                         break;
                     }
                     cursorId = gCurrentToolId;
-                    subWindow
-                        = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
+                    subWindow = window_find_by_number(
+                        gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
                     if (subWindow == nullptr)
                         break;
 

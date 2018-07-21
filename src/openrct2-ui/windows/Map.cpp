@@ -1215,8 +1215,8 @@ static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
  *
  *  rct2: 0x00666EEF
  */
-static void
-    place_park_entrance_get_map_position(int32_t x, int32_t y, int16_t* mapX, int16_t* mapY, int16_t* mapZ, int32_t* direction)
+static void place_park_entrance_get_map_position(
+    int32_t x, int32_t y, int16_t* mapX, int16_t* mapY, int16_t* mapZ, int32_t* direction)
 {
     rct_tile_element* tileElement;
 

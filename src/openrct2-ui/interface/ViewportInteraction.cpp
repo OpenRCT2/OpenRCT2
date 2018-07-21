@@ -634,8 +634,8 @@ static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
         if (peep->sprite_left == LOCATION_NULL)
             continue;
 
-        distance
-            = abs(((peep->sprite_left + peep->sprite_right) / 2) - x) + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - y);
+        distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - x)
+            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - y);
         if (distance > maxDistance)
             continue;
 

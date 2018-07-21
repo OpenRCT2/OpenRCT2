@@ -175,8 +175,8 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         {
             // Draw translucent overlay:
             // TODO: Name palette entries
-            int32_t image_id
-                = (baseImageid & 0x7FFFF) + (GlassPaletteIds[scenery_small_get_primary_colour(tileElement)] << 19) + 0x40000004;
+            int32_t image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[scenery_small_get_primary_colour(tileElement)] << 19)
+                + 0x40000004;
             sub_98199C(
                 session,
                 image_id,

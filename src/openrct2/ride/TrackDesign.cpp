@@ -208,8 +208,8 @@ static rct_track_td6* track_design_open_from_td4(uint8_t* src, size_t srcLength)
     for (int32_t i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
     {
         // RCT1 had no third colour
-        RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor
-            = RCT1::GetColourSchemeCopyDescriptor(td4->vehicle_type);
+        RCT1::RCT1VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
+            td4->vehicle_type);
         if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
         {
             td6->vehicle_colours[i].body_colour = RCT1::GetColour(td4->vehicle_colours[i].body_colour);
@@ -695,8 +695,8 @@ static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_
  *
  *  rct2: 0x006D0964
  */
-static int32_t
-    track_design_place_scenery(rct_td6_scenery_element* scenery_start, int32_t originX, int32_t originY, int32_t originZ)
+static int32_t track_design_place_scenery(
+    rct_td6_scenery_element* scenery_start, int32_t originX, int32_t originY, int32_t originZ)
 {
     for (uint8_t mode = 0; mode <= 1; mode++)
     {
@@ -1395,8 +1395,8 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
 
 static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, int16_t z, uint8_t rideIndex)
 {
-    const rct_preview_track** trackBlockArray
-        = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks : FlatRideTrackBlocks;
+    const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
+                                                                                                          : FlatRideTrackBlocks;
 
     gTrackPreviewOrigin.x = x;
     gTrackPreviewOrigin.y = y;

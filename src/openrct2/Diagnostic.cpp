@@ -35,8 +35,9 @@ static FILE* diagnostic_get_stream(DIAGNOSTIC_LEVEL level)
 
 #ifdef __ANDROID__
 
-int _android_log_priority[DIAGNOSTIC_LEVEL_COUNT]
-    = { ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO };
+int _android_log_priority[DIAGNOSTIC_LEVEL_COUNT] = {
+    ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO
+};
 
 void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char* format, ...)
 {

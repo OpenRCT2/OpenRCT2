@@ -896,8 +896,8 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     window_invalidate(w);
                     break;
                 case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
-                    gConfigGeneral.allow_loading_with_incorrect_checksum
-                        = !gConfigGeneral.allow_loading_with_incorrect_checksum;
+                    gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral
+                                                                                .allow_loading_with_incorrect_checksum;
                     config_save_default();
                     window_invalidate(w);
                     break;
@@ -1682,11 +1682,11 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
 
             // Dropdown captions for straightforward strings.
-            window_options_display_widgets[WIDX_FULLSCREEN].text
-                = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
+            window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral
+                                                                                                            .fullscreen_mode];
             window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[gConfigGeneral.drawing_engine];
-            window_options_display_widgets[WIDX_SCALE_QUALITY].text
-                = window_options_scale_quality_names[gConfigGeneral.scale_quality - 1];
+            window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
+                [gConfigGeneral.scale_quality - 1];
 
             break;
         }
@@ -1699,11 +1699,12 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
             widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
-            rct_string_id VirtualFloorStyleStrings[]
-                = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT, STR_VIRTUAL_FLOOR_STYLE_GLASSY };
+            rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED,
+                                                         STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
+                                                         STR_VIRTUAL_FLOOR_STYLE_GLASSY };
 
-            window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text
-                = VirtualFloorStyleStrings[gConfigGeneral.virtual_floor_style];
+            window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[gConfigGeneral
+                                                                                                     .virtual_floor_style];
 
             widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
             if (gConfigGeneral.day_night_cycle
@@ -1766,12 +1767,13 @@ static void window_options_invalidate(rct_window* w)
             window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
 
             // Temperature: celsius/fahrenheit
-            window_options_culture_widgets[WIDX_TEMPERATURE].text
-                = gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F ? STR_FAHRENHEIT : STR_CELSIUS;
+            window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F
+                ? STR_FAHRENHEIT
+                : STR_CELSIUS;
 
             // Height: units/real values
-            window_options_culture_widgets[WIDX_HEIGHT_LABELS].text
-                = gConfigGeneral.show_height_as_units ? STR_UNITS : STR_REAL_VALUES;
+            window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_UNITS
+                                                                                                          : STR_REAL_VALUES;
 
             break;
 
@@ -1877,8 +1879,8 @@ static void window_options_invalidate(rct_window* w)
                 w->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
             }
 
-            window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text
-                = RideInspectionIntervalNames[gConfigGeneral.default_inspection_interval];
+            window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
+                [gConfigGeneral.default_inspection_interval];
 
             break;
         }
@@ -1921,11 +1923,11 @@ static void window_options_update(rct_window* w)
     if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
     {
         rct_widget* widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
-        uint8_t sound_volume
-            = (uint8_t)(((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 100);
+        uint8_t sound_volume = (uint8_t)(
+            ((float)w->scrolls[0].h_left / (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))) * 100);
         widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-        uint8_t ride_music_volume
-            = (uint8_t)(((float)w->scrolls[1].h_left / (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))) * 100);
+        uint8_t ride_music_volume = (uint8_t)(
+            ((float)w->scrolls[1].h_left / (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))) * 100);
         if (sound_volume != gConfigSound.sound_volume)
         {
             gConfigSound.sound_volume = sound_volume;

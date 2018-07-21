@@ -424,8 +424,9 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
 {
     Ride* ride;
 
-    static constexpr const LocationXY16 NeighbourCheckOrder[]
-        = { { 32, 0 }, { -32, 0 }, { 0, 32 }, { 0, -32 }, { -32, +32 }, { +32, -32 }, { +32, +32 }, { -32, +32 }, { 0, 0 } };
+    static constexpr const LocationXY16 NeighbourCheckOrder[] = { { 32, 0 },    { -32, 0 },   { 0, 32 },
+                                                                  { 0, -32 },   { -32, +32 }, { +32, -32 },
+                                                                  { +32, +32 }, { -32, +32 }, { 0, 0 } };
 
     for (size_t i = 0; i < (int32_t)Util::CountOf(NeighbourCheckOrder); i++)
     {

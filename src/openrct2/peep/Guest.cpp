@@ -3480,8 +3480,8 @@ static void peep_update_ride_leave_entrance_spiral_slide(rct_peep* peep, Ride* r
     peep->sub_state = PEEP_RIDE_APPROACH_SPIRAL_SLIDE;
 }
 
-static uint8_t
-    peep_get_waypointed_seat_location(rct_peep* peep, Ride* ride, rct_ride_entry_vehicle* vehicle_type, uint8_t track_direction)
+static uint8_t peep_get_waypointed_seat_location(
+    rct_peep* peep, Ride* ride, rct_ride_entry_vehicle* vehicle_type, uint8_t track_direction)
 {
     // The seatlocation can be split into segments around the ride base
     // to decide the segment first split off the segmentable seat location

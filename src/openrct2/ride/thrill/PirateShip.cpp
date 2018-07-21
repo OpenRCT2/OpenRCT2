@@ -55,8 +55,8 @@ static constexpr const uint32_t pirate_ship_frame_sprites[][2] = {
 };
 
 /** rct2: 0x4AF254 */
-static void
-    paint_pirate_ship_structure(paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+static void paint_pirate_ship_structure(
+    paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     uint32_t imageId, baseImageId;
 
@@ -100,8 +100,8 @@ static void
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
-        imageColourFlags
-            = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
+            ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     pirate_ship_bound_box bounds = pirate_ship_data[direction];
@@ -148,8 +148,8 @@ static void
             }
 
             int32_t frameNum = offset + (direction >> 1);
-            imageColourFlags
-                = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
+            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
+                vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
             sub_98199C(
                 session,
@@ -172,8 +172,8 @@ static void
             }
 
             frameNum = offset + ((direction >> 1) ^ 1);
-            imageColourFlags
-                = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
+            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
+                vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
             sub_98199C(
                 session,

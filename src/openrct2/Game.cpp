@@ -409,8 +409,8 @@ int32_t game_do_command_p(
     }
 
     // Log certain commands if we are in multiplayer and logging is enabled
-    bool serverLog
-        = (network_get_mode() == NETWORK_MODE_SERVER) && gGameCommandNestLevel == 1 && gConfigNetwork.log_server_actions;
+    bool serverLog = (network_get_mode() == NETWORK_MODE_SERVER) && gGameCommandNestLevel == 1
+        && gConfigNetwork.log_server_actions;
     bool clientLog = (network_get_mode() == NETWORK_MODE_CLIENT) && (flags & GAME_COMMAND_FLAG_NETWORKED)
         && gGameCommandNestLevel == 1 && gConfigNetwork.log_server_actions;
     if (serverLog || clientLog)

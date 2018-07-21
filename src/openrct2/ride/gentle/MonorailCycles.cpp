@@ -70,80 +70,84 @@ enum
     SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3 = 16869,
 };
 
-static constexpr const uint32_t monorail_cycles_track_pieces_flat[4]
-    = { SPR_MONORAIL_CYCLES_FLAT_SW_NE, SPR_MONORAIL_CYCLES_FLAT_NW_SE };
+static constexpr const uint32_t monorail_cycles_track_pieces_flat[4] = { SPR_MONORAIL_CYCLES_FLAT_SW_NE,
+                                                                         SPR_MONORAIL_CYCLES_FLAT_NW_SE };
 
-static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_5_tiles[4][5]
-    = { {
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_0,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_1,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_2,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_3,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_4,
-        },
-        {
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_0,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_1,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_2,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_3,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_4,
-        },
-        {
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_0,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_1,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_2,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_3,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_4,
-        },
-        {
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_0,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_1,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_2,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_3,
-            SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_4,
-        } };
+static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+    {
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_0,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_1,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_2,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_3,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SW_SE_PART_4,
+    },
+    {
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_0,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_1,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_2,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_3,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NW_SW_PART_4,
+    },
+    {
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_0,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_1,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_2,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_3,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_NE_NW_PART_4,
+    },
+    {
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_0,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_1,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_2,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_3,
+        SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_5_TILES_SE_NE_PART_4,
+    }
+};
 
-static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_left[2][4]
-    = { {
-            SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_0,
-            SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_1,
-            SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_2,
-            SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_3,
-        },
-        {
-            SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_0,
-            SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_1,
-            SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_2,
-            SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_3,
-        } };
+static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_left[2][4] = {
+    {
+        SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_0,
+        SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_1,
+        SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_2,
+        SPR_MONORAIL_CYCLES_S_BEND_LEFT_SW_NE_PART_3,
+    },
+    {
+        SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_0,
+        SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_1,
+        SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_2,
+        SPR_MONORAIL_CYCLES_S_BEND_LEFT_NW_SE_PART_3,
+    }
+};
 
-static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_right[2][4]
-    = { {
-            SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_0,
-            SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_1,
-            SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_2,
-            SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_3,
-        },
-        {
-            SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_0,
-            SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_1,
-            SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_2,
-            SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3,
-        } };
+static constexpr const uint32_t monorail_cycles_track_pieces_s_bend_right[2][4] = {
+    {
+        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_0,
+        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_1,
+        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_2,
+        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_SW_NE_PART_3,
+    },
+    {
+        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_0,
+        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_1,
+        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_2,
+        SPR_MONORAIL_CYCLES_S_BEND_RIGHT_NW_SE_PART_3,
+    }
+};
 
-static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_3_tiles[4][3]
-    = { { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
-          SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-          SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
-        { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
-          SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-          SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2 },
-        { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
-          SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-          SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2 },
-        { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
-          SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-          SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 } };
+static constexpr const uint32_t monorail_cycles_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+    { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
+    { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_2 },
+    { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_NE_NW_PART_2 },
+    { SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+      SPR_MONORAIL_CYCLES_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
+};
 
 static paint_struct* paint_monorail_cycles_util_7c(
     paint_session* session,
@@ -358,8 +362,8 @@ static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(
         defaultRightQuarterTurn5TilesBoundLengths,
         defaultRightQuarterTurn5TilesBoundOffsets);
 
-    int32_t supportHeight
-        = height + monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
+    int32_t supportHeight = height
+        + monorail_cycles_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
     int32_t supportSpecial = monorail_cycles_track_right_quarter_turn_5_tiles_support_special[direction][trackSequence];
     switch (trackSequence)
     {
@@ -534,8 +538,8 @@ static void paint_monorail_cycles_track_s_bend_left(
         trackSequence = 3 - trackSequence;
     }
 
-    uint32_t imageId
-        = monorail_cycles_track_pieces_s_bend_left[direction & 1][trackSequence] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = monorail_cycles_track_pieces_s_bend_left[direction & 1][trackSequence]
+        | session->TrackColours[SCHEME_TRACK];
     switch (trackSequence)
     {
         case 0:
@@ -653,8 +657,8 @@ static void paint_monorail_cycles_track_s_bend_right(
         trackSequence = 3 - trackSequence;
     }
 
-    uint32_t imageId
-        = monorail_cycles_track_pieces_s_bend_right[direction & 1][trackSequence] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = monorail_cycles_track_pieces_s_bend_right[direction & 1][trackSequence]
+        | session->TrackColours[SCHEME_TRACK];
     switch (trackSequence)
     {
         case 0:

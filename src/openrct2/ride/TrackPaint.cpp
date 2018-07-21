@@ -374,8 +374,8 @@ static void track_paint_util_draw_station_impl(
             }
             else
             {
-                imageId
-                    = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE)
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE
+                                    : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE)
                     | session->TrackColours[SCHEME_SUPPORTS];
             }
         }
@@ -469,8 +469,8 @@ static void track_paint_util_draw_station_impl(
             }
             else
             {
-                imageId
-                    = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE)
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE
+                                    : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE)
                     | session->TrackColours[SCHEME_SUPPORTS];
             }
         }
@@ -583,8 +583,8 @@ void track_paint_util_draw_station_inverted(
             }
             else
             {
-                imageId
-                    = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE)
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE
+                                    : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE)
                     | session->TrackColours[SCHEME_SUPPORTS];
             }
         }
@@ -678,8 +678,8 @@ void track_paint_util_draw_station_inverted(
             }
             else
             {
-                imageId
-                    = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE)
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE
+                                    : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE)
                     | session->TrackColours[SCHEME_SUPPORTS];
             }
         }
@@ -943,8 +943,8 @@ void track_paint_util_draw_pier(
     if (direction & 1)
     {
         hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
-        imageId
-            = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE) | session->TrackColours[SCHEME_SUPPORTS];
+        imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE)
+            | session->TrackColours[SCHEME_SUPPORTS];
         sub_98197C(session, imageId, 0, 0, 6, 32, 1, height, 2, 0, height);
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, height);
 
@@ -962,8 +962,8 @@ void track_paint_util_draw_pier(
     else
     {
         hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, rotation);
-        imageId
-            = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW) | session->TrackColours[SCHEME_SUPPORTS];
+        imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW)
+            | session->TrackColours[SCHEME_SUPPORTS];
         sub_98197C(session, imageId, 0, 0, 32, 6, 1, height, 0, 2, height);
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, height);
 

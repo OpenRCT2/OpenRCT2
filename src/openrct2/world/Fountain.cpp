@@ -42,15 +42,16 @@ static constexpr const LocationXY16 _fountainDirectionsNegative[] = {
     { -32, 0 }, { -32, -32 }, { 0, 0 }, { -32, 0 }, { 0, 0 }, { 0, -32 }, { 0, -32 }, { -32, -32 },
 };
 
-static constexpr const LocationXY16 _fountainDirectionsPositive[]
-    = { { 32, 0 }, { 0, 0 }, { 0, 32 }, { 32, 32 }, { 32, 32 }, { 32, 0 }, { 0, 0 }, { 0, 32 } };
+static constexpr const LocationXY16 _fountainDirectionsPositive[] = { { 32, 0 },  { 0, 0 },  { 0, 32 }, { 32, 32 },
+                                                                      { 32, 32 }, { 32, 0 }, { 0, 0 },  { 0, 32 } };
 
 // rct2: 0x0097F040
 const uint8_t _fountainDirections[] = { 0, 1, 2, 3, 0, 1, 2, 3 };
 
 // rct2: 0x0097F048
-const uint8_t _fountainDirectionFlags[]
-    = { 0, 0, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, 0, 0 };
+const uint8_t _fountainDirectionFlags[] = {
+    0, 0, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, FOUNTAIN_FLAG::DIRECTION, 0, 0
+};
 
 // rct2: 0x0097F050
 const uint8_t _fountainPatternFlags[] = {
@@ -166,8 +167,8 @@ void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int3
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
         sprite_move(x, y, z, (rct_sprite*)jumpingFountain);
-        jumpingFountain->misc_identifier
-            = type == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
+        jumpingFountain->misc_identifier = type == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
+                                                                              : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
         jumpingFountain->num_ticks_alive = 0;
         jumpingFountain->frame = 0;
     }
@@ -273,8 +274,8 @@ static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z)
 {
     z = z >> 3;
 
-    int32_t pathBitFlagMask
-        = type == JUMPING_FOUNTAIN_TYPE_SNOW ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
+    int32_t pathBitFlagMask = type == JUMPING_FOUNTAIN_TYPE_SNOW ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
+                                                                 : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -337,8 +338,8 @@ static void jumping_fountain_goto_edge(
     jumping_fountain_create_next(jumpingFountain, x, y, z, direction);
 }
 
-static void
-    jumping_fountain_bounce(rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections)
+static void jumping_fountain_bounce(
+    rct_jumping_fountain* jumpingFountain, int32_t x, int32_t y, int32_t z, int32_t availableDirections)
 {
     jumpingFountain->iteration++;
     if (jumpingFountain->iteration < 8)

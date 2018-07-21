@@ -1380,8 +1380,8 @@ static bool vehicle_close_restraints(rct_vehicle* vehicle)
 
                 ride_breakdown_add_news_item(vehicle->ride);
 
-                ride->window_invalidate_flags
-                    |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
+                    | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 
@@ -1487,8 +1487,8 @@ static bool vehicle_open_restraints(rct_vehicle* vehicle)
 
                 ride_breakdown_add_news_item(vehicle->ride);
 
-                ride->window_invalidate_flags
-                    |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
+                    | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 
@@ -1663,8 +1663,8 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         }
         else if (testing_flags & RIDE_TESTING_TURN_RIGHT || testing_flags & RIDE_TESTING_TURN_LEFT)
         {
-            ride->testing_flags
-                &= ~(RIDE_TESTING_TURN_LEFT | RIDE_TESTING_TURN_RIGHT | RIDE_TESTING_TURN_BANKED | RIDE_TESTING_TURN_SLOPED);
+            ride->testing_flags &= ~(
+                RIDE_TESTING_TURN_LEFT | RIDE_TESTING_TURN_RIGHT | RIDE_TESTING_TURN_BANKED | RIDE_TESTING_TURN_SLOPED);
 
             uint8_t turn_type = 1;
             if (!(testing_flags & RIDE_TESTING_TURN_BANKED))
@@ -3133,8 +3133,8 @@ void vehicle_test_reset(rct_vehicle* vehicle)
 
 static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle)
 {
-    rct_tile_element* tileElement
-        = map_get_track_element_at_of_type(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
+    rct_tile_element* tileElement = map_get_track_element_at_of_type(
+        vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
 
     if (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE)
     {
@@ -3172,9 +3172,10 @@ static void vehicle_update_travelling_boat_hire_setup(rct_vehicle* vehicle)
     vehicle->track_x = vehicle->x & 0xFFE0;
     vehicle->track_y = vehicle->y & 0xFFE0;
 
-    LocationXY8 location
-        = { static_cast<uint8_t>((vehicle->track_x + CoordsDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
-            static_cast<uint8_t>((vehicle->track_y + CoordsDirectionDelta[vehicle->sprite_direction >> 3].y) / 32) };
+    LocationXY8 location = {
+        static_cast<uint8_t>((vehicle->track_x + CoordsDirectionDelta[vehicle->sprite_direction >> 3].x) / 32),
+        static_cast<uint8_t>((vehicle->track_y + CoordsDirectionDelta[vehicle->sprite_direction >> 3].y) / 32)
+    };
 
     vehicle->boat_location = location;
     vehicle->var_35 = 0;
@@ -3225,8 +3226,8 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
             ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
             ride_breakdown_add_news_item(vehicle->ride);
 
-            ride->window_invalidate_flags
-                |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
+                | RIDE_INVALIDATE_RIDE_MAINTENANCE;
             ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             ride->inspection_station = vehicle->current_station;
             ride->breakdown_reason = ride->breakdown_reason_pending;
@@ -4202,8 +4203,8 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle)
 
             ride->lifecycle_flags |= RIDE_LIFECYCLE_BROKEN_DOWN;
             ride_breakdown_add_news_item(vehicle->ride);
-            ride->window_invalidate_flags
-                |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST | RIDE_INVALIDATE_RIDE_MAINTENANCE;
+            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST
+                | RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
             ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             ride->inspection_station = vehicle->current_station;
@@ -6674,8 +6675,8 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
 
     int32_t trackType = vehicle->track_type >> 2;
 
-    rct_tile_element* trackElement
-        = map_get_track_element_at_of_type(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType);
+    rct_tile_element* trackElement = map_get_track_element_at_of_type(
+        vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType);
 
     if (trackElement == nullptr)
     {
@@ -7096,27 +7097,28 @@ enum
     R9_SPIN
 };
 
-static const uint8_t TrackTypeToSpinFunction[256]
-    = { NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, LR_SPIN,
-        RL_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L5_SPIN, R5_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, LR_SPIN, RL_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
-        L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L5_SPIN, R5_SPIN, L5_SPIN, R5_SPIN, NO_SPIN, RC_SPIN, NO_SPIN, L8_SPIN, R8_SPIN,
-        L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, SP_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, R5_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, L7_SPIN, R7_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
-        L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
-        NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN };
+static const uint8_t TrackTypeToSpinFunction[256] = {
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, LR_SPIN,
+    RL_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L5_SPIN, R5_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, LR_SPIN, RL_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
+    L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L5_SPIN, R5_SPIN, L5_SPIN, R5_SPIN, NO_SPIN, RC_SPIN, NO_SPIN, L8_SPIN, R8_SPIN,
+    L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, SP_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, R5_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, L7_SPIN, R7_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
+    L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN
+};
 
 #pragma endregion
 
@@ -7887,8 +7889,8 @@ static void sub_6DBF3E(rct_vehicle* vehicle)
     rct_tile_element* tileElement = nullptr;
     if (map_is_location_valid({ vehicle->track_x, vehicle->track_y }))
     {
-        tileElement
-            = map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+        tileElement = map_get_track_element_at_of_type_seq(
+            vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
     }
 
     if (tileElement == nullptr)
@@ -7966,8 +7968,8 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
 
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
     _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
-    rct_tile_element* tileElement
-        = map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+    rct_tile_element* tileElement = map_get_track_element_at_of_type_seq(
+        vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
 
     if (tileElement == nullptr)
     {
@@ -8302,8 +8304,8 @@ loc_6DAEB9:
         {
             vehicle_reverse_reverser_car(vehicle);
 
-            const rct_vehicle_info* moveInfo2
-                = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
+            const rct_vehicle_info* moveInfo2 = vehicle_get_move_info(
+                vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
             x = vehicle->x + moveInfo2->x;
             y = vehicle->y + moveInfo2->y;
         }
@@ -8403,8 +8405,8 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
 {
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
     _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
-    rct_tile_element* tileElement
-        = map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+    rct_tile_element* tileElement = map_get_track_element_at_of_type_seq(
+        vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
 
     if (tileElement == nullptr)
         return false;
@@ -8450,8 +8452,8 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
             return false;
         }
 
-        bool isInverted
-            = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0) ^ track_element_is_inverted(tileElement);
+        bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
+            ^ track_element_is_inverted(tileElement);
         int32_t bank = TrackDefinitions[trackType].bank_end;
         bank = track_get_actual_bank_2(ride->type, isInverted, bank);
         int32_t vAngle = TrackDefinitions[trackType].vangle_end;
@@ -8865,8 +8867,8 @@ loc_6DC476:
         uint16_t trackType = vehicle->track_type >> 2;
         _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
         _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
-        tileElement
-            = map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+        tileElement = map_get_track_element_at_of_type_seq(
+            vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
     }
     int16_t x, y, z;
     int32_t direction;
@@ -9122,8 +9124,8 @@ loc_6DCA9A:
         _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
         _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
 
-        tileElement
-            = map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
+        tileElement = map_get_track_element_at_of_type_seq(
+            vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
     }
     {
         track_begin_end trackBeginEnd;
@@ -9938,8 +9940,8 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
 
         while (true)
         {
-            rct_tile_element* tileElement
-                = map_get_path_element_at(xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
+            rct_tile_element* tileElement = map_get_path_element_at(
+                xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
 
             if (tileElement)
             {
@@ -10011,8 +10013,8 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
                 }
             }
 
-            rct_tile_element* tileElement
-                = map_get_path_element_at(xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
+            rct_tile_element* tileElement = map_get_path_element_at(
+                xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
             if (tileElement)
             {
                 tileElement->flags &= ~TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;

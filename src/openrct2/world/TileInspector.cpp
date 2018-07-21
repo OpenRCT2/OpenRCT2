@@ -984,8 +984,8 @@ int32_t tile_inspector_track_set_chain(
     return 0;
 }
 
-int32_t
-    tile_inspector_scenery_set_quarter_location(int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)
+int32_t tile_inspector_scenery_set_quarter_location(
+    int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)
 {
     rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
 

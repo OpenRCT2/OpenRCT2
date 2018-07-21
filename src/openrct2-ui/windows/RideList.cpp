@@ -503,8 +503,8 @@ static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex,
  */
 static void window_ride_list_invalidate(rct_window* w)
 {
-    window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].text
-        = ride_info_type_string_mapping[_window_ride_list_information_type];
+    window_ride_list_widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping
+        [_window_ride_list_information_type];
 
     // Set correct active tab
     for (int32_t i = 0; i < 3; i++)
@@ -563,10 +563,10 @@ static void window_ride_list_invalidate(rct_window* w)
                 allOpen = false;
             }
         }
-        w->widgets[WIDX_CLOSE_LIGHT].image
-            = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed == 1) * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
-        w->widgets[WIDX_OPEN_LIGHT].image
-            = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen == 1) * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
+        w->widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed == 1) * 2
+            + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+        w->widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen == 1) * 2
+            + widget_is_pressed(w, WIDX_OPEN_LIGHT);
         w->widgets[WIDX_QUICK_DEMOLISH].top = w->widgets[WIDX_OPEN_LIGHT].bottom + 3;
     }
     else
@@ -750,8 +750,8 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE)
                 {
                     set_format_arg(2, uint16_t, ride->guests_favourite);
-                    formatSecondary
-                        = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
+                    formatSecondary = ride->guests_favourite == 1 ? STR_GUESTS_FAVOURITE_LABEL
+                                                                  : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
                 }
                 break;
         }

@@ -769,10 +769,10 @@ static void window_park_entrance_invalidate(rct_window* w)
     set_format_arg(0, rct_string_id, gParkName);
     set_format_arg(2, uint32_t, gParkNameArgs);
     window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
-    window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image
-        = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2 + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
-    window_park_entrance_widgets[WIDX_OPEN_LIGHT].image
-        = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2 + widget_is_pressed(w, WIDX_OPEN_LIGHT);
+    window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
+        + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+    window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2
+        + widget_is_pressed(w, WIDX_OPEN_LIGHT);
 
     // Only allow closing of park for guest / rating objective
     if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)

@@ -138,35 +138,36 @@ static constexpr const uint32_t monorail_track_pieces_flat[4] = {
     SPR_MONORAIL_FLAT_NW_SE,
 };
 
-static constexpr const uint32_t monorail_track_pieces_flat_quarter_turn_5_tiles[4][5]
-    = { {
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_0,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_1,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_2,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_3,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_4,
-        },
-        {
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_0,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_1,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_2,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_3,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_4,
-        },
-        {
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_0,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_1,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_2,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_3,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_4,
-        },
-        {
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_0,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_1,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_2,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_3,
-            SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_4,
-        } };
+static constexpr const uint32_t monorail_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+    {
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_0,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_1,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_2,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_3,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SW_SE_PART_4,
+    },
+    {
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_0,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_1,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_2,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_3,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NW_SW_PART_4,
+    },
+    {
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_0,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_1,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_2,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_3,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_NE_NW_PART_4,
+    },
+    {
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_0,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_1,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_2,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_3,
+        SPR_MONORAIL_QUARTER_TURN_5_TILES_SE_NE_PART_4,
+    }
+};
 
 static constexpr const uint32_t monorail_track_pieces_25_deg_up[4] = {
     SPR_MONORAIL_25_DEG_UP_SW_NE,
@@ -215,19 +216,20 @@ static constexpr const uint32_t monorail_track_pieces_s_bend_right[2][4] = { {
                                                                                  SPR_MONORAIL_S_BEND_RIGHT_SE_NW_PART_0,
                                                                              } };
 
-static constexpr const uint32_t monorail_track_pieces_flat_quarter_turn_3_tiles[4][3]
-    = { { SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_0,
-          SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_1,
-          SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
-        { SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_0,
-          SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_1,
-          SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_2 },
-        { SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_0,
-          SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_1,
-          SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_2 },
-        { SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_0,
-          SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_1,
-          SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_2 } };
+static constexpr const uint32_t monorail_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+    { SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_0,
+      SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_1,
+      SPR_MONORAIL_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
+    { SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_0,
+      SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_1,
+      SPR_MONORAIL_QUARTER_TURN_3_TILES_NW_SW_PART_2 },
+    { SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_0,
+      SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_1,
+      SPR_MONORAIL_QUARTER_TURN_3_TILES_NE_NW_PART_2 },
+    { SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_0,
+      SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_1,
+      SPR_MONORAIL_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
+};
 
 static constexpr const uint32_t ghost_train_track_pieces_right_eight_to_diag[4][4] = {
     {
@@ -1418,8 +1420,8 @@ static void paint_monorail_track_diag_flat_to_25_deg_down(
 {
     if (monorail_diag_image_segment[direction][trackSequence])
     {
-        uint32_t imageId
-            = monorail_track_pieces_diag_25_deg_up_to_flat[(direction + 2) % 4] | session->TrackColours[SCHEME_TRACK];
+        uint32_t imageId = monorail_track_pieces_diag_25_deg_up_to_flat[(direction + 2) % 4]
+            | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height);
     }
 
@@ -1450,8 +1452,8 @@ static void paint_monorail_track_diag_25_deg_down_to_flat(
 {
     if (monorail_diag_image_segment[direction][trackSequence])
     {
-        uint32_t imageId
-            = monorail_track_pieces_diag_flat_to_25_deg_up[(direction + 2) % 4] | session->TrackColours[SCHEME_TRACK];
+        uint32_t imageId = monorail_track_pieces_diag_flat_to_25_deg_up[(direction + 2) % 4]
+            | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height);
     }
 

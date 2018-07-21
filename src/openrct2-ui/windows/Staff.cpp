@@ -822,8 +822,8 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_CHECKBOX_4].text = STR_STAFF_OPTION_MOW_GRASS;
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_EMPTY;
-            w->pressed_widgets
-                &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
+            w->pressed_widgets &= ~(
+                (1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
             w->pressed_widgets |= peep->staff_orders << WIDX_CHECKBOX_1;
             break;
         case STAFF_TYPE_MECHANIC:

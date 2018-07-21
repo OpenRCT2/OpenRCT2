@@ -301,11 +301,11 @@ CoordsXY translate_3d_to_2d_with_z(int32_t rotation, CoordsXYZ pos);
 rct_tile_element* map_get_track_element_at(int32_t x, int32_t y, int32_t z);
 rct_tile_element* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, int32_t trackType);
 rct_tile_element* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t sequence);
-rct_tile_element*
-    map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t rideIndex);
+rct_tile_element* map_get_track_element_at_of_type_from_ride(
+    int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t rideIndex);
 rct_tile_element* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, int32_t rideIndex);
-rct_tile_element*
-    map_get_track_element_at_with_direction_from_ride(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex);
+rct_tile_element* map_get_track_element_at_with_direction_from_ride(
+    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex);
 
 bool map_is_location_at_edge(int32_t x, int32_t y);
 void map_obstruction_set_error_text(rct_tile_element* tileElement);

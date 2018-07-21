@@ -11,8 +11,8 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 
-static void
-    graph_draw_months_uint8_t(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
+static void graph_draw_months_uint8_t(
+    rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
 {
     int32_t i, x, y, yearOver32, currentMonth, currentDay;
 
@@ -38,8 +38,8 @@ static void
     }
 }
 
-static void
-    graph_draw_line_a_uint8_t(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
+static void graph_draw_line_a_uint8_t(
+    rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
 {
     int32_t i, x, y, lastX, lastY;
     lastX = -1;
@@ -66,8 +66,8 @@ static void
     }
 }
 
-static void
-    graph_draw_line_b_uint8_t(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
+static void graph_draw_line_b_uint8_t(
+    rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
 {
     int32_t i, x, y, lastX, lastY;
 
@@ -99,8 +99,8 @@ void graph_draw_uint8_t(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count,
     graph_draw_line_b_uint8_t(dpi, history, count, baseX, baseY);
 }
 
-static void
-    graph_draw_months_money32(rct_drawpixelinfo* dpi, const money32* history, int32_t count, int32_t baseX, int32_t baseY)
+static void graph_draw_months_money32(
+    rct_drawpixelinfo* dpi, const money32* history, int32_t count, int32_t baseX, int32_t baseY)
 {
     int32_t i, x, y, yearOver32, currentMonth, currentDay;
 

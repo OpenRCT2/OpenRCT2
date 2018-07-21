@@ -39,8 +39,8 @@ static void paint_3d_cinema_structure(
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
-        imageColourFlags
-            = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
+            ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     uint32_t imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;

@@ -641,8 +641,8 @@ void window_themes_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* wi
         return;
 
     int32_t scrollHeight = get_colour_scheme_tab_count() * _row_height;
-    int32_t i
-        = scrollHeight - window_themes_widgets[WIDX_THEMES_LIST].bottom + window_themes_widgets[WIDX_THEMES_LIST].top + 21;
+    int32_t i = scrollHeight - window_themes_widgets[WIDX_THEMES_LIST].bottom + window_themes_widgets[WIDX_THEMES_LIST].top
+        + 21;
     if (i < 0)
         i = 0;
     if (i < w->scrolls[0].v_top)
@@ -676,14 +676,16 @@ void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x
                 else
                 {
                     window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_COLOURBTN;
-                    window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left
-                        = _button_offset_x + _colour_index_2 * 12 + window_themes_widgets[WIDX_THEMES_LIST].left;
+                    window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12
+                        + window_themes_widgets[WIDX_THEMES_LIST].left;
                     window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].top = _colour_index_1 * _row_height + _button_offset_y
                         - w->scrolls[0].v_top + window_themes_widgets[WIDX_THEMES_LIST].top;
-                    window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].right
-                        = window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left + 12;
-                    window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].bottom
-                        = window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].top + 12;
+                    window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].right = window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]
+                                                                                  .left
+                        + 12;
+                    window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].bottom = window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]
+                                                                                   .top
+                        + 12;
 
                     uint8_t colour = theme_get_colour(wc, _colour_index_2);
                     window_dropdown_show_colour(w, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), w->colours[1], colour);
@@ -951,8 +953,8 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 gfx_draw_string_left(dpi, theme_desc_get_name(wc), nullptr, w->colours[1], 2, y + 4);
 
                 uint8_t colour = theme_get_colour(wc, j);
-                uint32_t image
-                    = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+                uint32_t image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT
+                    | SPR_PALETTE_BTN;
                 if (i == _colour_index_1 && j == _colour_index_2)
                 {
                     image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | IMAGE_TYPE_TRANSPARENT

@@ -694,8 +694,8 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
         const char* client_sprite_hash = sprite_checksum();
-        const bool sprites_mismatch
-            = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash.c_str()) != 0;
+        const bool sprites_mismatch = server_sprite_hash[0] != '\0'
+            && strcmp(client_sprite_hash, server_sprite_hash.c_str()) != 0;
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch)
         {
@@ -2093,8 +2093,8 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
                     throw std::runtime_error("Failed to load public key.");
                 }
 
-                bool verified
-                    = connection.Key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature, sigsize);
+                bool verified = connection.Key.Verify(
+                    connection.Challenge.data(), connection.Challenge.size(), signature, sigsize);
                 const std::string hash = connection.Key.PublicKeyHash();
                 if (verified)
                 {

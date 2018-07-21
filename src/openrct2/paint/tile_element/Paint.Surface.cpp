@@ -1484,8 +1484,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 image_offset = byte_97B740[surfaceShape & 0xF];
             }
 
-            const int32_t image_id
-                = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | PALETTE_WATER << 19;
+            const int32_t image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
+                | PALETTE_WATER << 19;
             sub_98196C(session, image_id, 0, 0, 32, 32, -1, waterHeight);
 
             paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);

@@ -528,8 +528,8 @@ static void window_track_place_draw_mini_preview_track(
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     rct_td6_track_element* trackElement = td6->track_elements;
 
-    const rct_preview_track** trackBlockArray
-        = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks : FlatRideTrackBlocks;
+    const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
+                                                                                                          : FlatRideTrackBlocks;
 
     while (trackElement->type != 255)
     {

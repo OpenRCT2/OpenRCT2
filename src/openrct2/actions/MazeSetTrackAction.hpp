@@ -217,8 +217,8 @@ public:
         uint8_t baseHeight = _z >> 3;
         uint8_t clearanceHeight = (_z + 32) >> 3;
 
-        rct_tile_element* tileElement
-            = map_get_track_element_at_of_type_from_ride(_x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        rct_tile_element* tileElement = map_get_track_element_at_of_type_from_ride(
+            _x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             Ride* ride = get_ride(_rideIndex);

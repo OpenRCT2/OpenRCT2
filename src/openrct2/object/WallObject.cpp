@@ -88,8 +88,8 @@ void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
 {
     auto properties = json_object_get(root, "properties");
 
-    _legacyType.wall.tool_id
-        = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_FENCE_DOWN);
+    _legacyType.wall.tool_id = ObjectJsonHelpers::ParseCursor(
+        ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_FENCE_DOWN);
     _legacyType.wall.height = json_integer_value(json_object_get(properties, "height"));
     _legacyType.wall.price = json_integer_value(json_object_get(properties, "price"));
 

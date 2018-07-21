@@ -24,8 +24,9 @@ enum
     SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP = 14566,
 };
 
-static constexpr const uint32_t launched_freefall_fence_sprites[]
-    = { SPR_FENCE_METAL_NE, SPR_FENCE_METAL_SE, SPR_FENCE_METAL_SW, SPR_FENCE_METAL_NW };
+static constexpr const uint32_t launched_freefall_fence_sprites[] = {
+    SPR_FENCE_METAL_NE, SPR_FENCE_METAL_SE, SPR_FENCE_METAL_SW, SPR_FENCE_METAL_NW
+};
 
 /**
  *

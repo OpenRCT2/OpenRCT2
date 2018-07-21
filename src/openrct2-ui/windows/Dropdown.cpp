@@ -22,8 +22,8 @@
 
 #define DROPDOWN_ITEM_HEIGHT 12
 
-int32_t gAppropriateImageDropdownItemsPerRow[]
-    = { 1, 1, 1, 1, 2, 2, 3, 3, 4, 3, 5, 4, 4, 5, 5, 5, 4, 5, 6, 5, 5, 7, 4, 5, 6, 5, 6, 6, 6, 6, 6, 8, 8, 0 };
+int32_t gAppropriateImageDropdownItemsPerRow[] = { 1, 1, 1, 1, 2, 2, 3, 3, 4, 3, 5, 4, 4, 5, 5, 5, 4,
+                                                   5, 6, 5, 5, 7, 4, 5, 6, 5, 6, 6, 6, 6, 6, 8, 8, 0 };
 
 enum
 {
