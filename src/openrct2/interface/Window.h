@@ -12,6 +12,7 @@
 
 #include <limits>
 #include "../common.h"
+#include <openrct2/world/Location.hpp>
 
 struct rct_drawpixelinfo;
 struct rct_window;
@@ -556,8 +557,8 @@ void window_close_all_except_class(rct_windowclass cls);
 void window_close_all_except_flags(uint16_t flags);
 rct_window *window_find_by_class(rct_windowclass cls);
 rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number);
-rct_window *window_find_from_point(int32_t x, int32_t y);
-rct_widgetindex window_find_widget_from_point(rct_window *w, int32_t x, int32_t y);
+rct_window *window_find_from_point(const LocationXY32& pos);
+rct_widgetindex window_find_widget_from_point(rct_window* w, const LocationXY32& pos);
 void window_invalidate(rct_window *window);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);

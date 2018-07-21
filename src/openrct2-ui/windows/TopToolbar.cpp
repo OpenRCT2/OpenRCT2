@@ -943,7 +943,7 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widgetIndex){
     // ax, cx, bl
-    int16_t grid_x, grid_y;
+    LocationXY16 gridCoords = {};
     int32_t type;
     // edx
     rct_tile_element* tile_element;
@@ -956,7 +956,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
     // not used
     rct_viewport* viewport;
-    get_map_coordinates_from_pos(x, y, flags, &grid_x, &grid_y, &type, &tile_element, &viewport);
+    get_map_coordinates_from_pos({x, y}, flags, &gridCoords, &type, &tile_element, &viewport);
 
     switch (type){
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
@@ -969,9 +969,9 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
         gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
         game_do_command(
-            grid_x,
+            gridCoords.x,
             1 | (tile_element->type << 8),
-            grid_y,
+            gridCoords.y,
             tile_element->base_height | (tile_element->properties.scenery.type << 8),
             GAME_COMMAND_SET_SCENERY_COLOUR,
             0,
@@ -990,9 +990,9 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
         gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
         game_do_command(
-            grid_x,
+            gridCoords.x,
             1 | (gWindowSceneryPrimaryColour << 8),
-            grid_y,
+            gridCoords.y,
             (tile_element->type & TILE_ELEMENT_DIRECTION_MASK) | (tile_element->base_height << 8),
             GAME_COMMAND_SET_WALL_COLOUR,
             0,
@@ -1010,9 +1010,9 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
 
         gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
         game_do_command(
-            grid_x,
+            gridCoords.x,
             1 | (tile_element->GetDirection() << 8),
-            grid_y,
+            gridCoords.y,
             tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
             GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
             0,
@@ -1027,9 +1027,9 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
         {
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
-                grid_x,
+                gridCoords.x,
                 1,
-                grid_y,
+                gridCoords.y,
                 tile_element->base_height | ((tile_element->properties.banner.position & 0x3) << 8),
                 GAME_COMMAND_SET_BANNER_COLOUR,
                 0,
@@ -1051,11 +1051,10 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         VIEWPORT_INTERACTION_MASK_BANNER &
         VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
 
-    int16_t gridX, gridY;
     int32_t type;
     rct_tile_element* tileElement;
     rct_viewport * viewport;
-    get_map_coordinates_from_pos(x, y, flags, &gridX, &gridY, &type, &tileElement, &viewport);
+    get_map_coordinates_from_pos({x, y}, flags, nullptr, &type, &tileElement, &viewport);
 
     switch (type) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
@@ -1187,7 +1186,7 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
                     VIEWPORT_INTERACTION_MASK_WALL &
                     VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
                 int32_t interaction_type;
-                get_map_coordinates_from_pos(x, y, flags, nullptr, nullptr, &interaction_type, &tile_element, nullptr);
+                get_map_coordinates_from_pos({x, y}, flags, nullptr, &interaction_type, &tile_element, nullptr);
 
                 if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE) {
                     gSceneryCtrlPressed = true;
@@ -1309,8 +1308,11 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
                 VIEWPORT_INTERACTION_MASK_WATER;
             int32_t interaction_type = 0;
             rct_tile_element* tile_element;
+            LocationXY16 gridCoords = {};
+            get_map_coordinates_from_pos({x, y}, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
 
-            get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
+            *grid_x = gridCoords.x;
+            *grid_y = gridCoords.y;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
                 *grid_x = LOCATION_NULL;
@@ -1384,7 +1386,10 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
         int32_t interaction_type = 0;
         rct_tile_element* tile_element;
 
-        get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
+        LocationXY16 gridCoords = {};
+        get_map_coordinates_from_pos({x, y}, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
+        *grid_x = gridCoords.x;
+        *grid_y = gridCoords.y;
 
         if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
             *grid_x = LOCATION_NULL;
@@ -1460,7 +1465,11 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
         // Large scenery
         // If CTRL not pressed
         if (!gSceneryCtrlPressed) {
-            sub_68A15E(x, y, grid_x, grid_y, nullptr, nullptr);
+
+            LocationXY16 gridCoords = {};
+            sub_68A15E(x, y, gridCoords, nullptr, nullptr);
+            *grid_x = gridCoords.x;
+            *grid_y = gridCoords.y;
 
             if (*grid_x == LOCATION_NULL)
                 return;
@@ -1522,7 +1531,10 @@ static void sub_6E1F34(int16_t x, int16_t y, uint16_t selected_scenery, int16_t*
         int32_t interaction_type = 0;
         rct_tile_element* tile_element;
 
-        get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
+        LocationXY16 gridCoords = {};
+        get_map_coordinates_from_pos({x, y}, flags, &gridCoords, &interaction_type, &tile_element, nullptr);
+        *grid_x = gridCoords.x;
+        *grid_y = gridCoords.y;
 
         if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
             *grid_x = LOCATION_NULL;
@@ -1963,8 +1975,7 @@ static void top_toolbar_tool_update_land(int16_t x, int16_t y)
     {
         int32_t selectionType;
         // Get selection type and map coordinates from mouse x,y position
-        mapTile = { x, y };
-        screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &selectionType);
+        mapTile = screen_pos_to_map_pos({ x, y }, &selectionType);
         screen_get_map_xy_side(x, y, &mapTile.x, &mapTile.y, &side);
 
         if (mapTile.x == LOCATION_NULL)
@@ -2201,11 +2212,9 @@ static void top_toolbar_tool_update_water(int16_t x, int16_t y){
     LocationXY16 mapTile = {};
     int32_t interaction_type = 0;
     get_map_coordinates_from_pos(
-        x,
-        y,
+        { x, y },
         VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER,
-        &mapTile.x,
-        &mapTile.y,
+        &mapTile,
         &interaction_type,
         nullptr,
         nullptr);
@@ -2854,10 +2863,10 @@ static money32 selection_lower_land(uint8_t flags)
 */
 static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
 {
-    rct_window *window = window_find_from_point(x, y);
+    rct_window *window = window_find_from_point({x, y});
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+    rct_widgetindex widget_index = window_find_widget_from_point(window, {x, y});
     if (widget_index == -1)
         return;
     rct_widget *widget = &window->widgets[widget_index];
@@ -2894,10 +2903,10 @@ static void window_top_toolbar_land_tool_drag(int16_t x, int16_t y)
 */
 static void window_top_toolbar_water_tool_drag(int16_t x, int16_t y)
 {
-    rct_window *window = window_find_from_point(x, y);
+    rct_window *window = window_find_from_point({x, y});
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, x, y);
+    rct_widgetindex widget_index = window_find_widget_from_point(window, {x, y});
     if (widget_index == -1)
         return;
     rct_widget *widget = &window->widgets[widget_index];

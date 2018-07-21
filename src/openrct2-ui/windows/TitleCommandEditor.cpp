@@ -196,7 +196,15 @@ static LocationXY16 get_location()
         int32_t interactionType;
         rct_tile_element * tileElement;
 
-        get_map_coordinates_from_pos_window(w, w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
+        get_map_coordinates_from_pos_window(
+            w,
+            { w->viewport->view_width / 2, w->viewport->view_height / 2 },
+            VIEWPORT_INTERACTION_MASK_TERRAIN,
+            &mapCoord,
+            &interactionType,
+            &tileElement,
+            nullptr);
+
         mapCoord.x -= 16;
         mapCoord.x /= 32;
         mapCoord.y -= 16;
@@ -636,7 +644,7 @@ static void window_title_command_editor_update(rct_window * w)
 static void window_title_command_editor_tool_down(rct_window * w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
     viewport_interaction_info info;
-    viewport_interaction_get_item_left(x, y, &info);
+    viewport_interaction_get_item_left({x, y}, &info);
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {

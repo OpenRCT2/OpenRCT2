@@ -914,39 +914,53 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
  *
  *  rct2: 0x0068958D
  */
-void screen_pos_to_map_pos(int16_t *x, int16_t *y, int32_t *direction)
+LocationXY16 screen_pos_to_map_pos(LocationXY16 pos, int32_t* direction)
 {
-    screen_get_map_xy(*x, *y, x, y, nullptr);
-    if (*x == LOCATION_NULL)
-        return;
+    screen_get_map_xy(pos.x, pos.y, &pos.x, &pos.y, nullptr);
+    if (pos.x == LOCATION_NULL)
+        return pos;
 
     int32_t my_direction;
-    int32_t dist_from_centre_x = abs(*x % 32);
-    int32_t dist_from_centre_y = abs(*y % 32);
-    if (dist_from_centre_x > 8 && dist_from_centre_x < 24 &&
-        dist_from_centre_y > 8 && dist_from_centre_y < 24) {
+    int32_t dist_from_centre_x = abs(pos.x % 32);
+    int32_t dist_from_centre_y = abs(pos.y % 32);
+    if (dist_from_centre_x > 8 && dist_from_centre_x < 24 && dist_from_centre_y > 8 && dist_from_centre_y < 24)
+    {
         my_direction = 4;
-    } else {
-        int16_t mod_x = *x & 0x1F;
-        int16_t mod_y = *y & 0x1F;
-        if (mod_x <= 16) {
-            if (mod_y < 16) {
+    }
+    else
+    {
+        int16_t mod_x = pos.x & 0x1F;
+        int16_t mod_y = pos.y & 0x1F;
+        if (mod_x <= 16)
+        {
+            if (mod_y < 16)
+            {
                 my_direction = 2;
-            } else {
+            }
+            else
+            {
                 my_direction = 3;
             }
-        } else {
-            if (mod_y < 16) {
+        }
+        else
+        {
+            if (mod_y < 16)
+            {
                 my_direction = 1;
-            } else {
+            }
+            else
+            {
                 my_direction = 0;
             }
         }
     }
 
-    *x = *x & ~0x1F;
-    *y = *y & ~0x1F;
-    if (direction != nullptr) *direction = my_direction;
+    pos.x = pos.x & ~0x1F;
+    pos.y = pos.y & ~0x1F;
+    if (direction != nullptr)
+        *direction = my_direction;
+
+    return pos;
 }
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16_t x, uint16_t y)
@@ -1489,33 +1503,45 @@ void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
  * tileElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(int32_t screenX, int32_t screenY, int32_t flags, int16_t *x, int16_t *y, int32_t *interactionType, rct_tile_element **tileElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos(
+    const LocationXY32& screenPos,
+    int32_t flags,
+    LocationXY16* pos,
+    int32_t* interactionType,
+    rct_tile_element** tileElement,
+    rct_viewport** viewport)
 {
-    rct_window* window = window_find_from_point(screenX, screenY);
-    get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, tileElement, viewport);
+    rct_window* window = window_find_from_point(screenPos);
+    get_map_coordinates_from_pos_window(window, screenPos, flags, pos, interactionType, tileElement, viewport);
 }
 
-void get_map_coordinates_from_pos_window(rct_window * window, int32_t screenX, int32_t screenY, int32_t flags, int16_t * x, int16_t * y,
-    int32_t * interactionType, rct_tile_element ** tileElement, rct_viewport ** viewport)
+void get_map_coordinates_from_pos_window(
+    rct_window* window,
+    LocationXY32 screenPos,
+    int32_t flags,
+    LocationXY16* pos,
+    int32_t* interactionType,
+    rct_tile_element** tileElement,
+    rct_viewport** viewport)
 {
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;
     if (window != nullptr && window->viewport != nullptr)
     {
         rct_viewport* myviewport = window->viewport;
-        screenX -= (int32_t)myviewport->x;
-        screenY -= (int32_t)myviewport->y;
-        if (screenX >= 0 && screenX < (int32_t)myviewport->width && screenY >= 0 && screenY < (int32_t)myviewport->height)
+        screenPos.x -= (int32_t)myviewport->x;
+        screenPos.y -= (int32_t)myviewport->y;
+        if (screenPos.x >= 0 && screenPos.x < (int32_t)myviewport->width && screenPos.y >= 0 && screenPos.y < (int32_t)myviewport->height)
         {
-            screenX <<= myviewport->zoom;
-            screenY <<= myviewport->zoom;
-            screenX += (int32_t)myviewport->view_x;
-            screenY += (int32_t)myviewport->view_y;
+            screenPos.x <<= myviewport->zoom;
+            screenPos.y <<= myviewport->zoom;
+            screenPos.x += (int32_t)myviewport->view_x;
+            screenPos.y += (int32_t)myviewport->view_y;
             _viewportDpi1.zoom_level = myviewport->zoom;
-            screenX &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-            screenY &= (0xFFFF << myviewport->zoom) & 0xFFFF;
-            _viewportDpi1.x = screenX;
-            _viewportDpi1.y = screenY;
+            screenPos.x &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+            screenPos.y &= (0xFFFF << myviewport->zoom) & 0xFFFF;
+            _viewportDpi1.x = screenPos.x;
+            _viewportDpi1.y = screenPos.y;
             rct_drawpixelinfo* dpi = &_viewportDpi2;
             dpi->y = _viewportDpi1.y;
             dpi->height = 1;
@@ -1523,18 +1549,26 @@ void get_map_coordinates_from_pos_window(rct_window * window, int32_t screenX, i
             dpi->x = _viewportDpi1.x;
             dpi->width = 1;
 
-            paint_session * session = paint_session_alloc(dpi);
+            paint_session* session = paint_session_alloc(dpi);
             paint_session_generate(session);
             paint_struct ps = paint_session_arrange(session);
             sub_68862C(dpi, &ps);
             paint_session_free(session);
         }
-        if (viewport != nullptr) *viewport = myviewport;
+        if (viewport != nullptr)
+            *viewport = myviewport;
     }
-    if (interactionType != nullptr) *interactionType = _interactionSpriteType;
-    if (x != nullptr) *x = _interactionMapX;
-    if (y != nullptr) *y = _interactionMapY;
-    if (tileElement != nullptr) *tileElement = _interaction_element;
+    if (interactionType != nullptr)
+        *interactionType = _interactionSpriteType;
+
+    if (pos)
+    {
+        pos->x = _interactionMapX;
+        pos->y = _interactionMapY;
+    }
+
+    if (tileElement != nullptr)
+        *tileElement = _interaction_element;
 }
 
 /**
@@ -1588,7 +1622,7 @@ void viewport_invalidate(rct_viewport *viewport, int32_t left, int32_t top, int3
 
 static rct_viewport *viewport_find_from_point(int32_t screenX, int32_t screenY)
 {
-    rct_window *w = window_find_from_point(screenX, screenY);
+    rct_window *w = window_find_from_point({screenX, screenY});
     if (w == nullptr)
         return nullptr;
 
@@ -1616,30 +1650,39 @@ static rct_viewport *viewport_find_from_point(int32_t screenX, int32_t screenY)
  *      tile_element: edx ?
  *      viewport: edi
  */
-void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t *x, int16_t *y, rct_viewport **viewport) {
-    int16_t my_x, my_y;
+void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, rct_viewport** viewport)
+{
     int32_t interactionType;
-    rct_viewport *myViewport = nullptr;
-    get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr, &myViewport);
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
+    rct_viewport* myViewport = nullptr;
+
+    LocationXY16 mapCoords;
+    get_map_coordinates_from_pos(
+        {screenX, screenY}, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoords, &interactionType, nullptr, &myViewport);
+    mapCoords.x += 16;
+    mapCoords.y += 16;
+
+    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    {
         *x = LOCATION_NULL;
         return;
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
-    LocationXY16 map_pos = { (int16_t)(my_x + 16), (int16_t)(my_y + 16) };
+    LocationXY16 map_pos = { (int16_t)(mapCoords.x + 16), (int16_t)(mapCoords.y + 16) };
 
-    for (int32_t i = 0; i < 5; i++) {
-        int32_t z = tile_element_height(map_pos.x, map_pos.y);
+    for (int32_t i = 0; i < 5; i++)
+    {
+        int32_t z = tile_element_height(mapCoords.x, mapCoords.y);
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = Math::Clamp<int16_t>(map_pos.x, my_x, my_x + 31);
-        map_pos.y = Math::Clamp<int16_t>(map_pos.y, my_y, my_y + 31);
+        map_pos.x = Math::Clamp<int16_t>(map_pos.x, mapCoords.x, mapCoords.x + 31);
+        map_pos.y = Math::Clamp<int16_t>(map_pos.y, mapCoords.y, mapCoords.y + 31);
     }
 
     *x = map_pos.x;
     *y = map_pos.y;
 
-    if (viewport != nullptr) *viewport = myViewport;
+    if (viewport != nullptr)
+        *viewport = myViewport;
 }
 
 /**

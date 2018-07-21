@@ -385,17 +385,17 @@ void window_close_all_except_flags(uint16_t flags)
  *
  *  rct2: 0x006EA845
  */
-rct_window *window_find_from_point(int32_t x, int32_t y)
+rct_window *window_find_from_point(const LocationXY32& pos)
 {
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
     {
         auto& w = **it;
-        if (x < w.x || x >= w.x + w.width || y < w.y || y >= w.y + w.height)
+        if (pos.x < w.x || pos.x >= w.x + w.width || pos.y < w.y || pos.y >= w.y + w.height)
             continue;
 
         if (w.flags & WF_NO_BACKGROUND)
         {
-            auto widgetIndex = window_find_widget_from_point(&w, x, y);
+            auto widgetIndex = window_find_widget_from_point(&w, pos);
             if (widgetIndex == -1)
                 continue;
         }
@@ -414,7 +414,7 @@ rct_window *window_find_from_point(int32_t x, int32_t y)
  * returns widget_index (edx)
  * EDI NEEDS TO BE SET TO w->widgets[widget_index] AFTER
  */
-rct_widgetindex window_find_widget_from_point(rct_window *w, int32_t x, int32_t y)
+rct_widgetindex window_find_widget_from_point(rct_window* w, const LocationXY32& pos)
 {
     // Invalidate the window
     window_event_invalidate_call(w);
@@ -426,8 +426,8 @@ rct_widgetindex window_find_widget_from_point(rct_window *w, int32_t x, int32_t 
         if (widget->type == WWT_LAST) {
             break;
         } else if (widget->type != WWT_EMPTY) {
-            if (x >= w->x + widget->left && x <= w->x + widget->right &&
-                y >= w->y + widget->top && y <= w->y + widget->bottom
+            if (pos.x >= w->x + widget->left && pos.x <= w->x + widget->right &&
+                pos.y >= w->y + widget->top && pos.y <= w->y + widget->bottom
             ) {
                 widget_index = i;
             }
@@ -973,12 +973,13 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, int16_t *map_x, int
     context_get_cursor_position_scaled(&mouse_x, &mouse_y);
 
     // Compute map coordinate by mouse position.
-    get_map_coordinates_from_pos(mouse_x, mouse_y, VIEWPORT_INTERACTION_MASK_NONE, map_x, map_y, nullptr, nullptr, nullptr);
+    LocationXY16 mapCoords = {};
+    get_map_coordinates_from_pos({ mouse_x, mouse_y }, VIEWPORT_INTERACTION_MASK_NONE, &mapCoords, nullptr, nullptr, nullptr);
 
     // Get viewport coordinates centring around the tile.
-    int32_t base_height = tile_element_height(*map_x, *map_y);
+    int32_t base_height = tile_element_height(mapCoords.x, mapCoords.y);
     int32_t dest_x, dest_y;
-    centre_2d_coordinates(*map_x, *map_y, base_height, &dest_x, &dest_y, w->viewport);
+    centre_2d_coordinates(mapCoords.x, mapCoords.y, base_height, &dest_x, &dest_y, w->viewport);
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
     int32_t rebased_x = ((w->width >> 1) - mouse_x) * (1 << w->viewport->zoom),
@@ -987,6 +988,9 @@ void window_viewport_get_map_coords_by_cursor(rct_window *w, int16_t *map_x, int
     // Compute cursor offset relative to tile.
     *offset_x = (w->saved_view_x - (dest_x + rebased_x)) * (1 << w->viewport->zoom);
     *offset_y = (w->saved_view_y - (dest_y + rebased_y)) * (1 << w->viewport->zoom);
+
+    *map_x = mapCoords.x;
+    *map_y = mapCoords.y;
 }
 
 void window_viewport_centre_tile_around_cursor(rct_window *w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y)

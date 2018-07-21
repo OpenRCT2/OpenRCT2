@@ -1195,19 +1195,27 @@ static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
  */
 static void place_park_entrance_get_map_position(int32_t x, int32_t y, int16_t *mapX, int16_t *mapY, int16_t *mapZ, int32_t *direction)
 {
-    rct_tile_element *tileElement;
+    rct_tile_element* tileElement;
 
-    sub_68A15E(x, y, mapX, mapY, direction, &tileElement);
-    if (*mapX == LOCATION_NULL)
+    LocationXY16 mapCoords;
+    sub_68A15E(x, y, mapCoords, direction, &tileElement);
+
+    *mapX = mapCoords.x;
+    *mapY = mapCoords.y;
+
+    if (mapCoords.x == LOCATION_NULL)
         return;
 
     tileElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
     *mapZ = surface_get_water_height(tileElement);
-    if (*mapZ == 0) {
+    if (*mapZ == 0)
+    {
         *mapZ = tileElement->base_height / 2;
-        if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0) {
+        if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+        {
             (*mapZ)++;
-            if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
+            if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            {
                 (*mapZ)++;
             }
         }

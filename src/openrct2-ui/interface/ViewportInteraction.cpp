@@ -44,7 +44,7 @@ static rct_peep *viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
  *
  *  rct2: 0x006ED9D0
  */
-int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info *info)
+int32_t viewport_interaction_get_item_left(const LocationXY32& pos, viewport_interaction_info* info)
 {
     rct_tile_element *tileElement;
     rct_sprite *sprite;
@@ -59,7 +59,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, nullptr);
+    get_map_coordinates_from_pos(pos, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -94,7 +94,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
 
     // If nothing is under cursor, find a close by peep
     if (info->type == VIEWPORT_INTERACTION_ITEM_NONE) {
-        info->peep = viewport_interaction_get_closest_peep(x, y, 32);
+        info->peep = viewport_interaction_get_closest_peep(pos.x, pos.y, 32);
         if (info->peep == nullptr)
             return VIEWPORT_INTERACTION_ITEM_NONE;
 
@@ -107,67 +107,78 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
     return info->type;
 }
 
-int32_t viewport_interaction_left_over(int32_t x, int32_t y)
+int32_t viewport_interaction_left_over(const LocationXY32& pos)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left(x, y, &info)) {
-    case VIEWPORT_INTERACTION_ITEM_SPRITE:
-    case VIEWPORT_INTERACTION_ITEM_RIDE:
-    case VIEWPORT_INTERACTION_ITEM_PARK:
-        return 1;
-    default:
-        return 0;
+    switch (viewport_interaction_get_item_left(pos, &info))
+    {
+        case VIEWPORT_INTERACTION_ITEM_SPRITE:
+        case VIEWPORT_INTERACTION_ITEM_RIDE:
+        case VIEWPORT_INTERACTION_ITEM_PARK:
+            return 1;
+        default:
+            return 0;
     }
 }
 
-int32_t viewport_interaction_left_click(int32_t x, int32_t y)
+int32_t viewport_interaction_left_click(const LocationXY32& pos)
 {
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_left(x, y, &info)) {
-    case VIEWPORT_INTERACTION_ITEM_SPRITE:
-        switch (info.sprite->unknown.sprite_identifier) {
-        case SPRITE_IDENTIFIER_VEHICLE:
-        {
-            auto intent = Intent(WD_VEHICLE);
-            intent.putExtra(INTENT_EXTRA_VEHICLE, info.vehicle);
-            context_open_intent(&intent);
-            break;
-        }
-        case SPRITE_IDENTIFIER_PEEP:
-        {
-            auto intent = Intent(WC_PEEP);
-            intent.putExtra(INTENT_EXTRA_PEEP, info.peep);
-            context_open_intent(&intent);
-            break;
-        }
-        case SPRITE_IDENTIFIER_MISC:
-            if (game_is_not_paused()) {
-                switch (info.sprite->unknown.misc_identifier) {
-                case SPRITE_MISC_BALLOON:
-                    game_do_command(info.sprite->balloon.sprite_index, GAME_COMMAND_FLAG_APPLY, 0, 0, GAME_COMMAND_BALLOON_PRESS, 0, 0);
-                    break;
-                case SPRITE_MISC_DUCK:
-                    duck_press(&info.sprite->duck);
+    switch (viewport_interaction_get_item_left(pos, &info))
+    {
+        case VIEWPORT_INTERACTION_ITEM_SPRITE:
+            switch (info.sprite->unknown.sprite_identifier)
+            {
+                case SPRITE_IDENTIFIER_VEHICLE:
+                {
+                    auto intent = Intent(WD_VEHICLE);
+                    intent.putExtra(INTENT_EXTRA_VEHICLE, info.vehicle);
+                    context_open_intent(&intent);
                     break;
                 }
+                case SPRITE_IDENTIFIER_PEEP:
+                {
+                    auto intent = Intent(WC_PEEP);
+                    intent.putExtra(INTENT_EXTRA_PEEP, info.peep);
+                    context_open_intent(&intent);
+                    break;
+                }
+                case SPRITE_IDENTIFIER_MISC:
+                    if (game_is_not_paused())
+                    {
+                        switch (info.sprite->unknown.misc_identifier)
+                        {
+                            case SPRITE_MISC_BALLOON:
+                                game_do_command(
+                                    info.sprite->balloon.sprite_index,
+                                    GAME_COMMAND_FLAG_APPLY,
+                                    0,
+                                    0,
+                                    GAME_COMMAND_BALLOON_PRESS,
+                                    0,
+                                    0);
+                                break;
+                            case SPRITE_MISC_DUCK:
+                                duck_press(&info.sprite->duck);
+                                break;
+                        }
+                    }
+                    break;
             }
-            break;
+            return 1;
+        case VIEWPORT_INTERACTION_ITEM_RIDE:
+        {
+            auto intent = Intent(WD_TRACK);
+            intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.tileElement);
+            context_open_intent(&intent);
+            return true;
         }
-        return 1;
-    case VIEWPORT_INTERACTION_ITEM_RIDE:
-    {
-        auto intent = Intent(WD_TRACK);
-        intent.putExtra(INTENT_EXTRA_TILE_ELEMENT, info.tileElement);
-        context_open_intent(&intent);
-        return true;
-    }
-    case VIEWPORT_INTERACTION_ITEM_PARK:
-        context_open_window(WC_PARK_INFORMATION);
-        return 1;
-    default:
-        return 0;
+        case VIEWPORT_INTERACTION_ITEM_PARK:
+            context_open_window(WC_PARK_INFORMATION); return 1;
+        default:
+            return 0;
     }
 }
 
@@ -175,7 +186,7 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
  *
  *  rct2: 0x006EDE88
  */
-int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_interaction_info *info)
+int32_t viewport_interaction_get_item_right(const LocationXY32& pos, viewport_interaction_info* info)
 {
     rct_tile_element *tileElement;
     rct_scenery_entry *sceneryEntry;
@@ -192,7 +203,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = {};
-    get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, nullptr);
+    get_map_coordinates_from_pos(pos, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -354,23 +365,23 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
     return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 }
 
-int32_t viewport_interaction_right_over(int32_t x, int32_t y)
+int32_t viewport_interaction_right_over(const LocationXY32& pos)
 {
     viewport_interaction_info info;
 
-    return viewport_interaction_get_item_right(x, y, &info) != 0;
+    return viewport_interaction_get_item_right(pos, &info) != 0;
 }
 
 /**
  *
  *  rct2: 0x006E8A62
  */
-int32_t viewport_interaction_right_click(int32_t x, int32_t y)
+int32_t viewport_interaction_right_click(const LocationXY32& pos)
 {
     CoordsXYE tileElement;
     viewport_interaction_info info;
 
-    switch (viewport_interaction_get_item_right(x, y, &info)) {
+    switch (viewport_interaction_get_item_right(pos, &info)) {
     case VIEWPORT_INTERACTION_ITEM_NONE:
         return 0;
 
@@ -552,7 +563,7 @@ static rct_peep *viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
     rct_viewport *viewport;
     rct_peep *peep, *closestPeep;
 
-    w = window_find_from_point(x, y);
+    w = window_find_from_point({x, y});
     if (w == nullptr)
         return nullptr;
 
@@ -588,57 +599,83 @@ static rct_peep *viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t *x, int16_t *y, int32_t *direction, rct_tile_element **tileElement)
+void sub_68A15E(int32_t screenX, int32_t screenY, LocationXY16& pos, int32_t *direction, rct_tile_element **tileElement)
 {
-    int16_t my_x, my_y;
     int32_t interactionType;
-    rct_tile_element *myTileElement;
-    rct_viewport *viewport;
-    get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myTileElement, &viewport);
+    rct_tile_element* myTileElement;
+    rct_viewport* viewport;
 
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
-        *x = LOCATION_NULL;
+    LocationXY16 mapCoord = {};
+    get_map_coordinates_from_pos(
+        {screenX, screenY},
+        VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER,
+        &mapCoord,
+        &interactionType,
+        &myTileElement,
+        &viewport);
+
+    mapCoord.x += 16;
+    mapCoord.y += 16;
+
+    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    {
+        pos.x = LOCATION_NULL;
         return;
     }
 
     int16_t originalZ = 0;
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
+    if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER)
+    {
         originalZ = surface_get_water_height(myTileElement) << 4;
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
-    LocationXY16 map_pos = { (int16_t)(my_x + 16), (int16_t)(my_y + 16) };
+    LocationXY16 map_pos = { (int16_t)(mapCoord.x + 16), (int16_t)(mapCoord.y + 16) };
 
-    for (int32_t i = 0; i < 5; i++) {
+    for (int32_t i = 0; i < 5; i++)
+    {
         int16_t z = originalZ;
-        if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER) {
+        if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER)
+        {
             z = tile_element_height(map_pos.x, map_pos.y);
         }
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = Math::Clamp<int16_t>(map_pos.x, my_x, my_x + 31);
-        map_pos.y = Math::Clamp<int16_t>(map_pos.y, my_y, my_y + 31);
+        map_pos.x = Math::Clamp<int16_t>(map_pos.x, mapCoord.x, mapCoord.x + 31);
+        map_pos.y = Math::Clamp<int16_t>(map_pos.y, mapCoord.y, mapCoord.y + 31);
     }
 
     // Determine to which edge the cursor is closest
     int32_t myDirection;
     int32_t mod_x = map_pos.x & 0x1F;
     int32_t mod_y = map_pos.y & 0x1F;
-    if (mod_x < mod_y) {
-        if (mod_x + mod_y < 32) {
+    if (mod_x < mod_y)
+    {
+        if (mod_x + mod_y < 32)
+        {
             myDirection = 0;
-        } else {
+        }
+        else
+        {
             myDirection = 1;
         }
-    } else {
-        if (mod_x + mod_y < 32) {
+    }
+    else
+    {
+        if (mod_x + mod_y < 32)
+        {
             myDirection = 3;
-        } else {
+        }
+        else
+        {
             myDirection = 2;
         }
     }
 
-    *x = map_pos.x & ~0x1F;
-    *y = map_pos.y & ~0x1F;
-    if (direction != nullptr) *direction = myDirection;
-    if (tileElement != nullptr) *tileElement = myTileElement;
+    pos.x = map_pos.x & ~0x1F;
+    pos.y = map_pos.y & ~0x1F;
+
+    if (direction != nullptr)
+        *direction = myDirection;
+    if (tileElement != nullptr)
+        *tileElement = myTileElement;
 }

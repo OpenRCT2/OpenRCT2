@@ -314,31 +314,27 @@ static void window_view_clipping_tool_update(rct_window* w, rct_widgetindex widg
         return;
     }
 
-    int16_t mapX = x;
-    int16_t mapY = y;
     int32_t direction;
-    screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX != LOCATION_NULL)
+    LocationXY16 mapCoords = screen_pos_to_map_pos({ (int16_t)x, (int16_t)y }, &direction);
+    if (mapCoords.x != LOCATION_NULL)
     {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         map_invalidate_tile_full(gMapSelectPositionA.x, gMapSelectPositionA.y);
-        gMapSelectPositionA.x = gMapSelectPositionB.x = mapX;
-        gMapSelectPositionA.y = gMapSelectPositionB.y = mapY;
-        map_invalidate_tile_full(mapX, mapY);
+        gMapSelectPositionA.x = gMapSelectPositionB.x = mapCoords.x;
+        gMapSelectPositionA.y = gMapSelectPositionB.y = mapCoords.y;
+        map_invalidate_tile_full(mapCoords.x, mapCoords.y);
         gMapSelectType = MAP_SELECT_TYPE_FULL;
     }
 }
 
 static void window_view_clipping_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    int16_t mapX = x;
-    int16_t mapY = y;
     int32_t direction;
-    screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX != LOCATION_NULL)
+    LocationXY16 mapCoords = screen_pos_to_map_pos({ (int16_t)x, (int16_t)y }, &direction);
+    if (mapCoords.x != LOCATION_NULL)
     {
         _dragging = true;
-        _selectionStart = { mapX, mapY };
+        _selectionStart = mapCoords;
     }
 }
 
@@ -349,18 +345,16 @@ static void window_view_clipping_tool_drag(rct_window* w, rct_widgetindex widget
         return;
     }
 
-    int16_t mapX = x;
-    int16_t mapY = y;
     int32_t direction;
-    screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX != LOCATION_NULL)
+    LocationXY16 mapCoords = screen_pos_to_map_pos({ (int16_t)x, (int16_t)y }, &direction);
+    if (mapCoords.x != LOCATION_NULL)
     {
         map_invalidate_selection_rect();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
-        gMapSelectPositionA.x = std::min(_selectionStart.x, mapX);
-        gMapSelectPositionB.x = std::max(_selectionStart.x, mapX);
-        gMapSelectPositionA.y = std::min(_selectionStart.y, mapY);
-        gMapSelectPositionB.y = std::max(_selectionStart.y, mapY);
+        gMapSelectPositionA.x = std::min(_selectionStart.x, mapCoords.x);
+        gMapSelectPositionB.x = std::max(_selectionStart.x, mapCoords.x);
+        gMapSelectPositionA.y = std::min(_selectionStart.y, mapCoords.y);
+        gMapSelectPositionB.y = std::max(_selectionStart.y, mapCoords.y);
         gMapSelectType = MAP_SELECT_TYPE_FULL;
         map_invalidate_selection_rect();
     }
