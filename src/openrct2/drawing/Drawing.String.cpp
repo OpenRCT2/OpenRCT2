@@ -820,15 +820,17 @@ static const utf8* ttf_process_glyph_run(rct_drawpixelinfo* dpi, const utf8* tex
 static void ttf_process_string(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
 {
     UErrorCode err = (UErrorCode)0;
+    // Force a hard left-to-right at the beginning (will mess up mixed strings' word order otherwise)
+    std::string text2 = std::string(u8"\xE2\x80\xAA") + text;
 
-    UnicodeString ustr = UnicodeString::fromUTF8(StringPiece(text));
+    UnicodeString ustr = UnicodeString::fromUTF8(StringPiece(text2));
 
     int32_t length = ustr.length();
     UnicodeString reordered;
     UnicodeString shaped;
     UBiDi* bidi = ubidi_openSized(length, 0, &err);
     ubidi_setPara(bidi, ustr.getBuffer(), length, UBIDI_DEFAULT_LTR, nullptr, &err);
-    ubidi_writeReordered(bidi, reordered.getBuffer(length), length, UBIDI_DO_MIRRORING, &err);
+    ubidi_writeReordered(bidi, reordered.getBuffer(length), length, UBIDI_DO_MIRRORING | UBIDI_REMOVE_BIDI_CONTROLS, &err);
     ubidi_close(bidi);
     reordered.releaseBuffer(length);
     u_shapeArabic(
