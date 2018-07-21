@@ -6825,21 +6825,21 @@ static void hybrid_rc_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18329, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+0), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18336, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+1), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18332, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+4), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18335, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+7), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18326, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+11), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         }
@@ -6860,19 +6860,19 @@ static void hybrid_rc_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18328, 0, 0, 16, 16, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+2), 0, 0, 16, 16, 3, height, 16, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18331, 0, 0, 16, 16, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+5), 0, 0, 16, 16, 1, height, 0, 0,
                                height + 27);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18334, 0, 0, 16, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+8), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18325, 0, 0, 16, 16, 3, height, 16, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+12), 0, 0, 16, 16, 3, height, 16, 16,
                                height);
             break;
         }
@@ -6884,21 +6884,21 @@ static void hybrid_rc_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18327, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+3), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18330, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+6), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18333, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+9), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18337, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+10), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18324, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+13), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         }
@@ -6921,21 +6921,21 @@ static void hybrid_rc_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18326, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+11), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18329, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+0), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18336, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+1), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18332, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+4), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18335, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+7), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         }
@@ -6961,19 +6961,19 @@ static void hybrid_rc_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18325, 0, 0, 16, 16, 3, height, 16, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+12), 0, 0, 16, 16, 3, height, 16, 16,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18328, 0, 0, 16, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+2), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18331, 0, 0, 16, 16, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+5), 0, 0, 16, 16, 1, height, 0, 0,
                                height + 27);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18334, 0, 0, 16, 16, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+8), 0, 0, 16, 16, 3, height, 16, 0,
                                height);
             break;
         }
@@ -6985,21 +6985,21 @@ static void hybrid_rc_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18324, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+13), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18327, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+3), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18330, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+6), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18333, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+9), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18337, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+10), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         }
@@ -7026,21 +7026,21 @@ static void hybrid_rc_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18310, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+14), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18313, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+17), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18316, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+21), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18319, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+24), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18323, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+25), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         }
@@ -7061,19 +7061,19 @@ static void hybrid_rc_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18311, 0, 0, 16, 16, 3, height, 16, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+15), 0, 0, 16, 16, 3, height, 16, 16,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18314, 0, 0, 16, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+18), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18317, 0, 0, 16, 16, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+22), 0, 0, 16, 16, 1, height, 0, 0,
                                height + 27);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18320, 0, 0, 16, 16, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+26), 0, 0, 16, 16, 3, height, 16, 0,
                                height);
             break;
         }
@@ -7085,21 +7085,21 @@ static void hybrid_rc_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18312, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+16), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18315, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+19), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18322, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+20), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18318, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+23), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18321, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+27), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         }
@@ -7122,21 +7122,21 @@ static void hybrid_rc_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18313, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+17), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18316, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+21), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18319, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+24), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18323, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+25), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18310, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+14), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         }
@@ -7162,19 +7162,19 @@ static void hybrid_rc_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18314, 0, 0, 16, 16, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+18), 0, 0, 16, 16, 3, height, 16, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18317, 0, 0, 16, 16, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+22), 0, 0, 16, 16, 1, height, 0, 0,
                                height + 27);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18320, 0, 0, 16, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+26), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18311, 0, 0, 16, 16, 3, height, 16, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+15), 0, 0, 16, 16, 3, height, 16, 16,
                                height);
             break;
         }
@@ -7186,21 +7186,21 @@ static void hybrid_rc_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18315, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+19), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18322, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+20), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18318, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+23), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18321, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+27), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18312, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+16), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         }
@@ -7243,7 +7243,6 @@ static void hybrid_rc_track_right_half_banked_helix_down_small(paint_session * s
     hybrid_rc_track_left_half_banked_helix_up_small(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
-/** rct2: 0x008AD9B4 */
 static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
                                                           uint8_t direction, int32_t height, const TileElement * tileElement)
 {
@@ -7253,21 +7252,21 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18369, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+0), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18380, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+1), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18374, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+6), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18379, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+11), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18364, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+17), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         }
@@ -7288,19 +7287,19 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18368, 0, 0, 32, 16, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+2), 0, 0, 32, 16, 3, height, 0, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18373, 0, 0, 32, 16, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+7), 0, 0, 32, 16, 1, height, 0, 0,
                                height + 27);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18378, 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+12), 0, 0, 32, 16, 3, height, 0, 16,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18363, 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+18), 0, 0, 32, 16, 3, height, 0, 16,
                                height);
             break;
         }
@@ -7314,19 +7313,19 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18367, 0, 0, 16, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+3), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18372, 0, 0, 16, 16, 1, height, 16, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+8), 0, 0, 16, 16, 1, height, 16, 16,
                                height + 27);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18377, 0, 0, 16, 16, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+13), 0, 0, 16, 16, 3, height, 16, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18362, 0, 0, 16, 16, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+19), 0, 0, 16, 16, 3, height, 0, 0,
                                height);
             break;
         }
@@ -7341,19 +7340,19 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18366, 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+4), 0, 0, 16, 32, 3, height, 16, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18371, 0, 0, 16, 32, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+9), 0, 0, 16, 32, 1, height, 0, 0,
                                height + 27);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18376, 0, 0, 16, 32, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+14), 0, 0, 16, 32, 3, height, 0, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18361, 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+20), 0, 0, 16, 32, 3, height, 16, 0,
                                height);
             break;
         }
@@ -7367,21 +7366,21 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18365, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+5), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18370, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+10), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18375, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+15), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18381, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+16), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18360, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+21), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         }
@@ -7404,21 +7403,21 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18364, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+17), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18369, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+0), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18380, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+1), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18374, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+6), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18379, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+11), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         }
@@ -7444,19 +7443,19 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18363, 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+18), 0, 0, 16, 32, 3, height, 16, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18368, 0, 0, 16, 32, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+2), 0, 0, 16, 32, 3, height, 0, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18373, 0, 0, 16, 32, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+7), 0, 0, 16, 32, 1, height, 0, 0,
                                height + 27);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18378, 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+12), 0, 0, 16, 32, 3, height, 16, 0,
                                height);
             break;
         }
@@ -7470,19 +7469,19 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18362, 0, 0, 16, 16, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+19), 0, 0, 16, 16, 3, height, 0, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18367, 0, 0, 16, 16, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+3), 0, 0, 16, 16, 3, height, 16, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18372, 0, 0, 16, 16, 1, height, 16, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+8), 0, 0, 16, 16, 1, height, 16, 16,
                                height + 27);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18377, 0, 0, 16, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+13), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             break;
         }
@@ -7497,19 +7496,19 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18361, 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+20), 0, 0, 32, 16, 3, height, 0, 16,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18366, 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+4), 0, 0, 32, 16, 3, height, 0, 16,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18371, 0, 0, 32, 16, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+9), 0, 0, 32, 16, 1, height, 0, 0,
                                height + 27);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18376, 0, 0, 32, 16, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+14), 0, 0, 32, 16, 3, height, 0, 0,
                                height);
             break;
         }
@@ -7523,21 +7522,21 @@ static void hybrid_rc_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18360, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+21), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18365, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+5), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18370, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+10), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18375, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+15), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18381, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+16), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         }
@@ -7564,21 +7563,21 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18338, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+22), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18343, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+27), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18348, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+33), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18353, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+38), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18359, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+39), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             break;
         }
@@ -7599,19 +7598,19 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18339, 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+23), 0, 0, 32, 16, 3, height, 0, 16,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18344, 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+28), 0, 0, 32, 16, 3, height, 0, 16,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18349, 0, 0, 32, 16, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+34), 0, 0, 32, 16, 1, height, 0, 0,
                                height + 27);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18354, 0, 0, 32, 16, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+40), 0, 0, 32, 16, 3, height, 0, 0,
                                height);
             break;
         }
@@ -7625,19 +7624,19 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18340, 0, 0, 16, 16, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+24), 0, 0, 16, 16, 3, height, 0, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18345, 0, 0, 16, 16, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+29), 0, 0, 16, 16, 3, height, 16, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18350, 0, 0, 16, 16, 1, height, 16, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+35), 0, 0, 16, 16, 1, height, 16, 16,
                                height + 27);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18355, 0, 0, 16, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+41), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             break;
         }
@@ -7652,19 +7651,19 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18341, 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+25), 0, 0, 16, 32, 3, height, 16, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18346, 0, 0, 16, 32, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+30), 0, 0, 16, 32, 3, height, 0, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18351, 0, 0, 16, 32, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+36), 0, 0, 16, 32, 1, height, 0, 0,
                                height + 27);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18356, 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+42), 0, 0, 16, 32, 3, height, 16, 0,
                                height);
             break;
         }
@@ -7678,24 +7677,24 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18342, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+26), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18347, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+31), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18358, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+32), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18352, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+37), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18357, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+43), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
@@ -7718,21 +7717,21 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18343, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+27), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18348, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+33), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18353, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+38), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18359, 0, 0, 1, 32, 26, height, 27, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+39), 0, 0, 1, 32, 26, height, 27, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18338, 0, 0, 20, 32, 3, height, 6, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+22), 0, 0, 20, 32, 3, height, 6, 0,
                                height);
             break;
         }
@@ -7758,19 +7757,19 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18344, 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+28), 0, 0, 16, 32, 3, height, 16, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18349, 0, 0, 16, 32, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+34), 0, 0, 16, 32, 1, height, 0, 0,
                                height + 27);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18354, 0, 0, 16, 32, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+40), 0, 0, 16, 32, 3, height, 0, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18339, 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+23), 0, 0, 16, 32, 3, height, 16, 0,
                                height);
             break;
         }
@@ -7784,19 +7783,19 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18345, 0, 0, 16, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+29), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18350, 0, 0, 16, 16, 1, height, 16, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+35), 0, 0, 16, 16, 1, height, 16, 16,
                                height + 27);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18355, 0, 0, 16, 16, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+41), 0, 0, 16, 16, 3, height, 16, 0,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18340, 0, 0, 16, 16, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+24), 0, 0, 16, 16, 3, height, 0, 0,
                                height);
             break;
         }
@@ -7811,19 +7810,19 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18346, 0, 0, 32, 16, 3, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+30), 0, 0, 32, 16, 3, height, 0, 0,
                                height);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18351, 0, 0, 32, 16, 1, height, 0, 0,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+36), 0, 0, 32, 16, 1, height, 0, 0,
                                height + 27);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18356, 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+42), 0, 0, 32, 16, 3, height, 0, 16,
                                height);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18341, 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+25), 0, 0, 32, 16, 3, height, 0, 16,
                                height);
             break;
         }
@@ -7837,24 +7836,24 @@ static void hybrid_rc_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18347, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+31), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18358, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+32), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18352, 0, 0, 32, 1, 26, height, 0, 27,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+37), 0, 0, 32, 1, 26, height, 0, 27,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18357, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+43), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | 18342, 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+26), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
