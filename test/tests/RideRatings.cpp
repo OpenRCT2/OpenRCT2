@@ -55,10 +55,7 @@ protected:
     {
         rating_tuple ratings = ride->ratings;
         std::string line = String::StdFormat(
-            "%s: (%d, %d, %d)",
-            ride_type_get_enum_name(ride->type),
-            (int)ratings.excitement,
-            (int)ratings.intensity,
+            "%s: (%d, %d, %d)", ride_type_get_enum_name(ride->type), (int)ratings.excitement, (int)ratings.intensity,
             (int)ratings.nausea);
         return line;
     }

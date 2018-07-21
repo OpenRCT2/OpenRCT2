@@ -11,7 +11,7 @@
 
 #ifndef NO_RCT2
 
-#include <openrct2/common.h>
+#    include <openrct2/common.h>
 
 enum
 {

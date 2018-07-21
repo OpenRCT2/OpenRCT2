@@ -27,23 +27,14 @@ class StringTest : public testing::TestWithParam<TCase>
 ///////////////////////////////////////////////////////////////////////////////
 
 INSTANTIATE_TEST_CASE_P(
-    TrimData,
-    StringTest,
+    TrimData, StringTest,
     testing::Values(
         // input                      after Trim       after TrimStart
-        TCase("string", "string", "string"),
-        TCase("  string", "string", "string"),
-        TCase("string  ", "string", "string  "),
-        TCase("   some   string  ", "some   string", "some   string  "),
-        TCase("      ", "", ""),
-        TCase(" ストリング", "ストリング", "ストリング"),
-        TCase("ストリング ", "ストリング", "ストリング "),
-        TCase("　ストリング　", "ストリング", "ストリング　"),
-        TCase("　　　　", "", ""),
-        TCase("", "", ""),
-        TCase("\n", "", ""),
-        TCase("\n\n\n\r\n", "", ""),
-        TCase("\n\n\n\r\nstring\n\n", "string", "string\n\n")));
+        TCase("string", "string", "string"), TCase("  string", "string", "string"), TCase("string  ", "string", "string  "),
+        TCase("   some   string  ", "some   string", "some   string  "), TCase("      ", "", ""),
+        TCase(" ストリング", "ストリング", "ストリング"), TCase("ストリング ", "ストリング", "ストリング "),
+        TCase("　ストリング　", "ストリング", "ストリング　"), TCase("　　　　", "", ""), TCase("", "", ""),
+        TCase("\n", "", ""), TCase("\n\n\n\r\n", "", ""), TCase("\n\n\n\r\nstring\n\n", "string", "string\n\n")));
 TEST_P(StringTest, Trim)
 {
     auto testCase = GetParam();

@@ -15,8 +15,8 @@
 #include <vector>
 
 #if defined(__unix__)
-#include <sys/mman.h>
-#include <unistd.h>
+#    include <sys/mman.h>
+#    include <unistd.h>
 #endif // defined(__unix__)
 
 #include "Data.h"
@@ -194,11 +194,11 @@ static void Write(const char* fmt, ...)
 
 #if defined(__WINDOWS__)
 
-#include <shellapi.h>
+#    include <shellapi.h>
 
 int main(int argc, char* argv[]);
 
-#define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
+#    define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
 
 static HMODULE _dllModule = nullptr;
 
@@ -331,17 +331,17 @@ static bool openrct2_setup_rct2_segment()
     if (err != 0)
     {
         err = errno;
-#ifdef __LINUX__
+#    ifdef __LINUX__
         // On Linux ENOMEM means all requested range is unmapped
         if (err != ENOMEM)
         {
             pagesMissing = true;
             perror("mincore");
         }
-#else
+#    else
         pagesMissing = true;
         perror("mincore");
-#endif // __LINUX__
+#    endif // __LINUX__
     }
     else
     {

@@ -42,13 +42,8 @@ public:
     virtual std::string VariantName(uint8_t rideType, uint8_t trackType, int variant) abstract;
 
     virtual void ApplyTo(
-        uint8_t rideType,
-        uint8_t trackType,
-        int variant,
-        rct_tile_element* tileElement,
-        rct_tile_element* surfaceElement,
-        Ride* ride,
-        rct_ride_entry* rideEntry) abstract;
+        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) abstract;
 };
 
 class CableLiftFilter : public ITestTrackFilter
@@ -70,13 +65,8 @@ public:
     }
 
     virtual void ApplyTo(
-        uint8_t rideType,
-        uint8_t trackType,
-        int variant,
-        rct_tile_element* tileElement,
-        rct_tile_element* surfaceElement,
-        Ride* ride,
-        rct_ride_entry* rideEntry) override
+        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) override
     {
         if (variant == 0)
         {
@@ -108,13 +98,8 @@ public:
     }
 
     virtual void ApplyTo(
-        uint8_t rideType,
-        uint8_t trackType,
-        int variant,
-        rct_tile_element* tileElement,
-        rct_tile_element* surfaceElement,
-        Ride* ride,
-        rct_ride_entry* rideEntry) override
+        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) override
     {
         if (variant == 0)
         {
@@ -152,13 +137,8 @@ public:
     }
 
     virtual void ApplyTo(
-        uint8_t rideType,
-        uint8_t trackType,
-        int variant,
-        rct_tile_element* tileElement,
-        rct_tile_element* surfaceElement,
-        Ride* ride,
-        rct_ride_entry* rideEntry) override
+        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) override
     {
         if (variant == 0)
         {
@@ -196,13 +176,8 @@ public:
     }
 
     virtual void ApplyTo(
-        uint8_t rideType,
-        uint8_t trackType,
-        int variant,
-        rct_tile_element* tileElement,
-        rct_tile_element* surfaceElement,
-        Ride* ride,
-        rct_ride_entry* rideEntry) override
+        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) override
     {
         ride->entrance_style = variant;
         RCT2_Rides[0].entrance_style = variant;
@@ -210,11 +185,7 @@ public:
 };
 
 static void CallOriginal(
-    uint8_t rideType,
-    uint8_t trackType,
-    uint8_t direction,
-    uint8_t trackSequence,
-    uint16_t height,
+    uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height,
     rct_tile_element* tileElement)
 {
     uint32_t* trackDirectionList = (uint32_t*)RideTypeTrackPaintFunctionsOld[rideType][trackType];
@@ -222,22 +193,12 @@ static void CallOriginal(
 
     // Have to call from this point as it pushes esi and expects callee to pop it
     RCT2_CALLPROC_X(
-        0x006C4934,
-        rideType,
-        (int)trackDirectionList,
-        direction,
-        height,
-        (int)tileElement,
-        rideIndex * sizeof(Ride),
+        0x006C4934, rideType, (int)trackDirectionList, direction, height, (int)tileElement, rideIndex * sizeof(Ride),
         trackSequence);
 }
 
 static void CallNew(
-    uint8_t rideType,
-    uint8_t trackType,
-    uint8_t direction,
-    uint8_t trackSequence,
-    uint16_t height,
+    uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height,
     rct_tile_element* tileElement)
 {
     TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
@@ -250,11 +211,11 @@ using TestFunction = uint8_t (*)(uint8_t, uint8_t, uint8_t, std::string*);
 
 static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
 
-static uint8_t
-    TestTrackElementSegmentSupportHeight(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
+static uint8_t TestTrackElementSegmentSupportHeight(
+    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
 
-static uint8_t
-    TestTrackElementGeneralSupportHeight(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
+static uint8_t TestTrackElementGeneralSupportHeight(
+    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
 
 static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
 
@@ -405,10 +366,7 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
                 RCT2_GLOBAL(0x009DE56E, int16_t) = 64; // y
 
                 std::string caseName = String::Format(
-                    "%srotation:%d direction:%d trackSequence:%d]",
-                    baseCaseName.c_str(),
-                    currentRotation,
-                    direction,
+                    "%srotation:%d direction:%d trackSequence:%d]", baseCaseName.c_str(), currentRotation, direction,
                     trackSequence);
 
                 PaintIntercept::ClearCalls();
@@ -442,9 +400,7 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
                 if (oldCalls.size() != newCalls.size())
                 {
                     *error += String::Format(
-                        "Call counts don't match (was %d, expected %d). %s\n",
-                        newCalls.size(),
-                        oldCalls.size(),
+                        "Call counts don't match (was %d, expected %d). %s\n", newCalls.size(), oldCalls.size(),
                         caseName.c_str());
                     sucess = false;
                 }
@@ -470,8 +426,8 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
     return TEST_SUCCESS;
 }
 
-static uint8_t
-    TestTrackElementSegmentSupportHeight(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
+static uint8_t TestTrackElementSegmentSupportHeight(
+    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
 {
     uint16_t height = 3 * 16;
 
@@ -539,8 +495,8 @@ static uint8_t
             continue;
         }
 
-        std::vector<SegmentSupportCall> newCalls
-            = SegmentSupportHeightCall::getSegmentCalls(gPaintSession.SupportSegments, direction);
+        std::vector<SegmentSupportCall> newCalls = SegmentSupportHeightCall::getSegmentCalls(
+            gPaintSession.SupportSegments, direction);
         if (!SegmentSupportHeightCall::CallsEqual(referenceCalls, newCalls))
         {
             *error += String::Format("Segment support heights didn't match. [direction:%d] %s\n", direction, state.c_str());
@@ -556,8 +512,8 @@ static uint8_t
     return TEST_SUCCESS;
 }
 
-static uint8_t
-    TestTrackElementGeneralSupportHeight(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
+static uint8_t TestTrackElementGeneralSupportHeight(
+    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
 {
     uint16_t height = 3 * 16;
 
@@ -638,10 +594,7 @@ static uint8_t
             {
                 *error += String::Format(
                     "General support heights didn't match. (expected height + %d, actual: height + %d) [direction:%d] %s\n",
-                    referenceCall.height - height,
-                    gPaintSession.Support.height - height,
-                    direction,
-                    state.c_str());
+                    referenceCall.height - height, gPaintSession.Support.height - height, direction, state.c_str());
                 return TEST_FAILED;
             }
         }
@@ -651,10 +604,7 @@ static uint8_t
             {
                 *error += String::Format(
                     "General support slopes didn't match. (expected 0x%02X, actual: 0x%02X) [direction:%d] %s\n",
-                    referenceCall.slope,
-                    gPaintSession.Support.slope,
-                    direction,
-                    state.c_str());
+                    referenceCall.slope, gPaintSession.Support.slope, direction, state.c_str());
                 return TEST_FAILED;
             }
         }
@@ -708,11 +658,11 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
         }
 
         bool err = false;
-        tileTunnelCalls[direction][rightIndex]
-            = SideTunnelCall::ExtractTunnelCalls(gRightTunnels, gRightTunnelCount, height, &err);
+        tileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(
+            gRightTunnels, gRightTunnelCount, height, &err);
 
-        tileTunnelCalls[direction][leftIndex]
-            = SideTunnelCall::ExtractTunnelCalls(gLeftTunnels, gLeftTunnelCount, height, &err);
+        tileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(
+            gLeftTunnels, gLeftTunnelCount, height, &err);
 
         if (err)
         {
@@ -743,10 +693,10 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
         }
 
         bool err = false;
-        newTileTunnelCalls[direction][rightIndex]
-            = SideTunnelCall::ExtractTunnelCalls(gPaintSession.RightTunnels, gPaintSession.RightTunnelCount, height, &err);
-        newTileTunnelCalls[direction][leftIndex]
-            = SideTunnelCall::ExtractTunnelCalls(gPaintSession.LeftTunnels, gPaintSession.LeftTunnelCount, height, &err);
+        newTileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(
+            gPaintSession.RightTunnels, gPaintSession.RightTunnelCount, height, &err);
+        newTileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(
+            gPaintSession.LeftTunnels, gPaintSession.LeftTunnelCount, height, &err);
         if (err)
         {
             *error += "Multiple tunnels on one side aren't supported.\n";
@@ -856,17 +806,14 @@ static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackTy
             {
                 *error += String::Format(
                     "Expected no tunnel. Actual: %s [trackSequence:%d]\n",
-                    Printer::PrintHeightOffset(testPaintVerticalTunnelHeight, height).c_str(),
-                    trackSequence);
+                    Printer::PrintHeightOffset(testPaintVerticalTunnelHeight, height).c_str(), trackSequence);
                 return TEST_FAILED;
             }
 
             *error += String::Format(
                 "Expected vertical tunnel height to be `%s`, was `%s`. [trackSequence:%d direction:%d]\n",
                 Printer::PrintHeightOffset(referenceHeight, height).c_str(),
-                Printer::PrintHeightOffset(testPaintVerticalTunnelHeight, height).c_str(),
-                trackSequence,
-                direction);
+                Printer::PrintHeightOffset(testPaintVerticalTunnelHeight, height).c_str(), trackSequence, direction);
 
             return TEST_FAILED;
         }

@@ -10,13 +10,13 @@
 #include "Addresses.h"
 
 #if defined(__GNUC__)
-#ifdef __clang__
-#define DISABLE_OPT __attribute__((noinline, optnone))
+#    ifdef __clang__
+#        define DISABLE_OPT __attribute__((noinline, optnone))
+#    else
+#        define DISABLE_OPT __attribute__((noinline, optimize("O0")))
+#    endif // __clang__
 #else
-#define DISABLE_OPT __attribute__((noinline, optimize("O0")))
-#endif // __clang__
-#else
-#define DISABLE_OPT
+#    define DISABLE_OPT
 #endif // defined(__GNUC__)
 
 // This variable serves a purpose of identifying a crash if it has happened inside original code.
@@ -29,7 +29,7 @@ int32_t DISABLE_OPT RCT2_CALLPROC_X(
     int32_t result = 0;
     _originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
-#ifdef _MSC_VER
+#    ifdef _MSC_VER
     __asm {
         push ebp
         push address
@@ -47,7 +47,7 @@ int32_t DISABLE_OPT RCT2_CALLPROC_X(
             /* Load result with flags */
         mov result, eax
     }
-#else
+#    else
     // clang-format off
     __asm__ volatile("\
         \n\
@@ -72,8 +72,8 @@ int32_t DISABLE_OPT RCT2_CALLPROC_X(
         :
         : "eax","ecx","edx","esi","edi","memory");
     // clang-format on
-#endif // _MSC_VER
-#endif // PLATFORM_X86
+#    endif // _MSC_VER
+#endif     // PLATFORM_X86
     _originalAddress = 0;
     // lahf only modifies ah, zero out the rest
     return result & 0xFF00;

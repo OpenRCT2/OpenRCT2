@@ -13,15 +13,15 @@
 #include <openrct2/common.h>
 
 #ifdef USE_MMAP
-#if defined(PLATFORM_64BIT)
-#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
-#elif defined(PLATFORM_32BIT)
-#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x09000000)
+#    if defined(PLATFORM_64BIT)
+#        define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
+#    elif defined(PLATFORM_32BIT)
+#        define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x09000000)
+#    else
+#        error "Unknown platform"
+#    endif
 #else
-#error "Unknown platform"
-#endif
-#else
-#define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x8a4000)
+#    define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x8a4000)
 #endif
 
 #define RCT2_ADDRESS(address, type) ((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address)))
