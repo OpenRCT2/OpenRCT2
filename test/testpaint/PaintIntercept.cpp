@@ -39,20 +39,10 @@ namespace PaintIntercept
     static uint8_t InterceptPaintFull(uint8_t function, registers* regs);
 
     bool PaintMetalSupports(
-        uint8_t function,
-        int supportType,
-        uint8_t segment,
-        int special,
-        int height,
-        uint32_t imageColourFlags,
+        uint8_t function, int supportType, uint8_t segment, int special, int height, uint32_t imageColourFlags,
         const support_height* supportSegments);
     bool PaintWoodenSupports(
-        uint8_t function,
-        int supportType,
-        int special,
-        int height,
-        uint32_t imageColourFlags,
-        bool* underground,
+        uint8_t function, int supportType, int special, int height, uint32_t imageColourFlags, bool* underground,
         const paint_struct* prependTo);
     static void CheckSegmentSupportHeight(const support_height* supportSegments);
 
@@ -86,12 +76,7 @@ namespace PaintIntercept
     }
 
     bool PaintWoodenSupports(
-        uint8_t function,
-        int supportType,
-        int special,
-        int height,
-        uint32_t imageColourFlags,
-        bool* underground,
+        uint8_t function, int supportType, int special, int height, uint32_t imageColourFlags, bool* underground,
         const paint_struct* prependTo)
     {
         function_call* call = &_calls[_callCount];
@@ -120,12 +105,7 @@ namespace PaintIntercept
     }
 
     bool PaintMetalSupports(
-        uint8_t function,
-        int supportType,
-        uint8_t segment,
-        int special,
-        int height,
-        uint32_t imageColourFlags,
+        uint8_t function, int supportType, uint8_t segment, int special, int height, uint32_t imageColourFlags,
         const support_height* supportSegments)
     {
         CheckSegmentSupportHeight(supportSegments);
@@ -144,14 +124,8 @@ namespace PaintIntercept
     }
 
     static paint_struct* Paint6C(
-        uint32_t imageID,
-        int8_t xOffset,
-        int8_t yOffset,
-        int16_t boundBoxLengthX,
-        int16_t boundBoxLengthY,
-        int8_t boundBoxLengthZ,
-        int16_t zOffset,
-        uint32_t rotation)
+        uint32_t imageID, int8_t xOffset, int8_t yOffset, int16_t boundBoxLengthX, int16_t boundBoxLengthY,
+        int8_t boundBoxLengthZ, int16_t zOffset, uint32_t rotation)
     {
         function_call* call = &_calls[_callCount];
         call->function = PAINT_98196C;
@@ -167,17 +141,8 @@ namespace PaintIntercept
     }
 
     static paint_struct* PaintFull(
-        uint8_t function,
-        uint32_t imageID,
-        int8_t xOffset,
-        int8_t yOffset,
-        int16_t boundBoxLengthX,
-        int16_t boundBoxLengthY,
-        int8_t boundBoxLengthZ,
-        int16_t zOffset,
-        int16_t boundBoxOffsetX,
-        int16_t boundBoxOffsetY,
-        int16_t boundBoxOffsetZ,
+        uint8_t function, uint32_t imageID, int8_t xOffset, int8_t yOffset, int16_t boundBoxLengthX, int16_t boundBoxLengthY,
+        int8_t boundBoxLengthZ, int16_t zOffset, int16_t boundBoxOffsetX, int16_t boundBoxOffsetY, int16_t boundBoxOffsetZ,
         uint32_t rotation)
     {
         function_call* call = &_calls[_callCount];
@@ -253,8 +218,8 @@ namespace PaintIntercept
     static uint8_t InterceptWoodenASupports(registers* regs)
     {
         bool cf = false;
-        regs->al
-            = PaintWoodenSupports(SUPPORTS_WOOD_A, regs->edi, regs->ax, regs->dx, regs->ebp, &cf, gWoodenSupportsPrependTo);
+        regs->al = PaintWoodenSupports(
+            SUPPORTS_WOOD_A, regs->edi, regs->ax, regs->dx, regs->ebp, &cf, gWoodenSupportsPrependTo);
 
         if (cf)
         {
@@ -267,8 +232,8 @@ namespace PaintIntercept
     static uint8_t InterceptWoodenBSupports(registers* regs)
     {
         bool cf = false;
-        regs->al
-            = PaintWoodenSupports(SUPPORTS_WOOD_B, regs->edi, regs->ax, regs->dx, regs->ebp, &cf, gWoodenSupportsPrependTo);
+        regs->al = PaintWoodenSupports(
+            SUPPORTS_WOOD_B, regs->edi, regs->ax, regs->dx, regs->ebp, &cf, gWoodenSupportsPrependTo);
 
         if (cf)
         {
@@ -287,13 +252,7 @@ namespace PaintIntercept
         }
 
         paint_struct* out = Paint6C(
-            regs->ebx,
-            (int8_t)regs->al,
-            (int8_t)regs->cl,
-            (int16_t)regs->di,
-            (int16_t)regs->si,
-            (int8_t)regs->ah,
-            regs->dx,
+            regs->ebx, (int8_t)regs->al, (int8_t)regs->cl, (int16_t)regs->di, (int16_t)regs->si, (int8_t)regs->ah, regs->dx,
             regs->ebp & 0x03);
 
         if (out == nullptr)
@@ -332,18 +291,8 @@ namespace PaintIntercept
         LocationXYZ16 boundOffset = { RCT2_PaintBoundBoxOffsetX, RCT2_PaintBoundBoxOffsetY, RCT2_PaintBoundBoxOffsetZ };
 
         paint_struct* out = PaintFull(
-            function,
-            regs->ebx,
-            (int8_t)regs->al,
-            (int8_t)regs->cl,
-            (int16_t)regs->di,
-            (int16_t)regs->si,
-            (int8_t)regs->ah,
-            regs->dx,
-            boundOffset.x,
-            boundOffset.y,
-            boundOffset.z,
-            regs->ebp & 0x03);
+            function, regs->ebx, (int8_t)regs->al, (int8_t)regs->cl, (int16_t)regs->di, (int16_t)regs->si, (int8_t)regs->ah,
+            regs->dx, boundOffset.x, boundOffset.y, boundOffset.z, regs->ebp & 0x03);
 
         if (out == nullptr)
         {
@@ -384,108 +333,42 @@ bool metal_b_supports_paint_setup(
 }
 
 paint_struct* sub_98196C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
 {
     return PaintIntercept::Paint6C(
-        image_id,
-        x_offset,
-        y_offset,
-        bound_box_length_x,
-        bound_box_length_y,
-        bound_box_length_z,
-        z_offset,
+        image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
         session->CurrentRotation);
 }
 
 paint_struct* sub_98197C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     return PaintIntercept::PaintFull(
-        PAINT_98197C,
-        image_id,
-        x_offset,
-        y_offset,
-        bound_box_length_x,
-        bound_box_length_y,
-        bound_box_length_z,
-        z_offset,
-        bound_box_offset_x,
-        bound_box_offset_y,
-        bound_box_offset_z,
-        session->CurrentRotation);
+        PAINT_98197C, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+        bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
 }
 
 paint_struct* sub_98198C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     return PaintIntercept::PaintFull(
-        PAINT_98198C,
-        image_id,
-        x_offset,
-        y_offset,
-        bound_box_length_x,
-        bound_box_length_y,
-        bound_box_length_z,
-        z_offset,
-        bound_box_offset_x,
-        bound_box_offset_y,
-        bound_box_offset_z,
-        session->CurrentRotation);
+        PAINT_98198C, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+        bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
 }
 
 paint_struct* sub_98199C(
-    paint_session* session,
-    uint32_t image_id,
-    int8_t x_offset,
-    int8_t y_offset,
-    int16_t bound_box_length_x,
-    int16_t bound_box_length_y,
-    int8_t bound_box_length_z,
-    int16_t z_offset,
-    int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y,
-    int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     return PaintIntercept::PaintFull(
-        PAINT_98199C,
-        image_id,
-        x_offset,
-        y_offset,
-        bound_box_length_x,
-        bound_box_length_y,
-        bound_box_length_z,
-        z_offset,
-        bound_box_offset_x,
-        bound_box_offset_y,
-        bound_box_offset_z,
-        session->CurrentRotation);
+        PAINT_98199C, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
+        bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
 }
 
 bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y)

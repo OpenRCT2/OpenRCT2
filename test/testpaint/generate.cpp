@@ -121,11 +121,8 @@ private:
             {
                 const uint32_t* paintFunctionList = RideTypeTrackPaintFunctionsOld[_rideType];
                 WriteLine(
-                    0,
-                    "/** rct2: 0x%08X, 0x%08X, 0x%08X */",
-                    paintFunctionList[TRACK_ELEM_END_STATION],
-                    paintFunctionList[TRACK_ELEM_BEGIN_STATION],
-                    paintFunctionList[TRACK_ELEM_MIDDLE_STATION]);
+                    0, "/** rct2: 0x%08X, 0x%08X, 0x%08X */", paintFunctionList[TRACK_ELEM_END_STATION],
+                    paintFunctionList[TRACK_ELEM_BEGIN_STATION], paintFunctionList[TRACK_ELEM_MIDDLE_STATION]);
                 WriteLine(
                     0,
                     "static void " + _rideName
@@ -219,17 +216,13 @@ private:
             { 0, TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN, TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP },
             { 0, TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN, TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP },
             { 0, TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN, TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP },
-            { 0,
-              TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT,
+            { 0, TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT,
               TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP },
-            { 0,
-              TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT,
+            { 0, TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT,
               TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP },
-            { 0,
-              TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN,
+            { 0, TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN,
               TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT },
-            { 0,
-              TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN,
+            { 0, TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN,
               TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT },
             { 0, TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT, TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP },
             { 0, TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT, TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP },
@@ -240,24 +233,20 @@ private:
             { 1, TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES, TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES },
             { 1, TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN, TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP },
             { 1, TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED, TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED },
-            { 1,
-              TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN,
+            { 1, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN,
               TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP },
             { 2, TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN, TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP },
-            { 2,
-              TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN,
+            { 2, TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN,
               TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP },
 
             { 3, TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES, TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES },
             { 3, TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK, TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK },
             { 3, TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN, TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP },
             { 3, TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED, TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED },
-            { 3,
-              TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN,
+            { 3, TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN,
               TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP },
             { 4, TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN, TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP },
-            { 4,
-              TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN,
+            { 4, TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN,
               TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP },
 
             { 5, TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE, TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE },
@@ -302,62 +291,53 @@ private:
                 {
                     case 0:
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 1:
                         WriteLine(tabs, "trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 2:
                         WriteLine(tabs, "trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 3:
                         WriteLine(tabs, "trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 4:
                         WriteLine(tabs, "trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 5:
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 6:
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 7:
                         WriteLine(tabs, "trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 8:
                         WriteLine(tabs, "trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 9:
@@ -367,8 +347,7 @@ private:
                         WriteLine(tabs, "}");
                         WriteLine(tabs, "trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 10:
@@ -378,8 +357,7 @@ private:
                         WriteLine(tabs, "}");
                         WriteLine(tabs, "trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 11:
@@ -389,8 +367,7 @@ private:
                         WriteLine(tabs, "}");
                         WriteLine(tabs, "trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 12:
@@ -400,26 +377,22 @@ private:
                         WriteLine(tabs, "}");
                         WriteLine(tabs, "trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];");
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 13:
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 14:
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, 2 - trackSequence, (direction - 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, 2 - trackSequence, (direction - 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 15:
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, 2 - trackSequence, (direction + 1) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, 2 - trackSequence, (direction + 1) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 16:
@@ -432,8 +405,7 @@ private:
                         break;
                     case 18:
                         WriteLine(
-                            tabs,
-                            "%s(rideIndex, 2 - trackSequence, (direction + 2) & 3, height, tileElement);",
+                            tabs, "%s(rideIndex, 2 - trackSequence, (direction + 2) & 3, height, tileElement);",
                             destFuncName.c_str());
                         break;
                     case 19:
@@ -683,12 +655,8 @@ private:
                 }
 
                 WriteLine(
-                    callTabs,
-                    "%s(%d, %d, %d, height%s, %s);",
-                    GetFunctionCallName(call.function),
-                    call.supports.type,
-                    call.supports.segment,
-                    call.supports.special,
+                    callTabs, "%s(%d, %d, %d, height%s, %s);", GetFunctionCallName(call.function), call.supports.type,
+                    call.supports.segment, call.supports.special,
                     GetOffsetExpressionString(call.supports.height - height).c_str(),
                     GetImageIdString(call.supports.colour_flags).c_str());
 
@@ -701,12 +669,8 @@ private:
             case SUPPORTS_WOOD_A:
             case SUPPORTS_WOOD_B:
                 WriteLine(
-                    tabs,
-                    "%s(%d, %d, height%s, %s, NULL);",
-                    GetFunctionCallName(call.function),
-                    call.supports.type,
-                    call.supports.special,
-                    GetOffsetExpressionString(call.supports.height - height).c_str(),
+                    tabs, "%s(%d, %d, height%s, %s, NULL);", GetFunctionCallName(call.function), call.supports.type,
+                    call.supports.special, GetOffsetExpressionString(call.supports.height - height).c_str(),
                     GetImageIdString(call.supports.colour_flags).c_str());
                 break;
         }
@@ -818,13 +782,8 @@ private:
     }
 
     bool GetTunnelCalls(
-        int trackType,
-        int direction,
-        int trackSequence,
-        int height,
-        rct_tile_element* tileElement,
-        TunnelCall tileTunnelCalls[4][4],
-        int16_t verticalTunnelHeights[4])
+        int trackType, int direction, int trackSequence, int height, rct_tile_element* tileElement,
+        TunnelCall tileTunnelCalls[4][4], int16_t verticalTunnelHeights[4])
     {
         TestPaint::ResetTunnels();
 
@@ -970,8 +929,7 @@ private:
             if (tunnelHeight != 0)
             {
                 WriteLine(
-                    tabs,
-                    "paint_util_set_vertical_tunnel(session, height%s);",
+                    tabs, "paint_util_set_vertical_tunnel(session, height%s);",
                     GetOffsetExpressionString(tunnelHeight).c_str());
             }
         }
@@ -983,17 +941,13 @@ private:
         {
             case 0:
                 WriteLine(
-                    tabs,
-                    "paint_util_push_tunnel_left(session, height%s, TUNNEL_%d);",
-                    GetOffsetExpressionString(offset).c_str(),
-                    type);
+                    tabs, "paint_util_push_tunnel_left(session, height%s, TUNNEL_%d);",
+                    GetOffsetExpressionString(offset).c_str(), type);
                 break;
             case 1:
                 WriteLine(
-                    tabs,
-                    "paint_util_push_tunnel_right(session, height%s, TUNNEL_%d);",
-                    GetOffsetExpressionString(offset).c_str(),
-                    type);
+                    tabs, "paint_util_push_tunnel_right(session, height%s, TUNNEL_%d);",
+                    GetOffsetExpressionString(offset).c_str(), type);
                 break;
         }
     }
@@ -1001,10 +955,8 @@ private:
     void GenerateTunnelCall(int tabs, int offset, int type)
     {
         WriteLine(
-            tabs,
-            "paint_util_push_tunnel_rotated(session, direction, height%s, TUNNEL_%d);",
-            GetOffsetExpressionString(offset).c_str(),
-            type);
+            tabs, "paint_util_push_tunnel_rotated(session, direction, height%s, TUNNEL_%d);",
+            GetOffsetExpressionString(offset).c_str(), type);
     }
 
     void GenerateSegmentSupportCall(int tabs, std::vector<SegmentSupportCall> segmentSupportCalls[4])
@@ -1046,10 +998,8 @@ private:
         }
 
         WriteLine(
-            tabs,
-            "paint_util_set_general_support_height(session, height%s, 0x%02X);",
-            GetOffsetExpressionString((int16_t)generalSupports[0].height).c_str(),
-            generalSupports[0].slope);
+            tabs, "paint_util_set_general_support_height(session, height%s, 0x%02X);",
+            GetOffsetExpressionString((int16_t)generalSupports[0].height).c_str(), generalSupports[0].slope);
         if (!AllMatch(generalSupports, 4))
         {
             // WriteLine(tabs, "#error Unsupported: different directional general supports");
@@ -1140,13 +1090,7 @@ private:
         uint32_t* trackDirectionList = (uint32_t*)RideTypeTrackPaintFunctionsOld[_rideType][trackType];
         // Have to call from this point as it pushes esi and expects callee to pop it
         RCT2_CALLPROC_X(
-            0x006C4934,
-            _rideType,
-            (int)trackDirectionList,
-            direction,
-            height,
-            (int)tileElement,
-            0 * sizeof(Ride),
+            0x006C4934, _rideType, (int)trackDirectionList, direction, height, (int)tileElement, 0 * sizeof(Ride),
             trackSequence);
     }
 
