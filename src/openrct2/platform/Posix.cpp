@@ -398,10 +398,10 @@ uint8_t platform_get_locale_temperature_format(){
 
 uint8_t platform_get_locale_date_format()
 {
-    const std::time_base::dateorder dateorder =
-        std::use_facet<std::time_get<char>>(std::locale()).date_order();
+    const std::time_base::dateorder dateorder = std::use_facet<std::time_get<char>>(std::locale()).date_order();
 
-    switch (dateorder) {
+    switch (dateorder) 
+    {
     case std::time_base::mdy:
         return DATE_FORMAT_MONTH_DAY_YEAR;
 
