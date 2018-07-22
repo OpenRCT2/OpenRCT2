@@ -20,6 +20,7 @@
 #endif
 #include <libgen.h>
 #include <locale.h>
+#include <locale>
 #include <pwd.h>
 #include <stdlib.h>
 #include <sys/file.h>
@@ -397,7 +398,22 @@ uint8_t platform_get_locale_temperature_format(){
 
 uint8_t platform_get_locale_date_format()
 {
-    return DATE_FORMAT_DAY_MONTH_YEAR;
+    const std::time_base::dateorder dateorder =
+        std::use_facet<std::time_get<char>>(std::locale()).date_order();
+
+    switch (dateorder) {
+    case std::time_base::mdy:
+        return DATE_FORMAT_MONTH_DAY_YEAR;
+
+    case std::time_base::ymd:
+        return DATE_FORMAT_YEAR_MONTH_DAY;
+
+    case std::time_base::ydm:
+        return DATE_FORMAT_YEAR_DAY_MONTH;
+
+    default:
+        return DATE_FORMAT_DAY_MONTH_YEAR;
+    }
 }
 
 datetime64 platform_get_datetime_now_utc()
