@@ -5020,49 +5020,49 @@ STR_PARK    :Alpine Adventures
 STR_DTLS    :Convierte un pequeño centro de esquí en un parque temático en la nieve.
 
 <Amity Airfield>
-STR_SCNR    :Amity Airfield
-STR_PARK    :Amity Airfield
-STR_DTLS    :Build a flying-themed amusement park in this abandoned airport
+STR_SCNR    :Aeroparque Amity
+STR_PARK    :Aeroparque Amity
+STR_DTLS    :Construye un parque de alto vuelo en este aeropuerto abandonado.
 
 <Botany Breakers>
-STR_SCNR    :Botany Breakers
-STR_PARK    :Botany Breakers
-STR_DTLS    :Your challenge is to build a high-profit park on this paradise island
+STR_SCNR    :Barrenas Botánicas
+STR_PARK    :Barrenas Botánicas
+STR_DTLS    :Tú desafío es construir un parque lucrativo en esta isla paradisíaca
 
 <Build your own Six Flags Belgium>
-STR_SCNR    :Build your own Six Flags Belgium
-STR_PARK    :Six Flags Belgium
-STR_DTLS    :Build your own version of this European Six Flags park
+STR_SCNR    :Construye tu propio Six Flags Bélgica
+STR_PARK    :Six Flags Bélgica
+STR_DTLS    :Construye tu propia versión de este parque Six Flags europeo.
 
 <Build your own Six Flags Great Adventure>
-STR_SCNR    :Build your own Six Flags Great Adventure
-STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Use your design skills to recreate this Six Flags park
+STR_SCNR    :Construye tu propio Six Flags Gran Aventura
+STR_PARK    :Six Flags Gran Aventura
+STR_DTLS    :Usa tus habilidades de diseño para recrear este parque de Six Flags
 
 <Build your own Six Flags Holland>
-STR_SCNR    :Build your own Six Flags Holland
-STR_PARK    :Six Flags Holland
-STR_DTLS    :Build this European Six Flags park the way you want to
+STR_SCNR    :Construye tu propio Six Flags Holanda
+STR_PARK    :Six Flags Holanda
+STR_DTLS    :Haz de este Six Flags europeo tu propio mundo de atracciones.
 
 <Build your own Six Flags Magic Mountain>
-STR_SCNR    :Build your own Six Flags Magic Mountain
+STR_SCNR    :Construye tu propio Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Create your own version of this massive Six Flags park
+STR_DTLS    :Crea tu propia versión de este parque Six Flags de gran envergadura.
 
 <Build your own Six Flags over Texas>
-STR_SCNR    :Build your own Six Flags over Texas
-STR_PARK    :Six Flags over Texas
-STR_DTLS    :Starting from scratch, build the rides in this Six Flags park
+STR_SCNR    :Contruye tu propio Six Flags sobe Tejas
+STR_PARK    :Six Flags sobre Tejas
+STR_DTLS    :Comenzando desde cero, construye las atracciones de este Six Flags tan caluroso.
 
 <Build your own Six Flags Park>
-STR_SCNR    :Build your own Six Flags Park
+STR_SCNR    :Construye tu propio parque Six Flags
 STR_PARK    :Six Flags
-STR_DTLS    :Build your own design of Six Flags park - Either build rides from other Six Flags parks or design and build your own rides
+STR_DTLS    :Construye tu propio diseño de un parque Six Flags - Ya sea incluyendo atracciones de otros parques Six Flags, o poniendo tu propia impronta.
 
 <Bumbly Bazaar>
-STR_SCNR    :Bumbly Bazaar
-STR_PARK    :Bumbly Bazaar
-STR_DTLS    :Starting with a small market bazaar, your challenge is to increase the profit from shops and stalls by building rides and roller coasters to attract more customers
+STR_SCNR    :Bazar Ruidoso
+STR_PARK    :Bazar Ruidoso
+STR_DTLS    :Comenzando desde un pequeño mercado, tu desafío es aumentar los ingresos de los negocios y puestos mediante la construcción de atracciones y montañas rusas para atraer a mas clientes.
 
 <Crazy Castle>
 STR_SCNR    :Castillo Loco
@@ -5070,79 +5070,79 @@ STR_PARK    :Castillo Loco
 STR_DTLS    :Has heredado un gran castillo - tu trabajo es convertirlo en un pequeño parque temático.
 
 <Dusty Greens>
-STR_SCNR    :Dusty Greens
-STR_PARK    :Dusty Greens
-STR_DTLS    :Situated near a highway junction in the desert, Dusty Greens is an opportunity to develop a small golf resort into a thriving theme park
+STR_SCNR    :Greens polvorientos
+STR_PARK    :Greens polvorientos
+STR_DTLS    :Situado cerca de una union de autopistas en el desierto, los Greens polvorientos es una oportunidad para llevar a un pequeño complejo de Golf a un pujante parque temático.
 
 <Electric Fields>
-STR_SCNR    :Electric Fields
-STR_PARK    :Electric Fields
-STR_DTLS    :You have inherited a small farm, and your challenge is to build a small theme park amongst the fields and farm buildings
+STR_SCNR    :Campos Eléctricos
+STR_PARK    :Campos Eléctricos
+STR_DTLS    :Has heredado una pequeña granja, y tu desafío es construir un pequeño parque temático entre los maices y graneros.
 
 <Extreme Heights>
-STR_SCNR    :Extreme Heights
-STR_PARK    :Extreme Heights
-STR_DTLS    :Free of financial restrictions, your challenge is to expand this desert park to attract people seeking the ultimate thrills
+STR_SCNR    :Alturas Extremas
+STR_PARK    :Alturas Extremas
+STR_DTLS    :Libre de restricciones financieras, el desafío será expandir este parque del desierto para atraer gente que busca la emoción definitiva.
 
 <Factory Capers>
-STR_SCNR    :Factory Capers
-STR_PARK    :Factory Capers
-STR_DTLS    :An abandoned factory complex is an opportunity to build a mechanical-themed amusement park
+STR_SCNR    :Tope de Fábrica
+STR_PARK    :Tope de Fábrica
+STR_DTLS    :Un complejo fabril abandonado es la oportunidad perfecta para construir un parque temático mecanizado.
 
 <Fungus Woods>
-STR_SCNR    :Fungus Woods
-STR_PARK    :Fungus Woods
-STR_DTLS    :Restricted to only older-style wooden rides, your challenge is to build a thriving theme park in Fungus Woods
+STR_SCNR    :Maderas Fungosas
+STR_PARK    :Maderas Fungosas
+STR_DTLS    :Restringido a solo construir atracciones de madera del viejo estilo, tú desafío será construir un próspero parque temático en Maderas Fungosas
 
 <Ghost Town>
-STR_SCNR    :Ghost Town
-STR_PARK    :Ghost Town
-STR_DTLS    :Hired by a large amusement park chain, your task is to build them a giant roller coaster park around an abandoned mining town
+STR_SCNR    :Pueblo Fantasma
+STR_PARK    :Pueblo Fantasma
+STR_DTLS    :Constratado por una gran cadena de parque de atracciones, tu tarea será construir para ellos un gigantesco parque alrededor de una ciudad minera abandonada.
 
 <Gravity Gardens>
-STR_SCNR    :Gravity Gardens
-STR_PARK    :Gravity Gardens
-STR_DTLS    :Your challenge is to build a roller coaster park in the beautiful Gravity Gardens - No other rides, just roller coasters!
+STR_SCNR    :Jardines Gravitacionales
+STR_PARK    :Jardines Gravitacionales
+STR_DTLS    :Tu desafío es contruir un parque de monstañas rusas en los bellos Jardines Gravitacionales - Ninguna otra atracción, sólo Montañas Rusas!
 
 <Infernal Views>
-STR_SCNR    :Infernal Views
-STR_PARK    :Infernal Views
-STR_DTLS    :A park nestled precariously on lava rock with streams of magma
+STR_SCNR    :Vistas Infernales
+STR_PARK    :Vistas Infernales
+STR_DTLS    :Un parque colocado precariamente sobre roca volcánica (principalmente basalto) con ríos de lava.
 
 <Lucky Lake>
-STR_SCNR    :Lucky Lake
-STR_PARK    :Lucky Lake
-STR_DTLS    :With unlimited funds but a challenging lake location, this park will be a challenge to expand and manage
+STR_SCNR    :Lago Suerte
+STR_PARK    :Lago Suerte
+STR_DTLS    :Con fondos ilimitados pero una ubicación desafiante, este parque será difícil de expandir y administrar.
 
 <Rainbow Summit>
-STR_SCNR    :Rainbow Summit
-STR_PARK    :Rainbow Summit
-STR_DTLS    :Built on a hillside, this park is forbidden from building anything tall. Can you expand the park and make it successful?
+STR_SCNR    :Cresta Arcoíris
+STR_PARK    :Cresta Arcoíris
+STR_DTLS    :Construido en una ladera, este parque la tiene difícil para construir algo alto. ¿Podrás expandir este parque y hacerlo exitoso?
 
 <Six Flags Belgium>
-STR_SCNR    :Six Flags Belgium
-STR_PARK    :Six Flags Belgium
-STR_DTLS    :Try your hand at running and improving this Six Flags park
+STR_SCNR    :Six Flags Bélgica
+STR_PARK    :Six Flags Bélgica
+STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flags.
 
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Atraer mas visitantes al parque!
 
 <Six Flags Holland>
-STR_SCNR    :Six Flags Holland
-STR_PARK    :Six Flags Holland
-STR_DTLS    :Try your hand at running and improving this Six Flags park
+STR_SCNR    :Six Flags Holanda
+STR_PARK    :Six Flags Holanda
+STR_DTLS    :Prueba tu capacidad para administrar y mejorar este parque Six Flags.
 
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To repay your loan while keeping the park value up!
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Repagar el préstamo y mantener el valor del parque!
 
 <Six Flags over Texas>
-STR_SCNR    :Six Flags over Texas
-STR_PARK    :Six Flags over Texas
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+STR_SCNR    :Six Flags sobre Tejas
+STR_PARK    :Six Flags sobre Tejas
+STR_DTLS    :Construye las atracciones Six Flags faltantes, o crea tus propios diseños para mejorar el parque. Sólo no te olvides el objetivo principal - ¡Atraer mas visitantes al parque!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
