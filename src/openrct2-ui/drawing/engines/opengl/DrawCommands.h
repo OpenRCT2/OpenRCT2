@@ -9,14 +9,14 @@
 
 #pragma once
 
-#include <openrct2/common.h>
-#include <vector>
-#include "OpenGLAPI.h"
 #include "GLSLTypes.h"
+#include "OpenGLAPI.h"
 #include "TextureCache.h"
 
-template<typename T>
-class CommandBatch
+#include <openrct2/common.h>
+#include <vector>
+
+template<typename T> class CommandBatch
 {
 private:
     std::vector<T> _instances;
@@ -43,7 +43,7 @@ public:
         }
         return _instances[_numInstances++];
     }
-    T& insert(const T &value)
+    T& insert(const T& value)
     {
         if (_numInstances + 1 > _instances.size())
         {

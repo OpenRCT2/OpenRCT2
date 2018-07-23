@@ -24,7 +24,9 @@ private:
     money32 _value;
 
 public:
-    ParkSetLoanAction() {}
+    ParkSetLoanAction()
+    {
+    }
     ParkSetLoanAction(money32 value)
         : _value(value)
     {
@@ -43,7 +45,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        auto  currentLoan = gBankLoan;
+        auto currentLoan = gBankLoan;
         auto loanDifference = currentLoan - _value;
         if (_value > currentLoan)
         {

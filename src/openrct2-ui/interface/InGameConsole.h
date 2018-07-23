@@ -23,42 +23,45 @@ namespace OpenRCT2::Ui
         static constexpr int32_t CONSOLE_EDGE_PADDING = 4;
         static constexpr int32_t CONSOLE_CARET_WIDTH = 6;
 
-        bool                    _isOpen = false;
-        int32_t                  _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
-        int32_t                  _lastMainViewportX, _lastMainViewportY;
+        bool _isOpen = false;
+        int32_t _consoleLeft, _consoleTop, _consoleRight, _consoleBottom;
+        int32_t _lastMainViewportX, _lastMainViewportY;
         std::deque<std::string> _consoleLines;
-        utf8                    _consoleCurrentLine[CONSOLE_INPUT_SIZE] = {};
-        int32_t                  _consoleCaretTicks;
-        int32_t                  _consoleScrollPos = 0;
-        TextInputSession *      _consoleTextInputSession;  
-        utf8                    _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
-        int32_t                  _consoleHistoryIndex = 0;
-        int32_t                  _consoleHistoryCount = 0;
+        utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE] = {};
+        int32_t _consoleCaretTicks;
+        int32_t _consoleScrollPos = 0;
+        TextInputSession* _consoleTextInputSession;
+        utf8 _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
+        int32_t _consoleHistoryIndex = 0;
+        int32_t _consoleHistoryCount = 0;
 
     public:
         InGameConsole();
         InGameConsole(const InGameConsole& src) = delete;
 
-        bool IsOpen() const { return _isOpen; }
+        bool IsOpen() const
+        {
+            return _isOpen;
+        }
 
         void Clear() override;
         void Open();
         void Close() override;
         void Hide() override;
         void Toggle();
-        void WriteLine(const std::string &s, uint32_t colourFormat) override;
+        void WriteLine(const std::string& s, uint32_t colourFormat) override;
 
         void Input(CONSOLE_INPUT input);
         void RefreshCaret();
         void Scroll(int32_t linesToScroll);
 
         void Update();
-        void Draw(rct_drawpixelinfo * dpi) const;
+        void Draw(rct_drawpixelinfo* dpi) const;
 
     private:
         void ClearInput();
         void ClearLine();
-        void HistoryAdd(const utf8 * src);
+        void HistoryAdd(const utf8* src);
         void WritePrompt();
         void ScrollToEnd();
         void Invalidate() const;

@@ -7,13 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/config/IniReader.hpp"
+
+#include "openrct2/config/ConfigEnum.hpp"
+#include "openrct2/core/MemoryStream.h"
+#include "openrct2/core/Util.hpp"
+
 #include <gtest/gtest.h>
 #include <limits>
 #include <string>
-#include "openrct2/config/ConfigEnum.hpp"
-#include "openrct2/config/IniReader.hpp"
-#include "openrct2/core/MemoryStream.h"
-#include "openrct2/core/Util.hpp"
 
 class IniReaderTest : public testing::Test
 {
@@ -31,7 +33,7 @@ TEST_F(IniReaderTest, create_empty)
     MemoryStream ms(0);
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), true);
-    IIniReader * ir = CreateIniReader(&ms);
+    IIniReader* ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->GetBoolean("nobody", true), true);
     ASSERT_EQ(ir->GetCString("expects", nullptr), nullptr);
@@ -46,7 +48,7 @@ TEST_F(IniReaderTest, read_prepared)
     MemoryStream ms(predefined.c_str(), predefined.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
-    IIniReader * ir = CreateIniReader(&ms);
+    IIniReader* ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->ReadSection("doesnt_exist"), false);
     ASSERT_EQ(ir->ReadSection("bool"), true);
@@ -62,7 +64,7 @@ TEST_F(IniReaderTest, read_prepared)
     // values from different sections
     ASSERT_EQ(ir->GetInt32("one", 42), 42);
     ASSERT_EQ(ir->GetBoolean("boolval", false), true);
-    const utf8 * str = ir->GetCString("path", nullptr);
+    const utf8* str = ir->GetCString("path", nullptr);
     ASSERT_STREQ(str, u8"C:'\\some/dir\\here/神鷹暢遊");
     Memory::Free(str);
     // go back a section
@@ -76,7 +78,7 @@ TEST_F(IniReaderTest, read_duplicate)
     MemoryStream ms(duplicate.c_str(), duplicate.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
-    IIniReader * ir = CreateIniReader(&ms);
+    IIniReader* ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     // there should only be data from the last section
     ASSERT_EQ(ir->ReadSection("section"), true);
@@ -102,12 +104,12 @@ TEST_F(IniReaderTest, read_untrimmed)
     MemoryStream ms(untrimmed.c_str(), untrimmed.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
-    IIniReader * ir = CreateIniReader(&ms);
+    IIniReader* ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     // there should only be data from the last section
     ASSERT_EQ(ir->ReadSection("section"), true);
     ASSERT_EQ(ir->GetBoolean("one", false), true);
-    const utf8 * str = ir->GetCString("str", nullptr);
+    const utf8* str = ir->GetCString("str", nullptr);
     ASSERT_STREQ(str, "  xxx ");
     Memory::Free(str);
     ASSERT_EQ(ir->GetString("str", "yyy"), "  xxx ");
@@ -120,7 +122,7 @@ TEST_F(IniReaderTest, read_case_insensitive)
     MemoryStream ms(caseInsensitive.c_str(), caseInsensitive.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
-    IIniReader * ir = CreateIniReader(&ms);
+    IIniReader* ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->ReadSection("section"), true);
     ASSERT_EQ(ir->GetString("foo", "yyy"), "bar");
@@ -128,32 +130,28 @@ TEST_F(IniReaderTest, read_case_insensitive)
     delete ir;
 }
 
-const std::string IniReaderTest::predefined =
-    "[bool]\n"
-    "boolval = true\n\n"
-    "[int]\n"
-    "one = 1\n"
-    "zero = 0\n\n"
-    "[string]\n"
-    "path = "
-    "\"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"\n";
+const std::string IniReaderTest::predefined = "[bool]\n"
+                                              "boolval = true\n\n"
+                                              "[int]\n"
+                                              "one = 1\n"
+                                              "zero = 0\n\n"
+                                              "[string]\n"
+                                              "path = "
+                                              "\"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"\n";
 
-const std::string IniReaderTest::duplicate =
-    "[section]\n"
-    "one = true\n"
-    "fortytwo = 13\n"
-    "[section]\n"
-    "two = true\n"
-    "[section]\n"
-    "three = true\n"
-    "fortytwo = 42\n"
-    "fortytwo = 41\n";
+const std::string IniReaderTest::duplicate = "[section]\n"
+                                             "one = true\n"
+                                             "fortytwo = 13\n"
+                                             "[section]\n"
+                                             "two = true\n"
+                                             "[section]\n"
+                                             "three = true\n"
+                                             "fortytwo = 42\n"
+                                             "fortytwo = 41\n";
 
-const std::string IniReaderTest::untrimmed =
-    "[section]\n"
-    "one =     true      \n"
-    "    str =    \"  xxx \"";
+const std::string IniReaderTest::untrimmed = "[section]\n"
+                                             "one =     true      \n"
+                                             "    str =    \"  xxx \"";
 
-const std::string IniReaderTest::caseInsensitive =
-    "[sEcTiOn]\n"
-    "foo = \"bar\"\n";
+const std::string IniReaderTest::caseInsensitive = "[sEcTiOn]\n"
+                                                   "foo = \"bar\"\n";

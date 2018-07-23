@@ -12,7 +12,8 @@
 
 #include "interface/Window.h"
 
-enum INPUT_FLAGS {
+enum INPUT_FLAGS
+{
     INPUT_FLAG_WIDGET_PRESSED = (1 << 0),
 
     // The dropdown can stay open if the mouse is released, set on flag DROPDOWN_FLAG_STAY_OPEN
@@ -36,7 +37,8 @@ enum INPUT_FLAGS {
     INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
 
-enum MOUSE_STATE {
+enum MOUSE_STATE
+{
     MOUSE_STATE_RELEASED,
     MOUSE_STATE_LEFT_PRESS,
     MOUSE_STATE_LEFT_RELEASE,
@@ -44,7 +46,8 @@ enum MOUSE_STATE {
     MOUSE_STATE_RIGHT_RELEASE
 };
 
-enum INPUT_STATE {
+enum INPUT_STATE
+{
     INPUT_STATE_RESET,
     INPUT_STATE_NORMAL,
     INPUT_STATE_WIDGET_PRESSED,
@@ -57,13 +60,15 @@ enum INPUT_STATE {
     INPUT_STATE_SCROLL_RIGHT
 };
 
-enum PLACE_OBJECT_MODIFIER {
+enum PLACE_OBJECT_MODIFIER
+{
     PLACE_OBJECT_MODIFIER_NONE = 0,
     PLACE_OBJECT_MODIFIER_SHIFT_Z = (1 << 0),
     PLACE_OBJECT_MODIFIER_COPY_Z = (1 << 1),
 };
 
-struct widget_ref {
+struct widget_ref
+{
     rct_windowclass window_classification;
     rct_windownumber window_number;
     rct_widgetindex widget_index;
@@ -90,7 +95,7 @@ extern INPUT_STATE _inputState;
 extern uint8_t _inputFlags;
 extern uint16_t _tooltipNotShownTicks;
 
-void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 
 void title_handle_keyboard_input();
 void game_handle_input();

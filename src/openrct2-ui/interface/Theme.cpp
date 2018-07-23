@@ -9,14 +9,16 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
-#include <memory>
-#include <stdexcept>
-#include <vector>
-#include <jansson.h>
+#include "Theme.h"
 
+#include "Window.h"
+
+#include <jansson.h>
+#include <memory>
+#include <openrct2/Context.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/Context.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Guard.hpp>
@@ -25,12 +27,11 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/PlatformEnvironment.h>
-#include <openrct2/interface/Colour.h>
-#include "Theme.h"
-#include "Window.h"
+#include <stdexcept>
+#include <vector>
 
 using namespace OpenRCT2;
 
@@ -50,11 +51,10 @@ struct WindowTheme
 struct UIThemeWindowEntry
 {
     rct_windowclass WindowClass;
-    WindowTheme     Theme;
+    WindowTheme Theme;
 
-
-           json_t *           ToJson() const;
-    static UIThemeWindowEntry FromJson(const WindowThemeDesc * wtDesc, const json_t * json);
+    json_t* ToJson() const;
+    static UIThemeWindowEntry FromJson(const WindowThemeDesc* wtDesc, const json_t* json);
 };
 
 /**
@@ -63,25 +63,25 @@ struct UIThemeWindowEntry
 class UITheme
 {
 public:
-    std::string                     Name;
+    std::string Name;
     std::vector<UIThemeWindowEntry> Entries;
-    uint8_t                           Flags = 0;
+    uint8_t Flags = 0;
 
-    explicit UITheme(const std::string &name)
+    explicit UITheme(const std::string& name)
         : Name(name)
     {
     }
 
-    const UIThemeWindowEntry * GetEntry(rct_windowclass windowClass) const;
-    void                       SetEntry(const UIThemeWindowEntry * entry);
-    void                       RemoveEntry(rct_windowclass windowClass);
+    const UIThemeWindowEntry* GetEntry(rct_windowclass windowClass) const;
+    void SetEntry(const UIThemeWindowEntry* entry);
+    void RemoveEntry(rct_windowclass windowClass);
 
-    json_t * ToJson() const;
-    bool     WriteToFile(const std::string &path) const;
+    json_t* ToJson() const;
+    bool WriteToFile(const std::string& path) const;
 
-    static UITheme * FromJson(const json_t * json);
-    static UITheme * FromFile(const std::string &path);
-    static UITheme   CreatePredefined(const std::string &name, const UIThemeWindowEntry * entries, uint8_t flags);
+    static UITheme* FromJson(const json_t* json);
+    static UITheme* FromFile(const std::string& path);
+    static UITheme CreatePredefined(const std::string& name, const UIThemeWindowEntry* entries, uint8_t flags);
 };
 
 /**
@@ -90,10 +90,10 @@ public:
 struct WindowThemeDesc
 {
     rct_windowclass WindowClass;
-    const utf8 *    WindowClassSZ;
-    rct_string_id   WindowName;
-    uint8_t           NumColours;
-    WindowTheme     DefaultTheme;
+    const utf8* WindowClassSZ;
+    rct_string_id WindowName;
+    uint8_t NumColours;
+    WindowTheme DefaultTheme;
 };
 
 #pragma region Window Theme Descriptors
@@ -234,9 +234,9 @@ static constexpr const PredefinedTheme PredefinedThemes[] = {
 
 #pragma endregion
 
-static const WindowThemeDesc * GetWindowThemeDescriptor(rct_windowclass windowClass)
+static const WindowThemeDesc* GetWindowThemeDescriptor(rct_windowclass windowClass)
 {
-    for (const auto &desc : WindowThemeDescriptors)
+    for (const auto& desc : WindowThemeDescriptors)
     {
         if (desc.WindowClass == windowClass)
         {
@@ -246,9 +246,9 @@ static const WindowThemeDesc * GetWindowThemeDescriptor(rct_windowclass windowCl
     return nullptr;
 }
 
-static const WindowThemeDesc * GetWindowThemeDescriptor(const utf8 * windowClassSZ)
+static const WindowThemeDesc* GetWindowThemeDescriptor(const utf8* windowClassSZ)
 {
-    for (const auto &desc : WindowThemeDescriptors)
+    for (const auto& desc : WindowThemeDescriptors)
     {
         if (String::Equals(desc.WindowClassSZ, windowClassSZ))
         {
@@ -265,29 +265,30 @@ static void ThrowThemeLoadException()
 
 #pragma region UIThemeEntry
 
-json_t * UIThemeWindowEntry::ToJson() const
+json_t* UIThemeWindowEntry::ToJson() const
 {
-    const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(WindowClass);
+    const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(WindowClass);
     if (wtDesc == nullptr)
     {
         return nullptr;
     }
 
-    json_t * jsonColours = json_array();
-    for (uint8_t i = 0; i < wtDesc->NumColours; i++) {
+    json_t* jsonColours = json_array();
+    for (uint8_t i = 0; i < wtDesc->NumColours; i++)
+    {
         colour_t colour = Theme.Colours[i];
         json_array_append_new(jsonColours, json_integer(colour));
     }
 
-    json_t * jsonEntry = json_object();
+    json_t* jsonEntry = json_object();
     json_object_set_new(jsonEntry, "colours", jsonColours);
 
     return jsonEntry;
 }
 
-UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, const json_t * json)
+UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc* wtDesc, const json_t* json)
 {
-    json_t * jsonColours = json_object_get(json, "colours");
+    json_t* jsonColours = json_object_get(json, "colours");
     if (jsonColours == nullptr)
     {
         ThrowThemeLoadException();
@@ -296,7 +297,7 @@ UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, 
     uint8_t numColours = (uint8_t)json_array_size(jsonColours);
     numColours = std::min(numColours, wtDesc->NumColours);
 
-    UIThemeWindowEntry result { };
+    UIThemeWindowEntry result{};
     result.WindowClass = wtDesc->WindowClass;
     result.Theme = wtDesc->DefaultTheme;
 
@@ -312,9 +313,9 @@ UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, 
 
 #pragma region UITheme
 
-const UIThemeWindowEntry * UITheme::GetEntry(rct_windowclass windowClass) const
+const UIThemeWindowEntry* UITheme::GetEntry(rct_windowclass windowClass) const
 {
-    for (const auto &entry : Entries)
+    for (const auto& entry : Entries)
     {
         if (entry.WindowClass == windowClass)
         {
@@ -324,10 +325,10 @@ const UIThemeWindowEntry * UITheme::GetEntry(rct_windowclass windowClass) const
     return nullptr;
 }
 
-void UITheme::SetEntry(const UIThemeWindowEntry * newEntry)
+void UITheme::SetEntry(const UIThemeWindowEntry* newEntry)
 {
     // Try to replace existing entry
-    for (auto &entry : Entries)
+    for (auto& entry : Entries)
     {
         if (entry.WindowClass == newEntry->WindowClass)
         {
@@ -344,7 +345,7 @@ void UITheme::RemoveEntry(rct_windowclass windowClass)
     // Remove existing entry
     for (size_t i = 0; i < Entries.size(); i++)
     {
-        UIThemeWindowEntry * entry = &Entries[i];
+        UIThemeWindowEntry* entry = &Entries[i];
         if (entry->WindowClass == windowClass)
         {
             Entries.erase(Entries.begin() + i);
@@ -353,13 +354,13 @@ void UITheme::RemoveEntry(rct_windowclass windowClass)
     }
 }
 
-json_t * UITheme::ToJson() const
+json_t* UITheme::ToJson() const
 {
     // Create entries
-    json_t * jsonEntries = json_object();
-    for (const UIThemeWindowEntry & entry : Entries)
+    json_t* jsonEntries = json_object();
+    for (const UIThemeWindowEntry& entry : Entries)
     {
-        const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(entry.WindowClass);
+        const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(entry.WindowClass);
         if (wtDesc == nullptr)
         {
             return nullptr;
@@ -368,30 +369,29 @@ json_t * UITheme::ToJson() const
     }
 
     // Create theme object
-    json_t * jsonTheme = json_object();
+    json_t* jsonTheme = json_object();
     json_object_set_new(jsonTheme, "name", json_string(Name.c_str()));
     json_object_set_new(jsonTheme, "entries", jsonEntries);
 
     json_object_set_new(jsonTheme, "useLightsRide", json_boolean(Flags & UITHEME_FLAG_USE_LIGHTS_RIDE));
     json_object_set_new(jsonTheme, "useLightsPark", json_boolean(Flags & UITHEME_FLAG_USE_LIGHTS_PARK));
-    json_object_set_new(jsonTheme,
-                        "useAltScenarioSelectFont",
-                        json_boolean(Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
+    json_object_set_new(
+        jsonTheme, "useAltScenarioSelectFont", json_boolean(Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
     json_object_set_new(jsonTheme, "useFullBottomToolbar", json_boolean(Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
 
     return jsonTheme;
 }
 
-bool UITheme::WriteToFile(const std::string &path) const
+bool UITheme::WriteToFile(const std::string& path) const
 {
-    json_t * jsonTheme = ToJson();
-    bool     result;
+    json_t* jsonTheme = ToJson();
+    bool result;
     try
     {
         Json::WriteToFile(path.c_str(), jsonTheme, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
         result = true;
     }
-    catch (const std::exception &ex)
+    catch (const std::exception& ex)
     {
         log_error("Unable to save %s: %s", path.c_str(), ex.what());
         result = false;
@@ -401,17 +401,17 @@ bool UITheme::WriteToFile(const std::string &path) const
     return result;
 }
 
-UITheme * UITheme::FromJson(const json_t * json)
+UITheme* UITheme::FromJson(const json_t* json)
 {
-    const char * themeName = json_string_value(json_object_get(json, "name"));
+    const char* themeName = json_string_value(json_object_get(json, "name"));
     if (themeName == nullptr)
     {
         ThrowThemeLoadException();
     }
 
-    json_t * jsonEntries = json_object_get(json, "entries");
+    json_t* jsonEntries = json_object_get(json, "entries");
 
-    UITheme * result = nullptr;
+    UITheme* result = nullptr;
     try
     {
         result = new UITheme(themeName);
@@ -433,12 +433,13 @@ UITheme * UITheme::FromJson(const json_t * json)
             result->Flags |= UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR;
         }
 
-        const char * jkey;
-        json_t     * jvalue;
+        const char* jkey;
+        json_t* jvalue;
         json_object_foreach(jsonEntries, jkey, jvalue)
         {
-            const WindowThemeDesc * wtDesc = GetWindowThemeDescriptor(jkey);
-            if (wtDesc == nullptr) continue;
+            const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(jkey);
+            if (wtDesc == nullptr)
+                continue;
 
             UIThemeWindowEntry entry = UIThemeWindowEntry::FromJson(wtDesc, jvalue);
             result->SetEntry(&entry);
@@ -446,23 +447,23 @@ UITheme * UITheme::FromJson(const json_t * json)
 
         return result;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         delete result;
         throw;
     }
 }
 
-UITheme * UITheme::FromFile(const std::string &path)
+UITheme* UITheme::FromFile(const std::string& path)
 {
-    json_t  * json = nullptr;
-    UITheme * result = nullptr;
+    json_t* json = nullptr;
+    UITheme* result = nullptr;
     try
     {
         json = Json::ReadFromFile(path.c_str());
         result = UITheme::FromJson(json);
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         log_error("Unable to read theme: %s", path.c_str());
         result = nullptr;
@@ -472,13 +473,13 @@ UITheme * UITheme::FromFile(const std::string &path)
     return result;
 }
 
-UITheme UITheme::CreatePredefined(const std::string &name, const UIThemeWindowEntry * entries, uint8_t flags)
+UITheme UITheme::CreatePredefined(const std::string& name, const UIThemeWindowEntry* entries, uint8_t flags)
 {
     auto theme = UITheme(name);
     theme.Flags = flags | UITHEME_FLAG_PREDEFINED;
 
     size_t numEntries = 0;
-    for (const UIThemeWindowEntry * entry = entries; entry->WindowClass != 255; entry++)
+    for (const UIThemeWindowEntry* entry = entries; entry->WindowClass != 255; entry++)
     {
         numEntries++;
     }
@@ -497,17 +498,17 @@ namespace ThemeManager
         std::string Name;
     };
 
-    static std::string                 CurrentThemePath;
-    static UITheme *                   CurrentTheme;
+    static std::string CurrentThemePath;
+    static UITheme* CurrentTheme;
     static std::vector<AvailableTheme> AvailableThemes;
-    static size_t                      ActiveAvailableThemeIndex = SIZE_MAX;
-    static size_t                      NumPredefinedThemes = 0;
+    static size_t ActiveAvailableThemeIndex = SIZE_MAX;
+    static size_t NumPredefinedThemes = 0;
 
-    std::string GetThemeFileName(const std::string &name);
+    std::string GetThemeFileName(const std::string& name);
     bool EnsureThemeDirectoryExists();
     std::string GetThemePath();
 
-    static void GetAvailableThemes(std::vector<AvailableTheme> * outThemes)
+    static void GetAvailableThemes(std::vector<AvailableTheme>* outThemes)
     {
         Guard::ArgumentNotNull(outThemes, GUARD_LINE);
 
@@ -516,7 +517,7 @@ namespace ThemeManager
         NumPredefinedThemes = 0;
         for (auto predefinedTheme : PredefinedThemes)
         {
-            AvailableTheme theme {};
+            AvailableTheme theme{};
             theme.Name = predefinedTheme.Theme->Name;
             outThemes->push_back(std::move(theme));
 
@@ -530,7 +531,7 @@ namespace ThemeManager
             auto fileInfo = scanner->GetFileInfo();
             auto name = Path::GetFileNameWithoutExtension(std::string(fileInfo->Name));
 
-            AvailableTheme theme {};
+            AvailableTheme theme{};
             theme.Name = name;
             theme.Path = GetThemeFileName(theme.Name);
             outThemes->push_back(std::move(theme));
@@ -542,7 +543,7 @@ namespace ThemeManager
         }
     }
 
-    static void LoadTheme(UITheme * theme)
+    static void LoadTheme(UITheme* theme)
     {
         if (CurrentTheme == theme)
         {
@@ -563,13 +564,13 @@ namespace ThemeManager
         gfx_invalidate_screen();
     }
 
-    static void LoadTheme(const std::string &path)
+    static void LoadTheme(const std::string& path)
     {
         auto theme = UITheme::FromFile(path);
         if (theme == nullptr)
         {
             // Fall-back to default
-            theme = (UITheme *)&PredefinedThemeRCT2;
+            theme = (UITheme*)&PredefinedThemeRCT2;
             LoadTheme(theme);
         }
         else
@@ -579,16 +580,16 @@ namespace ThemeManager
         }
     }
 
-    static bool LoadThemeByConfigName(const utf8 * name)
+    static bool LoadThemeByConfigName(const utf8* name)
     {
         for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
         {
-            const auto &theme = ThemeManager::AvailableThemes[i];
+            const auto& theme = ThemeManager::AvailableThemes[i];
             if (String::Equals(name, theme.Name))
             {
                 if (theme.Path.empty())
                 {
-                    LoadTheme((UITheme *)PredefinedThemes[i].Theme);
+                    LoadTheme((UITheme*)PredefinedThemes[i].Theme);
                 }
                 else
                 {
@@ -604,7 +605,7 @@ namespace ThemeManager
     static void Initialise()
     {
         ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
-        LoadTheme((UITheme *)&PredefinedThemeRCT2);
+        LoadTheme((UITheme*)&PredefinedThemeRCT2);
         ActiveAvailableThemeIndex = 1;
 
         bool configValid = false;
@@ -622,7 +623,7 @@ namespace ThemeManager
         }
     }
 
-    std::string GetThemeFileName(const std::string &name)
+    std::string GetThemeFileName(const std::string& name)
     {
         auto themeDirectory = GetThemePath();
         auto themePath = Path::Combine(themeDirectory, name + ".json");
@@ -637,7 +638,7 @@ namespace ThemeManager
             Path::CreateDirectory(path);
             return true;
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             return false;
         }
@@ -661,16 +662,16 @@ size_t theme_manager_get_num_available_themes()
     return ThemeManager::AvailableThemes.size();
 }
 
-const utf8 * theme_manager_get_available_theme_path(size_t index)
+const utf8* theme_manager_get_available_theme_path(size_t index)
 {
     return ThemeManager::AvailableThemes[index].Path.c_str();
 }
 
-const utf8 * theme_manager_get_available_theme_config_name(size_t index)
+const utf8* theme_manager_get_available_theme_config_name(size_t index)
 {
     return ThemeManager::AvailableThemes[index].Name.c_str();
 }
-const utf8 * theme_manager_get_available_theme_name(size_t index)
+const utf8* theme_manager_get_available_theme_name(size_t index)
 {
     if (index < ThemeManager::NumPredefinedThemes)
         return language_get_string(PredefinedThemes[index].Name);
@@ -686,7 +687,7 @@ void theme_manager_set_active_available_theme(size_t index)
 {
     if (index < ThemeManager::NumPredefinedThemes)
     {
-        ThemeManager::LoadTheme((UITheme *)PredefinedThemes[index].Theme);
+        ThemeManager::LoadTheme((UITheme*)PredefinedThemes[index].Theme);
     }
     else
     {
@@ -705,12 +706,12 @@ void theme_manager_set_active_available_theme(size_t index)
     colour_scheme_update_all();
 }
 
-size_t theme_get_index_for_name(const utf8 * name)
+size_t theme_get_index_for_name(const utf8* name)
 {
     size_t count = ThemeManager::AvailableThemes.size();
     for (size_t i = 0; i < count; i++)
     {
-        const utf8 * tn = theme_manager_get_available_theme_name(i);
+        const utf8* tn = theme_manager_get_available_theme_name(i);
         if (String::Equals(tn, name, true))
         {
             return i;
@@ -721,10 +722,10 @@ size_t theme_get_index_for_name(const utf8 * name)
 
 uint8_t theme_get_colour(rct_windowclass wc, uint8_t index)
 {
-    const UIThemeWindowEntry * entry = ThemeManager::CurrentTheme->GetEntry(wc);
+    const UIThemeWindowEntry* entry = ThemeManager::CurrentTheme->GetEntry(wc);
     if (entry == nullptr)
     {
-        const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+        const WindowThemeDesc* desc = GetWindowThemeDescriptor(wc);
         if (desc == nullptr)
         {
             return 0;
@@ -739,17 +740,17 @@ uint8_t theme_get_colour(rct_windowclass wc, uint8_t index)
 
 void theme_set_colour(rct_windowclass wc, uint8_t index, colour_t colour)
 {
-    UIThemeWindowEntry entry { };
+    UIThemeWindowEntry entry{};
     entry.WindowClass = wc;
 
-    auto currentEntry = (UIThemeWindowEntry *)ThemeManager::CurrentTheme->GetEntry(wc);
+    auto currentEntry = (UIThemeWindowEntry*)ThemeManager::CurrentTheme->GetEntry(wc);
     if (currentEntry != nullptr)
     {
         entry.Theme = currentEntry->Theme;
     }
     else
     {
-        const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+        const WindowThemeDesc* desc = GetWindowThemeDescriptor(wc);
         if (desc == nullptr)
         {
             return;
@@ -780,7 +781,7 @@ void theme_save()
     ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
 }
 
-void theme_rename(const utf8 * name)
+void theme_rename(const utf8* name)
 {
     const auto oldPath = ThemeManager::CurrentThemePath;
 
@@ -804,13 +805,13 @@ void theme_rename(const utf8 * name)
     }
 }
 
-void theme_duplicate(const utf8 * name)
+void theme_duplicate(const utf8* name)
 {
     ThemeManager::EnsureThemeDirectoryExists();
     auto newPath = ThemeManager::GetThemeFileName(name);
 
     // Copy the theme, save it and then load it back in
-    UITheme * newTheme = new UITheme(*ThemeManager::CurrentTheme);
+    UITheme* newTheme = new UITheme(*ThemeManager::CurrentTheme);
     newTheme->Name = name;
     newTheme->Flags &= ~UITHEME_FLAG_PREDEFINED;
     newTheme->WriteToFile(newPath);
@@ -833,7 +834,7 @@ void theme_duplicate(const utf8 * name)
 void theme_delete()
 {
     File::Delete(ThemeManager::CurrentThemePath);
-    ThemeManager::LoadTheme((UITheme *)&PredefinedThemeRCT2);
+    ThemeManager::LoadTheme((UITheme*)&PredefinedThemeRCT2);
     ThemeManager::ActiveAvailableThemeIndex = 1;
     String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
 }
@@ -845,7 +846,7 @@ void theme_manager_initialise()
 
 uint8_t theme_desc_get_num_colours(rct_windowclass wc)
 {
-    const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+    const WindowThemeDesc* desc = GetWindowThemeDescriptor(wc);
     if (desc == nullptr)
     {
         return 0;
@@ -855,7 +856,7 @@ uint8_t theme_desc_get_num_colours(rct_windowclass wc)
 
 rct_string_id theme_desc_get_name(rct_windowclass wc)
 {
-    const WindowThemeDesc * desc = GetWindowThemeDescriptor(wc);
+    const WindowThemeDesc* desc = GetWindowThemeDescriptor(wc);
     if (desc == nullptr)
     {
         return STR_EMPTY;
@@ -871,22 +872,22 @@ void colour_scheme_update_all()
     }
 }
 
-void colour_scheme_update(rct_window * window)
+void colour_scheme_update(rct_window* window)
 {
     colour_scheme_update_by_class(window, window->classification);
 }
 
-void colour_scheme_update_by_class(rct_window * window, rct_windowclass classification)
+void colour_scheme_update_by_class(rct_window* window, rct_windowclass classification)
 {
-    const WindowTheme *        windowTheme;
-    const UIThemeWindowEntry * entry = ThemeManager::CurrentTheme->GetEntry(classification);
+    const WindowTheme* windowTheme;
+    const UIThemeWindowEntry* entry = ThemeManager::CurrentTheme->GetEntry(classification);
     if (entry != nullptr)
     {
         windowTheme = &entry->Theme;
     }
     else
     {
-        const WindowThemeDesc * desc = GetWindowThemeDescriptor(classification);
+        const WindowThemeDesc* desc = GetWindowThemeDescriptor(classification);
 
         // Some windows don't have a theme set (e.g. main window, title screen)
         if (desc == nullptr)
@@ -897,11 +898,11 @@ void colour_scheme_update_by_class(rct_window * window, rct_windowclass classifi
         windowTheme = &desc->DefaultTheme;
     }
 
-    for (int32_t i = 0; i < 6; i++) {
+    for (int32_t i = 0; i < 6; i++)
+    {
         window->colours[i] = windowTheme->Colours[i];
     }
     // Some windows need to be transparent even if the colours aren't.
     // There doesn't seem to be any side-effects for all windows being transparent
     window->flags |= WF_TRANSPARENT;
 }
-

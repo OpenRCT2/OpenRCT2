@@ -9,28 +9,31 @@
 
 #ifdef _WIN32
 
-#ifdef __MINGW32__
+#    ifdef __MINGW32__
 // 0x0600 == vista
-#define WINVER 0x0600
-#define _WIN32_WINNT 0x0600
-#endif // __MINGW32__
+#        define WINVER 0x0600
+#        define _WIN32_WINNT 0x0600
+#    endif // __MINGW32__
 
-#include <sstream>
-#include <openrct2/common.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/core/Path.hpp>
-#include <openrct2/core/String.hpp>
-#include <openrct2/ui/UiContext.h>
-#include "UiContext.h"
+// Windows.h needs to be included first
+#    include <windows.h>
+#    undef CreateWindow
 
-#undef interface
-#include <windows.h>
-#include <shlobj.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_syswm.h>
+// Then the rest
+#    include "UiContext.h"
+
+#    include <SDL2/SDL.h>
+#    include <SDL2/SDL_syswm.h>
+#    include <openrct2/common.h>
+#    include <openrct2/core/Math.hpp>
+#    include <openrct2/core/Path.hpp>
+#    include <openrct2/core/String.hpp>
+#    include <openrct2/ui/UiContext.h>
+#    include <shlobj.h>
+#    include <sstream>
 
 // Native resource IDs
-#include "../../resources/resource.h"
+#    include "../../resources/resource.h"
 
 static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
 {
@@ -60,7 +63,7 @@ namespace OpenRCT2::Ui
             _win32module = GetModuleHandleA(nullptr);
         }
 
-        void SetWindowIcon(SDL_Window * window) override
+        void SetWindowIcon(SDL_Window* window) override
         {
             if (_win32module != nullptr)
             {
@@ -81,14 +84,14 @@ namespace OpenRCT2::Ui
             return (GetModuleHandleA("GameOverlayRenderer.dll") != nullptr);
         }
 
-        void ShowMessageBox(SDL_Window * window, const std::string &message) override
+        void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
             HWND hwnd = GetHWND(window);
             std::wstring messageW = String::ToUtf16(message);
             MessageBoxW(hwnd, messageW.c_str(), L"OpenRCT2", MB_OK);
         }
 
-        std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
+        std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             std::wstring wcFilename = String::ToUtf16(desc.DefaultFilename);
             wcFilename.resize(std::max<size_t>(wcFilename.size(), MAX_PATH));
@@ -146,14 +149,13 @@ namespace OpenRCT2::Ui
             return resultFilename;
         }
 
-        std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) override
+        std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
         {
             std::string result;
 
             // Initialize COM and get a pointer to the shell memory allocator
             LPMALLOC lpMalloc;
-            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)) &&
-                SUCCEEDED(SHGetMalloc(&lpMalloc)))
+            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)) && SUCCEEDED(SHGetMalloc(&lpMalloc)))
             {
                 std::wstring titleW = String::ToUtf16(title);
                 BROWSEINFOW bi = {};
@@ -181,7 +183,7 @@ namespace OpenRCT2::Ui
         }
 
     private:
-        HWND GetHWND(SDL_Window * window)
+        HWND GetHWND(SDL_Window* window)
         {
             HWND result = nullptr;
             if (window != nullptr)
@@ -204,16 +206,13 @@ namespace OpenRCT2::Ui
             std::wstringstream filtersb;
             for (auto filter : filters)
             {
-                filtersb << String::ToUtf16(filter.Name)
-                         << '\0'
-                         << String::ToUtf16(filter.Pattern)
-                         << '\0';
+                filtersb << String::ToUtf16(filter.Name) << '\0' << String::ToUtf16(filter.Pattern) << '\0';
             }
             return filtersb.str();
         }
     };
 
-    IPlatformUiContext * CreatePlatformUiContext()
+    IPlatformUiContext* CreatePlatformUiContext()
     {
         return new Win32Context();
     }

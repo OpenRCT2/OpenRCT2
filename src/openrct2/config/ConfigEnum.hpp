@@ -9,34 +9,32 @@
 
 #pragma once
 
+#include "../core/String.hpp"
+
 #include <initializer_list>
 #include <utility>
 #include <vector>
-#include "../core/String.hpp"
 
-template<typename T>
-struct ConfigEnumEntry
+template<typename T> struct ConfigEnumEntry
 {
     std::string Key;
-    T           Value;
+    T Value;
 
     ConfigEnumEntry(std::string key, T value)
-        : Key(std::move(key)),
-          Value(value)
+        : Key(std::move(key))
+        , Value(value)
     {
     }
 };
 
-template<typename T>
-interface IConfigEnum
+template<typename T> interface IConfigEnum
 {
     virtual ~IConfigEnum() = default;
     virtual std::string GetName(T value) const abstract;
-    virtual T GetValue(const std::string &key, T defaultValue) const abstract;
+    virtual T GetValue(const std::string& key, T defaultValue) const abstract;
 };
 
-template<typename T>
-class ConfigEnum final : public IConfigEnum<T>
+template<typename T> class ConfigEnum final : public IConfigEnum<T>
 {
 private:
     const std::vector<ConfigEnumEntry<T>> _entries;
@@ -49,7 +47,7 @@ public:
 
     std::string GetName(T value) const override
     {
-        for (const auto &entry : _entries)
+        for (const auto& entry : _entries)
         {
             if (entry.Value == value)
             {
@@ -59,9 +57,9 @@ public:
         return std::string();
     }
 
-    T GetValue(const std::string &key, T defaultValue) const override
+    T GetValue(const std::string& key, T defaultValue) const override
     {
-        for (const auto &entry : _entries)
+        for (const auto& entry : _entries)
         {
             if (String::Equals(entry.Key, key, true))
             {

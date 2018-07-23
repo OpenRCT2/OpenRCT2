@@ -9,9 +9,9 @@
 
 #pragma once
 
+#include "DrawCommands.h"
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
-#include "DrawCommands.h"
 
 class DrawLineShader final : public OpenGLShaderProgram
 {

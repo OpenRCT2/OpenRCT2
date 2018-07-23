@@ -9,33 +9,36 @@
 
 #ifdef _WIN32
 
-#include <memory>
-#include <windows.h>
-#include <datetimeapi.h>
-#include <shlobj.h>
-#undef GetEnvironmentVariable
+// Windows.h needs to be included first
+#    include <windows.h>
 
-#if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
-    #define __USE_SHGETKNOWNFOLDERPATH__
-    #define __USE_GETDATEFORMATEX__
-#else
-    #define ENABLE_VIRTUAL_TERMINAL_PROCESSING  0x0004
-#endif
+// Then the rest
+#    include <datetimeapi.h>
+#    include <memory>
+#    include <shlobj.h>
+#    undef GetEnvironmentVariable
 
-#include "../core/Path.hpp"
-#include "../core/String.hpp"
-#include "../core/Util.hpp"
-#include "../OpenRCT2.h"
-#include "Platform2.h"
-#include "platform.h"
+#    if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
+#        define __USE_SHGETKNOWNFOLDERPATH__
+#        define __USE_GETDATEFORMATEX__
+#    else
+#        define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#    endif
+
+#    include "../OpenRCT2.h"
+#    include "../core/Path.hpp"
+#    include "../core/String.hpp"
+#    include "../core/Util.hpp"
+#    include "Platform2.h"
+#    include "platform.h"
 
 namespace Platform
 {
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
-#else
+#    else
     static std::string WIN32_GetFolderPath(int nFolder);
-#endif
+#    endif
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
 
     uint32_t GetTicks()
@@ -43,7 +46,7 @@ namespace Platform
         return platform_get_ticks();
     }
 
-    std::string GetEnvironmentVariable(const std::string &name)
+    std::string GetEnvironmentVariable(const std::string& name)
     {
         std::wstring result;
         auto wname = String::ToUtf16(name);
@@ -79,29 +82,29 @@ namespace Platform
     {
         switch (folder)
         {
-        // We currently store everything under Documents/OpenRCT2
-        case SPECIAL_FOLDER::USER_CACHE:
-        case SPECIAL_FOLDER::USER_CONFIG:
-        case SPECIAL_FOLDER::USER_DATA:
+            // We currently store everything under Documents/OpenRCT2
+            case SPECIAL_FOLDER::USER_CACHE:
+            case SPECIAL_FOLDER::USER_CONFIG:
+            case SPECIAL_FOLDER::USER_DATA:
             {
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Documents);
-#else
+#    else
                 auto path = WIN32_GetFolderPath(CSIDL_PERSONAL);
-#endif
+#    endif
                 if (path.empty())
                 {
                     path = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
                 }
                 return path;
             }
-        case SPECIAL_FOLDER::USER_HOME:
+            case SPECIAL_FOLDER::USER_HOME:
             {
-#ifdef __USE_SHGETKNOWNFOLDERPATH__
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Profile);
-#else
+#    else
                 auto path = WIN32_GetFolderPath(CSIDL_PROFILE);
-#endif
+#    endif
                 if (path.empty())
                 {
                     path = GetHomePathViaEnvironment();
@@ -112,8 +115,8 @@ namespace Platform
                 }
                 return path;
             }
-        default:
-            return std::string();
+            default:
+                return std::string();
         }
     }
 
@@ -148,7 +151,7 @@ namespace Platform
         LONGLONG ll = Int32x32To64(timestamp, 10000000) + 116444736000000000;
 
         FILETIME ft;
-        ft.dwLowDateTime = (DWORD) ll;
+        ft.dwLowDateTime = (DWORD)ll;
         ft.dwHighDateTime = ll >> 32;
 
         SYSTEMTIME st;
@@ -160,15 +163,15 @@ namespace Platform
     {
         SYSTEMTIME st = TimeToSystemTime(timestamp);
 
-#ifdef __USE_GETDATEFORMATEX__
+#    ifdef __USE_GETDATEFORMATEX__
         wchar_t date[20];
         GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date), nullptr);
         std::string result = String::ToUtf8(std::wstring(date));
-#else
+#    else
         char date[20];
         GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date));
         std::string result(date);
-#endif
+#    endif
 
         return result;
     }
@@ -177,15 +180,15 @@ namespace Platform
     {
         SYSTEMTIME st = TimeToSystemTime(timestamp);
 
-#ifdef __USE_GETDATEFORMATEX__
+#    ifdef __USE_GETDATEFORMATEX__
         wchar_t time[20];
         GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
         std::string result = String::ToUtf8(std::wstring(time));
-#else
+#    else
         char time[20];
         GetTimeFormat(LOCALE_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
         std::string result(time);
-#endif
+#    endif
 
         return result;
     }
@@ -196,7 +199,7 @@ namespace Platform
         auto hModule = GetModuleHandleA("ntdll.dll");
         if (hModule != nullptr)
         {
-            using RtlGetVersionPtr = NTSTATUS(WINAPI *)(PRTL_OSVERSIONINFOW);
+            using RtlGetVersionPtr = NTSTATUS(WINAPI*)(PRTL_OSVERSIONINFOW);
             auto fn = (RtlGetVersionPtr)GetProcAddress(hModule, "RtlGetVersion");
             if (fn != nullptr)
             {
@@ -204,11 +207,9 @@ namespace Platform
                 rovi.dwOSVersionInfoSize = sizeof(rovi);
                 if (fn(&rovi) == 0)
                 {
-                    if (rovi.dwMajorVersion > major ||
-                        (rovi.dwMajorVersion == major &&
-                        (rovi.dwMinorVersion > minor ||
-                            (rovi.dwMinorVersion == minor &&
-                                rovi.dwBuildNumber >= build))))
+                    if (rovi.dwMajorVersion > major
+                        || (rovi.dwMajorVersion == major
+                            && (rovi.dwMinorVersion > minor || (rovi.dwMinorVersion == minor && rovi.dwBuildNumber >= build))))
                     {
                         result = true;
                     }
@@ -262,11 +263,11 @@ namespace Platform
         return isSupported;
     }
 
- #ifdef __USE_SHGETKNOWNFOLDERPATH__
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
     {
         std::string path;
-        wchar_t * wpath = nullptr;
+        wchar_t* wpath = nullptr;
         if (SUCCEEDED(SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &wpath)))
         {
             path = String::ToUtf8(std::wstring(wpath));
@@ -274,7 +275,7 @@ namespace Platform
         CoTaskMemFree(wpath);
         return path;
     }
-#else
+#    else
     static std::string WIN32_GetFolderPath(int nFolder)
     {
         std::string path;
@@ -285,7 +286,7 @@ namespace Platform
         }
         return path;
     }
-#endif
+#    endif
 
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule)
     {
@@ -297,8 +298,7 @@ namespace Platform
             wExePathCapacity *= 2;
             wExePath = std::make_unique<wchar_t[]>(wExePathCapacity);
             size = GetModuleFileNameW(hModule, wExePath.get(), wExePathCapacity);
-        }
-        while (size >= wExePathCapacity);
+        } while (size >= wExePathCapacity);
         return String::ToUtf8(wExePath.get());
     }
 } // namespace Platform

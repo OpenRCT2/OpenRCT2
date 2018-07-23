@@ -7,13 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/config/Config.h>
-#include <openrct2/Context.h>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/Intro.h>
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/Intro.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/localisation/Localisation.h>
 
 // clang-format off
 enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
@@ -63,15 +62,10 @@ static rct_window_event_list window_title_options_events = {
 /**
  * Creates the window containing the options button on the title screen.
  */
-rct_window * window_title_options_open()
+rct_window* window_title_options_open()
 {
-    rct_window * window = window_create(
-        context_get_width() - 80, 0,
-        80, 15,
-        &window_title_options_events,
-        WC_TITLE_OPTIONS,
-        WF_STICK_TO_BACK | WF_TRANSPARENT
-    );
+    rct_window* window = window_create(
+        context_get_width() - 80, 0, 80, 15, &window_title_options_events, WC_TITLE_OPTIONS, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_options_widgets;
     window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
     window_init_scroll_widgets(window);
@@ -79,20 +73,20 @@ rct_window * window_title_options_open()
     return window;
 }
 
-static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_title_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (gIntroState != INTRO_STATE_NONE)
         return;
 
-    switch (widgetIndex) {
-    case WIDX_OPTIONS:
-        context_open_window(WC_OPTIONS);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_OPTIONS:
+            context_open_window(WC_OPTIONS);
+            break;
     }
 }
 
-static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_title_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 }
-

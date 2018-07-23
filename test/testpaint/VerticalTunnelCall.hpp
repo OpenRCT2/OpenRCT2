@@ -11,7 +11,8 @@
 
 #include <openrct2/common.h>
 
-namespace VerticalTunnelCall {
-    uint16_t GetTunnelHeight(uint16_t baseHeight, uint8_t *calls);
-    bool HeightIsConsistent(uint16_t *heights);
-};
+namespace VerticalTunnelCall
+{
+    uint16_t GetTunnelHeight(uint16_t baseHeight, uint8_t* calls);
+    bool HeightIsConsistent(uint16_t* heights);
+}; // namespace VerticalTunnelCall

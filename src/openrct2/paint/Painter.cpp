@@ -7,20 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../config/Config.h"
-#include "../drawing/IDrawingEngine.h"
-#include "../OpenRCT2.h"
-#include "../title/TitleScreen.h"
-#include "../ui/UiContext.h"
 #include "Painter.h"
 
-#include "../drawing/Drawing.h"
 #include "../Game.h"
+#include "../Intro.h"
+#include "../OpenRCT2.h"
+#include "../config/Config.h"
+#include "../drawing/Drawing.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../interface/Chat.h"
 #include "../interface/InteractiveConsole.h"
-#include "../Intro.h"
-#include "../localisation/Language.h"
 #include "../localisation/FormatCodes.h"
+#include "../localisation/Language.h"
+#include "../title/TitleScreen.h"
+#include "../ui/UiContext.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -64,7 +64,7 @@ void Painter::Paint(IDrawingEngine& de)
     gCurrentDrawCount++;
 }
 
-void Painter::PaintFPS(rct_drawpixelinfo * dpi)
+void Painter::PaintFPS(rct_drawpixelinfo* dpi)
 {
     int32_t x = _uiContext->GetWidth() / 2;
     int32_t y = 2;
@@ -74,7 +74,7 @@ void Painter::PaintFPS(rct_drawpixelinfo * dpi)
 
     // Format string
     utf8 buffer[64] = { 0 };
-    utf8 * ch = buffer;
+    utf8* ch = buffer;
     ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
     ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
     ch = utf8_write_codepoint(ch, FORMAT_WHITE);

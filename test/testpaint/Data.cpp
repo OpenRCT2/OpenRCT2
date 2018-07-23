@@ -363,6 +363,7 @@ const_utf8string TrackNames[256] = {
     "Elem255",
 };
 
+// clang-format off
 const_utf8string FlatTrackNames[256] = {
     "",
     "",
@@ -621,6 +622,7 @@ const_utf8string FlatTrackNames[256] = {
     "",
     "",
 };
+// clang-format on
 
 const_utf8string TrackElemNames[] = {
     "TRACK_ELEM_FLAT",
@@ -1231,5 +1233,5 @@ const_utf8string TrackCodeNames[256] = {
     "right_quarter_turn_1_90_deg_down",
     "multidim_90_deg_up_to_inverted_flat_quarter_loop",
     "multidim_flat_to_90_deg_down_quarter_loop",
-    "elem_255"
+    "elem_255",
 };

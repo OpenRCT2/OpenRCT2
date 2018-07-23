@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include <openrct2/common.h>
-#include <openrct2/drawing/Drawing.h>
 #include "OpenGLAPI.h"
 
+#include <openrct2/common.h>
+#include <openrct2/drawing/Drawing.h>
 #include <vector>
 
 struct SDL_Window;
@@ -27,26 +27,38 @@ private:
     int32_t _height;
 
 public:
-    explicit OpenGLFramebuffer(SDL_Window * window);
+    explicit OpenGLFramebuffer(SDL_Window* window);
     OpenGLFramebuffer(int32_t width, int32_t height, bool depth = true, bool integer = true);
     ~OpenGLFramebuffer();
 
-    OpenGLFramebuffer(const OpenGLFramebuffer &) = delete;
-    OpenGLFramebuffer &operator=(const OpenGLFramebuffer &) = delete;
+    OpenGLFramebuffer(const OpenGLFramebuffer&) = delete;
+    OpenGLFramebuffer& operator=(const OpenGLFramebuffer&) = delete;
 
-    GLuint GetWidth() const { return _width; }
-    GLuint GetHeight() const { return _height; }
-    GLuint GetTexture() const { return _texture; }
-    GLuint GetDepthTexture() const { return _depth; }
+    GLuint GetWidth() const
+    {
+        return _width;
+    }
+    GLuint GetHeight() const
+    {
+        return _height;
+    }
+    GLuint GetTexture() const
+    {
+        return _texture;
+    }
+    GLuint GetDepthTexture() const
+    {
+        return _depth;
+    }
 
     void Bind() const;
     void BindDraw() const;
     void BindRead() const;
-    void GetPixels(rct_drawpixelinfo &dpi) const;
+    void GetPixels(rct_drawpixelinfo& dpi) const;
 
-    void SwapColourBuffer(OpenGLFramebuffer &other);
+    void SwapColourBuffer(OpenGLFramebuffer& other);
     GLuint SwapDepthTexture(GLuint depth);
-    void Copy(OpenGLFramebuffer &src, GLenum filter);
+    void Copy(OpenGLFramebuffer& src, GLenum filter);
 
     static GLuint CreateDepthTexture(int32_t width, int32_t height);
 };

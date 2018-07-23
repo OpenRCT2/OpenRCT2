@@ -7,7 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
+#include "GameAction.h"
+
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
@@ -18,7 +19,8 @@
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 #include "../world/Park.h"
-#include "GameAction.h"
+
+#include <algorithm>
 
 GameActionResult::GameActionResult(GA_ERROR error, rct_string_id message)
 {
@@ -33,7 +35,7 @@ GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_stri
     ErrorMessage = message;
 }
 
-GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t * args)
+GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t* args)
 {
     Error = error;
     ErrorTitle = title;
@@ -69,7 +71,7 @@ namespace GameActions
     {
         Initialize();
 
-        GameAction * result = nullptr;
+        GameAction* result = nullptr;
         if (id < Util::CountOf(_actions))
         {
             GameActionFactory factory = _actions[id];
@@ -84,21 +86,27 @@ namespace GameActions
 
     static bool CheckActionInPausedMode(uint32_t actionFlags)
     {
-        if (gGamePaused == 0) return true;
-        if (gCheatsBuildInPauseMode) return true;
-        if (actionFlags & GA_FLAGS::ALLOW_WHILE_PAUSED) return true;
+        if (gGamePaused == 0)
+            return true;
+        if (gCheatsBuildInPauseMode)
+            return true;
+        if (actionFlags & GA_FLAGS::ALLOW_WHILE_PAUSED)
+            return true;
         return false;
     }
 
-    static bool CheckActionAffordability(const GameActionResult * result)
+    static bool CheckActionAffordability(const GameActionResult* result)
     {
-        if (gParkFlags & PARK_FLAGS_NO_MONEY) return true;
-        if (result->Cost <= 0) return true;
-        if (result->Cost <= gCash) return true;
+        if (gParkFlags & PARK_FLAGS_NO_MONEY)
+            return true;
+        if (result->Cost <= 0)
+            return true;
+        if (result->Cost <= gCash)
+            return true;
         return false;
     }
 
-    GameActionResult::Ptr Query(const GameAction * action)
+    GameActionResult::Ptr Query(const GameAction* action)
     {
         Guard::ArgumentNotNull(action);
 
@@ -131,7 +139,7 @@ namespace GameActions
         return result;
     }
 
-    GameActionResult::Ptr Execute(const GameAction * action)
+    GameActionResult::Ptr Execute(const GameAction* action)
     {
         Guard::ArgumentNotNull(action);
 
@@ -177,10 +185,8 @@ namespace GameActions
             gCommandPosition.z = result->Position.z;
 
             // Update money balance
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && 
-                !(flags & GAME_COMMAND_FLAG_GHOST) && 
-                !(flags & GAME_COMMAND_FLAG_5) &&
-                result->Cost != 0)
+            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5)
+                && result->Cost != 0)
             {
                 finance_payment(result->Cost, result->ExpenditureType);
                 money_effect_create(result->Cost);
@@ -214,9 +220,7 @@ namespace GameActions
             cb(action, result.get());
         }
 
-        if (result->Error != GA_ERROR::OK && 
-            !(flags & GAME_COMMAND_FLAG_GHOST) &&
-            !(flags & GAME_COMMAND_FLAG_5))
+        if (result->Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5))
         {
             // Show the error box
             std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);

@@ -10,10 +10,10 @@
 #pragma once
 
 #include "../common.h"
+
 #include <cstddef>
 
-template<typename T>
-struct Nullable
+template<typename T> struct Nullable
 {
 public:
     Nullable()
@@ -28,7 +28,7 @@ public:
         _hasValue = false;
     }
 
-    Nullable(const T &value)
+    Nullable(const T& value)
     {
         _value = value;
         _hasValue = true;
@@ -50,6 +50,6 @@ public:
     }
 
 private:
-    T       _value;
-    bool    _hasValue;
+    T _value;
+    bool _hasValue;
 };

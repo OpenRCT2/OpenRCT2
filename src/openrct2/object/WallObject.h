@@ -9,24 +9,29 @@
 
 #pragma once
 
-#include "SceneryObject.h"
-
 #include "../world/Scenery.h"
+#include "SceneryObject.h"
 
 class WallObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry   _legacyType = {};
+    rct_scenery_entry _legacyType = {};
 
 public:
-    explicit WallObject(const rct_object_entry &entry) : SceneryObject(entry) { }
+    explicit WallObject(const rct_object_entry& entry)
+        : SceneryObject(entry)
+    {
+    }
 
-    void * GetLegacyData()  override { return &_legacyType; }
+    void* GetLegacyData() override
+    {
+        return &_legacyType;
+    }
 
-    void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
-    void ReadJson(IReadObjectContext * context, const json_t * root) override;
+    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadJson(IReadObjectContext* context, const json_t* root) override;
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 };

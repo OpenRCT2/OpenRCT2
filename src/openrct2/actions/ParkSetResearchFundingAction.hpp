@@ -26,10 +26,12 @@ private:
     uint8_t _fundingAmount;
 
 public:
-    ParkSetResearchFundingAction() {}
+    ParkSetResearchFundingAction()
+    {
+    }
     ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount)
-        : _priorities(priorities),
-          _fundingAmount(fundingAmount)
+        : _priorities(priorities)
+        , _fundingAmount(fundingAmount)
     {
     }
 

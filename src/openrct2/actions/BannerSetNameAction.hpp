@@ -15,9 +15,9 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../ui/UiContext.h"
-#include "../world/Sprite.h"
-#include "../world/Banner.h"
 #include "../windows/Intent.h"
+#include "../world/Banner.h"
+#include "../world/Sprite.h"
 #include "GameAction.h"
 
 struct BannerSetNameAction : public GameActionBase<GAME_COMMAND_SET_BANNER_NAME, GameActionResult>
@@ -27,10 +27,12 @@ private:
     std::string _name;
 
 public:
-    BannerSetNameAction() {}
+    BannerSetNameAction()
+    {
+    }
     BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
-        : _bannerIndex(bannerIndex),
-        _name(name)
+        : _bannerIndex(bannerIndex)
+        , _name(name)
     {
     }
 
@@ -71,8 +73,8 @@ public:
     {
         rct_banner* banner = &gBanners[_bannerIndex];
 
-        utf8 *buffer = gCommonStringFormatBuffer;
-        utf8 *dst = buffer;
+        utf8* buffer = gCommonStringFormatBuffer;
+        utf8* dst = buffer;
         dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
         String::Set(dst, sizeof(gCommonStringFormatBuffer) - (dst - buffer), _name.c_str(), _name.size());
 

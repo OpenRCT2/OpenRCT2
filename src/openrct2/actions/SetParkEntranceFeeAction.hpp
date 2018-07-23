@@ -9,13 +9,12 @@
 
 #pragma once
 
-#include "../core/MemoryStream.h"
-#include "../localisation/StringIds.h"
-#include "GameAction.h"
-
 #include "../Cheats.h"
+#include "../core/MemoryStream.h"
 #include "../interface/Window.h"
+#include "../localisation/StringIds.h"
 #include "../world/Park.h"
+#include "GameAction.h"
 
 struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActionResult>
 {
@@ -23,8 +22,10 @@ private:
     money16 _fee;
 
 public:
-    SetParkEntranceFeeAction() {}
-    SetParkEntranceFeeAction(money16 fee) 
+    SetParkEntranceFeeAction()
+    {
+    }
+    SetParkEntranceFeeAction(money16 fee)
         : _fee(fee)
     {
     }
@@ -63,4 +64,3 @@ public:
         return std::make_unique<GameActionResult>();
     }
 };
-

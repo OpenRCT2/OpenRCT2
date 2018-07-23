@@ -9,33 +9,32 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "OpenGLFramebuffer.h"
-#include "SwapFramebuffer.h"
+#    include "SwapFramebuffer.h"
+
+#    include "OpenGLFramebuffer.h"
 
 constexpr GLfloat depthValue[1] = { 1.0f };
 constexpr GLfloat depthValueTransparent[1] = { 0.0f };
 constexpr GLuint indexValue[4] = { 0, 0, 0, 0 };
 
-SwapFramebuffer::SwapFramebuffer(int32_t width, int32_t height) :
-_opaqueFramebuffer(width, height), _transparentFramebuffer(width, height),
-_mixFramebuffer(width, height, false), _backDepth(OpenGLFramebuffer::CreateDepthTexture(width, height))
+SwapFramebuffer::SwapFramebuffer(int32_t width, int32_t height)
+    : _opaqueFramebuffer(width, height)
+    , _transparentFramebuffer(width, height)
+    , _mixFramebuffer(width, height, false)
+    , _backDepth(OpenGLFramebuffer::CreateDepthTexture(width, height))
 {
     _transparentFramebuffer.Bind();
     glClearBufferfv(GL_DEPTH, 0, depthValueTransparent);
 }
 
-void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader &shader, GLuint paletteTex)
+void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader& shader, GLuint paletteTex)
 {
     _mixFramebuffer.Bind();
     glDisable(GL_DEPTH_TEST);
     shader.Use();
     shader.SetTextures(
-        _opaqueFramebuffer.GetTexture(),
-        _opaqueFramebuffer.GetDepthTexture(),
-        _transparentFramebuffer.GetTexture(),
-        _transparentFramebuffer.GetDepthTexture(),
-        paletteTex
-    );
+        _opaqueFramebuffer.GetTexture(), _opaqueFramebuffer.GetDepthTexture(), _transparentFramebuffer.GetTexture(),
+        _transparentFramebuffer.GetDepthTexture(), paletteTex);
     shader.Draw();
 
     _backDepth = _transparentFramebuffer.SwapDepthTexture(_backDepth);
@@ -46,7 +45,7 @@ void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader &shader, GLuint 
     glClearBufferfv(GL_DEPTH, 0, depthValueTransparent);
 
     _opaqueFramebuffer.SwapColourBuffer(_mixFramebuffer);
-    //Change binding to guaruntee no undefined behavior
+    // Change binding to guaruntee no undefined behavior
     _opaqueFramebuffer.Bind();
 }
 

@@ -7,41 +7,42 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/common.h>
-#include <cmath>
-#include <SDL2/SDL.h>
-#include <speex/speex_resampler.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/audio/AudioChannel.h>
-#include <openrct2/audio/AudioSource.h>
 #include "AudioContext.h"
 #include "AudioFormat.h"
+
+#include <SDL2/SDL.h>
+#include <cmath>
+#include <openrct2/audio/AudioChannel.h>
+#include <openrct2/audio/AudioSource.h>
+#include <openrct2/common.h>
+#include <openrct2/core/Math.hpp>
+#include <speex/speex_resampler.h>
 
 namespace OpenRCT2::Audio
 {
     class AudioChannelImpl : public ISDLAudioChannel
     {
     private:
-        ISDLAudioSource * _source = nullptr;
-        SpeexResamplerState * _resampler = nullptr;
+        ISDLAudioSource* _source = nullptr;
+        SpeexResamplerState* _resampler = nullptr;
 
         int32_t _group = MIXER_GROUP_SOUND;
         double _rate = 0;
         uint64_t _offset = 0;
         int32_t _loop = 0;
 
-        int32_t  _volume = 1;
-        float   _volume_l = 0.f;
-        float   _volume_r = 0.f;
-        float   _oldvolume_l = 0.f;
-        float   _oldvolume_r = 0.f;
-        int32_t  _oldvolume = 0;
-        float   _pan = 0;
+        int32_t _volume = 1;
+        float _volume_l = 0.f;
+        float _volume_r = 0.f;
+        float _oldvolume_l = 0.f;
+        float _oldvolume_r = 0.f;
+        int32_t _oldvolume = 0;
+        float _pan = 0;
 
-        bool    _stopping = false;
-        bool    _done = true;
-        bool    _deleteondone = false;
-        bool    _deletesourceondone = false;
+        bool _stopping = false;
+        bool _done = true;
+        bool _deleteondone = false;
+        bool _deletesourceondone = false;
 
     public:
         AudioChannelImpl()
@@ -64,17 +65,17 @@ namespace OpenRCT2::Audio
             }
         }
 
-        IAudioSource * GetSource() const override
+        IAudioSource* GetSource() const override
         {
             return _source;
         }
 
-        SpeexResamplerState * GetResampler() const override
+        SpeexResamplerState* GetResampler() const override
         {
             return _resampler;
         }
 
-        void SetResampler(SpeexResamplerState * value) override
+        void SetResampler(SpeexResamplerState* value) override
         {
             _resampler = value;
         }
@@ -223,9 +224,9 @@ namespace OpenRCT2::Audio
             return !_done;
         }
 
-        void Play(IAudioSource * source, int32_t loop) override
+        void Play(IAudioSource* source, int32_t loop) override
         {
-            _source = static_cast<ISDLAudioSource *>(source);
+            _source = static_cast<ISDLAudioSource*>(source);
             _loop = loop;
             _offset = 0;
             _done = false;
@@ -249,7 +250,7 @@ namespace OpenRCT2::Audio
             return result;
         }
 
-        size_t Read(void * dst, size_t len) override
+        size_t Read(void* dst, size_t len) override
         {
             size_t bytesRead = 0;
             size_t bytesToRead = len;
@@ -258,7 +259,7 @@ namespace OpenRCT2::Audio
                 size_t readLen = _source->Read(dst, _offset, bytesToRead);
                 if (readLen > 0)
                 {
-                    dst = (void *)((uintptr_t)dst + readLen);
+                    dst = (void*)((uintptr_t)dst + readLen);
                     bytesToRead -= readLen;
                     bytesRead += readLen;
                     _offset += readLen;
@@ -284,7 +285,7 @@ namespace OpenRCT2::Audio
         }
     };
 
-    ISDLAudioChannel * AudioChannel::Create()
+    ISDLAudioChannel* AudioChannel::Create()
     {
         return new (std::nothrow) AudioChannelImpl();
     }

@@ -28,15 +28,24 @@ enum class SAWYER_ENCODING : uint8_t
 class SawyerChunk final
 {
 private:
-    void *          _data       = nullptr;
-    size_t          _length     = 0;
-    SAWYER_ENCODING _encoding   = SAWYER_ENCODING::NONE;
+    void* _data = nullptr;
+    size_t _length = 0;
+    SAWYER_ENCODING _encoding = SAWYER_ENCODING::NONE;
 
 public:
-    const void *    GetData() const { return _data; }
-    size_t          GetLength() const { return _length; }
-    SAWYER_ENCODING GetEncoding() const { return _encoding; }
+    const void* GetData() const
+    {
+        return _data;
+    }
+    size_t GetLength() const
+    {
+        return _length;
+    }
+    SAWYER_ENCODING GetEncoding() const
+    {
+        return _encoding;
+    }
 
-    SawyerChunk(SAWYER_ENCODING encoding, void * data, size_t length);
+    SawyerChunk(SAWYER_ENCODING encoding, void* data, size_t length);
     ~SawyerChunk();
 };

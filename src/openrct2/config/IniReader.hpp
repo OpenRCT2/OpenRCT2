@@ -9,26 +9,26 @@
 
 #pragma once
 
-#include <string>
 #include "../common.h"
 
+#include <string>
+
 interface IStream;
-template <typename T> struct IConfigEnum;
+template<typename T> struct IConfigEnum;
 
 interface IIniReader
 {
     virtual ~IIniReader() = default;
 
-    virtual bool ReadSection(const std::string &name) abstract;
+    virtual bool ReadSection(const std::string& name) abstract;
 
-    virtual bool GetBoolean(const std::string &name, bool defaultValue) const abstract;
-    virtual int32_t GetInt32(const std::string &name, int32_t defaultValue) const abstract;
-    virtual float GetFloat(const std::string &name, float defaultValue) const abstract;
-    virtual std::string GetString(const std::string &name, const std::string &defaultValue) const abstract;
-    virtual bool TryGetString(const std::string &name, std::string * outValue) const abstract;
+    virtual bool GetBoolean(const std::string& name, bool defaultValue) const abstract;
+    virtual int32_t GetInt32(const std::string& name, int32_t defaultValue) const abstract;
+    virtual float GetFloat(const std::string& name, float defaultValue) const abstract;
+    virtual std::string GetString(const std::string& name, const std::string& defaultValue) const abstract;
+    virtual bool TryGetString(const std::string& name, std::string* outValue) const abstract;
 
-    template<typename T>
-    T GetEnum(const std::string &name, T defaultValue, const IConfigEnum<T> &configEnum) const
+    template<typename T> T GetEnum(const std::string& name, T defaultValue, const IConfigEnum<T>& configEnum) const
     {
         std::string szValue;
         if (!TryGetString(name, &szValue))
@@ -39,8 +39,8 @@ interface IIniReader
         return configEnum.GetValue(szValue, defaultValue);
     }
 
-    utf8 * GetCString(const std::string &name, const utf8 * defaultValue) const;
+    utf8* GetCString(const std::string& name, const utf8* defaultValue) const;
 };
 
-IIniReader * CreateIniReader(IStream * stream);
-IIniReader * CreateDefaultIniReader();
+IIniReader* CreateIniReader(IStream* stream);
+IIniReader* CreateDefaultIniReader();

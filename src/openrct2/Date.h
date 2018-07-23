@@ -19,8 +19,8 @@ namespace OpenRCT2
     class Date final
     {
     private:
-        uint16_t _monthTicks      = 0;
-        uint32_t _monthsElapsed   = 0;
+        uint16_t _monthTicks = 0;
+        uint32_t _monthsElapsed = 0;
 
     public:
         Date() = default;
@@ -43,4 +43,4 @@ namespace OpenRCT2
 
         static int32_t GetDaysInMonth(int32_t month);
     };
-}
+} // namespace OpenRCT2

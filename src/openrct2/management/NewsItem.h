@@ -28,7 +28,7 @@ enum
 enum
 {
     NEWS_TYPE_HAS_LOCATION = 1,
-    NEWS_TYPE_HAS_SUBJECT  = 2,
+    NEWS_TYPE_HAS_SUBJECT = 2,
 };
 
 enum
@@ -41,13 +41,13 @@ enum
  */
 struct NewsItem
 {
-    uint8_t  Type;
-    uint8_t  Flags;
+    uint8_t Type;
+    uint8_t Flags;
     uint32_t Assoc;
     uint16_t Ticks;
     uint16_t MonthYear;
-    uint8_t  Day;
-    utf8   Text[256];
+    uint8_t Day;
+    utf8 Text[256];
 };
 
 #define MAX_NEWS_ITEMS 61
@@ -61,21 +61,20 @@ void news_item_init_queue();
 void news_item_update_current();
 void news_item_close_current();
 
-void news_item_get_subject_location(int32_t type, int32_t subject, int32_t * x, int32_t * y, int32_t * z);
+void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, int32_t* y, int32_t* z);
 
 void news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t assoc);
-void news_item_add_to_queue_raw(uint8_t type, const utf8 * text, uint32_t assoc);
+void news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc);
 
 void news_item_open_subject(int32_t type, int32_t subject);
 
 void news_item_disable_news(uint8_t type, uint32_t assoc);
 
-NewsItem * news_item_get(int32_t index);
+NewsItem* news_item_get(int32_t index);
 
 bool news_item_is_empty(int32_t index);
 bool news_item_is_queue_empty();
 
 bool news_item_is_valid_idx(int32_t index);
 
-void news_item_add_to_queue_custom(NewsItem * newNewsItem);
-
+void news_item_add_to_queue_custom(NewsItem* newNewsItem);

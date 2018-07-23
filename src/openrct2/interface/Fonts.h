@@ -28,9 +28,9 @@ extern TTFFontSetDescriptor TTFFontGulim;
 extern TTFFontSetDescriptor TTFFontNanum;
 extern TTFFontSetDescriptor TTFFontArial;
 extern TTFFontSetDescriptor TTFFontArialUnicode;
-#define FONT(x) x
+#    define FONT(x) x
 #else
-#define FONT(x) FONT_OPENRCT2_SPRITE
+#    define FONT(x) FONT_OPENRCT2_SPRITE
 #endif // NO_TTF
 
 void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);

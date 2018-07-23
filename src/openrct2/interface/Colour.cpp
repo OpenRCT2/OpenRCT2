@@ -7,11 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <cmath>
+#include "Colour.h"
+
 #include "../drawing/Drawing.h"
 #include "../sprites.h"
-#include "Colour.h"
+
+#include <algorithm>
+#include <cmath>
 
 rct_colour_map ColourMapA[COLOUR_COUNT] = {};
 
@@ -36,7 +38,7 @@ void colours_init_maps()
     // Get colour maps from g1
     for (int32_t i = 0; i < COLOUR_COUNT; i++)
     {
-        const rct_g1_element * g1 = gfx_get_g1_element(SPR_PALETTE_2_START + i);
+        const rct_g1_element* g1 = gfx_get_g1_element(SPR_PALETTE_2_START + i);
         if (g1 != nullptr)
         {
             ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];
@@ -56,7 +58,7 @@ void colours_init_maps()
 }
 
 #ifndef NO_TTF
-static uint8_t BlendColourMap[PALETTE_COUNT][PALETTE_COUNT] = {0};
+static uint8_t BlendColourMap[PALETTE_COUNT][PALETTE_COUNT] = { 0 };
 
 static uint8_t findClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 {
@@ -65,8 +67,8 @@ static uint8_t findClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 
     for (int i = PALETTE_INDEX_0; i < PALETTE_INDEX_230; i++)
     {
-        const int32_t distance =
-            std::pow(gPalette[i].red - red, 2) + std::pow(gPalette[i].green - green, 2) + std::pow(gPalette[i].blue - blue, 2);
+        const int32_t distance = std::pow(gPalette[i].red - red, 2) + std::pow(gPalette[i].green - green, 2)
+            + std::pow(gPalette[i].blue - blue, 2);
 
         if (distance < closestDistance)
         {
@@ -96,5 +98,3 @@ uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2)
     return BlendColourMap[cMin][cMax];
 }
 #endif
-
-

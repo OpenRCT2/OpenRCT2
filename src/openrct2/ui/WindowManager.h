@@ -9,11 +9,11 @@
 
 #pragma once
 
-#include <string>
-#include "../windows/Intent.h"
 #include "../common.h"
-
 #include "../interface/Window.h"
+#include "../windows/Intent.h"
+
+#include <string>
 
 namespace OpenRCT2::Ui
 {
@@ -24,12 +24,12 @@ namespace OpenRCT2::Ui
     {
         virtual ~IWindowManager() = default;
         virtual void Init() abstract;
-        virtual rct_window * OpenWindow(rct_windowclass wc) abstract;
-        virtual rct_window * OpenView(uint8_t view) abstract;
-        virtual rct_window * OpenDetails(uint8_t type, int32_t id) abstract;
-        virtual rct_window * OpenIntent(Intent * intent) abstract;
-        virtual void BroadcastIntent(const Intent &intent) abstract;
-        virtual rct_window * ShowError(rct_string_id title, rct_string_id message) abstract;
+        virtual rct_window* OpenWindow(rct_windowclass wc) abstract;
+        virtual rct_window* OpenView(uint8_t view) abstract;
+        virtual rct_window* OpenDetails(uint8_t type, int32_t id) abstract;
+        virtual rct_window* OpenIntent(Intent * intent) abstract;
+        virtual void BroadcastIntent(const Intent& intent) abstract;
+        virtual rct_window* ShowError(rct_string_id title, rct_string_id message) abstract;
         virtual void ForceClose(rct_windowclass windowClass) abstract;
         virtual void UpdateMapTooltip() abstract;
         virtual void HandleInput() abstract;
@@ -40,5 +40,5 @@ namespace OpenRCT2::Ui
         virtual rct_window* GetOwner(const rct_viewport* viewport) abstract;
     };
 
-    IWindowManager * CreateDummyWindowManager();
+    IWindowManager* CreateDummyWindowManager();
 } // namespace OpenRCT2::Ui

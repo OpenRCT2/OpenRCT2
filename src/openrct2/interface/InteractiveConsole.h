@@ -9,13 +9,14 @@
 
 #pragma once
 
+#include "../common.h"
+#include "../localisation/FormatCodes.h"
+
 #include <deque>
 #include <future>
 #include <queue>
 #include <string>
 #include <tuple>
-#include "../common.h"
-#include "../localisation/FormatCodes.h"
 
 struct rct_drawpixelinfo;
 struct TextInputSession;
@@ -34,32 +35,40 @@ enum CONSOLE_INPUT
 class InteractiveConsole
 {
 public:
-    virtual ~InteractiveConsole() { }
+    virtual ~InteractiveConsole()
+    {
+    }
 
-    void Execute(const std::string &s);
-    void WriteLine(const std::string &s);
-    void WriteLineError(const std::string &s);
-    void WriteLineWarning(const std::string &s);
-    void WriteFormatLine(const char * format, ...);
+    void Execute(const std::string& s);
+    void WriteLine(const std::string& s);
+    void WriteLineError(const std::string& s);
+    void WriteLineWarning(const std::string& s);
+    void WriteFormatLine(const char* format, ...);
 
     virtual void Clear() abstract;
     virtual void Close() abstract;
     virtual void Hide() abstract;
-    virtual void WriteLine(const std::string &s, uint32_t colourFormat) abstract;
+    virtual void WriteLine(const std::string& s, uint32_t colourFormat) abstract;
 };
 
 class StdInOutConsole final : public InteractiveConsole
 {
 private:
     std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
+
 public:
     void Start();
-    std::future<void> Eval(const std::string &s);
+    std::future<void> Eval(const std::string& s);
     void ProcessEvalQueue();
 
     void Clear() override;
     void Close() override;
-    void Hide() override { }
-    void WriteLine(const std::string &s) { InteractiveConsole::WriteLine(s); }
-    void WriteLine(const std::string &s, uint32_t colourFormat) override;
+    void Hide() override
+    {
+    }
+    void WriteLine(const std::string& s)
+    {
+        InteractiveConsole::WriteLine(s);
+    }
+    void WriteLine(const std::string& s, uint32_t colourFormat) override;
 };

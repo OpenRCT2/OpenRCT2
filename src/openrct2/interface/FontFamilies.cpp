@@ -7,37 +7,33 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Fonts.h"
 #include "FontFamilies.h"
+
+#include "Fonts.h"
 
 #ifndef NO_TTF
 
-TTFontFamily const TTFFamilyChineseSimplified =
-{
+TTFontFamily const TTFFamilyChineseSimplified = {
     &TTFFontSimSun,
     &TTFFontHeiti,
 };
 
-TTFontFamily const TTFFamilyChineseTraditional =
-{
+TTFontFamily const TTFFamilyChineseTraditional = {
     &TTFFontMingLiu,
     &TTFFontLiHeiPro,
 };
 
-TTFontFamily const TTFFamilyJapanese =
-{
+TTFontFamily const TTFFamilyJapanese = {
     &TTFFontHiragano,
     &TTFFontMSGothic,
 };
 
-TTFontFamily const TTFFamilyKorean =
-{
+TTFontFamily const TTFFamilyKorean = {
     &TTFFontGulim,
     &TTFFontNanum,
 };
 
-TTFontFamily const TTFFamilySansSerif =
-{
+TTFontFamily const TTFFamilySansSerif = {
     &TTFFontArialUnicode,
     &TTFFontArial,
 };
