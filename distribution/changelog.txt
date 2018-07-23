@@ -6,6 +6,7 @@
 - Feature: [#7771] Danish translation.
 - Feature: [#7802] Add sprite font glyphs for Russian.
 - Fix: [#3177] Wrong keys displayed in shortcut menu.
+- Fix: [#4039] Add sprite font glyph for German opening quotation mark.
 - Fix: [#7533] Screenshot is incorrectly named/file is not generated in CJK language.
 - Fix: [#7628] Always-researched items can be modified in the inventory list.
 - Fix: [#7643] No Money scenarios with funding set to zero.

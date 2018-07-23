@@ -133,6 +133,7 @@ bool utf8_should_use_sprite_for_codepoint(int32_t codepoint)
         case FORMAT_LEFT:
         case FORMAT_OPENQUOTES:
         case FORMAT_ENDQUOTES:
+        case FORMAT_GERMAN_OPENQUOTES:
         case UNICODE_DINGBATS_PLUS:
         case UNICODE_DINGBATS_MINUS:
             return true;
