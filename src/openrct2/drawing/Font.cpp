@@ -170,6 +170,7 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
         case UNICODE_CAPITAL_SHARP_S:
             return 223 - 32;
 
+        // Norwegian/Danish
         case UNICODE_AE_UC:
             return SPR_G2_AE_UPPER - SPR_CHAR_START;
         case UNICODE_O_STROKE_UC:
@@ -183,6 +184,144 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
             return 11;
         case UNICODE_DINGBATS_MINUS:
             return 13;
+
+        // Cyrillic
+        case UNICODE_CYRILLIC_A_UC:
+            return 'A' - 32;
+        case UNICODE_CYRILLIC_BE_UC:
+            return SPR_G2_CYRILLIC_BE_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_VE_UC:
+            return 'B' - 32;
+        case UNICODE_CYRILLIC_GHE_UC:
+            return SPR_G2_CYRILLIC_GHE_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_DE_UC:
+            return SPR_G2_CYRILLIC_DE_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_IE_UC:
+            return 'E' - 32;
+        case UNICODE_CYRILLIC_ZHE_UC:
+            return SPR_G2_CYRILLIC_ZHE_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_ZE_UC:
+            return SPR_G2_CYRILLIC_ZE_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_I_UC:
+            return SPR_G2_CYRILLIC_I_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_SHORT_I_UC:
+            return SPR_G2_CYRILLIC_SHORT_I_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_KA_UC:
+            return 'K' - 32;
+        case UNICODE_CYRILLIC_EL_UC:
+            return SPR_G2_CYRILLIC_EL_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_EM_UC:
+            return 'M' - 32;
+        case UNICODE_CYRILLIC_EN_UC:
+            return 'H' - 32;
+        case UNICODE_CYRILLIC_O_UC:
+            return 'O' - 32;
+        case UNICODE_CYRILLIC_PE_UC:
+            return SPR_G2_CYRILLIC_PE_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_ER_UC:
+            return 'P' - 32;
+        case UNICODE_CYRILLIC_ES_UC:
+            return 'C' - 32;
+        case UNICODE_CYRILLIC_TE_UC:
+            return 'T' - 32;
+        case UNICODE_CYRILLIC_U_UC:
+            return SPR_G2_CYRILLIC_U_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_EF_UC:
+            return SPR_G2_CYRILLIC_EF_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_HA_UC:
+            return 'X' - 32;
+        case UNICODE_CYRILLIC_TSE_UC:
+            return SPR_G2_CYRILLIC_TSE_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_CHE_UC:
+            return SPR_G2_CYRILLIC_CHE_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_SHA_UC:
+            return SPR_G2_CYRILLIC_SHA_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_SHCHA_UC:
+            return SPR_G2_CYRILLIC_SHCHA_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_HARD_SIGN_UC:
+            return SPR_G2_CYRILLIC_HARD_SIGN_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_YERU_UC:
+            return SPR_G2_CYRILLIC_YERU_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_SOFT_SIGN_UC:
+            return SPR_G2_CYRILLIC_SOFT_SIGN_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_E_UC:
+            return SPR_G2_CYRILLIC_E_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_YU_UC:
+            return SPR_G2_CYRILLIC_YU_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_YA_UC:
+            return SPR_G2_CYRILLIC_YA_UPPER - SPR_CHAR_START;
+
+        case UNICODE_CYRILLIC_A:
+            return 'a' - 32;
+        case UNICODE_CYRILLIC_BE:
+            return SPR_G2_CYRILLIC_BE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_VE:
+            return SPR_G2_CYRILLIC_VE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_GHE:
+            return SPR_G2_CYRILLIC_GHE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_DE:
+            return SPR_G2_CYRILLIC_DE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_IE:
+            return 'e' - 32;
+        case UNICODE_CYRILLIC_ZHE:
+            return SPR_G2_CYRILLIC_ZHE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_ZE:
+            return SPR_G2_CYRILLIC_ZE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_I:
+            return SPR_G2_CYRILLIC_I_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_SHORT_I:
+            return SPR_G2_CYRILLIC_SHORT_I_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_KA:
+            return SPR_G2_CYRILLIC_KA_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_EL:
+            return SPR_G2_CYRILLIC_EL_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_EM:
+            return SPR_G2_CYRILLIC_EM_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_EN:
+            return SPR_G2_CYRILLIC_EN_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_O:
+            return 'o' - 32;
+        case UNICODE_CYRILLIC_PE:
+            return SPR_G2_CYRILLIC_PE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_ER:
+            return 'p' - 32;
+        case UNICODE_CYRILLIC_ES:
+            return 'c' - 32;
+        case UNICODE_CYRILLIC_TE:
+            return SPR_G2_CYRILLIC_TE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_U:
+            return 'y' - 32;
+        case UNICODE_CYRILLIC_EF:
+            return SPR_G2_CYRILLIC_EF_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_HA:
+            return 'x' - 32;
+        case UNICODE_CYRILLIC_TSE:
+            return SPR_G2_CYRILLIC_TSE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_CHE:
+            return SPR_G2_CYRILLIC_CHE_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_SHA:
+            return SPR_G2_CYRILLIC_SHA_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_SHCHA:
+            return SPR_G2_CYRILLIC_SHCHA_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_HARD_SIGN:
+            // Not a typo, there is no glyph, use the upper case variant.
+            return SPR_G2_CYRILLIC_HARD_SIGN_UPPER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_YERU:
+            return SPR_G2_CYRILLIC_YERU_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_SOFT_SIGN:
+            return SPR_G2_CYRILLIC_SOFT_SIGN_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_E:
+            return SPR_G2_CYRILLIC_E_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_YU:
+            return SPR_G2_CYRILLIC_YU_LOWER - SPR_CHAR_START;
+        case UNICODE_CYRILLIC_YA:
+            return SPR_G2_CYRILLIC_YA_LOWER - SPR_CHAR_START;
+
+            // Looks just like Ë.
+        case UNICODE_CYRILLIC_IO_UC:
+            return 171;
+        case UNICODE_CYRILLIC_IO:
+            return 203;
 
         default:
             if (codepoint < 32 || codepoint >= 256)
@@ -336,15 +475,20 @@ bool font_supports_string_sprite(const utf8* text)
             case UNICODE_Z_DOT:
             case UNICODE_Z_ACUTE:
 
+            case UNICODE_CYRILLIC_IO_UC:
+            case UNICODE_CYRILLIC_IO:
+
                 supported = true;
                 break;
             default:
-                if (codepoint >= 32 && codepoint < 256)
+                if ((codepoint >= 32 && codepoint < 256)
+                    || (codepoint >= UNICODE_CYRILLIC_A_UC && codepoint <= UNICODE_CYRILLIC_YA))
                 {
                     supported = true;
                 }
                 break;
         }
+
         if (!supported)
         {
             return false;

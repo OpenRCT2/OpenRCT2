@@ -4,6 +4,7 @@
 - Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
 - Feature: [#7694] Debug option to visualize paths that the game detects as wide.
 - Feature: [#7771] Danish translation.
+- Feature: [#7802] Add sprite font glyphs for Russian.
 - Fix: [#3177] Wrong keys displayed in shortcut menu.
 - Fix: [#7533] Screenshot is incorrectly named/file is not generated in CJK language.
 - Fix: [#7628] Always-researched items can be modified in the inventory list.
@@ -21,6 +22,7 @@
 - Fix: [#7773] Once research has been completed, player is still charged for research.
 - Fix: [#7786] Crash when importing a track design.
 - Fix: [#7793] Duplicate private keys generated.
+- Fix: [#7797] Add sprite font glyphs for Æ and Ø, needed for Norwegian and Danish.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
