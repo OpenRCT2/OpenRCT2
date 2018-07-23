@@ -73,7 +73,10 @@ void GameState::Update()
 {
     gInUpdateCode = true;
 
-    uint32_t numUpdates;
+    uint32_t numUpdates = 0;
+
+    static uint32_t pctUpdates = 0;
+    static uint32_t GameSpeeds[] = { 0, 25, 100, 200, 400, 1000, 10000 };  // speed in percent
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
@@ -89,14 +92,19 @@ void GameState::Update()
     }
 
     // Determine how many times we need to update the game
-    if (gGameSpeed > 1)
+    if (gGameSpeed == GameSpeedNormal)
     {
-        numUpdates = 1 << (gGameSpeed - 1);
+        numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
+        Math::Clamp<uint32_t>(1, numUpdates, GAME_MAX_UPDATES);
     }
     else
     {
-        numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        numUpdates = Math::Clamp<uint32_t>(1, numUpdates, GAME_MAX_UPDATES);
+        pctUpdates += GameSpeeds[gGameSpeed] * gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
+        if (pctUpdates >= 100)
+        {
+            numUpdates = pctUpdates / 100;
+            pctUpdates = 0;
+        }
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK)
@@ -125,7 +133,7 @@ void GameState::Update()
     for (uint32_t i = 0; i < numUpdates; i++)
     {
         UpdateLogic();
-        if (gGameSpeed == 1)
+        if (gGameSpeed == GameSpeedNormal)
         {
             if (input_get_state() == INPUT_STATE_RESET ||
                 input_get_state() == INPUT_STATE_NORMAL)

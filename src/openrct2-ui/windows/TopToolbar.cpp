@@ -867,12 +867,15 @@ static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
         imgId = SPR_G2_FASTFORWARD;
         gfx_draw_sprite(dpi, imgId, x + 6, y + 3, 0);
 
-
-        for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++) {
-            gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, x + 5 + i * 5, y + 15, 0);
+        if (gGameSpeed == GameSpeedHyper) {
+            for (int32_t i = 0; i < 3; i++) {
+                gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 5, y + 15, 0);
+            }
         }
-        for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++) {
-            gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
+        else {
+            for (int32_t i = 0; i < gGameSpeed; i++) {
+                gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, x + 5 + i * 4, y + 15, 0);
+        }
         }
     }
 
@@ -3056,22 +3059,24 @@ static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetI
 }
 
 static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget) {
-    int32_t num_items = 4;
+    int32_t num_items = 5;
     gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
     gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
     gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
     gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
+    gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
     if (gConfigGeneral.debugging_tools) {
-        gDropdownItemsFormat[4] = STR_EMPTY;
-        gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
-        gDropdownItemsArgs[5] = STR_SPEED_HYPER;
-        num_items = 6;
+        gDropdownItemsFormat[5] = STR_EMPTY;
+        gDropdownItemsFormat[6] = STR_TOGGLE_OPTION;
+        gDropdownItemsArgs[6] = STR_SPEED_HYPER;
+        num_items = 7;
     }
 
-    gDropdownItemsArgs[0] = STR_SPEED_NORMAL;
-    gDropdownItemsArgs[1] = STR_SPEED_QUICK;
-    gDropdownItemsArgs[2] = STR_SPEED_FAST;
-    gDropdownItemsArgs[3] = STR_SPEED_TURBO;
+    gDropdownItemsArgs[0] = STR_SPEED_SLOW;
+    gDropdownItemsArgs[1] = STR_SPEED_NORMAL;
+    gDropdownItemsArgs[2] = STR_SPEED_QUICK;
+    gDropdownItemsArgs[3] = STR_SPEED_FAST;
+    gDropdownItemsArgs[4] = STR_SPEED_TURBO;
 
 
     window_dropdown_show_text(
@@ -3084,31 +3089,20 @@ static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget)
         );
 
     // Set checkmarks
-    if (gGameSpeed <= 4) {
-        dropdown_set_checked(gGameSpeed - 1, true);
-    }
-    if (gGameSpeed == 8) {
-        dropdown_set_checked(5, true);
+    gDropdownDefaultIndex = gGameSpeed - 1;
+    if (gConfigGeneral.debugging_tools && gGameSpeed == GameSpeedHyper ) {
+        gDropdownDefaultIndex++;
     }
 
-    if (gConfigGeneral.debugging_tools) {
-        gDropdownDefaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
-    } else {
-        gDropdownDefaultIndex = (gGameSpeed >= 4 ? 0 : gGameSpeed);
-    }
-    if (gDropdownDefaultIndex == 4) {
-        gDropdownDefaultIndex = 5;
-    }
+    dropdown_set_checked(gDropdownDefaultIndex, true);
 }
 
 static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex)
 {
     rct_window* w = window_get_main();
     if (w) {
-        if (dropdownIndex >= 0 && dropdownIndex <= 5) {
-            gGameSpeed = dropdownIndex + 1;
-            if (gGameSpeed >= 5)
-                gGameSpeed = 8;
+        if (dropdownIndex >= 0 && dropdownIndex <= 6) {
+            gGameSpeed = std::min( dropdownIndex + 1, (int32_t) GameSpeedHyper );
             window_invalidate(w);
         }
     }

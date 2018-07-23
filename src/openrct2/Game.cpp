@@ -65,7 +65,7 @@
 
 uint16_t gTicksSinceLastUpdate;
 uint8_t  gGamePaused    = 0;
-int32_t gGameSpeed     = 1;
+int32_t gGameSpeed     = GameSpeedNormal;     // initial, normal speed 
 float  gDayNightCycle = 0;
 bool   gInUpdateCode  = false;
 bool   gInMapInitCode = false;
@@ -127,17 +127,21 @@ GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32_t inde
 
 void game_increase_game_speed()
 {
-    gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
-    if (gGameSpeed == 5)
-        gGameSpeed = 8;
+    if (gGameSpeed < (gConfigGeneral.debugging_tools ? GameSpeedHyper : GameSpeedTurbo))
+        gGameSpeed++;
+
+    if ( game_is_paused() )
+        pause_toggle();
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
 void game_reduce_game_speed()
 {
-    gGameSpeed = std::max(1, gGameSpeed - 1);
-    if (gGameSpeed == 7)
-        gGameSpeed = 4;
+    if (gGameSpeed > GameSpeedPaused)
+        gGameSpeed--;
+
+    if (gGameSpeed == GameSpeedPaused && game_is_not_paused() )
+        pause_toggle();
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
@@ -818,6 +822,10 @@ void pause_toggle()
     {
         audio_stop_all_music_and_sounds();
     }
+    else if (gGameSpeed == GameSpeedPaused)
+    {
+        gGameSpeed = GameSpeedNormal;
+    }
 }
 
 bool game_is_paused()
@@ -1153,7 +1161,7 @@ void game_load_init()
     }
 
     audio_stop_title_music();
-    gGameSpeed = 1;
+    gGameSpeed = GameSpeedNormal;
 }
 
 /**
@@ -1383,7 +1391,7 @@ void game_load_or_quit_no_save_prompt()
         {
             input_set_flag(INPUT_FLAG_5, false);
         }
-        gGameSpeed       = 1;
+        gGameSpeed       = GameSpeedNormal;
         gFirstTimeSaving = true;
         title_load();
         break;

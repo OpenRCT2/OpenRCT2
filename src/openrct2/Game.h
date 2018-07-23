@@ -138,6 +138,7 @@ extern uint32_t gCurrentTicks;
 extern uint16_t gTicksSinceLastUpdate;
 extern uint8_t  gGamePaused;
 extern int32_t gGameSpeed;
+enum { GameSpeedPaused = 0, GameSpeedNormal = 2, GameSpeedTurbo = 5, GameSpeedHyper = 6 };
 extern float  gDayNightCycle;
 extern bool   gInUpdateCode;
 extern bool   gInMapInitCode;
