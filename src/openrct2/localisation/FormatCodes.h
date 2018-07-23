@@ -271,4 +271,12 @@ enum UnicodeDingbats
     UNICODE_DINGBATS_MINUS = 0x2796,
 };
 
+enum UnicodeCurrency
+{
+    UNICODE_GUILDER_SIGN = 402,
+
+    // Not a currency sign, but the guilder sign will be capitalised to this.
+    UNICODE_F_WITH_HOOK_UC = 401,
+};
+
 #endif

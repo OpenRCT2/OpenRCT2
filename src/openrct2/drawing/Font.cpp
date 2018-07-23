@@ -333,6 +333,13 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
         case FORMAT_GERMAN_SINGLE_OPENQUOTE:
             return 12;
 
+        case UNICODE_GUILDER_SIGN:
+            return SPR_G2_GUILDER_SIGN - SPR_CHAR_START;
+
+        // This is to catch capitalised versions of the guilder sign
+        case UNICODE_F_WITH_HOOK_UC:
+            return 'F' - 32;
+
         default:
             if (codepoint < 32 || codepoint >= 256)
                 codepoint = '?';
@@ -492,6 +499,8 @@ bool font_supports_string_sprite(const utf8* text)
             case FORMAT_SINGLE_OPENQUOTE:
             case FORMAT_SINGLE_ENDQUOTE:
             case FORMAT_GERMAN_SINGLE_OPENQUOTE:
+
+            case UNICODE_GUILDER_SIGN:
 
                 supported = true;
                 break;

@@ -699,6 +699,12 @@
         "forceBmp": true
     },
     {
+        "path": "font/guilder-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -954,6 +960,12 @@
     {
         "path": "font/german-openquotes-bold.png",
         "y_offset": 5,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/guilder-bold.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1221,6 +1233,12 @@
     {
         "path": "font/german-openquotes-tiny.png",
         "y_offset": 4,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/guilder-tiny.png",
+        "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     }
