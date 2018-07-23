@@ -67,7 +67,7 @@ extern uint8_t gCommonFormatArgs[80];
 extern uint8_t gMapTooltipFormatArgs[40];
 extern bool gDebugStringFormatting;
 
-extern const rct_string_id SpeedNames[5];
+extern const rct_string_id SpeedNames[6];
 extern const rct_string_id ObjectiveNames[12];
 extern const rct_string_id ResearchFundingLevelNames[4];
 extern const rct_string_id MarketingCampaignNames[ADVERTISING_CAMPAIGN_COUNT][3];
