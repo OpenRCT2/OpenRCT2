@@ -164,7 +164,7 @@ void TitleScreen::Update()
 
         int32_t numUpdates = 1;
         if (gGameSpeed > GameSpeedNormal ) {
-            numUpdates = 1 << ((gGameSpeed - GameSpeedNormal) *2);
+            numUpdates = 1 << (gGameSpeed - GameSpeedNormal);
         }
         for (int32_t i = 0; i < numUpdates; i++)
         {

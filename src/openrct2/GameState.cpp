@@ -95,7 +95,7 @@ void GameState::Update()
     if (gGameSpeed == GameSpeedNormal)
     {
         numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        Math::Clamp<uint32_t>(1, numUpdates, GAME_MAX_UPDATES);
+        numUpdates = Math::Clamp<uint32_t>(1, numUpdates, GAME_MAX_UPDATES);
     }
     else
     {
