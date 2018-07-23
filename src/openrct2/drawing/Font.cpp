@@ -317,11 +317,21 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
         case UNICODE_CYRILLIC_YA:
             return SPR_G2_CYRILLIC_YA_LOWER - SPR_CHAR_START;
 
-            // Looks just like Ë.
+        // Looks just like Ë.
         case UNICODE_CYRILLIC_IO_UC:
             return 171;
         case UNICODE_CYRILLIC_IO:
             return 203;
+
+        case FORMAT_GERMAN_OPENQUOTES:
+            return SPR_G2_GERMAN_OPENQUOTES - SPR_CHAR_START;
+
+        case FORMAT_SINGLE_OPENQUOTE:
+            return 64;
+        case FORMAT_SINGLE_ENDQUOTE:
+            return 7;
+        case FORMAT_GERMAN_SINGLE_OPENQUOTE:
+            return 12;
 
         default:
             if (codepoint < 32 || codepoint >= 256)
@@ -477,6 +487,11 @@ bool font_supports_string_sprite(const utf8* text)
 
             case UNICODE_CYRILLIC_IO_UC:
             case UNICODE_CYRILLIC_IO:
+
+            case FORMAT_GERMAN_OPENQUOTES:
+            case FORMAT_SINGLE_OPENQUOTE:
+            case FORMAT_SINGLE_ENDQUOTE:
+            case FORMAT_GERMAN_SINGLE_OPENQUOTE:
 
                 supported = true;
                 break;

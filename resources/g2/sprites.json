@@ -693,6 +693,12 @@
         "forceBmp": true
     },
     {
+        "path": "font/german-openquotes-small.png",
+        "y_offset": 6,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -942,6 +948,12 @@
     },
     {
         "path": "font/cyrillic/U1103-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/german-openquotes-bold.png",
+        "y_offset": 5,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1203,6 +1215,12 @@
     {
         "path": "font/cyrillic/U1103-tiny.png",
         "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/german-openquotes-tiny.png",
+        "y_offset": 4,
         "palette": "keep",
         "forceBmp": true
     }
