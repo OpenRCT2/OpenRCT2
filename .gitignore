@@ -308,3 +308,4 @@ discord-rpc
 
 # Cmake
 cmake-build-debug/
+*.favdoc

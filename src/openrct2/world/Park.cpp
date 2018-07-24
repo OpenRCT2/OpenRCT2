@@ -1066,13 +1066,8 @@ void Park::UpdateHistories()
     HistoryPushRecord<money32, 128>(gCashHistory, finance_get_current_cash() - gBankLoan);
 
     // Update weekly profit history
-    money32 currentWeeklyProfit = gWeeklyProfitAverageDividend;
-    if (gWeeklyProfitAverageDivisor != 0)
-    {
-        currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
-    }
-    HistoryPushRecord<money32, 128>(gWeeklyProfitHistory, currentWeeklyProfit);
-    gWeeklyProfitAverageDividend = 0;
+    HistoryPushRecord<money32, 128>(gWeeklyProfitHistory, gCurrentProfit);
+    gCurrentProfit = 0; // Weekly sum is reset here.
     gWeeklyProfitAverageDivisor = 0;
 
     // Update park value history

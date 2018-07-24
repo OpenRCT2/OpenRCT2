@@ -43,7 +43,9 @@ const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
     MONEY(400, 00), // Maximum funding
 };
 
-static constexpr const int32_t dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {
+
+// NonRecurring[] was dword_988E60[]
+static constexpr const int32_t NonRecurring[RCT_EXPENDITURE_TYPE_COUNT] = {
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
@@ -76,7 +78,10 @@ void finance_payment(money32 amount, rct_expenditure_type type)
     gCash = add_clamp_money32(gCash, -amount);
 
     gExpenditureTable[0][type] -= amount;
-    if (dword_988E60[type] & 1)
+    //  long-term, non-recurring capital investments are not daily/weekly spending. Excluded from expenditure.
+    if ( type != RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION 
+        && type != RCT_EXPENDITURE_TYPE_LAND_PURCHASE
+        && type != RCT_EXPENDITURE_TYPE_LANDSCAPING )
     {
         // Cumulative amount of money spent this day
         gCurrentExpenditure -= amount;
@@ -215,7 +220,7 @@ void finance_init()
 
     gHistoricalProfit = 0;
 
-    gBankLoanInterestRate = 10;
+    gBankLoanInterestRate = 20;
     gParkValue = 0;
     gCompanyValue = 0;
     gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
@@ -230,9 +235,13 @@ void finance_init()
  */
 void finance_update_daily_profit()
 {
-    gCurrentProfit = 7 * gCurrentExpenditure;
+    // gCurrentProfit is weekly sum/accumulator. 
+    gCurrentProfit      +=  gCurrentExpenditure;
     gCurrentExpenditure = 0; // Reset daily expenditure
 
+    // This part calculates weekly/momthly recurring expenses as daily expediture.
+    // But they are already subtracted from gCurrentExpenditure. So this part no longer needed.
+    /*
     money32 current_profit = 0;
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -270,10 +279,11 @@ void finance_update_daily_profit()
     current_profit = current_profit >> 2;
 
     gCurrentProfit += current_profit;
+    */
 
     // These are related to weekly profit graph
-    gWeeklyProfitAverageDividend += gCurrentProfit;
-    gWeeklyProfitAverageDivisor += 1;
+    gWeeklyProfitAverageDividend = gCurrentProfit;
+    gWeeklyProfitAverageDivisor++;
 
     window_invalidate_by_class(WC_FINANCES);
 }
