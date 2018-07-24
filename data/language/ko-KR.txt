@@ -1,4 +1,4 @@
-# STR_XXXX part is read and XXXX becomes the string id number.
+﻿# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -4568,8 +4568,6 @@ STR_6258    :투명하게
 STR_6259    :끄기
 STR_6260    :차단된 칸 표시
 STR_6261    :넓은 보도 표시
-STR_6262    :느린 속도
-STR_6263    :매우 느린 속도
 
 
 #############

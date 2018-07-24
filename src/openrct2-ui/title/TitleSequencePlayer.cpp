@@ -286,7 +286,7 @@ private:
             SetViewZoom(command->Zoom);
             break;
         case TITLE_SCRIPT_SPEED:
-            gGameSpeed = Math::Clamp<uint8_t>(1, command->Speed, GameSpeedTurbo);
+            gGameSpeed = Math::Clamp<uint8_t>(1, command->Speed, GAMESPEED_TURBO);
             break;
         case TITLE_SCRIPT_FOLLOW:
             FollowSprite(command->SpriteIndex);
@@ -507,7 +507,7 @@ private:
         news_item_init_queue();
         load_palette();
         gScreenAge = 0;
-        gGameSpeed = GameSpeedNormal;
+        gGameSpeed = GAMESPEED_NORMAL;
     }
 
     /**

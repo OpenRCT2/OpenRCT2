@@ -65,7 +65,7 @@
 
 uint16_t gTicksSinceLastUpdate;
 uint8_t  gGamePaused    = 0;
-int32_t gGameSpeed     = GameSpeedNormal;     // initial, normal speed 
+int32_t gGameSpeed     = GAMESPEED_NORMAL;     // initial, normal speed 
 float  gDayNightCycle = 0;
 bool   gInUpdateCode  = false;
 bool   gInMapInitCode = false;
@@ -127,20 +127,20 @@ GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32_t inde
 
 void game_increase_game_speed()
 {
-    if (gGameSpeed < (gConfigGeneral.debugging_tools ? GameSpeedHyper : GameSpeedTurbo))
+    if (gGameSpeed < (gConfigGeneral.debugging_tools ? GAMESPEED_HYPER : GAMESPEED_TURBO))
         gGameSpeed++;
 
-    if ( game_is_paused() )
+    if (game_is_paused())
         pause_toggle();
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
 void game_reduce_game_speed()
 {
-    if (gGameSpeed > GameSpeedPaused)
+    if (gGameSpeed > GAMESPEED_PAUSED)
         gGameSpeed--;
 
-    if (gGameSpeed == GameSpeedPaused && game_is_not_paused() )
+    if (gGameSpeed == GAMESPEED_PAUSED && game_is_not_paused() )
         pause_toggle();
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
@@ -822,9 +822,9 @@ void pause_toggle()
     {
         audio_stop_all_music_and_sounds();
     }
-    else if (gGameSpeed == GameSpeedPaused)
+    else if (gGameSpeed == GAMESPEED_PAUSED)
     {
-        gGameSpeed = GameSpeedNormal;
+        gGameSpeed = GAMESPEED_NORMAL;
     }
 }
 
@@ -1161,7 +1161,7 @@ void game_load_init()
     }
 
     audio_stop_title_music();
-    gGameSpeed = GameSpeedNormal;
+    gGameSpeed = GAMESPEED_NORMAL;
 }
 
 /**
@@ -1391,7 +1391,7 @@ void game_load_or_quit_no_save_prompt()
         {
             input_set_flag(INPUT_FLAG_5, false);
         }
-        gGameSpeed       = GameSpeedNormal;
+        gGameSpeed       = GAMESPEED_NORMAL;
         gFirstTimeSaving = true;
         title_load();
         break;
