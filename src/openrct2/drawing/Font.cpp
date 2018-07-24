@@ -350,6 +350,9 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
         case UNICODE_S_CEDILLA:
             return SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START;
 
+        case UNICODE_INTERPUNCT:
+            return SPR_G2_INTERPUNCT - SPR_CHAR_START;
+
         // This is to catch capitalised versions of the guilder sign
         case UNICODE_F_WITH_HOOK_UC:
             return 'F' - 32;
@@ -522,6 +525,8 @@ bool font_supports_string_sprite(const utf8* text)
             case UNICODE_G_BREVE:
             case UNICODE_I_WITHOUT_DOT:
             case UNICODE_S_CEDILLA:
+
+            case UNICODE_INTERPUNCT:
 
                 supported = true;
                 break;

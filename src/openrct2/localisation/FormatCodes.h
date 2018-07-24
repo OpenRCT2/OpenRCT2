@@ -179,6 +179,11 @@ enum UnicodePolish
     UNICODE_Z_ACUTE = 378,
 };
 
+enum UnicodeCatalan
+{
+    UNICODE_INTERPUNCT = 183,
+};
+
 enum UnicodeGerman
 {
     UNICODE_CAPITAL_SHARP_S = 0x1E9E,
