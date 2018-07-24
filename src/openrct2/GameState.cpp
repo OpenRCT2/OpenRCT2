@@ -32,6 +32,9 @@
 
 using namespace OpenRCT2;
 
+// speed steps in percent. 25% is 1/4 of normal speed (100%).  
+static uint32_t GameSpeeds[GAMESPEED_HYPER+1] = { 0, 25, 100, 200, 400, 1000, 10000 };
+
 GameState::GameState()
 {
     _park = std::make_unique<Park>();
@@ -72,9 +75,10 @@ void GameState::InitAll(int32_t mapSize)
 
 void GameState::Update()
 {
+	static uint32_t pctUpdates = 0;
     gInUpdateCode = true;
 
-    uint32_t numUpdates;
+    uint32_t numUpdates = 0;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
@@ -90,14 +94,19 @@ void GameState::Update()
     }
 
     // Determine how many times we need to update the game
-    if (gGameSpeed > 1)
-    {
-        numUpdates = 1 << (gGameSpeed - 1);
-    }
-    else
+    if (gGameSpeed == GAMESPEED_NORMAL)
     {
         numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
         numUpdates = Math::Clamp<uint32_t>(1, numUpdates, GAME_MAX_UPDATES);
+    }
+    else
+    {
+        pctUpdates += GameSpeeds[gGameSpeed] * gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
+        if (pctUpdates >= 100)
+        {
+            numUpdates = pctUpdates / 100;
+            pctUpdates = 0;
+        }
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
@@ -127,7 +136,7 @@ void GameState::Update()
     for (uint32_t i = 0; i < numUpdates; i++)
     {
         UpdateLogic();
-        if (gGameSpeed == 1)
+        if (gGameSpeed == GAMESPEED_NORMAL)
         {
             if (input_get_state() == INPUT_STATE_RESET || input_get_state() == INPUT_STATE_NORMAL)
             {

@@ -266,7 +266,7 @@ private:
                     Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
                     return false;
                 }
-
+  
                 const utf8* path = entry->path;
                 if (!LoadParkFromFile(path))
                 {
@@ -510,7 +510,7 @@ private:
         news_item_init_queue();
         load_palette();
         gScreenAge = 0;
-        gGameSpeed = 1;
+        gGameSpeed = GAMESPEED_NORMAL;
     }
 
     /**
