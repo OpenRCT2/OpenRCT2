@@ -1783,8 +1783,8 @@ STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COM
 STR_1772    :{COMMA16}
 STR_1773    :每个游乐设施只能建造一个照相区域
 STR_1774    :每个游乐设施只能建造一个牵引轨道
-STR_1775    :关闭
-STR_1776    :开启
+STR_1775    :<removed string - do not use>
+STR_1776    :<removed string - do not use>
 STR_1777    :{WINDOW_COLOUR_2}设施音乐
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊猫服装
@@ -4320,7 +4320,7 @@ STR_6002    :{SMALLFONT}{BLACK}夜晚时路灯和游乐设施将会被点亮.{NE
 STR_6003    :剖视图
 STR_6004    :剖视图
 STR_6005    :启用剖视图
-STR_6006    :{SMALLFONT}{BLACK}剖视图只显示小于等于切割高度的地图元素
+STR_6006    :{SMALLFONT}{BLACK}剖视图只显示小于等于切割高度（垂直切割）和指定的面积（纵横切割）的地图元素
 STR_6007    :切割高度
 STR_6008    :{SMALLFONT}{BLACK}单击在原始值或度量单位值之间切换
 STR_6009    :{SMALLFONT}{BLACK}选择切割高度
@@ -4517,7 +4517,7 @@ STR_6198    :{BLACK}日:
 STR_6199    :设置日期
 STR_6200    :重置日期
 STR_6201    :{MONTH}
-STR_6202    :启用虚拟楼层
+STR_6202    :虚拟楼层类型：
 STR_6203    :{SMALLFONT}{BLACK}启用后, 当按住Ctrl或Shift键时将会绘制一层虚拟楼层以便轻松地垂直放置元素.
 STR_6204    :砖墙
 STR_6205    :钢铁
@@ -4554,7 +4554,23 @@ STR_6235    :服务器信息
 STR_6236    :玩家
 STR_6237    :组
 STR_6238    :多人选项
-
+STR_6239    :垂直切割
+STR_6240    :纵横切割
+STR_6241    :选择面积
+STR_6242    :清空选项
+STR_6243    :{SMALLFONT}{BLACK}翻新游乐设施,{NEWLINE}让其焕然一新
+STR_6244    :无法翻新游乐设施...
+STR_6245    :{SMALLFONT}{BLACK}无需翻新游乐设施
+STR_6246    :翻新
+STR_6247    :翻新游乐设施/胜地
+STR_6248    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID} 以获得 {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}你是否确定要完全拆除 {STRINGID} 以获得 {CURRENCY}?
+STR_6251    :游乐设施尚未清空
+STR_6252    :Twitch API 链接
+STR_6253    :{SMALLFONT}{BLACK}提供 Twitch integration API 链接. 用以启用 Twitch integration.
+STR_6254    :Twitch integration API 链接:
+STR_6255    :链接无效
 
 #############
 # Scenarios #
