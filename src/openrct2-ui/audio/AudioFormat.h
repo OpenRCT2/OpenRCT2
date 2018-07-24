@@ -9,8 +9,8 @@
 
 #pragma once
 
-#include <openrct2/common.h>
 #include <SDL2/SDL.h>
+#include <openrct2/common.h>
 
 namespace OpenRCT2::Audio
 {
@@ -20,9 +20,9 @@ namespace OpenRCT2::Audio
      */
     struct AudioFormat
     {
-        int32_t          freq;
+        int32_t freq;
         SDL_AudioFormat format;
-        int32_t          channels;
+        int32_t channels;
 
         int32_t BytesPerSample() const
         {
@@ -35,14 +35,12 @@ namespace OpenRCT2::Audio
         }
     };
 
-    inline bool operator ==(const AudioFormat& lhs, const AudioFormat& rhs)
+    inline bool operator==(const AudioFormat& lhs, const AudioFormat& rhs)
     {
-        return lhs.freq == rhs.freq &&
-               lhs.format == rhs.format &&
-               lhs.channels == rhs.channels;
+        return lhs.freq == rhs.freq && lhs.format == rhs.format && lhs.channels == rhs.channels;
     }
 
-    inline bool operator !=(const AudioFormat& lhs, const AudioFormat& rhs)
+    inline bool operator!=(const AudioFormat& lhs, const AudioFormat& rhs)
     {
         return !(lhs == rhs);
     }

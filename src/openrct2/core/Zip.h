@@ -9,17 +9,20 @@
 
 #pragma once
 
+#include "../common.h"
+
 #include <memory>
 #include <string_view>
 #include <vector>
-#include "../common.h"
 
 /**
  * Represents a zip file.
  */
 interface IZipArchive
 {
-    virtual ~IZipArchive() { }
+    virtual ~IZipArchive()
+    {
+    }
 
     virtual size_t GetNumFiles() const abstract;
     virtual std::string GetFileName(size_t index) const abstract;
@@ -47,4 +50,4 @@ namespace Zip
 {
     std::unique_ptr<IZipArchive> Open(const std::string_view& path, ZIP_ACCESS zipAccess);
     std::unique_ptr<IZipArchive> TryOpen(const std::string_view& path, ZIP_ACCESS zipAccess);
-}
+} // namespace Zip

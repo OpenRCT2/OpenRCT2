@@ -8,26 +8,27 @@
  *****************************************************************************/
 
 #include "GameState.h"
+
 #include "Context.h"
-#include "core/Math.hpp"
 #include "Editor.h"
 #include "Input.h"
+#include "OpenRCT2.h"
+#include "core/Math.hpp"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "network/network.h"
-#include "OpenRCT2.h"
 #include "platform/Platform2.h"
 #include "scenario/Scenario.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequencePlayer.h"
+#include "ui/UiContext.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "ui/UiContext.h"
 
 using namespace OpenRCT2;
 
@@ -108,7 +109,8 @@ void GameState::Update()
         }
     }
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK)
+    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
+        && network_get_authstatus() == NETWORK_AUTH_OK)
     {
         if (network_get_server_tick() - gCurrentTicks >= 10)
         {
@@ -136,8 +138,7 @@ void GameState::Update()
         UpdateLogic();
         if (gGameSpeed == GAMESPEED_NORMAL)
         {
-            if (input_get_state() == INPUT_STATE_RESET ||
-                input_get_state() == INPUT_STATE_NORMAL)
+            if (input_get_state() == INPUT_STATE_RESET || input_get_state() == INPUT_STATE_NORMAL)
             {
                 if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING))
                 {
@@ -183,9 +184,8 @@ void GameState::Update()
     }
 
     // Always perform autosave check, even when paused
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) &&
-        !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) &&
-        !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         scenario_autosave_check();
     }
@@ -193,7 +193,7 @@ void GameState::Update()
     window_dispatch_update_all();
 
     gGameCommandNestLevel = 0;
-    gInUpdateCode         = false;
+    gInUpdateCode = false;
 }
 
 void GameState::UpdateLogic()
@@ -204,9 +204,8 @@ void GameState::UpdateLogic()
 
     network_update();
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT &&
-        network_get_status() == NETWORK_STATUS_CONNECTED &&
-        network_get_authstatus() == NETWORK_AUTH_OK)
+    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
+        && network_get_authstatus() == NETWORK_AUTH_OK)
     {
         // Can't be in sync with server, round trips won't work if we are at same level.
         if (gCurrentTicks >= network_get_server_tick())
@@ -259,16 +258,16 @@ void GameState::UpdateLogic()
     editor_open_windows_for_current_step();
 
     // Update windows
-    //window_dispatch_update_all();
+    // window_dispatch_update_all();
 
     if (gErrorType != ERROR_TYPE_NONE)
     {
         rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text  = gErrorStringId;
+        rct_string_id body_text = gErrorStringId;
         if (gErrorType == ERROR_TYPE_GENERIC)
         {
             title_text = gErrorStringId;
-            body_text  = 0xFFFF;
+            body_text = 0xFFFF;
         }
         gErrorType = ERROR_TYPE_NONE;
 

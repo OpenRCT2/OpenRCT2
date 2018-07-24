@@ -16,22 +16,23 @@
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
-#include "../world/Sprite.h"
 #include "../world/MapAnimation.h"
+#include "../world/Sprite.h"
 
-#define RCT1_MAX_TILE_ELEMENTS        0xC000
-#define RCT1_MAX_SPRITES              5000
-#define RCT1_MAX_TRAINS_PER_RIDE      12
-#define RCT1_MAX_MAP_SIZE             128
-#define RCT1_MAX_RIDES_IN_PARK        128
-#define RCT1_MAX_STAFF                116
+#define RCT1_MAX_TILE_ELEMENTS 0xC000
+#define RCT1_MAX_SPRITES 5000
+#define RCT1_MAX_TRAINS_PER_RIDE 12
+#define RCT1_MAX_MAP_SIZE 128
+#define RCT1_MAX_RIDES_IN_PARK 128
+#define RCT1_MAX_STAFF 116
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
-#define RCT1_MAX_ANIMATED_OBJECTS     1000
+#define RCT1_MAX_ANIMATED_OBJECTS 1000
 
 struct ParkLoadResult;
 
 #pragma pack(push, 1)
-struct rct1_entrance {
+struct rct1_entrance
+{
     uint16_t x;
     uint16_t y;
     uint16_t z;
@@ -43,31 +44,33 @@ assert_struct_size(rct1_entrance, 7);
  * RCT1 ride structure
  * size: 0x260
  */
-struct rct1_ride {
-    uint8_t type;                                             // 0x000
-    uint8_t vehicle_type;                                     // 0x001
-    uint16_t lifecycle_flags;                                 // 0x002
-    uint8_t operating_mode;                                   // 0x004
-    uint8_t colour_scheme;                                    // 0x005
-    struct {
+struct rct1_ride
+{
+    uint8_t type;             // 0x000
+    uint8_t vehicle_type;     // 0x001
+    uint16_t lifecycle_flags; // 0x002
+    uint8_t operating_mode;   // 0x004
+    uint8_t colour_scheme;    // 0x005
+    struct
+    {
         colour_t body;
         colour_t trim;
-    } vehicle_colours[RCT1_MAX_TRAINS_PER_RIDE];            // 0x006
-    colour_t track_primary_colour;                          // 0x01E
-    colour_t track_secondary_colour;                        // 0x01F
-    colour_t track_support_colour;                          // 0x020
+    } vehicle_colours[RCT1_MAX_TRAINS_PER_RIDE];              // 0x006
+    colour_t track_primary_colour;                            // 0x01E
+    colour_t track_secondary_colour;                          // 0x01F
+    colour_t track_support_colour;                            // 0x020
     uint8_t status;                                           // 0x021
     uint16_t name;                                            // 0x022
     uint16_t name_argument_ride;                              // 0x024
     uint16_t name_argument_number;                            // 0x026
-    LocationXY8 overall_view;                                   // 0x028
-    LocationXY8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];    // 0x02A
+    LocationXY8 overall_view;                                 // 0x028
+    LocationXY8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];  // 0x02A
     uint8_t station_height[RCT12_MAX_STATIONS_PER_RIDE];      // 0x032
     uint8_t station_length[RCT12_MAX_STATIONS_PER_RIDE];      // 0x036
     uint8_t station_light[RCT12_MAX_STATIONS_PER_RIDE];       // 0x03A
     uint8_t station_depart[RCT12_MAX_STATIONS_PER_RIDE];      // 0x03E
-    LocationXY8 entrance[RCT12_MAX_STATIONS_PER_RIDE];          // 0x042
-    LocationXY8 exit[RCT12_MAX_STATIONS_PER_RIDE];              // 0x04A
+    LocationXY8 entrance[RCT12_MAX_STATIONS_PER_RIDE];        // 0x042
+    LocationXY8 exit[RCT12_MAX_STATIONS_PER_RIDE];            // 0x04A
     uint16_t last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE]; // 0x052
     uint8_t num_peeps_in_queue[RCT12_MAX_STATIONS_PER_RIDE];  // 0x05A
     uint16_t vehicles[RCT1_MAX_TRAINS_PER_RIDE];              // 0x05E
@@ -83,436 +86,462 @@ struct rct1_ride {
     uint8_t max_waiting_time;                                 // 0x07F
     uint8_t operation_option;                                 // 0x080
     uint8_t boat_hire_return_direction;                       // 0x081
-    LocationXY8 boat_hire_return_position;                      // 0x082
+    LocationXY8 boat_hire_return_position;                    // 0x082
     uint8_t data_logging_index;                               // 0x084
     uint8_t special_track_elements;                           // 0x085
     uint16_t unk_86;                                          // 0x086
-    int32_t max_speed;                                       // 0x088
-    int32_t average_speed;                                   // 0x08C
+    int32_t max_speed;                                        // 0x088
+    int32_t average_speed;                                    // 0x08C
     uint8_t current_test_segment;                             // 0x090
     uint8_t average_speed_test_timeout;                       // 0x091
     uint8_t pad_0E2[0x2];                                     // 0x092
-    int32_t length[RCT12_MAX_STATIONS_PER_RIDE];             // 0x094
+    int32_t length[RCT12_MAX_STATIONS_PER_RIDE];              // 0x094
     uint16_t time[RCT12_MAX_STATIONS_PER_RIDE];               // 0x0A4
-    fixed16_2dp max_positive_vertical_g;                    // 0x0AC
-    fixed16_2dp max_negative_vertical_g;                    // 0x0AE
-    fixed16_2dp max_lateral_g;                              // 0x0B0
-    fixed16_2dp previous_vertical_g;                        // 0x0B2
-    fixed16_2dp previous_lateral_g;                         // 0x0B4
+    fixed16_2dp max_positive_vertical_g;                      // 0x0AC
+    fixed16_2dp max_negative_vertical_g;                      // 0x0AE
+    fixed16_2dp max_lateral_g;                                // 0x0B0
+    fixed16_2dp previous_vertical_g;                          // 0x0B2
+    fixed16_2dp previous_lateral_g;                           // 0x0B4
     uint8_t pad_B6[0x2];                                      // 0x0B6
     uint32_t testing_flags;                                   // 0x0B8
     // x y map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    LocationXY8 cur_test_track_location;                        // 0x0BC
+    LocationXY8 cur_test_track_location; // 0x0BC
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
-    uint16_t turn_count_default;                              // 0x0BE X = current turn count
-    uint16_t turn_count_banked;                               // 0x0C0
-    uint16_t turn_count_sloped;                               // 0x0C2 X = number turns > 3 elements
-    union {
-        uint8_t num_inversions;                               // 0x0C4
+    uint16_t turn_count_default; // 0x0BE X = current turn count
+    uint16_t turn_count_banked;  // 0x0C0
+    uint16_t turn_count_sloped;  // 0x0C2 X = number turns > 3 elements
+    union
+    {
+        uint8_t num_inversions; // 0x0C4
         uint8_t num_holes;
     };
-    uint8_t num_drops;                                        // 0x0C5
-    uint8_t start_drop_height;                                // 0x0C6
-    uint8_t highest_drop_height;                              // 0x0C7
-    int32_t sheltered_length;                                // 0x0C8
-    uint8_t unk_CC[2];                                        // 0x0CC
-    uint8_t num_sheltered_sections;                           // 0x0CE
+    uint8_t num_drops;              // 0x0C5
+    uint8_t start_drop_height;      // 0x0C6
+    uint8_t highest_drop_height;    // 0x0C7
+    int32_t sheltered_length;       // 0x0C8
+    uint8_t unk_CC[2];              // 0x0CC
+    uint8_t num_sheltered_sections; // 0x0CE
     // see cur_test_track_location
-    uint8_t cur_test_track_z;                                 // 0x0CF
-    int16_t unk_D0;                                          // 0x0D0
-    int16_t unk_D2;                                          // 0x0D2
-    int16_t customers_per_hour;                              // 0x0D4
-    int16_t unk_D6;                                          // 0x0D6
-    int16_t unk_D8;                                          // 0x0D8
-    int16_t unk_DA;                                          // 0x0DA
-    int16_t unk_DC;                                          // 0x0DC
-    int16_t unk_DE;                                          // 0x0DE
-    uint16_t age;                                             // 0x0E0
-    int16_t running_cost;                                    // 0x0E2
-    int16_t unk_E4;                                          // 0x0E4
-    int16_t unk_E6;                                          // 0x0E6
-    money16 price;                                          // 0x0E8
-    LocationXY8 chairlift_bullwheel_location[2];                // 0x0EA
-    uint8_t chairlift_bullwheel_z[2];                         // 0x0EE
-    union {
+    uint8_t cur_test_track_z;                    // 0x0CF
+    int16_t unk_D0;                              // 0x0D0
+    int16_t unk_D2;                              // 0x0D2
+    int16_t customers_per_hour;                  // 0x0D4
+    int16_t unk_D6;                              // 0x0D6
+    int16_t unk_D8;                              // 0x0D8
+    int16_t unk_DA;                              // 0x0DA
+    int16_t unk_DC;                              // 0x0DC
+    int16_t unk_DE;                              // 0x0DE
+    uint16_t age;                                // 0x0E0
+    int16_t running_cost;                        // 0x0E2
+    int16_t unk_E4;                              // 0x0E4
+    int16_t unk_E6;                              // 0x0E6
+    money16 price;                               // 0x0E8
+    LocationXY8 chairlift_bullwheel_location[2]; // 0x0EA
+    uint8_t chairlift_bullwheel_z[2];            // 0x0EE
+    union
+    {
         rating_tuple ratings;
-        struct {
-            ride_rating excitement;                         // 0x0F0
-            ride_rating intensity;                          // 0x0F2
-            ride_rating nausea;                             // 0x0F4
+        struct
+        {
+            ride_rating excitement; // 0x0F0
+            ride_rating intensity;  // 0x0F2
+            ride_rating nausea;     // 0x0F4
         };
     };
-    uint16_t value;                                           // 0x0F6
-    uint16_t chairlift_bullwheel_rotation;                    // 0x0F8
-    uint8_t satisfaction;                                     // 0x0FA
-    uint8_t satisfaction_time_out;                            // 0x0FB
-    uint8_t satisfaction_next;                                // 0x0FC
-    uint8_t window_invalidate_flags;                          // 0x0FD
-    uint8_t unk_FE[2];                                        // 0x0FE
-    uint32_t total_customers;                                 // 0x100
-    money32 total_profit;                                   // 0x104
-    uint8_t popularity;                                       // 0x108
-    uint8_t popularity_time_out;                              // 0x109
-    uint8_t popularity_next;                                  // 0x10A
-    uint8_t num_riders;                                       // 0x10B
-    uint8_t music_tune_id;                                    // 0x10C
-    uint8_t slide_in_use;                                     // 0x10D
-    union {
-        uint16_t slide_peep;                                  // 0x10E
-        uint16_t maze_tiles;                                  // 0x10E
+    uint16_t value;                        // 0x0F6
+    uint16_t chairlift_bullwheel_rotation; // 0x0F8
+    uint8_t satisfaction;                  // 0x0FA
+    uint8_t satisfaction_time_out;         // 0x0FB
+    uint8_t satisfaction_next;             // 0x0FC
+    uint8_t window_invalidate_flags;       // 0x0FD
+    uint8_t unk_FE[2];                     // 0x0FE
+    uint32_t total_customers;              // 0x100
+    money32 total_profit;                  // 0x104
+    uint8_t popularity;                    // 0x108
+    uint8_t popularity_time_out;           // 0x109
+    uint8_t popularity_next;               // 0x10A
+    uint8_t num_riders;                    // 0x10B
+    uint8_t music_tune_id;                 // 0x10C
+    uint8_t slide_in_use;                  // 0x10D
+    union
+    {
+        uint16_t slide_peep; // 0x10E
+        uint16_t maze_tiles; // 0x10E
     };
-    uint8_t pad_110[0xE];                                     // 0x110
-    uint8_t slide_peep_t_shirt_colour;                        // 0x11E
-    uint8_t pad_11F[0x7];                                     // 0x11F
-    uint8_t spiral_slide_progress;                            // 0x126
-    uint8_t pad_127[0x9];                                     // 0x127
-    int16_t build_date;                                      // 0x130
-    money16 upkeep_cost;                                    // 0x131
-    uint16_t race_winner;                                     // 0x132
-    uint8_t unk_134[2];                                       // 0x134
-    uint32_t music_position;                                  // 0x138
-    uint8_t breakdown_reason_pending;                         // 0x13C
-    uint8_t mechanic_status;                                  // 0x13D
-    uint16_t mechanic;                                        // 0x13E
-    uint8_t inspection_station;                               // 0x140
-    uint8_t broken_vehicle;                                   // 0x141
-    uint8_t broken_car;                                       // 0x142
-    uint8_t breakdown_reason;                                 // 0x143
-    uint8_t unk_144[2];                                       // 0x144
+    uint8_t pad_110[0xE];              // 0x110
+    uint8_t slide_peep_t_shirt_colour; // 0x11E
+    uint8_t pad_11F[0x7];              // 0x11F
+    uint8_t spiral_slide_progress;     // 0x126
+    uint8_t pad_127[0x9];              // 0x127
+    int16_t build_date;                // 0x130
+    money16 upkeep_cost;               // 0x131
+    uint16_t race_winner;              // 0x132
+    uint8_t unk_134[2];                // 0x134
+    uint32_t music_position;           // 0x138
+    uint8_t breakdown_reason_pending;  // 0x13C
+    uint8_t mechanic_status;           // 0x13D
+    uint16_t mechanic;                 // 0x13E
+    uint8_t inspection_station;        // 0x140
+    uint8_t broken_vehicle;            // 0x141
+    uint8_t broken_car;                // 0x142
+    uint8_t breakdown_reason;          // 0x143
+    uint8_t unk_144[2];                // 0x144
     union
     {
         struct
         {
-            uint8_t reliability_subvalue;                     // 0x146, 0 - 255, acts like the decimals for reliability_percentage
-            uint8_t reliability_percentage;                   // 0x147, Starts at 100 and decreases from there.
+            uint8_t reliability_subvalue;   // 0x146, 0 - 255, acts like the decimals for reliability_percentage
+            uint8_t reliability_percentage; // 0x147, Starts at 100 and decreases from there.
         };
-        uint16_t reliability;                                 // 0x146
+        uint16_t reliability; // 0x146
     };
-    uint8_t unreliability_factor;                             // 0x148
-    uint8_t downtime;                                         // 0x149
-    uint8_t inspection_interval;                              // 0x14A
-    uint8_t last_inspection;                                  // 0x14B
-    uint8_t unk_14C[20];                                      // 0x14C
-    money32 income_per_hour;                                // 0x160
-    money32 profit;                                         // 0x164
-    uint8_t queue_time[RCT12_MAX_STATIONS_PER_RIDE];          // 0x168
-    colour_t track_colour_main[4];                          // 0x16C
-    colour_t track_colour_additional[4];                    // 0x170
-    colour_t track_colour_supports[4];                      // 0x174
-    uint8_t music;                                            // 0x178
-    uint8_t entrance_style;                                   // 0x179
-    uint8_t unk_17A[230];                                     // 0x17A
+    uint8_t unreliability_factor;                    // 0x148
+    uint8_t downtime;                                // 0x149
+    uint8_t inspection_interval;                     // 0x14A
+    uint8_t last_inspection;                         // 0x14B
+    uint8_t unk_14C[20];                             // 0x14C
+    money32 income_per_hour;                         // 0x160
+    money32 profit;                                  // 0x164
+    uint8_t queue_time[RCT12_MAX_STATIONS_PER_RIDE]; // 0x168
+    colour_t track_colour_main[4];                   // 0x16C
+    colour_t track_colour_additional[4];             // 0x170
+    colour_t track_colour_supports[4];               // 0x174
+    uint8_t music;                                   // 0x178
+    uint8_t entrance_style;                          // 0x179
+    uint8_t unk_17A[230];                            // 0x17A
 };
 assert_struct_size(rct1_ride, 0x260);
 
-struct rct1_unk_sprite {
-    uint8_t sprite_identifier;        // 0x00
-    uint8_t misc_identifier;          // 0x01
-    uint16_t next_in_quadrant;        // 0x02
-    uint16_t next;                    // 0x04
-    uint16_t previous;                // 0x06
-    uint8_t linked_list_type_offset;  // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+struct rct1_unk_sprite
+{
+    uint8_t sprite_identifier;       // 0x00
+    uint8_t misc_identifier;         // 0x01
+    uint16_t next_in_quadrant;       // 0x02
+    uint16_t next;                   // 0x04
+    uint16_t previous;               // 0x06
+    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
     // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative;   // 0x09
-    uint16_t sprite_index;            // 0x0A
-    uint16_t flags;           // 0x0C
-    int16_t x;                       // 0x0E
-    int16_t y;                       // 0x10
-    int16_t z;                       // 0x12
+    uint8_t sprite_height_negative; // 0x09
+    uint16_t sprite_index;          // 0x0A
+    uint16_t flags;                 // 0x0C
+    int16_t x;                      // 0x0E
+    int16_t y;                      // 0x10
+    int16_t z;                      // 0x12
     // Width from centre of sprite to edge
-    uint8_t sprite_width;             // 0x14
+    uint8_t sprite_width; // 0x14
     // Height from centre of sprite to top
-    uint8_t sprite_height_positive;   // 0x15
-    int16_t sprite_left;             // 0x16
-    int16_t sprite_top;              // 0x18
-    int16_t sprite_right;            // 0x1A
-    int16_t sprite_bottom;           // 0x1C
-    uint8_t  sprite_direction; //direction of sprite? 0x1e
-    uint8_t pad_1F[3]; // 0x1f
+    uint8_t sprite_height_positive; // 0x15
+    int16_t sprite_left;            // 0x16
+    int16_t sprite_top;             // 0x18
+    int16_t sprite_right;           // 0x1A
+    int16_t sprite_bottom;          // 0x1C
+    uint8_t sprite_direction;       // direction of sprite? 0x1e
+    uint8_t pad_1F[3];              // 0x1f
     rct_string_id name_string_idx;  // 0x22
     uint16_t var_24;
-    uint16_t frame;                   // 0x26
+    uint16_t frame; // 0x26
     uint8_t var_28[3];
     uint8_t var_2B;
     uint8_t pad_2C[0x45];
     uint8_t var_71;
 };
 
-struct rct1_vehicle {
-    uint8_t sprite_identifier;        // 0x00
-    uint8_t is_child;                 // 0x01
-    uint16_t next_in_quadrant;        // 0x02
-    uint16_t next;                    // 0x04
-    uint16_t previous;                // 0x06
-    uint8_t linked_list_type_offset;  // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+struct rct1_vehicle
+{
+    uint8_t sprite_identifier;       // 0x00
+    uint8_t is_child;                // 0x01
+    uint16_t next_in_quadrant;       // 0x02
+    uint16_t next;                   // 0x04
+    uint16_t previous;               // 0x06
+    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
     // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative;   // 0x09
-    uint16_t sprite_index;            // 0x0A
-    uint16_t flags;           // 0x0C
-    int16_t x;                       // 0x0E
-    int16_t y;                       // 0x10
-    int16_t z;                       // 0x12
+    uint8_t sprite_height_negative; // 0x09
+    uint16_t sprite_index;          // 0x0A
+    uint16_t flags;                 // 0x0C
+    int16_t x;                      // 0x0E
+    int16_t y;                      // 0x10
+    int16_t z;                      // 0x12
     // Width from centre of sprite to edge
-    uint8_t sprite_width;             // 0x14
+    uint8_t sprite_width; // 0x14
     // Height from centre of sprite to top
-    uint8_t sprite_height_positive;   // 0x15
-    int16_t sprite_left;             // 0x16
-    int16_t sprite_top;              // 0x18
-    int16_t sprite_right;            // 0x1A
-    int16_t sprite_bottom;           // 0x1C
-    uint8_t sprite_direction;         // 0x1E
-    uint8_t vehicle_sprite_type;      // 0x1F
-    uint8_t bank_rotation;            // 0x20
+    uint8_t sprite_height_positive; // 0x15
+    int16_t sprite_left;            // 0x16
+    int16_t sprite_top;             // 0x18
+    int16_t sprite_right;           // 0x1A
+    int16_t sprite_bottom;          // 0x1C
+    uint8_t sprite_direction;       // 0x1E
+    uint8_t vehicle_sprite_type;    // 0x1F
+    uint8_t bank_rotation;          // 0x20
     uint8_t pad_21[3];
-    int32_t remaining_distance;      // 0x24
-    int32_t velocity;                // 0x28
-    int32_t acceleration;            // 0x2C
-    uint8_t ride;                     // 0x30
-    uint8_t vehicle_type;             // 0x31
-    rct_vehicle_colour colours;     // 0x32
-    union {
-        uint16_t track_progress;          // 0x34
-        struct {
+    int32_t remaining_distance; // 0x24
+    int32_t velocity;           // 0x28
+    int32_t acceleration;       // 0x2C
+    uint8_t ride;               // 0x30
+    uint8_t vehicle_type;       // 0x31
+    rct_vehicle_colour colours; // 0x32
+    union
+    {
+        uint16_t track_progress; // 0x34
+        struct
+        {
             int8_t var_34;
             uint8_t var_35;
         };
     };
-    union {
-        int16_t track_direction;     // 0x36 (0000 0000 0000 0011)
-        int16_t track_type;          // 0x36 (0000 0011 1111 1100)
-        LocationXY8 boat_location;      // 0x36
+    union
+    {
+        int16_t track_direction;   // 0x36 (0000 0000 0000 0011)
+        int16_t track_type;        // 0x36 (0000 0011 1111 1100)
+        LocationXY8 boat_location; // 0x36
     };
-    uint16_t track_x;                 // 0x38
-    uint16_t track_y;                 // 0x3A
-    uint16_t track_z;                 // 0x3C
-    uint16_t next_vehicle_on_train;   // 0x3E
+    uint16_t track_x;               // 0x38
+    uint16_t track_y;               // 0x3A
+    uint16_t track_z;               // 0x3C
+    uint16_t next_vehicle_on_train; // 0x3E
 
     // The previous vehicle on the same train or the last vehicle on the previous or only train.
-    uint16_t prev_vehicle_on_ride;    // 0x40
+    uint16_t prev_vehicle_on_ride; // 0x40
 
     // The next vehicle on the same train or the first vehicle on the next or only train
-    uint16_t next_vehicle_on_ride;    // 0x42
+    uint16_t next_vehicle_on_ride; // 0x42
 
     uint16_t var_44;
-    uint16_t mass;                    // 0x46
-    uint16_t update_flags;            // 0x48
+    uint16_t mass;         // 0x46
+    uint16_t update_flags; // 0x48
     uint8_t swing_sprite;
-    uint8_t current_station;          // 0x4B
-    union {
-        int16_t swinging_car_var_0;  // 0x4C
-        int16_t current_time;        // 0x4C
-        struct {
-            int8_t ferris_wheel_var_0;   // 0x4C
-            int8_t ferris_wheel_var_1;   // 0x4D
+    uint8_t current_station; // 0x4B
+    union
+    {
+        int16_t swinging_car_var_0; // 0x4C
+        int16_t current_time;       // 0x4C
+        struct
+        {
+            int8_t ferris_wheel_var_0; // 0x4C
+            int8_t ferris_wheel_var_1; // 0x4D
         };
     };
     int16_t var_4E;
-    uint8_t status;                   // 0x50
-    uint8_t sub_state;                // 0x51
-    uint16_t peep[32];                // 0x52
-    uint8_t peep_tshirt_colours[32];  // 0x92
-    uint8_t num_seats;                // 0xB2
-    uint8_t num_peeps;                // 0xB3
-    uint8_t next_free_seat;           // 0xB4
-    uint8_t restraints_position;      // 0xB5 0 == Close, 255 == Open
+    uint8_t status;                  // 0x50
+    uint8_t sub_state;               // 0x51
+    uint16_t peep[32];               // 0x52
+    uint8_t peep_tshirt_colours[32]; // 0x92
+    uint8_t num_seats;               // 0xB2
+    uint8_t num_peeps;               // 0xB3
+    uint8_t next_free_seat;          // 0xB4
+    uint8_t restraints_position;     // 0xB5 0 == Close, 255 == Open
     int16_t spin_speed;
     uint16_t sound2_flags;
     uint8_t spin_sprite;
-    uint8_t sound1_id;                // 0xBB
-    uint8_t sound1_volume;            // 0xBC
-    uint8_t sound2_id;                // 0xBD
-    uint8_t sound2_volume;            // 0xBE
+    uint8_t sound1_id;     // 0xBB
+    uint8_t sound1_volume; // 0xBC
+    uint8_t sound2_id;     // 0xBD
+    uint8_t sound2_volume; // 0xBE
     int8_t sound_vector_factor;
-    union {
+    union
+    {
         uint16_t var_C0;
-        uint16_t time_waiting;        // 0xC0
-        uint16_t cable_lift_target;   // 0xC0
+        uint16_t time_waiting;      // 0xC0
+        uint16_t cable_lift_target; // 0xC0
     };
-    uint8_t speed;                    // 0xC2
-    uint8_t powered_acceleration;     // 0xC3
+    uint8_t speed;                // 0xC2
+    uint8_t powered_acceleration; // 0xC3
     uint8_t var_C4;
     uint8_t animation_frame;
     uint8_t pad_C6[0x2];
     uint16_t var_C8;
     uint16_t var_CA;
-    uint8_t scream_sound_id;          // 0xCC
+    uint8_t scream_sound_id; // 0xCC
     uint8_t var_CD;
-    union {
+    union
+    {
         uint8_t var_CE;
-        uint8_t num_laps;             // 0xCE
+        uint8_t num_laps; // 0xCE
     };
-    union {
+    union
+    {
         uint8_t var_CF;
-        uint8_t brake_speed;          // 0xCF
+        uint8_t brake_speed; // 0xCF
     };
-    uint16_t lost_time_out;           // 0xD0
-    int8_t vertical_drop_countdown;  // 0xD1
+    uint16_t lost_time_out;         // 0xD0
+    int8_t vertical_drop_countdown; // 0xD1
     uint8_t var_D3;
     uint8_t mini_golf_current_animation;
-    uint8_t mini_golf_flags;          // 0xD5
-    uint8_t ride_subtype;             // 0xD6
-    uint8_t colours_extended;         // 0xD7
+    uint8_t mini_golf_flags;  // 0xD5
+    uint8_t ride_subtype;     // 0xD6
+    uint8_t colours_extended; // 0xD7
 };
 
-struct rct1_peep {
-    uint8_t sprite_identifier;        // 0x00
-    uint8_t misc_identifier;          // 0x01
-    uint16_t next_in_quadrant;        // 0x02
-    uint16_t next;                    // 0x04
-    uint16_t previous;                // 0x06
-    uint8_t linked_list_type_offset;  // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
+struct rct1_peep
+{
+    uint8_t sprite_identifier;       // 0x00
+    uint8_t misc_identifier;         // 0x01
+    uint16_t next_in_quadrant;       // 0x02
+    uint16_t next;                   // 0x04
+    uint16_t previous;               // 0x06
+    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
     // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative;   // 0x09
-    uint16_t sprite_index;            // 0x0A
-    uint16_t flags;           // 0x0C
-    int16_t x;                       // 0x0E
-    int16_t y;                       // 0x10
-    int16_t z;                       // 0x12
+    uint8_t sprite_height_negative; // 0x09
+    uint16_t sprite_index;          // 0x0A
+    uint16_t flags;                 // 0x0C
+    int16_t x;                      // 0x0E
+    int16_t y;                      // 0x10
+    int16_t z;                      // 0x12
     // Width from centre of sprite to edge
-    uint8_t sprite_width;             // 0x14
+    uint8_t sprite_width; // 0x14
     // Height from centre of sprite to top
-    uint8_t sprite_height_positive;   // 0x15
-    int16_t sprite_left;             // 0x16
-    int16_t sprite_top;              // 0x18
-    int16_t sprite_right;            // 0x1A
-    int16_t sprite_bottom;           // 0x1C
-    uint8_t sprite_direction;         // 0x1E
+    uint8_t sprite_height_positive; // 0x15
+    int16_t sprite_left;            // 0x16
+    int16_t sprite_top;             // 0x18
+    int16_t sprite_right;           // 0x1A
+    int16_t sprite_bottom;          // 0x1C
+    uint8_t sprite_direction;       // 0x1E
     uint8_t pad_1F[3];
-    rct_string_id name_string_idx;  // 0x22
-    uint16_t next_x;                  // 0x24
-    uint16_t next_y;                  // 0x26
-    uint8_t next_z;                   // 0x28
-    uint8_t next_flags;              // 0x29
-    uint8_t outside_of_park;          // 0x2A
-    uint8_t state;                    // 0x2B
-    uint8_t sub_state;                // 0x2C
-    uint8_t sprite_type;              // 0x2D
-    uint8_t type;                     // 0x2E
-    union{
-        uint8_t staff_type;           // 0x2F
-        uint8_t no_of_rides;          // 0x2F
+    rct_string_id name_string_idx; // 0x22
+    uint16_t next_x;               // 0x24
+    uint16_t next_y;               // 0x26
+    uint8_t next_z;                // 0x28
+    uint8_t next_flags;            // 0x29
+    uint8_t outside_of_park;       // 0x2A
+    uint8_t state;                 // 0x2B
+    uint8_t sub_state;             // 0x2C
+    uint8_t sprite_type;           // 0x2D
+    uint8_t type;                  // 0x2E
+    union
+    {
+        uint8_t staff_type;  // 0x2F
+        uint8_t no_of_rides; // 0x2F
     };
-    uint8_t tshirt_colour;            // 0x30
-    uint8_t trousers_colour;          // 0x31
-    uint16_t destination_x;           // 0x32 Location that the peep is trying to get to
-    uint16_t destination_y;           // 0x34
-    uint8_t destination_tolerance;    // 0x36 How close to destination before next action/state 0 = exact
+    uint8_t tshirt_colour;         // 0x30
+    uint8_t trousers_colour;       // 0x31
+    uint16_t destination_x;        // 0x32 Location that the peep is trying to get to
+    uint16_t destination_y;        // 0x34
+    uint8_t destination_tolerance; // 0x36 How close to destination before next action/state 0 = exact
     uint8_t var_37;
-    uint8_t energy;                   // 0x38
-    uint8_t energy_target;            // 0x39
-    uint8_t happiness;                // 0x3A
-    uint8_t happiness_target;         // 0x3B
-    uint8_t nausea;                   // 0x3C
-    uint8_t nausea_target;            // 0x3D
-    uint8_t hunger;                   // 0x3E
-    uint8_t thirst;                   // 0x3F
-    uint8_t toilet;                   // 0x40
-    uint8_t mass;                     // 0x41
+    uint8_t energy;           // 0x38
+    uint8_t energy_target;    // 0x39
+    uint8_t happiness;        // 0x3A
+    uint8_t happiness_target; // 0x3B
+    uint8_t nausea;           // 0x3C
+    uint8_t nausea_target;    // 0x3D
+    uint8_t hunger;           // 0x3E
+    uint8_t thirst;           // 0x3F
+    uint8_t toilet;           // 0x40
+    uint8_t mass;             // 0x41
     uint8_t time_to_consume;
-    uint8_t intensity;                // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
-    uint8_t nausea_tolerance;         // 0x44
-    uint8_t window_invalidate_flags;  // 0x45
-    money16 paid_on_drink;          // 0x46
-    uint8_t ride_types_been_on[16];   // 0x48
-    uint32_t item_extra_flags;        // 0x58
-    uint8_t photo2_ride_ref;          // 0x5C
-    uint8_t photo3_ride_ref;          // 0x5D
-    uint8_t photo4_ride_ref;          // 0x5E
-    uint8_t pad_5F[0x09];             // 0x5F
-    uint8_t current_ride;             // 0x68
-    uint8_t current_ride_station;     // 0x69
-    uint8_t current_train;            // 0x6A
-    union{
-        struct{
-            uint8_t current_car;      // 0x6B
-            uint8_t current_seat;     // 0x6C
+    uint8_t intensity; // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
+    uint8_t nausea_tolerance;        // 0x44
+    uint8_t window_invalidate_flags; // 0x45
+    money16 paid_on_drink;           // 0x46
+    uint8_t ride_types_been_on[16];  // 0x48
+    uint32_t item_extra_flags;       // 0x58
+    uint8_t photo2_ride_ref;         // 0x5C
+    uint8_t photo3_ride_ref;         // 0x5D
+    uint8_t photo4_ride_ref;         // 0x5E
+    uint8_t pad_5F[0x09];            // 0x5F
+    uint8_t current_ride;            // 0x68
+    uint8_t current_ride_station;    // 0x69
+    uint8_t current_train;           // 0x6A
+    union
+    {
+        struct
+        {
+            uint8_t current_car;  // 0x6B
+            uint8_t current_seat; // 0x6C
         };
-        uint16_t time_to_sitdown;     //0x6B
-        struct{
-            uint8_t time_to_stand;    //0x6B
-            uint8_t standing_flags;   //0x6C
+        uint16_t time_to_sitdown; // 0x6B
+        struct
+        {
+            uint8_t time_to_stand;  // 0x6B
+            uint8_t standing_flags; // 0x6C
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t special_sprite;           // 0x6D
-    uint8_t action_sprite_type;       // 0x6E
-    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which reads this again
-    uint8_t next_action_sprite_type;  // 0x6F
+    uint8_t special_sprite;     // 0x6D
+    uint8_t action_sprite_type; // 0x6E
+    // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which reads this
+    // again
+    uint8_t next_action_sprite_type;    // 0x6F
     uint8_t action_sprite_image_offset; // 0x70
-    uint8_t action;                   // 0x71
-    uint8_t action_frame;             // 0x72
+    uint8_t action;                     // 0x71
+    uint8_t action_frame;               // 0x72
     uint8_t step_progress;
-    union {
+    union
+    {
         uint16_t mechanic_time_since_call; // time getting to ride to fix
-        uint16_t next_in_queue;       // 0x74
+        uint16_t next_in_queue;            // 0x74
     };
     uint8_t pad_76;
     uint8_t pad_77;
-    union{
-        uint8_t maze_last_edge;       // 0x78
-        uint8_t direction;    //Direction ?
+    union
+    {
+        uint8_t maze_last_edge; // 0x78
+        uint8_t direction;      // Direction ?
     };
     uint8_t interaction_ride_index;
-    uint16_t time_in_queue;           // 0x7A
-    uint8_t rides_been_on[32];        // 0x7C
+    uint16_t time_in_queue;    // 0x7A
+    uint8_t rides_been_on[32]; // 0x7C
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
-    uint32_t id;                      // 0x9C
-    money32 cash_in_pocket;         // 0xA0
-    money32 cash_spent;             // 0xA4
-    int32_t time_in_park;            // 0xA8
-    int8_t rejoin_queue_timeout;                   // 0xAC
-    uint8_t previous_ride;            // 0xAD
-    uint16_t previous_ride_time_out;  // 0xAE
-    rct_peep_thought thoughts[PEEP_MAX_THOUGHTS];   // 0xB0
+    uint32_t id;                                  // 0x9C
+    money32 cash_in_pocket;                       // 0xA0
+    money32 cash_spent;                           // 0xA4
+    int32_t time_in_park;                         // 0xA8
+    int8_t rejoin_queue_timeout;                  // 0xAC
+    uint8_t previous_ride;                        // 0xAD
+    uint16_t previous_ride_time_out;              // 0xAE
+    rct_peep_thought thoughts[PEEP_MAX_THOUGHTS]; // 0xB0
     uint8_t pad_C4;
-    union {
-        uint8_t staff_id;                     // 0xC5
-        uint8_t guest_heading_to_ride_id;     // 0xC5
+    union
+    {
+        uint8_t staff_id;                 // 0xC5
+        uint8_t guest_heading_to_ride_id; // 0xC5
     };
-    union {
-        uint8_t staff_orders;             // 0xC6
-        uint8_t peep_is_lost_countdown;   // 0xC6
+    union
+    {
+        uint8_t staff_orders;           // 0xC6
+        uint8_t peep_is_lost_countdown; // 0xC6
     };
-    uint8_t photo1_ride_ref;          // 0xC7
-    uint32_t peep_flags;              // 0xC8
-    rct12_xyzd8 pathfind_goal;        // 0xCC
-    rct12_xyzd8 pathfind_history[4];  // 0xD0
-    uint8_t no_action_frame_num;       // 0xE0
+    uint8_t photo1_ride_ref;         // 0xC7
+    uint32_t peep_flags;             // 0xC8
+    rct12_xyzd8 pathfind_goal;       // 0xCC
+    rct12_xyzd8 pathfind_history[4]; // 0xD0
+    uint8_t no_action_frame_num;     // 0xE0
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t litter_count;             // 0xE1
-    union{
+    uint8_t litter_count; // 0xE1
+    union
+    {
         uint8_t time_on_ride;         // 0xE2
-        uint8_t staff_mowing_timeout;               // 0xE2
+        uint8_t staff_mowing_timeout; // 0xE2
     };
     // 0x3F Sick Count split into lots of 3 with time, 0xC0 Time since last recalc
-    uint8_t disgusting_count;         // 0xE3
-    money16 paid_to_enter;          // 0xE4
-    money16 paid_on_rides;          // 0xE6
-    money16 paid_on_food;           // 0xE8
-    money16 paid_on_souvenirs;      // 0xEA
-    uint8_t no_of_food;               // 0xEC
-    uint8_t no_of_drinks;             // 0xED
-    uint8_t no_of_souvenirs;          // 0xEE
-    uint8_t vandalism_seen;           // 0xEF
-    uint8_t voucher_type;             // 0xF0
-    uint8_t voucher_arguments;        // 0xF1 ride_id or string_offset_id
+    uint8_t disgusting_count;             // 0xE3
+    money16 paid_to_enter;                // 0xE4
+    money16 paid_on_rides;                // 0xE6
+    money16 paid_on_food;                 // 0xE8
+    money16 paid_on_souvenirs;            // 0xEA
+    uint8_t no_of_food;                   // 0xEC
+    uint8_t no_of_drinks;                 // 0xED
+    uint8_t no_of_souvenirs;              // 0xEE
+    uint8_t vandalism_seen;               // 0xEF
+    uint8_t voucher_type;                 // 0xF0
+    uint8_t voucher_arguments;            // 0xF1 ride_id or string_offset_id
     uint8_t surroundings_thought_timeout; // 0xF2
-    uint8_t angriness;                // 0xF3
+    uint8_t angriness;                    // 0xF3
     uint8_t time_lost;
-    uint8_t days_in_queue;            // 0xF5
-    uint8_t balloon_colour;           // 0xF6
-    uint8_t umbrella_colour;          // 0xF7
-    uint8_t hat_colour;               // 0xF8
-    uint8_t favourite_ride;           // 0xF9
-    uint8_t favourite_ride_rating;    // 0xFA
+    uint8_t days_in_queue;         // 0xF5
+    uint8_t balloon_colour;        // 0xF6
+    uint8_t umbrella_colour;       // 0xF7
+    uint8_t hat_colour;            // 0xF8
+    uint8_t favourite_ride;        // 0xF9
+    uint8_t favourite_ride_rating; // 0xFA
     uint8_t pad_FB;
-    uint32_t item_standard_flags;     // 0xFC
+    uint32_t item_standard_flags; // 0xFC
 };
 assert_struct_size(rct1_peep, 0x100);
 
-enum RCT1_PEEP_SPRITE_TYPE {
+enum RCT1_PEEP_SPRITE_TYPE
+{
     RCT1_PEEP_SPRITE_TYPE_NORMAL = 0,
     RCT1_PEEP_SPRITE_TYPE_HANDYMAN = 1,
     RCT1_PEEP_SPRITE_TYPE_MECHANIC = 2,
@@ -529,7 +558,7 @@ enum RCT1_PEEP_SPRITE_TYPE {
     RCT1_PEEP_SPRITE_TYPE_BALLOON = 16,
     RCT1_PEEP_SPRITE_TYPE_CANDYFLOSS = 17,
     RCT1_PEEP_SPRITE_TYPE_UMBRELLA = 18,
-    RCT1_PEEP_SPRITE_TYPE_PIZZA = 19, // Unsure
+    RCT1_PEEP_SPRITE_TYPE_PIZZA = 19,        // Unsure
     RCT1_PEEP_SPRITE_TYPE_SECURITY_ALT = 20, // Unknown
     RCT1_PEEP_SPRITE_TYPE_POPCORN = 21,
     RCT1_PEEP_SPRITE_TYPE_ARMS_CROSSED = 22,
@@ -543,7 +572,8 @@ enum RCT1_PEEP_SPRITE_TYPE {
     RCT1_PEEP_SPRITE_TYPE_TOFFEE_APPLE = 30
 };
 
-union rct1_sprite {
+union rct1_sprite
+{
     uint8_t pad_00[0x100];
     rct1_unk_sprite unknown;
     rct1_vehicle vehicle;
@@ -559,7 +589,8 @@ union rct1_sprite {
 };
 assert_struct_size(rct1_sprite, 0x100);
 
-struct rct1_research_item {
+struct rct1_research_item
+{
     uint8_t item;
     uint8_t related_ride;
     uint8_t type;
@@ -572,7 +603,8 @@ assert_struct_size(rct1_research_item, 5);
  * RCT1,AA,LL scenario / saved game structure.
  * size: 0x1F850C
  */
-struct rct1_s4 {
+struct rct1_s4
+{
     uint16_t month;
     uint16_t day;
     uint32_t ticks;
@@ -748,58 +780,62 @@ assert_struct_size(rct1_s4, 0x1F850C);
  * Track design structure.
  * size: 0x2006
  */
-struct rct_track_td4 {
-    uint8_t type;                                     // 0x00
+struct rct_track_td4
+{
+    uint8_t type; // 0x00
     uint8_t vehicle_type;
-    uint32_t flags;                                   // 0x02
-    uint8_t mode;                                     // 0x06
-    uint8_t version_and_colour_scheme;                // 0x07 0b0000_VVCC
+    uint32_t flags;                                               // 0x02
+    uint8_t mode;                                                 // 0x06
+    uint8_t version_and_colour_scheme;                            // 0x07 0b0000_VVCC
     rct_vehicle_colour vehicle_colours[RCT1_MAX_TRAINS_PER_RIDE]; // 0x08
-    uint8_t track_spine_colour_v0;                    // 0x20
-    uint8_t track_rail_colour_v0;                     // 0x21
-    uint8_t track_support_colour_v0;                  // 0x22
-    uint8_t depart_flags;                             // 0x23
-    uint8_t number_of_trains;                         // 0x24
-    uint8_t number_of_cars_per_train;                 // 0x25
-    uint8_t min_waiting_time;                         // 0x26
-    uint8_t max_waiting_time;                         // 0x27
-    union {
+    uint8_t track_spine_colour_v0;                                // 0x20
+    uint8_t track_rail_colour_v0;                                 // 0x21
+    uint8_t track_support_colour_v0;                              // 0x22
+    uint8_t depart_flags;                                         // 0x23
+    uint8_t number_of_trains;                                     // 0x24
+    uint8_t number_of_cars_per_train;                             // 0x25
+    uint8_t min_waiting_time;                                     // 0x26
+    uint8_t max_waiting_time;                                     // 0x27
+    union
+    {
         uint8_t operation_setting;
         uint8_t launch_speed;
         uint8_t num_laps;
         uint8_t max_people;
     };
-    int8_t max_speed;                                // 0x29
-    int8_t average_speed;                            // 0x2A
-    uint16_t ride_length;                             // 0x2B
-    uint8_t max_positive_vertical_g;                  // 0x2D
-    int8_t max_negative_vertical_g;                  // 0x2C
-    uint8_t max_lateral_g;                            // 0x2F
-    union {
-        uint8_t num_inversions;                       // 0x30
-        uint8_t num_holes;                            // 0x30
+    int8_t max_speed;                // 0x29
+    int8_t average_speed;            // 0x2A
+    uint16_t ride_length;            // 0x2B
+    uint8_t max_positive_vertical_g; // 0x2D
+    int8_t max_negative_vertical_g;  // 0x2C
+    uint8_t max_lateral_g;           // 0x2F
+    union
+    {
+        uint8_t num_inversions; // 0x30
+        uint8_t num_holes;      // 0x30
     };
-    uint8_t num_drops;                                // 0x31
-    uint8_t highest_drop_height;                      // 0x32
-    uint8_t excitement;                               // 0x33
-    uint8_t intensity;                                // 0x34
-    uint8_t nausea;                                   // 0x35
-    money16 upkeep_cost;                            // 0x36
+    uint8_t num_drops;           // 0x31
+    uint8_t highest_drop_height; // 0x32
+    uint8_t excitement;          // 0x33
+    uint8_t intensity;           // 0x34
+    uint8_t nausea;              // 0x35
+    money16 upkeep_cost;         // 0x36
 
     // Added Attractions / Loopy Landscapes only
     uint8_t track_spine_colour[RCT12_NUM_COLOUR_SCHEMES];   // 0x38
     uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];    // 0x3C
     uint8_t track_support_colour[RCT12_NUM_COLOUR_SCHEMES]; // 0x40
-    uint8_t flags2;                                   // 0x44
+    uint8_t flags2;                                         // 0x44
 
-    uint8_t var_45[0x7F];                             // 0x45
+    uint8_t var_45[0x7F]; // 0x45
 
-    void *elements;                                 // 0xC4 (data starts here in file, 38 for original RCT1)
+    void* elements; // 0xC4 (data starts here in file, 38 for original RCT1)
     size_t elementsSize;
 };
 #pragma pack(pop)
 
-enum {
+enum
+{
     RCT1_RIDE_TYPE_NULL = 255,
     RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER = 0,
     RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER,
@@ -890,7 +926,8 @@ enum {
     RCT1_RIDE_TYPE_COUNT
 };
 
-enum {
+enum
+{
     RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN = 0,
     RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS,
     RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN,
@@ -984,32 +1021,36 @@ enum {
     RCT1_VEHICLE_TYPE_COUNT
 };
 
-enum {
+enum
+{
     RCT1_TRACK_ELEM_BOOSTER = 100
 };
 
-enum {
+enum
+{
     RCT1_RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE = 2,
     RCT1_RIDE_MODE_POWERED_LAUNCH = 3,
 };
 
-enum {
+enum
+{
     RCT1_RIDE_DEPART_PLAY_MUSIC = 1 << 5,
 };
 
-enum {
+enum
+{
     RCT1_SCENERY_THEME_GENERAL,
     RCT1_SCENERY_THEME_MINE,
     RCT1_SCENERY_THEME_CLASSICAL_ROMAN,
     RCT1_SCENERY_THEME_EGYPTIAN,
     RCT1_SCENERY_THEME_MARTIAN,
-    RCT1_SCENERY_THEME_JUMPING_FOUNTAINS,   // Single researchable scenery item
+    RCT1_SCENERY_THEME_JUMPING_FOUNTAINS, // Single researchable scenery item
     RCT1_SCENERY_THEME_WONDERLAND,
     RCT1_SCENERY_THEME_JURASSIC,
     RCT1_SCENERY_THEME_SPOOKY,
     RCT1_SCENERY_THEME_JUNGLE,
     RCT1_SCENERY_THEME_ABSTRACT,
-    RCT1_SCENERY_THEME_GARDEN_CLOCK,        // Single researchable scenery item
+    RCT1_SCENERY_THEME_GARDEN_CLOCK, // Single researchable scenery item
     RCT1_SCENERY_THEME_SNOW_ICE,
     RCT1_SCENERY_THEME_MEDIEVAL,
     RCT1_SCENERY_THEME_SPACE,
@@ -1018,7 +1059,8 @@ enum {
     RCT1_SCENERY_THEME_PAGODA,
 };
 
-enum {
+enum
+{
     RCT1_FOOTPATH_TYPE_QUEUE_BLUE,
     RCT1_FOOTPATH_TYPE_QUEUE_RED,
     RCT1_FOOTPATH_TYPE_QUEUE_YELLOW,
@@ -1042,14 +1084,16 @@ enum {
     RCT1_FOOTPATH_TYPE_TILE_GREEN,
 };
 
-enum {
+enum
+{
     FOOTPATH_SUPPORTS_WOODEN_TRUSS,
     FOOTPATH_SUPPORTS_WOOD,
     FOOTPATH_SUPPORTS_STEEL,
     FOOTPATH_SUPPORTS_BAMBOO,
 };
 
-enum {
+enum
+{
     RCT1_PATH_ADDITION_NONE,
     RCT1_PATH_ADDITION_LAMP_1,
     RCT1_PATH_ADDITION_LAMP_2,
@@ -1067,7 +1111,8 @@ enum {
     RCT1_PATH_ADDITION_JUMPING_SNOW,
 };
 
-enum {
+enum
+{
     RCT1_WALL_TYPE_GLASS_SMOOTH = 11,
     RCT1_WALL_TYPE_GLASS_PANELS = 22,
     RCT1_WALL_TYPE_WOODEN_PANEL_FENCE = 12,
@@ -1083,30 +1128,34 @@ enum {
     RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW = 50,
 };
 
-enum {
+enum
+{
     RCT1_RESEARCH_END_AVAILABLE = 0xFF,
     RCT1_RESEARCH_END_RESEARCHABLE = 0xFE,
     RCT1_RESEARCH_END = 0xFD,
 };
 
-enum {
+enum
+{
     RCT1_RESEARCH_TYPE_THEME,
     RCT1_RESEARCH_TYPE_RIDE,
     RCT1_RESEARCH_TYPE_VEHICLE,
     RCT1_RESEARCH_TYPE_SPECIAL,
 };
 
-enum {
-    RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS         = 1 << 0,
-    RCT1_RESEARCH_CATEGORY_THRILL_RIDES           = 1 << 1,
+enum
+{
+    RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS = 1 << 0,
+    RCT1_RESEARCH_CATEGORY_THRILL_RIDES = 1 << 1,
     RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES = 1 << 2,
-    RCT1_RESEARCH_CATEGORY_SHOPS                  = 1 << 3,
-    RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING       = 1 << 4,
-    RCT1_RESEARCH_CATEGORY_RIDE_IMPROVEMENTS      = 1 << 5,
+    RCT1_RESEARCH_CATEGORY_SHOPS = 1 << 3,
+    RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING = 1 << 4,
+    RCT1_RESEARCH_CATEGORY_RIDE_IMPROVEMENTS = 1 << 5,
 };
 
 // Unconfirmed special track elements for research
-enum {
+enum
+{
     RCT1_RESEARCH_SPECIAL_BANKED_CURVES = 0x06,
     RCT1_RESEARCH_SPECIAL_VERTICAL_LOOP = 0x07,
     RCT1_RESEARCH_SPECIAL_STEEP_TWIST = 0x0C,
@@ -1127,7 +1176,8 @@ enum {
     RCT1_RESEARCH_SPECIAL_REVERSING_SECTIONS = 0x23,
 };
 
-enum {
+enum
+{
     RCT1_SCENARIO_FLAG_0 = 1 << 0,
     RCT1_SCENARIO_FLAG_1 = 1 << 1,
     RCT1_SCENARIO_FLAG_2 = 1 << 2,
@@ -1150,25 +1200,27 @@ enum {
     RCT1_SCENARIO_FLAG_19 = 1 << 19,
 };
 
-enum {
-    RCT1_PARK_FLAGS_PARK_OPEN =                         (1 << 0),
-    RCT1_PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT =      (1 << 1),
-    RCT1_PARK_FLAGS_FORBID_LANDSCAPE_CHANGES =          (1 << 2),
-    RCT1_PARK_FLAGS_FORBID_TREE_REMOVAL =               (1 << 3),
-    RCT1_PARK_FLAGS_SHOW_REAL_GUEST_NAMES =             (1 << 4),
-    RCT1_PARK_FLAGS_FORBID_HIGH_CONSTRUCTION =          (1 << 5),   // Below tree height
-    RCT1_PARK_FLAGS_PREF_LESS_INTENSE_RIDES =           (1 << 6),
-    RCT1_PARK_FLAGS_FORBID_MARKETING_CAMPAIGN =         (1 << 7),
-    RCT1_PARK_FLAGS_ANTI_CHEAT_DEPRECATED =             (1 << 8),   // Not used anymore, used for cheat detection
-    RCT1_PARK_FLAGS_PREF_MORE_INTENSE_RIDES =           (1 << 9),
-    RCT1_PARK_FLAGS_NO_MONEY =                          (1 << 11),  // Used for both scenarios and saved games, unlike RCT2
-    RCT1_PARK_FLAGS_DIFFICULT_GUEST_GENERATION =        (1 << 12),
-    RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE =         (1 << 13),  // Off: rides and park entry chargeable. On: only rides chargeable.
-    RCT1_PARK_FLAGS_DIFFICULT_PARK_RATING =             (1 << 14),
-    RCT1_PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15),  // Deprecated now we use a persistent 'real names' setting
+enum
+{
+    RCT1_PARK_FLAGS_PARK_OPEN = (1 << 0),
+    RCT1_PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT = (1 << 1),
+    RCT1_PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
+    RCT1_PARK_FLAGS_FORBID_TREE_REMOVAL = (1 << 3),
+    RCT1_PARK_FLAGS_SHOW_REAL_GUEST_NAMES = (1 << 4),
+    RCT1_PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // Below tree height
+    RCT1_PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
+    RCT1_PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
+    RCT1_PARK_FLAGS_ANTI_CHEAT_DEPRECATED = (1 << 8), // Not used anymore, used for cheat detection
+    RCT1_PARK_FLAGS_PREF_MORE_INTENSE_RIDES = (1 << 9),
+    RCT1_PARK_FLAGS_NO_MONEY = (1 << 11), // Used for both scenarios and saved games, unlike RCT2
+    RCT1_PARK_FLAGS_DIFFICULT_GUEST_GENERATION = (1 << 12),
+    RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE = (1 << 13), // Off: rides and park entry chargeable. On: only rides chargeable.
+    RCT1_PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
+    RCT1_PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15), // Deprecated now we use a persistent 'real names' setting
 };
 
-enum {
+enum
+{
     STEEL_RC_FRONT = 0,
     STEEL_RC_CARRIAGE = 1,
     WOODEN_RC_TRAIN = 2,
@@ -1204,17 +1256,20 @@ enum {
     RIVER_RAFT = 103,
 };
 
-enum {
+enum
+{
     COPY_COLOUR_1 = -1,
     COPY_COLOUR_2 = -2,
 };
 
-enum {
+enum
+{
     RCT1_WATER_CYAN,
     RCT1_WATER_ORANGE
 };
 
-enum {
+enum
+{
     RCT1_SCENERY_TULIPS_1 = 65,
     RCT1_SCENERY_TULIPS_2 = 68,
 
@@ -1225,13 +1280,14 @@ enum {
     RCT1_SCENERY_GEOMETRIC_SCULPTURE_5 = 171, // TGE5
 };
 
-enum {
+enum
+{
     RCT1_LANDSCAPE_DOOR_CLOSED = 0,
     RCT1_LANDSCAPE_DOOR_HALF_OPEN = 2,
     RCT1_LANDSCAPE_DOOR_OPEN = 3,
 };
 
-void load_from_sv4(const char *path);
-void load_from_sc4(const char *path);
+void load_from_sv4(const char* path);
+void load_from_sc4(const char* path);
 
 #endif

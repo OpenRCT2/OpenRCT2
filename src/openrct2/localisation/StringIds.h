@@ -15,7 +15,8 @@
 #define STR_NONE ((rct_string_id)-1)
 #define STR_VIEWPORT ((rct_string_id)-2)
 
-enum {
+enum
+{
     STR_EMPTY = 0,
     // STR_0001    :{STRINGID} {COMMA16}
     STR_RIDE_NAME_SPIRAL_ROLLER_COASTER = 2,
@@ -250,8 +251,8 @@ enum {
     STR_MONTH_SHORT_OCT = 819,
     STR_MONTH_SHORT_NOV = 820, // Unused
     STR_MONTH_SHORT_DEC = 821, // Unused
-// STR_0822    :Unable to access graphic data file
-// STR_0823    :Missing or inaccessible data file
+                               // STR_0822    :Unable to access graphic data file
+                               // STR_0823    :Missing or inaccessible data file
     STR_CLOSE_X = 824,
     STR_CHOSEN_NAME_IN_USE_ALREADY = 825,
     STR_TOO_MANY_NAMES_DEFINED = 826,
@@ -264,21 +265,21 @@ enum {
     STR_PAUSE_GAME_TIP = 833,
     STR_DISC_AND_GAME_OPTIONS_TIP = 834,
     STR_ERR_GAME_INITIALISATION_FAILED = 835,
-// STR_0835    :Game initialisation failed
-// STR_0836    :Unable to start game in a minimised state
-// STR_0837    :Unable to initialise graphics system
-// STR_0838    :<removed string - do not use>
+    // STR_0835    :Game initialisation failed
+    // STR_0836    :Unable to start game in a minimised state
+    // STR_0837    :Unable to initialise graphics system
+    // STR_0838    :<removed string - do not use>
     STR_RESOLUTION_X_BY_Y = 839,
     STR_ARG_16_RESOLUTION_X_BY_Y = 840,
-// STR_0841    :<removed string - do not use>
-// STR_0842    :<removed string - do not use>
-// STR_0843    :<removed string - do not use>
-// STR_0844    :<removed string - do not use>
-// STR_0845    :<removed string - do not use>
-// STR_0846    :<removed string - do not use>
+    // STR_0841    :<removed string - do not use>
+    // STR_0842    :<removed string - do not use>
+    // STR_0843    :<removed string - do not use>
+    // STR_0844    :<removed string - do not use>
+    // STR_0845    :<removed string - do not use>
+    // STR_0846    :<removed string - do not use>
     STR_ABOUT = 847,
     STR_ROLLERCOASTER_TYCOON_2 = 848,
-    //STR_VERSION_X = 849,
+    // STR_VERSION_X = 849,
     STR_COPYRIGHT_CS = 850,
     STR_DESIGNED_AND_PROGRAMMED_BY_CS = 851,
     STR_GRAPHICS_BY_SF = 852,
@@ -287,7 +288,7 @@ enum {
     STR_REPRESENTATION_BY_JL = 855,
     STR_THANKS_TO = 856,
     STR_THANKS_TO_PEOPLE = 857,
-// STR_0858 to 0864 are removed.
+    // STR_0858 to 0864 are removed.
     STR_STRINGID = 865,
     STR_ARG_2_STRINGID = 866, // Unused
     STR_ARG_4_STRINGID = 867, // Unused
@@ -313,7 +314,7 @@ enum {
     STR_QUIT_SCENARIO_EDITOR = 887,
     STR_QUIT_ROLLERCOASTER_DESIGNER = 888,
     STR_QUIT_TRACK_DESIGNS_MANAGER = 889,
-// STR_0890    :<removed string - do not use>
+    // STR_0890    :<removed string - do not use>
     STR_SCREENSHOT = 891,
     STR_SCREENSHOT_SAVED_AS = 892,
     STR_SCREENSHOT_FAILED = 893,
@@ -447,8 +448,8 @@ enum {
     STR_RIDE_VEHICLE_COUNT = 1021,
     STR_1_CAR_PER_TRAIN = 1022,
     STR_X_CARS_PER_TRAIN = 1023,
-// STR_1024    :{COMMA16} car per train
-// STR_1025    :{COMMA16} cars per train
+    // STR_1024    :{COMMA16} car per train
+    // STR_1025    :{COMMA16} cars per train
     STR_STATION_PLATFORM_TOO_LONG = 1026,
     STR_LOCATE_SUBJECT_TIP = 1027,
     STR_OFF_EDGE_OF_MAP = 1028,
@@ -566,7 +567,7 @@ enum {
     STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP = 1140,
     STR_SELECT_VEHICLE_TO_MODIFY_TIP = 1141,
     STR_DROPDOWN_MENU_LABEL = 1142,
-// STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+    // STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
     STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION = 1144,
     STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION = 1145,
     STR_ENTRANCE_NOT_YET_BUILT = 1146,
@@ -755,7 +756,7 @@ enum {
     STR_LAUNCH_SPEED = 1329,
     STR_LAUNCH_SPEED_TIP = 1330,
     STR_RIDE_MODE_SPEED_VALUE = 1331,
-// 1332 not used. Likely ride_mode_speed value
+    // 1332 not used. Likely ride_mode_speed value
     STR_RIDE_STATION = 1333,
     STR_RIDE_STATION_X = 1334,
     STR_RIDE_ENTRANCE = 1335,
@@ -951,11 +952,11 @@ enum {
     STR_PEEP_THOUGHT_TYPE_CHIPS = 1525,
     STR_PEEP_THOUGHT_TYPE_ICE_CREAM = 1526,
     STR_PEEP_THOUGHT_TYPE_CANDYFLOSS = 1527,
-// STR_1528    :
-// STR_1529    :
-// STR_1530    :
+    // STR_1528    :
+    // STR_1529    :
+    // STR_1530    :
     STR_PEEP_THOUGHT_TYPE_PIZZA = 1531,
-// STR_1532    :
+    // STR_1532    :
     STR_PEEP_THOUGHT_TYPE_POPCORN = 1533,
     STR_PEEP_THOUGHT_TYPE_HOT_DOG = 1534,
     STR_PEEP_THOUGHT_TYPE_TENTACLE = 1535,
@@ -964,15 +965,15 @@ enum {
     STR_PEEP_THOUGHT_TYPE_TSHIRT = 1538,
     STR_PEEP_THOUGHT_TYPE_DOUGHNUT = 1539,
     STR_PEEP_THOUGHT_TYPE_COFFEE = 1540,
-// STR_1541    :
+    // STR_1541    :
     STR_PEEP_THOUGHT_TYPE_CHICKEN = 1542,
     STR_PEEP_THOUGHT_TYPE_LEMONADE = 1543,
-// STR_1544    :
-// STR_1545    :
-// STR_1546    :
+    // STR_1544    :
+    // STR_1545    :
+    // STR_1546    :
     STR_PEEP_THOUGHT_TYPE_WOW = 1547, // This string is empty! STR_1547    :
-// STR_1548    :
-// STR_1549    :
+                                      // STR_1548    :
+                                      // STR_1549    :
     STR_PEEP_THOUGHT_TYPE_WOW2 = 1550,
     STR_PEEP_THOUGHT_TYPE_WATCHED = 1551,
     STR_PEEP_THOUGHT_TYPE_BALLOON_MUCH = 1552,
@@ -985,11 +986,11 @@ enum {
     STR_PEEP_THOUGHT_TYPE_CHIPS_MUCH = 1559,
     STR_PEEP_THOUGHT_TYPE_ICE_CREAM_MUCH = 1560,
     STR_PEEP_THOUGHT_TYPE_CANDYFLOSS_MUCH = 1561,
-// STR_1562    :
-// STR_1563    :
-// STR_1564    :
+    // STR_1562    :
+    // STR_1563    :
+    // STR_1564    :
     STR_PEEP_THOUGHT_TYPE_PIZZA_MUCH = 1565,
-// STR_1566    :
+    // STR_1566    :
     STR_PEEP_THOUGHT_TYPE_POPCORN_MUCH = 1567,
     STR_PEEP_THOUGHT_TYPE_HOT_DOG_MUCH = 1568,
     STR_PEEP_THOUGHT_TYPE_TENTACLE_MUCH = 1569,
@@ -998,15 +999,15 @@ enum {
     STR_PEEP_THOUGHT_TYPE_TSHIRT_MUCH = 1572,
     STR_PEEP_THOUGHT_TYPE_DOUGHNUT_MUCH = 1573,
     STR_PEEP_THOUGHT_TYPE_COFFEE_MUCH = 1574,
-// STR_1575    :
+    // STR_1575    :
     STR_PEEP_THOUGHT_TYPE_CHICKEN_MUCH = 1576,
     STR_PEEP_THOUGHT_TYPE_LEMONADE_MUCH = 1577,
-// STR_1578    :
-// STR_1579    :
-// STR_1580    :
-// STR_1581    :
-// STR_1582    :
-// STR_1583    :
+    // STR_1578    :
+    // STR_1579    :
+    // STR_1580    :
+    // STR_1581    :
+    // STR_1582    :
+    // STR_1583    :
     STR_PEEP_THOUGHT_TYPE_PHOTO2 = 1584,
     STR_PEEP_THOUGHT_TYPE_PHOTO3 = 1585,
     STR_PEEP_THOUGHT_TYPE_PHOTO4 = 1586,
@@ -1024,21 +1025,21 @@ enum {
     STR_PEEP_THOUGHT_TYPE_SU_JONGKWA = 1598,
     STR_PEEP_THOUGHT_TYPE_SUB_SANDWICH = 1599,
     STR_PEEP_THOUGHT_TYPE_COOKIE = 1600,
-// STR_1601    :
-// STR_1602    :
-// STR_1603    :
+    // STR_1601    :
+    // STR_1602    :
+    // STR_1603    :
     STR_PEEP_THOUGHT_TYPE_ROAST_SAUSAGE = 1604,
-// STR_1605    :
-// STR_1606    :
-// STR_1607    :
-// STR_1608    :
-// STR_1609    :
-// STR_1610    :
-// STR_1611    :
-// STR_1612    :
-// STR_1613    :
-// STR_1614    :
-// STR_1615    :
+    // STR_1605    :
+    // STR_1606    :
+    // STR_1607    :
+    // STR_1608    :
+    // STR_1609    :
+    // STR_1610    :
+    // STR_1611    :
+    // STR_1612    :
+    // STR_1613    :
+    // STR_1614    :
+    // STR_1615    :
     STR_PEEP_THOUGHT_TYPE_PHOTO2_MUCH = 1616,
     STR_PEEP_THOUGHT_TYPE_PHOTO3_MUCH = 1617,
     STR_PEEP_THOUGHT_TYPE_PHOTO4_MUCH = 1618,
@@ -1056,21 +1057,21 @@ enum {
     STR_PEEP_THOUGHT_TYPE_SU_JONGKWA_MUCH = 1630,
     STR_PEEP_THOUGHT_TYPE_SUB_SANDWICH_MUCH = 1631,
     STR_PEEP_THOUGHT_TYPE_COOKIE_MUCH = 1632,
-// STR_1633    :
-// STR_1634    :
-// STR_1635    :
+    // STR_1633    :
+    // STR_1634    :
+    // STR_1635    :
     STR_PEEP_THOUGHT_TYPE_ROAST_SAUSAGE_MUCH = 1636,
-// STR_1637    :
-// STR_1638    :
-// STR_1639    :
-// STR_1640    :
-// STR_1641    :
-// STR_1642    :
-// STR_1643    :
-// STR_1644    :
-// STR_1645    :
-// STR_1646    :
-// STR_1647    :
+    // STR_1637    :
+    // STR_1638    :
+    // STR_1639    :
+    // STR_1640    :
+    // STR_1641    :
+    // STR_1642    :
+    // STR_1643    :
+    // STR_1644    :
+    // STR_1645    :
+    // STR_1646    :
+    // STR_1647    :
     STR_PEEP_THOUGHT_TYPE_HELP = 1648,
     STR_PEEP_THOUGHT_TYPE_RUNNING_OUT = 1649,
     STR_PEEP_THOUGHT_TYPE_NEW_RIDE = 1650,
@@ -1160,7 +1161,7 @@ enum {
     STR_NUMBER_OF_LAPS = 1734,
     STR_NUMBER_OF_LAPS_TIP = 1735,
     STR_NUMBER_OF_LAPS_VALUE = 1736,
-// STR_1737    :{COMMA16}
+    // STR_1737    :{COMMA16}
     STR_CANT_CHANGE_NUMBER_OF_LAPS = 1738,
     STR_RACE_WON_BY_GUEST = 1739,
     STR_RACE_WON_BY = 1740,
@@ -1168,12 +1169,12 @@ enum {
     STR_MAX_PEOPLE_ON_RIDE = 1742,
     STR_MAX_PEOPLE_ON_RIDE_TIP = 1743,
     STR_MAX_PEOPLE_ON_RIDE_VALUE = 1744,
-// STR_1745    :{COMMA16}
+    // STR_1745    :{COMMA16}
     STR_CANT_CHANGE_THIS = 1746,
     STR_TIME_LIMIT = 1747,
     STR_TIME_LIMIT_TIP = 1748,
     STR_RIDE_MODE_TIME_LIMIT_VALUE = 1749,
-// STR_1750    :{DURATION}
+    // STR_1750    :{DURATION}
     STR_CANT_CHANGE_TIME_LIMIT = 1751,
     STR_INDIVIDUAL_GUESTS_TIP = 1752,
     STR_SUMMARISED_GUESTS_TIP = 1753,
@@ -1195,11 +1196,11 @@ enum {
     STR_NUMBER_OF_SWINGS = 1769,
     STR_NUMBER_OF_SWINGS_TIP = 1770,
     STR_RIDE_MODE_NUMBER_OF_SWINGS_VALUE = 1771,
-// STR_1772    :{COMMA16}
+    // STR_1772    :{COMMA16}
     STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE = 1773,
     STR_ONLY_ONE_CABLE_LIFT_HILL_PER_RIDE = 1774,
-// STR_OPTIONS_RIDE_MUSIC_OFF = 1775,
-// STR_OPTIONS_RIDE_MUSIC_ON = 1776,
+    // STR_OPTIONS_RIDE_MUSIC_OFF = 1775,
+    // STR_OPTIONS_RIDE_MUSIC_ON = 1776,
     STR_RIDE_MUSIC = 1777,
     STR_SCROLLING_SIGN_TEXT = 1778,
     STR_STAFF_OPTION_COSTUME_PANDA = 1779,
@@ -1220,7 +1221,7 @@ enum {
     STR_FIXING_RIDE = 1794,
     STR_ANSWERING_RADIO_CALL = 1795,
     STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING = 1796,
-// STR_1797    :This option cannot be changed for this ride
+    // STR_1797    :This option cannot be changed for this ride
     STR_WHIRLPOOL = 1798,
     STR_RIDE_SECONDARY_PRICE_VALUE = 1799,
     STR_RIDE_BREAKDOWN_SAFETY_CUT_OUT = 1800,
@@ -1268,7 +1269,7 @@ enum {
     STR_GUESTS_FAVOURITE_LABEL = 1842,
     STR_GUESTS_FAVOURITE_PLURAL_LABEL = 1843,
     STR_RIDE_LIST_INFORMATION_TYPE_TIP = 1844,
-// STR_1845    :{MONTHYEAR}  // Used in window_game_bottom_toolbar_onpaint
+    // STR_1845    :{MONTHYEAR}  // Used in window_game_bottom_toolbar_onpaint
     STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE = 1846,
     STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE = 1847,
     STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE = 1848,
@@ -1295,7 +1296,7 @@ enum {
     STR_NUMBER_OF_ROTATIONS = 1869,
     STR_NUMBER_OF_ROTATIONS_TIP = 1870,
     STR_NUMBER_OF_ROTATIONS_VALUE = 1871,
-// STR_1872    :{COMMA16}
+    // STR_1872    :{COMMA16}
     STR_INCOME_PER_HOUR = 1873,
     STR_PROFIT_PER_HOUR = 1874,
     STR_GUEST_ITEM_FORMAT = 1875,
@@ -1315,8 +1316,8 @@ enum {
     STR_DOWN_TIME_LABEL_1889 = 1889,
     STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE = 1890,
     STR_NO_THING_IN_PARK_YET = 1891,
-// STR_1892    :<removed string - do not use>
-// STR_1893    :<removed string - do not use>
+    // STR_1892    :<removed string - do not use>
+    // STR_1893    :<removed string - do not use>
     STR_ITEMS_SOLD = 1894,
     STR_BUILD_RIDE_TIP = 1895,
     STR_FINANCES_SUMMARY_EXPENDITURE_INCOME = 1896,
@@ -1348,7 +1349,7 @@ enum {
     STR_CONTINUE_SAVED_GAME_TIP = 1922,
     STR_EXIT = 1924,
     STR_ERR_CANT_PLACE_PERSON_HERE = 1925,
-// STR_1926    :{SMALLFONT} // Used in window_game_bottom_toolbar_onpaint and window_news_onscrollpaint
+    // STR_1926    :{SMALLFONT} // Used in window_game_bottom_toolbar_onpaint and window_news_onscrollpaint
     STR_RIDE_IS_BROKEN_DOWN = 1927,
     STR_RIDE_HAS_CRASHED = 1928,
     STR_RIDE_IS_STILL_NOT_FIXED = 1929,
@@ -1380,8 +1381,8 @@ enum {
     STR_NUMBER_OF_CIRCUITS = 1955,
     STR_NUMBER_OF_CIRCUITS_TIP = 1956,
     STR_NUMBER_OF_CIRCUITS_VALUE = 1957,
-// STR_1958    :{COMMA16}
-// STR_1959    :Can't change number of circuits...
+    // STR_1958    :{COMMA16}
+    // STR_1959    :Can't change number of circuits...
     STR_SHOP_ITEM_PRICE_LABEL_BALLOON = 1960,
     STR_SHOP_ITEM_PRICE_LABEL_CUDDLY_TOY = 1961,
     STR_SHOP_ITEM_PRICE_LABEL_PARK_MAP = 1962,
@@ -1392,8 +1393,8 @@ enum {
     STR_SHOP_ITEM_PRICE_LABEL_CHIPS = 1967,
     STR_SHOP_ITEM_PRICE_LABEL_ICE_CREAM = 1968,
     STR_SHOP_ITEM_PRICE_LABEL_CANDYFLOSS = 1969,
-    STR_SHOP_ITEM_PRICE_LABEL_EMPTY_CAN = 1970, // Empty
-    STR_SHOP_ITEM_PRICE_LABEL_RUBBISH = 1971, // Empty
+    STR_SHOP_ITEM_PRICE_LABEL_EMPTY_CAN = 1970,        // Empty
+    STR_SHOP_ITEM_PRICE_LABEL_RUBBISH = 1971,          // Empty
     STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BURGER_BOX = 1972, // Empty
     STR_SHOP_ITEM_PRICE_LABEL_PIZZA = 1973,
     STR_SHOP_ITEM_PRICE_LABEL_VOUCHER = 1974, // Empty
@@ -1408,7 +1409,7 @@ enum {
     STR_SHOP_ITEM_PRICE_LABEL_EMPTY_CUP = 1983, // Empty
     STR_SHOP_ITEM_PRICE_LABEL_FRIED_CHICKEN = 1984,
     STR_SHOP_ITEM_PRICE_LABEL_LEMONADE = 1985,
-    STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOX = 1986, // Empty
+    STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOX = 1986,    // Empty
     STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOTTLE = 1987, // Empty
     STR_SHOP_ITEM_SINGULAR_BALLOON = 1988,
     STR_SHOP_ITEM_SINGULAR_CUDDLY_TOY = 1989,
@@ -1539,14 +1540,14 @@ enum {
     STR_SHOP_ITEM_PRICE_LABEL_SUJONGKWA = 2114,
     STR_SHOP_ITEM_PRICE_LABEL_SUB_SANDWICH = 2115,
     STR_SHOP_ITEM_PRICE_LABEL_COOKIE = 2116,
-    STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOWL_RED = 2117, // Empty
+    STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOWL_RED = 2117,     // Empty
     STR_SHOP_ITEM_PRICE_LABEL_EMPTY_DRINK_CARTON = 2118, // Empty
-    STR_SHOP_ITEM_PRICE_LABEL_EMPTY_JUICE_CUP = 2119, // Empty
+    STR_SHOP_ITEM_PRICE_LABEL_EMPTY_JUICE_CUP = 2119,    // Empty
     STR_SHOP_ITEM_PRICE_LABEL_ROAST_SAUSAGE = 2120,
     STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOWL_BLUE = 2121, // Empty
-    STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO2 = 2122, // Unused
-    STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO3 = 2123, // Unused
-    STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO4 = 2124, // Unused
+    STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO2 = 2122,     // Unused
+    STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO3 = 2123,     // Unused
+    STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO4 = 2124,     // Unused
     STR_SHOP_ITEM_SINGULAR_PRETZEL = 2125,
     STR_SHOP_ITEM_SINGULAR_HOT_CHOCOLATE = 2126,
     STR_SHOP_ITEM_SINGULAR_ICED_TEA = 2127,
@@ -1658,7 +1659,7 @@ enum {
     STR_PARK_INFORMATION_TIP = 2233,
     STR_RECENT_MESSAGES = 2234,
     STR_NEWS_DATE_FORMAT = 2235,
-    STR_MONTH_JANUARY = 2236, // unused
+    STR_MONTH_JANUARY = 2236,  // unused
     STR_MONTH_FEBRUARY = 2237, // unused
     STR_MONTH_MARCH = 2238,
     STR_MONTH_APRIL = 2239,
@@ -1673,7 +1674,7 @@ enum {
     STR_CANT_DEMOLISH_RIDE = 2248,
     STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE = 2249,
     STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE = 2250,
-// STR_2251    :Can only be built on paths!
+    // STR_2251    :Can only be built on paths!
     STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS = 2252,
     STR_RESEARCH_NEW_TRANSPORT_RIDES = 2253,
     STR_RESEARCH_NEW_GENTLE_RIDES = 2254,
@@ -1701,18 +1702,18 @@ enum {
     STR_RESEARCH_AND_DEVELOPMENT_TIP = 2276,
     STR_RESEARCH_UNKNOWN = 2277,
     STR_RESEARCH_CATEGORY_TRANSPORT = 2278,
-    STR_RESEARCH_CATEGORY_GENTLE    = 2279,
+    STR_RESEARCH_CATEGORY_GENTLE = 2279,
     STR_RESEARCH_CATEGORY_ROLLERCOASTER = 2280,
-    STR_RESEARCH_CATEGORY_THRILL        = 2281,
-    STR_RESEARCH_CATEGORY_WATER     = 2282,
-    STR_RESEARCH_CATEGORY_SHOP  = 2283,
+    STR_RESEARCH_CATEGORY_THRILL = 2281,
+    STR_RESEARCH_CATEGORY_WATER = 2282,
+    STR_RESEARCH_CATEGORY_SHOP = 2283,
     STR_RESEARCH_CATEGORY_SCENERY_GROUP = 2284,
     STR_RESEARCH_STAGE_INITIAL_RESEARCH = 2285,
     STR_RESEARCH_STAGE_DESIGNING = 2286,
     STR_RESEARCH_STAGE_COMPLETING_DESIGN = 2287,
     STR_RESEARCH_STAGE_UNKNOWN = 2288,
     STR_RESEARCH_EXPECTED_FORMAT = 2289,
-// STR_2290    :<removed string - do not use>
+    // STR_2290    :<removed string - do not use>
     STR_SELECT_SCENARIO = 2291,
     STR_GUEST_LABEL_RIDES_BEEN_ON = 2292,
     STR_NOTHING = 2293,
@@ -1727,8 +1728,8 @@ enum {
     STR_GUEST_EXPENSES_DRINK_PLURAL = 2302,
     STR_GUEST_EXPENSES_SOUVENIR = 2303,
     STR_GUEST_EXPENSES_SOUVENIR_PLURAL = 2304,
-// STR_2305    :Track design files
-// STR_2306    :Save track design
+    // STR_2305    :Track design files
+    // STR_2306    :Save track design
     STR_SELECT_DESIGN = 2307,
     STR_TRACK_DESIGNS = 2308,
     STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE = 2309,
@@ -1739,10 +1740,10 @@ enum {
     STR_TRACK_LIST_RIDE_LENGTH = 2314,
     STR_TRACK_LIST_COST_AROUND = 2315,
     STR_TRACK_LIST_SPACE_REQUIRED = 2316,
-// STR_2317    :<removed string - do not use>
-// STR_2318    :<removed string - do not use>
-// STR_2319    :<removed string - do not use>
-// STR_2320    :<removed string - do not use>
+    // STR_2317    :<removed string - do not use>
+    // STR_2318    :<removed string - do not use>
+    // STR_2319    :<removed string - do not use>
+    // STR_2320    :<removed string - do not use>
     STR_NUMBER_OF_RIDES_LABEL = 2321,
     STR_STAFF_LABEL = 2322,
     STR_PARK_SIZE_METRIC_LABEL = 2323,
@@ -1779,9 +1780,9 @@ enum {
     STR_STAFF_STAT_BINS_EMPTIED = 2354,
     STR_STAFF_STAT_RIDES_FIXED = 2355,
     STR_STAFF_STAT_RIDES_INSPECTED = 2356,
-// STR_2357    :House
-// STR_2358    :Units
-    //STR_UNITS = 2358,
+    // STR_2357    :House
+    // STR_2358    :Units
+    // STR_UNITS = 2358,
     STR_REAL_VALUES = 2359,
     STR_DISPLAY_RESOLUTION = 2360,
     STR_TILE_SMOOTHING = 2361,
@@ -1845,8 +1846,8 @@ enum {
     STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE = 2419,
     STR_PEEP_INVENTORY_VOUCHER_PARK_ENTRY_HALF_PRICE = 2420,
     STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE = 2421,
-// STR_2422    :Advertising campaign for {STRINGID}
-// STR_2423    :Advertising campaign for {STRINGID}
+    // STR_2422    :Advertising campaign for {STRINGID}
+    // STR_2423    :Advertising campaign for {STRINGID}
     STR_MARKETING_VOUCHERS_FOR_FREE_ENTRY_TO_THE_PARK = 2424,
     STR_MARKETING_VOUCHERS_FOR_FREE_RIDES_ON_A_PARTICULAR_RIDE = 2425,
     STR_MARKETING_VOUCHERS_FOR_HALF_PRICE_ENTRY_TO_THE_PARK = 2426,
@@ -1860,12 +1861,12 @@ enum {
     STR_ADVERTISING_CAMPAIGN_FOR_1 = 2434,
     STR_ADVERTISING_CAMPAIGN_FOR_2 = 2435,
     STR_MARKETING_1_WEEK = 2436,
-// STR_2437    :<removed string - do not use>
-// STR_2438    :<removed string - do not use>
-// STR_2439    :<removed string - do not use>
-// STR_2440    :<removed string - do not use>
-// STR_2441    :<removed string - do not use>
-// STR_2442    :<removed string - do not use>
+    // STR_2437    :<removed string - do not use>
+    // STR_2438    :<removed string - do not use>
+    // STR_2439    :<removed string - do not use>
+    // STR_2440    :<removed string - do not use>
+    // STR_2441    :<removed string - do not use>
+    // STR_2442    :<removed string - do not use>
     STR_MARKETING_COST_PER_WEEK = 2443,
     STR_MARKETING_TOTAL_COST = 2444,
     STR_MARKETING_START_THIS_MARKETING_CAMPAIGN = 2445,
@@ -1909,7 +1910,7 @@ enum {
     STR_FINANCES_WEEKLY_PROFIT_POSITIVE = 2483,
     STR_FINANCES_WEEKLY_PROFIT_LOSS = 2484,
     STR_CONTROLS = 2485, // Unused
-    STR_GENERAL = 2486, // Unused
+    STR_GENERAL = 2486,  // Unused
     STR_REAL_NAME = 2487,
     STR_REAL_NAME_TIP = 2488,
     STR_HOTKEY = 2489,
@@ -1950,165 +1951,165 @@ enum {
     STR_SHORTCUT_SCREENSHOT = 2524,
     STR_SHORTCUT_KEY_UNKNOWN = 2525,
 
-// STR_2525    :???
-// STR_2526    :???
-// STR_2527    :???
-// STR_2528    :???
-// STR_2529    :???
-// STR_2530    :???
-// STR_2531    :???
-// STR_2532    :???
-// STR_2533    :Backspace
-// STR_2534    :Tab
-// STR_2535    :???
-// STR_2536    :???
-// STR_2537    :Clear
-// STR_2538    :Return
-// STR_2539    :???
-// STR_2540    :???
-// STR_2541    :???
-// STR_2542    :???
-// STR_2543    :Alt/Menu
-// STR_2544    :Pause
-// STR_2545    :Caps
-// STR_2546    :???
-// STR_2547    :???
-// STR_2548    :???
-// STR_2549    :???
-// STR_2550    :???
-// STR_2551    :???
-// STR_2552    :Escape
-// STR_2553    :???
-// STR_2554    :???
-// STR_2555    :???
-// STR_2556    :???
-// STR_2557    :Spacebar
-// STR_2558    :PgUp
-// STR_2559    :PgDn
-// STR_2560    :End
-// STR_2561    :Home
-// STR_2562    :Left
-// STR_2563    :Up
-// STR_2564    :Right
-// STR_2565    :Down
-// STR_2566    :Select
-// STR_2567    :Print
-// STR_2568    :Execute
-// STR_2569    :Snapshot
-// STR_2570    :Insert
-// STR_2571    :Delete
-// STR_2572    :Help
-// STR_2573    :0
-// STR_2574    :1
-// STR_2575    :2
-// STR_2576    :3
-// STR_2577    :4
-// STR_2578    :5
-// STR_2579    :6
-// STR_2580    :7
-// STR_2581    :8
-// STR_2582    :9
-// STR_2583    :???
-// STR_2584    :???
-// STR_2585    :???
-// STR_2586    :???
-// STR_2587    :???
-// STR_2588    :???
-// STR_2589    :???
-// STR_2590    :A
-// STR_2591    :B
-// STR_2592    :C
-// STR_2593    :D
-// STR_2594    :E
-// STR_2595    :F
-// STR_2596    :G
-// STR_2597    :H
-// STR_2598    :I
-// STR_2599    :J
-// STR_2600    :K
-// STR_2601    :L
-// STR_2602    :M
-// STR_2603    :N
-// STR_2604    :O
-// STR_2605    :P
-// STR_2606    :Q
-// STR_2607    :R
-// STR_2608    :S
-// STR_2609    :T
-// STR_2610    :U
-// STR_2611    :V
-// STR_2612    :W
-// STR_2613    :X
-// STR_2614    :Y
-// STR_2615    :Z
-// STR_2616    :???
-// STR_2617    :???
-// STR_2618    :Menu
-// STR_2619    :???
-// STR_2620    :???
-// STR_2621    :NumPad 0
-// STR_2622    :NumPad 1
-// STR_2623    :NumPad 2
-// STR_2624    :NumPad 3
-// STR_2625    :NumPad 4
-// STR_2626    :NumPad 5
-// STR_2627    :NumPad 6
-// STR_2628    :NumPad 7
-// STR_2629    :NumPad 8
-// STR_2630    :NumPad 9
-// STR_2631    :NumPad *
-// STR_2632    :NumPad +
-// STR_2633    :???
-// STR_2634    :NumPad -
-// STR_2635    :NumPad .
-// STR_2636    :NumPad /
-// STR_2637    :F1
-// STR_2638    :F2
-// STR_2639    :F3
-// STR_2640    :F4
-// STR_2641    :F5
-// STR_2642    :F6
-// STR_2643    :F7
-// STR_2644    :F8
-// STR_2645    :F9
-// STR_2646    :F10
-// STR_2647    :F11
-// STR_2648    :F12
-// STR_2649    :F13
-// STR_2650    :F14
-// STR_2651    :F15
-// STR_2652    :F16
-// STR_2653    :F17
-// STR_2654    :F18
-// STR_2655    :F19
-// STR_2656    :F20
-// STR_2657    :F21
-// STR_2658    :F22
-// STR_2659    :F23
-// STR_2660    :F24
-// STR_2661    :???
-// STR_2662    :???
-// STR_2663    :???
-// STR_2664    :???
-// STR_2665    :???
-// STR_2666    :???
-// STR_2667    :???
-// STR_2668    :???
-// STR_2669    :NumLock
-// STR_2670    :Scroll
-// STR_2671    :???
-// STR_2672    :???
-// STR_2673    :???
-// STR_2674    :???
-// STR_2675    :???
-// STR_2676    :???
-// STR_2677    :???
-// STR_2678    :???
-// STR_2679    :???
+    // STR_2525    :???
+    // STR_2526    :???
+    // STR_2527    :???
+    // STR_2528    :???
+    // STR_2529    :???
+    // STR_2530    :???
+    // STR_2531    :???
+    // STR_2532    :???
+    // STR_2533    :Backspace
+    // STR_2534    :Tab
+    // STR_2535    :???
+    // STR_2536    :???
+    // STR_2537    :Clear
+    // STR_2538    :Return
+    // STR_2539    :???
+    // STR_2540    :???
+    // STR_2541    :???
+    // STR_2542    :???
+    // STR_2543    :Alt/Menu
+    // STR_2544    :Pause
+    // STR_2545    :Caps
+    // STR_2546    :???
+    // STR_2547    :???
+    // STR_2548    :???
+    // STR_2549    :???
+    // STR_2550    :???
+    // STR_2551    :???
+    // STR_2552    :Escape
+    // STR_2553    :???
+    // STR_2554    :???
+    // STR_2555    :???
+    // STR_2556    :???
+    // STR_2557    :Spacebar
+    // STR_2558    :PgUp
+    // STR_2559    :PgDn
+    // STR_2560    :End
+    // STR_2561    :Home
+    // STR_2562    :Left
+    // STR_2563    :Up
+    // STR_2564    :Right
+    // STR_2565    :Down
+    // STR_2566    :Select
+    // STR_2567    :Print
+    // STR_2568    :Execute
+    // STR_2569    :Snapshot
+    // STR_2570    :Insert
+    // STR_2571    :Delete
+    // STR_2572    :Help
+    // STR_2573    :0
+    // STR_2574    :1
+    // STR_2575    :2
+    // STR_2576    :3
+    // STR_2577    :4
+    // STR_2578    :5
+    // STR_2579    :6
+    // STR_2580    :7
+    // STR_2581    :8
+    // STR_2582    :9
+    // STR_2583    :???
+    // STR_2584    :???
+    // STR_2585    :???
+    // STR_2586    :???
+    // STR_2587    :???
+    // STR_2588    :???
+    // STR_2589    :???
+    // STR_2590    :A
+    // STR_2591    :B
+    // STR_2592    :C
+    // STR_2593    :D
+    // STR_2594    :E
+    // STR_2595    :F
+    // STR_2596    :G
+    // STR_2597    :H
+    // STR_2598    :I
+    // STR_2599    :J
+    // STR_2600    :K
+    // STR_2601    :L
+    // STR_2602    :M
+    // STR_2603    :N
+    // STR_2604    :O
+    // STR_2605    :P
+    // STR_2606    :Q
+    // STR_2607    :R
+    // STR_2608    :S
+    // STR_2609    :T
+    // STR_2610    :U
+    // STR_2611    :V
+    // STR_2612    :W
+    // STR_2613    :X
+    // STR_2614    :Y
+    // STR_2615    :Z
+    // STR_2616    :???
+    // STR_2617    :???
+    // STR_2618    :Menu
+    // STR_2619    :???
+    // STR_2620    :???
+    // STR_2621    :NumPad 0
+    // STR_2622    :NumPad 1
+    // STR_2623    :NumPad 2
+    // STR_2624    :NumPad 3
+    // STR_2625    :NumPad 4
+    // STR_2626    :NumPad 5
+    // STR_2627    :NumPad 6
+    // STR_2628    :NumPad 7
+    // STR_2629    :NumPad 8
+    // STR_2630    :NumPad 9
+    // STR_2631    :NumPad *
+    // STR_2632    :NumPad +
+    // STR_2633    :???
+    // STR_2634    :NumPad -
+    // STR_2635    :NumPad .
+    // STR_2636    :NumPad /
+    // STR_2637    :F1
+    // STR_2638    :F2
+    // STR_2639    :F3
+    // STR_2640    :F4
+    // STR_2641    :F5
+    // STR_2642    :F6
+    // STR_2643    :F7
+    // STR_2644    :F8
+    // STR_2645    :F9
+    // STR_2646    :F10
+    // STR_2647    :F11
+    // STR_2648    :F12
+    // STR_2649    :F13
+    // STR_2650    :F14
+    // STR_2651    :F15
+    // STR_2652    :F16
+    // STR_2653    :F17
+    // STR_2654    :F18
+    // STR_2655    :F19
+    // STR_2656    :F20
+    // STR_2657    :F21
+    // STR_2658    :F22
+    // STR_2659    :F23
+    // STR_2660    :F24
+    // STR_2661    :???
+    // STR_2662    :???
+    // STR_2663    :???
+    // STR_2664    :???
+    // STR_2665    :???
+    // STR_2666    :???
+    // STR_2667    :???
+    // STR_2668    :???
+    // STR_2669    :NumLock
+    // STR_2670    :Scroll
+    // STR_2671    :???
+    // STR_2672    :???
+    // STR_2673    :???
+    // STR_2674    :???
+    // STR_2675    :???
+    // STR_2676    :???
+    // STR_2677    :???
+    // STR_2678    :???
+    // STR_2679    :???
     STR_RESEARCH_COMPLETED_AL = 2680,
     STR_CHEAT_5K_MONEY_TIP = 2681,
-// STR_2682    :<removed string - do not use>
-// STR_2683    :<removed string - do not use>
+    // STR_2682    :<removed string - do not use>
+    // STR_2683    :<removed string - do not use>
     STR_CHEAT_LARGE_TRAM_GUESTS_TIP = 2684,
     STR_MAPGEN_SIMPLEX_NOISE = 2685,
     STR_MAPGEN_SIMPLEX_NOISE_LOW_ = 2686,
@@ -2122,9 +2123,9 @@ enum {
     STR_MAPGEN_ACTION_GENERATE = 2694,
     STR_MAPGEN_OPTION_RANDOM_TERRAIN = 2695,
     STR_MAPGEN_OPTION_PLACE_TREES = 2696,
-// STR_2697    :???
-// STR_2698    :???
-// STR_2699    :???
+    // STR_2697    :???
+    // STR_2698    :???
+    // STR_2699    :???
     STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL = 2700,
     STR_SAVE_EVERY_MINUTE = 2701,
     STR_SAVE_EVERY_5MINUTES = 2702,
@@ -2136,13 +2137,13 @@ enum {
     STR_FILEBROWSER_OVERWRITE_PROMPT = 2708,
     STR_FILEBROWSER_OVERWRITE_TITLE = 2709,
     STR_FILEBROWSER_FILE_NAME_PROMPT = 2710,
-// STR_2711    :;
-// STR_2712    :=
-// STR_2713    :,
-// STR_2714    :-
-// STR_2715    :.
-// STR_2716    :/
-// STR_2717    :'
+    // STR_2711    :;
+    // STR_2712    :=
+    // STR_2713    :,
+    // STR_2714    :-
+    // STR_2715    :.
+    // STR_2716    :/
+    // STR_2717    :'
     STR_FILEBROWSER_ACTION_UP = 2718,
     STR_FILEBROWSER_ACTION_NEW_FILE = 2719,
     STR_DURATION_SEC = 2720,
@@ -2169,11 +2170,11 @@ enum {
     STR_ROLLERCOASTER_TYCOON_2_DROPDOWN = 2741,
     STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND = 2742,
     STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT = 2743,
-// STR_2744    :[
-// STR_2745    :\
+    // STR_2744    :[
+    // STR_2745    :\
 // STR_2746    :]
-// STR_2747    :{ENDQUOTES}
-// STR_2748    :Bar
+    // STR_2747    :{ENDQUOTES}
+    // STR_2748    :Bar
     STR_MY_NEW_SCENARIO = 2749,
     STR_MOVE_ALL_TOP = 2750,
     STR_MOVE_ALL_BOTTOM = 2751,
@@ -2182,22 +2183,22 @@ enum {
     STR_CHEAT_WATER_PLANTS = 2754,
     STR_CHEAT_FIX_VANDALISM = 2755,
     STR_CHEAT_REMOVE_LITTER = 2756,
-    STR_CHEAT_FORCE_SUN = 2757, // <removed string - do not use>
-    STR_CHEAT_FORCE_THUNDER = 2758, // <removed string - do not use>
+    STR_CHEAT_FORCE_SUN = 2757,      // <removed string - do not use>
+    STR_CHEAT_FORCE_THUNDER = 2758,  // <removed string - do not use>
     STR_CHEAT_ZERO_CLEARANCE = 2759, // <removed string - do not use>
     STR_CHEAT_5K_MONEY = 2760,
-// STR_2761    :<removed string - do not use>
-// STR_2762    :<removed string - do not use>
-// STR_2763    :???
-// STR_2764    :<removed string - do not use>
+    // STR_2761    :<removed string - do not use>
+    // STR_2762    :<removed string - do not use>
+    // STR_2763    :???
+    // STR_2764    :<removed string - do not use>
     STR_CHEAT_LARGE_TRAM_GUESTS = 2765,
     STR_CHEAT_WIN_SCENARIO = 2766,
     STR_CHEAT_FREEZE_CLIMATE = 2767,
     STR_CHEAT_UNFREEZE_CLIMATE = 2768,
     STR_CHEAT_OPEN_PARK = 2769,
     STR_CHEAT_CLOSE_PARK = 2770,
-// STR_2771    :Slower Gamespeed
-// STR_2772    :Faster Gamespeed
+    // STR_2771    :Slower Gamespeed
+    // STR_2772    :Faster Gamespeed
     STR_OPTIONS_DISPLAY_WINDOWED = 2773,
     STR_OPTIONS_DISPLAY_FULLSCREEN = 2774,
     STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS = 2775,
@@ -2274,15 +2275,15 @@ enum {
     STR_NEWS_ITEM_MOST_CONFUSING_LAYOUT = STR_NEWS_ITEM_AWARD_MOST_UNTIDY + 15,
     STR_NEWS_ITEM_BEST_GENTLE_RIDES = STR_NEWS_ITEM_AWARD_MOST_UNTIDY + 16,
     STR_NO_RECENT_AWARDS = 2848,
-// STR_2849    :New scenario installed successfully
-// STR_2850    :New track design installed successfully
-// STR_2851    :Scenario already installed
-// STR_2852    :Track design already installed
+    // STR_2849    :New scenario installed successfully
+    // STR_2850    :New track design installed successfully
+    // STR_2851    :Scenario already installed
+    // STR_2852    :Track design already installed
     STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY = 2853,
     STR_ENTRANCE_NOT_CONNECTED = 2854,
     STR_EXIT_NOT_CONNECTED = 2855,
     STR_CANT_START_MARKETING_CAMPAIGN = 2858,
-// STR_2859    :Another instance of OpenRCT2 is already running
+    // STR_2859    :Another instance of OpenRCT2 is already running
     STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC = 2861,
     STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS = 2862,
     STR_MUSIC_ACKNOWLEDGEMENTS = 2863,
@@ -2454,7 +2455,7 @@ enum {
     STR_LIFT_HILL_CHAIN_SPEED = 3095,
     STR_LIFT_HILL_CHAIN_SPEED_VALUE = 3096,
     STR_SELECT_LIFT_HILL_CHAIN_SPEED_TIP = 3097,
-// STR_3098    :Can't change lift hill speed...
+    // STR_3098    :Can't change lift hill speed...
     STR_SELECT_COLOUR = 3099,
     STR_SELECT_SECONDARY_COLOUR = 3100,
     STR_SELECT_TERNARY_COLOUR = 3101,
@@ -2501,29 +2502,29 @@ enum {
     STR_CAPACITY = 3142,
     STR_SHOW_PEOPLE_ON_MAP_TIP = 3143,
     STR_SHOW_RIDES_STALLS_ON_MAP_TIP = 3144,
-    STR_SCROLL_LEFT_TIP = 3145, // Unused
-    STR_SCROLL_RIGHT_TIP = STR_SCROLL_LEFT_TIP + 1, // Unused
-    STR_SCROLL_LEFT_FAST_TIP = STR_SCROLL_LEFT_TIP + 2, // Unused
+    STR_SCROLL_LEFT_TIP = 3145,                          // Unused
+    STR_SCROLL_RIGHT_TIP = STR_SCROLL_LEFT_TIP + 1,      // Unused
+    STR_SCROLL_LEFT_FAST_TIP = STR_SCROLL_LEFT_TIP + 2,  // Unused
     STR_SCROLL_RIGHT_FAST_TIP = STR_SCROLL_LEFT_TIP + 3, // Unused
     STR_SCROLL_LEFT_RIGHT_TIP = STR_SCROLL_LEFT_TIP + 4, // Unused
-    STR_SCROLL_UP_TIP = STR_SCROLL_LEFT_TIP + 5, // Unused
-    STR_SCROLL_DOWN_TIP = STR_SCROLL_LEFT_TIP + 6, // Unused
-    STR_SCROLL_UP_FAST_TIP = STR_SCROLL_LEFT_TIP + 7, // Unused
-    STR_SCROLL_DOWN_FAST_TIP = STR_SCROLL_LEFT_TIP + 8, // Unused
-    STR_SCROLL_UP_DOWN_TIP = STR_SCROLL_LEFT_TIP + 9, // Unused
-// STR_3155    :
-// STR_3156    :
+    STR_SCROLL_UP_TIP = STR_SCROLL_LEFT_TIP + 5,         // Unused
+    STR_SCROLL_DOWN_TIP = STR_SCROLL_LEFT_TIP + 6,       // Unused
+    STR_SCROLL_UP_FAST_TIP = STR_SCROLL_LEFT_TIP + 7,    // Unused
+    STR_SCROLL_DOWN_FAST_TIP = STR_SCROLL_LEFT_TIP + 8,  // Unused
+    STR_SCROLL_UP_DOWN_TIP = STR_SCROLL_LEFT_TIP + 9,    // Unused
+                                                         // STR_3155    :
+                                                         // STR_3156    :
     STR_MAP = 3157,
     STR_GRAPH = 3158,
     STR_LIST = 3159,
     STR_SELECT_NUMBER_OF_CIRCUITS_TIP = 3160,
-// STR_3161    :<removed string - do not use>
+    // STR_3161    :<removed string - do not use>
     STR_ERR_REASON_NOT_ENOUGH_MEMORY = 3162,
-// STR_3163    :Installing new data:
+    // STR_3163    :Installing new data:
     STR_OBJECT_SELECTION_SELECTION_SIZE = 3164,
-// STR_PLACEHOLDER = 3165, <placeholder strings are unsafe>
-// STR_3166    :{BLACK}(ID:
-// STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
+    // STR_PLACEHOLDER = 3165, <placeholder strings are unsafe>
+    // STR_3166    :{BLACK}(ID:
+    // STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
     STR_OBJECT_SELECTION_DESCRIPTION_SCENARIO_TEXT = 3168,
     STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND = 3169,
     STR_OBJECT_SELECTION_ERR_NOT_ENOUGH_SPACE_FOR_GRAPHICS = 3170,
@@ -2677,7 +2678,7 @@ enum {
     STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN = 3318,
     STR_WINDOW_SCENARIO_GROUP = 3319,
     STR_UNABLE_TO_SAVE_SCENARIO_FILE = 3320,
-// STR_3321    :New objects installed successfully
+    // STR_3321    :New objects installed successfully
     STR_OBJECTIVE = 3322,
     STR_MISSING_OBJECT_DATA_ID = 3323,
     STR_REQUIRES_THE_FOLLOWING_ADDON_PACK = 3324,
@@ -2693,7 +2694,7 @@ enum {
     STR_SAVE_PLUGIN_DATA_TIP = 3334,
     STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES = 3335,
     STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE = 3336,
-// STR_3337    :<removed string - do not use>
+    // STR_3337    :<removed string - do not use>
     STR_CUSTOM_DESIGNED_LAYOUT = 3338,
     STR_1_DESIGN_AVAILABLE = 3339,
     STR_X_DESIGNS_AVAILABLE = 3340,
@@ -2718,8 +2719,8 @@ enum {
     STR_NO_TRACK_DESIGNS_OF_THIS_TYPE = 3359,
     STR_WARNING = 3360,
     STR_TOO_MANY_TRACK_DESIGNS_OF_THIS_TYPE = 3361,
-// STR_3362    :<removed string - do not use>
-// STR_3363    :<removed string - do not use>
+    // STR_3362    :<removed string - do not use>
+    // STR_3363    :<removed string - do not use>
     STR_OBJECT_SELECTION_ADVANCED = 3364,
     STR_OBJECT_SELECTION_ADVANCED_TIP = 3365,
     STR_MAP_RIDE = 3366,
@@ -2737,14 +2738,14 @@ enum {
     STR_INSTALL_NEW_TRACK_DESIGN_INSTALL = 3378,
     STR_INSTALL_NEW_TRACK_DESIGN_CANCEL = 3379,
     STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN = 3380,
-// STR_3381    :File is not compatible or contains invalid data
-// STR_3382    :File copy failed
+    // STR_3381    :File is not compatible or contains invalid data
+    // STR_3382    :File copy failed
     STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN = 3383,
     STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME = 3384,
-// STR_3388    :Unable to switch to selected mode
+    // STR_3388    :Unable to switch to selected mode
     STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY = 3389,
     STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED = 3390,
-// TUTORIAL
+    // TUTORIAL
     STR_CLEAR_SCENERY_TIP = 3437,
     STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE = 3438,
     STR_CLEAR_SCENERY = 3439,
@@ -2762,7 +2763,7 @@ enum {
     STR_RESEARCH_BUTTON_ON_TOOLBAR = 5121,
 
     STR_CHEAT_RENEW_RIDES = 5123,
-// STR_5124    :<not used anymore>
+    // STR_5124    :<not used anymore>
     STR_CHEAT_MAKE_DESTRUCTABLE = 5125,
     STR_OPTIONS_MUSIC_VALUE_RANDOM = 5126,
     STR_DISABLE_ELEVATION = 5127,
@@ -2913,7 +2914,7 @@ enum {
     STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP = 5272,
     STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP = 5273,
     STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP = 5274,
-    STR_OBJECT_SEARCH = 5275, // Unused (commented out)
+    STR_OBJECT_SEARCH = 5275,      // Unused (commented out)
     STR_OBJECT_SEARCH_DESC = 5276, // Unused (commented out)
     STR_OBJECT_SEARCH_CLEAR = 5277,
     STR_CHEAT_SANDBOX_MODE = 5278,
@@ -3033,13 +3034,13 @@ enum {
     STR_TITLE_EDITOR_ACTION_RENAME_TIP = 5394,
     STR_TITLE_EDITOR_ACTION_LOAD_TIP = 5395,
     STR_TITLE_EDITOR_ACTION_RELOAD_TIP = 5396,
-// STR_5397    :Can only be used on the title screen
+    // STR_5397    :Can only be used on the title screen
     STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING = 5398,
     STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING = 5399,
     STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE = 5400,
-// STR_5401    :Create a new title sequence to make changes to
+    // STR_5401    :Create a new title sequence to make changes to
     STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE = 5402,
-// STR_5403    :There may be no Load or Wait command or a save may be invalid
+    // STR_5403    :There may be no Load or Wait command or a save may be invalid
     STR_ERROR_EXISTING_NAME = 5404,
     STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE = 5405,
     STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE = 5406,
@@ -3130,7 +3131,7 @@ enum {
     STR_DEBUG_DROPDOWN_INVENTIONS_LIST = 5491,
     STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS = 5492,
     STR_SEND_MESSAGE = 5493,
-// STR_5494    :<not used anymore>
+    // STR_5494    :<not used anymore>
     STR_PLAYER_LIST = 5495, // Unused
     STR_PLAYER = 5496,
     STR_PING = 5497,
@@ -3244,7 +3245,8 @@ enum {
     STR_NOTIFICATION_GUEST_DIED = 5606,
     STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT = 5608,
     STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT = 5609,
-// STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+    // STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will
+    // be used/gained. Use with caution.
     STR_REMOVE_SELECTED_ELEMENT_TIP = 5610,
     STR_TILE_INSPECTOR_FLAG_GHOST_SHORT = 5611,
     STR_TILE_INSPECTOR_FLAG_GHOST = 5612,
@@ -3302,7 +3304,7 @@ enum {
     STR_ACTION_CHEAT = 5664,
     STR_ACTION_TOGGLE_SCENERY_CLUSTER = 5665,
     STR_ACTION_PASSWORDLESS_LOGIN = 5666,
-// Empty block
+    // Empty block
     STR_LAST_ACTION_RAN = 5701,
     STR_LOCATE_PLAYER_TIP = 5702,
     STR_CANT_KICK_THE_HOST = 5703,
@@ -3315,7 +3317,7 @@ enum {
     STR_GROUP_NAME = 5710,
     STR_ENTER_NEW_NAME_FOR_THIS_GROUP = 5711,
     STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF = 5712,
-// STR_5713    :Kick Player (unused)
+    // STR_5713    :Kick Player (unused)
     STR_SHORTCUT_SHOW_OPTIONS = 5714,
     STR_NEW_GAME = 5715,
     STR_NOT_ALLOWED_IN_MULTIPLAYER = 5716, // Unused
@@ -3330,7 +3332,7 @@ enum {
     STR_FORCE_WEATHER = 5725,
     STR_FORCE_WEATHER_TOOLTIP = 5726,
     STR_SCALING_QUALITY = 5727,
-    STR_REQUIRES_HW_DISPLAY = 5728, // unused
+    STR_REQUIRES_HW_DISPLAY = 5728,     // unused
     STR_REQUIRES_HW_DISPLAY_TIP = 5729, // unused
     STR_SCALING_QUALITY_LINEAR = 5731,
     STR_OPTIONS_RENDERING_TIP = 5734,
@@ -3365,7 +3367,7 @@ enum {
     STR_ALL_FILES = 5763,
     STR_INVALID_RIDE_TYPE = 5764,
     STR_CANT_EDIT_INVALID_RIDE_TYPE = 5765,
-// 5766 is unused
+    // 5766 is unused
     STR_RIDE_LIST_INCOME = 5767,
     STR_RIDE_LIST_TOTAL_CUSTOMERS = 5768,
     STR_RIDE_LIST_TOTAL_PROFIT = 5769,

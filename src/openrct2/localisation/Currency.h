@@ -13,30 +13,32 @@
 #include "../common.h"
 
 // List of currencies
-enum CURRENCY_TYPE {
-    CURRENCY_POUNDS,            // British Pound
-    CURRENCY_DOLLARS,           // US Dollar
-    CURRENCY_FRANC,             // French Franc
-    CURRENCY_DEUTSCHMARK,       // Deutsche Mark
-    CURRENCY_YEN,               // Japanese Yen
-    CURRENCY_PESETA,            // Spanish Peseta
-    CURRENCY_LIRA,              // Italian Lira
-    CURRENCY_GUILDERS,          // Dutch Gilder
-    CURRENCY_KRONA,             // Swedish Krona
-    CURRENCY_EUROS,             // Euro
-    CURRENCY_WON,               // South Korean Won
-    CURRENCY_ROUBLE,            // Russian Rouble
-    CURRENCY_CZECH_KORUNA,      // Czech koruna
-    CURRENCY_HKD,               // Hong Kong Dollar
-    CURRENCY_TWD,               // New Taiwan Dollar
-    CURRENCY_YUAN,              // Chinese Yuan
+enum CURRENCY_TYPE
+{
+    CURRENCY_POUNDS,       // British Pound
+    CURRENCY_DOLLARS,      // US Dollar
+    CURRENCY_FRANC,        // French Franc
+    CURRENCY_DEUTSCHMARK,  // Deutsche Mark
+    CURRENCY_YEN,          // Japanese Yen
+    CURRENCY_PESETA,       // Spanish Peseta
+    CURRENCY_LIRA,         // Italian Lira
+    CURRENCY_GUILDERS,     // Dutch Gilder
+    CURRENCY_KRONA,        // Swedish Krona
+    CURRENCY_EUROS,        // Euro
+    CURRENCY_WON,          // South Korean Won
+    CURRENCY_ROUBLE,       // Russian Rouble
+    CURRENCY_CZECH_KORUNA, // Czech koruna
+    CURRENCY_HKD,          // Hong Kong Dollar
+    CURRENCY_TWD,          // New Taiwan Dollar
+    CURRENCY_YUAN,         // Chinese Yuan
 
-    CURRENCY_CUSTOM,            // Custom currency
+    CURRENCY_CUSTOM, // Custom currency
 
-    CURRENCY_END                // Last item
+    CURRENCY_END // Last item
 };
 
-enum CURRENCY_AFFIX {
+enum CURRENCY_AFFIX
+{
     CURRENCY_PREFIX,
     CURRENCY_SUFFIX
 };
@@ -45,7 +47,8 @@ enum CURRENCY_AFFIX {
 #define CURRENCY_RATE_MAX_NUM_DIGITS 9
 
 // Currency format specification - inspired by OpenTTD
-struct currency_descriptor {
+struct currency_descriptor
+{
     char isoCode[4];
     // Rate is relative to 0.10 GBP
     int32_t rate;

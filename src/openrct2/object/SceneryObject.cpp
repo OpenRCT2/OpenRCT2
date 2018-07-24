@@ -7,10 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "ObjectJsonHelpers.h"
 #include "SceneryObject.h"
 
-void SceneryObject::SetPrimarySceneryGroup(const std::string &s)
+#include "ObjectJsonHelpers.h"
+
+void SceneryObject::SetPrimarySceneryGroup(const std::string& s)
 {
     if (!s.empty())
     {

@@ -9,21 +9,31 @@
 
 #pragma once
 
-#include <string>
 #include "Object.h"
+
+#include <string>
 
 class SceneryObject : public Object
 {
 private:
-    rct_object_entry    _primarySceneryGroupEntry = { };
+    rct_object_entry _primarySceneryGroupEntry = {};
 
 public:
-    explicit SceneryObject(const rct_object_entry &entry) : Object(entry) { }
+    explicit SceneryObject(const rct_object_entry& entry)
+        : Object(entry)
+    {
+    }
     virtual ~SceneryObject() = default;
 
-    const rct_object_entry * GetPrimarySceneryGroup() { return &_primarySceneryGroupEntry; }
+    const rct_object_entry* GetPrimarySceneryGroup()
+    {
+        return &_primarySceneryGroupEntry;
+    }
 
 protected:
-    void SetPrimarySceneryGroup(const rct_object_entry * entry) { _primarySceneryGroupEntry = *entry; }
-    void SetPrimarySceneryGroup(const std::string &s);
+    void SetPrimarySceneryGroup(const rct_object_entry* entry)
+    {
+        _primarySceneryGroupEntry = *entry;
+    }
+    void SetPrimarySceneryGroup(const std::string& s);
 };

@@ -7,16 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <openrct2/common.h>
+#include "DrawingEngineFactory.hpp"
+
 #include <SDL2/SDL.h>
+#include <algorithm>
+#include <openrct2/Game.h>
+#include <openrct2/common.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
-#include <openrct2/Game.h>
 #include <openrct2/ui/UiContext.h>
-#include "DrawingEngineFactory.hpp"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -26,17 +27,17 @@ class SoftwareDrawingEngine final : public X8DrawingEngine
 {
 private:
     std::shared_ptr<IUiContext> const _uiContext;
-    SDL_Window *        _window         = nullptr;
-    SDL_Surface *       _surface        = nullptr;
-    SDL_Surface *       _RGBASurface    = nullptr;
-    SDL_Palette *       _palette        = nullptr;
+    SDL_Window* _window = nullptr;
+    SDL_Surface* _surface = nullptr;
+    SDL_Surface* _RGBASurface = nullptr;
+    SDL_Palette* _palette = nullptr;
 
 public:
     explicit SoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
-        : X8DrawingEngine(uiContext),
-          _uiContext(uiContext)
+        : X8DrawingEngine(uiContext)
+        , _uiContext(uiContext)
     {
-        _window = (SDL_Window *)_uiContext->GetWindow();
+        _window = (SDL_Window*)_uiContext->GetWindow();
     }
 
     ~SoftwareDrawingEngine() override
@@ -61,9 +62,7 @@ public:
         SDL_SetSurfaceBlendMode(_RGBASurface, SDL_BLENDMODE_NONE);
         _palette = SDL_AllocPalette(256);
 
-        if (_surface == nullptr ||
-            _palette == nullptr ||
-            _RGBASurface == nullptr)
+        if (_surface == nullptr || _palette == nullptr || _RGBASurface == nullptr)
         {
             log_fatal("%p || %p || %p == nullptr %s", _surface, _palette, _RGBASurface, SDL_GetError());
             exit(-1);
@@ -78,13 +77,14 @@ public:
         ConfigureBits(width, height, _surface->pitch);
     }
 
-    void SetPalette(const rct_palette_entry * palette) override
+    void SetPalette(const rct_palette_entry* palette) override
     {
-        SDL_Surface * windowSurface = SDL_GetWindowSurface(_window);
+        SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
         if (windowSurface != nullptr && _palette != nullptr)
         {
             SDL_Colour colours[256];
-            for (int32_t i = 0; i < 256; i++) {
+            for (int32_t i = 0; i < 256; i++)
+            {
                 colours[i].r = palette[i].red;
                 colours[i].g = palette[i].green;
                 colours[i].b = palette[i].blue;
@@ -113,7 +113,7 @@ private:
         }
 
         // Copy pixels from the virtual screen buffer to the surface
-        std::copy_n(_bits, _surface->pitch * _surface->h, (uint8_t *)_surface->pixels);
+        std::copy_n(_bits, _surface->pitch * _surface->h, (uint8_t*)_surface->pixels);
 
         // Unlock the surface
         if (SDL_MUSTLOCK(_surface))
@@ -124,7 +124,7 @@ private:
         // Copy the surface to the window
         if (gConfigGeneral.window_scale == 1 || gConfigGeneral.window_scale <= 0)
         {
-            SDL_Surface * windowSurface = SDL_GetWindowSurface(_window);
+            SDL_Surface* windowSurface = SDL_GetWindowSurface(_window);
             if (SDL_BlitSurface(_surface, nullptr, windowSurface, nullptr))
             {
                 log_fatal("SDL_BlitSurface %s", SDL_GetError());

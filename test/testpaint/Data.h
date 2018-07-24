@@ -13,7 +13,6 @@
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
 
-
 extern const utf8string RideNames[RIDE_TYPE_COUNT];
 extern const utf8string TrackNames[256];
 extern const utf8string FlatTrackNames[256];

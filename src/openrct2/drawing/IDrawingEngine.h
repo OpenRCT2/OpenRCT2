@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include <memory>
 #include "../common.h"
+
+#include <memory>
 
 enum DRAWING_ENGINE
 {
@@ -46,24 +47,26 @@ namespace OpenRCT2::Drawing
 
     interface IDrawingEngine
     {
-        virtual ~IDrawingEngine() { }
+        virtual ~IDrawingEngine()
+        {
+        }
 
-        virtual void Initialise()                                   abstract;
-        virtual void Resize(uint32_t width, uint32_t height)            abstract;
-        virtual void SetPalette(const rct_palette_entry * colours)  abstract;
+        virtual void Initialise() abstract;
+        virtual void Resize(uint32_t width, uint32_t height) abstract;
+        virtual void SetPalette(const rct_palette_entry* colours) abstract;
 
         virtual void SetVSync(bool vsync) abstract;
 
-        virtual void    Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
-        virtual void    BeginDraw() abstract;
-        virtual void    EndDraw() abstract;
-        virtual void    PaintWindows() abstract;
-        virtual void    PaintRain() abstract;
-        virtual void    CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
-        virtual int32_t  Screenshot() abstract;
+        virtual void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
+        virtual void BeginDraw() abstract;
+        virtual void EndDraw() abstract;
+        virtual void PaintWindows() abstract;
+        virtual void PaintRain() abstract;
+        virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
+        virtual int32_t Screenshot() abstract;
 
-        virtual IDrawingContext *   GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
-        virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
+        virtual IDrawingContext* GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
+        virtual rct_drawpixelinfo* GetDrawingPixelInfo() abstract;
 
         virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
 
@@ -72,18 +75,18 @@ namespace OpenRCT2::Drawing
 
     interface IDrawingEngineFactory
     {
-        virtual ~IDrawingEngineFactory() { }
-        virtual std::unique_ptr<IDrawingEngine> Create(DRAWING_ENGINE_TYPE type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
+        virtual ~IDrawingEngineFactory()
+        {
+        }
+        virtual std::unique_ptr<IDrawingEngine> Create(
+            DRAWING_ENGINE_TYPE type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
     };
 
     interface IRainDrawer
     {
-        virtual ~IRainDrawer() { }
-        virtual void Draw(int32_t x,
-            int32_t y,
-            int32_t width,
-            int32_t height,
-            int32_t xStart,
-            int32_t yStart) abstract;
+        virtual ~IRainDrawer()
+        {
+        }
+        virtual void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) abstract;
     };
 } // namespace OpenRCT2::Drawing

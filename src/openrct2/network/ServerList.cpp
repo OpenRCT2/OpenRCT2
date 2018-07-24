@@ -7,14 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ServerList.h"
+
+#include "../Context.h"
+#include "../PlatformEnvironment.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../Context.h"
-#include "../PlatformEnvironment.h"
 #include "../platform/platform.h"
-#include "ServerList.h"
 
 using namespace OpenRCT2;
 
@@ -42,7 +43,7 @@ std::vector<server_entry> server_list_read()
             entries.push_back(std::move(serverInfo));
         }
     }
-    catch (const std::exception &e)
+    catch (const std::exception& e)
     {
         log_error("Unable to read server list: %s", e.what());
         entries = std::vector<server_entry>();
@@ -50,7 +51,7 @@ std::vector<server_entry> server_list_read()
     return entries;
 }
 
-bool server_list_write(const std::vector<server_entry> &entries)
+bool server_list_write(const std::vector<server_entry>& entries)
 {
     log_verbose("server_list_write(%d, 0x%p)", entries.size(), entries.data());
 
@@ -62,7 +63,7 @@ bool server_list_write(const std::vector<server_entry> &entries)
     {
         auto fs = FileStream(path, FILE_MODE_WRITE);
         fs.WriteValue<uint32_t>((uint32_t)entries.size());
-        for (const auto &entry : entries)
+        for (const auto& entry : entries)
         {
             fs.WriteString(entry.address);
             fs.WriteString(entry.name);
@@ -70,7 +71,7 @@ bool server_list_write(const std::vector<server_entry> &entries)
         }
         return true;
     }
-    catch (const std::exception &e)
+    catch (const std::exception& e)
     {
         log_error("Unable to write server list: %s", e.what());
         return false;

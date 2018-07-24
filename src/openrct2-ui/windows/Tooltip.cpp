@@ -7,13 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/Context.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/Input.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/Input.h>
+#include <openrct2/core/Math.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Localisation.h>
 
 // clang-format off
 enum {
@@ -75,7 +75,7 @@ void window_tooltip_reset(int32_t x, int32_t y)
 
 void window_tooltip_show(rct_string_id id, int32_t x, int32_t y)
 {
-    rct_window *w;
+    rct_window* w;
     int32_t width, height;
 
     w = window_find_by_class(WC_ERROR);
@@ -120,15 +120,7 @@ void window_tooltip_show(rct_string_id id, int32_t x, int32_t y)
         y -= height + 40;
     y = Math::Clamp(22, y, max_y);
 
-    w = window_create(
-        x,
-        y,
-        width,
-        height,
-        &window_tooltip_events,
-        WC_TOOLTIP,
-        WF_TRANSPARENT | WF_STICK_TO_FRONT
-        );
+    w = window_create(x, y, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     w->widgets = window_tooltip_widgets;
 
     reset_tooltip_not_shown();
@@ -138,9 +130,9 @@ void window_tooltip_show(rct_string_id id, int32_t x, int32_t y)
  *
  *  rct2: 0x006EA10D
  */
-void window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    rct_widget *widget;
+    rct_widget* widget;
 
     if (widgetWindow == nullptr || widgetIndex == -1)
         return;
@@ -175,7 +167,7 @@ void window_tooltip_close()
  *
  *  rct2: 0x006EA580
  */
-static void window_tooltip_update(rct_window *w)
+static void window_tooltip_update(rct_window* w)
 {
     reset_tooltip_not_shown();
 }
@@ -184,7 +176,7 @@ static void window_tooltip_update(rct_window *w)
  *
  *  rct2: 0x006EA41D
  */
-static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t left = w->x;
     int32_t top = w->y;
@@ -196,15 +188,15 @@ static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, PALETTE_GLASS_LIGHT_ORANGE);
 
     // Sides
-    gfx_filter_rect(dpi, left  + 0, top    + 2, left  + 0, bottom - 2, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, right + 0, top    + 2, right + 0, bottom - 2, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, left  + 2, bottom + 0, right - 2, bottom + 0, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, left  + 2, top    + 0, right - 2, top    + 0, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, left + 0, top + 2, left + 0, bottom - 2, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, right + 0, top + 2, right + 0, bottom - 2, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, left + 2, bottom + 0, right - 2, bottom + 0, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, left + 2, top + 0, right - 2, top + 0, PALETTE_DARKEN_3);
 
     // Corners
-    gfx_filter_pixel(dpi, left  + 1, top    + 1, PALETTE_DARKEN_3);
-    gfx_filter_pixel(dpi, right - 1, top    + 1, PALETTE_DARKEN_3);
-    gfx_filter_pixel(dpi, left  + 1, bottom - 1, PALETTE_DARKEN_3);
+    gfx_filter_pixel(dpi, left + 1, top + 1, PALETTE_DARKEN_3);
+    gfx_filter_pixel(dpi, right - 1, top + 1, PALETTE_DARKEN_3);
+    gfx_filter_pixel(dpi, left + 1, bottom - 1, PALETTE_DARKEN_3);
     gfx_filter_pixel(dpi, right - 1, bottom - 1, PALETTE_DARKEN_3);
 
     // Text

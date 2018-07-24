@@ -9,20 +9,21 @@
 
 #pragma once
 
+#include "FunctionCall.hpp"
+#include "SegmentSupportHeightCall.hpp"
+#include "SideTunnelCall.hpp"
+
 #include <string>
 #include <vector>
 
-#include "FunctionCall.hpp"
-#include "SideTunnelCall.hpp"
-#include "SegmentSupportHeightCall.hpp"
-
-namespace Printer {
+namespace Printer
+{
     std::string PrintFunctionCall(function_call call, uint16_t baseHeight);
-    std::string PrintFunctionCalls(std::vector <function_call> calls, uint16_t baseHeight);
+    std::string PrintFunctionCalls(std::vector<function_call> calls, uint16_t baseHeight);
 
     std::string PrintSegmentSupportHeightCalls(std::vector<SegmentSupportCall> calls);
 
     std::string PrintSideTunnelCalls(TunnelCall tunnelCalls[4][4]);
 
     std::string PrintHeightOffset(uint16_t height, uint16_t baseHeight);
-}
+} // namespace Printer

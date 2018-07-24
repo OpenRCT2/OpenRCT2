@@ -7,12 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <cstdarg>
-
 #include "String.hpp"
 
-namespace String {
-    std::string Format(const char * format, ...)
+#include <cstdarg>
+
+namespace String
+{
+    std::string Format(const char* format, ...)
     {
         va_list args;
         char buffer[512];
@@ -23,4 +24,4 @@ namespace String {
 
         return std::string(buffer);
     }
-};
+}; // namespace String

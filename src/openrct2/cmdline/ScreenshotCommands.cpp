@@ -38,12 +38,13 @@ const CommandLineCommand CommandLine::ScreenshotCommands[]
 };
 // clang-format on
 
-static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator)
+static exitcode_t HandleScreenshot(CommandLineArgEnumerator* argEnumerator)
 {
-    const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex();
+    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
     int32_t result = cmdline_for_screenshot(argv, argc, &options);
-    if (result < 0) {
+    if (result < 0)
+    {
         return EXITCODE_FAIL;
     }
     return EXITCODE_OK;

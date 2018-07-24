@@ -9,15 +9,21 @@
 
 #include "VerticalTunnelCall.hpp"
 
-uint16_t VerticalTunnelCall::GetTunnelHeight(uint16_t baseHeight, uint8_t *calls) {
-    if (calls[0] == 0 && calls[1] == 0 && calls[2] == 0) {
+uint16_t VerticalTunnelCall::GetTunnelHeight(uint16_t baseHeight, uint8_t* calls)
+{
+    if (calls[0] == 0 && calls[1] == 0 && calls[2] == 0)
+    {
         return 0;
     }
 
-    for (int16_t offset = 0; offset <= 256; offset += 8) {
-        if (calls[0] != (baseHeight - 8 + offset) / 16) continue;
-        if (calls[1] != (baseHeight + 0 + offset) / 16) continue;
-        if (calls[2] != (baseHeight + 8 + offset) / 16) continue;
+    for (int16_t offset = 0; offset <= 256; offset += 8)
+    {
+        if (calls[0] != (baseHeight - 8 + offset) / 16)
+            continue;
+        if (calls[1] != (baseHeight + 0 + offset) / 16)
+            continue;
+        if (calls[2] != (baseHeight + 8 + offset) / 16)
+            continue;
 
         return baseHeight + offset;
     }
@@ -26,9 +32,12 @@ uint16_t VerticalTunnelCall::GetTunnelHeight(uint16_t baseHeight, uint8_t *calls
     return 0;
 }
 
-bool VerticalTunnelCall::HeightIsConsistent(uint16_t *heights) {
-    for (int i = 1; i < 4; ++i) {
-        if (heights[i] != heights[0]) return false;
+bool VerticalTunnelCall::HeightIsConsistent(uint16_t* heights)
+{
+    for (int i = 1; i < 4; ++i)
+    {
+        if (heights[i] != heights[0])
+            return false;
     }
 
     return true;

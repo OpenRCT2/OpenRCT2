@@ -28,7 +28,9 @@ private:
     std::string _name;
 
 public:
-    ParkSetNameAction() {}
+    ParkSetNameAction()
+    {
+    }
     ParkSetNameAction(const std::string& name)
         : _name(name)
     {
@@ -84,8 +86,8 @@ public:
         gParkName = newNameId;
 
         // Log park rename command if we are in multiplayer and logging is enabled
-        if ((network_get_mode() == NETWORK_MODE_CLIENT ||
-             network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions)
+        if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER)
+            && gConfigNetwork.log_server_actions)
         {
             LogAction(oldName);
         }
@@ -102,19 +104,15 @@ private:
         return buffer;
     }
 
-    void LogAction(const std::string &oldName) const
+    void LogAction(const std::string& oldName) const
     {
         // Get player name
         auto playerIndex = network_get_player_index(game_command_playerid);
         auto playerName = network_get_player_name(playerIndex);
 
         char logMessage[256];
-        const char * args[3] = {
-            playerName,
-            oldName.c_str(),
-            _name.c_str()
-        };
-        format_string(logMessage, sizeof(logMessage), STR_LOG_PARK_NAME, (void *)args);
+        const char* args[3] = { playerName, oldName.c_str(), _name.c_str() };
+        format_string(logMessage, sizeof(logMessage), STR_LOG_PARK_NAME, (void*)args);
         network_append_server_log(logMessage);
     }
 };

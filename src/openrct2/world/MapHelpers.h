@@ -12,7 +12,8 @@
 
 #include "../common.h"
 
-enum {
+enum
+{
     SLOPE_S_THRESHOLD_FLAGS = (1 << 0),
     SLOPE_W_THRESHOLD_FLAGS = (1 << 1),
     SLOPE_N_THRESHOLD_FLAGS = (1 << 2),

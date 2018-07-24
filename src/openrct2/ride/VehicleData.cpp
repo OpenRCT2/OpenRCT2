@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../core/Util.hpp"
 #include "VehicleData.h"
+
+#include "../core/Util.hpp"
 
 // clang-format off
 /** rct2: 0x0099F100 */

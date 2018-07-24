@@ -7,8 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <memory>
-#include <vector>
+#include "TitleSequence.h"
+
 #include "../common.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
@@ -26,32 +26,33 @@
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "../util/Util.h"
-#include "TitleSequence.h"
 
+#include <memory>
+#include <vector>
 
-static std::vector<utf8 *> GetSaves(const utf8 * path);
-static std::vector<utf8 *> GetSaves(IZipArchive * zip);
-static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves);
-static void LegacyScriptGetLine(IStream * stream, char * parts);
-static std::vector<uint8_t> ReadScriptFile(const utf8 * path);
-static std::string LegacyScriptWrite(TitleSequence * seq);
+static std::vector<utf8*> GetSaves(const utf8* path);
+static std::vector<utf8*> GetSaves(IZipArchive* zip);
+static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves);
+static void LegacyScriptGetLine(IStream* stream, char* parts);
+static std::vector<uint8_t> ReadScriptFile(const utf8* path);
+static std::string LegacyScriptWrite(TitleSequence* seq);
 
-TitleSequence * CreateTitleSequence()
+TitleSequence* CreateTitleSequence()
 {
-    TitleSequence * seq = Memory::Allocate<TitleSequence>();
+    TitleSequence* seq = Memory::Allocate<TitleSequence>();
     *seq = {};
     return seq;
 }
 
-TitleSequence * LoadTitleSequence(const utf8 * path)
+TitleSequence* LoadTitleSequence(const utf8* path)
 {
     std::vector<uint8_t> script;
-    std::vector<utf8 *> saves;
+    std::vector<utf8*> saves;
     bool isZip;
 
     log_verbose("Loading title sequence: %s", path);
 
-    const utf8 * ext = Path::GetExtension(path);
+    const utf8* ext = Path::GetExtension(path);
     if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
     {
         auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(path, ZIP_ACCESS::READ));
@@ -87,9 +88,9 @@ TitleSequence * LoadTitleSequence(const utf8 * path)
         isZip = false;
     }
 
-    auto commands = LegacyScriptRead((utf8 *)script.data(), script.size(), saves);
+    auto commands = LegacyScriptRead((utf8*)script.data(), script.size(), saves);
 
-    TitleSequence * seq = CreateTitleSequence();
+    TitleSequence* seq = CreateTitleSequence();
     seq->Name = Path::GetFileNameWithoutExtension(path);
     seq->Path = String::Duplicate(path);
     seq->NumSaves = saves.size();
@@ -100,7 +101,7 @@ TitleSequence * LoadTitleSequence(const utf8 * path)
     return seq;
 }
 
-void FreeTitleSequence(TitleSequence * seq)
+void FreeTitleSequence(TitleSequence* seq)
 {
     if (seq != nullptr)
     {
@@ -116,12 +117,12 @@ void FreeTitleSequence(TitleSequence * seq)
     }
 }
 
-TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t index)
+TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence* seq, size_t index)
 {
-    TitleSequenceParkHandle * handle = nullptr;
+    TitleSequenceParkHandle* handle = nullptr;
     if (index <= seq->NumSaves)
     {
-        const utf8 * filename = seq->Saves[index];
+        const utf8* filename = seq->Saves[index];
         if (seq->IsZip)
         {
             auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(seq->Path, ZIP_ACCESS::READ));
@@ -135,7 +136,9 @@ TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t
                 handle = Memory::Allocate<TitleSequenceParkHandle>();
                 handle->Stream = ms;
                 handle->HintPath = String::Duplicate(filename);
-            } else {
+            }
+            else
+            {
                 Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename, seq->Path);
             }
         }
@@ -166,17 +169,17 @@ TitleSequenceParkHandle * TitleSequenceGetParkHandle(TitleSequence * seq, size_t
     return handle;
 }
 
-void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle)
+void TitleSequenceCloseParkHandle(TitleSequenceParkHandle* handle)
 {
     if (handle != nullptr)
     {
         Memory::Free(handle->HintPath);
-        delete ((IStream *)handle->Stream);
+        delete ((IStream*)handle->Stream);
         Memory::Free(handle);
     }
 }
 
-bool TitleSequenceSave(TitleSequence * seq)
+bool TitleSequenceSave(TitleSequence* seq)
 {
     try
     {
@@ -194,13 +197,13 @@ bool TitleSequenceSave(TitleSequence * seq)
         }
         return true;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         return false;
     }
 }
 
-bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name)
+bool TitleSequenceAddPark(TitleSequence* seq, const utf8* path, const utf8* name)
 {
     // Get new save index
     size_t index = SIZE_MAX;
@@ -234,7 +237,7 @@ bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * n
             }
             zip->SetFileData(name, std::move(fdata));
         }
-        catch (const std::exception &ex)
+        catch (const std::exception& ex)
         {
             Console::Error::WriteLine(ex.what());
         }
@@ -254,11 +257,11 @@ bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * n
     return true;
 }
 
-bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name)
+bool TitleSequenceRenamePark(TitleSequence* seq, size_t index, const utf8* name)
 {
     Guard::Assert(index < seq->NumSaves, GUARD_LINE);
 
-    utf8 * oldRelativePath = seq->Saves[index];
+    utf8* oldRelativePath = seq->Saves[index];
     if (seq->IsZip)
     {
         auto zip = Zip::TryOpen(seq->Path, ZIP_ACCESS::WRITE);
@@ -289,12 +292,12 @@ bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * nam
     return true;
 }
 
-bool TitleSequenceRemovePark(TitleSequence * seq, size_t index)
+bool TitleSequenceRemovePark(TitleSequence* seq, size_t index)
 {
     Guard::Assert(index < seq->NumSaves, GUARD_LINE);
 
     // Delete park file
-    utf8 * relativePath = seq->Saves[index];
+    utf8* relativePath = seq->Saves[index];
     if (seq->IsZip)
     {
         auto zip = Zip::TryOpen(seq->Path, ZIP_ACCESS::WRITE);
@@ -328,7 +331,7 @@ bool TitleSequenceRemovePark(TitleSequence * seq, size_t index)
     // Update load commands
     for (size_t i = 0; i < seq->NumCommands; i++)
     {
-        TitleCommand * command = &seq->Commands[i];
+        TitleCommand* command = &seq->Commands[i];
         if (command->Type == TITLE_SCRIPT_LOAD)
         {
             if (command->SaveIndex == index)
@@ -347,33 +350,32 @@ bool TitleSequenceRemovePark(TitleSequence * seq, size_t index)
     return true;
 }
 
-static std::vector<utf8 *> GetSaves(const utf8 * directory)
+static std::vector<utf8*> GetSaves(const utf8* directory)
 {
-    std::vector<utf8 *> saves;
+    std::vector<utf8*> saves;
 
     utf8 pattern[MAX_PATH];
     String::Set(pattern, sizeof(pattern), directory);
     Path::Append(pattern, sizeof(pattern), "*.sc6;*.sv6");
 
-    IFileScanner * scanner = Path::ScanDirectory(pattern, true);
+    IFileScanner* scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {
-        const utf8 * path = scanner->GetPathRelative();
+        const utf8* path = scanner->GetPathRelative();
         saves.push_back(String::Duplicate(path));
     }
     return saves;
 }
 
-static std::vector<utf8 *> GetSaves(IZipArchive * zip)
+static std::vector<utf8*> GetSaves(IZipArchive* zip)
 {
-    std::vector<utf8 *> saves;
+    std::vector<utf8*> saves;
     size_t numFiles = zip->GetNumFiles();
     for (size_t i = 0; i < numFiles; i++)
     {
         auto name = zip->GetFileName(i);
         auto ext = Path::GetExtension(name);
-        if (String::Equals(ext, ".sv6", true) ||
-            String::Equals(ext, ".sc6", true))
+        if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true))
         {
             saves.push_back(String::Duplicate(name));
         }
@@ -381,7 +383,7 @@ static std::vector<utf8 *> GetSaves(IZipArchive * zip)
     return saves;
 }
 
-static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLength, std::vector<utf8 *> saves)
+static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves)
 {
     std::vector<TitleCommand> commands;
     auto fs = MemoryStream(script, scriptLength);
@@ -464,10 +466,10 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
             {
                 command.Type = TITLE_SCRIPT_LOADSC;
                 // Confirm the scenario exists
-                //source_desc desc;
-                //if (ScenarioSources::TryGetByName(part1, &desc))
+                // source_desc desc;
+                // if (ScenarioSources::TryGetByName(part1, &desc))
                 //{
-                    safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
+                safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
                 //}
             }
         }
@@ -475,12 +477,11 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
         {
             commands.push_back(command);
         }
-    }
-    while (fs.GetPosition() < scriptLength);
+    } while (fs.GetPosition() < scriptLength);
     return commands;
 }
 
-static void LegacyScriptGetLine(IStream * stream, char * parts)
+static void LegacyScriptGetLine(IStream* stream, char* parts)
 {
     for (int32_t i = 0; i < 3; i++)
     {
@@ -513,8 +514,9 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
         {
             if (!whitespace)
             {
-                if (part == 0 && ((cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0) ||
-                                  (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0)))
+                if (part == 0
+                    && ((cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
+                        || (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0)))
                 {
                     load = true;
                 }
@@ -545,7 +547,7 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
     }
 }
 
-static std::vector<uint8_t> ReadScriptFile(const utf8 * path)
+static std::vector<uint8_t> ReadScriptFile(const utf8* path)
 {
     std::vector<uint8_t> result;
     try
@@ -555,7 +557,7 @@ static std::vector<uint8_t> ReadScriptFile(const utf8 * path)
         result.resize(size);
         fs.Read(result.data(), size);
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         result.clear();
         result.shrink_to_fit();
@@ -563,7 +565,7 @@ static std::vector<uint8_t> ReadScriptFile(const utf8 * path)
     return result;
 }
 
-static std::string LegacyScriptWrite(TitleSequence * seq)
+static std::string LegacyScriptWrite(TitleSequence* seq)
 {
     utf8 buffer[128];
     auto sb = StringBuilder(128);
@@ -573,67 +575,68 @@ static std::string LegacyScriptWrite(TitleSequence * seq)
     sb.Append("\n");
     for (size_t i = 0; i < seq->NumCommands; i++)
     {
-        const TitleCommand * command = &seq->Commands[i];
-        switch (command->Type) {
-        case TITLE_SCRIPT_LOADMM:
-            sb.Append("LOADMM");
-            break;
-        case TITLE_SCRIPT_LOADRCT1:
-            String::Format(buffer, sizeof(buffer), "LOADRCT1 %u", command->SaveIndex);
-            sb.Append(buffer);
-            break;
-        case TITLE_SCRIPT_LOAD:
-            if (command->SaveIndex == 0xFF)
-            {
-                sb.Append("LOAD <No save file>");
-            }
-            else
-            {
-                sb.Append("LOAD ");
-                sb.Append(seq->Saves[command->SaveIndex]);
-            }
-            break;
-        case TITLE_SCRIPT_LOADSC:
-            if (command->Scenario[0] == '\0')
-            {
-                sb.Append("LOADSC <No scenario name>");
-            }
-            else
-            {
-                sb.Append("LOADSC ");
-                sb.Append(command->Scenario);
-            }
-            break;
-        case TITLE_SCRIPT_LOCATION:
-            String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command->X, command->Y);
-            sb.Append(buffer);
-            break;
-        case TITLE_SCRIPT_ROTATE:
-            String::Format(buffer, sizeof(buffer), "ROTATE %u", command->Rotations);
-            sb.Append(buffer);
-            break;
-        case TITLE_SCRIPT_ZOOM:
-            String::Format(buffer, sizeof(buffer), "ZOOM %u", command->Zoom);
-            sb.Append(buffer);
-            break;
-        case TITLE_SCRIPT_FOLLOW:
-            String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command->SpriteIndex);
-            sb.Append(buffer);
-            sb.Append(command->SpriteName);
-            break;
-        case TITLE_SCRIPT_SPEED:
-            String::Format(buffer, sizeof(buffer), "SPEED %u", command->Speed);
-            sb.Append(buffer);
-            break;
-        case TITLE_SCRIPT_WAIT:
-            String::Format(buffer, sizeof(buffer), "WAIT %u", command->Milliseconds);
-            sb.Append(buffer);
-            break;
-        case TITLE_SCRIPT_RESTART:
-            sb.Append("RESTART");
-            break;
-        case TITLE_SCRIPT_END:
-            sb.Append("END");
+        const TitleCommand* command = &seq->Commands[i];
+        switch (command->Type)
+        {
+            case TITLE_SCRIPT_LOADMM:
+                sb.Append("LOADMM");
+                break;
+            case TITLE_SCRIPT_LOADRCT1:
+                String::Format(buffer, sizeof(buffer), "LOADRCT1 %u", command->SaveIndex);
+                sb.Append(buffer);
+                break;
+            case TITLE_SCRIPT_LOAD:
+                if (command->SaveIndex == 0xFF)
+                {
+                    sb.Append("LOAD <No save file>");
+                }
+                else
+                {
+                    sb.Append("LOAD ");
+                    sb.Append(seq->Saves[command->SaveIndex]);
+                }
+                break;
+            case TITLE_SCRIPT_LOADSC:
+                if (command->Scenario[0] == '\0')
+                {
+                    sb.Append("LOADSC <No scenario name>");
+                }
+                else
+                {
+                    sb.Append("LOADSC ");
+                    sb.Append(command->Scenario);
+                }
+                break;
+            case TITLE_SCRIPT_LOCATION:
+                String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command->X, command->Y);
+                sb.Append(buffer);
+                break;
+            case TITLE_SCRIPT_ROTATE:
+                String::Format(buffer, sizeof(buffer), "ROTATE %u", command->Rotations);
+                sb.Append(buffer);
+                break;
+            case TITLE_SCRIPT_ZOOM:
+                String::Format(buffer, sizeof(buffer), "ZOOM %u", command->Zoom);
+                sb.Append(buffer);
+                break;
+            case TITLE_SCRIPT_FOLLOW:
+                String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command->SpriteIndex);
+                sb.Append(buffer);
+                sb.Append(command->SpriteName);
+                break;
+            case TITLE_SCRIPT_SPEED:
+                String::Format(buffer, sizeof(buffer), "SPEED %u", command->Speed);
+                sb.Append(buffer);
+                break;
+            case TITLE_SCRIPT_WAIT:
+                String::Format(buffer, sizeof(buffer), "WAIT %u", command->Milliseconds);
+                sb.Append(buffer);
+                break;
+            case TITLE_SCRIPT_RESTART:
+                sb.Append("RESTART");
+                break;
+            case TITLE_SCRIPT_END:
+                sb.Append("END");
         }
         sb.Append("\n");
     }
@@ -641,15 +644,16 @@ static std::string LegacyScriptWrite(TitleSequence * seq)
     return sb.GetBuffer();
 }
 
-bool TitleSequenceIsLoadCommand(const TitleCommand * command)
+bool TitleSequenceIsLoadCommand(const TitleCommand* command)
 {
-    switch (command->Type) {
-    case TITLE_SCRIPT_LOADMM:
-    case TITLE_SCRIPT_LOAD:
-    case TITLE_SCRIPT_LOADRCT1:
-    case TITLE_SCRIPT_LOADSC:
-        return true;
-    default:
-        return false;
+    switch (command->Type)
+    {
+        case TITLE_SCRIPT_LOADMM:
+        case TITLE_SCRIPT_LOAD:
+        case TITLE_SCRIPT_LOADRCT1:
+        case TITLE_SCRIPT_LOADSC:
+            return true;
+        default:
+            return false;
     }
 }

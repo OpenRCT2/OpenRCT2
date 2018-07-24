@@ -17,7 +17,8 @@
  * Animated object
  * size: 0x06
  */
-struct rct_map_animation {
+struct rct_map_animation
+{
     uint8_t baseZ;
     uint8_t type;
     uint16_t x;
@@ -26,7 +27,8 @@ struct rct_map_animation {
 assert_struct_size(rct_map_animation, 6);
 #pragma pack(pop)
 
-enum {
+enum
+{
     MAP_ANIMATION_TYPE_RIDE_ENTRANCE,
     MAP_ANIMATION_TYPE_QUEUE_BANNER,
     MAP_ANIMATION_TYPE_SMALL_SCENERY,

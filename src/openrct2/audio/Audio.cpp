@@ -7,24 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../config/Config.h"
+#include "audio.h"
+
 #include "../Context.h"
+#include "../Intro.h"
+#include "../OpenRCT2.h"
+#include "../config/Config.h"
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
+#include "../interface/Viewport.h"
+#include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
-#include "../OpenRCT2.h"
+#include "../ride/Ride.h"
 #include "../ui/UiContext.h"
-#include "audio.h"
+#include "../util/Util.h"
 #include "AudioContext.h"
 #include "AudioMixer.h"
-
-#include "../interface/Viewport.h"
-#include "../Intro.h"
-#include "../localisation/Language.h"
-#include "../ride/Ride.h"
-#include "../util/Util.h"
 
 using namespace OpenRCT2::Audio;
 
@@ -35,23 +35,23 @@ struct AudioParams
     int32_t pan;
 };
 
-audio_device *  gAudioDevices = nullptr;
-int32_t          gAudioDeviceCount;
-int32_t          gAudioCurrentDevice = -1;
+audio_device* gAudioDevices = nullptr;
+int32_t gAudioDeviceCount;
+int32_t gAudioCurrentDevice = -1;
 
-bool    gGameSoundsOff = false;
-int32_t  gVolumeAdjustZoom = 0;
+bool gGameSoundsOff = false;
+int32_t gVolumeAdjustZoom = 0;
 
-void *  gTitleMusicChannel = nullptr;
-void *  gRainSoundChannel = nullptr;
+void* gTitleMusicChannel = nullptr;
+void* gRainSoundChannel = nullptr;
 
 rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-rct_ride_music_params   gRideMusicParamsList[6];
-rct_ride_music_params * gRideMusicParamsListEnd;
+rct_ride_music_params gRideMusicParamsList[6];
+rct_ride_music_params* gRideMusicParamsListEnd;
 
-rct_vehicle_sound           gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
-rct_vehicle_sound_params    gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
-rct_vehicle_sound_params *  gVehicleSoundParamsListEnd;
+rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
+rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
+rct_vehicle_sound_params* gVehicleSoundParamsListEnd;
 
 // clang-format off
 static int32_t SoundVolumeAdjust[SOUND_MAXID] =
@@ -122,7 +122,7 @@ static int32_t SoundVolumeAdjust[SOUND_MAXID] =
 };
 // clang-format on
 
-AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16 *location);
+AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16* location);
 
 void audio_init()
 {
@@ -154,7 +154,7 @@ void audio_populate_devices()
     std::vector<std::string> devices = audioContext->GetOutputDevices();
 
     // Replace blanks with localised unknown string
-    for (auto &device : devices)
+    for (auto& device : devices)
     {
         if (device.empty())
         {
@@ -196,12 +196,12 @@ int32_t audio_play_sound_at_location(int32_t soundId, int16_t x, int16_t y, int1
 }
 
 /**
-* Returns the audio parameters to use when playing the specified sound at a virtual location.
-* @param soundId The sound effect to be played.
-* @param location The location at which the sound effect is to be played.
-* @return The audio parameters to be used when playing this sound effect.
-*/
-AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16 *location)
+ * Returns the audio parameters to use when playing the specified sound at a virtual location.
+ * @param soundId The sound effect to be played.
+ * @param location The location at which the sound effect is to be played.
+ * @return The audio parameters to be used when playing this sound effect.
+ */
+AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16* location)
 {
     int32_t volumeDown = 0;
     AudioParams params;
@@ -209,7 +209,7 @@ AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16 
     params.volume = 0;
     params.pan = 0;
 
-    rct_tile_element * element = map_get_surface_element_at({location->x, location->y});
+    rct_tile_element* element = map_get_surface_element_at({ location->x, location->y });
     if (element && (element->base_height * 8) - 5 > location->z)
     {
         volumeDown = 10;
@@ -218,7 +218,7 @@ AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16 
     uint8_t rotation = get_current_rotation();
     LocationXY16 pos2 = coordinate_3d_to_2d(location, rotation);
 
-    rct_viewport * viewport = nullptr;
+    rct_viewport* viewport = nullptr;
     while ((viewport = window_get_previous_viewport(viewport)) != nullptr)
     {
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
@@ -270,19 +270,19 @@ void audio_start_title_music()
     }
 
     int32_t pathId;
-    switch (gConfigSound.title_music) {
-    case 1:
-        pathId = PATH_ID_CSS50;
-        break;
-    case 2:
-        pathId = PATH_ID_CSS17;
-        break;
-    case 3:
-        pathId = (util_rand() & 1) ? PATH_ID_CSS50 :
-                                     PATH_ID_CSS17;
-        break;
-    default:
-        return;
+    switch (gConfigSound.title_music)
+    {
+        case 1:
+            pathId = PATH_ID_CSS50;
+            break;
+        case 2:
+            pathId = PATH_ID_CSS17;
+            break;
+        case 3:
+            pathId = (util_rand() & 1) ? PATH_ID_CSS50 : PATH_ID_CSS17;
+            break;
+        default:
+            return;
     }
 
     gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
@@ -294,7 +294,7 @@ void audio_start_title_music()
 
 void audio_stop_ride_music()
 {
-    for (auto &rideMusic : gRideMusicList)
+    for (auto& rideMusic : gRideMusicList)
     {
         if (rideMusic.ride_id != RIDE_ID_NULL)
         {
@@ -339,9 +339,9 @@ void audio_init_ride_sounds_and_info()
     int32_t deviceNum = 0;
     audio_init_ride_sounds(deviceNum);
 
-    for (auto &rideMusicInfo : gRideMusicInfoList)
+    for (auto& rideMusicInfo : gRideMusicInfoList)
     {
-        const utf8 * path = context_get_path_legacy(rideMusicInfo.path_id);
+        const utf8* path = context_get_path_legacy(rideMusicInfo.path_id);
         if (File::Exists(path))
         {
             try
@@ -358,7 +358,7 @@ void audio_init_ride_sounds_and_info()
                     rideMusicInfo.length = fs.GetLength();
                 }
             }
-            catch (const std::exception &)
+            catch (const std::exception&)
             {
             }
         }
@@ -368,14 +368,14 @@ void audio_init_ride_sounds_and_info()
 void audio_init_ride_sounds(int32_t device)
 {
     audio_close();
-    for (auto &vehicleSound : gVehicleSoundList)
+    for (auto& vehicleSound : gVehicleSoundList)
     {
         vehicleSound.id = SOUND_ID_NULL;
     }
 
     gAudioCurrentDevice = device;
     config_save_default();
-    for (auto &rideMusic : gRideMusicList)
+    for (auto& rideMusic : gRideMusicList)
     {
         rideMusic.ride_id = RIDE_ID_NULL;
     }
@@ -425,7 +425,7 @@ void audio_stop_vehicle_sounds()
         return;
     }
 
-    for (auto &vehicleSound : gVehicleSoundList)
+    for (auto& vehicleSound : gVehicleSoundList)
     {
         if (vehicleSound.id != SOUND_ID_NULL)
         {

@@ -9,13 +9,14 @@
 
 #pragma once
 
+#include "../common.h"
+#include "../drawing/Drawing.h"
+
 #include <functional>
 #include <istream>
 #include <memory>
 #include <string_view>
 #include <vector>
-#include "../common.h"
-#include "../drawing/Drawing.h"
 
 struct rct_drawpixelinfo;
 struct rct_palette;
@@ -31,10 +32,10 @@ struct PaletteBGRA
 enum class IMAGE_FORMAT
 {
     UNKNOWN,
-    AUTOMATIC,  // Automatically detect from file extension
+    AUTOMATIC, // Automatically detect from file extension
     BITMAP,
     PNG,
-    PNG_32,     // Force load to 32bpp buffer
+    PNG_32, // Force load to 32bpp buffer
 };
 
 struct Image
@@ -60,4 +61,4 @@ namespace Imaging
     void WriteToFile(const std::string_view& path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
 
     void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl);
-}
+} // namespace Imaging

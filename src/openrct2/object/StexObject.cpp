@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../core/IStream.hpp"
 #include "StexObject.h"
 
+#include "../core/IStream.hpp"
 #include "../localisation/Localisation.h"
 
-void StexObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
+void StexObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.var_06 = stream->ReadValue<uint8_t>();
@@ -42,7 +42,7 @@ void StexObject::Unload()
     _legacyType.details = 0;
 }
 
-void StexObject::DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const
+void StexObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     // Write (no image)
     int32_t x = width / 2;

@@ -7,25 +7,24 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <cassert>
-#include <cstdarg>
-#include <cstdio>
-#include <cstdlib>
-
-#include "../common.h"
-
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #endif
 
 #include "../Version.h"
+#include "../common.h"
 #include "Console.hpp"
 #include "Diagnostics.hpp"
 #include "Guard.hpp"
 #include "String.hpp"
 
-void openrct2_assert_fwd(bool expression, const char * message, ...)
+#include <cassert>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
+
+void openrct2_assert_fwd(bool expression, const char* message, ...)
 {
     va_list va;
     va_start(va, message);
@@ -35,7 +34,7 @@ void openrct2_assert_fwd(bool expression, const char * message, ...)
 
 namespace Guard
 {
-    constexpr const utf8 * ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
+    constexpr const utf8* ASSERTION_MESSAGE = "An assertion failed, please report this to the OpenRCT2 developers.";
 
     // The default behaviour when an assertion is raised.
     static ASSERT_BEHAVIOUR _assertBehaviour =
@@ -47,7 +46,7 @@ namespace Guard
         ;
 
 #ifdef _WIN32
-    static void GetAssertMessage(char * buffer, size_t bufferSize, const char * formattedMessage);
+    static void GetAssertMessage(char* buffer, size_t bufferSize, const char* formattedMessage);
     static void ForceCrash();
 #endif
 
@@ -61,7 +60,7 @@ namespace Guard
         _assertBehaviour = behaviour;
     }
 
-    void Assert(bool expression, const char * message, ...)
+    void Assert(bool expression, const char* message, ...)
     {
         va_list args;
         va_start(args, message);
@@ -69,15 +68,16 @@ namespace Guard
         va_end(args);
     }
 
-    void Assert_VA(bool expression, const char * message, va_list args)
+    void Assert_VA(bool expression, const char* message, va_list args)
     {
-        if (expression) return;
+        if (expression)
+            return;
 
         Console::Error::WriteLine(ASSERTION_MESSAGE);
         Console::Error::WriteLine("Version: %s", gVersionInfoFull);
 
         // This is never freed, but acceptable considering we are about to crash out
-        utf8 * formattedMessage = nullptr;
+        utf8* formattedMessage = nullptr;
         if (message != nullptr)
         {
             formattedMessage = String::Format_VA(message, args);
@@ -88,31 +88,32 @@ namespace Guard
         Debug::Break();
 #endif
 
-        switch (_assertBehaviour) {
-        case ASSERT_BEHAVIOUR::ABORT:
-            abort();
-        default:
-        case ASSERT_BEHAVIOUR::CASSERT:
-            assert(false);
-            break;
-#ifdef _WIN32
-        case ASSERT_BEHAVIOUR::MESSAGE_BOX:
+        switch (_assertBehaviour)
         {
-            // Show message box if we are not building for testing
-            char buffer[512];
-            GetAssertMessage(buffer, sizeof(buffer), formattedMessage);
-            int32_t result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
-            if (result == IDABORT)
+            case ASSERT_BEHAVIOUR::ABORT:
+                abort();
+            default:
+            case ASSERT_BEHAVIOUR::CASSERT:
+                assert(false);
+                break;
+#ifdef _WIN32
+            case ASSERT_BEHAVIOUR::MESSAGE_BOX:
             {
-                ForceCrash();
+                // Show message box if we are not building for testing
+                char buffer[512];
+                GetAssertMessage(buffer, sizeof(buffer), formattedMessage);
+                int32_t result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
+                if (result == IDABORT)
+                {
+                    ForceCrash();
+                }
+                break;
             }
-            break;
-        }
 #endif
         }
     }
 
-    void Fail(const char * message, ...)
+    void Fail(const char* message, ...)
     {
         va_list args;
         va_start(args, message);
@@ -120,13 +121,13 @@ namespace Guard
         va_end(args);
     }
 
-    void Fail_VA(const char * message, va_list args)
+    void Fail_VA(const char* message, va_list args)
     {
         Assert_VA(false, message, args);
     }
 
 #ifdef _WIN32
-    static void GetAssertMessage(char * buffer, size_t bufferSize, const char * formattedMessage)
+    static void GetAssertMessage(char* buffer, size_t bufferSize, const char* formattedMessage)
     {
         String::Set(buffer, bufferSize, ASSERTION_MESSAGE);
         String::Append(buffer, bufferSize, "\r\n\r\n");
@@ -141,12 +142,12 @@ namespace Guard
 
     static void ForceCrash()
     {
-#ifdef USE_BREAKPAD
+#    ifdef USE_BREAKPAD
         // Force a crash that breakpad will handle allowing us to get a dump
         *((void**)0) = 0;
-#else
+#    else
         assert(false);
-#endif
+#    endif
     }
 #endif
 } // namespace Guard

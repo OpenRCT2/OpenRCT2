@@ -9,14 +9,16 @@
 
 #pragma once
 
-#include <openrct2/common.h>
 #include "FunctionCall.hpp"
 
-namespace PaintIntercept {
+#include <openrct2/common.h>
+
+namespace PaintIntercept
+{
     void InitHooks();
 
     void ClearCalls();
-    int GetCalls(function_call *buffer);
+    int GetCalls(function_call* buffer);
 
     void SetSimulateWoodenSupports(bool enabled);
-};
+}; // namespace PaintIntercept

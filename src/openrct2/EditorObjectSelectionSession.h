@@ -9,9 +9,10 @@
 
 #pragma once
 
-#include <vector>
 #include "common.h"
 #include "object/Object.h"
+
+#include <vector>
 
 extern bool _maxObjectsWasHit;
 extern std::vector<uint8_t> _objectSelectionFlags;
@@ -22,11 +23,10 @@ void editor_object_flags_free();
 void unload_unselected_objects();
 void sub_6AB211();
 void reset_selected_object_count_and_size();
-int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, const rct_object_entry *entry);
+int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, const rct_object_entry* entry);
 
 /**
-* Removes all unused objects from the object selection.
-* @return The number of removed objects.
-*/
+ * Removes all unused objects from the object selection.
+ * @return The number of removed objects.
+ */
 int32_t editor_remove_unused_objects();
-

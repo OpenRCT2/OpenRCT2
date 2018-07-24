@@ -9,24 +9,25 @@
 
 #pragma once
 
+#include "../common.h"
+
 #include <string>
 #include <vector>
-#include "../common.h"
 
 struct FileInfo
 {
-    const utf8 *    Name;
-    uint64_t          Size;
-    uint64_t          LastModified;
+    const utf8* Name;
+    uint64_t Size;
+    uint64_t LastModified;
 };
 
 interface IFileScanner
 {
     virtual ~IFileScanner() = default;
 
-    virtual const FileInfo *    GetFileInfo() const abstract;
-    virtual const utf8 *        GetPath() const abstract;
-    virtual const utf8 *        GetPathRelative() const abstract;
+    virtual const FileInfo* GetFileInfo() const abstract;
+    virtual const utf8* GetPath() const abstract;
+    virtual const utf8* GetPathRelative() const abstract;
 
     virtual void Reset() abstract;
     virtual bool Next() abstract;
@@ -49,14 +50,14 @@ namespace Path
      * @param recurse Whether to scan sub directories or not.
      * @returns A new FileScanner, this must be deleted when no longer needed.
      */
-    IFileScanner * ScanDirectory(const std::string &pattern, bool recurse);
+    IFileScanner* ScanDirectory(const std::string& pattern, bool recurse);
 
     /**
      * Scans a directory and all sub directories
      * @param result The query result to modify.
      * @param pattern The path followed by a semi-colon delimited list of wildcard patterns.
      */
-    void QueryDirectory(QueryDirectoryResult * result, const std::string &pattern);
+    void QueryDirectory(QueryDirectoryResult* result, const std::string& pattern);
 
-    std::vector<std::string> GetDirectories(const std::string &path);
+    std::vector<std::string> GetDirectories(const std::string& path);
 } // namespace Path

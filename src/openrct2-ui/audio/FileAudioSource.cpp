@@ -7,12 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/common.h>
-#include <SDL2/SDL.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/audio/AudioSource.h>
 #include "AudioContext.h"
 #include "AudioFormat.h"
+
+#include <SDL2/SDL.h>
+#include <openrct2/audio/AudioSource.h>
+#include <openrct2/common.h>
+#include <openrct2/core/Math.hpp>
 
 namespace OpenRCT2::Audio
 {
@@ -24,9 +25,9 @@ namespace OpenRCT2::Audio
     {
     private:
         AudioFormat _format = {};
-        SDL_RWops * _rw = nullptr;
-        uint64_t      _dataBegin = 0;
-        uint64_t      _dataLength = 0;
+        SDL_RWops* _rw = nullptr;
+        uint64_t _dataBegin = 0;
+        uint64_t _dataLength = 0;
 
     public:
         ~FileAudioSource()
@@ -44,7 +45,7 @@ namespace OpenRCT2::Audio
             return _format;
         }
 
-        size_t Read(void * dst, uint64_t offset, size_t len) override
+        size_t Read(void* dst, uint64_t offset, size_t len) override
         {
             size_t bytesRead = 0;
             int64_t currentPosition = SDL_RWtell(_rw);
@@ -65,10 +66,10 @@ namespace OpenRCT2::Audio
             return bytesRead;
         }
 
-        bool LoadWAV(SDL_RWops * rw)
+        bool LoadWAV(SDL_RWops* rw)
         {
             const uint32_t DATA = 0x61746164;
-            const uint32_t FMT  = 0x20746D66;
+            const uint32_t FMT = 0x20746D66;
             const uint32_t RIFF = 0x46464952;
             const uint32_t WAVE = 0x45564157;
             const uint16_t pcmformat = 0x0001;
@@ -109,22 +110,24 @@ namespace OpenRCT2::Audio
             WaveFormat waveFormat;
             SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
             SDL_RWseek(rw, chunkStart + fmtChunkSize, RW_SEEK_SET);
-            if (waveFormat.encoding != pcmformat) {
+            if (waveFormat.encoding != pcmformat)
+            {
                 log_verbose("Not in proper format");
                 return false;
             }
 
             _format.freq = waveFormat.frequency;
-            switch (waveFormat.bitspersample) {
-            case 8:
-                _format.format = AUDIO_U8;
-                break;
-            case 16:
-                _format.format = AUDIO_S16LSB;
-                break;
-            default:
-                log_verbose("Invalid bits per sample");
-                return false;
+            switch (waveFormat.bitspersample)
+            {
+                case 8:
+                    _format.format = AUDIO_U8;
+                    break;
+                case 16:
+                    _format.format = AUDIO_S16LSB;
+                    break;
+                default:
+                    log_verbose("Invalid bits per sample");
+                    return false;
             }
             _format.channels = waveFormat.channels;
 
@@ -141,7 +144,7 @@ namespace OpenRCT2::Audio
         }
 
     private:
-        uint32_t FindChunk(SDL_RWops * rw, uint32_t wantedId)
+        uint32_t FindChunk(SDL_RWops* rw, uint32_t wantedId)
         {
             uint32_t subchunkId = SDL_ReadLE32(rw);
             uint32_t subchunkSize = SDL_ReadLE32(rw);
@@ -178,9 +181,9 @@ namespace OpenRCT2::Audio
         }
     };
 
-    IAudioSource * AudioSource::CreateStreamFromWAV(const std::string &path)
+    IAudioSource* AudioSource::CreateStreamFromWAV(const std::string& path)
     {
-        IAudioSource * source = nullptr;
+        IAudioSource* source = nullptr;
         SDL_RWops* rw = SDL_RWFromFile(path.c_str(), "rb");
         if (rw != nullptr)
         {
@@ -189,7 +192,7 @@ namespace OpenRCT2::Audio
         return source;
     }
 
-    IAudioSource * AudioSource::CreateStreamFromWAV(SDL_RWops * rw)
+    IAudioSource* AudioSource::CreateStreamFromWAV(SDL_RWops* rw)
     {
         auto source = new FileAudioSource();
         if (!source->LoadWAV(rw))

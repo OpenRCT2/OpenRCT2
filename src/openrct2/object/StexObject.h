@@ -9,9 +9,8 @@
 
 #pragma once
 
-#include "Object.h"
-
 #include "../scenario/Scenario.h"
+#include "Object.h"
 
 class StexObject final : public Object
 {
@@ -19,15 +18,21 @@ private:
     rct_stex_entry _legacyType = {};
 
 public:
-    explicit StexObject(const rct_object_entry &entry) : Object(entry) { }
+    explicit StexObject(const rct_object_entry& entry)
+        : Object(entry)
+    {
+    }
 
-    void * GetLegacyData()  override { return &_legacyType; }
+    void* GetLegacyData() override
+    {
+        return &_legacyType;
+    }
 
-    void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
+    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
     std::string GetName() const override;
 

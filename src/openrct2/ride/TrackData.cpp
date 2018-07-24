@@ -7,9 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "TrackData.h"
+
 #include "../core/Util.hpp"
 #include "Track.h"
-#include "TrackData.h"
 #include "TrackPaint.h"
 
 // clang-format off

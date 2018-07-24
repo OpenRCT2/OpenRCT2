@@ -10,8 +10,8 @@
 #pragma once
 
 #include <memory>
-#include <string>
 #include <openrct2/common.h>
+#include <string>
 
 struct SDL_Window;
 
@@ -22,9 +22,9 @@ namespace OpenRCT2
 
     namespace Ui
     {
-        struct      FileDialogDesc;
-        class       InGameConsole;
-        interface   IUiContext;
+        struct FileDialogDesc;
+        class InGameConsole;
+        interface IUiContext;
 
         interface IPlatformUiContext
         {
@@ -32,13 +32,13 @@ namespace OpenRCT2
             virtual void SetWindowIcon(SDL_Window * window) abstract;
             virtual bool IsSteamOverlayAttached() abstract;
 
-            virtual void        ShowMessageBox(SDL_Window * window, const std::string &message) abstract;
-            virtual std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) abstract;
-            virtual std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) abstract;
+            virtual void ShowMessageBox(SDL_Window * window, const std::string& message) abstract;
+            virtual std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc& desc) abstract;
+            virtual std::string ShowDirectoryDialog(SDL_Window * window, const std::string& title) abstract;
         };
 
         std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);
-        IPlatformUiContext * CreatePlatformUiContext();
+        IPlatformUiContext* CreatePlatformUiContext();
 
         InGameConsole& GetInGameConsole();
     } // namespace Ui
