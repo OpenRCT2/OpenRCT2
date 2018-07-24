@@ -3928,6 +3928,9 @@ enum
     STR_DEBUG_PAINT_SHOW_BLOCKED_TILES = 6260,
     STR_DEBUG_PAINT_SHOW_WIDE_PATHS = 6261,
 
+    STR_SPEED_SLOW = 6262,
+    STR_SPEED_SLOWER = 6263,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
