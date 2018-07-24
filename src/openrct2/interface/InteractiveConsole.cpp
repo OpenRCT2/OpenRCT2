@@ -820,14 +820,9 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
             else
                 console.Execute("get climate");
         }
-<<<<<<< HEAD
-        else if (strcmp(argv[0], "game_speed") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-            gGameSpeed = Math::Clamp(1, int_val[0], (int32_t)GAMESPEED_HYPER);
-=======
         else if (strcmp(argv[0], "game_speed") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gGameSpeed = Math::Clamp(1, int_val[0], 8);
->>>>>>> upstream/develop
+            gGameSpeed = Math::Clamp(1, int_val[0], (int32_t)GAMESPEED_HYPER);
             console.Execute("get game_speed");
         }
         else if (strcmp(argv[0], "console_small_font") == 0 && invalidArguments(&invalidArgs, int_valid[0]))

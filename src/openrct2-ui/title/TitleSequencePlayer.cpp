@@ -266,55 +266,9 @@ private:
                     Console::Error::WriteLine("%s not found.", SFMM_FILENAME);
                     return false;
                 }
-
-<<<<<<< HEAD
-            const utf8 * path = entry->path;
-            if (!LoadParkFromFile(path))
-            {
-                Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
-                return false;
-            }
-            break;
-        }
-        case TITLE_SCRIPT_LOCATION:
-        {
-            int32_t x = command->X * 32 + 16;
-            int32_t y = command->Y * 32 + 16;
-            SetViewLocation(x, y);
-            break;
-        }
-        case TITLE_SCRIPT_ROTATE:
-            RotateView(command->Rotations);
-            break;
-        case TITLE_SCRIPT_ZOOM:
-            SetViewZoom(command->Zoom);
-            break;
-        case TITLE_SCRIPT_SPEED:
-            gGameSpeed = Math::Clamp<uint8_t>(1, command->Speed, GAMESPEED_TURBO);
-            break;
-        case TITLE_SCRIPT_FOLLOW:
-            FollowSprite(command->SpriteIndex);
-            break;
-        case TITLE_SCRIPT_RESTART:
-            Reset();
-            break;
-        case TITLE_SCRIPT_LOAD:
-        {
-            bool loadSuccess = false;
-            uint8_t saveIndex = command->SaveIndex;
-            TitleSequenceParkHandle * parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
-            if (parkHandle != nullptr)
-            {
-                loadSuccess = LoadParkFromStream((IStream *)parkHandle->Stream, parkHandle->HintPath);
-                TitleSequenceCloseParkHandle(parkHandle);
-            }
-            if (!loadSuccess)
-            {
-                if (_sequence->NumSaves > saveIndex)
-=======
+  
                 const utf8* path = entry->path;
                 if (!LoadParkFromFile(path))
->>>>>>> upstream/develop
                 {
                     Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
                     return false;

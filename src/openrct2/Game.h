@@ -140,7 +140,6 @@ extern uint32_t gCurrentTicks;
 extern uint16_t gTicksSinceLastUpdate;
 extern uint8_t gGamePaused;
 extern int32_t gGameSpeed;
-<<<<<<< HEAD
 enum GAMESPEED {
     GAMESPEED_PAUSED = 0,
     GAMESPEED_SLOW = 1,
@@ -148,14 +147,10 @@ enum GAMESPEED {
     GAMESPEED_TURBO = 5,
     GAMESPEED_HYPER = 6,
 };
-extern float  gDayNightCycle;
-extern bool   gInUpdateCode;
-extern bool   gInMapInitCode;
-=======
 extern float gDayNightCycle;
 extern bool gInUpdateCode;
 extern bool gInMapInitCode;
->>>>>>> upstream/develop
+
 extern int32_t gGameCommandNestLevel;
 extern bool gGameCommandIsNetworked;
 extern char gCurrentLoadedPath[260];

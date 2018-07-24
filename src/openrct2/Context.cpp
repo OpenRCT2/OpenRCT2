@@ -762,21 +762,14 @@ namespace OpenRCT2
 
         bool ShouldRunVariableFrame()
         {
-<<<<<<< HEAD
-            if (!gConfigGeneral.uncap_fps) return false;
-            if (gGameSpeed >= GAMESPEED_HYPER) return false;
-            if (gOpenRCT2Headless) return false;
-            if (_uiContext->IsMinimised()) return false;
-=======
             if (!gConfigGeneral.uncap_fps)
                 return false;
-            if (gGameSpeed > 4)
+            if (gGameSpeed > GAMESPEED_HYPER)
                 return false;
             if (gOpenRCT2Headless)
                 return false;
             if (_uiContext->IsMinimised())
                 return false;
->>>>>>> upstream/develop
             return true;
         }
 

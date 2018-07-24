@@ -66,19 +66,11 @@
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
 uint16_t gTicksSinceLastUpdate;
-<<<<<<< HEAD
-uint8_t  gGamePaused    = 0;
-int32_t gGameSpeed     = GAMESPEED_NORMAL;     // initial, normal speed 
-float  gDayNightCycle = 0;
-bool   gInUpdateCode  = false;
-bool   gInMapInitCode = false;
-=======
 uint8_t gGamePaused = 0;
-int32_t gGameSpeed = 1;
+int32_t gGameSpeed = GAMESPEED_NORMAL;     // initial, normal speed ;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
->>>>>>> upstream/develop
 int32_t gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
 char gCurrentLoadedPath[MAX_PATH];
@@ -1370,37 +1362,6 @@ void game_load_or_quit_no_save_prompt()
 {
     switch (gSavePromptMode)
     {
-<<<<<<< HEAD
-    case PM_SAVE_BEFORE_LOAD:
-        game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
-        tool_cancel();
-        if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        {
-            load_landscape();
-        }
-        else
-        {
-            auto intent = Intent(WC_LOADSAVE);
-            intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) game_load_or_quit_no_save_prompt_callback);
-            context_open_intent(&intent);
-        }
-        break;
-    case PM_SAVE_BEFORE_QUIT:
-        game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
-        tool_cancel();
-        if (input_test_flag(INPUT_FLAG_5))
-        {
-            input_set_flag(INPUT_FLAG_5, false);
-        }
-        gGameSpeed       = GAMESPEED_NORMAL;
-        gFirstTimeSaving = true;
-        title_load();
-        break;
-    default:
-        openrct2_finish();
-        break;
-=======
         case PM_SAVE_BEFORE_LOAD:
             game_do_command(0, 1, 0, 1, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
             tool_cancel();
@@ -1430,7 +1391,6 @@ void game_load_or_quit_no_save_prompt()
         default:
             openrct2_finish();
             break;
->>>>>>> upstream/develop
     }
 }
 
