@@ -179,6 +179,11 @@ enum UnicodePolish
     UNICODE_Z_ACUTE = 378,
 };
 
+enum UnicodeCatalan
+{
+    UNICODE_INTERPUNCT = 183,
+};
+
 enum UnicodeGerman
 {
     UNICODE_CAPITAL_SHARP_S = 0x1E9E,
@@ -265,10 +270,28 @@ enum UnicodeCyrillic
 
 };
 
+enum UnicodeTurkish
+{
+    UNICODE_G_BREVE_UC = 286,
+    UNICODE_G_BREVE = 287,
+    UNICODE_I_WITH_DOT_UC = 304,
+    UNICODE_I_WITHOUT_DOT = 305,
+    UNICODE_S_CEDILLA_UC = 350,
+    UNICODE_S_CEDILLA = 351,
+};
+
 enum UnicodeDingbats
 {
     UNICODE_DINGBATS_PLUS = 0x2795,
     UNICODE_DINGBATS_MINUS = 0x2796,
+};
+
+enum UnicodeCurrency
+{
+    UNICODE_GUILDER_SIGN = 402,
+
+    // Not a currency sign, but the guilder sign will be capitalised to this.
+    UNICODE_F_WITH_HOOK_UC = 401,
 };
 
 #endif

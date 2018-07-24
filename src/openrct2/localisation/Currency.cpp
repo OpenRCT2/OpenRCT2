@@ -22,7 +22,7 @@ currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
     {   "JPY",  1000,   CURRENCY_PREFIX,    "\xC2\xA5",     CURRENCY_SUFFIX,    "YEN",  STR_YEN             },  // Japanese Yen
     {   "ESP",  10,     CURRENCY_SUFFIX,    "Pts",          CURRENCY_SUFFIX,    "Pts",  STR_PESETA          },  // Spanish Peseta
     {   "ITL",  1000,   CURRENCY_PREFIX,    "L",            CURRENCY_PREFIX,    "L",    STR_LIRA            },  // Italian Lira
-    {   "NLG",  10,     CURRENCY_PREFIX,    "\xC6\x92",     CURRENCY_PREFIX,    "fl.",  STR_GUILDERS        },  // Dutch Guilder
+    {   "NLG",  10,     CURRENCY_PREFIX,    "\xC6\x92 ",    CURRENCY_PREFIX,    "fl.",  STR_GUILDERS        },  // Dutch Guilder
     {   "SEK",  10,     CURRENCY_SUFFIX,    " kr",          CURRENCY_SUFFIX,    " kr",  STR_KRONA           },  // Swedish Krona
     {   "EUR",  10,     CURRENCY_PREFIX,    "\xE2\x82\xAC", CURRENCY_SUFFIX,    "EUR",  STR_EUROS           },  // Euro
     {   "KRW",  10000,  CURRENCY_PREFIX,    "\xE2\x82\xA9", CURRENCY_PREFIX,    "W",    STR_WON             },  // South Korean Won
