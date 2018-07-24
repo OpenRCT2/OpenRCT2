@@ -4571,6 +4571,12 @@ STR_6252    :Twitch API 链接
 STR_6253    :{SMALLFONT}{BLACK}提供 Twitch integration API 链接. 用以启用 Twitch integration.
 STR_6254    :Twitch integration API 链接:
 STR_6255    :链接无效
+STR_6256    :渲染效果
+STR_6257    :明净的 (半透明)
+STR_6258    :澄清 (透明)
+STR_6259    :已停用
+STR_6260    :显示受阻地砖
+STR_6261    :显示宽阔走道
 
 #############
 # Scenarios #
