@@ -823,11 +823,11 @@ static void ttf_process_string(rct_drawpixelinfo* dpi, const utf8* text, text_dr
     // Force a hard left-to-right at the beginning (will mess up mixed strings' word order otherwise)
     std::string text2 = std::string(u8"\xE2\x80\xAA") + text;
 
-    UnicodeString ustr = UnicodeString::fromUTF8(StringPiece(text2));
+    icu::UnicodeString ustr = icu::UnicodeString::fromUTF8(icu::StringPiece(text2));
 
     int32_t length = ustr.length();
-    UnicodeString reordered;
-    UnicodeString shaped;
+    icu::UnicodeString reordered;
+    icu::UnicodeString shaped;
     UBiDi* bidi = ubidi_openSized(length, 0, &err);
     ubidi_setPara(bidi, ustr.getBuffer(), length, UBIDI_DEFAULT_LTR, nullptr, &err);
     ubidi_writeReordered(bidi, reordered.getBuffer(length), length, UBIDI_DO_MIRRORING | UBIDI_REMOVE_BIDI_CONTROLS, &err);
