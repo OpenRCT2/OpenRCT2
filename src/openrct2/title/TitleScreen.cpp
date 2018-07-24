@@ -163,9 +163,9 @@ void TitleScreen::Update()
         _sequencePlayer->Update();
 
         int32_t numUpdates = 1;
-        if (gGameSpeed > 1)
+        if (gGameSpeed > GAMESPEED_NORMAL)
         {
-            numUpdates = 1 << (gGameSpeed - 1);
+            numUpdates <<= (gGameSpeed - GAMESPEED_NORMAL );
         }
         for (int32_t i = 0; i < numUpdates; i++)
         {
