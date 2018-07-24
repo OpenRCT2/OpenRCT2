@@ -265,6 +265,16 @@ enum UnicodeCyrillic
 
 };
 
+enum UnicodeTurkish
+{
+    UNICODE_G_BREVE_UC = 286,
+    UNICODE_G_BREVE = 287,
+    UNICODE_I_WITH_DOT_UC = 304,
+    UNICODE_I_WITHOUT_DOT = 305,
+    UNICODE_S_CEDILLA_UC = 350,
+    UNICODE_S_CEDILLA = 351,
+};
+
 enum UnicodeDingbats
 {
     UNICODE_DINGBATS_PLUS = 0x2795,

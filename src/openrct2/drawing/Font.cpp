@@ -336,6 +336,20 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
         case UNICODE_GUILDER_SIGN:
             return SPR_G2_GUILDER_SIGN - SPR_CHAR_START;
 
+        // Turkish
+        case UNICODE_G_BREVE_UC:
+            return SPR_G2_G_BREVE_UPPER - SPR_CHAR_START;
+        case UNICODE_I_WITH_DOT_UC:
+            return SPR_G2_I_WITH_DOT_UPPER - SPR_CHAR_START;
+        case UNICODE_S_CEDILLA_UC:
+            return SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START;
+        case UNICODE_G_BREVE:
+            return SPR_G2_G_BREVE_LOWER - SPR_CHAR_START;
+        case UNICODE_I_WITHOUT_DOT:
+            return SPR_G2_I_WITHOUT_DOT_LOWER - SPR_CHAR_START;
+        case UNICODE_S_CEDILLA:
+            return SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START;
+
         // This is to catch capitalised versions of the guilder sign
         case UNICODE_F_WITH_HOOK_UC:
             return 'F' - 32;
@@ -501,6 +515,13 @@ bool font_supports_string_sprite(const utf8* text)
             case FORMAT_GERMAN_SINGLE_OPENQUOTE:
 
             case UNICODE_GUILDER_SIGN:
+
+            case UNICODE_G_BREVE_UC:
+            case UNICODE_I_WITH_DOT_UC:
+            case UNICODE_S_CEDILLA_UC:
+            case UNICODE_G_BREVE:
+            case UNICODE_I_WITHOUT_DOT:
+            case UNICODE_S_CEDILLA:
 
                 supported = true;
                 break;

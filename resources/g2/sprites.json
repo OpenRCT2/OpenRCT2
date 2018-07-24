@@ -705,6 +705,42 @@
         "forceBmp": true
     },
     {
+        "path": "font/g-breve-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/i-with-dot-uc-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/s-cedilla-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/g-breve-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/i-without-dot-small.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/s-cedilla-small.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -966,6 +1002,42 @@
     {
         "path": "font/guilder-bold.png",
         "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/g-breve-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/i-with-dot-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/s-cedilla-uc-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/g-breve-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/i-without-dot-bold.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/s-cedilla-bold.png",
+        "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1238,6 +1310,42 @@
     },
     {
         "path": "font/guilder-tiny.png",
+        "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/g-breve-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/i-with-dot-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/s-cedilla-uc-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/g-breve-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/i-without-dot-tiny.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/s-cedilla-tiny.png",
         "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
