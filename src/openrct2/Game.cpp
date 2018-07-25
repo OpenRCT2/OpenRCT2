@@ -67,7 +67,11 @@
 
 uint16_t gTicksSinceLastUpdate;
 uint8_t gGamePaused = 0;
+<<<<<<< HEAD
 int32_t gGameSpeed = GAMESPEED_NORMAL;     // initial, normal speed ;
+=======
+int32_t gGameSpeed = 1;
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;
@@ -129,21 +133,33 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(uint32_t index
 
 void game_increase_game_speed()
 {
+<<<<<<< HEAD
     if (gGameSpeed < (gConfigGeneral.debugging_tools ? GAMESPEED_HYPER : GAMESPEED_TURBO))
         gGameSpeed++;
 
     if (game_is_paused())
         pause_toggle();
+=======
+    gGameSpeed = std::min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
+    if (gGameSpeed == 5)
+        gGameSpeed = 8;
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 
 void game_reduce_game_speed()
 {
+<<<<<<< HEAD
     if (gGameSpeed > GAMESPEED_PAUSED)
         gGameSpeed--;
 
     if (gGameSpeed == GAMESPEED_PAUSED && game_is_not_paused() )
         pause_toggle();
+=======
+    gGameSpeed = std::max(1, gGameSpeed - 1);
+    if (gGameSpeed == 7)
+        gGameSpeed = 4;
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 }
 

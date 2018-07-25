@@ -100,6 +100,7 @@ void GameState::Update()
     }
     else
     {
+<<<<<<< HEAD
         pctUpdates += GameSpeeds[gGameSpeed] * gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
         if (pctUpdates >= 100)
         {
@@ -108,6 +109,10 @@ void GameState::Update()
         }
         else
             numUpdates = 0;
+=======
+        numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
+        numUpdates = Math::Clamp<uint32_t>(1, numUpdates, GAME_MAX_UPDATES);
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED

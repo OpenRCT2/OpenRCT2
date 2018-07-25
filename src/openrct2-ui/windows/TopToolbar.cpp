@@ -884,6 +884,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         imgId = SPR_G2_FASTFORWARD;
         gfx_draw_sprite(dpi, imgId, x + 6, y + 3, 0);
 
+<<<<<<< HEAD
         if (gGameSpeed == GAMESPEED_SLOW)
         {
             gfx_draw_sprite(dpi, SPR_G2_RCT1_TEST_BUTTON_2, x+3 , y + 12, 0);
@@ -905,6 +906,15 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 			{
                 gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, x + 5 + i * 5, y + 15, 0);
             }
+=======
+        for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++)
+        {
+            gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, x + 5 + i * 5, y + 15, 0);
+        }
+        for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
+        {
+            gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, x + 5 + i * 6, y + 15, 0);
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
         }
     }
 
@@ -1523,6 +1533,7 @@ static void sub_6E1F34(
                 if (gSceneryShiftPressed)
                 {
                     rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+<<<<<<< HEAD
 
                     if (tile_element == nullptr)
                     {
@@ -1535,6 +1546,20 @@ static void sub_6E1F34(
 
                     z = std::max<int16_t>(z, 16);
 
+=======
+
+                    if (tile_element == nullptr)
+                    {
+                        *grid_x = LOCATION_NULL;
+                        return;
+                    }
+
+                    int16_t z = (tile_element->base_height * 8) & 0xFFF0;
+                    z += gSceneryShiftPressZOffset;
+
+                    z = std::max<int16_t>(z, 16);
+
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
                     gSceneryPlaceZ = z;
                 }
             }
@@ -1668,6 +1693,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 int16_t cur_grid_y = gridY;
 
                 if (isCluster)
+<<<<<<< HEAD
                 {
                     if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
                     {
@@ -1724,6 +1750,64 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                 {
                     successfulPlacements++;
                 }
+=======
+                {
+                    if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+                    {
+                        parameter_2 &= 0xFF00;
+                        parameter_2 |= util_rand() & 3;
+                    }
+
+                    cur_grid_x += ((util_rand() % 16) - 8) * 32;
+                    cur_grid_y += ((util_rand() % 16) - 8) * 32;
+
+                    if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+                    {
+                        gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
+                    }
+                }
+
+                uint8_t zAttemptRange = 1;
+                if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+                {
+                    zAttemptRange = 20;
+                }
+
+                bool success = false;
+                for (; zAttemptRange != 0; zAttemptRange--)
+                {
+                    int32_t flags = GAME_COMMAND_FLAG_APPLY | (parameter_1 & 0xFF00);
+
+                    gDisableErrorWindowSound = true;
+                    gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
+                    int32_t cost = game_do_command(
+                        cur_grid_x, flags, cur_grid_y, parameter_2, GAME_COMMAND_PLACE_SCENERY,
+                        gSceneryPlaceRotation | (parameter_3 & 0xFFFF0000), gSceneryPlaceZ);
+                    gDisableErrorWindowSound = false;
+
+                    if (cost != MONEY32_UNDEFINED)
+                    {
+                        window_close_by_class(WC_ERROR);
+                        audio_play_sound_at_location(
+                            SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+                        success = true;
+                        break;
+                    }
+
+                    if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES
+                        || gGameCommandErrorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER)
+                    {
+                        break;
+                    }
+
+                    gSceneryPlaceZ += 8;
+                }
+
+                if (success)
+                {
+                    successfulPlacements++;
+                }
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
                 else
                 {
                     if (gGameCommandErrorText == STR_NOT_ENOUGH_CASH_REQUIRES)
@@ -1732,8 +1816,27 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
                     }
                 }
                 gSceneryPlaceZ = zCoordinate;
+<<<<<<< HEAD
             }
 
+            if (successfulPlacements > 0)
+            {
+                window_close_by_class(WC_ERROR);
+            }
+            else
+            {
+                audio_play_sound_at_location(SOUND_ERROR, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+=======
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
+            }
+            break;
+        }
+        case SCENERY_TYPE_PATH_ITEM:
+        {
+            int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | (parameter_1 & 0xFF00);
+
+<<<<<<< HEAD
+=======
             if (successfulPlacements > 0)
             {
                 window_close_by_class(WC_ERROR);
@@ -1748,6 +1851,7 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         {
             int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | (parameter_1 & 0xFF00);
 
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
             gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
             int32_t cost = game_do_command(gridX, flags, gridY, parameter_2, GAME_COMMAND_PLACE_PATH, parameter_3, 0);
             if (cost != MONEY32_UNDEFINED)
@@ -2445,6 +2549,7 @@ static money32 try_place_ghost_scenery(
 
             if (cost == MONEY32_UNDEFINED)
                 return cost;
+<<<<<<< HEAD
 
             gSceneryGhostPosition.x = map_tile.x;
             gSceneryGhostPosition.y = map_tile.y;
@@ -2469,6 +2574,32 @@ static money32 try_place_ghost_scenery(
             gSceneryGhostPosition.y = map_tile.y;
             gSceneryPlaceRotation = ((parameter_1 >> 8) & 0xFF);
 
+=======
+
+            gSceneryGhostPosition.x = map_tile.x;
+            gSceneryGhostPosition.y = map_tile.y;
+            gSceneryGhostWallRotation = (parameter_2 & 0xFF);
+
+            tileElement = gSceneryTileElement;
+            gSceneryGhostPosition.z = tileElement->base_height;
+
+            gSceneryGhostType |= (1 << 2);
+            break;
+        case 3:
+            // Large Scenery
+            // 6e25a7
+            cost = game_do_command(
+                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_LARGE_SCENERY, parameter_3,
+                gSceneryPlaceZ);
+
+            if (cost == MONEY32_UNDEFINED)
+                return cost;
+
+            gSceneryGhostPosition.x = map_tile.x;
+            gSceneryGhostPosition.y = map_tile.y;
+            gSceneryPlaceRotation = ((parameter_1 >> 8) & 0xFF);
+
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
 
@@ -2599,6 +2730,7 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
             {
                 bl = 20;
             }
+<<<<<<< HEAD
 
             for (; bl != 0; bl--)
             {
@@ -2753,6 +2885,162 @@ static void top_toolbar_tool_update_scenery(int16_t x, int16_t y)
 
             cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, selected_tab);
 
+=======
+
+            for (; bl != 0; bl--)
+            {
+                cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, selected_tab);
+
+                if (cost != MONEY32_UNDEFINED)
+                    break;
+                gSceneryPlaceZ += 8;
+            }
+
+            gSceneryPlaceCost = cost;
+            break;
+        case SCENERY_TYPE_PATH_ITEM:
+            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+            gMapSelectPositionA.x = mapTile.x;
+            gMapSelectPositionA.y = mapTile.y;
+            gMapSelectPositionB.x = mapTile.x;
+            gMapSelectPositionB.y = mapTile.y;
+            gMapSelectType = MAP_SELECT_TYPE_FULL;
+
+            map_invalidate_selection_rect();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile.x == gSceneryGhostPosition.x
+                && mapTile.y == gSceneryGhostPosition.y && (int16_t)(parameter2 & 0xFF) == gSceneryGhostPosition.z)
+            {
+                return;
+            }
+
+            scenery_remove_ghost_tool_placement();
+
+            cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, selected_tab);
+
+            gSceneryPlaceCost = cost;
+            break;
+        case SCENERY_TYPE_WALL:
+            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+            gMapSelectPositionA.x = mapTile.x;
+            gMapSelectPositionA.y = mapTile.y;
+            gMapSelectPositionB.x = mapTile.x;
+            gMapSelectPositionB.y = mapTile.y;
+            gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (parameter2 & 0xFF);
+
+            map_invalidate_selection_rect();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) && mapTile.x == gSceneryGhostPosition.x
+                && mapTile.y == gSceneryGhostPosition.y && (parameter2 & 0xFF) == gSceneryGhostWallRotation
+                && gSceneryPlaceZ == _unkF64F0A)
+            {
+                return;
+            }
+
+            scenery_remove_ghost_tool_placement();
+
+            gSceneryGhostWallRotation = (parameter2 & 0xFF);
+            _unkF64F0A = gSceneryPlaceZ;
+
+            bl = 1;
+            if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+            {
+                bl = 20;
+            }
+
+            cost = 0;
+            for (; bl != 0; bl--)
+            {
+                cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, selected_tab);
+
+                if (cost != MONEY32_UNDEFINED)
+                    break;
+                gSceneryPlaceZ += 8;
+            }
+
+            gSceneryPlaceCost = cost;
+            break;
+        case SCENERY_TYPE_LARGE:
+        {
+            scenery = get_large_scenery_entry(selected_scenery);
+            LocationXY16* selectedTile = gMapSelectionTiles;
+
+            for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (int16_t)(uint16_t)0xFFFF;
+                 tile++)
+            {
+                LocationXY16 tileLocation = { tile->x_offset, tile->y_offset };
+
+                rotate_map_coordinates(&tileLocation.x, &tileLocation.y, (parameter1 >> 8) & 0xFF);
+
+                tileLocation.x += mapTile.x;
+                tileLocation.y += mapTile.y;
+
+                selectedTile->x = tileLocation.x;
+                selectedTile->y = tileLocation.y;
+                selectedTile++;
+            }
+            selectedTile->x = -1;
+
+            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+            map_invalidate_map_selection_tiles();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) && mapTile.x == gSceneryGhostPosition.x
+                && mapTile.y == gSceneryGhostPosition.y && gSceneryPlaceZ == _unkF64F0A
+                && (int16_t)(parameter3 & 0xFFFF) == gSceneryPlaceObject)
+            {
+                return;
+            }
+
+            scenery_remove_ghost_tool_placement();
+
+            gSceneryPlaceObject = (parameter3 & 0xFFFF);
+            _unkF64F0A = gSceneryPlaceZ;
+
+            bl = 1;
+            if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
+            {
+                bl = 20;
+            }
+
+            cost = 0;
+            for (; bl != 0; bl--)
+            {
+                cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, selected_tab);
+
+                if (cost != MONEY32_UNDEFINED)
+                    break;
+                gSceneryPlaceZ += 8;
+            }
+
+            gSceneryPlaceCost = cost;
+            break;
+        }
+        case SCENERY_TYPE_BANNER:
+            gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
+            gMapSelectPositionA.x = mapTile.x;
+            gMapSelectPositionA.y = mapTile.y;
+            gMapSelectPositionB.x = mapTile.x;
+            gMapSelectPositionB.y = mapTile.y;
+            gMapSelectType = MAP_SELECT_TYPE_FULL;
+
+            map_invalidate_selection_rect();
+
+            // If no change in ghost placement
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile.x == gSceneryGhostPosition.x
+                && mapTile.y == gSceneryGhostPosition.y && (int16_t)(parameter2 & 0xFF) == gSceneryGhostPosition.z
+                && ((parameter2 >> 8) & 0xFF) == gSceneryPlaceRotation)
+            {
+                return;
+            }
+
+            scenery_remove_ghost_tool_placement();
+
+            cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, selected_tab);
+
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
             gSceneryPlaceCost = cost;
             break;
     }
@@ -3075,6 +3363,7 @@ static void window_top_toolbar_tool_abort(rct_window* w, rct_widgetindex widgetI
 
 static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget)
 {
+<<<<<<< HEAD
     int32_t num_menu;
     extern const rct_string_id SpeedNames[];
 
@@ -3100,14 +3389,69 @@ static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget)
     if (gConfigGeneral.debugging_tools && gGameSpeed == GAMESPEED_HYPER)
         gDropdownDefaultIndex++;
     dropdown_set_checked(gDropdownDefaultIndex, true);
+=======
+    int32_t num_items = 4;
+    gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
+    gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
+    gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
+    gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
+    if (gConfigGeneral.debugging_tools)
+    {
+        gDropdownItemsFormat[4] = STR_EMPTY;
+        gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
+        gDropdownItemsArgs[5] = STR_SPEED_HYPER;
+        num_items = 6;
+    }
+
+    gDropdownItemsArgs[0] = STR_SPEED_NORMAL;
+    gDropdownItemsArgs[1] = STR_SPEED_QUICK;
+    gDropdownItemsArgs[2] = STR_SPEED_FAST;
+    gDropdownItemsArgs[3] = STR_SPEED_TURBO;
+
+    window_dropdown_show_text(
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, num_items);
+
+    // Set checkmarks
+    if (gGameSpeed <= 4)
+    {
+        dropdown_set_checked(gGameSpeed - 1, true);
+    }
+    if (gGameSpeed == 8)
+    {
+        dropdown_set_checked(5, true);
+    }
+
+    if (gConfigGeneral.debugging_tools)
+    {
+        gDropdownDefaultIndex = (gGameSpeed == 8 ? 0 : gGameSpeed);
+    }
+    else
+    {
+        gDropdownDefaultIndex = (gGameSpeed >= 4 ? 0 : gGameSpeed);
+    }
+    if (gDropdownDefaultIndex == 4)
+    {
+        gDropdownDefaultIndex = 5;
+    }
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
 }
 
 static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex)
 {
     rct_window* w = window_get_main();
+<<<<<<< HEAD
     if (w && dropdownIndex >= 0 && dropdownIndex <= 6)
     {
         gGameSpeed = (dropdownIndex == 6) ? GAMESPEED_HYPER : (dropdownIndex + 1);
+=======
+    if (w)
+    {
+        if (dropdownIndex >= 0 && dropdownIndex <= 5)
+        {
+            gGameSpeed = dropdownIndex + 1;
+            if (gGameSpeed >= 5)
+                gGameSpeed = 8;
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
             window_invalidate(w);
     }
 }
