@@ -15,14 +15,13 @@
 /**
  * Common utility functions.
  */
-namespace Util {
-
-// Based on http://www.g-truc.net/post-0708.html
-template <typename T, size_t N>
-static constexpr size_t CountOf(T const (&)[N]) noexcept
+namespace Util
 {
-    return N;
-}
+    // Based on http://www.g-truc.net/post-0708.html
+    template<typename T, size_t N> static constexpr size_t CountOf(T const (&)[N]) noexcept
+    {
+        return N;
+    }
 
 } // namespace Util
 

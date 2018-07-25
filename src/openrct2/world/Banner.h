@@ -20,7 +20,7 @@ constexpr BannerIndex BANNER_INDEX_NULL = (BannerIndex)-1;
 struct rct_banner
 {
     uint8_t type;
-    uint8_t flags;              // 0x01
+    uint8_t flags;            // 0x01
     rct_string_id string_idx; // 0x02
     union
     {
@@ -50,4 +50,5 @@ rct_tile_element* banner_get_tile_element(BannerIndex bannerIndex);
 uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z);
 void banner_reset_broken_index();
 void fix_duplicated_banners();
-void game_command_callback_place_banner(int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
+void game_command_callback_place_banner(
+    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);

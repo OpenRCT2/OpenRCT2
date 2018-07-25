@@ -7,22 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <memory>
+#include "../FileClassifier.h"
+#include "../OpenRCT2.h"
+#include "../ParkImporter.h"
 #include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
-#include "../FileClassifier.h"
-#include "../ParkImporter.h"
+#include "../interface/Window.h"
 #include "../rct2/S6Exporter.h"
 #include "CommandLine.hpp"
 
-#include "../interface/Window.h"
-#include "../OpenRCT2.h"
+#include <memory>
 
 static void WriteConvertFromAndToMessage(uint32_t sourceFileType, uint32_t destinationFileType);
-static const utf8 * GetFileTypeFriendlyName(uint32_t fileType);
+static const utf8* GetFileTypeFriendlyName(uint32_t fileType);
 
-exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerator)
+exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerator)
 {
     exitcode_t result = CommandLine::HandleCommandDefault();
     if (result != EXITCODE_CONTINUE)
@@ -31,7 +31,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
     }
 
     // Get the source path
-    const utf8 * rawSourcePath;
+    const utf8* rawSourcePath;
     if (!enumerator->TryPopString(&rawSourcePath))
     {
         Console::Error::WriteLine("Expected a source path.");
@@ -43,7 +43,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
     uint32_t sourceFileType = get_file_extension_type(sourcePath);
 
     // Get the destination path
-    const utf8 * rawDestinationPath;
+    const utf8* rawDestinationPath;
     if (!enumerator->TryPopString(&rawDestinationPath))
     {
         Console::Error::WriteLine("Expected a destination path.");
@@ -55,35 +55,35 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
     uint32_t destinationFileType = get_file_extension_type(destinationPath);
 
     // Validate target type
-    if (destinationFileType != FILE_EXTENSION_SC6 &&
-        destinationFileType != FILE_EXTENSION_SV6)
+    if (destinationFileType != FILE_EXTENSION_SC6 && destinationFileType != FILE_EXTENSION_SV6)
     {
         Console::Error::WriteLine("Only conversion to .SC6 or .SV4 is supported.");
         return EXITCODE_FAIL;
     }
 
     // Validate the source type
-    switch (sourceFileType) {
-    case FILE_EXTENSION_SC4:
-    case FILE_EXTENSION_SV4:
-        break;
-    case FILE_EXTENSION_SC6:
-        if (destinationFileType == FILE_EXTENSION_SC6)
-        {
-            Console::Error::WriteLine("File is already a RollerCoaster Tycoon 2 scenario.");
+    switch (sourceFileType)
+    {
+        case FILE_EXTENSION_SC4:
+        case FILE_EXTENSION_SV4:
+            break;
+        case FILE_EXTENSION_SC6:
+            if (destinationFileType == FILE_EXTENSION_SC6)
+            {
+                Console::Error::WriteLine("File is already a RollerCoaster Tycoon 2 scenario.");
+                return EXITCODE_FAIL;
+            }
+            break;
+        case FILE_EXTENSION_SV6:
+            if (destinationFileType == FILE_EXTENSION_SV6)
+            {
+                Console::Error::WriteLine("File is already a RollerCoaster Tycoon 2 saved game.");
+                return EXITCODE_FAIL;
+            }
+            break;
+        default:
+            Console::Error::WriteLine("Only conversion from .SC4, .SV4, .SC6 or .SV6 is supported.");
             return EXITCODE_FAIL;
-        }
-        break;
-    case FILE_EXTENSION_SV6:
-        if (destinationFileType == FILE_EXTENSION_SV6)
-        {
-            Console::Error::WriteLine("File is already a RollerCoaster Tycoon 2 saved game.");
-            return EXITCODE_FAIL;
-        }
-        break;
-    default:
-        Console::Error::WriteLine("Only conversion from .SC4, .SV4, .SC6 or .SV6 is supported.");
-        return EXITCODE_FAIL;
     }
 
     // Perform conversion
@@ -102,14 +102,13 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
         importer->Load(sourcePath);
         importer->Import();
     }
-    catch (const std::exception &ex)
+    catch (const std::exception& ex)
     {
         Console::Error::WriteLine(ex.what());
         return EXITCODE_FAIL;
     }
 
-    if (sourceFileType == FILE_EXTENSION_SC4 ||
-        sourceFileType == FILE_EXTENSION_SC6)
+    if (sourceFileType == FILE_EXTENSION_SC4 || sourceFileType == FILE_EXTENSION_SC6)
     {
         // We are converting a scenario, so reset the park
         scenario_begin();
@@ -133,7 +132,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
             exporter->SaveGame(destinationPath);
         }
     }
-    catch (const std::exception &ex)
+    catch (const std::exception& ex)
     {
         Console::Error::WriteLine(ex.what());
         return EXITCODE_FAIL;
@@ -145,19 +144,24 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
 
 static void WriteConvertFromAndToMessage(uint32_t sourceFileType, uint32_t destinationFileType)
 {
-    const utf8 * sourceFileTypeName = GetFileTypeFriendlyName(sourceFileType);
-    const utf8 * destinationFileTypeName = GetFileTypeFriendlyName(destinationFileType);
+    const utf8* sourceFileTypeName = GetFileTypeFriendlyName(sourceFileType);
+    const utf8* destinationFileTypeName = GetFileTypeFriendlyName(destinationFileType);
     Console::WriteFormat("Converting from a %s to a %s.", sourceFileTypeName, destinationFileTypeName);
     Console::WriteLine();
 }
 
-static const utf8 * GetFileTypeFriendlyName(uint32_t fileType)
+static const utf8* GetFileTypeFriendlyName(uint32_t fileType)
 {
-    switch (fileType) {
-    case FILE_EXTENSION_SC4: return "RollerCoaster Tycoon 1 scenario";
-    case FILE_EXTENSION_SV4: return "RollerCoaster Tycoon 1 saved game";
-    case FILE_EXTENSION_SC6: return "RollerCoaster Tycoon 2 scenario";
-    case FILE_EXTENSION_SV6: return "RollerCoaster Tycoon 2 saved game";
+    switch (fileType)
+    {
+        case FILE_EXTENSION_SC4:
+            return "RollerCoaster Tycoon 1 scenario";
+        case FILE_EXTENSION_SV4:
+            return "RollerCoaster Tycoon 1 saved game";
+        case FILE_EXTENSION_SC6:
+            return "RollerCoaster Tycoon 2 scenario";
+        case FILE_EXTENSION_SV6:
+            return "RollerCoaster Tycoon 2 saved game";
     }
 
     assert(false);

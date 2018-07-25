@@ -80,11 +80,11 @@ struct rct_shop_item_stats
 
 struct rct_shop_item_string_types
 {
-    rct_string_id price_label;      // Balloon price:
-    rct_string_id singular;         // Balloon
-    rct_string_id plural;           // Balloons
-    rct_string_id indefinite;       // a Balloon
-    rct_string_id display;          // "Diamond Heights" Balloon
+    rct_string_id price_label; // Balloon price:
+    rct_string_id singular;    // Balloon
+    rct_string_id plural;      // Balloons
+    rct_string_id indefinite;  // a Balloon
+    rct_string_id display;     // "Diamond Heights" Balloon
 };
 
 extern uint32_t gSamePriceThroughoutParkA;
@@ -98,7 +98,7 @@ money32 get_shop_item_cost(int32_t shopItem);
 money16 get_shop_base_value(int32_t shopItem);
 money16 get_shop_hot_value(int32_t shopItem);
 money16 get_shop_cold_value(int32_t shopItem);
-money32 shop_item_get_common_price(Ride *forRide, int32_t shopItem);
+money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem);
 bool shop_item_is_photo(int32_t shopItem);
 bool shop_item_has_common_price(int32_t shopItem);
 bool shop_item_is_food_or_drink(int32_t shopItem);

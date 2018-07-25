@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/interface/Cursors.h>
 #include "CursorRepository.h"
+
+#include <openrct2/interface/Cursors.h>
 
 // clang-format off
 namespace OpenRCT2::Ui

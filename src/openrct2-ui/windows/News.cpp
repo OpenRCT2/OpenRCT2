@@ -7,18 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/core/Math.hpp>
-#include <openrct2/Context.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-
+#include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/management/NewsItem.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/world/Sprite.h>
+#include <openrct2/management/NewsItem.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/world/Sprite.h>
 
 // clang-format off
 enum WINDOW_NEWS_WIDGET_IDX {
@@ -82,28 +81,23 @@ static rct_window_event_list window_news_events = {
  *
  *  rct2: 0x0066E464
  */
-rct_window * window_news_open()
+rct_window* window_news_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_RECENT_NEWS);
-    if (window == nullptr) {
-        window = window_create_auto_pos(
-            400,
-            300,
-            &window_news_events,
-            WC_RECENT_NEWS,
-            0
-        );
+    if (window == nullptr)
+    {
+        window = window_create_auto_pos(400, 300, &window_news_events, WC_RECENT_NEWS, 0);
         window->widgets = window_news_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
         window_init_scroll_widgets(window);
         window->news.var_480 = -1;
     }
 
-// sub_66E4BA:
-    rct_widget *widget;
+    // sub_66E4BA:
+    rct_widget* widget;
 
     int32_t width = 0;
     int32_t height = 0;
@@ -124,16 +118,16 @@ static int32_t window_news_get_item_height()
  *
  *  rct2: 0x0066D4D5
  */
-static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_news_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_SETTINGS:
-        context_open_window(WC_NOTIFICATION_OPTIONS);
-        break;
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_SETTINGS:
+            context_open_window(WC_NOTIFICATION_OPTIONS);
+            break;
     }
 }
 
@@ -141,12 +135,11 @@ static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x0066EAB8
  */
-static void window_news_update(rct_window *w)
+static void window_news_update(rct_window* w)
 {
     int32_t i, j, x, y, z;
 
-    if (w->news.var_480 == -1 ||
-        --w->news.var_484 != 0)
+    if (w->news.var_480 == -1 || --w->news.var_484 != 0)
     {
         return;
     }
@@ -163,7 +156,7 @@ static void window_news_update(rct_window *w)
 
         if (j == 0)
         {
-            NewsItem * const newsItem = news_item_get(i);
+            NewsItem* const newsItem = news_item_get(i);
             if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
                 return;
             if (w->news.var_482 == 1)
@@ -189,7 +182,7 @@ static void window_news_update(rct_window *w)
  *
  *  rct2: 0x0066EA3C
  */
-static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
+static void window_news_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     int32_t itemHeight = window_news_get_item_height();
 
@@ -207,7 +200,7 @@ static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_
  *
  *  rct2: 0x0066EA5C
  */
-static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y)
+static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     int32_t itemHeight = window_news_get_item_height();
     int32_t i, buttonIndex;
@@ -220,10 +213,8 @@ static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, int3
 
         if (y < itemHeight)
         {
-            NewsItem * const newsItem = news_item_get(i);
-            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON ||
-                y < 14 || y >= 38 ||
-                x < 328)
+            NewsItem* const newsItem = news_item_get(i);
+            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON || y < 14 || y >= 38 || x < 328)
             {
                 buttonIndex = 0;
                 break;
@@ -256,7 +247,7 @@ static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, int3
  *
  *  rct2: 0x0066EAAE
  */
-static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
+static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
 {
     set_format_arg(0, rct_string_id, STR_LIST);
 }
@@ -265,7 +256,7 @@ static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_
  *
  *  rct2: 0x0066E4E8
  */
-static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_news_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 }
@@ -274,7 +265,7 @@ static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0066E4EE
  */
-static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
+static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
     int32_t itemHeight = window_news_get_item_height();
@@ -283,7 +274,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32
     y = 0;
     for (i = 11; i < 61; i++)
     {
-        NewsItem * const newsItem = news_item_get(i);
+        NewsItem* const newsItem = news_item_get(i);
         if (news_item_is_empty(i))
             break;
         if (y >= dpi->y + dpi->height)
@@ -295,7 +286,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32
         }
 
         // Background
-        gfx_fill_rect_inset(dpi, -1, y, 383, y + itemHeight - 1, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+        gfx_fill_rect_inset(
+            dpi, -1, y, 383, y + itemHeight - 1, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
         // Date text
         set_format_arg(0, rct_string_id, DateDayNames[newsItem->Day - 1]);
@@ -303,7 +295,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32
         gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 2, y);
 
         // Item text
-        utf8 *text = newsItem->Text;
+        utf8* text = newsItem->Text;
         gfx_draw_string_left_wrapped(dpi, &text, 2, y + lineHeight, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
         // Subject button
@@ -313,7 +305,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32
             yy = y + lineHeight + 4;
 
             press = 0;
-            if (w->news.var_480 != -1) {
+            if (w->news.var_480 != -1)
+            {
                 const uint8_t idx = 11 + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 1)
@@ -321,53 +314,57 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32
             }
             gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
 
-            switch (newsItem->Type) {
-            case NEWS_ITEM_RIDE:
-                gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
-                break;
-            case NEWS_ITEM_PEEP:
-            case NEWS_ITEM_PEEP_ON_RIDE:
+            switch (newsItem->Type)
             {
-                rct_drawpixelinfo cliped_dpi;
-                if (!clip_drawpixelinfo(&cliped_dpi, dpi, x + 1, yy + 1, 22, 22)) {
+                case NEWS_ITEM_RIDE:
+                    gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
+                    break;
+                case NEWS_ITEM_PEEP:
+                case NEWS_ITEM_PEEP_ON_RIDE:
+                {
+                    rct_drawpixelinfo cliped_dpi;
+                    if (!clip_drawpixelinfo(&cliped_dpi, dpi, x + 1, yy + 1, 22, 22))
+                    {
+                        break;
+                    }
+
+                    rct_peep* peep = GET_PEEP(newsItem->Assoc);
+                    int32_t clip_x = 10, clip_y = 19;
+
+                    // If normal peep set sprite to normal (no food)
+                    // If staff set sprite to staff sprite
+                    int32_t sprite_type = 0;
+                    if (peep->type == PEEP_TYPE_STAFF)
+                    {
+                        sprite_type = peep->sprite_type;
+                        if (peep->staff_type == STAFF_TYPE_ENTERTAINER)
+                        {
+                            clip_y += 3;
+                        }
+                    }
+
+                    uint32_t image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
+                    image_id += 0xA0000001;
+                    image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
+
+                    gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
                     break;
                 }
-
-                rct_peep* peep = GET_PEEP(newsItem->Assoc);
-                int32_t clip_x = 10, clip_y = 19;
-
-                // If normal peep set sprite to normal (no food)
-                // If staff set sprite to staff sprite
-                int32_t sprite_type = 0;
-                if (peep->type == PEEP_TYPE_STAFF){
-                    sprite_type = peep->sprite_type;
-                    if (peep->staff_type == STAFF_TYPE_ENTERTAINER){
-                        clip_y += 3;
-                    }
-                }
-
-                uint32_t image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
-                image_id += 0xA0000001;
-                image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
-
-                gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
-                break;
-            }
-            case NEWS_ITEM_MONEY:
-                gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
-                break;
-            case NEWS_ITEM_RESEARCH:
-                gfx_draw_sprite(dpi, newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
-                break;
-            case NEWS_ITEM_PEEPS:
-                gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
-                break;
-            case NEWS_ITEM_AWARD:
-                gfx_draw_sprite(dpi, SPR_AWARD, x, yy, 0);
-                break;
-            case NEWS_ITEM_GRAPH:
-                gfx_draw_sprite(dpi, SPR_GRAPH, x, yy, 0);
-                break;
+                case NEWS_ITEM_MONEY:
+                    gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
+                    break;
+                case NEWS_ITEM_RESEARCH:
+                    gfx_draw_sprite(dpi, newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
+                    break;
+                case NEWS_ITEM_PEEPS:
+                    gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
+                    break;
+                case NEWS_ITEM_AWARD:
+                    gfx_draw_sprite(dpi, SPR_AWARD, x, yy, 0);
+                    break;
+                case NEWS_ITEM_GRAPH:
+                    gfx_draw_sprite(dpi, SPR_GRAPH, x, yy, 0);
+                    break;
             }
         }
 
@@ -378,7 +375,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32
             yy = y + lineHeight + 4;
 
             press = 0;
-            if (w->news.var_480 != -1) {
+            if (w->news.var_480 != -1)
+            {
                 const uint8_t idx = 11 + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 2)

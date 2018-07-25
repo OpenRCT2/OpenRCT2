@@ -14,7 +14,8 @@
 
 struct rct_drawpixelinfo;
 
-enum INTRO_STATE {
+enum INTRO_STATE
+{
     INTRO_STATE_NONE,
     INTRO_STATE_PUBLISHER_BEGIN,
     INTRO_STATE_PUBLISHER_SCROLL,
@@ -25,13 +26,13 @@ enum INTRO_STATE {
     INTRO_STATE_LOGO_FADE_OUT,
     INTRO_STATE_DISCLAIMER_1,
     INTRO_STATE_DISCLAIMER_2,
-    INTRO_STATE_CLEAR               = 254,
-    INTRO_STATE_FINISH              = 255,
+    INTRO_STATE_CLEAR = 254,
+    INTRO_STATE_FINISH = 255,
 };
 
 extern uint8_t gIntroState;
 
 void intro_update();
-void intro_draw(rct_drawpixelinfo *dpi);
+void intro_draw(rct_drawpixelinfo* dpi);
 
 #endif

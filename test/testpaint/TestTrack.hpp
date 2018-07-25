@@ -9,11 +9,11 @@
 
 #pragma once
 
+#include <openrct2/common.h>
 #include <string>
 
-#include <openrct2/common.h>
-
-class TestTrack {
+class TestTrack
+{
 public:
-    static uint8_t TestPaintTrackElement(uint8_t rideType, uint8_t trackType, std::string *out);
+    static uint8_t TestPaintTrackElement(uint8_t rideType, uint8_t trackType, std::string* out);
 };

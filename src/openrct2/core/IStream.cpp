@@ -7,12 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <vector>
 #include "IStream.hpp"
+
 #include "Memory.hpp"
 #include "String.hpp"
 
-utf8 * IStream::ReadString()
+#include <vector>
+
+utf8* IStream::ReadString()
 {
     std::vector<utf8> result;
 
@@ -23,7 +25,7 @@ utf8 * IStream::ReadString()
     }
     result.push_back(0);
 
-    utf8 * resultString = Memory::AllocateArray<utf8>(result.size());
+    utf8* resultString = Memory::AllocateArray<utf8>(result.size());
     std::copy(result.begin(), result.end(), resultString);
     return resultString;
 }
@@ -39,7 +41,7 @@ std::string IStream::ReadStdString()
     return result;
 }
 
-void IStream::WriteString(const utf8 * str)
+void IStream::WriteString(const utf8* str)
 {
     if (str == nullptr)
     {
@@ -52,7 +54,7 @@ void IStream::WriteString(const utf8 * str)
     }
 }
 
-void IStream::WriteString(const std::string &str)
+void IStream::WriteString(const std::string& str)
 {
     WriteString(str.c_str());
 }

@@ -17,57 +17,66 @@
 class CommandLineArgEnumerator final
 {
 private:
-    const char * const * _arguments;
-    uint16_t               _count;
-    uint16_t               _index;
+    const char* const* _arguments;
+    uint16_t _count;
+    uint16_t _index;
 
 public:
-    const char * const * GetArguments() const { return _arguments; }
-    uint16_t               GetCount()     const { return _count; }
-    uint16_t               GetIndex()     const { return _index; }
+    const char* const* GetArguments() const
+    {
+        return _arguments;
+    }
+    uint16_t GetCount() const
+    {
+        return _count;
+    }
+    uint16_t GetIndex() const
+    {
+        return _index;
+    }
 
-    CommandLineArgEnumerator(const char * const * arguments, int32_t count);
+    CommandLineArgEnumerator(const char* const* arguments, int32_t count);
 
     void Reset();
     bool Backtrack();
     bool TryPop();
-    bool TryPopInteger(int32_t * result);
-    bool TryPopReal(float * result);
-    bool TryPopString(const char * * result);
+    bool TryPopInteger(int32_t* result);
+    bool TryPopReal(float* result);
+    bool TryPopString(const char** result);
 };
 
-using exitcode_t      = int32_t;
-using CommandLineFunc = exitcode_t (*)(CommandLineArgEnumerator *);
+using exitcode_t = int32_t;
+using CommandLineFunc = exitcode_t (*)(CommandLineArgEnumerator*);
 
 enum
 {
-    EXITCODE_FAIL     = -1,
-    EXITCODE_OK       =  0,
-    EXITCODE_CONTINUE =  1,
+    EXITCODE_FAIL = -1,
+    EXITCODE_OK = 0,
+    EXITCODE_CONTINUE = 1,
 };
 
 struct CommandLineExample
 {
-    const char * Arguments;
-    const char * Description;
+    const char* Arguments;
+    const char* Description;
 };
 
 struct CommandLineOptionDefinition
 {
-    uint8_t        Type;
-    void *       OutAddress;
-    char         ShortName;
-    const char * LongName;
-    const char * Description;
+    uint8_t Type;
+    void* OutAddress;
+    char ShortName;
+    const char* LongName;
+    const char* Description;
 };
 
 struct CommandLineCommand
 {
-    const char *                        Name;
-    const char *                        Parameters;
-    const CommandLineOptionDefinition * Options;
-    const CommandLineCommand *          SubCommands;
-    CommandLineFunc                     Func;
+    const char* Name;
+    const char* Parameters;
+    const CommandLineOptionDefinition* Options;
+    const CommandLineCommand* SubCommands;
+    CommandLineFunc Func;
 };
 
 enum
@@ -80,12 +89,27 @@ enum
 
 constexpr char NAC = '\0';
 
-#define ExampleTableEnd { nullptr, nullptr }
-#define OptionTableEnd  { UINT8_MAX, nullptr, NAC, nullptr, nullptr }
-#define CommandTableEnd { nullptr, nullptr, nullptr, nullptr, nullptr }
+#define ExampleTableEnd                                                                                                        \
+    {                                                                                                                          \
+        nullptr, nullptr                                                                                                       \
+    }
+#define OptionTableEnd                                                                                                         \
+    {                                                                                                                          \
+        UINT8_MAX, nullptr, NAC, nullptr, nullptr                                                                              \
+    }
+#define CommandTableEnd                                                                                                        \
+    {                                                                                                                          \
+        nullptr, nullptr, nullptr, nullptr, nullptr                                                                            \
+    }
 
-#define DefineCommand(name, params, options, func) { name, params, options, nullptr,         func }
-#define DefineSubCommand(name, subcommandtable)    { name, "",     nullptr, subcommandtable, nullptr }
+#define DefineCommand(name, params, options, func)                                                                             \
+    {                                                                                                                          \
+        name, params, options, nullptr, func                                                                                   \
+    }
+#define DefineSubCommand(name, subcommandtable)                                                                                \
+    {                                                                                                                          \
+        name, "", nullptr, subcommandtable, nullptr                                                                            \
+    }
 
 namespace CommandLine
 {
@@ -99,6 +123,6 @@ namespace CommandLine
     void PrintHelp(bool allCommands = false);
     exitcode_t HandleCommandDefault();
 
-    exitcode_t HandleCommandConvert(CommandLineArgEnumerator * enumerator);
-    exitcode_t HandleCommandUri(CommandLineArgEnumerator * enumerator);
+    exitcode_t HandleCommandConvert(CommandLineArgEnumerator* enumerator);
+    exitcode_t HandleCommandUri(CommandLineArgEnumerator* enumerator);
 } // namespace CommandLine

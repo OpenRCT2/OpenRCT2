@@ -9,36 +9,43 @@
 
 #pragma once
 
-#include <vector>
 #include "../world/Scenery.h"
 #include "Object.h"
+
+#include <vector>
 
 struct ObjectRepositoryItem;
 
 class SceneryGroupObject final : public Object
 {
 private:
-    rct_scenery_group_entry         _legacyType = {};
-    std::vector<rct_object_entry>   _items;
+    rct_scenery_group_entry _legacyType = {};
+    std::vector<rct_object_entry> _items;
 
 public:
-    explicit SceneryGroupObject(const rct_object_entry &entry) : Object(entry) { }
+    explicit SceneryGroupObject(const rct_object_entry& entry)
+        : Object(entry)
+    {
+    }
 
-    void * GetLegacyData()  override { return &_legacyType; }
-    void ReadJson(IReadObjectContext * context, const json_t * root) override;
+    void* GetLegacyData() override
+    {
+        return &_legacyType;
+    }
+    void ReadJson(IReadObjectContext* context, const json_t* root) override;
 
-    void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
+    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
     void Load() override;
     void Unload() override;
     void UpdateEntryIndexes();
 
-    void DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
-    void SetRepositoryItem(ObjectRepositoryItem * item) const override;
+    void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
 private:
-    static std::vector<rct_object_entry> ReadItems(IStream * stream);
-    static uint32_t ReadJsonEntertainerCostumes(const json_t * jCostumes);
-    static uint32_t ParseEntertainerCostume(const std::string &s);
-    static std::vector<rct_object_entry> ReadJsonEntries(const json_t * jEntries);
+    static std::vector<rct_object_entry> ReadItems(IStream* stream);
+    static uint32_t ReadJsonEntertainerCostumes(const json_t* jCostumes);
+    static uint32_t ParseEntertainerCostume(const std::string& s);
+    static std::vector<rct_object_entry> ReadJsonEntries(const json_t* jEntries);
 };

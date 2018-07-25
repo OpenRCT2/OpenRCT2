@@ -14,9 +14,9 @@
 
 enum VirtualFloorStyles
 {
-	VIRTUAL_FLOOR_STYLE_OFF,
-	VIRTUAL_FLOOR_STYLE_CLEAR,
-	VIRTUAL_FLOOR_STYLE_GLASSY
+    VIRTUAL_FLOOR_STYLE_OFF,
+    VIRTUAL_FLOOR_STYLE_CLEAR,
+    VIRTUAL_FLOOR_STYLE_GLASSY
 };
 
 struct paint_session;
@@ -32,6 +32,6 @@ void virtual_floor_invalidate();
 
 bool virtual_floor_tile_is_floor(int16_t x, int16_t y);
 
-void virtual_floor_paint(paint_session * session);
+void virtual_floor_paint(paint_session* session);
 
 #endif

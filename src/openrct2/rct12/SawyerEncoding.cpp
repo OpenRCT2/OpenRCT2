@@ -7,13 +7,14 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "SawyerEncoding.h"
+
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
-#include "SawyerEncoding.h"
 
 namespace SawyerEncoding
 {
-    bool ValidateChecksum(IStream * stream)
+    bool ValidateChecksum(IStream* stream)
     {
         uint64_t initialPosition = stream->GetPosition();
         uint64_t dataSize = stream->GetLength() - initialPosition;
@@ -39,8 +40,7 @@ namespace SawyerEncoding
                 }
 
                 dataSize -= bufferSize;
-            }
-            while (dataSize != 0);
+            } while (dataSize != 0);
 
             // Read file checksum
             uint32_t fileChecksum = stream->ReadValue<uint32_t>();
@@ -49,7 +49,7 @@ namespace SawyerEncoding
             stream->SetPosition(initialPosition);
             return checksum == fileChecksum;
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             // Rewind back to original position
             stream->SetPosition(initialPosition);

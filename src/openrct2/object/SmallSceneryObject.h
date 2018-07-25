@@ -9,31 +9,38 @@
 
 #pragma once
 
-#include <vector>
 #include "../world/Scenery.h"
 #include "SceneryObject.h"
+
+#include <vector>
 
 class SmallSceneryObject final : public SceneryObject
 {
 private:
-    rct_scenery_entry   _legacyType = {};
-    std::vector<uint8_t>  _frameOffsets;
+    rct_scenery_entry _legacyType = {};
+    std::vector<uint8_t> _frameOffsets;
 
 public:
-    explicit SmallSceneryObject(const rct_object_entry &entry) : SceneryObject(entry) { }
+    explicit SmallSceneryObject(const rct_object_entry& entry)
+        : SceneryObject(entry)
+    {
+    }
 
-    void * GetLegacyData()  override { return &_legacyType; }
+    void* GetLegacyData() override
+    {
+        return &_legacyType;
+    }
 
-    void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
-    void ReadJson(IReadObjectContext * context, const json_t * root) override;
+    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadJson(IReadObjectContext* context, const json_t* root) override;
     void Load() override;
     void Unload() override;
 
-    void DrawPreview(rct_drawpixelinfo * dpi, int32_t width, int32_t height) const override;
+    void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
 private:
-    static std::vector<uint8_t> ReadFrameOffsets(IStream * stream);
-    static std::vector<uint8_t> ReadJsonFrameOffsets(const json_t * jFrameOffsets);
+    static std::vector<uint8_t> ReadFrameOffsets(IStream* stream);
+    static std::vector<uint8_t> ReadJsonFrameOffsets(const json_t* jFrameOffsets);
     void PerformFixes();
     rct_object_entry GetScgPiratHeader();
     rct_object_entry GetScgMineHeader();

@@ -7,11 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <time.h>
 #include "../Game.h"
 #include "../core/Math.hpp"
 #include "Date.h"
 #include "StringIds.h"
+
+#include <time.h>
 
 uint16_t gDateMonthTicks;
 uint16_t gDateMonthsElapsed;
@@ -89,7 +90,7 @@ void date_update()
 void date_update_real_time_of_day()
 {
     time_t timestamp = time(nullptr);
-    struct tm *now = localtime(&timestamp);
+    struct tm* now = localtime(&timestamp);
 
     gRealTimeOfDay.second = now->tm_sec;
     gRealTimeOfDay.minute = now->tm_min;

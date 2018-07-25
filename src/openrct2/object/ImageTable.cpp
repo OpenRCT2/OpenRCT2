@@ -7,26 +7,28 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ImageTable.h"
+
+#include "../OpenRCT2.h"
+#include "../core/IStream.hpp"
+#include "Object.h"
+
 #include <algorithm>
 #include <memory>
 #include <stdexcept>
-#include "../core/IStream.hpp"
-#include "../OpenRCT2.h"
-#include "ImageTable.h"
-#include "Object.h"
 
 ImageTable::~ImageTable()
 {
     if (_data == nullptr)
     {
-        for (auto &entry : _entries)
+        for (auto& entry : _entries)
         {
-            delete [] entry.offset;
+            delete[] entry.offset;
         }
     }
 }
 
-void ImageTable::Read(IReadObjectContext * context, IStream * stream)
+void ImageTable::Read(IReadObjectContext* context, IStream* stream)
 {
     if (gOpenRCT2NoGraphics)
     {
@@ -88,14 +90,14 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
         _data = std::move(data);
         _entries.insert(_entries.end(), newEntries.begin(), newEntries.end());
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Bad image table.");
         throw;
     }
 }
 
-void ImageTable::AddImage(const rct_g1_element * g1)
+void ImageTable::AddImage(const rct_g1_element* g1)
 {
     rct_g1_element newg1 = *g1;
     auto length = g1_calculate_data_size(g1);

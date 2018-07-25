@@ -9,12 +9,12 @@
 
 #pragma once
 
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 #include <openrct2/sprites.h>
-#include <openrct2-ui/interface/Window.h>
 
-#define MINIMUM_TOOL_SIZE         1
-#define MAXIMUM_TOOL_SIZE         64
+#define MINIMUM_TOOL_SIZE 1
+#define MAXIMUM_TOOL_SIZE 64
 // The highest tool size to have a sprite. Bigger tool sizes simply display a number.
 #define MAX_TOOL_SIZE_WITH_SPRITE 7
 
@@ -30,5 +30,5 @@ extern uint32_t WallTextureOrder[];
 extern uint32_t WallTexturePreviews[];
 
 uint32_t land_tool_size_to_sprite_index(uint16_t size);
-void land_tool_show_surface_style_dropdown(rct_window * w, rct_widget * widget, uint8_t currentSurfaceType);
-void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uint8_t currentEdgeType);
+void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentSurfaceType);
+void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentEdgeType);

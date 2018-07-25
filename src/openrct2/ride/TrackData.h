@@ -21,9 +21,9 @@ extern const rct_track_coordinates FlatTrackCoordinates[253];
 extern const uint8_t TrackSequenceProperties[256][16];
 extern const uint8_t FlatRideTrackSequenceProperties[256][16];
 
-extern const uint64_t              RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT];
-extern const rct_preview_track * TrackBlocks[256];
-extern const rct_preview_track * FlatRideTrackBlocks[256];
+extern const uint64_t RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT];
+extern const rct_preview_track* TrackBlocks[256];
+extern const rct_preview_track* FlatRideTrackBlocks[256];
 
 extern const uint8_t TrackPieceLengths[256];
 
@@ -37,11 +37,11 @@ extern const track_curve_chain gTrackCurveChain[256];
 extern const track_curve_chain gFlatRideTrackCurveChain[256];
 
 extern const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT];
-extern const uint32_t *                    RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT];
+extern const uint32_t* RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT];
 
 struct track_descriptor
 {
-    bool  starts_diagonal;
+    bool starts_diagonal;
     uint8_t slope_start;
     uint8_t bank_start;
     uint8_t track_curve;
@@ -54,11 +54,11 @@ extern const track_descriptor gTrackDescriptors[142];
 
 struct rct_vehicle_info_list
 {
-    uint16_t                   size;
-    const rct_vehicle_info * info;
+    uint16_t size;
+    const rct_vehicle_info* info;
 };
 
-extern const rct_vehicle_info_list * const * const gTrackVehicleInfo[17];
+extern const rct_vehicle_info_list* const* const gTrackVehicleInfo[17];
 
 extern const int16_t AlternativeTrackTypes[256];
 
@@ -84,4 +84,3 @@ extern const uint8_t FlatRideTrackSequenceElementAllowedWallEdges[256][16];
 
 extern const uint16_t FlatTrackFlags[256];
 extern const uint16_t TrackFlags[256];
-

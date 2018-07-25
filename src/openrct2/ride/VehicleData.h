@@ -12,16 +12,17 @@
 
 #include "../common.h"
 
-extern const uint8_t * Rotation1TimeToSpriteMaps[];
-extern const uint8_t * Rotation2TimeToSpriteMaps[];
-extern const uint8_t * Rotation3TimeToSpriteMaps[];
+extern const uint8_t* Rotation1TimeToSpriteMaps[];
+extern const uint8_t* Rotation2TimeToSpriteMaps[];
+extern const uint8_t* Rotation3TimeToSpriteMaps[];
 
-struct top_spin_time_to_sprite_map {
+struct top_spin_time_to_sprite_map
+{
     uint8_t arm_rotation;
     uint8_t bank_rotation;
 };
 
-extern const top_spin_time_to_sprite_map * TopSpinTimeToSpriteMaps[];
+extern const top_spin_time_to_sprite_map* TopSpinTimeToSpriteMaps[];
 
 extern const uint8_t MotionSimulatorTimeToSpriteMap[];
 extern const int32_t MotionSimulatorTimeToSpriteMapCount;

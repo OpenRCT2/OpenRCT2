@@ -34,12 +34,12 @@ void chat_toggle();
 
 void chat_init();
 void chat_update();
-void chat_draw(rct_drawpixelinfo * dpi, uint8_t chatBackgroundColour);
+void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColour);
 
-void chat_history_add(const char *src);
+void chat_history_add(const char* src);
 void chat_input(CHAT_INPUT input);
 
-int32_t chat_string_wrapped_get_height(void *args, int32_t width);
-int32_t chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, int32_t x, int32_t y, int32_t width);
+int32_t chat_string_wrapped_get_height(void* args, int32_t width);
+int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width);
 
 #endif

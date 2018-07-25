@@ -7,16 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <utility>
-#include "../core/Guard.hpp"
 #include "Intent.h"
+
+#include "../core/Guard.hpp"
+
+#include <utility>
 
 Intent::Intent(rct_windowclass windowclass)
 {
     this->_Class = windowclass;
 }
 
-Intent * Intent::putExtra(uint32_t key, uint32_t value)
+Intent* Intent::putExtra(uint32_t key, uint32_t value)
 {
     IntentData data = {};
     data.intVal.unsignedInt = value;
@@ -27,7 +29,7 @@ Intent * Intent::putExtra(uint32_t key, uint32_t value)
     return this;
 }
 
-Intent * Intent::putExtra(uint32_t key, void * value)
+Intent* Intent::putExtra(uint32_t key, void* value)
 {
     IntentData data = {};
     data.pointerVal = value;
@@ -38,7 +40,7 @@ Intent * Intent::putExtra(uint32_t key, void * value)
     return this;
 }
 
-Intent * Intent::putExtra(uint32_t key, int32_t value)
+Intent* Intent::putExtra(uint32_t key, int32_t value)
 {
     IntentData data = {};
     data.intVal.signedInt = value;
@@ -49,7 +51,7 @@ Intent * Intent::putExtra(uint32_t key, int32_t value)
     return this;
 }
 
-Intent * Intent::putExtra(uint32_t key, std::string value)
+Intent* Intent::putExtra(uint32_t key, std::string value)
 {
     IntentData data = {};
     data.stringVal = std::move(value);
@@ -60,7 +62,7 @@ Intent * Intent::putExtra(uint32_t key, std::string value)
     return this;
 }
 
-Intent * Intent::putExtra(uint32_t key, close_callback value)
+Intent* Intent::putExtra(uint32_t key, close_callback value)
 {
     IntentData data = {};
     data.closeCallbackVal = value;
@@ -76,7 +78,7 @@ rct_windowclass Intent::GetWindowClass() const
     return this->_Class;
 }
 
-void * Intent::GetPointerExtra(uint32_t key) const
+void* Intent::GetPointerExtra(uint32_t key) const
 {
     if (_Data.count(key) == 0)
     {
@@ -85,7 +87,7 @@ void * Intent::GetPointerExtra(uint32_t key) const
 
     auto data = _Data.at(key);
     openrct2_assert(data.type == IntentData::DT_POINTER, "Actual type doesn't match requested type");
-    return (void *) data.pointerVal;
+    return (void*)data.pointerVal;
 }
 
 uint32_t Intent::GetUIntExtra(uint32_t key) const
@@ -116,7 +118,7 @@ std::string Intent::GetStringExtra(uint32_t key) const
 {
     if (_Data.count(key) == 0)
     {
-        return std::string {};
+        return std::string{};
     }
 
     auto data = _Data.at(key);

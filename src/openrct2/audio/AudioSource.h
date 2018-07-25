@@ -23,11 +23,11 @@ namespace OpenRCT2::Audio
 
         virtual uint64_t GetLength() const abstract;
         // virtual AudioFormat GetFormat() abstract;
-        virtual size_t Read(void * dst, uint64_t offset, size_t len) abstract;
+        virtual size_t Read(void* dst, uint64_t offset, size_t len) abstract;
     };
 
     namespace AudioSource
     {
-        IAudioSource * CreateNull();
+        IAudioSource* CreateNull();
     }
 } // namespace OpenRCT2::Audio

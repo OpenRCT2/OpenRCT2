@@ -25,7 +25,7 @@ public:
         SDL_GetError();
     }
 
-    explicit SDLException(const char * message)
+    explicit SDLException(const char* message)
         : runtime_error(message)
     {
     }
@@ -34,7 +34,7 @@ public:
      * Throws an SDL exception with a message containing the given call information
      * and the message given by SDL_GetError.
      */
-    static void Throw(const char * call)
+    static void Throw(const char* call)
     {
         std::string message = std::string(call) + ": " + std::string(SDL_GetError());
         throw SDLException(message);

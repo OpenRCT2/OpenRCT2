@@ -11,10 +11,10 @@
 // directly into the test binary.
 #ifdef _MSC_VER
 
-#include <gtest/gtest.h>
-#include <openrct2/core/Guard.hpp>
+#    include <gtest/gtest.h>
+#    include <openrct2/core/Guard.hpp>
 
-int main(int argc, char * * argv)
+int main(int argc, char** argv)
 {
     // Abort on an assertions so the tests do not hang
     Guard::SetAssertBehaviour(ASSERT_BEHAVIOUR::ABORT);

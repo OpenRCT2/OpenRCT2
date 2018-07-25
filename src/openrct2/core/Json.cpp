@@ -7,16 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "FileStream.hpp"
 #include "Json.hpp"
+
+#include "FileStream.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
 
 namespace Json
 {
-    json_t * ReadFromFile(const utf8 * path, size_t maxSize)
+    json_t* ReadFromFile(const utf8* path, size_t maxSize)
     {
-        json_t  * json = nullptr;
+        json_t* json = nullptr;
         auto fs = FileStream(path, FILE_MODE_OPEN);
 
         size_t fileLength = (size_t)fs.GetLength();
@@ -25,7 +26,7 @@ namespace Json
             throw IOException("Json file too large.");
         }
 
-        utf8 * fileData = Memory::Allocate<utf8>(fileLength + 1);
+        utf8* fileData = Memory::Allocate<utf8>(fileLength + 1);
         fs.Read(fileData, fileLength);
         fileData[fileLength] = '\0';
 
@@ -41,10 +42,10 @@ namespace Json
         return json;
     }
 
-    void WriteToFile(const utf8 * path, const json_t * json, size_t flags)
+    void WriteToFile(const utf8* path, const json_t* json, size_t flags)
     {
         // Serialise JSON
-        const char * jsonOutput = json_dumps(json, flags);
+        const char* jsonOutput = json_dumps(json, flags);
 
         // Write to file
         auto fs = FileStream(path, FILE_MODE_WRITE);
@@ -52,9 +53,9 @@ namespace Json
         fs.Write(jsonOutput, jsonOutputSize);
     }
 
-    json_t * FromString(const std::string & raw)
+    json_t* FromString(const std::string& raw)
     {
-        json_t *     root;
+        json_t* root;
         json_error_t error;
         root = json_loads(raw.c_str(), 0, &error);
         if (root == nullptr)

@@ -7,11 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Console.hpp"
+
+#include "../platform/platform.h"
+
 #include <cstdio>
 #include <string>
-
-#include "Console.hpp"
-#include "../platform/platform.h"
 
 namespace Console
 {
@@ -20,7 +21,7 @@ namespace Console
         fputc(c, stdout);
     }
 
-    void Write(const utf8 * str)
+    void Write(const utf8* str)
     {
         fputs(str, stdout);
     }
@@ -31,7 +32,7 @@ namespace Console
         Write(sz.c_str());
     }
 
-    void WriteFormat(const utf8 * format, ...)
+    void WriteFormat(const utf8* format, ...)
     {
         va_list args;
 
@@ -45,7 +46,7 @@ namespace Console
         puts("");
     }
 
-    void WriteLine(const utf8 * format, ...)
+    void WriteLine(const utf8* format, ...)
     {
         va_list args;
 
@@ -62,12 +63,12 @@ namespace Console
             fputc(c, stderr);
         }
 
-        void Write(const utf8 * str)
+        void Write(const utf8* str)
         {
             fputs(str, stderr);
         }
 
-        void WriteFormat(const utf8 * format, ...)
+        void WriteFormat(const utf8* format, ...)
         {
             va_list args;
 
@@ -81,7 +82,7 @@ namespace Console
             fputs(PLATFORM_NEWLINE, stderr);
         }
 
-        void WriteLine(const utf8 * format, ...)
+        void WriteLine(const utf8* format, ...)
         {
             va_list args;
             va_start(args, format);
@@ -89,7 +90,7 @@ namespace Console
             va_end(args);
         }
 
-        void WriteLine_VA(const utf8 * format, va_list args)
+        void WriteLine_VA(const utf8* format, va_list args)
         {
             auto formatLn = std::string(format) + "\n";
             vfprintf(stdout, formatLn.c_str(), args);

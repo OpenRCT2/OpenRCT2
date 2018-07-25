@@ -9,10 +9,11 @@
 
 #pragma once
 
-#include <memory>
 #include "../common.h"
 #include "../util/SawyerCoding.h"
 #include "SawyerChunk.h"
+
+#include <memory>
 
 interface IStream;
 
@@ -23,10 +24,10 @@ interface IStream;
 class SawyerChunkReader final
 {
 private:
-    IStream * const _stream = nullptr;
+    IStream* const _stream = nullptr;
 
 public:
-    explicit SawyerChunkReader(IStream * stream);
+    explicit SawyerChunkReader(IStream* stream);
 
     /**
      * Skips the next chunk in the stream without decoding or reading its data
@@ -47,15 +48,14 @@ public:
      * @param dst The destination buffer.
      * @param length The size of the destination buffer.
      */
-    void ReadChunk(void * dst, size_t length);
+    void ReadChunk(void* dst, size_t length);
 
     /**
      * Reads the next chunk from the stream into a buffer returned as the
      * specified type. If the chunk is smaller than the size of the type
      * then the remaining space is padded with zero.
      */
-    template<typename T>
-    T ReadChunkAs()
+    template<typename T> T ReadChunkAs()
     {
         T result;
         ReadChunk(&result, sizeof(result));
@@ -63,13 +63,13 @@ public:
     }
 
 private:
-    static size_t DecodeChunk(void * dst, size_t dstCapacity, const void * src, const sawyercoding_chunk_header &header);
-    static size_t DecodeChunkRLERepeat(void * dst, size_t dstCapacity, const void * src, size_t srcLength);
-    static size_t DecodeChunkRLE(void * dst, size_t dstCapacity, const void * src, size_t srcLength);
-    static size_t DecodeChunkRepeat(void * dst, size_t dstCapacity, const void * src, size_t srcLength);
-    static size_t DecodeChunkRotate(void * dst, size_t dstCapacity, const void * src, size_t srcLength);
+    static size_t DecodeChunk(void* dst, size_t dstCapacity, const void* src, const sawyercoding_chunk_header& header);
+    static size_t DecodeChunkRLERepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
+    static size_t DecodeChunkRLE(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
+    static size_t DecodeChunkRepeat(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
+    static size_t DecodeChunkRotate(void* dst, size_t dstCapacity, const void* src, size_t srcLength);
 
-    static void * AllocateLargeTempBuffer();
-    static void * FinaliseLargeTempBuffer(void * buffer, size_t len);
-    static void FreeLargeTempBuffer(void * buffer);
+    static void* AllocateLargeTempBuffer();
+    static void* FinaliseLargeTempBuffer(void* buffer, size_t len);
+    static void FreeLargeTempBuffer(void* buffer);
 };
