@@ -484,20 +484,20 @@ char* strcasestr(const char* haystack, const char* needle)
 {
     const char* p1 = haystack;
     const char* p2 = needle;
-    const char* r = *p2 == 0 ? haystack : 0;
+    const char* r = *p2 == 0 ? haystack : nullptr;
 
     while (*p1 != 0 && *p2 != 0)
     {
         if (tolower((unsigned char)*p1) == tolower((unsigned char)*p2))
         {
-            if (r == 0)
+            if (r == nullptr)
                 r = p1;
             p2++;
         }
         else
         {
             p2 = needle;
-            if (r != 0)
+            if (r != nullptr)
                 p1 = r + 1;
 
             if (tolower((unsigned char)*p1) == tolower((unsigned char)*p2))
@@ -507,14 +507,14 @@ char* strcasestr(const char* haystack, const char* needle)
             }
             else
             {
-                r = 0;
+                r = nullptr;
             }
         }
 
         p1++;
     }
 
-    return *p2 == 0 ? (char*)r : 0;
+    return *p2 == 0 ? (char*)r : nullptr;
 }
 #endif
 

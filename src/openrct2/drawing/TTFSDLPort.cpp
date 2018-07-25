@@ -357,13 +357,13 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         {
             fclose(src);
         }
-        return NULL;
+        return nullptr;
     }
 
     if (!src)
     {
         TTF_SetError("Passed a NULL font source");
-        return NULL;
+        return nullptr;
     }
 
     /* Check to make sure we can seek in this stream */
@@ -375,18 +375,18 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         {
             fclose(src);
         }
-        return NULL;
+        return nullptr;
     }
 
     font = (TTF_Font*)malloc(sizeof *font);
-    if (font == NULL)
+    if (font == nullptr)
     {
         TTF_SetError("Out of memory");
         if (freesrc)
         {
             fclose(src);
         }
-        return NULL;
+        return nullptr;
     }
     memset(font, 0, sizeof(*font));
 
@@ -394,11 +394,11 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
     font->freesrc = freesrc;
 
     stream = (FT_Stream)malloc(sizeof(*stream));
-    if (stream == NULL)
+    if (stream == nullptr)
     {
         TTF_SetError("Out of memory");
         TTF_CloseFont(font);
-        return NULL;
+        return nullptr;
     }
     memset(stream, 0, sizeof(*stream));
 
@@ -415,12 +415,12 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
     {
         TTF_SetFTError("Couldn't load font file", error);
         TTF_CloseFont(font);
-        return NULL;
+        return nullptr;
     }
     face = font->face;
 
     /* Set charmap for loaded font */
-    found = 0;
+    found = nullptr;
     for (i = 0; i < face->num_charmaps; i++)
     {
         FT_CharMap charmap = face->charmaps[i];
@@ -448,7 +448,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         {
             TTF_SetFTError("Couldn't set font size", error);
             TTF_CloseFont(font);
-            return NULL;
+            return nullptr;
         }
 
         /* Get the scalable font metrics for this font */
@@ -524,9 +524,9 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
 static TTF_Font* TTF_OpenFontIndex(const char* file, int ptsize, long index)
 {
     FILE* rw = fopen(file, "rb");
-    if (rw == NULL)
+    if (rw == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
     return TTF_OpenFontIndexRW(rw, 1, ptsize, index);
 }
@@ -543,12 +543,12 @@ static void Flush_Glyph(c_glyph* glyph)
     if (glyph->bitmap.buffer)
     {
         free(glyph->bitmap.buffer);
-        glyph->bitmap.buffer = 0;
+        glyph->bitmap.buffer = nullptr;
     }
     if (glyph->pixmap.buffer)
     {
         free(glyph->pixmap.buffer);
-        glyph->pixmap.buffer = 0;
+        glyph->pixmap.buffer = nullptr;
     }
     glyph->cached = 0;
 }
@@ -646,7 +646,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
         unsigned int i;
         FT_Bitmap* src;
         FT_Bitmap* dst;
-        FT_Glyph bitmap_glyph = NULL;
+        FT_Glyph bitmap_glyph = nullptr;
 
         /* Handle the italic style */
         if (TTF_HANDLE_STYLE_ITALIC(font))
@@ -675,7 +675,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
             FT_Glyph_Stroke(&bitmap_glyph, stroker, 1 /* delete the original glyph */);
             FT_Stroker_Done(stroker);
             /* Render the glyph */
-            error = FT_Glyph_To_Bitmap(&bitmap_glyph, mono ? ft_render_mode_mono : ft_render_mode_normal, 0, 1);
+            error = FT_Glyph_To_Bitmap(&bitmap_glyph, mono ? ft_render_mode_mono : ft_render_mode_normal, nullptr, 1);
             if (error)
             {
                 FT_Done_Glyph(bitmap_glyph);
@@ -1272,20 +1272,20 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
     FT_UInt prev_index = 0;
     size_t textlen;
 
-    TTF_CHECKPOINTER(text, NULL);
+    TTF_CHECKPOINTER(text, nullptr);
 
     /* Get the dimensions of the text surface */
     if ((TTF_SizeUTF8(font, text, &width, &height) < 0) || !width)
     {
         TTF_SetError("Text has zero width");
-        return NULL;
+        return nullptr;
     }
 
     /* Create the target surface */
     textbuf = (TTFSurface*)calloc(1, sizeof(TTFSurface));
-    if (textbuf == NULL)
+    if (textbuf == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
     textbuf->w = width;
     textbuf->h = height;
@@ -1316,7 +1316,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
         {
             TTF_SetFTError("Couldn't find glyph", error);
             ttf_free_surface(textbuf);
-            return NULL;
+            return nullptr;
         }
         glyph = font->current;
         current = &glyph->bitmap;
@@ -1404,20 +1404,20 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
     FT_UInt prev_index = 0;
     size_t textlen;
 
-    TTF_CHECKPOINTER(text, NULL);
+    TTF_CHECKPOINTER(text, nullptr);
 
     /* Get the dimensions of the text surface */
     if ((TTF_SizeUTF8(font, text, &width, &height) < 0) || !width)
     {
         TTF_SetError("Text has zero width");
-        return NULL;
+        return nullptr;
     }
 
     /* Create the target surface */
     textbuf = (TTFSurface*)calloc(1, sizeof(TTFSurface));
-    if (textbuf == NULL)
+    if (textbuf == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
     textbuf->w = width;
     textbuf->h = height;
@@ -1448,7 +1448,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
         {
             TTF_SetFTError("Couldn't find glyph", error);
             ttf_free_surface(textbuf);
-            return NULL;
+            return nullptr;
         }
 
         glyph = font->current;

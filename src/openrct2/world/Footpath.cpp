@@ -1663,7 +1663,7 @@ void footpath_connect_edges(int32_t x, int32_t y, rct_tile_element* tileElement,
 
     while (neighbour_list_pop(&neighbourList, &neighbour))
     {
-        loc_6A6C85(x, y, neighbour.direction, tileElement, flags, false, NULL);
+        loc_6A6C85(x, y, neighbour.direction, tileElement, flags, false, nullptr);
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)

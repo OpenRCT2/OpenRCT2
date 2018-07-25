@@ -319,7 +319,7 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
     direction = tileElement->type & 3;
     sequence = scenery_large_get_sequence(tileElement);
 
-    if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, NULL))
+    if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
         return;
     }
@@ -510,7 +510,7 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_til
     direction = tileElement->type & 3;
     sequence = scenery_large_get_sequence(tileElement);
 
-    if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, NULL))
+    if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
         return;
     }
@@ -1066,7 +1066,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         track++;
         numTrackElements++;
 
-        if (!track_block_get_next(&trackElement, &trackElement, NULL, NULL))
+        if (!track_block_get_next(&trackElement, &trackElement, nullptr, nullptr))
         {
             break;
         }
