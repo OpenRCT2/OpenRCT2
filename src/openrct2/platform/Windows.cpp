@@ -53,7 +53,7 @@ static HMODULE plaform_get_dll_module()
 {
     if (_dllModule == nullptr)
     {
-        _dllModule = GetModuleHandle(NULL);
+        _dllModule = GetModuleHandle(nullptr);
     }
     return _dllModule;
 }
@@ -112,7 +112,7 @@ bool platform_ensure_directory_exists(const utf8* path)
         return 1;
 
     wchar_t* wPath = utf8_to_widechar(path);
-    BOOL success = CreateDirectoryW(wPath, NULL);
+    BOOL success = CreateDirectoryW(wPath, nullptr);
     free(wPath);
     return success == TRUE;
 }
@@ -152,7 +152,7 @@ bool platform_lock_single_instance()
     if (mutex == nullptr)
     {
         // Create new mutex
-        status = CreateMutex(NULL, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+        status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (status == nullptr)
             log_error("unable to create mutex\n");
 
@@ -210,14 +210,14 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         return false;
 
     // Get the size of the path first
-    if (RegQueryValueExW(hKey, L"SteamPath", 0, &type, NULL, &size) != ERROR_SUCCESS)
+    if (RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, nullptr, &size) != ERROR_SUCCESS)
     {
         RegCloseKey(hKey);
         return false;
     }
 
     wSteamPath = (wchar_t*)malloc(size);
-    result = RegQueryValueExW(hKey, L"SteamPath", 0, &type, (LPBYTE)wSteamPath, &size);
+    result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath, &size);
     if (result == ERROR_SUCCESS)
     {
         utf8* utf8SteamPath = widechar_to_utf8(wSteamPath);
@@ -329,7 +329,7 @@ uint8_t platform_get_locale_currency()
     CHAR currCode[4];
     if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SINTLSYMBOL, (LPSTR)&currCode, sizeof(currCode)) == 0)
     {
-        return platform_get_currency_value(NULL);
+        return platform_get_currency_value(nullptr);
     }
 
     return platform_get_currency_value(currCode);
@@ -429,7 +429,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 #        if !defined(__MINGW32__)                                                                                              \
             && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
     wchar_t* fontFolder;
-    if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, NULL, &fontFolder)))
+    if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, nullptr, &fontFolder)))
     {
         // Convert wchar to utf8, then copy the font folder path to the buffer.
         utf8* outPathTemp = widechar_to_utf8(fontFolder);
@@ -463,7 +463,7 @@ utf8* platform_get_absolute_path(const utf8* relativePath, const utf8* basePath)
 
     wchar_t* pathW = utf8_to_widechar(path);
     wchar_t fullPathW[MAX_PATH];
-    DWORD fullPathLen = GetFullPathNameW(pathW, (DWORD)Util::CountOf(fullPathW), fullPathW, NULL);
+    DWORD fullPathLen = GetFullPathNameW(pathW, (DWORD)Util::CountOf(fullPathW), fullPathW, nullptr);
 
     free(pathW);
 
@@ -547,7 +547,7 @@ static bool windows_setup_file_association(
 
     [[maybe_unused]] int32_t printResult;
 
-    GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
+    GetModuleFileNameW(nullptr, exePathW, sizeof(exePathW));
     GetModuleFileNameW(plaform_get_dll_module(), dllPathW, sizeof(dllPathW));
 
     wchar_t* extensionW = utf8_to_widechar(extension);
@@ -580,7 +580,7 @@ static bool windows_setup_file_association(
     }
 
     // [hRootKey\OpenRCT2.ext]
-    if (RegSetValueW(hKey, NULL, REG_SZ, fileTypeTextW, 0) != ERROR_SUCCESS)
+    if (RegSetValueW(hKey, nullptr, REG_SZ, fileTypeTextW, 0) != ERROR_SUCCESS)
     {
         goto fail;
     }
@@ -654,7 +654,7 @@ void platform_setup_file_associations()
     windows_setup_file_association(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
 
     // Refresh explorer
-    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
+    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
 }
 
 void platform_remove_file_associations()
@@ -668,7 +668,7 @@ void platform_remove_file_associations()
     windows_remove_file_association(".td6");
 
     // Refresh explorer
-    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, NULL, NULL);
+    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -689,13 +689,13 @@ bool platform_setup_uri_protocol()
         HKEY hClassKey;
         if (RegCreateKeyA(hRootKey, "openrct2", &hClassKey) == ERROR_SUCCESS)
         {
-            if (RegSetValueA(hClassKey, NULL, REG_SZ, "URL:openrct2", 0) == ERROR_SUCCESS)
+            if (RegSetValueA(hClassKey, nullptr, REG_SZ, "URL:openrct2", 0) == ERROR_SUCCESS)
             {
-                if (RegSetKeyValueA(hClassKey, NULL, "URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
+                if (RegSetKeyValueA(hClassKey, nullptr, "URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
                 {
                     // [hRootKey\openrct2\shell\open\command]
                     wchar_t exePath[MAX_PATH];
-                    GetModuleFileNameW(NULL, exePath, MAX_PATH);
+                    GetModuleFileNameW(nullptr, exePath, MAX_PATH);
 
                     wchar_t buffer[512];
                     swprintf_s(buffer, sizeof(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
@@ -710,7 +710,7 @@ bool platform_setup_uri_protocol()
                             // mingw-w64 used to define RegSetKeyValueW's signature incorrectly
                             // You need at least mingw-w64 5.0 including this commit:
                             //   https://sourceforge.net/p/mingw-w64/mingw-w64/ci/da9341980a4b70be3563ac09b5927539e7da21f7/
-                            RegSetKeyValueW(hMuiCacheKey, NULL, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2") + 1);
+                            RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2") + 1);
                         }
 
                         log_verbose("URI protocol setup successful");
