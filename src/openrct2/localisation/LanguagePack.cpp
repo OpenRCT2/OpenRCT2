@@ -15,6 +15,7 @@
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "../core/StringReader.hpp"
+#include "Language.h"
 #include "Localisation.h"
 
 #include <algorithm>
