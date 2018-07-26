@@ -20,6 +20,14 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#ifndef _WIN32
+#include <unicode/ubidi.h>
+#include <unicode/unistr.h>
+#include <unicode/ushape.h>
+#include <unicode/ustring.h>
+#include <unicode/utf.h>
+#include <unicode/utypes.h>
+#endif
 
 // Don't try to load more than language files that exceed 64 MiB
 constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
@@ -564,7 +572,18 @@ private:
             }
         }
 
-        auto s = std::string(sb.GetBuffer(), sb.GetLength());
+        std::string s;
+        if (LanguagesDescriptors[_id].isRtl)
+        {
+            auto ts = std::string(sb.GetBuffer(), sb.GetLength());
+            s = FixRTL(ts);
+
+        }
+        else
+        {
+            s = std::string(sb.GetBuffer(), sb.GetLength());
+        }
+
         if (_currentGroup.empty())
         {
             // Make sure the list is big enough to contain this string id
@@ -626,6 +645,37 @@ private:
         }
 
         return true;
+    }
+
+    std::string FixRTL(std::string& input)
+    {
+#ifdef _WIN32
+        return input;
+#else
+        UErrorCode err = (UErrorCode)0;
+        // Force a hard left-to-right at the beginning (will mess up mixed strings' word order otherwise)
+        std::string text2 = std::string(u8"\xE2\x80\xAA") + input;
+
+        icu::UnicodeString ustr = icu::UnicodeString::fromUTF8(icu::StringPiece(text2));
+
+        int32_t length = ustr.length();
+        icu::UnicodeString reordered;
+        icu::UnicodeString shaped;
+        UBiDi* bidi = ubidi_openSized(length, 0, &err);
+        // UBIDI_DEFAULT_LTR preserves formatting codes.
+        ubidi_setPara(bidi, ustr.getBuffer(), length, UBIDI_DEFAULT_LTR, nullptr, &err);
+        ubidi_writeReordered(bidi, reordered.getBuffer(length), length, UBIDI_DO_MIRRORING | UBIDI_REMOVE_BIDI_CONTROLS, &err);
+        ubidi_close(bidi);
+        reordered.releaseBuffer(length);
+        u_shapeArabic(
+                reordered.getBuffer(), length, shaped.getBuffer(length), length,
+                U_SHAPE_LETTERS_SHAPE | U_SHAPE_LENGTH_FIXED_SPACES_NEAR | U_SHAPE_TEXT_DIRECTION_VISUAL_LTR, &err);
+        shaped.releaseBuffer(length);
+
+        std::string cppstring;
+        shaped.toUTF8String(cppstring);
+        return cppstring;
+#endif
     }
 };
 

@@ -19,12 +19,6 @@
 #include "TTF.h"
 
 #include <algorithm>
-#include <unicode/ubidi.h>
-#include <unicode/unistr.h>
-#include <unicode/ushape.h>
-#include <unicode/ustring.h>
-#include <unicode/utf.h>
-#include <unicode/utypes.h>
 
 enum : uint32_t
 {
@@ -819,30 +813,7 @@ static const utf8* ttf_process_glyph_run(rct_drawpixelinfo* dpi, const utf8* tex
 
 static void ttf_process_string(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
 {
-    UErrorCode err = (UErrorCode)0;
-    // Force a hard left-to-right at the beginning (will mess up mixed strings' word order otherwise)
-    std::string text2 = std::string(u8"\xE2\x80\xAA") + text;
-
-    icu::UnicodeString ustr = icu::UnicodeString::fromUTF8(icu::StringPiece(text2));
-
-    int32_t length = ustr.length();
-    icu::UnicodeString reordered;
-    icu::UnicodeString shaped;
-    UBiDi* bidi = ubidi_openSized(length, 0, &err);
-    ubidi_setPara(bidi, ustr.getBuffer(), length, UBIDI_DEFAULT_LTR, nullptr, &err);
-    ubidi_writeReordered(bidi, reordered.getBuffer(length), length, UBIDI_DO_MIRRORING | UBIDI_REMOVE_BIDI_CONTROLS, &err);
-    ubidi_close(bidi);
-    reordered.releaseBuffer(length);
-    u_shapeArabic(
-        reordered.getBuffer(), length, shaped.getBuffer(length), length,
-        U_SHAPE_LETTERS_SHAPE | U_SHAPE_LENGTH_FIXED_SPACES_NEAR | U_SHAPE_TEXT_DIRECTION_VISUAL_LTR, &err);
-    shaped.releaseBuffer(length);
-
-    std::string cppstring;
-    shaped.toUTF8String(cppstring);
-
-    const utf8* utf8c = cppstring.c_str();
-    const utf8* ch = utf8c;
+    const utf8* ch = text;
     const utf8* nextCh;
     int32_t codepoint;
 
