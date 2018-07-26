@@ -22,12 +22,12 @@
 #include <string>
 #include <vector>
 #ifndef _WIN32
-#include <unicode/ubidi.h>
-#include <unicode/unistr.h>
-#include <unicode/ushape.h>
-#include <unicode/ustring.h>
-#include <unicode/utf.h>
-#include <unicode/utypes.h>
+#    include <unicode/ubidi.h>
+#    include <unicode/unistr.h>
+#    include <unicode/ushape.h>
+#    include <unicode/ustring.h>
+#    include <unicode/utf.h>
+#    include <unicode/utypes.h>
 #endif
 
 // Don't try to load more than language files that exceed 64 MiB
@@ -578,7 +578,6 @@ private:
         {
             auto ts = std::string(sb.GetBuffer(), sb.GetLength());
             s = FixRTL(ts);
-
         }
         else
         {
@@ -669,8 +668,8 @@ private:
         ubidi_close(bidi);
         reordered.releaseBuffer(length);
         u_shapeArabic(
-                reordered.getBuffer(), length, shaped.getBuffer(length), length,
-                U_SHAPE_LETTERS_SHAPE | U_SHAPE_LENGTH_FIXED_SPACES_NEAR | U_SHAPE_TEXT_DIRECTION_VISUAL_LTR, &err);
+            reordered.getBuffer(), length, shaped.getBuffer(length), length,
+            U_SHAPE_LETTERS_SHAPE | U_SHAPE_LENGTH_FIXED_SPACES_NEAR | U_SHAPE_TEXT_DIRECTION_VISUAL_LTR, &err);
         shaped.releaseBuffer(length);
 
         std::string cppstring;
