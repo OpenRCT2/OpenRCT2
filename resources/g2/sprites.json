@@ -699,6 +699,8 @@
         "forceBmp": true
     },
     {
+<<<<<<< HEAD
+=======
         "path": "font/guilder-small.png",
         "y_offset": 0,
         "palette": "keep",
@@ -747,6 +749,7 @@
         "forceBmp": true
     },
     {
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
         "path": "font/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1006,6 +1009,8 @@
         "forceBmp": true
     },
     {
+<<<<<<< HEAD
+=======
         "path": "font/guilder-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1054,6 +1059,7 @@
         "forceBmp": true
     },
     {
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
         "path": "font/ae-uc-tiny.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1319,6 +1325,8 @@
         "y_offset": 4,
         "palette": "keep",
         "forceBmp": true
+<<<<<<< HEAD
+=======
     },
     {
         "path": "font/guilder-tiny.png",
@@ -1367,5 +1375,6 @@
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
+>>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
     }
 ]

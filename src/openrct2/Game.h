@@ -118,6 +118,16 @@ enum
     ERROR_TYPE_FILE_LOAD = 255
 };
 
+enum GAMESPEED {
+    GAMESPEED_PAUSED = 0,
+    GAMESPEED_SLOW,
+    GAMESPEED_NORMAL,
+    GAMESPEED_QUICK,
+    GAMESPEED_FAST,
+    GAMESPEED_TURBO,
+    GAMESPEED_HYPER,
+};
+
 using GAME_COMMAND_POINTER = void(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 using GAME_COMMAND_CALLBACK_POINTER = void(
