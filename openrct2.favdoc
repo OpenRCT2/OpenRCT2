@@ -6,33 +6,31 @@
       <folders />
       <favorites>
         <Favorite>
-          <name>Finance.cpp</name>
-          <path>src\openrct2\management\Finance.cpp</path>
-          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\management\Finance.cpp</absolutePath>
+          <name>Game.h</name>
+          <path>SRC\OPENRCT2\GAME.H</path>
+          <absolutePath>C:\GITHUB\OPENRCT2\SRC\OPENRCT2\GAME.H</absolutePath>
+          <viewKind>7651a701-06e5-11d1-8ebd-00a0c90f26ea</viewKind>
           <position>
-            <line>8</line>
-            <column>48</column>
-            <lineHash>Yo1eIO4jVBZ2uEK9qyjG8XMqq91OxUZpGZgUwyu16zk=</lineHash>
+            <line>128</line>
+            <column>21</column>
           </position>
         </Favorite>
         <Favorite>
-          <name>Finances.cpp</name>
-          <path>src\openrct2-ui\windows\Finances.cpp</path>
-          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2-ui\windows\Finances.cpp</absolutePath>
+          <name>Context.cpp</name>
+          <path>src\openrct2\Context.cpp</path>
+          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\Context.cpp</absolutePath>
           <position>
-            <line>1</line>
-            <column>1</column>
-            <lineHash>/tlCSc12AKFUKguKs3PP6qlbfLYvUKC2M1zVPXMUyhQ=</lineHash>
+            <line>767</line>
+            <column>47</column>
           </position>
         </Favorite>
         <Favorite>
-          <name>Park.cpp</name>
-          <path>src\openrct2\world\Park.cpp</path>
-          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\world\Park.cpp</absolutePath>
+          <name>Game.cpp</name>
+          <path>src\openrct2\Game.cpp</path>
+          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\Game.cpp</absolutePath>
           <position>
-            <line>1</line>
-            <column>1</column>
-            <lineHash>/tlCSc12AKFUKguKs3PP6qlbfLYvUKC2M1zVPXMUyhQ=</lineHash>
+            <line>132</line>
+            <column>30</column>
           </position>
         </Favorite>
         <Favorite>
@@ -40,20 +38,8 @@
           <path>src\openrct2-ui\windows\TopToolbar.cpp</path>
           <absolutePath>C:\GitHub\OpenRCT2\src\openrct2-ui\windows\TopToolbar.cpp</absolutePath>
           <position>
-            <line>24</line>
-            <column>34</column>
-            <lineHash>xDGFQl/AIdVcZLME/oxo/j07otv/PDui9VikFvOj6KY=</lineHash>
-          </position>
-        </Favorite>
-        <Favorite>
-          <name>Game.h</name>
-          <path>src\openrct2\Game.h</path>
-          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\Game.h</absolutePath>
-          <viewKind>7651a701-06e5-11d1-8ebd-00a0c90f26ea</viewKind>
-          <position>
-            <line>136</line>
-            <column>1</column>
-            <lineHash>8qg1HHQgMDMarMgr10Vp4aoai0oU23T0W12t2U1gJEA=</lineHash>
+            <line>895</line>
+            <column>47</column>
           </position>
         </Favorite>
         <Favorite>
@@ -61,9 +47,86 @@
           <path>src\openrct2\GameState.cpp</path>
           <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\GameState.cpp</absolutePath>
           <position>
-            <line>103</line>
-            <column>37</column>
-            <lineHash>Q7q/47nCiqE4YGRgtcw/v85hKqm2UtzHfa4Cd0m9GRc=</lineHash>
+            <line>16</line>
+            <column>25</column>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>TitleSequencePlayer.cpp</name>
+          <path>src\openrct2-ui\title\TitleSequencePlayer.cpp</path>
+          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2-ui\title\TitleSequencePlayer.cpp</absolutePath>
+          <position>
+            <line>513</line>
+            <column>38</column>
+            <lineHash>PXmW8KlDEuuJHEjioXnVr5AbpFAcv244k86KALRh/CY=</lineHash>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>TitleScreen.cpp</name>
+          <path>src\openrct2\title\TitleScreen.cpp</path>
+          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\title\TitleScreen.cpp</absolutePath>
+          <position>
+            <line>168</line>
+            <column>58</column>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>StringIds.h</name>
+          <path>src\openrct2\localisation\StringIds.h</path>
+          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\localisation\StringIds.h</absolutePath>
+          <viewKind>7651a701-06e5-11d1-8ebd-00a0c90f26ea</viewKind>
+          <position>
+            <line>3925</line>
+            <column>48</column>
+            <lineHash>kjUdLB/AW8LGAen+7uLTrmfNalvmOcVOM9qcJovtPxQ=</lineHash>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>Localisation.cpp</name>
+          <path>src\openrct2\localisation\Localisation.cpp</path>
+          <absolutePath>C:\GitHub\OpenRCT2\src\openrct2\localisation\Localisation.cpp</absolutePath>
+          <position>
+            <line>59</line>
+            <column>24</column>
+            <lineHash>ebz4C1ixyg+nc7ORFgrr6Hgw3VjEo2evK3dxkolnURs=</lineHash>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>Localisation.h</name>
+          <path>src\openrct2\localisation\Localisation.h</path>
+          <absolutePath>c:\GitHub\OpenRCT2\src\openrct2\localisation\Localisation.h</absolutePath>
+          <viewKind>7651a701-06e5-11d1-8ebd-00a0c90f26ea</viewKind>
+          <position>
+            <line>78</line>
+            <column>60</column>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>changelog.txt</name>
+          <path>distribution\changelog.txt</path>
+          <absolutePath>C:\GitHub\OpenRCT2\distribution\changelog.txt</absolutePath>
+          <position>
+            <line>19</line>
+            <column>36</column>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>en-GB.txt</name>
+          <path>data\language\en-GB.txt</path>
+          <absolutePath>C:\GitHub\OpenRCT2\data\language\en-GB.txt</absolutePath>
+          <position>
+            <line>17</line>
+            <column>22</column>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>contributors.md</name>
+          <path>contributors.md</path>
+          <absolutePath>C:\GitHub\OpenRCT2\contributors.md</absolutePath>
+          <position>
+            <line>89</line>
+            <column>25</column>
+            <lineHash>iZZNfAyaeyYT/QwFjFsAs4+Ge9klN3yh/etcim8I2Sk=</lineHash>
           </position>
         </Favorite>
       </favorites>

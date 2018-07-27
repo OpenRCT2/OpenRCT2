@@ -764,11 +764,7 @@ namespace OpenRCT2
         {
             if (!gConfigGeneral.uncap_fps)
                 return false;
-<<<<<<< HEAD
-             if (gGameSpeed > GAMESPEED_HYPER)
-=======
-            if (gGameSpeed > 4)
->>>>>>> 80f67247dcce75791a0e9f4eadc521a663e7c497
+             if (gGameSpeed >= GAMESPEED_HYPER)
                 return false;
             if (gOpenRCT2Headless)
                 return false;
