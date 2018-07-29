@@ -141,7 +141,7 @@ The following people are not part of the development team, but have been contrib
 * English (UK) - Ted John (IntelOrca), (Tinytimrob)
 * English (US) - Ted John (IntelOrca), Michael Steenbeek (Gymnasiast); small fixes: (LRFLEW), (mike-koch), Harry Lam (daihakken)
 * Catalan - Joan Josep (J0anJosep)
-* Chinese (Simplified) - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30)
+* Chinese (Simplified) - Naiji Ma (naijim), (izhangfei), Eric Zhao (sczyh30), (Muhhan)
 * Chinese (Traditional) - Harry Lam (daihakken)
 * Czech - Martin Černáč (octaroot), (Clonewayx), Tomáš Pazdiora (Aroidzap)
 * Dutch - Michael Steenbeek (Gymnasiast), Yannic Geurts (xzbobzx), (mrtnptrs), Thomas den Hollander (ThomasdenH), (hostbrute),  Marijn van der Werf (marijnvdwerf), Tom Kroes (ThePsionic); reviewing and discussion: Aaron van Geffen (AaronVanGeffen), (Balletie) and Sijmen Schoon (SijmenSchoon).
