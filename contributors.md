@@ -1,4 +1,4 @@
-# Contributors to OpenRCT2
+﻿# Contributors to OpenRCT2
 Includes all git commit authors. Aliases are GitHub user names.
 
 ## Development team
