@@ -108,8 +108,12 @@ private:
         json_t* body = json_object();
         json_object_set_new(body, "key", json_string(_key.c_str()));
         json_object_set_new(body, "port", json_integer(_port));
-        request.body = json_dumps(body, JSON_COMPACT);
+
+        char* bodyDump = json_dumps(body, JSON_COMPACT);
+        request.body = bodyDump;
         request.header["Content-Type"] = "application/json";
+        free(bodyDump);
+        json_decref(body);
 
         Http::DoAsync(request, [&](Http::Response response) -> void {
             if (response.status != Http::Status::OK)
@@ -120,9 +124,8 @@ private:
 
             json_t* root = Json::FromString(response.body);
             this->OnRegistrationResponse(root);
+            json_decref(root);
         });
-
-        json_decref(body);
     }
 
     void SendHeartbeat()
@@ -132,8 +135,11 @@ private:
         request.method = Http::Method::PUT;
 
         json_t* body = GetHeartbeatJson();
-        request.body = json_dumps(body, JSON_COMPACT);
+        char* bodyDump = json_dumps(body, JSON_COMPACT);
+        request.body = bodyDump;
         request.header["Content-Type"] = "application/json";
+        free(bodyDump);
+        json_decref(body);
 
         _lastHeartbeatTime = platform_get_ticks();
         Http::DoAsync(request, [&](Http::Response response) -> void {
@@ -145,9 +151,8 @@ private:
 
             json_t* root = Json::FromString(response.body);
             this->OnHeartbeatResponse(root);
+            json_decref(root);
         });
-
-        json_decref(body);
     }
 
     void OnRegistrationResponse(json_t* jsonRoot)
