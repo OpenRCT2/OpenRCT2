@@ -9,6 +9,7 @@
 
 #include "VirtualFloor.h"
 
+#include "../Cheats.h"
 #include "../Input.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -17,7 +18,6 @@
 #include "Paint.h"
 #include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
-
 #include <algorithm>
 #include <limits>
 
@@ -199,12 +199,14 @@ bool virtual_floor_tile_is_floor(int16_t x, int16_t y)
 }
 
 static void virtual_floor_get_tile_properties(
-    int16_t x, int16_t y, int16_t height, bool* outOccupied, uint8_t* outOccupiedEdges, bool* outBelowGround, bool* outLit)
+    int16_t x, int16_t y, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround, bool* aboveGround, bool* outLit)
 {
     *outOccupied = false;
     *outOccupiedEdges = 0;
     *outBelowGround = false;
     *outLit = false;
+    *aboveGround = false;
+    *tileOwned = false;
 
     // See if we are a selected tile
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
@@ -229,6 +231,11 @@ static void virtual_floor_get_tile_properties(
         }
     }
 
+    *tileOwned = map_is_location_owned(x, y, height);
+
+    if(gCheatsSandboxMode)
+        *tileOwned = true;
+
     // Iterate through the map elements of the current tile to find:
     //  * Surfaces, which may put us underground
     //  * Walls / banners, which are displayed as occupied edges
@@ -248,6 +255,10 @@ static void virtual_floor_get_tile_properties(
             {
                 *outBelowGround = true;
                 *outOccupied = true;
+            }
+            if (height > tileElement->base_height)
+            {
+                *aboveGround = true;
             }
             continue;
         }
@@ -298,11 +309,13 @@ void virtual_floor_paint(paint_session* session)
     uint8_t occupiedEdges;
     bool weAreBelowGround;
     bool weAreLit;
+    bool weAreOwned;
+    bool weAreAboveGround;
     uint8_t litEdges = 0;
 
     virtual_floor_get_tile_properties(
-        session->MapPosition.x, session->MapPosition.y, virtualFloorClipHeight, &weAreOccupied, &occupiedEdges,
-        &weAreBelowGround, &weAreLit);
+        session->MapPosition.x, session->MapPosition.y, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges,
+        &weAreBelowGround, &weAreAboveGround, &weAreLit);
 
     // Move the bits around to match the current rotation
     occupiedEdges |= occupiedEdges << 4;
@@ -321,20 +334,22 @@ void virtual_floor_paint(paint_session* session)
         uint8_t theirOccupiedEdges;
         bool theyAreBelowGround;
         bool theyAreLit;
+        bool theyAreOwned;
+        bool theyAreAboveGround;
 
         virtual_floor_get_tile_properties(
-            theirLocationX, theirLocationY, virtualFloorClipHeight, &theyAreOccupied, &theirOccupiedEdges, &theyAreBelowGround,
-            &theyAreLit);
+            theirLocationX, theirLocationY, virtualFloorClipHeight, &theyAreOccupied, &theyAreOwned, &theirOccupiedEdges, &theyAreBelowGround,
+            &theyAreAboveGround, &theyAreLit);
 
-        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % 4)))
+        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % 4)) && (weAreOwned && !theyAreOwned))
         {
             occupiedEdges |= 1 << i;
         }
-        if (weAreLit != theyAreLit)
+        if (weAreLit != theyAreLit || (weAreOwned && !theyAreOwned))
         {
             litEdges |= 1 << i;
         }
-        else if (weAreOccupied != theyAreOccupied || weAreBelowGround != theyAreBelowGround)
+        else if ((weAreOccupied != theyAreOccupied || weAreBelowGround != theyAreBelowGround) && weAreOwned)
         {
             occupiedEdges |= 1 << i;
         }
@@ -347,30 +362,30 @@ void virtual_floor_paint(paint_session* session)
     // Edges which are internal to objects (i.e., the tile on both sides
     //  is occupied/lit) are not rendered to provide visual clarity.
     uint8_t dullEdges = 0xF & ~occupiedEdges & ~litEdges;
-    uint8_t paintEdges = (weAreOccupied || weAreLit) ? ~dullEdges : 0xF;
+    uint8_t paintEdges = ((weAreOccupied || weAreLit) && weAreOwned) ? ~dullEdges : 0xF;
 
-    if (paintEdges & 0x1)
+    if ((paintEdges & 0x1))
     {
         sub_98197C(
             session,
             SPR_G2_SELECTION_EDGE_NE | (!(occupiedEdges & 0x1) ? ((litEdges & 0x1) ? remap_lit : remap_base) : remap_edge), 0,
             0, 0, 0, 1, _virtualFloorHeight, 5, 5, _virtualFloorHeight + ((dullEdges & 0x1) ? -2 : 0));
     }
-    if (paintEdges & 0x2)
+    if ((paintEdges & 0x2))
     {
         sub_98197C(
             session,
             SPR_G2_SELECTION_EDGE_SE | (!(occupiedEdges & 0x2) ? ((litEdges & 0x2) ? remap_lit : remap_base) : remap_edge), 0,
             0, 1, 1, 1, _virtualFloorHeight, 16, 27, _virtualFloorHeight + ((dullEdges & 0x2) ? -2 : 0));
     }
-    if (paintEdges & 0x4)
+    if ((paintEdges & 0x4))
     {
         sub_98197C(
             session,
             SPR_G2_SELECTION_EDGE_SW | (!(occupiedEdges & 0x4) ? ((litEdges & 0x4) ? remap_lit : remap_base) : remap_edge), 0,
             0, 1, 1, 1, _virtualFloorHeight, 27, 16, _virtualFloorHeight + ((dullEdges & 0x4) ? -2 : 0));
     }
-    if (paintEdges & 0x8)
+    if ((paintEdges & 0x8))
     {
         sub_98197C(
             session,
@@ -381,7 +396,7 @@ void virtual_floor_paint(paint_session* session)
     if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_GLASSY)
         return;
 
-    if (!weAreOccupied && !weAreLit)
+    if (((!weAreOccupied && !weAreLit)) && weAreAboveGround && weAreOwned)
     {
         int32_t imageColourFlats = SPR_G2_SURFACE_GLASSY_RECOLOURABLE | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
             | PALETTE_WATER << 19;
