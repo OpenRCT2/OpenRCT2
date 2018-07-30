@@ -4527,7 +4527,7 @@ STR_6217    :Ride / track availability
 STR_6218    :OpenRCT2 Official
 STR_6219    :Highlight path issues
 STR_6220    :Make Usable
-STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per stations.
+STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per station.
 STR_6222    :Can't place guest entry point here...
 STR_6223    :Must be outside park boundaries!
 STR_6224    :{STRING} placed a guest entry point.
