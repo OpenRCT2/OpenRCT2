@@ -35,6 +35,7 @@
 #include "coaster/meta/FlyingRollerCoaster.h"
 #include "coaster/meta/GigaCoaster.h"
 #include "coaster/meta/HeartlineTwisterCoaster.h"
+#include "coaster/meta/HybridCoaster.h"
 #include "coaster/meta/HyperTwister.h"
 #include "coaster/meta/Hypercoaster.h"
 #include "coaster/meta/InvertedHairpinCoaster.h"
@@ -307,6 +308,7 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_MONSTER_TRUCKS,                    */ MonsterTrucksRTD,
     /* RIDE_TYPE_SPINNING_WILD_MOUSE,               */ SpinningWildMouseRTD,
     /* RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,       */ ClassicMiniRollerCoasterRTD,
+    /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const

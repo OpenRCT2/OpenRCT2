@@ -4369,7 +4369,6 @@ static Vehicle* vehicle_create_car(
     vehicle->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
     vehicle->ride = rideIndex;
     vehicle->ride_subtype = ride->subtype;
-
     vehicle->vehicle_type = vehicleEntryIndex;
     vehicle->type = static_cast<uint8_t>(carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail);
     vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
