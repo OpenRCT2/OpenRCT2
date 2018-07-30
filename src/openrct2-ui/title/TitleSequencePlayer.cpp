@@ -510,7 +510,7 @@ private:
         news_item_init_queue();
         load_palette();
         gScreenAge = 0;
-        gGameSpeed = 1;
+        gGameSpeed = GAMESPEED_NORMAL;
     }
 
     /**

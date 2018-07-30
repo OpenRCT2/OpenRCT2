@@ -6,11 +6,13 @@
 - Feature: [#7694] Debug option to visualize paths that the game detects as wide.
 - Feature: [#7713] The virtual floor now takes land ownership rights into account.
 - Feature: [#7771] Danish translation.
+- Feature: [#7816] Slow game speed step.
 - Feature: [#7797, #7802, #7821, #7830] Add sprite font glyphs for Danish, Norwegian, Russian, Turkish, Catalan and Romanian.
 - Feature: [#7848] Add a master volume slider to audio options screen.
 - Feature: [#7868] Placing scenery while holding shift now scales appropriately with zoom levels.
 - Feature: [#7882] Auto-detect Steam and GOG installations of RCT1.
 - Feature: [#7885] Turkish translation.
+- Feature: [#7831] Slow game speed step.
 - Fix: [#3177] Wrong keys displayed in shortcut menu.
 - Fix: [#4039] No sprite font glyph for German opening quotation mark.
 - Fix: [#5548] platform_get_locale_date_format is not implemented for Linux.
