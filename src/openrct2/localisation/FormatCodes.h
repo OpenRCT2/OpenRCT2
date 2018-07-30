@@ -280,6 +280,16 @@ enum UnicodeTurkish
     UNICODE_S_CEDILLA = 351,
 };
 
+enum UnicodeRomanian
+{
+    UNICODE_A_BREVE_UC = 258,
+    UNICODE_A_BREVE = 259,
+    UNICODE_S_COMMA_UC = 536,
+    UNICODE_S_COMMA = 537,
+    UNICODE_T_COMMA_UC = 538,
+    UNICODE_T_COMMA = 539,
+};
+
 enum UnicodeDingbats
 {
     UNICODE_DINGBATS_PLUS = 0x2795,
