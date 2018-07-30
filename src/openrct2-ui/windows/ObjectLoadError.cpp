@@ -330,7 +330,7 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
 
         // ... source game ...
         rct_string_id sourceStringId = object_manager_get_source_game_string(
-                object_entry_get_source_game_legacy(&_invalid_entries[i]));
+            object_entry_get_source_game_legacy(&_invalid_entries[i]));
         gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, SOURCE_COL_LEFT - 3, y);
 
         // ... and type

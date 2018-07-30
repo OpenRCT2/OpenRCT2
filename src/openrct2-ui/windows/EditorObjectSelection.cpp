@@ -301,8 +301,8 @@ static void visible_list_refresh(rct_window* w)
         uint8_t selectionFlags = _objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
         uint8_t objectType = item->ObjectEntry.flags & 0x0F;
-        if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6)
-            && filter_source(item) && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
+        if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && filter_source(item)
+            && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
         {
             rct_object_filters* filter = new rct_object_filters;
             filter->ride.category[0] = 0;
@@ -1426,12 +1426,12 @@ static bool sources_match(uint8_t source)
     // clang-format on
 }
 
-static bool filter_source(const ObjectRepositoryItem * item)
+static bool filter_source(const ObjectRepositoryItem* item)
 {
     if (_FILTER_ALL)
         return true;
 
-    for (auto source: item->Sources)
+    for (auto source : item->Sources)
     {
         if (sources_match(source))
             return true;
@@ -1475,8 +1475,9 @@ static void filter_update_counts()
 
         size_t numObjects = object_repository_get_items_count();
         const ObjectRepositoryItem* items = object_repository_get_items();
-        for (size_t i = 0; i < numObjects; i++) {
-            const ObjectRepositoryItem * item = &items[i];
+        for (size_t i = 0; i < numObjects; i++)
+        {
+            const ObjectRepositoryItem* item = &items[i];
             if (filter_source(item) && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags[i]))
             {
                 uint8_t objectType = item->ObjectEntry.flags & 0xF;

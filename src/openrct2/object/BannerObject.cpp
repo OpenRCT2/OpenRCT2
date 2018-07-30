@@ -48,8 +48,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     if (item != nullptr)
     {
         auto sourceGame = item->GetFirstSourceGame();
-        if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS
-            || sourceGame == OBJECT_SOURCE_TIME_TWISTER
+        if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS || sourceGame == OBJECT_SOURCE_TIME_TWISTER
             || sourceGame == OBJECT_SOURCE_CUSTOM)
         {
             auto scgPathX = Object::GetScgPathXHeader();
