@@ -49,6 +49,14 @@ struct ObjectRepositoryItem
     {
         std::vector<rct_object_entry> Entries;
     } SceneryGroupInfo;
+
+    OBJECT_SOURCE_GAME GetFirstSourceGame() const
+    {
+        if (Sources.empty())
+            return OBJECT_SOURCE_CUSTOM;
+        else
+            return (OBJECT_SOURCE_GAME)Sources[0];
+    }
 };
 
 interface IObjectRepository

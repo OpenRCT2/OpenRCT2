@@ -47,7 +47,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     auto item = objectRepository.FindObject(identifier);
     if (item != nullptr)
     {
-        auto sourceGame = item->Sources[0];
+        auto sourceGame = item->GetFirstSourceGame();
         if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS
             || sourceGame == OBJECT_SOURCE_TIME_TWISTER
             || sourceGame == OBJECT_SOURCE_CUSTOM)

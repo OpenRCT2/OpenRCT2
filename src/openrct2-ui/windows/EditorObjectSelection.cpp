@@ -1090,7 +1090,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     y += 12;
 
     // Draw object source
-    stringId = object_manager_get_source_game_string(listItem->repositoryItem->Sources[0]);
+    stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
     gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
     y += 12;
 
