@@ -1082,14 +1082,14 @@ STR_1076    :Shop stall mode
 STR_1077    :Rotation mode
 STR_1078    :Forward rotation
 STR_1079    :Backward rotation
-STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
-STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
+STR_1080    :Film: {OPENQUOTES}Avenging aviators{ENDQUOTES}
+STR_1081    :3D film: {OPENQUOTES}Mouse tails{ENDQUOTES}
 STR_1082    :Space rings mode
 STR_1083    :Beginners mode
 STR_1084    :LIM-powered launch
-STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
+STR_1085    :Film: {OPENQUOTES}Thrill riders{ENDQUOTES}
+STR_1086    :3D film: {OPENQUOTES}Storm chasers{ENDQUOTES}
+STR_1087    :3D film: {OPENQUOTES}Space raiders{ENDQUOTES}
 STR_1088    :Intense mode
 STR_1089    :Berserk mode
 STR_1090    :Haunted house mode
@@ -2879,7 +2879,7 @@ STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) no
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
 STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Traditional)
 STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Traditional)
-STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyright
+STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Franz von Suppé) non copyright
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
