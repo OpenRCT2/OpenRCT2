@@ -154,9 +154,6 @@ namespace ObjectFactory
     static Object* CreateObjectFromJson(
         IObjectRepository& objectRepository, const json_t* jRoot, const IFileDataRetriever* fileRetriever);
 
-<<<<<<< HEAD
-    static void ReadObjectLegacy(Object* object, IReadObjectContext* context, IStream* stream)
-=======
     static uint8_t ParseSourceGame(const std::string &s)
     {
         static const std::unordered_map<std::string, uint8_t> LookupTable
@@ -176,8 +173,7 @@ namespace ObjectFactory
                OBJECT_SOURCE_CUSTOM;
     }
 
-    static void ReadObjectLegacy(Object * object, IReadObjectContext * context, IStream * stream)
->>>>>>> e280f8972... Attempt at showing secondary source game
+    static void ReadObjectLegacy(Object * object, IReadObjectContext* context, IStream* stream)
     {
         try
         {
