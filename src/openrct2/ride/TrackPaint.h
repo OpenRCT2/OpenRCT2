@@ -463,6 +463,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t tr
 TRACK_PAINT_FUNCTION get_track_paint_function_inverted_hairpin_rc(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int32_t trackType, int32_t direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_hybrid_rc(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_rc(int32_t trackType, int32_t direction);

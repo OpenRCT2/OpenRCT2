@@ -4440,7 +4440,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYP
     ride_ratings_calculate_magic_carpet,                   // MAGIC_CARPET
     ride_ratings_calculate_submarine_ride,                 // SUBMARINE_RIDE
     ride_ratings_calculate_river_rafts,                    // RIVER_RAFTS
-    nullptr,                                               // 50
+    ride_ratings_calculate_giga_coaster,                   // HYBRID_COASTER  TODO actually implement rating function
     ride_ratings_calculate_enterprise,                     // ENTERPRISE
     nullptr,                                               // 52
     nullptr,                                               // 53

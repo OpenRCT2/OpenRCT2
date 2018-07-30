@@ -4809,7 +4809,6 @@ static rct_vehicle* vehicle_create_car(
     vehicle->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
     vehicle->ride = rideIndex;
     vehicle->ride_subtype = ride->subtype;
-
     vehicle->vehicle_type = vehicleEntryIndex;
     vehicle->is_child = carIndex == 0 ? 0 : 1;
     vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;

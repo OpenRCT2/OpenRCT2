@@ -1131,7 +1131,7 @@ const uint64_t RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_MAGIC_CARPET                       */  0,
     /* RIDE_TYPE_SUBMARINE_RIDE                     */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL),
     /* RIDE_TYPE_RIVER_RAFTS                        */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE),
-    /* RIDE_TYPE_50                                 */  0,
+    /* RIDE_TYPE_HYBRID_COASTER                     */  (1ULL << TRACK_FLAT) | (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_SLOPE_VERTICAL) | (1ULL << TRACK_BARREL_ROLL) | (1ULL << TRACK_POWERED_LIFT) | (1ULL << TRACK_HALF_LOOP_LARGE) | (1ULL << TRACK_SLOPE_CURVE_BANKED) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_ROLL_BANKING) | (1ULL << TRACK_SLOPE_STEEP_LONG) | (1ULL << TRACK_CURVE_VERTICAL) | (1ULL << TRACK_QUARTER_LOOP) | (1ULL << TRACK_BOOSTER),
     /* RIDE_TYPE_ENTERPRISE                         */  0,
     /* RIDE_TYPE_52                                 */  0,
     /* RIDE_TYPE_53                                 */  0,
@@ -6322,7 +6322,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT] =
     get_track_paint_function_magic_carpet,                          // RIDE_TYPE_MAGIC_CARPET
     get_track_paint_function_submarine_ride,                        // RIDE_TYPE_SUBMARINE_RIDE
     get_track_paint_function_splash_boats,                          // RIDE_TYPE_RIVER_RAFTS
-    get_track_paint_function_shop,                      // RIDE_TYPE_50
+    get_track_paint_function_hybrid_rc,                      // RIDE_TYPE_HYBRID_COASTER
     get_track_paint_function_enterprise,                // RIDE_TYPE_ENTERPRISE
     get_track_paint_function_shop,                      // RIDE_TYPE_52
     get_track_paint_function_shop,                      // RIDE_TYPE_53

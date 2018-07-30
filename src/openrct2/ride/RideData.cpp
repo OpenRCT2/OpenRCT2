@@ -110,7 +110,7 @@ const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
     false,  // 4d Magic Carpet
     false,  // 4e Submarine Ride
     true,   // 4f River Rafts
-    false,  // 50 (none)
+    true,   // 50 Hybrid Coaster
     false,  // 51 Enterprise
     false,  // 52 (none)
     false,  // 53 (none)
@@ -211,7 +211,7 @@ const uint8_t initialUpkeepCosts[RIDE_TYPE_COUNT] = {
     50, // 4d Magic Carpet
     50, // 4e Submarine Ride
     50, // 4f River Rafts
-    50, // 50 (none)
+    50, // 50 Hybrid Coaster
     50, // 51 Enterprise
     50, // 52 (none)
     50, // 53 (none)
@@ -305,7 +305,7 @@ const uint8_t costPerTrackPiece[RIDE_TYPE_COUNT] = {
     0,  // 4d Magic Carpet
     0,  // 4e Submarine Ride
     0,  // 4f River Rafts
-    0,  // 50 (none)
+    80,  // 50 Hybrid Coaster
     0,  // 51 Enterprise
     0,  // 52 (none)
     0,  // 53 (none)
@@ -402,7 +402,7 @@ const uint8_t costPerVehicle[RIDE_TYPE_COUNT] = {
     0,  // 4d Magic Carpet
     4,  // 4e Submarine Ride
     9,  // 4f River Rafts
-    0,  // 50 (none)
+    11,  // 50 Hybrid Coaster
     0,  // 51 Enterprise
     0,  // 52 (none)
     0,  // 53 (none)
@@ -500,7 +500,7 @@ const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT] = {
     false,  // 4d Magic Carpet
     false,  // 4e Submarine Ride
     false,  // 4f River Rafts
-    false,  // 50 (none)
+    true,  // 50 Hybrid Coaster
     false,  // 51 Enterprise
     false,  // 52 (none)
     false,  // 53 (none)
@@ -595,7 +595,7 @@ const uint8_t costPerStation[RIDE_TYPE_COUNT] = {
     0,  // 4d Magic Carpet
     0,  // 4e Submarine Ride
     10, // 4f River Rafts
-    0,  // 50 (none)
+    10,  // 50 Hybrid Coaster
     0,  // 51 Enterprise
     0,  // 52 (none)
     0,  // 53 (none)
@@ -690,7 +690,7 @@ const uint8_t rideBonusValue[RIDE_TYPE_COUNT] = {
     35,  // 4d Magic Carpet
     40,  // 4e Submarine Ride
     65,  // 4f River Rafts
-    15,  // 50 (none)
+    120,  // 50 Hybrid Coaster
     45,  // 51 Enterprise
     15,  // 52 (none)
     15,  // 53 (none)
@@ -801,7 +801,7 @@ const rct_ride_name_convention RideNameConvention[RIDE_TYPE_COUNT] = {
     { RIDE_COMPONENT_TYPE_CAR,          RIDE_COMPONENT_TYPE_STRUCTURE,          RIDE_COMPONENT_TYPE_STATION }, // 4d Magic Carpet
     { RIDE_COMPONENT_TYPE_BOAT,         RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_DOCKING_PLATFORM }, // 4e Submarine Ride
     { RIDE_COMPONENT_TYPE_BOAT,         RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 4f River Rafts
-    { RIDE_COMPONENT_TYPE_CAR,          RIDE_COMPONENT_TYPE_BUILDING,           RIDE_COMPONENT_TYPE_STATION }, // 50 (none)
+    { RIDE_COMPONENT_TYPE_TRAIN,        RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 50 Hybrid Coaster
     { RIDE_COMPONENT_TYPE_WHEEL,        RIDE_COMPONENT_TYPE_STRUCTURE,          RIDE_COMPONENT_TYPE_STATION }, // 51 Enterprise
     { RIDE_COMPONENT_TYPE_CAR,          RIDE_COMPONENT_TYPE_BUILDING,           RIDE_COMPONENT_TYPE_STATION }, // 52 (none)
     { RIDE_COMPONENT_TYPE_CAR,          RIDE_COMPONENT_TYPE_BUILDING,           RIDE_COMPONENT_TYPE_STATION }, // 53 (none)
@@ -895,7 +895,7 @@ const rct_ride_name RideNaming[] =  {
     { STR_RIDE_NAME_MAGIC_CARPET,                   STR_RIDE_DESCRIPTION_MAGIC_CARPET                   }, // RIDE_TYPE_MAGIC_CARPET
     { STR_RIDE_NAME_SUBMARINE_RIDE,                 STR_RIDE_DESCRIPTION_SUBMARINE_RIDE                 }, // RIDE_TYPE_SUBMARINE_RIDE
     { STR_RIDE_NAME_RIVER_RAFTS,                    STR_RIDE_DESCRIPTION_RIVER_RAFTS                    }, // RIDE_TYPE_RIVER_RAFTS
-    { STR_RIDE_NAME_50,                             STR_RIDE_DESCRIPTION_UNKNOWN                        }, // RIDE_TYPE_50
+    { STR_RIDE_NAME_HYBRID_COASTER,                 STR_RIDE_DESCRIPTION_HYBRID_COASTER                 }, // RIDE_TYPE_HYBRID_COASTER
     { STR_RIDE_NAME_ENTERPRISE,                     STR_RIDE_DESCRIPTION_ENTERPRISE                     }, // RIDE_TYPE_ENTERPRISE
     { STR_RIDE_NAME_52,                             STR_RIDE_DESCRIPTION_UNKNOWN                        }, // RIDE_TYPE_52
     { STR_RIDE_NAME_53,                             STR_RIDE_DESCRIPTION_UNKNOWN                        }, // RIDE_TYPE_53
@@ -993,7 +993,7 @@ const uint8_t RideAvailableModes[] = {
     RIDE_MODE_SWING, 0xFF,                                                                                                                                  // 4D Magic Carpet
     RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,                                                                                                                     // 4E Submarine Ride
     RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,                                                                                                                     // 4F River Rafts
-    RIDE_MODE_SHOP_STALL, 0xFF,                                                                                                                             // 50 (none)
+    RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 50 Hybrid Coaster
     RIDE_MODE_ROTATION, 0xFF,                                                                                                                               // 51 Enterprise
     RIDE_MODE_SHOP_STALL, 0xFF,                                                                                                                             // 52 (none)
     RIDE_MODE_SHOP_STALL, 0xFF,                                                                                                                             // 53 (none)
@@ -1091,7 +1091,7 @@ const uint8_t RideAvailableBreakdowns[] = {
     (1 << BREAKDOWN_SAFETY_CUT_OUT),                                                                                                                                                                // 4D Magic Carpet
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),                                                                                                                         // 4E Submarine Ride
     (1 << BREAKDOWN_SAFETY_CUT_OUT),                                                                                                                                                                // 4F River Rafts
-    0,                                                                                                                                                                                              // 50 (none)
+    (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 50 Hybrid Coaster
     (1 << BREAKDOWN_SAFETY_CUT_OUT),                                                                                                                                                                // 51 Enterprise
     0,                                                                                                                                                                                              // 52 (none)
     0,                                                                                                                                                                                              // 53 (none)
@@ -1203,7 +1203,7 @@ const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT] = {
     {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_EGYPTIAN,           0                                               },  // RIDE_TYPE_MAGIC_CARPET
     {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS,                                                                                                                                                                                                                  MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_SUBMARINE_RIDE
     {   10, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                            MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_RIVER_RAFTS
-    {   7,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_50
+    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_HYBRID_COASTER
     {   20, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_ROCK_STYLE_2,       0                                               },  // RIDE_TYPE_ENTERPRISE
     {   12, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_52
     {   15, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_53
@@ -1298,7 +1298,7 @@ const ride_cost RideTrackCosts[RIDE_TYPE_COUNT] =   {
     {   198,    2   },  // RIDE_TYPE_MAGIC_CARPET
     {   70,     0   },  // RIDE_TYPE_SUBMARINE_RIDE
     {   40,     5   },  // RIDE_TYPE_RIVER_RAFTS
-    {   525,    0   },  // RIDE_TYPE_50
+    {   100,    0   },  // RIDE_TYPE_HYBRID_COASTER
     {   100,    2   },  // RIDE_TYPE_ENTERPRISE
     {   500,    0   },  // RIDE_TYPE_52
     {   520,    0   },  // RIDE_TYPE_53
@@ -1393,7 +1393,7 @@ const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
     {   15,     176,    7,      255,    11,     1,      35,     0   },  // RIDE_TYPE_MAGIC_CARPET
     {   255,    16,     0,      255,    3,      5,      40,     0   },  // RIDE_TYPE_SUBMARINE_RIDE
     {   12,     24,     7,      255,    11,     30,     65,     0   },  // RIDE_TYPE_RIVER_RAFTS
-    {   12,     64,     0,      255,    0,      1,      15,     0   },  // RIDE_TYPE_50
+    {   54,     24,     8,      31,     9,      55,     120,    0   },  // RIDE_TYPE_HYBRID_COASTER
     {   16,     160,    3,      255,    2,      1,      45,     0   },  // RIDE_TYPE_ENTERPRISE
     {   12,     48,     0,      255,    0,      1,      15,     0   },  // RIDE_TYPE_52
     {   12,     64,     0,      255,    0,      1,      15,     0   },  // RIDE_TYPE_53
@@ -1546,7 +1546,7 @@ const rct_ride_lift_data RideLiftData[] = {
     { 255,          5, 5 }, // Magic Carpet
     { 255,          5, 5 }, // Submarine Ride
     { 255,          5, 5 }, // River Rafts
-    { 255,          5, 5 }, // (none)
+    { SOUND_LIFT_1, 5, 8 }, // Hybrid Coaster TODO -revisit this
     { 255,          5, 5 }, // Enterprise
     { 255,          5, 5 }, // (none)
     { 255,          5, 5 }, // (none)
@@ -1641,7 +1641,7 @@ const int32_t RidePhotoItems[] = {
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_MAGIC_CARPET
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_SUBMARINE_RIDE
     SHOP_ITEM_PHOTO4,   // RIDE_TYPE_RIVER_RAFTS
-    SHOP_ITEM_PHOTO,    // RIDE_TYPE_50
+    SHOP_ITEM_PHOTO,    // RIDE_TYPE_HYBRID_COASTER
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_ENTERPRISE
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_52
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_53
@@ -1736,7 +1736,7 @@ const rating_tuple RideRatings[RIDE_TYPE_COUNT] = {
     {   50,     30, 10  },  // RIDE_TYPE_MAGIC_CARPET
     {   70,     6,  0   },  // RIDE_TYPE_SUBMARINE_RIDE
     {   80,     34, 6   },  // RIDE_TYPE_RIVER_RAFTS
-    {   0,      0,  0   },  // RIDE_TYPE_50
+    {   51,     32, 10  },  // RIDE_TYPE_HYBRID_COASTER TODO revisit this
     {   50,     10, 0   },  // RIDE_TYPE_ENTERPRISE
     {   0,      0,  0   },  // RIDE_TYPE_52
     {   0,      0,  0   },  // RIDE_TYPE_53
@@ -2190,10 +2190,13 @@ const rct_ride_properties RideProperties[RIDE_TYPE_COUNT] = {
          RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK |
          RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
                 0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_RIVER_RAFTS
-        {RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-         RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
-         RIDE_TYPE_FLAG_SELLS_FOOD,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_50
+        {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
+         RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
+         RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
+         RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
+         RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
+         RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
+                10, 27,  30, 17,  68, 0 },  // RIDE_TYPE_HYBRID_COASTER TODO not sure what last 6 values are for
         {RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
          RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_16 | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
          RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
@@ -2336,7 +2339,7 @@ const uint8_t RideConstructionDefaultTrackType[] = {
     FLAT_TRACK_ELEM_1_X_4_A,    // RIDE_TYPE_MAGIC_CARPET
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_SUBMARINE_RIDE
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_RIVER_RAFTS
-    FLAT_TRACK_ELEM_1_X_1_A,    // RIDE_TYPE_50
+    TRACK_ELEM_END_STATION,     // RIDE_TYPE_HYBRID_COASTER
     FLAT_TRACK_ELEM_4_X_4,      // RIDE_TYPE_ENTERPRISE
     FLAT_TRACK_ELEM_1_X_1_A,    // RIDE_TYPE_52
     FLAT_TRACK_ELEM_1_X_1_A,    // RIDE_TYPE_53
@@ -2851,8 +2854,12 @@ const track_colour_preset_list RideColourPresets[] = {
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_SATURATED_BROWN },
     ),
 
-    // RIDE_TYPE_50
-    DEFAULT_FLAT_RIDE_COLOUR_PRESET,
+    // RIDE_TYPE_HYBRID_COASTER  TODO come back to this
+    TRACK_COLOUR_PRESETS(
+        { COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_YELLOW, COLOUR_BRIGHT_RED },
+        { COLOUR_BLACK, COLOUR_ICY_BLUE, COLOUR_BLACK },
+        { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
+    ),
 
     // RIDE_TYPE_ENTERPRISE
     DEFAULT_FLAT_RIDE_COLOUR_PRESET,

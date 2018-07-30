@@ -83,7 +83,7 @@ STR_0078    :Inverted Hairpin Coaster
 STR_0079    :Magic Carpet
 STR_0080    :Submarine Ride
 STR_0081    :River Rafts
-STR_0082    :Unknown Ride (50)
+STR_0082    :Hybrid Coaster
 STR_0083    :Enterprise
 STR_0084    :Unknown Ride (52)
 STR_0085    :Unknown Ride (53)
@@ -593,7 +593,7 @@ STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns 
 STR_0589    :A large flying-carpet themed car which moves up and down cyclically on the ends of 4 arms
 STR_0590    :Riders ride in a submerged submarine through an underwater course
 STR_0591    :Raft-shaped boats gently meander around a river track
-STR_0592    :<removed string - do not use>
+STR_0592    :TODO add description
 STR_0593    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
 STR_0594    :<removed string - do not use>
 STR_0595    :<removed string - do not use>
