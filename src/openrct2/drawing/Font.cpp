@@ -353,6 +353,22 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
         case UNICODE_INTERPUNCT:
             return SPR_G2_INTERPUNCT - SPR_CHAR_START;
 
+        // Romanian
+        case UNICODE_A_BREVE_UC:
+            return SPR_G2_A_BREVE_UPPER - SPR_CHAR_START;
+        case UNICODE_A_BREVE:
+            // Render as â, there is no visual difference on this scale.
+            return 194;
+        case UNICODE_S_COMMA_UC:
+            // Also no visual difference.
+            return SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START;
+        case UNICODE_S_COMMA:
+            return SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START;
+        case UNICODE_T_COMMA_UC:
+            return SPR_G2_T_COMMA_UPPER - SPR_CHAR_START;
+        case UNICODE_T_COMMA:
+            return SPR_G2_T_COMMA_LOWER - SPR_CHAR_START;
+
         // This is to catch capitalised versions of the guilder sign
         case UNICODE_F_WITH_HOOK_UC:
             return 'F' - 32;
@@ -527,6 +543,13 @@ bool font_supports_string_sprite(const utf8* text)
             case UNICODE_S_CEDILLA:
 
             case UNICODE_INTERPUNCT:
+
+            case UNICODE_A_BREVE_UC:
+            case UNICODE_A_BREVE:
+            case UNICODE_S_COMMA_UC:
+            case UNICODE_S_COMMA:
+            case UNICODE_T_COMMA_UC:
+            case UNICODE_T_COMMA:
 
                 supported = true;
                 break;
