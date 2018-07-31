@@ -2345,7 +2345,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Pesetas (Pts)
 STR_2340    :Lire (L)
-STR_2341    :Gylden (fl.)
+STR_2341    :Gylden (ƒ)
 STR_2342    :Krone (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperialistisk

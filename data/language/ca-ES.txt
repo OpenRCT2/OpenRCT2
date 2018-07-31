@@ -2345,7 +2345,7 @@ STR_2337    :Marc alemà (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Pesseta (Pts) revisar!!!!
 STR_2340    :Lliura (L)
-STR_2341    :Florí (fl.)
+STR_2341    :Florí (ƒ)
 STR_2342    :Corona sueca (kr)
 STR_2343    :Euro ({EURO})
 STR_2344    :Imperial

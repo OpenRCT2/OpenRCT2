@@ -2181,7 +2181,7 @@ STR_2337    :Marchi tedeschi (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Pesetas (Pts)
 STR_2340    :Lire (L)
-STR_2341    :Fiorini (fl.)
+STR_2341    :Fiorini (ƒ)
 STR_2342    :Corone (kr)
 STR_2343    :Euro ({EURO})
 STR_2344    :Imperiale
@@ -4340,6 +4340,8 @@ STR_6256    :Effetti di rendering
 STR_6257    :Vetro (traslucido)
 STR_6258    :Limpido (trasparente)
 STR_6259    :Disabilitato
+STR_6260    :Mostra celle bloccate
+STR_6261    :Mostra percorsi larghi
 
 #############
 # Scenarios #
