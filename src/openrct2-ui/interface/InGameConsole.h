@@ -9,8 +9,10 @@
 
 #pragma once
 
+#include <deque>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/world/Location.hpp>
+#include <string>
 
 namespace OpenRCT2::Ui
 {

@@ -34,20 +34,20 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        sint32 x_get() { return GetWindow()->x; }
-        void x_set(sint32 value)
+        int32_t x_get() { return GetWindow()->x; }
+        void x_set(int32_t value)
         {
             auto w = GetWindow();
             window_set_position(w, value, w->y);
         }
-        sint32 y_get() { return GetWindow()->y; }
-        void y_set(sint32 value)
+        int32_t y_get() { return GetWindow()->y; }
+        void y_set(int32_t value)
         {
             auto w = GetWindow();
             window_set_position(w, w->x, value);
         }
-        sint32 width_get() { return GetWindow()->width; }
-        sint32 height_get() { return GetWindow()->height; }
+        int32_t width_get() { return GetWindow()->width; }
+        int32_t height_get() { return GetWindow()->height; }
         bool isSticky_get()
         {
             auto flags = GetWindow()->flags;

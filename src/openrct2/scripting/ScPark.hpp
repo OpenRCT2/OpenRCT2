@@ -31,8 +31,8 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
-        sint32 rating_get() { return gParkRating; }
-        void rating_set(sint32 value)
+        int32_t rating_get() { return gParkRating; }
+        void rating_set(int32_t value)
         {
             gParkRating = std::min(std::max(0, value), 999);
             auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
@@ -59,7 +59,7 @@ namespace OpenRCT2::Scripting
         {
             try
             {
-                uint8 type = NEWS_ITEM_BLANK;
+                uint8_t type = NEWS_ITEM_BLANK;
                 std::string text;
                 if (message.type() == DukValue::Type::STRING)
                 {
@@ -70,7 +70,7 @@ namespace OpenRCT2::Scripting
                     type = GetParkMessageType(message["type"].as_string());
                     text = message["text"].as_string();
                 }
-                news_item_add_to_queue_raw(type, text.c_str(), static_cast<uint32>(-1));
+                news_item_add_to_queue_raw(type, text.c_str(), static_cast<uint32_t>(-1));
             }
             catch (const std::exception&)
             {
@@ -87,7 +87,7 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        uint8 GetParkMessageType(const std::string& key)
+        uint8_t GetParkMessageType(const std::string& key)
         {
             static auto keys = {
                 "attraction",
@@ -99,7 +99,7 @@ namespace OpenRCT2::Scripting
                 "guests",
                 "award",
                 "chart" };
-            uint8 i = 0;
+            uint8_t i = 0;
             for (const auto& k : keys)
             {
                 if (k == key)

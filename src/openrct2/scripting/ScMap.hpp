@@ -40,23 +40,23 @@ namespace OpenRCT2::Scripting
             return DukValue::take_from_stack(ctx);
         }
 
-        sint32 rides_get()
+        int32_t rides_get()
         {
             return MAX_RIDES;
         }
 
-        sint32 things_get()
+        int32_t things_get()
         {
             return MAX_SPRITES;
         }
 
-        std::shared_ptr<ScTile> getTile(sint32 x, sint32 y)
+        std::shared_ptr<ScTile> getTile(int32_t x, int32_t y)
         {
             auto firstElement = map_get_first_element_at(x, y);
             return std::make_shared<ScTile>(firstElement);
         }
 
-        std::shared_ptr<ScThing> getThing(sint32 id)
+        std::shared_ptr<ScThing> getThing(int32_t id)
         {
             if (id >= 0 && id < MAX_SPRITES)
             {

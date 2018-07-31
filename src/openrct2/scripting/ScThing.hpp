@@ -35,14 +35,14 @@ namespace OpenRCT2::Scripting
             return "unknown";
         }
 
-        sint32 x_get() { return _sprite->unknown.x; }
-        sint32 y_get() { return _sprite->unknown.y; }
-        sint32 z_get() { return _sprite->unknown.z; }
+        int32_t x_get() { return _sprite->unknown.x; }
+        int32_t y_get() { return _sprite->unknown.y; }
+        int32_t z_get() { return _sprite->unknown.z; }
 
-        uint8 tshirtColour_get() { return _sprite->peep.tshirt_colour; }
-        void tshirtColour_set(uint8 value) { _sprite->peep.tshirt_colour = value; }
-        uint8 trousersColour_get() { return _sprite->peep.trousers_colour; }
-        void trousersColour_set(uint8 value) { _sprite->peep.trousers_colour = value; }
+        uint8_t tshirtColour_get() { return _sprite->peep.tshirt_colour; }
+        void tshirtColour_set(uint8_t value) { _sprite->peep.tshirt_colour = value; }
+        uint8_t trousersColour_get() { return _sprite->peep.trousers_colour; }
+        void trousersColour_set(uint8_t value) { _sprite->peep.trousers_colour = value; }
 
         static void Register(duk_context * ctx)
         {

@@ -39,11 +39,11 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        sint32 width_get() { return context_get_width(); }
-        sint32 height_get() { return context_get_height(); }
-        sint32 windows_get()
+        int32_t width_get() { return context_get_width(); }
+        int32_t height_get() { return context_get_height(); }
+        int32_t windows_get()
         {
-            return static_cast<sint32>(g_window_list.size());
+            return static_cast<int32_t>(g_window_list.size());
         }
 
         std::shared_ptr<ScWindow> openWindow(DukValue desc)
@@ -83,9 +83,9 @@ namespace OpenRCT2::Scripting
             window_close_all();
         }
 
-        std::shared_ptr<ScWindow> getWindow(sint32 index)
+        std::shared_ptr<ScWindow> getWindow(int32_t index)
         {
-            for (sint32 i = 0; i < g_window_list.size(); i++)
+            for (int32_t i = 0; i < g_window_list.size(); i++)
             {
                 if (i == index)
                 {

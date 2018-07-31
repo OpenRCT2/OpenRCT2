@@ -70,7 +70,7 @@ namespace OpenRCT2::Scripting
         {
             return _element->base_height;
         }
-        void baseHeight_set(uint8 newBaseHeight)
+        void baseHeight_set(uint8_t newBaseHeight)
         {
             _element->base_height = newBaseHeight;
         }
@@ -79,7 +79,7 @@ namespace OpenRCT2::Scripting
         {
             return _element->clearance_height;
         }
-        void clearanceHeight_set(uint8 newClearanceHeight)
+        void clearanceHeight_set(uint8_t newClearanceHeight)
         {
             _element->clearance_height = newClearanceHeight;
         }
@@ -204,13 +204,13 @@ namespace OpenRCT2::Scripting
             "broken");
         dukglue_register_property(
             ctx,
-            static_cast<uint8 (T::*)() const>(&ScTileElement::baseHeight_get),
-            static_cast<void (T::*)(uint8)>(&ScTileElement::baseHeight_set),
+            static_cast<uint8_t (T::*)() const>(&ScTileElement::baseHeight_get),
+            static_cast<void (T::*)(uint8_t)>(&ScTileElement::baseHeight_set),
             "baseHeight");
         dukglue_register_property(
             ctx,
-            static_cast<uint8 (T::*)() const>(&ScTileElement::clearanceHeight_get),
-            static_cast<void (T::*)(uint8)>(&ScTileElement::clearanceHeight_set),
+            static_cast<uint8_t (T::*)() const>(&ScTileElement::clearanceHeight_get),
+            static_cast<void (T::*)(uint8_t)>(&ScTileElement::clearanceHeight_set),
             "clearanceHeight");
     }
 

@@ -46,7 +46,7 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_mouseup(rct_window * w, rct_widgetindex widgetIndex);
     static void window_custom_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
     static void window_custom_resize(rct_window * w);
-    static void window_custom_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+    static void window_custom_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
     static void window_custom_invalidate(rct_window * w);
     static void window_custom_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
@@ -86,13 +86,13 @@ namespace OpenRCT2::Ui::Windows
     {
         // Properties
         std::string Type;
-        sint32 X{};
-        sint32 Y{};
-        sint32 Width{};
-        sint32 Height{};
+        int32_t X{};
+        int32_t Y{};
+        int32_t Width{};
+        int32_t Height{};
         std::string Text;
         std::vector<std::string> Items;
-        sint32 SelectedIndex{};
+        int32_t SelectedIndex{};
 
         // Event handlers
         DukValue OnClick;
@@ -128,16 +128,16 @@ namespace OpenRCT2::Ui::Windows
     struct CustomWindowDesc
     {
         std::string Classification;
-        std::optional<sint32> X;
-        std::optional<sint32> Y;
-        sint32 Width;
-        sint32 Height;
-        std::optional<sint32> MinWidth;
-        std::optional<sint32> MinHeight;
-        std::optional<sint32> MaxWidth;
-        std::optional<sint32> MaxHeight;
+        std::optional<int32_t> X;
+        std::optional<int32_t> Y;
+        int32_t Width;
+        int32_t Height;
+        std::optional<int32_t> MinWidth;
+        std::optional<int32_t> MinHeight;
+        std::optional<int32_t> MaxWidth;
+        std::optional<int32_t> MaxHeight;
         std::string Title;
-        std::optional<sint32> Id;
+        std::optional<int32_t> Id;
         std::vector<CustomWidgetDesc> Widgets;
 
         CustomWindowDesc() = default;
@@ -172,7 +172,7 @@ namespace OpenRCT2::Ui::Windows
             return std::move(result);
         }
 
-        static std::optional<sint32> GetOptionalInt(DukValue input)
+        static std::optional<int32_t> GetOptionalInt(DukValue input)
         {
             return input.type() == DukValue::Type::NUMBER ?
                 std::make_optional(input.as_int()) :
@@ -232,7 +232,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto desc = CustomWindowDesc::FromDukValue(dukDesc);
 
-        uint16 windowFlags = 0;
+        uint16_t windowFlags = 0;
         if (desc.IsResizable())
         {
             windowFlags |= WF_RESIZABLE;
@@ -270,8 +270,8 @@ namespace OpenRCT2::Ui::Windows
         {
             window->min_width = desc.MinWidth.value_or(0);
             window->min_height = desc.MinHeight.value_or(0);
-            window->max_width = desc.MaxWidth.value_or(std::numeric_limits<uint16>::max());
-            window->max_height = desc.MaxHeight.value_or(std::numeric_limits<uint16>::max());
+            window->max_width = desc.MaxWidth.value_or(std::numeric_limits<uint16_t>::max());
+            window->max_height = desc.MaxHeight.value_or(std::numeric_limits<uint16_t>::max());
         }
         RefreshWidgets(window);
         window_init_scroll_widgets(window);
@@ -338,7 +338,7 @@ namespace OpenRCT2::Ui::Windows
                 for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_STRING;
-                    set_format_arg_on((uint8*)&gDropdownItemsArgs[i], 0, const char *, items[i].c_str());
+                    set_format_arg_on((uint8_t*)&gDropdownItemsArgs[i], 0, const char *, items[i].c_str());
                 }
                 window_dropdown_show_text_custom_width(
                     w->x + widget->left,
@@ -353,7 +353,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void window_custom_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+    static void window_custom_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
             return;

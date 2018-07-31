@@ -35,7 +35,7 @@ HookEngine::HookEngine(ScriptExecutionInfo& execInfo) :
     }
 }
 
-uint32 HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue &function)
+uint32_t HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue &function)
 {
     auto& hookList = GetHookList(type);
     auto cookie = _nextCookie++;
@@ -44,7 +44,7 @@ uint32 HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, cons
     return cookie;
 }
 
-void HookEngine::Unsubscribe(HOOK_TYPE type, uint32 cookie)
+void HookEngine::Unsubscribe(HOOK_TYPE type, uint32_t cookie)
 {
     auto& hookList = GetHookList(type);
     auto& hooks = hookList.Hooks;

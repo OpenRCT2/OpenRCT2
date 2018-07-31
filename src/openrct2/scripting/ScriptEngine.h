@@ -88,7 +88,7 @@ namespace OpenRCT2::Scripting
         bool _initialised{};
         std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
         std::vector<std::shared_ptr<Plugin>> _plugins;
-        uint32 _lastHotReloadCheckTick{};
+        uint32_t _lastHotReloadCheckTick{};
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
 
