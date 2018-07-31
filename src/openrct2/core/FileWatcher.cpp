@@ -8,17 +8,17 @@
  *****************************************************************************/
 
 #include <array>
-#include <stdexcept>
 #include <experimental/filesystem>
+#include <stdexcept>
 
 #ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #else
-#include <fcntl.h>
-#include <sys/inotify.h>
-#include <sys/types.h>
-#include <unistd.h>
+#    include <fcntl.h>
+#    include <sys/inotify.h>
+#    include <sys/types.h>
+#    include <unistd.h>
 #endif
 
 #include "../core/String.hpp"
@@ -61,9 +61,9 @@ void FileWatcher::FileDescriptor::Close()
 }
 
 FileWatcher::WatchDescriptor::WatchDescriptor(int fd, const std::string& path)
-    : Fd(fd),
-      Wd(inotify_add_watch(fd, path.c_str(), IN_CLOSE_WRITE)),
-      Path(path)
+    : Fd(fd)
+    , Wd(inotify_add_watch(fd, path.c_str(), IN_CLOSE_WRITE))
+    , Path(path)
 {
     if (Wd >= 0)
     {
@@ -83,11 +83,13 @@ FileWatcher::WatchDescriptor::~WatchDescriptor()
 }
 #endif
 
-FileWatcher::FileWatcher(const std::string &directoryPath)
+FileWatcher::FileWatcher(const std::string& directoryPath)
 {
 #ifdef _WIN32
     _path = directoryPath;
-    _directoryHandle = CreateFileA(directoryPath.c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+    _directoryHandle = CreateFileA(
+        directoryPath.c_str(), FILE_LIST_DIRECTORY, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS,
+        nullptr);
     if (_directoryHandle == INVALID_HANDLE_VALUE)
     {
         throw std::runtime_error("Unable to open directory '" + directoryPath + "'");
@@ -123,12 +125,14 @@ void FileWatcher::WatchDirectory()
 #ifdef _WIN32
     std::array<char, 1024> eventData;
     DWORD bytesReturned;
-    while (ReadDirectoryChangesW(_directoryHandle, eventData.data(), (DWORD)eventData.size(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE, &bytesReturned, nullptr, nullptr))
+    while (ReadDirectoryChangesW(
+        _directoryHandle, eventData.data(), (DWORD)eventData.size(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE, &bytesReturned,
+        nullptr, nullptr))
     {
         auto onFileChanged = OnFileChanged;
         if (onFileChanged)
         {
-            FILE_NOTIFY_INFORMATION * notifyInfo;
+            FILE_NOTIFY_INFORMATION* notifyInfo;
             size_t offset = 0;
             do
             {
@@ -139,8 +143,7 @@ void FileWatcher::WatchDirectory()
                 auto fileName = String::ToUtf8(fileNameW);
                 auto path = fs::path(_path) / fs::path(fileName);
                 onFileChanged(path.u8string());
-            }
-            while (notifyInfo->NextEntryOffset != 0);
+            } while (notifyInfo->NextEntryOffset != 0);
         }
     }
 #else
@@ -165,11 +168,9 @@ void FileWatcher::WatchDirectory()
 
                         // Find watch descriptor
                         int wd = e->wd;
-                        auto findResult = std::find_if(_watchDescs.begin(), _watchDescs.end(),
-                            [wd](const WatchDescriptor& watchDesc)
-                            {
-                                return wd == watchDesc.Wd;
-                            });
+                        auto findResult = std::find_if(
+                            _watchDescs.begin(), _watchDescs.end(),
+                            [wd](const WatchDescriptor& watchDesc) { return wd == watchDesc.Wd; });
                         if (findResult != _watchDescs.end())
                         {
                             auto directory = findResult->Path;

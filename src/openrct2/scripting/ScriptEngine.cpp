@@ -8,28 +8,29 @@
  *****************************************************************************/
 
 #include "ScriptEngine.h"
+
+#include "../PlatformEnvironment.h"
 #include "../core/FileScanner.h"
 #include "../core/Path.hpp"
 #include "../interface/InteractiveConsole.h"
 #include "../platform/Platform2.h"
-#include "../PlatformEnvironment.h"
-#include <dukglue/dukglue.h>
-#include <duktape.h>
-#include <iostream>
-#include <stdexcept>
-
 #include "ScConsole.hpp"
 #include "ScContext.hpp"
 #include "ScDisposable.hpp"
 #include "ScMap.hpp"
 #include "ScPark.hpp"
-#include "ScTile.hpp"
 #include "ScThing.hpp"
+#include "ScTile.hpp"
+
+#include <dukglue/dukglue.h>
+#include <duktape.h>
+#include <iostream>
+#include <stdexcept>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static std::string Stringify(duk_context * ctx, duk_idx_t idx);
+static std::string Stringify(duk_context* ctx, duk_idx_t idx);
 
 DukContext::DukContext()
 {
@@ -45,10 +46,10 @@ DukContext::~DukContext()
     duk_destroy_heap(_context);
 }
 
-ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env) :
-    _console(console),
-    _env(env),
-    _hookEngine(_execInfo)
+ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env)
+    : _console(console)
+    , _env(env)
+    , _hookEngine(_execInfo)
 {
 }
 
@@ -88,7 +89,7 @@ void ScriptEngine::LoadPlugins()
             plugin->Load();
             _plugins.push_back(std::move(plugin));
         }
-        catch (const std::exception &e)
+        catch (const std::exception& e)
         {
             _console.WriteLineError(e.what());
         }
@@ -98,12 +99,10 @@ void ScriptEngine::LoadPlugins()
     {
         // Enable hot reloading
         _pluginFileWatcher = std::make_unique<FileWatcher>(base);
-        _pluginFileWatcher->OnFileChanged =
-            [this](const std::string &path)
-            {
-                std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
-                _changedPluginFiles.push_back(path);
-            };
+        _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
+            std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+            _changedPluginFiles.push_back(path);
+        };
     }
     catch (const std::exception& e)
     {
@@ -118,11 +117,9 @@ void ScriptEngine::AutoReloadPlugins()
         std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
         for (auto& path : _changedPluginFiles)
         {
-            auto findResult = std::find_if(_plugins.begin(), _plugins.end(),
-                [&path](const std::shared_ptr<Plugin>& plugin)
-                {
-                    return Path::Equals(path, plugin->GetPath());
-                });
+            auto findResult = std::find_if(_plugins.begin(), _plugins.end(), [&path](const std::shared_ptr<Plugin>& plugin) {
+                return Path::Equals(path, plugin->GetPath());
+            });
             if (findResult != _plugins.end())
             {
                 auto& plugin = *findResult;
@@ -134,7 +131,7 @@ void ScriptEngine::AutoReloadPlugins()
                     plugin->Load();
                     plugin->Start();
                 }
-                catch (const std::exception &e)
+                catch (const std::exception& e)
                 {
                     _console.WriteLineError(e.what());
                 }
@@ -153,7 +150,7 @@ void ScriptEngine::StartPlugins()
         {
             plugin->Start();
         }
-        catch (const std::exception &e)
+        catch (const std::exception& e)
         {
             _console.WriteLineError(e.what());
         }
@@ -196,7 +193,7 @@ void ScriptEngine::Update()
     }
 }
 
-std::future<void> ScriptEngine::Eval(const std::string &s)
+std::future<void> ScriptEngine::Eval(const std::string& s)
 {
     std::promise<void> barrier;
     auto future = barrier.get_future();
@@ -204,7 +201,7 @@ std::future<void> ScriptEngine::Eval(const std::string &s)
     return future;
 }
 
-static std::string Stringify(duk_context * ctx, duk_idx_t idx)
+static std::string Stringify(duk_context* ctx, duk_idx_t idx)
 {
     auto type = duk_get_type(ctx, idx);
     if (type == DUK_TYPE_OBJECT && !duk_is_function(ctx, idx))

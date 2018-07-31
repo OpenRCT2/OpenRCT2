@@ -18,4 +18,4 @@ namespace OpenRCT2::Scripting
     public:
         static void Extend(ScriptEngine& scriptEngine);
     };
-}
+} // namespace OpenRCT2::Scripting

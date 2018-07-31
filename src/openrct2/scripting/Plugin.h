@@ -9,10 +9,10 @@
 
 #pragma once
 
+#include <dukglue/dukglue.h>
 #include <memory>
 #include <string>
 #include <vector>
-#include <dukglue/dukglue.h>
 
 namespace OpenRCT2::Scripting
 {
@@ -27,15 +27,20 @@ namespace OpenRCT2::Scripting
     class Plugin
     {
     private:
-        duk_context * _context;
+        duk_context* _context;
         std::string _path;
         PluginMetadata _metadata;
 
     public:
-        std::string GetPath() const { return _path; };
+        std::string GetPath() const
+        {
+            return _path;
+        };
 
-        Plugin() { }
-        Plugin(duk_context * context, const std::string &path);
+        Plugin()
+        {
+        }
+        Plugin(duk_context* context, const std::string& path);
         Plugin(const Plugin&) = delete;
         Plugin(Plugin&&) = delete;
 
@@ -46,4 +51,4 @@ namespace OpenRCT2::Scripting
     private:
         static PluginMetadata GetMetadata(const DukValue& dukMetadata);
     };
-}
+} // namespace OpenRCT2::Scripting

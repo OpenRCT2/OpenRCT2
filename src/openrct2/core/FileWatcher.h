@@ -15,7 +15,7 @@
 #include <vector>
 
 #ifdef _WIN32
-typedef void * HANDLE;
+typedef void* HANDLE;
 #endif
 
 /**
@@ -53,9 +53,9 @@ private:
 #endif
 
 public:
-    std::function<void(const std::string &path)> OnFileChanged;
+    std::function<void(const std::string& path)> OnFileChanged;
 
-    FileWatcher(const std::string &directoryPath);
+    FileWatcher(const std::string& directoryPath);
     ~FileWatcher();
 
 private:

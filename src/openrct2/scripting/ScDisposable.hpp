@@ -20,8 +20,8 @@ namespace OpenRCT2::Scripting
         std::function<void()> _onDispose;
 
     public:
-        ScDisposable(std::function<void()> onDispose) :
-            _onDispose(onDispose)
+        ScDisposable(std::function<void()> onDispose)
+            : _onDispose(onDispose)
         {
         }
 
@@ -33,9 +33,9 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        static void Register(duk_context * ctx)
+        static void Register(duk_context* ctx)
         {
             dukglue_register_method(ctx, &ScDisposable::dispose, "dispose");
         }
     };
-}
+} // namespace OpenRCT2::Scripting

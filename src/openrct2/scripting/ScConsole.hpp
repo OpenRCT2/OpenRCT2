@@ -9,9 +9,8 @@
 
 #pragma once
 
-#include <dukglue/dukglue.h>
-#include "../interface/InteractiveConsole.h"
 #include "../core/Math.hpp"
+#include "../interface/InteractiveConsole.h"
 
 #include <dukglue/dukglue.h>
 
@@ -38,9 +37,15 @@ namespace OpenRCT2::Scripting
             std::string str;
             switch (val.type())
             {
-                case DukValue::Type::UNDEFINED: str = "undefined"; break;
-                case DukValue::Type::NULLREF: str = "null"; break;
-                case DukValue::Type::BOOLEAN: str = val.as_bool() ? "true" : "false"; break;
+                case DukValue::Type::UNDEFINED:
+                    str = "undefined";
+                    break;
+                case DukValue::Type::NULLREF:
+                    str = "null";
+                    break;
+                case DukValue::Type::BOOLEAN:
+                    str = val.as_bool() ? "true" : "false";
+                    break;
                 case DukValue::Type::NUMBER:
                 {
                     const auto d = val.as_double();
@@ -55,11 +60,20 @@ namespace OpenRCT2::Scripting
                     }
                     break;
                 }
-                case DukValue::Type::STRING: str = val.as_string(); break;
-                case DukValue::Type::OBJECT: str = "{}"; break;
-                case DukValue::Type::BUFFER: str = "buffer"; break;
-                case DukValue::Type::POINTER: str = "pointer"; break;
-                case DukValue::Type::LIGHTFUNC: break;
+                case DukValue::Type::STRING:
+                    str = val.as_string();
+                    break;
+                case DukValue::Type::OBJECT:
+                    str = "{}";
+                    break;
+                case DukValue::Type::BUFFER:
+                    str = "buffer";
+                    break;
+                case DukValue::Type::POINTER:
+                    str = "pointer";
+                    break;
+                case DukValue::Type::LIGHTFUNC:
+                    break;
             }
 
             _console.WriteLine(str);

@@ -8,26 +8,27 @@
  *****************************************************************************/
 
 #include "Plugin.h"
+
+#include <algorithm>
 #include <dukglue/dukglue.h>
 #include <duktape.h>
-#include <algorithm>
 #include <fstream>
 #include <memory>
 
 #ifdef _WIN32
-    
+
 #else
-    #include <fcntl.h>
-    #include <sys/inotify.h>
-    #include <sys/types.h>
-    #include <unistd.h>
+#    include <fcntl.h>
+#    include <sys/inotify.h>
+#    include <sys/types.h>
+#    include <unistd.h>
 #endif
 
 using namespace OpenRCT2::Scripting;
 
-Plugin::Plugin(duk_context * context, const std::string &path)
-    : _context(context),
-      _path(path)
+Plugin::Plugin(duk_context* context, const std::string& path)
+    : _context(context)
+    , _path(path)
 {
 }
 
@@ -39,12 +40,10 @@ void Plugin::Load()
         std::ifstream fs(_path);
         if (fs.is_open())
         {
-            fs.seekg(0, std::ios::end);   
+            fs.seekg(0, std::ios::end);
             code.reserve(fs.tellg());
             fs.seekg(0, std::ios::beg);
-            code.assign(
-                std::istreambuf_iterator<char>(fs),
-                std::istreambuf_iterator<char>());
+            code.assign(std::istreambuf_iterator<char>(fs), std::istreambuf_iterator<char>());
         }
     }
     // Wrap the script in a function and pass the global objects as variables
@@ -98,11 +97,9 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
         if (dukAuthors.is_array())
         {
             auto elements = dukAuthors.as_array();
-            std::transform(
-                elements.begin(),
-                elements.end(),
-                std::back_inserter(metadata.Authors),
-                [](const DukValue& v) { return v.as_string(); });
+            std::transform(elements.begin(), elements.end(), std::back_inserter(metadata.Authors), [](const DukValue& v) {
+                return v.as_string();
+            });
         }
         else
         {

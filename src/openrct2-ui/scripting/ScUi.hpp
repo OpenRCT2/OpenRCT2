@@ -9,13 +9,14 @@
 
 #pragma once
 
+#include "../Context.h"
+#include "../common.h"
+#include "ScWindow.hpp"
+
 #include <dukglue/dukglue.h>
 #include <memory>
-#include <string>
 #include <openrct2/scripting/ScriptEngine.h>
-#include "../common.h"
-#include "../Context.h"
-#include "ScWindow.hpp"
+#include <string>
 
 namespace OpenRCT2::Scripting
 {
@@ -24,7 +25,7 @@ namespace OpenRCT2::Scripting
 
 namespace OpenRCT2::Ui::Windows
 {
-    rct_window * window_custom_open(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
+    rct_window* window_custom_open(std::shared_ptr<OpenRCT2::Scripting::Plugin> owner, DukValue dukDesc);
 }
 
 namespace OpenRCT2::Scripting
@@ -33,14 +34,21 @@ namespace OpenRCT2::Scripting
     {
     private:
         ScriptEngine& _scriptEngine;
+
     public:
         ScUi(ScriptEngine& scriptEngine)
             : _scriptEngine(scriptEngine)
         {
         }
 
-        int32_t width_get() { return context_get_width(); }
-        int32_t height_get() { return context_get_height(); }
+        int32_t width_get()
+        {
+            return context_get_width();
+        }
+        int32_t height_get()
+        {
+            return context_get_height();
+        }
         int32_t windows_get()
         {
             return static_cast<int32_t>(g_window_list.size());
@@ -97,7 +105,7 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        static void Register(duk_context * ctx)
+        static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScUi::height_get, nullptr, "height");
             dukglue_register_property(ctx, &ScUi::width_get, nullptr, "width");
@@ -114,4 +122,4 @@ namespace OpenRCT2::Scripting
             return WC_NULL;
         }
     };
-}
+} // namespace OpenRCT2::Scripting

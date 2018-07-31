@@ -7,26 +7,26 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <unordered_map>
 #include "HookEngine.h"
+
 #include "ScriptEngine.h"
+
+#include <unordered_map>
 
 using namespace OpenRCT2::Scripting;
 
-HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string &name)
+HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
 {
     static const std::unordered_map<std::string, HOOK_TYPE> LookupTable({
         { "interval.tick", HOOK_TYPE::INTERVAL_TICK },
         { "interval.day", HOOK_TYPE::INTERVAL_DAY },
     });
     auto result = LookupTable.find(name);
-    return (result != LookupTable.end()) ?
-        result->second :
-        HOOK_TYPE::UNDEFINED;
+    return (result != LookupTable.end()) ? result->second : HOOK_TYPE::UNDEFINED;
 }
 
-HookEngine::HookEngine(ScriptExecutionInfo& execInfo) :
-    _execInfo(execInfo)
+HookEngine::HookEngine(ScriptExecutionInfo& execInfo)
+    : _execInfo(execInfo)
 {
     _hookMap.resize(NUM_HOOK_TYPES);
     for (size_t i = 0; i < NUM_HOOK_TYPES; i++)
@@ -35,7 +35,7 @@ HookEngine::HookEngine(ScriptExecutionInfo& execInfo) :
     }
 }
 
-uint32_t HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue &function)
+uint32_t HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue& function)
 {
     auto& hookList = GetHookList(type);
     auto cookie = _nextCookie++;

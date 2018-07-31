@@ -69,7 +69,7 @@ namespace WIDGET_FLAGS
 {
     const WidgetFlags TEXT_IS_STRING = 1 << 0;
     const WidgetFlags IS_ENABLED = 1 << 1;
-}
+} // namespace WIDGET_FLAGS
 
 /**
  * Widget structure

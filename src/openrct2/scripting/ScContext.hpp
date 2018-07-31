@@ -9,11 +9,12 @@
 
 #pragma once
 
-#include <dukglue/dukglue.h>
 #include "HookEngine.h"
 #include "ScDisposable.hpp"
 #include "ScriptEngine.h"
+
 #include <cstdio>
+#include <dukglue/dukglue.h>
 #include <memory>
 
 namespace OpenRCT2::Scripting
@@ -26,8 +27,8 @@ namespace OpenRCT2::Scripting
 
     public:
         ScContext(ScriptExecutionInfo& execInfo, HookEngine& hookEngine)
-            : _execInfo(execInfo),
-              _hookEngine(hookEngine)
+            : _execInfo(execInfo)
+            , _hookEngine(hookEngine)
         {
         }
 
@@ -35,7 +36,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        std::shared_ptr<ScDisposable> subscribe(const std::string &hook, const DukValue &callback)
+        std::shared_ptr<ScDisposable> subscribe(const std::string& hook, const DukValue& callback)
         {
             auto hookType = GetHookType(hook);
             if (hookType == HOOK_TYPE::UNDEFINED)
@@ -55,17 +56,13 @@ namespace OpenRCT2::Scripting
             }
 
             auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
-            return std::make_shared<ScDisposable>(
-                [this, hookType, cookie]()
-                {
-                    _hookEngine.Unsubscribe(hookType, cookie);
-                });
+            return std::make_shared<ScDisposable>([this, hookType, cookie]() { _hookEngine.Unsubscribe(hookType, cookie); });
         }
 
-        static void Register(duk_context * ctx)
+        static void Register(duk_context* ctx)
         {
             dukglue_register_method(ctx, &ScContext::registerIntent, "registerIntent");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
         }
     };
-}
+} // namespace OpenRCT2::Scripting

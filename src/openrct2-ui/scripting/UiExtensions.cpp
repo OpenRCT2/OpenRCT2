@@ -7,10 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/scripting/ScriptEngine.h>
 #include "UiExtensions.h"
+
 #include "ScUi.hpp"
 #include "ScWindow.hpp"
+
+#include <openrct2/scripting/ScriptEngine.h>
 
 using namespace OpenRCT2::Scripting;
 

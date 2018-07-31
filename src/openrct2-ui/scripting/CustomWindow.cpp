@@ -7,19 +7,20 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/Dropdown.h"
+#include "ScUi.hpp"
+#include "ScWindow.hpp"
+
 #include <limits>
-#include <optional>
-#include <string>
-#include <vector>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/scripting/Plugin.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
-#include "../interface/Dropdown.h"
-#include "ScUi.hpp"
-#include "ScWindow.hpp"
+#include <optional>
+#include <string>
+#include <vector>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -36,51 +37,48 @@ namespace OpenRCT2::Ui::Windows
     };
 
     static rct_widget CustomDefaultWidgets[] = {
-        { WWT_FRAME,    0, 0, 0, 0,  0,  0xFFFFFFFF,            STR_NONE             }, // panel / background
-        { WWT_CAPTION,  0, 1, 0, 1,  14, STR_STRING,            STR_WINDOW_TITLE_TIP }, // title bar
-        { WWT_CLOSEBOX, 0, 0, 0, 2,  13, STR_CLOSE_X,           STR_CLOSE_WINDOW_TIP }, // close x button
-        { WWT_RESIZE,   1, 0, 0, 14, 0,  0xFFFFFFFF,            STR_NONE             }, // content panel
+        { WWT_FRAME, 0, 0, 0, 0, 0, 0xFFFFFFFF, STR_NONE },                  // panel / background
+        { WWT_CAPTION, 0, 1, 0, 1, 14, STR_STRING, STR_WINDOW_TITLE_TIP },   // title bar
+        { WWT_CLOSEBOX, 0, 0, 0, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }, // close x button
+        { WWT_RESIZE, 1, 0, 0, 14, 0, 0xFFFFFFFF, STR_NONE },                // content panel
     };
 
-    static void window_custom_close(rct_window * w);
-    static void window_custom_mouseup(rct_window * w, rct_widgetindex widgetIndex);
-    static void window_custom_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
-    static void window_custom_resize(rct_window * w);
-    static void window_custom_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-    static void window_custom_invalidate(rct_window * w);
-    static void window_custom_paint(rct_window * w, rct_drawpixelinfo * dpi);
+    static void window_custom_close(rct_window* w);
+    static void window_custom_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+    static void window_custom_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+    static void window_custom_resize(rct_window* w);
+    static void window_custom_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+    static void window_custom_invalidate(rct_window* w);
+    static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-    static rct_window_event_list window_custom_events =
-    {
-        window_custom_close,
-        window_custom_mouseup,
-        window_custom_resize,
-        window_custom_mousedown,
-        window_custom_dropdown,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        window_custom_invalidate,
-        window_custom_paint,
-        nullptr
-    };
+    static rct_window_event_list window_custom_events = { window_custom_close,
+                                                          window_custom_mouseup,
+                                                          window_custom_resize,
+                                                          window_custom_mousedown,
+                                                          window_custom_dropdown,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          nullptr,
+                                                          window_custom_invalidate,
+                                                          window_custom_paint,
+                                                          nullptr };
 
     struct CustomWidgetDesc
     {
@@ -165,8 +163,9 @@ namespace OpenRCT2::Ui::Windows
             if (desc["widgets"].is_array())
             {
                 auto dukWidgets = desc["widgets"].as_array();
-                std::transform(dukWidgets.begin(), dukWidgets.end(), std::back_inserter(result.Widgets),
-                    [](const DukValue& w) { return CustomWidgetDesc::FromDukValue(w); });
+                std::transform(dukWidgets.begin(), dukWidgets.end(), std::back_inserter(result.Widgets), [](const DukValue& w) {
+                    return CustomWidgetDesc::FromDukValue(w);
+                });
             }
 
             return std::move(result);
@@ -174,9 +173,7 @@ namespace OpenRCT2::Ui::Windows
 
         static std::optional<int32_t> GetOptionalInt(DukValue input)
         {
-            return input.type() == DukValue::Type::NUMBER ?
-                std::make_optional(input.as_int()) :
-                std::nullopt;
+            return input.type() == DukValue::Type::NUMBER ? std::make_optional(input.as_int()) : std::nullopt;
         }
     };
 
@@ -193,20 +190,17 @@ namespace OpenRCT2::Ui::Windows
         std::vector<size_t> WidgetIndexMap;
 
         CustomWindowInfo(
-            rct_windowclass cls,
-            rct_windownumber number,
-            std::shared_ptr<Plugin> owner,
-            const CustomWindowDesc& desc)
-            : _class(cls),
-            _number(number),
-            Owner(owner),
-            Desc(desc)
+            rct_windowclass cls, rct_windownumber number, std::shared_ptr<Plugin> owner, const CustomWindowDesc& desc)
+            : _class(cls)
+            , _number(number)
+            , Owner(owner)
+            , Desc(desc)
         {
         }
 
         CustomWindowInfo(const CustomWindowInfo&) = delete;
 
-        const CustomWidgetDesc * GetCustomWidgetDesc(size_t widgetIndex) const
+        const CustomWidgetDesc* GetCustomWidgetDesc(size_t widgetIndex) const
         {
             if (widgetIndex < WidgetIndexMap.size())
             {
@@ -222,13 +216,14 @@ namespace OpenRCT2::Ui::Windows
 
     static rct_windownumber _nextWindowNumber;
 
-    static CustomWindowInfo& GetInfo(rct_window * w);
+    static CustomWindowInfo& GetInfo(rct_window* w);
     static rct_windownumber GetNewWindowNumber();
-    static void RefreshWidgets(rct_window * w);
+    static void RefreshWidgets(rct_window* w);
     static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler);
-    static void InvokeEventHandler(std::shared_ptr<Plugin> owner, const DukValue& dukHandler, const std::vector<DukValue>& args);
+    static void InvokeEventHandler(
+        std::shared_ptr<Plugin> owner, const DukValue& dukHandler, const std::vector<DukValue>& args);
 
-    rct_window * window_custom_open(std::shared_ptr<Plugin> owner, DukValue dukDesc)
+    rct_window* window_custom_open(std::shared_ptr<Plugin> owner, DukValue dukDesc)
     {
         auto desc = CustomWindowDesc::FromDukValue(dukDesc);
 
@@ -238,26 +233,15 @@ namespace OpenRCT2::Ui::Windows
             windowFlags |= WF_RESIZABLE;
         }
 
-        rct_window * window;
+        rct_window* window;
         if (desc.X && desc.Y)
         {
             window = window_create(
-                desc.X.value(),
-                desc.Y.value(),
-                desc.Width,
-                desc.Height,
-                &window_custom_events,
-                WC_CUSTOM,
-                windowFlags);
+                desc.X.value(), desc.Y.value(), desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
         }
         else
         {
-            window = window_create_auto_pos(
-                desc.Width,
-                desc.Height,
-                &window_custom_events,
-                WC_CUSTOM,
-                windowFlags);
+            window = window_create_auto_pos(desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
         }
 
         window->number = GetNewWindowNumber();
@@ -278,19 +262,20 @@ namespace OpenRCT2::Ui::Windows
         return window;
     }
 
-    static void window_custom_close(rct_window * w)
+    static void window_custom_close(rct_window* w)
     {
-        delete static_cast<CustomWindowInfo *>(w->custom_info);
+        delete static_cast<CustomWindowInfo*>(w->custom_info);
         w->custom_info = nullptr;
     }
 
-    static void window_custom_mouseup(rct_window * w, rct_widgetindex widgetIndex)
+    static void window_custom_mouseup(rct_window* w, rct_widgetindex widgetIndex)
     {
-        switch (widgetIndex) {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        default:
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                window_close(w);
+                break;
+            default:
             {
                 const auto& info = GetInfo(w);
                 const auto widgetDesc = info.GetCustomWidgetDesc(widgetIndex);
@@ -306,7 +291,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void window_custom_resize(rct_window * w)
+    static void window_custom_resize(rct_window* w)
     {
         const auto& desc = GetInfo(w).Desc;
         if (desc.IsResizable())
@@ -324,7 +309,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void window_custom_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget)
+    static void window_custom_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
     {
         const auto& info = GetInfo(w);
         const auto widgetDesc = info.GetCustomWidgetDesc(widgetIndex);
@@ -338,22 +323,16 @@ namespace OpenRCT2::Ui::Windows
                 for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_STRING;
-                    set_format_arg_on((uint8_t*)&gDropdownItemsArgs[i], 0, const char *, items[i].c_str());
+                    set_format_arg_on((uint8_t*)&gDropdownItemsArgs[i], 0, const char*, items[i].c_str());
                 }
                 window_dropdown_show_text_custom_width(
-                    w->x + widget->left,
-                    w->y + widget->top,
-                    widget->bottom - widget->top + 1,
-                    w->colours[widget->colour],
-                    0,
-                    DROPDOWN_FLAG_STAY_OPEN,
-                    numItems,
-                    widget->right - widget->left - 3);
+                    w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[widget->colour], 0,
+                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
             }
         }
     }
 
-    static void window_custom_dropdown(rct_window * w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    static void window_custom_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
             return;
@@ -379,7 +358,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void window_custom_invalidate(rct_window * w)
+    static void window_custom_invalidate(rct_window* w)
     {
         w->widgets[WIDX_BACKGROUND].right = w->width - 1;
         w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -390,17 +369,17 @@ namespace OpenRCT2::Ui::Windows
         w->widgets[WIDX_CONTENT_PANEL].bottom = w->height - 1;
 
         const auto& desc = GetInfo(w).Desc;
-        set_format_arg(0, void *, desc.Title.c_str());
+        set_format_arg(0, void*, desc.Title.c_str());
     }
 
-    static void window_custom_paint(rct_window * w, rct_drawpixelinfo * dpi)
+    static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         window_draw_widgets(w, dpi);
     }
 
-    static CustomWindowInfo& GetInfo(rct_window * w)
+    static CustomWindowInfo& GetInfo(rct_window* w)
     {
-        return *(static_cast<CustomWindowInfo *>(w->custom_info));
+        return *(static_cast<CustomWindowInfo*>(w->custom_info));
     }
 
     static rct_windownumber GetNewWindowNumber()
@@ -413,7 +392,7 @@ namespace OpenRCT2::Ui::Windows
         return result;
     }
 
-    static void CreateWidget(std::vector<rct_widget>& widgetList, const CustomWidgetDesc &desc)
+    static void CreateWidget(std::vector<rct_widget>& widgetList, const CustomWidgetDesc& desc)
     {
         rct_widget widget{};
         widget.colour = 1;
@@ -456,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void RefreshWidgets(rct_window * w)
+    static void RefreshWidgets(rct_window* w)
     {
         auto& info = GetInfo(w);
         auto& widgets = info.Widgets;
@@ -521,4 +500,4 @@ namespace OpenRCT2::Ui::Windows
             }
         }
     }
-}
+} // namespace OpenRCT2::Ui::Windows

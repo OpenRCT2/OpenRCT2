@@ -10,10 +10,11 @@
 #pragma once
 
 #include "../common.h"
+
+#include <dukglue/dukglue.h>
 #include <memory>
 #include <string>
 #include <vector>
-#include <dukglue/dukglue.h>
 
 namespace OpenRCT2::Scripting
 {
@@ -28,7 +29,7 @@ namespace OpenRCT2::Scripting
         UNDEFINED = -1,
     };
     constexpr size_t NUM_HOOK_TYPES = static_cast<size_t>(HOOK_TYPE::COUNT);
-    HOOK_TYPE GetHookType(const std::string &name);
+    HOOK_TYPE GetHookType(const std::string& name);
 
     struct Hook
     {
@@ -37,10 +38,10 @@ namespace OpenRCT2::Scripting
         DukValue Function;
 
         Hook();
-        Hook(uint32_t cookie, std::shared_ptr<Plugin> owner, const DukValue &function)
-            : Cookie(cookie),
-              Owner(owner),
-              Function(function)
+        Hook(uint32_t cookie, std::shared_ptr<Plugin> owner, const DukValue& function)
+            : Cookie(cookie)
+            , Owner(owner)
+            , Function(function)
         {
         }
     };
@@ -50,11 +51,13 @@ namespace OpenRCT2::Scripting
         HOOK_TYPE Type;
         std::vector<Hook> Hooks;
 
-        HookList() {}
+        HookList()
+        {
+        }
         HookList(const HookList&) = delete;
         HookList(HookList&& src)
-            : Type(std::move(src.Type)),
-              Hooks(std::move(src.Hooks))
+            : Type(std::move(src.Type))
+            , Hooks(std::move(src.Hooks))
         {
         }
     };
@@ -70,7 +73,7 @@ namespace OpenRCT2::Scripting
     public:
         HookEngine(ScriptExecutionInfo& execInfo);
         HookEngine(const HookEngine&) = delete;
-        uint32_t Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue &function);
+        uint32_t Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, const DukValue& function);
         void Unsubscribe(HOOK_TYPE type, uint32_t cookie);
         void UnsubscribeAll(std::shared_ptr<const Plugin> owner);
         void Call(HOOK_TYPE type);
@@ -78,4 +81,4 @@ namespace OpenRCT2::Scripting
     private:
         HookList& GetHookList(HOOK_TYPE type);
     };
-}
+} // namespace OpenRCT2::Scripting

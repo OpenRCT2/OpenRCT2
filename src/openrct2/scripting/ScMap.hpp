@@ -9,22 +9,23 @@
 
 #pragma once
 
-#include <dukglue/dukglue.h>
 #include "../common.h"
 #include "../ride/Ride.h"
 #include "../world/Map.h"
-#include "ScTile.hpp"
 #include "ScThing.hpp"
+#include "ScTile.hpp"
+
+#include <dukglue/dukglue.h>
 
 namespace OpenRCT2::Scripting
 {
     class ScMap
     {
     private:
-        duk_context * _context;
+        duk_context* _context;
 
     public:
-        ScMap(duk_context * ctx)
+        ScMap(duk_context* ctx)
             : _context(ctx)
         {
         }
@@ -69,7 +70,7 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
-        static void Register(duk_context * ctx)
+        static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
             dukglue_register_property(ctx, &ScMap::rides_get, nullptr, "rides");
@@ -78,4 +79,4 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScMap::getThing, "getThing");
         }
     };
-}
+} // namespace OpenRCT2::Scripting

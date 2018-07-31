@@ -13,6 +13,7 @@
 #include "../core/FileWatcher.h"
 #include "HookEngine.h"
 #include "Plugin.h"
+
 #include <future>
 #include <memory>
 #include <mutex>
@@ -47,8 +48,8 @@ namespace OpenRCT2::Scripting
 
         public:
             PluginScope(ScriptExecutionInfo& execInfo, std::shared_ptr<Plugin> plugin)
-                : _execInfo(execInfo),
-                  _plugin(plugin)
+                : _execInfo(execInfo)
+                , _plugin(plugin)
             {
                 _execInfo._plugin = plugin;
             }
@@ -59,13 +60,16 @@ namespace OpenRCT2::Scripting
             }
         };
 
-        std::shared_ptr<Plugin> GetCurrentPlugin() { return _plugin; }
+        std::shared_ptr<Plugin> GetCurrentPlugin()
+        {
+            return _plugin;
+        }
     };
 
     class DukContext
     {
     private:
-        duk_context * _context{};
+        duk_context* _context{};
 
     public:
         DukContext();
@@ -76,7 +80,10 @@ namespace OpenRCT2::Scripting
         }
         ~DukContext();
 
-        operator duk_context*() { return _context; }
+        operator duk_context*()
+        {
+            return _context;
+        }
     };
 
     class ScriptEngine
@@ -100,12 +107,21 @@ namespace OpenRCT2::Scripting
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
         ScriptEngine(ScriptEngine&) = delete;
 
-        duk_context * GetContext() { return _context; }
-        HookEngine& GetHookEngine() { return _hookEngine; }
-        ScriptExecutionInfo& GetExecInfo() { return _execInfo; }
+        duk_context* GetContext()
+        {
+            return _context;
+        }
+        HookEngine& GetHookEngine()
+        {
+            return _hookEngine;
+        }
+        ScriptExecutionInfo& GetExecInfo()
+        {
+            return _execInfo;
+        }
 
         void Update();
-        std::future<void> Eval(const std::string &s);
+        std::future<void> Eval(const std::string& s);
 
     private:
         void Initialise();
@@ -113,4 +129,4 @@ namespace OpenRCT2::Scripting
         void StartPlugins();
         void AutoReloadPlugins();
     };
-}
+} // namespace OpenRCT2::Scripting

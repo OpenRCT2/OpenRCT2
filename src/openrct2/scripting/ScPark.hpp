@@ -9,21 +9,25 @@
 
 #pragma once
 
-#include <algorithm>
-#include <dukglue/dukglue.h>
-#include "../common.h"
 #include "../Context.h"
+#include "../common.h"
 #include "../management/Finance.h"
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
+
+#include <algorithm>
+#include <dukglue/dukglue.h>
 
 namespace OpenRCT2::Scripting
 {
     class ScPark
     {
     public:
-        money32 cash_get() { return gCash; }
+        money32 cash_get()
+        {
+            return gCash;
+        }
         void cash_set(money32 value)
         {
             gCash = value;
@@ -31,7 +35,10 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
-        int32_t rating_get() { return gParkRating; }
+        int32_t rating_get()
+        {
+            return gParkRating;
+        }
         void rating_set(int32_t value)
         {
             gParkRating = std::min(std::max(0, value), 999);
@@ -39,7 +46,10 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
-        money32 bankLoan_get() { return gBankLoan; }
+        money32 bankLoan_get()
+        {
+            return gBankLoan;
+        }
         void bankLoan_set(money32 value)
         {
             gBankLoan = value;
@@ -47,7 +57,10 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
-        money32 maxBankLoan_get() { return gMaxBankLoan; }
+        money32 maxBankLoan_get()
+        {
+            return gMaxBankLoan;
+        }
         void maxBankLoan_set(money32 value)
         {
             gMaxBankLoan = value;
@@ -77,7 +90,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        static void Register(duk_context * ctx)
+        static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScPark::cash_get, &ScPark::cash_set, "cash");
             dukglue_register_property(ctx, &ScPark::rating_get, &ScPark::rating_set, "rating");
@@ -89,16 +102,8 @@ namespace OpenRCT2::Scripting
     private:
         uint8_t GetParkMessageType(const std::string& key)
         {
-            static auto keys = {
-                "attraction",
-                "peep_on_attraction",
-                "peep",
-                "money",
-                "blank",
-                "research",
-                "guests",
-                "award",
-                "chart" };
+            static auto keys = { "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award",
+                                 "chart" };
             uint8_t i = 0;
             for (const auto& k : keys)
             {
@@ -111,4 +116,4 @@ namespace OpenRCT2::Scripting
             return NEWS_ITEM_BLANK;
         }
     };
-}
+} // namespace OpenRCT2::Scripting
