@@ -1124,7 +1124,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                 case WIDX_HEIGHT_LABELS_DROPDOWN:
                     gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
                     gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_UNITS;
+                    gDropdownItemsArgs[0] = STR_HEIGHT_IN_UNITS;
                     gDropdownItemsArgs[1] = STR_REAL_VALUES;
 
                     window_options_show_dropdown(w, widget, 2);
@@ -1754,7 +1754,7 @@ static void window_options_invalidate(rct_window* w)
                 : STR_CELSIUS;
 
             // Height: units/real values
-            window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_UNITS
+            window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS
                                                                                                           : STR_REAL_VALUES;
 
             break;
