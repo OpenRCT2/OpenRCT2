@@ -1584,6 +1584,17 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     }
 }
 
+static void initialize_scroll_position(rct_window* w, size_t widget_index, size_t scroll_index, uint8_t volume)
+{
+    rct_widget* widget = &window_options_audio_widgets[widget_index];
+    rct_scroll* scroll = &w->scrolls[scroll_index];
+
+    int widget_size = scroll->h_right - (widget->right - widget->left - 1);
+    scroll->h_left = ceil(volume / 100.0f * widget_size);
+
+    widget_scroll_update_thumbs(w, widget_index);
+}
+
 /**
  *
  *  rct2: 0x006BAD48
@@ -1796,23 +1807,13 @@ static void window_options_invalidate(rct_window* w)
             // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
             if (w->frame_no == 0)
             {
-                widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
-                w->scrolls[0].h_left = ceil(
-                    (gConfigSound.master_volume / 100.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
-                widget_scroll_update_thumbs(w, WIDX_MASTER_VOLUME);
-
-                widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
-                w->scrolls[1].h_left = ceil(
-                    (gConfigSound.sound_volume / 100.0f) * (w->scrolls[1].h_right - ((widget->right - widget->left) - 1)));
-                widget_scroll_update_thumbs(w, WIDX_SOUND_VOLUME);
-
-                widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-                w->scrolls[2].h_left = ceil(
-                    (gConfigSound.ride_music_volume / 100.0f) * (w->scrolls[2].h_right - ((widget->right - widget->left) - 1)));
-                widget_scroll_update_thumbs(w, WIDX_MUSIC_VOLUME);
+                initialize_scroll_position(w, WIDX_MASTER_VOLUME, 0, gConfigSound.master_volume);
+                initialize_scroll_position(w, WIDX_SOUND_VOLUME, 1, gConfigSound.sound_volume);
+                initialize_scroll_position(w, WIDX_MUSIC_VOLUME, 2, gConfigSound.ride_music_volume);
             }
+
+            break;
         }
-        break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         {
