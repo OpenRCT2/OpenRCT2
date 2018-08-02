@@ -3126,7 +3126,7 @@ STR_3120    :{SMALLFONT}{BLACK}Vind de dichtstbijzijnde monteur of de monteur di
 STR_3121    :Kan geen monteur vinden of alle monteurs in de buurt zijn bezig
 STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoeker
 STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoekers
-STR_3124    :{STRINGID} defect
+STR_3124    :{STRINGID} (vernield)
 STR_3125    :{WINDOW_COLOUR_2}Spanningsfactor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}+{COMMA16}%
