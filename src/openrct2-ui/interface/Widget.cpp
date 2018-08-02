@@ -862,14 +862,12 @@ void widget_scroll_get_part(
     rct_window* w, rct_widget* widget, int32_t x, int32_t y, int32_t* output_x, int32_t* output_y, int32_t* output_scroll_area,
     int32_t* scroll_id)
 {
-    rct_widget* iterator = w->widgets;
     *scroll_id = 0;
-    while (++iterator != widget)
+    for (rct_widget* iterator = w->widgets; iterator != widget; iterator++)
     {
         if (iterator->type == WWT_SCROLL)
         {
-            (*scroll_id)++;
-            break;
+            *scroll_id += 1;
         }
     }
 
