@@ -1798,23 +1798,17 @@ static void window_options_invalidate(rct_window* w)
             {
                 widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
                 w->scrolls[0].h_left = ceil(
-                    (gConfigSound.master_volume / 100.0f) * 
-                    (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))
-                );
+                    (gConfigSound.master_volume / 100.0f) * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
                 widget_scroll_update_thumbs(w, WIDX_MASTER_VOLUME);
 
                 widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
                 w->scrolls[1].h_left = ceil(
-                    (gConfigSound.sound_volume / 100.0f) *
-                    (w->scrolls[1].h_right - ((widget->right - widget->left) - 1))
-                );
+                    (gConfigSound.sound_volume / 100.0f) * (w->scrolls[1].h_right - ((widget->right - widget->left) - 1)));
                 widget_scroll_update_thumbs(w, WIDX_SOUND_VOLUME);
 
                 widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
                 w->scrolls[2].h_left = ceil(
-                    (gConfigSound.ride_music_volume / 100.0f) *
-                    (w->scrolls[2].h_right - ((widget->right - widget->left) - 1))
-                );
+                    (gConfigSound.ride_music_volume / 100.0f) * (w->scrolls[2].h_right - ((widget->right - widget->left) - 1)));
                 widget_scroll_update_thumbs(w, WIDX_MUSIC_VOLUME);
             }
         }
