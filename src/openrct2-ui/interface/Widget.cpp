@@ -696,19 +696,29 @@ static void widget_hscrollbar_draw(
     gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, ColourMapA[colour].lighter);
 
     // Left button
-    gfx_fill_rect_inset(
-        dpi, l, t, l + 9, b, colour, ((scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, (char*)BlackLeftArrowString, COLOUR_BLACK, l + 1, t);
+    {
+        uint8_t flags = (scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+
+        gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, flags);
+        gfx_draw_string(dpi, (char*)BlackLeftArrowString, COLOUR_BLACK, l + 1, t);
+    }
 
     // Thumb
-    gfx_fill_rect_inset(
-        dpi, std::max(l + 10, l + scroll->h_thumb_left - 1), t, std::min(r - 10, l + scroll->h_thumb_right - 1), b, colour,
-        ((scroll->flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+    {
+        int16_t left = std::max(l + 10, l + scroll->h_thumb_left - 1);
+        int16_t right = std::min(r - 10, l + scroll->h_thumb_right - 1);
+        uint8_t flags = (scroll->flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+
+        gfx_fill_rect_inset(dpi, left, t, right, b, colour, flags);
+    }
 
     // Right button
-    gfx_fill_rect_inset(
-        dpi, r - 9, t, r, b, colour, ((scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, (char*)BlackRightArrowString, COLOUR_BLACK, r - 6, t);
+    {
+        uint8_t flags = (scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+
+        gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, flags);
+        gfx_draw_string(dpi, (char*)BlackRightArrowString, COLOUR_BLACK, r - 6, t);
+    }
 }
 
 static void widget_vscrollbar_draw(
