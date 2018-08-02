@@ -2093,7 +2093,7 @@ static void window_options_scrollgetsize(rct_window* w, int32_t scrollIndex, int
 {
     if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
     {
-        *width = 1000;
+        *width = 500;
     }
 }
 
