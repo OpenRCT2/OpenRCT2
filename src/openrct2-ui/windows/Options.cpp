@@ -1584,10 +1584,10 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     }
 }
 
-static void initialize_scroll_position(rct_window* w, size_t widget_index, size_t scroll_index, uint8_t volume)
+static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
 {
     rct_widget* widget = &window_options_audio_widgets[widget_index];
-    rct_scroll* scroll = &w->scrolls[scroll_index];
+    rct_scroll* scroll = &w->scrolls[scroll_id];
 
     int widget_size = scroll->h_right - (widget->right - widget->left - 1);
     scroll->h_left = ceil(volume / 100.0f * widget_size);
