@@ -499,7 +499,7 @@ static void window_maze_construction_construct(int32_t direction)
         default:
         case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
             mode = GC_SET_MAZE_TRACK_FILL;
-            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
+            flags = GAME_COMMAND_FLAG_APPLY;
             break;
     }
 
