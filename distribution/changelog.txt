@@ -24,6 +24,7 @@
 - Fix: [#7786] Crash when importing a track design.
 - Fix: [#7793] Duplicate private keys generated.
 - Fix: [#7817] No sprite font glyph for interpunct.
+- Fix: [#7823] You can build mazes in pause mode.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
