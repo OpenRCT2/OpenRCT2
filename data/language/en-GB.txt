@@ -5288,7 +5288,7 @@ STR_PARK    :From The Ashes
 STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
 
 <N. America - Extreme Hawaiian Island>
-STR_SCNR    :N. America - Extreme Hawaiian Island
+STR_SCNR    :North America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
 
