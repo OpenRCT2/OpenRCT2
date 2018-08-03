@@ -68,6 +68,7 @@
 uint16_t gTicksSinceLastUpdate;
 uint8_t gGamePaused = 0;
 int32_t gGameSpeed = 1;
+bool gDoSingleUpdate = false;
 float gDayNightCycle = 0;
 bool gInUpdateCode = false;
 bool gInMapInitCode = false;

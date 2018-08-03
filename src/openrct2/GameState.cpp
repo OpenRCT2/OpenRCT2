@@ -111,17 +111,27 @@ void GameState::Update()
         }
     }
 
+    bool didRunSingleFrame = false;
     if (game_is_paused())
     {
-        numUpdates = 0;
-        // Update the animation list. Note this does not
-        // increment the map animation.
-        map_animation_invalidate_all();
+        if (gDoSingleUpdate && network_get_mode() == NETWORK_MODE_NONE)
+        {
+            didRunSingleFrame = true;
+            pause_toggle();
+            numUpdates = 1;
+        }
+        else
+        {
+            numUpdates = 0;
+            // Update the animation list. Note this does not
+            // increment the map animation.
+            map_animation_invalidate_all();
 
-        // Special case because we set numUpdates to 0, otherwise in game_logic_update.
-        network_update();
+            // Special case because we set numUpdates to 0, otherwise in game_logic_update.
+            network_update();
 
-        network_process_game_commands();
+            network_process_game_commands();
+        }
     }
 
     // Update the game one or more times
@@ -184,7 +194,13 @@ void GameState::Update()
 
     window_dispatch_update_all();
 
+    if (didRunSingleFrame && game_is_not_paused() && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    {
+        pause_toggle();
+    }
+
     gGameCommandNestLevel = 0;
+    gDoSingleUpdate = false;
     gInUpdateCode = false;
 }
 

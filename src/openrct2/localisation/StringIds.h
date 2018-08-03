@@ -3895,6 +3895,8 @@ enum
 
     STR_SHORTCUT_OPEN_TILE_INSPECTOR = 6267,
 
+    STR_ADVANCE_TO_NEXT_TICK = 6268,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

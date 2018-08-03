@@ -140,6 +140,7 @@ extern uint32_t gCurrentTicks;
 extern uint16_t gTicksSinceLastUpdate;
 extern uint8_t gGamePaused;
 extern int32_t gGameSpeed;
+extern bool gDoSingleUpdate;
 extern float gDayNightCycle;
 extern bool gInUpdateCode;
 extern bool gInMapInitCode;
