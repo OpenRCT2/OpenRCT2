@@ -4792,7 +4792,7 @@ STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local p
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
 
 <Rotting Heights>

@@ -2808,7 +2808,7 @@ private:
             case SC_PACIFIC_PYRAMIDS:
                 FixLandOwnershipTiles({ { 93, 105 }, { 63, 34 }, { 76, 25 }, { 85, 31 }, { 96, 47 }, { 96, 48 } });
                 break;
-            case SC_UTOPIA:
+            case SC_UTOPIA_PARK:
                 FixLandOwnershipTiles({ { 85, 73 } });
                 break;
             case SC_URBAN_PARK:
