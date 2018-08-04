@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
+option(DISABLE_RCT2_TESTS "Disable tests that require RollerCoaster Tycoon 2 assets.")
 option(SYSTEM_GTEST "Use the googletest library provided by the system.")
 
 if (SYSTEM_GTEST)
@@ -172,18 +173,21 @@ set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_ride_ratings ${RIDE_RATINGS_TEST_SOURCES})
 target_link_libraries(test_ride_ratings ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-add_test(NAME ride_ratings COMMAND test_ride_ratings)
 
 # Multi-launch test
 set(MULTILAUNCH_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/MultiLaunch.cpp"
                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_multilaunch ${MULTILAUNCH_TEST_SOURCES})
 target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-add_test(NAME multilaunch COMMAND test_multilaunch)
 
 # Tile element test
 set(TILE_ELEMENT_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/TileElements.cpp"
                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_tile_elements ${TILE_ELEMENT_TEST_SOURCES})
 target_link_libraries(test_tile_elements ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-add_test(NAME tile_elements COMMAND test_tile_elements)
+
+if (NOT DISABLE_RCT2_TESTS)
+    add_test(NAME ride_ratings COMMAND test_ride_ratings)
+    add_test(NAME multilaunch COMMAND test_multilaunch)
+    add_test(NAME tile_elements COMMAND test_tile_elements)
+endif ()
