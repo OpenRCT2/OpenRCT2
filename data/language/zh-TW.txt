@@ -4779,7 +4779,7 @@ STR_DTLS    :建造一個能吸引喜好高刺激度遊樂設施的當地遊客�
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :一個沙漠中的綠洲帶來了一個非比尋常的機會去建造一個主題樂園
 
 <Rotting Heights>

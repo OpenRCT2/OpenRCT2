@@ -4796,7 +4796,7 @@ STR_SCNR    :Mont Adrénaline
 STR_PARK    :Mont Adrénalin
 STR_DTLS    :Construisez un parc qui plaira à la population locale en quête de sensations fortes.
 
-<Utopia>
+<Utopia Park>
 STR_SCNR    :Utopia
 STR_PARK    :Utopia
 STR_DTLS    :Une oasis en plein coeur d'un désert constitue une idée de parc originale.

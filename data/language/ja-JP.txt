@@ -4749,7 +4749,7 @@ STR_SCNR    :アドレナリン・ハイツ
 STR_PARK    :Adrenaline Heights
 STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
 
-<Utopia>
+<Utopia Park>
 STR_SCNR    :ユートピア・パーク
 STR_PARK    :Utopia
 STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park

@@ -4566,7 +4566,7 @@ STR_DTLS    :Costruisci un parco per attirare gli amanti del brivido della zona
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :Un'oasi nel mezzo del deserto offre un'opportunità unica per costruire un parco a tema
 
 <Rotting Heights>

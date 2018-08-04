@@ -4785,7 +4785,7 @@ STR_DTLS    :Bauen Sie einen Park für die Menschen dieser Gegend, die hohe Inte
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :Eine Oase inmitten der Wüste ist sicher eine ungewöhnliche Herausforderung für Planer eines Vergnügungsparks.
 
 <Rotting Heights>

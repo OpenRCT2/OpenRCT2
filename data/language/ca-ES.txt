@@ -5203,7 +5203,7 @@ STR_SCNR    :Europa - Renovació
 STR_PARK    :Des de les cendres
 STR_DTLS    :Aquest parc vell està en mal estat. Heu guanyat una subvenció per retornar aquesta àrea desafavorida a la seva antiga glòria! Heu de renovar el parc i retornar la subvenció.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    :Nord-amèrica - Illa hawaiana llunyana
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :La gent de Hawaii s'avorreixen només fent surf i busquen alguna cosa més intensa. Heu de construir un parc amb això al cap per mantenir un interès turístic en la zona prou elevat.

@@ -4787,7 +4787,7 @@ STR_DTLS    :Bouw een park dat de lokale bevolking, die op zoek is naar snelheid
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :Een oase midden in de woestijn vormt een ongebruikelijke gelegenheid tot het bouwen van een pretpark.
 
 <Rotting Heights>
@@ -5193,7 +5193,7 @@ STR_SCNR    : Europa - Renovatie
 STR_PARK    :From The Ashes
 STR_DTLS    :Een oud park is vervallen. Je hebt een lening van de Europese Unie gekregen om het troosteloze terrein weer in oude luister te herstellen! Je moet het park renoveren en de lening terugbetalen.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    : Noord-Amerika - Extreem Hawaiiaans eiland
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :De bevolking van Hawaii wil wel eens iets spannenders dan surfen. Houd dit in het achterhoofd bij het bouwen van een park om zoveel mogelijk mogelijk toeristen aan te trekken.
