@@ -26,6 +26,7 @@
 #include "StaffSetColourAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "WallRemoveAction.hpp"
+#include "FootpathRemoveAction.hpp"
 
 namespace GameActions
 {
@@ -49,5 +50,6 @@ namespace GameActions
         Register<ParkSetNameAction>();
         Register<BannerSetNameAction>();
         Register<WallRemoveAction>();
+        Register<FootpathRemoveAction>();
     }
 } // namespace GameActions

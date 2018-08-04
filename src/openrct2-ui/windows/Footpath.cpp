@@ -1030,7 +1030,6 @@ static void footpath_remove_tile_element(rct_tile_element* tileElement)
     }
 
     // Remove path
-    gGameCommandErrorTitle = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
     footpath_remove(
         gFootpathConstructFromPosition.x, gFootpathConstructFromPosition.y, tileElement->base_height, GAME_COMMAND_FLAG_APPLY);
 

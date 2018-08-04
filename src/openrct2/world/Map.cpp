@@ -15,6 +15,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/WallRemoveAction.hpp"
+#include "../actions/FootpathRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
@@ -1073,19 +1074,20 @@ restart_from_beginning:
             case TILE_ELEMENT_TYPE_PATH:
                 if (clear & (1 << 2))
                 {
-                    int32_t eax = x * 32;
-                    int32_t ebx = flags;
-                    int32_t ecx = y * 32;
-                    int32_t edx = tileElement->base_height;
-                    int32_t edi = 0, ebp = 0;
-                    cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_PATH, edi, ebp);
-
-                    if (cost == MONEY32_UNDEFINED)
+                    auto footpathRemoveAction = FootpathRemoveAction(x * 32, y * 32, tileElement->base_height);
+                    footpathRemoveAction.SetFlags(flags);
+                    auto res
+                        = ((flags & GAME_COMMAND_FLAG_APPLY) ? footpathRemoveAction.Execute() : footpathRemoveAction.Query());
+                    if (res->Error == GA_ERROR::OK)
+                    {
+                        totalCost += res->Cost;
+                    }
+                    else
+                    {
                         return MONEY32_UNDEFINED;
+                    }
 
-                    totalCost += cost;
-
-                    if (flags & 1)
+                    if (flags & GAME_COMMAND_FLAG_APPLY)
                         goto restart_from_beginning;
                 }
                 break;
@@ -1104,7 +1106,7 @@ restart_from_beginning:
 
                     totalCost += cost;
 
-                    if (flags & 1)
+                    if (flags & GAME_COMMAND_FLAG_APPLY)
                         goto restart_from_beginning;
                 }
                 break;
@@ -1137,7 +1139,7 @@ restart_from_beginning:
 
                     totalCost += cost;
 
-                    if (flags & 1)
+                    if (flags & GAME_COMMAND_FLAG_APPLY)
                         goto restart_from_beginning;
                 }
                 break;
