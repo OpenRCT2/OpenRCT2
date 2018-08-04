@@ -912,9 +912,6 @@ void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_stri
 {
     switch (widgetIndex)
     {
-        case WIDX_SCENERY_LIST:
-            set_format_arg(0, uint16_t, STR_LIST);
-            break;
         case WIDX_SCENERY_TAB_1:
         case WIDX_SCENERY_TAB_2:
         case WIDX_SCENERY_TAB_3:

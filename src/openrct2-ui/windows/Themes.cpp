@@ -44,7 +44,6 @@ static void window_themes_scrollgetsize(rct_window *w, int32_t scrollIndex, int3
 static void window_themes_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_themes_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_themes_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_themes_invalidate(rct_window *w);
 static void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -73,7 +72,7 @@ static rct_window_event_list window_themes_events = {
     window_themes_textinput,
     nullptr,
     nullptr,
-    window_themes_tooltip,
+    nullptr,
     nullptr,
     nullptr,
     window_themes_invalidate,
@@ -741,11 +740,6 @@ static void window_themes_textinput(rct_window* w, rct_widgetindex widgetIndex, 
             }
             break;
     }
-}
-
-void window_themes_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
-{
-    set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 void window_themes_invalidate(rct_window* w)

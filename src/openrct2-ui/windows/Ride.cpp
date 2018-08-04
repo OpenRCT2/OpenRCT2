@@ -5803,7 +5803,6 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
 {
     if (widgetIndex == WIDX_GRAPH)
     {
-        set_format_arg(0, rct_string_id, STR_GRAPH);
         rct_string_id message;
         rct_ride_measurement* measurement = ride_get_measurement(w->number, &message);
         if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))

@@ -79,7 +79,6 @@ static void window_ride_list_update(rct_window *w);
 static void window_ride_list_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_ride_list_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_ride_list_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_ride_list_invalidate(rct_window *w);
 static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -107,7 +106,7 @@ static rct_window_event_list window_ride_list_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_ride_list_tooltip,
+    nullptr,
     nullptr,
     nullptr,
     window_ride_list_invalidate,
@@ -480,15 +479,6 @@ static void window_ride_list_scrollmouseover(rct_window* w, int32_t scrollIndex,
 
     w->selected_list_item = index;
     window_invalidate(w);
-}
-
-/**
- *
- *  rct2: 0x006B3861
- */
-static void window_ride_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
-{
-    set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**

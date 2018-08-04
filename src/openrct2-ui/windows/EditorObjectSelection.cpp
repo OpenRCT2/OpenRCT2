@@ -782,10 +782,6 @@ static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetinde
     {
         set_format_arg(0, rct_string_id, ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
     }
-    else
-    {
-        set_format_arg(0, rct_string_id, STR_LIST);
-    }
 }
 
 /**

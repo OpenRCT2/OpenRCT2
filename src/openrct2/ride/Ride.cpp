@@ -3235,7 +3235,7 @@ rct_ride_measurement* ride_get_measurement(int32_t rideIndex, rct_string_id* mes
     if (measurement->flags & 1)
     {
         if (message != nullptr)
-            *message = 0;
+            *message = STR_EMPTY;
         return measurement;
     }
     else
