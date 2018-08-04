@@ -77,7 +77,11 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags();
+        uint16_t flags = GameAction::GetActionFlags();
+        if (GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
+            flags |= GA_FLAGS::ALLOW_WHILE_PAUSED;
+
+        return flags;
     }
 
     void Serialise(DataSerialiser& stream) override

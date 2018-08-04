@@ -3782,6 +3782,7 @@ void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
 
             if (_trackPlaceCost == MONEY32_UNDEFINED)
             {
+                _rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
                 rct_string_id errorText = gGameCommandErrorText;
                 z -= 8;
                 if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER

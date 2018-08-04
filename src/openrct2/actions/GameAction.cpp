@@ -116,6 +116,7 @@ namespace GameActions
             GameActionResult::Ptr result = std::make_unique<GameActionResult>();
 
             result->Error = GA_ERROR::GAME_PAUSED;
+            result->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             result->ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
             return result;
