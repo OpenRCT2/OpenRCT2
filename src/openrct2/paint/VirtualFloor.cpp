@@ -18,6 +18,7 @@
 #include "Paint.h"
 #include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
+
 #include <algorithm>
 #include <limits>
 
@@ -199,7 +200,8 @@ bool virtual_floor_tile_is_floor(int16_t x, int16_t y)
 }
 
 static void virtual_floor_get_tile_properties(
-    int16_t x, int16_t y, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround, bool* aboveGround, bool* outLit)
+    int16_t x, int16_t y, int16_t height, bool* outOccupied, bool* tileOwned, uint8_t* outOccupiedEdges, bool* outBelowGround,
+    bool* aboveGround, bool* outLit)
 {
     *outOccupied = false;
     *outOccupiedEdges = 0;
@@ -233,7 +235,7 @@ static void virtual_floor_get_tile_properties(
 
     *tileOwned = map_is_location_owned(x, y, height);
 
-    if(gCheatsSandboxMode)
+    if (gCheatsSandboxMode)
         *tileOwned = true;
 
     // Iterate through the map elements of the current tile to find:
