@@ -3,6 +3,7 @@
 - Feature: [#5993] Ride window prices can now be set via text input.
 - Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
 - Feature: [#7694] Debug option to visualize paths that the game detects as wide.
+- Feature: [#7713] The virtual floor now takes land ownership rights into account.
 - Feature: [#7771] Danish translation.
 - Feature: [#7797, #7802, #7821] Add sprite font glyphs for Danish, Norwegian, Russian, Turkish and Catalan.
 - Fix: [#3177] Wrong keys displayed in shortcut menu.
