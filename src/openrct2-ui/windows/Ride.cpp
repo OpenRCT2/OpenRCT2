@@ -1887,7 +1887,8 @@ static void window_ride_init_viewport(rct_window* w)
 
     if (w->viewport != nullptr)
     {
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x && focus.coordinate.y == w->viewport_focus_coordinates.y
+        if (focus.coordinate.x == w->viewport_focus_coordinates.x
+            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
             && focus.coordinate.z == w->viewport_focus_coordinates.z
             && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation
             && focus.coordinate.zoom == w->viewport_focus_coordinates.zoom && focus.coordinate.width == w->width

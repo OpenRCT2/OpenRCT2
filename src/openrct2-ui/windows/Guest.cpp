@@ -762,7 +762,8 @@ void window_guest_viewport_init(rct_window* w)
     if (w->viewport)
     {
         // Check all combos, for now skipping y and rot
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x && focus.coordinate.y == w->viewport_focus_coordinates.y
+        if (focus.coordinate.x == w->viewport_focus_coordinates.x
+            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
             && focus.coordinate.z == w->viewport_focus_coordinates.z
             && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation)
             return;
@@ -799,8 +800,9 @@ void window_guest_viewport_init(rct_window* w)
             int32_t height = view_widget->bottom - view_widget->top - 1;
 
             viewport_create(
-                w, x, y, width, height, 0, focus.coordinate.x, focus.coordinate.y, focus.coordinate.z,
+                w, x, y, width, height, 0, focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z,
                 focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+
             w->flags |= WF_NO_SCROLLING;
             window_invalidate(w);
         }
