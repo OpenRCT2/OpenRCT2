@@ -91,19 +91,21 @@ extern TOOL_IDX gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
 // TODO: Move to openrct2-ui and make static again
-extern INPUT_STATE _inputState;
-extern uint8_t _inputFlags;
-extern uint16_t _tooltipNotShownTicks;
+extern INPUT_STATE gInputState;
+extern uint8_t gInputFlags;
+extern uint16_t gTooltipsNotShownTicks;
+extern widget_ref gDragWidget;
+extern int32_t gCurrentScrollIndex;
+extern int32_t gCurrentScrollArea;
 
 void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 
 void title_handle_keyboard_input();
-void game_handle_input();
+void input_handle();
 void game_handle_keyboard_input();
-void game_handle_edge_scroll();
-int32_t get_next_key();
+void input_handle_edge_scroll();
 
-void store_mouse_input(int32_t state, int32_t x, int32_t y);
+void input_store_mouse_input(int32_t state, int32_t x, int32_t y);
 
 void input_set_flag(INPUT_FLAGS flag, bool on);
 bool input_test_flag(INPUT_FLAGS flag);

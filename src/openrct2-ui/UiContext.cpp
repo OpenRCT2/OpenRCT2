@@ -384,7 +384,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
+                            input_store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
                             _cursorState.left = CURSOR_PRESSED;
                             _cursorState.old = 1;
                             break;
@@ -392,7 +392,7 @@ public:
                             _cursorState.middle = CURSOR_PRESSED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
+                            input_store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
@@ -406,7 +406,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
+                            input_store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
                             _cursorState.left = CURSOR_RELEASED;
                             _cursorState.old = 3;
                             break;
@@ -414,7 +414,7 @@ public:
                             _cursorState.middle = CURSOR_RELEASED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
+                            input_store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
                             break;
@@ -438,13 +438,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
+                        input_store_mouse_input(MOUSE_STATE_RIGHT_PRESS, x, y);
                         _cursorState.right = CURSOR_PRESSED;
                         _cursorState.old = 2;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
+                        input_store_mouse_input(MOUSE_STATE_LEFT_PRESS, x, y);
                         _cursorState.left = CURSOR_PRESSED;
                         _cursorState.old = 1;
                     }
@@ -459,13 +459,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
+                        input_store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, x, y);
                         _cursorState.right = CURSOR_RELEASED;
                         _cursorState.old = 4;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
+                        input_store_mouse_input(MOUSE_STATE_LEFT_RELEASE, x, y);
                         _cursorState.left = CURSOR_RELEASED;
                         _cursorState.old = 3;
                     }

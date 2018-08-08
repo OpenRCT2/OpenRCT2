@@ -9,14 +9,9 @@
 
 #pragma once
 
-#include <openrct2/Input.h>
+#include <openrct2-ui/input/Input.h>
+#include <openrct2-ui/windows/Window.h>
 
-struct input_mouse_data
-{
-    int32_t X;
-    int32_t Y;
-    uint32_t State;
-};
-
-void input_handle_keyboard(bool isTitle);
-void input_set_mouse_cursor(int32_t cursor_id);
+void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const input_mouse_data& mouseData);
+void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, const input_mouse_data& mouseData);
+void input_scroll_end();

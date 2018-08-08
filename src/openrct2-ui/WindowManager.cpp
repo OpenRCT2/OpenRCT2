@@ -458,7 +458,7 @@ public:
 
     void HandleInput() override
     {
-        game_handle_input();
+        input_handle();
     }
 
     void HandleKeyboard(bool isTitle) override

@@ -11,17 +11,21 @@
 
 #include "Context.h"
 
-INPUT_STATE _inputState;
-uint8_t _inputFlags;
 uint8_t gInputPlaceObjectModifier;
 
 widget_ref gHoverWidget;
 widget_ref gPressedWidget;
 
-uint16_t _tooltipNotShownTicks;
-
 TOOL_IDX gCurrentToolId;
 widget_ref gCurrentToolWidget;
+
+// TODO: Move to openrct2-ui and make static again
+INPUT_STATE gInputState;
+uint8_t gInputFlags;
+uint16_t gTooltipsNotShownTicks;
+widget_ref gDragWidget;
+int32_t gCurrentScrollIndex;
+int32_t gCurrentScrollArea;
 
 /**
  *
@@ -45,37 +49,37 @@ void input_set_flag(INPUT_FLAGS flag, bool on)
 {
     if (on)
     {
-        _inputFlags |= flag;
+        gInputFlags |= flag;
     }
     else
     {
-        _inputFlags &= ~flag;
+        gInputFlags &= ~flag;
     }
 }
 
 bool input_test_flag(INPUT_FLAGS flag)
 {
-    return _inputFlags & flag;
+    return gInputFlags & flag;
 }
 
 void input_reset_flags()
 {
-    _inputFlags = 0;
+    gInputFlags = 0;
 }
 
 void input_set_state(INPUT_STATE state)
 {
-    _inputState = state;
+    gInputState = state;
 }
 
 INPUT_STATE input_get_state()
 {
-    return _inputState;
+    return gInputState;
 }
 
 void reset_tooltip_not_shown()
 {
-    _tooltipNotShownTicks = 0;
+    gTooltipsNotShownTicks = 0;
 }
 
 void input_reset_place_obj_modifier()
