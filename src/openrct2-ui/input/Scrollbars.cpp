@@ -245,6 +245,70 @@ static void InvalidateScroll()
     }
 }
 
+static void ScrollContinue(rct_window* w, rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
+{
+    assert(w != nullptr);
+
+    rct_widget* widget = &w->widgets[widgetIndex];
+    if (w->classification != gPressedWidget.window_classification || w->number != gPressedWidget.window_number
+        || widgetIndex != gPressedWidget.widget_index)
+    {
+        InvalidateScroll();
+        return;
+    }
+
+    int32_t x, y, scrollPart, scrollId;
+    widget_scroll_get_part(w, widget, mouseData.X, mouseData.Y, &x, &y, &scrollPart, &scrollId);
+
+    if (gCurrentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
+    {
+        int32_t originalTooltipCursorX = gTooltipCursorX;
+        gTooltipCursorX = mouseData.X;
+        ScrollPartUpdateHThumb(w, widgetIndex, mouseData.X - originalTooltipCursorX, scrollId);
+        return;
+    }
+
+    if (gCurrentScrollArea == SCROLL_PART_VSCROLLBAR_THUMB)
+    {
+        int32_t originalTooltipCursorY = gTooltipCursorY;
+        gTooltipCursorY = mouseData.Y;
+        ScrollPartUpdateVThumb(w, widgetIndex, mouseData.Y - originalTooltipCursorY, scrollId);
+        return;
+    }
+
+    if (scrollPart != gCurrentScrollArea)
+    {
+        InvalidateScroll();
+        return;
+    }
+
+    switch (scrollPart)
+    {
+        case SCROLL_PART_VIEW:
+            window_event_scroll_mousedrag_call(w, scrollId, x, y);
+            break;
+
+        case SCROLL_PART_HSCROLLBAR_LEFT:
+            ScrollPartUpdateHLeft(w, widgetIndex, scrollId);
+            break;
+
+        case SCROLL_PART_HSCROLLBAR_RIGHT:
+            ScrollPartUpdateHRight(w, widgetIndex, scrollId);
+            break;
+
+        case SCROLL_PART_VSCROLLBAR_TOP:
+            ScrollPartUpdateVTop(w, widgetIndex, scrollId);
+            break;
+
+        case SCROLL_PART_VSCROLLBAR_BOTTOM:
+            ScrollPartUpdateVBottom(w, widgetIndex, scrollId);
+            break;
+
+        default:
+            break;
+    }
+}
+
 void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
 {
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -291,95 +355,52 @@ void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const input_
         case SCROLL_PART_HSCROLLBAR_LEFT:
             scroll->h_left = (uint16_t)std::max(scroll->h_left - 3, 0);
             break;
+
         case SCROLL_PART_HSCROLLBAR_RIGHT:
             scroll->h_left = (uint16_t)std::min(scroll->h_left + 3, widget_content_width);
             break;
+
         case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
             scroll->h_left = (uint16_t)std::max(scroll->h_left - widget_width, 0);
             break;
+
         case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
             scroll->h_left = (uint16_t)std::min(scroll->h_left + widget_width, widget_content_width);
             break;
+
         case SCROLL_PART_VSCROLLBAR_TOP:
             scroll->v_top = (uint16_t)std::max(scroll->v_top - 3, 0);
             break;
+
         case SCROLL_PART_VSCROLLBAR_BOTTOM:
             scroll->v_top = (uint16_t)std::min(scroll->v_top + 3, widget_content_height);
             break;
+
         case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:
             scroll->v_top = (uint16_t)std::max(scroll->v_top - widget_height, 0);
             break;
+
         case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:
             scroll->v_top = (uint16_t)std::min(scroll->v_top + widget_height, widget_content_height);
             break;
+
         default:
             break;
     }
+
     widget_scroll_update_thumbs(w, widgetIndex);
     window_invalidate_by_number(w->classification, w->number);
 }
 
-void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
+void input_scroll(rct_window* w, const rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
 {
-    assert(w != nullptr);
-
-    rct_widget* widget = &w->widgets[widgetIndex];
-    if (w->classification != gPressedWidget.window_classification || w->number != gPressedWidget.window_number
-        || widgetIndex != gPressedWidget.widget_index)
+    if (mouseData.State == MOUSE_STATE_RELEASED)
     {
+        ScrollContinue(w, widgetIndex, mouseData);
+    }
+    else
+    {
+        gInputState = INPUT_STATE_RESET;
         InvalidateScroll();
-        return;
     }
-
-    int32_t x, y, scrollPart, scrollId;
-    widget_scroll_get_part(w, widget, mouseData.X, mouseData.Y, &x, &y, &scrollPart, &scrollId);
-
-    if (gCurrentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
-    {
-        int32_t originalTooltipCursorX = gTooltipCursorX;
-        gTooltipCursorX = mouseData.X;
-        ScrollPartUpdateHThumb(w, widgetIndex, mouseData.X - originalTooltipCursorX, scrollId);
-        return;
-    }
-
-    if (gCurrentScrollArea == SCROLL_PART_VSCROLLBAR_THUMB)
-    {
-        int32_t originalTooltipCursorY = gTooltipCursorY;
-        gTooltipCursorY = mouseData.Y;
-        ScrollPartUpdateVThumb(w, widgetIndex, mouseData.Y - originalTooltipCursorY, scrollId);
-        return;
-    }
-
-    if (scrollPart != gCurrentScrollArea)
-    {
-        InvalidateScroll();
-        return;
-    }
-
-    switch (scrollPart)
-    {
-        case SCROLL_PART_VIEW:
-            window_event_scroll_mousedrag_call(w, scrollId, x, y);
-            break;
-        case SCROLL_PART_HSCROLLBAR_LEFT:
-            ScrollPartUpdateHLeft(w, widgetIndex, scrollId);
-            break;
-        case SCROLL_PART_HSCROLLBAR_RIGHT:
-            ScrollPartUpdateHRight(w, widgetIndex, scrollId);
-            break;
-        case SCROLL_PART_VSCROLLBAR_TOP:
-            ScrollPartUpdateVTop(w, widgetIndex, scrollId);
-            break;
-        case SCROLL_PART_VSCROLLBAR_BOTTOM:
-            ScrollPartUpdateVBottom(w, widgetIndex, scrollId);
-            break;
-        default:
-            break;
-    }
-}
-
-void input_scroll_end()
-{
-    gInputState = INPUT_STATE_RESET;
-    InvalidateScroll();
 }

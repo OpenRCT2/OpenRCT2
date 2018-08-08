@@ -98,7 +98,8 @@ static void UpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const inpu
     }
 }
 
-static bool HandleDropdown(rct_widgetindex widgetIndex, rct_window* w, rct_window* cursor_w, const input_mouse_data& mouseData)
+static bool HandleDropdown(
+    const rct_widgetindex widgetIndex, rct_window* w, rct_window* cursor_w, const input_mouse_data& mouseData)
 {
     if (w == nullptr)
     {
@@ -547,111 +548,13 @@ void input_widget_right(
     }
 }
 
-/**
- *
- *  rct2: 0x006E8DA7
- */
-void input_widget_pressed(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget, const input_mouse_data& mouseData)
+void WidgetPressedPost(rct_window* w, const input_mouse_data& mouseData)
 {
-    rct_window* cursor_w = window_find_by_number(gPressedWidget.window_classification, gPressedWidget.window_number);
-    if (cursor_w == nullptr)
-    {
-        gInputState = INPUT_STATE_RESET;
-        return;
-    }
-
-    if (widget == nullptr)
-    {
-        return;
-    }
-
-    switch (mouseData.State)
-    {
-        case MOUSE_STATE_RELEASED:
-            if (gPressedWidget.window_classification != w->classification || gPressedWidget.window_number != w->number
-                || gPressedWidget.widget_index != widgetIndex || w->disabled_widgets & (1 << widgetIndex))
-            {
-                break;
-            }
-
-            if (ClickRepeatTicks != 0)
-            {
-                ClickRepeatTicks++;
-
-                // Handle click repeat
-                auto is_hold_down_widget = static_cast<bool>(w->hold_down_widgets & (1 << widgetIndex));
-                if (ClickRepeatTicks >= 16 && !(ClickRepeatTicks & 3) && is_hold_down_widget)
-                {
-                    window_event_mouse_down_call(w, widgetIndex);
-                }
-            }
-
-            if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED)
-            {
-                if (gInputState == INPUT_STATE_DROPDOWN_ACTIVE)
-                {
-                    gDropdownHighlightedIndex = gDropdownDefaultIndex;
-                    window_invalidate_by_class(WC_DROPDOWN);
-                }
-                return;
-            }
-
-            gInputFlags |= INPUT_FLAG_WIDGET_PRESSED;
-            widget_invalidate_by_number(gPressedWidget.window_classification, gPressedWidget.window_number, widgetIndex);
-
-            return;
-
-        case MOUSE_STATE_LEFT_RELEASE:
-        case MOUSE_STATE_RIGHT_PRESS:
-            if (gInputState == INPUT_STATE_DROPDOWN_ACTIVE)
-            {
-                if (!HandleDropdown(widgetIndex, w, cursor_w, mouseData))
-                {
-                    return;
-                }
-
-                window_close_by_class(WC_DROPDOWN);
-
-                // Update w as it will be invalid after closing the dropdown window
-                w = window_find_by_number(w->classification, w->number);
-            }
-
-            gInputState = INPUT_STATE_NORMAL;
-
-            if (mouseData.State == MOUSE_STATE_LEFT_RELEASE)
-            {
-                gTooltipTimeout = 0;
-                gTooltipWidget.widget_index = gPressedWidget.widget_index;
-
-                if (w == nullptr)
-                {
-                    break;
-                }
-
-                int32_t mid_point_x = (widget->left + widget->right) / 2 + w->x;
-                audio_play_sound(SOUND_CLICK_2, 0, mid_point_x);
-
-                if (gPressedWidget.window_classification != w->classification || gPressedWidget.window_number != w->number
-                    || gPressedWidget.widget_index != widgetIndex || (w->disabled_widgets & (1 << widgetIndex)))
-                {
-                    break;
-                }
-
-                widget_invalidate_by_number(gPressedWidget.window_classification, gPressedWidget.window_number, widgetIndex);
-                window_event_mouse_up_call(w, widgetIndex);
-            }
-
-            return;
-
-        default:
-            return;
-    }
-
     ClickRepeatTicks = 0;
     if (gInputState != INPUT_STATE_DROPDOWN_ACTIVE)
     {
-        // Hold down widget and drag outside of area??
-        if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED)
+        // Close the dropdown if the mouse is dragged away while holding
+        if (input_test_flag(INPUT_FLAG_WIDGET_PRESSED))
         {
             gInputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
             widget_invalidate_by_number(
@@ -688,6 +591,112 @@ void input_widget_pressed(rct_widgetindex widgetIndex, rct_window* w, rct_widget
 
         gDropdownHighlightedIndex = dropdownIndex;
         window_invalidate_by_class(WC_DROPDOWN);
+    }
+}
+
+void WidgetPressedContinue(
+    rct_window* w, const rct_widgetindex widgetIndex, rct_window* cursor_w, const input_mouse_data& mouseData,
+    const rct_widget* widget)
+{
+    if (gInputState == INPUT_STATE_DROPDOWN_ACTIVE)
+    {
+        if (!HandleDropdown(widgetIndex, w, cursor_w, mouseData))
+        {
+            return;
+        }
+
+        window_close_by_class(WC_DROPDOWN);
+
+        // Update w as it will be invalid after closing the dropdown window
+        w = window_find_by_number(w->classification, w->number);
+    }
+
+    gInputState = INPUT_STATE_NORMAL;
+
+    if (mouseData.State == MOUSE_STATE_LEFT_RELEASE)
+    {
+        gTooltipTimeout = 0;
+        gTooltipWidget.widget_index = gPressedWidget.widget_index;
+
+        if (w == nullptr)
+        {
+            WidgetPressedPost(w, mouseData);
+            return;
+        }
+
+        int32_t mid_point_x = (widget->left + widget->right) / 2 + w->x;
+        audio_play_sound(SOUND_CLICK_2, 0, mid_point_x);
+
+        if (gPressedWidget.window_classification != w->classification || gPressedWidget.window_number != w->number
+            || gPressedWidget.widget_index != widgetIndex || (w->disabled_widgets & (1 << widgetIndex)))
+        {
+            WidgetPressedPost(w, mouseData);
+            return;
+        }
+
+        widget_invalidate_by_number(gPressedWidget.window_classification, gPressedWidget.window_number, widgetIndex);
+        window_event_mouse_up_call(w, widgetIndex);
+    }
+}
+
+static void WidgetPressedOver(rct_window* w, const rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
+{
+    if (gPressedWidget.window_classification != w->classification || gPressedWidget.window_number != w->number
+        || gPressedWidget.widget_index != widgetIndex || w->disabled_widgets & (1 << widgetIndex))
+    {
+        WidgetPressedPost(w, mouseData);
+        return;
+    }
+
+    if (ClickRepeatTicks != 0)
+    {
+        ClickRepeatTicks++;
+
+        // Handle click repeat
+        auto is_hold_down_widget = static_cast<bool>(w->hold_down_widgets & (1 << widgetIndex));
+        if (ClickRepeatTicks >= 16 && !(ClickRepeatTicks & 3) && is_hold_down_widget)
+        {
+            window_event_mouse_down_call(w, widgetIndex);
+        }
+    }
+
+    if (gInputFlags & INPUT_FLAG_WIDGET_PRESSED)
+    {
+        if (gInputState == INPUT_STATE_DROPDOWN_ACTIVE)
+        {
+            gDropdownHighlightedIndex = gDropdownDefaultIndex;
+            window_invalidate_by_class(WC_DROPDOWN);
+        }
+        return;
+    }
+
+    gInputFlags |= INPUT_FLAG_WIDGET_PRESSED;
+    widget_invalidate_by_number(gPressedWidget.window_classification, gPressedWidget.window_number, widgetIndex);
+}
+
+/**
+ *
+ *  rct2: 0x006E8DA7
+ */
+void input_widget_pressed(rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget, const input_mouse_data& mouseData)
+{
+    rct_window* cursor_w = window_find_by_number(gPressedWidget.window_classification, gPressedWidget.window_number);
+    if (cursor_w == nullptr)
+    {
+        gInputState = INPUT_STATE_RESET;
+        return;
+    }
+
+    if (widget != nullptr)
+    {
+        if (mouseData.State == MOUSE_STATE_RELEASED)
+        {
+            WidgetPressedOver(w, widgetIndex, mouseData);
+        }
+        else if (mouseData.State == MOUSE_STATE_LEFT_RELEASE || mouseData.State == MOUSE_STATE_RIGHT_PRESS)
+        {
+            WidgetPressedContinue(w, widgetIndex, cursor_w, mouseData, widget);
+        }
     }
 }
 

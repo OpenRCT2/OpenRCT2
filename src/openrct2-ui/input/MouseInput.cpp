@@ -129,6 +129,28 @@ static void ProcessMouseTool(const input_mouse_data& mouseData)
     }
 }
 
+void HandleInputNormal(
+    rct_window* w, const rct_widget* widget, const rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
+{
+    switch (mouseData.State)
+    {
+        case MOUSE_STATE_RELEASED:
+            input_widget_over(w, mouseData, widgetIndex);
+            break;
+
+        case MOUSE_STATE_LEFT_PRESS:
+            input_widget_left(w, mouseData, widgetIndex);
+            break;
+
+        case MOUSE_STATE_RIGHT_PRESS:
+            input_widget_right(w, mouseData, widget, widgetIndex);
+            break;
+
+        default:
+            break;
+    }
+}
+
 /**
  *
  *  rct2: 0x006E8655
@@ -153,23 +175,7 @@ static void HandleInputMouse(const input_mouse_data& mouseData)
             [[fallthrough]];
 
         case INPUT_STATE_NORMAL:
-            switch (mouseData.State)
-            {
-                case MOUSE_STATE_RELEASED:
-                    input_widget_over(w, mouseData, widgetIndex);
-                    break;
-
-                case MOUSE_STATE_LEFT_PRESS:
-                    input_widget_left(w, mouseData, widgetIndex);
-                    break;
-
-                case MOUSE_STATE_RIGHT_PRESS:
-                    input_widget_right(w, mouseData, widget, widgetIndex);
-                    break;
-
-                default:
-                    break;
-            }
+            HandleInputNormal(w, widget, widgetIndex, mouseData);
             break;
 
         case INPUT_STATE_WIDGET_PRESSED:
@@ -177,24 +183,8 @@ static void HandleInputMouse(const input_mouse_data& mouseData)
             break;
 
         case INPUT_STATE_POSITIONING_WINDOW:
-        {
-            w = window_find_by_number(gDragWidget.window_classification, gDragWidget.window_number);
-            if (w == nullptr)
-            {
-                gInputState = INPUT_STATE_RESET;
-                break;
-            }
-
-            int32_t snapProximity = (w->flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
-            window_move_and_snap(w, mouseData.X - gInputDragLastX, mouseData.Y - gInputDragLastY, snapProximity);
-
-            if (mouseData.State == MOUSE_STATE_LEFT_RELEASE)
-            {
-                input_window_position_end(w, mouseData);
-            }
-
+            input_window_positioning(mouseData);
             break;
-        }
 
         case INPUT_STATE_VIEWPORT_RIGHT:
             input_viewport_right(mouseData);
@@ -209,34 +199,11 @@ static void HandleInputMouse(const input_mouse_data& mouseData)
             break;
 
         case INPUT_STATE_SCROLL_LEFT:
-            if (mouseData.State == MOUSE_STATE_RELEASED)
-            {
-                input_scroll_continue(w, widgetIndex, mouseData);
-            }
-            else
-            {
-                input_scroll_end();
-            }
-
+            input_scroll(w, widgetIndex, mouseData);
             break;
 
         case INPUT_STATE_RESIZING:
-            w = window_find_by_number(gDragWidget.window_classification, gDragWidget.window_number);
-            if (w == nullptr)
-            {
-                gInputState = INPUT_STATE_RESET;
-                break;
-            }
-
-            if (mouseData.State == MOUSE_STATE_RELEASED)
-            {
-                input_window_resize_continue(w, mouseData);
-            }
-            else
-            {
-                input_window_resize_end();
-            }
-
+            input_window_resizing(mouseData);
             break;
 
         case INPUT_STATE_SCROLL_RIGHT:
