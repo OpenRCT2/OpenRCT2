@@ -2069,7 +2069,16 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
-            _trackPlaceShiftZ = floor2(_trackPlaceShiftStartScreenY - screenY + 4, 8);
+            _trackPlaceShiftZ = _trackPlaceShiftStartScreenY - screenY + 4;
+
+            // Scale delta by zoom to match mouse position.
+            auto* mainWnd = window_get_main();
+            if (mainWnd && mainWnd->viewport)
+            {
+                _trackPlaceShiftZ <<= mainWnd->viewport->zoom;
+            }
+            _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
+
             screenX = _trackPlaceShiftStartScreenX;
             screenY = _trackPlaceShiftStartScreenY;
         }

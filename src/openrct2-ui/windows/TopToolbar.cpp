@@ -1232,7 +1232,15 @@ static void sub_6E1F34(
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
             {
                 // SHIFT pressed
-                gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4) & 0xFFF8;
+                gSceneryShiftPressZOffset = (gSceneryShiftPressY - y + 4);
+
+                // Scale delta by zoom to match mouse position.
+                auto *mainWnd = window_get_main();
+                if (mainWnd && mainWnd->viewport)
+                {
+                    gSceneryShiftPressZOffset <<= mainWnd->viewport->zoom;
+                }
+                gSceneryShiftPressZOffset = floor2(gSceneryShiftPressZOffset, 8);
 
                 x = gSceneryShiftPressX;
                 y = gSceneryShiftPressY;
