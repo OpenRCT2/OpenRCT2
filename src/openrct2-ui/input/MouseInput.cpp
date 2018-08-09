@@ -129,7 +129,7 @@ static void ProcessMouseTool(const input_mouse_data& mouseData)
     }
 }
 
-void HandleInputNormal(
+static void HandleInputNormal(
     rct_window* w, const rct_widget* widget, const rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
 {
     switch (mouseData.State)

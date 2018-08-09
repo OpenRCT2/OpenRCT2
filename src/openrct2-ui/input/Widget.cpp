@@ -548,7 +548,7 @@ void input_widget_right(
     }
 }
 
-void WidgetPressedPost(rct_window* w, const input_mouse_data& mouseData)
+static void WidgetPressedPost(rct_window* w, const input_mouse_data& mouseData)
 {
     ClickRepeatTicks = 0;
     if (gInputState != INPUT_STATE_DROPDOWN_ACTIVE)
@@ -594,7 +594,7 @@ void WidgetPressedPost(rct_window* w, const input_mouse_data& mouseData)
     }
 }
 
-void WidgetPressedContinue(
+static void WidgetPressedContinue(
     rct_window* w, const rct_widgetindex widgetIndex, rct_window* cursor_w, const input_mouse_data& mouseData,
     const rct_widget* widget)
 {

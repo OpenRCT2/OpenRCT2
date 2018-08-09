@@ -13,7 +13,6 @@
 #include <openrct2-ui/input/Input.h>
 #include <openrct2-ui/interface/Window.h>
 
-void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 void input_window_positioning(const input_mouse_data& mouseData);
 
 void input_window_resize_begin(rct_window* w, rct_widgetindex widgetIndex, const input_mouse_data& mouseData);
