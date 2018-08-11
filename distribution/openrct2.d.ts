@@ -64,16 +64,57 @@ export interface TileElement {
     type: TileElementType;
     zBase: number;
     zClearance: number;
-
-    // footpath-item:
     broken: boolean;
+
+    /**
+     * Gets the element as a specific type to access its properties
+     */
+    asSurface(): SurfaceElement;
+    asTrack(): TrackElement;
+    asSmallScenery(): SmallSceneryElement;
+    asEntrance(): EntranceElement;
+    asWall(): WallElement;
+    asLargeScenery(): LargeSceneryElement;
+    asBanner(): BannerElement;
+    asCorruptElement(): CorruptElement;
+}
+
+export interface SurfaceElement extends TileElement {
+    slope: number;
+    terrain: number;
+    waterHeight: number;
+    grassLength: number;
+    ownership: number;
+    parkFences: number;
+}
+
+export interface TrackElement extends TileElement {
+}
+
+export interface SmallSceneryElement extends TileElement {
+}
+
+export interface EntranceElement extends TileElement {
+}
+
+export interface WallElement extends TileElement {
+}
+
+export interface LargeSceneryElement extends TileElement {
+}
+
+export interface BannerElement extends TileElement {
+}
+
+export interface CorruptElement extends TileElement {
 }
 
 export interface Tile {
     x: number;
     y: number;
-    type: TileType;
     elements: TileElement[];
+
+    getElement(index: number): TileElement;
 }
 
 export interface Ride {
