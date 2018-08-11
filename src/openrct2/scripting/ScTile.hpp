@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
 
 #include <cstdio>
 #include <dukglue/dukglue.h>
@@ -100,10 +101,77 @@ namespace OpenRCT2::Scripting
 
     class ScSurfaceElement final : public ScTileElement
     {
+        uint8_t slope_get()
+        {
+            return _element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+        }
+        void slope_set(uint8_t value)
+        {
+            // TODO: Give warning when value > TILE_ELEMENT_SURFACE_SLOPE_MASK
+            _element->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
+            _element->properties.surface.slope |= value & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+        }
+
+        uint8_t terrain_get()
+        {
+            return surface_get_terrain(_element);
+        }
+        void terrain_set(uint8_t value)
+        {
+            surface_set_terrain(_element, value);
+        }
+
+        uint8_t waterHeight_get()
+        {
+            return surface_get_water_height(_element);
+        }
+        void waterHeight_set(uint8_t value)
+        {
+            // TODO: Give warning when value > TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK
+            _element->properties.surface.terrain &= ~TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+            _element->properties.surface.terrain |= value & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+        }
+
+        uint8_t grassLength_get()
+        {
+            return _element->properties.surface.grass_length;
+        }
+        void grassLength_set(uint8_t value)
+        {
+            // TODO: Give warning when value > GRASS_LENGTH_CLUMPS_2
+            _element->properties.surface.grass_length = value;
+        }
+
+        uint8_t ownership_get()
+        {
+            return _element->properties.surface.ownership & 0xF0;
+        }
+        void ownership_set(uint8_t flags)
+        {
+            _element->properties.surface.ownership &= ~0xF0;
+            _element->properties.surface.ownership |= flags << 4;
+        }
+
+        uint8_t parkFences_get()
+        {
+            return _element->properties.surface.ownership & 0xF0;
+        }
+        void parkFences_set(uint8_t flags)
+        {
+            _element->properties.surface.ownership &= ~0x0F;
+            _element->properties.surface.ownership |= flags & 0x0F;
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
             RegisterSharedProperties<ScSurfaceElement>(ctx);
+            dukglue_register_property(ctx, &slope_get, &slope_set, "slope");
+            dukglue_register_property(ctx, &terrain_get, &terrain_set, "terrain");
+            dukglue_register_property(ctx, &waterHeight_get, &waterHeight_set, "waterHeight");
+            dukglue_register_property(ctx, &grassLength_get, &grassLength_set, "grassLength");
+            dukglue_register_property(ctx, &ownership_get, &ownership_set, "ownership");
+            dukglue_register_property(ctx, &waterHeight_get, &parkFences_set, "parkFences");
         }
     };
 

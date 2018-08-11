@@ -36,17 +36,34 @@ namespace OpenRCT2::Scripting
             return "unknown";
         }
 
+        // x getter and setter
         int32_t x_get()
         {
             return _sprite->unknown.x;
         }
+        void x_set(int32_t value)
+        {
+            _sprite->unknown.x = value;
+        }
+
+        // y getter and setter
         int32_t y_get()
         {
             return _sprite->unknown.y;
         }
-        int32_t z_get()
+        void y_set(int32_t value)
+        {
+            _sprite->unknown.y = value;
+        }
+
+        // z getter and setter
+        int16_t z_get()
         {
             return _sprite->unknown.z;
+        }
+        void z_set(int16_t value)
+        {
+            _sprite->unknown.z = value;
         }
 
         uint8_t tshirtColour_get()
@@ -66,12 +83,21 @@ namespace OpenRCT2::Scripting
             _sprite->peep.trousers_colour = value;
         }
 
+        template<typename T> static void dukglue_property_helper(duk_context* ctx, T& var, const char* name)
+        {
+            auto getter = []() -> const T { return var; };
+            auto setter = [&var](T& value) -> void { var = value; };
+            dukglue_register_property(ctx, getter, setter, name);
+        }
+
         static void Register(duk_context* ctx)
         {
+            dukglue_register_constructor<ScThing, rct_sprite*>(ctx, "Thing");
             dukglue_register_property(ctx, &ScThing::type_get, nullptr, "type");
-            dukglue_register_property(ctx, &ScThing::x_get, nullptr, "x");
-            dukglue_register_property(ctx, &ScThing::y_get, nullptr, "y");
-            dukglue_register_property(ctx, &ScThing::z_get, nullptr, "z");
+            dukglue_register_property(ctx, &ScThing::x_get, &ScThing::x_set, "x");
+            //dukglue_property_helper(ctx, _sprite->peep.x, "x");
+            dukglue_register_property(ctx, &ScThing::y_get, &ScThing::y_set, "y");
+            dukglue_register_property(ctx, &ScThing::z_get, &ScThing::z_set, "z");
             dukglue_register_property(ctx, &ScThing::tshirtColour_get, &ScThing::tshirtColour_set, "tshirtColour");
             dukglue_register_property(ctx, &ScThing::trousersColour_get, &ScThing::trousersColour_set, "trousersColour");
         }
