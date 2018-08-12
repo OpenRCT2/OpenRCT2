@@ -2343,7 +2343,7 @@ STR_2337    :Deutsche Mark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseten (Pts)
 STR_2340    :Lire (L)
-STR_2341    :Gulden (fl.)
+STR_2341    :Gulden (ƒ)
 STR_2342    :Kronen (kr)
 STR_2343    :Euro ({EURO})
 STR_2344    :Englisch
@@ -4785,7 +4785,7 @@ STR_DTLS    :Bauen Sie einen Park für die Menschen dieser Gegend, die hohe Inte
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :Eine Oase inmitten der Wüste ist sicher eine ungewöhnliche Herausforderung für Planer eines Vergnügungsparks.
 
 <Rotting Heights>

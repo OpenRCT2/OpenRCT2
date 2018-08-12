@@ -85,7 +85,6 @@ static void window_loadsave_scrollgetsize(rct_window *w, int32_t scrollIndex, in
 static void window_loadsave_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_loadsave_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_loadsave_compute_max_date_width();
 static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -115,7 +114,7 @@ static rct_window_event_list window_loadsave_events =
     window_loadsave_textinput,
     nullptr,
     nullptr,
-    window_loadsave_tooltip,
+    nullptr,
     nullptr,
     nullptr,
     window_loadsave_invalidate,
@@ -597,11 +596,6 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
                 window_loadsave_select(w, path);
             break;
     }
-}
-
-static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
-{
-    set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 static void window_loadsave_compute_max_date_width()

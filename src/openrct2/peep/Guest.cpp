@@ -13,7 +13,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -36,6 +35,8 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "Peep.h"
+
+#include <algorithm>
 
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
@@ -1485,7 +1486,7 @@ void rct_peep::OnEnterRide(uint8_t rideIndex)
 
     SetHasRidden(current_ride);
     peep_update_favourite_ride(this, ride);
-    happiness_target = Math::Clamp(0, happiness_target + satisfaction, PEEP_MAX_HAPPINESS);
+    happiness_target = std::clamp(happiness_target + satisfaction, 0, PEEP_MAX_HAPPINESS);
     peep_update_ride_nausea_growth(this, ride);
 }
 
@@ -2475,7 +2476,7 @@ static int16_t peep_calculate_ride_satisfaction(rct_peep* peep, Ride* ride)
 static void peep_update_favourite_ride(rct_peep* peep, Ride* ride)
 {
     peep->peep_flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-    uint8_t peepRideRating = Math::Clamp(0, (ride->excitement / 4) + peep->happiness, PEEP_MAX_HAPPINESS);
+    uint8_t peepRideRating = std::clamp((ride->excitement / 4) + peep->happiness, 0, PEEP_MAX_HAPPINESS);
     if (peepRideRating >= peep->favourite_ride_rating)
     {
         if (peep->happiness >= 160 && peep->happiness_target >= 160)
@@ -2621,7 +2622,7 @@ static int16_t peep_calculate_ride_intensity_nausea_satisfaction(rct_peep* peep,
  */
 static void peep_update_ride_nausea_growth(rct_peep* peep, Ride* ride)
 {
-    uint32_t nauseaMultiplier = Math::Clamp(64, 256 - peep->happiness_target, 200);
+    uint32_t nauseaMultiplier = std::clamp(256 - peep->happiness_target, 64, 200);
     uint32_t nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
     nauseaGrowthRateChange *= std::max(static_cast<uint8_t>(128), peep->hunger) / 64;
     nauseaGrowthRateChange >>= (peep->nausea_tolerance & 3);
@@ -5629,7 +5630,7 @@ void rct_peep::UpdateWatching()
 
         sub_state++;
 
-        time_to_stand = Math::Clamp(0, ((129 - energy) * 16 + 50) / 2, 255);
+        time_to_stand = std::clamp(((129 - energy) * 16 + 50) / 2, 0, 255);
         UpdateSpriteType();
     }
     else if (sub_state == 1)

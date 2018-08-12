@@ -9,7 +9,6 @@
 
 #include "MapHelpers.h"
 
-#include "../core/Math.hpp"
 #include "Map.h"
 #include "Surface.h"
 
@@ -250,14 +249,14 @@ int32_t tile_smooth(int32_t x, int32_t y)
     }
 
     // Count number from the three tiles that is currently higher
-    int8_t thresholdW = Math::Clamp(0, neighbourHeightOffset.SW, 1) + Math::Clamp(0, neighbourHeightOffset.W, 1)
-        + Math::Clamp(0, neighbourHeightOffset.NW, 1);
-    int8_t thresholdN = Math::Clamp(0, neighbourHeightOffset.NW, 1) + Math::Clamp(0, neighbourHeightOffset.N, 1)
-        + Math::Clamp(0, neighbourHeightOffset.NE, 1);
-    int8_t thresholdE = Math::Clamp(0, neighbourHeightOffset.NE, 1) + Math::Clamp(0, neighbourHeightOffset.E, 1)
-        + Math::Clamp(0, neighbourHeightOffset.SE, 1);
-    int8_t thresholdS = Math::Clamp(0, neighbourHeightOffset.SE, 1) + Math::Clamp(0, neighbourHeightOffset.S, 1)
-        + Math::Clamp(0, neighbourHeightOffset.SW, 1);
+    int8_t thresholdW = std::clamp(neighbourHeightOffset.SW, 0, 1) + std::clamp(neighbourHeightOffset.W, 0, 1)
+        + std::clamp(neighbourHeightOffset.NW, 0, 1);
+    int8_t thresholdN = std::clamp(neighbourHeightOffset.NW, 0, 1) + std::clamp(neighbourHeightOffset.N, 0, 1)
+        + std::clamp(neighbourHeightOffset.NE, 0, 1);
+    int8_t thresholdE = std::clamp(neighbourHeightOffset.NE, 0, 1) + std::clamp(neighbourHeightOffset.E, 0, 1)
+        + std::clamp(neighbourHeightOffset.SE, 0, 1);
+    int8_t thresholdS = std::clamp(neighbourHeightOffset.SE, 0, 1) + std::clamp(neighbourHeightOffset.S, 0, 1)
+        + std::clamp(neighbourHeightOffset.SW, 0, 1);
 
     uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
     slope |= (thresholdW >= 1) ? SLOPE_W_THRESHOLD_FLAGS : 0;

@@ -13,6 +13,7 @@
 
 #include "Window.h"
 
+#include <algorithm>
 #include <jansson.h>
 #include <memory>
 #include <openrct2/Context.h>
@@ -23,7 +24,6 @@
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Json.hpp>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>

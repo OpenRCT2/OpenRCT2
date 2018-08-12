@@ -2351,7 +2351,7 @@ STR_2337    :德国马克 (DM)
 STR_2338    :日元 ({YEN})
 STR_2339    :比塞塔 (Pts)
 STR_2340    :里拉 (L)
-STR_2341    :荷兰盾 (fl.)
+STR_2341    :荷兰盾 (ƒ)
 STR_2342    :克朗 (kr)
 STR_2343    :欧元 ({EURO})
 STR_2344    :英制
@@ -4802,7 +4802,7 @@ STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local p
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
 
 <Rotting Heights>
@@ -5212,7 +5212,7 @@ STR_SCNR    :Europe - Renovation
 STR_PARK    :From The Ashes
 STR_DTLS    :一个老公园年久失修。你获得一个欧盟的补助金，将这个被剥夺的地区归还给它昔日的荣耀！你需要整修公园并偿还补助金。
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :夏威夷的人们厌倦了冲浪，寻找更刺激的东西。你需要建立一个游乐园，以保持该地区的旅游评级。

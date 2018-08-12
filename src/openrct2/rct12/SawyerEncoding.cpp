@@ -10,7 +10,8 @@
 #include "SawyerEncoding.h"
 
 #include "../core/IStream.hpp"
-#include "../core/Math.hpp"
+
+#include <algorithm>
 
 namespace SawyerEncoding
 {

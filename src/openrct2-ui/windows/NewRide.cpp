@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -15,7 +16,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Localisation.h>
@@ -209,7 +209,6 @@ static void window_new_ride_update(rct_window *w);
 static void window_new_ride_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_new_ride_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_new_ride_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_new_ride_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_new_ride_invalidate(rct_window *w);
 static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -239,7 +238,7 @@ static rct_window_event_list window_new_ride_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_new_ride_tooltip,
+    nullptr,
     nullptr,
     nullptr,
     window_new_ride_invalidate,
@@ -799,15 +798,6 @@ static void window_new_ride_scrollmouseover(rct_window* w, int32_t scrollIndex, 
     w->new_ride.highlighted_ride_id = item.ride_type_and_entry;
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
     window_invalidate(w);
-}
-
-/**
- *
- *  rct2: 0x006B6BBF
- */
-static void window_new_ride_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
-{
-    set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**

@@ -2345,7 +2345,7 @@ STR_2337    :ドイツマルク (DM)
 STR_2338    :円 ({YEN})
 STR_2339    :ペセタ (Pts)
 STR_2340    :リラ (L)
-STR_2341    :フローリン (fl.)
+STR_2341    :フローリン (ƒ)
 STR_2342    :クローナ (kr)
 STR_2343    :ユーロ ({EURO})
 STR_2344    :ポンド法
@@ -4749,7 +4749,7 @@ STR_SCNR    :アドレナリン・ハイツ
 STR_PARK    :Adrenaline Heights
 STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
 
-<Utopia>
+<Utopia Park>
 STR_SCNR    :ユートピア・パーク
 STR_PARK    :Utopia
 STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park

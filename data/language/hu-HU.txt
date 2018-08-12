@@ -366,7 +366,7 @@ STR_2337    :Német márka (DM)
 STR_2338    :Jen ({YEN})
 STR_2339    :Pezeta (Pts)
 STR_2340    :Líra (L)
-STR_2341    :Gulden (fl.)
+STR_2341    :Gulden (ƒ)
 STR_2342    :Korona (kr)
 STR_2343    :Euró ({EURO})
 STR_2344    :Birodalmi

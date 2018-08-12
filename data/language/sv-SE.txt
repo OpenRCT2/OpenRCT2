@@ -2343,7 +2343,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Guilders (fl.)
+STR_2341    :Guilders (ƒ)
 STR_2342    :Kronor (kr)
 STR_2343    :Euro ({EURO})
 STR_2344    :Brittiska
@@ -4746,7 +4746,7 @@ STR_DTLS    :Bygg en park för den höga intensitets- och spänningssökande lok
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :En oas i mitten av öknen skapar en ovanlig chans till att bygga en nöjespark
 
 <Rotting Heights>

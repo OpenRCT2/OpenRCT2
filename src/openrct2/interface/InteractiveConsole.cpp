@@ -16,7 +16,6 @@
 #include "../Version.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
@@ -696,23 +695,23 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
         }
         else if (strcmp(argv[0], "scenario_initial_cash") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gInitialCash = Math::Clamp(MONEY(0, 0), MONEY(int_val[0], 0), MONEY(1000000, 00));
+            gInitialCash = std::clamp(MONEY(int_val[0], 0), MONEY(0, 0), MONEY(1000000, 00));
             console.Execute("get scenario_initial_cash");
         }
         else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gBankLoan = Math::Clamp(MONEY(0, 0), MONEY(int_val[0] - (int_val[0] % 1000), 0), gMaxBankLoan);
+            gBankLoan = std::clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan);
             console.Execute("get current_loan");
         }
         else if (strcmp(argv[0], "max_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gMaxBankLoan = Math::Clamp(MONEY(0, 0), MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(5000000, 0));
+            gMaxBankLoan = std::clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
             console.Execute("get max_loan");
         }
         else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            gGuestInitialCash = Math::Clamp(
-                MONEY(0, 0), MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(1000, 0));
+            gGuestInitialCash = std::clamp(
+                MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
             console.Execute("get guest_initial_cash");
         }
         else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
@@ -722,12 +721,12 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
         }
         else if (strcmp(argv[0], "guest_initial_hunger") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gGuestInitialHunger = (Math::Clamp(1, int_val[0], 84) * 255 / 100 - 255) * -1;
+            gGuestInitialHunger = (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
             console.Execute("get guest_initial_hunger");
         }
         else if (strcmp(argv[0], "guest_initial_thirst") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gGuestInitialThirst = (Math::Clamp(1, int_val[0], 84) * 255 / 100 - 255) * -1;
+            gGuestInitialThirst = (std::clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
             console.Execute("get guest_initial_thirst");
         }
         else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
@@ -787,21 +786,21 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
         }
         else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            gLandPrice = Math::Clamp(
-                MONEY(0, 0), MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(200, 0));
+            gLandPrice = std::clamp(
+                MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
             console.Execute("get land_rights_cost");
         }
         else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            gConstructionRightsPrice = Math::Clamp(
-                MONEY(0, 0), MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(200, 0));
+            gConstructionRightsPrice = std::clamp(
+                MONEY((int32_t)double_val[0], ((int32_t)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
             console.Execute("get construction_rights_cost");
         }
         else if (strcmp(argv[0], "climate") == 0)
         {
             if (int_valid[0])
             {
-                gClimate = Math::Clamp(0, int_val[0], 3);
+                gClimate = std::clamp(int_val[0], 0, 3);
             }
             else
             {
@@ -822,7 +821,7 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
         }
         else if (strcmp(argv[0], "game_speed") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gGameSpeed = Math::Clamp(1, int_val[0], 8);
+            gGameSpeed = std::clamp(int_val[0], 1, 8);
             console.Execute("get game_speed");
         }
         else if (strcmp(argv[0], "console_small_font") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
@@ -859,7 +858,7 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
         else if (strcmp(argv[0], "window_scale") == 0 && invalidArguments(&invalidArgs, double_valid[0]))
         {
             float newScale = (float)(0.001 * std::trunc(1000 * double_val[0]));
-            gConfigGeneral.window_scale = Math::Clamp(0.5f, newScale, 5.0f);
+            gConfigGeneral.window_scale = std::clamp(newScale, 0.5f, 5.0f);
             config_save_default();
             gfx_invalidate_screen();
             context_trigger_resize();
@@ -1240,7 +1239,7 @@ static int32_t cc_for_date(
     // YYYY OR YYYY MM (no day provided, preserve existing day)
     if (argc <= 2)
     {
-        day = Math::Clamp(1, gDateMonthTicks / (0x10000 / days_in_month[month - 1]) + 1, (int)days_in_month[month - 1]);
+        day = std::clamp(gDateMonthTicks / (0x10000 / days_in_month[month - 1]) + 1, 1, (int)days_in_month[month - 1]);
     }
 
     // YYYY MM DD (year, month, and day provided)

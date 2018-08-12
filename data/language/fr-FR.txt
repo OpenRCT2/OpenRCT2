@@ -2347,7 +2347,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Florins (fl.)
+STR_2341    :Florins (ƒ)
 STR_2342    :Krona (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Impérial
@@ -4571,6 +4571,8 @@ STR_6256    :Effets de rendu
 STR_6257    :Verre (transparent)
 STR_6258    :Net (transparent)
 STR_6259    :Désactivé
+STR_6260    :Afficher les tuiles bloquées
+STR_6261    :Afficher les chemins larges
 
 
 #############
@@ -4794,7 +4796,7 @@ STR_SCNR    :Mont Adrénaline
 STR_PARK    :Mont Adrénalin
 STR_DTLS    :Construisez un parc qui plaira à la population locale en quête de sensations fortes.
 
-<Utopia>
+<Utopia Park>
 STR_SCNR    :Utopia
 STR_PARK    :Utopia
 STR_DTLS    :Une oasis en plein coeur d'un désert constitue une idée de parc originale.

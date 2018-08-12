@@ -16,7 +16,6 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
@@ -25,6 +24,8 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+
+#include <algorithm>
 
 constexpr int32_t MAX_THUNDER_INSTANCES = 2;
 

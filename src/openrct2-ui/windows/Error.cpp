@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/localisation/Localisation.h>
@@ -127,7 +127,7 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message)
     int32_t screenHeight = context_get_height();
     const CursorState* state = context_get_cursor_state();
     x = state->x - (width / 2);
-    x = Math::Clamp(0, x, screenWidth);
+    x = std::clamp(x, 0, screenWidth);
 
     y = state->y + 26;
     y = std::max(22, y);

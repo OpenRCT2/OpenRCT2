@@ -2346,7 +2346,7 @@ STR_2337    :馬克 (DM)
 STR_2338    :日元 ({YEN})
 STR_2339    :比塞塔 (Pts)
 STR_2340    :裡拉 (L)
-STR_2341    :荷蘭盾 (fl.)
+STR_2341    :荷蘭盾 (ƒ)
 STR_2342    :克朗 (kr)
 STR_2343    :歐元 ({EURO})
 STR_2344    :英制
@@ -4779,7 +4779,7 @@ STR_DTLS    :建造一個能吸引喜好高刺激度遊樂設施的當地遊客�
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :一個沙漠中的綠洲帶來了一個非比尋常的機會去建造一個主題樂園
 
 <Rotting Heights>

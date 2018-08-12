@@ -11,7 +11,6 @@
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -231,7 +230,7 @@ static void ride_ratings_update_state_2()
                 /* .element = */ tileElement,
             };
             CoordsXYE nextTrackElement;
-            if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL))
+            if (!track_block_get_next(&trackElement, &nextTrackElement, nullptr, nullptr))
             {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_4;
                 return;
@@ -1329,7 +1328,7 @@ static rating_tuple ride_ratings_get_gforce_ratings(Ride* ride)
 
     // Apply maximum negative G force factor
     fixed16_2dp gforce = ride->max_negative_vertical_g;
-    result.excitement += (Math::Clamp<fixed16_2dp>(-FIXED_2DP(2, 50), gforce, FIXED_2DP(0, 00)) * -15728) >> 16;
+    result.excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
     result.intensity += ((gforce - FIXED_2DP(1, 00)) * -52428) >> 16;
     result.nausea += ((gforce - FIXED_2DP(1, 00)) * -14563) >> 16;
 
@@ -1458,9 +1457,9 @@ static void ride_ratings_add(rating_tuple* rating, int32_t excitement, int32_t i
     int32_t newExcitement = rating->excitement + excitement;
     int32_t newIntensity = rating->intensity + intensity;
     int32_t newNausea = rating->nausea + nausea;
-    rating->excitement = Math::Clamp<int32_t>(0, newExcitement, INT16_MAX);
-    rating->intensity = Math::Clamp<int32_t>(0, newIntensity, INT16_MAX);
-    rating->nausea = Math::Clamp<int32_t>(0, newNausea, INT16_MAX);
+    rating->excitement = std::clamp<int32_t>(newExcitement, 0, INT16_MAX);
+    rating->intensity = std::clamp<int32_t>(newIntensity, 0, INT16_MAX);
+    rating->nausea = std::clamp<int32_t>(newNausea, 0, INT16_MAX);
 }
 
 static void ride_ratings_apply_length(rating_tuple* ratings, Ride* ride, int32_t maxLength, int32_t excitementMultiplier)
@@ -4440,16 +4439,16 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYP
     ride_ratings_calculate_magic_carpet,                   // MAGIC_CARPET
     ride_ratings_calculate_submarine_ride,                 // SUBMARINE_RIDE
     ride_ratings_calculate_river_rafts,                    // RIVER_RAFTS
-    NULL,                                                  // 50
+    nullptr,                                               // 50
     ride_ratings_calculate_enterprise,                     // ENTERPRISE
-    NULL,                                                  // 52
-    NULL,                                                  // 53
-    NULL,                                                  // 54
-    NULL,                                                  // 55
+    nullptr,                                               // 52
+    nullptr,                                               // 53
+    nullptr,                                               // 54
+    nullptr,                                               // 55
     ride_ratings_calculate_inverted_impulse_coaster,       // INVERTED_IMPULSE_COASTER
     ride_ratings_calculate_mini_roller_coaster,            // MINI_ROLLER_COASTER
     ride_ratings_calculate_mine_ride,                      // MINE_RIDE
-    NULL,                                                  // 59
+    nullptr,                                               // 59
     ride_ratings_calculate_lim_launched_roller_coaster,    // LIM_LAUNCHED_ROLLER_COASTER
 };
 

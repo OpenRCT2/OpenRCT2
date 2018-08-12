@@ -2350,7 +2350,7 @@ STR_2337    :Saksanmarkka (DM)
 STR_2338    :Jen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Liira (L)
-STR_2341    :Guldeni (fl.)
+STR_2341    :Guldeni (ƒ)
 STR_2342    :Kruunu (kr)
 STR_2343    :Euro ({EURO})
 STR_2344    :Brittiläinen

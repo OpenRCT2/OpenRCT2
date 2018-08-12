@@ -1079,14 +1079,14 @@ STR_1076    :Winkelmodus
 STR_1077    :Draaimodus
 STR_1078    :Voorwaartse rotatie
 STR_1079    :Achterwaartse rotatie
-STR_1080    :Film: {ENDQUOTES}Avenging Aviators{ENDQUOTES}
-STR_1081    :3D-film: {ENDQUOTES}Mouse Tails{ENDQUOTES}
+STR_1080    :Film: {OPENQUOTES}Avenging Aviators{ENDQUOTES}
+STR_1081    :3D-film: {OPENQUOTES}Mouse Tails{ENDQUOTES}
 STR_1082    :Ruimteringenmodus
 STR_1083    :Beginnersstand
 STR_1084    :LIM-lancering
-STR_1085    :Film: {ENDQUOTES}Thrill Riders{ENDQUOTES}
-STR_1086    :3D-film: {ENDQUOTES}Storm Chasers{ENDQUOTES}
-STR_1087    :3D-film: {ENDQUOTES}Space Raiders{ENDQUOTES}
+STR_1085    :Film: {OPENQUOTES}Thrill Riders{ENDQUOTES}
+STR_1086    :3D-film: {OPENQUOTES}Storm Chasers{ENDQUOTES}
+STR_1087    :3D-film: {OPENQUOTES}Space Raiders{ENDQUOTES}
 STR_1088    :Intense stand
 STR_1089    :Waanzinnige stand
 STR_1090    :Spookhuismodus
@@ -1472,8 +1472,8 @@ STR_1469    :Attracties moeten beginnen en eindigen met stations
 STR_1470    :Station is niet lang genoeg
 STR_1471    :{WINDOW_COLOUR_2}Snelheid:
 STR_1472    :{SMALLFONT}{BLACK}Snelheid van deze attractie
-STR_1473    :{WINDOW_COLOUR_2}Spanningwaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Spanningwaarde: {BLACK}Nog niet beschikbaar
+STR_1473    :{WINDOW_COLOUR_2}Plezierwaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Plezierwaarde: {BLACK}Nog niet beschikbaar
 STR_1475    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1476    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}Nog niet beschikbaar
 STR_1477    :{WINDOW_COLOUR_2}Intensiteitswaarde: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
@@ -2313,7 +2313,7 @@ STR_2307    :Ontwerp voor {STRINGID} selecteren
 STR_2308    :Baanontwerpen voor {STRINGID}
 STR_2309    :Nieuw baanontwerp installeren
 STR_2310    :Eigen ontwerp bouwen
-STR_2311    :{WINDOW_COLOUR_2}Spanningswaarde: {BLACK}{COMMA2DP32} (ongeveer)
+STR_2311    :{WINDOW_COLOUR_2}Plezierwaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2312    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2313    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
@@ -2392,11 +2392,11 @@ STR_2386    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben aan h
 STR_2387    :{BLACK}Om een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te hebben aan het einde van {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Om plezier te hebben!
 STR_2389    :{BLACK}Om de beste {STRINGID} te bouwen!
-STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een spanningswaarde van ten minste 6,00
+STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een plezierwaarde van ten minste 6,00
 STR_2391    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben. Je parkwaardering mag geen moment onder de 700 komen!
 STR_2392    :{BLACK}Om in één maand ten minste {POP16}{POP16}{CURRENCY} aan attractiekaartjes te verdienen
-STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van ten minste {LENGTH} en een spanningswaarde van ten minste 7,00
-STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, elk met een spanningswaarde van ten minste {POP16}{POP16}{COMMA2DP32}
+STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van ten minste {LENGTH} en een plezierwaarde van ten minste 7,00
+STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, elk met een plezierwaarde van ten minste {POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}Om je lening terug te betalen en een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te bereiken
 STR_2396    :{BLACK}Om in één maand ten minste {POP16}{POP16}{CURRENCY} aan de verkoop van eten, drinken en souvenirs te verdienen
 STR_2397    :Geen
@@ -3126,7 +3126,7 @@ STR_3120    :{SMALLFONT}{BLACK}Vind de dichtstbijzijnde monteur of de monteur di
 STR_3121    :Kan geen monteur vinden of alle monteurs in de buurt zijn bezig
 STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoeker
 STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoekers
-STR_3124    :{STRINGID} defect
+STR_3124    :{STRINGID} (vernield)
 STR_3125    :{WINDOW_COLOUR_2}Spanningsfactor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}+{COMMA16}%
@@ -3310,7 +3310,7 @@ STR_3304    :{WINDOW_COLOUR_2}Parkwaarde:
 STR_3305    :{WINDOW_COLOUR_2}Maandelijkse inkomsten:
 STR_3306    :{WINDOW_COLOUR_2}Maandelijkse winst:
 STR_3307    :{WINDOW_COLOUR_2}Minimumlengte:
-STR_3308    :{WINDOW_COLOUR_2}Spanningswaarde:
+STR_3308    :{WINDOW_COLOUR_2}Plezierwaarde:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
@@ -4787,7 +4787,7 @@ STR_DTLS    :Bouw een park dat de lokale bevolking, die op zoek is naar snelheid
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :Een oase midden in de woestijn vormt een ongebruikelijke gelegenheid tot het bouwen van een pretpark.
 
 <Rotting Heights>
@@ -5193,7 +5193,7 @@ STR_SCNR    : Europa - Renovatie
 STR_PARK    :From The Ashes
 STR_DTLS    :Een oud park is vervallen. Je hebt een lening van de Europese Unie gekregen om het troosteloze terrein weer in oude luister te herstellen! Je moet het park renoveren en de lening terugbetalen.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    : Noord-Amerika - Extreem Hawaiiaans eiland
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :De bevolking van Hawaii wil wel eens iets spannenders dan surfen. Houd dit in het achterhoofd bij het bouwen van een park om zoveel mogelijk mogelijk toeristen aan te trekken.

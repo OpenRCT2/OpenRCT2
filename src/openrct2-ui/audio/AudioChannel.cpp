@@ -11,11 +11,11 @@
 #include "AudioFormat.h"
 
 #include <SDL2/SDL.h>
+#include <algorithm>
 #include <cmath>
 #include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/common.h>
-#include <openrct2/core/Math.hpp>
 #include <speex/speex_resampler.h>
 
 namespace OpenRCT2::Audio
@@ -159,7 +159,7 @@ namespace OpenRCT2::Audio
 
         void SetVolume(int32_t volume) override
         {
-            _volume = Math::Clamp(0, volume, MIXER_VOLUME_MAX);
+            _volume = std::clamp(volume, 0, MIXER_VOLUME_MAX);
         }
 
         float GetPan() const override
@@ -169,7 +169,7 @@ namespace OpenRCT2::Audio
 
         void SetPan(float pan) override
         {
-            _pan = Math::Clamp(0.0f, pan, 1.0f);
+            _pan = std::clamp(pan, 0.0f, 1.0f);
             double decibels = (std::abs(_pan - 0.5) * 2.0) * 100.0;
             double attenuation = pow(10, decibels / 20.0);
             if (_pan <= 0.5)

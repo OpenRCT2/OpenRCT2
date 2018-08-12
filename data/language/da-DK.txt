@@ -528,16 +528,16 @@ STR_0523    :Passagerer sidder i et køretøj, og kører rundt på en bane.
 STR_0524    :Frit fald vogn der hydrautisk bliver skudt i vejret, og falder derefter ned i fridt fald.
 STR_0525    :Passagerer glider ned af en snoet bane, kun holdt på plads af siderne i den halv-cirkulær bane
 STR_0526    :Passagerer sidder i en roterende observations kabine som kører op i et højt tårn
-STR_0527    :En glat står konstrueret rutschebane som er i stand til at laver vertikale loops
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed rutschebane trains career along steel rutschebane track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :A compact steel-tracked rutschebane where the train travels through corkscrews and loops
-STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
-STR_0533    :Wooden building with an internal staircase and an external spiral slide for use with slide mats
+STR_0527    :En glat stål konstrueret rutschebane som er i stand til at lave vertikale loops
+STR_0528    :Passagerer sidder i en oppustelig gummibåd ned af et snoet halv-cirkulært eller helt lukket rørbane
+STR_0529    :Minevogns rutschebane, kører på en stålskinne som er lavet til at se ud som en gammel jernbane
+STR_0530    :Vogne hænger i et stålkabel, som kører kontinuerligt fra den ene ende af banen, til den anden, og tilbage igen
+STR_0531    :En kompakt stålbane rutschebane, hvor vognene kører igennem proptrækkersving og loops
+STR_0532    :Labyrinth konstrueret af 2 meter høje hække og vægge, og gæsterne bevæger sig rundt i labyrinthen, og kommer kun ud hvis de finder udgangen
+STR_0533    :Træbygning med en intern trappe, og en ekstern traditionel rutschebane, hvor gæster sidder på måtter
 STR_0534    :Gæster kører i benzin drevet go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0535    :Træstammeformet både sejler langs en vandfyldt bane, plasker ned af stejle fald, for at gøre passagerne våde
+STR_0536    :Runde både sejler rundt i en bred kanal, med bølger og små fald, vandfald, og uroligt vand
 STR_0537    :Gæster kører i eletriske radiobiler
 STR_0538    :Stort svingende piratskib
 STR_0539    :Et skib monteret på en arm, med en stor kontravægt i den modsatte ende, som kan køre 360 grader rundt.
@@ -551,17 +551,17 @@ STR_0546    :<removed string - do not use>
 STR_0547    :En bod hvor gæster kan få kort over parken, og købe paraplyer
 STR_0548    :En toilet bygning
 STR_0549    :Stort roternde hjul, med åbne sæder.
-STR_0550    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
-STR_0551    :Cinema showing 3D films inside a geodesic sphere shaped building
+STR_0550    :Passagerer ser en film inde i en simulator, med bevæglese der passer til det der bliver vist på lærredet
+STR_0551    :Biograf der viser 3D film Inde i en stor hvælvet bygning
 STR_0552    :Passagerer sidder i en gondol, på store roterende arme, som roterer rundt, frem og tilbage så passagerer ender flere gange med hovedet ned af
-STR_0553    :Concentric pivoting rings allowing the riders free rotation in all directions
-STR_0554    :The car is accelerated out of the station along a long level track using Linear Induction Motors, then heads straight up a vertical spike of track, freefalling back down to return to the station
+STR_0553    :Koncentriske drejelige ringe som tillader passageren fridt at dreje rundt på alle akser
+STR_0554    :Vognen bliver acceleret ud af stationen langs en lige banne, ved hjælp af Linear Induction Motorer. Så bevæger den sig lodret op, hvorefter at returnere til stationen via et fridt fald
 STR_0555    :Guests ride in a lift up or down a vertical tower to get from one level to another
 STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall rutschebane experience
 STR_0557    :An A.T.M. (Cash Machine) for guests to use if they run low on funds
 STR_0558    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
-STR_0559    :Large themed building containing scary corridors and spooky rooms
-STR_0560    :A place for sick guests to go for faster recovery
+STR_0559    :Stor temabygning med uhyggelige gange og skræmmende rum
+STR_0560    :Et sted for syge gæster at gå hen for hurtigere at få det bedre
 STR_0561    :Cirkus show inde i et stort telt
 STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
 STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
@@ -581,9 +581,9 @@ STR_0576    :<removed string - do not use>
 STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
 STR_0579    :Et roligt spil mini golf
-STR_0580    :A giant steel rutschebane capable of smooth drops and hills of over 300ft
-STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
-STR_0582    :Self-drive hovercraft vehicles
+STR_0580    :En gigantisk rutschebane der er i stand til fald og bakker på over 90 meter
+STR_0581    :En ring af sæder bliver trukket op i toppen af et højt tårn, imens den roterer roligt rundt, hvorefter af lave et fridt fald ned , og stopper roligt i bunden ved hjælp af magnetiske bremser
+STR_0582    :En kør-selv luftpudebåd
 STR_0583    :Building containing warped rooms and angled corridors to disorientate people walking through it
 STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
 STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
@@ -2345,7 +2345,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Pesetas (Pts)
 STR_2340    :Lire (L)
-STR_2341    :Gylden (fl.)
+STR_2341    :Gylden (ƒ)
 STR_2342    :Krone (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperialistisk
@@ -3018,138 +3018,138 @@ STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan ikke indlæse fil...
-STR_3011    :File contains invalid data
-STR_3012    :Dodgems beat style
-STR_3013    :Fairground organ style
-STR_3014    :Roman fanfare style
-STR_3015    :Oriental style
-STR_3016    :Martian style
-STR_3017    :Jungle drums style
-STR_3018    :Egyptian style
-STR_3019    :Toyland style
+STR_3011    :Filen indeholder ugyldige data
+STR_3012    :Radiobil musik stil
+STR_3013    :Karnevalsmusik stil
+STR_3014    :Romersk fanfare stil
+STR_3015    :Orientalsk stil
+STR_3016    :Maritim stil
+STR_3017    :Jungletrommer stil
+STR_3018    :Egyptisk stil
+STR_3019    :Legetøjsland stil
 STR_3020    :
-STR_3021    :Space style
-STR_3022    :Horror style
-STR_3023    :Techno style
-STR_3024    :Gentle style
-STR_3025    :Summer style
-STR_3026    :Water style
-STR_3027    :Wild west style
-STR_3028    :Jurassic style
-STR_3029    :Rock style
-STR_3030    :Ragtime style
-STR_3031    :Fantasy style
-STR_3032    :Rock style 2
-STR_3033    :Ice style
-STR_3034    :Snow style
-STR_3035    :Custom music 1
-STR_3036    :Custom music 2
-STR_3037    :Medieval style
-STR_3038    :Urban style
-STR_3039    :Organ style
-STR_3040    :Mechanical style
-STR_3041    :Modern style
-STR_3042    :Pirates style
-STR_3043    :Rock style 3
-STR_3044    :Candy style
-STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
-STR_3046    :This ride cannot be modified
-STR_3047    :Local authority forbids demolition or modifications to this ride
-STR_3048    :Marketing campaigns forbidden by local authority
-STR_3049    :Golf hole A
-STR_3050    :Golf hole B
-STR_3051    :Golf hole C
-STR_3052    :Golf hole D
-STR_3053    :Golf hole E
-STR_3054    :Loading...
+STR_3021    :Rum stil
+STR_3022    :Gyser stil
+STR_3023    :Techno stil
+STR_3024    :Rolig stil
+STR_3025    :Sommer stil
+STR_3026    :Vand stil
+STR_3027    :Western stil
+STR_3028    :Jurassic stil
+STR_3029    :Rock stil
+STR_3030    :Ragtime stil
+STR_3031    :Fantasy stil
+STR_3032    :Rock stil 2
+STR_3033    :Is stil
+STR_3034    :Sne stil
+STR_3035    :Valgfrit musik 1
+STR_3036    :Valgfrit musik 2
+STR_3037    :Middelalder stil
+STR_3038    :Undergrunds stil
+STR_3039    :Orgel stil
+STR_3040    :Mekanisk stil
+STR_3041    :Moderne stil
+STR_3042    :Pirat stil
+STR_3043    :Rock stil 3
+STR_3044    :Slik stil
+STR_3045    :{SMALLFONT}{BLACK}Vælg musikstilen der skal spilles
+STR_3046    :Denne forlystelse kan ikke modificeres
+STR_3047    :Lokal myndigheder forbyder nedrivning eller ændringer af denne forlystelse
+STR_3048    :Marketingkampagner forbydes af de lokale myndigheder
+STR_3049    :Golf hul A
+STR_3050    :Golf hul B
+STR_3051    :Golf hul C
+STR_3052    :Golf hul D
+STR_3053    :Golf hul E
+STR_3054    :Henter...
 STR_3055    :<removed string - do not use>
 STR_3056    :<removed string - do not use>
 STR_3057    :<removed string - do not use>
-STR_3058    :Brick walls
-STR_3059    :Hedges
-STR_3060    :Ice blocks
-STR_3061    :Wooden fences
-STR_3062    :{SMALLFONT}{BLACK}Standard rutschebane track
-STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
-STR_3064    :Beginner Parks
-STR_3065    :Challenging Parks
-STR_3066    :Expert Parks
-STR_3067    :{OPENQUOTES}Real{ENDQUOTES} Parks
-STR_3068    :Other Parks
-STR_3069    :Top Section
-STR_3070    :Slope to Level
-STR_3071    :{WINDOW_COLOUR_2}Same price throughout park
-STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
-STR_3073    :{RED}WARNING: Your park rating has dropped below 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
-STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have 3 weeks to raise the park rating
-STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
-STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
-STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
-STR_3078    :Plain entrance
-STR_3079    :Wooden entrance
-STR_3080    :Canvas tent entrance
-STR_3081    :Castle entrance (grey)
-STR_3082    :Castle entrance (brown)
-STR_3083    :Jungle entrance
-STR_3084    :Log cabin entrance
-STR_3085    :Classical/Roman entrance
-STR_3086    :Abstract entrance
-STR_3087    :Snow/Ice entrance
-STR_3088    :Pagoda entrance
-STR_3089    :Space entrance
-STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
-STR_3091    :You are not allowed to remove this section!
-STR_3092    :You are not allowed to move or modify the station for this ride!
-STR_3093    :{WINDOW_COLOUR_2}Favourite: {BLACK}{STRINGID}
+STR_3058    :Murstensvæge
+STR_3059    :Hække
+STR_3060    :Isblokke
+STR_3061    :Træstakitter
+STR_3062    :{SMALLFONT}{BLACK}Standard rutschebane bane
+STR_3063    :{SMALLFONT}{BLACK}Vandkanal (undervandsbane)
+STR_3064    :Begynder Parker
+STR_3065    :Udfordrende Parker
+STR_3066    :Ekspert Parker
+STR_3067    :{OPENQUOTES}Virkelige{ENDQUOTES} Parker
+STR_3068    :Andre Parker
+STR_3069    :Top valgte
+STR_3070    :Hældning til niveau
+STR_3071    :{WINDOW_COLOUR_2}Samme pris overalt i parken
+STR_3072    :{SMALLFONT}{BLACK}Vælg om prisen skal være det samme overalt i parken
+STR_3073    :{RED}ADVARSEL: Din parks vurdering er faldet til under 700 !{NEWLINE}Din park bliver lukket, hvis din parks vurdering ikke bliver forbedret inden 4 uger
+STR_3074    :{RED}ADVARSEL: Din parks vurdering er stadig under 700 !{NEWLINE}Du har tre uger til at forbedre din parks vurdering
+STR_3075    :{RED}ADVARSEL: Din parks vurdering er stadig under 700 !{NEWLINE}Du har kun to uger til at forbedre vurderingen, elles bliver din park lukket
+STR_3076    :{RED}SIDSTE ADVARSEL: Din parks vurdering er stadig under 700 !{NEWLINE}Om kun 7 dage lukker parken, hvis du ikke forbedrer park vurderingen
+STR_3077    :{RED}LUKNINGS BESKED: Din park er blevet lukket !
+STR_3078    :Almindelig indgang
+STR_3079    :Træ indgang
+STR_3080    :Telt indgang
+STR_3081    :Ridderborg indgang (grå)
+STR_3082    :Ridderborg indgang (brun)
+STR_3083    :Jungle indgang
+STR_3084    :Bjælkehytte indgang
+STR_3085    :Klassisk/Romer indgang
+STR_3086    :Abstrakt indgang
+STR_3087    :Sne/is indgang
+STR_3088    :Pagode indgang
+STR_3089    :Rumfarts indgang
+STR_3090    :{SMALLFONT}{BLACK}Vælg stilen af indgang, udgang, og station
+STR_3091    :Du har ikke lov til at fjerne denne sektion!
+STR_3092    :Du har ikek lov til at flytte eller ændre stationen for denne forlystelse!
+STR_3093    :{WINDOW_COLOUR_2}Favorit: {BLACK}{STRINGID}
 STR_3094    :N/A
-STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
+STR_3095    :{WINDOW_COLOUR_2}Løftekæde hastighed:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
-STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
-STR_3098    :Kan ikke change lift hill speed...
-STR_3099    :{SMALLFONT}{BLACK}Select colour
-STR_3100    :{SMALLFONT}{BLACK}Select second colour
-STR_3101    :{SMALLFONT}{BLACK}Select third colour
-STR_3102    :{SMALLFONT}{BLACK}Re-paint coloured scenery on landscape
-STR_3103    :Kan ikke re-paint this...
+STR_3097    :{SMALLFONT}{BLACK}Vælg hastigheden på kæden der løfter vognen
+STR_3098    :Kan ikke ændre løftekæde hastigheden...
+STR_3099    :{SMALLFONT}{BLACK}Vælg farve
+STR_3100    :{SMALLFONT}{BLACK}Vælg anden farve
+STR_3101    :{SMALLFONT}{BLACK}Vælg tredie farve
+STR_3102    :{SMALLFONT}{BLACK}Om-mal farvet sceneri på landskabet
+STR_3103    :Kan ikke male denne om...
 STR_3104    :{SMALLFONT}{BLACK}List forlystelser
 STR_3105    :{SMALLFONT}{BLACK}List butikker og boder
-STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
-STR_3107    :Close
+STR_3106    :{SMALLFONT}{BLACK}List informations kiosker og andre gæste faciliteter
+STR_3107    :Luk
 STR_3108    :Test
-STR_3109    :Open
-STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
-STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
-STR_3113    :Select a different design
-STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
-STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
-STR_3117    :{BLACK}Calling mechanic...
-STR_3118    :{BLACK}{STRINGID} is heading for the ride
-STR_3119    :{BLACK}{STRINGID} is fixing the ride
-STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
-STR_3121    :Unable to locate mechanic, or all nearby mekanikere are busy
-STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guest
-STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guests
-STR_3124    :Broken {STRINGID}
-STR_3125    :{WINDOW_COLOUR_2}Excitement Factor: {BLACK}+{COMMA16}%
-STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
-STR_3128    :Save Track Design
-STR_3129    :Save Track Design with Scenery
-STR_3130    :Save
-STR_3131    :Cancel
-STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
-STR_3133    :Unable to build this on a slope
-STR_3134    :{RED}(Design includes scenery which is unavailable)
-STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
-STR_3136    :Warning: This design will be built with an alternative vehicle type and may not perform as expected
-STR_3137    :Select Nearby Scenery
-STR_3138    :Reset Selection
-STR_3139    :Cable lift unable to work in this operating mode
-STR_3140    :Cable lift hill must start immediately after station
-STR_3141    :Multi-circuit per ride not possible with cable lift hill
-STR_3142    :{WINDOW_COLOUR_2}Kapasitet: {BLACK}{STRINGID}
+STR_3109    :Åben
+STR_3110    :{WINDOW_COLOUR_2}Blok Sektioner: {BLACK}{COMMA16}
+STR_3111    :{SMALLFONT}{BLACK}Klik på et design for at bygge det
+STR_3112    :{SMALLFONT}{BLACK}Klik på et design, for at omdøbe eller slette det
+STR_3113    :Vælg et andet design
+STR_3114    :{SMALLFONT}{BLACK}Gå tilbage til designvalgs vinduet
+STR_3115    :{SMALLFONT}{BLACK}Gem banedesign
+STR_3116    :{SMALLFONT}{BLACK}Gem banedesign (Ikke muligt for benen er testet og der er genereret statistik over banen)
+STR_3117    :{BLACK}Tilkalder mekaniker...
+STR_3118    :{BLACK}{STRINGID} er på vej til forlystelsen
+STR_3119    :{BLACK}{STRINGID} er igang med at reparere forlystelsen
+STR_3120    :{SMALLFONT}{BLACK}Find nærmeste ledige mekaniker, eller mekaniker der er igang med at reparere en forlystelse
+STR_3121    :Kan ikke finde en makaniker, eller alle mekanikere er optaget
+STR_3122    :{WINDOW_COLOUR_2}Ynglingsforlystelse for: {BLACK}{COMMA16} gæst
+STR_3123    :{WINDOW_COLOUR_2}Ynglingsforlystelse for: {BLACK}{COMMA16} guests
+STR_3124    :I stykker {STRINGID}
+STR_3125    :{WINDOW_COLOUR_2}Spændings Faktor: {BLACK}+{COMMA16}%
+STR_3126    :{WINDOW_COLOUR_2}Intensitets Faktor: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Kvalme Faktor: {BLACK}+{COMMA16}%
+STR_3128    :Gem banedesignesign
+STR_3129    :Gem banedesignesign med sceneri
+STR_3130    :Gem
+STR_3131    :Afbrud
+STR_3132    :{BLACK}Klik på sceneri, for at vælge dem der skal gemmes sammen med benedesignet...
+STR_3133    :Kan ikke bygges på en hældning
+STR_3134    :{RED}(Designet indeholder sceneri der ikke er tilgængeligt)
+STR_3135    :{RED}(Vogndesign ikke tilgængelig - Køreegenskaber kan blive påvirket)
+STR_3136    :Advarsel: Denne forlystelse vil blive bygget med en alternativ vogn type, så den måske ikke fungerer som forventet
+STR_3137    :Vælg sceneri i nærheden
+STR_3138    :nulstil valg
+STR_3139    :Kædeløft virker ikke i denne operations tilstand
+STR_3140    :Kædeløft bakke skal starte umiddelbart efter stationen
+STR_3141    :Multi-kredsløb per tur ikke muligt med kædeløft bakke
+STR_3142    :{WINDOW_COLOUR_2}Kapacitet: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Vis folk på kortet
 STR_3144    :{SMALLFONT}{BLACK}Vis forlystelser og boder på kortet
 STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} venstre
@@ -3167,75 +3167,75 @@ STR_3156    :
 STR_3157    :kort
 STR_3158    :graf
 STR_3159    :liste
-STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
+STR_3160    :{SMALLFONT}{BLACK}Vælg antal omgange per tur
 STR_3161    :<removed string - do not use>
-STR_3162    :Unable to allocate enough memory
-STR_3163    :Installing new data: 
-STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
+STR_3162    :Kan ikke allokere nok hukommelse
+STR_3163    :Insatllerer ny data: 
+STR_3164    :{BLACK}{COMMA16} valgt (maximum {COMMA16})
 STR_3165    :
 STR_3166    :{BLACK}(ID: 
-STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
-STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
-STR_3169    :Data for the following object not found: 
-STR_3170    :Not enough space for graphics
-STR_3171    :Too many objects of this type selected
-STR_3172    :The following object must be selected first: {STRING}
-STR_3173    :This object is currently in use
-STR_3174    :This object is required by another object
-STR_3175    :This object is always required
-STR_3176    :Unable to select this object
-STR_3177    :Unable to de-select this object
-STR_3178    :At least one path object must be selected
-STR_3179    :At least one ride vehicle/attraction object must be selected
-STR_3180    :Invalid selection of objects
-STR_3181    :Object Selection - {STRINGID}
-STR_3182    :Park entrance type must be selected
-STR_3183    :Water type must be selected
+STR_3167    :{WINDOW_COLOUR_2}Inkluderer: {BLACK}{COMMA16} objekter
+STR_3168    :{WINDOW_COLOUR_2}Tekst: {BLACK}{STRINGID}
+STR_3169    :Data for følgende opbekt ikke fundet: 
+STR_3170    :Ikke nok plads til grafik
+STR_3171    :For mange objekter for denne type valgt
+STR_3172    :Følgende objekt skal vælges først: {STRING}
+STR_3173    :Dette objekt bruges i øjeblikket
+STR_3174    :Dette objekt kræves af et andet objekt
+STR_3175    :Dette objekt er altid påkrævet
+STR_3176    :Kan ikke vælge dette objekt
+STR_3177    :Kan ikke fravælge dette objekt
+STR_3178    :Mindst et stiobjekt skal vælges
+STR_3179    :Mindst et forlystelse/attraktion objekt skal vælges
+STR_3180    :Ugyldigt udvalg af objekter
+STR_3181    :Objekt valg - {STRINGID}
+STR_3182    :Park indgangstype skal vælges
+STR_3183    :Vandtype skal vælges
 STR_3184    :Ride Vehicles/Attractions
-STR_3185    :Small Scenery
-STR_3186    :Large Scenery
-STR_3187    :Walls/Fences
-STR_3188    :Path Signs
-STR_3189    :Footpaths
+STR_3185    :Lille Sceneri
+STR_3186    :Stort Sceneri
+STR_3187    :Vægge/Hegn
+STR_3188    :Stiskilte
+STR_3189    :Gangstier
 STR_3190    :Path Extras
-STR_3191    :Scenery Groups
-STR_3192    :Park Entrance
-STR_3193    :Water
-STR_3194    :Scenario Description
-STR_3195    :Invention List
-STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
-STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
-STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
-STR_3199    :Random Shuffle
-STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
-STR_3201    :Object Selection
-STR_3202    :Landscape Editor
-STR_3203    :Invention List Set Up
-STR_3204    :Options Selection
-STR_3205    :Objective Selection
-STR_3206    :Save Scenario
-STR_3207    :Track Designer
-STR_3208    :Track Designs Manager
-STR_3209    :Back to Previous Step:
-STR_3210    :Forward to Next Step:
-STR_3211    :Map size:
+STR_3191    :Sceneri Grupper
+STR_3192    :Park indgang
+STR_3193    :Vand
+STR_3194    :Scenarie Beskrivelse
+STR_3195    :Opfindelses liste
+STR_3196    :{WINDOW_COLOUR_2}forskningsgruppe: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}Enheder der er tilgængelig i starten af spillet:
+STR_3198    :{WINDOW_COLOUR_2}Enheder der skal opfindet i løbet af spillet:
+STR_3199    :Tilfældig blanding
+STR_3200    :{SMALLFONT}{BLACK}Blander tilfældig, alle de ting der skal opfindet i løbet af spillet 
+STR_3201    :Objekt valg
+STR_3202    :Landskabs redigering
+STR_3203    :Opfindelses opsætning
+STR_3204    :Indstillings valg
+STR_3205    :Objekt udvælgelse
+STR_3206    :Gem Scenarie
+STR_3207    :Banedesigner
+STR_3208    :Banedesign Manager
+STR_3209    :Tilbage til tidligere skridt:
+STR_3210    :Videre til næste skridt:
+STR_3211    :Kortstørrelse:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
-STR_3213    :Kan ikke decrease map size any further
-STR_3214    :Kan ikke increase map size any further
-STR_3215    :Too close to edge of map
-STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
-STR_3217    :Land Owned
-STR_3218    :Construction Rights Owned
-STR_3219    :Land For Sale
-STR_3220    :Construction Rights For Sale
+STR_3213    :Kan ikke reducere korttsørrelsen yderligere
+STR_3214    :Kan ikke forøge korttsørrelsen yderligere
+STR_3215    :For tæt på kanten af kortet
+STR_3216    :{SMALLFONT}{BLACK}Vælg park-ejet land osv.
+STR_3217    :Land ejet
+STR_3218    :Konstruktionsrettigheder ejet
+STR_3219    :Land til salg
+STR_3220    :Konstruktionsrettigheder til salg
 STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
 STR_3222    :{SMALLFONT}{BLACK}Set construction rights only to be owned by the park
 STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
 STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
 STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
-STR_3226    :{SMALLFONT}{BLACK}Build park entrance
-STR_3227    :Too many park entrances!
-STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
+STR_3226    :{SMALLFONT}{BLACK}Build park indgang
+STR_3227    :For mange park indgange!
+STR_3228    :{SMALLFONT}{BLACK}Sæt start punkt for personer
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
@@ -3245,17 +3245,17 @@ STR_3234    :Options - Park
 STR_3235    :{SMALLFONT}{BLACK}Vis financial options
 STR_3236    :{SMALLFONT}{BLACK}Vis guest options
 STR_3237    :{SMALLFONT}{BLACK}Vis park options
-STR_3238    :No Money
+STR_3238    :Ingen penge
 STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
-STR_3240    :{WINDOW_COLOUR_2}Initial cash:
-STR_3241    :{WINDOW_COLOUR_2}Initial loan:
-STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
-STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
-STR_3244    :Forbid marketing campaigns
+STR_3240    :{WINDOW_COLOUR_2}Startkapital:
+STR_3241    :{WINDOW_COLOUR_2}Startlån:
+STR_3242    :{WINDOW_COLOUR_2}Maximum lånstørrelse:
+STR_3243    :{WINDOW_COLOUR_2}Årlig rentesats:
+STR_3244    :Forbyd markedsføringskampagner
 STR_3245    :{SMALLFONT}{BLACK}Forbid advertising, promotional schemes, and other marketing campaigns
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
-STR_3248    :Kan ikke increase initial cash any further!
+STR_3248    :Kan ikke forøge startkapital ydderligere!
 STR_3249    :Kan ikke reduce initial cash any further!
 STR_3250    :Kan ikke increase initial loan any further!
 STR_3251    :Kan ikke reduce initial loan any further!
@@ -3273,7 +3273,7 @@ STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
 STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
 STR_3264    :Kan ikke increase this any further!
 STR_3265    :Kan ikke reduce this any further!
-STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and forlystelser
+STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for indgang and forlystelser
 STR_3267    :Forbid tree removal
 STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
 STR_3269    :Forbid landscape changes
@@ -3336,10 +3336,10 @@ STR_3325    :Requires an Add-On Pack
 STR_3326    :{WINDOW_COLOUR_2}(no image)
 STR_3327    :Starting positions for people not set
 STR_3328    :Kan ikke advance to next editor stage...
-STR_3329    :Park entrance not yet built
+STR_3329    :Park indgang not yet built
 STR_3330    :Park must own some land
-STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
-STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
+STR_3331    :Path from park indgang to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
+STR_3332    :Park indgang is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Track Designer - Select Ride Types & Vehicles
@@ -3397,7 +3397,7 @@ STR_3386    :<removed string - do not use>
 STR_3387    :<removed string - do not use>
 STR_3388    :Unable to switch to selected mode
 STR_3389    :Unable to select additional item of scenery...
-STR_3390    :Too many items selected
+STR_3390    :For mange enheder valgt
 STR_3391    :<removed string - do not use>
 STR_3392    :<removed string - do not use>
 STR_3393    :<removed string - do not use>
@@ -3444,16 +3444,16 @@ STR_3433    :<removed string - do not use>
 STR_3434    :<removed string - do not use>
 STR_3435    :<removed string - do not use>
 STR_3436    :<removed string - do not use>
-STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
-STR_3438    :Unable to remove all scenery from here...
-STR_3439    :Clear Scenery
-STR_3440    :Page 1
-STR_3441    :Page 2
-STR_3442    :Page 3
-STR_3443    :Page 4
-STR_3444    :Page 5
-STR_3445    :Set Patrol Area
-STR_3446    :Cancel Patrol Area
+STR_3437    :{SMALLFONT}{BLACK}Ryd et stort område for sceneri
+STR_3438    :Kan ikke fjerne al sceneri herfra...
+STR_3439    :Ryd sceneri
+STR_3440    :Side 1
+STR_3441    :Side 2
+STR_3442    :Side 3
+STR_3443    :Side 4
+STR_3444    :Side 5
+STR_3445    :Sæt patruljeområde
+STR_3446    :Anuller patruljeområde
 
 # New strings, cleaner
 STR_5120    :Finances
@@ -3671,9 +3671,9 @@ STR_5331    :Rock
 STR_5332    :Wood (red)
 STR_5333    :Wood (black)
 STR_5334    :Ice
-STR_5335    :Ride entrance
+STR_5335    :Ride indgang
 STR_5336    :Ride exit
-STR_5337    :Park entrance
+STR_5337    :Park indgang
 STR_5338    :Element type
 STR_5339    :{SMALLFONT}{BLACK}Base height
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
@@ -3824,7 +3824,7 @@ STR_5484    :{BLACK}({COMMA16} week remaining)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Vis recent messages
-STR_5488    :No entrance (OpenRCT2 only!)
+STR_5488    :No indgang (OpenRCT2 only!)
 STR_5489    :{SMALLFONT}{BLACK}Vis only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
@@ -3898,7 +3898,7 @@ STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all forlystelser
 STR_5561    :Failed to load language
-STR_5562    :WARNING!
+STR_5562    :ADVARSEL!
 STR_5563    :This feature is currently unstable, take extra caution.
 STR_5564    :Insert Corrupt Element
 STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
@@ -4094,7 +4094,7 @@ STR_5786    :Invalid group name
 STR_5787    :{COMMA32} players online
 STR_5788    :Default inspection interval:
 STR_5789    :Disable lightning effect
-STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
+STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and indgang price)
 STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all forlystelser to 100%{NEWLINE}and resets their built date to {OPENQUOTES}this year{ENDQUOTES}
 STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down forlystelser
 STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
@@ -4272,7 +4272,7 @@ STR_5962    :{WINDOW_COLOUR_2}Collision detection:
 STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
 STR_5964    :{WINDOW_COLOUR_2}Diagonal
 STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Park entrance part: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Park indgang part: {BLACK}{STRINGID}
 STR_5967    :Middle
 STR_5968    :Left
 STR_5969    :Right
@@ -4320,7 +4320,7 @@ STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
-STR_6014    :{SMALLFONT}{BLACK}Guests will only pay entrance tickets for forlystelser and services.{NEWLINE}They won't pay anything to enter the park.
+STR_6014    :{SMALLFONT}{BLACK}Guests will only pay indgang tickets for forlystelser and services.{NEWLINE}They won't pay anything to enter the park.
 STR_6015    :Sloped
 STR_6016    :Modify Tile
 STR_6017    :Please slow down
@@ -4398,7 +4398,7 @@ STR_6088    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
 STR_6089    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
 STR_6090    :{STRING} opened the park.
 STR_6091    :{STRING} closed the park.
-STR_6092    :{STRING} changed the park entrance fee to {STRING}
+STR_6092    :{STRING} changed the park indgang fee to {STRING}
 STR_6093    :{STRING} placed new scenery.
 STR_6094    :{STRING} removed scenery.
 STR_6095    :{STRING} edited scenery.
@@ -4508,7 +4508,7 @@ STR_6198    :{BLACK}Day:
 STR_6199    :Set date
 STR_6200    :Reset date
 STR_6201    :{MONTH}
-STR_6202    :Virtual floor style:
+STR_6202    :Virtual floor stil:
 STR_6203    :{SMALLFONT}{BLACK}When enabled, a virtual floor will be rendered when holding Ctrl or Shift to ease vertical placement of elements.
 STR_6204    :Brick
 STR_6205    :Iron
@@ -4527,7 +4527,7 @@ STR_6217    :Ride / track availability
 STR_6218    :OpenRCT2 Official
 STR_6219    :Highlight path issues
 STR_6220    :Make Usable
-STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per stations.
+STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known indgang or exit location to the currently selected tile. Only one indgang and exit location can be made usable per stations.
 STR_6222    :Kan ikke place guest entry point here...
 STR_6223    :Must be outside park boundaries!
 STR_6224    :{STRING} placed a guest entry point.
@@ -4790,7 +4790,7 @@ STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local p
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
 
 <Rotting Heights>
@@ -5285,7 +5285,7 @@ STR_SCNR    :Europe - Renovation
 STR_PARK    :From The Ashes
 STR_DTLS    :An old park has fallen into disrepair. You gain a European Union grant to return this deprived area to its former glory! You need to renovate the park and repay the grant.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.

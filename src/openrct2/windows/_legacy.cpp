@@ -485,21 +485,21 @@ bool window_ride_construction_update_state(
         properties = _currentSeatRotationAngle << 12;
     }
 
-    if (_trackType != NULL)
+    if (_trackType != nullptr)
         *_trackType = trackType;
-    if (_trackDirection != NULL)
+    if (_trackDirection != nullptr)
         *_trackDirection = trackDirection;
-    if (_rideIndex != NULL)
+    if (_rideIndex != nullptr)
         *_rideIndex = rideIndex;
-    if (_liftHillAndAlternativeState != NULL)
+    if (_liftHillAndAlternativeState != nullptr)
         *_liftHillAndAlternativeState = liftHillAndAlternativeState;
-    if (_x != NULL)
+    if (_x != nullptr)
         *_x = x;
-    if (_y != NULL)
+    if (_y != nullptr)
         *_y = y;
-    if (_z != NULL)
+    if (_z != nullptr)
         *_z = z;
-    if (_properties != NULL)
+    if (_properties != nullptr)
         *_properties = properties;
 
     return false;
@@ -510,7 +510,7 @@ void window_ride_construction_do_entrance_exit_check()
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     Ride* ride = get_ride(_currentRideIndex);
 
-    if (w == NULL || ride == NULL)
+    if (w == nullptr || ride == nullptr)
     {
         return;
     }
@@ -518,7 +518,7 @@ void window_ride_construction_do_entrance_exit_check()
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_0)
     {
         w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-        if (w != NULL)
+        if (w != nullptr)
         {
             if (!ride_are_all_possible_entrances_and_exits_built(ride))
             {
@@ -535,7 +535,7 @@ void window_ride_construction_do_entrance_exit_check()
 void window_ride_construction_do_station_check()
 {
     Ride* ride = get_ride(_currentRideIndex);
-    if (ride != NULL)
+    if (ride != nullptr)
     {
         _stationConstructed = ride->num_stations != 0;
     }
@@ -560,7 +560,7 @@ void window_ride_construction_mouseup_demolish_next_piece(int32_t x, int32_t y, 
         int32_t b4 = _currentTrackLiftHill;
         ride_construction_set_default_next_piece();
         window_ride_construction_update_active_elements();
-        if (!ride_try_get_origin_element(_currentRideIndex, NULL))
+        if (!ride_try_get_origin_element(_currentRideIndex, nullptr))
         {
             ride_initialise_construction_window(_currentRideIndex);
             _currentTrackPieceDirection = direction & 3;

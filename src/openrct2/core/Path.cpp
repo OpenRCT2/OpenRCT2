@@ -16,7 +16,6 @@
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "File.h"
-#include "Math.hpp"
 #include "Memory.hpp"
 #include "Path.hpp"
 #include "String.hpp"

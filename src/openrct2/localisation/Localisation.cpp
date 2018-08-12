@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <cstring>
 #include <ctype.h>
 #include <limits.h>
@@ -26,7 +27,6 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../management/Marketing.h"

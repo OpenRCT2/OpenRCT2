@@ -2345,7 +2345,7 @@ STR_2337    :Marco Alemão(DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Florim Neerlandês (fl.)
+STR_2341    :Florim Neerlandês (ƒ)
 STR_2342    :Coroa Sueca(kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
@@ -4792,7 +4792,7 @@ STR_DTLS    :Construa um parque para apelar às pessoas locais buscadoras de emo
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :Um oasis no meio de um deserto fornece uma oportunidade incomum de construir um parque de diversões.
 
 <Rotting Heights>
@@ -5287,7 +5287,7 @@ STR_SCNR    :Europe - Renovation
 STR_PARK    :From The Ashes
 STR_DTLS    :Um velho parque caiu em ruínas. Você ganha uma concessão da União Europeia para retornar essa área privada à sua antiga glória! Você precisa renovar o parque e reembolsar a concessão.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :As pessoas do Havaí estão entediadas de surfar e estão procurando por algo mais intenso. Você precisa construir um parque com isto em mente para manter a atração turística da área com classificação alta.

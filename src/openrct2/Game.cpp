@@ -19,7 +19,6 @@
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
-#include "core/Math.hpp"
 #include "core/Util.hpp"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
@@ -61,6 +60,7 @@
 #include "world/Surface.h"
 #include "world/Water.h"
 
+#include <algorithm>
 #include <memory>
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
@@ -1406,7 +1406,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_set_water_height,
     game_command_place_footpath,
     game_command_place_footpath_from_track,
-    game_command_remove_footpath,
+    nullptr,
     game_command_change_surface_style,
     game_command_set_ride_price,
     game_command_set_guest_name,

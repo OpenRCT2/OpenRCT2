@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -14,7 +15,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
@@ -912,9 +912,6 @@ void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_stri
 {
     switch (widgetIndex)
     {
-        case WIDX_SCENERY_LIST:
-            set_format_arg(0, uint16_t, STR_LIST);
-            break;
         case WIDX_SCENERY_TAB_1:
         case WIDX_SCENERY_TAB_2:
         case WIDX_SCENERY_TAB_3:

@@ -9,11 +9,11 @@
 
 #include "SawyerCoding.h"
 
-#include "../core/Math.hpp"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 #include "Util.h"
 
+#include <algorithm>
 #include <cstring>
 
 static size_t decode_chunk_rle(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);

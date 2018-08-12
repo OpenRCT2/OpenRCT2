@@ -10,7 +10,6 @@
 #include "SawyerChunkWriter.h"
 
 #include "../core/IStream.hpp"
-#include "../core/Math.hpp"
 #include "../util/SawyerCoding.h"
 
 // Maximum buffer size to store compressed data, maximum of 16 MiB

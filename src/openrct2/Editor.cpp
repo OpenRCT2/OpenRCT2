@@ -17,7 +17,6 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "audio/audio.h"
-#include "core/Math.hpp"
 #include "interface/Viewport.h"
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
@@ -35,6 +34,7 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 
+#include <algorithm>
 #include <array>
 #include <vector>
 
@@ -328,16 +328,16 @@ namespace Editor
 
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
-            gGuestInitialCash = Math::Clamp((money16)MONEY(10, 00), gGuestInitialCash, (money16)MAX_ENTRANCE_FEE);
+            gGuestInitialCash = std::clamp(gGuestInitialCash, (money16)MONEY(10, 00), (money16)MAX_ENTRANCE_FEE);
 
             gInitialCash = std::min(gInitialCash, 100000);
             finance_reset_cash_to_initial();
 
-            gBankLoan = Math::Clamp(MONEY(0, 00), gBankLoan, MONEY(5000000, 00));
+            gBankLoan = std::clamp(gBankLoan, MONEY(0, 00), MONEY(5000000, 00));
 
-            gMaxBankLoan = Math::Clamp(MONEY(0, 00), gMaxBankLoan, MONEY(5000000, 00));
+            gMaxBankLoan = std::clamp(gMaxBankLoan, MONEY(0, 00), MONEY(5000000, 00));
 
-            gBankLoanInterestRate = Math::Clamp((uint8_t)5, gBankLoanInterestRate, (uint8_t)80);
+            gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 80);
         }
 
         climate_reset(gClimate);
@@ -576,23 +576,23 @@ namespace Editor
                 }
                 break;
             case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
-                gInitialCash = Math::Clamp(MONEY(0, 00), *edx, MONEY(1000000, 00));
+                gInitialCash = std::clamp(*edx, MONEY(0, 00), MONEY(1000000, 00));
                 gCash = gInitialCash;
                 window_invalidate_by_class(WC_FINANCES);
                 window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
                 break;
             case EDIT_SCENARIOOPTIONS_SETINITIALLOAN:
-                gBankLoan = Math::Clamp(MONEY(0, 00), *edx, MONEY(5000000, 00));
+                gBankLoan = std::clamp(*edx, MONEY(0, 00), MONEY(5000000, 00));
                 gMaxBankLoan = std::max(gBankLoan, gMaxBankLoan);
                 window_invalidate_by_class(WC_FINANCES);
                 break;
             case EDIT_SCENARIOOPTIONS_SETMAXIMUMLOANSIZE:
-                gMaxBankLoan = Math::Clamp(MONEY(0, 00), *edx, MONEY(5000000, 00));
+                gMaxBankLoan = std::clamp(*edx, MONEY(0, 00), MONEY(5000000, 00));
                 gBankLoan = std::min(gBankLoan, gMaxBankLoan);
                 window_invalidate_by_class(WC_FINANCES);
                 break;
             case EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE:
-                gBankLoanInterestRate = Math::Clamp(0, *edx, 80);
+                gBankLoanInterestRate = std::clamp(*edx, 0, 80);
                 window_invalidate_by_class(WC_FINANCES);
                 break;
             case EDIT_SCENARIOOPTIONS_SETFORBIDMARKETINGCAMPAIGNS:
@@ -606,16 +606,16 @@ namespace Editor
                 }
                 break;
             case EDIT_SCENARIOOPTIONS_SETAVERAGECASHPERGUEST:
-                gGuestInitialCash = Math::Clamp(MONEY(0, 00), *edx, MONEY(1000, 00));
+                gGuestInitialCash = std::clamp(*edx, MONEY(0, 00), MONEY(1000, 00));
                 break;
             case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHAPPINESS:
-                gGuestInitialHappiness = Math::Clamp(40, *edx, 250);
+                gGuestInitialHappiness = std::clamp(*edx, 40, 250);
                 break;
             case EDIT_SCENARIOOPTIONS_SETGUESTINITIALHUNGER:
-                gGuestInitialHunger = Math::Clamp(40, *edx, 250);
+                gGuestInitialHunger = std::clamp(*edx, 40, 250);
                 break;
             case EDIT_SCENARIOOPTIONS_SETGUESTINITIALTHIRST:
-                gGuestInitialThirst = Math::Clamp(40, *edx, 250);
+                gGuestInitialThirst = std::clamp(*edx, 40, 250);
                 break;
             case EDIT_SCENARIOOPTIONS_SETGUESTSPREFERLESSINTENSERIDES:
                 if (*edx != 0)
@@ -638,10 +638,10 @@ namespace Editor
                 }
                 break;
             case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYLAND:
-                gLandPrice = Math::Clamp(MONEY(5, 00), *edx, MONEY(200, 00));
+                gLandPrice = std::clamp(*edx, MONEY(5, 00), MONEY(200, 00));
                 break;
             case EDIT_SCENARIOOPTIONS_SETCOSTTOBUYCONSTRUCTIONRIGHTS:
-                gConstructionRightsPrice = Math::Clamp(MONEY(5, 00), *edx, MONEY(200, 00));
+                gConstructionRightsPrice = std::clamp(*edx, MONEY(5, 00), MONEY(200, 00));
                 break;
             case EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD:
                 if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -687,7 +687,7 @@ namespace Editor
                 }
                 break;
             case EDIT_SCENARIOOPTIONS_SETPARKCHARGEENTRYFEE:
-                gParkEntranceFee = Math::Clamp(MONEY(0, 00), *edx, MAX_ENTRANCE_FEE);
+                gParkEntranceFee = std::clamp(*edx, MONEY(0, 00), MAX_ENTRANCE_FEE);
                 window_invalidate_by_class(WC_PARK_INFORMATION);
                 break;
             case EDIT_SCENARIOOPTIONS_SETFORBIDTREEREMOVAL:

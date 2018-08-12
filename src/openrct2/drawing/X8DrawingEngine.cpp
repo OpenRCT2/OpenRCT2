@@ -13,7 +13,6 @@
 #include "../Game.h"
 #include "../Intro.h"
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../interface/Screenshot.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"

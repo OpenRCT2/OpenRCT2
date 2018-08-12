@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Game.h"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../object/Object.h"
 #include "../util/SawyerCoding.h"
@@ -19,6 +18,7 @@
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
+#include <algorithm>
 #include <cstring>
 
 // 98DA00
@@ -71,7 +71,7 @@ uint8_t object_entry_get_type(const rct_object_entry* objectEntry)
     return (objectEntry->flags & 0x0F);
 }
 
-uint8_t object_entry_get_source_game(const rct_object_entry* objectEntry)
+uint8_t object_entry_get_source_game_legacy(const rct_object_entry* objectEntry)
 {
     return (objectEntry->flags & 0xF0) >> 4;
 }

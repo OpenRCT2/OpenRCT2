@@ -2345,7 +2345,7 @@ STR_2337    :Deutschmark (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Guilders (fl.)
+STR_2341    :Guilders (ƒ)
 STR_2342    :Krona (kr)
 STR_2343    :Euros ({EURO})
 STR_2344    :Imperial
@@ -4716,7 +4716,7 @@ STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local p
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
 
 <Rotting Heights>

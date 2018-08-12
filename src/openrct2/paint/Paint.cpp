@@ -10,7 +10,6 @@
 #include "Paint.h"
 
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
@@ -77,7 +76,7 @@ static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi)
 
 static void paint_session_add_ps_to_quadrant(paint_session* session, paint_struct* ps, int32_t positionHash)
 {
-    uint32_t paintQuadrantIndex = Math::Clamp(0, positionHash / 32, MAX_PAINT_QUADRANTS - 1);
+    uint32_t paintQuadrantIndex = std::clamp(positionHash / 32, 0, MAX_PAINT_QUADRANTS - 1);
     ps->quadrant_index = paintQuadrantIndex;
     ps->next_quadrant_ps = session->Quadrants[paintQuadrantIndex];
     session->Quadrants[paintQuadrantIndex] = ps;

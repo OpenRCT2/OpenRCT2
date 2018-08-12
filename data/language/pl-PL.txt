@@ -3737,7 +3737,7 @@ STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local p
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
 
 <Rotting Heights>
@@ -4142,7 +4142,7 @@ STR_SCNR    : Europa - odbudowa
 STR_PARK    :From The Ashes
 STR_DTLS    :Pewien stary lunapark popadł w ruinę. Otrzymujesz fundusze z Unii Europejskiej, aby przywrócić temu żałosnemu miejscu jego dawną chwałę! Musisz odnowić park i zwrócić otrzymany kredyt.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    : Ameryka Płn. - ekstremalne Hawaje
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :Mieszkańcy Hawajów znudzili się surfowaniem i szukają bardziej intensywnych przeżyć. Budując swój lunapark, musisz o tym pamiętać, aby utrzymać wysoką atrakcyjność dla turystów.

@@ -19,6 +19,7 @@
 #include "../util/Util.h"
 #include "Drawing.h"
 
+#include <algorithm>
 #include <memory>
 #include <stdexcept>
 #include <vector>

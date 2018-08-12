@@ -11,13 +11,13 @@
 
 #include "../common.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "../title/TitleScreen.h"
 #include "zlib.h"
 
+#include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <ctime>
@@ -484,20 +484,20 @@ char* strcasestr(const char* haystack, const char* needle)
 {
     const char* p1 = haystack;
     const char* p2 = needle;
-    const char* r = *p2 == 0 ? haystack : 0;
+    const char* r = *p2 == 0 ? haystack : nullptr;
 
     while (*p1 != 0 && *p2 != 0)
     {
         if (tolower((unsigned char)*p1) == tolower((unsigned char)*p2))
         {
-            if (r == 0)
+            if (r == nullptr)
                 r = p1;
             p2++;
         }
         else
         {
             p2 = needle;
-            if (r != 0)
+            if (r != nullptr)
                 p1 = r + 1;
 
             if (tolower((unsigned char)*p1) == tolower((unsigned char)*p2))
@@ -507,14 +507,14 @@ char* strcasestr(const char* haystack, const char* needle)
             }
             else
             {
-                r = 0;
+                r = nullptr;
             }
         }
 
         p1++;
     }
 
-    return *p2 == 0 ? (char*)r : 0;
+    return *p2 == 0 ? (char*)r : nullptr;
 }
 #endif
 
@@ -706,7 +706,7 @@ uint8_t soft_light(uint8_t a, uint8_t b)
     {
         fr = (2 * fa * (1 - fb)) + (std::sqrt(fa) * ((2 * fb) - 1));
     }
-    return (uint8_t)(Math::Clamp(0.0f, fr, 1.0f) * 255.0f);
+    return (uint8_t)(std::clamp(fr, 0.0f, 1.0f) * 255.0f);
 }
 
 /**

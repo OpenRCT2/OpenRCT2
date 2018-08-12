@@ -19,6 +19,7 @@
 #include "../util/SawyerCoding.h"
 #include "../world/Location.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
 #define ACTION_COOLDOWN_TIME_PLACE_SCENERY 20
@@ -27,7 +28,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "3"
+#define NETWORK_STREAM_VERSION "5"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static rct_peep* _pickup_peep = nullptr;
@@ -43,7 +44,6 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.hpp"
 #    include "../core/Json.hpp"
-#    include "../core/Math.hpp"
 #    include "../core/MemoryStream.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"

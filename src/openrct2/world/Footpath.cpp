@@ -11,8 +11,8 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/FootpathRemoveAction.hpp"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -30,7 +30,8 @@
 #include "Sprite.h"
 #include "Surface.h"
 
-void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z);
+#include <algorithm>
+
 void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_element* tileElement);
 
 uint8_t gFootpathProvisionalFlags;
@@ -499,7 +500,7 @@ static money32 footpath_place_real(
  *
  *  rct2: 0x006BA23E
  */
-static void remove_banners_at_element(int32_t x, int32_t y, rct_tile_element* tileElement)
+void remove_banners_at_element(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
     while (!(tileElement++)->IsLastForTile())
     {
@@ -512,87 +513,6 @@ static void remove_banners_at_element(int32_t x, int32_t y, rct_tile_element* ti
             x, 1, y, tileElement->base_height | tileElement->properties.banner.position << 8, GAME_COMMAND_REMOVE_BANNER, 0, 0);
         tileElement--;
     }
-}
-
-money32 footpath_remove_real(int32_t x, int32_t y, int32_t z, int32_t flags)
-{
-    rct_tile_element* tileElement;
-    rct_tile_element* footpathElement = nullptr;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z * 8;
-
-    if (!(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_GHOST))
-    {
-        footpath_interrupt_peeps(x, y, z * 8);
-        footpath_remove_litter(x, y, z * 8);
-    }
-
-    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
-        return MONEY32_UNDEFINED;
-
-    tileElement = map_get_footpath_element(x / 32, y / 32, z);
-    if (tileElement != nullptr && (flags & GAME_COMMAND_FLAG_APPLY))
-    {
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            LocationXYZ16 coord;
-            coord.x = x + 16;
-            coord.y = y + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-
-        // If the ghost flag is present we have to make sure to only delete ghost footpaths as they may be
-        // at the same origin.
-        if ((flags & GAME_COMMAND_FLAG_GHOST) && tile_element_is_ghost(tileElement) == false)
-        {
-            while (!(tileElement++)->IsLastForTile())
-            {
-                if (tileElement->type != TILE_ELEMENT_TYPE_PATH && !tile_element_is_ghost(tileElement))
-                {
-                    continue;
-                }
-                footpathElement = tileElement;
-                break;
-            }
-        }
-        else
-        {
-            footpathElement = tileElement;
-        }
-
-        if (footpathElement != nullptr)
-        {
-            footpath_queue_chain_reset();
-            remove_banners_at_element(x, y, footpathElement);
-            footpath_remove_edges_at(x, y, footpathElement);
-            map_invalidate_tile_full(x, y);
-            tile_element_remove(footpathElement);
-            footpath_update_queue_chains();
-        }
-    }
-
-    money32 cost = -MONEY(10, 00);
-
-    bool isNotOwnedByPark = (flags & GAME_COMMAND_FLAG_5);
-    bool moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY);
-    bool isGhost = (footpathElement == nullptr) || (tile_element_is_ghost(footpathElement));
-
-    if (isNotOwnedByPark || moneyDisabled || isGhost)
-    {
-        cost = 0;
-    }
-
-    return cost;
 }
 
 /**
@@ -758,17 +678,6 @@ void game_command_place_footpath_from_track(
         (*ebx >> 8) & 0xF, *ebx & 0xFF);
 }
 
-/**
- *
- *  rct2: 0x006A67C0
- */
-void game_command_remove_footpath(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    *ebx = footpath_remove_real((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edx & 0xFF), (*ebx & 0xFF));
-}
-
 money32 footpath_place(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags)
 {
     return game_do_command(x, (slope << 8) | flags, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, 0);
@@ -781,9 +690,18 @@ money32 footpath_place_remove_intersecting(
         x, (slope << 8) | flags, y, (type << 8) | z, GAME_COMMAND_PLACE_PATH, 0, FOOTPATH_CLEAR_DIRECTIONAL | direction);
 }
 
-void footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
+money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags)
 {
-    game_do_command(x, flags, y, z, GAME_COMMAND_REMOVE_PATH, 0, 0);
+    auto action = FootpathRemoveAction(x, y, z);
+    action.SetFlags(flags);
+
+    if (flags & GAME_COMMAND_FLAG_APPLY)
+    {
+        auto res = GameActions::Execute(&action);
+        return res->Cost;
+    }
+    auto res = GameActions::Query(&action);
+    return res->Cost;
 }
 
 /**
@@ -941,8 +859,8 @@ void footpath_get_coordinates_from_pos(
             z = tile_element_height(position.x, position.y);
         }
         position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        position.x = Math::Clamp(minPosition.x, position.x, maxPosition.x);
-        position.y = Math::Clamp(minPosition.y, position.y, maxPosition.y);
+        position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
+        position.y = std::clamp(position.y, minPosition.y, maxPosition.y);
     }
 
     // Determine to which edge the cursor is closest
@@ -1663,7 +1581,7 @@ void footpath_connect_edges(int32_t x, int32_t y, rct_tile_element* tileElement,
 
     while (neighbour_list_pop(&neighbourList, &neighbour))
     {
-        loc_6A6C85(x, y, neighbour.direction, tileElement, flags, false, NULL);
+        loc_6A6C85(x, y, neighbour.direction, tileElement, flags, false, nullptr);
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)

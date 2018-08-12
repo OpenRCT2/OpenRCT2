@@ -36,6 +36,7 @@ struct ObjectRepositoryItem
     rct_object_entry ObjectEntry;
     std::string Path;
     std::string Name;
+    std::vector<uint8_t> Sources;
     Object* LoadedObject{};
     struct
     {
@@ -48,6 +49,14 @@ struct ObjectRepositoryItem
     {
         std::vector<rct_object_entry> Entries;
     } SceneryGroupInfo;
+
+    OBJECT_SOURCE_GAME GetFirstSourceGame() const
+    {
+        if (Sources.empty())
+            return OBJECT_SOURCE_CUSTOM;
+        else
+            return (OBJECT_SOURCE_GAME)Sources[0];
+    }
 };
 
 interface IObjectRepository
