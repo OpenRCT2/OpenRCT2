@@ -192,7 +192,6 @@ static void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static void window_guest_rides_resize(rct_window *w);
 static void window_guest_rides_update(rct_window *w);
-static void window_guest_rides_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_guest_rides_scroll_get_size(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_guest_rides_scroll_mouse_down(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_guest_rides_scroll_mouse_over(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
@@ -300,7 +299,7 @@ static rct_window_event_list window_guest_rides_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_guest_rides_tooltip,
+    nullptr,
     nullptr,
     nullptr,
     window_guest_rides_invalidate,
@@ -1619,15 +1618,6 @@ void window_guest_rides_update(rct_window* w)
         w->no_list_items = curr_list_position;
         window_invalidate(w);
     }
-}
-
-/**
- *
- *  rct2: 0x697844
- */
-void window_guest_rides_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
-{
-    set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**

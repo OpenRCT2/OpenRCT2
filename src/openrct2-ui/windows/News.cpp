@@ -41,7 +41,6 @@ static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_news_update(rct_window *w);
 static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
-static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
@@ -68,7 +67,7 @@ static rct_window_event_list window_news_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_news_tooltip,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,
@@ -241,15 +240,6 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, int3
         window_invalidate(w);
         audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
     }
-}
-
-/**
- *
- *  rct2: 0x0066EAAE
- */
-static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
-{
-    set_format_arg(0, rct_string_id, STR_LIST);
 }
 
 /**
