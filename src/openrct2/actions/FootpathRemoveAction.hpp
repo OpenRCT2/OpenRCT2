@@ -15,10 +15,10 @@
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../world/Location.hpp"
-#include "../world/Wall.h"
 #include "../world/Footpath.h"
+#include "../world/Location.hpp"
 #include "../world/Park.h"
+#include "../world/Wall.h"
 #include "GameAction.h"
 
 struct FootpathRemoveAction : public GameActionBase<GAME_COMMAND_REMOVE_PATH, GameActionResult>
@@ -141,5 +141,4 @@ private:
 
         return cost;
     }
-
 };

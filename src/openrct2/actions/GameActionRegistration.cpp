@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "BannerSetNameAction.hpp"
+#include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
 #include "MazeSetTrackAction.hpp"
@@ -26,7 +27,6 @@
 #include "StaffSetColourAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "WallRemoveAction.hpp"
-#include "FootpathRemoveAction.hpp"
 
 namespace GameActions
 {
