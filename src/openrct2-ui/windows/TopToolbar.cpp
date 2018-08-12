@@ -1308,8 +1308,7 @@ static void sub_6E1F34(
                         int16_t z = (tile_element->base_height * 8) & 0xFFF0;
                         z += gSceneryShiftPressZOffset;
 
-                        z = std::max<int16_t>(z, 16);
-                        z = std::min<int16_t>(z, maxPossibleHeight);
+                        z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                         gSceneryPlaceZ = z;
                     }
@@ -1326,8 +1325,7 @@ static void sub_6E1F34(
                         z += gSceneryShiftPressZOffset;
                     }
 
-                    z = std::max<int16_t>(z, 16);
-                    z = std::min<int16_t>(z, maxPossibleHeight);
+                    z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                     gSceneryPlaceZ = z;
                 }
@@ -1394,8 +1392,7 @@ static void sub_6E1F34(
                     int16_t z = (tile_element->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
-                    z = std::max<int16_t>(z, 16);
-                    z = std::min<int16_t>(z, maxPossibleHeight);
+                    z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                     gSceneryPlaceZ = z;
                 }
@@ -1411,8 +1408,7 @@ static void sub_6E1F34(
                     z += gSceneryShiftPressZOffset;
                 }
 
-                z = std::max<int16_t>(z, 16);
-                z = std::min<int16_t>(z, maxPossibleHeight);
+                z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                 gSceneryPlaceZ = z;
             }
@@ -1493,8 +1489,7 @@ static void sub_6E1F34(
                     int16_t z = (tile_element->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
-                    z = std::max<int16_t>(z, 16);
-                    z = std::min<int16_t>(z, maxPossibleHeight);
+                    z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                     gSceneryPlaceZ = z;
                 }
@@ -1510,8 +1505,7 @@ static void sub_6E1F34(
                     z += gSceneryShiftPressZOffset;
                 }
 
-                z = std::max<int16_t>(z, 16);
-                z = std::min<int16_t>(z, maxPossibleHeight);
+                z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                 gSceneryPlaceZ = z;
             }
@@ -1554,8 +1548,7 @@ static void sub_6E1F34(
                     int16_t z = (tile_element->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
-                    z = std::max<int16_t>(z, 16);
-                    z = std::min<int16_t>(z, maxPossibleHeight);
+                    z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                     gSceneryPlaceZ = z;
                 }
@@ -1571,8 +1564,7 @@ static void sub_6E1F34(
                     z += gSceneryShiftPressZOffset;
                 }
 
-                z = std::max<int16_t>(z, 16);
-                z = std::min<int16_t>(z, maxPossibleHeight);
+                z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                 gSceneryPlaceZ = z;
             }
