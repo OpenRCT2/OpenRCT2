@@ -58,18 +58,19 @@ export interface IDisposable {
 }
 
 export type TileElementType =
-    "surface" | "footpath-item";
+    "surface" | "footpath";
 
 export interface TileElement {
     type: TileElementType;
-    zBase: number;
-    zClearance: number;
+    baseHeight: number;
+    clearanceHeight: number;
     broken: boolean;
 
     /**
      * Gets the element as a specific type to access its properties
      */
     asSurface(): SurfaceElement;
+    asFootpath(): FootpathElement;
     asTrack(): TrackElement;
     asSmallScenery(): SmallSceneryElement;
     asEntrance(): EntranceElement;
@@ -86,6 +87,30 @@ export interface SurfaceElement extends TileElement {
     grassLength: number;
     ownership: number;
     parkFences: number;
+}
+
+export interface FootpathAddition {
+    type: number;
+    isBin: boolean;
+    isBench: boolean;
+    isLamp: boolean;
+    isBreakable: boolean;
+    isJumpingFountainWater: boolean;
+    isJumpingFountainSnow: boolean;
+    allowedOnQueue: boolean;
+    allowedOnSlope: boolean;
+    isQueueScreen: boolean;
+
+    /**
+     * Remove the path addition
+     */
+    remove(): void;
+}
+
+export interface FootpathElement extends TileElement {
+    type: number;
+    isSloped: boolean;
+    addition: FootpathAddition;
 }
 
 export interface TrackElement extends TileElement {

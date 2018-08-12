@@ -10,6 +10,8 @@
 #pragma once
 
 #include "../common.h"
+#include "../world/Footpath.h"
+#include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
@@ -177,10 +179,188 @@ namespace OpenRCT2::Scripting
 
     class ScFootpathElement final : public ScTileElement
     {
+        class ScFootpathAddition
+        {
+        protected:
+            rct_tile_element* _element;
+            bool VerifyPathAdditionExists()
+            {
+                if (!footpath_element_has_path_scenery(_element))
+                {
+                    // TODO: Show warning in console that the path addition has been removed
+                    return false;
+                }
+                return true;
+            }
+
+        public:
+            ScFootpathAddition(ScFootpathElement* path)
+                : _element(path->_element)
+            {
+            }
+
+            void Remove()
+            {
+                footpath_element_set_path_scenery(_element, 0);
+            }
+
+            uint8_t type_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return 0;
+                return footpath_element_get_path_scenery(_element);
+            }
+            void type_set(uint8_t value)
+            {
+                footpath_element_set_path_scenery(_element, value);
+            }
+
+            bool isBin_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN;
+            }
+            bool isBench_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH;
+            }
+            bool isLamp_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP;
+            }
+            bool isBreakable_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE;
+            }
+            bool isJumpingFountainWater_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
+            }
+            bool isJumpingFountainSnow_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW;
+            }
+            bool allowedOnQueue_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE;
+            }
+            bool allowedOnSlope_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE;
+            }
+            bool isQueueScreen_get()
+            {
+                if (!VerifyPathAdditionExists())
+                    return false;
+
+                auto index = footpath_element_get_path_scenery_index(_element);
+                auto sceneryEntry = get_footpath_item_entry(index);
+                return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN;
+            }
+
+            static void Register(duk_context* ctx)
+            {
+                dukglue_register_method(ctx, &ScFootpathAddition::Remove, "remove");
+
+                dukglue_register_property(ctx, &type_get, &type_set, "type");
+                dukglue_register_property(ctx, &isBin_get, nullptr, "isBin");
+                dukglue_register_property(ctx, &isBench_get, nullptr, "isBench");
+                dukglue_register_property(ctx, &isLamp_get, nullptr, "isLamp");
+                dukglue_register_property(ctx, &isBreakable_get, nullptr, "isBreakable");
+                dukglue_register_property(ctx, &isJumpingFountainWater_get, nullptr, "isJumpingFountainWater");
+                dukglue_register_property(ctx, &isJumpingFountainSnow_get, nullptr, "isJumpingFountainSnow");
+                dukglue_register_property(ctx, &allowedOnQueue_get, nullptr, "allowedOnQueue");
+                dukglue_register_property(ctx, &allowedOnSlope_get, nullptr, "allowedOnSlope");
+                dukglue_register_property(ctx, &isQueueScreen_get, nullptr, "isQueueScreen");
+            }
+        };
+
+        uint8_t type_get()
+        {
+            return footpath_element_get_type(_element);
+        }
+        void type_set(uint8_t index)
+        {
+            auto entry = get_footpath_entry(index);
+            if (entry == nullptr)
+            {
+                // TODO: Give warning (most likely only happens when index > MAX_PATH_OBJECTS)
+                return;
+            }
+            footpath_element_set_type(_element, index);
+        }
+
+        bool sloped_get()
+        {
+            return footpath_element_is_sloped(_element);
+        }
+        void slope_set(bool value)
+        {
+            footpath_element_set_sloped(_element, value);
+        }
+
+        std::shared_ptr<ScFootpathAddition> addition_get()
+        {
+            
+            if (!footpath_element_has_path_scenery(_element))
+                return nullptr;
+
+            return std::make_shared<ScFootpathAddition>(this);
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
+            // Registe rshared properties (baseheight, clearance height, etc.)
             RegisterSharedProperties<ScFootpathElement>(ctx);
+
+            // Register path addition properties (.addition.isBench, .addition.isLamp, etc.)
+            ScFootpathAddition::Register(ctx);
+
+            // Specific properties
+            dukglue_register_property(ctx, &type_get, &type_set, "type");
+            dukglue_register_property(ctx, &sloped_get, &slope_set, "isSloped");
+            dukglue_register_property(ctx, &sloped_get, &slope_set, "isQueue");
+            dukglue_register_property(ctx, &addition_get, nullptr, "addition");
         }
     };
 
@@ -247,6 +427,7 @@ namespace OpenRCT2::Scripting
     void ScTileElement::Register(duk_context* ctx)
     {
         dukglue_register_method(ctx, &ScTileElement::getAs<ScSurfaceElement>, "asSurface");
+        dukglue_register_method(ctx, &ScTileElement::getAs<ScFootpathElement>, "asFootpath");
         dukglue_register_method(ctx, &ScTileElement::getAs<ScTrackElement>, "asTrack");
         dukglue_register_method(ctx, &ScTileElement::getAs<ScSmallSceneryElement>, "asSmallScenery");
         dukglue_register_method(ctx, &ScTileElement::getAs<ScEntranceElement>, "asEntrance");
@@ -259,6 +440,7 @@ namespace OpenRCT2::Scripting
 
         // Register type specific properties
         ScSurfaceElement ::Register(ctx);
+        ScFootpathElement::Register(ctx);
         ScTrackElement ::Register(ctx);
         ScSmallSceneryElement ::Register(ctx);
         ScEntranceElement ::Register(ctx);
