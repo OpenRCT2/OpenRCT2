@@ -11,9 +11,9 @@
 
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
-#include "../core/Math.hpp"
 #include "../core/String.hpp"
 
+#include <algorithm>
 #include <cstring>
 
 #pragma region CommandLineArgEnumerator

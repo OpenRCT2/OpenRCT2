@@ -31,7 +31,6 @@
 #include <openrct2/Version.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingEngine.h>
@@ -546,7 +545,7 @@ public:
         SDL_SetHint(SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss ? "1" : "0");
 
         // Set window position to default display
-        int32_t defaultDisplay = Math::Clamp(0, gConfigGeneral.default_display, 0xFFFF);
+        int32_t defaultDisplay = std::clamp(gConfigGeneral.default_display, 0, 0xFFFF);
         int32_t x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
         int32_t y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(defaultDisplay);
 

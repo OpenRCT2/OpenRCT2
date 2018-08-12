@@ -9,7 +9,6 @@
 
 #include "../Game.h"
 #include "../audio/audio.h"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/Date.h"
 #include "../scenario/Scenario.h"
@@ -17,6 +16,7 @@
 #include "../world/Surface.h"
 #include "Sprite.h"
 
+#include <algorithm>
 #include <limits>
 
 // clang-format off

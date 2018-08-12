@@ -9,6 +9,7 @@
 
 #include "../interface/Theme.h"
 
+#include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
@@ -21,7 +22,6 @@
 #include <openrct2/Input.h>
 #include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Award.h>

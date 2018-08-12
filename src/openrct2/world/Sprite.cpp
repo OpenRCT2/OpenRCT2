@@ -15,7 +15,6 @@
 #include "../audio/audio.h"
 #include "../core/Crypt.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -194,8 +193,8 @@ static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
     size_t index = SPATIAL_INDEX_LOCATION_NULL;
     if (x != LOCATION_NULL)
     {
-        x = Math::Clamp(0, x, 0xFFFF);
-        y = Math::Clamp(0, y, 0xFFFF);
+        x = std::clamp(x, 0, 0xFFFF);
+        y = std::clamp(y, 0, 0xFFFF);
 
         int16_t flooredX = floor2(x, 32);
         uint8_t tileY = y >> 5;

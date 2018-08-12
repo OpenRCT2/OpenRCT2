@@ -19,7 +19,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Cursors.h"
 #include "../interface/Window.h"
@@ -45,6 +44,8 @@
 #include "Surface.h"
 #include "TileInspector.h"
 #include "Wall.h"
+
+#include <algorithm>
 
 /**
  * Replaces 0x00993CCC, 0x00993CCE
@@ -1767,18 +1768,18 @@ static money32 map_set_land_ownership(uint8_t flags, int16_t x1, int16_t y1, int
         return 0;
 
     // Clamp to maximum addressable element to prevent long loop spamming the log
-    x1 = Math::Clamp(32, (int32_t)x1, gMapSizeUnits - 32);
-    y1 = Math::Clamp(32, (int32_t)y1, gMapSizeUnits - 32);
-    x2 = Math::Clamp(32, (int32_t)x2, gMapSizeUnits - 32);
-    y2 = Math::Clamp(32, (int32_t)y2, gMapSizeUnits - 32);
+    x1 = std::clamp<int16_t>(x1, 32, gMapSizeUnits - 32);
+    y1 = std::clamp<int16_t>(y1, 32, gMapSizeUnits - 32);
+    x2 = std::clamp<int16_t>(x2, 32, gMapSizeUnits - 32);
+    y2 = std::clamp<int16_t>(y2, 32, gMapSizeUnits - 32);
     gMapLandRightsUpdateSuccess = false;
     map_buy_land_rights(x1, y1, x2, y2, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, flags | (newOwnership << 8));
 
     if (!gMapLandRightsUpdateSuccess)
         return 0;
 
-    int16_t x = Math::Clamp(32, (int32_t)x1, gMapSizeUnits - 32);
-    int16_t y = Math::Clamp(32, (int32_t)y1, gMapSizeUnits - 32);
+    int16_t x = std::clamp<int16_t>(x1, 32, gMapSizeUnits - 32);
+    int16_t y = std::clamp<int16_t>(y1, 32, gMapSizeUnits - 32);
 
     x += 16;
     y += 16;
@@ -2455,8 +2456,8 @@ static money32 smooth_land(
     // Cap bounds to map
     mapLeft = std::max(mapLeft, 32);
     mapTop = std::max(mapTop, 32);
-    mapRight = Math::Clamp(0, mapRight, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
-    mapBottom = Math::Clamp(0, mapBottom, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+    mapRight = std::clamp(mapRight, 0, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+    mapBottom = std::clamp(mapBottom, 0, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
 
     // Play sound (only once)
     int32_t centreZ = tile_element_height(centreX, centreY);
@@ -2486,22 +2487,22 @@ static money32 smooth_land(
             // Smooth the 4 corners
             { // top-left
                 rct_tile_element* tileElement = map_get_surface_element_at({ mapLeft, mapTop });
-                int32_t z = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 2), maxHeight);
+                int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 2), minHeight, maxHeight);
                 totalCost += smooth_land_row_by_corner(flags, mapLeft, mapTop, z, -32, -32, 0, 2, raiseLand);
             }
             { // bottom-left
                 rct_tile_element* tileElement = map_get_surface_element_at(mapLeft >> 5, mapBottom >> 5);
-                int32_t z = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 3), maxHeight);
+                int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 3), minHeight, maxHeight);
                 totalCost += smooth_land_row_by_corner(flags, mapLeft, mapBottom, z, -32, 32, 1, 3, raiseLand);
             }
             { // bottom-right
                 rct_tile_element* tileElement = map_get_surface_element_at(mapRight >> 5, mapBottom >> 5);
-                int32_t z = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 0), maxHeight);
+                int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 0), minHeight, maxHeight);
                 totalCost += smooth_land_row_by_corner(flags, mapRight, mapBottom, z, 32, 32, 2, 0, raiseLand);
             }
             { // top-right
                 rct_tile_element* tileElement = map_get_surface_element_at(mapRight >> 5, mapTop >> 5);
-                int32_t z = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 1), maxHeight);
+                int32_t z = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 1), minHeight, maxHeight);
                 totalCost += smooth_land_row_by_corner(flags, mapRight, mapTop, z, 32, -32, 3, 1, raiseLand);
             }
 
@@ -2511,26 +2512,26 @@ static money32 smooth_land(
             for (int32_t y = mapTop; y <= mapBottom; y += 32)
             {
                 tileElement = map_get_surface_element_at({ mapLeft, y });
-                z1 = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 3), maxHeight);
-                z2 = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 2), maxHeight);
+                z1 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 3), minHeight, maxHeight);
+                z2 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 2), minHeight, maxHeight);
                 totalCost += smooth_land_row_by_edge(flags, mapLeft, y, z1, z2, -32, 0, 0, 1, 3, 2, raiseLand);
 
                 tileElement = map_get_surface_element_at({ mapRight, y });
-                z1 = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 1), maxHeight);
-                z2 = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 0), maxHeight);
+                z1 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 1), minHeight, maxHeight);
+                z2 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 0), minHeight, maxHeight);
                 totalCost += smooth_land_row_by_edge(flags, mapRight, y, z1, z2, 32, 0, 2, 3, 1, 0, raiseLand);
             }
 
             for (int32_t x = mapLeft; x <= mapRight; x += 32)
             {
                 tileElement = map_get_surface_element_at({ x, mapTop });
-                z1 = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 1), maxHeight);
-                z2 = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 2), maxHeight);
+                z1 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 1), minHeight, maxHeight);
+                z2 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 2), minHeight, maxHeight);
                 totalCost += smooth_land_row_by_edge(flags, x, mapTop, z1, z2, 0, -32, 0, 3, 1, 2, raiseLand);
 
                 tileElement = map_get_surface_element_at({ x, mapBottom });
-                z1 = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 0), maxHeight);
-                z2 = Math::Clamp(minHeight, (uint8_t)tile_element_get_corner_height(tileElement, 3), maxHeight);
+                z1 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 0), minHeight, maxHeight);
+                z2 = std::clamp((uint8_t)tile_element_get_corner_height(tileElement, 3), minHeight, maxHeight);
                 totalCost += smooth_land_row_by_edge(flags, x, mapBottom, z1, z2, 0, 32, 1, 2, 0, 3, raiseLand);
             }
             break;

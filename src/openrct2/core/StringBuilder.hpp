@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "Math.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
 

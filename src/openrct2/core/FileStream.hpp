@@ -12,8 +12,9 @@
 #include "../common.h"
 #include "../localisation/Language.h"
 #include "IStream.hpp"
-#include "Math.hpp"
 #include "String.hpp"
+
+#include <algorithm>
 
 enum
 {

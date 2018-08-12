@@ -7,13 +7,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
@@ -715,13 +715,13 @@ static void window_mapgen_textinput(rct_window* w, rct_widgetindex widgetIndex, 
         case WIDX_SIMPLEX_MAP_SIZE:
             // The practical size is 2 lower than the technical size
             value += 2;
-            _mapSize = Math::Clamp(MINIMUM_MAP_SIZE_TECHNICAL, value, MAXIMUM_MAP_SIZE_TECHNICAL);
+            _mapSize = std::clamp(value, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
             break;
         case WIDX_BASE_HEIGHT:
-            _baseHeight = Math::Clamp(BASESIZE_MIN, (value * 2) + 12, BASESIZE_MAX);
+            _baseHeight = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
             break;
         case WIDX_WATER_LEVEL:
-            _waterLevel = Math::Clamp(WATERLEVEL_MIN, (value * 2) + 12, WATERLEVEL_MAX);
+            _waterLevel = std::clamp((value * 2) + 12, WATERLEVEL_MIN, WATERLEVEL_MAX);
             break;
     }
 

@@ -13,6 +13,7 @@
 #include "OpenGLAPI.h"
 
 #include <SDL2/SDL_pixels.h>
+#include <algorithm>
 #include <array>
 #include <openrct2/common.h>
 #include <unordered_map>

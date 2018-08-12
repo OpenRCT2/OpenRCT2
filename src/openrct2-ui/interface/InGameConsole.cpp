@@ -16,7 +16,6 @@
 #include <openrct2/Context.h>
 #include <openrct2/Version.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Window.h>
@@ -143,7 +142,7 @@ void InGameConsole::Scroll(int32_t linesToScroll)
     if (numLines > maxVisibleLines)
     {
         int32_t maxScrollValue = numLines - maxVisibleLines;
-        _consoleScrollPos = Math::Clamp<int32_t>(0, _consoleScrollPos - linesToScroll, maxScrollValue);
+        _consoleScrollPos = std::clamp<int32_t>(_consoleScrollPos - linesToScroll, 0, maxScrollValue);
     }
 }
 

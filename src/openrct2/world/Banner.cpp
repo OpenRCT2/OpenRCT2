@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../Game.h"
-#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"

@@ -18,7 +18,6 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
@@ -563,8 +562,8 @@ static void window_map_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
 static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
     CoordsXY c = map_window_screen_to_map(x, y);
-    int32_t mapX = Math::Clamp(0, c.x, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
-    int32_t mapY = Math::Clamp(0, c.y, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
+    int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
+    int32_t mapY = std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_TECHNICAL * 32 - 1);
     int32_t mapZ = tile_element_height(x, y);
 
     rct_window* mainWindow = window_get_main();
@@ -636,7 +635,7 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
             size = strtol(text, &end, 10);
             if (*end == '\0')
             {
-                size = Math::Clamp(MINIMUM_TOOL_SIZE, size, MAXIMUM_TOOL_SIZE);
+                size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
                 _landRightsToolSize = size;
                 window_invalidate(w);
             }
@@ -647,7 +646,7 @@ static void window_map_textinput(rct_window* w, rct_widgetindex widgetIndex, cha
             {
                 // The practical size is 2 lower than the technical size
                 size += 2;
-                size = Math::Clamp(MINIMUM_MAP_SIZE_TECHNICAL, size, MAXIMUM_MAP_SIZE_TECHNICAL);
+                size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
 
                 int32_t currentSize = gMapSize;
                 while (size < currentSize)

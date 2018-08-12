@@ -15,7 +15,6 @@
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/common.h>
-#include <openrct2/core/Math.hpp>
 #include <vector>
 
 namespace OpenRCT2::Audio

@@ -7,11 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
@@ -107,7 +107,7 @@ void window_tooltip_show(rct_string_id id, int32_t x, int32_t y)
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
-    x = Math::Clamp(0, x - (width / 2), screenWidth - width);
+    x = std::clamp(x - (width / 2), 0, screenWidth - width);
 
     // TODO The cursor size will be relative to the window DPI.
     //      The amount to offset the y should be adjusted.
@@ -118,7 +118,7 @@ void window_tooltip_show(rct_string_id id, int32_t x, int32_t y)
         // If y is too large, the tooltip could be forced below the cursor if we'd just clamped y,
         // so we'll subtract a bit more
         y -= height + 40;
-    y = Math::Clamp(22, y, max_y);
+    y = std::clamp(y, 22, max_y);
 
     w = window_create(x, y, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     w->widgets = window_tooltip_widgets;

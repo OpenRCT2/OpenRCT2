@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -14,7 +15,6 @@
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
@@ -754,7 +754,7 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
         x = w->x + w->widgets[WIDX_INTEREST_RATE].left + 1;
         y = w->y + w->widgets[WIDX_INTEREST_RATE].top;
 
-        int16_t interestRate = Math::Clamp<int16_t>(INT16_MIN, (int16_t)gBankLoanInterestRate, INT16_MAX);
+        int16_t interestRate = std::clamp<int16_t>((int16_t)gBankLoanInterestRate, INT16_MIN, INT16_MAX);
         gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, COLOUR_BLACK, x, y);
     }
 }

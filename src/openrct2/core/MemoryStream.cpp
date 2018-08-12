@@ -9,7 +9,6 @@
 
 #include "MemoryStream.h"
 
-#include "Math.hpp"
 #include "Memory.hpp"
 
 #include <algorithm>

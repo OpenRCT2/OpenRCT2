@@ -34,7 +34,6 @@
 #include "core/FileScanner.h"
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
-#include "core/Math.hpp"
 #include "core/MemoryStream.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"

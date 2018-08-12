@@ -9,7 +9,6 @@
 
 #include "JuniorRollerCoaster.h"
 
-#include "../../core/Math.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../interface/Window.h"
@@ -22,6 +21,8 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+
+#include <algorithm>
 
 enum
 {

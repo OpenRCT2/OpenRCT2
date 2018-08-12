@@ -13,7 +13,6 @@
 #include "../OpenRCT2.h"
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -30,6 +29,8 @@
 #include "Park.h"
 #include "Sprite.h"
 #include "Surface.h"
+
+#include <algorithm>
 
 void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_element* tileElement);
 
@@ -858,8 +859,8 @@ void footpath_get_coordinates_from_pos(
             z = tile_element_height(position.x, position.y);
         }
         position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        position.x = Math::Clamp(minPosition.x, position.x, maxPosition.x);
-        position.y = Math::Clamp(minPosition.y, position.y, maxPosition.y);
+        position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
+        position.y = std::clamp(position.y, minPosition.y, maxPosition.y);
     }
 
     // Determine to which edge the cursor is closest

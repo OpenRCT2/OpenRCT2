@@ -11,6 +11,7 @@
 
 #include "../interface/Window.h"
 
+#include <algorithm>
 #include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -20,7 +21,6 @@
 #include <openrct2/common.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/interface/Viewport.h>
@@ -289,7 +289,7 @@ private:
                 SetViewZoom(command->Zoom);
                 break;
             case TITLE_SCRIPT_SPEED:
-                gGameSpeed = Math::Clamp<uint8_t>(1, command->Speed, 4);
+                gGameSpeed = std::clamp<uint8_t>(command->Speed, 1, 4);
                 break;
             case TITLE_SCRIPT_FOLLOW:
                 FollowSprite(command->SpriteIndex);

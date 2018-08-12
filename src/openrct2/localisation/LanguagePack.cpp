@@ -11,7 +11,6 @@
 
 #include "../common.h"
 #include "../core/FileStream.hpp"
-#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
@@ -621,7 +620,7 @@ private:
             int32_t number;
             if (sscanf(tokenName, "%d", &number) == 1)
             {
-                *token = Math::Clamp(0, number, 255);
+                *token = std::clamp(number, 0, 255);
                 *isByte = true;
             }
         }

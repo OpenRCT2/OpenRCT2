@@ -26,6 +26,8 @@
 #include "AudioContext.h"
 #include "AudioMixer.h"
 
+#include <algorithm>
+
 using namespace OpenRCT2::Audio;
 
 struct AudioParams

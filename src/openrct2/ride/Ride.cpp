@@ -19,7 +19,6 @@
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -56,6 +55,7 @@
 #include "Track.h"
 #include "TrackData.h"
 
+#include <algorithm>
 #include <climits>
 #include <cstdlib>
 #include <limits>
@@ -3071,8 +3071,8 @@ static void ride_measurement_update(rct_ride_measurement* measurement)
     if (measurement->flags & RIDE_MEASUREMENT_FLAG_G_FORCES)
     {
         vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
-        verticalG = Math::Clamp(-127, verticalG / 8, 127);
-        lateralG = Math::Clamp(-127, lateralG / 8, 127);
+        verticalG = std::clamp(verticalG / 8, -127, 127);
+        lateralG = std::clamp(lateralG / 8, -127, 127);
 
         if (gScenarioTicks & 1)
         {
@@ -7650,7 +7650,7 @@ void ride_update_max_vehicles(int32_t rideIndex)
         {
             case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
             case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
-                maxNumTrains = Math::Clamp(1, ride->num_stations + ride->num_block_brakes - 1, 31);
+                maxNumTrains = std::clamp(ride->num_stations + ride->num_block_brakes - 1, 1, 31);
                 break;
             case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
             case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
@@ -7870,7 +7870,7 @@ static money32 ride_set_vehicles(uint8_t rideIndex, uint8_t setting, uint8_t val
             rideEntry = get_ride_entry(ride->subtype);
             if (!gCheatsDisableTrainLengthLimit)
             {
-                value = Math::Clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
+                value = std::clamp(value, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
             ride->proposed_num_cars_per_train = value;
             break;
@@ -7912,8 +7912,8 @@ static money32 ride_set_vehicles(uint8_t rideIndex, uint8_t setting, uint8_t val
             ride_set_vehicle_colours_to_random_preset(ride, preset);
             if (!gCheatsDisableTrainLengthLimit)
             {
-                ride->proposed_num_cars_per_train = Math::Clamp(
-                    rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
+                ride->proposed_num_cars_per_train = std::clamp(
+                    ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
             }
             break;
         }

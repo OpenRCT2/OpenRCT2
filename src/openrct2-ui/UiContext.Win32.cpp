@@ -24,8 +24,8 @@
 
 #    include <SDL2/SDL.h>
 #    include <SDL2/SDL_syswm.h>
+#    include <algorithm>
 #    include <openrct2/common.h>
-#    include <openrct2/core/Math.hpp>
 #    include <openrct2/core/Path.hpp>
 #    include <openrct2/core/String.hpp>
 #    include <openrct2/ui/UiContext.h>

@@ -35,6 +35,7 @@
 #include "WallObject.h"
 #include "WaterObject.h"
 
+#include <algorithm>
 #include <unordered_map>
 
 interface IFileDataRetriever

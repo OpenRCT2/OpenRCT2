@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <cmath>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -19,7 +20,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Cursors.h>
@@ -126,8 +126,8 @@ void game_handle_input()
     {
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
-        x = Math::Clamp(0, x, screenWidth - 1);
-        y = Math::Clamp(0, y, screenHeight - 1);
+        x = std::clamp(x, 0, screenWidth - 1);
+        y = std::clamp(y, 0, screenHeight - 1);
 
         game_handle_input_mouse(x, y, state);
         process_mouse_over(x, y);
