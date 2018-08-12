@@ -9,6 +9,7 @@
 - Feature: [#7868] Placing scenery while holding shift now scales appropriately with zoom levels.
 - Fix: [#3177] Wrong keys displayed in shortcut menu.
 - Fix: [#4039] No sprite font glyph for German opening quotation mark.
+- Fix: [#7204] Object source filters do not work for RCT1, AA and LL.
 - Fix: [#7462] Guest window goes beyond the map edge on a spiral slide.
 - Fix: [#7533] Screenshot is incorrectly named/file is not generated in CJK language.
 - Fix: [#7628] Always-researched items can be modified in the inventory list.
