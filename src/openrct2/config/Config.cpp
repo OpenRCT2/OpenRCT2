@@ -597,6 +597,49 @@ namespace Config
     }
 
     /**
+     * Attempts to find the RCT1 installation directory.
+     * @returns Path to RCT1, if found. Empty string otherwise.
+     */
+    static std::string FindRCT1Path()
+    {
+        log_verbose("config_find_rct1_path(...)");
+
+        static constexpr const utf8* searchLocations[] = {
+            R"(C:\GOG Games\RollerCoaster Tycoon Deluxe)",
+            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
+            R"(C:\Program Files\Hasbro Interactive\RollerCoaster Tycoon)",
+            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
+            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
+            R"(C:\Program Files (x86)\Hasbro Interactive\RollerCoaster Tycoon)",
+            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
+        };
+
+        for (const utf8* location : searchLocations)
+        {
+            if (platform_original_rct1_data_exists(location))
+            {
+                return location;
+            }
+        }
+
+        utf8 steamPath[2048] = { 0 };
+        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
+        {
+            std::string location = Path::Combine(steamPath, platform_get_rct1_steam_dir());
+            if (platform_original_rct1_data_exists(location.c_str()))
+            {
+                return location;
+            }
+        }
+
+        if (platform_original_rct1_data_exists(gExePath))
+        {
+            return gExePath;
+        }
+        return std::string();
+    }
+
+    /**
      * Attempts to find the RCT2 installation directory.
      * This should be created from some other resource when OpenRCT2 grows.
      * @returns Path to RCT2, if found. Empty string otherwise.
@@ -769,5 +812,13 @@ bool config_find_or_browse_install_directory()
             return false;
         }
     }
+    // While we're at it, also check if the player has RCT1
+    std::string rct1Path = Config::FindRCT1Path();
+    if (!rct1Path.empty())
+    {
+        Memory::Free(gConfigGeneral.rct1_path);
+        gConfigGeneral.rct1_path = String::Duplicate(rct1Path.c_str());
+    }
+
     return true;
 }
