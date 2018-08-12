@@ -157,6 +157,7 @@ private:
     rct_object_entry _objectEntry{};
     StringTable _stringTable;
     ImageTable _imageTable;
+    std::vector<uint8_t> _sourceGames;
 
 protected:
     StringTable& GetStringTable()
@@ -176,10 +177,6 @@ protected:
     std::string GetString(uint8_t index) const;
     std::string GetString(int32_t language, uint8_t index) const;
 
-    void SetSourceGame(const uint8_t sourceGame);
-    bool IsRCT1Object();
-    bool IsAAObject();
-    bool IsLLObject();
     bool IsOpenRCT2OfficialObject();
 
 public:
@@ -218,6 +215,8 @@ public:
     virtual void SetRepositoryItem(ObjectRepositoryItem* /*item*/) const
     {
     }
+    std::vector<uint8_t> GetSourceGames();
+    void SetSourceGames(const std::vector<uint8_t>& sourceGames);
 
     const ImageTable& GetImageTable() const
     {

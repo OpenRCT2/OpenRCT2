@@ -951,7 +951,6 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 {
     int32_t i, x, y, width;
     rct_widget* widget;
-    rct_object_entry* highlightedEntry;
     rct_string_id stringId;
 
     window_draw_widgets(w, dpi);
@@ -1043,8 +1042,6 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
     list_item* listItem = &_listItems[w->selected_list_item];
 
-    highlightedEntry = w->object_entry;
-
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
     {
@@ -1093,7 +1090,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     y += 12;
 
     // Draw object source
-    stringId = object_manager_get_source_game_string(highlightedEntry);
+    stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
     gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, w->x + w->width - 5, y);
     y += 12;
 
@@ -1408,19 +1405,39 @@ static bool filter_string(const ObjectRepositoryItem* item)
     return inName || inRideType || inPath;
 }
 
+static bool sources_match(uint8_t source)
+{
+    // clang-format off
+    return (_FILTER_RCT1 && source == OBJECT_SOURCE_RCT1) ||
+           (_FILTER_AA && source == OBJECT_SOURCE_ADDED_ATTRACTIONS) ||
+           (_FILTER_LL && source == OBJECT_SOURCE_LOOPY_LANDSCAPES) ||
+           (_FILTER_RCT2 && source == OBJECT_SOURCE_RCT2) ||
+           (_FILTER_WW && source == OBJECT_SOURCE_WACKY_WORLDS) ||
+           (_FILTER_TT && source == OBJECT_SOURCE_TIME_TWISTER) ||
+           (_FILTER_OO && source == OBJECT_SOURCE_OPENRCT2_OFFICIAL) ||
+           (_FILTER_CUSTOM &&
+            source != OBJECT_SOURCE_RCT1 &&
+            source != OBJECT_SOURCE_ADDED_ATTRACTIONS &&
+            source != OBJECT_SOURCE_LOOPY_LANDSCAPES &&
+            source != OBJECT_SOURCE_RCT2 &&
+            source != OBJECT_SOURCE_WACKY_WORLDS &&
+            source != OBJECT_SOURCE_TIME_TWISTER &&
+            source != OBJECT_SOURCE_OPENRCT2_OFFICIAL);
+    // clang-format on
+}
+
 static bool filter_source(const ObjectRepositoryItem* item)
 {
     if (_FILTER_ALL)
         return true;
 
-    uint8_t source = object_entry_get_source_game(&item->ObjectEntry);
-    return (_FILTER_RCT1 && source == OBJECT_SOURCE_RCT1) || (_FILTER_AA && source == OBJECT_SOURCE_ADDED_ATTRACTIONS)
-        || (_FILTER_LL && source == OBJECT_SOURCE_LOOPY_LANDSCAPES) || (_FILTER_RCT2 && source == OBJECT_SOURCE_RCT2)
-        || (_FILTER_WW && source == OBJECT_SOURCE_WACKY_WORLDS) || (_FILTER_TT && source == OBJECT_SOURCE_TIME_TWISTER)
-        || (_FILTER_OO && source == OBJECT_SOURCE_OPENRCT2_OFFICIAL)
-        || (_FILTER_CUSTOM && source != OBJECT_SOURCE_RCT1 && source != OBJECT_SOURCE_ADDED_ATTRACTIONS
-            && source != OBJECT_SOURCE_LOOPY_LANDSCAPES && source != OBJECT_SOURCE_RCT2 && source != OBJECT_SOURCE_WACKY_WORLDS
-            && source != OBJECT_SOURCE_TIME_TWISTER && source != OBJECT_SOURCE_OPENRCT2_OFFICIAL);
+    for (auto source : item->Sources)
+    {
+        if (sources_match(source))
+            return true;
+    }
+
+    return false;
 }
 
 static bool filter_chunks(const ObjectRepositoryItem* item)

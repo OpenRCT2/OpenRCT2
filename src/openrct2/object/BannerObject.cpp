@@ -47,10 +47,9 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     auto item = objectRepository.FindObject(identifier);
     if (item != nullptr)
     {
-        auto objectEntry = &item->ObjectEntry;
-        if (object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_WACKY_WORLDS
-            || object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_TIME_TWISTER
-            || object_entry_get_source_game(objectEntry) == OBJECT_SOURCE_CUSTOM)
+        auto sourceGame = item->GetFirstSourceGame();
+        if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS || sourceGame == OBJECT_SOURCE_TIME_TWISTER
+            || sourceGame == OBJECT_SOURCE_CUSTOM)
         {
             auto scgPathX = Object::GetScgPathXHeader();
             SetPrimarySceneryGroup(&scgPathX);

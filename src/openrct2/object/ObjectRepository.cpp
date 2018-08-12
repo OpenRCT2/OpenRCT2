@@ -72,7 +72,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 17;
+    static constexpr uint16_t VERSION = 18;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -112,6 +112,7 @@ public:
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
+            item.Sources = object->GetSourceGames();
             object->SetRepositoryItem(&item);
             delete object;
             return std::make_tuple(true, item);
@@ -125,6 +126,12 @@ protected:
         stream->WriteValue(item.ObjectEntry);
         stream->WriteString(item.Path);
         stream->WriteString(item.Name);
+        uint8_t sourceLength = (uint8_t)item.Sources.size();
+        stream->WriteValue(sourceLength);
+        for (auto source : item.Sources)
+        {
+            stream->WriteValue(source);
+        }
 
         switch (object_entry_get_type(&item.ObjectEntry))
         {
@@ -157,6 +164,12 @@ protected:
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
         item.Path = stream->ReadStdString();
         item.Name = stream->ReadStdString();
+        auto sourceLength = stream->ReadValue<uint8_t>();
+        for (size_t i = 0; i < sourceLength; i++)
+        {
+            auto value = stream->ReadValue<uint8_t>();
+            item.Sources.push_back(value);
+        }
 
         switch (object_entry_get_type(&item.ObjectEntry))
         {

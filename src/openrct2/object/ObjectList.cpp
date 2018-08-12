@@ -71,7 +71,7 @@ uint8_t object_entry_get_type(const rct_object_entry* objectEntry)
     return (objectEntry->flags & 0x0F);
 }
 
-uint8_t object_entry_get_source_game(const rct_object_entry* objectEntry)
+uint8_t object_entry_get_source_game_legacy(const rct_object_entry* objectEntry)
 {
     return (objectEntry->flags & 0xF0) >> 4;
 }

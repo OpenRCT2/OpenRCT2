@@ -49,4 +49,4 @@ uint8_t object_manager_get_loaded_object_entry_index(const void* loadedObject);
 void* object_manager_load_object(const rct_object_entry* entry);
 void object_manager_unload_objects(const rct_object_entry* entries, size_t count);
 void object_manager_unload_all_objects();
-rct_string_id object_manager_get_source_game_string(const rct_object_entry* entry);
+rct_string_id object_manager_get_source_game_string(const uint8_t sourceGame);
