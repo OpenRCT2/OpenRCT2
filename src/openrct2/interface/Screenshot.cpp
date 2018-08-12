@@ -438,8 +438,8 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     bool giantScreenshot = (argc == 5) && _stricmp(argv[2], "giant") == 0;
     if (argc != 4 && argc != 8 && !giantScreenshot)
     {
-        std::printf("Usage: openrct2 screenshot <file> <ouput_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
-        std::printf("Usage: openrct2 screenshot <file> <ouput_image> giant <zoom> <rotation>\n");
+        std::printf("Usage: openrct2 screenshot <file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
+        std::printf("Usage: openrct2 screenshot <file> <output_image> giant <zoom> <rotation>\n");
         return -1;
     }
 
