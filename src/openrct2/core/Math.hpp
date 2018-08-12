@@ -16,11 +16,6 @@
  */
 namespace Math
 {
-    template<typename T> static T Clamp(T low, T x, T high)
-    {
-        return (std::min)((std::max)(low, x), high);
-    }
-
     template<typename T> static T Sign(T x)
     {
         if (x < 0)

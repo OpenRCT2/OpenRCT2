@@ -9,7 +9,6 @@
 
 #include "CableLift.h"
 
-#include "../core/Math.hpp"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
 #include "../world/Sprite.h"
@@ -17,6 +16,8 @@
 #include "RideData.h"
 #include "Track.h"
 #include "VehicleData.h"
+
+#include <algorithm>
 
 static void cable_lift_update_moving_to_end_of_station(rct_vehicle* vehicle);
 static void cable_lift_update_waiting_to_depart(rct_vehicle* vehicle);

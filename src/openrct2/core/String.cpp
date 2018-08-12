@@ -13,6 +13,7 @@
 #    define _WIN32_WINNT 0x0600
 #endif // __MINGW32__
 
+#include <algorithm>
 #include <cwctype>
 #include <stdexcept>
 #include <vector>
@@ -34,7 +35,6 @@
 #include "../localisation/ConversionTables.h"
 #include "../localisation/Language.h"
 #include "../util/Util.h"
-#include "Math.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
 #include "StringBuilder.hpp"

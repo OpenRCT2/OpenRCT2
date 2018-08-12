@@ -19,6 +19,7 @@
 #include "../util/SawyerCoding.h"
 #include "../world/Location.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
 #define ACTION_COOLDOWN_TIME_PLACE_SCENERY 20
@@ -43,7 +44,6 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.hpp"
 #    include "../core/Json.hpp"
-#    include "../core/Math.hpp"
 #    include "../core/MemoryStream.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"

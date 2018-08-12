@@ -46,6 +46,8 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
+#include <algorithm>
+
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
 

@@ -13,7 +13,6 @@
 #include "Editor.h"
 #include "Input.h"
 #include "OpenRCT2.h"
-#include "core/Math.hpp"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
@@ -29,6 +28,8 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+
+#include <algorithm>
 
 using namespace OpenRCT2;
 
@@ -97,7 +98,7 @@ void GameState::Update()
     else
     {
         numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        numUpdates = Math::Clamp<uint32_t>(1, numUpdates, GAME_MAX_UPDATES);
+        numUpdates = std::clamp<uint32_t>(numUpdates, 1, GAME_MAX_UPDATES);
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED

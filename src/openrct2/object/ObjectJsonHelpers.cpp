@@ -15,7 +15,6 @@
 #include "../PlatformEnvironment.h"
 #include "../core/File.h"
 #include "../core/FileScanner.h"
-#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -26,6 +25,7 @@
 #include "Object.h"
 #include "ObjectFactory.h"
 
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <unordered_map>

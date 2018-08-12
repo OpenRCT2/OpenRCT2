@@ -12,7 +12,6 @@
 #include "SmallSceneryObject.h"
 
 #include "../core/IStream.hpp"
-#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
@@ -21,6 +20,8 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "ObjectJsonHelpers.h"
+
+#include <algorithm>
 
 void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {

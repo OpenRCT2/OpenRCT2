@@ -26,7 +26,6 @@ void twitch_update()
 #    include "../OpenRCT2.h"
 #    include "../config/Config.h"
 #    include "../core/Json.hpp"
-#    include "../core/Math.hpp"
 #    include "../core/String.hpp"
 #    include "../drawing/Drawing.h"
 #    include "../interface/InteractiveConsole.h"

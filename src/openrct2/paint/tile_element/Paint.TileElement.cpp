@@ -12,7 +12,6 @@
 #include "../../Game.h"
 #include "../../Input.h"
 #include "../../config/Config.h"
-#include "../../core/Math.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
@@ -30,6 +29,8 @@
 #include "../Supports.h"
 #include "../VirtualFloor.h"
 #include "Paint.Surface.h"
+
+#include <algorithm>
 
 #ifdef __TESTPAINT__
 uint16_t testPaintVerticalTunnelHeight;

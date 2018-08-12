@@ -13,9 +13,9 @@
 #include "interface/InGameConsole.h"
 
 #include <SDL2/SDL.h>
+#include <algorithm>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/interface/InteractiveConsole.h>

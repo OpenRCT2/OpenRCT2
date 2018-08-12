@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
@@ -641,36 +641,36 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_YEAR_UP:
             year_spinner_value++;
-            year_spinner_value = Math::Clamp(1, year_spinner_value, 8192);
+            year_spinner_value = std::clamp(year_spinner_value, 1, 8192);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_YEAR_DOWN:
             year_spinner_value--;
-            year_spinner_value = Math::Clamp(1, year_spinner_value, 8192);
+            year_spinner_value = std::clamp(year_spinner_value, 1, 8192);
             widget_invalidate(w, WIDX_YEAR_BOX);
             break;
         case WIDX_MONTH_UP:
             month_spinner_value++;
-            month_spinner_value = Math::Clamp(1, month_spinner_value, (int)MONTH_COUNT);
-            day_spinner_value = Math::Clamp(1, day_spinner_value, (int)days_in_month[month_spinner_value - 1]);
+            month_spinner_value = std::clamp(month_spinner_value, 1, (int)MONTH_COUNT);
+            day_spinner_value = std::clamp(day_spinner_value, 1, (int)days_in_month[month_spinner_value - 1]);
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_MONTH_DOWN:
             month_spinner_value--;
-            month_spinner_value = Math::Clamp(1, month_spinner_value, (int)MONTH_COUNT);
-            day_spinner_value = Math::Clamp(1, day_spinner_value, (int)days_in_month[month_spinner_value - 1]);
+            month_spinner_value = std::clamp(month_spinner_value, 1, (int)MONTH_COUNT);
+            day_spinner_value = std::clamp(day_spinner_value, 1, (int)days_in_month[month_spinner_value - 1]);
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DAY_UP:
             day_spinner_value++;
-            day_spinner_value = Math::Clamp(1, day_spinner_value, (int)days_in_month[month_spinner_value - 1]);
+            day_spinner_value = std::clamp(day_spinner_value, 1, (int)days_in_month[month_spinner_value - 1]);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DAY_DOWN:
             day_spinner_value--;
-            day_spinner_value = Math::Clamp(1, day_spinner_value, (int)days_in_month[month_spinner_value - 1]);
+            day_spinner_value = std::clamp(day_spinner_value, 1, (int)days_in_month[month_spinner_value - 1]);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DATE_SET:

@@ -14,7 +14,6 @@
 #include "../common.h"
 #include "../core/Guard.hpp"
 #include "../core/Imaging.h"
-#include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/StringIds.h"
@@ -27,6 +26,7 @@
 #include "SmallScenery.h"
 #include "Surface.h"
 
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <vector>
@@ -514,7 +514,7 @@ static float fractal_noise(int32_t x, int32_t y, float frequency, int32_t octave
 static float generate(float x, float y)
 {
     const float F2 = 0.366025403f; // F2 = 0.5*(sqrt(3.0)-1.0)
-    const float G2 = 0.211324865f; // G2 = (3.0-Math.sqrt(3.0))/6.0
+    const float G2 = 0.211324865f; // G2 = (3.0-sqrt(3.0))/6.0
 
     float n0, n1, n2; // Noise contributions from the three corners
 
@@ -625,7 +625,7 @@ static void mapgen_simplex(mapgen_settings* settings)
     {
         for (x = 0; x < _heightSize; x++)
         {
-            float noiseValue = Math::Clamp(-1.0f, fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), 1.0f);
+            float noiseValue = std::clamp(fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
             float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;
 
             set_height(x, y, low + (int32_t)(normalisedNoiseValue * high));
@@ -736,8 +736,8 @@ static void mapgen_smooth_heightmap(uint8_t* src, int32_t strength)
                     {
                         // Clamp x and y so they stay within the image
                         // This assumes the height map is not tiled, and increases the weight of the edges
-                        const int32_t readX = Math::Clamp((int32_t)x + offsetX, 0, (int32_t)_heightMapData.width - 1);
-                        const int32_t readY = Math::Clamp((int32_t)y + offsetY, 0, (int32_t)_heightMapData.height - 1);
+                        const int32_t readX = std::clamp<int32_t>(x + offsetX, 0, _heightMapData.width - 1);
+                        const int32_t readY = std::clamp<int32_t>(y + offsetY, 0, _heightMapData.height - 1);
                         heightSum += src[readX + readY * _heightMapData.width];
                     }
                 }

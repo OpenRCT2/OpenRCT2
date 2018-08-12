@@ -10,6 +10,7 @@
 #include "../UiContext.h"
 #include "../interface/InGameConsole.h"
 
+#include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
@@ -24,7 +25,6 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>

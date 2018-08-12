@@ -19,7 +19,6 @@
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
-#include "core/Math.hpp"
 #include "core/Util.hpp"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
@@ -61,6 +60,7 @@
 #include "world/Surface.h"
 #include "world/Water.h"
 
+#include <algorithm>
 #include <memory>
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9

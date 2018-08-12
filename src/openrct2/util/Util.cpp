@@ -11,13 +11,13 @@
 
 #include "../common.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "../title/TitleScreen.h"
 #include "zlib.h"
 
+#include <algorithm>
 #include <cctype>
 #include <cmath>
 #include <ctime>
@@ -706,7 +706,7 @@ uint8_t soft_light(uint8_t a, uint8_t b)
     {
         fr = (2 * fa * (1 - fb)) + (std::sqrt(fa) * ((2 * fb) - 1));
     }
-    return (uint8_t)(Math::Clamp(0.0f, fr, 1.0f) * 255.0f);
+    return (uint8_t)(std::clamp(fr, 0.0f, 1.0f) * 255.0f);
 }
 
 /**

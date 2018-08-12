@@ -16,7 +16,6 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Colour.h"
@@ -39,6 +38,8 @@
 #include "Map.h"
 #include "Sprite.h"
 #include "Surface.h"
+
+#include <algorithm>
 
 using namespace OpenRCT2;
 
@@ -777,7 +778,7 @@ int32_t Park::CalculateParkRating() const
     }
 
     result -= gParkRatingCasualtyPenalty;
-    result = Math::Clamp(0, result, 999);
+    result = std::clamp(result, 0, 999);
     return result;
 }
 
@@ -893,7 +894,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 uint32_t Park::CalculateGuestGenerationProbability() const
 {
     // Begin with 50 + park rating
-    uint32_t probability = 50 + Math::Clamp(0, gParkRating - 200, 650);
+    uint32_t probability = 50 + std::clamp(gParkRating - 200, 0, 650);
 
     // The more guests, the lower the chance of a new one
     int32_t numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
@@ -948,7 +949,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
 
 uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
 {
-    percentage = Math::Clamp<uint8_t>(15, percentage, 98);
+    percentage = std::clamp<uint8_t>(percentage, 15, 98);
 
     // The percentages follow this sequence:
     //   15 17 18 20 21 23 25 26 28 29 31 32 34 36 37 39 40 42 43 45 47 48 50 51 53...

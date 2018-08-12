@@ -18,7 +18,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -47,6 +46,7 @@
 #include "../world/Surface.h"
 #include "Staff.h"
 
+#include <algorithm>
 #include <limits>
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -1806,7 +1806,7 @@ rct_peep* peep_generate(int32_t x, int32_t y, int32_t z)
     /* Initial value will vary by -15..16 */
     int8_t happiness_delta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->happiness = Math::Clamp(0, peep->happiness + happiness_delta, PEEP_MAX_HAPPINESS);
+    peep->happiness = std::clamp(peep->happiness + happiness_delta, 0, PEEP_MAX_HAPPINESS);
     peep->happiness_target = peep->happiness;
     peep->nausea = 0;
     peep->nausea_target = 0;
@@ -1818,7 +1818,7 @@ rct_peep* peep_generate(int32_t x, int32_t y, int32_t z)
     /* Initial value will vary by -15..16 */
     int8_t hunger_delta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->hunger = Math::Clamp(0, peep->hunger + hunger_delta, 255);
+    peep->hunger = std::clamp(peep->hunger + hunger_delta, 0, 255);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
@@ -1827,7 +1827,7 @@ rct_peep* peep_generate(int32_t x, int32_t y, int32_t z)
     /* Initial value will vary by -15..16 */
     int8_t thirst_delta = (scenario_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->thirst = Math::Clamp(0, peep->thirst + thirst_delta, 0xFF);
+    peep->thirst = std::clamp(peep->thirst + thirst_delta, 0, 0xFF);
 
     peep->toilet = 0;
     peep->time_to_consume = 0;

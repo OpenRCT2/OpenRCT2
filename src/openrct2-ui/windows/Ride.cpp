@@ -9,6 +9,7 @@
 
 #include "../interface/Theme.h"
 
+#include <algorithm>
 #include <cmath>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -22,7 +23,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
@@ -1499,7 +1499,7 @@ static void window_ride_update_overall_view(uint8_t ride_index)
     {
         // Each farther zoom level shows twice as many tiles (log)
         // Appropriate zoom is lowered by one to fill the entire view with the ride
-        view->zoom = Math::Clamp(0, (int32_t)std::ceil(std::log(size / 80)) - 1, 3);
+        view->zoom = std::clamp<int32_t>(std::ceil(std::log(size / 80)) - 1, 0, 3);
     }
     else
     {
@@ -2400,7 +2400,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_RIDE_TYPE_DROPDOWN:
             if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
             {
-                uint8_t rideLabelId = Math::Clamp(0, dropdownIndex, RIDE_TYPE_COUNT - 1);
+                uint8_t rideLabelId = std::clamp(dropdownIndex, 0, RIDE_TYPE_COUNT - 1);
                 uint8_t rideType = RideDropdownData[rideLabelId].ride_type_id;
                 if (rideType < RIDE_TYPE_COUNT)
                 {
@@ -3187,7 +3187,7 @@ static void window_ride_mode_tweak_increase(rct_window* w)
 
     uint8_t increment = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
-    window_ride_mode_tweak_set(w, Math::Clamp<int16_t>(minValue, ride->operation_option + increment, maxValue));
+    window_ride_mode_tweak_set(w, std::clamp<int16_t>(ride->operation_option + increment, minValue, maxValue));
 }
 
 /**
@@ -3207,7 +3207,7 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
 
     uint8_t decrement = ride->mode == RIDE_MODE_BUMPERCAR ? 10 : 1;
 
-    window_ride_mode_tweak_set(w, Math::Clamp<int16_t>(minValue, ride->operation_option - decrement, maxValue));
+    window_ride_mode_tweak_set(w, std::clamp<int16_t>(ride->operation_option - decrement, minValue, maxValue));
 }
 
 /**
@@ -3357,42 +3357,42 @@ static void window_ride_operating_mousedown(rct_window* w, rct_widgetindex widge
             lower_bound = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
             set_operating_setting(
                 w->number, RIDE_SETTING_LIFT_HILL_SPEED,
-                Math::Clamp<int16_t>(lower_bound, ride->lift_hill_speed + 1, upper_bound));
+                std::clamp<int16_t>(ride->lift_hill_speed + 1, lower_bound, upper_bound));
             break;
         case WIDX_LIFT_HILL_SPEED_DECREASE:
             upper_bound = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
             lower_bound = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
             set_operating_setting(
                 w->number, RIDE_SETTING_LIFT_HILL_SPEED,
-                Math::Clamp<int16_t>(lower_bound, ride->lift_hill_speed - 1, upper_bound));
+                std::clamp<int16_t>(ride->lift_hill_speed - 1, lower_bound, upper_bound));
             break;
         case WIDX_MINIMUM_LENGTH_INCREASE:
             upper_bound = 250;
             lower_bound = 0;
             set_operating_setting(
                 w->number, RIDE_SETTING_MIN_WAITING_TIME,
-                Math::Clamp<int16_t>(lower_bound, ride->min_waiting_time + 1, upper_bound));
+                std::clamp<int16_t>(ride->min_waiting_time + 1, lower_bound, upper_bound));
             break;
         case WIDX_MINIMUM_LENGTH_DECREASE:
             upper_bound = 250;
             lower_bound = 0;
             set_operating_setting(
                 w->number, RIDE_SETTING_MIN_WAITING_TIME,
-                Math::Clamp<int16_t>(lower_bound, ride->min_waiting_time - 1, upper_bound));
+                std::clamp<int16_t>(ride->min_waiting_time - 1, lower_bound, upper_bound));
             break;
         case WIDX_MAXIMUM_LENGTH_INCREASE:
             upper_bound = 250;
             lower_bound = 0;
             set_operating_setting(
                 w->number, RIDE_SETTING_MAX_WAITING_TIME,
-                Math::Clamp<int16_t>(lower_bound, ride->max_waiting_time + 1, upper_bound));
+                std::clamp<int16_t>(ride->max_waiting_time + 1, lower_bound, upper_bound));
             break;
         case WIDX_MAXIMUM_LENGTH_DECREASE:
             upper_bound = 250;
             lower_bound = 0;
             set_operating_setting(
                 w->number, RIDE_SETTING_MAX_WAITING_TIME,
-                Math::Clamp<int16_t>(lower_bound, ride->max_waiting_time - 1, upper_bound));
+                std::clamp<int16_t>(ride->max_waiting_time - 1, lower_bound, upper_bound));
             break;
         case WIDX_MODE_DROPDOWN:
             window_ride_mode_dropdown(w, widget);
@@ -3404,13 +3404,13 @@ static void window_ride_operating_mousedown(rct_window* w, rct_widgetindex widge
             upper_bound = gCheatsFastLiftHill ? 255 : 20;
             lower_bound = 1;
             set_operating_setting(
-                w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<int16_t>(lower_bound, ride->num_circuits + 1, upper_bound));
+                w->number, RIDE_SETTING_NUM_CIRCUITS, std::clamp<int16_t>(ride->num_circuits + 1, lower_bound, upper_bound));
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
             upper_bound = gCheatsFastLiftHill ? 255 : 20;
             lower_bound = 1;
             set_operating_setting(
-                w->number, RIDE_SETTING_NUM_CIRCUITS, Math::Clamp<int16_t>(lower_bound, ride->num_circuits - 1, upper_bound));
+                w->number, RIDE_SETTING_NUM_CIRCUITS, std::clamp<int16_t>(ride->num_circuits - 1, lower_bound, upper_bound));
             break;
     }
 }
@@ -5118,7 +5118,7 @@ static void window_ride_music_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static rct_string_id get_rating_name(ride_rating rating)
 {
-    int32_t index = Math::Clamp<int32_t>(0, rating >> 8, (int32_t)Util::CountOf(RatingNames) - 1);
+    int32_t index = std::clamp<int32_t>(rating >> 8, 0, (int32_t)Util::CountOf(RatingNames) - 1);
     return RatingNames[index];
 }
 
@@ -5763,7 +5763,7 @@ static void window_ride_graphs_update(rct_window* w)
         x = measurement == nullptr ? 0 : measurement->current_item - (((widget->right - widget->left) / 4) * 3);
     }
 
-    w->scrolls[0].h_left = Math::Clamp(0, x, w->scrolls[0].h_right - ((widget->right - widget->left) - 2));
+    w->scrolls[0].h_left = std::clamp(x, 0, w->scrolls[0].h_right - ((widget->right - widget->left) - 2));
     widget_scroll_update_thumbs(w, WIDX_GRAPH);
 }
 
@@ -6309,7 +6309,7 @@ static void window_ride_income_textinput(rct_window* w, rct_widgetindex widgetIn
         return;
     }
 
-    price = Math::Clamp(MONEY(0, 00), price, MONEY(20, 00));
+    price = std::clamp(price, MONEY(0, 00), MONEY(20, 00));
     money16 price16 = (money16)price;
 
     if (widgetIndex == WIDX_PRIMARY_PRICE)

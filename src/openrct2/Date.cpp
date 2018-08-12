@@ -11,7 +11,8 @@
 
 #include "Date.h"
 #include "core/Guard.hpp"
-#include "core/Math.hpp"
+
+#include <algorithm>
 
 using namespace OpenRCT2;
 
@@ -37,7 +38,7 @@ Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
     if (day != 0)
     {
         auto daysInMonth = GetDaysInMonth(month);
-        day = Math::Clamp(0, day, daysInMonth - 1);
+        day = std::clamp(day, 0, daysInMonth - 1);
         monthTicks = (day << 16) / daysInMonth;
     }
 

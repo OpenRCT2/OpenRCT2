@@ -13,7 +13,6 @@
 #include "../../OpenRCT2.h"
 #include "../../config/Config.h"
 #include "../../core/Guard.hpp"
-#include "../../core/Math.hpp"
 #include "../../core/Util.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Colour.h"
@@ -26,6 +25,7 @@
 #include "../../world/Surface.h"
 #include "Paint.TileElement.h"
 
+#include <algorithm>
 #include <cstring>
 
 // clang-format off

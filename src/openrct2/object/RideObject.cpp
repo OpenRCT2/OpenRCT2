@@ -13,7 +13,6 @@
 
 #include "../OpenRCT2.h"
 #include "../core/IStream.hpp"
-#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"

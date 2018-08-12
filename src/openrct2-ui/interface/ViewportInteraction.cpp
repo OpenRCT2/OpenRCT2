@@ -10,13 +10,13 @@
 #include "Viewport.h"
 #include "Window.h"
 
+#include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/WallRemoveAction.hpp>
-#include <openrct2/core/Math.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
@@ -653,8 +653,8 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
             z = tile_element_height(map_pos.x, map_pos.y);
         }
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = Math::Clamp<int16_t>(map_pos.x, my_x, my_x + 31);
-        map_pos.y = Math::Clamp<int16_t>(map_pos.y, my_y, my_y + 31);
+        map_pos.x = std::clamp<int16_t>(map_pos.x, my_x, my_x + 31);
+        map_pos.y = std::clamp<int16_t>(map_pos.y, my_y, my_y + 31);
     }
 
     // Determine to which edge the cursor is closest

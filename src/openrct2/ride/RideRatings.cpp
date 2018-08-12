@@ -11,7 +11,6 @@
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -1329,7 +1328,7 @@ static rating_tuple ride_ratings_get_gforce_ratings(Ride* ride)
 
     // Apply maximum negative G force factor
     fixed16_2dp gforce = ride->max_negative_vertical_g;
-    result.excitement += (Math::Clamp<fixed16_2dp>(-FIXED_2DP(2, 50), gforce, FIXED_2DP(0, 00)) * -15728) >> 16;
+    result.excitement += (std::clamp<fixed16_2dp>(gforce, -FIXED_2DP(2, 50), FIXED_2DP(0, 00)) * -15728) >> 16;
     result.intensity += ((gforce - FIXED_2DP(1, 00)) * -52428) >> 16;
     result.nausea += ((gforce - FIXED_2DP(1, 00)) * -14563) >> 16;
 
@@ -1458,9 +1457,9 @@ static void ride_ratings_add(rating_tuple* rating, int32_t excitement, int32_t i
     int32_t newExcitement = rating->excitement + excitement;
     int32_t newIntensity = rating->intensity + intensity;
     int32_t newNausea = rating->nausea + nausea;
-    rating->excitement = Math::Clamp<int32_t>(0, newExcitement, INT16_MAX);
-    rating->intensity = Math::Clamp<int32_t>(0, newIntensity, INT16_MAX);
-    rating->nausea = Math::Clamp<int32_t>(0, newNausea, INT16_MAX);
+    rating->excitement = std::clamp<int32_t>(newExcitement, 0, INT16_MAX);
+    rating->intensity = std::clamp<int32_t>(newIntensity, 0, INT16_MAX);
+    rating->nausea = std::clamp<int32_t>(newNausea, 0, INT16_MAX);
 }
 
 static void ride_ratings_apply_length(rating_tuple* ratings, Ride* ride, int32_t maxLength, int32_t excitementMultiplier)

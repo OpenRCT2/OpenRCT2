@@ -14,7 +14,6 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../drawing/Drawing.h"
 #include "../paint/Paint.h"
 #include "../peep/Staff.h"
@@ -1761,8 +1760,8 @@ void screen_get_map_xy(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y,
     {
         int32_t z = tile_element_height(map_pos.x, map_pos.y);
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = Math::Clamp<int16_t>(map_pos.x, my_x, my_x + 31);
-        map_pos.y = Math::Clamp<int16_t>(map_pos.y, my_y, my_y + 31);
+        map_pos.x = std::clamp<int16_t>(map_pos.x, my_x, my_x + 31);
+        map_pos.y = std::clamp<int16_t>(map_pos.y, my_y, my_y + 31);
     }
 
     *x = map_pos.x;

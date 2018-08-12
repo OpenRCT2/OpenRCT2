@@ -14,7 +14,6 @@
 #include "../Input.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -36,6 +35,8 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "Peep.h"
+
+#include <algorithm>
 
 // clang-format off
 const rct_string_id StaffCostumeNames[] = {

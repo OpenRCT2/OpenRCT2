@@ -15,7 +15,6 @@
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../core/File.h"
-#include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
@@ -40,6 +39,8 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesignRepository.h"
+
+#include <algorithm>
 
 struct map_backup
 {

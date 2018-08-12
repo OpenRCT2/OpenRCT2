@@ -17,7 +17,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
@@ -196,7 +195,7 @@ static void window_close_surplus(int32_t cap, int8_t avoid_classification)
 void window_set_window_limit(int32_t value)
 {
     int32_t prev = gConfigGeneral.window_limit;
-    int32_t val = Math::Clamp(WINDOW_LIMIT_MIN, value, WINDOW_LIMIT_MAX);
+    int32_t val = std::clamp(value, WINDOW_LIMIT_MIN, WINDOW_LIMIT_MAX);
     gConfigGeneral.window_limit = val;
     config_save_default();
     // Checks if value decreases and then closes surplus
@@ -1045,7 +1044,7 @@ void window_zoom_set(rct_window* w, int32_t zoomLevel, bool atCursor)
 {
     rct_viewport* v = w->viewport;
 
-    zoomLevel = Math::Clamp(0, zoomLevel, MAX_ZOOM_LEVEL);
+    zoomLevel = std::clamp(zoomLevel, 0, MAX_ZOOM_LEVEL);
     if (v->zoom == zoomLevel)
         return;
 
@@ -1325,8 +1324,8 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
     window_invalidate(w);
 
     // Clamp new size to minimum and maximum
-    w->width = Math::Clamp<int16_t>(w->min_width, w->width + dw, w->max_width);
-    w->height = Math::Clamp<int16_t>(w->min_height, w->height + dh, w->max_height);
+    w->width = std::clamp<int16_t>(w->width + dw, w->min_width, w->max_width);
+    w->height = std::clamp<int16_t>(w->height + dh, w->min_height, w->max_height);
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
@@ -1351,8 +1350,8 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
     w->max_height = maxHeight;
 
     // Clamp width and height to minimum and maximum
-    int32_t width = Math::Clamp<int32_t>(minWidth, w->width, maxWidth);
-    int32_t height = Math::Clamp<int32_t>(minHeight, w->height, maxHeight);
+    int32_t width = std::clamp<int32_t>(w->width, minWidth, maxWidth);
+    int32_t height = std::clamp<int32_t>(w->height, minHeight, maxHeight);
 
     // Resize window if size has changed
     if (w->width != width || w->height != height)
@@ -1947,7 +1946,7 @@ void window_move_and_snap(rct_window* w, int32_t newWindowX, int32_t newWindowY,
     int32_t originalY = w->y;
     int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
-    newWindowY = Math::Clamp(minY, newWindowY, context_get_height() - 34);
+    newWindowY = std::clamp(newWindowY, minY, context_get_height() - 34);
 
     if (snapProximity > 0)
     {

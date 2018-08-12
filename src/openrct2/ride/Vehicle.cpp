@@ -16,7 +16,6 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Viewport.h"
@@ -41,6 +40,8 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "VehicleData.h"
+
+#include <algorithm>
 
 static void vehicle_update(rct_vehicle* vehicle);
 static void vehicle_update_crossings(const rct_vehicle* vehicle);
@@ -5571,7 +5572,7 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
     // Calculate Sound Vector (used for sound frequency calcs)
     int32_t soundDirection = SpriteDirectionToSoundDirection[vehicle->sprite_direction];
     int32_t soundVector = ((vehicle->velocity >> 14) * soundDirection) >> 14;
-    soundVector = Math::Clamp(-127, soundVector, 127);
+    soundVector = std::clamp(soundVector, -127, 127);
 
     vehicle->sound_vector_factor = soundVector & 0xFF;
 }
@@ -7208,8 +7209,8 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
             break;
     }
 
-    spinSpeed = Math::Clamp(
-        static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED), vehicle->spin_speed, static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED));
+    spinSpeed = std::clamp(
+        vehicle->spin_speed, static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED), static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED));
     vehicle->spin_speed = spinSpeed;
     vehicle->spin_sprite += spinSpeed >> 8;
     // Note this actually increases the spin speed if going right!
@@ -9417,8 +9418,8 @@ loc_6DCEFF:
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
     {
-        vehicle->spin_speed = Math::Clamp(
-            static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), vehicle->spin_speed,
+        vehicle->spin_speed = std::clamp(
+            vehicle->spin_speed, static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE),
             static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
     }
 
@@ -9537,8 +9538,8 @@ static void vehicle_update_track_motion_powered_ride_acceleration(
 
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
-            vehicle->spin_speed = Math::Clamp(
-                static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), vehicle->spin_speed,
+            vehicle->spin_speed = std::clamp(
+                vehicle->spin_speed, static_cast<int16_t>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE),
                 static_cast<int16_t>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
         }
 
