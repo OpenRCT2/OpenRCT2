@@ -9,6 +9,7 @@
 - Feature: [#7868] Placing scenery while holding shift now scales appropriately with zoom levels.
 - Fix: [#3177] Wrong keys displayed in shortcut menu.
 - Fix: [#4039] No sprite font glyph for German opening quotation mark.
+- Fix: [#5548] platform_get_locale_date_format is not implemented for Linux.
 - Fix: [#7204] Object source filters do not work for RCT1, AA and LL.
 - Fix: [#7440] Memory leak. All system memory used.
 - Fix: [#7462] Guest window goes beyond the map edge on a spiral slide.
