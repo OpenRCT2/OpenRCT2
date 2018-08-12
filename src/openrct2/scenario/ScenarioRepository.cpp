@@ -18,7 +18,6 @@
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.hpp"
-#include "../core/Math.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -48,7 +47,10 @@ static int32_t ScenarioCategoryCompare(int32_t categoryA, int32_t categoryB)
         return -1;
     if (categoryB == SCENARIO_CATEGORY_BUILD_YOUR_OWN)
         return 1;
-    return Math::Sign(categoryA - categoryB);
+    if (categoryA < categoryB)
+        return -1;
+    else
+        return 1;
 }
 
 static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry& entryA, const scenario_index_entry& entryB)
