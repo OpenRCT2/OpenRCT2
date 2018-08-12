@@ -46,6 +46,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "ru-RU", "Russian",               u8"Русский",             FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_RUSSIAN
     { "fi-FI", "Finnish",               "Suomi",                 FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_FINNISH
     { "sv-SE", "Swedish",               "Svenska",               FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_SWEDISH },             // LANGUAGE_SWEDISH
+    { "tr-TR", "Turkish",               "Türkçe",                FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_TURKISH
 };
 // clang-format on
 
