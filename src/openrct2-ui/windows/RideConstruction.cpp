@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -2069,7 +2070,21 @@ static bool ride_get_place_position_from_screen_position(int32_t screenX, int32_
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
-            _trackPlaceShiftZ = floor2(_trackPlaceShiftStartScreenY - screenY + 4, 8);
+            constexpr uint16_t maxHeight = (std::numeric_limits<decltype(rct_tile_element::base_height)>::max() - 32)
+                << MAX_ZOOM_LEVEL;
+
+            _trackPlaceShiftZ = _trackPlaceShiftStartScreenY - screenY + 4;
+            // Scale delta by zoom to match mouse position.
+            auto* mainWnd = window_get_main();
+            if (mainWnd && mainWnd->viewport)
+            {
+                _trackPlaceShiftZ <<= mainWnd->viewport->zoom;
+            }
+            _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
+
+            // Clamp to maximum possible value of base_height can offer.
+            _trackPlaceShiftZ = std::min<int16_t>(_trackPlaceShiftZ, maxHeight);
+
             screenX = _trackPlaceShiftStartScreenX;
             screenY = _trackPlaceShiftStartScreenY;
         }
