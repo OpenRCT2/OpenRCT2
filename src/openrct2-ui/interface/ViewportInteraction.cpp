@@ -488,7 +488,6 @@ static void viewport_interaction_remove_footpath(rct_tile_element* tileElement, 
     {
         if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z)
         {
-            gGameCommandErrorTitle = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
             footpath_remove(x, y, z, GAME_COMMAND_FLAG_APPLY);
             break;
         }

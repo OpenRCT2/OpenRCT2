@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "BannerSetNameAction.hpp"
+#include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
 #include "MazeSetTrackAction.hpp"
@@ -49,5 +50,6 @@ namespace GameActions
         Register<ParkSetNameAction>();
         Register<BannerSetNameAction>();
         Register<WallRemoveAction>();
+        Register<FootpathRemoveAction>();
     }
 } // namespace GameActions
