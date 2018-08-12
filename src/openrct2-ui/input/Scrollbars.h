@@ -13,4 +13,4 @@
 #include <openrct2-ui/windows/Window.h>
 
 void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const input_mouse_data& mouseData);
-void input_scroll(rct_window* w, const rct_widgetindex widgetIndex, const input_mouse_data& mouseData);
+void input_scroll_left(rct_window *w, const rct_widgetindex widgetIndex, const input_mouse_data &mouseData);

@@ -133,10 +133,8 @@ static void HandleScrolling()
         return;
     }
 
-    rct_window* textWindow;
-
-    textWindow = window_find_by_class(WC_TEXTINPUT);
-    if (textWindow || gUsingWidgetTextBox || gChatOpen)
+    rct_window* textWindow = window_find_by_class(WC_TEXTINPUT);
+    if (textWindow != nullptr || gUsingWidgetTextBox || gChatOpen || GetInGameConsole().IsOpen())
     {
         return;
     }
@@ -219,7 +217,7 @@ void input_handle_keyboard(bool isTitle)
         return;
     }
 
-    if (!isTitle && !GetInGameConsole().IsOpen())
+    if (!isTitle)
     {
         HandleScrolling();
     }

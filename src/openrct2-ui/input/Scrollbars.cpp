@@ -392,7 +392,7 @@ void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const input_
     window_invalidate_by_number(w->classification, w->number);
 }
 
-void input_scroll(rct_window* w, const rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
+void input_scroll_left(rct_window *w, const rct_widgetindex widgetIndex, const input_mouse_data &mouseData)
 {
     if (mouseData.State == MOUSE_STATE_RELEASED)
     {

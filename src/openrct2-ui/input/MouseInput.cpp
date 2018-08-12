@@ -199,7 +199,7 @@ static void HandleInputMouse(const input_mouse_data& mouseData)
             break;
 
         case INPUT_STATE_SCROLL_LEFT:
-            input_scroll(w, widgetIndex, mouseData);
+            input_scroll_left(w, widgetIndex, mouseData);
             break;
 
         case INPUT_STATE_RESIZING:
