@@ -3194,8 +3194,6 @@ STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Force weather:
 STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
 STR_5727    :Scaling quality:
-STR_5728    :Requires hardware display option
-STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
 STR_5731    :Linear
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
@@ -3230,7 +3228,6 @@ STR_5762    :Chinese Yuan (CN{YEN})
 STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
-STR_5766    :<available string id>
 STR_5767    :Income
 STR_5768    :Total customers
 STR_5769    :Total profit
