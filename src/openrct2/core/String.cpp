@@ -33,6 +33,7 @@
 
 #include "../common.h"
 #include "../localisation/ConversionTables.h"
+#include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../util/Util.h"
 #include "Memory.hpp"
@@ -739,5 +740,17 @@ namespace String
 
         return res;
 #endif
+    }
+
+    bool ContainsColourCode(std::string string)
+    {
+        for (char c : string)
+        {
+            if (c >= (char)FORMAT_COLOUR_CODE_START && c <= (char)FORMAT_COLOUR_CODE_END)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 } // namespace String

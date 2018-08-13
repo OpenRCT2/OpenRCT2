@@ -243,8 +243,14 @@ private:
                 if (header.type == S6_TYPE_SCENARIO)
                 {
                     rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
-                    rct2_to_utf8_self(info.name, sizeof(info.name));
-                    rct2_to_utf8_self(info.details, sizeof(info.details));
+                    // If the name or the details contain a colour code, they might be in UTF-8 already.
+                    // This is caused by a bug that was in OpenRCT2 for 3 years.
+                    if (!String::ContainsColourCode(info.name) && !String::ContainsColourCode(info.details))
+                    {
+                        rct2_to_utf8_self(info.name, sizeof(info.name));
+                        rct2_to_utf8_self(info.details, sizeof(info.details));
+                    }
+
                     *entry = CreateNewScenarioEntry(path, timestamp, &info);
                     return true;
                 }

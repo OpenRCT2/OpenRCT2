@@ -184,13 +184,26 @@ public:
         // _s6.header
         gS6Info = _s6.info;
 
+        // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
+        // This is hard to detect. Therefore, consider invalid characters like colour codes as a sign the text is in UTF-8.
+        bool alreadyInUTF8 = false;
+
+        if (String::ContainsColourCode(_s6.info.name) || String::ContainsColourCode(_s6.info.details))
+        {
+            alreadyInUTF8 = true;
+        }
+
+        if (!alreadyInUTF8)
         {
             auto temp = rct2_to_utf8(_s6.info.name, RCT2_LANGUAGE_ID_ENGLISH_UK);
             safe_strcpy(gS6Info.name, temp.data(), sizeof(gS6Info.name));
+            auto temp2 = rct2_to_utf8(_s6.info.details, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            safe_strcpy(gS6Info.details, temp2.data(), sizeof(gS6Info.details));
         }
+        else
         {
-            auto temp = rct2_to_utf8(_s6.info.details, RCT2_LANGUAGE_ID_ENGLISH_UK);
-            safe_strcpy(gS6Info.details, temp.data(), sizeof(gS6Info.details));
+            safe_strcpy(gS6Info.name, _s6.info.name, sizeof(gS6Info.name));
+            safe_strcpy(gS6Info.details, _s6.info.details, sizeof(gS6Info.details));
         }
 
         gDateMonthsElapsed = _s6.elapsed_months;
