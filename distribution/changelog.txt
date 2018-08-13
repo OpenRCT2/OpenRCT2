@@ -34,6 +34,7 @@
 - Fix: [#7817] No sprite font glyph for interpunct.
 - Fix: [#7823] You can build mazes in pause mode.
 - Fix: [#7804] Russian ride descriptions are cut off.
+- Fix: [#7872] CJK tooltips are often cut off.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------

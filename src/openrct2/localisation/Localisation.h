@@ -63,7 +63,7 @@ extern const char real_name_initials[16];
 extern const char* real_names[1024];
 
 extern utf8 gUserStrings[MAX_USER_STRINGS][USER_STRING_MAX_LENGTH];
-extern char gCommonStringFormatBuffer[256];
+extern char gCommonStringFormatBuffer[512];
 extern uint8_t gCommonFormatArgs[80];
 extern uint8_t gMapTooltipFormatArgs[40];
 extern bool gDebugStringFormatting;
