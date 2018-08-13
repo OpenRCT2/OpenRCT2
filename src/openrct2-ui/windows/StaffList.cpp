@@ -268,9 +268,9 @@ static void window_staff_list_mousedown(rct_window* w, rct_widgetindex widgetInd
         case WIDX_STAFF_LIST_SECURITY_TAB:
         case WIDX_STAFF_LIST_ENTERTAINERS_TAB:
             newSelectedTab = widgetIndex - WIDX_STAFF_LIST_HANDYMEN_TAB;
-            ;
             if (_windowStaffListSelectedTab == newSelectedTab)
                 break;
+
             _windowStaffListSelectedTab = (uint8_t)newSelectedTab;
             window_invalidate(w);
             w->scrolls[0].v_top = 0;
@@ -663,9 +663,10 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
     // How much space do we have for the name and action columns? (Discount scroll area and icons.)
-    int32_t nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15 - 68;
-    int32_t columnSize = nonIconSpace / 2;
-    int32_t actionOffset = w->widgets[WIDX_STAFF_LIST_LIST].right - columnSize - 15;
+    const int32_t nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15 - 68;
+    const int32_t nameColumnSize = nonIconSpace * 0.42;
+    const int32_t actionColumnSize = nonIconSpace * 0.58;
+    const int32_t actionOffset = w->widgets[WIDX_STAFF_LIST_LIST].right - actionColumnSize - 15;
 
     y = 0;
     i = 0;
@@ -691,20 +692,20 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
 
                 set_format_arg(0, rct_string_id, peep->name_string_idx);
                 set_format_arg(2, uint32_t, peep->id);
-                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, columnSize);
+                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, nameColumnSize);
 
                 get_arguments_from_action(peep, &argument_1, &argument_2);
                 set_format_arg(0, uint32_t, argument_1);
                 set_format_arg(4, uint32_t, argument_2);
-                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, actionOffset, y, columnSize);
+                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, actionOffset, y, actionColumnSize);
 
                 // True if a patrol path is set for the worker
                 if (gStaffModes[peep->staff_id] & 2)
                 {
-                    gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, columnSize + 5, y, 0);
+                    gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, nameColumnSize + 5, y, 0);
                 }
 
-                staffOrderIcon_x = columnSize + 20;
+                staffOrderIcon_x = nameColumnSize + 20;
                 if (peep->staff_type != 3)
                 {
                     staffOrders = peep->staff_orders;
