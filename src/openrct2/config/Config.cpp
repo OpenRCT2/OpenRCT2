@@ -816,7 +816,7 @@ bool config_find_or_browse_install_directory()
     std::string rct1Path = Config::FindRCT1Path();
     if (!rct1Path.empty())
     {
-        Memory::Free(gConfigGeneral.rct1_path);
+        free(gConfigGeneral.rct1_path);
         gConfigGeneral.rct1_path = String::Duplicate(rct1Path.c_str());
     }
 
