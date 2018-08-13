@@ -88,7 +88,7 @@ static input_mouse_data GetNextInput()
     }
 
     const CursorState* cursorState = context_get_cursor_state();
-    return { .X = cursorState->x, .Y = cursorState->y, .State = 0 };
+    return { cursorState->x, cursorState->y, 0 };
 }
 
 /**
@@ -357,7 +357,7 @@ void input_handle()
 
     invalidate_all_windows_after_input();
 
-    input_mouse_data mouseData = { .X = 0, .Y = 0, .State = 1 };
+    input_mouse_data mouseData = { 0, 0, 1 };
     while (mouseData.State != MOUSE_STATE_RELEASED)
     {
         mouseData = GetNextInput();
