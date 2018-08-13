@@ -26,10 +26,6 @@
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/StringIds.h>
 
-// TODO: Change to <optional> when Xcode gets std::optional support
-#include <experimental/optional>
-using std::experimental::optional;
-
 static int16_t ClickRepeatTicks;
 static uint32_t TicksSinceDragStart;
 static size_t DragScrollIndex;

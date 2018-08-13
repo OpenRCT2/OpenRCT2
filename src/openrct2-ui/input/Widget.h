@@ -13,8 +13,13 @@
 #include <openrct2-ui/windows/Window.h>
 
 // TODO: Change to <optional> when Xcode gets std::optional support
-#include <experimental/optional>
+#if defined(__has_include) && __has_include(<optional>)
+#    include <optional>
+using std::optional;
+#else
+#    include <experimental/optional>
 using std::experimental::optional;
+#endif
 
 void input_widget_over(rct_window* w, const input_mouse_data& mouseData, const rct_widgetindex widgetIndex);
 void input_widget_left(rct_window* w, const input_mouse_data& mouseData, const rct_widgetindex widgetIndex);

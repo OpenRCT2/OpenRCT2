@@ -38,8 +38,13 @@
 #include <openrct2/world/Sprite.h>
 
 // TODO: Change to <optional> when Xcode gets std::optional support
-#include <experimental/optional>
+#if defined(__has_include) && __has_include(<optional>)
+#    include <optional>
+using std::optional;
+#else
+#    include <experimental/optional>
 using std::experimental::optional;
+#endif
 
 static input_mouse_data MouseInputQueue[64];
 static size_t MouseInputQueueReadIndex = 0;
