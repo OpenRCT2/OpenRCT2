@@ -89,6 +89,13 @@ export interface SurfaceElement extends TileElement {
     parkFences: number;
 }
 
+export interface FootpathAdditionStatus {
+    north: number;
+    east: number;
+    south: number;
+    west: number;
+}
+
 export interface FootpathAddition {
     type: number;
     isBin: boolean;
@@ -100,6 +107,8 @@ export interface FootpathAddition {
     allowedOnQueue: boolean;
     allowedOnSlope: boolean;
     isQueueScreen: boolean;
+    status: FootpathAdditionStatus;
+    rideIndex: number;
 
     /**
      * Remove the path addition
@@ -108,7 +117,7 @@ export interface FootpathAddition {
 }
 
 export interface FootpathElement extends TileElement {
-    type: number;
+    footpathType: number;
     isSloped: boolean;
     addition: FootpathAddition;
 }

@@ -31,7 +31,7 @@ namespace OpenRCT2::Scripting
         {
         }
 
-        std::string type_get() const
+        std::string footpathType_get() const
         {
             switch (_element->GetType())
             {
@@ -181,6 +181,66 @@ namespace OpenRCT2::Scripting
     {
         class ScFootpathAddition
         {
+            class ScFootpathAdditionStatus
+            {
+            protected:
+                rct_tile_element* _element;
+
+            public:
+                ScFootpathAdditionStatus(rct_tile_element* element)
+                    : _element(element)
+                {
+                }
+
+                uint8_t north_get()
+                {
+                    return _element->properties.path.addition_status & 3;
+                }
+                void north_set(uint8_t value)
+                {
+                    _element->properties.path.addition_status &= ~3;
+                    _element->properties.path.addition_status |= value & 3;
+                }
+
+                uint8_t east_get()
+                {
+                    return _element->properties.path.addition_status & 3;
+                }
+                void east_set(uint8_t value)
+                {
+                    _element->properties.path.addition_status &= ~(3 << 2);
+                    _element->properties.path.addition_status |= (value & 3) << 2;
+                }
+
+                uint8_t south_get()
+                {
+                    return _element->properties.path.addition_status & 3;
+                }
+                void south_set(uint8_t value)
+                {
+                    _element->properties.path.addition_status &= ~(3 << 4);
+                    _element->properties.path.addition_status |= (value & 3) << 4;
+                }
+
+                uint8_t west_get()
+                {
+                    return _element->properties.path.addition_status & 3;
+                }
+                void west_set(uint8_t value)
+                {
+                    _element->properties.path.addition_status &= ~(3 << 6);
+                    _element->properties.path.addition_status |= (value & 3) << 6;
+                }
+
+                static void Register(duk_context* ctx)
+                {
+                    dukglue_register_property(ctx, &north_get, &north_set, "north");
+                    dukglue_register_property(ctx, &east_get, &east_set, "east");
+                    dukglue_register_property(ctx, &south_get, &south_set, "south");
+                    dukglue_register_property(ctx, &west_get, &west_set, "west");
+                }
+            };
+
         protected:
             rct_tile_element* _element;
             bool VerifyPathAdditionExists()
@@ -194,8 +254,8 @@ namespace OpenRCT2::Scripting
             }
 
         public:
-            ScFootpathAddition(ScFootpathElement* path)
-                : _element(path->_element)
+            ScFootpathAddition(rct_tile_element* element)
+                : _element(element)
             {
             }
 
@@ -297,10 +357,20 @@ namespace OpenRCT2::Scripting
                 return sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN;
             }
 
+            std::shared_ptr<ScFootpathAdditionStatus> status_get()
+            {
+                return std::make_shared<ScFootpathAdditionStatus>(_element);
+            }
+
             static void Register(duk_context* ctx)
             {
+                // Addition status properties (.status.north, .status.east, etc.)
+                ScFootpathAdditionStatus::Register(ctx);
+
+                // Functions
                 dukglue_register_method(ctx, &ScFootpathAddition::Remove, "remove");
 
+                // Properties
                 dukglue_register_property(ctx, &type_get, &type_set, "type");
                 dukglue_register_property(ctx, &isBin_get, nullptr, "isBin");
                 dukglue_register_property(ctx, &isBench_get, nullptr, "isBench");
@@ -311,10 +381,11 @@ namespace OpenRCT2::Scripting
                 dukglue_register_property(ctx, &allowedOnQueue_get, nullptr, "allowedOnQueue");
                 dukglue_register_property(ctx, &allowedOnSlope_get, nullptr, "allowedOnSlope");
                 dukglue_register_property(ctx, &isQueueScreen_get, nullptr, "isQueueScreen");
+                dukglue_register_property(ctx, &status_get, nullptr, "status");
             }
         };
 
-        uint8_t type_get()
+        uint8_t footpathType_get()
         {
             return footpath_element_get_type(_element);
         }
@@ -329,38 +400,72 @@ namespace OpenRCT2::Scripting
             footpath_element_set_type(_element, index);
         }
 
-        bool sloped_get()
+        bool isSloped_get()
         {
             return footpath_element_is_sloped(_element);
         }
-        void slope_set(bool value)
+        void isSlope_set(bool value)
         {
             footpath_element_set_sloped(_element, value);
         }
 
+        bool isQueue_get()
+        {
+            return footpath_element_is_queue(_element);
+        }
+
         std::shared_ptr<ScFootpathAddition> addition_get()
         {
-            
             if (!footpath_element_has_path_scenery(_element))
                 return nullptr;
 
-            return std::make_shared<ScFootpathAddition>(this);
+            return std::make_shared<ScFootpathAddition>(_element);
+        }
+
+        uint8_t edges_get()
+        {
+            return footpath_element_get_edges(_element);
+        }
+        void edges_set(uint8_t value)
+        {
+            footpath_element_set_edges(_element, value);
+        }
+
+        uint8_t corners_get()
+        {
+            return footpath_element_get_corners(_element);
+        }
+        void corners_set(uint8_t value)
+        {
+            footpath_element_set_corners(_element, value);
+        }
+
+        uint8_t rideIndex_get()
+        {
+            if (!footpath_element_is_queue(_element))
+            {
+                // TODO: Show warning that "path is not a queue"
+            }
+            return _element->properties.path.ride_index;
         }
 
     public:
         static void Register(duk_context* ctx)
         {
-            // Registe rshared properties (baseheight, clearance height, etc.)
+            // Register shared properties (baseheight, clearance height, etc.)
             RegisterSharedProperties<ScFootpathElement>(ctx);
 
             // Register path addition properties (.addition.isBench, .addition.isLamp, etc.)
             ScFootpathAddition::Register(ctx);
 
             // Specific properties
-            dukglue_register_property(ctx, &type_get, &type_set, "type");
-            dukglue_register_property(ctx, &sloped_get, &slope_set, "isSloped");
-            dukglue_register_property(ctx, &sloped_get, &slope_set, "isQueue");
+            dukglue_register_property(ctx, &footpathType_get, &type_set, "footpathType");
+            dukglue_register_property(ctx, &isSloped_get, &isSlope_set, "isSloped");
+            dukglue_register_property(ctx, &isQueue_get, nullptr, "isQueue");
             dukglue_register_property(ctx, &addition_get, nullptr, "addition");
+            dukglue_register_property(ctx, &edges_get, &edges_set, "edges");
+            dukglue_register_property(ctx, &corners_get, &corners_set, "corners");
+            dukglue_register_property(ctx, &rideIndex_get, nullptr, "rideIndex");
         }
     };
 
@@ -454,7 +559,8 @@ namespace OpenRCT2::Scripting
         // When you register a member function of a parent class, it belongs to the parent and cannot be accessed by its
         // children. To get around this issue, we need to force the function pointer types to be of the class we want them to be
         // available for. This needs to be done for every child.
-        dukglue_register_property(ctx, static_cast<std::string (T::*)() const>(&ScTileElement::type_get), nullptr, "type");
+        dukglue_register_property(
+            ctx, static_cast<std::string (T::*)() const>(&ScTileElement::footpathType_get), nullptr, "type");
         dukglue_register_property(
             ctx, static_cast<bool (T::*)() const>(&ScTileElement::broken_get),
             static_cast<void (T::*)(bool)>(&ScTileElement::broken_set), "broken");
