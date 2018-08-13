@@ -454,11 +454,12 @@ static void sub_6A4101(
             }
             if (gConfigGeneral.upper_case_banners)
             {
-                format_string_to_upper(gCommonStringFormatBuffer, 256, string_id, gCommonFormatArgs);
+                format_string_to_upper(
+                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
             }
             else
             {
-                format_string(gCommonStringFormatBuffer, 256, string_id, gCommonFormatArgs);
+                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), string_id, gCommonFormatArgs);
             }
 
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

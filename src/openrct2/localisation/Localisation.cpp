@@ -35,7 +35,7 @@
 #include "Date.h"
 #include "Localisation.h"
 
-char gCommonStringFormatBuffer[256];
+char gCommonStringFormatBuffer[512];
 uint8_t gCommonFormatArgs[80];
 uint8_t gMapTooltipFormatArgs[40];
 

@@ -107,7 +107,7 @@ static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* pa
 
 static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, rct_string_id format, void* args)
 {
-    utf8 buffer[256];
+    utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
     DrawText(dpi, x, y, paint, buffer);
 }
@@ -134,7 +134,7 @@ static void DrawTextEllipsisedCompat(
     _legacyPaint.SpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    utf8 buffer[256];
+    utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
     gfx_clip_string(buffer, width);
 
@@ -206,7 +206,7 @@ void gfx_draw_string_right_clipped(
 int32_t gfx_draw_string_left_wrapped(
     rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
 {
-    utf8 buffer[256];
+    utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -225,7 +225,7 @@ int32_t gfx_draw_string_left_wrapped(
 int32_t gfx_draw_string_centred_wrapped(
     rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
 {
-    utf8 buffer[256];
+    utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
