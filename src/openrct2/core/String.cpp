@@ -742,7 +742,7 @@ namespace String
 #endif
     }
 
-    bool ContainsColourCode(std::string string)
+    bool ContainsColourCode(const std::string& string)
     {
         for (char c : string)
         {

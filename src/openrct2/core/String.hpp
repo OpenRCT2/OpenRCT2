@@ -114,6 +114,6 @@ namespace String
     /**
      * Returns true if the string contains an RCT2 colour code.
      */
-    bool ContainsColourCode(std::string string);
+    bool ContainsColourCode(const std::string& string);
 
 } // namespace String
