@@ -91,6 +91,7 @@ void platform_get_time_local(rct2_time* out_time);
 bool platform_file_exists(const utf8* path);
 bool platform_directory_exists(const utf8* path);
 bool platform_original_game_data_exists(const utf8* path);
+bool platform_original_rct1_data_exists(const utf8* path);
 time_t platform_file_get_modified_time(const utf8* path);
 bool platform_ensure_directory_exists(const utf8* path);
 bool platform_directory_delete(const utf8* path);
@@ -119,6 +120,7 @@ uint8_t platform_get_locale_temperature_format();
 uint8_t platform_get_locale_date_format();
 bool platform_process_is_elevated();
 bool platform_get_steam_path(utf8* outPath, size_t outSize);
+std::string platform_get_rct1_steam_dir();
 std::string platform_get_rct2_steam_dir();
 
 #ifndef NO_TTF
