@@ -25,7 +25,10 @@
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/StringIds.h>
-#include <optional>
+
+// TODO: Change to <optional> when Xcode gets std::optional support
+#include <experimental/optional>
+using std::experimental::optional;
 
 static int16_t ClickRepeatTicks;
 static uint32_t TicksSinceDragStart;
@@ -700,8 +703,7 @@ void input_widget_pressed(rct_widgetindex widgetIndex, rct_window* w, rct_widget
     }
 }
 
-std::optional<int32_t> input_get_widget_cursor_id(
-    rct_window* window, rct_widgetindex widgetId, const input_mouse_data& mouseData)
+optional<int32_t> input_get_widget_cursor_id(rct_window* window, rct_widgetindex widgetId, const input_mouse_data& mouseData)
 {
     switch (window->widgets[widgetId].type)
     {

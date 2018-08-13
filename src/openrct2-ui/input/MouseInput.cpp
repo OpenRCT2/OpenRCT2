@@ -36,7 +36,10 @@
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Sprite.h>
-#include <optional>
+
+// TODO: Change to <optional> when Xcode gets std::optional support
+#include <experimental/optional>
+using std::experimental::optional;
 
 static input_mouse_data MouseInputQueue[64];
 static size_t MouseInputQueueReadIndex = 0;
@@ -55,7 +58,7 @@ int32_t gTooltipCursorY;
  *
  *  rct2: 0x00407074
  */
-static std::optional<input_mouse_data> GetMouseInput()
+static optional<input_mouse_data> GetMouseInput()
 {
     // Check if that location has been written to yet
     if (MouseInputQueueReadIndex == MouseInputQueueWriteIndex)
@@ -74,7 +77,7 @@ static std::optional<input_mouse_data> GetMouseInput()
  */
 static input_mouse_data GetNextInput()
 {
-    if (std::optional<input_mouse_data> input = GetMouseInput())
+    if (optional<input_mouse_data> input = GetMouseInput())
     {
         return *input;
     }
@@ -89,7 +92,7 @@ static input_mouse_data GetNextInput()
  */
 static void ProcessMouseOver(const input_mouse_data& mouseData)
 {
-    std::optional<int32_t> cursorId;
+    optional<int32_t> cursorId;
     set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
 
     if (rct_window* window = window_find_from_point(mouseData.X, mouseData.Y); window != nullptr)
@@ -100,7 +103,7 @@ static void ProcessMouseOver(const input_mouse_data& mouseData)
         }
     }
 
-    if (cursorId != std::nullopt)
+    if (cursorId)
     {
         viewport_interaction_right_over(mouseData.X, mouseData.Y);
         input_set_mouse_cursor(*cursorId);
