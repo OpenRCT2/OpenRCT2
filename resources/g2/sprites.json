@@ -765,6 +765,12 @@
         "forceBmp": true
     },
     {
+        "path": "font/ellipsis-small.png",
+        "y_offset": 6,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1086,6 +1092,12 @@
     {
         "path": "font/t-comma-bold.png",
         "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/ellipsis-bold.png",
+        "y_offset": 6,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1419,6 +1431,12 @@
     {
         "path": "font/t-comma-tiny.png",
         "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/ellipsis-tiny.png",
+        "y_offset": 4,
         "palette": "keep",
         "forceBmp": true
     }
