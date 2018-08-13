@@ -13,7 +13,7 @@
 #include <algorithm>
 #include <cmath>
 #include <openrct2-ui/input/Input.h>
-#include <openrct2-ui/input/Widget.h>
+#include <openrct2-ui/input/WidgetInput.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -627,7 +627,7 @@ static void WidgetPressedContinue(
         audio_play_sound(SOUND_CLICK_2, 0, mid_point_x);
 
         if (gPressedWidget.window_classification != w->classification || gPressedWidget.window_number != w->number
-            || gPressedWidget.widget_index != widgetIndex || (w->disabled_widgets & (1 << widgetIndex)))
+            || gPressedWidget.widget_index != widgetIndex || (w->disabled_widgets & (1UL << widgetIndex)))
         {
             WidgetPressedPost(w, mouseData);
             return;
@@ -641,7 +641,7 @@ static void WidgetPressedContinue(
 static void WidgetPressedOver(rct_window* w, const rct_widgetindex widgetIndex, const input_mouse_data& mouseData)
 {
     if (gPressedWidget.window_classification != w->classification || gPressedWidget.window_number != w->number
-        || gPressedWidget.widget_index != widgetIndex || w->disabled_widgets & (1 << widgetIndex))
+        || gPressedWidget.widget_index != widgetIndex || w->disabled_widgets & (1UL << widgetIndex))
     {
         WidgetPressedPost(w, mouseData);
         return;
@@ -652,7 +652,7 @@ static void WidgetPressedOver(rct_window* w, const rct_widgetindex widgetIndex, 
         ClickRepeatTicks++;
 
         // Handle click repeat
-        auto is_hold_down_widget = static_cast<bool>(w->hold_down_widgets & (1 << widgetIndex));
+        auto is_hold_down_widget = static_cast<bool>(w->hold_down_widgets & (1UL << widgetIndex));
         if (ClickRepeatTicks >= 16 && !(ClickRepeatTicks & 3) && is_hold_down_widget)
         {
             window_event_mouse_down_call(w, widgetIndex);

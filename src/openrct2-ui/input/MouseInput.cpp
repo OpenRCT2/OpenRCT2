@@ -11,7 +11,7 @@
 #include <cmath>
 #include <openrct2-ui/input/Input.h>
 #include <openrct2-ui/input/Scrollbars.h>
-#include <openrct2-ui/input/Widget.h>
+#include <openrct2-ui/input/WidgetInput.h>
 #include <openrct2-ui/input/WindowPositioning.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
