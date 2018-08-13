@@ -18,7 +18,7 @@
 static int32_t OriginalWindowWidth;
 static int32_t OriginalWindowHeight;
 
-static void PositionEnd(rct_window *w, const input_mouse_data &mouseData)
+static void PositionEnd(rct_window* w, const input_mouse_data& mouseData)
 {
     gInputState = INPUT_STATE_NORMAL;
     gTooltipTimeout = 0;
@@ -26,7 +26,7 @@ static void PositionEnd(rct_window *w, const input_mouse_data &mouseData)
     window_event_moved_call(w, mouseData.X, mouseData.Y);
 }
 
-static void ResizeContinue(rct_window *w, const input_mouse_data &mouseData)
+static void ResizeContinue(rct_window* w, const input_mouse_data& mouseData)
 {
     if (mouseData.Y < (int32_t)context_get_height() - 2)
     {
