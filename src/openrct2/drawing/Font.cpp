@@ -352,6 +352,8 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
 
         case UNICODE_INTERPUNCT:
             return SPR_G2_INTERPUNCT - SPR_CHAR_START;
+        case UNICODE_ELLIPSIS:
+            return SPR_G2_ELLIPSIS - SPR_CHAR_START;
 
         // Romanian
         case UNICODE_A_BREVE_UC:
@@ -543,6 +545,7 @@ bool font_supports_string_sprite(const utf8* text)
             case UNICODE_S_CEDILLA:
 
             case UNICODE_INTERPUNCT:
+            case UNICODE_ELLIPSIS:
 
             case UNICODE_A_BREVE_UC:
             case UNICODE_A_BREVE:

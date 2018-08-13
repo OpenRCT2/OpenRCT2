@@ -304,4 +304,9 @@ enum UnicodeCurrency
     UNICODE_F_WITH_HOOK_UC = 401,
 };
 
+enum UnicodePunctuation
+{
+    UNICODE_ELLIPSIS = 8230,
+};
+
 #endif
