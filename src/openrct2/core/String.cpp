@@ -744,9 +744,9 @@ namespace String
 
     bool ContainsColourCode(const std::string& string)
     {
-        for (char c : string)
+        for (unsigned char c : string)
         {
-            if (c >= (char)FORMAT_COLOUR_CODE_START && c <= (char)FORMAT_COLOUR_CODE_END)
+            if (c >= FORMAT_COLOUR_CODE_START && c <= FORMAT_COLOUR_CODE_END)
             {
                 return true;
             }
