@@ -35,6 +35,7 @@
 - Fix: [#7823] You can build mazes in pause mode.
 - Fix: [#7804] Russian ride descriptions are cut off.
 - Fix: [#7872] CJK tooltips are often cut off.
+- Fix: [#7895] Import of Mega Park and the RCT1 title music do not work on some RCT1 sources.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
