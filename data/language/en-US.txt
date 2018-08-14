@@ -1563,7 +1563,7 @@ STR_DTLS    :The people of Hawaii are bored of surfing and are looking for somet
 <North America - Grand Canyon>
 STR_SCNR    :North America - Grand Canyon
 STR_PARK    :Canyon Calamities
-STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
+STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighboring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :North America - Rollercoaster Heaven
