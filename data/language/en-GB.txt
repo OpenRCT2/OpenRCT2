@@ -3724,6 +3724,8 @@ STR_6260    :Show blocked tiles
 STR_6261    :Show wide paths
 STR_6262    :Master volume
 STR_6263    :{SMALLFONT}{BLACK}Toggle all sound on/off
+STR_6264    :Always use system file browser
+STR_6265    :{SMALLFONT}{BLACK}When enabled, your operating system's file browser will be used instead of OpenRCT2's.
 
 #############
 # Scenarios #

@@ -175,6 +175,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,
     WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
     WIDX_STAY_CONNECTED_AFTER_DESYNC,
+    WIDX_ALWAYS_NATIVE_LOADSAVE,
     WIDX_AUTOSAVE,
     WIDX_AUTOSAVE_DROPDOWN,
     WIDX_PATH_TO_RCT1_TEXT,
@@ -355,11 +356,12 @@ static rct_widget window_options_advanced_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    84,      95,    STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,  STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },    // Allow loading with incorrect checksum
     { WWT_CHECKBOX,         2,  10,     299,    99,     110,    STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
     { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
-    { WWT_DROPDOWN,         1,  165,    299,    130,    141,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
-    { WWT_BUTTON,           1,  288,    298,    131,    140,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-    { WWT_LABEL,            1,  23,     298,    148,    159,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
-    { WWT_BUTTON,           1,  24,     289,    163,    176,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
-    { WWT_BUTTON,           1,  289,    299,    163,    176,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
+    { WWT_CHECKBOX,         1,  10,     299,    129,    140,    STR_ALWAYS_NATIVE_LOADSAVE,                 STR_ALWAYS_NATIVE_LOADSAVE_TIP },                   // Use native load/save window
+    { WWT_DROPDOWN,         1,  165,    299,    145,    157,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
+    { WWT_BUTTON,           1,  288,    298,    146,    156,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
+    { WWT_LABEL,            1,  23,     298,    165,    176,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_BUTTON,           1,  24,     289,    180,    193,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
+    { WWT_BUTTON,           1,  289,    299,    180,    193,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },
 };
 
@@ -594,6 +596,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
     (1 << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
     (1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
+    (1 << WIDX_ALWAYS_NATIVE_LOADSAVE) |
     (1 << WIDX_AUTOSAVE) |
     (1 << WIDX_AUTOSAVE_DROPDOWN) |
     (1 << WIDX_PATH_TO_RCT1_TEXT) |
@@ -926,6 +929,11 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     break;
                 case WIDX_STAY_CONNECTED_AFTER_DESYNC:
                     gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
+                    config_save_default();
+                    window_invalidate(w);
+                    break;
+                case WIDX_ALWAYS_NATIVE_LOADSAVE:
+                    gConfigGeneral.use_native_browse_dialog = !gConfigGeneral.use_native_browse_dialog;
                     config_save_default();
                     window_invalidate(w);
                     break;
@@ -1888,6 +1896,7 @@ static void window_options_invalidate(rct_window* w)
                 w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
             widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
             widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+            widget_set_checkbox_value(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
             break;
 
         case WINDOW_OPTIONS_PAGE_TWITCH:

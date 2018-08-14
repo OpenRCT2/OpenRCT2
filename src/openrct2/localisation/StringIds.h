@@ -3888,6 +3888,9 @@ enum
     STR_MASTER_VOLUME = 6262,
     STR_MASTER_VOLUME_TIP = 6263,
 
+    STR_ALWAYS_NATIVE_LOADSAVE = 6264,
+    STR_ALWAYS_NATIVE_LOADSAVE_TIP = 6265,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

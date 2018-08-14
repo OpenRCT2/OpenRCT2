@@ -161,11 +161,6 @@ static void window_loadsave_sort_list();
 
 static rct_window* window_overwrite_prompt_open(const char* name, const char* path);
 
-void window_loadsave_set_loadsave_callback(loadsave_callback cb)
-{
-    _loadSaveCallback = cb;
-}
-
 static int32_t window_loadsave_get_dir(utf8* last_save, char* path, const char* subdir, size_t pathSize)
 {
     if (last_save && platform_ensure_directory_exists(last_save))
@@ -182,15 +177,31 @@ static int32_t window_loadsave_get_dir(utf8* last_save, char* path, const char* 
     return 1;
 }
 
-rct_window* window_loadsave_open(int32_t type, const char* defaultName)
+static bool browse(bool isSave, char* path, size_t pathSize);
+
+rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback)
 {
-    _loadSaveCallback = nullptr;
+    _loadSaveCallback = callback;
     _type = type;
     _defaultName[0] = '\0';
 
     if (!str_is_null_or_empty(defaultName))
     {
         safe_strcpy(_defaultName, defaultName, sizeof(_defaultName));
+    }
+
+    bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
+    bool success = false;
+    char path[MAX_PATH];
+
+    // Bypass the lot?
+    if (gConfigGeneral.use_native_browse_dialog)
+    {
+        if (browse(isSave, path, sizeof(path)))
+        {
+            window_loadsave_select(nullptr, path);
+        }
+        return nullptr;
     }
 
     rct_window* w = window_bring_to_front_by_class(WC_LOADSAVE);
@@ -209,10 +220,6 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName)
 
     w->no_list_items = 0;
     w->selected_list_item = -1;
-
-    bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
-    bool success = false;
-    char path[MAX_PATH];
 
     switch (type & 0x0E)
     {
