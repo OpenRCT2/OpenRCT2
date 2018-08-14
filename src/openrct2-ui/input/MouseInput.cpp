@@ -373,8 +373,8 @@ void input_handle()
     {
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
-        mouseData.X = std::clamp(0, mouseData.X, screenWidth - 1);
-        mouseData.Y = std::clamp(0, mouseData.Y, screenHeight - 1);
+        mouseData.X = std::clamp(mouseData.X, 0, screenWidth - 1);
+        mouseData.Y = std::clamp(mouseData.Y, 0, screenHeight - 1);
 
         HandleInputMouse(mouseData);
         ProcessMouseOver(mouseData);
