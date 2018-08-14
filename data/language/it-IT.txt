@@ -4784,3 +4784,299 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
+
+###############################################################################
+## RCT2 Scenarios
+###############################################################################
+
+
+<Alpine Adventures>
+STR_SCNR    :Avventure alpine
+STR_PARK    :Avventure alpine
+STR_DTLS    :Converti un piccolo rifugio d'alta quota in un parco dei divertimenti a tema nevoso
+
+<Amity Airfield>
+STR_SCNR    :Campo d'aviazione dell'amicizia
+STR_PARK    :Campo d'aviazione dell'amicizia
+STR_DTLS    :Costruisci un parco avente come tema il volo in questo aeroporto abbandonato
+
+<Botany Breakers>
+STR_SCNR    :Distruttori botanici
+STR_PARK    :Distruttori botanici
+STR_DTLS    :La sfida è quella di costruire un parco ad alto profitto su questa isola paradisiaca
+
+<Build your own Six Flags Belgium>
+STR_SCNR    :Costruisci il tuo Six Flags Belgio
+STR_PARK    :Six Flags Belgio
+STR_DTLS    :Costruisci la tua versione personale di questo parco europeo Six Flags
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR    :Costruisci la tua Grande avventura Six Flags
+STR_PARK    :Grande avventura Six Flags
+STR_DTLS    :Usa la tua abilità nel progettare per ricreare questo parco Six Flags
+
+<Build your own Six Flags Holland>
+STR_SCNR    :Costruisci il tuo Six Flags Olanda
+STR_PARK    :Six Flags Olanda
+STR_DTLS    :Costruisci questo parco europeo Six Flags come piace a te
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR    :Costruisci la tua Montagna magica Six Flags
+STR_PARK    :Montagna magica Six Flags
+STR_DTLS    :Crea la tua versione personale di questo immenso parco Six Flags
+
+<Build your own Six Flags Park>
+STR_SCNR    :Costruisci il tuo parco Six Flags
+STR_PARK    :Six Flags
+STR_DTLS    :Costruisci il tuo progetto di parco Six Flags: costruisci le attrazioni degli altri parchi Six Flags oppure progettale da solo
+
+<Build your own Six Flags over Texas>
+STR_SCNR    :Costruisci il tuo Six Flags sul Texas
+STR_PARK    :Six Flags sul Texas
+STR_DTLS    :Cominciando da zero, costruisci tutte le attrazioni di questo parco Six Flags
+
+<Bumbly Bazaar>
+STR_SCNR    :Bazar nei guai
+STR_PARK    :Bazar nei guai
+STR_DTLS    :A partire da un bazar in un piccolo mercato, devi far aumentare i profitti dei negozi e dei chioschi costruendo attrazioni e ottovolanti per attirare più clienti
+
+<Crazy Castle>
+STR_SCNR    :Castello pazzo
+STR_PARK    :Castello pazzo
+STR_DTLS    :Hai ereditato un grande castello: il tuo compito è convertirlo in un piccolo parco tematico.
+
+<Dusty Greens>
+STR_SCNR    :Green polverosi
+STR_PARK    :Green polverosi
+STR_DTLS    :Situato vicino a un'uscita autostradale nel deserto, Green polverosi è un'ottima opportunità per trasformare un piccolo club di golf in un eccitante parco a tema
+
+<Electric Fields>
+STR_SCNR    :Campi elettrici
+STR_PARK    :Campi elettrici
+STR_DTLS    :Hai ereditato una piccola fattoria. La sfida è costruire un piccolo parco a tema tra i campi e gli edifici della fattoria
+
+<Extreme Heights>
+STR_SCNR    :Altezze estreme
+STR_PARK    :Altezze estreme
+STR_DTLS    :Libero da restrizioni economiche, la sfida sta nell'espandere questo parco deserto per attrarre le persone che vogliono sperimentare la massima ebbrezza
+
+<Factory Capers>
+STR_SCNR    :Stramberie industriali
+STR_PARK    :Stramberie industriali
+STR_DTLS    :Un complesso industriale abbandonato è un'opportunità ideale per costruire un parco dei divertimenti con a tema la meccanica
+
+<Fungus Woods>
+STR_SCNR    :Boschi fungosi
+STR_PARK    :Boschi fungosi
+STR_DTLS    :La sfida sta nel costruire un entusiasmante parco a tema nei Boschi fungosi utilizzando solo attrazioni di legno d'altri tempi
+
+<Ghost Town>
+STR_SCNR    :Città fantasma
+STR_PARK    :Città fantasma
+STR_DTLS    :Sei stato assunto da una grande catena di parchi di divertimento per costruire un parco con ottovolanti giganti intorno a una città abbandonata vicino a una miniera
+
+<Gravity Gardens>
+STR_SCNR    :Giardini gravitazionali
+STR_PARK    :Giardini gravitazionali
+STR_DTLS    :La sfida è costruire un parco con ottovolanti in questi bellissimi giardini gravitazionali. Non altre attrazioni, solo ottovolanti!!
+
+<Infernal Views>
+STR_SCNR    :Viste infernali
+STR_PARK    :Viste infernali
+STR_DTLS    :Un parco arroccato pericolosamente su roccia vulcanica e tra fiumi di lava
+
+<Lucky Lake>
+STR_SCNR    :Lago fortunato
+STR_PARK    :Lago fortunato
+STR_DTLS    :Nonostante i fondi illimitati, la posizione di questo parco ti darà del filo da torcere se vorrai espanderlo e gestirlo
+
+<Rainbow Summit>
+STR_SCNR    :Vertice dell'arcobaleno
+STR_PARK    :Vertice dell'arcobaleno
+STR_DTLS    :Questo parco, costruito sul lato di una collina, non può avere attrazioni molto alte. Riuscirai a espandere il parco e a renderlo un enorme successo?
+
+<Six Flags Belgium>
+STR_SCNR    :Six Flags Belgio
+STR_PARK    :Six Flags Belgio
+STR_DTLS    :Mettiti alla prova gestendo e migliorando questo parco Six Flags
+
+<Six Flags Great Adventure>
+STR_SCNR    :Grande avventura Six Flags
+STR_PARK    :Grande avventura Six Flags
+STR_DTLS    :Costruisci le attrazioni Six Flags mancanti o crea dei progetti tutti tuoi per migliorare il parco!! Ma non dimenticare il tuo vero scopo: attirare più visitatori al parco!!
+
+<Six Flags Holland>
+STR_SCNR    :Six Flags Olanda
+STR_PARK    :Six Flags Olanda
+STR_DTLS    :Mettiti alla prova gestendo e migliorando questo parco Six Flags
+
+<Six Flags Magic Mountain>
+STR_SCNR    :Montagna magica Six Flags
+STR_PARK    :Montagna magica Six Flags
+STR_DTLS    :Costruisci le attrazioni Six Flags mancanti o crea dei progetti tutti tuoi per migliorare il parco!! Ma non dimenticare il tuo vero scopo: restituire il prestito mantenendo al tempo stesso alto il valore del parco!!
+
+<Six Flags over Texas>
+STR_SCNR    :Six Flags sul Texas
+STR_PARK    :Six Flags sul Texas
+STR_DTLS    :Costruisci le attrazioni Six Flags mancanti o crea dei progetti tutti tuoi per migliorare il parco!! Ma non dimenticare il tuo vero scopo: attirare più visitatori al parco!!
+
+###############################################################################
+## Wacky Worlds Scenarios
+###############################################################################
+<Africa - African Diamond Mine>
+STR_SCNR    :Africa - Miniera di diamanti
+STR_PARK    :Miniere africane
+STR_DTLS    :Hai ereditato una miniera di diamanti abbandonata, da cui è stato estratto l'ultimo prezioso diamante. Decidi di investire il ricavato per creare un parco che diventi famoso in tutto il mondo.
+
+<Africa - Oasis>
+STR_SCNR    :Africa - Oasi
+STR_PARK    :Il miraggio
+STR_DTLS    :Nel deserto è stata scoperta un'oasi che costituirebbe una splendida ambientazione per un parco. I mezzi di trasporto per raggiungerla esistono già.
+
+<Africa - Victoria Falls>
+STR_SCNR    :Africa - Cascate Vittoria
+STR_PARK    :Tuffo nel vuoto
+STR_DTLS    :È stata costruita una diga che eroga energia idroelettrica a basso prezzo e in quantità, con la quale è possibile alimentare un parco. Per rimborsare il prestito della diga, dovrai creare un parco di grande valore.
+
+<Antarctic - Ecological Salvage>
+STR_SCNR    :Antartide - Recupero ecologico
+STR_PARK    :Avventure fra i ghiacci
+STR_DTLS    :L'agenzia dei servizi ambientali si è rivolta a te per trasformare una vecchia raffineria, vero pugno nell'occhio, in rinomata attrazione turistica. La terra costa poco ma l'interesse sui prestiti è alto. Puoi vendere i vecchi edifici.
+
+<Asia - Great Wall of China Tourism Enhancement>
+STR_SCNR    :Asia - Turismo alla Grande Muraglia
+STR_PARK    :La Grande Muraglia Cinese
+STR_DTLS    :Le autorità hanno deciso di promuovere il turismo presso la Grande Muraglia costruendo un parco a tema nei paraggi. I soldi non sono un problema
+
+<Asia - Japanese Coastal Reclaim>
+STR_SCNR    :Asia - Sfruttamento costiero in Giappone
+STR_PARK    :Costa di Okinawa
+STR_DTLS    :Un parco esistente ha esaurito lo spazio a sua disposizione. L'unica possibilità è costruire in mare aperto e per riuscirci hai chiesto un prestito. Le limitazioni di altezza sono piuttosto restrittive, a causa del terreno cedevole.
+
+<Asia - Maharaja Palace>
+STR_SCNR    :Asia - Palazzo del Maragià
+STR_PARK    :Il parco del Maragià
+STR_DTLS    :Il Maragià ti ha incaricato di creare qualcosa che intrattenga la vasta popolazione locale. Costruisci un parco ispirato al palazzo del Maragià.
+
+<Australasia - Ayers Rock>
+STR_SCNR    :Australia - Ayers Rock
+STR_PARK    :Avventura all'Ayers
+STR_DTLS    :Nell'ambito di un programma di rivalutazione culturale, stai aiutando gli aborigeni a creare un parco. Devi attrarre un numero elevato di visitatori per trasmettergli l'eredità culturale degli aborigeni.
+
+<Australasia - Fun at the Beach>
+STR_SCNR    :Australia - Divertimento in spiaggia
+STR_PARK    :Barbecue balneare
+STR_DTLS    :Il parco marino di un imprenditore locale è fallito. Tu possiedi già un piccolo parco e per comprare l'altro devi trovare dei soldi, sviluppando poi entrambi in una grossa struttura combinata.
+
+<Europe - European Cultural Festival>
+STR_SCNR    :Europa - Festival culturale europeo
+STR_PARK    :Festival europeo
+STR_DTLS    :Ti è stato chiesto di gestire una grande attrazione culturale europea. Devi incrementare il numero di visite per ripagare i sussidi UE prima che scada il termine stabilito dal Parlamento Europeo.
+
+<Europe - Renovation>
+STR_SCNR    :Europa - Rinnovo
+STR_PARK    :Rinascita dalle ceneri
+STR_DTLS    :Un vecchio parco è in sfacelo. Ti viene concesso un prestito dall'Unione Europea per riportare questa zona desolata alla sua bellezza originaria. Dovrai rinnovare il parco e ripagare il prestito.
+
+<N. America - Extreme Hawaiian Island>
+STR_SCNR    :Nordamerica - Hawaii estreme
+STR_PARK    :Brivido a Waikiki
+STR_DTLS    :Gli abitanti delle Hawaii sono stufi del surf e cercano qualcosa di più eccitante. Devi costruire un parco che soddisfi le loro aspettative, mantenendo alto il livello di attrazione turistica locale.
+
+<North America - Grand Canyon>
+STR_SCNR    :Nordamerica - Grand Canyon
+STR_PARK    :Calamità nel canyon
+STR_DTLS    :Devi costruire un parco ai due lati di questa meraviglia naturale. Hai dei limiti di spazio da rispettare, ma potrai acquistare terreno dagli indiani locali. Dovrai raggiungere l'obiettivo per sostenere la popolazione locale.
+
+<North America - Rollercoaster Heaven>
+STR_SCNR    :Nordamerica - Paradiso dell'ottovolante
+STR_PARK    :Paradiso dell'ottovolante
+STR_DTLS    :Sei un magnate della finanza di grande successo, che si è preso 4 anni di vacanza dagli affari e desidera costruire un parco senza badare a spese.
+
+<South America - Inca Lost City>
+STR_SCNR    :Sudamerica - Città perduta Inca
+STR_PARK    :Il fondatore della città perduta
+STR_DTLS    :Per potenziare il turismo, devi creare un parco intonato all'ambiente, rispettando dei limiti di altezza.
+
+<South America - Rain Forest Plateau>
+STR_SCNR    :Sudamerica - La foresta pluviale
+STR_PARK    :Scorribanda nella foresta
+STR_DTLS    :Nella preziosa foresta pluviale, lo spazio è limitato. Devi sfruttare al meglio la radura già esistente per creare una valida alternativa all'industria locale del legno.
+
+<South America - Rio Carnival>
+STR_SCNR    :Sudamerica - Carnevale di Rio
+STR_PARK    :Pan di zucchero
+STR_DTLS    :Gestisci un piccolo parco presso Rio e la banca ti ha chiesto di rimborsare un debito. Devi aumentare rapidamente le tue entrate per fronteggiare questa situazione imprevista.
+
+###############################################################################
+## Time Twister Scenarios
+###############################################################################
+<Dark Age - Castle>
+STR_SCNR    :Età Oscura - Castello
+STR_PARK    :Castello di Cliffside
+STR_DTLS    :I membri locali della società per il ripristino delle leggi sulle battaglie prendono seriamente il loro hobby. Ti hanno affidato l'incarico di costruire un parco a tema sull'Età Oscura, da erigere sulle fondamenta del Castello di Cliffside.
+
+<Dark Age - Robin Hood>
+STR_SCNR    :Età Oscura - Robin Hood
+STR_PARK    :Foresta di Sherwood
+STR_DTLS    :Per sottrarre i beni ai ricchi e donarli ai poveri, tu e i tuoi uomini avete deciso di costruire un parco a tema nella Foresta di Sherwood.
+
+<Future - First Encounters>
+STR_SCNR    :Futuro - Primi incontri
+STR_PARK    :Stravaganza extraterrestre
+STR_DTLS    :Su un lontano pianeta è stata scoperta la vita Costruisci un parco a tema sugli alieni e goditi un successo di visitatori senza precedenti.
+
+<Future - Future World>
+STR_SCNR    :Futuro - Il mondo del futuro
+STR_PARK    :Città di Gemini
+STR_DTLS    :Metti in gioco la tua fantastica e utopistica visione del futuro e costruisci un parco futuristico composto dalle attrazioni più all'avanguardia.
+
+<Mythological - Animatronic Film Set>
+STR_SCNR    :Mitologico - Set cinematografico animatronico
+STR_PARK    :Animatronica antichità
+STR_DTLS    :Hai ricevuto l'incarico di gestire un parco a tema esistente, costruito sul set di un vecchio film. Rendi omaggio ai pionieri dell'animazione cinematografica che per primi hanno portato sul grande schermo e creature mitologiche.
+
+<Mythological - Cradle of Civilisation>
+STR_SCNR    :Mitologico - La culla della civiltà
+STR_PARK    :Follia mitologica
+STR_DTLS    :Possiedi un'isola di eccezionale valore archeologico. Hai deciso di preservarne le origini costruendo un parco a tema basato sull'eredità mitologica della zona.
+
+<Prehistoric - After the Asteroid>
+STR_SCNR    :Preistoria - Dopo l'asteroide
+STR_PARK    :Il massacro del cratere
+STR_DTLS    :Possiedi un vecchio cratere meteoritico. Con lo spirito che ti contraddistingue, hai deciso di costruire un parco sugli asteroidi, tramutando così la tua terra in una fonte di ingente guadagno.
+
+<Prehistoric - Jurassic Safari>
+STR_SCNR    :Preistoria - Safari Giurassico
+STR_PARK    :Ottovolantosauro
+STR_DTLS    :Hai ricevuto l'incarico di costruire un parco preistorico ispirato al Giurassico. Per ottimizzare l'accesso dei visitatori, dovrai costruire tragitti che sovrastano la valle e vi si inoltrano.
+
+<Prehistoric - Stone Age>
+STR_SCNR    :Preistoria - Età della Pietra
+STR_PARK    :Passeggiata tra le rocce
+STR_DTLS    :Per scoraggiare i costruttori di autostrade e conservare i misteriosi e antichi cerchi di pietra, dovrai costruire un parco a tema sull'Età della Pietra e farlo fruttare. L'impresa è una vera e propria sfida, dato il territorio inospitale.
+
+<Roaring Twenties - Prison Island>
+STR_SCNR    :Ruggenti Anni Venti - Isola carceraria
+STR_PARK    :Alcatraz
+STR_DTLS    :L'infame isola carceraria, la cui popolazione un tempo si dedicava al contrabbando e alle attività illecite, è in vendita. Hai deciso di trasformarla in un'importante attrazione turistica e il denaro non è un problema.
+
+<Roaring Twenties - Schneider Cup>
+STR_SCNR    :Ruggenti Anni Venti - Coppa Schneider
+STR_PARK    :Costa di Schneider
+STR_DTLS    :Manca poco aI 75° anniversario della conquista della Coppa Schneider da parte di tuo nonno. Hai deciso di onorare la sua impresa costruendo un parco a tema basato sulla famosa corsa di idrovolanti.
+
+<Roaring Twenties - Skyscrapers>
+STR_SCNR    :Ruggenti Anni Venti
+STR_PARK    :Metropoli
+STR_DTLS    :Possiedi un lotto di terra vuoto vicino alla parte meno sviluppata della città. Per sfruttare al meglio la tua proprietà, costruisci un parco caratterizzato da grattacieli ispirandoti all'architettura art decò degli anni Venti.
+
+<Rock 'n' Roll - Flower Power>
+STR_SCNR    :Rock & Roll - Gli anni dei fiori
+STR_PARK    :Woodstock
+STR_DTLS    :Un importante festival musicale si tiene ogni anno sulla tua proprietà. Costruisci un parco a tema di ispirazione hippy per attrarre gli spiriti liberi.
+
+<Rock 'n' Roll - Rock 'n' Roll>
+STR_SCNR    :Rock & Roll - Rock & Roll
+STR_PARK    :La rinascita del Rock & Roll
+STR_DTLS    :Questo vecchio parco a tema ha vissuto tempi migliori. Aiuta il proprietario a ristrutturarlo in stile Rock & Roll e trasformalo in un luogo di successo.

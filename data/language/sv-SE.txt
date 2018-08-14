@@ -3572,8 +3572,8 @@ STR_5232    :{SMALLFONT}{BLACK}Redigerare
 STR_5233    :{SMALLFONT}{BLACK}Övrigt
 STR_5234    :{SMALLFONT}{BLACK}Hanterare
 STR_5235    :{SMALLFONT}{BLACK}Inställningar
-STR_5236    :Fönster:
-STR_5237    :Palett:
+STR_5236    :Fönster
+STR_5237    :Palett
 STR_5238    :Nuvarande Tema:
 STR_5239    :Kopiera
 STR_5240    :Döp ditt tema
@@ -3832,15 +3832,15 @@ STR_5492    :Scenarioinställningar
 STR_5493    :Skicka Meddelande
 STR_5494    :<removed string - do not use>
 STR_5495    :Spelarlista
-STR_5496    :Spelare:
-STR_5497    :Ping:
+STR_5496    :Spelare
+STR_5497    :Ping
 STR_5498    :Serverlista
 STR_5499    :Spelarens Namn:
 STR_5500    :Lägg till server
 STR_5501    :Starta en server
-STR_5502    :Flera spelare
+STR_5502    :Online
 STR_5503    :Skriv in hostnamn eller IP-adress:
-STR_5504    :{SMALLFONT}{BLACK}Visa alla spelare
+STR_5504    :{SMALLFONT}{BLACK}Visa online-status
 STR_5505    :Kunde inte ansluta till servern.
 STR_5506    :Gästerna ignorerar intensivitetnivån
 STR_5507    :<removed string - do not use>
@@ -3978,7 +3978,7 @@ STR_5638    :Åtkomst nekad
 STR_5639    :{SMALLFONT}{BLACK}Visa lista över spelare på servern
 STR_5640    :{SMALLFONT}{BLACK}Hantera grupper
 STR_5641    :Standardgrupp:
-STR_5642    :Grupp:
+STR_5642    :Grupp
 STR_5643    :Lägg till Grupp
 STR_5644    :Ta bort Grupp
 STR_5645    :Chatta
@@ -4006,7 +4006,7 @@ STR_5666    :Lösenordslös Inloggning
 STR_5701    :{WINDOW_COLOUR_2}Senaste handling: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Visa spelarens senaste handling
 STR_5703    :Kan inte sparka ut ägaren
-STR_5704    :Senaste Handling:
+STR_5704    :Senaste Handling
 STR_5705    :Kan inte välja denna grupp
 STR_5706    :Kan inte ta bort grupper spelare finns i
 STR_5707    :Denna grupp kan inte modifieras
@@ -4311,7 +4311,7 @@ STR_6002    :{SMALLFONT}{BLACK}Lampor och åkturer kommer lysa upp i natten.{NEW
 STR_6003    :Avskärnings-vy
 STR_6004    :Avskärnings-vy
 STR_6005    :Aktivera Avskärnings-vy
-STR_6006    :{SMALLFONT}{BLACK}Avskärnings-vyn kommer endast visa element på eller under den avskurna höjden, allt ovanför blir dolt
+STR_6006    :{SMALLFONT}{BLACK}Avskärnings-vyn kommer endast visa element på eller under den avskurna höjden (vertikal avskärning)och det markerade området (horizontal avskärning)
 STR_6007    :Höjd
 STR_6008    :{SMALLFONT}{BLACK}Klicka för att växla råa-värden<->värden i måttenheter
 STR_6009    :{SMALLFONT}{BLACK}Välj höjd på avskärning
@@ -4459,7 +4459,7 @@ STR_6150    :Ogiltigt svar från huvudservern (inget JSON-nummer)
 STR_6151    :Huvudservern misslyckades att söka upp servrar
 STR_6152    :Ogiltigt svar från huvudservern (ingen JSON-array)
 STR_6153    :Betala för inträde / Betala för åktur
-STR_6154    :Det är inte rekommenderat att köra OpenRCT2 med extra behörigheter.
+STR_6154    :Av säkerhetsskäl är det inte rekommenderat att köra OpenRCT2 med extra behörigheter.
 STR_6155    :Varken KDialog eller Zenity är installerade. Vänligen installera en av dem eller konfigurera från kommandoraden.
 STR_6156    :Namn är reserverat
 STR_6157    :Utvecklarkonsol
@@ -4475,7 +4475,7 @@ STR_6166    :{SMALLFONT}{BLACK}Synkroniserar varje bild som ritas med skärmens 
 STR_6167    :{SMALLFONT}{BLACK}Avancerat
 STR_6168    :Titelsekvens
 STR_6169    :Scenarioväljaren
-STR_6170    :Anpassa
+STR_6170    :Anpassa gränssnittet
 STR_6171    :Sök
 STR_6172    :{SMALLFONT}{BLACK}Sök
 STR_6173    :Vänligen skriv in ett namn att söka:
@@ -4507,19 +4507,66 @@ STR_6198    :{BLACK}Dag:
 STR_6199    :Välj datum
 STR_6200    :Återställ datum
 STR_6201    :{MONTH}
-STR_6202    :Aktivera virtuella golv
+STR_6202    :Stil på virutiella golv
 STR_6203    :{SMALLFONT}{BLACK}När aktiverad, kommer ett rutnät att ritas i samma höjd som elementen är på när du håller in Ctrl eller Shift vilket förenklar vertikala placeringar.
-
+STR_6204    :Tegel
+STR_6205    :Järn
+STR_6206    :Grå stuck
+STR_6207    :Gul stuck
+STR_6208    :Röd stuck
+STR_6209    :Lila stuck
+STR_6210    :Grön stuck
+STR_6211    :Brun sandsten
+STR_6212    :Grå sandsten
+STR_6213    :Skyskrapa A
+STR_6214    :Skyskrapa B
 STR_6215    :Konstruktion
 STR_6216    :Manövrering
 STR_6217    :Åktur-/spårtillgänglighet
 STR_6218    :Officiella OpenRCT2
 STR_6219    :Visa problem på gångvägar
-
+STR_6220    :Skapa gång
+STR_6221    :{SMALLFONT}{BLACK}Detta kommer ställa in åkturens kända ingång- eller utgångsposition till den nuvarande valda rutan. Endast en ingång/utgång kan ställas in per station.
+STR_6222    :Kan inte placera en ingångspunkt här...
+STR_6223    :Måste vara utanför parkens gränser!
+STR_6224    :{STRING} placerade en ingångspunkt.
+STR_6225    :Visningen stöds inte i OpenGL-rendering
+STR_6226    :Tillåt vinst innan scenarions tid gått ut
+STR_6227    :{SMALLFONT}{BLACK}Räknas som att scenarion avklarades när alla mål i scenarion är slutförda innan det satta datumet.
+STR_6228    :Scenario-inställningar
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
-
+STR_6232    :Frys
+STR_6233    :Avskärnings-vy
+STR_6234    :Visa problem på gångvägar
+STR_6235    :Server information
+STR_6236    :Spelare
+STR_6237    :Grupper
+STR_6238    :Inställningar online
+STR_6239    :Vertikal avskärning
+STR_6240    :Horisontal avskärning
+STR_6241    :Markera område
+STR_6242    :Rensa område
+STR_6243    :{SMALLFONT}{BLACK}Renoverar åkturen,{NEWLINE}blir som ny igen
+STR_6244    :Kan inte renovera åkturen...
+STR_6245    :{SMALLFONT}{BLACK}Åkturen behöver inte renoveras
+STR_6246    :Renovera
+STR_6247    :Renovera åkturen/attraktionen
+STR_6248    :{WINDOW_COLOUR_1}Vill du renovera {STRINGID} för {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Vill du renovera {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Är du säker på att du vill riva {STRINGID} och tjäna {CURRENCY}?
+STR_6251    :Åkturen är inte tom
+STR_6252    :Twitch API-URL
+STR_6253    :{SMALLFONT}{BLACK}Skriv in URL:en för Twitch integrerade-API. Krävs för att aktivera Twitch integration.
+STR_6254    :URL:en av Twitch integrerade-API:
+STR_6255    :URL:en är inte giltig
+STR_6256    :Rendering-effekt
+STR_6257    :Glasaktig (genomskinlig)
+STR_6258    :Klar (genomskinlig)
+STR_6259    :Inaktivera
+STR_6260    :Visa blockerade rutor
+STR_6261    :Visa breda gångar
 
 
 
@@ -4964,6 +5011,302 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
+
+
+###############################################################################
+## RCT2 Scenarios
+###############################################################################
+<Alpine Adventures>
+STR_SCNR    :Alpinäventyr
+STR_PARK    :Alpinäventyr
+STR_DTLS    :Förvandla en liten bergsskidort till en nöjespark med vintertema
+
+<Amity Airfield>
+STR_SCNR    :Vänskapsflygfält
+STR_PARK    :Vänskapsflygfält
+STR_DTLS    :Bygg en nöjespark med flygtema på den här övergivna flygplatsen
+
+<Botany Breakers>
+STR_SCNR    :Botany Breakers
+STR_PARK    :Botany Breakers
+STR_DTLS    :Din utmaning är att bygga en högvinstspark på den här paradisön
+
+<Build your own Six Flags Belgium>
+STR_SCNR    :Bygg ditt egen Six Flags Belgien
+STR_PARK    :Six Flags Belgien
+STR_DTLS    :Bygg din egen version av det här europeiska Six Flags nöjesfältet
+
+<Build your own Six Flags Great Adventure>
+STR_SCNR    :Bygg din egen Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Använd din designförmåga för att återskapa den här Six Flags parken
+
+<Build your own Six Flags Holland>
+STR_SCNR    :Bygg din egen Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Bygg det här europeiska Six Flags nöjesfältet på ditt eget sätt
+
+<Build your own Six Flags Magic Mountain>
+STR_SCNR    :Bygg ditt eget Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Skapa din egen version av det här omfattande Six Flags nöjesfältet
+
+<Build your own Six Flags Park>
+STR_SCNR    :Bygg din egen Six Flags Park
+STR_PARK    :Six Flags
+STR_DTLS    :Bygg din egen designade Six Flags park - Bygg antingen attraktioner från andra Six Flags parker eller designa och bygg dina egna attraktioner
+
+<Build your own Six Flags over Texas>
+STR_SCNR    :Bygg ditt eget Six Flags över Texas
+STR_PARK    :Six Flags över Texas
+STR_DTLS    :Börja från början, bygg attraktionerna på det här Six Flags nöjesfältet
+
+<Bumbly Bazaar>
+STR_SCNR    :Bumbly basar
+STR_PARK    :Bumbly basar
+STR_DTLS    :Börja med en liten marknad, din utmaning är att öka vinsten från  affärer och stånd  genom att bygga attraktioner och berg- och dalbanor för att locka fler kunder
+
+<Crazy Castle>
+STR_SCNR    :Roliga slottet
+STR_PARK    :Roliga slottet
+STR_DTLS    :Du har ärvt ett stort slott - Ditt jobb är att förvandla det till en liten temapark.
+
+<Dusty Greens>
+STR_SCNR    :Dammiga greener
+STR_PARK    :Dammiga greener
+STR_DTLS    :Beläget nära motorvägspåfarten i öknen, Dusty Greens är en möjlighet att utveckla en liten golfort till en blomstrande temapark
+
+<Electric Fields>
+STR_SCNR    :Elektriska fält
+STR_PARK    :Elektriska fält
+STR_DTLS    :Du har ärvt en liten gård och din utmaning är att bygga en liten temapark bland fälten och gårdsbyggnaderna
+
+<Extreme Heights>
+STR_SCNR    :Extrema höjder
+STR_PARK    :Extrema höjder
+STR_DTLS    :Utan ekonomiska begränsningar, din utmaning är att utvidga den här ökenparken för att locka personer som söker den slutliga spänningen
+
+<Factory Capers>
+STR_SCNR    :Factory Capers
+STR_PARK    :Factory Capers
+STR_DTLS    :Ett övergivet fabrikskomplex är en möjlighet för att bygga en nöjespark med mekaniskt tema
+
+<Fungus Woods>
+STR_SCNR    :Fungus skogar
+STR_PARK    :Fungus skogar
+STR_DTLS    :Begränsad till bara äldre sorters träattraktioner är det din utmaning att bygga en framgångsrik temapark i Fungus skogar
+
+<Ghost Town>
+STR_SCNR    :Spökstad
+STR_PARK    :Spökstad
+STR_DTLS    :Anställd av en stor nöjesparkskedja, din uppgift är att bygga en jätteberg- och dalbana runt en övergiven gruvstad
+
+<Gravity Gardens>
+STR_SCNR    :Gravitationsträdgårdarna
+STR_PARK    :Gravitationsträdgårdarna
+STR_DTLS    :Din utmaning är att bygga en berg- och dalbanepark i Gravitationsträdgårdarna - Inga andra attraktioner, bara berg- och dalbanor!
+
+<Infernal Views>
+STR_SCNR    :Infernaliska utsikter
+STR_PARK    :Infernaliska utsikter
+STR_DTLS    :En park som ligger osäkert på lavasten med strömmar av magma
+
+<Lucky Lake>
+STR_SCNR    :Tursjön
+STR_PARK    :Tursjön
+STR_DTLS    :Med obegränsat kapital men en  utmanande sjöplats kommer det här nöjesfältet att bli en utmaning att expandera och leda
+
+<Rainbow Summit>
+STR_SCNR    :Rainbow Summit
+STR_PARK    :Regnbågstopp
+STR_DTLS    :Byggd på en slutning, den här parken är förbjuden att bygga något högt. Kan du utvidga parken och göra den framgångsrik?
+
+<Six Flags Belgium>
+STR_SCNR    :Six Flags Belgien
+STR_PARK    :Six Flags Belgien
+STR_DTLS    :Utmana dig själv genom att leda och förbättra den här Six Flags-parken
+
+<Six Flags Great Adventure>
+STR_SCNR    :Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Bygg de Six Flags attraktionerna som saknas eller skapa dina egna för att förbättra parken! Men glöm inte bort ditt syfte - Att locka fler besökare till parken
+
+<Six Flags Holland>
+STR_SCNR    :Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Utmana dig själv genom att leda och förbättra den här Six Flags-parken
+
+<Six Flags Magic Mountain>
+STR_SCNR    :Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Bygg de Six Flags attraktionerna som saknas eller skapa dina egna för att förbättra parken! Men glöm inte bort ditt syfte - Att betala tillbaka dina lån medan du behåller parkens värde uppe!
+
+<Six Flags over Texas>
+STR_SCNR    :Six Flags över Texas
+STR_PARK    :Six Flags över Texas
+STR_DTLS    :Bygg de Six Flags attraktionerna som saknas eller skapa dina egna för att förbättra parken! Men glöm inte bort ditt syfte - Att locka fler besökare till parken
+
+###############################################################################
+## Wacky Worlds Scenarios
+###############################################################################
+<Africa - African Diamond Mine>
+STR_SCNR    :Afrika - Afrikansk diamantgruva
+STR_PARK    :Afrikas gruvor
+STR_DTLS    :Du har hittat en diamant efter att ha ärvt en övergiven diamantgruva. Du beslutar dig för att satsa pengarna på en storslaget nöjesfält.
+
+<Africa - Oasis>
+STR_SCNR    :Afrika - Oas
+STR_PARK    :Hägring och fägring
+STR_DTLS    :Man har upptäckt en ökenoas som skulle passa utmärkt till ett nöjesfält. Transportmöjligheter till oasen existerar redan.
+
+<Africa - Victoria Falls>
+STR_SCNR    :Afrika - Victoriafallen
+STR_PARK    :Över kanten
+STR_DTLS    :En nybyggd damm ger tillräckligt med billig vattenkraft för att kunna driva ett nöjesfält. Du måste dock uppnå ett högt parkvärde för att kunna betala tillbaka lånet för dammen.
+
+<Antarctic - Ecological Salvage>
+STR_SCNR    :Antarktis - Miljöräddning
+STR_PARK    :Iskallt äventyr
+STR_DTLS    :En miljöorganisation har bett dig att bygga om ett gammalt, miljöfarligt oljeraffinaderi till en toppmodern turistattraktion. Marken är billig, men låneräntan är hög. Du kan dock sälja de gamla byggnaderna.
+
+<Asia - Great Wall of China Tourism Enhancement>
+STR_SCNR    :Asien - Turistsatsning vid Kinesiska muren
+STR_PARK    :Kinesiska muren
+STR_DTLS    :Myndigheterna har beslutat att stödja turismen kring Kinesiska muren genom att bygga ett nöjesfält i dess närhet. Pengar är inget hinder!
+
+<Asia - Japanese Coastal Reclaim>
+STR_SCNR    :Asien - Japansk kustremsa
+STR_PARK    :Okinawa-kusten
+STR_DTLS    :Ett nöjesfält behöver mer plats. Din enda möjlighet är att ta ett lån och bygga ut mot havet. Höjdrestriktioner råder på grund av jordbävningsfaran.
+
+<Asia - Maharaja Palace>
+STR_SCNR    :Asien - Maharadjans palats
+STR_PARK    :Maharadjaparken
+STR_DTLS    :Du har fått i uppdrag av maharadjan att underhålla lokalbefolkningen. Inhämta inspiration från maharadjans palats när du bygger nöjesfältet.
+
+<Australasia - Ayers Rock>
+STR_SCNR    :Australasien - Ayers Rock
+STR_PARK    :Ayers äventyr
+STR_DTLS    :Du hjälper urbefolkningen att bygga ett nöjesfält som en del av ett kulturprogram. Du måste locka tillräckligt med besökare för att kunna sprida urbefolkningens kultur.
+
+<Australasia - Fun at the Beach>
+STR_SCNR    :Australasien - Fun at the Beach
+STR_PARK    :Strandhugg
+STR_DTLS    :En lokal affärsmans vattenpark har gått i konkurs. Du måste göra ditt eget, mindre nöjesfält tillräckligt lönsamt för att kunna köpa den nya parken och expandera.
+
+<Europe - European Cultural Festival>
+STR_SCNR    :Europa - Europeisk kulturfestival
+STR_PARK    :Europeisk festival
+STR_DTLS    :Du har blivit erbjuden att ta över en europeisk turistattraktion, men måste öka besöksfrekvensen för att kunna betala tillbaka ett EU-lån innan det europeiska parlamentet tar sommarlov.
+
+<Europe - Renovation>
+STR_SCNR    :Europa - Renovering
+STR_PARK    :Ur askan
+STR_DTLS    :Ett gammalt nöjesfält har förfallit. Du har beviljats ett EU-lån för att kunna återställa det nedgångna området till sin forna prakt. Du måste renovera nöjesfältet och betala tillbaka lånet.
+
+<N. America - Extreme Hawaiian Island>
+STR_SCNR    :Nordamerika - Extrem Hawaii-ö
+STR_PARK    :Wacky Waikiki
+STR_DTLS    :Folket på Hawaii har tröttnat på att surfa och vill göra något mer spännande. Du måste bygga ett nöjesfält för att hålla dem på gott humör och bibehålla områdets attraktionskraft.
+
+<North America - Grand Canyon>
+STR_SCNR    :Nordamerika - Grand Canyon
+STR_PARK    :Trubbel i Canyon
+STR_DTLS    :Du måste bygga ett nöjesfält på ett begränsat område på båda sidor om detta naturfenomen. Du har möjlighet att köpa upp angränsande land från urbefolkningen. Målet med bygget är att bibehålla den lokala befolkningssiffran.
+
+<North America - Rollercoaster Heaven>
+STR_SCNR    :Nordamerika - Rollercoaster Heaven
+STR_PARK    :Rollercoaster Heaven
+STR_DTLS    :Du är en framgångsrik affärsman som under ett sabbatsår beslutar dig för att förvandla en stadspark till ett Rollercoaster Heaven oavsett kostnad!
+
+<South America - Inca Lost City>
+STR_SCNR    :Sydamerika - Förlorad inka-stad
+STR_PARK    :Förlorad stadsgrundare
+STR_DTLS    :Du måste öka de lokala turistintäkterna genom att bygga ett nöjesfält som passar omgivningen och håller sig inom höjdrestriktionerna.
+
+<South America - Rain Forest Plateau>
+STR_SCNR    :Sydamerika - Regnskogsplatå
+STR_PARK    :Kul i regnskog
+STR_DTLS    :Utrymmet är begränsat i den utrotningshotade regnskogen. Du måste få plats med så mycket som möjligt i gläntan för att kunna erbjuda ett alternativ till den lokala timmerindustrin.
+
+<South America - Rio Carnival>
+STR_SCNR    :Sydamerika - Rio-karneval
+STR_PARK    :Sockersöta stränder
+STR_DTLS    :Du driver ett litet nöjesfält nära Rio, men banken kräver plötslig betalning av ditt lån. Du måste öka dina intäkter snabbt för att kunna klara den uppkomna krisen.
+
+###############################################################################
+## Time Twister Scenarios
+###############################################################################
+<Dark Age - Castle>
+STR_SCNR    :Medeltiden - Slott
+STR_PARK    :Slott på klipporna
+STR_DTLS    :Medlemmarna i den lokala medeltidsföreningen tar sin hobby på allvar. De har bett dig konstruera en nöjespark med medeltidstema på det gamla slottets ägor.
+
+<Dark Age - Robin Hood>
+STR_SCNR    :Medeltiden - Robin Hood
+STR_PARK    :Sherwoodskogen
+STR_DTLS    :För att kunna stjäla mer från de rika och ge till de fattiga har du och dina män bestämt er för att bygga ett nöjesfält i Sherwoodskogen.
+
+<Future - First Encounters>
+STR_SCNR    :Framtid - Första kontakt
+STR_PARK    :Utomjordisk extravagans
+STR_DTLS    :Liv har påträffats på en främmande planet. Bygg en park med utomjordiskt tema för att tjäna pengar på folks nyväckta intresse.
+
+<Future - Future World>
+STR_SCNR    :Framtid - Framtidsvärld
+STR_PARK    :Gemini City
+STR_DTLS    :Realisera din innovativa och utopiska vision av framtiden. Bygg en futuristisk park med de allra senaste attraktionerna.
+
+<Mythological - Animatronic Film Set>
+STR_SCNR    :Mytologisk tid - Animatronisk filminspelning
+STR_PARK    :Animatroniska äventyr
+STR_DTLS    :Du har fått i uppgift att driva och förbättra en existerande park som ligger på en gammal filminspelningsplats. Bygg en hyllning till filmhistoriens animationspionjärer som först gav liv åt förhistoriska vidunder på vita duken.
+
+<Mythological - Cradle of Civilisation>
+STR_SCNR    :Mytologisk tid - Civilisationens vagga
+STR_PARK    :Mytologiskt arv
+STR_DTLS    :Du äger en ö av högt arkeologiskt värde. Du har bestämt dig för att finansiera dess bevarande genom att konstruera ett nöjesfält med ett tema baserat på områdets rika mytologiska arv.
+
+<Prehistoric - After the Asteroid>
+STR_SCNR    :Förhistorisk tid - Efter asteroiden
+STR_PARK    :Kraterkatastrof
+STR_DTLS    :Du äger en dammig gammal meteorkrater. Som den entreprenör du är bestämmer du dig för att bygga ett nöjesfält med asteroidtema och omvandla den till synes värdelösa marken till en förmögenhet.
+
+<Prehistoric - Jurassic Safari>
+STR_SCNR    :Förhistorisk tid - Jurasafari
+STR_PARK    :Bergosaurier
+STR_DTLS    :Du har fått i uppgift att bygga en park med Juratema. För att besökarna ska kunna uppleva den exotiska floran och faunan ordentligt krävs det att du bygger attraktioner som går över och ned i dalen.
+
+<Prehistoric - Stone Age>
+STR_SCNR    :Förhistorisk tid - Stenålder
+STR_PARK    :Stenigt värre
+STR_DTLS    :Stoppa motorvägsbygget och bevara de urtida stencirklarna genom att bygga ett nöjesfält med stenålderstema som går med vinst. Det kan dock bli en smula problematiskt att locka besökare eftersom terrängen är aningen oländig.
+
+<Roaring Twenties - Prison Island>
+STR_SCNR    :Det glada tjugotalet - Fängelseön
+STR_PARK    :Alcatraz
+STR_DTLS    :Den ökända fängelseön, vars befolkning en gång i tiden utgjordes av smugglare och gangsters, är till salu. Du har bestämt dig för att förvandla den till en förstklassig turistattraktion. Pengar är inget hinder
+
+<Roaring Twenties - Schneider Cup>
+STR_SCNR    :Det glada tjugotalet - Schneidertrofén
+STR_PARK    :Schneiders strand
+STR_DTLS    :75-årsjubiléet av din faders vinst av Schneidertrofén inträffar om några år. Du vill hedra hans prestation genom att bygga en park baserad på den berömda sjöflygplanstävlingen.
+
+<Roaring Twenties - Skyscrapers>
+STR_SCNR    :Det glada tjugotalet - Skyskrapor
+STR_PARK    :Metropolis
+STR_DTLS    :Du äger en tom tomt i närheten av stadens lågt byggda kvarter. För att få ut så mycket vinst som möjligt av marken bygger du ett nöjesfält i form av en skyskrapa inspirerad av tjugotalets art déco-arkitektur.
+
+<Rock 'n' Roll - Flower Power>
+STR_SCNR    :Rock'n'roll - Flower power
+STR_PARK    :Woodstock
+STR_DTLS    :En stor årlig rockfestival äger rum på din mark. Bygg en hipp nöjespark i den fritänkande publikens smak.
+
+<Rock 'n' Roll - Rock 'n' Roll>
+STR_SCNR    :Rock'n'roll - Rock'n'roll
+STR_PARK    :Rock'n'roll-revival
+STR_DTLS    :Denna åldrande park har sett bättre dagar. Hjälp ägaren med att ge den ett retro-rock'n'roll-tema för att förvandla den till en framgångsrik park.
+
 
 #Maintainer: Nubbie
 #Everyone is allowed to edit this document
