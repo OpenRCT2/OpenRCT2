@@ -486,7 +486,8 @@ private:
     {
         auto mpdatPath = _env->GetFilePath(PATHID::MP_DAT);
         auto scenarioDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
-        auto sc21Path = Path::ResolveCasing(Path::Combine(scenarioDirectory, "sc21.sc4"));
+        auto expectedSc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
+        auto sc21Path = Path::ResolveCasing(expectedSc21Path);
 
         // If the user has a Steam installation.
         if (!File::Exists(mpdatPath))
@@ -497,7 +498,7 @@ private:
 
         if (File::Exists(mpdatPath) && !File::Exists(sc21Path))
         {
-            ConvertMegaPark(mpdatPath, sc21Path);
+            ConvertMegaPark(mpdatPath, expectedSc21Path);
         }
     }
 
