@@ -331,9 +331,12 @@ time_t platform_file_get_modified_time(const utf8* path)
 
     if (result)
     {
+        FILETIME localFileTime;
+        FileTimeToLocalFileTime(&data.ftLastWriteTime, &localFileTime);
+
         ULARGE_INTEGER ull;
-        ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
-        ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
+        ull.LowPart = localFileTime.dwLowDateTime;
+        ull.HighPart = localFileTime.dwHighDateTime;
         return ull.QuadPart / 10000000ULL - 11644473600ULL;
     }
     else
