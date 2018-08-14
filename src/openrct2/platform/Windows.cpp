@@ -329,20 +329,18 @@ time_t platform_file_get_modified_time(const utf8* path)
     BOOL result = GetFileAttributesExW(wPath, GetFileExInfoStandard, &data);
     free(wPath);
 
-    if (result)
-    {
-        FILETIME localFileTime;
-        FileTimeToLocalFileTime(&data.ftLastWriteTime, &localFileTime);
-
-        ULARGE_INTEGER ull;
-        ull.LowPart = localFileTime.dwLowDateTime;
-        ull.HighPart = localFileTime.dwHighDateTime;
-        return ull.QuadPart / 10000000ULL - 11644473600ULL;
-    }
-    else
-    {
+    if (!result)
         return 0;
-    }
+
+    FILETIME localFileTime;
+    result = FileTimeToLocalFileTime(&data.ftLastWriteTime, &localFileTime);
+    if (!result)
+        return 0;
+
+    ULARGE_INTEGER ull;
+    ull.LowPart = localFileTime.dwLowDateTime;
+    ull.HighPart = localFileTime.dwHighDateTime;
+    return ull.QuadPart / 10000000ULL - 11644473600ULL;
 }
 
 uint8_t platform_get_locale_currency()
