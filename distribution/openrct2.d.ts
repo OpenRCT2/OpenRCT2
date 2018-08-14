@@ -108,7 +108,6 @@ export interface FootpathAddition {
     allowedOnSlope: boolean;
     isQueueScreen: boolean;
     status: FootpathAdditionStatus;
-    rideIndex: number;
 
     /**
      * Remove the path addition
@@ -119,7 +118,11 @@ export interface FootpathAddition {
 export interface FootpathElement extends TileElement {
     footpathType: number;
     isSloped: boolean;
+    isQueue: boolean;
     addition: FootpathAddition;
+    edges: number;
+    corners: number;
+    rideIndex: number;
 }
 
 export interface TrackElement extends TileElement {
