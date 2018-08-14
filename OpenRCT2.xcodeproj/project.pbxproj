@@ -25,6 +25,8 @@
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
+		9303DA212121D1A7000857E3 /* Scrollbars.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9303DA1B2121D1A5000857E3 /* Scrollbars.cpp */; };
+		9303DA222121D1A7000857E3 /* WindowPositioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9303DA1F2121D1A6000857E3 /* WindowPositioning.cpp */; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308D9FF209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308DA00209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -33,6 +35,7 @@
 		9308DA03209908090079EE96 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FB209908080079EE96 /* Surface.cpp */; };
 		9308DA04209908090079EE96 /* TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FC209908080079EE96 /* TileElement.h */; };
 		9308DA05209908090079EE96 /* Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FD209908090079EE96 /* Surface.h */; };
+		930950D22122C17500585799 /* WidgetInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930950D12122C17500585799 /* WidgetInput.cpp */; };
 		933CBDB520CB1ACD00134678 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB120CB1ACC00134678 /* Widget.cpp */; };
 		933CBDB620CB1ACD00134678 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB220CB1ACD00134678 /* Theme.cpp */; };
 		933CBDBB20CB1B3F00134678 /* TitleSequencePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB920CB1B3F00134678 /* TitleSequencePlayer.cpp */; };
@@ -861,10 +864,16 @@
 		4CFE4E881F950164005243C2 /* TrackDataOld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDataOld.cpp; sourceTree = "<group>"; };
 		4CFE4E8E1F9625B0005243C2 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
 		4CFE4E8F1F9625B0005243C2 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
+		9303DA1B2121D1A5000857E3 /* Scrollbars.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scrollbars.cpp; sourceTree = "<group>"; };
+		9303DA1C2121D1A5000857E3 /* WindowPositioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowPositioning.h; sourceTree = "<group>"; };
+		9303DA1D2121D1A6000857E3 /* Scrollbars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scrollbars.h; sourceTree = "<group>"; };
+		9303DA1F2121D1A6000857E3 /* WindowPositioning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowPositioning.cpp; sourceTree = "<group>"; };
 		9308D9FA209908080079EE96 /* TileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileElement.cpp; sourceTree = "<group>"; };
 		9308D9FB209908080079EE96 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
 		9308D9FC209908080079EE96 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
+		930950D02122C17500585799 /* WidgetInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetInput.h; sourceTree = "<group>"; };
+		930950D12122C17500585799 /* WidgetInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WidgetInput.cpp; sourceTree = "<group>"; };
 		933CBDB120CB1ACC00134678 /* Widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Widget.cpp; sourceTree = "<group>"; };
 		933CBDB220CB1ACD00134678 /* Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
 		933CBDB320CB1ACD00134678 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
@@ -3247,6 +3256,12 @@
 				F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */,
 				F7CB86481EEDA1330030C877 /* KeyboardShortcuts.h */,
 				C68313C71FDB4ED4006DB3D8 /* MouseInput.cpp */,
+				9303DA1B2121D1A5000857E3 /* Scrollbars.cpp */,
+				9303DA1D2121D1A6000857E3 /* Scrollbars.h */,
+				930950D12122C17500585799 /* WidgetInput.cpp */,
+				930950D02122C17500585799 /* WidgetInput.h */,
+				9303DA1F2121D1A6000857E3 /* WindowPositioning.cpp */,
+				9303DA1C2121D1A5000857E3 /* WindowPositioning.h */,
 			);
 			path = input;
 			sourceTree = "<group>";
@@ -3587,6 +3602,7 @@
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
 				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
+				9303DA212121D1A7000857E3 /* Scrollbars.cpp in Sources */,
 				C68878C420289B710084B384 /* OpenGLAPI.cpp in Sources */,
 				933CBDBB20CB1B3F00134678 /* TitleSequencePlayer.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
@@ -3617,6 +3633,7 @@
 				933CBDB620CB1ACD00134678 /* Theme.cpp in Sources */,
 				93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */,
 				C68878CC20289B710084B384 /* SoftwareDrawingEngine.cpp in Sources */,
+				9303DA222121D1A7000857E3 /* WindowPositioning.cpp in Sources */,
 				C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */,
 				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
 				933CBDBD20CB1BA900134678 /* ViewportInteraction.cpp in Sources */,
@@ -3669,6 +3686,7 @@
 				4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
+				930950D22122C17500585799 /* WidgetInput.cpp in Sources */,
 				C654DF2D1F69C0430040F43D /* Banner.cpp in Sources */,
 				C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */,
 				C6D2BEEA1F9BB83C008B557C /* NetworkStatus.cpp in Sources */,
