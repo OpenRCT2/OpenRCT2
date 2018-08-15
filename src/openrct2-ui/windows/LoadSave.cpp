@@ -202,6 +202,10 @@ static void getInitialDirectoryByType(const int32_t type, char* path, size_t pat
         case LOADSAVETYPE_TRACK:
             subdir = "track";
             break;
+
+        case LOADSAVETYPE_HEIGHTMAP:
+            subdir = "heightmap";
+            break;
     }
 
     platform_get_user_directory(path, subdir, pathSize);
@@ -223,8 +227,8 @@ static const char* getFilterPatternByType(const int32_t type, const bool isSave)
         case LOADSAVETYPE_TRACK:
             return isSave ? "*.td6" : "*.td6;*.td4";
 
-        case LOADSAVETYPE_IMAGE:
-            return "*.bmp;*.jpg;*.png";
+        case LOADSAVETYPE_HEIGHTMAP:
+            return "*.bmp;*.png";
 
         default:
             openrct2_assert(true, "Unsupported load/save directory type.");
@@ -316,7 +320,7 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
                                                  : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
             break;
 
-        case LOADSAVETYPE_IMAGE:
+        case LOADSAVETYPE_HEIGHTMAP:
             openrct2_assert(!isSave, "Cannot save images through loadsave window");
             w->widgets[WIDX_TITLE].text = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
             break;
@@ -391,7 +395,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
             desc.filters[0].pattern = getFilterPatternByType(_type, isSave);
             break;
 
-        case LOADSAVETYPE_IMAGE:
+        case LOADSAVETYPE_HEIGHTMAP:
             title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE);
             desc.filters[0].pattern = getFilterPatternByType(_type, isSave);
@@ -1099,7 +1103,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             break;
         }
 
-        case (LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE):
+        case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
             window_close_by_class(WC_LOADSAVE);
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
             break;
