@@ -73,14 +73,14 @@ namespace Platform
     std::string FormatShortDate(std::time_t timestamp)
     {
         char date[20];
-        std::strftime(date, sizeof(date), "%x", std::gmtime(&timestamp));
+        std::strftime(date, sizeof(date), "%x", std::localtime(&timestamp));
         return std::string(date);
     }
 
     std::string FormatTime(std::time_t timestamp)
     {
         char time[20];
-        std::strftime(time, sizeof(time), "%X", std::gmtime(&timestamp));
+        std::strftime(time, sizeof(time), "%X", std::localtime(&timestamp));
         return std::string(time);
     }
 
