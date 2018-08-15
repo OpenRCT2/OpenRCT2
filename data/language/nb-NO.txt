@@ -3574,8 +3574,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
+STR_5236    :Window
+STR_5237    :Palette
 STR_5238    :Current Theme:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
@@ -3834,8 +3834,8 @@ STR_5492    :Scenario options
 STR_5493    :Send Message
 STR_5494    :<not used anymore>
 STR_5495    :Player List
-STR_5496    :Player:
-STR_5497    :Ping:
+STR_5496    :Player
+STR_5497    :Ping
 STR_5498    :Server List
 STR_5499    :Player Name:
 STR_5500    :Add Server
@@ -3980,7 +3980,7 @@ STR_5638    :Permission denied
 STR_5639    :{SMALLFONT}{BLACK}Show list of players
 STR_5640    :{SMALLFONT}{BLACK}Manage groups
 STR_5641    :Default Group:
-STR_5642    :Group:
+STR_5642    :Group
 STR_5643    :Add Group
 STR_5644    :Remove Group
 STR_5645    :Chat
@@ -4008,7 +4008,7 @@ STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
-STR_5704    :Last Action:
+STR_5704    :Last Action
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
@@ -4464,7 +4464,7 @@ STR_6150    :Ugyldig svar fra mesterserver (mangler JSON-nummer)
 STR_6151    :Mesterserver sendte ikke serverliste
 STR_6152    :Ugyldig svar fra mesterserver (mangler JSON-liste)
 STR_6153    :Betal for parkinngang / Betal for attraksjoner
-STR_6154    :Det er ikke anbefalt å kjøre OpenRCT2 med opphøyde brukerrettigheter.
+STR_6154    :Av sikkerhetshensyn er det er ikke anbefalt å kjøre OpenRCT2 med opphøyde brukerrettigheter.
 STR_6155    :Hverken KDialog eller Zenity er installert. Installer en av dem, eller konfigurer fra kommandolinjen.
 STR_6156    :Reservert navn
 STR_6157    :Kommandolinje
@@ -4492,6 +4492,54 @@ STR_6178    :Load{MOVE_X}{87}{RED}Mangler scenario
 STR_6179    :Velg
 STR_6180    :Ingen scenario valgt
 STR_6181    :{RED}Mangler scenario
+STR_6182    :Følg{MOVE_X}{87}{STRING}
+STR_6183    :Følg{MOVE_X}{87}Ingen sprite valgt
+STR_6184    :Følg sprite
+STR_6185    :Velg sprite
+STR_6186    :Ingen sprite valgt
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Oppkast
+STR_6189    :And
+STR_6190    :{SMALLFONT}{BLACK}Du kan ikke velge sprite mens tittelsekvensen spilles av.
+STR_6191    :Overflate
+STR_6192    :Vegg
+STR_6193    :{COMMA16} gjest
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gjest
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gjest
+STR_6196    :{BLACK}År:
+STR_6197    :{BLACK}Måned:
+STR_6198    :{BLACK}Dag:
+STR_6199    :Sett dato
+STR_6200    :Tilbakestill dato
+STR_6201    :{MONTH}
+STR_6202    :Skru på virtuelt gulv
+STR_6203    :{SMALLFONT}{BLACK}Viser et virtuelt gulv når Ctrl eller Shift holdes, for å assistere i plassering av elementer vertikalt.
+STR_6204    :Murstein
+STR_6205    :Jern
+STR_6206    :Grå stukk
+STR_6207    :Gul stukk
+STR_6208    :Rød stukk
+STR_6209    :Lilla stukk
+STR_6210    :Grønn stukk
+STR_6211    :Brun sandstein
+STR_6212    :Grå sandstein
+STR_6213    :Skyskraper A
+STR_6214    :Skyskraper B
+STR_6215    :Konstruksjon
+STR_6216    :Operasjon
+STR_6217    :Attraksjons- og sportilgjengelighet
+STR_6218    :OpenRCT2 offisielt
+STR_6219    :Fremhev problemer på gangstier
+STR_6220    :Gjør aktiv
+STR_6221    :{SMALLFONT}{BLACK}Sett attraksjonens kjente inngangs- og utgangsposisjon til den gjeldende ruten. Kun én inngangs- og utgangsposisjon per stasjon kan bli gjort aktiv.
+STR_6222    :Kan ikke plassere gjesteinngangspunkt her...
+STR_6223    :Må være utenfor parkens grenser!
+STR_6224    :{STRING} plasserte et gjesteinngangspunkt.
+STR_6225    :Visningen ikke støttet i OpenGL-grafikkmotoren
+STR_6226    :Tillat å fullføre scenario før tidsfristen
+STR_6227    :{SMALLFONT}{BLACK}Trigger scenario-seier med en gang målene for scenariet er nådd, selv om tiden ikke er ute.
+STR_6228    :Scenarioinnstillinger
+STR_6232    :Stillestående
 
 #############
 # Scenarios #
