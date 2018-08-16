@@ -249,7 +249,7 @@ namespace Editor
         {
             load_from_sc6(path);
         }
-        else if (_stricmp(extension, ".sv6") == 0)
+        else if (_stricmp(extension, ".sv6") == 0 || _stricmp(extension, ".sv7") == 0)
         {
             load_from_sv6(path);
         }

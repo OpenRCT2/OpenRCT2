@@ -669,6 +669,7 @@ void platform_setup_file_associations()
     windows_setup_file_association(".sc6", "RCT2 Scenario (.sc6)", "Play", "\"%1\"", 0);
     windows_setup_file_association(".sv4", "RCT1 Saved Game (.sc4)", "Play", "\"%1\"", 0);
     windows_setup_file_association(".sv6", "RCT2 Saved Game (.sv6)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".sv7", "RCT Modified Saved Game (.sv7)", "Play", "\"%1\"", 0);
     windows_setup_file_association(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
     windows_setup_file_association(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
 
@@ -683,6 +684,7 @@ void platform_remove_file_associations()
     windows_remove_file_association(".sc6");
     windows_remove_file_association(".sv4");
     windows_remove_file_association(".sv6");
+    windows_remove_file_association(".sv7");
     windows_remove_file_association(".td4");
     windows_remove_file_association(".td6");
 
