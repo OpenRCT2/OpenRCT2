@@ -220,7 +220,7 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName)
             w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
             if (window_loadsave_get_dir(gConfigGeneral.last_save_game_directory, path, "save", sizeof(path)))
             {
-                window_loadsave_populate_list(w, isSave, path, isSave ? ".sv6" : ".sv6;.sc6;.sv4;.sc4");
+                window_loadsave_populate_list(w, isSave, path, isSave ? ".sv6" : ".sv6;.sc6;.sv4;.sc4;.sv7");
                 success = true;
             }
             break;
@@ -229,7 +229,7 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName)
             w->widgets[WIDX_TITLE].text = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
             if (window_loadsave_get_dir(gConfigGeneral.last_save_landscape_directory, path, "landscape", sizeof(path)))
             {
-                window_loadsave_populate_list(w, isSave, path, isSave ? ".sc6" : ".sc6;.sv6;.sc4;.sv4");
+                window_loadsave_populate_list(w, isSave, path, isSave ? ".sc6" : ".sc6;.sv6;.sc4;.sv4;.sv7");
                 success = true;
             }
             break;
@@ -313,7 +313,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
             fileType = FILE_EXTENSION_SV6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
-            desc.filters[0].pattern = isSave ? "*.sv6" : "*.sv6;*.sc6;*.sv4;*.sc4";
+            desc.filters[0].pattern = isSave ? "*.sv6" : "*.sv6;*.sc6;*.sv4;*.sc4;*.sv7";
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
@@ -321,7 +321,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
             fileType = FILE_EXTENSION_SC6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
-            desc.filters[0].pattern = isSave ? "*.sc6" : "*.sc6;*.sv6;*.sc4;*.sv4";
+            desc.filters[0].pattern = isSave ? "*.sc6" : "*.sc6;*.sv6;*.sc4;*.sv4;*.sv7";
             break;
 
         case LOADSAVETYPE_SCENARIO:
