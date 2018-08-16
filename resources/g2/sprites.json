@@ -771,6 +771,18 @@
         "forceBmp": true
     },
     {
+        "path": "font/c-caron-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/c-caron-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1098,6 +1110,18 @@
     {
         "path": "font/ellipsis-bold.png",
         "y_offset": 6,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/c-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/c-caron-bold.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1437,6 +1461,18 @@
     {
         "path": "font/ellipsis-tiny.png",
         "y_offset": 4,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/c-caron-uc-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/c-caron-tiny.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     }

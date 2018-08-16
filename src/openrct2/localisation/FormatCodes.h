@@ -309,4 +309,10 @@ enum UnicodePunctuation
     UNICODE_ELLIPSIS = 8230,
 };
 
+enum UnicodeCzech
+{
+    UNICODE_C_CARON_UC = 268,
+    UNICODE_C_CARON = 269,
+};
+
 #endif
