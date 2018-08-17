@@ -593,6 +593,11 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     // checkbox
     gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, INSET_RECT_F_60);
 
+    if (widget_is_disabled(w, widgetIndex))
+    {
+        colour |= COLOUR_FLAG_INSET;
+    }
+
     // fill it when checkbox is pressed
     if (widget_is_pressed(w, widgetIndex))
     {
@@ -603,11 +608,6 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     // draw the text
     if (widget->text == STR_NONE)
         return;
-
-    if (widget_is_disabled(w, widgetIndex))
-    {
-        colour |= COLOUR_FLAG_INSET;
-    }
 
     gfx_draw_string_left_centred(dpi, widget->text, gCommonFormatArgs, colour, l + 14, yMid);
 }
