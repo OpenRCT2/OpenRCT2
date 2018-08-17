@@ -418,7 +418,7 @@ STR_1737    :{COMMA16}
 STR_1738    :Can't change number of laps...
 STR_1739    :Race won by guest {INT32}
 STR_1740    :Race won by {STRINGID}
-STR_1741    :Not yet constructed !
+STR_1741    :Not yet constructed!
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
