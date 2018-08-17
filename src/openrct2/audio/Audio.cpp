@@ -394,8 +394,8 @@ void audio_close()
 
 void audio_toggle_all_sounds()
 {
-    gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
-    if (gConfigSound.sound_enabled)
+    gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
+    if (gConfigSound.master_sound_enabled)
     {
         audio_unpause_sounds();
     }
@@ -404,6 +404,8 @@ void audio_toggle_all_sounds()
         audio_stop_title_music();
         audio_pause_sounds();
     }
+
+    window_invalidate_by_class(WC_OPTIONS);
 }
 
 void audio_pause_sounds()

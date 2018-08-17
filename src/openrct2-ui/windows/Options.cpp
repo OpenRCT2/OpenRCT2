@@ -768,11 +768,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             {
                 case WIDX_SOUND_CHECKBOX:
                     gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
-                    if (!gConfigSound.sound_enabled)
-                        audio_pause_sounds();
-                    else
-                        audio_unpause_sounds();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
                     config_save_default();
                     window_invalidate(w);
                     break;
