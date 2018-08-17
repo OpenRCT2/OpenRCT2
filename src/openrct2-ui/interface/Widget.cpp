@@ -593,6 +593,11 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     // checkbox
     gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, INSET_RECT_F_60);
 
+    if (widget_is_disabled(w, widgetIndex))
+    {
+        colour |= COLOUR_FLAG_INSET;
+    }
+
     // fill it when checkbox is pressed
     if (widget_is_pressed(w, widgetIndex))
     {
@@ -603,11 +608,6 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     // draw the text
     if (widget->text == STR_NONE)
         return;
-
-    if (widget_is_disabled(w, widgetIndex))
-    {
-        colour |= COLOUR_FLAG_INSET;
-    }
 
     gfx_draw_string_left_centred(dpi, widget->text, gCommonFormatArgs, colour, l + 14, yMid);
 }
@@ -696,19 +696,29 @@ static void widget_hscrollbar_draw(
     gfx_fill_rect(dpi, l + 10, t + 8, r - 10, t + 8, ColourMapA[colour].lighter);
 
     // Left button
-    gfx_fill_rect_inset(
-        dpi, l, t, l + 9, b, colour, ((scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, (char*)BlackLeftArrowString, COLOUR_BLACK, l + 1, t);
+    {
+        uint8_t flags = (scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+
+        gfx_fill_rect_inset(dpi, l, t, l + 9, b, colour, flags);
+        gfx_draw_string(dpi, (char*)BlackLeftArrowString, COLOUR_BLACK, l + 1, t);
+    }
 
     // Thumb
-    gfx_fill_rect_inset(
-        dpi, std::max(l + 10, l + scroll->h_thumb_left - 1), t, std::min(r - 10, l + scroll->h_thumb_right - 1), b, colour,
-        ((scroll->flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+    {
+        int16_t left = std::max(l + 10, l + scroll->h_thumb_left - 1);
+        int16_t right = std::min(r - 10, l + scroll->h_thumb_right - 1);
+        uint8_t flags = (scroll->flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+
+        gfx_fill_rect_inset(dpi, left, t, right, b, colour, flags);
+    }
 
     // Right button
-    gfx_fill_rect_inset(
-        dpi, r - 9, t, r, b, colour, ((scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, (char*)BlackRightArrowString, COLOUR_BLACK, r - 6, t);
+    {
+        uint8_t flags = (scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+
+        gfx_fill_rect_inset(dpi, r - 9, t, r, b, colour, flags);
+        gfx_draw_string(dpi, (char*)BlackRightArrowString, COLOUR_BLACK, r - 6, t);
+    }
 }
 
 static void widget_vscrollbar_draw(
@@ -862,14 +872,12 @@ void widget_scroll_get_part(
     rct_window* w, rct_widget* widget, int32_t x, int32_t y, int32_t* output_x, int32_t* output_y, int32_t* output_scroll_area,
     int32_t* scroll_id)
 {
-    rct_widget* iterator = w->widgets;
     *scroll_id = 0;
-    while (++iterator != widget)
+    for (rct_widget* iterator = w->widgets; iterator != widget; iterator++)
     {
         if (iterator->type == WWT_SCROLL)
         {
-            (*scroll_id)++;
-            break;
+            *scroll_id += 1;
         }
     }
 

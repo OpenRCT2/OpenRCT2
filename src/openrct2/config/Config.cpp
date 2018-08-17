@@ -320,6 +320,8 @@ namespace Config
         if (reader->ReadSection("sound"))
         {
             auto model = &gConfigSound;
+            model->device = reader->GetCString("audio_device", nullptr);
+            model->master_sound_enabled = reader->GetBoolean("master_sound", true);
             model->master_volume = reader->GetInt32("master_volume", 100);
             model->title_music = reader->GetInt32("title_music", 2);
             model->sound_enabled = reader->GetBoolean("sound", true);
@@ -327,7 +329,6 @@ namespace Config
             model->ride_music_enabled = reader->GetBoolean("ride_music", true);
             model->ride_music_volume = reader->GetInt32("ride_music_volume", 100);
             model->audio_focus = reader->GetBoolean("audio_focus", false);
-            model->device = reader->GetCString("audio_device", nullptr);
         }
     }
 
@@ -335,6 +336,8 @@ namespace Config
     {
         auto model = &gConfigSound;
         writer->WriteSection("sound");
+        writer->WriteString("audio_device", model->device);
+        writer->WriteBoolean("master_sound", model->master_sound_enabled);
         writer->WriteInt32("master_volume", model->master_volume);
         writer->WriteInt32("title_music", model->title_music);
         writer->WriteBoolean("sound", model->sound_enabled);
@@ -342,7 +345,6 @@ namespace Config
         writer->WriteBoolean("ride_music", model->ride_music_enabled);
         writer->WriteInt32("ride_music_volume", model->ride_music_volume);
         writer->WriteBoolean("audio_focus", model->audio_focus);
-        writer->WriteString("audio_device", model->device);
     }
 
     static void ReadNetwork(IIniReader* reader)
