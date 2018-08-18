@@ -95,425 +95,6 @@ STR_0089    :Minivuoristorata
 STR_0090    :Kaivosajelu
 STR_0091    :Tuntematon laite (59)
 STR_0092    :Induktiomoottorilaukaisuvuoristorata
-STR_0093    :
-STR_0094    :
-STR_0095    :
-STR_0096    :
-STR_0097    :
-STR_0098    :
-STR_0099    :
-STR_0100    :
-STR_0101    :
-STR_0102    :
-STR_0103    :
-STR_0104    :
-STR_0105    :
-STR_0106    :
-STR_0107    :
-STR_0108    :
-STR_0109    :
-STR_0110    :
-STR_0111    :
-STR_0112    :
-STR_0113    :
-STR_0114    :
-STR_0115    :
-STR_0116    :
-STR_0117    :
-STR_0118    :
-STR_0119    :
-STR_0120    :
-STR_0121    :
-STR_0122    :
-STR_0123    :
-STR_0124    :
-STR_0125    :
-STR_0126    :
-STR_0127    :
-STR_0128    :
-STR_0129    :
-STR_0130    :
-STR_0131    :
-STR_0132    :
-STR_0133    :
-STR_0134    :
-STR_0135    :
-STR_0136    :
-STR_0137    :
-STR_0138    :
-STR_0139    :
-STR_0140    :
-STR_0141    :
-STR_0142    :
-STR_0143    :
-STR_0144    :
-STR_0145    :
-STR_0146    :
-STR_0147    :
-STR_0148    :
-STR_0149    :
-STR_0150    :
-STR_0151    :
-STR_0152    :
-STR_0153    :
-STR_0154    :
-STR_0155    :
-STR_0156    :
-STR_0157    :
-STR_0158    :
-STR_0159    :
-STR_0160    :
-STR_0161    :
-STR_0162    :
-STR_0163    :
-STR_0164    :
-STR_0165    :
-STR_0166    :
-STR_0167    :
-STR_0168    :
-STR_0169    :
-STR_0170    :
-STR_0171    :
-STR_0172    :
-STR_0173    :
-STR_0174    :
-STR_0175    :
-STR_0176    :
-STR_0177    :
-STR_0178    :
-STR_0179    :
-STR_0180    :
-STR_0181    :
-STR_0182    :
-STR_0183    :
-STR_0184    :
-STR_0185    :
-STR_0186    :
-STR_0187    :
-STR_0188    :
-STR_0189    :
-STR_0190    :
-STR_0191    :
-STR_0192    :
-STR_0193    :
-STR_0194    :
-STR_0195    :
-STR_0196    :
-STR_0197    :
-STR_0198    :
-STR_0199    :
-STR_0200    :
-STR_0201    :
-STR_0202    :
-STR_0203    :
-STR_0204    :
-STR_0205    :
-STR_0206    :
-STR_0207    :
-STR_0208    :
-STR_0209    :
-STR_0210    :
-STR_0211    :
-STR_0212    :
-STR_0213    :
-STR_0214    :
-STR_0215    :
-STR_0216    :
-STR_0217    :
-STR_0218    :
-STR_0219    :
-STR_0220    :
-STR_0221    :
-STR_0222    :
-STR_0223    :
-STR_0224    :
-STR_0225    :
-STR_0226    :
-STR_0227    :
-STR_0228    :
-STR_0229    :
-STR_0230    :
-STR_0231    :
-STR_0232    :
-STR_0233    :
-STR_0234    :
-STR_0235    :
-STR_0236    :
-STR_0237    :
-STR_0238    :
-STR_0239    :
-STR_0240    :
-STR_0241    :
-STR_0242    :
-STR_0243    :
-STR_0244    :
-STR_0245    :
-STR_0246    :
-STR_0247    :
-STR_0248    :
-STR_0249    :
-STR_0250    :
-STR_0251    :
-STR_0252    :
-STR_0253    :
-STR_0254    :
-STR_0255    :
-STR_0256    :
-STR_0257    :
-STR_0258    :
-STR_0259    :
-STR_0260    :
-STR_0261    :
-STR_0262    :
-STR_0263    :
-STR_0264    :
-STR_0265    :
-STR_0266    :
-STR_0267    :
-STR_0268    :
-STR_0269    :
-STR_0270    :
-STR_0271    :
-STR_0272    :
-STR_0273    :
-STR_0274    :
-STR_0275    :
-STR_0276    :
-STR_0277    :
-STR_0278    :
-STR_0279    :
-STR_0280    :
-STR_0281    :
-STR_0282    :
-STR_0283    :
-STR_0284    :
-STR_0285    :
-STR_0286    :
-STR_0287    :
-STR_0288    :
-STR_0289    :
-STR_0290    :
-STR_0291    :
-STR_0292    :
-STR_0293    :
-STR_0294    :
-STR_0295    :
-STR_0296    :
-STR_0297    :
-STR_0298    :
-STR_0299    :
-STR_0300    :
-STR_0301    :
-STR_0302    :
-STR_0303    :
-STR_0304    :
-STR_0305    :
-STR_0306    :
-STR_0307    :
-STR_0308    :
-STR_0309    :
-STR_0310    :
-STR_0311    :
-STR_0312    :
-STR_0313    :
-STR_0314    :
-STR_0315    :
-STR_0316    :
-STR_0317    :
-STR_0318    :
-STR_0319    :
-STR_0320    :
-STR_0321    :
-STR_0322    :
-STR_0323    :
-STR_0324    :
-STR_0325    :
-STR_0326    :
-STR_0327    :
-STR_0328    :
-STR_0329    :
-STR_0330    :
-STR_0331    :
-STR_0332    :
-STR_0333    :
-STR_0334    :
-STR_0335    :
-STR_0336    :
-STR_0337    :
-STR_0338    :
-STR_0339    :
-STR_0340    :
-STR_0341    :
-STR_0342    :
-STR_0343    :
-STR_0344    :
-STR_0345    :
-STR_0346    :
-STR_0347    :
-STR_0348    :
-STR_0349    :
-STR_0350    :
-STR_0351    :
-STR_0352    :
-STR_0353    :
-STR_0354    :
-STR_0355    :
-STR_0356    :
-STR_0357    :
-STR_0358    :
-STR_0359    :
-STR_0360    :
-STR_0361    :
-STR_0362    :
-STR_0363    :
-STR_0364    :
-STR_0365    :
-STR_0366    :
-STR_0367    :
-STR_0368    :
-STR_0369    :
-STR_0370    :
-STR_0371    :
-STR_0372    :
-STR_0373    :
-STR_0374    :
-STR_0375    :
-STR_0376    :
-STR_0377    :
-STR_0378    :
-STR_0379    :
-STR_0380    :
-STR_0381    :
-STR_0382    :
-STR_0383    :
-STR_0384    :
-STR_0385    :
-STR_0386    :
-STR_0387    :
-STR_0388    :
-STR_0389    :
-STR_0390    :
-STR_0391    :
-STR_0392    :
-STR_0393    :
-STR_0394    :
-STR_0395    :
-STR_0396    :
-STR_0397    :
-STR_0398    :
-STR_0399    :
-STR_0400    :
-STR_0401    :
-STR_0402    :
-STR_0403    :
-STR_0404    :
-STR_0405    :
-STR_0406    :
-STR_0407    :
-STR_0408    :
-STR_0409    :
-STR_0410    :
-STR_0411    :
-STR_0412    :
-STR_0413    :
-STR_0414    :
-STR_0415    :
-STR_0416    :
-STR_0417    :
-STR_0418    :
-STR_0419    :
-STR_0420    :
-STR_0421    :
-STR_0422    :
-STR_0423    :
-STR_0424    :
-STR_0425    :
-STR_0426    :
-STR_0427    :
-STR_0428    :
-STR_0429    :
-STR_0430    :
-STR_0431    :
-STR_0432    :
-STR_0433    :
-STR_0434    :
-STR_0435    :
-STR_0436    :
-STR_0437    :
-STR_0438    :
-STR_0439    :
-STR_0440    :
-STR_0441    :
-STR_0442    :
-STR_0443    :
-STR_0444    :
-STR_0445    :
-STR_0446    :
-STR_0447    :
-STR_0448    :
-STR_0449    :
-STR_0450    :
-STR_0451    :
-STR_0452    :
-STR_0453    :
-STR_0454    :
-STR_0455    :
-STR_0456    :
-STR_0457    :
-STR_0458    :
-STR_0459    :
-STR_0460    :
-STR_0461    :
-STR_0462    :
-STR_0463    :
-STR_0464    :
-STR_0465    :
-STR_0466    :
-STR_0467    :
-STR_0468    :
-STR_0469    :
-STR_0470    :
-STR_0471    :
-STR_0472    :
-STR_0473    :
-STR_0474    :
-STR_0475    :
-STR_0476    :
-STR_0477    :
-STR_0478    :
-STR_0479    :
-STR_0480    :
-STR_0481    :
-STR_0482    :
-STR_0483    :
-STR_0484    :
-STR_0485    :
-STR_0486    :
-STR_0487    :
-STR_0488    :
-STR_0489    :
-STR_0490    :
-STR_0491    :
-STR_0492    :
-STR_0493    :
-STR_0494    :
-STR_0495    :
-STR_0496    :
-STR_0497    :
-STR_0498    :
-STR_0499    :
-STR_0500    :
-STR_0501    :
-STR_0502    :
-STR_0503    :
-STR_0504    :
-STR_0505    :
-STR_0506    :
-STR_0507    :
-STR_0508    :
-STR_0509    :
-STR_0510    :
-STR_0511    :
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -543,12 +124,9 @@ STR_0537    :
 STR_0538    :
 STR_0539    :
 STR_0540    :
-STR_0541    :
 STR_0542    :
-STR_0543    :
 STR_0544    :
 STR_0545    :
-STR_0546    :
 STR_0547    :
 STR_0548    :
 STR_0549    :
@@ -571,15 +149,12 @@ STR_0564    :Puisen radan takia tämä vuoristorata on nopea, raaka, meluisa ja 
 STR_0565    :Yksinkertainen puinen vuoristorata joka kykenee vain lempeisiin mäkiin ja käännöksiin. Vaunut pysyvät radalla sivukitkapyörien ja painovoiman avulla
 STR_0566    :Yksittäiset vuoristoratavaunut singahtelevat pitkin tiukkaa mutkarataa jossa on teräviä kaarteita ja pudotuksia
 STR_0567    :Radan sivuilla olevissa tuoleissa matkustajia pyöritetään ylösalaisin kun vaunu huristaa alas jyrkkiä pudotuksia läpi useiden inversioiden
-STR_0568    :
 STR_0569    :Erikoisvaljaiden ansiosta matkustajat kokevat lentävänsä ilmojen halki
-STR_0570    :
 STR_0571    :Pyöreät vaunut pyörivät ympäri mutkikkaalla puisella radalla
 STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
 STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
 STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Powered trains hanging from a single rail transport people around the park
-STR_0576    :
 STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
 STR_0579    :
@@ -595,191 +170,16 @@ STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns 
 STR_0589    :
 STR_0590    :Riders ride in a submerged submarine through an underwater course
 STR_0591    :Raft-shaped boats gently meander around a river track
-STR_0592    :
 STR_0593    :
-STR_0594    :
-STR_0595    :
-STR_0596    :
-STR_0597    :
 STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
-STR_0601    :
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :Vieras {INT32}
-STR_0604    :Vieras {INT32}
-STR_0605    :Vieras {INT32}
-STR_0606    :Vieras {INT32}
-STR_0607    :Vieras {INT32}
-STR_0608    :Vieras {INT32}
-STR_0609    :Vieras {INT32}
-STR_0610    :Vieras {INT32}
-STR_0611    :Vieras {INT32}
-STR_0612    :Vieras {INT32}
-STR_0613    :Vieras {INT32}
-STR_0614    :Vieras {INT32}
-STR_0615    :Vieras {INT32}
-STR_0616    :Vieras {INT32}
-STR_0617    :Vieras {INT32}
-STR_0618    :Vieras {INT32}
-STR_0619    :Vieras {INT32}
-STR_0620    :Vieras {INT32}
-STR_0621    :Vieras {INT32}
-STR_0622    :Vieras {INT32}
-STR_0623    :Vieras {INT32}
-STR_0624    :Vieras {INT32}
-STR_0625    :Vieras {INT32}
-STR_0626    :Vieras {INT32}
-STR_0627    :Vieras {INT32}
-STR_0628    :Vieras {INT32}
-STR_0629    :Vieras {INT32}
-STR_0630    :Vieras {INT32}
-STR_0631    :Vieras {INT32}
-STR_0632    :Vieras {INT32}
-STR_0633    :Vieras {INT32}
-STR_0634    :Vieras {INT32}
-STR_0635    :Vieras {INT32}
-STR_0636    :Vieras {INT32}
-STR_0637    :Vieras {INT32}
-STR_0638    :Vieras {INT32}
-STR_0639    :Vieras {INT32}
-STR_0640    :Vieras {INT32}
-STR_0641    :Vieras {INT32}
-STR_0642    :Vieras {INT32}
-STR_0643    :Vieras {INT32}
-STR_0644    :Vieras {INT32}
-STR_0645    :Vieras {INT32}
-STR_0646    :Vieras {INT32}
-STR_0647    :Vieras {INT32}
-STR_0648    :Vieras {INT32}
-STR_0649    :Vieras {INT32}
-STR_0650    :Vieras {INT32}
-STR_0651    :Vieras {INT32}
-STR_0652    :Vieras {INT32}
-STR_0653    :Vieras {INT32}
-STR_0654    :Vieras {INT32}
-STR_0655    :Vieras {INT32}
-STR_0656    :Vieras {INT32}
-STR_0657    :Vieras {INT32}
-STR_0658    :Vieras {INT32}
-STR_0659    :Vieras {INT32}
-STR_0660    :Vieras {INT32}
-STR_0661    :Vieras {INT32}
-STR_0662    :Vieras {INT32}
-STR_0663    :Vieras {INT32}
-STR_0664    :Vieras {INT32}
-STR_0665    :Vieras {INT32}
-STR_0666    :Vieras {INT32}
-STR_0667    :Vieras {INT32}
-STR_0668    :Vieras {INT32}
-STR_0669    :Vieras {INT32}
-STR_0670    :Vieras {INT32}
-STR_0671    :Vieras {INT32}
-STR_0672    :Vieras {INT32}
-STR_0673    :Vieras {INT32}
-STR_0674    :Vieras {INT32}
-STR_0675    :Vieras {INT32}
-STR_0676    :Vieras {INT32}
-STR_0677    :Vieras {INT32}
-STR_0678    :Vieras {INT32}
-STR_0679    :Vieras {INT32}
-STR_0680    :Vieras {INT32}
-STR_0681    :Vieras {INT32}
-STR_0682    :Vieras {INT32}
-STR_0683    :Vieras {INT32}
-STR_0684    :Vieras {INT32}
-STR_0685    :Vieras {INT32}
-STR_0686    :Vieras {INT32}
-STR_0687    :Vieras {INT32}
-STR_0688    :Vieras {INT32}
-STR_0689    :Vieras {INT32}
-STR_0690    :Vieras {INT32}
-STR_0691    :Vieras {INT32}
-STR_0692    :Vieras {INT32}
-STR_0693    :Vieras {INT32}
-STR_0694    :Vieras {INT32}
-STR_0695    :Vieras {INT32}
-STR_0696    :Vieras {INT32}
-STR_0697    :Vieras {INT32}
-STR_0698    :Vieras {INT32}
-STR_0699    :Vieras {INT32}
-STR_0700    :Vieras {INT32}
-STR_0701    :Vieras {INT32}
-STR_0702    :Vieras {INT32}
-STR_0703    :Vieras {INT32}
-STR_0704    :Vieras {INT32}
-STR_0705    :Vieras {INT32}
-STR_0706    :Vieras {INT32}
-STR_0707    :Vieras {INT32}
-STR_0708    :Vieras {INT32}
-STR_0709    :Vieras {INT32}
-STR_0710    :Vieras {INT32}
-STR_0711    :Vieras {INT32}
-STR_0712    :Vieras {INT32}
-STR_0713    :Vieras {INT32}
-STR_0714    :Vieras {INT32}
-STR_0715    :Vieras {INT32}
-STR_0716    :Vieras {INT32}
-STR_0717    :Vieras {INT32}
-STR_0718    :Vieras {INT32}
-STR_0719    :Vieras {INT32}
-STR_0720    :Vieras {INT32}
-STR_0721    :Vieras {INT32}
-STR_0722    :Vieras {INT32}
-STR_0723    :Vieras {INT32}
-STR_0724    :Vieras {INT32}
-STR_0725    :Vieras {INT32}
-STR_0726    :Vieras {INT32}
-STR_0727    :Vieras {INT32}
-STR_0728    :Vieras {INT32}
-STR_0729    :Vieras {INT32}
-STR_0730    :Vieras {INT32}
-STR_0731    :Vieras {INT32}
-STR_0732    :Vieras {INT32}
-STR_0733    :Vieras {INT32}
-STR_0734    :Vieras {INT32}
-STR_0735    :Vieras {INT32}
-STR_0736    :Vieras {INT32}
-STR_0737    :Vieras {INT32}
-STR_0738    :Vieras {INT32}
-STR_0739    :Vieras {INT32}
-STR_0740    :Vieras {INT32}
-STR_0741    :Vieras {INT32}
-STR_0742    :Vieras {INT32}
-STR_0743    :Vieras {INT32}
-STR_0744    :Vieras {INT32}
-STR_0745    :Vieras {INT32}
-STR_0746    :Vieras {INT32}
-STR_0747    :Vieras {INT32}
-STR_0748    :Vieras {INT32}
-STR_0749    :Vieras {INT32}
-STR_0750    :Vieras {INT32}
-STR_0751    :Vieras {INT32}
-STR_0752    :Vieras {INT32}
-STR_0753    :Vieras {INT32}
-STR_0754    :Vieras {INT32}
-STR_0755    :Vieras {INT32}
-STR_0756    :Vieras {INT32}
-STR_0757    :Vieras {INT32}
-STR_0758    :Vieras {INT32}
-STR_0759    :Vieras {INT32}
-STR_0760    :Vieras {INT32}
-STR_0761    :Vieras {INT32}
-STR_0762    :Vieras {INT32}
-STR_0763    :Vieras {INT32}
-STR_0764    :Vieras {INT32}
-STR_0765    :Vieras {INT32}
-STR_0766    :Vieras {INT32}
 STR_0767    :Vieras {INT32}
 STR_0768    :Yleismies {INT32}
 STR_0769    :Mekaanikko {INT32}
 STR_0770    :Vartija {INT32}
 STR_0771    :Viihdyttjäjä {INT32}
-STR_0772    :Nimetön puisto{POP16}{POP16}
-STR_0773    :Nimetön puisto{POP16}{POP16}
-STR_0774    :Nimetön puisto{POP16}{POP16}
-STR_0775    :Nimetön puisto{POP16}{POP16}
-STR_0776    :Nimetön puisto{POP16}{POP16}
 STR_0777    :Nimetön puisto{POP16}{POP16}
 STR_0778    :Kyltti
 STR_0779    :1.
@@ -838,22 +238,10 @@ STR_0831    :{SMALLFONT}{BLACK}Pienennä
 STR_0832    :{SMALLFONT}{BLACK}Käännä 90{DEGREE} myötäpäivään
 STR_0833    :{SMALLFONT}{BLACK}Pysäytä peli
 STR_0834    :{SMALLFONT}{BLACK}Levy- ja peliasetukset
-STR_0835    :Pelin alustus epäonnistui
-STR_0836    :Pelin aloitus ei onnistu pienennetyssä tilassa
-STR_0837    :Grafiikkajärjestelmän alustus ei toimi
-STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<not used anymore>
-STR_0842    :<not used anymore>
-STR_0843    :<not used anymore>
-STR_0844    :<not used anymore>
-STR_0845    :<not used anymore>
-STR_0846    :<not used anymore>
 STR_0847    :Lisätietoja 'OpenRCT2'
-STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Versio 2.01.028
 STR_0850    :{WINDOW_COLOUR_2}Tekijänoikeus {COPYRIGHT} 2002 Chris Sawyer, kaikki oikeudet pidetään
 STR_0851    :{WINDOW_COLOUR_2}Suunnitellut ja ohjelmoinut Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafiikka Simon Foster
@@ -862,13 +250,6 @@ STR_0854    :{WINDOW_COLOUR_2}Lisä-äänet nauhoittanut David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Edustaja Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Kiitoksia:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, ja John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,11 +271,9 @@ STR_0882    :Lataa peli
 STR_0883    :Tallenna peli
 STR_0884    :Lataa maisema
 STR_0885    :Tallenna maisema
-STR_0886    :Lopeta peli
 STR_0887    :Lopeta skenaarioeditori
 STR_0888    :Lopeta vuoristoratasuunnittelu
 STR_0889    :Lopeta ratasuunnitelmahallinta
-STR_0890    :<removed string - do not use>
 STR_0891    :Kuvankaappaus
 STR_0892    :Kuvankaappaus tallennettu levylle nimellä '{STRINGID}'
 STR_0893    :Kuvankaappaus epäonnistui !
@@ -1658,8 +1037,6 @@ STR_1648    :{SMALLFONT}{OPENQUOTES}Auta! Laske minut alas!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Rahat ovat loppumassa!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Vau! Uutta laitetta rakennetaan!{ENDQUOTES}
 # Two removed inside jokes about Intamin and Phoenix
-STR_1651    :<removed string - do not use>
-STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...ja tässä me olemme {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Viimeisimmät ajatukset:
 STR_1655    :{SMALLFONT}{BLACK}Rakenna jalkakäytävä maahan
@@ -1744,7 +1121,6 @@ STR_1733    :Moodi
 STR_1734    :{WINDOW_COLOUR_2}Kierrosten määrä:
 STR_1735    :{SMALLFONT}{BLACK}Kierrosten määrä radalla
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1737    :{COMMA16}
 STR_1738    :Kierrosten määrää ei voitu muuttaa...
 STR_1739    :Kisan voitti vieras {INT32}
 STR_1740    :Kisan voitti {STRINGID}
@@ -1752,12 +1128,10 @@ STR_1741    :Ei ole vielä rakennettu !
 STR_1742    :{WINDOW_COLOUR_2}Laitteen suurin kävijämäärä:
 STR_1743    :{SMALLFONT}{BLACK}Laitteen suurin sallittu kävijämäärä yhdellä kertaa
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1745    :{COMMA16}
 STR_1746    :Tätä ei voitu muuttaa...
 STR_1747    :{WINDOW_COLOUR_2}Aikarajoitus:
 STR_1748    :{SMALLFONT}{BLACK}Aikarajoitus ajelulle
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1750    :{DURATION}
 STR_1751    :Aikarajoitusta ajelulle ei voitu muuttaa...
 STR_1752    :{SMALLFONT}{BLACK}Näytä puiston yksittäiset vieraat
 STR_1753    :{SMALLFONT}{BLACK}Näytä puiston vieraat yhteenvetona
@@ -1779,11 +1153,8 @@ STR_1768    :Heilahdusten määrää ei voitu muuttaa...
 STR_1769    :{WINDOW_COLOUR_2}Heilahdusten määrä:
 STR_1770    :{SMALLFONT}{BLACK}Kokonaisten heilahdusten määrä
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Vain yksi nostomäki sallittu per laite
-STR_1775    :Pois päältä
-STR_1776    :Päällä
 STR_1777    :{WINDOW_COLOUR_2}Musiikki
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapuku
@@ -1804,7 +1175,6 @@ STR_1793    :Matkalla kohti {STRINGID} tarkistusta varten
 STR_1794    :Korjataan {STRINGID}
 STR_1795    :Vastataan radiopuheluun
 STR_1796    :Hajonnut ja korjauksen tarpeessa
-STR_1797    :Tätä asetusta ei voida muuttaa tälle laitteelle
 STR_1798    :Whirlpool
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Turvakatkaisu
@@ -1879,7 +1249,6 @@ STR_1868    :Kierrosten määrää ei voi muuttaa...
 STR_1869    :{WINDOW_COLOUR_2}Kierrosten määrä:
 STR_1870    :{SMALLFONT}{BLACK}Täysien kierrosten määrä
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Tulo: {BLACK}{CURRENCY2DP} per tunti
 STR_1874    :{WINDOW_COLOUR_2}Tuotto: {BLACK}{CURRENCY2DP} per tunti
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
@@ -1901,8 +1270,6 @@ STR_1890    :{SMALLFONT}{BLACK}Valitse kuinka usein mekaanikko tarkistaa tämän
 STR_1891    :Puistossa ei vielä ole {STRINGID} !
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
-STR_1892    :<not used anymore>
-STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} myyty: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Rakenna uusi laite/kohde
 STR_1896    :{WINDOW_COLOUR_2}Rahan käyttö/tulot
@@ -1932,7 +1299,6 @@ STR_1919    :Rahaa ei ole tarpeeksi!
 STR_1920    :Lainan takaisin maksaminen ei onnistunut!
 STR_1921    :{SMALLFONT}{BLACK}Aloita uusi peli
 STR_1922    :{SMALLFONT}{BLACK}Jatka tallennetun pelin pelaamista
-STR_1923    :{SMALLFONT}{BLACK}Näytä tutoriaali
 STR_1924    :{SMALLFONT}{BLACK}Lopeta
 STR_1925    :Henkilöä ei voi sijoittaa tähän...
 STR_1926    :{SMALLFONT}
@@ -2109,9 +1475,6 @@ STR_2096    :Paistettu kana
 STR_2097    :Limonaadi
 STR_2098    :Tyhjä tölkki
 STR_2099    :Tyhjä pullo
-STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_2103    :{WINDOW_COLOUR_2}Rinkelin hinta:
 STR_2104    :{WINDOW_COLOUR_2}Kaakaon hinta:
 STR_2105    :{WINDOW_COLOUR_2}Jääteen hinta:
@@ -2131,9 +1494,6 @@ STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}Paahdetun makkaran hinta:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :On-Ride Photo
-STR_2123    :On-Ride Photo
-STR_2124    :On-Ride Photo
 STR_2125    :Rinkeli
 STR_2126    :Kaakao
 STR_2127    :Jäätee
@@ -2153,9 +1513,6 @@ STR_2140    :Tyhjä juomatölkki
 STR_2141    :Tyhjä mehukuppi
 STR_2142    :Paahdettu makkara
 STR_2143    :Tyhjä kulho
-STR_2144    :On-Ride Photos
-STR_2145    :On-Ride Photos
-STR_2146    :On-Ride Photos
 STR_2147    :Rinkelit
 STR_2148    :Kaakaot
 STR_2149    :Jääteet
@@ -2175,9 +1532,6 @@ STR_2162    :Tyhjiä juomatölkkejä
 STR_2163    :Tyhjiä mehukuppeja
 STR_2164    :Paahdetut makkarat
 STR_2165    :Tyhjiä kulhoja
-STR_2166    :an On-Ride Photo
-STR_2167    :an On-Ride Photo
-STR_2168    :an On-Ride Photo
 STR_2169    :Rinkeli
 STR_2170    :Kaakao
 STR_2171    :Jäätee
@@ -2197,9 +1551,6 @@ STR_2184    :Tyhjä juomatölkki
 STR_2185    :Tyhjä mehukuppi
 STR_2186    :Paahdettu makkara
 STR_2187    :Tyhjä kulho
-STR_2188    :On-Ride Photo of {STRINGID}
-STR_2189    :On-Ride Photo of {STRINGID}
-STR_2190    :On-Ride Photo of {STRINGID}
 STR_2191    :Rinkeli
 STR_2192    :Kaakao
 STR_2193    :Jäätee
@@ -2299,7 +1650,6 @@ STR_2286    :Suunnitellaan
 STR_2287    :Viimeistellään suunnittelua
 STR_2288    :Tuntematon
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
 STR_2291    :Valitse uuden pelin skenaario
 STR_2292    :{WINDOW_COLOUR_2}Käytyjä laitteita:
 STR_2293    :{BLACK} Ei mitään
@@ -2326,10 +1676,6 @@ STR_2313    :{WINDOW_COLOUR_2}Pahoinvointiarvosana: {BLACK}{COMMA2DP32} (approx.
 STR_2314    :{WINDOW_COLOUR_2}Ajelun pituus: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kustannus: {BLACK}noin {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Tilaa tarvitaan: {BLACK}{COMMA16} x {COMMA16} neliötä
-STR_2317    :<not used anymore>
-STR_2318    :<not used anymore>
-STR_2319    :<not used anymore>
-STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Laitteiden/kohteiden määrä: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Henkilökunta: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}m{SQUARED}
@@ -2355,7 +1701,6 @@ STR_2342    :Kruunu (kr)
 STR_2343    :Euro ({EURO})
 STR_2344    :Brittiläinen
 STR_2345    :Metrinen
-STR_2346    :Näytä
 STR_2347    :{RED}{STRINGID} on hukkunut!
 STR_2348    :{SMALLFONT}{BLACK}Näytä tämän henkilökunnan jäsenen tarkemmat tiedot
 STR_2349    :{WINDOW_COLOUR_2}Palkat: {BLACK}{CURRENCY} per kuukausi
@@ -2366,7 +1711,6 @@ STR_2353    :{WINDOW_COLOUR_2}Törkyä harjattu: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Roskakoria tyhjennetty: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Ajelua korjattu: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}Ajelua tarkistettu: {BLACK}{COMMA16}
-STR_2357    :Talo
 STR_2358    :Yksiköt
 STR_2359    :Oikeat arvot
 STR_2360    :{WINDOW_COLOUR_2}Näytön tarkkuus
@@ -2431,8 +1775,6 @@ STR_2418    :Vapaa pääsy laitteeseen {STRINGID}
 STR_2419    :Vapaa ajelu laitteessa {STRINGID}
 STR_2420    :Puolen hinnan pääsy laitteeseen {STRINGID}
 STR_2421    :Ilmainen {STRINGID}
-STR_2422    :Mainoskampanja {STRINGID}:n mainostamiseksi
-STR_2423    :Mainoskampanja {STRINGID}:n mainostamiseksi
 STR_2424    :{WINDOW_COLOUR_2}Vapaa sisäänpääsy -kuponkeja
 STR_2425    :{WINDOW_COLOUR_2}Ilmainen ajelu tietyssä laitteessa -kuponkeja
 STR_2426    :{WINDOW_COLOUR_2}Puolen hinnan sisäänpääsy -kuponkeja
@@ -2446,12 +1788,6 @@ STR_2433    :{BLACK}Kuponkeja joilla saa ilmaisen {STRINGID}
 STR_2434    :{BLACK}Mainoskampanja {STRINGID}:n mainostamiseksi
 STR_2435    :{BLACK}Mainoskampanja {STRINGID}:n mainostamiseksi
 STR_2436    :1 viikko
-STR_2437    :<not used anymore>
-STR_2438    :<not used anymore>
-STR_2439    :<not used anymore>
-STR_2440    :<not used anymore>
-STR_2441    :<not used anymore>
-STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Viikottainen kustannus: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Kokonaiskustannus: {BLACK}{CURRENCY2DP}
 STR_2445    :Aloita tämä markkinointikampanja
@@ -2464,8 +1800,6 @@ STR_2451    :{YELLOW}Mainoskampanjasi laitteelle {STRINGID} on loppunut
 STR_2452    :{WINDOW_COLOUR_2}Raha (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Raha (less loan): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
-STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :{SMALLFONT}{BLACK}Näytä taloustiedot
 STR_2458    :{SMALLFONT}{BLACK}Näytä kuvaaja rahan määrästä (less loan) over time
 STR_2459    :{SMALLFONT}{BLACK}Näytä kuvaaja puiston arvosta
@@ -2494,8 +1828,6 @@ STR_2481    :{SMALLFONT}{BLACK}Näytä poikittaisen kiihtyvyyden kuvaaja ajalle
 STR_2482    :{SMALLFONT}{BLACK}Tuotto: {CURRENCY} viikossa,  puiston arvo: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Viikottainen tuotto: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Viikottainen tuotto: {RED}{CURRENCY2DP}
-STR_2485    :Ohjaimet
-STR_2486    :Yleiset
 STR_2487    :Näytä vieraiden 'oikeat' nimet
 STR_2488    :{SMALLFONT}{BLACK}Vaihda vieraiden nimen ja numeron näyttämisen välillä
 STR_2489    :Pikanäppäimet...
@@ -2692,8 +2024,6 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :Kaikki tutkimustyö on tehty
 STR_2681    :{MEDIUMFONT}{BLACK}Saat {CURRENCY} lisää rahaa
-STR_2682    :<not used anymore>
-STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Suuri kävijäryhmä saapuu
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Matala:
@@ -2758,7 +2088,6 @@ STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
-STR_2748    :Bar
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Siirrä kaikki esineet ylös
@@ -2768,22 +2097,13 @@ STR_2753    :Leikattu ruoho
 STR_2754    :Kastele kasvit
 STR_2755    :Korjaa tärvelöinti
 STR_2756    :Poista roskat
-STR_2757    :Pakota aurinko
-STR_2758    :Pakota ukkonen
-STR_2759    :Zero Clearance
-STR_2760    :+{CURRENCY}
-STR_2761    :<not used anymore>
-STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :<not used anymore>
 STR_2765    :Large Tram
 STR_2766    :Voita skenaario
 STR_2767    :Jäädytä ilmasto
 STR_2768    :Sulata ilmasto
 STR_2769    :Avaa puisto
 STR_2770    :Sulje puisto
-STR_2771    :Hitaampi pelinopeus
-STR_2772    :Nopeampi pelinopeus
 STR_2773    :Ikkunoitu
 STR_2774    :Koko näyttö
 STR_2775    :Koko näyttö (työpöytä)
@@ -2868,11 +2188,7 @@ STR_2852    :Ratasuunnitelma on jo asennettu
 STR_2853    :Kiellettyä paikallisten viranomaisten mukaan!
 STR_2854    :{RED}Kävijät eivät pääse laitteen {STRINGID} sisäänkäynnille !{NEWLINE}Rakenna polku sisäänkäynnille
 STR_2855    :{RED}Laitteen {STRINGID} uloskäynnistä ei lähde polkua !{NEWLINE}Rakenna polku uloskäynniltä
-STR_2856    :{WINDOW_COLOUR_2}Tutoriaali
-STR_2857    :{WINDOW_COLOUR_2}(Paina nappia ohjataksesi)
 STR_2858    :Markkinointikampanjaa ei voitu aloittaa...
-STR_2859    :Toinen OpenRCT2-ohjelma on jo auki
-STR_2860    :Infogrames Interactiven lopputekstit...
 STR_2861    :{WINDOW_COLOUR_2}Lisensoinut Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements...
 STR_2863    :Music acknowledgements
@@ -2912,7 +2228,6 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) tekijänoikeus {
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2900    :{WINDOW_COLOUR_2}
 STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
@@ -2920,69 +2235,6 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) tekijänoikeu
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Senior Producer:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Executive Producer:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Senior Marketing Product Manager:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}V.P. of Product Development:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}General Manager:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Director of Quality Assurance:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Q.A. Certification Manager:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Q.A. Certification Lead:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Testaajat:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Director of Marketing:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Manager of Creative Services:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Manager of Editorial & Documentation Services:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Graphic Designer:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Copywriter:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Erikoiskiitokset:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Engineering Specialist:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Engineering Services Manager:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Lead Compatibility Analyst:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Compatibility Analysts:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Päätestaaja:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Senior Tester:  Matt Pantaleoni
-STR_2931    :{WINDOW_COLOUR_2}
-STR_2932    :{WINDOW_COLOUR_2}
-STR_2933    :{WINDOW_COLOUR_2}
-STR_2934    :{WINDOW_COLOUR_2}
-STR_2935    :{WINDOW_COLOUR_2}
-STR_2936    :{WINDOW_COLOUR_2}
-STR_2937    :{WINDOW_COLOUR_2}
-STR_2938    :{WINDOW_COLOUR_2}
-STR_2939    :{WINDOW_COLOUR_2}
-STR_2940    :{WINDOW_COLOUR_2}
-STR_2941    :{WINDOW_COLOUR_2}
-STR_2942    :{WINDOW_COLOUR_2}
-STR_2943    :{WINDOW_COLOUR_2}
-STR_2944    :{WINDOW_COLOUR_2}
-STR_2945    :{WINDOW_COLOUR_2}
-STR_2946    :{WINDOW_COLOUR_2}
-STR_2947    :{WINDOW_COLOUR_2}
-STR_2948    :{WINDOW_COLOUR_2}
-STR_2949    :{WINDOW_COLOUR_2}
-STR_2950    :{WINDOW_COLOUR_2}
-STR_2951    :{WINDOW_COLOUR_2}
-STR_2952    :{WINDOW_COLOUR_2}
-STR_2953    :{WINDOW_COLOUR_2}
-STR_2954    :{WINDOW_COLOUR_2}
-STR_2955    :{WINDOW_COLOUR_2}
-STR_2956    :{WINDOW_COLOUR_2}
-STR_2957    :{WINDOW_COLOUR_2}
-STR_2958    :{WINDOW_COLOUR_2}
-STR_2959    :{WINDOW_COLOUR_2}
-STR_2960    :{WINDOW_COLOUR_2}
-STR_2961    :{WINDOW_COLOUR_2}
-STR_2962    :{WINDOW_COLOUR_2}
-STR_2963    :{WINDOW_COLOUR_2}
-STR_2964    :{WINDOW_COLOUR_2}
-STR_2965    :{WINDOW_COLOUR_2}
-STR_2966    :
-STR_2967    :
-STR_2968    :
-STR_2969    :<not used anymore>
-STR_2970    :<not used anymore>
 STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
@@ -3058,7 +2310,6 @@ STR_3042    :Merirosvotyyli
 STR_3043    :Kivityyli 3
 STR_3044    :Karkkityyli
 STR_3045    :{SMALLFONT}{BLACK}Valitse toistettavan musiikin tyyli
-STR_3046    :Tätä ajelua ei voi muokata
 STR_3047    :Local authority forbids demolition or modifications to this ride
 STR_3048    :Marketing campaigns forbidden by local authority
 STR_3049    :Golf-reikä A
@@ -3067,9 +2318,6 @@ STR_3051    :Golf-reikä C
 STR_3052    :Golf-reikä D
 STR_3053    :Golf-reikä E
 STR_3054    :Ladataan...
-STR_3055    :Valkoinen
-STR_3056    :Läpikuultava
-STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
 STR_3058    :Tiiliseinät
 STR_3059    :Pensasaidat
 STR_3060    :Jääpalat
@@ -3110,7 +2358,6 @@ STR_3094    :Ei saatavilla
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
-STR_3098    :Can't change lift hill speed...
 STR_3099    :{SMALLFONT}{BLACK}Valitse väri
 STR_3100    :{SMALLFONT}{BLACK}Valitse toinen väri
 STR_3101    :{SMALLFONT}{BLACK}Valitse kolmas väri
@@ -3157,30 +2404,13 @@ STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Kapasiteetti: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Näytä ihmiset kartalla
 STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3145    :{SMALLFONT}{BLACK}Vieritä {STRINGID} vasemmalle
-STR_3146    :{SMALLFONT}{BLACK}Vieritä {STRINGID} oikealle
-STR_3147    :{SMALLFONT}{BLACK}Vieritä {STRINGID} vasemmalle nopeasti
-STR_3148    :{SMALLFONT}{BLACK}Vieritä {STRINGID} oikealle nopeasti
-STR_3149    :{SMALLFONT}{BLACK}Vieritä {STRINGID} vasemmalle/oikealle
-STR_3150    :{SMALLFONT}{BLACK}Vieritä {STRINGID} ylös
-STR_3151    :{SMALLFONT}{BLACK}Vieritä {STRINGID} alas
-STR_3152    :{SMALLFONT}{BLACK}Vieritä {STRINGID} ylös nopeasti
-STR_3153    :{SMALLFONT}{BLACK}Vieritä {STRINGID} alas nopeasti
-STR_3154    :{SMALLFONT}{BLACK}Vieritä {STRINGID} ylös/alas
-STR_3155    :
-STR_3156    :
-STR_3157    :kartta
 STR_3158    :graph
 STR_3159    :lista
 STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
-STR_3161    :<not used anymore>
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
-STR_3165    :
-STR_3166    :{BLACK}(ID: 
 STR_3167    :{WINDOW_COLOUR_2}Sisältää: {BLACK}{COMMA16} objektia
-STR_3168    :{WINDOW_COLOUR_2}Teksti: {BLACK}{STRINGID}
 STR_3169    :Tiedot seuraavalle objektille ei löydy: 
 STR_3170    :Tilaa ei ole tarpeeksi grafiikoille
 STR_3171    :Liian montaa tämän tyyppistä objektia valittuna
@@ -3335,9 +2565,6 @@ STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file...
 STR_3321    :Uusia objekteja asennettu onnistuneesti
 STR_3322    :{WINDOW_COLOUR_2}Tavoite: {BLACK}{STRINGID}
-STR_3323    :Missing object data, ID: 
-STR_3324    :Tarvitsee lisäosapaketin: 
-STR_3325    :Tarvitsee lisäosapaketin
 STR_3326    :{WINDOW_COLOUR_2}(ei kuvaa)
 STR_3327    :Starting positions for people not set
 STR_3328    :Can't advance to next editor stage...
@@ -3349,7 +2576,6 @@ STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
@@ -3374,8 +2600,6 @@ STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Varoitus!
 STR_3361    :Too many track designs of this type - Some will not be listed.
-STR_3362    :<not used anymore>
-STR_3363    :<not used anymore>
 STR_3364    :Edistynyt
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
 STR_3366    :{BLACK}= Ajelu
@@ -3397,58 +2621,8 @@ STR_3381    :File is not compatible or contains invalid data
 STR_3382    :Tiedoston kopio epäonnistui
 STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name - Please select a new name for this design:
-STR_3385    :Beginners Tutorial
-STR_3386    :Custom Rides Tutorial
-STR_3387    :Roller Coaster Building Tutorial
-STR_3388    :Unable to switch to selected mode
 STR_3389    :Unable to select additional item of scenery...
 STR_3390    :Liian monta esinettä valittuna
-STR_3391    :{SMALLFONT}{BLACK}Here is our park - Let's have a quick look around...
-STR_3392    :{SMALLFONT}{BLACK}Holding down the RIGHT mouse button and moving the mouse is the quickest way to move the view...
-STR_3393    :{SMALLFONT}{BLACK}To view more of the park, you can zoom the view out using the icon at the top of the screen...
-STR_3394    :{SMALLFONT}{BLACK}You can also rotate the view in 90 degree steps...
-STR_3395    :{SMALLFONT}{BLACK}Building anything at this scale is a bit difficult, so let's zoom the view back in again...
-STR_3396    :{SMALLFONT}{BLACK}Let's build a simple ride to get the park started...
-STR_3397    :{SMALLFONT}{BLACK}The white 'ghost' image shows where the ride will be built. We'll move the pointer to select the position then click to build it...
-STR_3398    :{SMALLFONT}{BLACK}Rides need an entrance and an exit. We'll move the pointer to a square on the edge of the ride and then click to build first the entrance and then the exit...
-STR_3399    :{SMALLFONT}{BLACK}We need to build footpaths to allow guests to reach our new ride...
-STR_3400    :{SMALLFONT}{BLACK}For the path to the ride entrance we'll use a special 'queue line' path...
-STR_3401    :{SMALLFONT}{BLACK}For the exit path, just an 'ordinary' path will do...
-STR_3402    :{SMALLFONT}{BLACK}Right, lets open the ride! To open the ride we click the flag icon on the ride window and select 'open'...
-STR_3403    :{SMALLFONT}{BLACK}Mutta missä ovat vieraat?
-STR_3404    :{SMALLFONT}{BLACK}Oh - The park is still closed! Right - Let's open it...
-STR_3405    :{SMALLFONT}{BLACK}While we're waiting for our first guests, let's build some scenery...
-STR_3406    :{SMALLFONT}{BLACK}Here's our empty park. We're going to build a simple custom-designed ride...
-STR_3407    :{SMALLFONT}{BLACK}First we need to choose a starting position...
-STR_3408    :{SMALLFONT}{BLACK}The section of track we've just built is a 'station platform', to allow guests to get on and off the ride...
-STR_3409    :{SMALLFONT}{BLACK}We'll extend the platform a bit by adding a couple more station platform sections...
-STR_3410    :{SMALLFONT}{BLACK}The icons at the top of the construction window let you choose different track pieces to add...
-STR_3411    :{SMALLFONT}{BLACK}We'll select a left-hand curve...
-STR_3412    :{SMALLFONT}{BLACK}The curve hasn't been built yet, but the white ghost image shows where it will be built. Clicking the large 'build this' icon actually builds the track...
-STR_3413    :{SMALLFONT}{BLACK}Now we want to build straight track, so we click the straight track icon...
-STR_3414    :{SMALLFONT}{BLACK}Now that the circuit is complete, we need to build the ride entrance and exit...
-STR_3415    :{SMALLFONT}{BLACK}Let's test our ride to check it works...
-STR_3416    :{SMALLFONT}{BLACK}White it's being tested, we'll build the queue line and exit path...
-STR_3417    :{SMALLFONT}{BLACK}OK - Let's open the park and the ride...
-STR_3418    :{SMALLFONT}{BLACK}Our new ride isn't very exciting - Perhaps we should add some scenery?
-STR_3419    :{SMALLFONT}{BLACK}To build scenery above other scenery or in mid-air, hold down the SHIFT key and move the mouse to select the height...
-STR_3420    :{SMALLFONT}{BLACK}Some types of scenery can be re-painted after it's built...
-STR_3421    :{SMALLFONT}{BLACK}Lisätään jotain musiikkia ajeluun...
-STR_3422    :{SMALLFONT}{BLACK}Rakennetaan vuoristorata!
-STR_3423    :{SMALLFONT}{BLACK}There are loads of pre-designed coasters, but we're going to build our own custom design...
-STR_3424    :{SMALLFONT}{BLACK}That's the station platform built. Now we need a lift hill...
-STR_3425    :{SMALLFONT}{BLACK}Roller coaster trains aren't powered, so a 'chain lift' is needed to pull the train up the first hill...
-STR_3426    :{SMALLFONT}{BLACK}That's the lift hill complete - Now for the first drop...
-STR_3427    :{SMALLFONT}{BLACK}Those curves are a bad idea - The riders will be flung to the sides by the lateral G forces as the train hurtles around...
-STR_3428    :{SMALLFONT}{BLACK}Banking the curves will improve the ride - Riders will be pushed down into their seats instead of flung to the sides...
-STR_3429    :{SMALLFONT}{BLACK}No - That won't work! Look at the height marks - The second hill is taller than the lift hill...
-STR_3430    :{SMALLFONT}{BLACK}To ensure the train makes it around, each hill should be slightly smaller than the previous one...
-STR_3431    :{SMALLFONT}{BLACK}That's better - Our train should make it up that hill now! Let's try some more twisted track...
-STR_3432    :{SMALLFONT}{BLACK}We need to slow the train before the final curve and station, so let's add some brakes...
-STR_3433    :{SMALLFONT}{BLACK}And finally we'll add 'block brakes', which allow two trains to operate more safely on the circuit...
-STR_3434    :{SMALLFONT}{BLACK}Let's test the ride and see if it works!
-STR_3435    :{SMALLFONT}{BLACK}Great - It worked! Let's add the footpaths and let guests onto our new roller coaster...
-STR_3436    :{SMALLFONT}{BLACK}While waiting for our first riders, we could customise the ride a bit...
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
 STR_3439    :Tyhjennä maisema
@@ -3465,7 +2639,6 @@ STR_5120    :Talous
 STR_5121    :Tutkimustyö
 STR_5122    :Valitse ajelut radan tyypin mukaan (kuten RCT1:ssä)
 STR_5123    :Uusi ajelut
-STR_5124    :<not used anymore>
 STR_5125    :Kaikki tuhottavat
 STR_5126    :Satunnainen otsikkomusiikki
 STR_5127    :{SMALLFONT}{BLACK}Estä maan korkeuden muuttaminen
@@ -3498,7 +2671,6 @@ STR_5153    :Muuta teemoja...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
-STR_5157    :Unlock all prices
 STR_5158    :Lopeta valikkoon
 STR_5159    :Lopeta OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Vuosi {POP16}{COMMA16}
@@ -3683,8 +2855,6 @@ STR_5337    :Puiston sisäänkäynti
 STR_5338    :Element type
 STR_5339    :Base height
 STR_5340    :Clearance height
-STR_5341    :Flags
-STR_5342    :Choose a map tile
 STR_5343    :Automaattisesti aseta henkilöstö
 STR_5344    :Muutosloki
 STR_5345    :Taloushuijaukset
@@ -3836,7 +3006,6 @@ STR_5490    :Disable audio on focus loss
 STR_5491    :Keksinnötlista
 STR_5492    :Scenario options
 STR_5493    :Lähetä viesti
-STR_5494    :<not used anymore>
 STR_5495    :Pelaajalista
 STR_5496    :Pelaaja:
 STR_5497    :Ping:
@@ -3849,7 +3018,6 @@ STR_5503    :Anna isäntänimi tai IP-osoite:
 STR_5504    :{SMALLFONT}{BLACK}Näytä moninpelin tilanne
 STR_5505    :Yhdistäminen ei onnistunut.
 STR_5506    :Guests ignore intensities
-STR_5507    :Yleismiehet leikkaavat ruohoa oletuksena
 STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
 STR_5510    :Oletus äänilaite

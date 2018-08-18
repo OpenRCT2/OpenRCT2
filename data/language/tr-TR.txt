@@ -1543,9 +1543,6 @@ STR_2184    :boş meyve suyu kutusu
 STR_2185    :boş meyve suyu şişesi
 STR_2186    :sosis
 STR_2187    :boş tas
-STR_2188    :{STRINGID} aletinden fotoğraf
-STR_2189    :{STRINGID} aletinden fotoğraf
-STR_2190    :{STRINGID} aletinden fotoğraf
 STR_2191    :Simit
 STR_2192    :Sıcak çikolata
 STR_2193    :Ice Tea
@@ -2614,7 +2611,6 @@ STR_3381    :Dosya uyumlu değil veya geçersiz veri içeriyor
 STR_3382    :Dosya kopyalama başarısız
 STR_3383    :Alet tasarımı için yeni isim seçiniz
 STR_3384    :Bu isim kullanılmakda - Yeni isim seçiniz:
-STR_3388    :Seçili cisimler gösterilemiyor
 STR_3389    :Daha fazla cisim seçilemiyor
 STR_3390    :Çok fazla cisim seçildi
 STR_3437    :{SMALLFONT}{BLACK}Büyük ölçüde tema veya cisim siliniz

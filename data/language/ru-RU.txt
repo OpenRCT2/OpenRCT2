@@ -94,425 +94,6 @@ STR_0089    :Мини-горки
 STR_0090    :Шахтёрская поездка
 STR_0091    :Неизвестный аттракцион (59)
 STR_0092    :Горки с запуском ЛИМ
-STR_0093    :
-STR_0094    :
-STR_0095    :
-STR_0096    :
-STR_0097    :
-STR_0098    :
-STR_0099    :
-STR_0100    :
-STR_0101    :
-STR_0102    :
-STR_0103    :
-STR_0104    :
-STR_0105    :
-STR_0106    :
-STR_0107    :
-STR_0108    :
-STR_0109    :
-STR_0110    :
-STR_0111    :
-STR_0112    :
-STR_0113    :
-STR_0114    :
-STR_0115    :
-STR_0116    :
-STR_0117    :
-STR_0118    :
-STR_0119    :
-STR_0120    :
-STR_0121    :
-STR_0122    :
-STR_0123    :
-STR_0124    :
-STR_0125    :
-STR_0126    :
-STR_0127    :
-STR_0128    :
-STR_0129    :
-STR_0130    :
-STR_0131    :
-STR_0132    :
-STR_0133    :
-STR_0134    :
-STR_0135    :
-STR_0136    :
-STR_0137    :
-STR_0138    :
-STR_0139    :
-STR_0140    :
-STR_0141    :
-STR_0142    :
-STR_0143    :
-STR_0144    :
-STR_0145    :
-STR_0146    :
-STR_0147    :
-STR_0148    :
-STR_0149    :
-STR_0150    :
-STR_0151    :
-STR_0152    :
-STR_0153    :
-STR_0154    :
-STR_0155    :
-STR_0156    :
-STR_0157    :
-STR_0158    :
-STR_0159    :
-STR_0160    :
-STR_0161    :
-STR_0162    :
-STR_0163    :
-STR_0164    :
-STR_0165    :
-STR_0166    :
-STR_0167    :
-STR_0168    :
-STR_0169    :
-STR_0170    :
-STR_0171    :
-STR_0172    :
-STR_0173    :
-STR_0174    :
-STR_0175    :
-STR_0176    :
-STR_0177    :
-STR_0178    :
-STR_0179    :
-STR_0180    :
-STR_0181    :
-STR_0182    :
-STR_0183    :
-STR_0184    :
-STR_0185    :
-STR_0186    :
-STR_0187    :
-STR_0188    :
-STR_0189    :
-STR_0190    :
-STR_0191    :
-STR_0192    :
-STR_0193    :
-STR_0194    :
-STR_0195    :
-STR_0196    :
-STR_0197    :
-STR_0198    :
-STR_0199    :
-STR_0200    :
-STR_0201    :
-STR_0202    :
-STR_0203    :
-STR_0204    :
-STR_0205    :
-STR_0206    :
-STR_0207    :
-STR_0208    :
-STR_0209    :
-STR_0210    :
-STR_0211    :
-STR_0212    :
-STR_0213    :
-STR_0214    :
-STR_0215    :
-STR_0216    :
-STR_0217    :
-STR_0218    :
-STR_0219    :
-STR_0220    :
-STR_0221    :
-STR_0222    :
-STR_0223    :
-STR_0224    :
-STR_0225    :
-STR_0226    :
-STR_0227    :
-STR_0228    :
-STR_0229    :
-STR_0230    :
-STR_0231    :
-STR_0232    :
-STR_0233    :
-STR_0234    :
-STR_0235    :
-STR_0236    :
-STR_0237    :
-STR_0238    :
-STR_0239    :
-STR_0240    :
-STR_0241    :
-STR_0242    :
-STR_0243    :
-STR_0244    :
-STR_0245    :
-STR_0246    :
-STR_0247    :
-STR_0248    :
-STR_0249    :
-STR_0250    :
-STR_0251    :
-STR_0252    :
-STR_0253    :
-STR_0254    :
-STR_0255    :
-STR_0256    :
-STR_0257    :
-STR_0258    :
-STR_0259    :
-STR_0260    :
-STR_0261    :
-STR_0262    :
-STR_0263    :
-STR_0264    :
-STR_0265    :
-STR_0266    :
-STR_0267    :
-STR_0268    :
-STR_0269    :
-STR_0270    :
-STR_0271    :
-STR_0272    :
-STR_0273    :
-STR_0274    :
-STR_0275    :
-STR_0276    :
-STR_0277    :
-STR_0278    :
-STR_0279    :
-STR_0280    :
-STR_0281    :
-STR_0282    :
-STR_0283    :
-STR_0284    :
-STR_0285    :
-STR_0286    :
-STR_0287    :
-STR_0288    :
-STR_0289    :
-STR_0290    :
-STR_0291    :
-STR_0292    :
-STR_0293    :
-STR_0294    :
-STR_0295    :
-STR_0296    :
-STR_0297    :
-STR_0298    :
-STR_0299    :
-STR_0300    :
-STR_0301    :
-STR_0302    :
-STR_0303    :
-STR_0304    :
-STR_0305    :
-STR_0306    :
-STR_0307    :
-STR_0308    :
-STR_0309    :
-STR_0310    :
-STR_0311    :
-STR_0312    :
-STR_0313    :
-STR_0314    :
-STR_0315    :
-STR_0316    :
-STR_0317    :
-STR_0318    :
-STR_0319    :
-STR_0320    :
-STR_0321    :
-STR_0322    :
-STR_0323    :
-STR_0324    :
-STR_0325    :
-STR_0326    :
-STR_0327    :
-STR_0328    :
-STR_0329    :
-STR_0330    :
-STR_0331    :
-STR_0332    :
-STR_0333    :
-STR_0334    :
-STR_0335    :
-STR_0336    :
-STR_0337    :
-STR_0338    :
-STR_0339    :
-STR_0340    :
-STR_0341    :
-STR_0342    :
-STR_0343    :
-STR_0344    :
-STR_0345    :
-STR_0346    :
-STR_0347    :
-STR_0348    :
-STR_0349    :
-STR_0350    :
-STR_0351    :
-STR_0352    :
-STR_0353    :
-STR_0354    :
-STR_0355    :
-STR_0356    :
-STR_0357    :
-STR_0358    :
-STR_0359    :
-STR_0360    :
-STR_0361    :
-STR_0362    :
-STR_0363    :
-STR_0364    :
-STR_0365    :
-STR_0366    :
-STR_0367    :
-STR_0368    :
-STR_0369    :
-STR_0370    :
-STR_0371    :
-STR_0372    :
-STR_0373    :
-STR_0374    :
-STR_0375    :
-STR_0376    :
-STR_0377    :
-STR_0378    :
-STR_0379    :
-STR_0380    :
-STR_0381    :
-STR_0382    :
-STR_0383    :
-STR_0384    :
-STR_0385    :
-STR_0386    :
-STR_0387    :
-STR_0388    :
-STR_0389    :
-STR_0390    :
-STR_0391    :
-STR_0392    :
-STR_0393    :
-STR_0394    :
-STR_0395    :
-STR_0396    :
-STR_0397    :
-STR_0398    :
-STR_0399    :
-STR_0400    :
-STR_0401    :
-STR_0402    :
-STR_0403    :
-STR_0404    :
-STR_0405    :
-STR_0406    :
-STR_0407    :
-STR_0408    :
-STR_0409    :
-STR_0410    :
-STR_0411    :
-STR_0412    :
-STR_0413    :
-STR_0414    :
-STR_0415    :
-STR_0416    :
-STR_0417    :
-STR_0418    :
-STR_0419    :
-STR_0420    :
-STR_0421    :
-STR_0422    :
-STR_0423    :
-STR_0424    :
-STR_0425    :
-STR_0426    :
-STR_0427    :
-STR_0428    :
-STR_0429    :
-STR_0430    :
-STR_0431    :
-STR_0432    :
-STR_0433    :
-STR_0434    :
-STR_0435    :
-STR_0436    :
-STR_0437    :
-STR_0438    :
-STR_0439    :
-STR_0440    :
-STR_0441    :
-STR_0442    :
-STR_0443    :
-STR_0444    :
-STR_0445    :
-STR_0446    :
-STR_0447    :
-STR_0448    :
-STR_0449    :
-STR_0450    :
-STR_0451    :
-STR_0452    :
-STR_0453    :
-STR_0454    :
-STR_0455    :
-STR_0456    :
-STR_0457    :
-STR_0458    :
-STR_0459    :
-STR_0460    :
-STR_0461    :
-STR_0462    :
-STR_0463    :
-STR_0464    :
-STR_0465    :
-STR_0466    :
-STR_0467    :
-STR_0468    :
-STR_0469    :
-STR_0470    :
-STR_0471    :
-STR_0472    :
-STR_0473    :
-STR_0474    :
-STR_0475    :
-STR_0476    :
-STR_0477    :
-STR_0478    :
-STR_0479    :
-STR_0480    :
-STR_0481    :
-STR_0482    :
-STR_0483    :
-STR_0484    :
-STR_0485    :
-STR_0486    :
-STR_0487    :
-STR_0488    :
-STR_0489    :
-STR_0490    :
-STR_0491    :
-STR_0492    :
-STR_0493    :
-STR_0494    :
-STR_0495    :
-STR_0496    :
-STR_0497    :
-STR_0498    :
-STR_0499    :
-STR_0500    :
-STR_0501    :
-STR_0502    :
-STR_0503    :
-STR_0504    :
-STR_0505    :
-STR_0506    :
-STR_0507    :
-STR_0508    :
-STR_0509    :
-STR_0510    :
-STR_0511    :
 STR_0512    :Компактные горки со спиральными подъёмом и плавными, кручёными выпадами.
 STR_0513    :Петляющие горки, на которых люди едут в стоячем положении.
 STR_0514    :Дно вагонеток раскачивается по пути, прижимаясь к сторонам на поворотах.
@@ -542,12 +123,9 @@ STR_0537    :Бамперные электромобили, управляемы
 STR_0538    :Большой качающийся пиратский корабль
 STR_0539    :Корабль, присоединённый к плечу с противовесом на противоположенной стороне, делает оборот 360 градусов
 STR_0540    :Киоск, где гости могут приобрести еду
-STR_0541    :<removed string - do not use>
 STR_0542    :Киоск, где гости могут приобрести напитки
-STR_0543    :<removed string - do not use>
 STR_0544    :Киоск, где продаются сувениры
 STR_0545    :Классическая карусель с резными деревянными лошадками
-STR_0546    :<removed string - do not use>
 STR_0547    :Киоск, где гости могут получить карты парка и купить зонтики
 STR_0548    :Туалет
 STR_0549    :Большое вращающееся колесо с открытыми креслами
@@ -569,15 +147,12 @@ STR_0564    :Движущийся по деревянному пути, этот
 STR_0565    :Люди спокойно катаются по пологим деревянным горкам. Вагончики удерживаются за счёт силы трения
 STR_0566    :Отдельные вагончики мчатся по рельсам с крутыми поворотами и неожиданными спусками
 STR_0567    :Сидящие в креслах либо подвешены под углом, либо перевёрнуты вниз головой и мчатся во всевозможных положениях
-STR_0568    :<removed string - do not use>
 STR_0569    :Закреплённые специальными ремнями, посетители испытывают чувство свободного полёта, когда они проносятся по воздуху
-STR_0570    :<removed string - do not use>
 STR_0571    :Круглые вагончики вращаются вокруг своей оси в процессе движения вдоль извилистой деревянной трассы
 STR_0572    :Лодки большой вместимости движутся по каналу с водой, поднимаются на склоны на конвейерной ленте, ускоряясь при спуске, обдавая пассажиров огромным брызгами
 STR_0573    :Вагончики в виде вертолётов движутся по стальному трэку, управляемые вращением педалей
 STR_0574    :Пассажиры в специальной упряжи в лежачем положении, движутся по закрученному трэку, оказываясь то лицом, то спиной к земле
 STR_0575    :Поезда, подвешенные на рельсе, перевозят людей по парку
-STR_0576    :<removed string - do not use>
 STR_0577    :Вагончики движутся на деревянных рельсах, разворачиваясь на специальных поворотных секциях
 STR_0578    :Вагончики следуют по рельсам, замкнутым по кругу с перепадами и захватывающими вращениями
 STR_0579    :Короткая игра в миниатюрный гольф
@@ -593,191 +168,16 @@ STR_0588    :Отдельные вагончики движутся под из�
 STR_0589    :Большая кабина в виде ковра-самолёта движется по окружности на конце четырёх креплений
 STR_0590    :Посетители плывут в погрузившейся подводной лодке
 STR_0591    :Лодки в виде рафтов неспешно курсируют по трэку на реке
-STR_0592    :<removed string - do not use>
 STR_0593    :Вращающееся колесо с подвешенными кабинками, которое начинает крутиться, а затем наклоняется с помощью поддерживающего рычага
-STR_0594    :<removed string - do not use>
-STR_0595    :<removed string - do not use>
-STR_0596    :<removed string - do not use>
-STR_0597    :<removed string - do not use>
 STR_0598    :Инвертированные поезда американских горок разгоняются со станции, устремляясь на вертикальный отрезок путей, затем скатываются обратно через станцию, чтобы забраться задним ходом на другой вертикальный отрезок
 STR_0599    :Небольшие горки с отдельными вагончиками и плавными спусками
 STR_0600    :Шахтёрский поезд с двигателем движется по плавным извитым путям
-STR_0601    :<removed string - do not use>
 STR_0602    :Поезда американских горок разгоняются со станции при помощи моторов линейной индукции, следуя по извивающимся и переворачивающимся путям
-STR_0603    :<removed string - do not use>
-STR_0604    :<removed string - do not use>
-STR_0605    :<removed string - do not use>
-STR_0606    :<removed string - do not use>
-STR_0607    :<removed string - do not use>
-STR_0608    :<removed string - do not use>
-STR_0609    :<removed string - do not use>
-STR_0610    :<removed string - do not use>
-STR_0611    :<removed string - do not use>
-STR_0612    :<removed string - do not use>
-STR_0613    :<removed string - do not use>
-STR_0614    :<removed string - do not use>
-STR_0615    :<removed string - do not use>
-STR_0616    :<removed string - do not use>
-STR_0617    :<removed string - do not use>
-STR_0618    :<removed string - do not use>
-STR_0619    :<removed string - do not use>
-STR_0620    :<removed string - do not use>
-STR_0621    :<removed string - do not use>
-STR_0622    :<removed string - do not use>
-STR_0623    :<removed string - do not use>
-STR_0624    :<removed string - do not use>
-STR_0625    :<removed string - do not use>
-STR_0626    :<removed string - do not use>
-STR_0627    :<removed string - do not use>
-STR_0628    :<removed string - do not use>
-STR_0629    :<removed string - do not use>
-STR_0630    :<removed string - do not use>
-STR_0631    :<removed string - do not use>
-STR_0632    :<removed string - do not use>
-STR_0633    :<removed string - do not use>
-STR_0634    :<removed string - do not use>
-STR_0635    :<removed string - do not use>
-STR_0636    :<removed string - do not use>
-STR_0637    :<removed string - do not use>
-STR_0638    :<removed string - do not use>
-STR_0639    :<removed string - do not use>
-STR_0640    :<removed string - do not use>
-STR_0641    :<removed string - do not use>
-STR_0642    :<removed string - do not use>
-STR_0643    :<removed string - do not use>
-STR_0644    :<removed string - do not use>
-STR_0645    :<removed string - do not use>
-STR_0646    :<removed string - do not use>
-STR_0647    :<removed string - do not use>
-STR_0648    :<removed string - do not use>
-STR_0649    :<removed string - do not use>
-STR_0650    :<removed string - do not use>
-STR_0651    :<removed string - do not use>
-STR_0652    :<removed string - do not use>
-STR_0653    :<removed string - do not use>
-STR_0654    :<removed string - do not use>
-STR_0655    :<removed string - do not use>
-STR_0656    :<removed string - do not use>
-STR_0657    :<removed string - do not use>
-STR_0658    :<removed string - do not use>
-STR_0659    :<removed string - do not use>
-STR_0660    :<removed string - do not use>
-STR_0661    :<removed string - do not use>
-STR_0662    :<removed string - do not use>
-STR_0663    :<removed string - do not use>
-STR_0664    :<removed string - do not use>
-STR_0665    :<removed string - do not use>
-STR_0666    :<removed string - do not use>
-STR_0667    :<removed string - do not use>
-STR_0668    :<removed string - do not use>
-STR_0669    :<removed string - do not use>
-STR_0670    :<removed string - do not use>
-STR_0671    :<removed string - do not use>
-STR_0672    :<removed string - do not use>
-STR_0673    :<removed string - do not use>
-STR_0674    :<removed string - do not use>
-STR_0675    :<removed string - do not use>
-STR_0676    :<removed string - do not use>
-STR_0677    :<removed string - do not use>
-STR_0678    :<removed string - do not use>
-STR_0679    :<removed string - do not use>
-STR_0680    :<removed string - do not use>
-STR_0681    :<removed string - do not use>
-STR_0682    :<removed string - do not use>
-STR_0683    :<removed string - do not use>
-STR_0684    :<removed string - do not use>
-STR_0685    :<removed string - do not use>
-STR_0686    :<removed string - do not use>
-STR_0687    :<removed string - do not use>
-STR_0688    :<removed string - do not use>
-STR_0689    :<removed string - do not use>
-STR_0690    :<removed string - do not use>
-STR_0691    :<removed string - do not use>
-STR_0692    :<removed string - do not use>
-STR_0693    :<removed string - do not use>
-STR_0694    :<removed string - do not use>
-STR_0695    :<removed string - do not use>
-STR_0696    :<removed string - do not use>
-STR_0697    :<removed string - do not use>
-STR_0698    :<removed string - do not use>
-STR_0699    :<removed string - do not use>
-STR_0700    :<removed string - do not use>
-STR_0701    :<removed string - do not use>
-STR_0702    :<removed string - do not use>
-STR_0703    :<removed string - do not use>
-STR_0704    :<removed string - do not use>
-STR_0705    :<removed string - do not use>
-STR_0706    :<removed string - do not use>
-STR_0707    :<removed string - do not use>
-STR_0708    :<removed string - do not use>
-STR_0709    :<removed string - do not use>
-STR_0710    :<removed string - do not use>
-STR_0711    :<removed string - do not use>
-STR_0712    :<removed string - do not use>
-STR_0713    :<removed string - do not use>
-STR_0714    :<removed string - do not use>
-STR_0715    :<removed string - do not use>
-STR_0716    :<removed string - do not use>
-STR_0717    :<removed string - do not use>
-STR_0718    :<removed string - do not use>
-STR_0719    :<removed string - do not use>
-STR_0720    :<removed string - do not use>
-STR_0721    :<removed string - do not use>
-STR_0722    :<removed string - do not use>
-STR_0723    :<removed string - do not use>
-STR_0724    :<removed string - do not use>
-STR_0725    :<removed string - do not use>
-STR_0726    :<removed string - do not use>
-STR_0727    :<removed string - do not use>
-STR_0728    :<removed string - do not use>
-STR_0729    :<removed string - do not use>
-STR_0730    :<removed string - do not use>
-STR_0731    :<removed string - do not use>
-STR_0732    :<removed string - do not use>
-STR_0733    :<removed string - do not use>
-STR_0734    :<removed string - do not use>
-STR_0735    :<removed string - do not use>
-STR_0736    :<removed string - do not use>
-STR_0737    :<removed string - do not use>
-STR_0738    :<removed string - do not use>
-STR_0739    :<removed string - do not use>
-STR_0740    :<removed string - do not use>
-STR_0741    :<removed string - do not use>
-STR_0742    :<removed string - do not use>
-STR_0743    :<removed string - do not use>
-STR_0744    :<removed string - do not use>
-STR_0745    :<removed string - do not use>
-STR_0746    :<removed string - do not use>
-STR_0747    :<removed string - do not use>
-STR_0748    :<removed string - do not use>
-STR_0749    :<removed string - do not use>
-STR_0750    :<removed string - do not use>
-STR_0751    :<removed string - do not use>
-STR_0752    :<removed string - do not use>
-STR_0753    :<removed string - do not use>
-STR_0754    :<removed string - do not use>
-STR_0755    :<removed string - do not use>
-STR_0756    :<removed string - do not use>
-STR_0757    :<removed string - do not use>
-STR_0758    :<removed string - do not use>
-STR_0759    :<removed string - do not use>
-STR_0760    :<removed string - do not use>
-STR_0761    :<removed string - do not use>
-STR_0762    :<removed string - do not use>
-STR_0763    :<removed string - do not use>
-STR_0764    :<removed string - do not use>
-STR_0765    :<removed string - do not use>
-STR_0766    :<removed string - do not use>
 STR_0767    :Гость {INT32}
 STR_0768    :Дворник {INT32}
 STR_0769    :Механик {INT32}
 STR_0770    :Охранник {INT32}
 STR_0771    :Артист {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
 STR_0777    :Unnamed park{POP16}{POP16}
 STR_0778    :Знак
 STR_0779    :1е
@@ -836,21 +236,9 @@ STR_0831    :{SMALLFONT}{BLACK}Отдалить
 STR_0832    :{SMALLFONT}{BLACK}Вращать на 90{DEGREE} по часовой стрелке
 STR_0833    :{SMALLFONT}{BLACK}Пауза
 STR_0834    :{SMALLFONT}{BLACK}Настройки
-STR_0835    :Ошибка во время инициализации игры
-STR_0836    :Невозможно запустить игру в минимизированном состоянии
-STR_0837    :Не удалось инициализировать графическую систему
-STR_0838    :<removed string - do not use>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0841    :<removed string - do not use>
-STR_0842    :<removed string - do not use>
-STR_0843    :<removed string - do not use>
-STR_0844    :<removed string - do not use>
-STR_0845    :<removed string - do not use>
-STR_0846    :<removed string - do not use>
 STR_0847    :Про 'OpenRCT2'
-STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Sawyer, все права принадлежат
 STR_0851    :{WINDOW_COLOUR_2}Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Графика: Simon Foster
@@ -859,13 +247,6 @@ STR_0854    :{WINDOW_COLOUR_2}Запись дополнительных звук
 STR_0855    :{WINDOW_COLOUR_2}Представительство: Jacqui Lyons из Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Благодарность:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
-STR_0858    :<removed string - do not use>
-STR_0859    :<removed string - do not use>
-STR_0860    :<removed string - do not use>
-STR_0861    :<removed string - do not use>
-STR_0862    :<removed string - do not use>
-STR_0863    :<removed string - do not use>
-STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -887,11 +268,9 @@ STR_0882    :Загрузить
 STR_0883    :Сохранить
 STR_0884    :Загрузить местность
 STR_0885    :Сохранить местность
-STR_0886    :<removed string - do not use>
 STR_0887    :Покинуть редактор
 STR_0888    :Покинуть редактор
 STR_0889    :Покинуть редактор
-STR_0890    :<removed string - do not use>
 STR_0891    :Снимок экрана
 STR_0892    :Снимок экрана сохранён как '{STRINGID}'
 STR_0893    :Ошибка при создании снимка экрана
@@ -1652,8 +1031,6 @@ STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Помогите! Опустите меня!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}У меня кончились деньги!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Вау! Новый аттракцион!{ENDQUOTES}
-STR_1651    :<removed string - do not use>
-STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...и вот мы на {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Недавние мысли:
 STR_1655    :{SMALLFONT}{BLACK}Построить дорожку на земле
@@ -1738,7 +1115,6 @@ STR_1733    :Режим
 STR_1734    :{WINDOW_COLOUR_2}Число кругов:
 STR_1735    :{SMALLFONT}{BLACK}Число кругов в контуре
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1737    :{COMMA16}
 STR_1738    :Нельзя изменить число кругов...
 STR_1739    :Гонку выиграл гость {INT32}
 STR_1740    :Гонку выиграл {STRINGID}
@@ -1746,12 +1122,10 @@ STR_1741    :Еще не построено !
 STR_1742    :{WINDOW_COLOUR_2}Макс. людей на аттракционе:
 STR_1743    :{SMALLFONT}{BLACK}Максимум людей, находящихся на аттракционе
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1745    :{COMMA16}
 STR_1746    :Нельзя это изменить...
 STR_1747    :{WINDOW_COLOUR_2}Время:
 STR_1748    :{SMALLFONT}{BLACK}Время на поездку
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1750    :{DURATION}
 STR_1751    :Нельзя изменить время на поездку...
 STR_1752    :{SMALLFONT}{BLACK}Показать список отдельных гостей в парке
 STR_1753    :{SMALLFONT}{BLACK}Показать суммированный список гостей
@@ -1773,11 +1147,8 @@ STR_1768    :Нельзя изменить число качений...
 STR_1769    :{WINDOW_COLOUR_2}Число качений:
 STR_1770    :{SMALLFONT}{BLACK}Число полных качений
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1772    :{COMMA16}
 STR_1773    :Допускается только одна фото секция
 STR_1774    :Допускается только один кабельный лифт
-STR_1775    :Выкл.
-STR_1776    :Вкл.
 STR_1777    :{WINDOW_COLOUR_2}Музыка:
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Костюм панды
@@ -1798,7 +1169,6 @@ STR_1793    :Идёт к {STRINGID} для инспекции
 STR_1794    :Чинит {STRINGID}
 STR_1795    :Отвечает на вызов
 STR_1796    :Сломался и нуждается в ремонте
-STR_1797    :Эту опцию нельзя изменить для этого аттракциона
 STR_1798    :Водоворот
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Аварийный рубильник
@@ -1873,7 +1243,6 @@ STR_1868    :Нельзя изменить число оборотов...
 STR_1869    :{WINDOW_COLOUR_2}Число оборотов:
 STR_1870    :{SMALLFONT}{BLACK}Число полных оборотов
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Доход: {BLACK}{CURRENCY} в час
 STR_1874    :{WINDOW_COLOUR_2}Прибыль: {BLACK}{CURRENCY} в час
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
@@ -1893,8 +1262,6 @@ STR_1888    :{WINDOW_COLOUR_2}Время послед. инспекции: {BLAC
 STR_1889    :{WINDOW_COLOUR_2}Простой: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Выберите, как часто механики проверяют аттракцион
 STR_1891    :{STRINGID} ещё нет в парке!
-STR_1892    :<removed string - do not use>
-STR_1893    :<removed string - do not use>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} продано: {BLACK}{COMMA16}
 STR_1895    :{SMALLFONT}{BLACK}Построить новый аттракцион
 STR_1896    :{WINDOW_COLOUR_2}Расходы/Прибыль
@@ -1924,7 +1291,6 @@ STR_1919    :Мало денег!
 STR_1920    :Не можем отдать заем!
 STR_1921    :{SMALLFONT}{BLACK}Начать новую игру
 STR_1922    :{SMALLFONT}{BLACK}Продолжить игру
-STR_1923    :{SMALLFONT}{BLACK}Обучение
 STR_1924    :{SMALLFONT}{BLACK}Выход
 STR_1925    :Нельзя поставить сюда...
 STR_1926    :{SMALLFONT}
@@ -2101,9 +1467,6 @@ STR_2096    :Цыплёнок
 STR_2097    :Лимонад
 STR_2098    :Пустая коробка
 STR_2099    :Пустая бутылка
-STR_2100    :{WINDOW_COLOUR_2}Цена за фото:
-STR_2101    :{WINDOW_COLOUR_2}Цена за фото:
-STR_2102    :{WINDOW_COLOUR_2}Цена за:
 STR_2103    :{WINDOW_COLOUR_2}Цена за крендель:
 STR_2104    :{WINDOW_COLOUR_2}Цена за горячий шоколад:
 STR_2105    :{WINDOW_COLOUR_2}Цена за холодный чай:
@@ -2123,9 +1486,6 @@ STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}Цена за сосиску:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :Фото
-STR_2123    :Фото
-STR_2124    :Фото
 STR_2125    :Крендель
 STR_2126    :Горячий шоколад
 STR_2127    :Холодный чай
@@ -2145,9 +1505,6 @@ STR_2140    :Пустой пакет
 STR_2141    :Пустая чашка
 STR_2142    :Сосиска
 STR_2143    :Пустая кастрюля
-STR_2144    :Фото
-STR_2145    :Фото
-STR_2146    :Фото
 STR_2147    :Кренделя
 STR_2148    :Горячий шоколад
 STR_2149    :Холодный чай
@@ -2167,9 +1524,6 @@ STR_2162    :Пустые пакеты
 STR_2163    :Пустые стаканы
 STR_2164    :Сосисок
 STR_2165    :Пустые кастрюли
-STR_2166    :Фото
-STR_2167    :Фото
-STR_2168    :Фото
 STR_2169    :Крендель
 STR_2170    :Горячий шоколад
 STR_2171    :Холодный чай
@@ -2189,9 +1543,6 @@ STR_2184    :Пустой пакет
 STR_2185    :Пустой стакан
 STR_2186    :Сосиска
 STR_2187    :Пустая тарелка
-STR_2188    :Фото {STRINGID}
-STR_2189    :Фото {STRINGID}
-STR_2190    :Фото {STRINGID}
 STR_2191    :Крендель
 STR_2192    :Горячий шоколад
 STR_2193    :Холодный чай
@@ -2291,7 +1642,6 @@ STR_2286    :Дизайн
 STR_2287    :Заверш. дизайн
 STR_2288    :Неизвестно
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :<removed string - do not use>
 STR_2291    :Выберите сценарий для новой игры
 STR_2292    :{WINDOW_COLOUR_2}Катался на:
 STR_2293    :{BLACK} Ничего
@@ -2318,10 +1668,6 @@ STR_2313    :{WINDOW_COLOUR_2}Рейтинг тошноты: {BLACK}{COMMA2DP32}
 STR_2314    :{WINDOW_COLOUR_2}Длина аттр.: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Цена: {BLACK}прим. {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Нужно места: {BLACK}{COMMA16} x {COMMA16} блоков
-STR_2317    :<removed string - do not use>
-STR_2318    :<removed string - do not use>
-STR_2319    :<removed string - do not use>
-STR_2320    :<removed string - do not use>
 STR_2321    :{WINDOW_COLOUR_2}Число аттракционов: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Штат: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Размер парка: {BLACK}{COMMA16}m{SQUARED}
@@ -2347,7 +1693,6 @@ STR_2342    :Кроны (kr)
 STR_2343    :Евро (µ)
 STR_2344    :Футы
 STR_2345    :Метры
-STR_2346    :Дисплей
 STR_2347    :{RED}{STRINGID} утонул!
 STR_2348    :{SMALLFONT}{BLACK}Показать статистику этого работника
 STR_2349    :{WINDOW_COLOUR_2}Зарплата: {BLACK}{CURRENCY} в месяц
@@ -2358,7 +1703,6 @@ STR_2353    :{WINDOW_COLOUR_2}Мусора вымел: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Урн вынес: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Аттр. починил: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}Аттр. осмотрел: {BLACK}{COMMA16}
-STR_2357    :Дом
 STR_2358    :ед.
 STR_2359    :в метрах
 STR_2360    :{WINDOW_COLOUR_2}Разрешение:
@@ -2423,8 +1767,6 @@ STR_2418    :Свободный вход на {STRINGID}
 STR_2419    :Беспл. поездка на {STRINGID}
 STR_2420    :Пол цены за {STRINGID}
 STR_2421    :Бесплат. {STRINGID}
-STR_2422    :Рекламная кампания для {STRINGID}
-STR_2423    :Рекламная кампания для {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Купоны на свободный вход в парк
 STR_2425    :{WINDOW_COLOUR_2}Купоны на бесплатные поездки
 STR_2426    :{WINDOW_COLOUR_2}Купоны на вход в парк за пол цены
@@ -2438,12 +1780,6 @@ STR_2433    :{BLACK}Купоны на бесплат. {STRINGID}
 STR_2434    :{BLACK}Рекламная кампания {STRINGID}
 STR_2435    :{BLACK}Рекламная кампания {STRINGID}
 STR_2436    :1 неделя
-STR_2437    :<removed string - do not use>
-STR_2438    :<removed string - do not use>
-STR_2439    :<removed string - do not use>
-STR_2440    :<removed string - do not use>
-STR_2441    :<removed string - do not use>
-STR_2442    :<removed string - do not use>
 STR_2443    :{WINDOW_COLOUR_2}Цена за неделю: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Общая цена: {BLACK}{CURRENCY2DP}
 STR_2445    :Начать эту рекламную кампанию
@@ -2456,8 +1792,6 @@ STR_2451    :{YELLOW}Ваша рекламная кампания для {STRING
 STR_2452    :{WINDOW_COLOUR_2}Деньги (с займом): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Деньги (с займом): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
-STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :{SMALLFONT}{BLACK}Показать балансы
 STR_2458    :{SMALLFONT}{BLACK}Показать график денег по времени
 STR_2459    :{SMALLFONT}{BLACK}Показать график стоимости парка
@@ -2486,8 +1820,6 @@ STR_2481    :{SMALLFONT}{BLACK}Показать график боковых пе
 STR_2482    :{SMALLFONT}{BLACK}Прибыль: {CURRENCY} в неделю,  Стоимость Парка: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Недельная прибыль: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Недельная прибыль: {RED}{CURRENCY2DP}
-STR_2485    :Управление
-STR_2486    :Общие
 STR_2487    :Показать 'реальные' имена гостей
 STR_2488    :{SMALLFONT}{BLACK}Включает 'реальные' имена гостей вместо номеров.
 STR_2489    :Горячие клавиши...
@@ -2674,8 +2006,6 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :Все исследования завершены
 STR_2681    :{MEDIUMFONT}{BLACK}Увеличит сумму ваших денег на {CURRENCY}
-STR_2682    :<removed string - do not use>
-STR_2683    :<removed string - do not use>
 STR_2684    :{SMALLFONT}{BLACK}Прибудет большая группа гостей
 STR_2685    :Параметры симплексного шума
 STR_2686    :Нижний предел:
@@ -2741,7 +2071,6 @@ STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
-STR_2748    :Бар/балка
 STR_2749    :Мой новый сценарий
 # New strings used in the cheats window previously these were ???
 STR_2750    :Все элементы наверх
@@ -2751,22 +2080,13 @@ STR_2753    :Стриженная трава
 STR_2754    :Полить растения
 STR_2755    :Исправить вандализм
 STR_2756    :Убрать мусор
-STR_2757    :<removed string - do not use>
-STR_2758    :<removed string - do not use>
-STR_2759    :Нулевые зазоры
-STR_2760    :+{CURRENCY}
-STR_2761    :<removed string - do not use>
-STR_2762    :<removed string - do not use>
 STR_2763    :???
-STR_2764    :<removed string - do not use>
 STR_2765    :Большой вагон
 STR_2766    :Выиграть сценарий
 STR_2767    :Заблок. климат
 STR_2768    :Разблок. климат
 STR_2769    :Открыть парк
 STR_2770    :Закрыть парк
-STR_2771    :Меньшая скорость игры
-STR_2772    :Большая скорость игры
 STR_2773    :Оконный режим
 STR_2774    :Полный экран
 STR_2775    :Полный экран (окно без рамок)
@@ -2851,11 +2171,7 @@ STR_2852    :Дизайн трека уже установлен
 STR_2853    :Запрещено местными властями!
 STR_2854    :{RED}Гости не могут попасть ко входу на {STRINGID} !{NEWLINE}Постройте дорожку ко входу
 STR_2855    :{RED}{STRINGID} не имеет дорожки!{NEWLINE}Постройте дорожку от аттракциона.
-STR_2856    :<removed string - do not use>
-STR_2857    :<removed string - do not use>
 STR_2858    :Невозможно начать маркетинговую кампанию...
-STR_2859    :Уже запущен один экземпляр OpenRCT2
-STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Лицензия принадлежит Infogrames Interactive Inc.
 STR_2862    :Музыка...
 STR_2863    :Музыка
@@ -2895,7 +2211,6 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYR
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2900    :<removed string - do not use>
 STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
@@ -2903,69 +2218,6 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :<removed string - do not use>
-STR_2909    :<removed string - do not use>
-STR_2910    :<removed string - do not use>
-STR_2911    :<removed string - do not use>
-STR_2912    :<removed string - do not use>
-STR_2913    :<removed string - do not use>
-STR_2914    :<removed string - do not use>
-STR_2915    :<removed string - do not use>
-STR_2916    :<removed string - do not use>
-STR_2917    :<removed string - do not use>
-STR_2918    :<removed string - do not use>
-STR_2919    :<removed string - do not use>
-STR_2920    :<removed string - do not use>
-STR_2921    :<removed string - do not use>
-STR_2922    :<removed string - do not use>
-STR_2923    :<removed string - do not use>
-STR_2924    :<removed string - do not use>
-STR_2925    :<removed string - do not use>
-STR_2926    :<removed string - do not use>
-STR_2927    :<removed string - do not use>
-STR_2928    :<removed string - do not use>
-STR_2929    :<removed string - do not use>
-STR_2930    :<removed string - do not use>
-STR_2931    :{WINDOW_COLOUR_2}
-STR_2932    :{WINDOW_COLOUR_2}
-STR_2933    :{WINDOW_COLOUR_2}
-STR_2934    :{WINDOW_COLOUR_2}
-STR_2935    :{WINDOW_COLOUR_2}
-STR_2936    :{WINDOW_COLOUR_2}
-STR_2937    :{WINDOW_COLOUR_2}
-STR_2938    :{WINDOW_COLOUR_2}
-STR_2939    :{WINDOW_COLOUR_2}
-STR_2940    :{WINDOW_COLOUR_2}
-STR_2941    :{WINDOW_COLOUR_2}
-STR_2942    :{WINDOW_COLOUR_2}
-STR_2943    :{WINDOW_COLOUR_2}
-STR_2944    :{WINDOW_COLOUR_2}
-STR_2945    :{WINDOW_COLOUR_2}
-STR_2946    :{WINDOW_COLOUR_2}
-STR_2947    :{WINDOW_COLOUR_2}
-STR_2948    :{WINDOW_COLOUR_2}
-STR_2949    :{WINDOW_COLOUR_2}
-STR_2950    :{WINDOW_COLOUR_2}
-STR_2951    :{WINDOW_COLOUR_2}
-STR_2952    :{WINDOW_COLOUR_2}
-STR_2953    :{WINDOW_COLOUR_2}
-STR_2954    :{WINDOW_COLOUR_2}
-STR_2955    :{WINDOW_COLOUR_2}
-STR_2956    :{WINDOW_COLOUR_2}
-STR_2957    :{WINDOW_COLOUR_2}
-STR_2958    :{WINDOW_COLOUR_2}
-STR_2959    :{WINDOW_COLOUR_2}
-STR_2960    :{WINDOW_COLOUR_2}
-STR_2961    :{WINDOW_COLOUR_2}
-STR_2962    :{WINDOW_COLOUR_2}
-STR_2963    :{WINDOW_COLOUR_2}
-STR_2964    :{WINDOW_COLOUR_2}
-STR_2965    :{WINDOW_COLOUR_2}
-STR_2966    :
-STR_2967    :
-STR_2968    :
-STR_2969    :<removed string - do not use>
-STR_2970    :<removed string - do not use>
 STR_2971    :Главная цветовая схема
 STR_2972    :Альт. схема 1
 STR_2973    :Альт. схема 2
@@ -3041,7 +2293,6 @@ STR_3042    :Пиратский стиль
 STR_3043    :Рок 3
 STR_3044    :Конфетный стиль
 STR_3045    :{SMALLFONT}{BLACK}Выберите стиль музыки
-STR_3046    :Аттракцион нельзя изменить
 STR_3047    :Местные власти запрещают уничтожение и изменение этого аттракциона
 STR_3048    :Маркетинговые кампании запрещены местными властями
 STR_3049    :Лунка A
@@ -3050,9 +2301,6 @@ STR_3051    :Лунка C
 STR_3052    :Лунка D
 STR_3053    :Лунка E
 STR_3054    :Загрузка...
-STR_3055    :<removed string - do not use>
-STR_3056    :<removed string - do not use>
-STR_3057    :<removed string - do not use>
 STR_3058    :Кирпичные стены
 STR_3059    :Ограда
 STR_3060    :Лед. блоки
@@ -3093,7 +2341,6 @@ STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Скорость цепного лифта:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Выберите скорость цепного лифта
-STR_3098    :Невозможно изменить скорость поезда.
 STR_3099    :{SMALLFONT}{BLACK}Выбор цвета
 STR_3100    :{SMALLFONT}{BLACK}Второй цвет
 STR_3101    :{SMALLFONT}{BLACK}Третий цвет
@@ -3140,30 +2387,13 @@ STR_3141    :Мульти-кольца невозможны с кабельны�
 STR_3142    :{WINDOW_COLOUR_2}Вместимость: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Показать людей на карте
 STR_3144    :{SMALLFONT}{BLACK}Показать аттракционы и лотки на карте
-STR_3145    :{SMALLFONT}{BLACK}{STRINGID} влево
-STR_3146    :{SMALLFONT}{BLACK}{STRINGID} вправо
-STR_3147    :{SMALLFONT}{BLACK}{STRINGID} влево
-STR_3148    :{SMALLFONT}{BLACK}{STRINGID} вправо
-STR_3149    :{SMALLFONT}{BLACK}{STRINGID} влево/вправо
-STR_3150    :{SMALLFONT}{BLACK}{STRINGID} вверх
-STR_3151    :{SMALLFONT}{BLACK}{STRINGID} вниз
-STR_3152    :{SMALLFONT}{BLACK}{STRINGID} вверх
-STR_3153    :{SMALLFONT}{BLACK}{STRINGID} вниз
-STR_3154    :{SMALLFONT}{BLACK}{STRINGID} вверх/вниз
-STR_3155    :
-STR_3156    :
-STR_3157    :карта
 STR_3158    :график
 STR_3159    :список
 STR_3160    :OpenRCT2: Запускается первый раз...
-STR_3161    :<removed string - do not use>
 STR_3162    :Невозможно выделить память
 STR_3163    :Установка данных:
 STR_3164    :{BLACK}{COMMA16} выбрано (макс. {COMMA16})
-STR_3165    :
-STR_3166    :{BLACK}(ID: 
 STR_3167    :{WINDOW_COLOUR_2}Вкл.: {BLACK}{COMMA16} элемент.
-STR_3168    :{WINDOW_COLOUR_2}Текст: {BLACK}{STRINGID}
 STR_3169    :Данные для объекта не найдены:
 STR_3170    :Не хватает места для графики
 STR_3171    :Слишком много объектов этого типа выделено
@@ -3318,9 +2548,6 @@ STR_3319    :{WINDOW_COLOUR_2}Группа:
 STR_3320    :Невозможно сохранить сценарий...
 STR_3321    :Новые объекты установлены
 STR_3322    :{WINDOW_COLOUR_2}Задача: {BLACK}{STRINGID}
-STR_3323    :Отсутствую данные объекта, ID: 
-STR_3324    :Требует Add-On: 
-STR_3325    :Требует Add-On
 STR_3326    :{WINDOW_COLOUR_2}(нет картинки)
 STR_3327    :Стартовая точка для людей не установлена
 STR_3328    :Невозможно перейти к следующей стадии...
@@ -3332,7 +2559,6 @@ STR_3333    :Экспорт объектов с сохранёнными игр�
 STR_3334    :{SMALLFONT}{BLACK}Выберите, сохранять ли доп. объекты в сохранённой игре или сценарии, позволив другим загружать их
 STR_3335    :Редактор американских горок - выберите тип аттракциона и машин
 STR_3336    :Менеджер треков - выберите тип аттракциона
-STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Собственный дизайн
 STR_3339    :{BLACK}{COMMA16} доступно или собственный дизайн
 STR_3340    :{BLACK}{COMMA16} доступно или собственный дизайн
@@ -3357,8 +2583,6 @@ STR_3358    :Невозможно удалить дизайн трека...
 STR_3359    :{BLACK}Нет дизайна трека этого типа
 STR_3360    :Внимание!
 STR_3361    :Слишком много дизайнов треков этого типа - некоторые не будут показаны.
-STR_3362    :<removed string - do not use>
-STR_3363    :<removed string - do not use>
 STR_3364    :Дополн.
 STR_3365    :{SMALLFONT}{BLACK}Разрешить выбор отдельных элементов пейзажа кроме групп
 STR_3366    :{BLACK}= Аттр.
@@ -3380,58 +2604,8 @@ STR_3381    :Файл несовместим или плохие данные
 STR_3382    :Ошибка копирования
 STR_3383    :Выберите новое имя дизайна трека
 STR_3384    :Существующий дизайн трека уже есть - выберите новое имя для дизайна:
-STR_3385    :<removed string - do not use>
-STR_3386    :<removed string - do not use>
-STR_3387    :<removed string - do not use>
-STR_3388    :Невозможно переключиться в режим
 STR_3389    :Невозможно выбрать доп. элемент...
 STR_3390    :Слишком много выбрано
-STR_3391    :<removed string - do not use>
-STR_3392    :<removed string - do not use>
-STR_3393    :<removed string - do not use>
-STR_3394    :<removed string - do not use>
-STR_3395    :<removed string - do not use>
-STR_3396    :<removed string - do not use>
-STR_3397    :<removed string - do not use>
-STR_3398    :<removed string - do not use>
-STR_3399    :<removed string - do not use>
-STR_3400    :<removed string - do not use>
-STR_3401    :<removed string - do not use>
-STR_3402    :<removed string - do not use>
-STR_3403    :<removed string - do not use>
-STR_3404    :<removed string - do not use>
-STR_3405    :<removed string - do not use>
-STR_3406    :<removed string - do not use>
-STR_3407    :<removed string - do not use>
-STR_3408    :<removed string - do not use>
-STR_3409    :<removed string - do not use>
-STR_3410    :<removed string - do not use>
-STR_3411    :<removed string - do not use>
-STR_3412    :<removed string - do not use>
-STR_3413    :<removed string - do not use>
-STR_3414    :<removed string - do not use>
-STR_3415    :<removed string - do not use>
-STR_3416    :<removed string - do not use>
-STR_3417    :<removed string - do not use>
-STR_3418    :<removed string - do not use>
-STR_3419    :<removed string - do not use>
-STR_3420    :<removed string - do not use>
-STR_3421    :<removed string - do not use>
-STR_3422    :<removed string - do not use>
-STR_3423    :<removed string - do not use>
-STR_3424    :<removed string - do not use>
-STR_3425    :<removed string - do not use>
-STR_3426    :<removed string - do not use>
-STR_3427    :<removed string - do not use>
-STR_3428    :<removed string - do not use>
-STR_3429    :<removed string - do not use>
-STR_3430    :<removed string - do not use>
-STR_3431    :<removed string - do not use>
-STR_3432    :<removed string - do not use>
-STR_3433    :<removed string - do not use>
-STR_3434    :<removed string - do not use>
-STR_3435    :<removed string - do not use>
-STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Очистите большие области местности
 STR_3438    :Невозможно удалить отсюда все декорации...
 STR_3439    :Очистить
@@ -3448,7 +2622,6 @@ STR_5120    :Финансы
 STR_5121    :Исследования
 STR_5122    :Выбирать аттракцион по типу трека (как в RCT1)
 STR_5123    :Обновить аттракционы
-STR_5124    :<removed string - do not use>
 STR_5125    :Всё уничтожаемое
 STR_5126    :Случайная заглавная музыка
 STR_5127    :{SMALLFONT}{BLACK}Окрас ландшафта перетаскиванием, вместо изменения высоты
@@ -3479,7 +2652,6 @@ STR_5151    :.
 STR_5152    :,
 STR_5153    :Редактировать темы…
 STR_5155    :Разрешить тестирование незавершённых треков
-STR_5157    :<removed string - do not use>
 STR_5158    :Выйти в меню
 STR_5159    :Выйти из OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Год {POP16}{COMMA16}
@@ -3538,22 +2710,12 @@ STR_5306    :RollerCoaster Tycoon 1 (AA)
 STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
-STR_5341    :<removed string - do not use>
-STR_5342    :<removed string - do not use>
 STR_5375    :{UP}
 STR_5376    :{DOWN}
 STR_5462    :{CURRENCY}
 STR_5467    :ALT + 
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5494    :<removed string - do not use>
-STR_5507    :<removed string - do not use>
-STR_5730    :<removed string - do not use>
-STR_5732    :<removed string - do not use>
-STR_5733    :<removed string - do not use>
-STR_5818    :<removed string - do not use>
-STR_5821    :<removed string - do not use>
-STR_5897    :<removed string - do not use>
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
