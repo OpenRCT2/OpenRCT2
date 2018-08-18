@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#5993] Ride window prices can now be set via text input.
 - Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
+- Feature: [#7658] Add option to always use system file browsing window.
 - Feature: [#7694] Debug option to visualize paths that the game detects as wide.
 - Feature: [#7713] The virtual floor now takes land ownership rights into account.
 - Feature: [#7771] Danish translation.

@@ -83,6 +83,7 @@ struct GeneralConfiguration
     bool show_real_names_of_guests;
     bool allow_early_completion;
 
+    // Loading and saving
     bool confirmation_prompt;
     int32_t load_save_sort;
     utf8* last_save_game_directory;
@@ -90,6 +91,7 @@ struct GeneralConfiguration
     utf8* last_save_scenario_directory;
     utf8* last_save_track_directory;
     utf8* last_run_version;
+    bool use_native_browse_dialog;
 };
 
 struct InterfaceConfiguration

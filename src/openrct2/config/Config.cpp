@@ -202,6 +202,7 @@ namespace Config
             model->last_save_landscape_directory = reader->GetCString("last_landscape_directory", nullptr);
             model->last_save_scenario_directory = reader->GetCString("last_scenario_directory", nullptr);
             model->last_save_track_directory = reader->GetCString("last_track_directory", nullptr);
+            model->use_native_browse_dialog = reader->GetBoolean("use_native_browse_dialog", false);
             model->window_limit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
             model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
@@ -273,6 +274,7 @@ namespace Config
         writer->WriteString("last_landscape_directory", model->last_save_landscape_directory);
         writer->WriteString("last_scenario_directory", model->last_save_scenario_directory);
         writer->WriteString("last_track_directory", model->last_save_track_directory);
+        writer->WriteBoolean("use_native_browse_dialog", model->use_native_browse_dialog);
         writer->WriteInt32("window_limit", model->window_limit);
         writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor);
         writer->WriteBoolean("render_weather_effects", model->render_weather_effects);

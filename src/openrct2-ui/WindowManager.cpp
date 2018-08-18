@@ -218,8 +218,7 @@ public:
                 uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
                 std::string defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
                 loadsave_callback callback = (loadsave_callback)intent->GetPointerExtra(INTENT_EXTRA_CALLBACK);
-                rct_window* w = window_loadsave_open(type, defaultName.c_str());
-                window_loadsave_set_loadsave_callback(callback);
+                rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback);
 
                 return w;
             }
