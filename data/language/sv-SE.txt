@@ -1150,7 +1150,7 @@ STR_1770    :{SMALLFONT}{BLACK}Antal hela gungningar
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Bara en fotosektion tillåten per åktur
 STR_1774    :Bara en uppskjutskulle tillåten per åktur
-STR_1777    :<removed string - do not use>
+STR_1777    :Musik för åkturer
 STR_1778    :<removed string - do not use>
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandadräkt
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tigerdräkt
@@ -3729,6 +3729,8 @@ STR_6258    :Klar (genomskinlig)
 STR_6259    :Inaktivera
 STR_6260    :Visa blockerade rutor
 STR_6261    :Visa breda gångar
+STR_6262    :Huvudvolym
+STR_6263    :{SMALLFONT}{BLACK}Växla alla ljud på/av
 
 
 
