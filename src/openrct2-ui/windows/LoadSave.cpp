@@ -216,19 +216,19 @@ static const char* getFilterPatternByType(const int32_t type, const bool isSave)
     switch (type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
-            return isSave ? ".sv6" : ".sv6;.sc6;.sc4;.sv4;.sv7";
+            return isSave ? "*.sv6" : "*.sv6;*.sc6;*.sc4;*.sv4;*.sv7";
 
         case LOADSAVETYPE_LANDSCAPE:
-            return isSave ? ".sc6" : ".sc6;.sv6;.sc4;.sv4;.sv7";
+            return isSave ? "*.sc6" : "*.sc6;*.sv6;*.sc4;*.sv4;*.sv7";
 
         case LOADSAVETYPE_SCENARIO:
-            return ".sc6";
+            return "*.sc6";
 
         case LOADSAVETYPE_TRACK:
-            return isSave ? ".td6" : ".td6;.td4";
+            return isSave ? "*.td6" : "*.td6;*.td4";
 
         case LOADSAVETYPE_HEIGHTMAP:
-            return ".bmp;.png";
+            return "*.bmp;*.png";
 
         default:
             openrct2_assert(true, "Unsupported load/save directory type.");
@@ -297,7 +297,8 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
         w->max_height = WH * 2;
     }
 
-    window_loadsave_populate_list(w, false, path, getFilterPatternByType(type, isSave));
+    const char* pattern = getFilterPatternByType(type, isSave);
+    window_loadsave_populate_list(w, false, path, pattern);
     w->no_list_items = static_cast<uint16_t>(_listItems.size());
     w->selected_list_item = -1;
 
@@ -1138,34 +1139,36 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_overwrite_prompt_events = { nullptr,
-                                                                window_overwrite_prompt_mouseup,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                nullptr,
-                                                                window_overwrite_prompt_paint,
-                                                                nullptr };
+static rct_window_event_list window_overwrite_prompt_events = {
+    nullptr,
+    window_overwrite_prompt_mouseup,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    window_overwrite_prompt_paint,
+    nullptr,
+};
 
 static char _window_overwrite_prompt_name[256];
 static char _window_overwrite_prompt_path[MAX_PATH];

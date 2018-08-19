@@ -127,6 +127,10 @@ void path_set_extension(utf8* path, const utf8* newExtension, size_t size)
 
 void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
 {
+    // Skip to the dot if the extension starts with a pattern (starts with "*.")
+    if (newExtension[0] == '*')
+        newExtension++;
+
     // Append a dot to the filename if the new extension doesn't start with it
     if (newExtension[0] != '.')
         safe_strcat(path, ".", size);
