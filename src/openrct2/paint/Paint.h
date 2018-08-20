@@ -14,6 +14,8 @@
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 
+#include <vector>
+
 struct rct_tile_element;
 
 #pragma pack(push, 1)
@@ -80,6 +82,8 @@ struct paint_struct
     uint16_t map_x;                // 0x2C
     uint16_t map_y;                // 0x2E
     rct_tile_element* tileElement; // 0x30 (or sprite pointer)
+    std::vector<paint_struct*> *behind;
+    uint32_t isoDepth;
 };
 #ifdef PLATFORM_32BIT
 // TODO: drop packing from this when all rendering is done.

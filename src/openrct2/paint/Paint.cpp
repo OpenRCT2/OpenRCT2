@@ -7,13 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Paint.h"
-
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
+#include "Paint.h"
 #include "sprite/Paint.Sprite.h"
 #include "tile_element/Paint.TileElement.h"
 
@@ -305,42 +304,30 @@ static bool check_bounding_box(const paint_struct_bound_box& initialBBox, const 
 
 template<> bool check_bounding_box<0>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
-    if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end >= currentBBox.x
-        && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x < currentBBox.x_end))
-    {
-        return true;
-    }
-    return false;
+    bool a = initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end >= currentBBox.x;
+    bool b = initialBBox.z > currentBBox.z_end || initialBBox.y > currentBBox.y_end || initialBBox.x > currentBBox.x_end;
+    return a && b;
 }
 
 template<> bool check_bounding_box<1>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
-    if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end < currentBBox.x
-        && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
-    {
-        return true;
-    }
-    return false;
+    bool a = initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end < currentBBox.x;
+    bool b = initialBBox.z > currentBBox.z_end || initialBBox.y > currentBBox.y_end || initialBBox.x < currentBBox.x_end;
+    return a && b;
 }
 
 template<> bool check_bounding_box<2>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
-    if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end < currentBBox.x
-        && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
-    {
-        return true;
-    }
-    return false;
+    bool a = initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end < currentBBox.x;
+    bool b = initialBBox.z > currentBBox.z_end || initialBBox.y < currentBBox.y_end || initialBBox.x < currentBBox.x_end;
+    return a && b;
 }
 
 template<> bool check_bounding_box<3>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
-    if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end >= currentBBox.x
-        && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x < currentBBox.x_end))
-    {
-        return true;
-    }
-    return false;
+    bool a = initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end >= currentBBox.x;
+    bool b = initialBBox.z > currentBBox.z_end || initialBBox.y < currentBBox.y_end || initialBBox.x > currentBBox.x_end;
+    return a && b;
 }
 
 template<uint8_t _TRotation>
@@ -445,11 +432,28 @@ paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadr
     return nullptr;
 }
 
-/**
- *
- *  rct2: 0x00688217
- */
-paint_struct paint_session_arrange(paint_session* session)
+#include <deque>
+
+void visitNode(paint_struct* ps, uint32_t& depth)
+{
+    if (ps->quadrant_flags == 1)
+        return;
+
+    ps->quadrant_flags = 1;
+
+    for (size_t i = 0; i < ps->behind->size(); i++)
+    {
+        paint_struct* psBehind = ps->behind->at(i);
+        if (psBehind->quadrant_flags != 0)
+            continue;
+
+        visitNode(psBehind, depth);
+    }
+
+    ps->isoDepth = depth++;
+}
+
+paint_struct paint_session_arrange_old(paint_session* session)
 {
     paint_struct psHead = {};
     paint_struct* ps = &psHead;
@@ -482,6 +486,111 @@ paint_struct paint_session_arrange(paint_session* session)
             ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0, rotation);
         }
     }
+
+    return psHead;
+}
+
+/**
+ *
+ *  rct2: 0x00688217
+ */
+paint_struct paint_session_arrange(paint_session* session)
+{  
+    static std::vector<paint_struct*> psData;
+    psData.clear();
+
+    uint32_t quadrantIndex = session->QuadrantBackIndex;
+    const uint8_t rotation = get_current_rotation();
+    paint_struct* ps;
+
+    do
+    {
+        paint_struct* ps_next = session->Quadrants[quadrantIndex];
+        if (ps_next != nullptr)
+        {
+            // ps->next_quadrant_ps = ps_next;
+            do
+            {
+                ps = ps_next;
+                ps->isoDepth = 0;
+                if (ps->behind == nullptr)
+                    ps->behind = new std::vector<paint_struct*>();
+                ps->behind->clear();
+                ps->quadrant_flags = 0;
+
+                psData.push_back(ps);
+                ps_next = ps_next->next_quadrant_ps;
+
+            } while (ps_next != nullptr);
+        }
+    } while (++quadrantIndex <= session->QuadrantFrontIndex);
+
+    typedef bool (*fnSorter)(const paint_struct *a, const paint_struct *b);
+
+    fnSorter sorter = nullptr;
+    switch (rotation)
+    {
+        case 0:
+            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
+                return check_bounding_box<0>(a->bounds, b->bounds);
+            };
+            break;
+        case 1:
+            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
+                return check_bounding_box<1>(a->bounds, b->bounds);
+            };
+            break;
+        case 2:
+            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
+                return check_bounding_box<2>(a->bounds, b->bounds);
+            };
+            break;
+        case 3:
+            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
+                return check_bounding_box<3>(a->bounds, b->bounds);
+            };
+            break;
+    }
+
+    for (size_t i = 0; i < psData.size(); i++)
+    {
+        paint_struct* psA = psData[i];
+        for (size_t j = 0; j < psData.size(); j++)
+        {
+            if (i == j)
+                continue;
+
+            paint_struct* psB = psData[j];
+            if (std::abs((int16_t)psB->quadrant_index - (int16_t)psA->quadrant_index) > 1)
+                continue;
+
+            if (sorter(psA, psB))
+            {
+                psA->behind->push_back(psB);
+            }
+        }
+    }
+
+    uint32_t depth = 0;
+    for (size_t i = 0; i < psData.size(); i++)
+    {
+        visitNode(psData[i], depth);
+    }
+
+    std::sort(psData.begin(), psData.end(), [](const paint_struct *a, const paint_struct *b)->bool
+    {
+        return a->isoDepth < b->isoDepth;
+    });
+
+    paint_struct psHead = {};
+    paint_struct* psLast = &psHead;
+
+    for (auto* curPs : psData)
+    {
+        psLast->next_quadrant_ps = curPs;
+        psLast = curPs;
+    }
+    psLast->next_quadrant_ps = nullptr;
 
     return psHead;
 }
