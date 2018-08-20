@@ -7,11 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <cstdlib>
+#include "ConversionTables.h"
 
 #include "../core/Util.hpp"
-#include "ConversionTables.h"
 #include "FormatCodes.h"
+
+#include <cstdlib>
 
 // clang-format off
 const encoding_convert_entry RCT2ToUnicodeTable[256] =

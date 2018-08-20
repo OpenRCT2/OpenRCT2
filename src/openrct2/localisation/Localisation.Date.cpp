@@ -7,11 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <time.h>
 #include "../Game.h"
-#include "../core/Math.hpp"
 #include "Date.h"
 #include "StringIds.h"
+
+#include <algorithm>
+#include <time.h>
 
 uint16_t gDateMonthTicks;
 uint16_t gDateMonthsElapsed;
@@ -65,9 +66,9 @@ void date_reset()
 
 void date_set(int32_t year, int32_t month, int32_t day)
 {
-    year = Math::Clamp(1, year, 8192);
-    month = Math::Clamp(1, month, (int)MONTH_COUNT);
-    day = Math::Clamp(1, day, (int)days_in_month[month - 1]);
+    year = std::clamp(year, 1, 8192);
+    month = std::clamp(month, 1, (int)MONTH_COUNT);
+    day = std::clamp(day, 1, (int)days_in_month[month - 1]);
     gDateMonthsElapsed = (year - 1) * MONTH_COUNT + month - 1;
     gDateMonthTicks = 0x10000 / days_in_month[month - 1] * (day - 1) + 4;
 }
@@ -89,7 +90,7 @@ void date_update()
 void date_update_real_time_of_day()
 {
     time_t timestamp = time(nullptr);
-    struct tm *now = localtime(&timestamp);
+    struct tm* now = localtime(&timestamp);
 
     gRealTimeOfDay.second = now->tm_sec;
     gRealTimeOfDay.minute = now->tm_min;

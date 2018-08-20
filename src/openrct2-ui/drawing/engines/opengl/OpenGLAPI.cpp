@@ -9,35 +9,34 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "OpenGLAPI.h"
+#    include "OpenGLAPI.h"
 
-#if OPENGL_NO_LINK
+#    if OPENGL_NO_LINK
 
-#define OPENGL_PROC(TYPE, PROC) TYPE PROC = nullptr;
-#include "OpenGLAPIProc.h"
-#undef OPENGL_PROC
+#        define OPENGL_PROC(TYPE, PROC) TYPE PROC = nullptr;
+#        include "OpenGLAPIProc.h"
+#        undef OPENGL_PROC
 
-#include <SDL2/SDL_video.h>
+#        include <SDL2/SDL_video.h>
+#        include <openrct2/core/Console.hpp>
 
-#include <openrct2/core/Console.hpp>
-
-static const char * TryLoadAllProcAddresses()
+static const char* TryLoadAllProcAddresses()
 {
-#define OPENGL_PROC(TYPE, PROC)                     \
-    {                                               \
-        PROC = (TYPE)SDL_GL_GetProcAddress(#PROC);  \
-        if (PROC == nullptr)                        \
-        {                                           \
-            return #PROC;                           \
-        }                                           \
-    }
-#include "OpenGLAPIProc.h"
-#undef OPENGL_PROC
+#        define OPENGL_PROC(TYPE, PROC)                                                                                        \
+            {                                                                                                                  \
+                PROC = (TYPE)SDL_GL_GetProcAddress(#PROC);                                                                     \
+                if (PROC == nullptr)                                                                                           \
+                {                                                                                                              \
+                    return #PROC;                                                                                              \
+                }                                                                                                              \
+            }
+#        include "OpenGLAPIProc.h"
+#        undef OPENGL_PROC
 
     return nullptr;
 }
 
-#endif /* #if OPENGL_NO_LINK */
+#    endif /* #if OPENGL_NO_LINK */
 
 namespace OpenGLState
 {
@@ -49,7 +48,7 @@ namespace OpenGLState
         ActiveTexture = UINT16_MAX;
         CurrentProgram = UINT32_MAX;
     }
-}
+} // namespace OpenGLState
 
 void OpenGLAPI::SetTexture(uint16_t index, GLenum type, GLuint texture)
 {
@@ -64,14 +63,14 @@ bool OpenGLAPI::Initialise()
 {
     OpenGLState::Reset();
 
-#ifdef OPENGL_NO_LINK
-    const char * failedProcName = TryLoadAllProcAddresses();
+#    ifdef OPENGL_NO_LINK
+    const char* failedProcName = TryLoadAllProcAddresses();
     if (failedProcName != nullptr)
     {
         Console::Error::WriteLine("Failed to load %s.", failedProcName);
         return false;
     }
-#endif
+#    endif
     return true;
 }
 

@@ -28,15 +28,14 @@ namespace OpenRCT2
         /**
          * Class which can wrap a function in an IRegistration.
          */
-        template<typename T>
-        struct CallbackRegistration : public IRegistration
+        template<typename T> struct CallbackRegistration : public IRegistration
         {
         private:
             T _callback;
 
         public:
-            CallbackRegistration(T callback) :
-                _callback(callback)
+            CallbackRegistration(T callback)
+                : _callback(callback)
             {
             }
 
@@ -51,10 +50,9 @@ namespace OpenRCT2
          * Creates a new IRegistration which when deleted, calls the given
          * function.
          */
-        template<typename T>
-        static IRegistration * Create(T unregisterCallback)
+        template<typename T> static IRegistration* Create(T unregisterCallback)
         {
             return new CallbackRegistration<T>(unregisterCallback);
         }
     };
-}
+} // namespace OpenRCT2

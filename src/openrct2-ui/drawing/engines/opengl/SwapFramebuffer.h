@@ -9,10 +9,11 @@
 
 #pragma once
 
-#include <openrct2/common.h>
 #include "ApplyTransparencyShader.h"
 #include "OpenGLAPI.h"
 #include "OpenGLFramebuffer.h"
+
+#include <openrct2/common.h>
 
 /**
  * Class to maintain two different framebuffers where the active framebuffer
@@ -25,19 +26,31 @@
 class SwapFramebuffer final
 {
 private:
-    OpenGLFramebuffer   _opaqueFramebuffer;
-    OpenGLFramebuffer   _transparentFramebuffer;
-    OpenGLFramebuffer   _mixFramebuffer;
-    GLuint              _backDepth;
+    OpenGLFramebuffer _opaqueFramebuffer;
+    OpenGLFramebuffer _transparentFramebuffer;
+    OpenGLFramebuffer _mixFramebuffer;
+    GLuint _backDepth;
 
 public:
     SwapFramebuffer(int32_t width, int32_t height);
 
-    const OpenGLFramebuffer &GetFinalFramebuffer() const { return _opaqueFramebuffer; }
-    GLuint GetBackDepthTexture() const { return _backDepth; }
-    void BindOpaque() { _opaqueFramebuffer.Bind(); }
-    void BindTransparent() { _transparentFramebuffer.Bind(); }
+    const OpenGLFramebuffer& GetFinalFramebuffer() const
+    {
+        return _opaqueFramebuffer;
+    }
+    GLuint GetBackDepthTexture() const
+    {
+        return _backDepth;
+    }
+    void BindOpaque()
+    {
+        _opaqueFramebuffer.Bind();
+    }
+    void BindTransparent()
+    {
+        _transparentFramebuffer.Bind();
+    }
 
-    void ApplyTransparency(ApplyTransparencyShader &shader, GLuint paletteTex);
+    void ApplyTransparency(ApplyTransparencyShader& shader, GLuint paletteTex);
     void Clear();
 };

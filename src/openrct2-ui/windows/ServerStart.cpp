@@ -7,18 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/Context.h>
-#include <openrct2/config/Config.h>
-#include <openrct2/ParkImporter.h>
-#include <openrct2/network/network.h>
-#include <openrct2/windows/Intent.h>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/interface/Chat.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/util/Util.h>
 #include "../interface/Theme.h"
+
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/ParkImporter.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/interface/Chat.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/network.h>
+#include <openrct2/util/Util.h>
+#include <openrct2/windows/Intent.h>
 
 static char _port[7];
 static char _name[65];
@@ -102,7 +102,7 @@ static rct_window_event_list window_server_start_events = {
 };
 // clang-format on
 
-rct_window * window_server_start_open()
+rct_window* window_server_start_open()
 {
     rct_window* window;
 
@@ -119,20 +119,11 @@ rct_window * window_server_start_open()
     window_server_start_widgets[WIDX_GREETING_INPUT].string = _greeting;
     window_server_start_widgets[WIDX_PASSWORD_INPUT].string = _password;
     window->widgets = window_server_start_widgets;
-    window->enabled_widgets = (
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_PORT_INPUT) |
-        (1 << WIDX_NAME_INPUT) |
-        (1 << WIDX_DESCRIPTION_INPUT) |
-        (1 << WIDX_GREETING_INPUT) |
-        (1 << WIDX_PASSWORD_INPUT) |
-        (1 << WIDX_MAXPLAYERS) |
-        (1 << WIDX_MAXPLAYERS_INCREASE) |
-        (1 << WIDX_MAXPLAYERS_DECREASE) |
-        (1 << WIDX_ADVERTISE_CHECKBOX) |
-        (1 << WIDX_START_SERVER) |
-        (1 << WIDX_LOAD_SERVER)
-    );
+    window->enabled_widgets
+        = ((1 << WIDX_CLOSE) | (1 << WIDX_PORT_INPUT) | (1 << WIDX_NAME_INPUT) | (1 << WIDX_DESCRIPTION_INPUT)
+           | (1 << WIDX_GREETING_INPUT) | (1 << WIDX_PASSWORD_INPUT) | (1 << WIDX_MAXPLAYERS) | (1 << WIDX_MAXPLAYERS_INCREASE)
+           | (1 << WIDX_MAXPLAYERS_DECREASE) | (1 << WIDX_ADVERTISE_CHECKBOX) | (1 << WIDX_START_SERVER)
+           | (1 << WIDX_LOAD_SERVER));
     window_init_scroll_widgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
@@ -153,82 +144,87 @@ rct_window * window_server_start_open()
     return window;
 }
 
-static void window_server_start_close(rct_window *w)
+static void window_server_start_close(rct_window* w)
 {
-
 }
 
-static void window_server_start_scenarioselect_callback(const utf8 *path)
+static void window_server_start_scenarioselect_callback(const utf8* path)
 {
     network_set_password(_password);
-    if (context_load_park_from_file(path)) {
+    if (context_load_park_from_file(path))
+    {
         network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
 
-static void window_server_start_loadsave_callback(int32_t result, const utf8 * path)
+static void window_server_start_loadsave_callback(int32_t result, const utf8* path)
 {
-    if (result == MODAL_RESULT_OK && context_load_park_from_file(path)) {
+    if (result == MODAL_RESULT_OK && context_load_park_from_file(path))
+    {
         network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
 
-static void window_server_start_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_server_start_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_PORT_INPUT:
-        window_start_textbox(w, widgetIndex, STR_STRING, _port, 6);
-        break;
-    case WIDX_NAME_INPUT:
-        window_start_textbox(w, widgetIndex, STR_STRING, _name, 64);
-        break;
-    case WIDX_DESCRIPTION_INPUT:
-        window_start_textbox(w, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
-        break;
-    case WIDX_GREETING_INPUT:
-        window_start_textbox(w, widgetIndex, STR_STRING, _greeting, CHAT_INPUT_SIZE);
-        break;
-    case WIDX_PASSWORD_INPUT:
-        window_start_textbox(w, widgetIndex, STR_STRING, _password, 32);
-        break;
-    case WIDX_MAXPLAYERS_INCREASE:
-        if (gConfigNetwork.maxplayers < 255) {
-            gConfigNetwork.maxplayers++;
-        }
-        config_save_default();
-        window_invalidate(w);
-        break;
-    case WIDX_MAXPLAYERS_DECREASE:
-        if (gConfigNetwork.maxplayers > 1) {
-            gConfigNetwork.maxplayers--;
-        }
-        config_save_default();
-        window_invalidate(w);
-        break;
-    case WIDX_ADVERTISE_CHECKBOX:
-        gConfigNetwork.advertise = !gConfigNetwork.advertise;
-        config_save_default();
-        window_invalidate(w);
-        break;
-    case WIDX_START_SERVER:
-        window_scenarioselect_open(window_server_start_scenarioselect_callback, false);
-        break;
-    case WIDX_LOAD_SERVER:
-        network_set_password(_password);
-        auto intent = Intent(WC_LOADSAVE);
-        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-        intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) window_server_start_loadsave_callback);
-        context_open_intent(&intent);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_PORT_INPUT:
+            window_start_textbox(w, widgetIndex, STR_STRING, _port, 6);
+            break;
+        case WIDX_NAME_INPUT:
+            window_start_textbox(w, widgetIndex, STR_STRING, _name, 64);
+            break;
+        case WIDX_DESCRIPTION_INPUT:
+            window_start_textbox(w, widgetIndex, STR_STRING, _description, MAX_SERVER_DESCRIPTION_LENGTH);
+            break;
+        case WIDX_GREETING_INPUT:
+            window_start_textbox(w, widgetIndex, STR_STRING, _greeting, CHAT_INPUT_SIZE);
+            break;
+        case WIDX_PASSWORD_INPUT:
+            window_start_textbox(w, widgetIndex, STR_STRING, _password, 32);
+            break;
+        case WIDX_MAXPLAYERS_INCREASE:
+            if (gConfigNetwork.maxplayers < 255)
+            {
+                gConfigNetwork.maxplayers++;
+            }
+            config_save_default();
+            window_invalidate(w);
+            break;
+        case WIDX_MAXPLAYERS_DECREASE:
+            if (gConfigNetwork.maxplayers > 1)
+            {
+                gConfigNetwork.maxplayers--;
+            }
+            config_save_default();
+            window_invalidate(w);
+            break;
+        case WIDX_ADVERTISE_CHECKBOX:
+            gConfigNetwork.advertise = !gConfigNetwork.advertise;
+            config_save_default();
+            window_invalidate(w);
+            break;
+        case WIDX_START_SERVER:
+            window_scenarioselect_open(window_server_start_scenarioselect_callback, false);
+            break;
+        case WIDX_LOAD_SERVER:
+            network_set_password(_password);
+            auto intent = Intent(WC_LOADSAVE);
+            intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)window_server_start_loadsave_callback);
+            context_open_intent(&intent);
+            break;
     }
 }
 
-static void window_server_start_update(rct_window *w)
+static void window_server_start_update(rct_window* w)
 {
-    if (gCurrentTextBox.window.classification == w->classification && gCurrentTextBox.window.number == w->number) {
+    if (gCurrentTextBox.window.classification == w->classification && gCurrentTextBox.window.number == w->number)
+    {
         window_update_textbox_caret();
         widget_invalidate(w, WIDX_NAME_INPUT);
         widget_invalidate(w, WIDX_DESCRIPTION_INPUT);
@@ -237,91 +233,101 @@ static void window_server_start_update(rct_window *w)
     }
 }
 
-static void window_server_start_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
+static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    if (text == nullptr) return;
+    if (text == nullptr)
+        return;
 
-    switch (widgetIndex) {
-    case WIDX_PORT_INPUT:
-        if (strcmp(_port, text) == 0)
-            return;
+    switch (widgetIndex)
+    {
+        case WIDX_PORT_INPUT:
+            if (strcmp(_port, text) == 0)
+                return;
 
-        memset(_port, 0, sizeof(_port));
-        if (strlen(text) > 0) {
-            safe_strcpy(_port, text, sizeof(_port));
-        }
+            memset(_port, 0, sizeof(_port));
+            if (strlen(text) > 0)
+            {
+                safe_strcpy(_port, text, sizeof(_port));
+            }
 
-        gConfigNetwork.default_port = atoi(_port);
-        config_save_default();
-
-        widget_invalidate(w, WIDX_NAME_INPUT);
-        break;
-    case WIDX_NAME_INPUT:
-        if (strcmp(_name, text) == 0)
-            return;
-
-        memset(_name, 0, sizeof(_name));
-        if (strlen(text) > 0) {
-            safe_strcpy(_name, text, sizeof(_name));
-        }
-
-        if (strlen(_name) > 0) {
-            SafeFree(gConfigNetwork.server_name);
-            gConfigNetwork.server_name = _strdup(_name);
+            gConfigNetwork.default_port = atoi(_port);
             config_save_default();
-        }
 
-        widget_invalidate(w, WIDX_NAME_INPUT);
-        break;
-    case WIDX_DESCRIPTION_INPUT:
-        if (strcmp(_description, text) == 0)
-            return;
+            widget_invalidate(w, WIDX_NAME_INPUT);
+            break;
+        case WIDX_NAME_INPUT:
+            if (strcmp(_name, text) == 0)
+                return;
 
-        memset(_description, 0, sizeof(_description));
-        if (strlen(text) > 0) {
-            safe_strcpy(_description, text, sizeof(_description));
-        }
+            memset(_name, 0, sizeof(_name));
+            if (strlen(text) > 0)
+            {
+                safe_strcpy(_name, text, sizeof(_name));
+            }
 
-        if (strlen(_description) > 0) {
-            SafeFree(gConfigNetwork.server_description);
-            gConfigNetwork.server_description = _strdup(_description);
-            config_save_default();
-        }
+            if (strlen(_name) > 0)
+            {
+                SafeFree(gConfigNetwork.server_name);
+                gConfigNetwork.server_name = _strdup(_name);
+                config_save_default();
+            }
 
-        widget_invalidate(w, WIDX_DESCRIPTION_INPUT);
-        break;
-    case WIDX_GREETING_INPUT:
-        if (strcmp(_greeting, text) == 0)
-            return;
+            widget_invalidate(w, WIDX_NAME_INPUT);
+            break;
+        case WIDX_DESCRIPTION_INPUT:
+            if (strcmp(_description, text) == 0)
+                return;
 
-        memset(_greeting, 0, sizeof(_greeting));
-        if (strlen(text) > 0) {
-            safe_strcpy(_greeting, text, sizeof(_greeting));
-        }
+            memset(_description, 0, sizeof(_description));
+            if (strlen(text) > 0)
+            {
+                safe_strcpy(_description, text, sizeof(_description));
+            }
 
-        if (strlen(_greeting) > 0) {
-            SafeFree(gConfigNetwork.server_greeting);
-            gConfigNetwork.server_greeting = _strdup(_greeting);
-            config_save_default();
-        }
+            if (strlen(_description) > 0)
+            {
+                SafeFree(gConfigNetwork.server_description);
+                gConfigNetwork.server_description = _strdup(_description);
+                config_save_default();
+            }
 
-        widget_invalidate(w, WIDX_GREETING_INPUT);
-        break;
-    case WIDX_PASSWORD_INPUT:
-        if (strcmp(_password, text) == 0)
-            return;
+            widget_invalidate(w, WIDX_DESCRIPTION_INPUT);
+            break;
+        case WIDX_GREETING_INPUT:
+            if (strcmp(_greeting, text) == 0)
+                return;
 
-        memset(_password, 0, sizeof(_password));
-        if (strlen(text) > 0) {
-            safe_strcpy(_password, text, sizeof(_password));
-        }
+            memset(_greeting, 0, sizeof(_greeting));
+            if (strlen(text) > 0)
+            {
+                safe_strcpy(_greeting, text, sizeof(_greeting));
+            }
 
-        widget_invalidate(w, WIDX_PASSWORD_INPUT);
-        break;
+            if (strlen(_greeting) > 0)
+            {
+                SafeFree(gConfigNetwork.server_greeting);
+                gConfigNetwork.server_greeting = _strdup(_greeting);
+                config_save_default();
+            }
+
+            widget_invalidate(w, WIDX_GREETING_INPUT);
+            break;
+        case WIDX_PASSWORD_INPUT:
+            if (strcmp(_password, text) == 0)
+                return;
+
+            memset(_password, 0, sizeof(_password));
+            if (strlen(text) > 0)
+            {
+                safe_strcpy(_password, text, sizeof(_password));
+            }
+
+            widget_invalidate(w, WIDX_PASSWORD_INPUT);
+            break;
     }
 }
 
-static void window_server_start_invalidate(rct_window *w)
+static void window_server_start_invalidate(rct_window* w)
 {
     colour_scheme_update_by_class(w, WC_SERVER_LIST);
 
@@ -329,14 +335,16 @@ static void window_server_start_invalidate(rct_window *w)
     set_format_arg(18, uint16_t, gConfigNetwork.maxplayers);
 }
 
-static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
     gfx_draw_string_left(dpi, STR_PORT, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PORT_INPUT].top);
     gfx_draw_string_left(dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_NAME_INPUT].top);
-    gfx_draw_string_left(dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
-    gfx_draw_string_left(dpi, STR_SERVER_GREETING, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_GREETING_INPUT].top);
+    gfx_draw_string_left(
+        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
+    gfx_draw_string_left(
+        dpi, STR_SERVER_GREETING, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_GREETING_INPUT].top);
     gfx_draw_string_left(dpi, STR_PASSWORD, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_PASSWORD_INPUT].top);
     gfx_draw_string_left(dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->x + 6, w->y + w->widgets[WIDX_MAXPLAYERS].top);
 }

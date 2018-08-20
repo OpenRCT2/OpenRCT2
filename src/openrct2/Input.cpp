@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Context.h"
 #include "Input.h"
+
+#include "Context.h"
 
 INPUT_STATE _inputState;
 uint8_t _inputFlags;
@@ -42,9 +43,12 @@ void game_handle_keyboard_input()
 
 void input_set_flag(INPUT_FLAGS flag, bool on)
 {
-    if (on) {
+    if (on)
+    {
         _inputFlags |= flag;
-    } else {
+    }
+    else
+    {
         _inputFlags &= ~flag;
     }
 }

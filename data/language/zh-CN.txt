@@ -99,425 +99,6 @@ STR_0090    :矿车式过山车
 STR_0091    :Unknown Ride (59)
 # LIM: Linear Induction Motors
 STR_0092    :LIM喷射过山车
-STR_0093    :
-STR_0094    :
-STR_0095    :
-STR_0096    :
-STR_0097    :
-STR_0098    :
-STR_0099    :
-STR_0100    :
-STR_0101    :
-STR_0102    :
-STR_0103    :
-STR_0104    :
-STR_0105    :
-STR_0106    :
-STR_0107    :
-STR_0108    :
-STR_0109    :
-STR_0110    :
-STR_0111    :
-STR_0112    :
-STR_0113    :
-STR_0114    :
-STR_0115    :
-STR_0116    :
-STR_0117    :
-STR_0118    :
-STR_0119    :
-STR_0120    :
-STR_0121    :
-STR_0122    :
-STR_0123    :
-STR_0124    :
-STR_0125    :
-STR_0126    :
-STR_0127    :
-STR_0128    :
-STR_0129    :
-STR_0130    :
-STR_0131    :
-STR_0132    :
-STR_0133    :
-STR_0134    :
-STR_0135    :
-STR_0136    :
-STR_0137    :
-STR_0138    :
-STR_0139    :
-STR_0140    :
-STR_0141    :
-STR_0142    :
-STR_0143    :
-STR_0144    :
-STR_0145    :
-STR_0146    :
-STR_0147    :
-STR_0148    :
-STR_0149    :
-STR_0150    :
-STR_0151    :
-STR_0152    :
-STR_0153    :
-STR_0154    :
-STR_0155    :
-STR_0156    :
-STR_0157    :
-STR_0158    :
-STR_0159    :
-STR_0160    :
-STR_0161    :
-STR_0162    :
-STR_0163    :
-STR_0164    :
-STR_0165    :
-STR_0166    :
-STR_0167    :
-STR_0168    :
-STR_0169    :
-STR_0170    :
-STR_0171    :
-STR_0172    :
-STR_0173    :
-STR_0174    :
-STR_0175    :
-STR_0176    :
-STR_0177    :
-STR_0178    :
-STR_0179    :
-STR_0180    :
-STR_0181    :
-STR_0182    :
-STR_0183    :
-STR_0184    :
-STR_0185    :
-STR_0186    :
-STR_0187    :
-STR_0188    :
-STR_0189    :
-STR_0190    :
-STR_0191    :
-STR_0192    :
-STR_0193    :
-STR_0194    :
-STR_0195    :
-STR_0196    :
-STR_0197    :
-STR_0198    :
-STR_0199    :
-STR_0200    :
-STR_0201    :
-STR_0202    :
-STR_0203    :
-STR_0204    :
-STR_0205    :
-STR_0206    :
-STR_0207    :
-STR_0208    :
-STR_0209    :
-STR_0210    :
-STR_0211    :
-STR_0212    :
-STR_0213    :
-STR_0214    :
-STR_0215    :
-STR_0216    :
-STR_0217    :
-STR_0218    :
-STR_0219    :
-STR_0220    :
-STR_0221    :
-STR_0222    :
-STR_0223    :
-STR_0224    :
-STR_0225    :
-STR_0226    :
-STR_0227    :
-STR_0228    :
-STR_0229    :
-STR_0230    :
-STR_0231    :
-STR_0232    :
-STR_0233    :
-STR_0234    :
-STR_0235    :
-STR_0236    :
-STR_0237    :
-STR_0238    :
-STR_0239    :
-STR_0240    :
-STR_0241    :
-STR_0242    :
-STR_0243    :
-STR_0244    :
-STR_0245    :
-STR_0246    :
-STR_0247    :
-STR_0248    :
-STR_0249    :
-STR_0250    :
-STR_0251    :
-STR_0252    :
-STR_0253    :
-STR_0254    :
-STR_0255    :
-STR_0256    :
-STR_0257    :
-STR_0258    :
-STR_0259    :
-STR_0260    :
-STR_0261    :
-STR_0262    :
-STR_0263    :
-STR_0264    :
-STR_0265    :
-STR_0266    :
-STR_0267    :
-STR_0268    :
-STR_0269    :
-STR_0270    :
-STR_0271    :
-STR_0272    :
-STR_0273    :
-STR_0274    :
-STR_0275    :
-STR_0276    :
-STR_0277    :
-STR_0278    :
-STR_0279    :
-STR_0280    :
-STR_0281    :
-STR_0282    :
-STR_0283    :
-STR_0284    :
-STR_0285    :
-STR_0286    :
-STR_0287    :
-STR_0288    :
-STR_0289    :
-STR_0290    :
-STR_0291    :
-STR_0292    :
-STR_0293    :
-STR_0294    :
-STR_0295    :
-STR_0296    :
-STR_0297    :
-STR_0298    :
-STR_0299    :
-STR_0300    :
-STR_0301    :
-STR_0302    :
-STR_0303    :
-STR_0304    :
-STR_0305    :
-STR_0306    :
-STR_0307    :
-STR_0308    :
-STR_0309    :
-STR_0310    :
-STR_0311    :
-STR_0312    :
-STR_0313    :
-STR_0314    :
-STR_0315    :
-STR_0316    :
-STR_0317    :
-STR_0318    :
-STR_0319    :
-STR_0320    :
-STR_0321    :
-STR_0322    :
-STR_0323    :
-STR_0324    :
-STR_0325    :
-STR_0326    :
-STR_0327    :
-STR_0328    :
-STR_0329    :
-STR_0330    :
-STR_0331    :
-STR_0332    :
-STR_0333    :
-STR_0334    :
-STR_0335    :
-STR_0336    :
-STR_0337    :
-STR_0338    :
-STR_0339    :
-STR_0340    :
-STR_0341    :
-STR_0342    :
-STR_0343    :
-STR_0344    :
-STR_0345    :
-STR_0346    :
-STR_0347    :
-STR_0348    :
-STR_0349    :
-STR_0350    :
-STR_0351    :
-STR_0352    :
-STR_0353    :
-STR_0354    :
-STR_0355    :
-STR_0356    :
-STR_0357    :
-STR_0358    :
-STR_0359    :
-STR_0360    :
-STR_0361    :
-STR_0362    :
-STR_0363    :
-STR_0364    :
-STR_0365    :
-STR_0366    :
-STR_0367    :
-STR_0368    :
-STR_0369    :
-STR_0370    :
-STR_0371    :
-STR_0372    :
-STR_0373    :
-STR_0374    :
-STR_0375    :
-STR_0376    :
-STR_0377    :
-STR_0378    :
-STR_0379    :
-STR_0380    :
-STR_0381    :
-STR_0382    :
-STR_0383    :
-STR_0384    :
-STR_0385    :
-STR_0386    :
-STR_0387    :
-STR_0388    :
-STR_0389    :
-STR_0390    :
-STR_0391    :
-STR_0392    :
-STR_0393    :
-STR_0394    :
-STR_0395    :
-STR_0396    :
-STR_0397    :
-STR_0398    :
-STR_0399    :
-STR_0400    :
-STR_0401    :
-STR_0402    :
-STR_0403    :
-STR_0404    :
-STR_0405    :
-STR_0406    :
-STR_0407    :
-STR_0408    :
-STR_0409    :
-STR_0410    :
-STR_0411    :
-STR_0412    :
-STR_0413    :
-STR_0414    :
-STR_0415    :
-STR_0416    :
-STR_0417    :
-STR_0418    :
-STR_0419    :
-STR_0420    :
-STR_0421    :
-STR_0422    :
-STR_0423    :
-STR_0424    :
-STR_0425    :
-STR_0426    :
-STR_0427    :
-STR_0428    :
-STR_0429    :
-STR_0430    :
-STR_0431    :
-STR_0432    :
-STR_0433    :
-STR_0434    :
-STR_0435    :
-STR_0436    :
-STR_0437    :
-STR_0438    :
-STR_0439    :
-STR_0440    :
-STR_0441    :
-STR_0442    :
-STR_0443    :
-STR_0444    :
-STR_0445    :
-STR_0446    :
-STR_0447    :
-STR_0448    :
-STR_0449    :
-STR_0450    :
-STR_0451    :
-STR_0452    :
-STR_0453    :
-STR_0454    :
-STR_0455    :
-STR_0456    :
-STR_0457    :
-STR_0458    :
-STR_0459    :
-STR_0460    :
-STR_0461    :
-STR_0462    :
-STR_0463    :
-STR_0464    :
-STR_0465    :
-STR_0466    :
-STR_0467    :
-STR_0468    :
-STR_0469    :
-STR_0470    :
-STR_0471    :
-STR_0472    :
-STR_0473    :
-STR_0474    :
-STR_0475    :
-STR_0476    :
-STR_0477    :
-STR_0478    :
-STR_0479    :
-STR_0480    :
-STR_0481    :
-STR_0482    :
-STR_0483    :
-STR_0484    :
-STR_0485    :
-STR_0486    :
-STR_0487    :
-STR_0488    :
-STR_0489    :
-STR_0490    :
-STR_0491    :
-STR_0492    :
-STR_0493    :
-STR_0494    :
-STR_0495    :
-STR_0496    :
-STR_0497    :
-STR_0498    :
-STR_0499    :
-STR_0500    :
-STR_0501    :
-STR_0502    :
-STR_0503    :
-STR_0504    :
-STR_0505    :
-STR_0506    :
-STR_0507    :
-STR_0508    :
-STR_0509    :
-STR_0510    :
-STR_0511    :
 STR_0512    :一种紧凑的过山车，有着螺旋状的爬升和平滑盘旋的下坠
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -547,12 +128,9 @@ STR_0537    :
 STR_0538    :
 STR_0539    :
 STR_0540    :
-STR_0541    :
 STR_0542    :
-STR_0543    :
 STR_0544    :
 STR_0545    :
-STR_0546    :
 STR_0547    :
 STR_0548    :
 STR_0549    :
@@ -574,15 +152,12 @@ STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gi
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
 STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
 STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
-STR_0568    :
 STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
-STR_0570    :
 STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
 STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyer belt, accelerating down steep slopes to soak the riders with a gaint splash
 STR_0573    :Powered helicoper shaped cars running on a steel track, controlled by the pedalling of the riders
 STR_0574    :Riders are held in special harnesses in a lying-down position, travlling through twisted track and inversions either on their backs or facing the ground
 STR_0575    :Powered trains hanging from a single rail transport people around the park
-STR_0576    :
 STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
 STR_0579    :
@@ -598,191 +173,16 @@ STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns 
 STR_0589    :
 STR_0590    :Riders ride in a submerged submarine through an underwater course
 STR_0591    :Raft-shaped boats gently meander around a river track
-STR_0592    :
 STR_0593    :
-STR_0594    :
-STR_0595    :
-STR_0596    :
-STR_0597    :
 STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
-STR_0601    :
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :<removed string - do not use>
-STR_0604    :<removed string - do not use>
-STR_0605    :<removed string - do not use>
-STR_0606    :<removed string - do not use>
-STR_0607    :<removed string - do not use>
-STR_0608    :<removed string - do not use>
-STR_0609    :<removed string - do not use>
-STR_0610    :<removed string - do not use>
-STR_0611    :<removed string - do not use>
-STR_0612    :<removed string - do not use>
-STR_0613    :<removed string - do not use>
-STR_0614    :<removed string - do not use>
-STR_0615    :<removed string - do not use>
-STR_0616    :<removed string - do not use>
-STR_0617    :<removed string - do not use>
-STR_0618    :<removed string - do not use>
-STR_0619    :<removed string - do not use>
-STR_0620    :<removed string - do not use>
-STR_0621    :<removed string - do not use>
-STR_0622    :<removed string - do not use>
-STR_0623    :<removed string - do not use>
-STR_0624    :<removed string - do not use>
-STR_0625    :<removed string - do not use>
-STR_0626    :<removed string - do not use>
-STR_0627    :<removed string - do not use>
-STR_0628    :<removed string - do not use>
-STR_0629    :<removed string - do not use>
-STR_0630    :<removed string - do not use>
-STR_0631    :<removed string - do not use>
-STR_0632    :<removed string - do not use>
-STR_0633    :<removed string - do not use>
-STR_0634    :<removed string - do not use>
-STR_0635    :<removed string - do not use>
-STR_0636    :<removed string - do not use>
-STR_0637    :<removed string - do not use>
-STR_0638    :<removed string - do not use>
-STR_0639    :<removed string - do not use>
-STR_0640    :<removed string - do not use>
-STR_0641    :<removed string - do not use>
-STR_0642    :<removed string - do not use>
-STR_0643    :<removed string - do not use>
-STR_0644    :<removed string - do not use>
-STR_0645    :<removed string - do not use>
-STR_0646    :<removed string - do not use>
-STR_0647    :<removed string - do not use>
-STR_0648    :<removed string - do not use>
-STR_0649    :<removed string - do not use>
-STR_0650    :<removed string - do not use>
-STR_0651    :<removed string - do not use>
-STR_0652    :<removed string - do not use>
-STR_0653    :<removed string - do not use>
-STR_0654    :<removed string - do not use>
-STR_0655    :<removed string - do not use>
-STR_0656    :<removed string - do not use>
-STR_0657    :<removed string - do not use>
-STR_0658    :<removed string - do not use>
-STR_0659    :<removed string - do not use>
-STR_0660    :<removed string - do not use>
-STR_0661    :<removed string - do not use>
-STR_0662    :<removed string - do not use>
-STR_0663    :<removed string - do not use>
-STR_0664    :<removed string - do not use>
-STR_0665    :<removed string - do not use>
-STR_0666    :<removed string - do not use>
-STR_0667    :<removed string - do not use>
-STR_0668    :<removed string - do not use>
-STR_0669    :<removed string - do not use>
-STR_0670    :<removed string - do not use>
-STR_0671    :<removed string - do not use>
-STR_0672    :<removed string - do not use>
-STR_0673    :<removed string - do not use>
-STR_0674    :<removed string - do not use>
-STR_0675    :<removed string - do not use>
-STR_0676    :<removed string - do not use>
-STR_0677    :<removed string - do not use>
-STR_0678    :<removed string - do not use>
-STR_0679    :<removed string - do not use>
-STR_0680    :<removed string - do not use>
-STR_0681    :<removed string - do not use>
-STR_0682    :<removed string - do not use>
-STR_0683    :<removed string - do not use>
-STR_0684    :<removed string - do not use>
-STR_0685    :<removed string - do not use>
-STR_0686    :<removed string - do not use>
-STR_0687    :<removed string - do not use>
-STR_0688    :<removed string - do not use>
-STR_0689    :<removed string - do not use>
-STR_0690    :<removed string - do not use>
-STR_0691    :<removed string - do not use>
-STR_0692    :<removed string - do not use>
-STR_0693    :<removed string - do not use>
-STR_0694    :<removed string - do not use>
-STR_0695    :<removed string - do not use>
-STR_0696    :<removed string - do not use>
-STR_0697    :<removed string - do not use>
-STR_0698    :<removed string - do not use>
-STR_0699    :<removed string - do not use>
-STR_0700    :<removed string - do not use>
-STR_0701    :<removed string - do not use>
-STR_0702    :<removed string - do not use>
-STR_0703    :<removed string - do not use>
-STR_0704    :<removed string - do not use>
-STR_0705    :<removed string - do not use>
-STR_0706    :<removed string - do not use>
-STR_0707    :<removed string - do not use>
-STR_0708    :<removed string - do not use>
-STR_0709    :<removed string - do not use>
-STR_0710    :<removed string - do not use>
-STR_0711    :<removed string - do not use>
-STR_0712    :<removed string - do not use>
-STR_0713    :<removed string - do not use>
-STR_0714    :<removed string - do not use>
-STR_0715    :<removed string - do not use>
-STR_0716    :<removed string - do not use>
-STR_0717    :<removed string - do not use>
-STR_0718    :<removed string - do not use>
-STR_0719    :<removed string - do not use>
-STR_0720    :<removed string - do not use>
-STR_0721    :<removed string - do not use>
-STR_0722    :<removed string - do not use>
-STR_0723    :<removed string - do not use>
-STR_0724    :<removed string - do not use>
-STR_0725    :<removed string - do not use>
-STR_0726    :<removed string - do not use>
-STR_0727    :<removed string - do not use>
-STR_0728    :<removed string - do not use>
-STR_0729    :<removed string - do not use>
-STR_0730    :<removed string - do not use>
-STR_0731    :<removed string - do not use>
-STR_0732    :<removed string - do not use>
-STR_0733    :<removed string - do not use>
-STR_0734    :<removed string - do not use>
-STR_0735    :<removed string - do not use>
-STR_0736    :<removed string - do not use>
-STR_0737    :<removed string - do not use>
-STR_0738    :<removed string - do not use>
-STR_0739    :<removed string - do not use>
-STR_0740    :<removed string - do not use>
-STR_0741    :<removed string - do not use>
-STR_0742    :<removed string - do not use>
-STR_0743    :<removed string - do not use>
-STR_0744    :<removed string - do not use>
-STR_0745    :<removed string - do not use>
-STR_0746    :<removed string - do not use>
-STR_0747    :<removed string - do not use>
-STR_0748    :<removed string - do not use>
-STR_0749    :<removed string - do not use>
-STR_0750    :<removed string - do not use>
-STR_0751    :<removed string - do not use>
-STR_0752    :<removed string - do not use>
-STR_0753    :<removed string - do not use>
-STR_0754    :<removed string - do not use>
-STR_0755    :<removed string - do not use>
-STR_0756    :<removed string - do not use>
-STR_0757    :<removed string - do not use>
-STR_0758    :<removed string - do not use>
-STR_0759    :<removed string - do not use>
-STR_0760    :<removed string - do not use>
-STR_0761    :<removed string - do not use>
-STR_0762    :<removed string - do not use>
-STR_0763    :<removed string - do not use>
-STR_0764    :<removed string - do not use>
-STR_0765    :<removed string - do not use>
-STR_0766    :<removed string - do not use>
 STR_0767    :游客 {INT32}
 STR_0768    :勤杂工 {INT32}
 STR_0769    :机械师 {INT32}
 STR_0770    :警卫 {INT32}
 STR_0771    :表演人员 {INT32}
-STR_0772    :未命名游乐园{POP16}{POP16}
-STR_0773    :未命名游乐园{POP16}{POP16}
-STR_0774    :未命名游乐园{POP16}{POP16}
-STR_0775    :未命名游乐园{POP16}{POP16}
-STR_0776    :未命名游乐园{POP16}{POP16}
 STR_0777    :未命名游乐园{POP16}{POP16}
 STR_0778    :指示牌
 STR_0779    :1日
@@ -841,22 +241,10 @@ STR_0831    :{SMALLFONT}{BLACK}缩小
 STR_0832    :{SMALLFONT}{BLACK}顺时针旋转90{DEGREE}
 STR_0833    :{SMALLFONT}{BLACK}暂停游戏
 STR_0834    :{SMALLFONT}{BLACK}磁盘和游戏选项
-STR_0835    :游戏初始化失败
-STR_0836    :最小化状态下无法启动游戏
-STR_0837    :无法初始化图形系统
-STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<not used anymore>
-STR_0842    :<not used anymore>
-STR_0843    :<not used anymore>
-STR_0844    :<not used anymore>
-STR_0845    :<not used anymore>
-STR_0846    :<not used anymore>
 STR_0847    :关于'OpenRCT2'
-STR_0848    :过山车大亨2
-STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}版权 {COPYRIGHT} 2002 Chris Sawyer, 版权所有
 STR_0851    :{WINDOW_COLOUR_2}设计及程序 by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}美术 by Simon Foster
@@ -865,13 +253,6 @@ STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}致谢:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
-STR_0858    :<removed string - do not use>
-STR_0859    :<removed string - do not use>
-STR_0860    :<removed string - do not use>
-STR_0861    :<removed string - do not use>
-STR_0862    :<removed string - do not use>
-STR_0863    :<removed string - do not use>
-STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -893,11 +274,9 @@ STR_0882    :加载游戏
 STR_0883    :保存游戏
 STR_0884    :加载地形
 STR_0885    :保存地形
-STR_0886    :退出游戏
 STR_0887    :退出场景编辑器
 STR_0888    :退出轨道设计工具
 STR_0889    :退出轨道设计管理工具
-STR_0890    :<removed string - do not use>
 STR_0891    :截图
 STR_0892    :截图 '{STRINGID}' 已保存
 STR_0893    :截图失败!
@@ -1659,8 +1038,6 @@ STR_1648    :{SMALLFONT}{OPENQUOTES}救命! 放我下来!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}我的现金不够了!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}喔!一个新的设施正在建造{ENDQUOTES}
 # Two removed inside jokes about Intamin and Phoenix
-STR_1651    :<removed string - do not use>
-STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...现在我们已经在{STRINGID}上!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}最近的想法:
 STR_1655    :{SMALLFONT}{BLACK}在地上建造道路
@@ -1745,7 +1122,6 @@ STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
 STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1737    :{COMMA16}
 STR_1738    :Can't change number of laps...
 STR_1739    :Race won by guest {INT32}
 STR_1740    :Race won by {STRINGID}
@@ -1753,12 +1129,10 @@ STR_1741    :Not yet constructed !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1745    :{COMMA16}
 STR_1746    :Can't change this...
 STR_1747    :{WINDOW_COLOUR_2}Time limit:
 STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1750    :{DURATION}
 STR_1751    :Can't change time limit for ride...
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
@@ -1780,11 +1154,8 @@ STR_1768    :Can't change number of swings...
 STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1772    :{COMMA16}
 STR_1773    :每个游乐设施只能建造一个照相区域
 STR_1774    :每个游乐设施只能建造一个牵引轨道
-STR_1775    :关闭
-STR_1776    :开启
 STR_1777    :{WINDOW_COLOUR_2}设施音乐
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊猫服装
@@ -1805,7 +1176,6 @@ STR_1793    :前往{STRINGID}检查中
 STR_1794    :修理{STRINGID}中
 STR_1795    :回应电台呼叫中
 STR_1796    :已经故障并需要修复
-STR_1797    :不能在这个游乐设施中更改这个选项
 STR_1798    :漩涡
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :保险设备跳闸
@@ -1880,7 +1250,6 @@ STR_1868    :不能改变旋转次数...
 STR_1869    :{WINDOW_COLOUR_2}旋转次数:
 STR_1870    :{SMALLFONT}{BLACK}完整旋转次数
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
@@ -1902,8 +1271,6 @@ STR_1890    :{SMALLFONT}{BLACK}选择机械师检查此游乐设施的时间间�
 STR_1891    :在乐园里暂未有{STRINGID}!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
-STR_1892    :<not used anymore>
-STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}售出{STRINGID}: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}建造新的游乐设施/店铺
 STR_1896    :{WINDOW_COLOUR_2}支出/收入
@@ -1933,7 +1300,6 @@ STR_1919    :没有足够的现金!
 STR_1920    :不能偿还贷款!
 STR_1921    :{SMALLFONT}{BLACK}开始新游戏
 STR_1922    :{SMALLFONT}{BLACK}从存档继续玩
-STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}退出游戏
 STR_1925    :不能放置人物于此...
 STR_1926    :{SMALLFONT}
@@ -2110,9 +1476,6 @@ STR_2096    :炸鸡
 STR_2097    :柠檬水
 STR_2098    :空盒子
 STR_2099    :空瓶子
-STR_2100    :{WINDOW_COLOUR_2}即时照片价格:
-STR_2101    :{WINDOW_COLOUR_2}即时照片价格:
-STR_2102    :{WINDOW_COLOUR_2}即时照片价格:
 STR_2103    :{WINDOW_COLOUR_2}椒盐卷饼价格:
 STR_2104    :{WINDOW_COLOUR_2}热巧克力价格:
 STR_2105    :{WINDOW_COLOUR_2}冰红茶价格:
@@ -2132,9 +1495,6 @@ STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}烤香肠价格:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :即时照片
-STR_2123    :即时照片
-STR_2124    :即时照片
 STR_2125    :椒盐卷饼
 STR_2126    :热巧克力
 STR_2127    :冰红茶
@@ -2154,9 +1514,6 @@ STR_2140    :空饮料包装
 STR_2141    :空果汁杯
 STR_2142    :烤香肠
 STR_2143    :空碗
-STR_2144    :即时照片
-STR_2145    :即时照片
-STR_2146    :即时照片
 STR_2147    :椒盐卷饼
 STR_2148    :热巧克力
 STR_2149    :冰红茶
@@ -2176,9 +1533,6 @@ STR_2162    :空饮料包装
 STR_2163    :空果汁杯
 STR_2164    :烤香肠
 STR_2165    :空碗
-STR_2166    :一张即时照片
-STR_2167    :一张即时照片
-STR_2168    :一张即时照片
 STR_2169    :一份椒盐卷饼
 STR_2170    :一杯热巧克力
 STR_2171    :一杯冰红茶
@@ -2198,9 +1552,6 @@ STR_2184    :一个空饮料包装
 STR_2185    :一个空果汁杯
 STR_2186    :一条烤香肠
 STR_2187    :一个空碗
-STR_2188    :{STRINGID}的即时照片
-STR_2189    :{STRINGID}的即时照片
-STR_2190    :{STRINGID}的即时照片
 STR_2191    :椒盐卷饼
 STR_2192    :热巧克力
 STR_2193    :冰红茶
@@ -2300,7 +1651,6 @@ STR_2286    :设计中
 STR_2287    :完成设计中
 STR_2288    :未知
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :<not used anymore>
 STR_2291    :选择新游戏的剧情
 STR_2292    :{WINDOW_COLOUR_2}乘坐过的游乐设施:
 STR_2293    :{BLACK}无
@@ -2327,10 +1677,6 @@ STR_2313    :{WINDOW_COLOUR_2}恶心度: {BLACK}{COMMA2DP32} (大约)
 STR_2314    :{WINDOW_COLOUR_2}轨道长度: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}建造费用: {BLACK}约{CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}需要空间: {BLACK}{COMMA16} x {COMMA16}格
-STR_2317    :<not used anymore>
-STR_2318    :<not used anymore>
-STR_2319    :<not used anymore>
-STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}游乐设施/店铺数目: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}员工数目: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}乐园大小: {BLACK}{COMMA32}m{SQUARED}
@@ -2351,12 +1697,11 @@ STR_2337    :德国马克 (DM)
 STR_2338    :日元 ({YEN})
 STR_2339    :比塞塔 (Pts)
 STR_2340    :里拉 (L)
-STR_2341    :荷兰盾 (fl.)
+STR_2341    :荷兰盾 (ƒ)
 STR_2342    :克朗 (kr)
 STR_2343    :欧元 ({EURO})
 STR_2344    :英制
 STR_2345    :公制
-STR_2346    :显示
 STR_2347    :{RED}{STRINGID}已被溺死!
 STR_2348    :{SMALLFONT}{BLACK}显示这位员工的统计数据
 STR_2349    :{WINDOW_COLOUR_2}工资: {BLACK}每个月{CURRENCY}
@@ -2367,7 +1712,6 @@ STR_2353    :{WINDOW_COLOUR_2}扫地次数: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}清空拉坡筒次数: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}修理游乐设施次数: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}检验游乐设施次数: {BLACK}{COMMA16}
-STR_2357    :房屋
 STR_2358    :单位
 STR_2359    :真实数值
 STR_2360    :屏幕分辨率:
@@ -2432,8 +1776,6 @@ STR_2418    :免费进入{STRINGID}
 STR_2419    :免费乘坐{STRINGID}
 STR_2420    :半价进入{STRINGID}
 STR_2421    :免费{STRINGID}
-STR_2422    :{STRINGID}的推广计划
-STR_2423    :{STRINGID}的推广计划
 STR_2424    :{WINDOW_COLOUR_2}发放免费进入乐园卷
 STR_2425    :{WINDOW_COLOUR_2}发放免费乘坐个别游乐设施卷
 STR_2426    :{WINDOW_COLOUR_2}发放半价进入乐园卷
@@ -2447,12 +1789,6 @@ STR_2433    :{BLACK}免费{STRINGID}的优惠卷
 STR_2434    :{BLACK}{STRINGID}的推广计划
 STR_2435    :{BLACK}{STRINGID}的推广计划
 STR_2436    :1 week
-STR_2437    :<not used anymore>
-STR_2438    :<not used anymore>
-STR_2439    :<not used anymore>
-STR_2440    :<not used anymore>
-STR_2441    :<not used anymore>
-STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}每周费用:{BLACK} {CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}总费用:{BLACK} {CURRENCY2DP}
 STR_2445    :开始实行此营销计划
@@ -2465,8 +1801,6 @@ STR_2451    :{YELLOW}你针对{STRINGID}的推广计划现已结束
 STR_2452    :{WINDOW_COLOUR_2}现金（减去贷款）:{BLACK} {CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}现金（减去贷款）:{RED} {CURRENCY2DP}
 STR_2454    :{SMALLFONT} {BLACK} {CURRENCY2DP} - 
-STR_2455    :{SMALLFONT} {BLACK} + {CURRENCY2DP} - 
-STR_2456    :{SMALLFONT} {BLACK} {CURRENCY2DP} - 
 STR_2457    :{SMALLFONT} {BLACK}显示财政报表
 STR_2458    :{SMALLFONT} {BLACK}以图表显示过往到现在的净现金
 STR_2459    :{SMALLFONT} {BLACK}以图表显示过往到现在的乐园价格
@@ -2495,8 +1829,6 @@ STR_2481    :{SMALLFONT}{BLACK}以图表显示横向加速与运作时间的关�
 STR_2482    :{SMALLFONT}{BLACK}营利: 每周{CURRENCY}, 乐园价值: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}每周营利: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}每周营利: {RED}{CURRENCY2DP}
-STR_2485    :控制
-STR_2486    :基本
 STR_2487    :显示游客的'真实'姓名
 STR_2488    :{SMALLFONT}{BLACK}在游客'真实'姓名和游客编号之间切换
 STR_2489    :快捷键...
@@ -2693,8 +2025,6 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :All research complete
 STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
-STR_2682    :<not used anymore>
-STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Low:
@@ -2759,7 +2089,6 @@ STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
-STR_2748    :Bar
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Move all items to top
@@ -2769,22 +2098,13 @@ STR_2753    :修剪好的草地
 STR_2754    :浇灌植物
 STR_2755    :修复路面设施破损
 STR_2756    :去除路面垃圾
-STR_2757    :<not used anymore>
-STR_2758    :<not used anymore>
-STR_2759    :Zero Clearance
-STR_2760    :+{CURRENCY}
-STR_2761    :<not used anymore>
-STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :<not used anymore>
 STR_2765    :Large Tram
 STR_2766    :完成剧情目标
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
 STR_2769    :开放游乐园
 STR_2770    :关闭游乐园
-STR_2771    :减慢游戏速度
-STR_2772    :加快游戏速度
 STR_2773    :窗口
 STR_2774    :全屏幕
 STR_2775    :全屏幕 (无边框窗口)
@@ -2869,11 +2189,7 @@ STR_2852    :轨道设计已经安装过了
 STR_2853    :被当地政府禁止!
 STR_2854    :{RED}游客都不能走到去{STRINGID}的入口!{NEWLINE}请建造道路连接入口
 STR_2855    :{RED}{STRINGID}的出口并没有道路连接!{NEWLINE}请建造道路连接出口
-STR_2856    :<removed string - do not use>
-STR_2857    :<removed string - do not use>
 STR_2858    :不能开始实行营销计划...
-STR_2859    :另外一个OpenRCT2进程已在运行中
-STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :音乐鸣谢列表...
 STR_2863    :音乐鸣谢列表
@@ -2913,7 +2229,6 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYR
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2900    :<removed string - do not use>
 STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
@@ -2921,69 +2236,6 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :<removed string - do not use>
-STR_2909    :<removed string - do not use>
-STR_2910    :<removed string - do not use>
-STR_2911    :<removed string - do not use>
-STR_2912    :<removed string - do not use>
-STR_2913    :<removed string - do not use>
-STR_2914    :<removed string - do not use>
-STR_2915    :<removed string - do not use>
-STR_2916    :<removed string - do not use>
-STR_2917    :<removed string - do not use>
-STR_2918    :<removed string - do not use>
-STR_2919    :<removed string - do not use>
-STR_2920    :<removed string - do not use>
-STR_2921    :<removed string - do not use>
-STR_2922    :<removed string - do not use>
-STR_2923    :<removed string - do not use>
-STR_2924    :<removed string - do not use>
-STR_2925    :<removed string - do not use>
-STR_2926    :<removed string - do not use>
-STR_2927    :<removed string - do not use>
-STR_2928    :<removed string - do not use>
-STR_2929    :<removed string - do not use>
-STR_2930    :<removed string - do not use>
-STR_2931    :{WINDOW_COLOUR_2}
-STR_2932    :{WINDOW_COLOUR_2}
-STR_2933    :{WINDOW_COLOUR_2}
-STR_2934    :{WINDOW_COLOUR_2}
-STR_2935    :{WINDOW_COLOUR_2}
-STR_2936    :{WINDOW_COLOUR_2}
-STR_2937    :{WINDOW_COLOUR_2}
-STR_2938    :{WINDOW_COLOUR_2}
-STR_2939    :{WINDOW_COLOUR_2}
-STR_2940    :{WINDOW_COLOUR_2}
-STR_2941    :{WINDOW_COLOUR_2}
-STR_2942    :{WINDOW_COLOUR_2}
-STR_2943    :{WINDOW_COLOUR_2}
-STR_2944    :{WINDOW_COLOUR_2}
-STR_2945    :{WINDOW_COLOUR_2}
-STR_2946    :{WINDOW_COLOUR_2}
-STR_2947    :{WINDOW_COLOUR_2}
-STR_2948    :{WINDOW_COLOUR_2}
-STR_2949    :{WINDOW_COLOUR_2}
-STR_2950    :{WINDOW_COLOUR_2}
-STR_2951    :{WINDOW_COLOUR_2}
-STR_2952    :{WINDOW_COLOUR_2}
-STR_2953    :{WINDOW_COLOUR_2}
-STR_2954    :{WINDOW_COLOUR_2}
-STR_2955    :{WINDOW_COLOUR_2}
-STR_2956    :{WINDOW_COLOUR_2}
-STR_2957    :{WINDOW_COLOUR_2}
-STR_2958    :{WINDOW_COLOUR_2}
-STR_2959    :{WINDOW_COLOUR_2}
-STR_2960    :{WINDOW_COLOUR_2}
-STR_2961    :{WINDOW_COLOUR_2}
-STR_2962    :{WINDOW_COLOUR_2}
-STR_2963    :{WINDOW_COLOUR_2}
-STR_2964    :{WINDOW_COLOUR_2}
-STR_2965    :{WINDOW_COLOUR_2}
-STR_2966    :
-STR_2967    :
-STR_2968    :
-STR_2969    :<not used anymore>
-STR_2970    :<not used anymore>
 STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
@@ -3059,7 +2311,6 @@ STR_3042    :海盗风格
 STR_3043    :摇滚风格3
 STR_3044    :糖果风格
 STR_3045    :{SMALLFONT}{BLACK}选择要播放的音乐风格:
-STR_3046    :此游乐设施不能被修改
 STR_3047    :当地政府禁止拆除或修改此游乐设施
 STR_3048    :当地政府禁止所有推广计划进行
 STR_3049    :高尔夫球洞A
@@ -3068,9 +2319,6 @@ STR_3051    :高尔夫球洞C
 STR_3052    :高尔夫球洞D
 STR_3053    :高尔夫球洞E
 STR_3054    :加载中...
-STR_3055    :<removed string - do not use>
-STR_3056    :<removed string - do not use>
-STR_3057    :<removed string - do not use>
 STR_3058    :砖墙
 STR_3059    :树篱
 STR_3060    :冰砖墙
@@ -3111,7 +2359,6 @@ STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}链条坡道的链条速度:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}选择链条坡道的链条上拉速度
-STR_3098    :不能更改链条坡道的链条速度...
 STR_3099    :{SMALLFONT}{BLACK}选择颜色
 STR_3100    :{SMALLFONT}{BLACK}选择第二颜色
 STR_3101    :{SMALLFONT}{BLACK}选择第三颜色
@@ -3158,30 +2405,13 @@ STR_3141    :缆道坡道并不适合於单次多圈数的游乐设施
 STR_3142    :{WINDOW_COLOUR_2}载客量: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}在地图上显示所有人物
 STR_3144    :{SMALLFONT}{BLACK}在地图上显示所有游乐设施及店铺
-STR_3145    :{SMALLFONT}{BLACK}向左卷动{STRINGID}
-STR_3146    :{SMALLFONT}{BLACK}向右卷动{STRINGID}
-STR_3147    :{SMALLFONT}{BLACK}快速向左卷动{STRINGID}
-STR_3148    :{SMALLFONT}{BLACK}快速向右卷动{STRINGID}
-STR_3149    :{SMALLFONT}{BLACK}向左/向右卷动{STRINGID}
-STR_3150    :{SMALLFONT}{BLACK}向上卷动{STRINGID}
-STR_3151    :{SMALLFONT}{BLACK}向下卷动{STRINGID}
-STR_3152    :{SMALLFONT}{BLACK}快速向上卷动{STRINGID}
-STR_3153    :{SMALLFONT}{BLACK}快速向下卷动{STRINGID}
-STR_3154    :{SMALLFONT}{BLACK}向上/向下卷动{STRINGID}
-STR_3155    :
-STR_3156    :
-STR_3157    :地图
 STR_3158    :graph
 STR_3159    :list
 STR_3160    :{SMALLFONT}{BLACK}选择每次乘坐循环的次数
-STR_3161    :<not used anymore>
 STR_3162    :无法分配足够的内存
 STR_3163    :安装新数据档中: 
 STR_3164    :{BLACK}已选择{COMMA16}项 (最多{COMMA16}项)
-STR_3165    :
-STR_3166    :{BLACK}(ID: 
 STR_3167    :{WINDOW_COLOUR_2}包含: {BLACK}{COMMA16}项对象
-STR_3168    :{WINDOW_COLOUR_2}文本: {BLACK}{STRINGID}
 STR_3169    :找不到以下对象的数据: 
 STR_3170    :没有空间绘制图像
 STR_3171    :选择了太多此类型的对象
@@ -3336,9 +2566,6 @@ STR_3319    :{WINDOW_COLOUR_2}剧情组别:
 STR_3320    :无法存储剧情文件...
 STR_3321    :成功安装新对象
 STR_3322    :{WINDOW_COLOUR_2}目标: {BLACK}{STRINGID}
-STR_3323    :缺少对象数据, ID为: 
-STR_3324    :需要数据片: {STRINGID}
-STR_3325    :需要一只数据片
 STR_3326    :{WINDOW_COLOUR_2}(暂无图片)
 STR_3327    :尚未设置游客的开始步行位置
 STR_3328    :不能进行下一步编辑...
@@ -3350,7 +2577,6 @@ STR_3333    :在存档中导出附加物
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :轨道设计工具 - 选择游乐设施的类型及车辆种类
 STR_3336    :轨道设计管理工具 - 选择游乐设施的类型
-STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
@@ -3375,8 +2601,6 @@ STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
 STR_3361    :Too many track designs of this type - Some will not be listed.
-STR_3362    :<not used anymore>
-STR_3363    :<not used anymore>
 STR_3364    :Advanced
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
 STR_3366    :{BLACK}= 游乐设施
@@ -3398,59 +2622,9 @@ STR_3381    :不兼容的文件或含有非法数据
 STR_3382    :复制文件失败
 STR_3383    :输入这个轨道设计的新名称
 STR_3384    :已有相同名称的轨道设计 - 请输入这个轨道设计的新名称:
-STR_3385    :<removed string - do not use>
-STR_3386    :<removed string - do not use>
-STR_3387    :<removed string - do not use>
-STR_3388    :无法切换至已选择的模式
 STR_3389    :无法选择额外的景观对象...
 STR_3390    :选取了太多对象
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
-STR_3391    :<removed string - do not use>
-STR_3392    :<removed string - do not use>
-STR_3393    :<removed string - do not use>
-STR_3394    :<removed string - do not use>
-STR_3395    :<removed string - do not use>
-STR_3396    :<removed string - do not use>
-STR_3397    :<removed string - do not use>
-STR_3398    :<removed string - do not use>
-STR_3399    :<removed string - do not use>
-STR_3400    :<removed string - do not use>
-STR_3401    :<removed string - do not use>
-STR_3402    :<removed string - do not use>
-STR_3403    :<removed string - do not use>
-STR_3404    :<removed string - do not use>
-STR_3405    :<removed string - do not use>
-STR_3406    :<removed string - do not use>
-STR_3407    :<removed string - do not use>
-STR_3408    :<removed string - do not use>
-STR_3409    :<removed string - do not use>
-STR_3410    :<removed string - do not use>
-STR_3411    :<removed string - do not use>
-STR_3412    :<removed string - do not use>
-STR_3413    :<removed string - do not use>
-STR_3414    :<removed string - do not use>
-STR_3415    :<removed string - do not use>
-STR_3416    :<removed string - do not use>
-STR_3417    :<removed string - do not use>
-STR_3418    :<removed string - do not use>
-STR_3419    :<removed string - do not use>
-STR_3420    :<removed string - do not use>
-STR_3421    :<removed string - do not use>
-STR_3422    :<removed string - do not use>
-STR_3423    :<removed string - do not use>
-STR_3424    :<removed string - do not use>
-STR_3425    :<removed string - do not use>
-STR_3426    :<removed string - do not use>
-STR_3427    :<removed string - do not use>
-STR_3428    :<removed string - do not use>
-STR_3429    :<removed string - do not use>
-STR_3430    :<removed string - do not use>
-STR_3431    :<removed string - do not use>
-STR_3432    :<removed string - do not use>
-STR_3433    :<removed string - do not use>
-STR_3434    :<removed string - do not use>
-STR_3435    :<removed string - do not use>
-STR_3436    :<removed string - do not use>
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}在地形中清理大范围内的景物Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
@@ -3468,7 +2642,6 @@ STR_5120    :财务
 STR_5121    :研发
 STR_5122    :根据轨道类型选择游乐设施 (像RCT1一样)
 STR_5123    :Renew rides
-STR_5124    :<removed string - do not use>
 STR_5125    :All destructable
 STR_5126    :随机主题音乐
 STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
@@ -3501,7 +2674,6 @@ STR_5153    :编辑配色主题...
 STR_5154    :使用硬件渲染
 STR_5155    :允许测试未完成的轨道设计
 STR_5156    :{SMALLFONT}{BLACK}允许测试大多数轨道设计, 即使那些轨道未完成的设计. 但这不适用于区域刹车模式
-STR_5157    :<removed string - do not use>
 STR_5158    :回到主菜单
 STR_5159    :退出OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}第{COMMA16}年
@@ -3685,8 +2857,6 @@ STR_5337    :Park entrance
 STR_5338    :Element type
 STR_5339    :{SMALLFONT}{BLACK}Base height
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
-STR_5341    :<removed string - do not use>
-STR_5342    :<removed string - do not use>
 STR_5343    :自动放置员工
 STR_5344    :更新日志
 STR_5345    :Financial cheats
@@ -3838,7 +3008,6 @@ STR_5490    :游戏失去焦点时静音
 STR_5491    :研发列表
 STR_5492    :剧情选项
 STR_5493    :发送信息
-STR_5494    :<removed string - do not use>
 STR_5495    :玩家列表
 STR_5496    :玩家
 STR_5497    :延迟值(Ping)
@@ -3851,7 +3020,6 @@ STR_5503    :请输入主机名称或IP地址:
 STR_5504    :{SMALLFONT}{BLACK}显示多人联机状态
 STR_5505    :无法连接至服务器.
 STR_5506    :游客忽略强烈程度
-STR_5507    :<removed string - do not use>
 STR_5508    :允许读取校验失败的文件
 STR_5509    :{SMALLFONT}{BLACK}允许读取校验失败的剧情和存档文件,{NEWLINE}例如试玩版的剧情或损坏的存档.
 STR_5510    :默认音频设备
@@ -4042,10 +3210,7 @@ STR_5726    :{SMALLFONT}{BLACK}设定游乐园当前的天气
 STR_5727    :缩放质量
 STR_5728    :需要开启硬件渲染
 STR_5729    :{SMALLFONT}{BLACK}需要开启硬件渲染选项
-STR_5730    :<removed string - do not use>
 STR_5731    :线性
-STR_5732    :<removed string - do not use>
-STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}渲染
 STR_5735    :网络状态
@@ -4132,10 +3297,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}游戏内显示FPS帧数
 STR_5816    :{SMALLFONT}{BLACK}设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
 STR_5817    :{SMALLFONT}{BLACK}设置UI缩放类型.需要开启硬件渲染{NEWLINE}线性缩放是平滑但模糊的.平滑最近邻缩放是锐利的, 但会导致轻微的性能下降.
-STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :{SMALLFONT}{BLACK}全屏模式时若游戏失焦{NEWLINE}则最小化游戏
-STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}日夜循环.{NEWLINE}完成一个循环花费游戏内一个月时间
 STR_5823    :{SMALLFONT}{BLACK}横幅上显示全大写英文(RCT1效果)
 STR_5824    :{SMALLFONT}{BLACK}当暴风雨来临时{NEWLINE}禁用闪电效果
@@ -4211,7 +3374,6 @@ STR_5893    :汇率
 STR_5894    :请输入汇率
 STR_5895    :保存轨道设计
 STR_5896    :保存轨道设计失败!
-STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}无法加载轨道, 文件可能{NEWLINE}损坏或丢失!
 STR_5899    :开启/关闭debug窗口
 STR_5900    :使用原始的渲染代码
@@ -4320,7 +3482,7 @@ STR_6002    :{SMALLFONT}{BLACK}夜晚时路灯和游乐设施将会被点亮.{NE
 STR_6003    :剖视图
 STR_6004    :剖视图
 STR_6005    :启用剖视图
-STR_6006    :{SMALLFONT}{BLACK}剖视图只显示小于等于切割高度的地图元素
+STR_6006    :{SMALLFONT}{BLACK}剖视图只显示小于等于切割高度（垂直切割）和指定的面积（纵横切割）的地图元素
 STR_6007    :切割高度
 STR_6008    :{SMALLFONT}{BLACK}单击在原始值或度量单位值之间切换
 STR_6009    :{SMALLFONT}{BLACK}选择切割高度
@@ -4517,7 +3679,7 @@ STR_6198    :{BLACK}日:
 STR_6199    :设置日期
 STR_6200    :重置日期
 STR_6201    :{MONTH}
-STR_6202    :启用虚拟楼层
+STR_6202    :虚拟楼层类型：
 STR_6203    :{SMALLFONT}{BLACK}启用后, 当按住Ctrl或Shift键时将会绘制一层虚拟楼层以便轻松地垂直放置元素.
 STR_6204    :砖墙
 STR_6205    :钢铁
@@ -4554,6 +3716,29 @@ STR_6235    :服务器信息
 STR_6236    :玩家
 STR_6237    :组
 STR_6238    :多人选项
+STR_6239    :垂直切割
+STR_6240    :纵横切割
+STR_6241    :选择面积
+STR_6242    :清空选项
+STR_6243    :{SMALLFONT}{BLACK}翻新游乐设施,{NEWLINE}让其焕然一新
+STR_6244    :无法翻新游乐设施...
+STR_6245    :{SMALLFONT}{BLACK}无需翻新游乐设施
+STR_6246    :翻新
+STR_6247    :翻新游乐设施/胜地
+STR_6248    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID} 以获得 {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}你是否确定要完全拆除 {STRINGID} 以获得 {CURRENCY}?
+STR_6251    :游乐设施尚未清空
+STR_6252    :Twitch API 链接
+STR_6253    :{SMALLFONT}{BLACK}提供 Twitch integration API 链接. 用以启用 Twitch integration.
+STR_6254    :Twitch integration API 链接:
+STR_6255    :链接无效
+STR_6256    :渲染效果
+STR_6257    :明净的 (半透明)
+STR_6258    :澄清 (透明)
+STR_6259    :已停用
+STR_6260    :显示受阻地砖
+STR_6261    :显示宽阔走道
 
 
 #############
@@ -4779,7 +3964,7 @@ STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local p
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
 
 <Rotting Heights>
@@ -5189,7 +4374,7 @@ STR_SCNR    :Europe - Renovation
 STR_PARK    :From The Ashes
 STR_DTLS    :一个老公园年久失修。你获得一个欧盟的补助金，将这个被剥夺的地区归还给它昔日的荣耀！你需要整修公园并偿还补助金。
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :夏威夷的人们厌倦了冲浪，寻找更刺激的东西。你需要建立一个游乐园，以保持该地区的旅游评级。

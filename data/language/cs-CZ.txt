@@ -94,425 +94,6 @@ STR_0089    :Malá horská dráha
 STR_0090    :Mini dráha
 STR_0091    :Neznámá atrakce (59)
 STR_0092    :Horská dráha s elektromotorem
-STR_0093    :
-STR_0094    :
-STR_0095    :
-STR_0096    :
-STR_0097    :
-STR_0098    :
-STR_0099    :
-STR_0100    :
-STR_0101    :
-STR_0102    :
-STR_0103    :
-STR_0104    :
-STR_0105    :
-STR_0106    :
-STR_0107    :
-STR_0108    :
-STR_0109    :
-STR_0110    :
-STR_0111    :
-STR_0112    :
-STR_0113    :
-STR_0114    :
-STR_0115    :
-STR_0116    :
-STR_0117    :
-STR_0118    :
-STR_0119    :
-STR_0120    :
-STR_0121    :
-STR_0122    :
-STR_0123    :
-STR_0124    :
-STR_0125    :
-STR_0126    :
-STR_0127    :
-STR_0128    :
-STR_0129    :
-STR_0130    :
-STR_0131    :
-STR_0132    :
-STR_0133    :
-STR_0134    :
-STR_0135    :
-STR_0136    :
-STR_0137    :
-STR_0138    :
-STR_0139    :
-STR_0140    :
-STR_0141    :
-STR_0142    :
-STR_0143    :
-STR_0144    :
-STR_0145    :
-STR_0146    :
-STR_0147    :
-STR_0148    :
-STR_0149    :
-STR_0150    :
-STR_0151    :
-STR_0152    :
-STR_0153    :
-STR_0154    :
-STR_0155    :
-STR_0156    :
-STR_0157    :
-STR_0158    :
-STR_0159    :
-STR_0160    :
-STR_0161    :
-STR_0162    :
-STR_0163    :
-STR_0164    :
-STR_0165    :
-STR_0166    :
-STR_0167    :
-STR_0168    :
-STR_0169    :
-STR_0170    :
-STR_0171    :
-STR_0172    :
-STR_0173    :
-STR_0174    :
-STR_0175    :
-STR_0176    :
-STR_0177    :
-STR_0178    :
-STR_0179    :
-STR_0180    :
-STR_0181    :
-STR_0182    :
-STR_0183    :
-STR_0184    :
-STR_0185    :
-STR_0186    :
-STR_0187    :
-STR_0188    :
-STR_0189    :
-STR_0190    :
-STR_0191    :
-STR_0192    :
-STR_0193    :
-STR_0194    :
-STR_0195    :
-STR_0196    :
-STR_0197    :
-STR_0198    :
-STR_0199    :
-STR_0200    :
-STR_0201    :
-STR_0202    :
-STR_0203    :
-STR_0204    :
-STR_0205    :
-STR_0206    :
-STR_0207    :
-STR_0208    :
-STR_0209    :
-STR_0210    :
-STR_0211    :
-STR_0212    :
-STR_0213    :
-STR_0214    :
-STR_0215    :
-STR_0216    :
-STR_0217    :
-STR_0218    :
-STR_0219    :
-STR_0220    :
-STR_0221    :
-STR_0222    :
-STR_0223    :
-STR_0224    :
-STR_0225    :
-STR_0226    :
-STR_0227    :
-STR_0228    :
-STR_0229    :
-STR_0230    :
-STR_0231    :
-STR_0232    :
-STR_0233    :
-STR_0234    :
-STR_0235    :
-STR_0236    :
-STR_0237    :
-STR_0238    :
-STR_0239    :
-STR_0240    :
-STR_0241    :
-STR_0242    :
-STR_0243    :
-STR_0244    :
-STR_0245    :
-STR_0246    :
-STR_0247    :
-STR_0248    :
-STR_0249    :
-STR_0250    :
-STR_0251    :
-STR_0252    :
-STR_0253    :
-STR_0254    :
-STR_0255    :
-STR_0256    :
-STR_0257    :
-STR_0258    :
-STR_0259    :
-STR_0260    :
-STR_0261    :
-STR_0262    :
-STR_0263    :
-STR_0264    :
-STR_0265    :
-STR_0266    :
-STR_0267    :
-STR_0268    :
-STR_0269    :
-STR_0270    :
-STR_0271    :
-STR_0272    :
-STR_0273    :
-STR_0274    :
-STR_0275    :
-STR_0276    :
-STR_0277    :
-STR_0278    :
-STR_0279    :
-STR_0280    :
-STR_0281    :
-STR_0282    :
-STR_0283    :
-STR_0284    :
-STR_0285    :
-STR_0286    :
-STR_0287    :
-STR_0288    :
-STR_0289    :
-STR_0290    :
-STR_0291    :
-STR_0292    :
-STR_0293    :
-STR_0294    :
-STR_0295    :
-STR_0296    :
-STR_0297    :
-STR_0298    :
-STR_0299    :
-STR_0300    :
-STR_0301    :
-STR_0302    :
-STR_0303    :
-STR_0304    :
-STR_0305    :
-STR_0306    :
-STR_0307    :
-STR_0308    :
-STR_0309    :
-STR_0310    :
-STR_0311    :
-STR_0312    :
-STR_0313    :
-STR_0314    :
-STR_0315    :
-STR_0316    :
-STR_0317    :
-STR_0318    :
-STR_0319    :
-STR_0320    :
-STR_0321    :
-STR_0322    :
-STR_0323    :
-STR_0324    :
-STR_0325    :
-STR_0326    :
-STR_0327    :
-STR_0328    :
-STR_0329    :
-STR_0330    :
-STR_0331    :
-STR_0332    :
-STR_0333    :
-STR_0334    :
-STR_0335    :
-STR_0336    :
-STR_0337    :
-STR_0338    :
-STR_0339    :
-STR_0340    :
-STR_0341    :
-STR_0342    :
-STR_0343    :
-STR_0344    :
-STR_0345    :
-STR_0346    :
-STR_0347    :
-STR_0348    :
-STR_0349    :
-STR_0350    :
-STR_0351    :
-STR_0352    :
-STR_0353    :
-STR_0354    :
-STR_0355    :
-STR_0356    :
-STR_0357    :
-STR_0358    :
-STR_0359    :
-STR_0360    :
-STR_0361    :
-STR_0362    :
-STR_0363    :
-STR_0364    :
-STR_0365    :
-STR_0366    :
-STR_0367    :
-STR_0368    :
-STR_0369    :
-STR_0370    :
-STR_0371    :
-STR_0372    :
-STR_0373    :
-STR_0374    :
-STR_0375    :
-STR_0376    :
-STR_0377    :
-STR_0378    :
-STR_0379    :
-STR_0380    :
-STR_0381    :
-STR_0382    :
-STR_0383    :
-STR_0384    :
-STR_0385    :
-STR_0386    :
-STR_0387    :
-STR_0388    :
-STR_0389    :
-STR_0390    :
-STR_0391    :
-STR_0392    :
-STR_0393    :
-STR_0394    :
-STR_0395    :
-STR_0396    :
-STR_0397    :
-STR_0398    :
-STR_0399    :
-STR_0400    :
-STR_0401    :
-STR_0402    :
-STR_0403    :
-STR_0404    :
-STR_0405    :
-STR_0406    :
-STR_0407    :
-STR_0408    :
-STR_0409    :
-STR_0410    :
-STR_0411    :
-STR_0412    :
-STR_0413    :
-STR_0414    :
-STR_0415    :
-STR_0416    :
-STR_0417    :
-STR_0418    :
-STR_0419    :
-STR_0420    :
-STR_0421    :
-STR_0422    :
-STR_0423    :
-STR_0424    :
-STR_0425    :
-STR_0426    :
-STR_0427    :
-STR_0428    :
-STR_0429    :
-STR_0430    :
-STR_0431    :
-STR_0432    :
-STR_0433    :
-STR_0434    :
-STR_0435    :
-STR_0436    :
-STR_0437    :
-STR_0438    :
-STR_0439    :
-STR_0440    :
-STR_0441    :
-STR_0442    :
-STR_0443    :
-STR_0444    :
-STR_0445    :
-STR_0446    :
-STR_0447    :
-STR_0448    :
-STR_0449    :
-STR_0450    :
-STR_0451    :
-STR_0452    :
-STR_0453    :
-STR_0454    :
-STR_0455    :
-STR_0456    :
-STR_0457    :
-STR_0458    :
-STR_0459    :
-STR_0460    :
-STR_0461    :
-STR_0462    :
-STR_0463    :
-STR_0464    :
-STR_0465    :
-STR_0466    :
-STR_0467    :
-STR_0468    :
-STR_0469    :
-STR_0470    :
-STR_0471    :
-STR_0472    :
-STR_0473    :
-STR_0474    :
-STR_0475    :
-STR_0476    :
-STR_0477    :
-STR_0478    :
-STR_0479    :
-STR_0480    :
-STR_0481    :
-STR_0482    :
-STR_0483    :
-STR_0484    :
-STR_0485    :
-STR_0486    :
-STR_0487    :
-STR_0488    :
-STR_0489    :
-STR_0490    :
-STR_0491    :
-STR_0492    :
-STR_0493    :
-STR_0494    :
-STR_0495    :
-STR_0496    :
-STR_0497    :
-STR_0498    :
-STR_0499    :
-STR_0500    :
-STR_0501    :
-STR_0502    :
-STR_0503    :
-STR_0504    :
-STR_0505    :
-STR_0506    :
-STR_0507    :
-STR_0508    :
-STR_0509    :
-STR_0510    :
-STR_0511    :
 STR_0512    :Malá ocelová horská dráha se spirálovitým profilem a vozy se sedadly za sebou
 STR_0513    :Návštěvníci jedou po horské dráze s loopingy ve stoje
 STR_0514    :Vlaky zavěšené pod kolejí se v zatáčkách houpají do stran
@@ -542,12 +123,9 @@ STR_0537    :
 STR_0538    :
 STR_0539    :
 STR_0540    :
-STR_0541    :
 STR_0542    :
-STR_0543    :
 STR_0544    :
 STR_0545    :
-STR_0546    :
 STR_0547    :
 STR_0548    :
 STR_0549    :
@@ -569,15 +147,12 @@ STR_0564    :Dřevěná, rychlá, hlučná a drsná horská dráha jede jako utr
 STR_0565    :Jednoduchá dřevěná horská dráha schopná jen mírných kopců a zatáček, na které je vůz držen jen bočními kolečky a gravitací
 STR_0566    :Malá horská dráha, na které vozy po jednom projíždí cik-cak trať s kroucenými pády a ostrými zatáčkami
 STR_0567    :Vozy se sedadly schopny otáčet návštěvníky vzhůru nohama
-STR_0568    :
 STR_0569    :Jízda ve speciálních postrojích zavěšených pod tratí, poskytuje pocit letu jako pták
-STR_0570    :
 STR_0571    :Kulaté vozy se otáčejí dokola tím, jak projíždějí dřevěnou klikatou tratí
 STR_0572    :Lodě s velkou kapacitou jedou po širokém vodním kanále, vzhůru poháněné bežícím pásem, zrychlují z prudkých svahů, aby obrovským šplouchnutím namočily všechny návštěvníky
 STR_0573    :Vozy ve tvaru helikoptér jedou na postavení dráze
 STR_0574    :Návštěvníci ve speciálních postrojích zavěšení v leže pod tratí, jedou přes zatáčky a obraty pozadu, nebo čelem k zemi
 STR_0575    :Poháněné vlaky visící pod visutou kolejí převážejí návštěvníky po parku
-STR_0576    :
 STR_0577    :Vozy s dvěma podvozky jedou po dřevěné trati, otáčející se dokola na speciálních místech
 STR_0578    :Horská dráha, která se točí dokola tak, že návštěvníci jsou pořád na stejném místě.
 STR_0579    :
@@ -593,191 +168,16 @@ STR_0588    :Vozy po jednom jedou pod cik-cak tratí s ostrými zatáčkami a p�
 STR_0589    :
 STR_0590    :Návštěvníci vyrazí na podvodní jízdu v ponorce
 STR_0591    :Rafty se plaví po meandrech na vodním kanále
-STR_0592    :
 STR_0593    :
-STR_0594    :
-STR_0595    :
-STR_0596    :
-STR_0597    :
 STR_0598    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpátku stanicí a vyletí až na druhý konec trati
 STR_0599    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
 STR_0600    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po hladkých kolejnicích skrze propletenou dráhu
-STR_0601    :
 STR_0602    :Horská dráha s vozy poháněnými elektromotorem, které sviští skrze propletenou dráhu
-STR_0603    :<removed string - do not use>
-STR_0604    :<removed string - do not use>
-STR_0605    :<removed string - do not use>
-STR_0606    :<removed string - do not use>
-STR_0607    :<removed string - do not use>
-STR_0608    :<removed string - do not use>
-STR_0609    :<removed string - do not use>
-STR_0610    :<removed string - do not use>
-STR_0611    :<removed string - do not use>
-STR_0612    :<removed string - do not use>
-STR_0613    :<removed string - do not use>
-STR_0614    :<removed string - do not use>
-STR_0615    :<removed string - do not use>
-STR_0616    :<removed string - do not use>
-STR_0617    :<removed string - do not use>
-STR_0618    :<removed string - do not use>
-STR_0619    :<removed string - do not use>
-STR_0620    :<removed string - do not use>
-STR_0621    :<removed string - do not use>
-STR_0622    :<removed string - do not use>
-STR_0623    :<removed string - do not use>
-STR_0624    :<removed string - do not use>
-STR_0625    :<removed string - do not use>
-STR_0626    :<removed string - do not use>
-STR_0627    :<removed string - do not use>
-STR_0628    :<removed string - do not use>
-STR_0629    :<removed string - do not use>
-STR_0630    :<removed string - do not use>
-STR_0631    :<removed string - do not use>
-STR_0632    :<removed string - do not use>
-STR_0633    :<removed string - do not use>
-STR_0634    :<removed string - do not use>
-STR_0635    :<removed string - do not use>
-STR_0636    :<removed string - do not use>
-STR_0637    :<removed string - do not use>
-STR_0638    :<removed string - do not use>
-STR_0639    :<removed string - do not use>
-STR_0640    :<removed string - do not use>
-STR_0641    :<removed string - do not use>
-STR_0642    :<removed string - do not use>
-STR_0643    :<removed string - do not use>
-STR_0644    :<removed string - do not use>
-STR_0645    :<removed string - do not use>
-STR_0646    :<removed string - do not use>
-STR_0647    :<removed string - do not use>
-STR_0648    :<removed string - do not use>
-STR_0649    :<removed string - do not use>
-STR_0650    :<removed string - do not use>
-STR_0651    :<removed string - do not use>
-STR_0652    :<removed string - do not use>
-STR_0653    :<removed string - do not use>
-STR_0654    :<removed string - do not use>
-STR_0655    :<removed string - do not use>
-STR_0656    :<removed string - do not use>
-STR_0657    :<removed string - do not use>
-STR_0658    :<removed string - do not use>
-STR_0659    :<removed string - do not use>
-STR_0660    :<removed string - do not use>
-STR_0661    :<removed string - do not use>
-STR_0662    :<removed string - do not use>
-STR_0663    :<removed string - do not use>
-STR_0664    :<removed string - do not use>
-STR_0665    :<removed string - do not use>
-STR_0666    :<removed string - do not use>
-STR_0667    :<removed string - do not use>
-STR_0668    :<removed string - do not use>
-STR_0669    :<removed string - do not use>
-STR_0670    :<removed string - do not use>
-STR_0671    :<removed string - do not use>
-STR_0672    :<removed string - do not use>
-STR_0673    :<removed string - do not use>
-STR_0674    :<removed string - do not use>
-STR_0675    :<removed string - do not use>
-STR_0676    :<removed string - do not use>
-STR_0677    :<removed string - do not use>
-STR_0678    :<removed string - do not use>
-STR_0679    :<removed string - do not use>
-STR_0680    :<removed string - do not use>
-STR_0681    :<removed string - do not use>
-STR_0682    :<removed string - do not use>
-STR_0683    :<removed string - do not use>
-STR_0684    :<removed string - do not use>
-STR_0685    :<removed string - do not use>
-STR_0686    :<removed string - do not use>
-STR_0687    :<removed string - do not use>
-STR_0688    :<removed string - do not use>
-STR_0689    :<removed string - do not use>
-STR_0690    :<removed string - do not use>
-STR_0691    :<removed string - do not use>
-STR_0692    :<removed string - do not use>
-STR_0693    :<removed string - do not use>
-STR_0694    :<removed string - do not use>
-STR_0695    :<removed string - do not use>
-STR_0696    :<removed string - do not use>
-STR_0697    :<removed string - do not use>
-STR_0698    :<removed string - do not use>
-STR_0699    :<removed string - do not use>
-STR_0700    :<removed string - do not use>
-STR_0701    :<removed string - do not use>
-STR_0702    :<removed string - do not use>
-STR_0703    :<removed string - do not use>
-STR_0704    :<removed string - do not use>
-STR_0705    :<removed string - do not use>
-STR_0706    :<removed string - do not use>
-STR_0707    :<removed string - do not use>
-STR_0708    :<removed string - do not use>
-STR_0709    :<removed string - do not use>
-STR_0710    :<removed string - do not use>
-STR_0711    :<removed string - do not use>
-STR_0712    :<removed string - do not use>
-STR_0713    :<removed string - do not use>
-STR_0714    :<removed string - do not use>
-STR_0715    :<removed string - do not use>
-STR_0716    :<removed string - do not use>
-STR_0717    :<removed string - do not use>
-STR_0718    :<removed string - do not use>
-STR_0719    :<removed string - do not use>
-STR_0720    :<removed string - do not use>
-STR_0721    :<removed string - do not use>
-STR_0722    :<removed string - do not use>
-STR_0723    :<removed string - do not use>
-STR_0724    :<removed string - do not use>
-STR_0725    :<removed string - do not use>
-STR_0726    :<removed string - do not use>
-STR_0727    :<removed string - do not use>
-STR_0728    :<removed string - do not use>
-STR_0729    :<removed string - do not use>
-STR_0730    :<removed string - do not use>
-STR_0731    :<removed string - do not use>
-STR_0732    :<removed string - do not use>
-STR_0733    :<removed string - do not use>
-STR_0734    :<removed string - do not use>
-STR_0735    :<removed string - do not use>
-STR_0736    :<removed string - do not use>
-STR_0737    :<removed string - do not use>
-STR_0738    :<removed string - do not use>
-STR_0739    :<removed string - do not use>
-STR_0740    :<removed string - do not use>
-STR_0741    :<removed string - do not use>
-STR_0742    :<removed string - do not use>
-STR_0743    :<removed string - do not use>
-STR_0744    :<removed string - do not use>
-STR_0745    :<removed string - do not use>
-STR_0746    :<removed string - do not use>
-STR_0747    :<removed string - do not use>
-STR_0748    :<removed string - do not use>
-STR_0749    :<removed string - do not use>
-STR_0750    :<removed string - do not use>
-STR_0751    :<removed string - do not use>
-STR_0752    :<removed string - do not use>
-STR_0753    :<removed string - do not use>
-STR_0754    :<removed string - do not use>
-STR_0755    :<removed string - do not use>
-STR_0756    :<removed string - do not use>
-STR_0757    :<removed string - do not use>
-STR_0758    :<removed string - do not use>
-STR_0759    :<removed string - do not use>
-STR_0760    :<removed string - do not use>
-STR_0761    :<removed string - do not use>
-STR_0762    :<removed string - do not use>
-STR_0763    :<removed string - do not use>
-STR_0764    :<removed string - do not use>
-STR_0765    :<removed string - do not use>
-STR_0766    :<removed string - do not use>
 STR_0767    :Návštěvník {INT32}
 STR_0768    :Údržbář {INT32}
 STR_0769    :Mechanik {INT32}
 STR_0770    :Hlídač {INT32}
 STR_0771    :Maskot {INT32}
-STR_0772    :Nepojmenovaný park{POP16}{POP16}
-STR_0773    :Nepojmenovaný park{POP16}{POP16}
-STR_0774    :Nepojmenovaný park{POP16}{POP16}
-STR_0775    :Nepojmenovaný park{POP16}{POP16}
-STR_0776    :Nepojmenovaný park{POP16}{POP16}
 STR_0777    :Nepojmenovaný park{POP16}{POP16}
 STR_0778    :Nápis
 STR_0779    :1.
@@ -836,22 +236,10 @@ STR_0831    :{SMALLFONT}{BLACK}Oddálit pohled
 STR_0832    :{SMALLFONT}{BLACK}Otočit o 90{DEGREE} po směru hod. ruč.
 STR_0833    :{SMALLFONT}{BLACK}Pozastavit hru
 STR_0834    :{SMALLFONT}{BLACK}Uložení a nastavení hry
-STR_0835    :Inicializace hry selhala
-STR_0836    :Nelze spustit hru minimalizovanou.
-STR_0837    :Inicializace grafického systému selhala
-STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<not used anymore>
-STR_0842    :<not used anymore>
-STR_0843    :<not used anymore>
-STR_0844    :<not used anymore>
-STR_0845    :<not used anymore>
-STR_0846    :<not used anymore>
 STR_0847    :O hře OpenRCT2
-STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, všechna práva vyhrazena
 STR_0851    :{WINDOW_COLOUR_2}Design a programování - Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafika - Simon Foster
@@ -860,13 +248,6 @@ STR_0854    :{WINDOW_COLOUR_2}Další zvukové nahrávky - David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Poděkování:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, a John Wardley
-STR_0858    :<removed string - do not use>
-STR_0859    :<removed string - do not use>
-STR_0860    :<removed string - do not use>
-STR_0861    :<removed string - do not use>
-STR_0862    :<removed string - do not use>
-STR_0863    :<removed string - do not use>
-STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -888,11 +269,9 @@ STR_0882    :Nahrát hru
 STR_0883    :Uložit hru
 STR_0884    :Nahrát krajinu
 STR_0885    :Uložit krajinu
-STR_0886    :Ukončit hru
 STR_0887    :Ukončit editor scénáře
 STR_0888    :Ukončit návrhář trati
 STR_0889    :Ukončit správu návrhů tratí
-STR_0890    :<removed string - do not use>
 STR_0891    :Snímek obrazovky
 STR_0892    :Snímek obrazovky byl uložen jako '{STRINGID}'
 STR_0893    :Snímaní obrazovky selhalo!
@@ -1655,8 +1034,6 @@ STR_1648    :{SMALLFONT}{OPENQUOTES}Pomoc! Polož mě dolů!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Dochází mi hotovost!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Tady se staví nová atrakce!{ENDQUOTES}
 # Two removed inside jokes about Intamin and Phoenix
-STR_1651    :<removed string - do not use>
-STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...a teď jsme na {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Poslední myšlenky:
 STR_1655    :{SMALLFONT}{BLACK}Stavět cestu na povrchu
@@ -1741,7 +1118,6 @@ STR_1733    :Mód
 STR_1734    :{WINDOW_COLOUR_2}Počet kol:
 STR_1735    :{SMALLFONT}{BLACK}Počet kol okruhu
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1737    :{COMMA16}
 STR_1738    :Nelze změnit počet kol...
 STR_1739    :Závod vyhrál návštěvník {INT32}
 STR_1740    :Závod vyhrál návštěvník {STRINGID}
@@ -1749,12 +1125,10 @@ STR_1741    :Zatím není postaveno!
 STR_1742    :{WINDOW_COLOUR_2}Max. návštěvníků na atrakci
 STR_1743    :{SMALLFONT}{BLACK}Maximální povolený počet návštěvníků současně na atrakci
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1745    :{COMMA16}
 STR_1746    :Tohle nelze změnit...
 STR_1747    :{WINDOW_COLOUR_2}Časový limit:
 STR_1748    :{SMALLFONT}{BLACK}Časový limit atrakce
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1750    :{DURATION}
 STR_1751    :Časový limit atrakce nelze změnit...
 STR_1752    :{SMALLFONT}{BLACK}Zobrazit seznam návštěvníků v parku
 STR_1753    :{SMALLFONT}{BLACK}Zobrazit sumarizovaný seznam návštěvníků v parku
@@ -1776,12 +1150,9 @@ STR_1768    :Nelze změnit počet zhoupnutí...
 STR_1769    :{WINDOW_COLOUR_2}Počet zhoupnutí:
 STR_1770    :{SMALLFONT}{BLACK}Počet zhoupnutí
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1772    :{COMMA16}
 STR_1773    :Je povolena jen jedna fotobuňka na atrakci
 STR_1774    :Je povolen pouze jeden výtah na atrakci
-STR_1775    :<removed string - do not use>
-STR_1776    :<removed string - do not use>
-STR_1777    :{WINDOW_COLOUR_2}Hudba atrakcí
+STR_1777    :Hudba atrakcí
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tygr
@@ -1801,7 +1172,6 @@ STR_1793    :Jde provést inspekci {STRINGID}
 STR_1794    :Opravuje {STRINGID}
 STR_1795    :Odpovídá po telefonu
 STR_1796    :Atrakce se rozbila a vyžaduje opravu
-STR_1797    :Tuto možnost nelze u této atrakce měnit
 STR_1798    :Vír
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Bezpečnostní zastavení
@@ -1876,7 +1246,6 @@ STR_1868    :Nelze změnit počet otoček...
 STR_1869    :{WINDOW_COLOUR_2}Počet otoček:
 STR_1870    :{SMALLFONT}{BLACK}Počet celých otoček
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Příjem: {BLACK}{CURRENCY2DP} za hodinu
 STR_1874    :{WINDOW_COLOUR_2}Zisk: {BLACK}{CURRENCY2DP} za hodinu
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
@@ -1898,8 +1267,6 @@ STR_1890    :{SMALLFONT}{BLACK}Vyberte, jak často by měl mechanik provést ins
 STR_1891    :V parku není řádný {STRINGID}!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
-STR_1892    :<not used anymore>
-STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} prodáno: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Postavit novou atrakci
 STR_1896    :{WINDOW_COLOUR_2}Příjmy a výdaje
@@ -1929,7 +1296,6 @@ STR_1919    :Nedostatek hotovosti!
 STR_1920    :Nelze splatit půjčku!
 STR_1921    :{SMALLFONT}{BLACK}Začít novou hru
 STR_1922    :{SMALLFONT}{BLACK}Nahrát uloženou hru
-STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Ukončit hru
 STR_1925    :Sem tuto osobu nelze umístit...
 STR_1926    :{SMALLFONT}
@@ -2106,9 +1472,6 @@ STR_2096    :Smažené kuře
 STR_2097    :Limonáda
 STR_2098    :Prázdná krabička
 STR_2099    :Prázdná láhev
-STR_2100    :{WINDOW_COLOUR_2}Cena fotky z atrakce:
-STR_2101    :{WINDOW_COLOUR_2}Cena fotky z atrakce:
-STR_2102    :{WINDOW_COLOUR_2}Cena fotky z atrakce:
 STR_2103    :{WINDOW_COLOUR_2}Cena preclíku:
 STR_2104    :{WINDOW_COLOUR_2}Cena horké čokolády:
 STR_2105    :{WINDOW_COLOUR_2}Cena ledového čaje:
@@ -2128,9 +1491,6 @@ STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}Cena grilované klobásy:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :Fotka z atrakce
-STR_2123    :Fotka z atrakce
-STR_2124    :Fotka z atrakce
 STR_2125    :Preclík
 STR_2126    :Horká čokoláda
 STR_2127    :Ledový čaj
@@ -2150,9 +1510,6 @@ STR_2140    :Prázdné pitíčko
 STR_2141    :Prázdný obal od džusu
 STR_2142    :Grilovaná klobása
 STR_2143    :Prázdná miska
-STR_2144    :Fotky z atrakcí
-STR_2145    :Fotky z atrakcí
-STR_2146    :Fotky z atrakcí
 STR_2147    :Preclíky
 STR_2148    :Horké čokolády
 STR_2149    :Ledové čaje
@@ -2172,9 +1529,6 @@ STR_2162    :Prázdná pitíčka
 STR_2163    :Prázdné obaly od džusů
 STR_2164    :Grilované klobásy
 STR_2165    :Prázdné misky
-STR_2166    :fotky z atrakcí
-STR_2167    :fotky z atrakcí
-STR_2168    :fotky z atrakcí
 STR_2169    :preclík
 STR_2170    :horká čokoláda
 STR_2171    :ledový čaj
@@ -2194,9 +1548,6 @@ STR_2184    :prázdné pitíčko
 STR_2185    :prázdný obal od džusu
 STR_2186    :grilovaná klobása
 STR_2187    :prázdná miska
-STR_2188    :Fotka z {STRINGID}
-STR_2189    :Fotka z {STRINGID}
-STR_2190    :Fotka z {STRINGID}
 STR_2191    :Preclík
 STR_2192    :Horká čokoláda
 STR_2193    :Ledový čaj
@@ -2296,7 +1647,6 @@ STR_2286    :Navrhování
 STR_2287    :Dokončování návrhu
 STR_2288    :Neznámé
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
 STR_2291    :Vyberte scénář pro novou hru
 STR_2292    :{WINDOW_COLOUR_2}Atrakce byly na:
 STR_2293    :{BLACK} Nic
@@ -2323,10 +1673,6 @@ STR_2313    :{WINDOW_COLOUR_2}Nevolnost: asi {BLACK}{COMMA2DP32}
 STR_2314    :{WINDOW_COLOUR_2}Délka jízdy: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cena: {BLACK}okolo {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vyžadovaný prostor: {BLACK}{COMMA16} x {COMMA16} dlaždic
-STR_2317    :<not used anymore>
-STR_2318    :<not used anymore>
-STR_2319    :<not used anymore>
-STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Celkem atrakcí: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personál: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Velikost parku: {BLACK}{COMMA32}m{SQUARED}
@@ -2347,12 +1693,11 @@ STR_2337    :Marka (DM)
 STR_2338    :Yen ({YEN})
 STR_2339    :Pesos (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Gulden (fl.)
+STR_2341    :Gulden (ƒ)
 STR_2342    :Švédská koruna (kr)
 STR_2343    :Euro ({EURO})
 STR_2344    :Imperiální
 STR_2345    :Metrické
-STR_2346    :Zobrazení
 STR_2347    :{RED}{STRINGID} se utopil!
 STR_2348    :{SMALLFONT}{BLACK}Zobrazit statistiku zaměstnance
 STR_2349    :{WINDOW_COLOUR_2}Plat: {BLACK}{CURRENCY} měsíčně
@@ -2363,7 +1708,6 @@ STR_2353    :{WINDOW_COLOUR_2}Zameteno odpadků: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Vysypáno košů: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Opraveno atrakcí: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}Provedeno inspekcí: {BLACK}{COMMA16}
-STR_2357    :Dům
 STR_2358    :Jednotky
 STR_2359    :Reálné hodnoty
 STR_2360    :Rozlišení displeje:
@@ -2428,8 +1772,6 @@ STR_2418    :Volný vstup do {STRINGID}
 STR_2419    :Volné vstupenky na {STRINGID}
 STR_2420    :Vstupenky za polovic na {STRINGID}
 STR_2421    :{STRINGID} zdarma
-STR_2422    :Reklamní kampaň pro {STRINGID}
-STR_2423    :Reklamní kampaň pro {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Kupony na volný vstup do parku
 STR_2425    :{WINDOW_COLOUR_2}Kupony na volné jízdy dané atrakce
 STR_2426    :{WINDOW_COLOUR_2}Kupony na vstup do parku za polovic
@@ -2443,12 +1785,6 @@ STR_2433    :{BLACK}Kupony na {STRINGID} zdarma
 STR_2434    :{BLACK}Reklamní kampaň pro {STRINGID}
 STR_2435    :{BLACK}Reklamní kampaň pro {STRINGID}
 STR_2436    :1 týden
-STR_2437    :<not used anymore>
-STR_2438    :<not used anymore>
-STR_2439    :<not used anymore>
-STR_2440    :<not used anymore>
-STR_2441    :<not used anymore>
-STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Náklady týdně: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Celkové náklady: {BLACK}{CURRENCY2DP}
 STR_2445    :Zahájit reklamní kampaň
@@ -2461,8 +1797,6 @@ STR_2451    :{YELLOW}Reklamní kampaň pro {STRINGID} skončila
 STR_2452    :{WINDOW_COLOUR_2}Hotovost (bez půjčky): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Hotovost (bez půjčky): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
-STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :{SMALLFONT}{BLACK}Zobrazit účet
 STR_2458    :{SMALLFONT}{BLACK}Zobrazit graf hotovosti
 STR_2459    :{SMALLFONT}{BLACK}Zobrazit graf hodnoty parku
@@ -2491,8 +1825,6 @@ STR_2481    :{SMALLFONT}{BLACK}Zobrazit graf laterálního zrychlení
 STR_2482    :{SMALLFONT}{BLACK}Zisk: {CURRENCY} týdně, hodnota parku: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Týdenní zisk: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Týdenní zisk: {RED}{CURRENCY2DP}
-STR_2485    :Ovládání
-STR_2486    :Obecné
 STR_2487    :Zobrazit "skutečná" jména návštěvníků
 STR_2488    :{SMALLFONT}{BLACK}Přepíná mezi zobrazením "skutečného" jména a čísla návštěvníka
 STR_2489    :Klávesové zkratky...
@@ -2689,8 +2021,6 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :Všechen výzkum byl dokončen
 STR_2681    :{MEDIUMFONT}{BLACK}Přidat {CURRENCY} hotovosti
-STR_2682    :<not used anymore>
-STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Dorazí velká skupina návštěvníků
 STR_2685    :Parametry simplex noise
 STR_2686    :Hloubky:
@@ -2755,7 +2085,6 @@ STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
-STR_2748    :Bar
 STR_2749    :Můj nový scénář
 # New strings used in the cheats window previously these were ???
 STR_2750    :Posunout všechny položky nahoru
@@ -2765,22 +2094,13 @@ STR_2753    :Posekat trávu
 STR_2754    :Zalít květiny
 STR_2755    :Opravit vandalismy
 STR_2756    :Odebrat odpadky
-STR_2757    :<not used anymore>
-STR_2758    :<not used anymore>
-STR_2759    :Povolit křížení staveb
-STR_2760    :+{CURRENCY}
-STR_2761    :<not used anymore>
-STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :<not used anymore>
 STR_2765    :Plná tramvaj
 STR_2766    :Vyhrát scénář
 STR_2767    :Zákaz změny klimatu
 STR_2768    :Povolení změny klimatu
 STR_2769    :Otevřít park
 STR_2770    :Zavřít park
-STR_2771    :Pomalejší hra
-STR_2772    :Rychlejší hra
 STR_2773    :V okně
 STR_2774    :Celá obrazovka
 STR_2775    :Celá obrazovka (okno bez okrajů)
@@ -2865,11 +2185,7 @@ STR_2852    :Návrh trati už je nainstalován
 STR_2853    :Zakázáno místní správnou!
 STR_2854    :{RED}Návštěvníci nemohou najít vstup do {STRINGID} !{NEWLINE}Postavte cestu k vstupu
 STR_2855    :{RED}{STRINGID} nemá postavenou vestu z východu!{NEWLINE}Postavte cestu z východu atrakce
-STR_2856    :<removed string - do not use>
-STR_2857    :<removed string - do not use>
 STR_2858    :Nelze zahájit reklamní kampaň...
-STR_2859    :OpenRCT2 už běží
-STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licencováno Infogrames Interactive Inc.
 STR_2862    :Poděkování za hudbu...
 STR_2863    :Poděkování za hudbu
@@ -2909,7 +2225,6 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYR
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2900    :{WINDOW_COLOUR_2}
 STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
@@ -2917,69 +2232,6 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :<removed string - do not use>
-STR_2909    :<removed string - do not use>
-STR_2910    :<removed string - do not use>
-STR_2911    :<removed string - do not use>
-STR_2912    :<removed string - do not use>
-STR_2913    :<removed string - do not use>
-STR_2914    :<removed string - do not use>
-STR_2915    :<removed string - do not use>
-STR_2916    :<removed string - do not use>
-STR_2917    :<removed string - do not use>
-STR_2918    :<removed string - do not use>
-STR_2919    :<removed string - do not use>
-STR_2920    :<removed string - do not use>
-STR_2921    :<removed string - do not use>
-STR_2922    :<removed string - do not use>
-STR_2923    :<removed string - do not use>
-STR_2924    :<removed string - do not use>
-STR_2925    :<removed string - do not use>
-STR_2926    :<removed string - do not use>
-STR_2927    :<removed string - do not use>
-STR_2928    :<removed string - do not use>
-STR_2929    :<removed string - do not use>
-STR_2930    :<removed string - do not use>
-STR_2931    :{WINDOW_COLOUR_2}
-STR_2932    :{WINDOW_COLOUR_2}
-STR_2933    :{WINDOW_COLOUR_2}
-STR_2934    :{WINDOW_COLOUR_2}
-STR_2935    :{WINDOW_COLOUR_2}
-STR_2936    :{WINDOW_COLOUR_2}
-STR_2937    :{WINDOW_COLOUR_2}
-STR_2938    :{WINDOW_COLOUR_2}
-STR_2939    :{WINDOW_COLOUR_2}
-STR_2940    :{WINDOW_COLOUR_2}
-STR_2941    :{WINDOW_COLOUR_2}
-STR_2942    :{WINDOW_COLOUR_2}
-STR_2943    :{WINDOW_COLOUR_2}
-STR_2944    :{WINDOW_COLOUR_2}
-STR_2945    :{WINDOW_COLOUR_2}
-STR_2946    :{WINDOW_COLOUR_2}
-STR_2947    :{WINDOW_COLOUR_2}
-STR_2948    :{WINDOW_COLOUR_2}
-STR_2949    :{WINDOW_COLOUR_2}
-STR_2950    :{WINDOW_COLOUR_2}
-STR_2951    :{WINDOW_COLOUR_2}
-STR_2952    :{WINDOW_COLOUR_2}
-STR_2953    :{WINDOW_COLOUR_2}
-STR_2954    :{WINDOW_COLOUR_2}
-STR_2955    :{WINDOW_COLOUR_2}
-STR_2956    :{WINDOW_COLOUR_2}
-STR_2957    :{WINDOW_COLOUR_2}
-STR_2958    :{WINDOW_COLOUR_2}
-STR_2959    :{WINDOW_COLOUR_2}
-STR_2960    :{WINDOW_COLOUR_2}
-STR_2961    :{WINDOW_COLOUR_2}
-STR_2962    :{WINDOW_COLOUR_2}
-STR_2963    :{WINDOW_COLOUR_2}
-STR_2964    :{WINDOW_COLOUR_2}
-STR_2965    :{WINDOW_COLOUR_2}
-STR_2966    :
-STR_2967    :
-STR_2968    :
-STR_2969    :<not used anymore>
-STR_2970    :<not used anymore>
 STR_2971    :Primární barevná kombinace
 STR_2972    :Alternativní barevná kombinace 1
 STR_2973    :Alternativní barevná kombinace 2
@@ -3055,7 +2307,6 @@ STR_3042    :Piráti
 STR_3043    :Rock 3
 STR_3044    :Sladkosti
 STR_3045    :{SMALLFONT}{BLACK}Vyberte styl muziky, která bude hrát
-STR_3046    :Tuto atrakci nelze upravovat
 STR_3047    :Místní správa zakazuje úpravy a zrušení této atrakce
 STR_3048    :Reklamní kampaně zakázány místní správou
 STR_3049    :Jamka A
@@ -3064,9 +2315,6 @@ STR_3051    :Jamka C
 STR_3052    :Jamka D
 STR_3053    :Jamka E
 STR_3054    :Načítání...
-STR_3055    :<removed string - do not use>
-STR_3056    :<removed string - do not use>
-STR_3057    :<removed string - do not use>
 STR_3058    :Cihlová zeď
 STR_3059    :Živý plot
 STR_3060    :Kusy ledu
@@ -3107,7 +2355,6 @@ STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Rychlost řetězového výtahu:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Vyberte rychlost řetězového výtahu
-STR_3098    :Rychlost řetězového výtahu nelze změnit...
 STR_3099    :{SMALLFONT}{BLACK}Vyberte barvu
 STR_3100    :{SMALLFONT}{BLACK}Vyberte sekundární barvu
 STR_3101    :{SMALLFONT}{BLACK}Vyberte terciální barvu
@@ -3154,30 +2401,13 @@ STR_3141    :Více kol za jízdu není přípustné současně s řetězovým v�
 STR_3142    :{WINDOW_COLOUR_2}Kapacita: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Zobrazit návštěvníky na mapě
 STR_3144    :{SMALLFONT}{BLACK}Zobrazit atrakce a stánky na mapě
-STR_3145    :{SMALLFONT}{BLACK}Posunout {STRINGID} vlevo
-STR_3146    :{SMALLFONT}{BLACK}Posunout {STRINGID} vpravo
-STR_3147    :{SMALLFONT}{BLACK}Posunout {STRINGID} rychle vlevo
-STR_3148    :{SMALLFONT}{BLACK}Posunout {STRINGID} rychle vpravo
-STR_3149    :{SMALLFONT}{BLACK}Posunout {STRINGID} vlevo/vpravo
-STR_3150    :{SMALLFONT}{BLACK}Posunout {STRINGID} nahoru
-STR_3151    :{SMALLFONT}{BLACK}Posunout {STRINGID} dolů
-STR_3152    :{SMALLFONT}{BLACK}Posunout {STRINGID} nahoru rychle
-STR_3153    :{SMALLFONT}{BLACK}Posunout {STRINGID} dolů rychle
-STR_3154    :{SMALLFONT}{BLACK}Posunout {STRINGID} nahoru/dolů
-STR_3155    :
-STR_3156    :
-STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
 STR_3160    :Vyberte počet kol za jednu jízdu
-STR_3161    :<not used anymore>
 STR_3162    :Nepodařilo se alokovat dostatek paměti
 STR_3163    :Instaluji nová data: 
 STR_3164    :{BLACK}{COMMA16} vybráno (maximum {COMMA16})
-STR_3165    :
-STR_3166    :{BLACK}(ID: 
 STR_3167    :{WINDOW_COLOUR_2}Včetně: {BLACK}{COMMA16} objektů
-STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
 STR_3169    :Nebyly nalezeny data pro následující objekt: 
 STR_3170    :Nedostatek místa pro grafiku
 STR_3171    :Vybráno příliš mnoho objektů tohoto typu
@@ -3332,9 +2562,6 @@ STR_3319    :{WINDOW_COLOUR_2}Skupina scénářů:
 STR_3320    :Nepodařilo se uložit scénář...
 STR_3321    :Nové objekty byly úspěšně nainstalovány
 STR_3322    :{WINDOW_COLOUR_2}Cíl scénáře: {BLACK}{STRINGID}
-STR_3323    :Chybějící data objektu, ID: 
-STR_3324    :Vyžaduje Add-On Pack: {STRINGID}
-STR_3325    :Vyžaduje Add-On Pack
 STR_3326    :{WINDOW_COLOUR_2}(bez obrázku)
 STR_3327    :Nenastavena počáteční pozice návštěvníků
 STR_3328    :Nelze přejít k dalšímu kroku...
@@ -3346,7 +2573,6 @@ STR_3333    :Exportovat plug-in objekty s uložením hry
 STR_3334    :{SMALLFONT}{BLACK}Vyberte, zda ukládat data plug-in objektů (add-in data nejsou dodána s hlavním produktem) do souborů uložených her a scénářů, což dovolí jejích načítání na těmi, kdo nemají tyto dodatečná data objektů.
 STR_3335    :Návrhář trati - Vyberte typ atrakce a vozů
 STR_3336    :Správa návrhu trati - Vyberte typ trati
-STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Vlastnoručně navržené
 STR_3339    :{BLACK}{COMMA16} návrh dostupný nebo vlastnoručně navržený
 STR_3340    :{BLACK}{COMMA16} návrhy dostupné nebo vlastnoručně navržené
@@ -3371,8 +2597,6 @@ STR_3358    :Nelze odstranit návrh trati...
 STR_3359    :{BLACK}Žádné návrhy tratí tohoto typu
 STR_3360    :Pozor!
 STR_3361    :Příliš mnoho návrhů tratí tohoto typu - některé nejsou zobrazeny.
-STR_3362    :<not used anymore>
-STR_3363    :<not used anymore>
 STR_3364    :Pokročilé
 STR_3365    :{SMALLFONT}{BLACK}Povolit výběr jednotlivých kulis společně se skupinami kulis
 STR_3366    :{BLACK}= Atrakce
@@ -3394,58 +2618,8 @@ STR_3381    :Soubor není kompatibilní, nebo obsahuje neplatná data
 STR_3382    :Kopírování souboru selhalo
 STR_3383    :Vyberte nový název návrhu trati
 STR_3384    :Existuje návrh trati se stejným názvem - vyberte prosím jiný název:
-STR_3385    :<removed string - do not use>
-STR_3386    :<removed string - do not use>
-STR_3387    :<removed string - do not use>
-STR_3388    :Nepodařilo se přepnout do vybraného módu
 STR_3389    :Nepodařilo se vybrat dodatečné kulisy...
 STR_3390    :Vybráno příliš mnoho položek
-STR_3391    :<removed string - do not use>
-STR_3392    :<removed string - do not use>
-STR_3393    :<removed string - do not use>
-STR_3394    :<removed string - do not use>
-STR_3395    :<removed string - do not use>
-STR_3396    :<removed string - do not use>
-STR_3397    :<removed string - do not use>
-STR_3398    :<removed string - do not use>
-STR_3399    :<removed string - do not use>
-STR_3400    :<removed string - do not use>
-STR_3401    :<removed string - do not use>
-STR_3402    :<removed string - do not use>
-STR_3403    :<removed string - do not use>
-STR_3404    :<removed string - do not use>
-STR_3405    :<removed string - do not use>
-STR_3406    :<removed string - do not use>
-STR_3407    :<removed string - do not use>
-STR_3408    :<removed string - do not use>
-STR_3409    :<removed string - do not use>
-STR_3410    :<removed string - do not use>
-STR_3411    :<removed string - do not use>
-STR_3412    :<removed string - do not use>
-STR_3413    :<removed string - do not use>
-STR_3414    :<removed string - do not use>
-STR_3415    :<removed string - do not use>
-STR_3416    :<removed string - do not use>
-STR_3417    :<removed string - do not use>
-STR_3418    :<removed string - do not use>
-STR_3419    :<removed string - do not use>
-STR_3420    :<removed string - do not use>
-STR_3421    :<removed string - do not use>
-STR_3422    :<removed string - do not use>
-STR_3423    :<removed string - do not use>
-STR_3424    :<removed string - do not use>
-STR_3425    :<removed string - do not use>
-STR_3426    :<removed string - do not use>
-STR_3427    :<removed string - do not use>
-STR_3428    :<removed string - do not use>
-STR_3429    :<removed string - do not use>
-STR_3430    :<removed string - do not use>
-STR_3431    :<removed string - do not use>
-STR_3432    :<removed string - do not use>
-STR_3433    :<removed string - do not use>
-STR_3434    :<removed string - do not use>
-STR_3435    :<removed string - do not use>
-STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Odebrat velkou oblast kulis z krajiny
 STR_3438    :Odsud nelze odebrat všechny kulisy...
 STR_3439    :Odebrat kulisy
@@ -3462,7 +2636,6 @@ STR_5120    :Finance
 STR_5121    :Výzkum
 STR_5122    :Výběr atrakcí podle typu (jako v RCT1)
 STR_5123    :Obnovit atrakce
-STR_5124    :<removed string - do not use>
 STR_5125    :Vše lze zbourat
 STR_5126    :Náhodná hudba
 STR_5127    :{SMALLFONT}{BLACK}Měnit vzhled země namísto změny výšky terénu
@@ -3495,7 +2668,6 @@ STR_5153    :Upravit motivy...
 STR_5154    :Hardwarové zobrazování
 STR_5155    :Povolit testování nedostavěných atrakcí
 STR_5156    :{SMALLFONT}{BLACK}Povolí testování většiny typů atrakcí, i přesto, že atrakce není dostavěna. Netýká se módu sekcí
-STR_5157    :Odemknout všechny ceny
 STR_5158    :Odejít do menu
 STR_5159    :Vypnout OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Rok {POP16}{COMMA16}
@@ -3679,8 +2851,6 @@ STR_5337    :Vstup do zábavního parku
 STR_5338    :Typ prvku
 STR_5339    :Výška povrchu
 STR_5340    :Výška objektu
-STR_5341    :<removed string - do not use>
-STR_5342    :<removed string - do not use>
 STR_5343    :Automaticky umisťovat personál
 STR_5344    :Seznam změn
 STR_5345    :Cheaty financí
@@ -3832,7 +3002,6 @@ STR_5490    :Vypnout zvuk při přepnutí ze hry
 STR_5491    :Seznam vynálezů
 STR_5492    :Nastavení scénáře
 STR_5493    :Poslat zprávu
-STR_5494    :<removed string - do not use>
 STR_5495    :Seznam hráčů
 STR_5496    :Hráč
 STR_5497    :Ping
@@ -3845,7 +3014,6 @@ STR_5503    :Zadejte hostname, nebo IP adresu:
 STR_5504    :{SMALLFONT}{BLACK}Zobrazit stav hry více hráčů
 STR_5505    :Nelze se připojit k serveru.
 STR_5506    :Návštěvníci ignorují intenzitu atrakcí
-STR_5507    :<removed string - do not use>
 STR_5508    :Povolit nahrávání souborů s chybným kontrolním součtem
 STR_5509    :{SMALLFONT}{BLACK}Povolit nahrávání scénářů s neplatným{NEWLINE}kontrolním součtem - například{NEWLINE}scénáře demoverze, nebo{NEWLINE}poškozené uložené hry.
 STR_5510    :Výchozí zvukové zařízení
@@ -4035,10 +3203,7 @@ STR_5726    :{SMALLFONT}{BLACK}Nastaví momentální počasí v parku
 STR_5727    :Metoda škálování:
 STR_5728    :Vyžaduje hardwarové zobrazování
 STR_5729    :{SMALLFONT}{BLACK}Vyžaduje hardwarové zobrazování
-STR_5730    :<removed string - do not use>
 STR_5731    :Lineární
-STR_5732    :<removed string - do not use>
-STR_5733    :<removed string - do not use>
 STR_5734    :{SMALLFONT}{BLACK}Vykreslování
 STR_5735    :Stav připojení
 STR_5736    :Hráč
@@ -4124,10 +3289,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}Zobrazovat počítadlo FPS ve hře
 STR_5816    :{SMALLFONT}{BLACK}Nastaví poměr stran pro škálování{NEWLINE} velikosti herního okna.{NEWLINE}Nejužitečnější je tato volba při hře ve vysokém rozlišení.
 STR_5817    :{SMALLFONT}{BLACK}Nastaví typ škálování UI prvků. Vyžaduje hardwarové vykreslování.{NEWLINE}Lineární škálování má hladký, ale rozmazaný obraz. Metoda vyhlazeného nejbližšího souseda má ostrý obraz, ale může způsobovat mírný výkonostní propad.
-STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Pozastavit hru, pokud je {NEWLINE}zapnutý Steam in-game overlay
 STR_5820    :{SMALLFONT}{BLACK}Minimalizovat hru, pokud je v{NEWLINE}režimu celé obrazovky a jiné okno se stane aktivním
-STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Zapnout cyklus dne a noci.{NEWLINE}Jeden cyklus trvá jeden herní měsíc
 STR_5823    :{SMALLFONT}{BLACK}Zobrazit bannery kapitálkami (RCT1 chování)
 STR_5824    :{SMALLFONT}{BLACK}Zakáže blesky během bouřek
@@ -4203,7 +3366,6 @@ STR_5893    :Kurz měny
 STR_5894    :Zadejte kurz měny
 STR_5895    :Uložit trať
 STR_5896    :Nepodařilo se uložit trať!
-STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Nelze načíst trať - soubor neexistuje,{newline}nebo je pravděpodobně poškozen!
 STR_5899    :Přepnout okno debug vykreslování
 STR_5900    :Použít původní vykreslovací kód
@@ -4568,6 +3730,8 @@ STR_6258    :Čistě (průhledně)
 STR_6259    :Žádné
 STR_6260    :Zobrazit blokované dlaždice
 STR_6261    :Zobrazit široké cesty
+STR_6262    :Hlavní hlasitost
+STR_6263    :{SMALLFONT}{BLACK}Zapnout/vypnout všechny zvuky
 
 ###############################################################################
 ## RCT2 Scenarios
@@ -4760,7 +3924,7 @@ STR_SCNR    :Europe - Renovation
 STR_PARK    :From The Ashes
 STR_DTLS    :Evropská Unie vám dala grant, abyste zajistil obnovu starého, neudržovaného zábavního parku a přinesl zpět jeho tehdejší slávu. Musíte celý park renovovat a splatit grant.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :Havajané jsou znudění ze surfování a chtějí zažít něco adrenalinovějšího. Postavte zábavní park a nezapomeňte na to - pomůže vám to s dosažením dobrého hodnocení parku.

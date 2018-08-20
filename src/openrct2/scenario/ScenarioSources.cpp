@@ -7,29 +7,29 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ScenarioSources.h"
+
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "ScenarioSources.h"
-
 #include "Scenario.h"
 
 namespace ScenarioSources
 {
     struct ScenarioAlias
     {
-        const utf8 * Original;
-        const utf8 * Alternative;
+        const utf8* Original;
+        const utf8* Alternative;
     };
 
     struct ScenarioTitleDescriptor
     {
-        const uint8_t  Id;
-        const utf8 * Title;
-        const uint8_t  Category;
+        const uint8_t Id;
+        const utf8* Title;
+        const uint8_t Category;
     };
 
-    #pragma region Scenario Data
+#pragma region Scenario Data
 
     // clang-format off
     static constexpr const ScenarioAlias ScenarioAliases[] =
@@ -46,6 +46,8 @@ namespace ScenarioSources
 
         // RCT1 pack by RCTScenarioLover has a mistake:
         { "Geoffrey Gardens",                       "Geoffery Gardens"                          },
+        // RCT1 pack by Crappage uses park name to identify Utopia Park, instead of scenario list name:
+        { "Utopia Park",                            "Utopia"                                    },
 
         // CD Projekt Polish Edition
         { "Alpine Adventures",                          "Górska przygoda"                           },
@@ -162,7 +164,7 @@ namespace ScenarioSources
         { SC_ROMAN_VILLAGE,             "Roman Village",        SCENARIO_CATEGORY_CHALLENGING   },
         { SC_SWAMP_COVE,                "Swamp Cove",           SCENARIO_CATEGORY_CHALLENGING   },
         { SC_ADRENALINE_HEIGHTS,        "Adrenaline Heights",   SCENARIO_CATEGORY_CHALLENGING   },
-        { SC_UTOPIA,                    "Utopia",               SCENARIO_CATEGORY_CHALLENGING   },
+        { SC_UTOPIA_PARK,               "Utopia Park",          SCENARIO_CATEGORY_CHALLENGING   },
         { SC_ROTTING_HEIGHTS,           "Rotting Heights",      SCENARIO_CATEGORY_EXPERT        },
         { SC_FIASCO_FOREST,             "Fiasco Forest",        SCENARIO_CATEGORY_EXPERT        },
         { SC_PICKLE_PARK,               "Pickle Park",          SCENARIO_CATEGORY_EXPERT        },
@@ -316,9 +318,9 @@ namespace ScenarioSources
     };
     // clang-format on
 
-    #pragma endregion
+#pragma endregion
 
-    bool TryGetByName(const utf8 * name, source_desc * outDesc)
+    bool TryGetByName(const utf8* name, source_desc* outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
@@ -327,7 +329,7 @@ namespace ScenarioSources
         {
             for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
             {
-                const ScenarioTitleDescriptor *desc = &ScenarioTitlesBySource[i].titles[j];
+                const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i].titles[j];
                 if (String::Equals(name, desc->Title, true))
                 {
                     outDesc->title = desc->Title;
@@ -349,7 +351,7 @@ namespace ScenarioSources
         return false;
     }
 
-    bool TryGetById(uint8_t id, source_desc * outDesc)
+    bool TryGetById(uint8_t id, source_desc* outDesc)
     {
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
@@ -358,7 +360,7 @@ namespace ScenarioSources
         {
             for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
             {
-                const ScenarioTitleDescriptor * desc = &ScenarioTitlesBySource[i].titles[j];
+                const ScenarioTitleDescriptor* desc = &ScenarioTitlesBySource[i].titles[j];
                 if (id == desc->Id)
                 {
                     outDesc->title = desc->Title;
@@ -380,7 +382,7 @@ namespace ScenarioSources
         return false;
     }
 
-    void NormaliseName(utf8 * buffer, size_t bufferSize, const utf8 * name)
+    void NormaliseName(utf8* buffer, size_t bufferSize, const utf8* name)
     {
         size_t nameLength = String::LengthOf(name);
 
@@ -403,7 +405,7 @@ namespace ScenarioSources
 
         // American scenario titles should be converted to British name
         // Don't worry, names will be translated using language packs later
-        for (const ScenarioAlias &alias : ScenarioAliases)
+        for (const ScenarioAlias& alias : ScenarioAliases)
         {
             if (String::Equals(alias.Alternative, name))
             {
@@ -414,18 +416,17 @@ namespace ScenarioSources
     }
 } // namespace ScenarioSources
 
-bool scenario_get_source_desc(const utf8 * name, source_desc * outDesc)
+bool scenario_get_source_desc(const utf8* name, source_desc* outDesc)
 {
     return ScenarioSources::TryGetByName(name, outDesc);
 }
 
-bool scenario_get_source_desc_by_id(uint8_t id, source_desc * outDesc)
+bool scenario_get_source_desc_by_id(uint8_t id, source_desc* outDesc)
 {
     return ScenarioSources::TryGetById(id, outDesc);
 }
 
-void scenario_normalise_name(utf8 * buffer, size_t bufferSize, utf8 * name)
+void scenario_normalise_name(utf8* buffer, size_t bufferSize, utf8* name)
 {
     ScenarioSources::NormaliseName(buffer, bufferSize, name);
 }
-

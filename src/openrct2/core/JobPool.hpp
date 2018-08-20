@@ -27,8 +27,8 @@ private:
         const std::function<void()> CompletionFn;
 
         TaskData(std::function<void()> workFn, std::function<void()> completionFn)
-            : WorkFn(workFn),
-              CompletionFn(completionFn)
+            : WorkFn(workFn)
+            , CompletionFn(completionFn)
         {
         }
     };
@@ -86,11 +86,7 @@ public:
         while (true)
         {
             // Wait for the queue to become empty or having completed tasks.
-            _condComplete.wait(lock, [this]()
-            {
-                return (_pending.empty() && _processing == 0) ||
-                        !_completed.empty();
-            });
+            _condComplete.wait(lock, [this]() { return (_pending.empty() && _processing == 0) || !_completed.empty(); });
 
             // Dispatch all completion callbacks if there are any.
             while (!_completed.empty())
@@ -118,9 +114,7 @@ public:
             }
 
             // If everything is empty and no more work has to be done we can stop waiting.
-            if (_completed.empty() &&
-                _pending.empty() &&
-                _processing == 0)
+            if (_completed.empty() && _pending.empty() && _processing == 0)
             {
                 break;
             }
@@ -139,11 +133,7 @@ private:
         do
         {
             // Wait for work or cancelation.
-            _condPending.wait(lock,
-                [this]()
-                {
-                    return _shouldStop || !_pending.empty();
-                });
+            _condPending.wait(lock, [this]() { return _shouldStop || !_pending.empty(); });
 
             if (!_pending.empty())
             {
@@ -163,7 +153,6 @@ private:
                 _processing--;
                 _condComplete.notify_one();
             }
-        }
-        while(!_shouldStop);
+        } while (!_shouldStop);
     }
 };

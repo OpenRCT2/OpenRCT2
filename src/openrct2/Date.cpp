@@ -7,21 +7,23 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "core/Guard.hpp"
-#include "core/Math.hpp"
 #include "localisation/Date.h"
+
 #include "Date.h"
+#include "core/Guard.hpp"
+
+#include <algorithm>
 
 using namespace OpenRCT2;
 
-constexpr int32_t MONTH_TICKS_INCREMENT  = 4;
-constexpr int32_t MASK_WEEK_TICKS        = 0x3FFF;
-constexpr int32_t MASK_FORTNIGHT_TICKS   = 0x7FFF;
-constexpr int32_t MASK_MONTH_TICKS       = 0xFFFF;
+constexpr int32_t MONTH_TICKS_INCREMENT = 4;
+constexpr int32_t MASK_WEEK_TICKS = 0x3FFF;
+constexpr int32_t MASK_FORTNIGHT_TICKS = 0x7FFF;
+constexpr int32_t MASK_MONTH_TICKS = 0xFFFF;
 
 Date::Date(uint32_t monthsElapsed, uint16_t monthTicks)
-    : _monthTicks(monthTicks),
-      _monthsElapsed(monthsElapsed)
+    : _monthTicks(monthTicks)
+    , _monthsElapsed(monthsElapsed)
 {
 }
 
@@ -36,7 +38,7 @@ Date Date::FromYMD(int32_t year, int32_t month, int32_t day)
     if (day != 0)
     {
         auto daysInMonth = GetDaysInMonth(month);
-        day = Math::Clamp(0, day, daysInMonth - 1);
+        day = std::clamp(day, 0, daysInMonth - 1);
         monthTicks = (day << 16) / daysInMonth;
     }
 

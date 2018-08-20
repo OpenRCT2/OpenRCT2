@@ -11,6 +11,7 @@
 
 #include <string>
 
-namespace String {
-    std::string Format(const char *format, ...);
+namespace String
+{
+    std::string Format(const char* format, ...);
 }

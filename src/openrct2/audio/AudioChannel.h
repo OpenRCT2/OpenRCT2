@@ -23,30 +23,30 @@ namespace OpenRCT2::Audio
     {
         virtual ~IAudioChannel() = default;
 
-        virtual IAudioSource * GetSource() const abstract;
+        virtual IAudioSource* GetSource() const abstract;
 
-        virtual int32_t  GetGroup() const abstract;
-        virtual void    SetGroup(int32_t group) abstract;
+        virtual int32_t GetGroup() const abstract;
+        virtual void SetGroup(int32_t group) abstract;
 
-        virtual double  GetRate() const abstract;
-        virtual void    SetRate(double rate) abstract;
+        virtual double GetRate() const abstract;
+        virtual void SetRate(double rate) abstract;
 
-        virtual uint64_t  GetOffset() const abstract;
-        virtual bool    SetOffset(uint64_t offset) abstract;
+        virtual uint64_t GetOffset() const abstract;
+        virtual bool SetOffset(uint64_t offset) abstract;
 
-        virtual int32_t  GetLoop() const abstract;
-        virtual void    SetLoop(int32_t value) abstract;
+        virtual int32_t GetLoop() const abstract;
+        virtual void SetLoop(int32_t value) abstract;
 
-        virtual int32_t  GetVolume() const abstract;
-        virtual float   GetVolumeL() const abstract;
-        virtual float   GetVolumeR() const abstract;
-        virtual float   GetOldVolumeL() const abstract;
-        virtual float   GetOldVolumeR() const abstract;
-        virtual int32_t  GetOldVolume() const abstract;
-        virtual void    SetVolume(int32_t volume) abstract;
+        virtual int32_t GetVolume() const abstract;
+        virtual float GetVolumeL() const abstract;
+        virtual float GetVolumeR() const abstract;
+        virtual float GetOldVolumeL() const abstract;
+        virtual float GetOldVolumeR() const abstract;
+        virtual int32_t GetOldVolume() const abstract;
+        virtual void SetVolume(int32_t volume) abstract;
 
-        virtual float   GetPan() const abstract;
-        virtual void    SetPan(float pan) abstract;
+        virtual float GetPan() const abstract;
+        virtual void SetPan(float pan) abstract;
 
         virtual bool IsStopping() const abstract;
         virtual void SetStopping(bool value) abstract;
@@ -64,6 +64,6 @@ namespace OpenRCT2::Audio
         virtual void Play(IAudioSource * source, int32_t loop = 0) abstract;
         virtual void UpdateOldVolume() abstract;
 
-        virtual size_t Read(void * dst, size_t len) abstract;
+        virtual size_t Read(void* dst, size_t len) abstract;
     };
 } // namespace OpenRCT2::Audio

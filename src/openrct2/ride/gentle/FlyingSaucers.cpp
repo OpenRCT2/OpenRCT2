@@ -15,7 +15,7 @@
 
 enum
 {
-    SPR_FLYING_SAUCERS_FLOOR    = 21920,
+    SPR_FLYING_SAUCERS_FLOOR = 21920,
     SPR_FLYING_SAUCERS_FENCE_NE = 21921,
     SPR_FLYING_SAUCERS_FENCE_SE = 21922,
     SPR_FLYING_SAUCERS_FENCE_SW = 21923,
@@ -33,17 +33,13 @@ static constexpr const uint32_t flying_saucers_fence_sprites[] = {
  * rct2: 0x008873D8
  */
 static void paint_flying_saucers(
-    paint_session *          session,
-    uint8_t                    rideIndex,
-    uint8_t                    trackSequence,
-    uint8_t                    direction,
-    int32_t                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
-    int32_t   edges    = edges_4x4[relativeTrackSequence];
-    Ride *   ride     = get_ride(rideIndex);
+    int32_t edges = edges_4x4[relativeTrackSequence];
+    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);

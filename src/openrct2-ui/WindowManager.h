@@ -13,5 +13,5 @@ namespace OpenRCT2::Ui
 {
     interface IWindowManager;
 
-    IWindowManager * CreateWindowManager();
-}
+    IWindowManager* CreateWindowManager();
+} // namespace OpenRCT2::Ui

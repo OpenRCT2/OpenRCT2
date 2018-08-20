@@ -7,15 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "User.h"
+
 #include "../Game.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "Localisation.h"
-#include "User.h"
 
 utf8 gUserStrings[MAX_USER_STRINGS][USER_STRING_MAX_LENGTH];
 
-static bool user_string_exists(const utf8 *text);
+static bool user_string_exists(const utf8* text);
 
 /**
  *
@@ -30,19 +31,20 @@ void user_string_clear_all()
  *
  *  rct2: 0x006C421D
  */
-rct_string_id user_string_allocate(int32_t base, const utf8 *text)
+rct_string_id user_string_allocate(int32_t base, const utf8* text)
 {
     int32_t highBits = (base & 0x7F) << 9;
     bool allowDuplicates = base & USER_STRING_DUPLICATION_PERMITTED;
 
-    if (!allowDuplicates && user_string_exists(text)) {
+    if (!allowDuplicates && user_string_exists(text))
+    {
         gGameCommandErrorText = STR_CHOSEN_NAME_IN_USE_ALREADY;
         return 0;
     }
 
     for (int32_t i = 0; i < MAX_USER_STRINGS; i++)
     {
-        char * userString = gUserStrings[i];
+        char* userString = gUserStrings[i];
 
         if (userString[0] != 0)
             continue;
@@ -67,9 +69,9 @@ void user_string_free(rct_string_id id)
     gUserStrings[id][0] = 0;
 }
 
-static bool user_string_exists(const utf8 *text)
+static bool user_string_exists(const utf8* text)
 {
-    char * userString;
+    char* userString;
     for (int32_t i = 0; i < MAX_USER_STRINGS; i++)
     {
         userString = gUserStrings[i];

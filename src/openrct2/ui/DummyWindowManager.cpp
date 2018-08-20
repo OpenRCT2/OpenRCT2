@@ -13,24 +13,59 @@ namespace OpenRCT2::Ui
 {
     class DummyWindowManager final : public IWindowManager
     {
-        void Init() override {};
-        rct_window * OpenWindow(rct_windowclass /*wc*/) override { return nullptr; }
-        rct_window * OpenView(uint8_t /*view*/) override { return nullptr; }
-        rct_window * OpenDetails(uint8_t /*type*/, int32_t /*id*/) override { return nullptr; }
-        rct_window * ShowError(rct_string_id /*title*/, rct_string_id /*message*/) override { return nullptr; }
-        rct_window * OpenIntent(Intent * /*intent*/) override { return nullptr; };
-        void BroadcastIntent(const Intent &/*intent*/) override { }
-        void ForceClose(rct_windowclass /*windowClass*/) override { }
-        void UpdateMapTooltip() override { }
-        void HandleInput() override { }
-        void HandleKeyboard(bool /*isTitle*/) override { }
-        std::string GetKeyboardShortcutString(int32_t /*shortcut*/) override { return std::string(); }
-        void SetMainView(int32_t x, int32_t y, int32_t zoom, int32_t rotation) override { }
-        void UpdateMouseWheel() override { }
-        rct_window* GetOwner(const rct_viewport* viewport) override { return nullptr; }
+        void Init() override{};
+        rct_window* OpenWindow(rct_windowclass /*wc*/) override
+        {
+            return nullptr;
+        }
+        rct_window* OpenView(uint8_t /*view*/) override
+        {
+            return nullptr;
+        }
+        rct_window* OpenDetails(uint8_t /*type*/, int32_t /*id*/) override
+        {
+            return nullptr;
+        }
+        rct_window* ShowError(rct_string_id /*title*/, rct_string_id /*message*/) override
+        {
+            return nullptr;
+        }
+        rct_window* OpenIntent(Intent* /*intent*/) override
+        {
+            return nullptr;
+        };
+        void BroadcastIntent(const Intent& /*intent*/) override
+        {
+        }
+        void ForceClose(rct_windowclass /*windowClass*/) override
+        {
+        }
+        void UpdateMapTooltip() override
+        {
+        }
+        void HandleInput() override
+        {
+        }
+        void HandleKeyboard(bool /*isTitle*/) override
+        {
+        }
+        std::string GetKeyboardShortcutString(int32_t /*shortcut*/) override
+        {
+            return std::string();
+        }
+        void SetMainView(int32_t x, int32_t y, int32_t zoom, int32_t rotation) override
+        {
+        }
+        void UpdateMouseWheel() override
+        {
+        }
+        rct_window* GetOwner(const rct_viewport* viewport) override
+        {
+            return nullptr;
+        }
     };
 
-    IWindowManager * CreateDummyWindowManager()
+    IWindowManager* CreateDummyWindowManager()
     {
         return new DummyWindowManager();
     }

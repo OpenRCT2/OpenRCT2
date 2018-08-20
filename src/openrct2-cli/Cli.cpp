@@ -9,15 +9,14 @@
 
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
-
 #include <openrct2/platform/platform.h>
 
 using namespace OpenRCT2;
 
 /**
-* Main entry point for non-Windows sytems. Windows instead uses its own DLL proxy.
-*/
-int main(int argc, const char * * argv)
+ * Main entry point for non-Windows sytems. Windows instead uses its own DLL proxy.
+ */
+int main(int argc, const char** argv)
 {
     int runGame = cmdline_run(argv, argc);
     core_init();

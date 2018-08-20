@@ -18,4 +18,4 @@ namespace OpenRCT2::Drawing
     interface IRainDrawer;
 }
 
-void DrawRain(rct_drawpixelinfo * dpi, OpenRCT2::Drawing::IRainDrawer * rainDrawer);
+void DrawRain(rct_drawpixelinfo* dpi, OpenRCT2::Drawing::IRainDrawer* rainDrawer);

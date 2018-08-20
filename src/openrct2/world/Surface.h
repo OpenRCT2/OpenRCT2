@@ -12,7 +12,8 @@
 #include "../common.h"
 #include "TileElement.h"
 
-enum {
+enum
+{
     TERRAIN_GRASS,
     TERRAIN_SAND,
     TERRAIN_DIRT,
@@ -32,7 +33,8 @@ enum {
     TERRAIN_UNDERGROUND_VIEW,
 };
 
-enum {
+enum
+{
     TERRAIN_EDGE_ROCK,
     TERRAIN_EDGE_WOOD_RED,
     TERRAIN_EDGE_WOOD_BLACK,
@@ -55,7 +57,8 @@ enum {
     TERRAIN_EDGE_COUNT
 };
 
-enum {
+enum
+{
     GRASS_LENGTH_MOWED,
     GRASS_LENGTH_CLEAR_0,
     GRASS_LENGTH_CLEAR_1,
@@ -65,7 +68,8 @@ enum {
     GRASS_LENGTH_CLUMPS_2
 };
 
-enum {
+enum
+{
     OWNERSHIP_UNOWNED = 0,
     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
     OWNERSHIP_OWNED = (1 << 5),
@@ -73,7 +77,8 @@ enum {
     OWNERSHIP_AVAILABLE = (1 << 7)
 };
 
-enum {
+enum
+{
     TILE_ELEMENT_SLOPE_FLAT = 0x00,
     TILE_ELEMENT_SLOPE_ALL_CORNERS_UP = 0x0F,
 
@@ -98,17 +103,19 @@ enum {
 };
 
 // Surface
-#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG       0x10 // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG 0x10       // in rct_tile_element.properties.surface.slope
 #define TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK 0x0F // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_SLOPE_MASK          (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK     0xE0 // in rct_tile_tile_element_set_terrainelement.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK   0x1F // in rct_tile_element.properties.surface.terrain
-#define TILE_ELEMENT_SURFACE_TERRAIN_MASK        0xE0 // in rct_tile_element.properties.surface.terrain
+#define TILE_ELEMENT_SURFACE_SLOPE_MASK                                                                                        \
+    (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG                                                                                        \
+     | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)    // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK 0xE0   // in rct_tile_tile_element_set_terrainelement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK 0x1F // in rct_tile_element.properties.surface.terrain
+#define TILE_ELEMENT_SURFACE_TERRAIN_MASK 0xE0      // in rct_tile_element.properties.surface.terrain
 
-int32_t surface_get_terrain(const rct_tile_element * element);
-int32_t surface_get_terrain_edge(const rct_tile_element * element);
-void surface_set_terrain(rct_tile_element * element, int32_t terrain);
-void surface_set_terrain_edge(rct_tile_element * element, int32_t terrain);
+int32_t surface_get_terrain(const rct_tile_element* element);
+int32_t surface_get_terrain_edge(const rct_tile_element* element);
+void surface_set_terrain(rct_tile_element* element, int32_t terrain);
+void surface_set_terrain_edge(rct_tile_element* element, int32_t terrain);
 
 // ~Oli414: Needs to renamed. This function is specific to the surface object.
-int32_t surface_get_water_height(const rct_tile_element * tileElement);
+int32_t surface_get_water_height(const rct_tile_element* tileElement);

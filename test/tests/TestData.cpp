@@ -7,8 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2/core/Path.hpp>
 #include "TestData.h"
+
+#include <openrct2/core/Path.hpp>
 
 namespace TestData
 {

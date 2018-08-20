@@ -12,7 +12,8 @@
 
 #include "../common.h"
 
-enum {
+enum
+{
     MONTH_MARCH,
     MONTH_APRIL,
     MONTH_MAY,
@@ -25,14 +26,16 @@ enum {
     MONTH_COUNT
 };
 
-enum {
+enum
+{
     DATE_FORMAT_DAY_MONTH_YEAR,
     DATE_FORMAT_MONTH_DAY_YEAR,
     DATE_FORMAT_YEAR_MONTH_DAY,
     DATE_FORMAT_YEAR_DAY_MONTH
 };
 
-struct openrct_timeofday {
+struct openrct_timeofday
+{
     uint8_t second;
     uint8_t minute;
     uint8_t hour;

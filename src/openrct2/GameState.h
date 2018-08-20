@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include <memory>
 #include "Date.h"
+
+#include <memory>
 
 namespace OpenRCT2
 {
@@ -23,17 +24,23 @@ namespace OpenRCT2
     {
     private:
         std::unique_ptr<Park> _park;
-        Date                  _date;
+        Date _date;
 
     public:
         GameState();
         GameState(const GameState&) = delete;
 
-        Date& GetDate() { return _date; }
-        Park& GetPark() { return *_park; }
+        Date& GetDate()
+        {
+            return _date;
+        }
+        Park& GetPark()
+        {
+            return *_park;
+        }
 
         void InitAll(int32_t mapSize);
         void Update();
         void UpdateLogic();
     };
-}
+} // namespace OpenRCT2

@@ -7,25 +7,26 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <vector>
+#include "TestPaint.hpp"
 
-#include "Hook.h"
 #include "GeneralSupportHeightCall.hpp"
+#include "Hook.h"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
-#include "TestPaint.hpp"
 #include "Utils.hpp"
 
+#include <algorithm>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/Supports.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/interface/Viewport.h>
+#include <vector>
 
 namespace TestPaint
 {
-    void ResetEnvironment() {
+    void ResetEnvironment()
+    {
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 
@@ -48,7 +49,7 @@ namespace TestPaint
             Ride ride = {};
             ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
             static rct_ride_entry rideEntry = {};
-            rct_ride_entry_vehicle vehicleEntry {};
+            rct_ride_entry_vehicle vehicleEntry{};
             vehicleEntry.base_image_id = 0x70000;
             rideEntry.vehicles[0] = vehicleEntry;
             gRideList[0] = ride;
@@ -70,13 +71,15 @@ namespace TestPaint
         RCT2_ScenarioTicks = 0;
     }
 
-    void ResetTunnels() {
+    void ResetTunnels()
+    {
         gLeftTunnelCount = 0;
         gRightTunnelCount = 0;
         gPaintSession.LeftTunnelCount = 0;
         gPaintSession.RightTunnelCount = 0;
 
-        for (int i = 0; i < TUNNEL_MAX_COUNT; i++) {
+        for (int i = 0; i < TUNNEL_MAX_COUNT; i++)
+        {
             gLeftTunnels[i].height = 0;
             gLeftTunnels[i].type = 0;
             gRightTunnels[i].height = 0;
@@ -97,7 +100,8 @@ namespace TestPaint
         gPaintSession.RightTunnels[0].type = 0xFF;
     }
 
-    void ResetSupportHeights() {
+    void ResetSupportHeights()
+    {
         for (int s = 0; s < 9; ++s)
         {
             gSupportSegments[s].height = 0;
@@ -139,18 +143,18 @@ namespace TestPaint
 
     bool testIsIgnored(uint8_t direction, uint8_t trackSequence)
     {
-        if (_ignoredAll) return true;
-        for (const IgnoredEntry &entry : _ignoredEntries)
+        if (_ignoredAll)
+            return true;
+        for (const IgnoredEntry& entry : _ignoredEntries)
         {
-            if (entry.Direction == direction &&
-                entry.TrackSequence == trackSequence)
+            if (entry.Direction == direction && entry.TrackSequence == trackSequence)
             {
                 return true;
             }
         }
         return false;
     }
-}
+} // namespace TestPaint
 
 void testpaint_clear_ignore()
 {

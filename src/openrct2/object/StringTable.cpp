@@ -7,17 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
+#include "StringTable.h"
+
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/LanguagePack.h"
 #include "../localisation/LocalisationService.h"
 #include "Object.h"
-#include "StringTable.h"
 
-static constexpr const uint8_t RCT2ToOpenRCT2LanguageId[] =
-{
+#include <algorithm>
+
+static constexpr const uint8_t RCT2ToOpenRCT2LanguageId[] = {
     LANGUAGE_ENGLISH_UK,
     LANGUAGE_ENGLISH_US,
     LANGUAGE_FRENCH,
@@ -34,7 +35,7 @@ static constexpr const uint8_t RCT2ToOpenRCT2LanguageId[] =
     LANGUAGE_PORTUGUESE_BR,
 };
 
-static bool StringIsBlank(const utf8 * str)
+static bool StringIsBlank(const utf8* str)
 {
     for (auto ch = str; *ch != '\0'; ch++)
     {
@@ -46,18 +47,16 @@ static bool StringIsBlank(const utf8 * str)
     return true;
 }
 
-void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8_t id)
+void StringTable::Read(IReadObjectContext* context, IStream* stream, uint8_t id)
 {
     try
     {
         RCT2LanguageId rct2LanguageId;
         while ((rct2LanguageId = (RCT2LanguageId)stream->ReadValue<uint8_t>()) != RCT2_LANGUAGE_ID_END)
         {
-            uint8_t languageId =
-                (rct2LanguageId <= RCT2_LANGUAGE_ID_PORTUGUESE) ?
-                RCT2ToOpenRCT2LanguageId[rct2LanguageId] :
-                LANGUAGE_UNDEFINED;
-            StringTableEntry entry { };
+            uint8_t languageId = (rct2LanguageId <= RCT2_LANGUAGE_ID_PORTUGUESE) ? RCT2ToOpenRCT2LanguageId[rct2LanguageId]
+                                                                                 : LANGUAGE_UNDEFINED;
+            StringTableEntry entry{};
             entry.Id = id;
             entry.LanguageId = languageId;
 
@@ -74,7 +73,7 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8_t i
             _strings.push_back(entry);
         }
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         context->LogError(OBJECT_ERROR_BAD_STRING_TABLE, "Bad string table.");
         throw;
@@ -84,7 +83,7 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8_t i
 
 std::string StringTable::GetString(uint8_t id) const
 {
-    for (auto &string : _strings)
+    for (auto& string : _strings)
     {
         if (string.Id == id)
         {
@@ -96,7 +95,7 @@ std::string StringTable::GetString(uint8_t id) const
 
 std::string StringTable::GetString(uint8_t language, uint8_t id) const
 {
-    for (auto &string : _strings)
+    for (auto& string : _strings)
     {
         if (string.LanguageId == language && string.Id == id)
         {
@@ -106,7 +105,7 @@ std::string StringTable::GetString(uint8_t language, uint8_t id) const
     return std::string();
 }
 
-void StringTable::SetString(uint8_t id, uint8_t language, const std::string &text)
+void StringTable::SetString(uint8_t id, uint8_t language, const std::string& text)
 {
     StringTableEntry entry;
     entry.Id = id;
@@ -118,8 +117,7 @@ void StringTable::SetString(uint8_t id, uint8_t language, const std::string &tex
 void StringTable::Sort()
 {
     auto targetLanguage = LocalisationService_GetCurrentLanguage();
-    std::sort(_strings.begin(), _strings.end(), [targetLanguage](const StringTableEntry &a, const StringTableEntry &b) -> bool
-    {
+    std::sort(_strings.begin(), _strings.end(), [targetLanguage](const StringTableEntry& a, const StringTableEntry& b) -> bool {
         if (a.Id == b.Id)
         {
             if (a.LanguageId == b.LanguageId)

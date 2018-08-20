@@ -13,19 +13,26 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 
-namespace Utils {
-    int getTrackSequenceCount(uint8_t rideType, uint8_t trackType) {
+namespace Utils
+{
+    int getTrackSequenceCount(uint8_t rideType, uint8_t trackType)
+    {
         int sequenceCount = 0;
-        const rct_preview_track **trackBlocks;
+        const rct_preview_track** trackBlocks;
 
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+        {
             trackBlocks = FlatRideTrackBlocks;
-        } else {
+        }
+        else
+        {
             trackBlocks = TrackBlocks;
         }
 
-        for (int i = 0; i < 256; i++) {
-            if (trackBlocks[trackType][i].index == 0xFF) {
+        for (int i = 0; i < 256; i++)
+        {
+            if (trackBlocks[trackType][i].index == 0xFF)
+            {
                 break;
             }
 
@@ -35,26 +42,31 @@ namespace Utils {
         return sequenceCount;
     }
 
-    bool rideSupportsTrackType(uint8_t rideType, uint8_t trackType) {
+    bool rideSupportsTrackType(uint8_t rideType, uint8_t trackType)
+    {
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
 
-        if (newPaintGetter == nullptr) {
+        if (newPaintGetter == nullptr)
+        {
             return false;
         }
 
-        if (newPaintGetter(trackType, 0) == nullptr) {
+        if (newPaintGetter(trackType, 0) == nullptr)
+        {
             return false;
         }
 
-        if (RideTypeTrackPaintFunctionsOld[rideType][trackType] == 0) {
+        if (RideTypeTrackPaintFunctionsOld[rideType][trackType] == 0)
+        {
             return false;
         }
 
         return true;
     }
 
-    bool rideIsImplemented(uint8_t rideType) {
+    bool rideIsImplemented(uint8_t rideType)
+    {
         TRACK_PAINT_FUNCTION_GETTER newPaintGetter = RideTypeTrackPaintFunctions[rideType];
         return (newPaintGetter != 0);
     }
-}
+} // namespace Utils

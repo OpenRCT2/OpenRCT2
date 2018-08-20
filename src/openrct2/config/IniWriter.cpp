@@ -7,26 +7,27 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <sstream>
-#include "../core/IStream.hpp"
-#include "../core/String.hpp"
 #include "IniWriter.hpp"
 
+#include "../core/IStream.hpp"
+#include "../core/String.hpp"
 #include "../platform/platform.h"
+
+#include <sstream>
 
 class IniWriter final : public IIniWriter
 {
 private:
-    IStream *   _stream;
-    bool        _firstSection = true;
+    IStream* _stream;
+    bool _firstSection = true;
 
 public:
-    explicit IniWriter(IStream * stream)
+    explicit IniWriter(IStream* stream)
         : _stream(stream)
     {
     }
 
-    void WriteSection(const std::string &name) override
+    void WriteSection(const std::string& name) override
     {
         if (!_firstSection)
         {
@@ -37,22 +38,22 @@ public:
         WriteLine("[" + name + "]");
     }
 
-    void WriteBoolean(const std::string &name, bool value) override
+    void WriteBoolean(const std::string& name, bool value) override
     {
         WriteProperty(name, value ? "true" : "false");
     }
 
-    void WriteInt32(const std::string &name, int32_t value) override
+    void WriteInt32(const std::string& name, int32_t value) override
     {
         WriteProperty(name, std::to_string(value));
     }
 
-    void WriteFloat(const std::string &name, float value) override
+    void WriteFloat(const std::string& name, float value) override
     {
         WriteProperty(name, std::to_string(value));
     }
 
-    void WriteString(const std::string &name, const std::string &value) override
+    void WriteString(const std::string& name, const std::string& value) override
     {
         std::ostringstream buffer;
         buffer << '"';
@@ -69,13 +70,13 @@ public:
         WriteProperty(name, buffer.str());
     }
 
-    void WriteEnum(const std::string &name, const std::string &key) override
+    void WriteEnum(const std::string& name, const std::string& key) override
     {
         WriteProperty(name, key);
     }
 
 private:
-    void WriteProperty(const std::string &name, const std::string &value)
+    void WriteProperty(const std::string& name, const std::string& value)
     {
         WriteLine(name + " = " + value);
     }
@@ -85,19 +86,19 @@ private:
         _stream->Write(PLATFORM_NEWLINE, String::SizeOf(PLATFORM_NEWLINE));
     }
 
-    void WriteLine(const std::string &line)
+    void WriteLine(const std::string& line)
     {
         _stream->Write(line.c_str(), line.size());
         WriteLine();
     }
 };
 
-void IIniWriter::WriteString(const std::string &name, const utf8 * value)
+void IIniWriter::WriteString(const std::string& name, const utf8* value)
 {
     WriteString(name, String::ToStd(value));
 }
 
-IIniWriter * CreateIniWriter(IStream * stream)
+IIniWriter* CreateIniWriter(IStream* stream)
 {
     return new IniWriter(stream);
 }

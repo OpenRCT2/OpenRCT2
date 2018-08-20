@@ -91,425 +91,6 @@ STR_0089    :Mini-achtbaan
 STR_0090    :Aangedreven mijntrein
 STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
-STR_0093    :
-STR_0094    :
-STR_0095    :
-STR_0096    :
-STR_0097    :
-STR_0098    :
-STR_0099    :
-STR_0100    :
-STR_0101    :
-STR_0102    :
-STR_0103    :
-STR_0104    :
-STR_0105    :
-STR_0106    :
-STR_0107    :
-STR_0108    :
-STR_0109    :
-STR_0110    :
-STR_0111    :
-STR_0112    :
-STR_0113    :
-STR_0114    :
-STR_0115    :
-STR_0116    :
-STR_0117    :
-STR_0118    :
-STR_0119    :
-STR_0120    :
-STR_0121    :
-STR_0122    :
-STR_0123    :
-STR_0124    :
-STR_0125    :
-STR_0126    :
-STR_0127    :
-STR_0128    :
-STR_0129    :
-STR_0130    :
-STR_0131    :
-STR_0132    :
-STR_0133    :
-STR_0134    :
-STR_0135    :
-STR_0136    :
-STR_0137    :
-STR_0138    :
-STR_0139    :
-STR_0140    :
-STR_0141    :
-STR_0142    :
-STR_0143    :
-STR_0144    :
-STR_0145    :
-STR_0146    :
-STR_0147    :
-STR_0148    :
-STR_0149    :
-STR_0150    :
-STR_0151    :
-STR_0152    :
-STR_0153    :
-STR_0154    :
-STR_0155    :
-STR_0156    :
-STR_0157    :
-STR_0158    :
-STR_0159    :
-STR_0160    :
-STR_0161    :
-STR_0162    :
-STR_0163    :
-STR_0164    :
-STR_0165    :
-STR_0166    :
-STR_0167    :
-STR_0168    :
-STR_0169    :
-STR_0170    :
-STR_0171    :
-STR_0172    :
-STR_0173    :
-STR_0174    :
-STR_0175    :
-STR_0176    :
-STR_0177    :
-STR_0178    :
-STR_0179    :
-STR_0180    :
-STR_0181    :
-STR_0182    :
-STR_0183    :
-STR_0184    :
-STR_0185    :
-STR_0186    :
-STR_0187    :
-STR_0188    :
-STR_0189    :
-STR_0190    :
-STR_0191    :
-STR_0192    :
-STR_0193    :
-STR_0194    :
-STR_0195    :
-STR_0196    :
-STR_0197    :
-STR_0198    :
-STR_0199    :
-STR_0200    :
-STR_0201    :
-STR_0202    :
-STR_0203    :
-STR_0204    :
-STR_0205    :
-STR_0206    :
-STR_0207    :
-STR_0208    :
-STR_0209    :
-STR_0210    :
-STR_0211    :
-STR_0212    :
-STR_0213    :
-STR_0214    :
-STR_0215    :
-STR_0216    :
-STR_0217    :
-STR_0218    :
-STR_0219    :
-STR_0220    :
-STR_0221    :
-STR_0222    :
-STR_0223    :
-STR_0224    :
-STR_0225    :
-STR_0226    :
-STR_0227    :
-STR_0228    :
-STR_0229    :
-STR_0230    :
-STR_0231    :
-STR_0232    :
-STR_0233    :
-STR_0234    :
-STR_0235    :
-STR_0236    :
-STR_0237    :
-STR_0238    :
-STR_0239    :
-STR_0240    :
-STR_0241    :
-STR_0242    :
-STR_0243    :
-STR_0244    :
-STR_0245    :
-STR_0246    :
-STR_0247    :
-STR_0248    :
-STR_0249    :
-STR_0250    :
-STR_0251    :
-STR_0252    :
-STR_0253    :
-STR_0254    :
-STR_0255    :
-STR_0256    :
-STR_0257    :
-STR_0258    :
-STR_0259    :
-STR_0260    :
-STR_0261    :
-STR_0262    :
-STR_0263    :
-STR_0264    :
-STR_0265    :
-STR_0266    :
-STR_0267    :
-STR_0268    :
-STR_0269    :
-STR_0270    :
-STR_0271    :
-STR_0272    :
-STR_0273    :
-STR_0274    :
-STR_0275    :
-STR_0276    :
-STR_0277    :
-STR_0278    :
-STR_0279    :
-STR_0280    :
-STR_0281    :
-STR_0282    :
-STR_0283    :
-STR_0284    :
-STR_0285    :
-STR_0286    :
-STR_0287    :
-STR_0288    :
-STR_0289    :
-STR_0290    :
-STR_0291    :
-STR_0292    :
-STR_0293    :
-STR_0294    :
-STR_0295    :
-STR_0296    :
-STR_0297    :
-STR_0298    :
-STR_0299    :
-STR_0300    :
-STR_0301    :
-STR_0302    :
-STR_0303    :
-STR_0304    :
-STR_0305    :
-STR_0306    :
-STR_0307    :
-STR_0308    :
-STR_0309    :
-STR_0310    :
-STR_0311    :
-STR_0312    :
-STR_0313    :
-STR_0314    :
-STR_0315    :
-STR_0316    :
-STR_0317    :
-STR_0318    :
-STR_0319    :
-STR_0320    :
-STR_0321    :
-STR_0322    :
-STR_0323    :
-STR_0324    :
-STR_0325    :
-STR_0326    :
-STR_0327    :
-STR_0328    :
-STR_0329    :
-STR_0330    :
-STR_0331    :
-STR_0332    :
-STR_0333    :
-STR_0334    :
-STR_0335    :
-STR_0336    :
-STR_0337    :
-STR_0338    :
-STR_0339    :
-STR_0340    :
-STR_0341    :
-STR_0342    :
-STR_0343    :
-STR_0344    :
-STR_0345    :
-STR_0346    :
-STR_0347    :
-STR_0348    :
-STR_0349    :
-STR_0350    :
-STR_0351    :
-STR_0352    :
-STR_0353    :
-STR_0354    :
-STR_0355    :
-STR_0356    :
-STR_0357    :
-STR_0358    :
-STR_0359    :
-STR_0360    :
-STR_0361    :
-STR_0362    :
-STR_0363    :
-STR_0364    :
-STR_0365    :
-STR_0366    :
-STR_0367    :
-STR_0368    :
-STR_0369    :
-STR_0370    :
-STR_0371    :
-STR_0372    :
-STR_0373    :
-STR_0374    :
-STR_0375    :
-STR_0376    :
-STR_0377    :
-STR_0378    :
-STR_0379    :
-STR_0380    :
-STR_0381    :
-STR_0382    :
-STR_0383    :
-STR_0384    :
-STR_0385    :
-STR_0386    :
-STR_0387    :
-STR_0388    :
-STR_0389    :
-STR_0390    :
-STR_0391    :
-STR_0392    :
-STR_0393    :
-STR_0394    :
-STR_0395    :
-STR_0396    :
-STR_0397    :
-STR_0398    :
-STR_0399    :
-STR_0400    :
-STR_0401    :
-STR_0402    :
-STR_0403    :
-STR_0404    :
-STR_0405    :
-STR_0406    :
-STR_0407    :
-STR_0408    :
-STR_0409    :
-STR_0410    :
-STR_0411    :
-STR_0412    :
-STR_0413    :
-STR_0414    :
-STR_0415    :
-STR_0416    :
-STR_0417    :
-STR_0418    :
-STR_0419    :
-STR_0420    :
-STR_0421    :
-STR_0422    :
-STR_0423    :
-STR_0424    :
-STR_0425    :
-STR_0426    :
-STR_0427    :
-STR_0428    :
-STR_0429    :
-STR_0430    :
-STR_0431    :
-STR_0432    :
-STR_0433    :
-STR_0434    :
-STR_0435    :
-STR_0436    :
-STR_0437    :
-STR_0438    :
-STR_0439    :
-STR_0440    :
-STR_0441    :
-STR_0442    :
-STR_0443    :
-STR_0444    :
-STR_0445    :
-STR_0446    :
-STR_0447    :
-STR_0448    :
-STR_0449    :
-STR_0450    :
-STR_0451    :
-STR_0452    :
-STR_0453    :
-STR_0454    :
-STR_0455    :
-STR_0456    :
-STR_0457    :
-STR_0458    :
-STR_0459    :
-STR_0460    :
-STR_0461    :
-STR_0462    :
-STR_0463    :
-STR_0464    :
-STR_0465    :
-STR_0466    :
-STR_0467    :
-STR_0468    :
-STR_0469    :
-STR_0470    :
-STR_0471    :
-STR_0472    :
-STR_0473    :
-STR_0474    :
-STR_0475    :
-STR_0476    :
-STR_0477    :
-STR_0478    :
-STR_0479    :
-STR_0480    :
-STR_0481    :
-STR_0482    :
-STR_0483    :
-STR_0484    :
-STR_0485    :
-STR_0486    :
-STR_0487    :
-STR_0488    :
-STR_0489    :
-STR_0490    :
-STR_0491    :
-STR_0492    :
-STR_0493    :
-STR_0494    :
-STR_0495    :
-STR_0496    :
-STR_0497    :
-STR_0498    :
-STR_0499    :
-STR_0500    :
-STR_0501    :
-STR_0502    :
-STR_0503    :
-STR_0504    :
-STR_0505    :
-STR_0506    :
-STR_0507    :
-STR_0508    :
-STR_0509    :
-STR_0510    :
-STR_0511    :
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -539,12 +120,9 @@ STR_0537    :
 STR_0538    :
 STR_0539    :
 STR_0540    :
-STR_0541    :
 STR_0542    :
-STR_0543    :
 STR_0544    :
 STR_0545    :
-STR_0546    :
 STR_0547    :
 STR_0548    :
 STR_0549    :
@@ -566,15 +144,12 @@ STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchti
 STR_0565    :Een simpele houten achtbaan die enkel in staat is rustige hellingen en bochten te bedwingen, de karretjes worden enkel op de baan gehouden door middel van zijfrictiewielen en zwaartekracht.
 STR_0566    :Losse karretjes rijden over een kronkelende baan met scherpe bochten en korte felle afdalingen.
 STR_0567    :Bezoekers zitten in stoelen aan beide kanten van de baan, en draaien alle kanten op terwijl ze door diepe afdalingen en diverse omkeringen gaan.
-STR_0568    :
 STR_0569    :Bezoekers hangen in treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen.
-STR_0570    :
 STR_0571    :Ronde karretjes gaan over een zigzaggende houten baan en draaien daarbij rond.
 STR_0572    :Boten met een hoge capaciteit varen door een brede waterbak, worden naar boven vervoerd door een lopende band, en gaan met hoge snelheid steile heuvels af om met een grote plons de passagiers te doorweken.
 STR_0573    :Aangedreven karretjes in de vorm van een helikopter rijden over een stalen baan, bestuurd door het trappen van de passagiers.
 STR_0574    :Passagiers worden door middel van een speciale beugel in een liggende positie vastgehouden, waarna ze op hun rug of met hun gezicht naar de grond door kronkelende stukken baan en omkeringen heen gaan.
 STR_0575    :Aangedreven treinen hangen aan een enkele rail en vervoeren mensen door het park heen.
-STR_0576    :
 STR_0577    :Karretjes met draaistellen rijden op een houten baan en kunnen omkeren op speciale stukken baan.
 STR_0578    :Karretjes rijden in een baan omgeven door hoepels en gaan door steile afdalingen en heartline-twists.
 STR_0579    :
@@ -590,191 +165,16 @@ STR_0588    :Losse karretjes hangen onder een zigzaggende baan met haarspeldboch
 STR_0589    :
 STR_0590    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
 STR_0591    :Boten in de vorm van een vlot varen rustig door een waterbak.
-STR_0592    :
 STR_0593    :
-STR_0594    :
-STR_0595    :
-STR_0596    :
-STR_0597    :
 STR_0598    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en gaat een verticale kronkelende baan op, waarna deze terugzakt, door het station heengaat en achteruit een ander stuk verticale baan opgaat.
 STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen.
 STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
-STR_0601    :
 STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
-STR_0603    :<removed string - do not use>
-STR_0604    :<removed string - do not use>
-STR_0605    :<removed string - do not use>
-STR_0606    :<removed string - do not use>
-STR_0607    :<removed string - do not use>
-STR_0608    :<removed string - do not use>
-STR_0609    :<removed string - do not use>
-STR_0610    :<removed string - do not use>
-STR_0611    :<removed string - do not use>
-STR_0612    :<removed string - do not use>
-STR_0613    :<removed string - do not use>
-STR_0614    :<removed string - do not use>
-STR_0615    :<removed string - do not use>
-STR_0616    :<removed string - do not use>
-STR_0617    :<removed string - do not use>
-STR_0618    :<removed string - do not use>
-STR_0619    :<removed string - do not use>
-STR_0620    :<removed string - do not use>
-STR_0621    :<removed string - do not use>
-STR_0622    :<removed string - do not use>
-STR_0623    :<removed string - do not use>
-STR_0624    :<removed string - do not use>
-STR_0625    :<removed string - do not use>
-STR_0626    :<removed string - do not use>
-STR_0627    :<removed string - do not use>
-STR_0628    :<removed string - do not use>
-STR_0629    :<removed string - do not use>
-STR_0630    :<removed string - do not use>
-STR_0631    :<removed string - do not use>
-STR_0632    :<removed string - do not use>
-STR_0633    :<removed string - do not use>
-STR_0634    :<removed string - do not use>
-STR_0635    :<removed string - do not use>
-STR_0636    :<removed string - do not use>
-STR_0637    :<removed string - do not use>
-STR_0638    :<removed string - do not use>
-STR_0639    :<removed string - do not use>
-STR_0640    :<removed string - do not use>
-STR_0641    :<removed string - do not use>
-STR_0642    :<removed string - do not use>
-STR_0643    :<removed string - do not use>
-STR_0644    :<removed string - do not use>
-STR_0645    :<removed string - do not use>
-STR_0646    :<removed string - do not use>
-STR_0647    :<removed string - do not use>
-STR_0648    :<removed string - do not use>
-STR_0649    :<removed string - do not use>
-STR_0650    :<removed string - do not use>
-STR_0651    :<removed string - do not use>
-STR_0652    :<removed string - do not use>
-STR_0653    :<removed string - do not use>
-STR_0654    :<removed string - do not use>
-STR_0655    :<removed string - do not use>
-STR_0656    :<removed string - do not use>
-STR_0657    :<removed string - do not use>
-STR_0658    :<removed string - do not use>
-STR_0659    :<removed string - do not use>
-STR_0660    :<removed string - do not use>
-STR_0661    :<removed string - do not use>
-STR_0662    :<removed string - do not use>
-STR_0663    :<removed string - do not use>
-STR_0664    :<removed string - do not use>
-STR_0665    :<removed string - do not use>
-STR_0666    :<removed string - do not use>
-STR_0667    :<removed string - do not use>
-STR_0668    :<removed string - do not use>
-STR_0669    :<removed string - do not use>
-STR_0670    :<removed string - do not use>
-STR_0671    :<removed string - do not use>
-STR_0672    :<removed string - do not use>
-STR_0673    :<removed string - do not use>
-STR_0674    :<removed string - do not use>
-STR_0675    :<removed string - do not use>
-STR_0676    :<removed string - do not use>
-STR_0677    :<removed string - do not use>
-STR_0678    :<removed string - do not use>
-STR_0679    :<removed string - do not use>
-STR_0680    :<removed string - do not use>
-STR_0681    :<removed string - do not use>
-STR_0682    :<removed string - do not use>
-STR_0683    :<removed string - do not use>
-STR_0684    :<removed string - do not use>
-STR_0685    :<removed string - do not use>
-STR_0686    :<removed string - do not use>
-STR_0687    :<removed string - do not use>
-STR_0688    :<removed string - do not use>
-STR_0689    :<removed string - do not use>
-STR_0690    :<removed string - do not use>
-STR_0691    :<removed string - do not use>
-STR_0692    :<removed string - do not use>
-STR_0693    :<removed string - do not use>
-STR_0694    :<removed string - do not use>
-STR_0695    :<removed string - do not use>
-STR_0696    :<removed string - do not use>
-STR_0697    :<removed string - do not use>
-STR_0698    :<removed string - do not use>
-STR_0699    :<removed string - do not use>
-STR_0700    :<removed string - do not use>
-STR_0701    :<removed string - do not use>
-STR_0702    :<removed string - do not use>
-STR_0703    :<removed string - do not use>
-STR_0704    :<removed string - do not use>
-STR_0705    :<removed string - do not use>
-STR_0706    :<removed string - do not use>
-STR_0707    :<removed string - do not use>
-STR_0708    :<removed string - do not use>
-STR_0709    :<removed string - do not use>
-STR_0710    :<removed string - do not use>
-STR_0711    :<removed string - do not use>
-STR_0712    :<removed string - do not use>
-STR_0713    :<removed string - do not use>
-STR_0714    :<removed string - do not use>
-STR_0715    :<removed string - do not use>
-STR_0716    :<removed string - do not use>
-STR_0717    :<removed string - do not use>
-STR_0718    :<removed string - do not use>
-STR_0719    :<removed string - do not use>
-STR_0720    :<removed string - do not use>
-STR_0721    :<removed string - do not use>
-STR_0722    :<removed string - do not use>
-STR_0723    :<removed string - do not use>
-STR_0724    :<removed string - do not use>
-STR_0725    :<removed string - do not use>
-STR_0726    :<removed string - do not use>
-STR_0727    :<removed string - do not use>
-STR_0728    :<removed string - do not use>
-STR_0729    :<removed string - do not use>
-STR_0730    :<removed string - do not use>
-STR_0731    :<removed string - do not use>
-STR_0732    :<removed string - do not use>
-STR_0733    :<removed string - do not use>
-STR_0734    :<removed string - do not use>
-STR_0735    :<removed string - do not use>
-STR_0736    :<removed string - do not use>
-STR_0737    :<removed string - do not use>
-STR_0738    :<removed string - do not use>
-STR_0739    :<removed string - do not use>
-STR_0740    :<removed string - do not use>
-STR_0741    :<removed string - do not use>
-STR_0742    :<removed string - do not use>
-STR_0743    :<removed string - do not use>
-STR_0744    :<removed string - do not use>
-STR_0745    :<removed string - do not use>
-STR_0746    :<removed string - do not use>
-STR_0747    :<removed string - do not use>
-STR_0748    :<removed string - do not use>
-STR_0749    :<removed string - do not use>
-STR_0750    :<removed string - do not use>
-STR_0751    :<removed string - do not use>
-STR_0752    :<removed string - do not use>
-STR_0753    :<removed string - do not use>
-STR_0754    :<removed string - do not use>
-STR_0755    :<removed string - do not use>
-STR_0756    :<removed string - do not use>
-STR_0757    :<removed string - do not use>
-STR_0758    :<removed string - do not use>
-STR_0759    :<removed string - do not use>
-STR_0760    :<removed string - do not use>
-STR_0761    :<removed string - do not use>
-STR_0762    :<removed string - do not use>
-STR_0763    :<removed string - do not use>
-STR_0764    :<removed string - do not use>
-STR_0765    :<removed string - do not use>
-STR_0766    :<removed string - do not use>
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
 STR_0770    :Bewaker {INT32}
 STR_0771    :Entertainer {INT32}
-STR_0772    :Naamloos park{POP16}{POP16}
-STR_0773    :Naamloos park{POP16}{POP16}
-STR_0774    :Naamloos park{POP16}{POP16}
-STR_0775    :Naamloos park{POP16}{POP16}
-STR_0776    :Naamloos park{POP16}{POP16}
 STR_0777    :Naamloos park{POP16}{POP16}
 STR_0778    :Bord
 STR_0779    :1
@@ -833,22 +233,10 @@ STR_0831    :{SMALLFONT}{BLACK}Uitzoomen
 STR_0832    :{SMALLFONT}{BLACK}Beeld 90{DEGREE} met de klok mee draaien
 STR_0833    :{SMALLFONT}{BLACK}Spel pauzeren
 STR_0834    :{SMALLFONT}{BLACK}Schijf- en spelopties
-STR_0835    :Kan het spel niet initialiseren
-STR_0836    :Kan het spel niet in geminimaliseerde toestand starten
-STR_0837    :Kan het grafisch systeem niet starten
-STR_0838    :<not used anymore>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<not used anymore>
-STR_0842    :<not used anymore>
-STR_0843    :<not used anymore>
-STR_0844    :<not used anymore>
-STR_0845    :<not used anymore>
-STR_0846    :<not used anymore>
 STR_0847    :Over 'OpenRCT2'
-STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :<removed string - do not use> 
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle rechten voorbehouden
 STR_0851    :{WINDOW_COLOUR_2}Ontworpen en geprogrammeerd door Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafisch werk door Simon Foster
@@ -857,13 +245,6 @@ STR_0854    :{WINDOW_COLOUR_2}Extra geluiden opgenomen door David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representatie door Jacqui Lyons van Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Met dank aan:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth en John Wardley
-STR_0858    :<removed string - do not use> 
-STR_0859    :<removed string - do not use> 
-STR_0860    :<removed string - do not use> 
-STR_0861    :<removed string - do not use> 
-STR_0862    :<removed string - do not use> 
-STR_0863    :<removed string - do not use> 
-STR_0864    :<removed string - do not use> 
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -885,11 +266,9 @@ STR_0882    :Spel laden
 STR_0883    :Spel opslaan
 STR_0884    :Landschap laden
 STR_0885    :Landschap opslaan
-STR_0886    :Spel afsluiten
 STR_0887    :Scenariobewerker afsluiten
 STR_0888    :Baanontwerper afsluiten
 STR_0889    :Baanontwerpbeheer afsluiten
-STR_0890    :<removed string - do not use>
 STR_0891    :Screenshot
 STR_0892    :Screenshot opgeslagen als '{STRINGID}'
 STR_0893    :Screenshot maken mislukt!
@@ -1079,14 +458,14 @@ STR_1076    :Winkelmodus
 STR_1077    :Draaimodus
 STR_1078    :Voorwaartse rotatie
 STR_1079    :Achterwaartse rotatie
-STR_1080    :Film: {ENDQUOTES}Avenging Aviators{ENDQUOTES}
-STR_1081    :3D-film: {ENDQUOTES}Mouse Tails{ENDQUOTES}
+STR_1080    :Film: {OPENQUOTES}Avenging Aviators{ENDQUOTES}
+STR_1081    :3D-film: {OPENQUOTES}Mouse Tails{ENDQUOTES}
 STR_1082    :Ruimteringenmodus
 STR_1083    :Beginnersstand
 STR_1084    :LIM-lancering
-STR_1085    :Film: {ENDQUOTES}Thrill Riders{ENDQUOTES}
-STR_1086    :3D-film: {ENDQUOTES}Storm Chasers{ENDQUOTES}
-STR_1087    :3D-film: {ENDQUOTES}Space Raiders{ENDQUOTES}
+STR_1085    :Film: {OPENQUOTES}Thrill Riders{ENDQUOTES}
+STR_1086    :3D-film: {OPENQUOTES}Storm Chasers{ENDQUOTES}
+STR_1087    :3D-film: {OPENQUOTES}Space Raiders{ENDQUOTES}
 STR_1088    :Intense stand
 STR_1089    :Waanzinnige stand
 STR_1090    :Spookhuismodus
@@ -1472,8 +851,8 @@ STR_1469    :Attracties moeten beginnen en eindigen met stations
 STR_1470    :Station is niet lang genoeg
 STR_1471    :{WINDOW_COLOUR_2}Snelheid:
 STR_1472    :{SMALLFONT}{BLACK}Snelheid van deze attractie
-STR_1473    :{WINDOW_COLOUR_2}Spanningwaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Spanningwaarde: {BLACK}Nog niet beschikbaar
+STR_1473    :{WINDOW_COLOUR_2}Plezierwaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}Plezierwaarde: {BLACK}Nog niet beschikbaar
 STR_1475    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1476    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}Nog niet beschikbaar
 STR_1477    :{WINDOW_COLOUR_2}Intensiteitswaarde: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
@@ -1651,8 +1030,6 @@ STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Zet me neer!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Mijn geld is bijna op!{ENDQUOTES}
 STR_1650    :{SMALLFONT}{OPENQUOTES}Wauw! Hier wordt een nieuwe attractie gebouwd!{ENDQUOTES}
 # Two removed inside jokes about Intamin and Phoenix
-STR_1651    :<removed string - do not use>
-STR_1652    :<removed string - do not use>
 STR_1653    :{SMALLFONT}{OPENQUOTES}...en nu zijn we in {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Recente gedachten:
 STR_1655    :{SMALLFONT}{BLACK}Voetpaden op land aanleggen
@@ -1737,7 +1114,6 @@ STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Aantal rondes:
 STR_1735    :{SMALLFONT}{BLACK}Aantal rondes op het circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1737    :{COMMA16}
 STR_1738    :Kan het aantal rondes niet aanpassen...
 STR_1739    :Race is gewonnen door bezoeker {INT32}
 STR_1740    :Race is gewonnen door {STRINGID}
@@ -1745,12 +1121,10 @@ STR_1741    :Nog niet gebouwd!
 STR_1742    :{WINDOW_COLOUR_2}Max. aant. personen:
 STR_1743    :{SMALLFONT}{BLACK}Het maximale aantal personen dat tegelijkertijd in deze attractie mag zijn
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1745    :{COMMA16}
 STR_1746    :Kan dit niet aanpassen...
 STR_1747    :{WINDOW_COLOUR_2}Tijdslimiet:
 STR_1748    :{SMALLFONT}{BLACK}Tijdslimiet voor deze attractie
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1750    :{DURATION}
 STR_1751    :Kan de tijdslimiet voor deze attractie niet aanpassen...
 STR_1752    :{SMALLFONT}{BLACK}Toon een lijst van individuele bezoekers in het park
 STR_1753    :{SMALLFONT}{BLACK}Toon een samengevatte lijst van bezoekers in het park
@@ -1772,12 +1146,9 @@ STR_1768    :Kan het aantal schommelingen niet aanpassen...
 STR_1769    :{WINDOW_COLOUR_2}Aantal schommelingen:
 STR_1770    :{SMALLFONT}{BLACK}Aantal complete schommelingen
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1772    :{COMMA16}
 STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
-STR_1775    :<removed string - do not use>
-STR_1776    :<removed string - do not use>
-STR_1777    :{WINDOW_COLOUR_2}Attractiemuziek
+STR_1777    :Attractiemuziek
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Pandapak
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tijgerpak
@@ -1797,7 +1168,6 @@ STR_1793    :Gaat {STRINGID} inspecteren
 STR_1794    :Repareert {STRINGID}
 STR_1795    :Beantwoordt radio-oproep
 STR_1796    :Is defect en moet worden gerepareerd
-STR_1797    :Deze optie kan niet worden aangepast bij deze attractie
 STR_1798    :Draaikolk
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Noodstop
@@ -1872,7 +1242,6 @@ STR_1868    :Kan het aantal rotaties niet aanpassen...
 STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
 STR_1870    :{SMALLFONT}{BLACK}Aantal complete rotaties
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY2DP} per uur
 STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY2DP} per uur
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
@@ -1894,8 +1263,6 @@ STR_1890    :{SMALLFONT}{BLACK}Selecteer hoe vaak een monteur deze attractie moe
 STR_1891    :Nog geen {STRINGID} in het park!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
-STR_1892    :<not used anymore>
-STR_1893    :<not used anymore>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkocht: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Nieuwe attractie bouwen
 STR_1896    :{WINDOW_COLOUR_2}Uitgaven/Inkomsten
@@ -1925,7 +1292,6 @@ STR_1919    :Onvoldoende contant geld beschikbaar!
 STR_1920    :Kan lening niet terugbetalen!
 STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
 STR_1922    :{SMALLFONT}{BLACK}Verder gaan met een opgeslagen spel
-STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Afsluiten
 STR_1925    :Kan hier geen persoon plaatsen...
 STR_1926    :{SMALLFONT}
@@ -2102,9 +1468,6 @@ STR_2096    :Gegrilde kip
 STR_2097    :Limonade
 STR_2098    :Lege doos
 STR_2099    :Lege fles
-STR_2100    :{WINDOW_COLOUR_2}Prijs actiefoto:
-STR_2101    :{WINDOW_COLOUR_2}Prijs actiefoto:
-STR_2102    :{WINDOW_COLOUR_2}Prijs actiefoto:
 STR_2103    :{WINDOW_COLOUR_2}Prijs krakeling:
 STR_2104    :{WINDOW_COLOUR_2}Prijs warme chocolademelk:
 STR_2105    :{WINDOW_COLOUR_2}Prijs ijsthee:
@@ -2124,9 +1487,6 @@ STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}Prijs gebraden worst:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :Actiefoto
-STR_2123    :Actiefoto
-STR_2124    :Actiefoto
 STR_2125    :Krakeling
 STR_2126    :Warme chocolademelk
 STR_2127    :IJsthee
@@ -2146,9 +1506,6 @@ STR_2140    :Leeg drinkpakje
 STR_2141    :Lege sapbeker
 STR_2142    :Gebraden worst
 STR_2143    :Lege kom
-STR_2144    :Actiefoto's
-STR_2145    :Actiefoto's
-STR_2146    :Actiefoto's
 STR_2147    :Krakelingen
 STR_2148    :Warme chocolademelk
 STR_2149    :IJsthee
@@ -2168,9 +1525,6 @@ STR_2162    :Lege drinkkartons
 STR_2163    :Lege sapbekers
 STR_2164    :gebraden worsten
 STR_2165    :Lege kommen
-STR_2166    :een actiefoto
-STR_2167    :een actiefoto
-STR_2168    :een actiefoto
 STR_2169    :een krakeling
 STR_2170    :warme chocolademelk
 STR_2171    :ijsthee
@@ -2190,9 +1544,6 @@ STR_2184    :een leeg drinkpakje
 STR_2185    :een lege sapbeker
 STR_2186    :een gebraden worst
 STR_2187    :een lege kom
-STR_2188    :Actiefoto van {STRINGID}
-STR_2189    :Actiefoto van {STRINGID}
-STR_2190    :Actiefoto van {STRINGID}
 STR_2191    :Krakeling
 STR_2192    :Warme chocolademelk
 STR_2193    :IJsthee
@@ -2292,7 +1643,6 @@ STR_2286    :Ontwerpen
 STR_2287    :Ontwerp voltooien
 STR_2288    :Onbekend
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :<not used anymore>
 STR_2291    :Selecteer een scenario voor een nieuw spel
 STR_2292    :{WINDOW_COLOUR_2}Bezochte attracties:
 STR_2293    :{BLACK} Niets
@@ -2313,16 +1663,12 @@ STR_2307    :Ontwerp voor {STRINGID} selecteren
 STR_2308    :Baanontwerpen voor {STRINGID}
 STR_2309    :Nieuw baanontwerp installeren
 STR_2310    :Eigen ontwerp bouwen
-STR_2311    :{WINDOW_COLOUR_2}Spanningswaarde: {BLACK}{COMMA2DP32} (ongeveer)
+STR_2311    :{WINDOW_COLOUR_2}Plezierwaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2312    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2313    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}{COMMA2DP32} (ongeveer)
 STR_2314    :{WINDOW_COLOUR_2}Lengte: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ongeveer {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Vereiste ruimte: {BLACK}{COMMA16} x {COMMA16} blokken
-STR_2317    :<not used anymore>
-STR_2318    :<not used anymore>
-STR_2319    :<not used anymore>
-STR_2320    :<not used anymore>
 STR_2321    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}m{SQUARED}
@@ -2348,7 +1694,6 @@ STR_2342    :Kronen (kr)
 STR_2343    :Euro's ({EURO})
 STR_2344    :Engelse maten
 STR_2345    :Metriek stelsel
-STR_2346    :Weergave
 STR_2347    :{RED}{STRINGID} is verdronken!
 STR_2348    :{SMALLFONT}{BLACK}Statistieken voor deze werknemer tonen
 STR_2349    :{WINDOW_COLOUR_2}Loon: {BLACK}{CURRENCY} per maand
@@ -2359,7 +1704,6 @@ STR_2353    :{WINDOW_COLOUR_2}Afval opgeveegd: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Prullenbakken geleegd: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Reparaties: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}Inspecties: {BLACK}{COMMA16}
-STR_2357    :Huis
 STR_2358    :Eenheden
 STR_2359    :Echte waarden
 STR_2360    :Schermresolutie:
@@ -2392,11 +1736,11 @@ STR_2386    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben aan h
 STR_2387    :{BLACK}Om een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te hebben aan het einde van {PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Om plezier te hebben!
 STR_2389    :{BLACK}Om de beste {STRINGID} te bouwen!
-STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een spanningswaarde van ten minste 6,00
+STR_2390    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een plezierwaarde van ten minste 6,00
 STR_2391    :{BLACK}Om ten minste {COMMA16} bezoekers in je park te hebben. Je parkwaardering mag geen moment onder de 700 komen!
 STR_2392    :{BLACK}Om in één maand ten minste {POP16}{POP16}{CURRENCY} aan attractiekaartjes te verdienen
-STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van ten minste {LENGTH} en een spanningswaarde van ten minste 7,00
-STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, elk met een spanningswaarde van ten minste {POP16}{POP16}{COMMA2DP32}
+STR_2393    :{BLACK}Om 10 verschillende typen achtbanen in je park te hebben, elk met een lengte van ten minste {LENGTH} en een plezierwaarde van ten minste 7,00
+STR_2394    :{BLACK}Om alle 5 deels gebouwde achtbanen in je park af te maken, elk met een plezierwaarde van ten minste {POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}Om je lening terug te betalen en een parkwaarde van ten minste {POP16}{POP16}{CURRENCY} te bereiken
 STR_2396    :{BLACK}Om in één maand ten minste {POP16}{POP16}{CURRENCY} aan de verkoop van eten, drinken en souvenirs te verdienen
 STR_2397    :Geen
@@ -2424,8 +1768,6 @@ STR_2418    :Gratis entree voor {STRINGID}
 STR_2419    :Gratis toegang tot {STRINGID}
 STR_2420    :50% korting op entree voor {STRINGID}
 STR_2421    :Gratis {STRINGID}
-STR_2422    :Advertentiecampagne voor {STRINGID}
-STR_2423    :Advertentiecampagne voor {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Bonnen voor gratis entree
 STR_2425    :{WINDOW_COLOUR_2}Bonnen voor gratis ritten op een bepaalde attractie
 STR_2426    :{WINDOW_COLOUR_2}Bonnen voor 50% korting op de entreeprijs
@@ -2439,12 +1781,6 @@ STR_2433    :{BLACK}Bonnen voor gratis {STRINGID}
 STR_2434    :{BLACK}Advertentiecampagne voor {STRINGID}
 STR_2435    :{BLACK}Advertentiecampagne voor {STRINGID}
 STR_2436    :<not used anymore>
-STR_2437    :<not used anymore>
-STR_2438    :<not used anymore>
-STR_2439    :<not used anymore>
-STR_2440    :<not used anymore>
-STR_2441    :<not used anymore>
-STR_2442    :<not used anymore>
 STR_2443    :{WINDOW_COLOUR_2}Kosten per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Totale kosten: {BLACK}{CURRENCY2DP}
 STR_2445    :Start deze marketingcampagne
@@ -2457,8 +1793,6 @@ STR_2451    :{YELLOW}Je advertentiecampagne voor {STRINGID} is afgelopen
 STR_2452    :{WINDOW_COLOUR_2}Saldo (zonder lening): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Saldo (zonder lening): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
-STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :{SMALLFONT}{BLACK}Laat financiële posten zien
 STR_2458    :{SMALLFONT}{BLACK}Toon grafiek van saldoverloop (zonder lening)
 STR_2459    :{SMALLFONT}{BLACK}Toon grafiek van parkwaardeverloop
@@ -2487,8 +1821,6 @@ STR_2481    :{SMALLFONT}{BLACK}Toon grafiek met verloop van zijwaartse versnelli
 STR_2482    :{SMALLFONT}{BLACK}Winst: {CURRENCY} per week,  parkwaarde: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Wekelijkse winst: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Wekelijkse winst: {RED}{CURRENCY2DP}
-STR_2485    :Besturing
-STR_2486    :Algemeen
 STR_2487    :'Echte' namen van bezoekers tonen
 STR_2488    :{SMALLFONT}{BLACK}Wissel tussen het tonen van 'echte' namen van bezoekers en bezoekernummers
 STR_2489    :Sneltoetsen...
@@ -2684,8 +2016,6 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :Alle onderzoeken zijn voltooid
 STR_2681    :{MEDIUMFONT}{BLACK}Verhoog je saldo met {CURRENCY}
-STR_2682    :<not used anymore>
-STR_2683    :<not used anymore>
 STR_2684    :{SMALLFONT}{BLACK}Er arriveert een grote groep bezoekers
 STR_2685    :Parameters voor Simplex noise
 STR_2686    :Minimum:
@@ -2750,7 +2080,6 @@ STR_2744    :[
 STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
-STR_2748    :Bar
 STR_2749    :Mijn nieuwe scenario
 STR_2750    :Alles naar boven verplaatsen
 STR_2751    :Alles naar beneden verplaatsen
@@ -2759,22 +2088,13 @@ STR_2753    :Gras maaien
 STR_2754    :Bloemen water gev.
 STR_2755    :Vandal. repareren
 STR_2756    :Afval verwijderen
-STR_2757    :<not used anymore>
-STR_2758    :<not used anymore>
-STR_2759    :Hoogtes op nul
-STR_2760    :+{CURRENCY}
-STR_2761    :<not used anymore>
-STR_2762    :<not used anymore>
 STR_2763    :???
-STR_2764    :<not used anymore>
 STR_2765    :Grote groep
 STR_2766    :Win scenario
 STR_2767    :Weer vastzetten
 STR_2768    :Weer vrijgeven
 STR_2769    :Park openen
 STR_2770    :Park sluiten
-STR_2771    :Lagere spelsnelheid
-STR_2772    :Hogere spelsnelheid
 STR_2773    :Venster
 STR_2774    :Volledig scherm
 STR_2775    :Voll. sch. (randl. venster)
@@ -2858,11 +2178,7 @@ STR_2852    :Baanontwerp is al geïnstalleerd
 STR_2853    :Niet toegestaan door de gemeente!
 STR_2854    :{RED}Bezoekers kunnen niet bij de ingang van {STRINGID} komen!{NEWLINE}Bouw een pad naar de ingang
 STR_2855    :{RED}{STRINGID} heeft geen pad vanaf de uitgang!{NEWLINE}Bouw een pad vanaf de uitgang
-STR_2856    :<removed string - do not use>
-STR_2857    :<removed string - do not use>
 STR_2858    :Kan marketingcampagne niet starten...
-STR_2859    :OpenRCT2 draait al
-STR_2860    :<removed string - do not use> 
 STR_2861    :{WINDOW_COLOUR_2}In licentie gegeven aan {NEWLINE}Infogrames Interactive Inc.
 STR_2862    :Muziekdankwoord...
 STR_2863    :Muziekdankwoord
@@ -2902,7 +2218,6 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYR
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2900    :{WINDOW_COLOUR_2}
 STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
@@ -2910,69 +2225,6 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :<removed string - do not use>
-STR_2909    :<removed string - do not use>
-STR_2910    :<removed string - do not use>
-STR_2911    :<removed string - do not use>
-STR_2912    :<removed string - do not use>
-STR_2913    :<removed string - do not use>
-STR_2914    :<removed string - do not use>
-STR_2915    :<removed string - do not use>
-STR_2916    :<removed string - do not use>
-STR_2917    :<removed string - do not use>
-STR_2918    :<removed string - do not use>
-STR_2919    :<removed string - do not use>
-STR_2920    :<removed string - do not use>
-STR_2921    :<removed string - do not use>
-STR_2922    :<removed string - do not use>
-STR_2923    :<removed string - do not use>
-STR_2924    :<removed string - do not use>
-STR_2925    :<removed string - do not use>
-STR_2926    :<removed string - do not use>
-STR_2927    :<removed string - do not use>
-STR_2928    :<removed string - do not use>
-STR_2929    :<removed string - do not use>
-STR_2930    :<removed string - do not use>
-STR_2931    :{WINDOW_COLOUR_2}
-STR_2932    :{WINDOW_COLOUR_2}
-STR_2933    :{WINDOW_COLOUR_2}
-STR_2934    :{WINDOW_COLOUR_2}
-STR_2935    :{WINDOW_COLOUR_2}
-STR_2936    :{WINDOW_COLOUR_2}
-STR_2937    :{WINDOW_COLOUR_2}
-STR_2938    :{WINDOW_COLOUR_2}
-STR_2939    :{WINDOW_COLOUR_2}
-STR_2940    :{WINDOW_COLOUR_2}
-STR_2941    :{WINDOW_COLOUR_2}
-STR_2942    :{WINDOW_COLOUR_2}
-STR_2943    :{WINDOW_COLOUR_2}
-STR_2944    :{WINDOW_COLOUR_2}
-STR_2945    :{WINDOW_COLOUR_2}
-STR_2946    :{WINDOW_COLOUR_2}
-STR_2947    :{WINDOW_COLOUR_2}
-STR_2948    :{WINDOW_COLOUR_2}
-STR_2949    :{WINDOW_COLOUR_2}
-STR_2950    :{WINDOW_COLOUR_2}
-STR_2951    :{WINDOW_COLOUR_2}
-STR_2952    :{WINDOW_COLOUR_2}
-STR_2953    :{WINDOW_COLOUR_2}
-STR_2954    :{WINDOW_COLOUR_2}
-STR_2955    :{WINDOW_COLOUR_2}
-STR_2956    :{WINDOW_COLOUR_2}
-STR_2957    :{WINDOW_COLOUR_2}
-STR_2958    :{WINDOW_COLOUR_2}
-STR_2959    :{WINDOW_COLOUR_2}
-STR_2960    :{WINDOW_COLOUR_2}
-STR_2961    :{WINDOW_COLOUR_2}
-STR_2962    :{WINDOW_COLOUR_2}
-STR_2963    :{WINDOW_COLOUR_2}
-STR_2964    :{WINDOW_COLOUR_2}
-STR_2965    :{WINDOW_COLOUR_2}
-STR_2966    :
-STR_2967    :
-STR_2968    :
-STR_2969    :<not used anymore>
-STR_2970    :<not used anymore>
 STR_2971    :Standaard kleurenschema
 STR_2972    :Alternatief kleurenschema 1
 STR_2973    :Alternatief kleurenschema 2
@@ -3048,7 +2300,6 @@ STR_3042    :Piratenstijl
 STR_3043    :Rockstijl 3
 STR_3044    :Snoepstijl
 STR_3045    :{SMALLFONT}{BLACK}Selecteer welke muziekstijl er moet worden gedraaid
-STR_3046    :Deze attractie kan niet worden aangepast
 STR_3047    :De gemeente staat de sloop van en wijzigingen aan deze attractie niet toe
 STR_3048    :Marketingcampagnes worden niet toegestaan door de gemeente
 STR_3049    :Golfhole A
@@ -3057,9 +2308,6 @@ STR_3051    :Golfhole C
 STR_3052    :Golfhole D
 STR_3053    :Golfhole E
 STR_3054    :Laden...
-STR_3055    :<removed string - do not use>
-STR_3056    :<removed string - do not use>
-STR_3057    :<removed string - do not use>
 STR_3058    :Stenen muren
 STR_3059    :Heggen
 STR_3060    :Blokken ijs
@@ -3100,7 +2348,6 @@ STR_3094    :n.v.t.
 STR_3095    :{WINDOW_COLOUR_2}Snelheid kettingheuvel:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Selecteer de snelheid van de kettingheuvel
-STR_3098    :Kan de snelheid van de kettingheuvel niet veranderen...
 STR_3099    :{SMALLFONT}{BLACK}Kleur selecteren
 STR_3100    :{SMALLFONT}{BLACK}Tweede kleur selecteren
 STR_3101    :{SMALLFONT}{BLACK}Derde kleur selecteren
@@ -3126,8 +2373,8 @@ STR_3120    :{SMALLFONT}{BLACK}Vind de dichtstbijzijnde monteur of de monteur di
 STR_3121    :Kan geen monteur vinden of alle monteurs in de buurt zijn bezig
 STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoeker
 STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoekers
-STR_3124    :{STRINGID} defect
-STR_3125    :{WINDOW_COLOUR_2}Spanningsfactor: {BLACK}+{COMMA16}%
+STR_3124    :{STRINGID} (vernield)
+STR_3125    :{WINDOW_COLOUR_2}Plezierfactor: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensiteitsfactor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Misselijkheidsfactor: {BLACK}+{COMMA16}%
 STR_3128    :Baanontwerp opslaan
@@ -3147,30 +2394,13 @@ STR_3141    :Meerdere circuits zijn niet mogelijk met een kabellift
 STR_3142    :{WINDOW_COLOUR_2}Capaciteit: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Laat bezoekers zien op kaart
 STR_3144    :{SMALLFONT}{BLACK}Laat attracties en kraampjes zien op kaart
-STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} naar links
-STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} naar rechts
-STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel naar links
-STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel naar rechts
-STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} links/rechts
-STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} omhoog
-STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} omlaag
-STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel omhoog
-STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} snel omlaag
-STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} omhoog/omlaag
-STR_3155    :
-STR_3156    :
-STR_3157    :kaart
 STR_3158    :grafiek
 STR_3159    :lijst
 STR_3160    :{SMALLFONT}{BLACK}Selecteer het aantal rondes dat de trein per rit zal afleggen
-STR_3161    :<not used anymore>
 STR_3162    :Kan niet voldoende geheugen toewijzen
 STR_3163    :Nieuwe data installeren: 
 STR_3164    :{BLACK}{COMMA16} geselecteerd (maximum: {COMMA16})
-STR_3165    :
-STR_3166    :{BLACK}(ID: 
 STR_3167    :{WINDOW_COLOUR_2}Bevat {BLACK}{COMMA16} objecten
-STR_3168    :{WINDOW_COLOUR_2}Tekst: {BLACK}{STRINGID}
 STR_3169    :Data voor de volgende objecten niet gevonden: 
 STR_3170    :Niet genoeg ruimte voor graphics.
 STR_3171    :er zijn teveel objecten van dit type geselecteerd.
@@ -3310,7 +2540,7 @@ STR_3304    :{WINDOW_COLOUR_2}Parkwaarde:
 STR_3305    :{WINDOW_COLOUR_2}Maandelijkse inkomsten:
 STR_3306    :{WINDOW_COLOUR_2}Maandelijkse winst:
 STR_3307    :{WINDOW_COLOUR_2}Minimumlengte:
-STR_3308    :{WINDOW_COLOUR_2}Spanningswaarde:
+STR_3308    :{WINDOW_COLOUR_2}Plezierwaarde:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
@@ -3325,9 +2555,6 @@ STR_3319    :{WINDOW_COLOUR_2}Scenariogroep:
 STR_3320    :Kan scenariobestand niet opslaan...
 STR_3321    :Nieuwe objecten succesvol geïnstalleerd
 STR_3322    :{WINDOW_COLOUR_2}Doelstelling: {BLACK}{STRINGID}
-STR_3323    :Ontbrekende objectdata, ID: 
-STR_3324    :Vereist het uitbreidingspakket {STRINGID}
-STR_3325    :Vereist een uitbreidingspakket
 STR_3326    :{WINDOW_COLOUR_2}(geen plaatje)
 STR_3327    :Startpositie voor bezoekers niet aangegeven
 STR_3328    :Kan niet verder naar volgende stap...
@@ -3339,7 +2566,6 @@ STR_3333    :Plug-inobjecten meeleveren in opgeslagen spellen
 STR_3334    :{SMALLFONT}{BLACK}Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
 STR_3335    :Baanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
-STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Eigen ontwerp
 STR_3339    :{BLACK}{COMMA16} ontwerp beschikbaar, of maak een eigen ontwerp
 STR_3340    :{BLACK}{COMMA16} ontwerpen beschikbaar, of maak een eigen ontwerp
@@ -3364,8 +2590,6 @@ STR_3358    :Kan het baanontwerp niet verwijderen...
 STR_3359    :{BLACK}Geen baanontwerpen van dit type
 STR_3360    :Waarschuwing!
 STR_3361    :Te veel baanontwerpen van dit type; sommige staan niet in de lijst
-STR_3362    :<not used anymore>
-STR_3363    :<not used anymore>
 STR_3364    :Meer opties
 STR_3365    :{SMALLFONT}{BLACK}Maakt naast selectie van decorgroepen ook selectie van losse items mogelijk
 STR_3366    :{BLACK}= Attractie
@@ -3387,58 +2611,8 @@ STR_3381    :Bestand is niet compatibel of bevat ongeldige gegevens
 STR_3382    :Kopiëren van bestand mislukt
 STR_3383    :Selecteer nieuwe naam voor dit baanontwerp
 STR_3384    :Er bestaat al een baanontwerp met deze naam; verzin een andere naam voor dit ontwerp:
-STR_3385    :<removed string - do not use>
-STR_3386    :<removed string - do not use>
-STR_3387    :<removed string - do not use>
-STR_3388    :Kan niet naar de geselecteerde modus overschakelen
 STR_3389    :Kan extra decorstukken niet selecteren...
 STR_3390    :Te veel items geselecteerd
-STR_3391    :<removed string - do not use>
-STR_3392    :<removed string - do not use>
-STR_3393    :<removed string - do not use>
-STR_3394    :<removed string - do not use>
-STR_3395    :<removed string - do not use>
-STR_3396    :<removed string - do not use>
-STR_3397    :<removed string - do not use>
-STR_3398    :<removed string - do not use>
-STR_3399    :<removed string - do not use>
-STR_3400    :<removed string - do not use>
-STR_3401    :<removed string - do not use>
-STR_3402    :<removed string - do not use>
-STR_3403    :<removed string - do not use>
-STR_3404    :<removed string - do not use>
-STR_3405    :<removed string - do not use>
-STR_3406    :<removed string - do not use>
-STR_3407    :<removed string - do not use>
-STR_3408    :<removed string - do not use>
-STR_3409    :<removed string - do not use>
-STR_3410    :<removed string - do not use>
-STR_3411    :<removed string - do not use>
-STR_3412    :<removed string - do not use>
-STR_3413    :<removed string - do not use>
-STR_3414    :<removed string - do not use>
-STR_3415    :<removed string - do not use>
-STR_3416    :<removed string - do not use>
-STR_3417    :<removed string - do not use>
-STR_3418    :<removed string - do not use>
-STR_3419    :<removed string - do not use>
-STR_3420    :<removed string - do not use>
-STR_3421    :<removed string - do not use>
-STR_3422    :<removed string - do not use>
-STR_3423    :<removed string - do not use>
-STR_3424    :<removed string - do not use>
-STR_3425    :<removed string - do not use>
-STR_3426    :<removed string - do not use>
-STR_3427    :<removed string - do not use>
-STR_3428    :<removed string - do not use>
-STR_3429    :<removed string - do not use>
-STR_3430    :<removed string - do not use>
-STR_3431    :<removed string - do not use>
-STR_3432    :<removed string - do not use>
-STR_3433    :<removed string - do not use>
-STR_3434    :<removed string - do not use>
-STR_3435    :<removed string - do not use>
-STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Grote gebieden met decor van het landschap verwijderen
 STR_3438    :Kan hier niet al het decor verwijderen...
 STR_3439    :Decor verwijderen
@@ -3455,7 +2629,6 @@ STR_5120    :Financiën
 STR_5121    :Onderzoek
 STR_5122    :Attracties op baantype sorteren
 STR_5123    :Attr. vernieuwen
-STR_5124    :<removed string - do not use>
 STR_5125    :Afbreekbaar maken
 STR_5126    :Willekeurige titelmuziek
 STR_5127    :{SMALLFONT}{BLACK}Landtype i.p.v. landhoogte aanpassen bij slepen
@@ -3490,7 +2663,6 @@ STR_5153    :Thema's
 STR_5154    :Weergave uitgevoerd door hardware
 STR_5155    :Testen van onvoltooide banen toestaan
 STR_5156    :{SMALLFONT}{BLACK}Maakt het mogelijk om de meeste attractietypes te testen, zelfs als de baan niet voltooid is. Werkt niet als de baan gebruik maakt van een blokremmodus.
-STR_5157    :Alle prijzen ontgrendelen
 STR_5158    :Terug naar het hoofdmenu
 STR_5159    :OpenRCT2 afsluiten
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, jaar {POP16}{COMMA16}
@@ -3674,8 +2846,6 @@ STR_5337    :Parkingang
 STR_5338    :Elementtype
 STR_5339    :{SMALLFONT}{BLACK}Hoogte onderkant
 STR_5340    :{SMALLFONT}{BLACK}Hoogte bovenkant
-STR_5341    :<removed string - do not use>
-STR_5342    :<removed string - do not use>
 STR_5343    :Werknemers automatisch plaatsen
 STR_5344    :Wijzigingsoverzicht
 STR_5345    :Cheats voor geld
@@ -3827,7 +2997,6 @@ STR_5490    :Geluid dempen bij focusverlies
 STR_5491    :Uitvindingenlijst
 STR_5492    :Scenario-opties
 STR_5493    :Bericht verzenden
-STR_5494    :<removed string - do not use>
 STR_5495    :Spelerslijst
 STR_5496    :Speler
 STR_5497    :Ping
@@ -3840,7 +3009,6 @@ STR_5503    :Hostnaam of IP-adres invoeren:
 STR_5504    :{SMALLFONT}{BLACK}Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
-STR_5507    :<removed string - do not use>
 STR_5508    :Bestanden met incorrecte checksum toch laden
 STR_5509    :{SMALLFONT}{BLACK}Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
@@ -4030,10 +3198,7 @@ STR_5726    :{SMALLFONT}{BLACK}Stelt het huidige weer in het park in
 STR_5727    :Opschaalkwaliteit:
 STR_5728    :Dit vereist 'weergave door hardware'
 STR_5729    :{SMALLFONT}{BLACK}Dit vereist 'weergave door hardware'
-STR_5730    :<removed string - do not use>
 STR_5731    :Lineair
-STR_5732    :<removed string - do not use>
-STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Netwerkstatus
@@ -4119,10 +3284,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}Toont FPS-teller aan de bovenkant van het scherm.
 STR_5816    :{SMALLFONT}{BLACK}Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
 STR_5817    :{SMALLFONT}{BLACK}(Vereist weergave via hardware){NEWLINE}Stelt manier van vergroten in.{NEWLINE}{NEWLINE}Lineair is sneller, maar niet zo scherp. SNN is scherp maar kost iets meer verwerkingskracht.
-STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Vereist 'Weergave uitgevoerd door hardware']{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
 STR_5820    :{SMALLFONT}{BLACK}Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
-STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
 STR_5823    :{SMALLFONT}{BLACK}Toont de tekst op lichtkranten altijd in hoofdletters (zoals RCT1).
 STR_5824    :{SMALLFONT}{BLACK}Schakelt bliksemeffect tijdens onweer uit.
@@ -4198,7 +3361,6 @@ STR_5893    :Wisselkoers
 STR_5894    :Vul de wisselkoers in
 STR_5895    :Baanontwerp opslaan
 STR_5896    :Opslaan baanontwerp mislukt!
-STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Kan het baanontwerp niet laden. Het bestand{NEWLINE}is beschadigd of verwijderd!
 STR_5899    :Debugscherm tekencode aan/uitschakelen
 STR_5900    :Originele tekencode gebruiken
@@ -4503,7 +3665,7 @@ STR_6198    :{BLACK}Dag:
 STR_6199    :Datum instellen
 STR_6200    :Datum resetten
 STR_6201    :{MONTH}
-STR_6202    :Hulpraster inschakelen
+STR_6202    :Stijl hulpraster:
 STR_6203    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal er een hulpraster worden weergegeven als je CTRL of SHIFT ingedrukt houdt, om het plaatsen van elementen gemakkelijker te maken.
 STR_6204    :Stenen
 STR_6205    :IJzer
@@ -4557,6 +3719,14 @@ STR_6252    :Twitch-API-URL
 STR_6253    :{SMALLFONT}{BLACK}Voer de URL van de Twitch-integratie-API in. Vereist voor het inschakelen van Twitch-integratie.
 STR_6254    :URL van de Twitch-integratie-API:
 STR_6255    :URL is niet geldig
+STR_6256    :Renderingeffecten
+STR_6257    :Glas (doorschijnend)
+STR_6258    :Doorzichtig
+STR_6259    :Uitgeschakeld
+STR_6260    :Geblokkeerde vakjes tonen
+STR_6261    :Brede paden tonen
+STR_6262    :Hoofdvolume
+STR_6263    :{SMALLFONT}{BLACK}Alle geluiden en muziek in/uitschakelen.
 
 #############
 # Scenarios #
@@ -4781,7 +3951,7 @@ STR_DTLS    :Bouw een park dat de lokale bevolking, die op zoek is naar snelheid
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
+STR_PARK    :Utopia
 STR_DTLS    :Een oase midden in de woestijn vormt een ongebruikelijke gelegenheid tot het bouwen van een pretpark.
 
 <Rotting Heights>
@@ -5187,7 +4357,7 @@ STR_SCNR    : Europa - Renovatie
 STR_PARK    :From The Ashes
 STR_DTLS    :Een oud park is vervallen. Je hebt een lening van de Europese Unie gekregen om het troosteloze terrein weer in oude luister te herstellen! Je moet het park renoveren en de lening terugbetalen.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    : Noord-Amerika - Extreem Hawaiiaans eiland
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :De bevolking van Hawaii wil wel eens iets spannenders dan surfen. Houd dit in het achterhoofd bij het bouwen van een park om zoveel mogelijk mogelijk toeristen aan te trekken.

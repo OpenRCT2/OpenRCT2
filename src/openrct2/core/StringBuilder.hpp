@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include <algorithm>
 #include "../common.h"
-
-#include "Math.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
+
+#include <algorithm>
+#include <string>
 
 /**
  * Class for constructing strings efficiently. A buffer is automatically allocated and reallocated when characters or strings
@@ -54,7 +54,7 @@ public:
     /**
      * Appends the given string to the current string.
      */
-    void Append(const utf8 * text)
+    void Append(const utf8* text)
     {
         size_t textLength = String::SizeOf(text);
         Append(text, textLength);
@@ -66,7 +66,7 @@ public:
      * @param text Pointer to the UTF-8 text to append.
      * @param textLength Number of bytes to copy. (Can be used to append single bytes rather than codepoints)
      */
-    void Append(const utf8 * text, size_t textLength)
+    void Append(const utf8* text, size_t textLength)
     {
         EnsureCapacity(_length + textLength + 1);
         std::copy_n(text, textLength, _buffer + _length);
@@ -77,7 +77,7 @@ public:
     /**
      * Appends the string of a given StringBuilder to the current string.
      */
-    void Append(const StringBuilder * sb)
+    void Append(const StringBuilder* sb)
     {
         Append(sb->GetBuffer(), sb->GetLength());
     }
@@ -107,9 +107,9 @@ public:
     /**
      * Resets the StringBuilder and returns the working buffer (resized to the string size).
      */
-    utf8 * StealString()
+    utf8* StealString()
     {
-        utf8 * result = _buffer;
+        utf8* result = _buffer;
         result = Memory::ReallocateArray<utf8>(result, _length + 1);
         result[_length] = 0;
 
@@ -123,44 +123,60 @@ public:
     /**
      * Returns the current string buffer as a new fire-and-forget string.
      */
-    utf8 * GetString() const
+    utf8* GetString() const
     {
         // If buffer is null, length should be 0 which will create a new one byte memory block containing a null terminator
-        utf8 * result = Memory::AllocateArray<utf8>(_length + 1);
+        utf8* result = Memory::AllocateArray<utf8>(_length + 1);
         std::copy_n(_buffer, _length, result);
         result[_length] = 0;
         return result;
     }
 
     /**
+     * Returns the current string buffer as a standard string.
+     */
+    std::string GetStdString() const
+    {
+        return std::string(_buffer, _length);
+    }
+
+    /**
      * Gets the current state of the StringBuilder. Warning: this represents the StringBuilder's current working buffer and will
      * be deallocated when the StringBuilder is destructed.
      */
-    const utf8 * GetBuffer() const
+    const utf8* GetBuffer() const
     {
         // buffer may be null, so return an immutable empty string
-        if (_buffer == nullptr) return "";
+        if (_buffer == nullptr)
+            return "";
         return _buffer;
     }
 
     /**
      * Gets the amount of allocated memory for the string buffer.
      */
-    size_t GetCapacity() const { return _capacity; }
+    size_t GetCapacity() const
+    {
+        return _capacity;
+    }
 
     /**
      * Gets the length of the current string.
      */
-    size_t GetLength() const { return _length; }
+    size_t GetLength() const
+    {
+        return _length;
+    }
 
 private:
-    utf8 * _buffer = nullptr;
+    utf8* _buffer = nullptr;
     size_t _capacity = 0;
     size_t _length = 0;
 
     void EnsureCapacity(size_t capacity)
     {
-        if (_capacity > capacity) return;
+        if (_capacity > capacity)
+            return;
 
         _capacity = std::max((size_t)8, _capacity);
         while (_capacity < capacity)

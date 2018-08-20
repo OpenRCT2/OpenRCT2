@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include <vector>
-
 #include "../common.h"
 #include "RideData.h"
+
+#include <vector>
 
 #define MAX_RIDE_GROUPS_PER_RIDE_TYPE 2
 
@@ -33,12 +33,12 @@ struct RideGroup
 class RideGroupManager
 {
 public:
-    static const RideGroup * GetRideGroup(const uint8_t trackType, const rct_ride_entry * rideEntry);
+    static const RideGroup* GetRideGroup(const uint8_t trackType, const rct_ride_entry* rideEntry);
     static bool RideTypeHasRideGroups(const uint8_t trackType);
-    static const RideGroup * RideGroupFind(const uint8_t rideType, const uint8_t index);
+    static const RideGroup* RideGroupFind(const uint8_t rideType, const uint8_t index);
 
-    static const std::vector<const char *> GetPreferredRideEntryOrder(const uint8_t rideType);
-    static int32_t VehiclePreferenceCompare(const uint8_t rideType, const char * a, const char * b);
+    static const std::vector<const char*> GetPreferredRideEntryOrder(const uint8_t rideType);
+    static int32_t VehiclePreferenceCompare(const uint8_t rideType, const char* a, const char* b);
     static bool RideTypeIsIndependent(const uint8_t rideType);
 };
 

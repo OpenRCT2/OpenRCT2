@@ -7,8 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <memory>
+#include "Config.h"
+
 #include "../Context.h"
+#include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
@@ -17,37 +19,34 @@
 #include "../core/String.hpp"
 #include "../drawing/IDrawingEngine.h"
 #include "../interface/Window.h"
+#include "../localisation/Currency.h"
+#include "../localisation/Date.h"
+#include "../localisation/Language.h"
 #include "../network/network.h"
-#include "../OpenRCT2.h"
+#include "../paint/VirtualFloor.h"
+#include "../platform/platform.h"
+#include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
-#include "Config.h"
 #include "ConfigEnum.hpp"
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 
-#include "../localisation/Currency.h"
-#include "../localisation/Date.h"
-#include "../localisation/Language.h"
-#include "../paint/VirtualFloor.h"
-#include "../platform/platform.h"
-#include "../scenario/Scenario.h"
+#include <memory>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 namespace Config
 {
-    #pragma region Enums
+#pragma region Enums
 
-    static const auto Enum_MeasurementFormat = ConfigEnum<int32_t>(
-    {
+    static const auto Enum_MeasurementFormat = ConfigEnum<int32_t>({
         ConfigEnumEntry<int32_t>("IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL),
         ConfigEnumEntry<int32_t>("METRIC", MEASUREMENT_FORMAT_METRIC),
         ConfigEnumEntry<int32_t>("SI", MEASUREMENT_FORMAT_SI),
     });
 
-    static const auto Enum_Currency = ConfigEnum<int32_t>(
-    {
+    static const auto Enum_Currency = ConfigEnum<int32_t>({
         ConfigEnumEntry<int32_t>("GBP", CURRENCY_POUNDS),
         ConfigEnumEntry<int32_t>("USD", CURRENCY_DOLLARS),
         ConfigEnumEntry<int32_t>("FRF", CURRENCY_FRANC),
@@ -67,42 +66,36 @@ namespace Config
         ConfigEnumEntry<int32_t>("CUSTOM", CURRENCY_CUSTOM),
     });
 
-    static const auto Enum_CurrencySymbolAffix = ConfigEnum<int32_t>(
-    {
+    static const auto Enum_CurrencySymbolAffix = ConfigEnum<int32_t>({
         ConfigEnumEntry<int32_t>("PREFIX", CURRENCY_PREFIX),
         ConfigEnumEntry<int32_t>("SUFFIX", CURRENCY_SUFFIX),
     });
 
-    static const auto Enum_DateFormat = ConfigEnum<int32_t>(
-    {
+    static const auto Enum_DateFormat = ConfigEnum<int32_t>({
         ConfigEnumEntry<int32_t>("DD/MM/YY", DATE_FORMAT_DAY_MONTH_YEAR),
         ConfigEnumEntry<int32_t>("MM/DD/YY", DATE_FORMAT_MONTH_DAY_YEAR),
         ConfigEnumEntry<int32_t>("YY/MM/DD", DATE_FORMAT_YEAR_MONTH_DAY),
         ConfigEnumEntry<int32_t>("YY/DD/MM", DATE_FORMAT_YEAR_DAY_MONTH),
     });
 
-    static const auto Enum_DrawingEngine = ConfigEnum<int32_t>(
-    {
+    static const auto Enum_DrawingEngine = ConfigEnum<int32_t>({
         ConfigEnumEntry<int32_t>("SOFTWARE", DRAWING_ENGINE_SOFTWARE),
         ConfigEnumEntry<int32_t>("SOFTWARE_HWD", DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY),
         ConfigEnumEntry<int32_t>("OPENGL", DRAWING_ENGINE_OPENGL),
     });
 
-    static const auto Enum_Temperature = ConfigEnum<int32_t>(
-    {
+    static const auto Enum_Temperature = ConfigEnum<int32_t>({
         ConfigEnumEntry<int32_t>("CELSIUS", TEMPERATURE_FORMAT_C),
         ConfigEnumEntry<int32_t>("FAHRENHEIT", TEMPERATURE_FORMAT_F),
     });
 
-    static const auto Enum_ScaleQuality = ConfigEnum<int32_t>(
-    {
+    static const auto Enum_ScaleQuality = ConfigEnum<int32_t>({
         ConfigEnumEntry<int32_t>("NEAREST_NEIGHBOUR", SCALE_QUALITY_NN),
         ConfigEnumEntry<int32_t>("LINEAR", SCALE_QUALITY_LINEAR),
         ConfigEnumEntry<int32_t>("SMOOTH_NEAREST_NEIGHBOUR", SCALE_QUALITY_SMOOTH_NN),
     });
 
-    static const auto Enum_VirtualFloorStyle = ConfigEnum<int32_t>(
-    {
+    static const auto Enum_VirtualFloorStyle = ConfigEnum<int32_t>({
         ConfigEnumEntry<int32_t>("OFF", VIRTUAL_FLOOR_STYLE_OFF),
         ConfigEnumEntry<int32_t>("CLEAR", VIRTUAL_FLOOR_STYLE_CLEAR),
         ConfigEnumEntry<int32_t>("GLASSY", VIRTUAL_FLOOR_STYLE_GLASSY),
@@ -119,10 +112,10 @@ namespace Config
             return LanguagesDescriptors[value].locale;
         }
 
-        int32_t GetValue(const std::string &key, int32_t defaultValue) const override
+        int32_t GetValue(const std::string& key, int32_t defaultValue) const override
         {
             int32_t i = 0;
-            for (const auto &langDesc : LanguagesDescriptors)
+            for (const auto& langDesc : LanguagesDescriptors)
             {
                 if (String::Equals(key.c_str(), langDesc.locale))
                 {
@@ -134,9 +127,9 @@ namespace Config
         }
     } Enum_LanguageEnum;
 
-    #pragma endregion
+#pragma endregion
 
-    static void ReadGeneral(IIniReader * reader)
+    static void ReadGeneral(IIniReader* reader)
     {
         if (reader->ReadSection("general"))
         {
@@ -146,7 +139,8 @@ namespace Config
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
             model->currency_format = reader->GetEnum<int32_t>("currency_format", platform_get_locale_currency(), Enum_Currency);
             model->custom_currency_rate = reader->GetInt32("custom_currency_rate", 10);
-            model->custom_currency_affix = reader->GetEnum<int32_t>("custom_currency_affix", CURRENCY_SUFFIX, Enum_CurrencySymbolAffix);
+            model->custom_currency_affix = reader->GetEnum<int32_t>(
+                "custom_currency_affix", CURRENCY_SUFFIX, Enum_CurrencySymbolAffix);
             model->custom_currency_symbol = reader->GetCString("custom_currency_symbol", "Ctm");
             model->edge_scrolling = reader->GetBoolean("edge_scrolling", true);
             model->edge_scrolling_speed = reader->GetInt32("edge_scrolling_speed", 12);
@@ -157,12 +151,14 @@ namespace Config
             model->rct2_path = reader->GetCString("game_path", nullptr);
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
             model->language = reader->GetEnum<int32_t>("language", platform_get_locale_language(), Enum_LanguageEnum);
-            model->measurement_format = reader->GetEnum<int32_t>("measurement_format", platform_get_locale_measurement_format(), Enum_MeasurementFormat);
+            model->measurement_format = reader->GetEnum<int32_t>(
+                "measurement_format", platform_get_locale_measurement_format(), Enum_MeasurementFormat);
             model->play_intro = reader->GetBoolean("play_intro", false);
             model->save_plugin_data = reader->GetBoolean("save_plugin_data", true);
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);
             model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
-            model->temperature_format = reader->GetEnum<int32_t>("temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
+            model->temperature_format = reader->GetEnum<int32_t>(
+                "temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
             model->window_height = reader->GetInt32("window_height", -1);
             model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
             model->window_width = reader->GetInt32("window_width", -1);
@@ -170,7 +166,8 @@ namespace Config
             model->drawing_engine = reader->GetEnum<int32_t>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
             model->use_vsync = reader->GetBoolean("use_vsync", true);
-            model->virtual_floor_style = reader->GetEnum<int32_t>("virtual_floor_style", VIRTUAL_FLOOR_STYLE_GLASSY, Enum_VirtualFloorStyle);
+            model->virtual_floor_style = reader->GetEnum<int32_t>(
+                "virtual_floor_style", VIRTUAL_FLOOR_STYLE_GLASSY, Enum_VirtualFloorStyle);
 
             // Default config setting is false until ghost trains are implemented #4540
             model->test_unfinished_tracks = reader->GetBoolean("test_unfinished_tracks", false);
@@ -205,6 +202,7 @@ namespace Config
             model->last_save_landscape_directory = reader->GetCString("last_landscape_directory", nullptr);
             model->last_save_scenario_directory = reader->GetCString("last_scenario_directory", nullptr);
             model->last_save_track_directory = reader->GetCString("last_track_directory", nullptr);
+            model->use_native_browse_dialog = reader->GetBoolean("use_native_browse_dialog", false);
             model->window_limit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
             model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
             model->render_weather_effects = reader->GetBoolean("render_weather_effects", true);
@@ -215,7 +213,7 @@ namespace Config
         }
     }
 
-    static void WriteGeneral(IIniWriter * writer)
+    static void WriteGeneral(IIniWriter* writer)
     {
         auto model = &gConfigGeneral;
         writer->WriteSection("general");
@@ -276,6 +274,7 @@ namespace Config
         writer->WriteString("last_landscape_directory", model->last_save_landscape_directory);
         writer->WriteString("last_scenario_directory", model->last_save_scenario_directory);
         writer->WriteString("last_track_directory", model->last_save_track_directory);
+        writer->WriteBoolean("use_native_browse_dialog", model->use_native_browse_dialog);
         writer->WriteInt32("window_limit", model->window_limit);
         writer->WriteBoolean("zoom_to_cursor", model->zoom_to_cursor);
         writer->WriteBoolean("render_weather_effects", model->render_weather_effects);
@@ -286,7 +285,7 @@ namespace Config
         writer->WriteEnum<int32_t>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
     }
 
-    static void ReadInterface(IIniReader * reader)
+    static void ReadInterface(IIniReader* reader)
     {
         if (reader->ReadSection("interface"))
         {
@@ -303,7 +302,7 @@ namespace Config
         }
     }
 
-    static void WriteInterface(IIniWriter * writer)
+    static void WriteInterface(IIniWriter* writer)
     {
         auto model = &gConfigInterface;
         writer->WriteSection("interface");
@@ -318,11 +317,13 @@ namespace Config
         writer->WriteInt32("object_selection_filter_flags", model->object_selection_filter_flags);
     }
 
-    static void ReadSound(IIniReader * reader)
+    static void ReadSound(IIniReader* reader)
     {
         if (reader->ReadSection("sound"))
         {
             auto model = &gConfigSound;
+            model->device = reader->GetCString("audio_device", nullptr);
+            model->master_sound_enabled = reader->GetBoolean("master_sound", true);
             model->master_volume = reader->GetInt32("master_volume", 100);
             model->title_music = reader->GetInt32("title_music", 2);
             model->sound_enabled = reader->GetBoolean("sound", true);
@@ -330,14 +331,15 @@ namespace Config
             model->ride_music_enabled = reader->GetBoolean("ride_music", true);
             model->ride_music_volume = reader->GetInt32("ride_music_volume", 100);
             model->audio_focus = reader->GetBoolean("audio_focus", false);
-            model->device = reader->GetCString("audio_device", nullptr);
         }
     }
 
-    static void WriteSound(IIniWriter * writer)
+    static void WriteSound(IIniWriter* writer)
     {
         auto model = &gConfigSound;
         writer->WriteSection("sound");
+        writer->WriteString("audio_device", model->device);
+        writer->WriteBoolean("master_sound", model->master_sound_enabled);
         writer->WriteInt32("master_volume", model->master_volume);
         writer->WriteInt32("title_music", model->title_music);
         writer->WriteBoolean("sound", model->sound_enabled);
@@ -345,10 +347,9 @@ namespace Config
         writer->WriteBoolean("ride_music", model->ride_music_enabled);
         writer->WriteInt32("ride_music_volume", model->ride_music_volume);
         writer->WriteBoolean("audio_focus", model->audio_focus);
-        writer->WriteString("audio_device", model->device);
     }
 
-    static void ReadNetwork(IIniReader * reader)
+    static void ReadNetwork(IIniReader* reader)
     {
         if (reader->ReadSection("network"))
         {
@@ -390,7 +391,7 @@ namespace Config
         }
     }
 
-    static void WriteNetwork(IIniWriter * writer)
+    static void WriteNetwork(IIniWriter* writer)
     {
         auto model = &gConfigNetwork;
         writer->WriteSection("network");
@@ -414,7 +415,7 @@ namespace Config
         writer->WriteBoolean("pause_server_if_no_clients", model->pause_server_if_no_clients);
     }
 
-    static void ReadNotifications(IIniReader * reader)
+    static void ReadNotifications(IIniReader* reader)
     {
         if (reader->ReadSection("notifications"))
         {
@@ -439,7 +440,7 @@ namespace Config
         }
     }
 
-    static void WriteNotifications(IIniWriter * writer)
+    static void WriteNotifications(IIniWriter* writer)
     {
         auto model = &gConfigNotifications;
         writer->WriteSection("notifications");
@@ -462,7 +463,7 @@ namespace Config
         writer->WriteBoolean("guest_died", model->guest_died);
     }
 
-    static void ReadTwitch(IIniReader * reader)
+    static void ReadTwitch(IIniReader* reader)
     {
         if (reader->ReadSection("twitch"))
         {
@@ -477,7 +478,7 @@ namespace Config
         }
     }
 
-    static void WriteTwitch(IIniWriter * writer)
+    static void WriteTwitch(IIniWriter* writer)
     {
         auto model = &gConfigTwitch;
         writer->WriteSection("twitch");
@@ -490,7 +491,7 @@ namespace Config
         writer->WriteBoolean("news", model->enable_news);
     }
 
-    static void ReadFont(IIniReader * reader)
+    static void ReadFont(IIniReader* reader)
     {
         if (reader->ReadSection("font"))
         {
@@ -512,7 +513,7 @@ namespace Config
         }
     }
 
-    static void WriteFont(IIniWriter * writer)
+    static void WriteFont(IIniWriter* writer)
     {
         auto model = &gConfigFonts;
         writer->WriteSection("font");
@@ -546,13 +547,13 @@ namespace Config
             ReadFont(reader.get());
             return true;
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             return false;
         }
     }
 
-    static bool ReadFile(const std::string &path)
+    static bool ReadFile(const std::string& path)
     {
         try
         {
@@ -567,13 +568,13 @@ namespace Config
             ReadFont(reader.get());
             return true;
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             return false;
         }
     }
 
-    static bool WriteFile(const std::string &path)
+    static bool WriteFile(const std::string& path)
     {
         try
         {
@@ -591,12 +592,55 @@ namespace Config
             WriteFont(writer.get());
             return true;
         }
-        catch (const std::exception &ex)
+        catch (const std::exception& ex)
         {
             Console::WriteLine("Error saving to '%s'", path.c_str());
             Console::WriteLine(ex.what());
             return false;
         }
+    }
+
+    /**
+     * Attempts to find the RCT1 installation directory.
+     * @returns Path to RCT1, if found. Empty string otherwise.
+     */
+    static std::string FindRCT1Path()
+    {
+        log_verbose("config_find_rct1_path(...)");
+
+        static constexpr const utf8* searchLocations[] = {
+            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
+            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
+            R"(C:\GOG Games\RollerCoaster Tycoon Deluxe)",
+            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
+            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
+            R"(C:\Program Files\Hasbro Interactive\RollerCoaster Tycoon)",
+            R"(C:\Program Files (x86)\Hasbro Interactive\RollerCoaster Tycoon)",
+        };
+
+        for (const utf8* location : searchLocations)
+        {
+            if (platform_original_rct1_data_exists(location))
+            {
+                return location;
+            }
+        }
+
+        utf8 steamPath[2048] = { 0 };
+        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
+        {
+            std::string location = Path::Combine(steamPath, platform_get_rct1_steam_dir());
+            if (platform_original_rct1_data_exists(location.c_str()))
+            {
+                return location;
+            }
+        }
+
+        if (platform_original_rct1_data_exists(gExePath))
+        {
+            return gExePath;
+        }
+        return std::string();
     }
 
     /**
@@ -608,22 +652,21 @@ namespace Config
     {
         log_verbose("config_find_rct2_path(...)");
 
-        static constexpr const utf8 * searchLocations[] =
-        {
-            R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files\Infogrames\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
+        static constexpr const utf8* searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
             R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)"
+            R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files\Infogrames\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
         };
 
-        for (const utf8 * location : searchLocations)
+        for (const utf8* location : searchLocations)
         {
             if (platform_original_game_data_exists(location))
             {
@@ -649,13 +692,13 @@ namespace Config
     }
 } // namespace Config
 
-GeneralConfiguration         gConfigGeneral;
-InterfaceConfiguration       gConfigInterface;
-SoundConfiguration           gConfigSound;
-TwitchConfiguration          gConfigTwitch;
-NetworkConfiguration         gConfigNetwork;
-NotificationConfiguration    gConfigNotifications;
-FontConfiguration            gConfigFonts;
+GeneralConfiguration gConfigGeneral;
+InterfaceConfiguration gConfigInterface;
+SoundConfiguration gConfigSound;
+TwitchConfiguration gConfigTwitch;
+NetworkConfiguration gConfigNetwork;
+NotificationConfiguration gConfigNotifications;
+FontConfiguration gConfigFonts;
 
 void config_set_defaults()
 {
@@ -663,7 +706,7 @@ void config_set_defaults()
     Config::SetDefaults();
 }
 
-bool config_open(const utf8 * path)
+bool config_open(const utf8* path)
 {
     if (!File::Exists(path))
     {
@@ -679,7 +722,7 @@ bool config_open(const utf8 * path)
     return result;
 }
 
-bool config_save(const utf8 * path)
+bool config_save(const utf8* path)
 {
     return Config::WriteFile(path);
 }
@@ -712,7 +755,7 @@ void config_release()
     SafeFree(gConfigFonts.font_name);
 }
 
-void config_get_default_path(utf8 * outPath, size_t size)
+void config_get_default_path(utf8* outPath, size_t size)
 {
     platform_get_user_directory(outPath, nullptr, size);
     Path::Append(outPath, size, "config.ini");
@@ -745,7 +788,8 @@ bool config_find_or_browse_install_directory()
             while (true)
             {
                 auto uiContext = GetContext()->GetUiContext();
-                uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. \nPlease select the directory where you installed RollerCoaster Tycoon 2.");
+                uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work.\n"
+                                          "Please select the directory where you installed RollerCoaster Tycoon 2.");
 
                 std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");
                 if (installPath.empty())
@@ -761,16 +805,24 @@ bool config_find_or_browse_install_directory()
                     return true;
                 }
 
-                std::string message = String::StdFormat("Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
+                std::string message = String::StdFormat(
+                    "Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
                 uiContext->ShowMessageBox(message);
             }
         }
-        catch (const std::exception &ex)
+        catch (const std::exception& ex)
         {
             Console::Error::WriteLine(ex.what());
             return false;
         }
     }
+    // While we're at it, also check if the player has RCT1
+    std::string rct1Path = Config::FindRCT1Path();
+    if (!rct1Path.empty())
+    {
+        free(gConfigGeneral.rct1_path);
+        gConfigGeneral.rct1_path = String::Duplicate(rct1Path.c_str());
+    }
+
     return true;
 }
-

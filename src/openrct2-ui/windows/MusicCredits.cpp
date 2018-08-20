@@ -7,14 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-
-#include <openrct2/core/Util.hpp>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2/interface/Colour.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/interface/Colour.h>
+#include <openrct2/localisation/Localisation.h>
 
 // clang-format off
 enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
@@ -117,10 +115,10 @@ static rct_window_event_list window_music_credits_events = {
 // clang-format on
 
 /**
-*
-*  rct2: 0x0066D55B
-*/
-rct_window * window_music_credits_open()
+ *
+ *  rct2: 0x0066D55B
+ */
+rct_window* window_music_credits_open()
 {
     rct_window* window;
 
@@ -129,13 +127,7 @@ rct_window * window_music_credits_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(
-        510,
-        314,
-        &window_music_credits_events,
-        WC_MUSIC_CREDITS,
-        0
-    );
+    window = window_create_centred(510, 314, &window_music_credits_events, WC_MUSIC_CREDITS, 0);
 
     window->widgets = window_music_credits_widgets;
     window->enabled_widgets = 1 << WIDX_CLOSE;
@@ -149,15 +141,16 @@ rct_window * window_music_credits_open()
 }
 
 /**
-*
-*  rct2: 0x0066DB2C
-*/
-static void window_music_credits_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+ *
+ *  rct2: 0x0066DB2C
+ */
+static void window_music_credits_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
     }
 }
 
@@ -165,17 +158,17 @@ static void window_music_credits_mouseup(rct_window *w, rct_widgetindex widgetIn
  *
  *  rct2: 0x0066DB37
  */
-static void window_music_credits_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height)
+static void window_music_credits_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
     *height = static_cast<int32_t>(Util::CountOf(music_credits) + Util::CountOf(music_credits_rct2)) * lineHeight + 12;
 }
 
 /**
-*
-*  rct2: 0x0066D7B9
-*/
-static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ *  rct2: 0x0066D7B9
+ */
+static void window_music_credits_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 }
@@ -184,14 +177,15 @@ static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0066D7BF
  */
-static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex)
+static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     int32_t x = 245;
     int32_t y = 2;
 
-    for (size_t i = 0; i < Util::CountOf(music_credits); i++) {
+    for (size_t i = 0; i < Util::CountOf(music_credits); i++)
+    {
         gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, nullptr);
         y += lineHeight;
     }
@@ -203,12 +197,12 @@ static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *d
 
     // Draw the separator
     y += 5;
-    gfx_fill_rect_inset(dpi, 4, y, 484, y+1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
+    gfx_fill_rect_inset(dpi, 4, y, 484, y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
     y += lineHeight + 1;
 
-    for (size_t i = 0; i < Util::CountOf(music_credits_rct2); i++) {
+    for (size_t i = 0; i < Util::CountOf(music_credits_rct2); i++)
+    {
         gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, nullptr);
         y += lineHeight;
     }
-
 }

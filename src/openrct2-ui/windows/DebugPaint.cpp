@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -80,9 +81,9 @@ static rct_window_event_list window_debug_paint_events = {
 };
 // clang-format on
 
-rct_window * window_debug_paint_open()
+rct_window* window_debug_paint_open()
 {
-    rct_window * window;
+    rct_window* window;
 
     // Check if window is already open
     window = window_find_by_class(WC_DEBUG_PAINT);
@@ -90,22 +91,12 @@ rct_window * window_debug_paint_open()
         return window;
 
     window = window_create(
-        16,
-        context_get_height() - 16 - 33 - WINDOW_HEIGHT,
-        WINDOW_WIDTH,
-        WINDOW_HEIGHT,
-        &window_debug_paint_events,
-        WC_DEBUG_PAINT,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT
-    );
+        16, context_get_height() - 16 - 33 - WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, &window_debug_paint_events,
+        WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     window->widgets = window_debug_paint_widgets;
-    window->enabled_widgets =
-        (1 << WIDX_TOGGLE_SHOW_WIDE_PATHS) |
-        (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES) |
-        (1 << WIDX_TOGGLE_SHOW_BOUND_BOXES) |
-        (1 << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS) |
-        (1 << WIDX_TOGGLE_SHOW_DIRTY_VISUALS);
+    window->enabled_widgets = (1 << WIDX_TOGGLE_SHOW_WIDE_PATHS) | (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES)
+        | (1 << WIDX_TOGGLE_SHOW_BOUND_BOXES) | (1 << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS) | (1 << WIDX_TOGGLE_SHOW_DIRTY_VISUALS);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
 
@@ -116,9 +107,10 @@ rct_window * window_debug_paint_open()
     return window;
 }
 
-static void window_debug_paint_mouseup([[maybe_unused]] rct_window * w, rct_widgetindex widgetIndex)
+static void window_debug_paint_mouseup([[maybe_unused]] rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
         case WIDX_TOGGLE_SHOW_WIDE_PATHS:
             gPaintWidePathsAsGhost = !gPaintWidePathsAsGhost;
             gfx_invalidate_screen();
@@ -146,7 +138,7 @@ static void window_debug_paint_mouseup([[maybe_unused]] rct_window * w, rct_widg
     }
 }
 
-static void window_debug_paint_invalidate(rct_window * w)
+static void window_debug_paint_invalidate(rct_window* w)
 {
     const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
     const auto currentLanguage = ls.GetCurrentLanguage();
@@ -189,7 +181,7 @@ static void window_debug_paint_invalidate(rct_window * w)
     widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
 }
 
-static void window_debug_paint_paint(rct_window * w, rct_drawpixelinfo * dpi)
+static void window_debug_paint_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 }

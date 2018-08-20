@@ -9,9 +9,10 @@
 
 #pragma once
 
+#include "../common.h"
+
 #include <ctime>
 #include <memory>
-#include "../common.h"
 
 struct rct_drawpixelinfo;
 
@@ -34,16 +35,16 @@ namespace OpenRCT2
         private:
             std::shared_ptr<Ui::IUiContext> const _uiContext;
 
-            time_t  _lastSecond = 0;
-            int32_t  _currentFPS = 0;
-            int32_t  _frames     = 0;
+            time_t _lastSecond = 0;
+            int32_t _currentFPS = 0;
+            int32_t _frames = 0;
 
         public:
             explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
             void Paint(Drawing::IDrawingEngine& de);
 
         private:
-            void PaintFPS(rct_drawpixelinfo * dpi);
+            void PaintFPS(rct_drawpixelinfo* dpi);
             void MeasureFPS();
         };
     } // namespace Paint
