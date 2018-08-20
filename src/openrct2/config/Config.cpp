@@ -609,13 +609,13 @@ namespace Config
         log_verbose("config_find_rct1_path(...)");
 
         static constexpr const utf8* searchLocations[] = {
+            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
+            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
             R"(C:\GOG Games\RollerCoaster Tycoon Deluxe)",
             R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
-            R"(C:\Program Files\Hasbro Interactive\RollerCoaster Tycoon)",
-            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
             R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon Deluxe)",
+            R"(C:\Program Files\Hasbro Interactive\RollerCoaster Tycoon)",
             R"(C:\Program Files (x86)\Hasbro Interactive\RollerCoaster Tycoon)",
-            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
         };
 
         for (const utf8* location : searchLocations)
@@ -653,17 +653,17 @@ namespace Config
         log_verbose("config_find_rct2_path(...)");
 
         static constexpr const utf8* searchLocations[] = {
-            R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files\Infogrames\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
-            R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
             R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)"
+            R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files\Infogrames\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
         };
 
         for (const utf8* location : searchLocations)
