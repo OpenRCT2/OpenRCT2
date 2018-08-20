@@ -39,6 +39,7 @@
 - Fix: [#7872] CJK tooltips are often cut off.
 - Fix: [#7895] Import of Mega Park and the RCT1 title music do not work on some RCT1 sources.
 - Improved: [#7899] Timestamps in the load/save screen are now displayed using local timezone instead of GMT.
+- Improved: [#7918] Better RCT2 detection if both disc and GOG/Steam versions are installed.
 
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
