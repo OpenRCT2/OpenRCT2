@@ -38,7 +38,7 @@ enum SPRITE_LIST
 };
 
 #pragma pack(push, 1)
-struct rct_unk_sprite
+struct rct_sprite_common
 {
     uint8_t sprite_identifier;       // 0x00
     uint8_t misc_identifier;         // 0x01
@@ -62,55 +62,30 @@ struct rct_unk_sprite
     int16_t sprite_right;           // 0x1A
     int16_t sprite_bottom;          // 0x1C
     uint8_t sprite_direction;       // 0x1e
+};
+
+struct rct_unk_sprite : rct_sprite_common
+{
     uint8_t pad_1F[3];
     rct_string_id name_string_idx; // 0x22
     uint16_t pad_24;
     uint16_t frame; // 0x26
 };
-assert_struct_size(rct_unk_sprite, 0x28);
+assert_struct_size(rct_unk_sprite, 0x28); // 9 bytes
 
-struct rct_litter
+struct rct_litter : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t type;                    // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    uint8_t sprite_height_negative;  // 0x09
-    uint16_t sprite_index;           // 0x0A
-    uint16_t flags;                  // 0x0C
-    int16_t x;                       // 0x0E
-    int16_t y;                       // 0x10
-    int16_t z;                       // 0x12
-    uint8_t sprite_width;            // 0x14
-    uint8_t sprite_height_positive;  // 0x15
-    uint8_t pad_16[8];
-    uint8_t sprite_direction; // 0x1E
     uint8_t pad_1F[5];
     uint32_t creationTick; // 0x24
 };
 assert_struct_size(rct_litter, 0x28);
 
-struct rct_balloon
+struct rct_balloon : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    uint8_t sprite_height_negative;  // 0x09
-    uint16_t sprite_index;           // 0x0A
-    uint16_t flags;                  // 0x0C
-    int16_t x;                       // 0x0E
-    int16_t y;                       // 0x10
-    int16_t z;                       // 0x12
-    uint8_t sprite_width;            // 0x14
-    uint8_t sprite_height_positive;  // 0x15
-    uint8_t pad_16[0xE];
+    uint8_t pad_16[0x05];
     uint16_t popped;      // 0x24
     uint8_t time_to_move; // 0x26
+
     uint8_t frame;        // 0x27
     uint8_t pad_28[4];
     uint8_t colour; // 0x2C
@@ -121,24 +96,8 @@ struct rct_balloon
 };
 assert_struct_size(rct_balloon, 0x2D);
 
-struct rct_duck
+struct rct_duck : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    uint8_t sprite_height_negative;  // 0x09
-    uint16_t sprite_index;           // 0x0A
-    uint16_t flags;                  // 0x0C
-    int16_t x;                       // 0x0E
-    int16_t y;                       // 0x10
-    int16_t z;                       // 0x12
-    uint8_t sprite_width;            // 0x14
-    uint8_t sprite_height_positive;  // 0x15
-    uint8_t pad_16[0x8];
-    uint8_t sprite_direction; // 0x1E
     uint8_t pad_1F[0x7];
     uint16_t frame;
     uint8_t pad_28[0x8];
@@ -159,24 +118,8 @@ struct rct_duck
 };
 assert_struct_size(rct_duck, 0x49);
 
-struct rct_jumping_fountain
+struct rct_jumping_fountain : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    uint8_t sprite_height_negative;
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    uint8_t sprite_width;           // 0x14
-    uint8_t sprite_height_positive; // 0x15
-    uint8_t pad_16[0x8];
-    uint8_t sprite_direction; // 0x1E
     uint8_t pad_1F[0x7];
     uint8_t num_ticks_alive; // 0x26
     uint8_t frame;           // 0x27
@@ -189,23 +132,9 @@ struct rct_jumping_fountain
 };
 assert_struct_size(rct_jumping_fountain, 0x48);
 
-struct rct_money_effect
+struct rct_money_effect : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    uint8_t sprite_height_negative;
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    uint8_t sprite_width;           // 0x14
-    uint8_t sprite_height_positive; // 0x15
-    uint8_t pad_16[0xE];
+    uint8_t pad_16[0x5];
     uint16_t move_delay;   // 0x24
     uint8_t num_movements; // 0x26
     uint8_t vertical;
@@ -216,30 +145,8 @@ struct rct_money_effect
 };
 assert_struct_size(rct_money_effect, 0x48);
 
-struct rct_crashed_vehicle_particle
+struct rct_crashed_vehicle_particle : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // direction of sprite? 0x1e
     uint8_t pad_1F[3];              // 0x1f
     uint16_t name_string_idx;       // 0x22
     uint16_t time_to_live;          // 0x24
@@ -257,30 +164,8 @@ struct rct_crashed_vehicle_particle
 };
 assert_struct_size(rct_crashed_vehicle_particle, 0x44);
 
-struct rct_crash_splash
+struct rct_crash_splash : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // direction of sprite? 0x1e
     uint8_t pad_1F[3];              // 0x1f
     uint16_t name_string_idx;       // 0x22
     uint16_t pad_24;
@@ -288,30 +173,8 @@ struct rct_crash_splash
 };
 assert_struct_size(rct_crash_splash, 0x28);
 
-struct rct_steam_particle
+struct rct_steam_particle : rct_sprite_common
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    // Height from centre of sprite to bottom
-    uint8_t sprite_height_negative; // 0x09
-    uint16_t sprite_index;          // 0x0A
-    uint16_t flags;                 // 0x0C
-    int16_t x;                      // 0x0E
-    int16_t y;                      // 0x10
-    int16_t z;                      // 0x12
-    // Width from centre of sprite to edge
-    uint8_t sprite_width; // 0x14
-    // Height from centre of sprite to top
-    uint8_t sprite_height_positive; // 0x15
-    int16_t sprite_left;            // 0x16
-    int16_t sprite_top;             // 0x18
-    int16_t sprite_right;           // 0x1A
-    int16_t sprite_bottom;          // 0x1C
-    uint8_t sprite_direction;       // 0x1E
     uint8_t pad_1F[3];              // 0x1F
     uint16_t name_string_idx;       // 0x22
     uint16_t time_to_move;          // 0x24 Moves +1 z every 3 ticks after intitial 4 ticks
