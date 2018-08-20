@@ -294,7 +294,7 @@ namespace Editor
         for (int32_t i = 0; i < MAX_SPRITES; i++)
         {
             rct_sprite* sprite = get_sprite(i);
-            user_string_free(sprite->unknown.name_string_idx);
+            user_string_free(sprite->generic.name_string_idx);
         }
 
         reset_sprite_list();

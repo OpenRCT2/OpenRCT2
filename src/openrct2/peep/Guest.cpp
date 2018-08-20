@@ -5348,11 +5348,11 @@ void rct_peep::UpdateWalking()
 
     // Check if there is a peep watching (and if there is place for us)
     uint16_t sprite_id = sprite_get_first_in_quadrant(x, y);
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
+    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
 
-        if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
+        if (sprite->generic.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
             continue;
 
         if (sprite->peep.state != PEEP_STATE_WATCHING)
@@ -5946,11 +5946,11 @@ bool rct_peep::UpdateWalkingFindBench()
     uint8_t free_edge = 3;
 
     // Check if there is no peep sitting in chosen_edge
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
+    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
 
-        if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
+        if (sprite->generic.linked_list_type_offset != SPRITE_LIST_PEEP * 2)
             continue;
 
         if (sprite->peep.state != PEEP_STATE_SITTING)
@@ -6136,11 +6136,11 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
     uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
 
     // Check if a peep is already sitting on the bench. If so, do not vandalise it.
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
+    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
 
-        if ((sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2) || (sprite->peep.state != PEEP_STATE_SITTING)
+        if ((sprite->generic.linked_list_type_offset != SPRITE_LIST_PEEP * 2) || (sprite->peep.state != PEEP_STATE_SITTING)
             || (peep->z != sprite->peep.z))
         {
             continue;

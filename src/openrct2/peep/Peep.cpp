@@ -396,7 +396,7 @@ rct_peep* try_get_guest(uint16_t spriteIndex)
     rct_sprite* sprite = try_get_sprite(spriteIndex);
     if (sprite == nullptr)
         return nullptr;
-    if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_PEEP)
+    if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_PEEP)
         return nullptr;
     if (sprite->peep.type != PEEP_TYPE_GUEST)
         return nullptr;
@@ -2775,10 +2775,10 @@ static void peep_footpath_move_forward(rct_peep* peep, int16_t x, int16_t y, rct
     uint8_t litter_count = 0;
     uint8_t sick_count = 0;
     uint16_t sprite_id = sprite_get_first_in_quadrant(x, y);
-    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
+    for (rct_sprite* sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
-        if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+        if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
         {
             rct_peep* other_peep = (rct_peep*)sprite;
             if (other_peep->state != PEEP_STATE_WALKING)
@@ -2789,7 +2789,7 @@ static void peep_footpath_move_forward(rct_peep* peep, int16_t x, int16_t y, rct
             crowded++;
             continue;
         }
-        else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+        else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
         {
             rct_litter* litter = (rct_litter*)sprite;
             if (abs(litter->z - peep->next_z * 8) > 16)

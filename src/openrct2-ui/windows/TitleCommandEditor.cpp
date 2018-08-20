@@ -616,8 +616,8 @@ static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
-        uint16_t spriteIndex = info.sprite->unknown.sprite_index;
-        uint16_t spriteIdentifier = info.sprite->unknown.sprite_identifier;
+        uint16_t spriteIndex = info.sprite->generic.sprite_index;
+        uint16_t spriteIdentifier = info.sprite->generic.sprite_identifier;
         bool validSprite = false;
         if (spriteIdentifier == SPRITE_IDENTIFIER_PEEP)
         {

@@ -41,7 +41,7 @@ enum SPRITE_LIST
 struct rct_sprite_common
 {
     uint8_t sprite_identifier;       // 0x00
-    uint8_t misc_identifier;         // 0x01
+    uint8_t type;                   // 0x01
     uint16_t next_in_quadrant;       // 0x02
     uint16_t next;                   // 0x04
     uint16_t previous;               // 0x06
@@ -62,27 +62,25 @@ struct rct_sprite_common
     int16_t sprite_right;           // 0x1A
     int16_t sprite_bottom;          // 0x1C
     uint8_t sprite_direction;       // 0x1e
-};
-
-struct rct_unk_sprite : rct_sprite_common
-{
     uint8_t pad_1F[3];
     rct_string_id name_string_idx; // 0x22
+};
+
+struct rct_sprite_generic : rct_sprite_common
+{
     uint16_t pad_24;
     uint16_t frame; // 0x26
 };
-assert_struct_size(rct_unk_sprite, 0x28); // 9 bytes
+assert_struct_size(rct_sprite_generic, 0x28); // 9 bytes
 
 struct rct_litter : rct_sprite_common
 {
-    uint8_t pad_1F[5];
     uint32_t creationTick; // 0x24
 };
 assert_struct_size(rct_litter, 0x28);
 
 struct rct_balloon : rct_sprite_common
 {
-    uint8_t pad_16[0x05];
     uint16_t popped;      // 0x24
     uint8_t time_to_move; // 0x26
 
@@ -98,7 +96,7 @@ assert_struct_size(rct_balloon, 0x2D);
 
 struct rct_duck : rct_sprite_common
 {
-    uint8_t pad_1F[0x7];
+    uint8_t pad_1F[0x2];
     uint16_t frame;
     uint8_t pad_28[0x8];
     int16_t target_x; // 0x30
@@ -120,7 +118,7 @@ assert_struct_size(rct_duck, 0x49);
 
 struct rct_jumping_fountain : rct_sprite_common
 {
-    uint8_t pad_1F[0x7];
+    uint8_t pad_1F[0x2];
     uint8_t num_ticks_alive; // 0x26
     uint8_t frame;           // 0x27
     uint8_t pad_28[0x7];     // 0x28 Originally var_2E was set to direction but it was unused.
@@ -134,7 +132,6 @@ assert_struct_size(rct_jumping_fountain, 0x48);
 
 struct rct_money_effect : rct_sprite_common
 {
-    uint8_t pad_16[0x5];
     uint16_t move_delay;   // 0x24
     uint8_t num_movements; // 0x26
     uint8_t vertical;
@@ -147,8 +144,6 @@ assert_struct_size(rct_money_effect, 0x48);
 
 struct rct_crashed_vehicle_particle : rct_sprite_common
 {
-    uint8_t pad_1F[3];              // 0x1f
-    uint16_t name_string_idx;       // 0x22
     uint16_t time_to_live;          // 0x24
     uint16_t frame;                 // 0x26
     uint8_t pad_28[4];
@@ -166,8 +161,6 @@ assert_struct_size(rct_crashed_vehicle_particle, 0x44);
 
 struct rct_crash_splash : rct_sprite_common
 {
-    uint8_t pad_1F[3];              // 0x1f
-    uint16_t name_string_idx;       // 0x22
     uint16_t pad_24;
     uint16_t frame; // 0x26
 };
@@ -175,8 +168,6 @@ assert_struct_size(rct_crash_splash, 0x28);
 
 struct rct_steam_particle : rct_sprite_common
 {
-    uint8_t pad_1F[3];              // 0x1F
-    uint16_t name_string_idx;       // 0x22
     uint16_t time_to_move;          // 0x24 Moves +1 z every 3 ticks after intitial 4 ticks
     uint16_t frame;                 // 0x26
 };
@@ -189,7 +180,7 @@ assert_struct_size(rct_steam_particle, 0x28);
 union rct_sprite
 {
     uint8_t pad_00[0x100];
-    rct_unk_sprite unknown;
+    rct_sprite_generic generic;
     rct_peep peep;
     rct_litter litter;
     rct_vehicle vehicle;

@@ -186,9 +186,9 @@ void viewport_create(
     {
         w->viewport_target_sprite = sprite;
         rct_sprite* centre_sprite = get_sprite(sprite);
-        centre_x = centre_sprite->unknown.x;
-        centre_y = centre_sprite->unknown.y;
-        centre_z = centre_sprite->unknown.z;
+        centre_x = centre_sprite->generic.x;
+        centre_y = centre_sprite->generic.y;
+        centre_z = centre_sprite->generic.z;
     }
     else
     {
@@ -638,13 +638,13 @@ void viewport_update_sprite_follow(rct_window* window)
     {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
-        int32_t height = (tile_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
-        int32_t underground = sprite->unknown.z < height;
+        int32_t height = (tile_element_height(0xFFFF & sprite->generic.x, 0xFFFF & sprite->generic.y) & 0xFFFF) - 16;
+        int32_t underground = sprite->generic.z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
 
         int32_t centre_x, centre_y;
-        centre_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &centre_x, &centre_y, window->viewport);
+        centre_2d_coordinates(sprite->generic.x, sprite->generic.y, sprite->generic.z, &centre_x, &centre_y, window->viewport);
 
         window->saved_view_x = centre_x;
         window->saved_view_y = centre_y;
@@ -660,7 +660,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
     }
-    else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+    else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
     {
         rct_peep* peep = GET_PEEP(window->viewport_smart_follow_sprite);
 
@@ -669,13 +669,13 @@ void viewport_update_smart_sprite_follow(rct_window* window)
         else if (peep->type == PEEP_TYPE_STAFF)
             viewport_update_smart_staff_follow(window, peep);
     }
-    else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+    else if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
     {
         viewport_update_smart_vehicle_follow(window);
     }
     else if (
-        sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC
-        || sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+        sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_MISC
+        || sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
     {
         window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
         window->viewport_target_sprite = window->viewport_smart_follow_sprite;

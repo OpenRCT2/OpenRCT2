@@ -37,7 +37,7 @@ void money_effect_create_at(money32 value, int32_t x, int32_t y, int32_t z, bool
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
     sprite_move(x, y, z, (rct_sprite*)moneyEffect);
-    moneyEffect->misc_identifier = SPRITE_MISC_MONEY_EFFECT;
+    moneyEffect->type = SPRITE_MISC_MONEY_EFFECT;
     moneyEffect->num_movements = 0;
     moneyEffect->move_delay = 0;
 
