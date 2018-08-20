@@ -31,11 +31,6 @@ public:
     {
     }
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
-
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
