@@ -664,7 +664,6 @@ namespace Config
             R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
             R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
             R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
-
         };
 
         for (const utf8* location : searchLocations)
