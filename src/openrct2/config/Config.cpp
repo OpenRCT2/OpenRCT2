@@ -654,7 +654,7 @@ namespace Config
 
         static constexpr const utf8* searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
-            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)"
+            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)",
             R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
             R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
             R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
