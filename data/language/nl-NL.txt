@@ -2039,7 +2039,7 @@ STR_2703    :Elke 15 minuten
 STR_2704    :Elke 30 minuten
 STR_2705    :Elk uur
 STR_2706    :Nooit
-STR_2707    :Systeemdialoogvenster openen
+STR_2707    :Systeembestandsbrowser openen
 STR_2708    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt vervangen?
 STR_2709    :Vervangen
 STR_2710    :Kies een bestandsnaam.
@@ -3727,6 +3727,8 @@ STR_6260    :Geblokkeerde vakjes tonen
 STR_6261    :Brede paden tonen
 STR_6262    :Hoofdvolume
 STR_6263    :{SMALLFONT}{BLACK}Alle geluiden en muziek in/uitschakelen.
+STR_6264    :Altijd systeembestandsbrowser gebruiken
+STR_6265    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zal de bestandsbrowser van je systeem gebruikt worden in plaats van de ingebouwde bestandsbrowser van OpenRCT2 zelf.
 
 #############
 # Scenarios #

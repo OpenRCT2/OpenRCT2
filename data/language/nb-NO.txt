@@ -1150,7 +1150,7 @@ STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1777    :{WINDOW_COLOUR_2}Ride music
+STR_1777    :Attraksjonsmusikk
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
@@ -2042,7 +2042,7 @@ STR_2703    :Every 15 minutes
 STR_2704    :Every 30 minutes
 STR_2705    :Every hour
 STR_2706    :Never
-STR_2707    :Use system dialog window
+STR_2707    :Bruk systemets fildialog
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
 STR_2710    :Type the name of the file.
@@ -3473,13 +3473,13 @@ STR_5999    :Sett penger
 STR_6000    :Skriv inn ny verdi
 STR_6001    :Skru på lyseffekter (eksperimentelt)
 STR_6002    :{SMALLFONT}{BLACK}Lamper og attraksjoner vil bli opplyst om natten.{NEWLINE}Krever at grafikkmotoren er satt tilhardware display.
-STR_6003    :Kutt-bortkamera
-STR_6004    :Kutt-bortkamera
-STR_6005    :Skru på kutt-bortkamera
-STR_6006    :{SMALLFONT}{BLACK}Kutt-bortkamera viser kun elementer på eller under kutthøyden
-STR_6007    :Kutthøyde
+STR_6003    :Utklippskamera
+STR_6004    :Utklippskamera
+STR_6005    :Skru på utklippskamera
+STR_6006    :{SMALLFONT}{BLACK}Utklippskamera skjuler elementer over utklippshøyden (for vertikal utklipping) og utenfor det valgte området (for horisontal utklipping).
+STR_6007    :Utklippshøyde
 STR_6008    :{SMALLFONT}{BLACK}Skru på rå verdi<->verdi i måleenheter
-STR_6009    :{SMALLFONT}{BLACK}Velg kutthøyde
+STR_6009    :{SMALLFONT}{BLACK}Velg utklippshøyde
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
@@ -3674,7 +3674,7 @@ STR_6198    :{BLACK}Dag:
 STR_6199    :Sett dato
 STR_6200    :Tilbakestill dato
 STR_6201    :{MONTH}
-STR_6202    :Skru på virtuelt gulv
+STR_6202    :Stil på virtuelt gulv
 STR_6203    :{SMALLFONT}{BLACK}Viser et virtuelt gulv når Ctrl eller Shift holdes, for å assistere i plassering av elementer vertikalt.
 STR_6204    :Murstein
 STR_6205    :Jern
@@ -3701,7 +3701,43 @@ STR_6225    :Visningen ikke støttet i OpenGL-grafikkmotoren
 STR_6226    :Tillat å fullføre scenario før tidsfristen
 STR_6227    :{SMALLFONT}{BLACK}Trigger scenario-seier med en gang målene for scenariet er nådd, selv om tiden ikke er ute.
 STR_6228    :Scenarioinnstillinger
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Stillestående
+STR_6233    :Utklippskamera
+STR_6234    :Fremhev problemer på gangstier
+STR_6235    :Serverinformasjon
+STR_6236    :Spillere
+STR_6237    :Grupper
+STR_6238    :Flerspillerinnstillinger
+STR_6239    :Vertikal utklipping
+STR_6240    :Horisontal utklipping
+STR_6241    :Velg område
+STR_6242    :Fjern markering
+STR_6243    :{SMALLFONT}{BLACK}Pusser opp attraksjonen,{NEWLINE}gjør den som ny
+STR_6244    :Kan ikke pusse opp attraksjon...
+STR_6245    :{SMALLFONT}{BLACK}Attraksjonen trenger ikke oppussing
+STR_6246    :Puss opp
+STR_6247    :Puss opp attraksjon
+STR_6248    :{WINDOW_COLOUR_1}Pusse opp {STRINGID} for {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Pusse opp {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Er du sikker på at du vil rive ned {STRINGID} og tjene {CURRENCY}?
+STR_6251    :Attraksjonen er ikke tømt
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Oppgi URL-en for integrasjons-API-et til Twitch. Påkrevd for å bruke Twitch-integrasjon.
+STR_6254    :Twitch-integrasjon API URL:
+STR_6255    :Ugyldig URL
+STR_6256    :Renderingseffekter
+STR_6257    :Glass
+STR_6258    :Gjennomsiktig
+STR_6259    :Av
+STR_6260    :Vis blokkerte ruter
+STR_6261    :Vis brede stier
+STR_6262    :Hovedvolum
+STR_6263    :{SMALLFONT}{BLACK}Skru all lyd av/på
+STR_6264    :Alltid bruk systemets fildialog
+STR_6265    :{SMALLFONT}{BLACK}Alltid ta i bruk systemets egne fildialog-vindu istedenfor den fra OpenRCT2.
 
 #############
 # Scenarios #

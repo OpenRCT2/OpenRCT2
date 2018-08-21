@@ -2044,7 +2044,7 @@ STR_2703    :každých 15 minut
 STR_2704    :každých 30 minut
 STR_2705    :každou hodinu
 STR_2706    :nikdy
-STR_2707    :použít systémový dialog
+STR_2707    :Použít systémového průzkumníka souborů
 STR_2708    :{WINDOW_COLOUR_1}Opravdu chcete přepsat {STRINGID}?
 STR_2709    :Přepsat
 STR_2710    :Napište název souboru.
@@ -3732,6 +3732,8 @@ STR_6260    :Zobrazit blokované dlaždice
 STR_6261    :Zobrazit široké cesty
 STR_6262    :Hlavní hlasitost
 STR_6263    :{SMALLFONT}{BLACK}Zapnout/vypnout všechny zvuky
+STR_6264    :Používat systémového průzkumníka souborů
+STR_6265    :{SMALLFONT}{BLACK}Výběr souborů bude vždy používat systémový dialog průzkumníka souborů namísto průzkumníka OpenRCT2.
 
 ###############################################################################
 ## RCT2 Scenarios

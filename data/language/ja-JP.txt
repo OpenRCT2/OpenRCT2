@@ -555,7 +555,7 @@ STR_1170    :{STRING}
 STR_1171    :{RED}閉鎖中 - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
-STR_1174    :Banner sign in the way
+STR_1174    :バナーがあります
 STR_1175    :Can't build this on sloped footpath
 STR_1176    :Can't build footpath here...
 STR_1177    :Can't remove footpath from here...
@@ -701,13 +701,13 @@ STR_1316    :プレーヤー
 STR_1317    :{COMMA16} プレーヤー
 STR_1318    :{COMMA16} プレーヤー
 STR_1319    :プレーヤー {COMMA16}
-STR_1320    :course
-STR_1321    :courses
-STR_1322    :Course
-STR_1323    :Courses
-STR_1324    :{COMMA16} course
-STR_1325    :{COMMA16} courses
-STR_1326    :Course {COMMA16}
+STR_1320    :コース
+STR_1321    :コース
+STR_1322    :コース
+STR_1323    :コース
+STR_1324    :{COMMA16} コース
+STR_1325    :{COMMA16} コース
+STR_1326    :コース {COMMA16}
 STR_1327    :{SMALLFONT}{BLACK}Rotate objects by 90{DEGREE}
 STR_1328    :平地が必要
 STR_1329    :{WINDOW_COLOUR_2}発車スピード:
@@ -1078,7 +1078,7 @@ STR_1695    :{SMALLFONT}{BLACK}収入とコスト
 STR_1696    :{SMALLFONT}{BLACK}顧客インフォメーション
 STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
-STR_1699    :Too many people in game
+STR_1699    :ゲームにゲストが多すぎる
 STR_1700    :清掃員を雇う
 STR_1701    :整備士を雇う
 STR_1702    :警備員を雇う
@@ -1086,7 +1086,7 @@ STR_1703    :エンタテイナーを雇う
 STR_1704    :新規スタッフを雇うことができません
 STR_1705    :{SMALLFONT}{BLACK}このスタッフをクビにする
 STR_1706    :{SMALLFONT}{BLACK}このスタッフを新しい場所に移動させる
-STR_1707    :Too many staff in game
+STR_1707    :ゲームにスタッフが多すぎる
 STR_1708    :{SMALLFONT}{BLACK}クリックしてスタッフを移動
 STR_1709    :解雇する
 STR_1710    :はい
@@ -1150,7 +1150,7 @@ STR_1770    :{SMALLFONT}{BLACK}スイング回数の設定
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1777    :{WINDOW_COLOUR_2}音楽
+STR_1777    :音楽
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} パンダのコスチューム
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} トラのコスチューム
@@ -1708,12 +1708,12 @@ STR_2355    :{WINDOW_COLOUR_2}ライドを修理した回数: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}ライドを点検した回数: {BLACK}{COMMA16}
 STR_2358    :単位
 STR_2359    :高さの単位
-STR_2360    :{WINDOW_COLOUR_2}ウィンドウ解像度:
+STR_2360    :ウィンドウ解像度:
 STR_2361    :地形タイルをならす
 STR_2362    :{SMALLFONT}{BLACK}地形タイルをならすの切り替え
 STR_2363    :工事中の標識
 STR_2364    :{SMALLFONT}{BLACK}地形グリッドの切り替え
-STR_2365    :The bank refuses to increase your loan!
+STR_2365    :銀行は借入額を増やす事を拒否します！
 STR_2366    :摂氏 ℃
 STR_2367    :華氏 ℉
 STR_2368    :なし
@@ -2026,7 +2026,7 @@ STR_2687    :High:
 STR_2688    :Base Frequency:
 STR_2689    :Octaves:
 STR_2690    :Map Generation
-STR_2691    :Base height:
+STR_2691    :ベースの高さ:
 STR_2692    :Water level:
 STR_2693    :Terrain:
 STR_2694    :Generate
@@ -2042,7 +2042,7 @@ STR_2703    :毎15分
 STR_2704    :毎30分
 STR_2705    :毎時間
 STR_2706    :なし
-STR_2707    :システムウィンドウを使用する
+STR_2707    :システムファイルブラウザを使う
 STR_2708    :{WINDOW_COLOUR_1}{STRINGID}に上書きしてもいいですか？
 STR_2709    :上書き
 STR_2710    :新しいファイルの名を入力して下さい。
@@ -2708,7 +2708,7 @@ STR_5196    :土地購入
 STR_5197    :景観物
 STR_5198    :歩道
 STR_5199    :ライドの建設
-STR_5200    :Track Design Place
+STR_5200    :トラックデサイン位置付け
 STR_5201    :新しいライド
 STR_5202    :トラックデサイン選択
 STR_5203    :ライド
@@ -2744,14 +2744,14 @@ STR_5232    :{SMALLFONT}{BLACK}エディター
 STR_5233    :{SMALLFONT}{BLACK}雑貨
 STR_5234    :{SMALLFONT}{BLACK}プロンプト
 STR_5235    :{SMALLFONT}{BLACK}設定
-STR_5236    :ウインドウ:
-STR_5237    :パレット:
+STR_5236    :ウインドウ
+STR_5237    :パレット
 STR_5238    :現行のスタイル:
 STR_5239    :複写
 STR_5240    :スタイルの名を入力してください。
 STR_5241    :このスタイルを変更できません。
 STR_5242    :スタイルの名はもう存在します。
-STR_5243    :Invalid characters used
+STR_5243    :無効な文字が使用されました
 STR_5244    :スタイル
 STR_5245    :上のツールバー
 STR_5246    :下のツールバー
@@ -2847,15 +2847,15 @@ STR_5335    :ライド入口
 STR_5336    :ライド出口
 STR_5337    :パーク入口
 STR_5338    :Element type
-STR_5339    :{SMALLFONT}{BLACK}Base height
-STR_5340    :{SMALLFONT}{BLACK}Clearance height
-STR_5343    :Automatically place staff
+STR_5339    :{SMALLFONT}{BLACK}ベースの高さ
+STR_5340    :{SMALLFONT}{BLACK}クリアランス高さ
+STR_5343    :自動的にスタッフを配置する
 STR_5344    :変更履歴
 STR_5345    :財務のカンニング
 STR_5346    :ゲストのカンニング
 STR_5347    :パークのカンニング
 STR_5348    :ライドのカンニング
-STR_5349    :{SMALLFONT}{BLACK}All Rides
+STR_5349    :{SMALLFONT}{BLACK}全てのライド
 STR_5350    :最大限
 STR_5351    :最小限
 STR_5352    :{BLACK}幸福度:
@@ -2952,7 +2952,7 @@ STR_5442    :Force park rating:
 STR_5443    :スピード{MOVE_X}{87}{STRINGID}
 STR_5444    :スピード:
 STR_5445    :スピード
-STR_5446    :Get
+STR_5446    :ゲット
 STR_5447    :タイプ {STRINGID}
 STR_5448    :ライド／乗り物 {STRINGID}
 STR_5449    :ゲームのスピードを下げる
@@ -3001,8 +3001,8 @@ STR_5491    :発明品リスト
 STR_5492    :シナリオ設定
 STR_5493    :メッセージを送る
 STR_5495    :プレイヤー 名鑑
-STR_5496    :プレイヤー:
-STR_5497    :ピング:
+STR_5496    :プレイヤー
+STR_5497    :ピング
 STR_5498    :サーバリスト
 STR_5499    :プレイヤー 名:
 STR_5500    :新しいサーバ
@@ -3010,7 +3010,7 @@ STR_5501    :サーバをスタートする
 STR_5502    :マルチプレイ
 STR_5503    :ホスト名またはIPアドレスを入力してください:
 STR_5504    :{SMALLFONT}{BLACK}マルチプレイのステイタスの表示
-STR_5505    :サーバーに接続できない
+STR_5505    :サーバに接続できない
 STR_5506    :Guests ignore intensities
 STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
@@ -3073,12 +3073,12 @@ STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. Thi
 STR_5566    :パスワード:
 STR_5567    :発表する
 STR_5568    :パスワードが必要
-STR_5569    :このサーバーはパスワードが必要
+STR_5569    :このサーバはパスワードが必要
 STR_5570    :リストを更新する
 STR_5571    :Join Game
 STR_5572    :Add To Favourites
 STR_5573    :Remove From Favourites
-STR_5574    :サーバーの名前:
+STR_5574    :サーバの名前:
 STR_5575    :プレイヤーの制限:
 STR_5576    :ポート:
 STR_5577    :大韓民国ウォン (₩)
@@ -3115,10 +3115,10 @@ STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
 STR_5608    :BH
 STR_5609    :CH
 STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
-STR_5611    :G
-STR_5612    :{SMALLFONT}{BLACK}Ghost flag
-STR_5613    :B
-STR_5614    :{SMALLFONT}{BLACK}Broken flag
+STR_5611    :化
+STR_5612    :{SMALLFONT}{BLACK}お化けを示すフラグ
+STR_5613    :壊
+STR_5614    :{SMALLFONT}{BLACK}破損を示すフラグ
 STR_5615    :L
 STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
 STR_5617    :{SMALLFONT}{BLACK}選択された要素を上に移動する
@@ -3146,9 +3146,9 @@ STR_5638    :アクセス拒否
 STR_5639    :{SMALLFONT}{BLACK}Show list of players
 STR_5640    :{SMALLFONT}{BLACK}Manage groups
 STR_5641    :デファルトのグループ:
-STR_5642    :グループ:
+STR_5642    :グループ
 STR_5643    :新しいグループ
-STR_5644    :Remove Group
+STR_5644    :グループを退ける
 STR_5645    :チャット
 STR_5646    :テラフォーム
 STR_5647    :Toggle Pause
@@ -3165,7 +3165,7 @@ STR_5657    :パーク設定
 STR_5658    :パーク資金
 STR_5659    :プレイヤーを蹴る
 STR_5660    :グループを変更する
-STR_5661    :Set Player Group
+STR_5661    :プレイヤーのグループに設定する
 STR_5662    :N/A
 STR_5663    :Clear Landscape
 STR_5664    :カンニング
@@ -3174,7 +3174,7 @@ STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}最後のアクション: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}プレイヤーの最後のアクションをに移動
 STR_5703    :ホストを蹴られません
-STR_5704    :最後のアクション:
+STR_5704    :最後のアクション
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
@@ -3226,7 +3226,7 @@ STR_5753    :{OUTLINE}{RED}{STRING}が切断されました ({STRING})
 STR_5754    :Bad Player Name
 STR_5755    :不適切なソフトウェアバージョン（サーバは{STRING}を使用しています）
 STR_5756    :Bad Password
-STR_5757    :サーバーがいっぱいです
+STR_5757    :サーバがいっぱいです
 STR_5758    :{OUTLINE}{GREEN}{STRING}がゲームに参加しました。
 STR_5759    :地図をダウンロード中... ({INT32} / {INT32}) KiB
 STR_5760    :香港ドル (HK$)
@@ -3235,7 +3235,6 @@ STR_5762    :人民元 (CN{YEN})
 STR_5763    :全てのファイル
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
-STR_5766    :<available string id>
 STR_5767    :収入
 STR_5768    :顧客総数
 STR_5769    :総収益
@@ -3336,10 +3335,10 @@ STR_5863    :{SMALLFONT}{BLACK}Only allow players with known keys to join.
 STR_5864    :This server only allows whitelisted players to connect.
 STR_5865    :Log chat history
 STR_5866    :{SMALLFONT}{BLACK}Logs all chat history to files in your user directory.
-STR_5867    :{WINDOW_COLOUR_2}Provider Name: {BLACK}{STRING}
-STR_5868    :{WINDOW_COLOUR_2}Provider E-mail: {BLACK}{STRING}
-STR_5869    :{WINDOW_COLOUR_2}Provider Website: {BLACK}{STRING}
-STR_5870    :{SMALLFONT}{BLACK}Show server information
+STR_5867    :{WINDOW_COLOUR_2}プロバイダ名： {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}プロバイダのメール： {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}プロバイダのウェブサイト： {BLACK}{STRING}
+STR_5870    :{SMALLFONT}{BLACK}サーバ報知の表示
 STR_5871    :Plants don't age
 STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
 STR_5873    :Allow chain lifts on all track pieces
@@ -3392,15 +3391,15 @@ STR_5920    :天気効果をレンダリングする
 STR_5921    :{SMALLFONT}{BLACK}このオプションを有効にすると、暴風雨ある時に雨と湿っぽい色でレンダリングします。
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
-STR_5924    :Surface details
-STR_5925    :Path details
-STR_5926    :Track details
-STR_5927    :Scenery details
-STR_5928    :Entrance details
-STR_5929    :Wall details
-STR_5930    :Large scenery details
-STR_5931    :Banner details
-STR_5932    :Corrupt element details
+STR_5924    :面ディテール
+STR_5925    :歩道ディテール
+STR_5926    :トラック・ディテール
+STR_5927    :景色物ディテール
+STR_5928    :入口ディテール
+STR_5929    :壁ディテール
+STR_5930    :大景色物ディテール
+STR_5931    :バナー・ディテール
+STR_5932    :破損要素ディテール
 STR_5933    :Properties
 STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
 STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
@@ -3474,7 +3473,7 @@ STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}
 STR_6003    :切り欠きビュー
 STR_6004    :切り欠きビュー
 STR_6005    :切り欠きビューを使う
-STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height
+STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height (vertical clipping) and in the selected area (horizontal clipping).
 STR_6007    :切り高さ
 STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
 STR_6009    :{SMALLFONT}{BLACK}切り高さに選定
@@ -3504,15 +3503,15 @@ STR_6032    :サーバの挨拶:
 STR_6033    :RCT1インストールのパス:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :RCT1のダイレクトリーを選定します。
-STR_6036    :{SMALLFONT}{BLACK}Clear
+STR_6036    :{SMALLFONT}{BLACK}クリア
 STR_6037    :Please select a valid RCT1 directory
 STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
 STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
-STR_6040    :Edit Scenario Options
+STR_6040    :シナリオ設定
 STR_6041    :{BLACK}No mechanics are hired!
-STR_6042    :Load height map
-STR_6043    :Select height map
-STR_6044    :Smooth height map
+STR_6042    :ハイトマップをロード
+STR_6043    :ハイトマップを選ぶ
+STR_6044    :地形の滑らか
 STR_6045    :Strength
 STR_6046    :Normalise height map
 STR_6047    :Smooth tiles
@@ -3523,7 +3522,7 @@ STR_6051    :The width and height need to match
 STR_6052    :The heightmap is too big, and will be cut off
 STR_6053    :The heightmap cannot be normalised
 STR_6054    :Only 24-bit bitmaps are supported
-STR_6055    :OpenRCT2 Heightmap File
+STR_6055    :OpenRCT2ハイトマップファイル
 STR_6056    :{SMALLFONT}{BLACK}ミュート
 STR_6057    :{SMALLFONT}{BLACK}ツールバーでミュートのボタンを表示する
 STR_6058    :ミュート
@@ -3670,7 +3669,7 @@ STR_6198    :{BLACK}日:
 STR_6199    :日付に設定
 STR_6200    :日付のリセット
 STR_6201    :{MONTH}
-STR_6202    :仮想フロアを使う
+STR_6202    :仮想フロアスタイル
 STR_6203    :{SMALLFONT}{BLACK}有効にすると、要素の垂直配置を容易にするためにCtrlまたはShiftキーを押しながら仮想床がレンダリングされます。
 STR_6204    :煉瓦
 STR_6205    :鉄
@@ -3688,10 +3687,58 @@ STR_6216    :操作
 STR_6217    :ライドやトラックの可用性
 STR_6218    :OpenRCT2オフィシャル
 STR_6219    :歩道の問題表示の切り替え
+STR_6220    :Make Usable
+STR_6221    :{SMALLFONT}{BLACK}This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per station.
+STR_6222    :Can't place guest entry point here...
+STR_6223    :Must be outside park boundaries!
+STR_6224    :{STRING} placed a guest entry point.
+STR_6225    :Not supported with OpenGL renderer
+STR_6226    :Enable early scenario completion
+STR_6227    :{SMALLFONT}{BLACK}Triggers scenario completion when all scenario goals are met before the target date.
+STR_6228    :シナリオ設定
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :停止
+STR_6233    :切り欠きビュー
+STR_6234    :歩道の問題を表示する
+STR_6235    :サーバ報知
+STR_6236    :プレーヤー
+STR_6237    :グループ
+STR_6238    :マルチプレイ設定
+STR_6239    :垂直クリッピング
+STR_6240    :水平クリッピング
+STR_6241    :地帯を選ぶ
+STR_6242    :選択をクリアする
+STR_6243    :{SMALLFONT}{BLACK}ライドに修復する
+STR_6244    :ライドに修復できません…
+STR_6245    :{SMALLFONT}{BLACK}ライドが修復必要ではない。
+STR_6246    :修復する
+STR_6247    :ライドの修復
+STR_6248    :{WINDOW_COLOUR_1}{STRINGID}のライド{CURRENCY}で修復よろしいですか？
+STR_6249    :{WINDOW_COLOUR_1}{STRINGID}のライド修復よろしいですか？
+STR_6250    :{WINDOW_COLOUR_1}{STRINGID}を完全に破棄して{CURRENCY}を獲得してもよろしいですか？
+STR_6251    :ライドはまだ空ではありません
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Provide URL of Twitch integration API. Required in order to enable Twitch integration.
+STR_6254    :URL of Twitch integration API:
+STR_6255    :URL is not valid
+STR_6256    :レンダリング・エフェクト
+STR_6257    :ガラス質（半透明）
+STR_6258    :クリア（透明）
+STR_6259    :使用禁止
+STR_6260    :ブロックされたタイルの表示
+STR_6261    :広い歩道の表示
+STR_6262    :マスター音量
+STR_6263    :{SMALLFONT}{BLACK}全ての音の切り替え
+STR_6264    :常にシステムファイルブラウザを使う
+STR_6265    :{SMALLFONT}{BLACK}有効にすると、オーエスのファイルブラウザがOpenRCT2の代わりに使用されます。
 
-###############################################################################
-## RCT1 Scenarios
-###############################################################################
+#############
+# Scenarios #
+################
+# RCT Original #
+################
 <Forest Frontiers>
 STR_SCNR    :フォレスト・フロンティア
 STR_PARK    :Forest Frontiers
@@ -3803,9 +3850,7 @@ STR_PARK    :Mega Park
 STR_DTLS    :楽しみだけ！
 
 
-###############################################################################
-## Added Attractions Scenarios
-###############################################################################
+## Added Attractions
 <Whispering Cliffs>
 STR_SCNR    :ウィスペリング・クリフス
 STR_PARK    :Whispering Cliffs
@@ -3957,9 +4002,7 @@ STR_PARK    :Geoffrey Gardens
 STR_DTLS    :A large garden park needs turning into a thriving theme park
 
 
-###############################################################################
-## Loopy Landscape Scenarios
-###############################################################################
+## Loopy Landscapes
 <Iceberg Islands>
 STR_SCNR    :アイスベルグ・アイランド
 STR_PARK    :Iceberg Islands
@@ -4134,10 +4177,94 @@ STR_SCNR    :フォート・アナクロニズム
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
-###############################################################################
-## RCT2 Original Scenarios
-###############################################################################
+###########
+# Scenery #
+###########
 
+## Start OpenRCT2 Official
+[XXBBBR01]
+STR_NAME    :ベースブロック
+
+[TTRFTL02]
+STR_NAME    :屋根
+
+[TTRFTL03]
+STR_NAME    :屋根
+
+[TTRFTL04]
+STR_NAME    :屋根
+
+[TTRFTL07]
+STR_NAME    :屋根
+
+[TTRFTL08]
+STR_NAME    :屋根
+
+[TTPIRF02]
+STR_NAME    :屋根
+
+[TTPIRF03]
+STR_NAME    :屋根
+
+[TTPIRF04]
+STR_NAME    :屋根
+
+[TTPIRF05]
+STR_NAME    :屋根
+
+[TTPIRF07]
+STR_NAME    :屋根
+
+[TTPIRF08]
+STR_NAME    :屋根
+
+[MG-PRAR]
+STR_NAME    :通路のある壁
+
+[TTRFWD01]
+STR_NAME    :屋根
+
+[TTRFWD02]
+STR_NAME    :屋根
+
+[TTRFWD03]
+STR_NAME    :屋根
+
+[TTRFWD04]
+STR_NAME    :屋根
+
+[TTRFWD05]
+STR_NAME    :屋根
+
+[TTRFWD06]
+STR_NAME    :屋根
+
+[TTRFWD07]
+STR_NAME    :屋根
+
+[TTRFWD08]
+STR_NAME    :屋根
+
+[TTRFGL01]
+STR_NAME    :ガラス屋根
+
+[TTRFGL02]
+STR_NAME    :ガラス屋根
+
+[TTRFGL03]
+STR_NAME    :ガラス屋根
+
+[ACWW33]
+STR_NAME    :木製のポスト壁
+
+[ACWWF32]
+STR_NAME    :木製のポスト壁
+
+## End OpenRCT2 Official
+
+###############################################################################
+## RCT2 Scenarios
+###############################################################################
 <Alpine Adventures>
 STR_SCNR    :高山アドベンチャー
 STR_PARK    :Alpine Adventures

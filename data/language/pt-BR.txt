@@ -238,7 +238,6 @@ STR_0833    :{SMALLFONT}{BLACK}Pausar Jogo
 STR_0834    :{SMALLFONT}{BLACK}Opções de disco e jogo
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Sobre 'OpenRCT2'
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, todos os direitos reservados
 STR_0851    :{WINDOW_COLOUR_2}Projetado e programado por Chris Sawyer
@@ -1150,7 +1149,7 @@ STR_1770    :{SMALLFONT}{BLACK}Número de balanços completos
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Somente uma seção de fotos é permitida por atração
 STR_1774    :Somente uma subida com cabo de elevação é permitida por atração
-STR_1777    :{WINDOW_COLOUR_2}Música da atração
+STR_1777    :Música da atração
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Fantasia de panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Fantasia de tigre
@@ -1263,8 +1262,6 @@ STR_1888    :{WINDOW_COLOUR_2}Tempo desde a última inspeção: {BLACK}mais de 4
 STR_1889    :{WINDOW_COLOUR_2}Tempo ocioso: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Selecione com qual frequência um mecânico deve verificar esta atração
 STR_1891    :Sem {STRINGID} no parque ainda!
-# The following two strings were used to display an error when the disc was missing.
-# This has been replaced in OpenRCT2.
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} vendido: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Construir uma nova atração
 STR_1896    :{WINDOW_COLOUR_2}Receitas/Despesas
@@ -2042,7 +2039,7 @@ STR_2703    :A cada 15 minutos
 STR_2704    :A cada 30 minutos
 STR_2705    :A cada hora
 STR_2706    :Nunca
-STR_2707    :Usar janela do sistema operacional
+STR_2707    :Usar explorador de arquivos do sistema
 STR_2708    :{WINDOW_COLOUR_1}Você tem certeza que quer sobrescrever {STRINGID}?
 STR_2709    :Sobrescrever
 STR_2710    :Tipo de nome para o arquivo.
@@ -2399,8 +2396,6 @@ STR_3141    :Várias voltas por ingresso não são possíveis com o cabo de elev
 STR_3142    :{WINDOW_COLOUR_2}Capacidade: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Mostrar pessoas no mapa
 STR_3144    :{SMALLFONT}{BLACK}Mostrar atrações e barracas no mapa
-STR_3158    :gráfico
-STR_3159    :lista
 STR_3160    :{SMALLFONT}{BLACK}Seleciona o número de circuitos por passeio
 STR_3162    :Impossível alocar memória o suficiente
 STR_3163    :Instalando novos dados: 
@@ -3199,8 +3194,6 @@ STR_5724    :Tempestade
 STR_5725    :{BLACK}Forçar clima:
 STR_5726    :{SMALLFONT}{BLACK}Define o clima atual no parque
 STR_5727    :Qualidade da escala:
-STR_5728    :Requer opção de exibição por hardware
-STR_5729    :{SMALLFONT}{BLACK}Requer opção de exibição por hardware
 STR_5731    :Linear
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Renderizando
@@ -3235,7 +3228,6 @@ STR_5762    :Yuan Chinês(CN{YEN})
 STR_5763    :Todos os arquivos
 STR_5764    :Tipo de atração inválida
 STR_5765    :Não é possível editar atração de tipo inválido
-STR_5766    :<available string id>
 STR_5767    :Receita
 STR_5768    :Clientes totais
 STR_5769    :Lucro total
@@ -3730,6 +3722,10 @@ STR_6258    :Claro (transparente)
 STR_6259    :Desabilitado
 STR_6260    :Mostrar azulejos bloqueados
 STR_6261    :Mostrar caminhos largos
+STR_6262    :Volume principal
+STR_6263    :{SMALLFONT}{BLACK}Liga/Desliga todos os sons
+STR_6264    :Sempre usar explorador de arquivos do sistema
+STR_6265    :{SMALLFONT}{BLACK}Quando habilitado, o explorador de arquivos do seu sistema operacional será usado ao invés do explorador do OpenRCT2.
 
 #############
 # Scenarios #

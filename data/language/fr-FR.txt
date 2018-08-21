@@ -1152,7 +1152,7 @@ STR_1770    :{SMALLFONT}{BLACK}Nombre de vrilles complètes
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Une seule section photo sur le vif autorisée par attraction
 STR_1774    :Une seule montée par câble autorisée par attraction
-STR_1777    :{WINDOW_COLOUR_2}Musique
+STR_1777    :Musique de l'attraction
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume de panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Costume de tigre
@@ -2043,7 +2043,7 @@ STR_2703    :Toutes les 15 minutes
 STR_2704    :Toutes les 30 minutes
 STR_2705    :Toutes les heures
 STR_2706    :Jamais
-STR_2707    :Fenêtre de dialogue système
+STR_2707    :Explorateur de fichiers système
 STR_2708    :{WINDOW_COLOUR_1}Etes vous sûr de vouloir écraser {STRINGID}?
 STR_2709    :Ecraser
 STR_2710    :Entrez le nom du fichier.
@@ -3736,7 +3736,10 @@ STR_6258    :Net (transparent)
 STR_6259    :Désactivé
 STR_6260    :Afficher les tuiles bloquées
 STR_6261    :Afficher les chemins larges
-
+STR_6262    :Volume principal
+STR_6263    :{SMALLFONT}{BLACK}Activer/Désactiver tous les sons
+STR_6264    :Toujours utiliser l'explorateur de fichiers système
+STR_6265    :{SMALLFONT}{BLACK}Lorsqu'activé, l'explorateur de fichiers du système d'exploitation sera utilisé à la place de celui d'OpenRCT2.
 
 #############
 # Scenarios #

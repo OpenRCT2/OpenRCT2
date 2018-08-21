@@ -2039,7 +2039,7 @@ STR_2703    :Var 15:e minut
 STR_2704    :Var 30:e minut
 STR_2705    :Varje timme
 STR_2706    :Aldrig
-STR_2707    :Öppna ett nytt fönster
+STR_2707    :Använd operativsystemets filhanterare
 STR_2708    :{WINDOW_COLOUR_1}Är du säker på att du vill skriva över {STRINGID}?
 STR_2709    :Skriv över
 STR_2710    :Skriv namnet på filen.
@@ -3731,6 +3731,8 @@ STR_6260    :Visa blockerade rutor
 STR_6261    :Visa breda gångar
 STR_6262    :Huvudvolym
 STR_6263    :{SMALLFONT}{BLACK}Växla alla ljud på/av
+STR_6264    :Använd alltid operativsystemets filhanterare
+STR_6265    :{SMALLFONT}{BLACK}Om aktiverad kommer spelet använda filhanteraren på datorn istället för OpenRCT2s egna.
 
 
 
