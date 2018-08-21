@@ -298,7 +298,7 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
     }
 
     const char* pattern = getFilterPatternByType(type, isSave);
-    window_loadsave_populate_list(w, false, path, pattern);
+    window_loadsave_populate_list(w, isSave, path, pattern);
     w->no_list_items = static_cast<uint16_t>(_listItems.size());
     w->selected_list_item = -1;
 
