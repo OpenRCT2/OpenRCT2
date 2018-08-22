@@ -284,8 +284,12 @@ private:
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
+            // Check if tile is a track type.
             if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                continue;
+                // If tile is not a track type, check if it's an entrance.
+                if (it.element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+                    // If not an entrance, continue.
+                    continue;
 
             if (track_element_get_ride_index(it.element) != _rideIndex)
                 continue;
