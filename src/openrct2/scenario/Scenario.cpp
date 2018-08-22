@@ -131,26 +131,6 @@ void scenario_begin()
                 safe_strcpy(gScenarioDetails, language_get_string(localisedStringIds[2]), 256);
             }
         }
-        else
-        {
-            auto stex = (rct_stex_entry*)object_entry_get_chunk(OBJECT_TYPE_SCENARIO_TEXT, 0);
-            if (stex != nullptr)
-            {
-                char* buffer = gCommonStringFormatBuffer;
-
-                // Set localised park name
-                format_string(buffer, 256, stex->park_name, nullptr);
-                park_set_name(buffer);
-
-                // Set localised scenario name
-                format_string(buffer, 256, stex->scenario_name, nullptr);
-                safe_strcpy(gScenarioName, buffer, 64);
-
-                // Set localised scenario details
-                format_string(buffer, 256, stex->details, nullptr);
-                safe_strcpy(gScenarioDetails, buffer, 256);
-            }
-        }
     }
 
     // Set the last saved game path
@@ -664,16 +644,6 @@ static bool scenario_prepare_rides_for_save()
 bool scenario_prepare_for_save()
 {
     gS6Info.entry.flags = 255;
-
-    auto stex = (rct_stex_entry*)object_entry_get_chunk(OBJECT_TYPE_SCENARIO_TEXT, 0);
-    if (stex != nullptr)
-    {
-        char buffer[256];
-        format_string(buffer, 256, stex->scenario_name, nullptr);
-        safe_strcpy(gS6Info.name, buffer, sizeof(gS6Info.name));
-
-        memcpy(&gS6Info.entry, object_entry_get_entry(OBJECT_TYPE_SCENARIO_TEXT, 0), sizeof(rct_object_entry));
-    }
 
     if (gS6Info.name[0] == 0)
         format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);

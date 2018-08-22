@@ -320,7 +320,7 @@ private:
             }
         }
 
-        scenario_translate(&entry, &s6Info->entry);
+        scenario_translate(&entry);
         return entry;
     }
 };

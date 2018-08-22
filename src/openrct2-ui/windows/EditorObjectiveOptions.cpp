@@ -837,12 +837,6 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
 
     window_editor_objective_options_set_pressed_tab(w);
 
-    auto stex = (rct_stex_entry*)object_entry_get_chunk(OBJECT_TYPE_SCENARIO_TEXT, 0);
-    if (stex == nullptr)
-        w->disabled_widgets &= ~((1 << WIDX_PARK_NAME) | (1 << WIDX_SCENARIO_NAME));
-    else
-        w->disabled_widgets |= ((1 << WIDX_PARK_NAME) | (1 << WIDX_SCENARIO_NAME));
-
     switch (gScenarioObjectiveType)
     {
         case OBJECTIVE_GUESTS_BY:
@@ -997,15 +991,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     y = w->y + w->widgets[WIDX_PARK_NAME].top;
     width = w->widgets[WIDX_PARK_NAME].left - 16;
 
-    auto stex = (rct_stex_entry*)object_entry_get_chunk(OBJECT_TYPE_SCENARIO_TEXT, 0);
-    if (stex != nullptr)
-    {
-        set_format_arg(0, rct_string_id, stex->park_name);
-    }
-    else
-    {
-        set_format_arg(0, rct_string_id, gParkName);
-    }
+    set_format_arg(0, rct_string_id, gParkName);
     set_format_arg(2, uint32_t, gParkNameArgs);
     gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
@@ -1014,16 +1000,8 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     y = w->y + w->widgets[WIDX_SCENARIO_NAME].top;
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
-    if (stex != nullptr)
-    {
-        set_format_arg(0, rct_string_id, stex->scenario_name);
-        set_format_arg(2, uint32_t, gParkNameArgs);
-    }
-    else
-    {
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, const char*, gS6Info.name);
-    }
+    set_format_arg(0, rct_string_id, STR_STRING);
+    set_format_arg(2, const char*, gS6Info.name);
 
     gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
@@ -1037,16 +1015,9 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     y = w->y + w->widgets[WIDX_DETAILS].top + 10;
     width = w->widgets[WIDX_DETAILS].left - 4;
 
-    if (stex != nullptr)
-    {
-        set_format_arg(0, rct_string_id, stex->details);
-        set_format_arg(2, uint32_t, gParkNameArgs);
-    }
-    else
-    {
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, const char*, gS6Info.details);
-    }
+    set_format_arg(0, rct_string_id, STR_STRING);
+    set_format_arg(2, const char*, gS6Info.details);
+
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Scenario category label

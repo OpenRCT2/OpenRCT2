@@ -138,9 +138,6 @@ static rct_string_id get_object_type_string(const rct_object_entry* entry)
         case OBJECT_TYPE_WATER:
             result = STR_OBJECT_SELECTION_WATER;
             break;
-        case OBJECT_TYPE_SCENARIO_TEXT:
-            result = STR_OBJECT_SELECTION_SCENARIO_DESCRIPTION;
-            break;
         default:
             result = STR_UNKNOWN_OBJECT_TYPE;
     }

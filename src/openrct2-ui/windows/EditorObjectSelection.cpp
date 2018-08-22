@@ -25,9 +25,9 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
-#include <openrct2/object/StexObject.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideGroupManager.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
@@ -841,7 +841,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     for (int32_t i = 0; i < OBJECT_TYPE_COUNT; i++)
     {
         auto widget = &w->widgets[WIDX_TAB_1 + i];
-        if ((!advancedMode && ObjectSelectionPages[i].IsAdvanced) || i == OBJECT_TYPE_SCENARIO_TEXT)
+        if (!advancedMode && ObjectSelectionPages[i].IsAdvanced)
         {
             widget->type = WWT_EMPTY;
         }
