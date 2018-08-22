@@ -41,7 +41,7 @@ enum SPRITE_LIST
 struct rct_sprite_common
 {
     uint8_t sprite_identifier;       // 0x00
-    uint8_t type;                   // 0x01
+    uint8_t type;                    // 0x01
     uint16_t next_in_quadrant;       // 0x02
     uint16_t next;                   // 0x04
     uint16_t previous;               // 0x06
@@ -84,7 +84,7 @@ struct rct_balloon : rct_sprite_common
     uint16_t popped;      // 0x24
     uint8_t time_to_move; // 0x26
 
-    uint8_t frame;        // 0x27
+    uint8_t frame; // 0x27
     uint8_t pad_28[4];
     uint8_t colour; // 0x2C
 
@@ -144,8 +144,8 @@ assert_struct_size(rct_money_effect, 0x48);
 
 struct rct_crashed_vehicle_particle : rct_sprite_common
 {
-    uint16_t time_to_live;          // 0x24
-    uint16_t frame;                 // 0x26
+    uint16_t time_to_live; // 0x24
+    uint16_t frame;        // 0x26
     uint8_t pad_28[4];
     uint8_t colour[2];
     uint16_t crashed_sprite_base; // 0x2E
@@ -168,8 +168,8 @@ assert_struct_size(rct_crash_splash, 0x28);
 
 struct rct_steam_particle : rct_sprite_common
 {
-    uint16_t time_to_move;          // 0x24 Moves +1 z every 3 ticks after intitial 4 ticks
-    uint16_t frame;                 // 0x26
+    uint16_t time_to_move; // 0x24 Moves +1 z every 3 ticks after intitial 4 ticks
+    uint16_t frame;        // 0x26
 };
 assert_struct_size(rct_steam_particle, 0x28);
 
