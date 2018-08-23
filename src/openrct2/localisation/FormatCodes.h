@@ -313,6 +313,8 @@ enum UnicodeCzech
 {
     UNICODE_C_CARON_UC = 268,
     UNICODE_C_CARON = 269,
+    UNICODE_Y_ACUTE_UC = 221,
+    UNICODE_Y_ACUTE = 253,
 };
 
 #endif

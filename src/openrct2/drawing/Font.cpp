@@ -380,6 +380,10 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
             return SPR_G2_C_CARON_UPPER - SPR_CHAR_START;
         case UNICODE_C_CARON:
             return SPR_G2_C_CARON_LOWER - SPR_CHAR_START;
+        case UNICODE_Y_ACUTE_UC:
+            return SPR_G2_Y_ACUTE_UPPER - SPR_CHAR_START;
+        case UNICODE_Y_ACUTE:
+            return SPR_G2_Y_ACUTE_LOWER - SPR_CHAR_START;
 
         default:
             if (codepoint < 32 || codepoint >= 256)
@@ -562,6 +566,8 @@ bool font_supports_string_sprite(const utf8* text)
 
             case UNICODE_C_CARON_UC:
             case UNICODE_C_CARON:
+            case UNICODE_Y_ACUTE_UC:
+            case UNICODE_Y_ACUTE:
 
                 supported = true;
                 break;

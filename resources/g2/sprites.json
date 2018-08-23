@@ -783,6 +783,18 @@
         "forceBmp": true
     },
     {
+        "path": "font/y-acute-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/y-acute-small.png",
+        "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1121,6 +1133,18 @@
     },
     {
         "path": "font/c-caron-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/y-acute-uc-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/y-acute-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
@@ -1472,6 +1496,18 @@
     },
     {
         "path": "font/c-caron-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/y-acute-uc-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/y-acute-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
