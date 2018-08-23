@@ -76,7 +76,6 @@ struct paint_struct
     uint8_t quadrant_flags;
     attached_paint_struct* attached_ps; // 0x1C
     paint_struct* var_20;
-    paint_struct* next_quadrant_ps; // 0x24
     uint8_t sprite_type;            // 0x28
     uint8_t var_29;
     uint16_t pad_2A;
@@ -139,7 +138,7 @@ struct tunnel_entry
     uint8_t type;
 };
 
-#define MAX_PAINT_QUADRANTS 512
+#define MAX_PAINT_QUADRANTS 1024
 #define TUNNEL_MAX_COUNT 65
 
 struct paint_session
@@ -148,7 +147,7 @@ struct paint_session
     //paint_entry PaintStructs[4000];
     //paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     std::array<paint_entry, 4000> PaintStructs;
-    std::array<paint_struct*, MAX_PAINT_QUADRANTS> Quadrants;
+    std::array<std::vector<paint_struct*>, MAX_PAINT_QUADRANTS> Quadrants;
     std::vector<paint_struct*> PaintStructsSorted;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
