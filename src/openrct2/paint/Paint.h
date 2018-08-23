@@ -15,6 +15,7 @@
 #include "../world/Location.hpp"
 
 #include <vector>
+#include <array>
 
 struct rct_tile_element;
 
@@ -144,8 +145,10 @@ struct tunnel_entry
 struct paint_session
 {
     rct_drawpixelinfo* DPI;
-    paint_entry PaintStructs[4000];
-    paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
+    //paint_entry PaintStructs[4000];
+    //paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
+    std::array<paint_entry, 4000> PaintStructs;
+    std::array<paint_struct*, MAX_PAINT_QUADRANTS> Quadrants;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
     const void* CurrentlyDrawnItem;

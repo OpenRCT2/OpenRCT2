@@ -56,8 +56,8 @@ static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, u
 static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi)
 {
     session->DPI = dpi;
-    session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
-    session->NextFreePaintStruct = session->PaintStructs;
+    session->EndOfPaintStructArray = &session->PaintStructs.at(4000 - 1);
+    session->NextFreePaintStruct = &session->PaintStructs.at(0);
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;
     for (auto& quadrant : session->Quadrants)
@@ -92,6 +92,7 @@ static paint_struct* sub_9819_c(
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
         return nullptr;
+
     auto g1 = gfx_get_g1_element(image_id & 0x7FFFF);
     if (g1 == nullptr)
     {
@@ -495,7 +496,7 @@ paint_struct paint_session_arrange_old(paint_session* session)
  *  rct2: 0x00688217
  */
 paint_struct paint_session_arrange(paint_session* session)
-{  
+{
     static std::vector<paint_struct*> psData;
     psData.clear();
 
@@ -525,7 +526,7 @@ paint_struct paint_session_arrange(paint_session* session)
         }
     } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
-    typedef bool (*fnSorter)(const paint_struct *a, const paint_struct *b);
+    typedef bool (*fnSorter)(const paint_struct* a, const paint_struct* b);
 
     fnSorter sorter = nullptr;
     switch (rotation)
@@ -555,18 +556,25 @@ paint_struct paint_session_arrange(paint_session* session)
     for (size_t i = 0; i < psData.size(); i++)
     {
         paint_struct* psA = psData[i];
-        for (size_t j = 0; j < psData.size(); j++)
+
+        // Only check neighbouring quadrants, we don't have to go over the entire list.
+        uint32_t sector = psA->quadrant_index;
+        if (sector > 0)
+            sector--;
+
+        for (size_t n = sector; n < sector + 2 && n <= session->QuadrantFrontIndex && n >= session->QuadrantBackIndex; n++)
         {
-            if (i == j)
-                continue;
-
-            paint_struct* psB = psData[j];
-            if (std::abs((int16_t)psB->quadrant_index - (int16_t)psA->quadrant_index) > 1)
-                continue;
-
-            if (sorter(psA, psB))
+            paint_struct* psB = session->Quadrants[n];
+            if (psB != nullptr)
             {
-                psA->behind->push_back(psB);
+                do
+                {
+                    if (psA != psB && sorter(psA, psB))
+                    {
+                        psA->behind->push_back(psB);
+                    }
+                    psB = psB->next_quadrant_ps;
+                } while (psB != nullptr);
             }
         }
     }
@@ -577,8 +585,7 @@ paint_struct paint_session_arrange(paint_session* session)
         visitNode(psData[i], depth);
     }
 
-    std::sort(psData.begin(), psData.end(), [](const paint_struct *a, const paint_struct *b)->bool
-    {
+    std::sort(psData.begin(), psData.end(), [](const paint_struct* a, const paint_struct* b) -> bool {
         return a->isoDepth < b->isoDepth;
     });
 
