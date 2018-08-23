@@ -2450,8 +2450,8 @@ static void sub_6CBCE2(
     gMapSize = preserveMapSize;
     gMapSizeMaxXY = preserveMapSizeMaxXY;
 
-    paint_struct ps = paint_session_arrange(session);
-    paint_draw_structs(dpi, &ps, gCurrentViewportFlags);
+    paint_session_arrange(session);
+    paint_draw_structs(session, gCurrentViewportFlags);
     paint_session_free(session);
 
     gCurrentViewportFlags = preserve_current_viewport_flags;

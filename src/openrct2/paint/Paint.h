@@ -149,6 +149,7 @@ struct paint_session
     //paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     std::array<paint_entry, 4000> PaintStructs;
     std::array<paint_struct*, MAX_PAINT_QUADRANTS> Quadrants;
+    std::vector<paint_struct*> PaintStructsSorted;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
     const void* CurrentlyDrawnItem;
@@ -233,9 +234,9 @@ void paint_floating_money_effect(
 paint_session* paint_session_alloc(rct_drawpixelinfo* dpi);
 void paint_session_free(paint_session*);
 void paint_session_generate(paint_session* session);
-paint_struct paint_session_arrange(paint_session* session);
+void paint_session_arrange(paint_session* session);
 paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation);
-void paint_draw_structs(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
+void paint_draw_structs(paint_session* session, uint32_t viewFlags);
 void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 
 // TESTING

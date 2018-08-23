@@ -495,9 +495,9 @@ paint_struct paint_session_arrange_old(paint_session* session)
  *
  *  rct2: 0x00688217
  */
-paint_struct paint_session_arrange(paint_session* session)
+void paint_session_arrange(paint_session* session)
 {
-    static std::vector<paint_struct*> psData;
+    std::vector<paint_struct*>& psData = session->PaintStructsSorted;
     psData.clear();
 
     uint32_t quadrantIndex = session->QuadrantBackIndex;
@@ -557,14 +557,11 @@ paint_struct paint_session_arrange(paint_session* session)
     {
         paint_struct* psA = psData[i];
 
-        // Only check neighbouring quadrants, we don't have to go over the entire list.
+        // Only check neighbor quadrants, we don't have to go over the entire list.
         uint32_t sector = psA->quadrant_index;
-        if (sector > 0)
-            sector--;
-
-        for (size_t n = sector; n < sector + 2 && n <= session->QuadrantFrontIndex && n >= session->QuadrantBackIndex; n++)
+        //for (size_t n = sector; n < sector + 2 && n <= session->QuadrantFrontIndex && n >= session->QuadrantBackIndex; n++)
         {
-            paint_struct* psB = session->Quadrants[n];
+            paint_struct* psB = session->Quadrants[sector];
             if (psB != nullptr)
             {
                 do
@@ -577,6 +574,18 @@ paint_struct paint_session_arrange(paint_session* session)
                 } while (psB != nullptr);
             }
         }
+
+        /*
+        for (size_t j = 0; j < psData.size(); j++)
+        {
+            paint_struct* psB = psData[j];
+
+            if (psA != psB && sorter(psA, psB))
+            {
+                psA->behind->push_back(psB);
+            }
+        }
+        */
     }
 
     uint32_t depth = 0;
@@ -588,66 +597,55 @@ paint_struct paint_session_arrange(paint_session* session)
     std::sort(psData.begin(), psData.end(), [](const paint_struct* a, const paint_struct* b) -> bool {
         return a->isoDepth < b->isoDepth;
     });
+}
 
-    paint_struct psHead = {};
-    paint_struct* psLast = &psHead;
-
-    for (auto* curPs : psData)
+static void paint_draw_struct(paint_session *session, uint32_t viewFlags, paint_struct *ps)
+{
+    int16_t x = ps->x;
+    int16_t y = ps->y;
+    if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
-        psLast->next_quadrant_ps = curPs;
-        psLast = curPs;
+        if (session->DPI->zoom_level >= 1)
+        {
+            x = floor2(x, 2);
+            y = floor2(y, 2);
+            if (session->DPI->zoom_level >= 2)
+            {
+                x = floor2(x, 4);
+                y = floor2(y, 4);
+            }
+        }
     }
-    psLast->next_quadrant_ps = nullptr;
 
-    return psHead;
+    uint32_t imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, viewFlags);
+    if (gPaintBoundingBoxes && session->DPI->zoom_level == 0)
+    {
+        paint_ps_image_with_bounding_boxes(session->DPI, ps, imageId, x, y);
+    }
+    else
+    {
+        paint_ps_image(session->DPI, ps, imageId, x, y);
+    }
+
+    if (ps->var_20 != nullptr)
+    {
+        paint_draw_struct(session, viewFlags, ps->var_20);
+    }
+    else
+    {
+        paint_attached_ps(session->DPI, ps, viewFlags);
+    }
 }
 
 /**
  *
  *  rct2: 0x00688485
  */
-void paint_draw_structs(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags)
+void paint_draw_structs(paint_session* session, uint32_t viewFlags)
 {
-    paint_struct* previous_ps = ps->next_quadrant_ps;
-    for (ps = ps->next_quadrant_ps; ps;)
+    for (auto* ps : session->PaintStructsSorted)
     {
-        int16_t x = ps->x;
-        int16_t y = ps->y;
-        if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SPRITE)
-        {
-            if (dpi->zoom_level >= 1)
-            {
-                x = floor2(x, 2);
-                y = floor2(y, 2);
-                if (dpi->zoom_level >= 2)
-                {
-                    x = floor2(x, 4);
-                    y = floor2(y, 4);
-                }
-            }
-        }
-
-        uint32_t imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, viewFlags);
-        if (gPaintBoundingBoxes && dpi->zoom_level == 0)
-        {
-            paint_ps_image_with_bounding_boxes(dpi, ps, imageId, x, y);
-        }
-        else
-        {
-            paint_ps_image(dpi, ps, imageId, x, y);
-        }
-
-        if (ps->var_20 != nullptr)
-        {
-            // NOTE: RCT uses var_20 instead of next_quadrant_ps, do we still need it?
-            ps = ps->var_20;
-        }
-        else
-        {
-            paint_attached_ps(dpi, ps, viewFlags);
-            ps = previous_ps->next_quadrant_ps;
-            previous_ps = ps;
-        }
+        paint_draw_struct(session, viewFlags, ps);
     }
 }
 

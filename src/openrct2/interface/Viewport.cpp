@@ -921,8 +921,8 @@ static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 
     paint_session* session = paint_session_alloc(dpi);
     paint_session_generate(session);
-    paint_struct ps = paint_session_arrange(session);
-    paint_draw_structs(dpi, &ps, viewFlags);
+    paint_session_arrange(session);
+    paint_draw_structs(session, viewFlags);
     paint_session_free(session);
 
     if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
@@ -1564,16 +1564,17 @@ static bool sub_679023(rct_drawpixelinfo* dpi, int32_t imageId, int32_t x, int32
  *
  *  rct2: 0x0068862C
  */
-void sub_68862C(rct_drawpixelinfo* dpi, paint_struct* ps)
+void sub_68862C(paint_session *session)
 {
-    while ((ps = ps->next_quadrant_ps) != nullptr)
+    //while ((ps = ps->next_quadrant_ps) != nullptr)
+    for (auto *ps : session->PaintStructsSorted)
     {
         paint_struct* old_ps = ps;
         paint_struct* next_ps = ps;
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            if (sub_679023(dpi, ps->image_id, ps->x, ps->y))
+            if (sub_679023(session->DPI, ps->image_id, ps->x, ps->y))
                 store_interaction_info(ps);
 
             next_ps = ps->var_20;
@@ -1581,7 +1582,8 @@ void sub_68862C(rct_drawpixelinfo* dpi, paint_struct* ps)
 
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
-            if (sub_679023(dpi, attached_ps->image_id, (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF))
+            if (sub_679023(
+                    session->DPI, attached_ps->image_id, (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF))
             {
                 store_interaction_info(ps);
             }
@@ -1642,8 +1644,8 @@ void get_map_coordinates_from_pos_window(
 
             paint_session* session = paint_session_alloc(dpi);
             paint_session_generate(session);
-            paint_struct ps = paint_session_arrange(session);
-            sub_68862C(dpi, &ps);
+            paint_session_arrange(session);
+            sub_68862C(session);
             paint_session_free(session);
         }
         if (viewport != nullptr)
