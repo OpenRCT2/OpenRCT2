@@ -5,6 +5,7 @@
 - Feature: [#7980] Allow data path for RCT1 to be specified by a command line argument.
 - Fix: [#7954] Key validation fails on Windows due to non-ASCII user / player name.
 - Fix: [#7975] Inspection flag not cleared for rides which are set to never be inspected (Original bug).
+- Fix: [#7828] Copied entrances and exits stay when demolishing ride.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.

@@ -284,7 +284,24 @@ private:
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
-            if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            uint8_t tile_type = it.element->GetType();
+
+            if (tile_type == TILE_ELEMENT_TYPE_ENTRANCE)
+            {
+                uint8_t type = track_element_get_type(it.element);
+                if (type == ENTRANCE_TYPE_PARK_ENTRANCE)
+                    continue;
+
+                if (track_element_get_ride_index(it.element) == _rideIndex)
+                {
+                    tile_element_remove(it.element);
+                    tile_element_iterator_restart_for_tile(&it);
+                }
+
+                continue;
+            }
+
+            if (tile_type != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
             if (track_element_get_ride_index(it.element) != _rideIndex)

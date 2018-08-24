@@ -114,6 +114,7 @@ The following people are not part of the development team, but have been contrib
 * Andy Ford (AndyTWF)
 * Matthew Beaudin (mattbeaudin)
 * Øystein Dale (oystedal)
+* Christian Schubert (Osmodium)
 
 ## Toolchain
 * (Balletie) - macOS
