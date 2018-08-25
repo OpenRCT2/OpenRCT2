@@ -137,6 +137,8 @@ void game_increase_game_speed()
 
 void game_reduce_game_speed()
 {
+    int *foo = reinterpret_cast<int *>(0x42);
+    *foo = 0x42;
     gGameSpeed = std::max(1, gGameSpeed - 1);
     if (gGameSpeed == 7)
         gGameSpeed = 4;
