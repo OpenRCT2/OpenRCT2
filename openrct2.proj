@@ -30,6 +30,7 @@
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1)'!=''">/D "OPENRCT2_COMMIT_SHA1=\"$(GIT_COMMIT_SHA1)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">/D "OPENRCT2_COMMIT_SHA1_SHORT=\"$(GIT_COMMIT_SHA1_SHORT)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_DESCRIBE)'!=''">/D "OPENRCT2_VERSION_TAG=\"$(GIT_DESCRIBE)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(Configuration)'=='Release'">/D "USE_BREAKPAD" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
 
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DistDir>$(RootDir)distribution\</DistDir>
@@ -64,10 +65,10 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v17/openrct2-libs-v17-x86-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">4f9fb5feebe4a4ed461b2a545b2fd1c91ef6527b</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v17/openrct2-libs-v17-x64-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">5aab386f9eeaad102b330fcddea2b4cc9e3c7067</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v18/openrct2-libs-v18-x86-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">5266545ca3034f9718729c7841d0352ed866db39</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v18/openrct2-libs-v18-x64-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">4a122221e000b26067c8a4d06d2f053f27fe3f39</LibsSha1>
     <GtestVersion>1.8.0</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
     <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
