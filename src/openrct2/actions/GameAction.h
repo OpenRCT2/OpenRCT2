@@ -119,12 +119,19 @@ public:
     virtual uint16_t GetActionFlags() const
     {
         // Make sure we execute some things only on the client.
+        uint16_t flags = 0;
+
         if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_5) != 0)
         {
-            return GA_FLAGS::CLIENT_ONLY;
+            flags |= GA_FLAGS::CLIENT_ONLY;
         }
 
-        return 0;
+        if (GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
+        {
+            flags |= GA_FLAGS::ALLOW_WHILE_PAUSED;
+        }
+
+        return flags;
     }
 
     /**
