@@ -59,13 +59,13 @@ static bool OnCrash(
     // Get filenames
     wchar_t dumpFilePath[MAX_PATH];
     wchar_t saveFilePath[MAX_PATH];
-    swprintf_s(dumpFilePath, sizeof(dumpFilePath), L"%s%s.dmp", dumpPath, miniDumpId);
-    swprintf_s(saveFilePath, sizeof(saveFilePath), L"%s%s.sv6", dumpPath, miniDumpId);
+    swprintf_s(dumpFilePath, sizeof(dumpFilePath), L"%s/%s.dmp", dumpPath, miniDumpId);
+    swprintf_s(saveFilePath, sizeof(saveFilePath), L"%s/%s.sv6", dumpPath, miniDumpId);
 
     // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
-        dumpFilePathNew, sizeof(dumpFilePathNew), L"%s%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short,
+        dumpFilePathNew, sizeof(dumpFilePathNew), L"%s/%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short,
         _wszArchitecture);
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
