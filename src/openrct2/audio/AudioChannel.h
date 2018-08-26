@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
@@ -30,30 +23,30 @@ namespace OpenRCT2::Audio
     {
         virtual ~IAudioChannel() = default;
 
-        virtual IAudioSource * GetSource() const abstract;
+        virtual IAudioSource* GetSource() const abstract;
 
-        virtual sint32  GetGroup() const abstract;
-        virtual void    SetGroup(sint32 group) abstract;
+        virtual int32_t GetGroup() const abstract;
+        virtual void SetGroup(int32_t group) abstract;
 
-        virtual double  GetRate() const abstract;
-        virtual void    SetRate(double rate) abstract;
+        virtual double GetRate() const abstract;
+        virtual void SetRate(double rate) abstract;
 
-        virtual uint64  GetOffset() const abstract;
-        virtual bool    SetOffset(uint64 offset) abstract;
+        virtual uint64_t GetOffset() const abstract;
+        virtual bool SetOffset(uint64_t offset) abstract;
 
-        virtual sint32  GetLoop() const abstract;
-        virtual void    SetLoop(sint32 value) abstract;
+        virtual int32_t GetLoop() const abstract;
+        virtual void SetLoop(int32_t value) abstract;
 
-        virtual sint32  GetVolume() const abstract;
-        virtual float   GetVolumeL() const abstract;
-        virtual float   GetVolumeR() const abstract;
-        virtual float   GetOldVolumeL() const abstract;
-        virtual float   GetOldVolumeR() const abstract;
-        virtual sint32  GetOldVolume() const abstract;
-        virtual void    SetVolume(sint32 volume) abstract;
+        virtual int32_t GetVolume() const abstract;
+        virtual float GetVolumeL() const abstract;
+        virtual float GetVolumeR() const abstract;
+        virtual float GetOldVolumeL() const abstract;
+        virtual float GetOldVolumeR() const abstract;
+        virtual int32_t GetOldVolume() const abstract;
+        virtual void SetVolume(int32_t volume) abstract;
 
-        virtual float   GetPan() const abstract;
-        virtual void    SetPan(float pan) abstract;
+        virtual float GetPan() const abstract;
+        virtual void SetPan(float pan) abstract;
 
         virtual bool IsStopping() const abstract;
         virtual void SetStopping(bool value) abstract;
@@ -68,9 +61,9 @@ namespace OpenRCT2::Audio
 
         virtual bool IsPlaying() const abstract;
 
-        virtual void Play(IAudioSource * source, sint32 loop = 0) abstract;
+        virtual void Play(IAudioSource * source, int32_t loop = 0) abstract;
         virtual void UpdateOldVolume() abstract;
 
-        virtual size_t Read(void * dst, size_t len) abstract;
+        virtual size_t Read(void* dst, size_t len) abstract;
     };
 } // namespace OpenRCT2::Audio

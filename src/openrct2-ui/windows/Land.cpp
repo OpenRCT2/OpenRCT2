@@ -1,28 +1,20 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <openrct2/Context.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
+#include <algorithm>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
@@ -60,7 +52,7 @@ static rct_widget window_land_widgets[] = {
 static void window_land_close(rct_window *w);
 static void window_land_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_land_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_land_update(rct_window *w);
 static void window_land_invalidate(rct_window *w);
 static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -99,14 +91,14 @@ static rct_window_event_list window_land_events = {
 };
 // clang-format on
 
-static sint32 _selectedFloorTexture;
-static sint32 _selectedWallTexture;
+static int32_t _selectedFloorTexture;
+static int32_t _selectedWallTexture;
 
 /**
  *
  *  rct2: 0x00663E7D
  */
-rct_window * window_land_open()
+rct_window* window_land_open()
 {
     rct_window* window;
 
@@ -117,15 +109,8 @@ rct_window * window_land_open()
 
     window = window_create(context_get_width() - 98, 29, 98, 160, &window_land_events, WC_LAND, 0);
     window->widgets = window_land_widgets;
-    window->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_DECREMENT) |
-        (1 << WIDX_INCREMENT) |
-        (1 << WIDX_FLOOR) |
-        (1 << WIDX_WALL) |
-        (1 << WIDX_MOUNTAINMODE) |
-        (1 << WIDX_PAINTMODE) |
-        (1 << WIDX_PREVIEW);
+    window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_FLOOR)
+        | (1 << WIDX_WALL) | (1 << WIDX_MOUNTAINMODE) | (1 << WIDX_PAINTMODE) | (1 << WIDX_PREVIEW);
     window->hold_down_widgets = (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT);
     window_init_scroll_widgets(window);
     window_push_others_below(window);
@@ -147,7 +132,7 @@ rct_window * window_land_open()
  *
  *  rct2: 0x006640A5
  */
-static void window_land_close(rct_window *w)
+static void window_land_close(rct_window* w)
 {
     // If the tool wasn't changed, turn tool off
     if (land_tool_is_active())
@@ -158,25 +143,26 @@ static void window_land_close(rct_window *w)
  *
  *  rct2: 0x00664064
  */
-static void window_land_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_land_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_MOUNTAINMODE:
-        gLandMountainMode ^= 1;
-        gLandPaintMode = 0;
-        window_invalidate(w);
-        break;
-    case WIDX_PAINTMODE:
-        gLandMountainMode = 0;
-        gLandPaintMode ^= 1;
-        window_invalidate(w);
-        break;
-    case WIDX_PREVIEW:
-        window_land_inputsize(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_MOUNTAINMODE:
+            gLandMountainMode ^= 1;
+            gLandPaintMode = 0;
+            window_invalidate(w);
+            break;
+        case WIDX_PAINTMODE:
+            gLandMountainMode = 0;
+            gLandPaintMode ^= 1;
+            window_invalidate(w);
+            break;
+        case WIDX_PREVIEW:
+            window_land_inputsize(w);
+            break;
     }
 }
 
@@ -184,32 +170,33 @@ static void window_land_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x0066407B
  */
-static void window_land_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_land_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    switch (widgetIndex) {
-    case WIDX_FLOOR:
-        land_tool_show_surface_style_dropdown(w, widget, _selectedFloorTexture);
-        break;
-    case WIDX_WALL:
-        land_tool_show_edge_style_dropdown(w, widget, _selectedWallTexture);
-        break;
-    case WIDX_PREVIEW:
-        window_land_inputsize(w);
-        break;
-    case WIDX_DECREMENT:
-        // Decrement land tool size
-        gLandToolSize = Math::Max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+    switch (widgetIndex)
+    {
+        case WIDX_FLOOR:
+            land_tool_show_surface_style_dropdown(w, widget, _selectedFloorTexture);
+            break;
+        case WIDX_WALL:
+            land_tool_show_edge_style_dropdown(w, widget, _selectedWallTexture);
+            break;
+        case WIDX_PREVIEW:
+            window_land_inputsize(w);
+            break;
+        case WIDX_DECREMENT:
+            // Decrement land tool size
+            gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
-        // Invalidate the window
-        window_invalidate(w);
-        break;
-    case WIDX_INCREMENT:
-        // Increment land tool size
-        gLandToolSize = Math::Min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+            // Invalidate the window
+            window_invalidate(w);
+            break;
+        case WIDX_INCREMENT:
+            // Increment land tool size
+            gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
-        // Invalidate the window
-        window_invalidate(w);
-        break;
+            // Invalidate the window
+            window_invalidate(w);
+            break;
     }
 }
 
@@ -217,63 +204,70 @@ static void window_land_mousedown(rct_window *w, rct_widgetindex widgetIndex, rc
  *
  *  rct2: 0x00664090
  */
-static void window_land_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    sint32 type;
+    int32_t type;
 
-    switch (widgetIndex) {
-    case WIDX_FLOOR:
-        if (dropdownIndex == -1)
-            dropdownIndex = gDropdownHighlightedIndex;
+    switch (widgetIndex)
+    {
+        case WIDX_FLOOR:
+            if (dropdownIndex == -1)
+                dropdownIndex = gDropdownHighlightedIndex;
 
-        type = (dropdownIndex == -1) ?
-            _selectedFloorTexture :
-            (uint32)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+            type = (dropdownIndex == -1) ? _selectedFloorTexture
+                                         : (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
 
-        if (gLandToolTerrainSurface == type) {
-            gLandToolTerrainSurface = 255;
-        } else {
-            gLandToolTerrainSurface = type;
-            _selectedFloorTexture = type;
-        }
-        window_invalidate(w);
-        break;
-    case WIDX_WALL:
-        if (dropdownIndex == -1)
-            dropdownIndex = gDropdownHighlightedIndex;
+            if (gLandToolTerrainSurface == type)
+            {
+                gLandToolTerrainSurface = 255;
+            }
+            else
+            {
+                gLandToolTerrainSurface = type;
+                _selectedFloorTexture = type;
+            }
+            window_invalidate(w);
+            break;
+        case WIDX_WALL:
+            if (dropdownIndex == -1)
+                dropdownIndex = gDropdownHighlightedIndex;
 
-        type = (dropdownIndex == -1) ?_selectedWallTexture : WallTextureOrder[dropdownIndex];
+            type = (dropdownIndex == -1) ? _selectedWallTexture : WallTextureOrder[dropdownIndex];
 
-        if (gLandToolTerrainEdge == type) {
-            gLandToolTerrainEdge = 255;
-        } else {
-            gLandToolTerrainEdge = type;
-            _selectedWallTexture = type;
-        }
-        window_invalidate(w);
-        break;
+            if (gLandToolTerrainEdge == type)
+            {
+                gLandToolTerrainEdge = 255;
+            }
+            else
+            {
+                gLandToolTerrainEdge = type;
+                _selectedWallTexture = type;
+            }
+            window_invalidate(w);
+            break;
     }
 }
 
-static void window_land_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
+static void window_land_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    sint32 size;
+    int32_t size;
     char* end;
 
     if (widgetIndex != WIDX_PREVIEW || text == nullptr)
         return;
 
     size = strtol(text, &end, 10);
-    if (*end == '\0') {
-        size = Math::Max(MINIMUM_TOOL_SIZE,size);
-        size = Math::Min(MAXIMUM_TOOL_SIZE,size);
+    if (*end == '\0')
+    {
+        size = std::max(MINIMUM_TOOL_SIZE, size);
+        size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
 
         window_invalidate(w);
     }
 }
 
-static void window_land_inputsize(rct_window *w)
+static void window_land_inputsize(rct_window* w)
 {
     TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
     TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
@@ -284,7 +278,7 @@ static void window_land_inputsize(rct_window *w)
  *
  *  rct2: 0x00664272
  */
-static void window_land_update(rct_window *w)
+static void window_land_update(rct_window* w)
 {
     if (!land_tool_is_active())
         window_close(w);
@@ -294,7 +288,7 @@ static void window_land_update(rct_window *w)
  *
  *  rct2: 0x00663F20
  */
-static void window_land_invalidate(rct_window *w)
+static void window_land_invalidate(rct_window* w)
 {
     w->pressed_widgets = (1 << WIDX_PREVIEW);
     if (gLandToolTerrainSurface != 255)
@@ -316,20 +310,23 @@ static void window_land_invalidate(rct_window *w)
  *
  *  rct2: 0x00663F7C
  */
-static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    sint32 x, y, numTiles;
+    int32_t x, y, numTiles;
     money32 price;
-    rct_widget *previewWidget = &window_land_widgets[WIDX_PREVIEW];
+    rct_widget* previewWidget = &window_land_widgets[WIDX_PREVIEW];
 
     window_draw_widgets(w, dpi);
 
     // Draw number for tool sizes bigger than 7
-    if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
+    if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+    {
         x = w->x + (previewWidget->left + previewWidget->right) / 2;
         y = w->y + (previewWidget->top + previewWidget->bottom) / 2;
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
-    } else if (gLandMountainMode) {
+    }
+    else if (gLandMountainMode)
+    {
         x = w->x + previewWidget->left;
         y = w->y + previewWidget->top;
         gfx_draw_sprite(dpi, SPR_LAND_TOOL_SIZE_0, x, y, 0);
@@ -356,7 +353,8 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (gLandToolTerrainEdge != 255)
         price += numTiles * 100;
 
-    if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+    if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+    {
         set_format_arg(0, money32, price);
         gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
     }

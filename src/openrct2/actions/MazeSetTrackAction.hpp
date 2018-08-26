@@ -1,37 +1,29 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
-#include "../core/MemoryStream.h"
-#include "../localisation/StringIds.h"
-#include "GameAction.h"
-
 #include "../Cheats.h"
+#include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
+#include "GameAction.h"
 
+// clang-format off
 /** rct2: 0x00993CE9 */
-static constexpr const uint8 byte_993CE9[] =
-{
+static constexpr const uint8_t byte_993CE9[] = {
     0xFF, 0xE0, 0xFF,
     14, 0, 1, 2,
     6, 2, 4, 5,
@@ -40,45 +32,47 @@ static constexpr const uint8 byte_993CE9[] =
 };
 
 /** rct2: 0x00993CFC */
-static constexpr const uint8 byte_993CFC[] =
-{
-    5, 12, 0xFF, 0xFF, 9, 0, 0xFF, 0xFF, 13, 4, 0xFF, 0xFF, 1, 8, 0xFF, 0xFF
+static constexpr const uint8_t byte_993CFC[] = {
+    5, 12, 0xFF, 0xFF,
+    9, 0, 0xFF, 0xFF,
+    13, 4, 0xFF, 0xFF,
+    1, 8, 0xFF, 0xFF,
 };
 
 /** rct2: 0x00993D0C */
-static constexpr const uint8 byte_993D0C[] =
-{
-    3, 0, 0xFF, 0xFF, 0, 1, 0xFF, 0xFF, 1, 2, 0xFF, 0xFF, 2, 3, 0xFF, 0xFF
+static constexpr const uint8_t byte_993D0C[] = {
+    3, 0, 0xFF, 0xFF,
+    0, 1, 0xFF, 0xFF,
+    1, 2, 0xFF, 0xFF,
+    2, 3, 0xFF, 0xFF,
 };
-
+// clang-format on
 
 struct MazeSetTrackAction : public GameActionBase<GAME_COMMAND_SET_MAZE_TRACK, GameActionResult>
 {
 private:
-    uint16 _x;
-    uint16 _y;
-    uint16 _z;
+    uint16_t _x;
+    uint16_t _y;
+    uint16_t _z;
     bool _initialPlacement;
-    uint8 _direction;
-    uint8 _rideIndex;
-    uint8 _mode;
+    uint8_t _direction;
+    uint8_t _rideIndex;
+    uint8_t _mode;
 
 public:
-    MazeSetTrackAction() {}
-    MazeSetTrackAction(uint16 x, uint16 y, uint16 z, bool initialPlacement, uint8 direction, uint8 rideIndex, uint8 mode)
-        : _x(x),
-        _y(y),
-        _z(z),
-        _initialPlacement(initialPlacement),
-        _direction(direction),
-        _rideIndex(rideIndex),
-        _mode(mode)
+    MazeSetTrackAction()
     {
     }
-
-    uint16 GetActionFlags() const override
+    MazeSetTrackAction(
+        uint16_t x, uint16_t y, uint16_t z, bool initialPlacement, uint8_t direction, uint8_t rideIndex, uint8_t mode)
+        : _x(x)
+        , _y(y)
+        , _z(z)
+        , _initialPlacement(initialPlacement)
+        , _direction(direction)
+        , _rideIndex(rideIndex)
+        , _mode(mode)
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
     void Serialise(DataSerialiser& stream) override
@@ -119,7 +113,7 @@ public:
             return res;
         }
 
-        rct_tile_element * tileElement = map_get_surface_element_at(_x / 32, _y / 32);
+        rct_tile_element* tileElement = map_get_surface_element_at(_x / 32, _y / 32);
         if (tileElement == nullptr)
         {
             res->Error = GA_ERROR::UNKNOWN;
@@ -127,10 +121,10 @@ public:
             return res;
         }
 
-        uint8 baseHeight = _z >> 3;
-        uint8 clearanceHeight = (_z + 32) >> 3;
+        uint8_t baseHeight = _z >> 3;
+        uint8_t clearanceHeight = (_z + 32) >> 3;
 
-        sint8 heightDifference = baseHeight - tileElement->base_height;
+        int8_t heightDifference = baseHeight - tileElement->base_height;
         if (heightDifference >= 0 && !gCheatsDisableSupportLimits)
         {
             heightDifference = heightDifference >> 1;
@@ -174,7 +168,7 @@ public:
                 return res;
             }
 
-            Ride * ride = get_ride(_rideIndex);
+            Ride* ride = get_ride(_rideIndex);
             if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
@@ -208,27 +202,28 @@ public:
             return res;
         }
 
-        uint32 flags = GetFlags();
+        uint32_t flags = GetFlags();
         if (!(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_2))
         {
             footpath_remove_litter(_x, _y, _z);
             wall_remove_at(floor2(_x, 32), floor2(_y, 32), _z, _z + 32);
         }
 
-        uint8 baseHeight = _z >> 3;
-        uint8 clearanceHeight = (_z + 32) >> 3;
+        uint8_t baseHeight = _z >> 3;
+        uint8_t clearanceHeight = (_z + 32) >> 3;
 
-        rct_tile_element * tileElement = map_get_track_element_at_of_type_from_ride(_x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        rct_tile_element* tileElement = map_get_track_element_at_of_type_from_ride(
+            _x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
-            Ride * ride = get_ride(_rideIndex);
+            Ride* ride = get_ride(_rideIndex);
             openrct2_assert(ride != nullptr, "Invalid ride index: %d\n", _rideIndex);
 
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
-            uint16 flooredX = floor2(_x, 32);
-            uint16 flooredY = floor2(_y, 32);
+            uint16_t flooredX = floor2(_x, 32);
+            uint16_t flooredY = floor2(_y, 32);
 
             tileElement = tile_element_insert(_x / 32, _y / 32, baseHeight, 0xF);
             assert(tileElement != nullptr);
@@ -260,110 +255,98 @@ public:
 
         switch (_mode)
         {
-        case GC_SET_MAZE_TRACK_BUILD:
-        {
-            uint8 segmentOffset = MazeGetSegmentBit(_x, _y);
-
-            tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
-
-            if (!_initialPlacement)
+            case GC_SET_MAZE_TRACK_BUILD:
             {
-                segmentOffset = byte_993CE9[(_direction + segmentOffset)];
+                uint8_t segmentOffset = MazeGetSegmentBit(_x, _y);
+
                 tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
 
-                uint8 temp_edx = byte_993CFC[segmentOffset];
-                if (temp_edx != 0xFF)
+                if (!_initialPlacement)
                 {
-                    uint16 previousElementX = floor2(_x, 32) - CoordsDirectionDelta[_direction].x;
-                    uint16 previousElementY = floor2(_y, 32) - CoordsDirectionDelta[_direction].y;
+                    segmentOffset = byte_993CE9[(_direction + segmentOffset)];
+                    tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
 
-                    rct_tile_element * previousTileElement = map_get_track_element_at_of_type_from_ride(
-                        previousElementX,
-                        previousElementY,
-                        baseHeight,
-                        TRACK_ELEM_MAZE,
-                        _rideIndex);
+                    uint8_t temp_edx = byte_993CFC[segmentOffset];
+                    if (temp_edx != 0xFF)
+                    {
+                        uint16_t previousElementX = floor2(_x, 32) - CoordsDirectionDelta[_direction].x;
+                        uint16_t previousElementY = floor2(_y, 32) - CoordsDirectionDelta[_direction].y;
 
-                    if (previousTileElement != nullptr)
-                    {
-                        previousTileElement->properties.track.maze_entry &= ~(1 << temp_edx);
-                    }
-                    else
-                    {
-                        tileElement->properties.track.maze_entry |= (1 << segmentOffset);
+                        rct_tile_element* previousTileElement = map_get_track_element_at_of_type_from_ride(
+                            previousElementX, previousElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+
+                        if (previousTileElement != nullptr)
+                        {
+                            previousTileElement->properties.track.maze_entry &= ~(1 << temp_edx);
+                        }
+                        else
+                        {
+                            tileElement->properties.track.maze_entry |= (1 << segmentOffset);
+                        }
                     }
                 }
+
+                break;
             }
 
-            break;
-        }
+            case GC_SET_MAZE_TRACK_MOVE:
+                break;
 
-        case GC_SET_MAZE_TRACK_MOVE:
-            break;
-
-        case GC_SET_MAZE_TRACK_FILL:
-            if (!_initialPlacement)
-            {
-                uint16 previousSegmentX = _x - CoordsDirectionDelta[_direction].x / 2;
-                uint16 previousSegmentY = _y - CoordsDirectionDelta[_direction].y / 2;
-
-                tileElement = map_get_track_element_at_of_type_from_ride(
-                    previousSegmentX,
-                    previousSegmentY,
-                    baseHeight,
-                    TRACK_ELEM_MAZE,
-                    _rideIndex);
-
-                map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
-                if (tileElement == nullptr)
+            case GC_SET_MAZE_TRACK_FILL:
+                if (!_initialPlacement)
                 {
-                    log_error("No surface found\n");
-                    res->Error = GA_ERROR::UNKNOWN;
-                    res->ErrorMessage = STR_NONE;
-                    return res;
-                }
+                    uint16_t previousSegmentX = _x - CoordsDirectionDelta[_direction].x / 2;
+                    uint16_t previousSegmentY = _y - CoordsDirectionDelta[_direction].y / 2;
 
-                uint32 segmentBit = MazeGetSegmentBit(previousSegmentX, previousSegmentY);
+                    tileElement = map_get_track_element_at_of_type_from_ride(
+                        previousSegmentX, previousSegmentY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
 
-                tileElement->properties.track.maze_entry |= (1 << segmentBit);
-                segmentBit--;
-                tileElement->properties.track.maze_entry |= (1 << segmentBit);
-                segmentBit = (segmentBit - 4) & 0x0F;
-                tileElement->properties.track.maze_entry |= (1 << segmentBit);
-                segmentBit = (segmentBit + 3) & 0x0F;
+                    map_invalidate_tile_full(floor2(previousSegmentX, 32), floor2(previousSegmentY, 32));
+                    if (tileElement == nullptr)
+                    {
+                        log_error("No surface found\n");
+                        res->Error = GA_ERROR::UNKNOWN;
+                        res->ErrorMessage = STR_NONE;
+                        return res;
+                    }
 
-                do
-                {
+                    uint32_t segmentBit = MazeGetSegmentBit(previousSegmentX, previousSegmentY);
+
                     tileElement->properties.track.maze_entry |= (1 << segmentBit);
-
-                    uint32 direction1 = byte_993D0C[segmentBit];
-                    uint16 nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
-                    uint16 nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
-
-                    rct_tile_element * tmp_tileElement = map_get_track_element_at_of_type_from_ride(
-                        nextElementX,
-                        nextElementY,
-                        baseHeight,
-                        TRACK_ELEM_MAZE,
-                        _rideIndex);
-
-                    if (tmp_tileElement != nullptr)
-                    {
-                        uint8 edx11 = byte_993CFC[segmentBit];
-                        tmp_tileElement->properties.track.maze_entry |= 1 << (edx11);
-                    }
-
                     segmentBit--;
-                } while ((segmentBit & 0x3) != 0x3);
-            }
-            break;
+                    tileElement->properties.track.maze_entry |= (1 << segmentBit);
+                    segmentBit = (segmentBit - 4) & 0x0F;
+                    tileElement->properties.track.maze_entry |= (1 << segmentBit);
+                    segmentBit = (segmentBit + 3) & 0x0F;
+
+                    do
+                    {
+                        tileElement->properties.track.maze_entry |= (1 << segmentBit);
+
+                        uint32_t direction1 = byte_993D0C[segmentBit];
+                        uint16_t nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
+                        uint16_t nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
+
+                        rct_tile_element* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
+                            nextElementX, nextElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+
+                        if (tmp_tileElement != nullptr)
+                        {
+                            uint8_t edx11 = byte_993CFC[segmentBit];
+                            tmp_tileElement->properties.track.maze_entry |= 1 << (edx11);
+                        }
+
+                        segmentBit--;
+                    } while ((segmentBit & 0x3) != 0x3);
+                }
+                break;
         }
 
         map_invalidate_tile(floor2(_x, 32), floor2(_y, 32), tileElement->base_height * 8, tileElement->clearance_height * 8);
 
         if ((tileElement->properties.track.maze_entry & 0x8888) == 0x8888)
         {
-            Ride * ride = get_ride(_rideIndex);
+            Ride* ride = get_ride(_rideIndex);
             tile_element_remove(tileElement);
             sub_6CB945(_rideIndex);
             ride->maze_tiles--;
@@ -373,10 +356,10 @@ public:
     }
 
 private:
-    uint8 MazeGetSegmentBit(uint16 x, uint16 y) const
+    uint8_t MazeGetSegmentBit(uint16_t x, uint16_t y) const
     {
-        uint8 minorX = x & 0x1F; // 0 or 16
-        uint8 minorY = y & 0x1F; // 0 or 16
+        uint8_t minorX = x & 0x1F; // 0 or 16
+        uint8_t minorY = y & 0x1F; // 0 or 16
 
         if (minorX == 0 && minorY == 0)
         {

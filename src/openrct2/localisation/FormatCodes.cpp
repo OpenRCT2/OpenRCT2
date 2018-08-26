@@ -1,29 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "FormatCodes.h"
 
 #include "../common.h"
 #include "../core/Util.hpp"
-#include "FormatCodes.h"
 #include "Localisation.h"
 
 #pragma region Format codes
 
-struct format_code_token {
-    uint32 code;
-    const char *token;
+struct format_code_token
+{
+    uint32_t code;
+    const char* token;
 };
 
 // clang-format off
@@ -102,9 +97,9 @@ static constexpr const format_code_token format_code_tokens[] = {
 };
 // clang-format on
 
-uint32 format_get_code(const char *token)
+uint32_t format_get_code(const char* token)
 {
-    for (uint32 i = 0; i < Util::CountOf(format_code_tokens); i++)
+    for (uint32_t i = 0; i < Util::CountOf(format_code_tokens); i++)
     {
         if (_strcmpi(token, format_code_tokens[i].token) == 0)
             return format_code_tokens[i].code;
@@ -112,9 +107,9 @@ uint32 format_get_code(const char *token)
     return 0;
 }
 
-const char *format_get_token(uint32 code)
+const char* format_get_token(uint32_t code)
 {
-    for (uint32 i = 0; i < Util::CountOf(format_code_tokens); i++)
+    for (uint32_t i = 0; i < Util::CountOf(format_code_tokens); i++)
     {
         if (code == format_code_tokens[i].code)
             return format_code_tokens[i].token;
@@ -122,24 +117,28 @@ const char *format_get_token(uint32 code)
     return nullptr;
 }
 
-bool utf8_should_use_sprite_for_codepoint(sint32 codepoint)
+bool utf8_should_use_sprite_for_codepoint(int32_t codepoint)
 {
-    switch (codepoint) {
-    case FORMAT_UP:
-    case FORMAT_DOWN:
-    case FORMAT_LEFTGUILLEMET:
-    case FORMAT_TICK:
-    case FORMAT_CROSS:
-    case FORMAT_RIGHT:
-    case FORMAT_RIGHTGUILLEMET:
-    case FORMAT_SMALLUP:
-    case FORMAT_SMALLDOWN:
-    case FORMAT_LEFT:
-    case FORMAT_OPENQUOTES:
-    case FORMAT_ENDQUOTES:
-        return true;
-    default:
-        return false;
+    switch (codepoint)
+    {
+        case FORMAT_UP:
+        case FORMAT_DOWN:
+        case FORMAT_LEFTGUILLEMET:
+        case FORMAT_TICK:
+        case FORMAT_CROSS:
+        case FORMAT_RIGHT:
+        case FORMAT_RIGHTGUILLEMET:
+        case FORMAT_SMALLUP:
+        case FORMAT_SMALLDOWN:
+        case FORMAT_LEFT:
+        case FORMAT_OPENQUOTES:
+        case FORMAT_ENDQUOTES:
+        case FORMAT_GERMAN_OPENQUOTES:
+        case UNICODE_DINGBATS_PLUS:
+        case UNICODE_DINGBATS_MINUS:
+            return true;
+        default:
+            return false;
     }
 }
 

@@ -1,30 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <stack>
 #include "../Context.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../interface/Fonts.h"
 #include "../interface/FontFamilies.h"
+#include "../interface/Fonts.h"
 #include "../object/ObjectManager.h"
 #include "../platform/platform.h"
 #include "LanguagePack.h"
 #include "Localisation.h"
 #include "LocalisationService.h"
+
+#include <stack>
 
 // clang-format off
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
@@ -35,6 +29,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "zh-CN", "Chinese (Simplified)",  "Chinese (Simplified)",  FAMILY(&TTFFamilyChineseSimplified),   RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED },  // LANGUAGE_CHINESE_SIMPLIFIED
     { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", FAMILY(&TTFFamilyChineseTraditional),  RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL }, // LANGUAGE_CHINESE_TRADITIONAL
     { "cs-CZ", "Czech",                 "Czech",                 FAMILY(&TTFFamilySansSerif),           RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
+    { "da-DK", "Danish",                "Dansk",                 FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_DANISH
     { "de-DE", "German",                "Deutsch",               FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_GERMAN },              // LANGUAGE_GERMAN
     { "en-GB", "English (UK)",          "English (UK)",          FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_ENGLISH_UK
     { "en-US", "English (US)",          "English (US)",          FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_US },          // LANGUAGE_ENGLISH_US
@@ -48,25 +43,26 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "nb-NO", "Norwegian",             "Norsk",                 FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_NORWEGIAN
     { "pl-PL", "Polish",                "Polski",                FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_POLISH
     { "pt-BR", "Portuguese (BR)",       u8"Português (BR)",      FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_PORTUGUESE },          // LANGUAGE_PORTUGUESE_BR
-    { "ru-RU", "Russian",               "Russian",               FAMILY(&TTFFamilySansSerif),           RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_RUSSIAN
+    { "ru-RU", "Russian",               u8"Русский",             FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_RUSSIAN
     { "fi-FI", "Finnish",               "Suomi",                 FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_FINNISH
     { "sv-SE", "Swedish",               "Svenska",               FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_SWEDISH },             // LANGUAGE_SWEDISH
+    { "tr-TR", "Turkish",               "Türkçe",                FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_TURKISH
 };
 // clang-format on
 
 // clang-format off
-const utf8 BlackUpArrowString[] =       { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB2, (utf8)(uint8)0x00 };
-const utf8 BlackDownArrowString[] =     { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xBC, (utf8)(uint8)0x00 };
-const utf8 BlackLeftArrowString[] =     { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x97, (utf8)(uint8)0x80, (utf8)(uint8)0x00 };
-const utf8 BlackRightArrowString[] =    { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB6, (utf8)(uint8)0x00 };
-const utf8 CheckBoxMarkString[] =       { (utf8)(uint8)0xE2, (utf8)(uint8)0x9C, (utf8)(uint8)0x93, (utf8)(uint8)0x00 };
+const utf8 BlackUpArrowString[] =       { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xB2, (utf8)(uint8_t)0x00 };
+const utf8 BlackDownArrowString[] =     { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xBC, (utf8)(uint8_t)0x00 };
+const utf8 BlackLeftArrowString[] =     { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x97, (utf8)(uint8_t)0x80, (utf8)(uint8_t)0x00 };
+const utf8 BlackRightArrowString[] =    { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xB6, (utf8)(uint8_t)0x00 };
+const utf8 CheckBoxMarkString[] =       { (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x9C, (utf8)(uint8_t)0x93, (utf8)(uint8_t)0x00 };
 // clang-format on
 
-void utf8_remove_format_codes(utf8 * text, bool allowcolours)
+void utf8_remove_format_codes(utf8* text, bool allowcolours)
 {
-    const utf8 * ch = text;
-    utf8 * dstCh = text;
-    sint32 codepoint;
+    const utf8* ch = text;
+    utf8* dstCh = text;
+    int32_t codepoint;
     while ((codepoint = String::GetNextCodepoint(ch, &ch)) != 0)
     {
         if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint)))
@@ -77,10 +73,10 @@ void utf8_remove_format_codes(utf8 * text, bool allowcolours)
     *dstCh = 0;
 }
 
-uint8 language_get_id_from_locale(const char * locale)
+uint8_t language_get_id_from_locale(const char* locale)
 {
-    uint8 i = 0;
-    for (const auto &langDesc : LanguagesDescriptors)
+    uint8_t i = 0;
+    for (const auto& langDesc : LanguagesDescriptors)
     {
         if (String::Equals(locale, langDesc.locale))
         {
@@ -91,13 +87,13 @@ uint8 language_get_id_from_locale(const char * locale)
     return LANGUAGE_UNDEFINED;
 }
 
-const char * language_get_string(rct_string_id id)
+const char* language_get_string(rct_string_id id)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.GetString(id);
 }
 
-bool language_open(sint32 id)
+bool language_open(int32_t id)
 {
     auto context = OpenRCT2::GetContext();
     auto& localisationService = context->GetLocalisationService();
@@ -113,17 +109,14 @@ bool language_open(sint32 id)
     }
 }
 
-bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds)
+bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     auto result = localisationService.GetLocalisedScenarioStrings(scenarioFilename);
     outStringIds[0] = std::get<0>(result);
     outStringIds[1] = std::get<1>(result);
     outStringIds[2] = std::get<2>(result);
-    return
-        outStringIds[0] != STR_NONE ||
-        outStringIds[1] != STR_NONE ||
-        outStringIds[2] != STR_NONE;
+    return outStringIds[0] != STR_NONE || outStringIds[1] != STR_NONE || outStringIds[2] != STR_NONE;
 }
 
 void language_free_object_string(rct_string_id stringId)
@@ -132,13 +125,13 @@ void language_free_object_string(rct_string_id stringId)
     localisationService.FreeObjectString(stringId);
 }
 
-rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index)
+rct_string_id language_get_object_override_string_id(const char* identifier, uint8_t index)
 {
     const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.GetObjectOverrideStringId(identifier, index);
 }
 
-rct_string_id language_allocate_object_string(const std::string &target)
+rct_string_id language_allocate_object_string(const std::string& target)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.AllocateObjectString(target);

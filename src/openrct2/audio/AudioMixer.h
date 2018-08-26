@@ -1,26 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
 #include "../common.h"
 
-#define MIXER_VOLUME_MAX        128
-#define MIXER_LOOP_NONE         0
-#define MIXER_LOOP_INFINITE     -1
+#define MIXER_VOLUME_MAX 128
+#define MIXER_LOOP_NONE 0
+#define MIXER_LOOP_INFINITE (-1)
 
 enum MIXER_GROUP
 {
@@ -41,41 +34,40 @@ namespace OpenRCT2::Audio
     {
         virtual ~IAudioMixer() = default;
 
-        virtual void Init(const char * device) abstract;
+        virtual void Init(const char* device) abstract;
         virtual void Close() abstract;
         virtual void Lock() abstract;
         virtual void Unlock() abstract;
-        virtual IAudioChannel * Play(IAudioSource * source, sint32 loop, bool deleteondone, bool deletesourceondone) abstract;
+        virtual IAudioChannel* Play(IAudioSource * source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
         virtual void Stop(IAudioChannel * channel) abstract;
         virtual bool LoadMusic(size_t pathid) abstract;
         virtual void SetVolume(float volume) abstract;
 
-        virtual IAudioSource * GetSoundSource(sint32 id) abstract;
-        virtual IAudioSource * GetMusicSource(sint32 id) abstract;
+        virtual IAudioSource* GetSoundSource(int32_t id) abstract;
+        virtual IAudioSource* GetMusicSource(int32_t id) abstract;
     };
 } // namespace OpenRCT2::Audio
 
 #ifndef DSBPAN_LEFT
-#define DSBPAN_LEFT -10000
+#    define DSBPAN_LEFT (-10000)
 #endif
 #ifndef DSBPAN_RIGHT
-#define DSBPAN_RIGHT 10000
+#    define DSBPAN_RIGHT 10000
 #endif
 
-void Mixer_Init(const char * device);
-void* Mixer_Play_Effect(size_t id, sint32 loop, sint32 volume, float pan, double rate, sint32 deleteondone);
+void Mixer_Init(const char* device);
+void* Mixer_Play_Effect(size_t id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
 void Mixer_Stop_Channel(void* channel);
-void Mixer_Channel_Volume(void* channel, sint32 volume);
+void Mixer_Channel_Volume(void* channel, int32_t volume);
 void Mixer_Channel_Pan(void* channel, float pan);
 void Mixer_Channel_Rate(void* channel, double rate);
-sint32 Mixer_Channel_IsPlaying(void* channel);
-uint64 Mixer_Channel_GetOffset(void* channel);
-sint32 Mixer_Channel_SetOffset(void* channel, uint64 offset);
-void Mixer_Channel_SetGroup(void* channel, sint32 group);
-void* Mixer_Play_Music(sint32 pathId, sint32 loop, sint32 streaming);
+int32_t Mixer_Channel_IsPlaying(void* channel);
+uint64_t Mixer_Channel_GetOffset(void* channel);
+int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset);
+void Mixer_Channel_SetGroup(void* channel, int32_t group);
+void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming);
 void Mixer_SetVolume(float volume);
 
-sint32 DStoMixerVolume(sint32 volume);
-float DStoMixerPan(sint32 pan);
-double DStoMixerRate(sint32 frequency);
-
+int32_t DStoMixerVolume(int32_t volume);
+float DStoMixerPan(int32_t pan);
+double DStoMixerRate(int32_t frequency);

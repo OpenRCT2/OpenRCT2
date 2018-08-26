@@ -24,6 +24,7 @@
     <comment xml:lang="zh-TW">OpenRCT2 遊戲存檔</comment>
     <glob weight="60" pattern="*.sv6"/>
     <glob weight="60" pattern="*.sv4"/>
+    <glob weight="60" pattern="*.sv7"/>
   </mime-type>
 
   <mime-type type="application/x-openrct2-scenario">

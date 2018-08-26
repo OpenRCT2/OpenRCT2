@@ -1,31 +1,23 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <openrct2/core/Math.hpp>
-#include <openrct2/Context.h>
+#include <algorithm>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-
+#include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/management/NewsItem.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/world/Sprite.h>
+#include <openrct2/management/NewsItem.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/drawing/Drawing.h>
+#include <openrct2/world/Sprite.h>
 
 // clang-format off
 enum WINDOW_NEWS_WIDGET_IDX {
@@ -47,11 +39,10 @@ static rct_widget window_news_widgets[] = {
 
 static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_news_update(rct_window *w);
-static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_news_events = {
     nullptr,
@@ -76,7 +67,7 @@ static rct_window_event_list window_news_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_news_tooltip,
+    nullptr,
     nullptr,
     nullptr,
     nullptr,
@@ -89,40 +80,35 @@ static rct_window_event_list window_news_events = {
  *
  *  rct2: 0x0066E464
  */
-rct_window * window_news_open()
+rct_window* window_news_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_RECENT_NEWS);
-    if (window == nullptr) {
-        window = window_create_auto_pos(
-            400,
-            300,
-            &window_news_events,
-            WC_RECENT_NEWS,
-            0
-        );
+    if (window == nullptr)
+    {
+        window = window_create_auto_pos(400, 300, &window_news_events, WC_RECENT_NEWS, 0);
         window->widgets = window_news_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
         window_init_scroll_widgets(window);
         window->news.var_480 = -1;
     }
 
-// sub_66E4BA:
-    rct_widget *widget;
+    // sub_66E4BA:
+    rct_widget* widget;
 
-    sint32 width = 0;
-    sint32 height = 0;
+    int32_t width = 0;
+    int32_t height = 0;
     window_get_scroll_size(window, 0, &width, &height);
     widget = &window_news_widgets[WIDX_SCROLL];
-    window->scrolls[0].v_top = Math::Max(0, height - (widget->bottom - widget->top - 1));
+    window->scrolls[0].v_top = std::max(0, height - (widget->bottom - widget->top - 1));
     widget_scroll_update_thumbs(window, WIDX_SCROLL);
 
     return window;
 }
 
-static sint32 window_news_get_item_height()
+static int32_t window_news_get_item_height()
 {
     return 4 * font_get_line_height(gCurrentFontSpriteBase) + 2;
 }
@@ -131,16 +117,16 @@ static sint32 window_news_get_item_height()
  *
  *  rct2: 0x0066D4D5
  */
-static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_news_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_SETTINGS:
-        context_open_window(WC_NOTIFICATION_OPTIONS);
-        break;
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_SETTINGS:
+            context_open_window(WC_NOTIFICATION_OPTIONS);
+            break;
     }
 }
 
@@ -148,12 +134,11 @@ static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x0066EAB8
  */
-static void window_news_update(rct_window *w)
+static void window_news_update(rct_window* w)
 {
-    sint32 i, j, x, y, z;
+    int32_t i, j, x, y, z;
 
-    if (w->news.var_480 == -1 ||
-        --w->news.var_484 != 0)
+    if (w->news.var_480 == -1 || --w->news.var_484 != 0)
     {
         return;
     }
@@ -170,7 +155,7 @@ static void window_news_update(rct_window *w)
 
         if (j == 0)
         {
-            NewsItem * const newsItem = news_item_get(i);
+            NewsItem* const newsItem = news_item_get(i);
             if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
                 return;
             if (w->news.var_482 == 1)
@@ -196,12 +181,12 @@ static void window_news_update(rct_window *w)
  *
  *  rct2: 0x0066EA3C
  */
-static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+static void window_news_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    sint32 itemHeight = window_news_get_item_height();
+    int32_t itemHeight = window_news_get_item_height();
 
     *height = 0;
-    for (sint32 i = 11; i < 61; i++)
+    for (int32_t i = 11; i < 61; i++)
     {
         if (news_item_is_empty(i))
             break;
@@ -214,10 +199,10 @@ static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 
  *
  *  rct2: 0x0066EA5C
  */
-static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 itemHeight = window_news_get_item_height();
-    sint32 i, buttonIndex;
+    int32_t itemHeight = window_news_get_item_height();
+    int32_t i, buttonIndex;
 
     buttonIndex = 0;
     for (i = 11; i < 61; i++)
@@ -227,10 +212,8 @@ static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint3
 
         if (y < itemHeight)
         {
-            NewsItem * const newsItem = news_item_get(i);
-            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON ||
-                y < 14 || y >= 38 ||
-                x < 328)
+            NewsItem* const newsItem = news_item_get(i);
+            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON || y < 14 || y >= 38 || x < 328)
             {
                 buttonIndex = 0;
                 break;
@@ -261,18 +244,9 @@ static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint3
 
 /**
  *
- *  rct2: 0x0066EAAE
- */
-static void window_news_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
-{
-    set_format_arg(0, rct_string_id, STR_LIST);
-}
-
-/**
- *
  *  rct2: 0x0066E4E8
  */
-static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_news_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 }
@@ -281,16 +255,16 @@ static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0066E4EE
  */
-static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-    sint32 itemHeight = window_news_get_item_height();
-    sint32 i, x, y, yy, press;
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t itemHeight = window_news_get_item_height();
+    int32_t i, x, y, yy, press;
 
     y = 0;
     for (i = 11; i < 61; i++)
     {
-        NewsItem * const newsItem = news_item_get(i);
+        NewsItem* const newsItem = news_item_get(i);
         if (news_item_is_empty(i))
             break;
         if (y >= dpi->y + dpi->height)
@@ -302,7 +276,8 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
         }
 
         // Background
-        gfx_fill_rect_inset(dpi, -1, y, 383, y + itemHeight - 1, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+        gfx_fill_rect_inset(
+            dpi, -1, y, 383, y + itemHeight - 1, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
         // Date text
         set_format_arg(0, rct_string_id, DateDayNames[newsItem->Day - 1]);
@@ -310,7 +285,7 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
         gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 2, y);
 
         // Item text
-        utf8 *text = newsItem->Text;
+        utf8* text = newsItem->Text;
         gfx_draw_string_left_wrapped(dpi, &text, 2, y + lineHeight, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
         // Subject button
@@ -320,61 +295,66 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
             yy = y + lineHeight + 4;
 
             press = 0;
-            if (w->news.var_480 != -1) {
-                const uint8 idx = 11 + w->news.var_480;
+            if (w->news.var_480 != -1)
+            {
+                const uint8_t idx = 11 + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 1)
                     press = INSET_RECT_FLAG_BORDER_INSET;
             }
             gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
 
-            switch (newsItem->Type) {
-            case NEWS_ITEM_RIDE:
-                gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
-                break;
-            case NEWS_ITEM_PEEP:
-            case NEWS_ITEM_PEEP_ON_RIDE:
+            switch (newsItem->Type)
             {
-                rct_drawpixelinfo cliped_dpi;
-                if (!clip_drawpixelinfo(&cliped_dpi, dpi, x + 1, yy + 1, 22, 22)) {
+                case NEWS_ITEM_RIDE:
+                    gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
+                    break;
+                case NEWS_ITEM_PEEP:
+                case NEWS_ITEM_PEEP_ON_RIDE:
+                {
+                    rct_drawpixelinfo cliped_dpi;
+                    if (!clip_drawpixelinfo(&cliped_dpi, dpi, x + 1, yy + 1, 22, 22))
+                    {
+                        break;
+                    }
+
+                    rct_peep* peep = GET_PEEP(newsItem->Assoc);
+                    int32_t clip_x = 10, clip_y = 19;
+
+                    // If normal peep set sprite to normal (no food)
+                    // If staff set sprite to staff sprite
+                    int32_t sprite_type = 0;
+                    if (peep->type == PEEP_TYPE_STAFF)
+                    {
+                        sprite_type = peep->sprite_type;
+                        if (peep->staff_type == STAFF_TYPE_ENTERTAINER)
+                        {
+                            clip_y += 3;
+                        }
+                    }
+
+                    uint32_t image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
+                    image_id += 0xA0000001;
+                    image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
+
+                    gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
                     break;
                 }
-
-                rct_peep* peep = GET_PEEP(newsItem->Assoc);
-                sint32 clip_x = 10, clip_y = 19;
-
-                // If normal peep set sprite to normal (no food)
-                // If staff set sprite to staff sprite
-                sint32 sprite_type = 0;
-                if (peep->type == PEEP_TYPE_STAFF){
-                    sprite_type = peep->sprite_type;
-                    if (peep->staff_type == STAFF_TYPE_ENTERTAINER){
-                        clip_y += 3;
-                    }
-                }
-
-                uint32 image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
-                image_id += 0xA0000001;
-                image_id |= (peep->tshirt_colour << 19) | (peep->trousers_colour << 24);
-
-                gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
-                break;
-            }
-            case NEWS_ITEM_MONEY:
-                gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
-                break;
-            case NEWS_ITEM_RESEARCH:
-                gfx_draw_sprite(dpi, newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
-                break;
-            case NEWS_ITEM_PEEPS:
-                gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
-                break;
-            case NEWS_ITEM_AWARD:
-                gfx_draw_sprite(dpi, SPR_AWARD, x, yy, 0);
-                break;
-            case NEWS_ITEM_GRAPH:
-                gfx_draw_sprite(dpi, SPR_GRAPH, x, yy, 0);
-                break;
+                case NEWS_ITEM_MONEY:
+                    gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
+                    break;
+                case NEWS_ITEM_RESEARCH:
+                    gfx_draw_sprite(dpi, newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
+                    break;
+                case NEWS_ITEM_PEEPS:
+                    gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
+                    break;
+                case NEWS_ITEM_AWARD:
+                    gfx_draw_sprite(dpi, SPR_AWARD, x, yy, 0);
+                    break;
+                case NEWS_ITEM_GRAPH:
+                    gfx_draw_sprite(dpi, SPR_GRAPH, x, yy, 0);
+                    break;
             }
         }
 
@@ -385,8 +365,9 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
             yy = y + lineHeight + 4;
 
             press = 0;
-            if (w->news.var_480 != -1) {
-                const uint8 idx = 11 + w->news.var_480;
+            if (w->news.var_480 != -1)
+            {
+                const uint8_t idx = 11 + w->news.var_480;
                 news_item_is_valid_idx(idx);
                 if (i == idx && w->news.var_482 == 2)
                     press = 0x20;

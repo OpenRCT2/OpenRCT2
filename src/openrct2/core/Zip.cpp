@@ -1,30 +1,25 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef __ANDROID__
-#include <zip.h>
-#include "IStream.hpp"
-#include "Zip.h"
+#    include "Zip.h"
+
+#    include "IStream.hpp"
+
+#    include <zip.h>
 
 class ZipArchive final : public IZipArchive
 {
 private:
-    zip_t * _zip;
+    zip_t* _zip;
     ZIP_ACCESS _access;
-    std::vector<std::vector<uint8>> _writeBuffers;
+    std::vector<std::vector<uint8_t>> _writeBuffers;
 
 public:
     ZipArchive(const std::string_view& path, ZIP_ACCESS access)
@@ -35,7 +30,7 @@ public:
             zipOpenMode = ZIP_CREATE;
         }
 
-        sint32 error;
+        int32_t error;
         _zip = zip_open(path.data(), zipOpenMode, &error);
         if (_zip == nullptr)
         {
@@ -66,7 +61,7 @@ public:
         return result;
     }
 
-    uint64 GetFileSize(size_t index) const override
+    uint64_t GetFileSize(size_t index) const override
     {
         zip_stat_t zipFileStat;
         if (zip_stat_index(_zip, index, 0, &zipFileStat) == ZIP_ER_OK)
@@ -79,9 +74,9 @@ public:
         }
     }
 
-    std::vector<uint8> GetFileData(const std::string_view& path) const override
+    std::vector<uint8_t> GetFileData(const std::string_view& path) const override
     {
-        std::vector<uint8> result;
+        std::vector<uint8_t> result;
         auto index = GetIndexFromPath(path);
         auto dataSize = GetFileSize(index);
         if (dataSize > 0 && dataSize < SIZE_MAX)
@@ -90,7 +85,7 @@ public:
             if (zipFile != nullptr)
             {
                 result.resize((size_t)dataSize);
-                uint64 readBytes = zip_fread(zipFile, result.data(), dataSize);
+                uint64_t readBytes = zip_fread(zipFile, result.data(), dataSize);
                 if (readBytes != dataSize)
                 {
                     result.clear();
@@ -102,7 +97,7 @@ public:
         return result;
     }
 
-    void SetFileData(const std::string_view& path, std::vector<uint8>&& data) override
+    void SetFileData(const std::string_view& path, std::vector<uint8_t>&& data) override
     {
         // Push buffer to an internal list as libzip requires access to it until the zip
         // handle is closed.
@@ -195,4 +190,4 @@ namespace Zip
     }
 } // namespace Zip
 
-# endif
+#endif

@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
@@ -22,26 +15,28 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../ui/UiContext.h"
-#include "../world/Sprite.h"
-#include "../world/Banner.h"
 #include "../windows/Intent.h"
+#include "../world/Banner.h"
+#include "../world/Sprite.h"
 #include "GameAction.h"
 
 struct BannerSetNameAction : public GameActionBase<GAME_COMMAND_SET_BANNER_NAME, GameActionResult>
 {
 private:
-    sint32 _bannerIndex;
+    BannerIndex _bannerIndex;
     std::string _name;
 
 public:
-    BannerSetNameAction() {}
-    BannerSetNameAction(sint32 bannerIndex, const std::string& name)
-        : _bannerIndex(bannerIndex),
-        _name(name)
+    BannerSetNameAction()
+    {
+    }
+    BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
+        : _bannerIndex(bannerIndex)
+        , _name(name)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -54,7 +49,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_bannerIndex >= MAX_BANNERS || _bannerIndex < 0)
+        if (_bannerIndex >= MAX_BANNERS)
         {
             log_warning("Invalid game command for setting banner name, banner id = %d", _bannerIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -78,8 +73,8 @@ public:
     {
         rct_banner* banner = &gBanners[_bannerIndex];
 
-        utf8 *buffer = gCommonStringFormatBuffer;
-        utf8 *dst = buffer;
+        utf8* buffer = gCommonStringFormatBuffer;
+        utf8* dst = buffer;
         dst = utf8_write_codepoint(dst, FORMAT_COLOUR_CODE_START + banner->text_colour);
         String::Set(dst, sizeof(gCommonStringFormatBuffer) - (dst - buffer), _name.c_str(), _name.size());
 

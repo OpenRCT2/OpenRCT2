@@ -1,27 +1,20 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef DISABLE_NETWORK
 
-#include "network.h"
-#include "NetworkConnection.h"
-#include "../core/String.hpp"
+#    include "NetworkConnection.h"
 
-#include "../localisation/Localisation.h"
-#include "../platform/platform.h"
+#    include "../core/String.hpp"
+#    include "../localisation/Localisation.h"
+#    include "../platform/platform.h"
+#    include "network.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
 
@@ -36,12 +29,12 @@ NetworkConnection::~NetworkConnection()
     delete[] _lastDisconnectReason;
 }
 
-sint32 NetworkConnection::ReadPacket()
+int32_t NetworkConnection::ReadPacket()
 {
     if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Size))
     {
         // read packet size
-        void * buffer = &((char*)&InboundPacket.Size)[InboundPacket.BytesTransferred];
+        void* buffer = &((char*)&InboundPacket.Size)[InboundPacket.BytesTransferred];
         size_t bufferLength = sizeof(InboundPacket.Size) - InboundPacket.BytesTransferred;
         size_t readBytes;
         NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
@@ -66,7 +59,7 @@ sint32 NetworkConnection::ReadPacket()
         // read packet data
         if (InboundPacket.Data->capacity() > 0)
         {
-            void * buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
+            void* buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
             size_t bufferLength = sizeof(InboundPacket.Size) + InboundPacket.Size - InboundPacket.BytesTransferred;
             size_t readBytes;
             NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
@@ -88,13 +81,13 @@ sint32 NetworkConnection::ReadPacket()
 
 bool NetworkConnection::SendPacket(NetworkPacket& packet)
 {
-    uint16 sizen = Convert::HostToNetwork(packet.Size);
-    std::vector<uint8> tosend;
+    uint16_t sizen = Convert::HostToNetwork(packet.Size);
+    std::vector<uint8_t> tosend;
     tosend.reserve(sizeof(sizen) + packet.Size);
-    tosend.insert(tosend.end(), (uint8*)&sizen, (uint8*)&sizen + sizeof(sizen));
+    tosend.insert(tosend.end(), (uint8_t*)&sizen, (uint8_t*)&sizen + sizeof(sizen));
     tosend.insert(tosend.end(), packet.Data->begin(), packet.Data->end());
 
-    const void * buffer = &tosend[packet.BytesTransferred];
+    const void* buffer = &tosend[packet.BytesTransferred];
     size_t bufferSize = tosend.size() - packet.BytesTransferred;
     size_t sent = Socket->SendData(buffer, bufferSize);
     if (sent > 0)
@@ -108,7 +101,7 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool 
 {
     if (AuthStatus == NETWORK_AUTH_OK || !packet->CommandRequiresAuth())
     {
-        packet->Size = (uint16)packet->Data->size();
+        packet->Size = (uint16_t)packet->Data->size();
         if (front)
         {
             // If the first packet was already partially sent add new packet to second position
@@ -145,21 +138,21 @@ void NetworkConnection::ResetLastPacketTime()
 
 bool NetworkConnection::ReceivedPacketRecently()
 {
-#ifndef DEBUG
+#    ifndef DEBUG
     if (platform_get_ticks() > _lastPacketTime + 7000)
     {
         return false;
     }
-#endif
+#    endif
     return true;
 }
 
-const utf8 * NetworkConnection::GetLastDisconnectReason() const
+const utf8* NetworkConnection::GetLastDisconnectReason() const
 {
     return this->_lastDisconnectReason;
 }
 
-void NetworkConnection::SetLastDisconnectReason(const utf8 * src)
+void NetworkConnection::SetLastDisconnectReason(const utf8* src)
 {
     if (src == nullptr)
     {
@@ -178,7 +171,7 @@ void NetworkConnection::SetLastDisconnectReason(const utf8 * src)
     String::Set(_lastDisconnectReason, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, src);
 }
 
-void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void *args)
+void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void* args)
 {
     char buffer[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
     format_string(buffer, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, string_id, args);

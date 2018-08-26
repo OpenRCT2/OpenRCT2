@@ -1,27 +1,21 @@
-#pragma region Copyright (c) 2018 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #ifndef DISABLE_NETWORK
 
-#include "Crypt.h"
-#include <stdexcept>
-#include <string>
-#include <vector>
-#include <openssl/evp.h>
-#include <openssl/pem.h>
+#    include "Crypt.h"
+
+#    include <openssl/evp.h>
+#    include <openssl/pem.h>
+#    include <stdexcept>
+#    include <string>
+#    include <vector>
 
 using namespace Crypt;
 
@@ -43,16 +37,15 @@ static void OpenSSLInitialise()
     }
 }
 
-template<typename TBase>
-class OpenSSLHashAlgorithm final : public TBase
+template<typename TBase> class OpenSSLHashAlgorithm final : public TBase
 {
 private:
-    const EVP_MD * _type;
-    EVP_MD_CTX * _ctx{};
+    const EVP_MD* _type;
+    EVP_MD_CTX* _ctx{};
     bool _initialised{};
 
 public:
-    OpenSSLHashAlgorithm(const EVP_MD * type)
+    OpenSSLHashAlgorithm(const EVP_MD* type)
     {
         _type = type;
         _ctx = EVP_MD_CTX_create();
@@ -67,7 +60,7 @@ public:
         EVP_MD_CTX_destroy(_ctx);
     }
 
-    TBase * Clear() override
+    TBase* Clear() override
     {
         if (EVP_DigestInit_ex(_ctx, _type, nullptr) <= 0)
         {
@@ -77,7 +70,7 @@ public:
         return this;
     }
 
-    TBase * Update(const void * data, size_t dataLen) override
+    TBase* Update(const void* data, size_t dataLen) override
     {
         // Auto initialise
         if (!_initialised)
@@ -118,7 +111,10 @@ public:
 class OpenSSLRsaKey final : public RsaKey
 {
 public:
-    EVP_PKEY * GetEvpKey() const { return _evpKey; }
+    EVP_PKEY* GetEvpKey() const
+    {
+        return _evpKey;
+    }
 
     ~OpenSSLRsaKey()
     {
@@ -144,7 +140,7 @@ public:
             status = EVP_PKEY_keygen_init(ctx);
             OpenSSLThrowOnBadStatus("EVP_PKEY_keygen_init", status);
 
-            EVP_PKEY * key{};
+            EVP_PKEY* key{};
             status = EVP_PKEY_keygen(ctx, &key);
             OpenSSLThrowOnBadStatus("EVP_PKEY_keygen", status);
 
@@ -170,31 +166,34 @@ public:
         SetKey(pem, false);
     }
 
-    std::string GetPrivate() override { return GetKey(true); }
+    std::string GetPrivate() override
+    {
+        return GetKey(true);
+    }
 
-    std::string GetPublic() override { return GetKey(false); }
+    std::string GetPublic() override
+    {
+        return GetKey(false);
+    }
 
 private:
-    EVP_PKEY * _evpKey{};
+    EVP_PKEY* _evpKey{};
 
     void SetKey(const std::string_view& pem, bool isPrivate)
     {
         // Read PEM data via BIO buffer
         // HACK first parameter is not const on MINGW for some reason
-        auto bio = BIO_new_mem_buf((void *)pem.data(), (int)pem.size());
+        auto bio = BIO_new_mem_buf((void*)pem.data(), (int)pem.size());
         if (bio == nullptr)
         {
             throw std::runtime_error("BIO_new_mem_buf failed");
         }
-        auto rsa = isPrivate ?
-            PEM_read_bio_RSAPrivateKey(bio, nullptr, nullptr, nullptr) :
-            PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
+        auto rsa = isPrivate ? PEM_read_bio_RSAPrivateKey(bio, nullptr, nullptr, nullptr)
+                             : PEM_read_bio_RSAPublicKey(bio, nullptr, nullptr, nullptr);
         if (rsa == nullptr)
         {
             BIO_free_all(bio);
-            auto msg = isPrivate ?
-                "PEM_read_bio_RSAPrivateKey failed" :
-                "PEM_read_bio_RSAPublicKey failed";
+            auto msg = isPrivate ? "PEM_read_bio_RSAPrivateKey failed" : "PEM_read_bio_RSAPublicKey failed";
             throw std::runtime_error(msg);
         }
         BIO_free_all(bio);
@@ -231,9 +230,8 @@ private:
             throw std::runtime_error("BIO_new failed");
         }
 
-        auto status = isPrivate ?
-            PEM_write_bio_RSAPrivateKey(bio, rsa, nullptr, nullptr, 0, nullptr, nullptr) :
-            PEM_write_bio_RSAPublicKey(bio, rsa);
+        auto status = isPrivate ? PEM_write_bio_RSAPrivateKey(bio, rsa, nullptr, nullptr, 0, nullptr, nullptr)
+                                : PEM_write_bio_RSAPublicKey(bio, rsa);
         if (status != 1)
         {
             BIO_free_all(bio);
@@ -253,10 +251,10 @@ private:
 class OpenSSLRsaAlgorithm final : public RsaAlgorithm
 {
 public:
-    std::vector<uint8_t> SignData(const RsaKey& key, const void * data, size_t dataLen) override
+    std::vector<uint8_t> SignData(const RsaKey& key, const void* data, size_t dataLen) override
     {
         auto evpKey = static_cast<const OpenSSLRsaKey&>(key).GetEvpKey();
-        EVP_MD_CTX * mdctx{};
+        EVP_MD_CTX* mdctx{};
         try
         {
             mdctx = EVP_MD_CTX_create();
@@ -291,10 +289,10 @@ public:
         }
     }
 
-    bool VerifyData(const RsaKey& key, const void * data, size_t dataLen, const void * sig, size_t sigLen) override
+    bool VerifyData(const RsaKey& key, const void* data, size_t dataLen, const void* sig, size_t sigLen) override
     {
         auto evpKey = static_cast<const OpenSSLRsaKey&>(key).GetEvpKey();
-        EVP_MD_CTX * mdctx{};
+        EVP_MD_CTX* mdctx{};
         try
         {
             mdctx = EVP_MD_CTX_create();
@@ -350,6 +348,6 @@ namespace Crypt
         OpenSSLInitialise();
         return std::make_unique<OpenSSLRsaKey>();
     }
-}
+} // namespace Crypt
 
 #endif // DISABLE_NETWORK

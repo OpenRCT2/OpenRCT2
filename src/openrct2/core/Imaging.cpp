@@ -1,32 +1,27 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 
-#include <algorithm>
-#include <fstream>
-#include <stdexcept>
-#include <unordered_map>
-#include <png.h>
-#include "IStream.hpp"
-#include "Guard.hpp"
 #include "Imaging.h"
+
+#include "../drawing/Drawing.h"
+#include "Guard.hpp"
+#include "IStream.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
-#include "../drawing/Drawing.h"
+
+#include <algorithm>
+#include <fstream>
+#include <png.h>
+#include <stdexcept>
+#include <unordered_map>
 
 namespace Imaging
 {
@@ -36,28 +31,28 @@ namespace Imaging
 
     static void PngReadData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
-        auto istream = static_cast<std::istream *>(png_get_io_ptr(png_ptr));
-        istream->read((char *)data, length);
+        auto istream = static_cast<std::istream*>(png_get_io_ptr(png_ptr));
+        istream->read((char*)data, length);
     }
 
     static void PngWriteData(png_structp png_ptr, png_bytep data, png_size_t length)
     {
-        auto ostream = static_cast<std::ostream *>(png_get_io_ptr(png_ptr));
-        ostream->write((const char *)data, length);
+        auto ostream = static_cast<std::ostream*>(png_get_io_ptr(png_ptr));
+        ostream->write((const char*)data, length);
     }
 
     static void PngFlush(png_structp png_ptr)
     {
-        auto ostream = static_cast<std::ostream *>(png_get_io_ptr(png_ptr));
+        auto ostream = static_cast<std::ostream*>(png_get_io_ptr(png_ptr));
         ostream->flush();
     }
 
-    static void PngWarning(png_structp, const char * b)
+    static void PngWarning(png_structp, const char* b)
     {
         log_warning(b);
     }
 
-    static void PngError(png_structp, const char * b)
+    static void PngError(png_structp, const char* b)
     {
         log_error(b);
     }
@@ -92,7 +87,7 @@ namespace Imaging
             png_set_read_fn(png_ptr, &istream, PngReadData);
             png_set_sig_bytes(png_ptr, sig_read);
 
-            uint32 readFlags = PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING;
+            uint32_t readFlags = PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING;
             if (expandTo32)
             {
                 // If we expand the resulting image always be full RGBA
@@ -108,7 +103,7 @@ namespace Imaging
             // Read pixels as 32bpp RGBA data
             auto rowBytes = png_get_rowbytes(png_ptr, info_ptr);
             auto rowPointers = png_get_rows(png_ptr, info_ptr);
-            auto pngPixels = std::vector<uint8>(pngWidth * pngHeight * 4);
+            auto pngPixels = std::vector<uint8_t>(pngWidth * pngHeight * 4);
             auto dst = pngPixels.data();
             if (colourType == PNG_COLOR_TYPE_RGB)
             {
@@ -159,7 +154,7 @@ namespace Imaging
             img.Stride = pngWidth * (expandTo32 ? 4 : 1);
             return img;
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             png_destroy_read_struct(&png_ptr, &info_ptr, nullptr);
             throw;
@@ -224,22 +219,15 @@ namespace Imaging
                 colourType = PNG_COLOR_TYPE_PALETTE;
             }
             png_set_IHDR(
-                png_ptr,
-                info_ptr,
-                image.Width,
-                image.Height,
-                8,
-                colourType,
-                PNG_INTERLACE_NONE,
-                PNG_COMPRESSION_TYPE_DEFAULT,
+                png_ptr, info_ptr, image.Width, image.Height, 8, colourType, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
                 PNG_FILTER_TYPE_DEFAULT);
             png_write_info(png_ptr, info_ptr);
 
             // Write pixels
             auto pixels = image.Pixels.data();
-            for (uint32 y = 0; y < image.Height; y++)
+            for (uint32_t y = 0; y < image.Height; y++)
             {
-                png_write_row(png_ptr, (png_byte *)pixels);
+                png_write_row(png_ptr, (png_byte*)pixels);
                 pixels += image.Stride;
             }
 
@@ -316,15 +304,20 @@ namespace Imaging
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
+#if defined(_WIN32) && !defined(__MINGW32__)
+                auto pathW = String::ToUtf16(path);
+                std::ifstream fs(pathW, std::ios::binary);
+#else
                 std::ifstream fs(path.data(), std::ios::binary);
+#endif
                 return ReadFromStream(fs, format);
             }
         }
     }
 
-    Image ReadFromBuffer(const std::vector<uint8>& buffer, IMAGE_FORMAT format)
+    Image ReadFromBuffer(const std::vector<uint8_t>& buffer, IMAGE_FORMAT format)
     {
-        ivstream<uint8> istream(buffer);
+        ivstream<uint8_t> istream(buffer);
         return ReadFromStream(istream, format);
     }
 
@@ -337,7 +330,12 @@ namespace Imaging
                 break;
             case IMAGE_FORMAT::PNG:
             {
+#if defined(_WIN32) && !defined(__MINGW32__)
+                auto pathW = String::ToUtf16(path);
+                std::ofstream fs(pathW, std::ios::binary);
+#else
                 std::ofstream fs(path.data(), std::ios::binary);
+#endif
                 WritePng(fs, image);
                 break;
             }
@@ -345,4 +343,4 @@ namespace Imaging
                 throw std::runtime_error(EXCEPTION_IMAGE_FORMAT_UNKNOWN);
         }
     }
-}
+} // namespace Imaging

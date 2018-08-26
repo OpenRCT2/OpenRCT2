@@ -1,28 +1,22 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
+
+#include "../common.h"
+#include "../localisation/FormatCodes.h"
 
 #include <deque>
 #include <future>
 #include <queue>
 #include <string>
 #include <tuple>
-#include "../common.h"
-#include "../localisation/FormatCodes.h"
 
 struct rct_drawpixelinfo;
 struct TextInputSession;
@@ -41,32 +35,40 @@ enum CONSOLE_INPUT
 class InteractiveConsole
 {
 public:
-    virtual ~InteractiveConsole() { }
+    virtual ~InteractiveConsole()
+    {
+    }
 
-    void Execute(const std::string &s);
-    void WriteLine(const std::string &s);
-    void WriteLineError(const std::string &s);
-    void WriteLineWarning(const std::string &s);
-    void WriteFormatLine(const char * format, ...);
+    void Execute(const std::string& s);
+    void WriteLine(const std::string& s);
+    void WriteLineError(const std::string& s);
+    void WriteLineWarning(const std::string& s);
+    void WriteFormatLine(const char* format, ...);
 
     virtual void Clear() abstract;
     virtual void Close() abstract;
     virtual void Hide() abstract;
-    virtual void WriteLine(const std::string &s, uint32 colourFormat) abstract;
+    virtual void WriteLine(const std::string& s, uint32_t colourFormat) abstract;
 };
 
 class StdInOutConsole final : public InteractiveConsole
 {
 private:
     std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
+
 public:
     void Start();
-    std::future<void> Eval(const std::string &s);
+    std::future<void> Eval(const std::string& s);
     void ProcessEvalQueue();
 
     void Clear() override;
     void Close() override;
-    void Hide() override { }
-    void WriteLine(const std::string &s) { InteractiveConsole::WriteLine(s); }
-    void WriteLine(const std::string &s, uint32 colourFormat) override;
+    void Hide() override
+    {
+    }
+    void WriteLine(const std::string& s)
+    {
+        InteractiveConsole::WriteLine(s);
+    }
+    void WriteLine(const std::string& s, uint32_t colourFormat) override;
 };

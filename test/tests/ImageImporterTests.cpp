@@ -1,8 +1,18 @@
-#include <string_view>
+/*****************************************************************************
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "TestData.h"
+
+#include <gtest/gtest.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/drawing/ImageImporter.h>
-#include <gtest/gtest.h>
-#include "TestData.h"
+#include <string_view>
 
 using namespace OpenRCT2::Drawing;
 
@@ -14,12 +24,12 @@ public:
         return Path::Combine(TestData::GetBasePath(), "images", name.data());
     }
 
-    static uint32 GetHash(void * buffer, size_t bufferLength)
+    static uint32_t GetHash(void* buffer, size_t bufferLength)
     {
-        uint32 hash = 27;
+        uint32_t hash = 27;
         for (size_t i = 0; i < bufferLength; i++)
         {
-            hash = (13 * hash) + ((uint8 *)buffer)[i];
+            hash = (13 * hash) + ((uint8_t*)buffer)[i];
         }
         return hash;
     }

@@ -1,23 +1,17 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
-#include <memory>
 #include "../common.h"
+
+#include <memory>
 
 enum DRAWING_ENGINE
 {
@@ -53,44 +47,46 @@ namespace OpenRCT2::Drawing
 
     interface IDrawingEngine
     {
-        virtual ~IDrawingEngine() { }
+        virtual ~IDrawingEngine()
+        {
+        }
 
-        virtual void Initialise()                                   abstract;
-        virtual void Resize(uint32 width, uint32 height)            abstract;
-        virtual void SetPalette(const rct_palette_entry * colours)  abstract;
+        virtual void Initialise() abstract;
+        virtual void Resize(uint32_t width, uint32_t height) abstract;
+        virtual void SetPalette(const rct_palette_entry* colours) abstract;
 
         virtual void SetVSync(bool vsync) abstract;
 
-        virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
-        virtual void    BeginDraw() abstract;
-        virtual void    EndDraw() abstract;
-        virtual void    PaintWindows() abstract;
-        virtual void    PaintRain() abstract;
-        virtual void    CopyRect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy) abstract;
-        virtual sint32  Screenshot() abstract;
+        virtual void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) abstract;
+        virtual void BeginDraw() abstract;
+        virtual void EndDraw() abstract;
+        virtual void PaintWindows() abstract;
+        virtual void PaintRain() abstract;
+        virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
+        virtual int32_t Screenshot() abstract;
 
-        virtual IDrawingContext *   GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
-        virtual rct_drawpixelinfo * GetDrawingPixelInfo() abstract;
+        virtual IDrawingContext* GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
+        virtual rct_drawpixelinfo* GetDrawingPixelInfo() abstract;
 
         virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
 
-        virtual void InvalidateImage(uint32 image) abstract;
+        virtual void InvalidateImage(uint32_t image) abstract;
     };
 
     interface IDrawingEngineFactory
     {
-        virtual ~IDrawingEngineFactory() { }
-        virtual std::unique_ptr<IDrawingEngine> Create(DRAWING_ENGINE_TYPE type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
+        virtual ~IDrawingEngineFactory()
+        {
+        }
+        virtual std::unique_ptr<IDrawingEngine> Create(
+            DRAWING_ENGINE_TYPE type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
     };
 
     interface IRainDrawer
     {
-        virtual ~IRainDrawer() { }
-        virtual void Draw(sint32 x,
-            sint32 y,
-            sint32 width,
-            sint32 height,
-            sint32 xStart,
-            sint32 yStart) abstract;
+        virtual ~IRainDrawer()
+        {
+        }
+        virtual void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) abstract;
     };
 } // namespace OpenRCT2::Drawing

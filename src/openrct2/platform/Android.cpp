@@ -1,51 +1,49 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifdef __ANDROID__
 
-#include "platform.h"
-#include "../config/Config.h"
-#include "../localisation/Language.h"
-#include "../util/Util.h"
-#include <wchar.h>
-#include <jni.h>
-#include <SDL.h>
+#    include "../config/Config.h"
+#    include "../localisation/Language.h"
+#    include "../util/Util.h"
+#    include "platform.h"
 
-#ifndef NO_TTF
-bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
+#    include <SDL.h>
+#    include <jni.h>
+#    include <wchar.h>
+
+#    ifndef NO_TTF
+bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {
     STUB();
     return false;
 }
-#endif
+#    endif
 
-uint16 platform_get_locale_language() {
+uint16_t platform_get_locale_language()
+{
     return LANGUAGE_ENGLISH_UK;
 }
 
-uint8 platform_get_locale_currency() {
+uint8_t platform_get_locale_currency()
+{
     return platform_get_currency_value(NULL);
 }
 
-uint8 platform_get_locale_measurement_format() {
+uint8_t platform_get_locale_measurement_format()
+{
     return MEASUREMENT_FORMAT_METRIC;
 }
 
-float platform_get_default_scale() {
-    JNIEnv *env = static_cast<JNIEnv *>(SDL_AndroidGetJNIEnv());
+float platform_get_default_scale()
+{
+    JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
 
     jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
     jclass activityClass = env->GetObjectClass(activity);
@@ -59,7 +57,7 @@ float platform_get_default_scale() {
     return displayScale;
 }
 
-bool platform_get_steam_path(utf8 * outPath, size_t outSize)
+bool platform_get_steam_path(utf8* outPath, size_t outSize)
 {
     return false;
 }

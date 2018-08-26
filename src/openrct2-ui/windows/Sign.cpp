@@ -1,35 +1,27 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <openrct2/config/Config.h>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/Game.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/localisation/StringIds.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Game.h>
+#include <openrct2/actions/SignSetNameAction.hpp>
+#include <openrct2/actions/WallRemoveAction.hpp>
+#include <openrct2/config/Config.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
+#include <openrct2/sprites.h>
+#include <openrct2/world/Banner.h>
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2/sprites.h>
-#include <openrct2/world/Banner.h>
-#include <openrct2/actions/SignSetNameAction.hpp>
-#include <openrct2/actions/WallRemoveAction.hpp>
 
 #define WW 113
 #define WH 96
@@ -61,7 +53,7 @@ static rct_widget window_sign_widgets[] = {
 
 static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_sign_viewport_rotate(rct_window *w);
 static void window_sign_invalidate(rct_window *w);
@@ -101,7 +93,7 @@ static rct_window_event_list window_sign_events = {
 };
 
 static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_sign_small_invalidate(rct_window *w);
 
 // 0x9A410C
@@ -138,14 +130,13 @@ static rct_window_event_list window_sign_small_events = {
 // clang-format on
 
 /**
-*
-*  rct2: 0x006BA305
-*/
-rct_window * window_sign_open(rct_windownumber number)
+ *
+ *  rct2: 0x006BA305
+ */
+rct_window* window_sign_open(rct_windownumber number)
 {
     rct_window* w;
-    rct_widget *viewportWidget;
-
+    rct_widget* viewportWidget;
 
     // Check if window is already open
     w = window_bring_to_front_by_number(WC_BANNER, number);
@@ -154,18 +145,14 @@ rct_window * window_sign_open(rct_windownumber number)
 
     w = window_create_auto_pos(WW, WH, &window_sign_events, WC_BANNER, WF_NO_SCROLLING);
     w->widgets = window_sign_widgets;
-    w->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_SIGN_TEXT) |
-        (1 << WIDX_SIGN_DEMOLISH) |
-        (1 << WIDX_MAIN_COLOUR) |
-        (1 << WIDX_TEXT_COLOUR);
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SIGN_TEXT) | (1 << WIDX_SIGN_DEMOLISH) | (1 << WIDX_MAIN_COLOUR)
+        | (1 << WIDX_TEXT_COLOUR);
 
     w->number = number;
     window_init_scroll_widgets(w);
 
-    sint32 view_x = gBanners[w->number].x << 5;
-    sint32 view_y = gBanners[w->number].y << 5;
+    int32_t view_x = gBanners[w->number].x << 5;
+    int32_t view_y = gBanners[w->number].y << 5;
 
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
@@ -176,16 +163,16 @@ rct_window * window_sign_open(rct_windownumber number)
             rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
             if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
             {
-                sint32 id = scenery_large_get_banner_id(tile_element);
+                BannerIndex bannerIndex = scenery_large_get_banner_id(tile_element);
 
-                if (id == w->number)
+                if (bannerIndex == w->number)
                     break;
             }
         }
         tile_element++;
     }
 
-    sint32 view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
     w->list_information_type = scenery_large_get_primary_colour(tile_element);
@@ -198,18 +185,8 @@ rct_window * window_sign_open(rct_windownumber number)
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w,
-        w->x + viewportWidget->left + 1,
-        w->y + viewportWidget->top + 1,
-        (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1,
-        0,
-        view_x,
-        view_y,
-        view_z,
-        0,
-        -1
-    );
+        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
+        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
@@ -221,56 +198,54 @@ rct_window * window_sign_open(rct_windownumber number)
  *
  *  rct2: 0x6B9765
  */
-static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_banner* banner = &gBanners[w->number];
-    sint32 x = banner->x << 5;
-    sint32 y = banner->y << 5;
+    int32_t x = banner->x << 5;
+    int32_t y = banner->y << 5;
 
     rct_string_id string_id;
 
     rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_SIGN_DEMOLISH:
-        while (1)
-        {
-            if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_SIGN_DEMOLISH:
+            while (1)
             {
-                rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
-                if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+                if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 {
-                    sint32 id = scenery_large_get_banner_id(tile_element);
-                    if (id == w->number)
-                        break;
+                    rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
+                    if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+                    {
+                        BannerIndex bannerIndex = scenery_large_get_banner_id(tile_element);
+                        if (bannerIndex == w->number)
+                            break;
+                    }
                 }
+                tile_element++;
             }
-            tile_element++;
-        }
-        game_do_command(
-            x,
-            1 | (tile_element->GetDirection() << 8),
-            y,
-            tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
-            GAME_COMMAND_REMOVE_LARGE_SCENERY,
-            0,
-            0);
-        break;
-    case WIDX_SIGN_TEXT:
-        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE){
-            Ride* ride = get_ride(banner->colour);
-            set_format_arg(16, uint32, ride->name_arguments);
-            string_id = ride->name;
-        }
-        else
-        {
-            string_id = gBanners[w->number].string_idx;
-        }
-        window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
-        break;
+            game_do_command(
+                x, 1 | (tile_element->GetDirection() << 8), y,
+                tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY,
+                0, 0);
+            break;
+        case WIDX_SIGN_TEXT:
+            if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+            {
+                Ride* ride = get_ride(banner->ride_index);
+                set_format_arg(16, uint32_t, ride->name_arguments);
+                string_id = ride->name;
+            }
+            else
+            {
+                string_id = gBanners[w->number].string_idx;
+            }
+            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
+            break;
     }
 }
 
@@ -278,15 +253,16 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x6B9784
   & 0x6E6164 */
-static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_sign_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    switch (widgetIndex) {
-    case WIDX_MAIN_COLOUR:
-        window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8)w->list_information_type);
-        break;
-    case WIDX_TEXT_COLOUR:
-        window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8)w->var_492);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_MAIN_COLOUR:
+            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8_t)w->list_information_type);
+            break;
+        case WIDX_TEXT_COLOUR:
+            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), (uint8_t)w->var_492);
+            break;
     }
 }
 
@@ -294,21 +270,25 @@ static void window_sign_mousedown(rct_window *w, rct_widgetindex widgetIndex, rc
  *
  *  rct2: 0x6B979C
  */
-static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_sign_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    switch (widgetIndex){
-    case WIDX_MAIN_COLOUR:
-        if (dropdownIndex == -1) return;
-        w->list_information_type = dropdownIndex;
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 1);
-        break;
-    case WIDX_TEXT_COLOUR:
-        if (dropdownIndex == -1) return;
-        w->var_492 = dropdownIndex;
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 1);
-        break;
-    default:
-        return;
+    switch (widgetIndex)
+    {
+        case WIDX_MAIN_COLOUR:
+            if (dropdownIndex == -1)
+                return;
+            w->list_information_type = dropdownIndex;
+            game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 1);
+            break;
+        case WIDX_TEXT_COLOUR:
+            if (dropdownIndex == -1)
+                return;
+            w->var_492 = dropdownIndex;
+            game_do_command(
+                1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 1);
+            break;
+        default:
+            return;
     }
 
     window_invalidate(w);
@@ -318,7 +298,7 @@ static void window_sign_dropdown(rct_window *w, rct_widgetindex widgetIndex, sin
  *
  *  rct2: 0x6B9791, 0x6E6171
  */
-static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
+static void window_sign_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     if (widgetIndex == WIDX_SIGN_TEXT && text != nullptr)
     {
@@ -331,7 +311,7 @@ static void window_sign_textinput(rct_window *w, rct_widgetindex widgetIndex, ch
  *
  *  rct2: 0x006B96F5
  */
-static void window_sign_invalidate(rct_window *w)
+static void window_sign_invalidate(rct_window* w)
 {
     rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
     rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
@@ -341,10 +321,12 @@ static void window_sign_invalidate(rct_window *w)
     main_colour_btn->type = WWT_EMPTY;
     text_colour_btn->type = WWT_EMPTY;
 
-    if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR){
+    if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+    {
         main_colour_btn->type = WWT_COLOURBTN;
     }
-    if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR) {
+    if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+    {
         text_colour_btn->type = WWT_COLOURBTN;
     }
 
@@ -356,12 +338,13 @@ static void window_sign_invalidate(rct_window *w)
  *
  *  rct2: 0x006B9754, 0x006E6134
  */
-static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_sign_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
     // Draw viewport
-    if (w->viewport != nullptr) {
+    if (w->viewport != nullptr)
+    {
         window_draw_viewport(dpi, w);
     }
 }
@@ -370,49 +353,37 @@ static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x6B9A6C, 0x6E6424
  */
-static void window_sign_viewport_rotate(rct_window *w)
+static void window_sign_viewport_rotate(rct_window* w)
 {
     rct_viewport* view = w->viewport;
     w->viewport = nullptr;
 
     view->width = 0;
-    viewport_update_pointers();
 
     rct_banner* banner = &gBanners[w->number];
 
-    sint32 view_x = (banner->x << 5) + 16;
-    sint32 view_y = (banner->y << 5) + 16;
-    sint32 view_z = w->frame_no;
+    int32_t view_x = (banner->x << 5) + 16;
+    int32_t view_y = (banner->y << 5) + 16;
+    int32_t view_z = w->frame_no;
 
     // Create viewport
     rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w,
-        w->x + viewportWidget->left + 1,
-        w->y + viewportWidget->top + 1,
-        (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1,
-        0,
-        view_x,
-        view_y,
-        view_z,
-        0,
-        -1
-        );
+        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
+        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
 }
 
-
 /**
  *
  *  rct2: 0x6E5F52
  */
-rct_window * window_sign_small_open(rct_windownumber number){
+rct_window* window_sign_small_open(rct_windownumber number)
+{
     rct_window* w;
-    rct_widget *viewportWidget;
-
+    rct_widget* viewportWidget;
 
     // Check if window is already open
     w = window_bring_to_front_by_number(WC_BANNER, number);
@@ -421,12 +392,8 @@ rct_window * window_sign_small_open(rct_windownumber number){
 
     w = window_create_auto_pos(WW, WH, &window_sign_small_events, WC_BANNER, 0);
     w->widgets = window_sign_widgets;
-    w->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_SIGN_TEXT) |
-        (1 << WIDX_SIGN_DEMOLISH) |
-        (1 << WIDX_MAIN_COLOUR) |
-        (1 << WIDX_TEXT_COLOUR);
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SIGN_TEXT) | (1 << WIDX_SIGN_DEMOLISH) | (1 << WIDX_MAIN_COLOUR)
+        | (1 << WIDX_TEXT_COLOUR);
 
     w->number = number;
     window_init_scroll_widgets(w);
@@ -434,15 +401,18 @@ rct_window * window_sign_small_open(rct_windownumber number){
     w->colours[1] = COLOUR_DARK_BROWN;
     w->colours[2] = COLOUR_DARK_BROWN;
 
-    sint32 view_x = gBanners[w->number].x << 5;
-    sint32 view_y = gBanners[w->number].y << 5;
+    int32_t view_x = gBanners[w->number].x << 5;
+    int32_t view_y = gBanners[w->number].y << 5;
 
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
-    while (1){
-        if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL) {
+    while (1)
+    {
+        if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
+        {
             rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
-            if (scenery_entry->wall.scrolling_mode != 0xFF){
+            if (scenery_entry->wall.scrolling_mode != 0xFF)
+            {
                 if (tile_element->properties.wall.banner_index == w->number)
                     break;
             }
@@ -450,7 +420,7 @@ rct_window * window_sign_small_open(rct_windownumber number){
         tile_element++;
     }
 
-    sint32 view_z = tile_element->base_height << 3;
+    int32_t view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
     w->list_information_type = wall_get_primary_colour(tile_element);
@@ -463,18 +433,8 @@ rct_window * window_sign_small_open(rct_windownumber number){
     // Create viewport
     viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w,
-        w->x + viewportWidget->left + 1,
-        w->y + viewportWidget->top + 1,
-        (viewportWidget->right - viewportWidget->left) - 1,
-        (viewportWidget->bottom - viewportWidget->top) - 1,
-        0,
-        view_x,
-        view_y,
-        view_z,
-        0,
-        -1
-    );
+        w, w->x + viewportWidget->left + 1, w->y + viewportWidget->top + 1, (viewportWidget->right - viewportWidget->left) - 1,
+        (viewportWidget->bottom - viewportWidget->top) - 1, 0, view_x, view_y, view_z, 0, -1);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->flags |= WF_NO_SCROLLING;
@@ -487,21 +447,22 @@ rct_window * window_sign_small_open(rct_windownumber number){
  *
  *  rct2: 0x6E6145
  */
-static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_banner* banner = &gBanners[w->number];
-    sint32 x = banner->x << 5;
-    sint32 y = banner->y << 5;
+    int32_t x = banner->x << 5;
+    int32_t y = banner->y << 5;
 
     rct_string_id string_id;
 
     rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_SIGN_DEMOLISH:
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_SIGN_DEMOLISH:
         {
             while (true)
             {
@@ -521,19 +482,19 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
             GameActions::Execute(&wallRemoveAction);
         }
         break;
-    case WIDX_SIGN_TEXT:
-        if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
-        {
-            Ride* ride = get_ride(banner->colour);
-            set_format_arg(16, uint32, ride->name_arguments);
-            string_id = ride->name;
-        }
-        else
-        {
-            string_id = gBanners[w->number].string_idx;
-        }
-        window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
-        break;
+        case WIDX_SIGN_TEXT:
+            if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
+            {
+                Ride* ride = get_ride(banner->ride_index);
+                set_format_arg(16, uint32_t, ride->name_arguments);
+                string_id = ride->name;
+            }
+            else
+            {
+                string_id = gBanners[w->number].string_idx;
+            }
+            window_text_input_open(w, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, string_id, 0, 32);
+            break;
     }
 }
 
@@ -541,21 +502,25 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x6E617C
  */
-static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_sign_small_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    switch (widgetIndex){
-    case WIDX_MAIN_COLOUR:
-        if (dropdownIndex == -1) return;
-        w->list_information_type = dropdownIndex;
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 0);
-        break;
-    case WIDX_TEXT_COLOUR:
-        if (dropdownIndex == -1) return;
-        w->var_492 = dropdownIndex;
-        game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 0);
-        break;
-    default:
-        return;
+    switch (widgetIndex)
+    {
+        case WIDX_MAIN_COLOUR:
+            if (dropdownIndex == -1)
+                return;
+            w->list_information_type = dropdownIndex;
+            game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, dropdownIndex, GAME_COMMAND_SET_SIGN_STYLE, w->var_492, 0);
+            break;
+        case WIDX_TEXT_COLOUR:
+            if (dropdownIndex == -1)
+                return;
+            w->var_492 = dropdownIndex;
+            game_do_command(
+                1, GAME_COMMAND_FLAG_APPLY, w->number, w->list_information_type, GAME_COMMAND_SET_SIGN_STYLE, dropdownIndex, 0);
+            break;
+        default:
+            return;
     }
 
     window_invalidate(w);
@@ -565,7 +530,7 @@ static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006E60D5
  */
-static void window_sign_small_invalidate(rct_window *w)
+static void window_sign_small_invalidate(rct_window* w)
 {
     rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
     rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
@@ -575,10 +540,12 @@ static void window_sign_small_invalidate(rct_window *w)
     main_colour_btn->type = WWT_EMPTY;
     text_colour_btn->type = WWT_EMPTY;
 
-    if (scenery_entry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
+    if (scenery_entry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
+    {
         main_colour_btn->type = WWT_COLOURBTN;
     }
-    if (scenery_entry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
+    if (scenery_entry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
+    {
         text_colour_btn->type = WWT_COLOURBTN;
     }
 

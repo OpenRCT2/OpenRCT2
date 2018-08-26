@@ -1,24 +1,18 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <cstdlib>
+#include "ConversionTables.h"
 
 #include "../core/Util.hpp"
-#include "ConversionTables.h"
 #include "FormatCodes.h"
+
+#include <cstdlib>
 
 // clang-format off
 const encoding_convert_entry RCT2ToUnicodeTable[256] =
@@ -281,9 +275,9 @@ const encoding_convert_entry RCT2ToUnicodeTable[256] =
     { 255, 255 }
 };
 
-static sint32 encoding_search_compare(const void *pKey, const void *pEntry)
+static int32_t encoding_search_compare(const void *pKey, const void *pEntry)
 {
-    uint16 key = *((uint16*)pKey);
+    uint16_t key = *((uint16_t*)pKey);
     encoding_convert_entry *entry = (encoding_convert_entry*)pEntry;
     if (key < entry->code) return -1;
     if (key > entry->code) return 1;
@@ -302,7 +296,7 @@ wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
     return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, Util::CountOf(RCT2ToUnicodeTable));
 }
 
-uint32 encoding_convert_unicode_to_rct2(uint32 unicode)
+uint32_t encoding_convert_unicode_to_rct2(uint32_t unicode)
 {
     // Can't do a binary search as it's sorted by RCT2 code, not unicode
     for (const auto& entry : RCT2ToUnicodeTable)

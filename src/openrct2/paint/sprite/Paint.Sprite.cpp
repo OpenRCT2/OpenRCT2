@@ -1,34 +1,28 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "Paint.Sprite.h"
-#include "../Paint.h"
+
 #include "../../drawing/Drawing.h"
-#include "../../world/Sprite.h"
-#include "../../ride/RideData.h"
 #include "../../interface/Viewport.h"
 #include "../../peep/Staff.h"
-#include "../../ride/VehiclePaint.h"
+#include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
+#include "../../ride/VehiclePaint.h"
+#include "../../world/Sprite.h"
+#include "../Paint.h"
 
 /**
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
+void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t y)
 {
     if ((x & 0xe000) | (y & 0xe000))
     {
@@ -40,7 +34,7 @@ void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
         return;
     }
 
-    uint16 sprite_idx = sprite_get_first_in_quadrant(x, y);
+    uint16_t sprite_idx = sprite_get_first_in_quadrant(x, y);
     if (sprite_idx == SPRITE_INDEX_NULL)
     {
         return;
@@ -54,7 +48,8 @@ void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
 
     const bool highlightPathIssues = (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (const rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant)
+    for (const rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL;
+         sprite_idx = spr->unknown.next_in_quadrant)
     {
         spr = get_sprite(sprite_idx);
 
@@ -62,7 +57,7 @@ void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
         {
             if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
-                rct_peep * peep = (rct_peep*)spr;
+                rct_peep* peep = (rct_peep*)spr;
                 if (!(peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_HANDYMAN))
                 {
                     continue;
@@ -102,7 +97,7 @@ void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
             continue;
         }
 
-        sint32 image_direction = session->CurrentRotation;
+        int32_t image_direction = session->CurrentRotation;
         image_direction <<= 3;
         image_direction += spr->unknown.sprite_direction;
         image_direction &= 0x1F;
@@ -114,21 +109,21 @@ void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y)
 
         switch (spr->unknown.sprite_identifier)
         {
-        case SPRITE_IDENTIFIER_VEHICLE:
-            vehicle_paint(session, (rct_vehicle*)spr, image_direction);
-            break;
-        case SPRITE_IDENTIFIER_PEEP:
-            peep_paint(session, (rct_peep*)spr, image_direction);
-            break;
-        case SPRITE_IDENTIFIER_MISC:
-            misc_paint(session, spr, image_direction);
-            break;
-        case SPRITE_IDENTIFIER_LITTER:
-            litter_paint(session, (rct_litter*)spr, image_direction);
-            break;
-        default:
-            assert(false);
-            break;
+            case SPRITE_IDENTIFIER_VEHICLE:
+                vehicle_paint(session, (rct_vehicle*)spr, image_direction);
+                break;
+            case SPRITE_IDENTIFIER_PEEP:
+                peep_paint(session, (rct_peep*)spr, image_direction);
+                break;
+            case SPRITE_IDENTIFIER_MISC:
+                misc_paint(session, spr, image_direction);
+                break;
+            case SPRITE_IDENTIFIER_LITTER:
+                litter_paint(session, (rct_litter*)spr, image_direction);
+                break;
+            default:
+                assert(false);
+                break;
         }
     }
 }

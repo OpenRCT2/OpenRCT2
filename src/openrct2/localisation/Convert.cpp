@@ -1,26 +1,20 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <algorithm>
-#include <limits>
-#include <stdexcept>
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "ConversionTables.h"
 #include "Language.h"
+
+#include <algorithm>
+#include <limits>
+#include <stdexcept>
 
 /**
  * Decodes an RCT2 string to a wide char string still in the original code page.
@@ -30,14 +24,14 @@ static std::wstring DecodeToWideChar(const std::string_view& src)
 {
     std::wstring decoded;
     decoded.reserve(src.size());
-    for (auto it = src.begin(); it != src.end(); )
+    for (auto it = src.begin(); it != src.end();)
     {
         uint8_t c = *it++;
         if (c == 255)
         {
             // Push next two characters
-            uint8 a = 0;
-            uint8 b = 0;
+            uint8_t a = 0;
+            uint8_t b = 0;
             if (it != src.end())
             {
                 a = *it++;
@@ -95,18 +89,18 @@ static std::string DecodeToMultiByte(const std::string_view& src)
 static std::string Encode(const std::string_view& src)
 {
     std::string dst;
-    const utf8 * ch = src.data();
-    sint32 codepoint;
+    const utf8* ch = src.data();
+    int32_t codepoint;
     while ((codepoint = utf8_get_next(ch, &ch)) != 0)
     {
         codepoint = encoding_convert_unicode_to_rct2(codepoint);
-        if (codepoint <= std::numeric_limits<uint8>::max())
+        if (codepoint <= std::numeric_limits<uint8_t>::max())
         {
             dst.push_back(codepoint);
         }
-        else if (codepoint <= std::numeric_limits<uint16>::max())
+        else if (codepoint <= std::numeric_limits<uint16_t>::max())
         {
-            dst.push_back((char)(uint8)0xFF);
+            dst.push_back((char)(uint8_t)0xFF);
             dst.push_back((codepoint >> 8) & 0xFF);
             dst.push_back(codepoint & 0xFF);
         }
@@ -119,7 +113,7 @@ static std::string Encode(const std::string_view& src)
     return dst;
 }
 
-static sint32 GetCodePageForRCT2Language(RCT2LanguageId languageId)
+static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
 {
     switch (languageId)
     {
@@ -136,8 +130,7 @@ static sint32 GetCodePageForRCT2Language(RCT2LanguageId languageId)
     }
 }
 
-template<typename TConvertFunc>
-static std::string DecodeConvertWithTable(const std::string_view& src, TConvertFunc func)
+template<typename TConvertFunc> static std::string DecodeConvertWithTable(const std::string_view& src, TConvertFunc func)
 {
     auto decoded = DecodeToWideChar(src);
     std::wstring u16;

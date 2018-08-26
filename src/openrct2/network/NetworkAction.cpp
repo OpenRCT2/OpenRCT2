@@ -1,31 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef DISABLE_NETWORK
 
-#include <algorithm>
-#include "NetworkAction.h"
+#    include "NetworkAction.h"
 
-#include "../Game.h"
-#include "../localisation/StringIds.h"
+#    include "../Game.h"
+#    include "../localisation/StringIds.h"
 
-sint32 NetworkActions::FindCommand(sint32 command)
+#    include <algorithm>
+
+int32_t NetworkActions::FindCommand(int32_t command)
 {
-    auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const &action)
-    {
+    auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const& action) {
         for (int currentCommand : action.Commands)
         {
             if (currentCommand == command)
@@ -37,20 +30,19 @@ sint32 NetworkActions::FindCommand(sint32 command)
     });
     if (it != Actions.end())
     {
-        return (sint32)(it - Actions.begin());
+        return (int32_t)(it - Actions.begin());
     }
     return -1;
 }
 
-sint32 NetworkActions::FindCommandByPermissionName(const std::string &permission_name)
+int32_t NetworkActions::FindCommandByPermissionName(const std::string& permission_name)
 {
-    auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const &action)
-    {
+    auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const& action) {
         return action.PermissionName == permission_name;
     });
     if (it != Actions.end())
     {
-        return (sint32)(it - Actions.begin());
+        return (int32_t)(it - Actions.begin());
     }
     return -1;
 }

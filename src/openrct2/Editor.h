@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _EDITOR_H_
 #define _EDITOR_H_
@@ -25,29 +18,29 @@ namespace Editor
     void ConvertSaveToScenario();
     void LoadTrackDesigner();
     void LoadTrackManager();
-    bool LoadLandscape(const utf8 *path);
+    bool LoadLandscape(const utf8* path);
 
     bool CheckPark();
-    sint32 CheckObjectSelection();
+    int32_t CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
-    void GameCommandEditScenarioOptions(sint32*, sint32*, sint32*, sint32*, sint32*, sint32*, sint32*);
+    void GameCommandEditScenarioOptions(int32_t*, int32_t*, int32_t*, int32_t*, int32_t*, int32_t*, int32_t*);
 
-    uint8 GetSelectedObjectFlags(sint32 objectType, size_t index);
-    void ClearSelectedObject(sint32 objectType, size_t index, uint32 flags);
-    void SetSelectedObject(sint32 objectType, size_t index, uint32 flags);
+    uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index);
+    void ClearSelectedObject(int32_t objectType, size_t index, uint32_t flags);
+    void SetSelectedObject(int32_t objectType, size_t index, uint32_t flags);
 } // namespace Editor
 
 enum RCT2_EDITOR_STEP
 {
-    EDITOR_STEP_OBJECT_SELECTION,           // 0
-    EDITOR_STEP_LANDSCAPE_EDITOR,           // 1
-    EDITOR_STEP_INVENTIONS_LIST_SET_UP,     // 2
-    EDITOR_STEP_OPTIONS_SELECTION,          // 3
-    EDITOR_STEP_OBJECTIVE_SELECTION,        // 4
-    EDITOR_STEP_SAVE_SCENARIO,              // 5
-    EDITOR_STEP_ROLLERCOASTER_DESIGNER,     // 6
-    EDITOR_STEP_TRACK_DESIGNS_MANAGER       // 7
+    EDITOR_STEP_OBJECT_SELECTION,       // 0
+    EDITOR_STEP_LANDSCAPE_EDITOR,       // 1
+    EDITOR_STEP_INVENTIONS_LIST_SET_UP, // 2
+    EDITOR_STEP_OPTIONS_SELECTION,      // 3
+    EDITOR_STEP_OBJECTIVE_SELECTION,    // 4
+    EDITOR_STEP_SAVE_SCENARIO,          // 5
+    EDITOR_STEP_ROLLERCOASTER_DESIGNER, // 6
+    EDITOR_STEP_TRACK_DESIGNS_MANAGER   // 7
 };
 
 enum
@@ -77,6 +70,7 @@ enum
 
 void editor_open_windows_for_current_step();
 
-void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+void game_command_edit_scenario_options(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 #endif

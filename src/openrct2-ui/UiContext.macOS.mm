@@ -1,49 +1,45 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #if defined(__APPLE__) && defined(__MACH__)
 
-#import <Cocoa/Cocoa.h>
+#    include "UiContext.h"
 
-#include <mach-o/dyld.h>
-#include <dlfcn.h>
-#include <openrct2/common.h>
-#include <openrct2/core/String.hpp>
-#include <openrct2/ui/UiContext.h>
-#include "UiContext.h"
+#    include <openrct2/common.h>
+#    include <openrct2/core/String.hpp>
+#    include <openrct2/ui/UiContext.h>
 
-#include <SDL.h>
+// undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
+#    undef interface
+#    undef abstract
+
+#    import <Cocoa/Cocoa.h>
+#    include <SDL.h>
+#    include <mach-o/dyld.h>
 
 namespace OpenRCT2::Ui
 {
     class macOSContext final : public IPlatformUiContext
     {
     private:
-
     public:
         macOSContext()
         {
             @autoreleasepool {
-                if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)]) {
+                if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)])
+                {
                     [NSWindow setAllowsAutomaticWindowTabbing:NO];
                 }
             }
         }
 
-        void SetWindowIcon(SDL_Window * window) override
+        void SetWindowIcon(SDL_Window* window) override
         {
         }
 
@@ -53,49 +49,51 @@ namespace OpenRCT2::Ui
             return false;
         }
 
-        void ShowMessageBox(SDL_Window * window, const std::string &message) override
+        void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
-            @autoreleasepool
-            {
-                NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+            @autoreleasepool {
+                NSAlert* alert = [[[NSAlert alloc] init] autorelease];
                 [alert addButtonWithTitle:@"OK"];
                 alert.messageText = [NSString stringWithUTF8String:message.c_str()];
                 [alert runModal];
             }
         }
 
-        std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
+        std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
-            @autoreleasepool
-            {
-                NSMutableArray *extensions = [NSMutableArray new];
-                for (const OpenRCT2::Ui::FileDialogDesc::Filter &filter: desc.Filters) {
-                    if (filter.Pattern != "") {
-                        NSString *fp = [NSString stringWithUTF8String:filter.Pattern.c_str()];
+            @autoreleasepool {
+                NSMutableArray* extensions = [NSMutableArray new];
+                for (const OpenRCT2::Ui::FileDialogDesc::Filter& filter : desc.Filters)
+                {
+                    if (filter.Pattern != "")
+                    {
+                        NSString* fp = [NSString stringWithUTF8String:filter.Pattern.c_str()];
                         fp = [fp stringByReplacingOccurrencesOfString:@"*." withString:@""];
                         [extensions addObjectsFromArray:[fp componentsSeparatedByString:@";"]];
                     }
                 }
 
-                NSString *directory;
-                NSSavePanel *panel;
+                NSString* directory;
+                NSSavePanel* panel;
                 if (desc.Type == FILE_DIALOG_TYPE::SAVE)
                 {
-                    NSString *filePath = [NSString stringWithUTF8String:desc.DefaultFilename.c_str()];
+                    NSString* filePath = [NSString stringWithUTF8String:desc.DefaultFilename.c_str()];
                     directory = filePath.stringByDeletingLastPathComponent;
-                    NSString *basename = filePath.lastPathComponent;
+                    NSString* basename = filePath.lastPathComponent;
                     panel = [NSSavePanel savePanel];
                     panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
                 }
                 else if (desc.Type == FILE_DIALOG_TYPE::OPEN)
                 {
                     directory = [NSString stringWithUTF8String:desc.InitialDirectory.c_str()];
-                    NSOpenPanel *open = [NSOpenPanel openPanel];
+                    NSOpenPanel* open = [NSOpenPanel openPanel];
                     open.canChooseDirectories = false;
                     open.canChooseFiles = true;
                     open.allowsMultipleSelection = false;
                     panel = open;
-                } else {
+                }
+                else
+                {
                     return std::string();
                 }
 
@@ -105,36 +103,39 @@ namespace OpenRCT2::Ui
                 if ([panel runModal] == NSModalResponseCancel)
                 {
                     return std::string();
-                } else {
+                }
+                else
+                {
                     return panel.URL.path.UTF8String;
                 }
             }
         }
 
-        std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) override
+        std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
         {
-            @autoreleasepool
-            {
-                NSOpenPanel *panel = [NSOpenPanel openPanel];
+            @autoreleasepool {
+                NSOpenPanel* panel = [NSOpenPanel openPanel];
                 panel.canChooseFiles = false;
                 panel.canChooseDirectories = true;
                 panel.allowsMultipleSelection = false;
                 if ([panel runModal] == NSModalResponseOK)
                 {
-                    NSString *selectedPath = panel.URL.path;
-                    const char *path = selectedPath.UTF8String;
+                    NSString* selectedPath = panel.URL.path;
+                    const char* path = selectedPath.UTF8String;
                     return path;
-                } else {
+                }
+                else
+                {
                     return "";
                 }
             }
         }
 
     private:
-        static sint32 Execute(const std::string &command, std::string * output = nullptr)
+        static int32_t Execute(const std::string& command, std::string* output = nullptr)
         {
             log_verbose("executing \"%s\"...\n", command.c_str());
-            FILE * fpipe = popen(command.c_str(), "r");
+            FILE* fpipe = popen(command.c_str(), "r");
             if (fpipe == nullptr)
             {
                 return -1;
@@ -178,7 +179,7 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext * CreatePlatformUiContext()
+    IPlatformUiContext* CreatePlatformUiContext()
     {
         return new macOSContext();
     }

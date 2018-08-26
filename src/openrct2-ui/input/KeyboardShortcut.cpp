@@ -1,32 +1,27 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
+#include "KeyboardShortcuts.h"
+
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
+#include <openrct2/Game.h>
+#include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Util.hpp>
-#include <openrct2/Game.h>
-#include <openrct2/Input.h>
-#include <openrct2/interface/Screenshot.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2-ui/interface/Viewport.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/interface/Window.h>
+#include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/platform.h>
@@ -37,9 +32,8 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
-#include "KeyboardShortcuts.h"
 
-uint8 gKeyboardShortcutChangeId;
+uint8_t gKeyboardShortcutChangeId;
 
 using shortcut_action = void (*)();
 
@@ -52,18 +46,18 @@ namespace
  *
  *  rct2: 0x006E3E68
  */
-void keyboard_shortcut_handle(sint32 key)
+void keyboard_shortcut_handle(int32_t key)
 {
-    sint32 shortcut = keyboard_shortcuts_get_from_key(key);
+    int32_t shortcut = keyboard_shortcuts_get_from_key(key);
     if (shortcut != -1)
     {
         keyboard_shortcut_handle_command(shortcut);
     }
 }
 
-void keyboard_shortcut_handle_command(sint32 shortcutIndex)
+void keyboard_shortcut_handle_command(int32_t shortcutIndex)
 {
-    if (shortcutIndex >= 0 && static_cast<uint32>(shortcutIndex) < Util::CountOf(shortcut_table))
+    if (shortcutIndex >= 0 && static_cast<uint32_t>(shortcutIndex) < Util::CountOf(shortcut_table))
     {
         shortcut_action action = shortcut_table[shortcutIndex];
         if (action != nullptr)
@@ -75,9 +69,9 @@ void keyboard_shortcut_handle_command(sint32 shortcutIndex)
 
 #pragma region Shortcut Commands
 
-static void toggle_view_flag(sint32 viewportFlag)
+static void toggle_view_flag(int32_t viewportFlag)
 {
-    rct_window * window;
+    rct_window* window;
 
     window = window_get_main();
     if (window != nullptr)
@@ -105,7 +99,7 @@ static void shortcut_cancel_construction_mode()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window * window = window_find_by_class(WC_ERROR);
+    rct_window* window = window_find_by_class(WC_ERROR);
     if (window != nullptr)
         window_close(window);
     else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -116,7 +110,7 @@ static void shortcut_pause_game()
 {
     if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
     {
-        rct_window * window = window_find_by_class(WC_TOP_TOOLBAR);
+        rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
         if (window != nullptr)
         {
             window_invalidate(window);
@@ -140,7 +134,7 @@ static void shortcut_rotate_view_clockwise()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window * w = window_get_main();
+    rct_window* w = window_get_main();
     window_rotate_camera(w, 1);
 }
 
@@ -149,7 +143,7 @@ static void shortcut_rotate_view_anticlockwise()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    rct_window * w = window_get_main();
+    rct_window* w = window_get_main();
     window_rotate_camera(w, -1);
 }
 
@@ -159,9 +153,9 @@ static void shortcut_rotate_construction_object()
         return;
 
     // Rotate scenery
-    rct_window * w = window_find_by_class(WC_SCENERY);
-    if (w != nullptr && !widget_is_disabled(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON) &&
-        w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WWT_EMPTY)
+    rct_window* w = window_find_by_class(WC_SCENERY);
+    if (w != nullptr && !widget_is_disabled(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
+        && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
         return;
@@ -169,8 +163,8 @@ static void shortcut_rotate_construction_object()
 
     // Rotate construction track piece
     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && !widget_is_disabled(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE) &&
-        w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WWT_EMPTY)
+    if (w != nullptr && !widget_is_disabled(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
+        && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WWT_EMPTY)
     {
         // Check if building a maze...
         if (w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].tooltip != STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP)
@@ -182,8 +176,8 @@ static void shortcut_rotate_construction_object()
 
     // Rotate track design preview
     w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (w != nullptr && !widget_is_disabled(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE) &&
-        w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WWT_EMPTY)
+    if (w != nullptr && !widget_is_disabled(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
+        && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
         return;
@@ -191,8 +185,8 @@ static void shortcut_rotate_construction_object()
 
     // Rotate track design placement
     w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-    if (w != nullptr && !widget_is_disabled(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE) &&
-        w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WWT_EMPTY)
+    if (w != nullptr && !widget_is_disabled(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
+        && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
         return;
@@ -354,7 +348,7 @@ static void shortcut_adjust_land()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window * window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
                 window_invalidate(window);
@@ -373,7 +367,7 @@ static void shortcut_adjust_water()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window * window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
                 window_invalidate(window);
@@ -392,7 +386,7 @@ static void shortcut_build_scenery()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window * window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
                 window_invalidate(window);
@@ -411,7 +405,7 @@ static void shortcut_build_paths()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window * window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
                 window_invalidate(window);
@@ -548,7 +542,7 @@ static void shortcut_open_cheat_window()
         return;
 
     // Check if window is already open
-    rct_window * window = window_find_by_class(WC_CHEATS);
+    rct_window* window = window_find_by_class(WC_CHEATS);
     if (window != nullptr)
     {
         window_close(window);
@@ -566,7 +560,7 @@ static void shortcut_clear_scenery()
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
-            rct_window * window = window_find_by_class(WC_TOP_TOOLBAR);
+            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
             if (window != nullptr)
             {
                 window_invalidate(window);
@@ -596,7 +590,7 @@ static void shortcut_quick_save_game()
     {
         auto intent = Intent(WC_LOADSAVE);
         intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent.putExtra(INTENT_EXTRA_PATH, std::string{gS6Info.name});
+        intent.putExtra(INTENT_EXTRA_PATH, std::string{ gS6Info.name });
         context_open_intent(&intent);
     }
 }
@@ -622,16 +616,9 @@ static void shortcut_show_multiplayer()
         context_open_window(WC_MULTIPLAYER);
 }
 
-static void shortcut_orginal_painting_toggle()
-{
-    gUseOriginalRidePaint = !gUseOriginalRidePaint;
-    window_invalidate_by_class(WC_DEBUG_PAINT);
-    gfx_invalidate_screen();
-}
-
 static void shortcut_debug_paint_toggle()
 {
-    rct_window * window = window_find_by_class(WC_DEBUG_PAINT);
+    rct_window* window = window_find_by_class(WC_DEBUG_PAINT);
     if (window != nullptr)
     {
         window_close(window);
@@ -764,8 +751,7 @@ static void shortcut_highlight_path_issues_toggle()
 
 namespace
 {
-    const shortcut_action shortcut_table[SHORTCUT_COUNT] =
-    {
+    const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
         shortcut_close_top_most_window,
         shortcut_close_all_floating_windows,
         shortcut_cancel_construction_mode,
@@ -815,7 +801,7 @@ namespace
         shortcut_mute_sound,
         shortcut_windowed_mode_toggle,
         shortcut_show_multiplayer,
-        shortcut_orginal_painting_toggle,
+        nullptr,
         shortcut_debug_paint_toggle,
         shortcut_see_through_paths_toggle,
         shortcut_ride_construction_turn_left,

@@ -1,26 +1,18 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <algorithm>
-#include <memory>
-#include <unordered_map>
-#include <vector>
+#include "ObjectRepository.h"
 
-#include "../common.h"
 #include "../Context.h"
+#include "../PlatformEnvironment.h"
+#include "../common.h"
+#include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.hpp"
@@ -30,33 +22,34 @@
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../PlatformEnvironment.h"
-#include "../rct12/SawyerChunkReader.h"
-#include "../rct12/SawyerChunkWriter.h"
-#include "../scenario/ScenarioRepository.h"
-#include "Object.h"
-#include "ObjectFactory.h"
-#include "ObjectManager.h"
-#include "ObjectRepository.h"
-#include "RideObject.h"
-#include "StexObject.h"
-
-#include "../config/Config.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
-#include "ObjectList.h"
 #include "../platform/platform.h"
+#include "../rct12/SawyerChunkReader.h"
+#include "../rct12/SawyerChunkWriter.h"
+#include "../scenario/ScenarioRepository.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
+#include "Object.h"
+#include "ObjectFactory.h"
+#include "ObjectList.h"
+#include "ObjectManager.h"
+#include "RideObject.h"
+#include "StexObject.h"
+
+#include <algorithm>
+#include <memory>
+#include <unordered_map>
+#include <vector>
 
 using namespace OpenRCT2;
 
 struct ObjectEntryHash
 {
-    size_t operator()(const rct_object_entry &entry) const
+    size_t operator()(const rct_object_entry& entry) const
     {
-        uint32 hash = 5381;
+        uint32_t hash = 5381;
         for (auto i : entry.name)
         {
             hash = ((hash << 5) + hash) + i;
@@ -67,7 +60,7 @@ struct ObjectEntryHash
 
 struct ObjectEntryEqual
 {
-    bool operator()(const rct_object_entry &lhs, const rct_object_entry &rhs) const
+    bool operator()(const rct_object_entry& lhs, const rct_object_entry& rhs) const
     {
         return memcmp(&lhs.name, &rhs.name, 8) == 0;
     }
@@ -78,30 +71,28 @@ using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryH
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
-    static constexpr uint32 MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16 VERSION = 17;
+    static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
+    static constexpr uint16_t VERSION = 18;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
 
 public:
-    explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env) :
-        FileIndex("object index",
-            MAGIC_NUMBER,
-            VERSION,
-            env.GetFilePath(PATHID::CACHE_OBJECTS),
-            std::string(PATTERN),
-            std::vector<std::string>({
-                env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
-                env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) })),
-        _objectRepository(objectRepository)
+    explicit ObjectFileIndex(IObjectRepository& objectRepository, const IPlatformEnvironment& env)
+        : FileIndex(
+              "object index", MAGIC_NUMBER, VERSION, env.GetFilePath(PATHID::CACHE_OBJECTS), std::string(PATTERN),
+              std::vector<std::string>{
+                  env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
+                  env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
+              })
+        , _objectRepository(objectRepository)
     {
     }
 
 public:
-    std::tuple<bool, ObjectRepositoryItem> Create([[maybe_unused]] sint32 language, const std::string& path) const override
+    std::tuple<bool, ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
     {
-        Object * object = nullptr;
+        Object* object = nullptr;
         auto extension = Path::GetExtension(path);
         if (String::Equals(extension, ".json", true))
         {
@@ -121,6 +112,7 @@ public:
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
+            item.Sources = object->GetSourceGames();
             object->SetRepositoryItem(&item);
             delete object;
             return std::make_tuple(true, item);
@@ -129,59 +121,73 @@ public:
     }
 
 protected:
-    void Serialise(IStream * stream, const ObjectRepositoryItem &item) const override
+    void Serialise(IStream* stream, const ObjectRepositoryItem& item) const override
     {
         stream->WriteValue(item.ObjectEntry);
         stream->WriteString(item.Path);
         stream->WriteString(item.Name);
+        uint8_t sourceLength = (uint8_t)item.Sources.size();
+        stream->WriteValue(sourceLength);
+        for (auto source : item.Sources)
+        {
+            stream->WriteValue(source);
+        }
 
-        switch (object_entry_get_type(&item.ObjectEntry)) {
-        case OBJECT_TYPE_RIDE:
-            stream->WriteValue<uint8>(item.RideInfo.RideFlags);
-            for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
-            {
-                stream->WriteValue<uint8>(item.RideInfo.RideCategory[i]);
-            }
-            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-            {
-                stream->WriteValue<uint8>(item.RideInfo.RideType[i]);
-            }
-            stream->WriteValue<uint8>(item.RideInfo.RideGroupIndex);
-            break;
-        case OBJECT_TYPE_SCENERY_GROUP:
-            stream->WriteValue<uint16>((uint16)item.SceneryGroupInfo.Entries.size());
-            for (const auto& entry : item.SceneryGroupInfo.Entries)
-            {
-                stream->WriteValue<rct_object_entry>(entry);
-            }
-            break;
+        switch (object_entry_get_type(&item.ObjectEntry))
+        {
+            case OBJECT_TYPE_RIDE:
+                stream->WriteValue<uint8_t>(item.RideInfo.RideFlags);
+                for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
+                {
+                    stream->WriteValue<uint8_t>(item.RideInfo.RideCategory[i]);
+                }
+                for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+                {
+                    stream->WriteValue<uint8_t>(item.RideInfo.RideType[i]);
+                }
+                stream->WriteValue<uint8_t>(item.RideInfo.RideGroupIndex);
+                break;
+            case OBJECT_TYPE_SCENERY_GROUP:
+                stream->WriteValue<uint16_t>((uint16_t)item.SceneryGroupInfo.Entries.size());
+                for (const auto& entry : item.SceneryGroupInfo.Entries)
+                {
+                    stream->WriteValue<rct_object_entry>(entry);
+                }
+                break;
         }
     }
 
-    ObjectRepositoryItem Deserialise(IStream * stream) const override
+    ObjectRepositoryItem Deserialise(IStream* stream) const override
     {
         ObjectRepositoryItem item;
 
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
-        item.Path = stream->ReadString();
-        item.Name = stream->ReadString();
+        item.Path = stream->ReadStdString();
+        item.Name = stream->ReadStdString();
+        auto sourceLength = stream->ReadValue<uint8_t>();
+        for (size_t i = 0; i < sourceLength; i++)
+        {
+            auto value = stream->ReadValue<uint8_t>();
+            item.Sources.push_back(value);
+        }
 
-        switch (object_entry_get_type(&item.ObjectEntry)) {
-        case OBJECT_TYPE_RIDE:
-            item.RideInfo.RideFlags = stream->ReadValue<uint8>();
-            for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
+        switch (object_entry_get_type(&item.ObjectEntry))
+        {
+            case OBJECT_TYPE_RIDE:
+                item.RideInfo.RideFlags = stream->ReadValue<uint8_t>();
+                for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
+                {
+                    item.RideInfo.RideCategory[i] = stream->ReadValue<uint8_t>();
+                }
+                for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+                {
+                    item.RideInfo.RideType[i] = stream->ReadValue<uint8_t>();
+                }
+                item.RideInfo.RideGroupIndex = stream->ReadValue<uint8_t>();
+                break;
+            case OBJECT_TYPE_SCENERY_GROUP:
             {
-                item.RideInfo.RideCategory[i] = stream->ReadValue<uint8>();
-            }
-            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-            {
-                item.RideInfo.RideType[i] = stream->ReadValue<uint8>();
-            }
-            item.RideInfo.RideGroupIndex = stream->ReadValue<uint8>();
-            break;
-        case OBJECT_TYPE_SCENERY_GROUP:
-            {
-                auto numEntries = stream->ReadValue<uint16>();
+                auto numEntries = stream->ReadValue<uint16_t>();
                 item.SceneryGroupInfo.Entries = std::vector<rct_object_entry>(numEntries);
                 for (size_t i = 0; i < numEntries; i++)
                 {
@@ -194,11 +200,9 @@ protected:
     }
 
 private:
-    bool IsTrackReadOnly(const std::string &path) const
+    bool IsTrackReadOnly(const std::string& path) const
     {
-        return
-            String::StartsWith(path, SearchPaths[0]) ||
-            String::StartsWith(path, SearchPaths[1]);
+        return String::StartsWith(path, SearchPaths[0]) || String::StartsWith(path, SearchPaths[1]);
     }
 };
 
@@ -211,8 +215,8 @@ class ObjectRepository final : public IObjectRepository
 
 public:
     explicit ObjectRepository(const std::shared_ptr<IPlatformEnvironment>& env)
-        : _env(env),
-          _fileIndex(*this, *env)
+        : _env(env)
+        , _fileIndex(*this, *env)
     {
     }
 
@@ -221,7 +225,7 @@ public:
         ClearItems();
     }
 
-    void LoadOrConstruct(sint32 language) override
+    void LoadOrConstruct(int32_t language) override
     {
         ClearItems();
         auto items = _fileIndex.LoadOrBuild(language);
@@ -229,7 +233,7 @@ public:
         SortItems();
     }
 
-    void Construct(sint32 language) override
+    void Construct(int32_t language) override
     {
         auto items = _fileIndex.Rebuild(language);
         AddItems(items);
@@ -241,12 +245,12 @@ public:
         return _items.size();
     }
 
-    const ObjectRepositoryItem * GetObjects() const override
+    const ObjectRepositoryItem* GetObjects() const override
     {
         return _items.data();
     }
 
-    const ObjectRepositoryItem * FindObject(const utf8 * name) const override
+    const ObjectRepositoryItem* FindObject(const utf8* name) const override
     {
         rct_object_entry entry = {};
         utf8 entryName[9] = { ' ' };
@@ -261,7 +265,7 @@ public:
         return nullptr;
     }
 
-    const ObjectRepositoryItem * FindObject(const rct_object_entry * objectEntry) const override final
+    const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const override final
     {
         auto kvp = _itemMap.find(*objectEntry);
         if (kvp != _itemMap.end())
@@ -271,7 +275,7 @@ public:
         return nullptr;
     }
 
-    Object * LoadObject(const ObjectRepositoryItem * ori) override
+    Object* LoadObject(const ObjectRepositoryItem* ori) override
     {
         Guard::ArgumentNotNull(ori, GUARD_LINE);
 
@@ -290,30 +294,30 @@ public:
         }
     }
 
-    void RegisterLoadedObject(const ObjectRepositoryItem * ori, Object * object) override
+    void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) override
     {
-        ObjectRepositoryItem * item = &_items[ori->Id];
+        ObjectRepositoryItem* item = &_items[ori->Id];
 
         Guard::Assert(item->LoadedObject == nullptr, GUARD_LINE);
         item->LoadedObject = object;
     }
 
-    void UnregisterLoadedObject(const ObjectRepositoryItem * ori, Object * object) override
+    void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) override
     {
-        ObjectRepositoryItem * item = &_items[ori->Id];
+        ObjectRepositoryItem* item = &_items[ori->Id];
         if (item->LoadedObject == object)
         {
             item->LoadedObject = nullptr;
         }
     }
 
-    void AddObject(const rct_object_entry * objectEntry, const void * data, size_t dataSize) override
+    void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) override
     {
         utf8 objectName[9];
         object_entry_get_name_fixed(objectName, sizeof(objectName), objectEntry);
 
         // Check that the object is loadable before writing it
-        Object * object = ObjectFactory::CreateObjectFromLegacyData(*this, objectEntry, data, dataSize);
+        Object* object = ObjectFactory::CreateObjectFromLegacyData(*this, objectEntry, data, dataSize);
         if (object == nullptr)
         {
             Console::Error::WriteLine("[%s] Unable to export object.", objectName);
@@ -329,14 +333,14 @@ public:
                 SaveObject(path, objectEntry, data, dataSize);
                 ScanObject(path);
             }
-            catch (const std::exception &)
+            catch (const std::exception&)
             {
                 Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
             }
         }
     }
 
-    void ExportPackedObject(IStream * stream) override
+    void ExportPackedObject(IStream* stream) override
     {
         auto chunkReader = SawyerChunkReader(stream);
 
@@ -354,10 +358,10 @@ public:
         }
     }
 
-    void WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem *> &objects) override
+    void WritePackedObjects(IStream* stream, std::vector<const ObjectRepositoryItem*>& objects) override
     {
         log_verbose("packing %u objects", objects.size());
-        for (const auto &object : objects)
+        for (const auto& object : objects)
         {
             Guard::ArgumentNotNull(object);
 
@@ -382,9 +386,7 @@ private:
 
     void SortItems()
     {
-        std::sort(_items.begin(), _items.end(), [](const ObjectRepositoryItem &a,
-                                                   const ObjectRepositoryItem &b) -> bool
-        {
+        std::sort(_items.begin(), _items.end(), [](const ObjectRepositoryItem& a, const ObjectRepositoryItem& b) -> bool {
             return String::Compare(a.Name, b.Name) < 0;
         });
 
@@ -403,7 +405,7 @@ private:
         }
     }
 
-    void AddItems(const std::vector<ObjectRepositoryItem> &items)
+    void AddItems(const std::vector<ObjectRepositoryItem>& items)
     {
         size_t numConflicts = 0;
         for (auto item : items)
@@ -419,7 +421,7 @@ private:
         }
     }
 
-    bool AddItem(const ObjectRepositoryItem &item)
+    bool AddItem(const ObjectRepositoryItem& item)
     {
         auto conflict = FindObject(&item.ObjectEntry);
         if (conflict == nullptr)
@@ -439,7 +441,7 @@ private:
         }
     }
 
-    void ScanObject(const std::string &path)
+    void ScanObject(const std::string& path)
     {
         auto language = LocalisationService_GetCurrentLanguage();
         auto result = _fileIndex.Create(language, path);
@@ -450,14 +452,12 @@ private:
         }
     }
 
-    static void SaveObject(const utf8 * path,
-                           const rct_object_entry * entry,
-                           const void * data, size_t dataSize,
-                           bool fixChecksum = true)
+    static void SaveObject(
+        const utf8* path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
     {
         if (fixChecksum)
         {
-            uint32 realChecksum = object_calculate_checksum(entry, data, dataSize);
+            uint32_t realChecksum = object_calculate_checksum(entry, data, dataSize);
             if (realChecksum != entry->checksum)
             {
                 char objectName[9];
@@ -467,18 +467,18 @@ private:
                 // Calculate the value of extra bytes that can be appended to the data so that the
                 // data is then valid for the object's checksum
                 size_t extraBytesCount = 0;
-                void * extraBytes = CalculateExtraBytesToFixChecksum(realChecksum, entry->checksum, &extraBytesCount);
+                void* extraBytes = CalculateExtraBytesToFixChecksum(realChecksum, entry->checksum, &extraBytesCount);
 
                 // Create new data blob with appended bytes
                 size_t newDataSize = dataSize + extraBytesCount;
-                uint8 * newData = Memory::Allocate<uint8>(newDataSize);
-                uint8 * newDataSaltOffset = newData + dataSize;
-                std::copy_n((const uint8 *)data, dataSize, newData);
-                std::copy_n((const uint8 *)extraBytes, extraBytesCount, newDataSaltOffset);
+                uint8_t* newData = Memory::Allocate<uint8_t>(newDataSize);
+                uint8_t* newDataSaltOffset = newData + dataSize;
+                std::copy_n((const uint8_t*)data, dataSize, newData);
+                std::copy_n((const uint8_t*)extraBytes, extraBytesCount, newDataSaltOffset);
 
                 try
                 {
-                    uint32 newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
+                    uint32_t newRealChecksum = object_calculate_checksum(entry, newData, newDataSize);
                     if (newRealChecksum != entry->checksum)
                     {
                         Console::Error::WriteLine("CalculateExtraBytesToFixChecksum failed to fix checksum.");
@@ -494,7 +494,7 @@ private:
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
                 }
-                catch (const std::exception &)
+                catch (const std::exception&)
                 {
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
@@ -505,12 +505,12 @@ private:
         }
 
         // Encode data
-        uint8 objectType = object_entry_get_type(entry);
+        uint8_t objectType = object_entry_get_type(entry);
         sawyercoding_chunk_header chunkHeader;
         chunkHeader.encoding = object_entry_group_encoding[objectType];
-        chunkHeader.length = (uint32)dataSize;
-        uint8 * encodedDataBuffer = Memory::Allocate<uint8>(0x600000);
-        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8 *)data, chunkHeader);
+        chunkHeader.length = (uint32_t)dataSize;
+        uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
+        size_t encodedDataSize = sawyercoding_write_chunk_buffer(encodedDataBuffer, (uint8_t*)data, chunkHeader);
 
         // Save to file
         try
@@ -521,22 +521,23 @@ private:
 
             Memory::Free(encodedDataBuffer);
         }
-        catch (const std::exception &)
+        catch (const std::exception&)
         {
             Memory::Free(encodedDataBuffer);
             throw;
         }
     }
 
-    static void * CalculateExtraBytesToFixChecksum(sint32 currentChecksum, sint32 targetChecksum, size_t * outSize)
+    static void* CalculateExtraBytesToFixChecksum(int32_t currentChecksum, int32_t targetChecksum, size_t* outSize)
     {
         // Allocate 11 extra bytes to manipulate the checksum
-        uint8 * salt = Memory::Allocate<uint8>(11);
-        if (outSize != nullptr) *outSize = 11;
+        uint8_t* salt = Memory::Allocate<uint8_t>(11);
+        if (outSize != nullptr)
+            *outSize = 11;
 
         // Next work out which bits need to be flipped to make the current checksum match the one in the file
         // The bitwise rotation compensates for the rotation performed during the checksum calculation*/
-        sint32 bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
+        int32_t bitsToFlip = targetChecksum ^ ((currentChecksum << 25) | (currentChecksum >> 7));
 
         // Each set bit encountered during encoding flips one bit of the resulting checksum (so each bit of the checksum is an
         // XOR of bits from the file). Here, we take each bit that should be flipped in the checksum and set one of the bits in
@@ -557,10 +558,10 @@ private:
         return salt;
     }
 
-    void GetPathForNewObject(utf8 * buffer, size_t bufferSize, const char * name)
+    void GetPathForNewObject(utf8* buffer, size_t bufferSize, const char* name)
     {
         char normalisedName[9] = { 0 };
-        for (sint32 i = 0; i < 8; i++)
+        for (int32_t i = 0; i < 8; i++)
         {
             if (name[i] != ' ')
             {
@@ -572,14 +573,14 @@ private:
             }
         }
 
-        const std::string &userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
+        const std::string& userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
         String::Set(buffer, bufferSize, userObjPath.c_str());
         platform_ensure_directory_exists(buffer);
 
         Path::Append(buffer, bufferSize, normalisedName);
         String::Append(buffer, bufferSize, ".DAT");
 
-        uint32 counter = 2;
+        uint32_t counter = 2;
         for (; platform_file_exists(buffer);)
         {
             utf8 counterString[8];
@@ -593,9 +594,9 @@ private:
         }
     }
 
-    void WritePackedObject(IStream * stream, const rct_object_entry * entry)
+    void WritePackedObject(IStream* stream, const rct_object_entry* entry)
     {
-        const ObjectRepositoryItem * item = FindObject(entry);
+        const ObjectRepositoryItem* item = FindObject(entry);
         if (item == nullptr)
         {
             throw std::runtime_error(String::StdFormat("Unable to find object '%.8s'", entry->name));
@@ -623,7 +624,7 @@ std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<
     return std::make_unique<ObjectRepository>(env);
 }
 
-bool IsObjectCustom(const ObjectRepositoryItem * object)
+bool IsObjectCustom(const ObjectRepositoryItem* object)
 {
     Guard::ArgumentNotNull(object);
 
@@ -631,9 +632,9 @@ bool IsObjectCustom(const ObjectRepositoryItem * object)
     return !(object->ObjectEntry.flags & 0xF0);
 }
 
-const rct_object_entry * object_list_find(rct_object_entry * entry)
+const rct_object_entry* object_list_find(rct_object_entry* entry)
 {
-    const rct_object_entry * result = nullptr;
+    const rct_object_entry* result = nullptr;
     auto objRepo = GetContext()->GetObjectRepository();
     auto item = objRepo->FindObject(entry);
     if (item != nullptr)
@@ -654,11 +655,11 @@ void object_list_load()
     objectManager->UnloadAll();
 }
 
-void * object_repository_load_object(const rct_object_entry * objectEntry)
+void* object_repository_load_object(const rct_object_entry* objectEntry)
 {
-    Object * object = nullptr;
+    Object* object = nullptr;
     auto objRepository = GetContext()->GetObjectRepository();
-    const ObjectRepositoryItem * ori = objRepository->FindObject(objectEntry);
+    const ObjectRepositoryItem* ori = objRepository->FindObject(objectEntry);
     if (ori != nullptr)
     {
         object = objRepository->LoadObject(ori);
@@ -667,10 +668,10 @@ void * object_repository_load_object(const rct_object_entry * objectEntry)
             object->Load();
         }
     }
-    return (void *)object;
+    return (void*)object;
 }
 
-void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_entry * stexObjectEntry)
+void scenario_translate(scenario_index_entry* scenarioEntry, const rct_object_entry* stexObjectEntry)
 {
     rct_string_id localisedStringIds[3];
     if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds))
@@ -690,10 +691,10 @@ void scenario_translate(scenario_index_entry * scenarioEntry, const rct_object_e
         if ((stexObjectEntry->flags & 0xFF) != 255)
         {
             auto objectRepository = GetContext()->GetObjectRepository();
-            const ObjectRepositoryItem * ori = objectRepository->FindObject(stexObjectEntry);
+            const ObjectRepositoryItem* ori = objectRepository->FindObject(stexObjectEntry);
             if (ori != nullptr)
             {
-                Object * object = objectRepository->LoadObject(ori);
+                Object* object = objectRepository->LoadObject(ori);
                 if (object != nullptr)
                 {
                     auto stexObject = static_cast<StexObject*>(object);
@@ -716,41 +717,41 @@ size_t object_repository_get_items_count()
     return objectRepository->GetNumObjects();
 }
 
-const ObjectRepositoryItem * object_repository_get_items()
+const ObjectRepositoryItem* object_repository_get_items()
 {
     auto objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->GetObjects();
 }
 
-const ObjectRepositoryItem * object_repository_find_object_by_entry(const rct_object_entry * entry)
+const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry)
 {
     auto objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->FindObject(entry);
 }
 
-const ObjectRepositoryItem * object_repository_find_object_by_name(const char * name)
+const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name)
 {
     auto objectRepository = GetContext()->GetObjectRepository();
     return objectRepository->FindObject(name);
 }
 
-void object_delete(void * object)
+void object_delete(void* object)
 {
     if (object != nullptr)
     {
-        Object * baseObject = static_cast<Object *>(object);
+        Object* baseObject = static_cast<Object*>(object);
         baseObject->Unload();
         delete baseObject;
     }
 }
 
-void object_draw_preview(const void * object, rct_drawpixelinfo * dpi, sint32 width, sint32 height)
+void object_draw_preview(const void* object, rct_drawpixelinfo* dpi, int32_t width, int32_t height)
 {
-    const Object * baseObject = static_cast<const Object *>(object);
+    const Object* baseObject = static_cast<const Object*>(object);
     baseObject->DrawPreview(dpi, width, height);
 }
 
-bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b)
+bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)
 {
     // If an official object don't bother checking checksum
     if ((a->flags & 0xF0) || (b->flags & 0xF0))
@@ -759,7 +760,7 @@ bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b
         {
             return false;
         }
-        sint32 match = memcmp(a->name, b->name, 8);
+        int32_t match = memcmp(a->name, b->name, 8);
         if (match)
         {
             return false;
@@ -771,7 +772,7 @@ bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b
         {
             return false;
         }
-        sint32 match = memcmp(a->name, b->name, 8);
+        int32_t match = memcmp(a->name, b->name, 8);
         if (match)
         {
             return false;
@@ -784,20 +785,20 @@ bool object_entry_compare(const rct_object_entry * a, const rct_object_entry * b
     return true;
 }
 
-sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)
+int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength)
 {
-    const uint8 * entryBytePtr = (uint8 *)entry;
+    const uint8_t* entryBytePtr = (uint8_t*)entry;
 
-    uint32 checksum = 0xF369A75B;
+    uint32_t checksum = 0xF369A75B;
     checksum ^= entryBytePtr[0];
     checksum = rol32(checksum, 11);
-    for (sint32 i = 4; i < 12; i++)
+    for (int32_t i = 4; i < 12; i++)
     {
         checksum ^= entryBytePtr[i];
         checksum = rol32(checksum, 11);
     }
 
-    uint8 *      dataBytes    = (uint8 *)data;
+    uint8_t* dataBytes = (uint8_t*)data;
     const size_t dataLength32 = dataLength - (dataLength & 31);
     for (size_t i = 0; i < 32; i++)
     {
@@ -813,5 +814,5 @@ sint32 object_calculate_checksum(const rct_object_entry * entry, const void * da
         checksum = rol32(checksum, 11);
     }
 
-    return (sint32)checksum;
+    return (int32_t)checksum;
 }

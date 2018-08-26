@@ -1,25 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
 #include "interface/Window.h"
 
-enum INPUT_FLAGS {
+enum INPUT_FLAGS
+{
     INPUT_FLAG_WIDGET_PRESSED = (1 << 0),
 
     // The dropdown can stay open if the mouse is released, set on flag DROPDOWN_FLAG_STAY_OPEN
@@ -43,7 +37,8 @@ enum INPUT_FLAGS {
     INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
 
-enum MOUSE_STATE {
+enum MOUSE_STATE
+{
     MOUSE_STATE_RELEASED,
     MOUSE_STATE_LEFT_PRESS,
     MOUSE_STATE_LEFT_RELEASE,
@@ -51,7 +46,8 @@ enum MOUSE_STATE {
     MOUSE_STATE_RIGHT_RELEASE
 };
 
-enum INPUT_STATE {
+enum INPUT_STATE
+{
     INPUT_STATE_RESET,
     INPUT_STATE_NORMAL,
     INPUT_STATE_WIDGET_PRESSED,
@@ -64,48 +60,50 @@ enum INPUT_STATE {
     INPUT_STATE_SCROLL_RIGHT
 };
 
-enum PLACE_OBJECT_MODIFIER {
+enum PLACE_OBJECT_MODIFIER
+{
     PLACE_OBJECT_MODIFIER_NONE = 0,
     PLACE_OBJECT_MODIFIER_SHIFT_Z = (1 << 0),
     PLACE_OBJECT_MODIFIER_COPY_Z = (1 << 1),
 };
 
-struct widget_ref {
+struct widget_ref
+{
     rct_windowclass window_classification;
     rct_windownumber window_number;
     rct_widgetindex widget_index;
 };
 
-extern uint8 gInputPlaceObjectModifier;
+extern uint8_t gInputPlaceObjectModifier;
 
-extern sint32 gInputDragLastX;
-extern sint32 gInputDragLastY;
+extern int32_t gInputDragLastX;
+extern int32_t gInputDragLastY;
 
 extern widget_ref gHoverWidget;
 extern widget_ref gPressedWidget;
 
-extern uint16 gTooltipTimeout;
+extern uint16_t gTooltipTimeout;
 extern widget_ref gTooltipWidget;
-extern sint32 gTooltipCursorX;
-extern sint32 gTooltipCursorY;
+extern int32_t gTooltipCursorX;
+extern int32_t gTooltipCursorY;
 
 extern TOOL_IDX gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
 // TODO: Move to openrct2-ui and make static again
 extern INPUT_STATE _inputState;
-extern uint8 _inputFlags;
-extern uint16 _tooltipNotShownTicks;
+extern uint8_t _inputFlags;
+extern uint16_t _tooltipNotShownTicks;
 
-void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 
 void title_handle_keyboard_input();
 void game_handle_input();
 void game_handle_keyboard_input();
 void game_handle_edge_scroll();
-sint32 get_next_key();
+int32_t get_next_key();
 
-void store_mouse_input(sint32 state, sint32 x, sint32 y);
+void store_mouse_input(int32_t state, int32_t x, int32_t y);
 
 void input_set_flag(INPUT_FLAGS flag, bool on);
 bool input_test_flag(INPUT_FLAGS flag);
@@ -120,6 +118,6 @@ void reset_tooltip_not_shown();
 
 void input_reset_place_obj_modifier();
 
-void input_scroll_viewport(sint32 scrollX, sint32 scrollY);
+void input_scroll_viewport(int32_t scrollX, int32_t scrollY);
 
 #endif

@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _STAFF_H_
 #define _STAFF_H_
@@ -44,12 +37,12 @@ enum STAFF_TYPE
 
 enum STAFF_ORDERS
 {
-    STAFF_ORDERS_SWEEPING      = (1 << 0),
+    STAFF_ORDERS_SWEEPING = (1 << 0),
     STAFF_ORDERS_WATER_FLOWERS = (1 << 1),
-    STAFF_ORDERS_EMPTY_BINS    = (1 << 2),
-    STAFF_ORDERS_MOWING        = (1 << 3),
+    STAFF_ORDERS_EMPTY_BINS = (1 << 2),
+    STAFF_ORDERS_MOWING = (1 << 3),
     STAFF_ORDERS_INSPECT_RIDES = (1 << 0),
-    STAFF_ORDERS_FIX_RIDES     = (1 << 1)
+    STAFF_ORDERS_FIX_RIDES = (1 << 1)
 };
 
 enum ENTERTAINER_COSTUME
@@ -71,43 +64,43 @@ enum ENTERTAINER_COSTUME
 
 extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
 
-extern uint32   gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
-extern uint8    gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
-extern uint16   gStaffDrawPatrolAreas;
+extern uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
+extern uint8_t gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
+extern uint16_t gStaffDrawPatrolAreas;
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;
 extern colour_t gStaffSecurityColour;
 
-void game_command_hire_new_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                        sint32 * ebp);
-void game_command_callback_hire_new_staff_member(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi,
-                                                 sint32 ebp);
-void game_command_set_staff_order(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                  sint32 * ebp);
-void game_command_set_staff_patrol(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                   sint32 * ebp);
-void game_command_fire_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                    sint32 * ebp);
-void game_command_set_staff_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                                 sint32 * ebp);
-void game_command_pickup_staff(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi,
-                               sint32 * ebp);
+void game_command_hire_new_staff_member(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+void game_command_callback_hire_new_staff_member(
+    int32_t eax, int32_t ebx, int32_t ecx, int32_t edx, int32_t esi, int32_t edi, int32_t ebp);
+void game_command_set_staff_order(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+void game_command_set_staff_patrol(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+void game_command_fire_staff_member(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+void game_command_set_staff_name(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
+void game_command_pickup_staff(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
-void     staff_reset_modes();
-void     staff_set_name(uint16 spriteIndex, const char * name);
-uint16   hire_new_staff_member(uint8 staffType);
-void     staff_update_greyed_patrol_areas();
-bool     staff_is_location_in_patrol(rct_peep * mechanic, sint32 x, sint32 y);
-bool     staff_is_location_on_patrol_edge(rct_peep * mechanic, sint32 x, sint32 y);
-bool     staff_can_ignore_wide_flag(rct_peep * mechanic, sint32 x, sint32 y, uint8 z, rct_tile_element * path);
-sint32   staff_path_finding(rct_peep * peep);
-void     staff_reset_stats();
-bool     staff_is_patrol_area_set(sint32 staffIndex, sint32 x, sint32 y);
-void     staff_set_patrol_area(sint32 staffIndex, sint32 x, sint32 y, bool value);
-void     staff_toggle_patrol_area(sint32 staffIndex, sint32 x, sint32 y);
-colour_t staff_get_colour(uint8 staffType);
-bool     staff_set_colour(uint8 staffType, colour_t value);
-uint32   staff_get_available_entertainer_costumes();
-sint32   staff_get_available_entertainer_costume_list(uint8 * costumeList);
+void staff_reset_modes();
+void staff_set_name(uint16_t spriteIndex, const char* name);
+uint16_t hire_new_staff_member(uint8_t staffType);
+void staff_update_greyed_patrol_areas();
+bool staff_is_location_in_patrol(rct_peep* mechanic, int32_t x, int32_t y);
+bool staff_is_location_on_patrol_edge(rct_peep* mechanic, int32_t x, int32_t y);
+bool staff_can_ignore_wide_flag(rct_peep* mechanic, int32_t x, int32_t y, uint8_t z, rct_tile_element* path);
+int32_t staff_path_finding(rct_peep* peep);
+void staff_reset_stats();
+bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y);
+void staff_set_patrol_area(int32_t staffIndex, int32_t x, int32_t y, bool value);
+void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y);
+colour_t staff_get_colour(uint8_t staffType);
+bool staff_set_colour(uint8_t staffType, colour_t value);
+uint32_t staff_get_available_entertainer_costumes();
+int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList);
 
 #endif

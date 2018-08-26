@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 /**
  * Whether a particular ride has a running track or not. Will probably end up
@@ -24,15 +17,16 @@
  * https://gist.github.com/kevinburke/eaeb1d8149a6eef0dcc1
  */
 
+#include "RideData.h"
+
 #include "../audio/audio.h"
 #include "../core/Util.hpp"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
 #include "../sprites.h"
 #include "Ride.h"
-#include "Track.h"
-#include "RideData.h"
 #include "ShopItem.h"
+#include "Track.h"
 
 // clang-format off
 const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
@@ -136,7 +130,7 @@ const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
  *
  * data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
  */
-const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT] = {
+const uint8_t initialUpkeepCosts[RIDE_TYPE_COUNT] = {
     41, // 00 Spiral Roller coaster
     40, // 01 Stand Up Coaster
     40, // 02 Suspended Swinging
@@ -230,7 +224,7 @@ const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT] = {
     42, // 5a LIM Launched Roller Coaster
 };
 
-const uint8 costPerTrackPiece[RIDE_TYPE_COUNT] = {
+const uint8_t costPerTrackPiece[RIDE_TYPE_COUNT] = {
     80, // 00 Spiral Roller coaster
     80, // 01 Stand Up Coaster
     80, // 02 Suspended Swinging
@@ -327,7 +321,7 @@ const uint8 costPerTrackPiece[RIDE_TYPE_COUNT] = {
 /**
  * Data initially at 0x0097E3B4
  */
-const uint8 costPerVehicle[RIDE_TYPE_COUNT] = {
+const uint8_t costPerVehicle[RIDE_TYPE_COUNT] = {
     10, // 00 Spiral Roller coaster
     10, // 01 Stand Up Coaster
     20, // 02 Suspended Swinging
@@ -520,7 +514,7 @@ const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT] = {
 };
 
 /* Data at 0x0097E3B8 */
-const uint8 costPerStation[RIDE_TYPE_COUNT] = {
+const uint8_t costPerStation[RIDE_TYPE_COUNT] = {
     10, // 00 Spiral Roller coaster
     10, // 01 Stand Up Coaster
     10, // 02 Suspended Swinging
@@ -615,7 +609,7 @@ const uint8 costPerStation[RIDE_TYPE_COUNT] = {
 };
 
 // Data at 0x0097D21E
-const uint8 rideBonusValue[RIDE_TYPE_COUNT] = {
+const uint8_t rideBonusValue[RIDE_TYPE_COUNT] = {
     85,  // 00 Spiral Roller coaster
     90,  // 01 Stand Up Coaster
     90,  // 02 Suspended Swinging
@@ -918,7 +912,7 @@ const rct_ride_name RideNaming[] =  {
  *
  *  rct2: 0x0097C8AC
  */
-const uint8 RideAvailableModes[] = {
+const uint8_t RideAvailableModes[] = {
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 00 Spiral Roller coaster
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 01 Stand Up Coaster
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 02 Suspended Swinging
@@ -1012,11 +1006,11 @@ const uint8 RideAvailableModes[] = {
     RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF                                           // 5a LIM Launched Roller Coaster
 };
 
-const uint8 AllRideModesAvailable[] = {
+const uint8_t AllRideModesAvailable[] = {
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE, RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_SHUTTLE, RIDE_MODE_NORMAL, RIDE_MODE_BOAT_HIRE, RIDE_MODE_UPWARD_LAUNCH, RIDE_MODE_ROTATING_LIFT, RIDE_MODE_STATION_TO_STATION, RIDE_MODE_SINGLE_RIDE_PER_ADMISSION, RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION, RIDE_MODE_MAZE, RIDE_MODE_RACE, RIDE_MODE_BUMPERCAR, RIDE_MODE_SWING, RIDE_MODE_SHOP_STALL, RIDE_MODE_ROTATION, RIDE_MODE_FORWARD_ROTATION, RIDE_MODE_BACKWARD_ROTATION, RIDE_MODE_FILM_AVENGING_AVIATORS, RIDE_MODE_3D_FILM_MOUSE_TAILS, RIDE_MODE_SPACE_RINGS, RIDE_MODE_BEGINNERS, RIDE_MODE_LIM_POWERED_LAUNCH, RIDE_MODE_FILM_THRILL_RIDERS, RIDE_MODE_3D_FILM_STORM_CHASERS, RIDE_MODE_3D_FILM_SPACE_RAIDERS, RIDE_MODE_INTENSE, RIDE_MODE_BERSERK, RIDE_MODE_HAUNTED_HOUSE, RIDE_MODE_CIRCUS_SHOW, RIDE_MODE_DOWNWARD_LAUNCH, RIDE_MODE_CROOKED_HOUSE, RIDE_MODE_FREEFALL_DROP, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF
 };
 
-const uint8 RideAvailableBreakdowns[] = {
+const uint8_t RideAvailableBreakdowns[] = {
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),                                                                                       // 00 Spiral Roller coaster
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 01 Stand Up Coaster
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 02 Suspended Swinging
@@ -1459,14 +1453,14 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
 };
 
 /* rct2: 0x009A0AA0 */
-const uint16 RideFilmLength[3] = {
+const uint16_t RideFilmLength[3] = {
     5000, // MOUSE_TAILS
     6000, // STORM_CHASERS
     7000  // SPACE_RAIDERS
 };
 
 /* rct2: 0x009A0AC4 */
-const uint16 RideCrookedHouseLength[1] = {
+const uint16_t RideCrookedHouseLength[1] = {
     600
 };
 
@@ -1566,7 +1560,7 @@ const rct_ride_lift_data RideLiftData[] = {
 };
 
 /** rct2: 0x0097D7CB */
-const sint32 RidePhotoItems[] = {
+const int32_t RidePhotoItems[] = {
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     SHOP_ITEM_PHOTO2,   // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
@@ -2261,7 +2255,7 @@ const rct_ride_properties RideProperties[RIDE_TYPE_COUNT] = {
 };
 
 /** rct2: 0x0097CC68 */
-const uint8 RideConstructionDefaultTrackType[] = {
+const uint8_t RideConstructionDefaultTrackType[] = {
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
@@ -2355,7 +2349,7 @@ const uint8 RideConstructionDefaultTrackType[] = {
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
-#define TRACK_COLOUR_PRESETS(...)       {static_cast<uint8>(Util::CountOf<track_colour>({__VA_ARGS__})), {__VA_ARGS__}}
+#define TRACK_COLOUR_PRESETS(...)       {static_cast<uint8_t>(Util::CountOf<track_colour>({__VA_ARGS__})), {__VA_ARGS__}}
 
 #define DEFAULT_FLAT_RIDE_COLOUR_PRESET TRACK_COLOUR_PRESETS( { COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW } )
 #define DEFAULT_STALL_COLOUR_PRESET     TRACK_COLOUR_PRESETS( { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED } )

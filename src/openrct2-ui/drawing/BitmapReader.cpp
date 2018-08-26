@@ -1,43 +1,37 @@
-#pragma region Copyright (c) 2018 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
-#include <algorithm>
-#include <stdexcept>
-#include <cstring>
-#include <SDL2/SDL.h>
-#include <openrct2/core/Imaging.h>
 #include "BitmapReader.h"
 
-static std::vector<uint8> ReadToVector(std::istream &stream)
+#include <SDL2/SDL.h>
+#include <algorithm>
+#include <cstring>
+#include <openrct2/core/Imaging.h>
+#include <stdexcept>
+
+static std::vector<uint8_t> ReadToVector(std::istream& stream)
 {
-    std::vector<uint8> result;
+    std::vector<uint8_t> result;
     if (!stream.eof() && !stream.fail())
     {
         stream.seekg(0, std::ios_base::end);
         auto size = stream.tellg();
         result.resize(size);
         stream.seekg(0, std::ios_base::beg);
-        stream.read((char *)result.data(), size);
+        stream.read((char*)result.data(), size);
     }
     return result;
 }
 
 // TODO Bitmaps aren't very complicated to read so we should probably just write our
 //      own implementation in libopenrct2 and spare the AOT implementation registration.
-static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
+static Image ReadBitmap(std::istream& istream, IMAGE_FORMAT format)
 {
     auto buffer = ReadToVector(istream);
     auto sdlStream = SDL_RWFromConstMem(buffer.data(), (int)buffer.size());
@@ -65,11 +59,11 @@ static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
             std::fill(image.Pixels.begin(), image.Pixels.end(), 0xFF);
 
             // Copy pixels over
-            auto src = (const uint8 *)bitmap->pixels;
+            auto src = (const uint8_t*)bitmap->pixels;
             auto dst = image.Pixels.data();
             if (numChannels == 4)
             {
-                for (sint32 y = 0; y < bitmap->h; y++)
+                for (int32_t y = 0; y < bitmap->h; y++)
                 {
                     std::memcpy(dst, src, bitmap->w);
                     src += bitmap->pitch;
@@ -78,9 +72,9 @@ static Image ReadBitmap(std::istream &istream, IMAGE_FORMAT format)
             }
             else
             {
-                for (sint32 y = 0; y < bitmap->h; y++)
+                for (int32_t y = 0; y < bitmap->h; y++)
                 {
-                    for (sint32 x = 0; x < bitmap->w; x++)
+                    for (int32_t x = 0; x < bitmap->w; x++)
                     {
                         std::memcpy(dst, src, 3);
                         src += 3;

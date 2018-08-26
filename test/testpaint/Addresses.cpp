@@ -1,41 +1,35 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "Addresses.h"
 
 #if defined(__GNUC__)
-    #ifdef __clang__
-        #define DISABLE_OPT __attribute__((noinline,optnone))
-    #else
-        #define DISABLE_OPT __attribute__((noinline,optimize("O0")))
-    #endif // __clang__
+#    ifdef __clang__
+#        define DISABLE_OPT __attribute__((noinline, optnone))
+#    else
+#        define DISABLE_OPT __attribute__((noinline, optimize("O0")))
+#    endif // __clang__
 #else
-#define DISABLE_OPT
+#    define DISABLE_OPT
 #endif // defined(__GNUC__)
 
 // This variable serves a purpose of identifying a crash if it has happened inside original code.
 // When switching to original code, stack frame pointer is modified and prevents breakpad from providing stack trace.
-volatile sint32 _originalAddress = 0;
+volatile int32_t _originalAddress = 0;
 
-sint32 DISABLE_OPT RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sint32 _ecx, sint32 _edx, sint32 _esi, sint32 _edi, sint32 _ebp)
+int32_t DISABLE_OPT RCT2_CALLPROC_X(
+    int32_t address, int32_t _eax, int32_t _ebx, int32_t _ecx, int32_t _edx, int32_t _esi, int32_t _edi, int32_t _ebp)
 {
-    sint32 result = 0;
+    int32_t result = 0;
     _originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
-    #ifdef _MSC_VER
+#    ifdef _MSC_VER
     __asm {
         push ebp
         push address
@@ -50,11 +44,12 @@ sint32 DISABLE_OPT RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sin
         lahf
         pop ebp
         pop ebp
-        /* Load result with flags */
+            /* Load result with flags */
         mov result, eax
     }
-    #else
-    __asm__ volatile ( "\
+#    else
+    // clang-format off
+    __asm__ volatile("\
         \n\
         push %%ebx \n\
         push %%ebp \n\
@@ -75,10 +70,10 @@ sint32 DISABLE_OPT RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sin
         mov %%eax, %[result] \n\
         " : [address] "+m" (address), [eax] "+m" (_eax), [ebx] "+m" (_ebx), [ecx] "+m" (_ecx), [edx] "+m" (_edx), [esi] "+m" (_esi), [edi] "+m" (_edi), [ebp] "+m" (_ebp), [result] "+m" (result)
         :
-        : "eax","ecx","edx","esi","edi","memory"
-    );
-    #endif
-#endif // PLATFORM_X86
+        : "eax","ecx","edx","esi","edi","memory");
+    // clang-format on
+#    endif // _MSC_VER
+#endif     // PLATFORM_X86
     _originalAddress = 0;
     // lahf only modifies ah, zero out the rest
     return result & 0xFF00;

@@ -1,28 +1,20 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <openrct2/Context.h>
-#include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2-ui/windows/Window.h>
-
+#include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/util/Util.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/util/Util.h>
 
 #pragma region Widgets
 
@@ -135,7 +127,7 @@ static rct_window_event_list window_track_delete_prompt_events = {
 
 #pragma endregion
 
-static track_design_file_ref *_trackDesignFileReference;
+static track_design_file_ref* _trackDesignFileReference;
 
 static void window_track_delete_prompt_open();
 static void window_track_design_list_reload_tracks();
@@ -144,26 +136,19 @@ static void window_track_design_list_reload_tracks();
  *
  *  rct2: 0x006D348F
  */
-rct_window * window_track_manage_open(track_design_file_ref *tdFileRef)
+rct_window* window_track_manage_open(track_design_file_ref* tdFileRef)
 {
     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
-    rct_window *w = window_create_centred(
-        250,
-        44,
-        &window_track_manage_events,
-        WC_MANAGE_TRACK_DESIGN,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT
-    );
+    rct_window* w = window_create_centred(
+        250, 44, &window_track_manage_events, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     w->widgets = window_track_manage_widgets;
-    w->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_RENAME) |
-        (1 << WIDX_DELETE);
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RENAME) | (1 << WIDX_DELETE);
     window_init_scroll_widgets(w);
 
-    rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (trackDesignListWindow != nullptr) {
+    rct_window* trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+    if (trackDesignListWindow != nullptr)
+    {
         trackDesignListWindow->track_list.track_list_being_updated = true;
     }
 
@@ -176,10 +161,11 @@ rct_window * window_track_manage_open(track_design_file_ref *tdFileRef)
  *
  *  rct2: 0x006D364C
  */
-static void window_track_manage_close(rct_window *w)
+static void window_track_manage_close(rct_window* w)
 {
-    rct_window *trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (trackDesignListWindow != nullptr) {
+    rct_window* trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+    if (trackDesignListWindow != nullptr)
+    {
         trackDesignListWindow->track_list.track_list_being_updated = false;
     }
 }
@@ -188,25 +174,21 @@ static void window_track_manage_close(rct_window *w)
  *
  *  rct2: 0x006D3523
  */
-static void window_track_manage_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_track_manage_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_RENAME:
-        window_text_input_raw_open(
-            w,
-            widgetIndex,
-            STR_TRACK_DESIGN_RENAME_TITLE,
-            STR_TRACK_DESIGN_RENAME_DESC,
-            _trackDesignFileReference->name,
-            127
-        );
-        break;
-    case WIDX_DELETE:
-        window_track_delete_prompt_open();
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_RENAME:
+            window_text_input_raw_open(
+                w, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, _trackDesignFileReference->name,
+                127);
+            break;
+        case WIDX_DELETE:
+            window_track_delete_prompt_open();
+            break;
     }
 }
 
@@ -214,27 +196,33 @@ static void window_track_manage_mouseup(rct_window *w, rct_widgetindex widgetInd
  *
  *  rct2: 0x006D3523
  */
-static void window_track_manage_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
+static void window_track_manage_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    if (widgetIndex != WIDX_RENAME || str_is_null_or_empty(text)) {
+    if (widgetIndex != WIDX_RENAME || str_is_null_or_empty(text))
+    {
         return;
     }
 
-    if (str_is_null_or_empty(text)) {
+    if (str_is_null_or_empty(text))
+    {
         context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE);
         return;
     }
 
-    if (!filename_valid_characters(text)) {
+    if (!filename_valid_characters(text))
+    {
         context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS);
         return;
     }
 
-    if (track_repository_rename(_trackDesignFileReference->path, text)) {
+    if (track_repository_rename(_trackDesignFileReference->path, text))
+    {
         window_close_by_class(WC_TRACK_DELETE_PROMPT);
         window_close(w);
         window_track_design_list_reload_tracks();
-    } else {
+    }
+    else
+    {
         context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED);
     }
 }
@@ -243,9 +231,9 @@ static void window_track_manage_textinput(rct_window *w, rct_widgetindex widgetI
  *
  *  rct2: 0x006D3523
  */
-static void window_track_manage_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_track_manage_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    set_format_arg(0, char *, _trackDesignFileReference->name);
+    set_format_arg(0, char*, _trackDesignFileReference->name);
     window_draw_widgets(w, dpi);
 }
 
@@ -257,22 +245,13 @@ static void window_track_delete_prompt_open()
 {
     window_close_by_class(WC_TRACK_DELETE_PROMPT);
 
-    sint32 screenWidth = context_get_width();
-    sint32 screenHeight = context_get_height();
-    rct_window *w = window_create(
-        Math::Max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2),
-        (screenHeight - 44) / 2,
-        250,
-        74,
-        &window_track_delete_prompt_events,
-        WC_TRACK_DELETE_PROMPT,
-        WF_STICK_TO_FRONT
-    );
+    int32_t screenWidth = context_get_width();
+    int32_t screenHeight = context_get_height();
+    rct_window* w = window_create(
+        std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2), (screenHeight - 44) / 2, 250, 74,
+        &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_track_delete_prompt_widgets;
-    w->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_RENAME) |
-        (1 << WIDX_DELETE);
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RENAME) | (1 << WIDX_DELETE);
     window_init_scroll_widgets(w);
     w->flags |= WF_TRANSPARENT;
 }
@@ -281,22 +260,26 @@ static void window_track_delete_prompt_open()
  *
  *  rct2: 0x006D3823
  */
-static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_track_delete_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-    case WIDX_PROMPT_CANCEL:
-        window_close(w);
-        break;
-    case WIDX_PROMPT_DELETE:
-        window_close(w);
-        if (track_repository_delete(_trackDesignFileReference->path)) {
-            window_close_by_class(WC_MANAGE_TRACK_DESIGN);
-            window_track_design_list_reload_tracks();
-        } else {
-            context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED);
-        }
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+        case WIDX_PROMPT_CANCEL:
+            window_close(w);
+            break;
+        case WIDX_PROMPT_DELETE:
+            window_close(w);
+            if (track_repository_delete(_trackDesignFileReference->path))
+            {
+                window_close_by_class(WC_MANAGE_TRACK_DESIGN);
+                window_track_design_list_reload_tracks();
+            }
+            else
+            {
+                context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED);
+            }
+            break;
     }
 }
 
@@ -304,25 +287,20 @@ static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex wi
  *
  *  rct2: 0x006D37EE
  */
-static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_track_delete_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
     gfx_draw_string_centred_wrapped(
-        dpi,
-        &_trackDesignFileReference->name,
-        w->x + 125,
-        w->y + 28,
-        246,
-        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK,
-        COLOUR_BLACK
-    );
+        dpi, &_trackDesignFileReference->name, w->x + 125, w->y + 28, 246,
+        STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, COLOUR_BLACK);
 }
 
 static void window_track_design_list_reload_tracks()
 {
-    rct_window * trackListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (trackListWindow != nullptr) {
+    rct_window* trackListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
+    if (trackListWindow != nullptr)
+    {
         trackListWindow->track_list.reload_track_designs = true;
     }
 }

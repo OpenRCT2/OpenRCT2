@@ -1,31 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "../CmdlineSprite.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "CommandLine.hpp"
 
-#define SZ_DEFAULT   "default"
-#define SZ_CLOSEST   "closest"
+#define SZ_DEFAULT "default"
+#define SZ_CLOSEST "closest"
 #define SZ_DITHERING "dithering"
 
-sint32 gSpriteMode = 0;
+int32_t gSpriteMode = 0;
 
-static const char * _mode;
+static const char* _mode;
 
 // clang-format off
 static constexpr const CommandLineOptionDefinition SpriteOptions[]
@@ -49,16 +42,19 @@ const CommandLineCommand CommandLine::SpriteCommands[]
 };
 // clang-format on
 
-static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator)
+static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
 {
-    if      (String::Equals(_mode, SZ_CLOSEST,   true)) gSpriteMode = 1;
-    else if (String::Equals(_mode, SZ_DITHERING, true)) gSpriteMode = 2;
+    if (String::Equals(_mode, SZ_CLOSEST, true))
+        gSpriteMode = 1;
+    else if (String::Equals(_mode, SZ_DITHERING, true))
+        gSpriteMode = 2;
     Memory::Free(_mode);
 
-    const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex() - 1;
-    sint32 argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
-    sint32 result = cmdline_for_sprite(argv, argc);
-    if (result < 0) {
+    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex() - 1;
+    int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex() + 1;
+    int32_t result = cmdline_for_sprite(argv, argc);
+    if (result < 0)
+    {
         return EXITCODE_FAIL;
     }
     return EXITCODE_OK;

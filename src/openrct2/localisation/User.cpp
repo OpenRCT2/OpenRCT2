@@ -1,28 +1,22 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "User.h"
 
 #include "../Game.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "Localisation.h"
-#include "User.h"
 
 utf8 gUserStrings[MAX_USER_STRINGS][USER_STRING_MAX_LENGTH];
 
-static bool user_string_exists(const utf8 *text);
+static bool user_string_exists(const utf8* text);
 
 /**
  *
@@ -37,19 +31,20 @@ void user_string_clear_all()
  *
  *  rct2: 0x006C421D
  */
-rct_string_id user_string_allocate(sint32 base, const utf8 *text)
+rct_string_id user_string_allocate(int32_t base, const utf8* text)
 {
-    sint32 highBits = (base & 0x7F) << 9;
+    int32_t highBits = (base & 0x7F) << 9;
     bool allowDuplicates = base & USER_STRING_DUPLICATION_PERMITTED;
 
-    if (!allowDuplicates && user_string_exists(text)) {
+    if (!allowDuplicates && user_string_exists(text))
+    {
         gGameCommandErrorText = STR_CHOSEN_NAME_IN_USE_ALREADY;
         return 0;
     }
 
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (int32_t i = 0; i < MAX_USER_STRINGS; i++)
     {
-        char * userString = gUserStrings[i];
+        char* userString = gUserStrings[i];
 
         if (userString[0] != 0)
             continue;
@@ -74,10 +69,10 @@ void user_string_free(rct_string_id id)
     gUserStrings[id][0] = 0;
 }
 
-static bool user_string_exists(const utf8 *text)
+static bool user_string_exists(const utf8* text)
 {
-    char * userString;
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    char* userString;
+    for (int32_t i = 0; i < MAX_USER_STRINGS; i++)
     {
         userString = gUserStrings[i];
         if (userString[0] == 0)
@@ -96,7 +91,7 @@ bool is_user_string_id(rct_string_id stringId)
 
 void reset_user_strings()
 {
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (int32_t i = 0; i < MAX_USER_STRINGS; i++)
     {
         gUserStrings[i][0] = 0;
     }

@@ -1,25 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifdef __ANDROID__
 
-#include <SDL.h>
-#include <jni.h>
-#include "IStream.hpp"
-#include "Zip.h"
+#    include "IStream.hpp"
+#    include "Zip.h"
+
+#    include <SDL.h>
+#    include <jni.h>
 
 class ZipArchive final : public IZipArchive
 {
@@ -30,7 +24,7 @@ public:
     ZipArchive(const std::string_view& path, ZIP_ACCESS access)
     {
         // retrieve the JNI environment.
-        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 
         jclass jniClass = env->FindClass("website/openrct2/ZipArchive");
         jmethodID constructor = env->GetMethodID(jniClass, "<init>", "(Ljava/lang/String;)V");
@@ -46,7 +40,7 @@ public:
     ~ZipArchive() override
     {
         // retrieve the JNI environment.
-        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID closeMethod = env->GetMethodID(zipClass, "close", "()V");
@@ -59,29 +53,28 @@ public:
     size_t GetNumFiles() const override
     {
         // retrieve the JNI environment.
-        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID fileCountMethod = env->GetMethodID(zipClass, "getNumFiles", "()I");
 
-        return (size_t) env->CallIntMethod(_zip, fileCountMethod);
+        return (size_t)env->CallIntMethod(_zip, fileCountMethod);
     }
 
     std::string GetFileName(size_t index) const override
     {
         // retrieve the JNI environment.
-        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
-        jmethodID fileNameMethod = env->GetMethodID(zipClass, "getFileName",
-                                                    "(I)Ljava/lang/String;");
+        jmethodID fileNameMethod = env->GetMethodID(zipClass, "getFileName", "(I)Ljava/lang/String;");
 
-        jstring jniString = (jstring) env->CallObjectMethod(_zip, fileNameMethod, (jint) index);
+        jstring jniString = (jstring)env->CallObjectMethod(_zip, fileNameMethod, (jint)index);
 
-        const char *jniChars = env->GetStringUTFChars(jniString, nullptr);
+        const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
 
-        utf8 *string = (char *) malloc(strlen(jniChars) + 1);
-        memcpy((void *) string, jniChars, strlen(jniChars));
+        utf8* string = (char*)malloc(strlen(jniChars) + 1);
+        memcpy((void*)string, jniChars, strlen(jniChars));
         string[strlen(jniChars)] = 0x00;
 
         env->ReleaseStringUTFChars(jniString, jniChars);
@@ -89,21 +82,21 @@ public:
         return string;
     }
 
-    uint64 GetFileSize(size_t index) const override
+    uint64_t GetFileSize(size_t index) const override
     {
         // retrieve the JNI environment.
-        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID fileSizeMethod = env->GetMethodID(zipClass, "getFileSize", "(I)J");
 
-        return (size_t) env->CallLongMethod(_zip, fileSizeMethod, (jint) index);
+        return (size_t)env->CallLongMethod(_zip, fileSizeMethod, (jint)index);
     }
 
-    std::vector<uint8> GetFileData(const std::string_view& path) const override
+    std::vector<uint8_t> GetFileData(const std::string_view& path) const override
     {
         // retrieve the JNI environment.
-        JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
+        JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 
         jclass zipClass = env->GetObjectClass(_zip);
         jstring javaPath = env->NewStringUTF(path.data());
@@ -113,13 +106,13 @@ public:
         jmethodID fileMethod = env->GetMethodID(zipClass, "getFile", "(I)J");
         jlong ptr = env->CallLongMethod(_zip, fileMethod, index);
 
-        auto dataPtr = reinterpret_cast<uint8 *>(ptr);
+        auto dataPtr = reinterpret_cast<uint8_t*>(ptr);
         auto dataSize = this->GetFileSize(index);
 
-        return std::vector<uint8>(dataPtr, dataPtr + dataSize);
+        return std::vector<uint8_t>(dataPtr, dataPtr + dataSize);
     }
 
-    void SetFileData(const std::string_view& path, std::vector<uint8>&& data) override
+    void SetFileData(const std::string_view& path, std::vector<uint8_t>&& data) override
     {
         STUB();
     }
@@ -154,26 +147,22 @@ namespace Zip
         }
         return result;
     }
-}
+} // namespace Zip
 
 extern "C" {
-JNIEXPORT jlong JNICALL
-Java_website_openrct2_ZipArchive_allocBytes(JNIEnv *env, jclass, jbyteArray input,
-                                                jint numBytes);
+JNIEXPORT jlong JNICALL Java_website_openrct2_ZipArchive_allocBytes(JNIEnv* env, jclass, jbyteArray input, jint numBytes);
 }
 
-JNIEXPORT jlong JNICALL
-Java_website_openrct2_ZipArchive_allocBytes(JNIEnv *env, jclass, jbyteArray input,
-                                                jint numBytes) {
+JNIEXPORT jlong JNICALL Java_website_openrct2_ZipArchive_allocBytes(JNIEnv* env, jclass, jbyteArray input, jint numBytes)
+{
+    jbyte* bufferPtr = env->GetByteArrayElements(input, nullptr);
 
-    jbyte *bufferPtr = env->GetByteArrayElements(input, nullptr);
-
-    void *data = Memory::Allocate<void>((size_t) numBytes);
+    void* data = Memory::Allocate<void>((size_t)numBytes);
     memcpy(data, bufferPtr, numBytes);
 
     env->ReleaseByteArrayElements(input, bufferPtr, 0);
 
-    return (uintptr_t) data;
+    return (uintptr_t)data;
 }
 
 #endif // __ANDROID__

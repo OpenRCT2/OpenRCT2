@@ -1,16 +1,25 @@
-#include <string>
+/*****************************************************************************
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "TestData.h"
+
 #include <gtest/gtest.h>
-#include <openrct2/audio/AudioContext.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/audio/AudioContext.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/ride/Ride.h>
-#include "TestData.h"
-
 #include <openrct2/platform/platform.h>
-#include <openrct2/Game.h>
+#include <openrct2/ride/Ride.h>
+#include <string>
 
 using namespace OpenRCT2;
 
@@ -21,7 +30,7 @@ protected:
     {
         for (int rideId = 0; rideId < MAX_RIDES; rideId++)
         {
-            Ride * ride = get_ride(rideId);
+            Ride* ride = get_ride(rideId);
             if (ride->type != RIDE_TYPE_NULL)
             {
                 ride_ratings_update_ride(rideId);
@@ -33,7 +42,7 @@ protected:
     {
         for (int rideId = 0; rideId < MAX_RIDES; rideId++)
         {
-            Ride * ride = get_ride(rideId);
+            Ride* ride = get_ride(rideId);
             if (ride->type != RIDE_TYPE_NULL)
             {
                 std::string line = FormatRatings(ride);
@@ -42,13 +51,11 @@ protected:
         }
     }
 
-    std::string FormatRatings(Ride * ride)
+    std::string FormatRatings(Ride* ride)
     {
         rating_tuple ratings = ride->ratings;
-        std::string line = String::StdFormat("%s: (%d, %d, %d)",
-            ride_type_get_enum_name(ride->type),
-            (int)ratings.excitement,
-            (int)ratings.intensity,
+        std::string line = String::StdFormat(
+            "%s: (%d, %d, %d)", ride_type_get_enum_name(ride->type), (int)ratings.excitement, (int)ratings.intensity,
             (int)ratings.nausea);
         return line;
     }
@@ -81,7 +88,7 @@ TEST_F(RideRatings, all)
     int expI = 0;
     for (int rideId = 0; rideId < MAX_RIDES; rideId++)
     {
-        Ride * ride = get_ride(rideId);
+        Ride* ride = get_ride(rideId);
         if (ride->type != RIDE_TYPE_NULL)
         {
             std::string actual = FormatRatings(ride);

@@ -1,34 +1,30 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _LANGUAGE_H_
 #define _LANGUAGE_H_
 
-#include <string>
-#include <string_view>
 #include "../common.h"
 #include "../drawing/Font.h"
 
-enum {
+#include <string>
+#include <string_view>
+
+enum
+{
     LANGUAGE_UNDEFINED,
     LANGUAGE_ARABIC,
     LANGUAGE_CATALAN,
     LANGUAGE_CHINESE_SIMPLIFIED,
     LANGUAGE_CHINESE_TRADITIONAL,
     LANGUAGE_CZECH,
+    LANGUAGE_DANISH,
     LANGUAGE_GERMAN,
     LANGUAGE_ENGLISH_UK,
     LANGUAGE_ENGLISH_US,
@@ -45,6 +41,7 @@ enum {
     LANGUAGE_RUSSIAN,
     LANGUAGE_FINNISH,
     LANGUAGE_SWEDISH,
+    LANGUAGE_TURKISH,
     LANGUAGE_COUNT
 };
 
@@ -72,14 +69,15 @@ enum RCT2LanguageId
 
 #include "../interface/FontFamilies.h"
 
-struct language_descriptor {
-    const char *locale;
-    const utf8 *english_name;
-    const utf8 *native_name;
+struct language_descriptor
+{
+    const char* locale;
+    const utf8* english_name;
+    const utf8* native_name;
 #if !defined(NO_TTF)
-    TTFontFamily const * font_family;
+    TTFontFamily const* font_family;
 #else
-    void * font_family;
+    void* font_family;
 #endif
     RCT2LanguageId rct2_original_id;
 };
@@ -92,25 +90,25 @@ extern const utf8 BlackLeftArrowString[];
 extern const utf8 BlackRightArrowString[];
 extern const utf8 CheckBoxMarkString[];
 
-uint8 language_get_id_from_locale(const char * locale);
-const char *language_get_string(rct_string_id id);
-bool language_open(sint32 id);
+uint8_t language_get_id_from_locale(const char* locale);
+const char* language_get_string(rct_string_id id);
+bool language_open(int32_t id);
 
-uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr);
-utf8 *utf8_write_codepoint(utf8 *dst, uint32 codepoint);
-sint32 utf8_insert_codepoint(utf8 *dst, uint32 codepoint);
-bool utf8_is_codepoint_start(const utf8 *text);
-void utf8_remove_format_codes(utf8 *text, bool allowcolours);
-sint32 utf8_get_codepoint_length(sint32 codepoint);
-sint32 utf8_length(const utf8 *text);
-wchar_t *utf8_to_widechar(const utf8 *src);
-utf8 *widechar_to_utf8(const wchar_t *src);
+uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr);
+utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint);
+int32_t utf8_insert_codepoint(utf8* dst, uint32_t codepoint);
+bool utf8_is_codepoint_start(const utf8* text);
+void utf8_remove_format_codes(utf8* text, bool allowcolours);
+int32_t utf8_get_codepoint_length(int32_t codepoint);
+int32_t utf8_length(const utf8* text);
+wchar_t* utf8_to_widechar(const utf8* src);
+utf8* widechar_to_utf8(const wchar_t* src);
 
 std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId);
 std::string utf8_to_rct2(const std::string_view& src);
-bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds);
+bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds);
 void language_free_object_string(rct_string_id stringId);
-rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index);
-rct_string_id language_allocate_object_string(const std::string &target);
+rct_string_id language_get_object_override_string_id(const char* identifier, uint8_t index);
+rct_string_id language_allocate_object_string(const std::string& target);
 
 #endif

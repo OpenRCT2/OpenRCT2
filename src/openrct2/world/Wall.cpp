@@ -1,27 +1,22 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include "../common.h"
-#include "../network/network.h"
-#include "../OpenRCT2.h"
+#include "Wall.h"
 
 #include "../Cheats.h"
 #include "../Game.h"
+#include "../OpenRCT2.h"
+#include "../common.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../network/network.h"
+#include "../ride/RideGroupManager.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "Banner.h"
@@ -38,7 +33,7 @@
  * Gets whether the given track type can have a wall placed on the edge of the given direction.
  * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
  */
-static bool TrackIsAllowedWallEdges(uint8 rideType, uint8 trackType, uint8 trackSequence, uint8 direction)
+static bool TrackIsAllowedWallEdges(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, uint8_t direction)
 {
     if (!ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_NO_WALLS))
     {
@@ -64,16 +59,13 @@ static bool TrackIsAllowedWallEdges(uint8 rideType, uint8 trackType, uint8 track
  *
  *  rct2: 0x006E5CBA
  */
-static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
-                                          sint32 z0,
-                                          sint32 edge,
-                                          rct_tile_element * trackElement,
-                                          bool * wallAcrossTrack)
+static bool WallCheckObstructionWithTrack(
+    rct_scenery_entry* wall, int32_t z0, int32_t edge, rct_tile_element* trackElement, bool* wallAcrossTrack)
 {
-    sint32 trackType = track_element_get_type(trackElement);
-    sint32 sequence = tile_element_get_track_sequence(trackElement);
-    sint32 direction = (edge - tile_element_get_direction(trackElement)) & TILE_ELEMENT_DIRECTION_MASK;
-    Ride * ride = get_ride(track_element_get_ride_index(trackElement));
+    int32_t trackType = track_element_get_type(trackElement);
+    int32_t sequence = tile_element_get_track_sequence(trackElement);
+    int32_t direction = (edge - tile_element_get_direction(trackElement)) & TILE_ELEMENT_DIRECTION_MASK;
+    Ride* ride = get_ride(track_element_get_ride_index(trackElement));
 
     if (TrackIsAllowedWallEdges(ride->type, trackType, sequence, direction))
     {
@@ -85,14 +77,15 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
         return false;
     }
 
-    // The following code checks if a door is allowed on the track
-    if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
+    if (RideGroupManager::RideTypeHasRideGroups(ride->type))
     {
-        return false;
+        auto rideGroup = RideGroupManager::GetRideGroup(ride->type, get_ride_entry(ride->subtype));
+        if (!(rideGroup->Flags & RIDE_GROUP_FLAG_ALLOW_DOORS_ON_TRACK))
+        {
+            return false;
+        }
     }
-
-    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_16)
+    else if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
     {
         return false;
     }
@@ -103,7 +96,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
         return false;
     }
 
-    sint32 z;
+    int32_t z;
     if (sequence == 0)
     {
         if (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_DISALLOW_DOORS)
@@ -118,7 +111,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
                 direction = tile_element_get_direction_with_offset(trackElement, 2);
                 if (direction == edge)
                 {
-                    const rct_preview_track * trackBlock = &TrackBlocks[trackType][sequence];
+                    const rct_preview_track* trackBlock = &TrackBlocks[trackType][sequence];
                     z = TrackCoordinates[trackType].z_begin;
                     z = trackElement->base_height + ((z - trackBlock->z) * 8);
                     if (z == z0)
@@ -130,7 +123,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
         }
     }
 
-    const rct_preview_track * trackBlock = &TrackBlocks[trackType][sequence + 1];
+    const rct_preview_track* trackBlock = &TrackBlocks[trackType][sequence + 1];
     if (trackBlock->index != 0xFF)
     {
         return false;
@@ -163,17 +156,12 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
  *
  *  rct2: 0x006E5C1A
  */
-static bool WallCheckObstruction(rct_scenery_entry * wall,
-                                 sint32 x,
-                                 sint32 y,
-                                 sint32 z0,
-                                 sint32 z1,
-                                 sint32 edge,
-                                 bool * wallAcrossTrack)
+static bool WallCheckObstruction(
+    rct_scenery_entry* wall, int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t edge, bool* wallAcrossTrack)
 {
-    sint32 entryType, sequence;
-    rct_scenery_entry * entry;
-    rct_large_scenery_tile * tile;
+    int32_t entryType, sequence;
+    rct_scenery_entry* entry;
+    rct_large_scenery_tile* tile;
 
     *wallAcrossTrack = false;
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
@@ -183,16 +171,19 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
         return false;
     }
 
-    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
-        sint32 elementType = tileElement->GetType();
-        if (elementType == TILE_ELEMENT_TYPE_SURFACE) continue;
-        if (z0 >= tileElement->clearance_height) continue;
-        if (z1 <= tileElement->base_height) continue;
+        int32_t elementType = tileElement->GetType();
+        if (elementType == TILE_ELEMENT_TYPE_SURFACE)
+            continue;
+        if (z0 >= tileElement->clearance_height)
+            continue;
+        if (z1 <= tileElement->base_height)
+            continue;
         if (elementType == TILE_ELEMENT_TYPE_WALL)
         {
-            sint32 direction = tile_element_get_direction(tileElement);
+            int32_t direction = tile_element_get_direction(tileElement);
             if (edge == direction)
             {
                 map_obstruction_set_error_text(tileElement);
@@ -200,51 +191,52 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
             }
             continue;
         }
-        if ((tileElement->flags & 0x0F) == 0) continue;
+        if ((tileElement->flags & 0x0F) == 0)
+            continue;
 
-        switch (elementType) {
-        case TILE_ELEMENT_TYPE_ENTRANCE:
-            map_obstruction_set_error_text(tileElement);
-            return false;
-        case TILE_ELEMENT_TYPE_PATH:
-            if (tileElement->properties.path.edges & (1 << edge))
-            {
+        switch (elementType)
+        {
+            case TILE_ELEMENT_TYPE_ENTRANCE:
                 map_obstruction_set_error_text(tileElement);
                 return false;
-            }
-            break;
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            entryType = scenery_large_get_type(tileElement);
-            sequence = scenery_large_get_sequence(tileElement);
-            entry = get_large_scenery_entry(entryType);
-            tile = &entry->large_scenery.tiles[sequence];
-            {
-                sint32 direction = ((edge - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) + 8;
-                if (!(tile->flags & (1 << direction)))
+            case TILE_ELEMENT_TYPE_PATH:
+                if (tileElement->properties.path.edges & (1 << edge))
                 {
                     map_obstruction_set_error_text(tileElement);
                     return false;
                 }
-            }
-            break;
-        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-            entryType = tileElement->properties.scenery.type;
-            entry = get_small_scenery_entry(entryType);
-            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
-            {
-                map_obstruction_set_error_text(tileElement);
-                return false;
-            }
-            break;
-        case TILE_ELEMENT_TYPE_TRACK:
-            if (!WallCheckObstructionWithTrack(wall, z0, edge, tileElement, wallAcrossTrack))
-            {
-                return false;
-            }
-            break;
+                break;
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                entryType = scenery_large_get_type(tileElement);
+                sequence = scenery_large_get_sequence(tileElement);
+                entry = get_large_scenery_entry(entryType);
+                tile = &entry->large_scenery.tiles[sequence];
+                {
+                    int32_t direction = ((edge - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) + 8;
+                    if (!(tile->flags & (1 << direction)))
+                    {
+                        map_obstruction_set_error_text(tileElement);
+                        return false;
+                    }
+                }
+                break;
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                entryType = tileElement->properties.scenery.type;
+                entry = get_small_scenery_entry(entryType);
+                if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
+                {
+                    map_obstruction_set_error_text(tileElement);
+                    return false;
+                }
+                break;
+            case TILE_ELEMENT_TYPE_TRACK:
+                if (!WallCheckObstructionWithTrack(wall, z0, edge, tileElement, wallAcrossTrack))
+                {
+                    return false;
+                }
+                break;
         }
-    }
-    while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->IsLastForTile());
 
     return true;
 }
@@ -263,7 +255,7 @@ enum EDGE_SLOPE
 };
 
 /** rct2: 0x009A3FEC */
-static constexpr const uint8 EdgeSlopes[][4] = {
+static constexpr const uint8_t EdgeSlopes[][4] = {
 //  Top right                        Bottom right                   Bottom left                       Top left
     { 0,                             0,                             0,                             0                             },
     { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },
@@ -302,15 +294,9 @@ static constexpr const uint8 EdgeSlopes[][4] = {
 
 #pragma endregion
 
-static money32 WallPlace(uint8 wallType,
-                  sint16 x,
-                  sint16 y,
-                  sint16 z,
-                  uint8 edge,
-                  uint8 primaryColour,
-                  uint8 secondaryColour,
-                  uint8 tertiaryColour,
-                  uint8 flags)
+static money32 WallPlace(
+    uint8_t wallType, int16_t x, int16_t y, int16_t z, uint8_t edge, uint8_t primaryColour, uint8_t secondaryColour,
+    uint8_t tertiaryColour, uint8_t flags)
 {
     LocationXYZ16 position = { x, y, z };
 
@@ -330,14 +316,11 @@ static money32 WallPlace(uint8 wallType,
         return MONEY32_UNDEFINED;
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !(flags & GAME_COMMAND_FLAG_PATH_SCENERY) &&
-        !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsSandboxMode)
     {
-
         if (position.z == 0)
         {
-            if (!map_is_location_in_park({position.x, position.y}))
+            if (!map_is_location_in_park({ position.x, position.y }))
             {
                 return MONEY32_UNDEFINED;
             }
@@ -348,17 +331,17 @@ static money32 WallPlace(uint8 wallType,
         }
     }
 
-    uint8 edgeSlope = 0;
+    uint8_t edgeSlope = 0;
     if (position.z == 0)
     {
-        rct_tile_element * surfaceElement = map_get_surface_element_at({position.x, position.y});
+        rct_tile_element* surfaceElement = map_get_surface_element_at({ position.x, position.y });
         if (surfaceElement == nullptr)
         {
             return MONEY32_UNDEFINED;
         }
         position.z = surfaceElement->base_height * 8;
 
-        uint8 slope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+        uint8_t slope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
         edgeSlope = EdgeSlopes[slope][edge & 3];
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {
@@ -367,7 +350,7 @@ static money32 WallPlace(uint8 wallType,
         }
     }
 
-    rct_tile_element * surfaceElement = map_get_surface_element_at({position.x, position.y});
+    rct_tile_element* surfaceElement = map_get_surface_element_at({ position.x, position.y });
     if (surfaceElement == nullptr)
     {
         return MONEY32_UNDEFINED;
@@ -375,7 +358,7 @@ static money32 WallPlace(uint8 wallType,
 
     if (surface_get_water_height(surfaceElement) > 0)
     {
-        uint16 waterHeight = surface_get_water_height(surfaceElement) * 16;
+        uint16_t waterHeight = surface_get_water_height(surfaceElement) * 16;
 
         if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {
@@ -392,8 +375,8 @@ static money32 WallPlace(uint8 wallType,
 
     if (!(edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS)))
     {
-        uint8 newEdge = (edge + 2) & 3;
-        uint8 newBaseHeight = surfaceElement->base_height;
+        uint8_t newEdge = (edge + 2) & 3;
+        uint8_t newBaseHeight = surfaceElement->base_height;
         newBaseHeight += 2;
         if (surfaceElement->properties.surface.slope & (1 << newEdge))
         {
@@ -453,8 +436,8 @@ static money32 WallPlace(uint8 wallType,
             }
         }
     }
-    sint32 bannerIndex = 0xFF;
-    rct_scenery_entry * wallEntry = get_wall_entry(wallType);
+    BannerIndex bannerIndex = BANNER_INDEX_NULL;
+    rct_scenery_entry* wallEntry = get_wall_entry(wallType);
 
     if (wallEntry == nullptr)
     {
@@ -470,7 +453,7 @@ static money32 WallPlace(uint8 wallType,
             return MONEY32_UNDEFINED;
         }
 
-        rct_banner * banner = &gBanners[bannerIndex];
+        rct_banner* banner = &gBanners[bannerIndex];
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
             banner->flags |= BANNER_FLAG_IS_WALL;
@@ -478,16 +461,16 @@ static money32 WallPlace(uint8 wallType,
             banner->x = position.x / 32;
             banner->y = position.y / 32;
 
-            sint32 rideIndex = banner_get_closest_ride_index(position.x, position.y, position.z);
-            if (rideIndex != -1)
+            uint8_t rideIndex = banner_get_closest_ride_index(position.x, position.y, position.z);
+            if (rideIndex != RIDE_ID_NULL)
             {
-                banner->colour = rideIndex & 0xFF;
+                banner->ride_index = rideIndex;
                 banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
             }
         }
     }
 
-    uint8 clearanceHeight = position.z / 8;
+    uint8_t clearanceHeight = position.z / 8;
     if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
     {
         if (wallEntry->wall.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE)
@@ -502,13 +485,7 @@ static money32 WallPlace(uint8 wallType,
     bool wallAcrossTrack = false;
     if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsDisableClearanceChecks)
     {
-        if (!WallCheckObstruction(wallEntry,
-                                  position.x,
-                                  position.y,
-                                  position.z / 8,
-                                  clearanceHeight,
-                                  edge,
-                                  &wallAcrossTrack))
+        if (!WallCheckObstruction(wallEntry, position.x, position.y, position.z / 8, clearanceHeight, edge, &wallAcrossTrack))
         {
             return MONEY32_UNDEFINED;
         }
@@ -530,7 +507,7 @@ static money32 WallPlace(uint8 wallType,
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        rct_tile_element * tileElement = tile_element_insert(position.x / 32, position.y / 32, position.z / 8, 0);
+        rct_tile_element* tileElement = tile_element_insert(position.x / 32, position.y / 32, position.z / 8, 0);
         assert(tileElement != nullptr);
 
         map_animation_create(MAP_ANIMATION_TYPE_WALL, position.x, position.y, position.z / 8);
@@ -577,31 +554,23 @@ static money32 WallPlace(uint8 wallType,
     }
 }
 
-static money32 WallSetColour(sint16 x,
-                             sint16 y,
-                             uint8 baseHeight,
-                             uint8 direction,
-                             uint8 primaryColour,
-                             uint8 secondaryColour,
-                             uint8 tertiaryColour,
-                             uint8 flags)
+static money32 WallSetColour(
+    int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t primaryColour, uint8_t secondaryColour,
+    uint8_t tertiaryColour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    sint32 z = baseHeight * 8;
+    int32_t z = baseHeight * 8;
 
     gCommandPosition.x = x + 16;
     gCommandPosition.y = y + 16;
     gCommandPosition.z = z;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !map_is_location_in_park({x, y}) &&
-        !gCheatsSandboxMode)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !map_is_location_in_park({ x, y }) && !gCheatsSandboxMode)
     {
-
         return MONEY32_UNDEFINED;
     }
 
-    rct_tile_element * wallElement = map_get_wall_element_at(x, y, baseHeight, direction);
+    rct_tile_element* wallElement = map_get_wall_element_at(x, y, baseHeight, direction);
     if (wallElement == nullptr)
     {
         return 0;
@@ -614,7 +583,7 @@ static money32 WallSetColour(sint16 x,
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_scenery_entry * scenery_entry = get_wall_entry(wallElement->properties.wall.type);
+        rct_scenery_entry* scenery_entry = get_wall_entry(wallElement->properties.wall.type);
         wall_set_primary_colour(wallElement, primaryColour);
         wall_set_secondary_colour(wallElement, secondaryColour);
 
@@ -628,42 +597,42 @@ static money32 WallSetColour(sint16 x,
     return 0;
 }
 
-uint8 wall_get_animation_frame(const rct_tile_element * wallElement)
+uint8_t wall_get_animation_frame(const rct_tile_element* wallElement)
 {
     return (wallElement->properties.wall.animation >> 3) & 0xF;
 }
 
-void wall_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum)
+void wall_set_animation_frame(rct_tile_element* wallElement, uint8_t frameNum)
 {
     wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
     wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;
 }
 
-colour_t wall_get_primary_colour(const rct_tile_element * tileElement)
+colour_t wall_get_primary_colour(const rct_tile_element* tileElement)
 {
     return tileElement->properties.wall.colour_1 & TILE_ELEMENT_COLOUR_MASK;
 }
 
-colour_t wall_get_secondary_colour(const rct_tile_element * wallElement)
+colour_t wall_get_secondary_colour(const rct_tile_element* wallElement)
 {
-    uint8 secondaryColour = (wallElement->properties.wall.colour_1 &~ TILE_ELEMENT_COLOUR_MASK) >> 5;
+    uint8_t secondaryColour = (wallElement->properties.wall.colour_1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
     secondaryColour |= (wallElement->flags & 0x60) >> 2;
     return secondaryColour;
 }
 
-colour_t wall_get_tertiary_colour(const rct_tile_element * tileElement)
+colour_t wall_get_tertiary_colour(const rct_tile_element* tileElement)
 {
     return tileElement->properties.wall.colour_3 & TILE_ELEMENT_COLOUR_MASK;
 }
 
-void wall_set_primary_colour(rct_tile_element * tileElement, colour_t colour)
+void wall_set_primary_colour(rct_tile_element* tileElement, colour_t colour)
 {
     assert(colour <= 31);
     tileElement->properties.wall.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
     tileElement->properties.wall.colour_1 |= colour;
 }
 
-void wall_set_secondary_colour(rct_tile_element * wallElement, colour_t secondaryColour)
+void wall_set_secondary_colour(rct_tile_element* wallElement, colour_t secondaryColour)
 {
     wallElement->properties.wall.colour_1 &= TILE_ELEMENT_COLOUR_MASK;
     wallElement->properties.wall.colour_1 |= (secondaryColour & 0x7) << 5;
@@ -671,7 +640,7 @@ void wall_set_secondary_colour(rct_tile_element * wallElement, colour_t secondar
     wallElement->flags |= (secondaryColour & 0x18) << 2;
 }
 
-void wall_set_tertiary_colour(rct_tile_element * tileElement, colour_t colour)
+void wall_set_tertiary_colour(rct_tile_element* tileElement, colour_t colour)
 {
     assert(colour <= 31);
     tileElement->properties.wall.colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
@@ -682,9 +651,9 @@ void wall_set_tertiary_colour(rct_tile_element * tileElement, colour_t colour)
  *
  *  rct2: 0x006E588E
  */
-void wall_remove_at(sint32 x, sint32 y, sint32 z0, sint32 z1)
+void wall_remove_at(int32_t x, int32_t y, int32_t z0, int32_t z1)
 {
-    rct_tile_element * tileElement;
+    rct_tile_element* tileElement;
 
     z0 /= 8;
     z1 /= 8;
@@ -703,15 +672,14 @@ repeat:
         map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->base_height * 8 + 72);
         tile_element_remove(tileElement);
         goto repeat;
-    }
-    while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
  *
  *  rct2: 0x006E57E6
  */
-void wall_remove_at_z(sint32 x, sint32 y, sint32 z)
+void wall_remove_at_z(int32_t x, int32_t y, int32_t z)
 {
     wall_remove_at(x, y, z, z + 48);
 }
@@ -720,9 +688,9 @@ void wall_remove_at_z(sint32 x, sint32 y, sint32 z)
  *
  *  rct2: 0x006E5935
  */
-void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, sint32 direction)
+void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
 {
-    rct_tile_element * tileElement;
+    rct_tile_element* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -740,52 +708,32 @@ void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, si
         map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->base_height * 8 + 72);
         tile_element_remove(tileElement);
         tileElement--;
-    }
-    while (!(tileElement++)->IsLastForTile());
+    } while (!(tileElement++)->IsLastForTile());
 }
 
 /**
  *
  *  rct2: 0x006E519A
  */
-void game_command_place_wall(sint32 * eax,
-                             sint32 * ebx,
-                             sint32 * ecx,
-                             sint32 * edx,
-                             [[maybe_unused]] sint32 * esi,
-                             sint32 * edi,
-                             sint32 * ebp)
+void game_command_place_wall(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
     *ebx = WallPlace(
-        (*ebx >> 8) & 0xFF,
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        *edi & 0xFFFF,
-        *edx & 0xFF,
-        (*edx >> 8) & 0xFF,
-        *ebp & 0xFF,
-        (*ebp >> 8) & 0xFF,
-        *ebx & 0xFF
-    );
+        (*ebx >> 8) & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edi & 0xFFFF, *edx & 0xFF, (*edx >> 8) & 0xFF, *ebp & 0xFF,
+        (*ebp >> 8) & 0xFF, *ebx & 0xFF);
 }
 
-money32 wall_place(sint32 type,
-                   sint32 x,
-                   sint32 y,
-                   sint32 z,
-                   sint32 edge,
-                   sint32 primaryColour,
-                   sint32 secondaryColour,
-                   sint32 tertiaryColour,
-                   sint32 flags)
+money32 wall_place(
+    int32_t type, int32_t x, int32_t y, int32_t z, int32_t edge, int32_t primaryColour, int32_t secondaryColour,
+    int32_t tertiaryColour, int32_t flags)
 {
-    sint32 eax = x;
-    sint32 ebx = flags | (type << 8);
-    sint32 ecx = y;
-    sint32 edx = edge | (primaryColour << 8);
-    sint32 esi = 0;
-    sint32 edi = z;
-    sint32 ebp = secondaryColour | (tertiaryColour << 8);
+    int32_t eax = x;
+    int32_t ebx = flags | (type << 8);
+    int32_t ecx = y;
+    int32_t edx = edge | (primaryColour << 8);
+    int32_t esi = 0;
+    int32_t edi = z;
+    int32_t ebp = secondaryColour | (tertiaryColour << 8);
     game_command_place_wall(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
     return ebx;
 }
@@ -794,22 +742,11 @@ money32 wall_place(sint32 type,
  *
  *  rct2: 0x006E56B5
  */
-void game_command_set_wall_colour(sint32 * eax,
-                                  sint32 * ebx,
-                                  sint32 * ecx,
-                                  sint32 * edx,
-                                  [[maybe_unused]] sint32 * esi,
-                                  [[maybe_unused]] sint32 * edi,
-                                  sint32 * ebp)
+void game_command_set_wall_colour(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
+    int32_t* ebp)
 {
     *ebx = WallSetColour(
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        (*edx >> 8) & 0xFF,
-        *edx & 0xFF,
-        (*ebx >> 8) & 0xFF,
-        *ebp & 0xFF,
-        (*ebp >> 8) & 0xFF,
-        *ebx & 0xFF
-    );
+        *eax & 0xFFFF, *ecx & 0xFFFF, (*edx >> 8) & 0xFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebp & 0xFF, (*ebp >> 8) & 0xFF,
+        *ebx & 0xFF);
 }

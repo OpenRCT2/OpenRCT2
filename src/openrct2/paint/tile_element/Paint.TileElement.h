@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _PAINT_TILE_ELEMENT_H
 #define _PAINT_TILE_ELEMENT_H
@@ -84,36 +77,36 @@ enum
 };
 
 #ifdef __TESTPAINT__
-extern uint16 testPaintVerticalTunnelHeight;
+extern uint16_t testPaintVerticalTunnelHeight;
 #endif
 
-extern const sint32 SEGMENTS_ALL;
-extern const uint16 segment_offsets[9];
+extern const int32_t SEGMENTS_ALL;
+extern const uint16_t segment_offsets[9];
 
 extern bool gShowSupportSegmentHeights;
 
 extern const LocationXY16 BannerBoundBoxes[][2];
 
-extern const uint8 byte_98D800[4];
+extern const uint8_t byte_98D800[4];
 
-void paint_util_push_tunnel_left(paint_session * session, uint16 height, uint8 type);
-void paint_util_push_tunnel_right(paint_session * session, uint16 height, uint8 type);
-void paint_util_set_vertical_tunnel(paint_session * session, uint16 height);
+void paint_util_push_tunnel_left(paint_session* session, uint16_t height, uint8_t type);
+void paint_util_push_tunnel_right(paint_session* session, uint16_t height, uint8_t type);
+void paint_util_set_vertical_tunnel(paint_session* session, uint16_t height);
 
-void paint_util_set_general_support_height(paint_session * session, sint16 height, uint8 slope);
-void paint_util_force_set_general_support_height(paint_session * session, sint16 height, uint8 slope);
-void paint_util_set_segment_support_height(paint_session * session, sint32 segments, uint16 height, uint8 slope);
-uint16 paint_util_rotate_segments(uint16 segments, uint8 rotation);
+void paint_util_set_general_support_height(paint_session* session, int16_t height, uint8_t slope);
+void paint_util_force_set_general_support_height(paint_session* session, int16_t height, uint8_t slope);
+void paint_util_set_segment_support_height(paint_session* session, int32_t segments, uint16_t height, uint8_t slope);
+uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation);
 
-void tile_element_paint_setup(paint_session * session, sint32 x, sint32 y);
+void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y);
 
-void entrance_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element);
-void banner_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tile_element);
-void surface_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement);
-void path_paint(paint_session * session, uint16 height, const rct_tile_element * tileElement);
-void scenery_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tileElement);
-void fence_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tileElement);
-void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, const rct_tile_element * tileElement);
-void track_paint(paint_session * session, uint8 direction, sint32 height, const rct_tile_element * tileElement);
+void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element);
+void banner_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element);
+void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement);
+void path_paint(paint_session* session, uint16_t height, const rct_tile_element* tileElement);
+void scenery_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tileElement);
+void fence_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tileElement);
+void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement);
+void track_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tileElement);
 
 #endif

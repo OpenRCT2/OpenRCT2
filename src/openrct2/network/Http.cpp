@@ -1,335 +1,223 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include "http.h"
-
-#ifdef DISABLE_HTTP
-
-void http_init() { }
-void http_dispose() { }
-
-#else
+#include "Http.h"
 
 #include <cstring>
+#include <exception>
+#include <memory>
 #include <thread>
 
-#include "../core/Console.hpp"
-#include "../core/Math.hpp"
-#include "../Version.h"
+#ifndef DISABLE_HTTP
 
-#ifdef _WIN32
-    // cURL includes windows.h, but we don't need all of it.
-    #define WIN32_LEAN_AND_MEAN
-#endif
-#include <curl/curl.h>
+#    include "../Version.h"
+#    include "../core/Console.hpp"
 
-#define MIME_TYPE_APPLICATION_JSON "application/json"
-#define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+#    ifdef _WIN32
+// cURL includes windows.h, but we don't need all of it.
+#        define WIN32_LEAN_AND_MEAN
+#    endif
+#    include <curl/curl.h>
 
-struct HttpRequest2
+#    define OPENRCT2_USER_AGENT "OpenRCT2/" OPENRCT2_VERSION
+
+namespace OpenRCT2::Network::Http
 {
-    void *          Tag = nullptr;
-    std::string     Method;
-    std::string     Url;
-    HTTP_DATA_TYPE  Type;
-    bool            ForceIPv4 = false;
-    size_t          Size = 0;
-    union
+    Http::Http()
     {
-        char *      Buffer = nullptr;
-        json_t *    Json;
-    } Body;
+        curl_global_init(CURL_GLOBAL_DEFAULT);
+    }
 
-    HttpRequest2() { }
-
-    HttpRequest2(const HttpRequest2 &request)
+    Http::~Http()
     {
-        Tag = request.Tag;
-        Method = request.Method;
-        Url = request.Url;
-        Type = request.Type;
-        ForceIPv4 = request.ForceIPv4;
-        Size = request.Size;
-        if (request.Type == HTTP_DATA_JSON)
-        {
-            Body.Json = json_deep_copy(request.Body.Json);
-        }
-        else
-        {
-            Body.Buffer = new char[request.Size];
-            memcpy(Body.Buffer, request.Body.Buffer, request.Size);
-        }
+        curl_global_cleanup();
     }
 
-    explicit HttpRequest2(const http_request_t * request)
+    static size_t writeData(const char* src, size_t size, size_t nmemb, void* userdata)
     {
-        Tag = request->tag;
-        Method = std::string(request->method);
-        Url = std::string(request->url);
-        Type = request->type;
-        ForceIPv4 = request->forceIPv4;
-        Size = request->size;
-        if (request->type == HTTP_DATA_JSON)
-        {
-            Body.Json = json_deep_copy(request->root);
-        }
-        else
-        {
-            Body.Buffer = new char[request->size];
-            memcpy(Body.Buffer, request->body, request->size);
-        }
+        size_t realsize = size * nmemb;
+        Response* res = static_cast<Response*>(userdata);
+        res->body += std::string(src, src + realsize);
+
+        return realsize;
     }
 
-    ~HttpRequest2()
+    static size_t header_callback(const char* src, size_t size, size_t nitems, void* userdata)
     {
-        if (Type == HTTP_DATA_JSON)
+        size_t realsize = nitems * size;
+        Response* res = static_cast<Response*>(userdata);
+
+        auto line = std::string(src, src + realsize);
+        auto pos = line.find(':');
+        if (pos != std::string::npos)
         {
-            json_decref(Body.Json);
+            std::string key = line.substr(0, pos);
+            // substract 4 chars for ": " and "\r\n"
+            std::string value = line.substr(pos + 2, line.size() - pos - 4);
+            res->header[key] = value;
         }
-        else
+
+        return realsize;
+    }
+
+    struct WriteThis
+    {
+        const char* readptr;
+        size_t sizeleft;
+    };
+
+    static size_t read_callback(void* dst, size_t size, size_t nmemb, void* userp)
+    {
+        WriteThis* wt = static_cast<WriteThis*>(userp);
+        size_t buffer_size = size * nmemb;
+
+        if (wt->sizeleft)
         {
-            delete Body.Buffer;
-        }
-    }
-};
+            size_t copy_this_much = wt->sizeleft;
+            if (copy_this_much > buffer_size)
+                copy_this_much = buffer_size;
+            memcpy(dst, wt->readptr, copy_this_much);
 
-struct read_buffer {
-    char *ptr;
-    size_t length;
-    size_t position;
-};
-
-struct write_buffer {
-    char *ptr;
-    size_t length;
-    size_t capacity;
-};
-
-void http_init()
-{
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-}
-
-void http_dispose()
-{
-    curl_global_cleanup();
-}
-
-static size_t http_request_write_func(void *ptr, size_t size, size_t nmemb, void *userdata)
-{
-    write_buffer *writeBuffer = (write_buffer*)userdata;
-
-    size_t newBytesLength = size * nmemb;
-    if (newBytesLength > 0) {
-        size_t newCapacity = writeBuffer->capacity;
-        size_t newLength = writeBuffer->length + newBytesLength;
-        while (newLength > newCapacity) {
-            newCapacity = Math::Max<size_t>(4096, newCapacity * 2);
-        }
-        if (newCapacity != writeBuffer->capacity) {
-            writeBuffer->ptr = (char*)realloc(writeBuffer->ptr, newCapacity);
-            writeBuffer->capacity = newCapacity;
+            wt->readptr += copy_this_much;
+            wt->sizeleft -= copy_this_much;
+            return copy_this_much;
         }
 
-        memcpy(writeBuffer->ptr + writeBuffer->length, ptr, newBytesLength);
-        writeBuffer->length = newLength;
-    }
-    return newBytesLength;
-}
-
-static http_response_t *http_request(const HttpRequest2 &request)
-{
-    CURL *curl;
-    CURLcode curlResult;
-    http_response_t *response;
-    read_buffer readBuffer = {};
-    write_buffer writeBuffer;
-
-    curl = curl_easy_init();
-    if (curl == nullptr)
-        return nullptr;
-
-    if (request.Type == HTTP_DATA_JSON && request.Body.Json != nullptr) {
-        readBuffer.ptr = json_dumps(request.Body.Json, JSON_COMPACT);
-        readBuffer.length = strlen(readBuffer.ptr);
-        readBuffer.position = 0;
-    } else if (request.Type == HTTP_DATA_RAW && request.Body.Buffer != nullptr) {
-        readBuffer.ptr = request.Body.Buffer;
-        readBuffer.length = request.Size;
-        readBuffer.position = 0;
-    }
-
-    writeBuffer.ptr = nullptr;
-    writeBuffer.length = 0;
-    writeBuffer.capacity = 0;
-
-    curl_slist *headers = nullptr;
-
-    if (request.Type == HTTP_DATA_JSON) {
-        headers = curl_slist_append(headers, "Accept: " MIME_TYPE_APPLICATION_JSON);
-
-        if (request.Body.Json != nullptr) {
-            headers = curl_slist_append(headers, "Content-Type: " MIME_TYPE_APPLICATION_JSON);
-        }
-    }
-
-    if (readBuffer.ptr != nullptr) {
-        char contentLengthHeaderValue[64];
-        snprintf(contentLengthHeaderValue, sizeof(contentLengthHeaderValue), "Content-Length: %zu", readBuffer.length);
-        headers = curl_slist_append(headers, contentLengthHeaderValue);
-
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, readBuffer.ptr);
-    }
-
-    curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, request.Method.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
-    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
-    curl_easy_setopt(curl, CURLOPT_USERAGENT, OPENRCT2_USER_AGENT);
-    curl_easy_setopt(curl, CURLOPT_URL, request.Url.c_str());
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &writeBuffer);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, http_request_write_func);
-    if (request.ForceIPv4)
-    {
-        // Force resolving to IPv4 to fix issues where advertising over IPv6 does not work
-        curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-    }
-
-    curlResult = curl_easy_perform(curl);
-
-    if (request.Type == HTTP_DATA_JSON && request.Body.Json != nullptr) {
-        free(readBuffer.ptr);
-    }
-
-    if (curlResult != CURLE_OK) {
-        log_error("HTTP request failed: %s.", curl_easy_strerror(curlResult));
-        if (writeBuffer.ptr != nullptr)
-            free(writeBuffer.ptr);
-
-        return nullptr;
-    }
-
-    long httpStatusCode;
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpStatusCode);
-
-    char* contentType;
-    curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &contentType);
-
-    // Null terminate the response buffer
-    writeBuffer.length++;
-    writeBuffer.ptr = (char*)realloc(writeBuffer.ptr, writeBuffer.length);
-    writeBuffer.capacity = writeBuffer.length;
-    writeBuffer.ptr[writeBuffer.length - 1] = 0;
-
-    response = nullptr;
-
-    // Parse as JSON if response is JSON
-    if (contentType != nullptr && strstr(contentType, "json") != nullptr) {
-        json_t *root;
-        json_error_t error;
-        root = json_loads(writeBuffer.ptr, 0, &error);
-        if (root != nullptr) {
-            response = (http_response_t*) malloc(sizeof(http_response_t));
-            response->tag = request.Tag;
-            response->status_code = (sint32) httpStatusCode;
-            response->root = root;
-            response->type = HTTP_DATA_JSON;
-            response->size = writeBuffer.length;
-        }
-        free(writeBuffer.ptr);
-    } else {
-        response = (http_response_t*) malloc(sizeof(http_response_t));
-        response->tag = request.Tag;
-        response->status_code = (sint32) httpStatusCode;
-        response->body = writeBuffer.ptr;
-        response->type = HTTP_DATA_RAW;
-        response->size = writeBuffer.length;
-    }
-
-    curl_easy_cleanup(curl);
-
-    return response;
-}
-
-void http_request_async(const http_request_t * request, void (*callback)(http_response_t*))
-{
-    auto request2 = HttpRequest2(request);
-    auto thread = std::thread([](const HttpRequest2 &req, void(*callback2)(http_response_t*)) -> void
-    {
-        http_response_t * response = http_request(req);
-        callback2(response);
-    }, std::move(request2), callback);
-    thread.detach();
-}
-
-void http_request_dispose(http_response_t *response)
-{
-    if (response->type == HTTP_DATA_JSON && response->root != nullptr)
-        json_decref(response->root);
-    else if (response->type == HTTP_DATA_RAW && response->body != nullptr)
-        free(response->body);
-
-    free(response);
-}
-
-const char *http_get_extension_from_url(const char *url, const char *fallback)
-{
-    const char *extension = strrchr(url, '.');
-
-    // Assume a save file by default if no valid extension can be determined
-    if (extension == nullptr || strchr(extension, '/') != nullptr) {
-        return fallback;
-    } else {
-        return extension;
-    }
-}
-
-size_t http_download_park(const char * url, void * * outData)
-{
-    // Download park to buffer in memory
-    HttpRequest2 request;
-    request.Url = url;
-    request.Method = "GET";
-    request.Type = HTTP_DATA_NONE;
-
-    http_response_t *response = http_request(request);
-
-    if (response == nullptr || response->status_code != 200) {
-        Console::Error::WriteLine("Failed to download '%s'", request.Url.c_str());
-        if (response != nullptr) {
-            http_request_dispose(response);
-        }
-
-        *outData = nullptr;
         return 0;
     }
 
-    size_t dataSize = response->size - 1;
-    void * data = malloc(dataSize);
-    if (data == nullptr) {
-        dataSize = 0;
-        Console::Error::WriteLine("Failed to allocate memory for downloaded park.");
-    } else {
-        memcpy(data, response->body, dataSize);
+    Response Do(const Request& req)
+    {
+        CURL* curl = curl_easy_init();
+        std::shared_ptr<void> _(nullptr, [curl](...) { curl_easy_cleanup(curl); });
+
+        if (!curl)
+            std::runtime_error("Failed to initialize curl");
+
+        Response res;
+        WriteThis wt;
+
+        if (req.method == Method::POST || req.method == Method::PUT)
+        {
+            wt.readptr = req.body.c_str();
+            wt.sizeleft = req.body.size();
+
+            curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
+            curl_easy_setopt(curl, CURLOPT_READDATA, &wt);
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)wt.sizeleft);
+        }
+
+        if (req.forceIPv4)
+            curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+
+        if (req.method == Method::POST)
+            curl_easy_setopt(curl, CURLOPT_POST, 1L);
+
+        if (req.method == Method::PUT)
+            curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+
+        curl_easy_setopt(curl, CURLOPT_URL, req.url.c_str());
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeData);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&res);
+        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, header_callback);
+        curl_easy_setopt(curl, CURLOPT_HEADERDATA, (void*)&res);
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, true);
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, OPENRCT2_USER_AGENT);
+
+        curl_slist* chunk = nullptr;
+        std::shared_ptr<void> __(nullptr, [chunk](...) { curl_slist_free_all(chunk); });
+        for (auto header : req.header)
+        {
+            std::string hs = header.first + ": " + header.second;
+            chunk = curl_slist_append(chunk, hs.c_str());
+        }
+        if (req.header.size() != 0)
+        {
+            if (chunk == nullptr)
+            {
+                throw std::runtime_error("Failed to set headers");
+            }
+            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
+        }
+
+        CURLcode curl_code = curl_easy_perform(curl);
+        if (curl_code != CURLE_OK)
+        {
+            throw std::runtime_error("Failed to perform request");
+        }
+
+        // gets freed by curl_easy_cleanup
+        char* content_type;
+        long code;
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &code);
+        curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &content_type);
+        res.status = static_cast<Status>(code);
+        res.content_type = std::string(content_type);
+
+        return res;
     }
 
-    http_request_dispose(response);
+    void DoAsync(const Request& req, std::function<void(Response& res)> fn)
+    {
+        auto thread = std::thread([=]() {
+            Response res;
+            try
+            {
+                res = Do(req);
+            }
+            catch (std::exception& e)
+            {
+                res.error = e.what();
+                return;
+            }
+            fn(res);
+        });
+        thread.detach();
+    }
 
-    *outData = data;
-    return dataSize;
-}
+    size_t DownloadPark(const char* url, void** outData)
+    {
+        // Download park to buffer in memory
+        Request request;
+        request.url = url;
+        request.method = Method::GET;
+
+        Response res;
+        try
+        {
+            res = Do(request);
+            if (res.status != Status::OK)
+                std::runtime_error("bad http status");
+        }
+        catch (std::exception& e)
+        {
+            Console::Error::WriteLine("Failed to download '%s', cause %s", request.url.c_str(), e.what());
+            *outData = nullptr;
+            return 0;
+        }
+
+        size_t dataSize = res.body.size() - 1;
+        void* data = malloc(dataSize);
+        if (data == nullptr)
+        {
+            Console::Error::WriteLine("Failed to allocate memory for downloaded park.");
+            return 0;
+        }
+
+        memcpy(data, res.body.c_str(), dataSize);
+        *outData = data;
+
+        return dataSize;
+    }
+
+} // namespace OpenRCT2::Network::Http
 
 #endif

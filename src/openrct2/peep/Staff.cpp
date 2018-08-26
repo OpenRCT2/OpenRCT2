@@ -1,26 +1,20 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include "../audio/audio.h"
-#include "../core/Math.hpp"
-#include "../core/Util.hpp"
+#include "Staff.h"
+
 #include "../Context.h"
-#include "../config/Config.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../audio/audio.h"
+#include "../config/Config.h"
+#include "../core/Util.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -28,10 +22,10 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
-#include "../ride/Station.h"
-#include "../ride/RideData.h"
-#include "../ride/Track.h"
 #include "../paint/tile_element/Paint.TileElement.h"
+#include "../ride/RideData.h"
+#include "../ride/Station.h"
+#include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/Entrance.h"
@@ -41,7 +35,8 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "Peep.h"
-#include "Staff.h"
+
+#include <algorithm>
 
 // clang-format off
 const rct_string_id StaffCostumeNames[] = {
@@ -61,9 +56,9 @@ const rct_string_id StaffCostumeNames[] = {
 
 // Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their staff_id
 // Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
-uint32   gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
-uint8    gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
-uint16   gStaffDrawPatrolAreas;
+uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
+uint8_t gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
+uint16_t gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
@@ -74,29 +69,29 @@ colour_t gStaffSecurityColour;
  */
 void staff_reset_modes()
 {
-    for (sint32 i = 0; i < STAFF_MAX_COUNT; i++)
+    for (int32_t i = 0; i < STAFF_MAX_COUNT; i++)
         gStaffModes[i] = STAFF_MODE_NONE;
 
-    for (sint32 i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + STAFF_TYPE_COUNT); i++)
+    for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + STAFF_TYPE_COUNT); i++)
         gStaffModes[i] = STAFF_MODE_WALK;
 
     staff_update_greyed_patrol_areas();
 }
 
-static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
+static inline void staff_autoposition_new_staff_member(rct_peep* newPeep)
 {
     // Find a location to place new staff member
 
     newPeep->state = PEEP_STATE_FALLING;
 
-    sint16             x, y, z;
-    uint32             count = 0;
-    uint16             sprite_index;
-    rct_peep *         guest = nullptr;
-    rct_tile_element * guest_tile = nullptr;
+    int16_t x, y, z;
+    uint32_t count = 0;
+    uint16_t sprite_index;
+    rct_peep* guest = nullptr;
+    rct_tile_element* guest_tile = nullptr;
 
     // Count number of walking guests
-    FOR_ALL_GUESTS(sprite_index, guest)
+    FOR_ALL_GUESTS (sprite_index, guest)
     {
         if (guest->state == PEEP_STATE_WALKING)
         {
@@ -110,8 +105,8 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
     if (count > 0)
     {
         // Place staff at a random guest
-        uint32 rand = scenario_rand_max(count);
-        FOR_ALL_GUESTS(sprite_index, guest)
+        uint32_t rand = scenario_rand_max(count);
+        FOR_ALL_GUESTS (sprite_index, guest)
         {
             if (guest->state == PEEP_STATE_WALKING)
             {
@@ -133,7 +128,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
     {
         // No walking guests; pick random park entrance
         count = 0;
-        uint8 i;
+        uint8_t i;
         for (i = 0; i < MAX_PARK_ENTRANCES; ++i)
         {
             if (gParkEntrances[i].x != LOCATION_NULL)
@@ -142,7 +137,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
 
         if (count > 0)
         {
-            uint32 rand = scenario_rand_max(count);
+            uint32_t rand = scenario_rand_max(count);
             for (i = 0; i < MAX_PARK_ENTRANCES; ++i)
             {
                 if (gParkEntrances[i].x != LOCATION_NULL)
@@ -153,10 +148,10 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
                 }
             }
 
-            uint8 dir = gParkEntrances[i].direction;
-            x         = gParkEntrances[i].x;
-            y         = gParkEntrances[i].y;
-            z         = gParkEntrances[i].z;
+            uint8_t dir = gParkEntrances[i].direction;
+            x = gParkEntrances[i].x;
+            y = gParkEntrances[i].y;
+            z = gParkEntrances[i].z;
             x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
             y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
         }
@@ -164,23 +159,24 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
         {
             // No more options; user must pick a location
             newPeep->state = PEEP_STATE_PICKED;
-            x              = newPeep->x;
-            y              = newPeep->y;
-            z              = newPeep->z;
+            x = newPeep->x;
+            y = newPeep->y;
+            z = newPeep->z;
         }
     }
 
-    sprite_move(x, y, z + 16, (rct_sprite *)newPeep);
-    invalidate_sprite_2((rct_sprite *)newPeep);
+    sprite_move(x, y, z + 16, (rct_sprite*)newPeep);
+    invalidate_sprite_2((rct_sprite*)newPeep);
 }
 
-static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16 command_x, sint16 command_y, sint16 command_z,
-                                           sint32 autoposition, sint32 * newPeep_sprite_index)
+static money32 staff_hire_new_staff_member(
+    uint8_t staff_type, uint8_t flags, int16_t command_x, int16_t command_y, int16_t command_z, int32_t autoposition,
+    int32_t* newPeep_sprite_index)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
-    gCommandPosition.x      = command_x;
-    gCommandPosition.y      = command_y;
-    gCommandPosition.z      = command_z;
+    gCommandPosition.x = command_x;
+    gCommandPosition.y = command_y;
+    gCommandPosition.z = command_z;
 
     if (gSpriteListCount[SPRITE_LIST_NULL] < 400)
     {
@@ -190,7 +186,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
     // Staff type matches STAFF_TYPE enum, but ENTERTAINER onwards will match
     // the ENTERTAINER_COSTUME enum
-    uint8 entertainerType = ENTERTAINER_COSTUME_PANDA;
+    uint8_t entertainerType = ENTERTAINER_COSTUME_PANDA;
     if (staff_type >= STAFF_TYPE_ENTERTAINER)
     {
         entertainerType = staff_type - STAFF_TYPE_ENTERTAINER;
@@ -200,7 +196,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             return MONEY32_UNDEFINED;
         }
 
-        uint32 availableCostumes = staff_get_available_entertainer_costumes();
+        uint32_t availableCostumes = staff_get_available_entertainer_costumes();
         if (!(availableCostumes & (1 << entertainerType)))
         {
             // Entertainer costume unavailable
@@ -210,7 +206,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
         staff_type = STAFF_TYPE_ENTERTAINER;
     }
 
-    sint32 i;
+    int32_t i;
     for (i = 0; i < STAFF_MAX_COUNT; ++i)
     {
         if (!(gStaffModes[i] & 1))
@@ -225,9 +221,9 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        sint32                    newStaffId = i;
-        const rct_sprite_bounds * spriteBounds;
-        rct_peep *                newPeep = &(create_sprite(flags)->peep);
+        int32_t newStaffId = i;
+        const rct_sprite_bounds* spriteBounds;
+        rct_peep* newPeep = &(create_sprite(flags)->peep);
 
         if (newPeep == nullptr)
         {
@@ -237,27 +233,27 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
         if (flags == 0)
         {
-            sprite_remove((rct_sprite *)newPeep);
+            sprite_remove((rct_sprite*)newPeep);
         }
         else
         {
-            move_sprite_to_list((rct_sprite *)newPeep, SPRITE_LIST_PEEP * 2);
+            move_sprite_to_list((rct_sprite*)newPeep, SPRITE_LIST_PEEP * 2);
 
-            newPeep->sprite_identifier          = 1;
-            newPeep->window_invalidate_flags    = 0;
-            newPeep->action                     = PEEP_ACTION_NONE_2;
-            newPeep->special_sprite             = 0;
+            newPeep->sprite_identifier = 1;
+            newPeep->window_invalidate_flags = 0;
+            newPeep->action = PEEP_ACTION_NONE_2;
+            newPeep->special_sprite = 0;
             newPeep->action_sprite_image_offset = 0;
-            newPeep->no_action_frame_num         = 0;
-            newPeep->action_sprite_type         = 0;
-            newPeep->path_check_optimisation                     = 0;
-            newPeep->type                       = PEEP_TYPE_STAFF;
-            newPeep->outside_of_park            = 0;
-            newPeep->peep_flags                 = 0;
-            newPeep->paid_to_enter              = 0;
-            newPeep->paid_on_rides              = 0;
-            newPeep->paid_on_food               = 0;
-            newPeep->paid_on_souvenirs          = 0;
+            newPeep->no_action_frame_num = 0;
+            newPeep->action_sprite_type = 0;
+            newPeep->path_check_optimisation = 0;
+            newPeep->type = PEEP_TYPE_STAFF;
+            newPeep->outside_of_park = 0;
+            newPeep->peep_flags = 0;
+            newPeep->paid_to_enter = 0;
+            newPeep->paid_on_rides = 0;
+            newPeep->paid_on_food = 0;
+            newPeep->paid_on_souvenirs = 0;
 
             if (staff_type == STAFF_TYPE_HANDYMAN)
                 newPeep->staff_orders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
@@ -266,17 +262,17 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             else
                 newPeep->staff_orders = 0;
 
-            uint16     idSearchSpriteIndex;
-            rct_peep * idSearchPeep;
+            uint16_t idSearchSpriteIndex;
+            rct_peep* idSearchPeep;
 
             // We search for the first available id for a given staff type
-            uint32 newStaffIndex = 0;
+            uint32_t newStaffIndex = 0;
             for (;;)
             {
                 bool found = false;
                 ++newStaffIndex;
 
-                FOR_ALL_STAFF(idSearchSpriteIndex, idSearchPeep)
+                FOR_ALL_STAFF (idSearchSpriteIndex, idSearchPeep)
                 {
                     if (idSearchPeep->staff_type != staff_type)
                         continue;
@@ -292,7 +288,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
                     break;
             }
 
-            newPeep->id         = newStaffIndex;
+            newPeep->id = newStaffIndex;
             newPeep->staff_type = staff_type;
 
             static constexpr const rct_string_id staffNames[] = {
@@ -303,23 +299,23 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             };
 
             /* rct2: 0x009929FC */
-            static constexpr const uint8 spriteTypes[] = {
+            static constexpr const uint8_t spriteTypes[] = {
                 PEEP_SPRITE_TYPE_HANDYMAN,
                 PEEP_SPRITE_TYPE_MECHANIC,
                 PEEP_SPRITE_TYPE_SECURITY,
                 PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
             };
 
-            uint8 sprite_type = spriteTypes[staff_type];
+            uint8_t sprite_type = spriteTypes[staff_type];
             if (staff_type == STAFF_TYPE_ENTERTAINER)
             {
                 sprite_type = PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + entertainerType;
             }
             newPeep->name_string_idx = staffNames[staff_type];
-            newPeep->sprite_type     = sprite_type;
+            newPeep->sprite_type = sprite_type;
 
-            spriteBounds                    = g_peep_animation_entries[sprite_type].sprite_bounds;
-            newPeep->sprite_width           = spriteBounds->sprite_width;
+            spriteBounds = g_peep_animation_entries[sprite_type].sprite_bounds;
+            newPeep->sprite_width = spriteBounds->sprite_width;
             newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
             newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
@@ -331,24 +327,24 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             {
                 newPeep->state = PEEP_STATE_PICKED;
 
-                sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite *)newPeep);
-                invalidate_sprite_2((rct_sprite *)newPeep);
+                sprite_move(newPeep->x, newPeep->y, newPeep->z, (rct_sprite*)newPeep);
+                invalidate_sprite_2((rct_sprite*)newPeep);
             }
 
-            newPeep->time_in_park            = gDateMonthsElapsed;
-            newPeep->pathfind_goal.x         = 0xFF;
-            newPeep->pathfind_goal.y         = 0xFF;
-            newPeep->pathfind_goal.z         = 0xFF;
+            newPeep->time_in_park = gDateMonthsElapsed;
+            newPeep->pathfind_goal.x = 0xFF;
+            newPeep->pathfind_goal.y = 0xFF;
+            newPeep->pathfind_goal.z = 0xFF;
             newPeep->pathfind_goal.direction = 0xFF;
 
-            uint8 colour             = staff_get_colour(staff_type);
-            newPeep->tshirt_colour   = colour;
+            uint8_t colour = staff_get_colour(staff_type);
+            newPeep->tshirt_colour = colour;
             newPeep->trousers_colour = colour;
 
             // Staff energy determines their walking speed
-            newPeep->energy        = 0x60;
+            newPeep->energy = 0x60;
             newPeep->energy_target = 0x60;
-            newPeep->staff_mowing_timeout        = 0;
+            newPeep->staff_mowing_timeout = 0;
 
             peep_update_name_sort(newPeep);
 
@@ -372,10 +368,11 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
  *  rct2: 0x006BEFA1
  */
 void game_command_hire_new_staff_member(
-    sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, [[maybe_unused]] sint32* esi, sint32* edi, [[maybe_unused]] sint32* ebp)
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
+    [[maybe_unused]] int32_t* ebp)
 {
-    *ebx = staff_hire_new_staff_member((*ebx & 0xFF00) >> 8, *ebx & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFFFF,
-                                       (*ebx & 0xFF0000) >> 16, edi);
+    *ebx = staff_hire_new_staff_member(
+        (*ebx & 0xFF00) >> 8, *ebx & 0xFF, *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFFFF, (*ebx & 0xFF0000) >> 16, edi);
 }
 
 /** rct2: 0x00982134 */
@@ -403,17 +400,12 @@ static constexpr const bool peep_slow_walking_types[] = {
  *  rct2: 0x006C0BB5
  */
 void game_command_set_staff_order(
-    [[maybe_unused]] sint32* eax,
-    sint32* ebx,
-    [[maybe_unused]] sint32* ecx,
-    sint32* edx,
-    [[maybe_unused]] sint32* esi,
-    [[maybe_unused]] sint32* edi,
-    [[maybe_unused]] sint32* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
-    uint8  order_id         = *ebx >> 8;
-    uint16 sprite_id        = *edx;
+    uint8_t order_id = *ebx >> 8;
+    uint16_t sprite_id = *edx;
     if (sprite_id >= MAX_SPRITES)
     {
         log_warning("Invalid game command, sprite_id = %u", sprite_id);
@@ -422,10 +414,10 @@ void game_command_set_staff_order(
     }
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_peep * peep = &get_sprite(sprite_id)->peep;
+        rct_peep* peep = &get_sprite(sprite_id)->peep;
         if (order_id & 0x80)
         { // change costume
-            uint8 sprite_type = order_id & ~0x80;
+            uint8_t sprite_type = order_id & ~0x80;
             sprite_type += 4;
             if (sprite_type >= Util::CountOf(peep_slow_walking_types))
             {
@@ -460,39 +452,34 @@ void game_command_set_staff_order(
  *  rct2: 0x006C09D1
  */
 void game_command_set_staff_patrol(
-    sint32* eax,
-    sint32* ebx,
-    sint32* ecx,
-    sint32* edx,
-    [[maybe_unused]] sint32* esi,
-    [[maybe_unused]] sint32* edi,
-    [[maybe_unused]] sint32* ebp)
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
+    [[maybe_unused]] int32_t* ebp)
 {
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {
-        sint32 x         = *eax;
-        sint32 y         = *ecx;
-        uint16 sprite_id = *edx;
+        int32_t x = *eax;
+        int32_t y = *ecx;
+        uint16_t sprite_id = *edx;
         if (sprite_id >= MAX_SPRITES)
         {
             *ebx = MONEY32_UNDEFINED;
             log_warning("Invalid sprite id %u", sprite_id);
             return;
         }
-        rct_sprite * sprite = get_sprite(sprite_id);
+        rct_sprite* sprite = get_sprite(sprite_id);
         if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_PEEP || sprite->peep.type != PEEP_TYPE_STAFF)
         {
             *ebx = MONEY32_UNDEFINED;
             log_warning("Invalid type of sprite %u for game command", sprite_id);
             return;
         }
-        rct_peep * peep         = &sprite->peep;
-        sint32     patrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
+        rct_peep* peep = &sprite->peep;
+        int32_t patrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
 
         staff_toggle_patrol_area(peep->staff_id, x, y);
 
-        sint32 ispatrolling = 0;
-        for (sint32 i = 0; i < 128; i++)
+        int32_t ispatrolling = 0;
+        for (int32_t i = 0; i < 128; i++)
         {
             ispatrolling |= gStaffPatrolAreas[patrolOffset + i];
         }
@@ -503,9 +490,9 @@ void game_command_set_staff_patrol(
             gStaffModes[peep->staff_id] |= 2;
         }
 
-        for (sint32 y2 = 0; y2 < 4; y2++)
+        for (int32_t y2 = 0; y2 < 4; y2++)
         {
-            for (sint32 x2 = 0; x2 < 4; x2++)
+            for (int32_t x2 = 0; x2 < 4; x2++)
             {
                 map_invalidate_tile_full((x & 0x1F80) + (x2 * 32), (y & 0x1F80) + (y2 * 32));
             }
@@ -520,30 +507,25 @@ void game_command_set_staff_patrol(
  *  rct2: 0x006C0B83
  */
 void game_command_fire_staff_member(
-    [[maybe_unused]] sint32* eax,
-    sint32* ebx,
-    [[maybe_unused]] sint32* ecx,
-    sint32* edx,
-    [[maybe_unused]] sint32* esi,
-    [[maybe_unused]] sint32* edi,
-    [[maybe_unused]] sint32* ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_WAGES;
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {
         window_close_by_class(WC_FIRE_PROMPT);
-        uint16 sprite_id = *edx;
+        uint16_t sprite_id = *edx;
         if (sprite_id >= MAX_SPRITES)
         {
             log_warning("Invalid game command, sprite_id = %u", sprite_id);
             *ebx = MONEY32_UNDEFINED;
             return;
         }
-        rct_peep * peep = &get_sprite(sprite_id)->peep;
+        rct_peep* peep = &get_sprite(sprite_id)->peep;
         if (peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
         {
-            log_warning("Invalid game command, peep->sprite_identifier = %u, peep->type = %u", peep->sprite_identifier,
-                        peep->type);
+            log_warning(
+                "Invalid game command, peep->sprite_identifier = %u, peep->type = %u", peep->sprite_identifier, peep->type);
             *ebx = MONEY32_UNDEFINED;
             return;
         }
@@ -556,15 +538,15 @@ void game_command_fire_staff_member(
  * Hires a new staff member of the given type. If the hire cannot be completed (eg. the maximum number of staff is reached or
  * there are too many peeps) it returns SPRITE_INDEX_NULL.
  */
-uint16 hire_new_staff_member(uint8 staffType)
+uint16_t hire_new_staff_member(uint8_t staffType)
 {
     gGameCommandErrorTitle = STR_CANT_HIRE_NEW_STAFF;
 
-    sint32 command_x, ebx, command_y, command_z, esi, new_sprite_index, ebp;
+    int32_t command_x, ebx, command_y, command_z, esi, new_sprite_index, ebp;
     command_y = command_z = esi = new_sprite_index = ebp = 0;
-    command_x                                            = 0x8000;
+    command_x = 0x8000;
 
-    sint32 autoposition = gConfigGeneral.auto_staff_placement;
+    int32_t autoposition = gConfigGeneral.auto_staff_placement;
     if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
     {
         autoposition = autoposition ^ 1;
@@ -573,18 +555,19 @@ uint16 hire_new_staff_member(uint8 staffType)
     ebx = autoposition << 16 | staffType << 8 | GAME_COMMAND_FLAG_APPLY;
 
     game_command_callback = game_command_callback_hire_new_staff_member;
-    sint32 result = game_do_command_p(GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, &command_x, &ebx, &command_y, &command_z, &esi,
-                                      &new_sprite_index, &ebp);
+    int32_t result = game_do_command_p(
+        GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, &command_x, &ebx, &command_y, &command_z, &esi, &new_sprite_index, &ebp);
 
     if (result == MONEY32_UNDEFINED)
         return SPRITE_INDEX_NULL;
 
     if ((staffType == STAFF_TYPE_HANDYMAN) && gConfigGeneral.handymen_mow_default)
     {
-        rct_peep * newPeep    = GET_PEEP(new_sprite_index);
-        uint8      new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
-        game_do_command(newPeep->x, ((sint32)new_orders << 8) | GAME_COMMAND_FLAG_APPLY, newPeep->y, new_sprite_index,
-                        GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
+        rct_peep* newPeep = GET_PEEP(new_sprite_index);
+        uint8_t new_orders = newPeep->staff_orders | STAFF_ORDERS_MOWING;
+        game_do_command(
+            newPeep->x, ((int32_t)new_orders << 8) | GAME_COMMAND_FLAG_APPLY, newPeep->y, new_sprite_index,
+            GAME_COMMAND_SET_STAFF_ORDER, 0, 0);
     }
 
     return new_sprite_index;
@@ -596,25 +579,25 @@ uint16 hire_new_staff_member(uint8 staffType)
  */
 void staff_update_greyed_patrol_areas()
 {
-    rct_peep * peep;
+    rct_peep* peep;
 
-    for (sint32 staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
+    for (int32_t staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
     {
-        sint32 staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
-        for (sint32 i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+        int32_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
+        for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
         {
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
 
-        for (uint16 sprite_index = gSpriteListHead[SPRITE_LIST_PEEP]; sprite_index != SPRITE_INDEX_NULL;
-             sprite_index        = peep->next)
+        for (uint16_t sprite_index = gSpriteListHead[SPRITE_LIST_PEEP]; sprite_index != SPRITE_INDEX_NULL;
+             sprite_index = peep->next)
         {
             peep = GET_PEEP(sprite_index);
 
             if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
             {
-                sint32 peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
-                for (sint32 i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+                int32_t peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
+                for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
                 {
                     gStaffPatrolAreas[staffPatrolOffset + i] |= gStaffPatrolAreas[peepPatrolOffset + i];
                 }
@@ -623,7 +606,7 @@ void staff_update_greyed_patrol_areas()
     }
 }
 
-static bool staff_is_location_in_patrol_area(rct_peep * peep, sint32 x, sint32 y)
+static bool staff_is_location_in_patrol_area(rct_peep* peep, int32_t x, int32_t y)
 {
     // Patrol quads are stored in a bit map (8 patrol quads per byte)
     // Each patrol quad is 4x4
@@ -635,7 +618,7 @@ static bool staff_is_location_in_patrol_area(rct_peep * peep, sint32 x, sint32 y
  *
  *  rct2: 0x006C0905
  */
-bool staff_is_location_in_patrol(rct_peep * staff, sint32 x, sint32 y)
+bool staff_is_location_in_patrol(rct_peep* staff, int32_t x, int32_t y)
 {
     // Check if location is in the park
     if (!map_is_location_owned_or_has_rights(x, y))
@@ -648,23 +631,23 @@ bool staff_is_location_in_patrol(rct_peep * staff, sint32 x, sint32 y)
     return staff_is_location_in_patrol_area(staff, x, y);
 }
 
-bool staff_is_location_on_patrol_edge(rct_peep * mechanic, sint32 x, sint32 y)
+bool staff_is_location_on_patrol_edge(rct_peep* mechanic, int32_t x, int32_t y)
 {
     // Check whether the location x,y is inside and on the edge of the
     // patrol zone for mechanic.
-    bool   onZoneEdge   = false;
-    sint32 neighbourDir = 0;
+    bool onZoneEdge = false;
+    int32_t neighbourDir = 0;
     while (!onZoneEdge && neighbourDir <= 7)
     {
-        sint32 neighbourX = x + CoordsDirectionDelta[neighbourDir].x;
-        sint32 neighbourY = y + CoordsDirectionDelta[neighbourDir].y;
-        onZoneEdge        = !staff_is_location_in_patrol(mechanic, neighbourX, neighbourY);
+        int32_t neighbourX = x + CoordsDirectionDelta[neighbourDir].x;
+        int32_t neighbourY = y + CoordsDirectionDelta[neighbourDir].y;
+        onZoneEdge = !staff_is_location_in_patrol(mechanic, neighbourX, neighbourY);
         neighbourDir++;
     }
     return onZoneEdge;
 }
 
-bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, rct_tile_element * path)
+bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z, rct_tile_element* path)
 {
     /* Wide flags can potentially wall off parts of a staff patrol zone
      * for the heuristic search.
@@ -697,14 +680,14 @@ bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, r
 
     /* Check the connected adjacent paths that are also inside the patrol
      * zone but are not on the patrol zone edge have the wide flag set. */
-    uint8 total     = 0;
-    uint8 pathcount = 0;
-    uint8 widecount = 0;
-    for (sint32 adjac_dir = 0; adjac_dir <= 3; adjac_dir++)
+    uint8_t total = 0;
+    uint8_t pathcount = 0;
+    uint8_t widecount = 0;
+    for (int32_t adjac_dir = 0; adjac_dir <= 3; adjac_dir++)
     {
-        sint32 adjac_x = x + CoordsDirectionDelta[adjac_dir].x;
-        sint32 adjac_y = y + CoordsDirectionDelta[adjac_dir].y;
-        uint8  adjac_z = z;
+        int32_t adjac_x = x + CoordsDirectionDelta[adjac_dir].x;
+        int32_t adjac_y = y + CoordsDirectionDelta[adjac_dir].y;
+        uint8_t adjac_z = z;
 
         /* Ignore adjacent tiles outside the patrol zone. */
         if (!staff_is_location_in_patrol(staff, adjac_x, adjac_y))
@@ -733,9 +716,9 @@ bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, r
         }
 
         /* Search through all adjacent map elements */
-        rct_tile_element * test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
-        bool              pathfound    = false;
-        bool              widefound    = false;
+        rct_tile_element* test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
+        bool pathfound = false;
+        bool widefound = false;
         do
         {
             if (test_element->GetType() != TILE_ELEMENT_TYPE_PATH)
@@ -767,14 +750,14 @@ bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, r
 
     switch (total)
     {
-    case 0: /* Concave corner */
-        return true;
-    case 1: /* Straight side */
-    case 2: /* Convex corner */
-        if (pathcount <= total - 1 || widecount == total)
-        {
+        case 0: /* Concave corner */
             return true;
-        }
+        case 1: /* Straight side */
+        case 2: /* Convex corner */
+            if (pathcount <= total - 1 || widecount == total)
+            {
+                return true;
+            }
     }
 
     return false;
@@ -785,9 +768,9 @@ bool staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, r
  *  rct2: 0x006C095B
  *  returns 0xF if not in a valid patrol area
  */
-static uint8 staff_get_valid_patrol_directions(rct_peep * peep, sint16 x, sint16 y)
+static uint8_t staff_get_valid_patrol_directions(rct_peep* peep, int16_t x, int16_t y)
 {
-    uint8 directions = 0;
+    uint8_t directions = 0;
 
     if (staff_is_location_in_patrol(peep, x - 32, y))
     {
@@ -823,41 +806,41 @@ static uint8 staff_get_valid_patrol_directions(rct_peep * peep, sint16 x, sint16
  */
 void staff_reset_stats()
 {
-    uint16     spriteIndex;
-    rct_peep * peep;
+    uint16_t spriteIndex;
+    rct_peep* peep;
 
-    FOR_ALL_STAFF(spriteIndex, peep)
+    FOR_ALL_STAFF (spriteIndex, peep)
     {
-        peep->time_in_park          = gDateMonthsElapsed;
-        peep->staff_lawns_mown      = 0;
-        peep->staff_rides_fixed     = 0;
+        peep->time_in_park = gDateMonthsElapsed;
+        peep->staff_lawns_mown = 0;
+        peep->staff_rides_fixed = 0;
         peep->staff_gardens_watered = 0;
         peep->staff_rides_inspected = 0;
-        peep->staff_litter_swept    = 0;
-        peep->staff_bins_emptied    = 0;
+        peep->staff_litter_swept = 0;
+        peep->staff_bins_emptied = 0;
     }
 }
 
-bool staff_is_patrol_area_set(sint32 staffIndex, sint32 x, sint32 y)
+bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y)
 {
     x = (x & 0x1F80) >> 7;
     y = (y & 0x1F80) >> 1;
 
-    sint32 peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    sint32 offset     = (x | y) >> 5;
-    sint32 bitIndex   = (x | y) & 0x1F;
-    return gStaffPatrolAreas[peepOffset + offset] & (((uint32)1) << bitIndex);
+    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
+    int32_t offset = (x | y) >> 5;
+    int32_t bitIndex = (x | y) & 0x1F;
+    return gStaffPatrolAreas[peepOffset + offset] & (((uint32_t)1) << bitIndex);
 }
 
-void staff_set_patrol_area(sint32 staffIndex, sint32 x, sint32 y, bool value)
+void staff_set_patrol_area(int32_t staffIndex, int32_t x, int32_t y, bool value)
 {
     x = (x & 0x1F80) >> 7;
     y = (y & 0x1F80) >> 1;
 
-    sint32   peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    sint32   offset     = (x | y) >> 5;
-    sint32   bitIndex   = (x | y) & 0x1F;
-    uint32 * addr       = &gStaffPatrolAreas[peepOffset + offset];
+    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
+    int32_t offset = (x | y) >> 5;
+    int32_t bitIndex = (x | y) & 0x1F;
+    uint32_t* addr = &gStaffPatrolAreas[peepOffset + offset];
     if (value)
     {
         *addr |= (1 << bitIndex);
@@ -868,14 +851,14 @@ void staff_set_patrol_area(sint32 staffIndex, sint32 x, sint32 y, bool value)
     }
 }
 
-void staff_toggle_patrol_area(sint32 staffIndex, sint32 x, sint32 y)
+void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y)
 {
     x = (x & 0x1F80) >> 7;
     y = (y & 0x1F80) >> 1;
 
-    sint32 peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    sint32 offset     = (x | y) >> 5;
-    sint32 bitIndex   = (x | y) & 0x1F;
+    int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
+    int32_t offset = (x | y) >> 5;
+    int32_t bitIndex = (x | y) & 0x1F;
     gStaffPatrolAreas[peepOffset + offset] ^= (1 << bitIndex);
 }
 
@@ -885,22 +868,22 @@ void staff_toggle_patrol_area(sint32 staffIndex, sint32 x, sint32 y)
  *
  * Returns 0xFF when no nearby litter or unpathable litter
  */
-static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
+static uint8_t staff_handyman_direction_to_nearest_litter(rct_peep* peep)
 {
-    uint16       nearestLitterDist = (uint16)-1;
-    rct_litter * nearestLitter     = nullptr;
-    rct_litter * litter            = nullptr;
+    uint16_t nearestLitterDist = (uint16_t)-1;
+    rct_litter* nearestLitter = nullptr;
+    rct_litter* litter = nullptr;
 
-    for (uint16 litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next)
+    for (uint16_t litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next)
     {
         litter = &get_sprite(litterIndex)->litter;
 
-        uint16 distance = abs(litter->x - peep->x) + abs(litter->y - peep->y) + abs(litter->z - peep->z) * 4;
+        uint16_t distance = abs(litter->x - peep->x) + abs(litter->y - peep->y) + abs(litter->z - peep->z) * 4;
 
         if (distance < nearestLitterDist)
         {
             nearestLitterDist = distance;
-            nearestLitter     = litter;
+            nearestLitter = litter;
         }
     }
 
@@ -909,7 +892,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         return 0xFF;
     }
 
-    LocationXY16 litterTile = { static_cast<sint16>(nearestLitter->x & 0xFFE0), static_cast<sint16>(nearestLitter->y & 0xFFE0) };
+    LocationXY16 litterTile = { static_cast<int16_t>(nearestLitter->x & 0xFFE0),
+                                static_cast<int16_t>(nearestLitter->y & 0xFFE0) };
 
     if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y))
     {
@@ -919,10 +903,10 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
     litterTile.x += 16;
     litterTile.y += 16;
 
-    sint16 x_diff = litterTile.x - peep->x;
-    sint16 y_diff = litterTile.y - peep->y;
+    int16_t x_diff = litterTile.x - peep->x;
+    int16_t y_diff = litterTile.y - peep->y;
 
-    uint8 nextDirection = 0;
+    uint8_t nextDirection = 0;
 
     if (abs(x_diff) <= abs(y_diff))
     {
@@ -933,19 +917,18 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         nextDirection = x_diff < 0 ? 0 : 2;
     }
 
-    CoordsXY nextTile = { static_cast<sint32>((nearestLitter->x & 0xFFE0) - CoordsDirectionDelta[nextDirection].x),
-                          static_cast<sint32>((nearestLitter->y & 0xFFE0) - CoordsDirectionDelta[nextDirection].y) };
+    CoordsXY nextTile = { static_cast<int32_t>((nearestLitter->x & 0xFFE0) - CoordsDirectionDelta[nextDirection].x),
+                          static_cast<int32_t>((nearestLitter->y & 0xFFE0) - CoordsDirectionDelta[nextDirection].y) };
 
-    sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
+    int16_t nextZ = ((peep->z + 8) & 0xFFF0) / 8;
 
-    rct_tile_element * tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
+    rct_tile_element* tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
 
     do
     {
         if (tileElement->base_height != nextZ)
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE ||
-            tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
             return 0xFF;
         }
@@ -960,8 +943,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
     {
         if (tileElement->base_height != nextZ)
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE ||
-            tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
             return 0xFF;
         }
@@ -970,32 +952,31 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
     return nextDirection;
 }
 
-
 /**
  *
  *  rct2: 0x006BF931
  */
-static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 valid_directions)
+static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t valid_directions)
 {
     if (!(peep->GetNextIsSurface()))
     {
-
-        rct_tile_element * tileElement = map_get_surface_element_at({peep->next_x, peep->next_y});
+        rct_tile_element* tileElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
         if (peep->next_z != tileElement->base_height)
             return 0xFF;
 
         if (peep->GetNextIsSloped())
         {
-            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != byte_98D800[peep->GetNextDirection()])
+            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK)
+                != byte_98D800[peep->GetNextDirection()])
                 return 0xFF;
         }
         else if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
             return 0xFF;
     }
 
-    uint8 chosenDirection = scenario_rand() & 0x3;
-    for (uint8 i = 0; i < 4; ++i, ++chosenDirection)
+    uint8_t chosenDirection = scenario_rand() & 0x3;
+    for (uint8_t i = 0; i < 4; ++i, ++chosenDirection)
     {
         chosenDirection &= 0x3;
 
@@ -1004,13 +985,13 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
             continue;
         }
 
-        CoordsXY chosenTile = { static_cast<sint32>(peep->next_x + CoordsDirectionDelta[chosenDirection].x),
-                                static_cast<sint32>(peep->next_y + CoordsDirectionDelta[chosenDirection].y) };
+        CoordsXY chosenTile = { static_cast<int32_t>(peep->next_x + CoordsDirectionDelta[chosenDirection].x),
+                                static_cast<int32_t>(peep->next_y + CoordsDirectionDelta[chosenDirection].y) };
 
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
             continue;
 
-        rct_tile_element * tileElement = map_get_surface_element_at(chosenTile);
+        rct_tile_element* tileElement = map_get_surface_element_at(chosenTile);
 
         if (surface_get_terrain(tileElement) != 0)
             continue;
@@ -1030,17 +1011,17 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
  *
  *  rct2: 0x006BFD9C
  */
-static sint32 staff_handyman_direction_rand_surface(rct_peep * peep, uint8 validDirections)
+static int32_t staff_handyman_direction_rand_surface(rct_peep* peep, uint8_t validDirections)
 {
-    uint8 direction = scenario_rand() & 3;
-    for (sint32 i = 0; i < 4; ++i, ++direction)
+    uint8_t direction = scenario_rand() & 3;
+    for (int32_t i = 0; i < 4; ++i, ++direction)
     {
         direction &= 3;
         if (!(validDirections & (1 << direction)))
             continue;
 
-        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
-                                static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
+        LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
+                                    static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
         if (map_surface_is_blocked(chosenTile.x, chosenTile.y))
             continue;
@@ -1058,19 +1039,19 @@ static sint32 staff_handyman_direction_rand_surface(rct_peep * peep, uint8 valid
  *
  *  rct2: 0x006BFBA8
  */
-static bool staff_path_finding_handyman(rct_peep * peep)
+static bool staff_path_finding_handyman(rct_peep* peep)
 {
     peep->staff_mowing_timeout++;
 
-    uint8 litterDirection = 0xFF;
-    uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
+    uint8_t litterDirection = 0xFF;
+    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
     if ((peep->staff_orders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + peep->sprite_index) & 0xFFF) > 110)
     {
         litterDirection = staff_handyman_direction_to_nearest_litter(peep);
     }
 
-    uint8 direction = 0xFF;
+    uint8_t direction = 0xFF;
     if (litterDirection == 0xFF && (peep->staff_orders & STAFF_ORDERS_MOWING) && peep->staff_mowing_timeout >= 12)
     {
         direction = staff_handyman_direction_to_uncut_grass(peep, validDirections);
@@ -1084,12 +1065,12 @@ static bool staff_path_finding_handyman(rct_peep * peep)
         }
         else
         {
-            rct_tile_element * tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+            rct_tile_element* tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
 
             if (tileElement == nullptr)
                 return true;
 
-            uint8 pathDirections = (tileElement->properties.path.edges & validDirections) & 0xF;
+            uint8_t pathDirections = (tileElement->properties.path.edges & validDirections) & 0xF;
             if (pathDirections == 0)
             {
                 direction = staff_handyman_direction_rand_surface(peep, validDirections);
@@ -1102,7 +1083,7 @@ static bool staff_path_finding_handyman(rct_peep * peep)
                     if ((scenario_rand() & 0xFFFF) >= 0x1999)
                     {
                         chooseRandom = false;
-                        direction    = litterDirection;
+                        direction = litterDirection;
                     }
                 }
                 else
@@ -1128,19 +1109,19 @@ static bool staff_path_finding_handyman(rct_peep * peep)
     // countof(CoordsDirectionDelta)
     assert(direction < 8);
 
-    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
-                            static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
+    LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
+                                static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
-        direction    = staff_handyman_direction_rand_surface(peep, validDirections);
+        direction = staff_handyman_direction_rand_surface(peep, validDirections);
         chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
         chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
     }
 
-    peep->direction             = direction;
-    peep->destination_x         = chosenTile.x + 16;
-    peep->destination_y         = chosenTile.y + 16;
+    peep->direction = direction;
+    peep->destination_x = chosenTile.x + 16;
+    peep->destination_y = chosenTile.y + 16;
     peep->destination_tolerance = 3;
     if (peep->state == PEEP_STATE_QUEUING)
     {
@@ -1149,24 +1130,24 @@ static bool staff_path_finding_handyman(rct_peep * peep)
     return false;
 }
 
-static uint8 staff_direction_surface(rct_peep * peep, uint8 initialDirection)
+static uint8_t staff_direction_surface(rct_peep* peep, uint8_t initialDirection)
 {
-    uint8 direction = initialDirection;
-    for (sint32 i = 0; i < 3; ++i)
+    uint8_t direction = initialDirection;
+    for (int32_t i = 0; i < 3; ++i)
     {
         // Looks left and right from initial direction
         switch (i)
         {
-        case 1:
-            direction++;
-            if (scenario_rand() & 1)
-            {
+            case 1:
+                direction++;
+                if (scenario_rand() & 1)
+                {
+                    direction -= 2;
+                }
+                break;
+            case 2:
                 direction -= 2;
-            }
-            break;
-        case 2:
-            direction -= 2;
-            break;
+                break;
         }
 
         direction &= 3;
@@ -1177,8 +1158,8 @@ static uint8 staff_direction_surface(rct_peep * peep, uint8 initialDirection)
         if (fence_in_the_way(peep->next_x, peep->next_y, peep->next_z, peep->next_z + 4, direction ^ (1 << 1)) == true)
             continue;
 
-        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
-                                static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
+        LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
+                                    static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
         if (map_surface_is_blocked(chosenTile.x, chosenTile.y) == false)
         {
@@ -1192,9 +1173,9 @@ static uint8 staff_direction_surface(rct_peep * peep, uint8 initialDirection)
  *
  *  rct2: 0x006BFF45
  */
-static uint8 staff_mechanic_direction_surface(rct_peep * peep)
+static uint8_t staff_mechanic_direction_surface(rct_peep* peep)
 {
-    uint8 direction = scenario_rand() & 3;
+    uint8_t direction = scenario_rand() & 3;
 
     if ((peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION) && scenario_rand() & 1)
     {
@@ -1204,10 +1185,10 @@ static uint8 staff_mechanic_direction_surface(rct_peep * peep)
             location = ride_get_entrance_location(peep->current_ride, peep->current_ride_station);
         }
 
-        LocationXY16 chosenTile = { static_cast<sint16>(location.x * 32), static_cast<sint16>(location.y * 32) };
+        LocationXY16 chosenTile = { static_cast<int16_t>(location.x * 32), static_cast<int16_t>(location.y * 32) };
 
-        sint16 x_diff = chosenTile.x - peep->x;
-        sint16 y_diff = chosenTile.y - peep->y;
+        int16_t x_diff = chosenTile.x - peep->x;
+        int16_t y_diff = chosenTile.y - peep->y;
 
         if (abs(x_diff) <= abs(y_diff))
         {
@@ -1226,7 +1207,7 @@ static uint8 staff_mechanic_direction_surface(rct_peep * peep)
  *
  *  rct2: 0x006C02D1
  */
-static uint8 staff_mechanic_direction_path_rand(rct_peep * peep, uint8 pathDirections)
+static uint8_t staff_mechanic_direction_path_rand(rct_peep* peep, uint8_t pathDirections)
 {
     if (scenario_rand() & 1)
     {
@@ -1235,8 +1216,8 @@ static uint8 staff_mechanic_direction_path_rand(rct_peep * peep, uint8 pathDirec
     }
 
     // Modified from original to spam scenario_rand less
-    uint8 direction = scenario_rand() & 3;
-    for (sint32 i = 0; i < 4; ++i, ++direction)
+    uint8_t direction = scenario_rand() & 3;
+    for (int32_t i = 0; i < 4; ++i, ++direction)
     {
         direction &= 3;
         if (pathDirections & (1 << direction))
@@ -1250,11 +1231,10 @@ static uint8 staff_mechanic_direction_path_rand(rct_peep * peep, uint8 pathDirec
  *
  *  rct2: 0x006C0121
  */
-static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirections, rct_tile_element * pathElement)
+static uint8_t staff_mechanic_direction_path(rct_peep* peep, uint8_t validDirections, rct_tile_element* pathElement)
 {
-
-    uint8 direction      = 0xFF;
-    uint8 pathDirections = pathElement->properties.path.edges & 0xF;
+    uint8_t direction = 0xFF;
+    uint8_t pathDirections = pathElement->properties.path.edges & 0xF;
     pathDirections &= validDirections;
 
     if (pathDirections == 0)
@@ -1309,13 +1289,14 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
         gPeepPathFindGoalPosition.z = location.z;
 
         gPeepPathFindIgnoreForeignQueues = false;
-        gPeepPathFindQueueRideIndex      = 255;
+        gPeepPathFindQueueRideIndex = 255;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         pathfind_logging_enable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        sint32 pathfindDirection = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
+        int32_t pathfindDirection = peep_pathfind_choose_direction(
+            { peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         pathfind_logging_disable();
@@ -1333,7 +1314,7 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
             return staff_mechanic_direction_path_rand(peep, pathDirections);
         }
 
-        return (uint8)pathfindDirection;
+        return (uint8_t)pathfindDirection;
     }
     return staff_mechanic_direction_path_rand(peep, pathDirections);
 }
@@ -1342,17 +1323,17 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
  *
  *  rct2: 0x006BFF2C
  */
-static bool staff_path_finding_mechanic(rct_peep * peep)
+static bool staff_path_finding_mechanic(rct_peep* peep)
 {
-    uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
-    uint8 direction       = 0xFF;
+    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
+    uint8_t direction = 0xFF;
     if (peep->GetNextIsSurface())
     {
         direction = staff_mechanic_direction_surface(peep);
     }
     else
     {
-        rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        rct_tile_element* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
         if (pathElement == nullptr)
             return true;
 
@@ -1362,19 +1343,19 @@ static bool staff_path_finding_mechanic(rct_peep * peep)
     // countof(CoordsDirectionDelta)
     assert(direction < 8);
 
-    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
-                            static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
+    LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
+                                static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
-        direction    = staff_mechanic_direction_surface(peep);
+        direction = staff_mechanic_direction_surface(peep);
         chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
         chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
     }
 
-    peep->direction             = direction;
-    peep->destination_x         = chosenTile.x + 16;
-    peep->destination_y         = chosenTile.y + 16;
+    peep->direction = direction;
+    peep->destination_x = chosenTile.x + 16;
+    peep->destination_y = chosenTile.y + 16;
     peep->destination_tolerance = (scenario_rand() & 7) + 2;
 
     return false;
@@ -1384,10 +1365,10 @@ static bool staff_path_finding_mechanic(rct_peep * peep)
  *
  *  rct2: 0x006C050B
  */
-static uint8 staff_direction_path(rct_peep * peep, uint8 validDirections, rct_tile_element * pathElement)
+static uint8_t staff_direction_path(rct_peep* peep, uint8_t validDirections, rct_tile_element* pathElement)
 {
-    uint8 direction      = 0xFF;
-    uint8 pathDirections = pathElement->properties.path.edges & 0xF;
+    uint8_t direction = 0xFF;
+    uint8_t pathDirections = pathElement->properties.path.edges & 0xF;
     if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
     {
         pathDirections &= validDirections;
@@ -1414,7 +1395,7 @@ static uint8 staff_direction_path(rct_peep * peep, uint8 validDirections, rct_ti
     pathDirections |= (1 << direction);
 
     direction = scenario_rand() & 3;
-    for (sint32 i = 0; i < 4; ++i, ++direction)
+    for (int32_t i = 0; i < 4; ++i, ++direction)
     {
         direction &= 3;
         if (pathDirections & (1 << direction))
@@ -1429,37 +1410,37 @@ static uint8 staff_direction_path(rct_peep * peep, uint8 validDirections, rct_ti
  *
  *  rct2: 0x006C0351
  */
-static bool staff_path_finding_misc(rct_peep * peep)
+static bool staff_path_finding_misc(rct_peep* peep)
 {
-    uint8 validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
+    uint8_t validDirections = staff_get_valid_patrol_directions(peep, peep->next_x, peep->next_y);
 
-    uint8 direction = 0xFF;
+    uint8_t direction = 0xFF;
     if (peep->GetNextIsSurface())
     {
         direction = staff_direction_surface(peep, scenario_rand() & 3);
     }
     else
     {
-        rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        rct_tile_element* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
         if (pathElement == nullptr)
             return true;
 
         direction = staff_direction_path(peep, validDirections, pathElement);
     }
 
-    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + CoordsDirectionDelta[direction].x),
-                            static_cast<sint16>(peep->next_y + CoordsDirectionDelta[direction].y) };
+    LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
+                                static_cast<int16_t>(peep->next_y + CoordsDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
     {
-        direction    = staff_direction_surface(peep, scenario_rand() & 3);
+        direction = staff_direction_surface(peep, scenario_rand() & 3);
         chosenTile.x = peep->next_x + CoordsDirectionDelta[direction].x;
         chosenTile.y = peep->next_y + CoordsDirectionDelta[direction].y;
     }
 
-    peep->direction             = direction;
-    peep->destination_x         = chosenTile.x + 16;
-    peep->destination_y         = chosenTile.y + 16;
+    peep->direction = direction;
+    peep->destination_x = chosenTile.x + 16;
+    peep->destination_y = chosenTile.y + 16;
     peep->destination_tolerance = (scenario_rand() & 7) + 2;
 
     return false;
@@ -1469,22 +1450,22 @@ static bool staff_path_finding_misc(rct_peep * peep)
  *
  *  rct2: 0x006C086D
  */
-static void staff_entertainer_update_nearby_peeps(rct_peep * peep)
+static void staff_entertainer_update_nearby_peeps(rct_peep* peep)
 {
-    uint16     spriteIndex;
-    rct_peep * guest;
+    uint16_t spriteIndex;
+    rct_peep* guest;
 
-    FOR_ALL_GUESTS(spriteIndex, guest)
+    FOR_ALL_GUESTS (spriteIndex, guest)
     {
         if (guest->x == LOCATION_NULL)
             continue;
 
-        sint16 z_dist = abs(peep->z - guest->z);
+        int16_t z_dist = abs(peep->z - guest->z);
         if (z_dist > 48)
             continue;
 
-        sint16 x_dist = abs(peep->x - guest->x);
-        sint16 y_dist = abs(peep->y - guest->y);
+        int16_t x_dist = abs(peep->x - guest->x);
+        int16_t y_dist = abs(peep->y - guest->y);
 
         if (x_dist > 96)
             continue;
@@ -1494,7 +1475,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep * peep)
 
         if (peep->state == PEEP_STATE_WALKING)
         {
-            peep->happiness_target = Math::Min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
+            peep->happiness_target = std::min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
         }
         else if (peep->state == PEEP_STATE_QUEUING)
         {
@@ -1506,7 +1487,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep * peep)
             {
                 peep->time_in_queue = 0;
             }
-            peep->happiness_target = Math::Min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
+            peep->happiness_target = std::min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
         }
     }
 }
@@ -1515,16 +1496,14 @@ static void staff_entertainer_update_nearby_peeps(rct_peep * peep)
  *
  *  rct2: 0x006C05AE
  */
-static sint32 staff_path_finding_entertainer(rct_peep * peep)
+static int32_t staff_path_finding_entertainer(rct_peep* peep)
 {
-
     if (((scenario_rand() & 0xFFFF) <= 0x4000) && (peep->action == PEEP_ACTION_NONE_1 || peep->action == PEEP_ACTION_NONE_2))
     {
-
         peep->Invalidate();
 
-        peep->action                     = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
-        peep->action_frame               = 0;
+        peep->action = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
+        peep->action_frame = 0;
         peep->action_sprite_image_offset = 0;
 
         peep->UpdateCurrentActionSpriteType();
@@ -1539,33 +1518,33 @@ static sint32 staff_path_finding_entertainer(rct_peep * peep)
  *
  *  rct2: 0x006BF926
  */
-sint32 staff_path_finding(rct_peep * peep)
+int32_t staff_path_finding(rct_peep* peep)
 {
     switch (peep->staff_type)
     {
-    case STAFF_TYPE_HANDYMAN:
-        return staff_path_finding_handyman(peep);
-    case STAFF_TYPE_MECHANIC:
-        return staff_path_finding_mechanic(peep);
-    case STAFF_TYPE_SECURITY:
-        return staff_path_finding_misc(peep);
-    case STAFF_TYPE_ENTERTAINER:
-        return staff_path_finding_entertainer(peep);
+        case STAFF_TYPE_HANDYMAN:
+            return staff_path_finding_handyman(peep);
+        case STAFF_TYPE_MECHANIC:
+            return staff_path_finding_mechanic(peep);
+        case STAFF_TYPE_SECURITY:
+            return staff_path_finding_misc(peep);
+        case STAFF_TYPE_ENTERTAINER:
+            return staff_path_finding_entertainer(peep);
 
-    default:
-        assert(false);
-        return 0;
+        default:
+            assert(false);
+            return 0;
     }
 }
 
 void game_command_pickup_staff(
-    sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, [[maybe_unused]] sint32* esi, sint32* edi, sint32* ebp)
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
-    sint32 peepnum = *eax;
-    sint32 x       = *edi;
-    sint32 y       = *ebp;
-    sint32 z       = *edx;
-    sint32 action  = *ecx;
+    int32_t peepnum = *eax;
+    int32_t x = *edi;
+    int32_t y = *ebp;
+    int32_t z = *edx;
+    int32_t action = *ecx;
     if (peep_pickup_command(peepnum, x, y, z, action, *ebx & GAME_COMMAND_FLAG_APPLY))
     {
         *ebx = 0;
@@ -1576,47 +1555,47 @@ void game_command_pickup_staff(
     }
 }
 
-colour_t staff_get_colour(uint8 staffType)
+colour_t staff_get_colour(uint8_t staffType)
 {
     switch (staffType)
     {
-    case STAFF_TYPE_HANDYMAN:
-        return gStaffHandymanColour;
-    case STAFF_TYPE_MECHANIC:
-        return gStaffMechanicColour;
-    case STAFF_TYPE_SECURITY:
-        return gStaffSecurityColour;
-    case STAFF_TYPE_ENTERTAINER:
-        return 0;
-    default:
-        assert(false);
-        return 0;
+        case STAFF_TYPE_HANDYMAN:
+            return gStaffHandymanColour;
+        case STAFF_TYPE_MECHANIC:
+            return gStaffMechanicColour;
+        case STAFF_TYPE_SECURITY:
+            return gStaffSecurityColour;
+        case STAFF_TYPE_ENTERTAINER:
+            return 0;
+        default:
+            assert(false);
+            return 0;
     }
 }
 
-bool staff_set_colour(uint8 staffType, colour_t value)
+bool staff_set_colour(uint8_t staffType, colour_t value)
 {
     switch (staffType)
     {
-    case STAFF_TYPE_HANDYMAN:
-        gStaffHandymanColour = value;
-        break;
-    case STAFF_TYPE_MECHANIC:
-        gStaffMechanicColour = value;
-        break;
-    case STAFF_TYPE_SECURITY:
-        gStaffSecurityColour = value;
-        break;
-    default:
-        return false;
+        case STAFF_TYPE_HANDYMAN:
+            gStaffHandymanColour = value;
+            break;
+        case STAFF_TYPE_MECHANIC:
+            gStaffMechanicColour = value;
+            break;
+        case STAFF_TYPE_SECURITY:
+            gStaffSecurityColour = value;
+            break;
+        default:
+            return false;
     }
     return true;
 }
 
-uint32 staff_get_available_entertainer_costumes()
+uint32_t staff_get_available_entertainer_costumes()
 {
-    uint32 entertainerCostumes = 0;
-    for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    uint32_t entertainerCostumes = 0;
+    for (int32_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         if (scenery_group_is_invented(i))
         {
@@ -1629,16 +1608,17 @@ uint32 staff_get_available_entertainer_costumes()
     entertainerCostumes >>= 4;
 
     // Fix #6593: force enable the default costumes, which normally get enabled through the default scenery groups.
-    entertainerCostumes |= (1 << ENTERTAINER_COSTUME_PANDA) | (1 << ENTERTAINER_COSTUME_TIGER) | (1 << ENTERTAINER_COSTUME_ELEPHANT);
+    entertainerCostumes |= (1 << ENTERTAINER_COSTUME_PANDA) | (1 << ENTERTAINER_COSTUME_TIGER)
+        | (1 << ENTERTAINER_COSTUME_ELEPHANT);
 
     return entertainerCostumes;
 }
 
-sint32 staff_get_available_entertainer_costume_list(uint8 * costumeList)
+int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList)
 {
-    uint32 availableCostumes = staff_get_available_entertainer_costumes();
-    sint32 numCostumes       = 0;
-    for (uint8 i = 0; i < ENTERTAINER_COSTUME_COUNT; i++)
+    uint32_t availableCostumes = staff_get_available_entertainer_costumes();
+    int32_t numCostumes = 0;
+    for (uint8_t i = 0; i < ENTERTAINER_COSTUME_COUNT; i++)
     {
         if (availableCostumes & (1 << i))
         {
@@ -1665,12 +1645,12 @@ void rct_peep::UpdateMowing()
     Invalidate();
     while (true)
     {
-        sint16 actionX = 0;
-        sint16 actionY = 0;
-        sint16 xy_distance;
+        int16_t actionX = 0;
+        int16_t actionY = 0;
+        int16_t xy_distance;
         if (UpdateAction(&actionX, &actionY, &xy_distance))
         {
-            sint16 checkZ = tile_element_height(actionX, actionY) & 0xFFFF;
+            int16_t checkZ = tile_element_height(actionX, actionY) & 0xFFFF;
             MoveTo(actionX, actionY, checkZ);
             Invalidate();
             return;
@@ -1695,7 +1675,7 @@ void rct_peep::UpdateMowing()
         if (var_37 != 7)
             continue;
 
-        rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+        rct_tile_element* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
 
         for (; (tile_element->GetType() != TILE_ELEMENT_TYPE_SURFACE); tile_element++)
             ;
@@ -1703,8 +1683,7 @@ void rct_peep::UpdateMowing()
         if ((tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK) == (TERRAIN_GRASS << 5))
         {
             tile_element->properties.surface.grass_length = GRASS_LENGTH_MOWED;
-            map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height * 8,
-                                      tile_element->base_height * 8 + 16);
+            map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height * 8, tile_element->base_height * 8 + 16);
         }
         staff_lawns_mown++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -1723,14 +1702,14 @@ void rct_peep::UpdateWatering()
         if (!CheckForPath())
             return;
 
-        uint8 pathingResult;
+        uint8_t pathingResult;
         PerformNextAction(pathingResult);
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sprite_direction           = (var_37 & 3) << 3;
-        action                     = PEEP_ACTION_STAFF_WATERING;
-        action_frame               = 0;
+        sprite_direction = (var_37 & 3) << 3;
+        action = PEEP_ACTION_STAFF_WATERING;
+        action_frame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
         Invalidate();
@@ -1741,25 +1720,25 @@ void rct_peep::UpdateWatering()
     {
         if (action != PEEP_ACTION_NONE_2)
         {
-            sint16 actionX, actionY, xy_distance;
+            int16_t actionX, actionY, xy_distance;
             UpdateAction(&actionX, &actionY, &xy_distance);
             return;
         }
 
-        sint32 actionX = next_x + CoordsDirectionDelta[var_37].x;
-        sint32 actionY = next_y + CoordsDirectionDelta[var_37].y;
+        int32_t actionX = next_x + CoordsDirectionDelta[var_37].x;
+        int32_t actionY = next_y + CoordsDirectionDelta[var_37].y;
 
-        rct_tile_element * tile_element = map_get_first_element_at(actionX / 32, actionY / 32);
+        rct_tile_element* tile_element = map_get_first_element_at(actionX / 32, actionY / 32);
 
         do
         {
             if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
-            if (abs(((sint32)next_z) - tile_element->base_height) > 4)
+            if (abs(((int32_t)next_z) - tile_element->base_height) > 4)
                 continue;
 
-            rct_scenery_entry * scenery_entry = get_small_scenery_entry(tile_element->properties.scenery.type);
+            rct_scenery_entry* scenery_entry = get_small_scenery_entry(tile_element->properties.scenery.type);
 
             if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
                 continue;
@@ -1786,14 +1765,14 @@ void rct_peep::UpdateEmptyingBin()
     {
         if (!CheckForPath())
             return;
-        uint8 pathingResult;
+        uint8_t pathingResult;
         PerformNextAction(pathingResult);
         if (!(pathingResult & PATHING_DESTINATION_REACHED))
             return;
 
-        sprite_direction           = (var_37 & 3) << 3;
-        action                     = PEEP_ACTION_STAFF_EMPTY_BIN;
-        action_frame               = 0;
+        sprite_direction = (var_37 & 3) << 3;
+        action = PEEP_ACTION_STAFF_EMPTY_BIN;
+        action_frame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
         Invalidate();
@@ -1802,22 +1781,21 @@ void rct_peep::UpdateEmptyingBin()
     }
     else if (sub_state == 1)
     {
-
         if (action == PEEP_ACTION_NONE_2)
         {
             StateReset();
             return;
         }
 
-        sint16 actionX = 0;
-        sint16 actionY = 0;
-        sint16 xy_distance;
+        int16_t actionX = 0;
+        int16_t actionY = 0;
+        int16_t xy_distance;
         UpdateAction(&actionX, &actionY, &xy_distance);
 
         if (action_frame != 11)
             return;
 
-        rct_tile_element * tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+        rct_tile_element* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
 
         for (;; tile_element++)
         {
@@ -1839,9 +1817,9 @@ void rct_peep::UpdateEmptyingBin()
             return;
         }
 
-        rct_scenery_entry * scenery_entry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
-        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & (1 << 5) ||
-            footpath_element_path_scenery_is_ghost(tile_element))
+        rct_scenery_entry* scenery_entry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+        if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & (1 << 5)
+            || footpath_element_path_scenery_is_ghost(tile_element))
         {
             StateReset();
             return;
@@ -1875,12 +1853,12 @@ void rct_peep::UpdateSweeping()
         staff_litter_swept++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
     }
-    sint16 actionX = 0;
-    sint16 actionY = 0;
-    sint16 xy_distance;
+    int16_t actionX = 0;
+    int16_t actionY = 0;
+    int16_t xy_distance;
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
-        sint16 actionZ = GetZOnSlope(actionX, actionY);
+        int16_t actionZ = GetZOnSlope(actionX, actionY);
         MoveTo(actionX, actionY, actionZ);
         Invalidate();
         return;
@@ -1889,8 +1867,8 @@ void rct_peep::UpdateSweeping()
     var_37++;
     if (var_37 != 2)
     {
-        action                     = PEEP_ACTION_STAFF_SWEEP;
-        action_frame               = 0;
+        action = PEEP_ACTION_STAFF_SWEEP;
+        action_frame = 0;
         action_sprite_image_offset = 0;
         UpdateCurrentActionSpriteType();
         Invalidate();
@@ -1905,7 +1883,7 @@ void rct_peep::UpdateSweeping()
  */
 void rct_peep::UpdateHeadingToInspect()
 {
-    Ride * ride = get_ride(current_ride);
+    Ride* ride = get_ride(current_ride);
 
     if (ride->type == RIDE_TYPE_NULL)
     {
@@ -1949,8 +1927,8 @@ void rct_peep::UpdateHeadingToInspect()
         if (!CheckForPath())
             return;
 
-        uint8 pathingResult;
-        rct_tile_element * rideEntranceExitElement;
+        uint8_t pathingResult;
+        rct_tile_element* rideEntranceExitElement;
         PerformNextAction(pathingResult, rideEntranceExitElement);
 
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
@@ -1961,7 +1939,7 @@ void rct_peep::UpdateHeadingToInspect()
         if (current_ride != rideEntranceExitElement->properties.entrance.ride_index)
             return;
 
-        uint8 exit_index = ((rideEntranceExitElement->properties.entrance.index & 0x70) >> 4);
+        uint8_t exit_index = ((rideEntranceExitElement->properties.entrance.index & 0x70) >> 4);
 
         if (current_ride_station != exit_index)
             return;
@@ -1976,24 +1954,24 @@ void rct_peep::UpdateHeadingToInspect()
 
         direction = tile_element_get_direction(rideEntranceExitElement);
 
-        sint32 destX = next_x + 16 + word_981D6C[direction].x * 53;
-        sint32 destY = next_y + 16 + word_981D6C[direction].y * 53;
+        int32_t destX = next_x + 16 + word_981D6C[direction].x * 53;
+        int32_t destY = next_y + 16 + word_981D6C[direction].y * 53;
 
-        destination_x         = destX;
-        destination_y         = destY;
+        destination_x = destX;
+        destination_y = destY;
         destination_tolerance = 2;
-        sprite_direction      = direction << 3;
+        sprite_direction = direction << 3;
 
-        z         = rideEntranceExitElement->base_height * 4;
+        z = rideEntranceExitElement->base_height * 4;
         sub_state = 4;
         // Falls through into sub_state 4
     }
 
     Invalidate();
 
-    sint16 delta_y = abs(y - destination_y);
+    int16_t delta_y = abs(y - destination_y);
 
-    sint16 actionX, actionY, xy_distance;
+    int16_t actionX, actionY, xy_distance;
     if (!UpdateAction(&actionX, &actionY, &xy_distance))
     {
         SetState(PEEP_STATE_INSPECTING);
@@ -2001,7 +1979,7 @@ void rct_peep::UpdateHeadingToInspect()
         return;
     }
 
-    sint32 newZ = ride->station_heights[current_ride_station] * 8;
+    int32_t newZ = ride->station_heights[current_ride_station] * 8;
 
     if (delta_y < 20)
     {
@@ -2018,19 +1996,18 @@ void rct_peep::UpdateHeadingToInspect()
  */
 void rct_peep::UpdateAnswering()
 {
-    Ride * ride = get_ride(current_ride);
+    Ride* ride = get_ride(current_ride);
 
     if (ride->type == RIDE_TYPE_NULL || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
     {
-
         SetState(PEEP_STATE_FALLING);
         return;
     }
 
     if (sub_state == 0)
     {
-        action                     = PEEP_ACTION_STAFF_ANSWER_CALL;
-        action_frame               = 0;
+        action = PEEP_ACTION_STAFF_ANSWER_CALL;
+        action_frame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
@@ -2050,7 +2027,7 @@ void rct_peep::UpdateAnswering()
             peep_reset_pathfind_goal(this);
             return;
         }
-        sint16 actionX, actionY, xy_distance;
+        int16_t actionX, actionY, xy_distance;
         UpdateAction(&actionX, &actionY, &xy_distance);
         return;
     }
@@ -2068,8 +2045,8 @@ void rct_peep::UpdateAnswering()
         if (!CheckForPath())
             return;
 
-        uint8 pathingResult;
-        rct_tile_element * rideEntranceExitElement;
+        uint8_t pathingResult;
+        rct_tile_element* rideEntranceExitElement;
         PerformNextAction(pathingResult, rideEntranceExitElement);
 
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
@@ -2080,7 +2057,7 @@ void rct_peep::UpdateAnswering()
         if (current_ride != rideEntranceExitElement->properties.entrance.ride_index)
             return;
 
-        uint8 exit_index = ((rideEntranceExitElement->properties.entrance.index & 0x70) >> 4);
+        uint8_t exit_index = ((rideEntranceExitElement->properties.entrance.index & 0x70) >> 4);
 
         if (current_ride_station != exit_index)
             return;
@@ -2095,24 +2072,24 @@ void rct_peep::UpdateAnswering()
 
         direction = tile_element_get_direction(rideEntranceExitElement);
 
-        sint32 destX = next_x + 16 + word_981D6C[direction].x * 53;
-        sint32 destY = next_y + 16 + word_981D6C[direction].y * 53;
+        int32_t destX = next_x + 16 + word_981D6C[direction].x * 53;
+        int32_t destY = next_y + 16 + word_981D6C[direction].y * 53;
 
-        destination_x         = destX;
-        destination_y         = destY;
+        destination_x = destX;
+        destination_y = destY;
         destination_tolerance = 2;
-        sprite_direction      = direction << 3;
+        sprite_direction = direction << 3;
 
-        z         = rideEntranceExitElement->base_height * 4;
+        z = rideEntranceExitElement->base_height * 4;
         sub_state = 4;
         // Falls through into sub_state 4
     }
 
     Invalidate();
 
-    sint16 delta_y = abs(y - destination_y);
+    int16_t delta_y = abs(y - destination_y);
 
-    sint16 actionX, actionY, xy_distance;
+    int16_t actionX, actionY, xy_distance;
     if (!UpdateAction(&actionX, &actionY, &xy_distance))
     {
         SetState(PEEP_STATE_FIXING);
@@ -2120,7 +2097,7 @@ void rct_peep::UpdateAnswering()
         return;
     }
 
-    sint32 newZ = ride->station_heights[current_ride_station] * 8;
+    int32_t newZ = ride->station_heights[current_ride_station] * 8;
 
     if (delta_y < 20)
     {
@@ -2140,20 +2117,20 @@ static constexpr const LocationXY16 _WateringUseOffsets[] = {
  *
  *  rct2: 0x006BF483
  */
-static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
+static int32_t peep_update_patrolling_find_watering(rct_peep* peep)
 {
     if (!(peep->staff_orders & STAFF_ORDERS_WATER_FLOWERS))
         return 0;
 
-    uint8 chosen_position = scenario_rand() & 7;
-    for (sint32 i = 0; i < 8; ++i, ++chosen_position)
+    uint8_t chosen_position = scenario_rand() & 7;
+    for (int32_t i = 0; i < 8; ++i, ++chosen_position)
     {
         chosen_position &= 7;
 
-        sint32 x = peep->next_x + CoordsDirectionDelta[chosen_position].x;
-        sint32 y = peep->next_y + CoordsDirectionDelta[chosen_position].y;
+        int32_t x = peep->next_x + CoordsDirectionDelta[chosen_position].x;
+        int32_t y = peep->next_y + CoordsDirectionDelta[chosen_position].y;
 
-        rct_tile_element * tile_element = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
         // This seems to happen in some SV4 files.
         if (tile_element == nullptr)
@@ -2168,14 +2145,14 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
                 continue;
             }
 
-            uint8 z_diff = abs(peep->next_z - tile_element->base_height);
+            uint8_t z_diff = abs(peep->next_z - tile_element->base_height);
 
             if (z_diff >= 4)
             {
                 continue;
             }
 
-            rct_scenery_entry * sceneryEntry = get_small_scenery_entry(tile_element->properties.scenery.type);
+            rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tile_element->properties.scenery.type);
 
             if (sceneryEntry == nullptr || !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
             {
@@ -2198,9 +2175,9 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
             peep->SetState(PEEP_STATE_WATERING);
             peep->var_37 = chosen_position;
 
-            peep->sub_state             = 0;
-            peep->destination_x         = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
-            peep->destination_y         = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
+            peep->sub_state = 0;
+            peep->destination_x = (peep->x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
+            peep->destination_y = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
             peep->destination_tolerance = 3;
 
             return 1;
@@ -2213,7 +2190,7 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
  *
  *  rct2: 0x006BF3A1
  */
-static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
+static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
 {
     if (!(peep->staff_orders & STAFF_ORDERS_EMPTY_BINS))
         return 0;
@@ -2221,13 +2198,12 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
     if (peep->GetNextIsSurface())
         return 0;
 
-    rct_tile_element * tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    rct_tile_element* tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
     if (tileElement == nullptr)
         return 0;
 
     for (;; tileElement++)
     {
-
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && (tileElement->base_height == peep->next_z))
             break;
 
@@ -2237,7 +2213,7 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
 
     if (!footpath_element_has_path_scenery(tileElement))
         return 0;
-    rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+    rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         return 0;
@@ -2248,9 +2224,9 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
     if (footpath_element_path_scenery_is_ghost(tileElement))
         return 0;
 
-    uint8 bin_positions   = tileElement->properties.path.edges & 0xF;
-    uint8 bin_quantity    = tileElement->properties.path.addition_status;
-    uint8 chosen_position = 0;
+    uint8_t bin_positions = tileElement->properties.path.edges & 0xF;
+    uint8_t bin_quantity = tileElement->properties.path.addition_status;
+    uint8_t chosen_position = 0;
 
     for (; chosen_position < 4; ++chosen_position)
     {
@@ -2266,9 +2242,9 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
     peep->var_37 = chosen_position;
     peep->SetState(PEEP_STATE_EMPTYING_BIN);
 
-    peep->sub_state             = 0;
-    peep->destination_x         = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
-    peep->destination_y         = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
+    peep->sub_state = 0;
+    peep->destination_x = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
+    peep->destination_y = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
     peep->destination_tolerance = 3;
     return 1;
 }
@@ -2277,7 +2253,7 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
  *
  *  rct2: 0x006BF322
  */
-static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
+static int32_t peep_update_patrolling_find_grass(rct_peep* peep)
 {
     if (!(peep->staff_orders & STAFF_ORDERS_MOWING))
         return 0;
@@ -2288,7 +2264,7 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
     if (!(peep->GetNextIsSurface()))
         return 0;
 
-    rct_tile_element * tile_element = map_get_surface_element_at({peep->next_x, peep->next_y});
+    rct_tile_element* tile_element = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
     if ((tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK) != TERRAIN_GRASS)
         return 0;
@@ -2299,8 +2275,8 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
     peep->SetState(PEEP_STATE_MOWING);
     peep->var_37 = 0;
     // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
-    peep->destination_x         = peep->next_x + _MowingWaypoints[0].x;
-    peep->destination_y         = peep->next_y + _MowingWaypoints[0].y;
+    peep->destination_x = peep->next_x + _MowingWaypoints[0].x;
+    peep->destination_y = peep->next_y + _MowingWaypoints[0].y;
     peep->destination_tolerance = 3;
     return 1;
 }
@@ -2309,30 +2285,29 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
  *
  *  rct2: 0x006BF295
  */
-static sint32 peep_update_patrolling_find_sweeping(rct_peep * peep)
+static int32_t peep_update_patrolling_find_sweeping(rct_peep* peep)
 {
     if (!(peep->staff_orders & STAFF_ORDERS_SWEEPING))
         return 0;
 
-    uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
+    uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
 
-    for (rct_sprite * sprite = nullptr; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
+    for (rct_sprite* sprite = nullptr; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
     {
-
         sprite = get_sprite(sprite_id);
 
         if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_LITTER * 2)
             continue;
 
-        uint16 z_diff = abs(peep->z - sprite->litter.z);
+        uint16_t z_diff = abs(peep->z - sprite->litter.z);
 
         if (z_diff >= 16)
             continue;
 
         peep->SetState(PEEP_STATE_SWEEPING);
-        peep->var_37                = 0;
-        peep->destination_x         = sprite->litter.x;
-        peep->destination_y         = sprite->litter.y;
+        peep->var_37 = 0;
+        peep->destination_x = sprite->litter.x;
+        peep->destination_y = sprite->litter.y;
         peep->destination_tolerance = 5;
         return 1;
     }
@@ -2345,16 +2320,16 @@ void rct_peep::Tick128UpdateStaff()
     if (staff_type != STAFF_TYPE_SECURITY)
         return;
 
-    uint8 newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
+    uint8_t newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
     if (state != PEEP_STATE_PATROLLING)
         newSpriteType = PEEP_SPRITE_TYPE_SECURITY;
 
     if (sprite_type == newSpriteType)
         return;
 
-    sprite_type                = newSpriteType;
+    sprite_type = newSpriteType;
     action_sprite_image_offset = 0;
-    no_action_frame_num        = 0;
+    no_action_frame_num = 0;
     if (action < PEEP_ACTION_NONE_1)
         action = PEEP_ACTION_NONE_2;
 
@@ -2382,18 +2357,18 @@ void rct_peep::UpdatePatrolling()
     if (!CheckForPath())
         return;
 
-    uint8 pathingResult;
+    uint8_t pathingResult;
     PerformNextAction(pathingResult);
     if (!(pathingResult & PATHING_DESTINATION_REACHED))
         return;
 
     if (GetNextIsSurface())
     {
-        rct_tile_element * tile_element = map_get_surface_element_at({next_x, next_y});
+        rct_tile_element* tile_element = map_get_surface_element_at({ next_x, next_y });
 
         if (tile_element != nullptr)
         {
-            sint32 water_height = surface_get_water_height(tile_element);
+            int32_t water_height = surface_get_water_height(tile_element);
             if (water_height)
             {
                 Invalidate();
@@ -2424,21 +2399,21 @@ void rct_peep::UpdatePatrolling()
 
 enum
 {
-    PEEP_FIXING_ENTER_STATION                 = 0,
-    PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE   = 1,
+    PEEP_FIXING_ENTER_STATION = 0,
+    PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE = 1,
     PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS = 2,
-    PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS      = 3,
-    PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS   = 4,
-    PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS        = 5,
-    PEEP_FIXING_FIX_VEHICLE_MALFUNCTION       = 6,
-    PEEP_FIXING_MOVE_TO_STATION_END           = 7,
-    PEEP_FIXING_FIX_STATION_END               = 8,
-    PEEP_FIXING_MOVE_TO_STATION_START         = 9,
-    PEEP_FIXING_FIX_STATION_START             = 10,
-    PEEP_FIXING_FIX_STATION_BRAKES            = 11,
-    PEEP_FIXING_MOVE_TO_STATION_EXIT          = 12,
-    PEEP_FIXING_FINISH_FIX_OR_INSPECT         = 13,
-    PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT        = 14,
+    PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS = 3,
+    PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS = 4,
+    PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS = 5,
+    PEEP_FIXING_FIX_VEHICLE_MALFUNCTION = 6,
+    PEEP_FIXING_MOVE_TO_STATION_END = 7,
+    PEEP_FIXING_FIX_STATION_END = 8,
+    PEEP_FIXING_MOVE_TO_STATION_START = 9,
+    PEEP_FIXING_FIX_STATION_START = 10,
+    PEEP_FIXING_FIX_STATION_BRAKES = 11,
+    PEEP_FIXING_MOVE_TO_STATION_EXIT = 12,
+    PEEP_FIXING_FINISH_FIX_OR_INSPECT = 13,
+    PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT = 14,
 };
 
 /**
@@ -2448,86 +2423,88 @@ enum
  *   when fixing a broken down ride;
  * - index 8 is for inspecting a ride.
  */
-static constexpr const uint32 FixingSubstatesForBreakdown[9] = {
-  ( // BREAKDOWN_SAFETY_CUT_OUT
-      (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
-      (1 << PEEP_FIXING_FIX_STATION_END) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
-      (1 << PEEP_FIXING_FIX_STATION_START) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
- ),
-  ( // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
-      (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
-      (1 << PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
- ),
-  ( // BREAKDOWN_RESTRAINTS_STUCK_OPEN
-      (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
-      (1 << PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
- ),
-  ( // BREAKDOWN_DOORS_STUCK_CLOSED
-      (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
-      (1 << PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
- ),
-  ( // BREAKDOWN_DOORS_STUCK_OPEN
-      (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
-      (1 << PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
- ),
-  ( // BREAKDOWN_VEHICLE_MALFUNCTION
-      (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
-      (1 << PEEP_FIXING_FIX_VEHICLE_MALFUNCTION) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
- ),
-  ( // BREAKDOWN_BRAKES_FAILURE
-      (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
-      (1 << PEEP_FIXING_FIX_STATION_BRAKES) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
- ),
-  ( // BREAKDOWN_CONTROL_FAILURE
-      (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
-      (1 << PEEP_FIXING_FIX_STATION_END) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
-      (1 << PEEP_FIXING_FIX_STATION_START) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
- ),
-  ( // INSPECTION
-      (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
-      (1 << PEEP_FIXING_FIX_STATION_END) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
-      (1 << PEEP_FIXING_FIX_STATION_START) |
-      (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
-      (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
-      (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
-  )
+// clang-format off
+static constexpr const uint32_t FixingSubstatesForBreakdown[9] = {
+    ( // BREAKDOWN_SAFETY_CUT_OUT
+        (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
+        (1 << PEEP_FIXING_FIX_STATION_END) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
+        (1 << PEEP_FIXING_FIX_STATION_START) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    ),
+    ( // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
+        (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
+        (1 << PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    ),
+    ( // BREAKDOWN_RESTRAINTS_STUCK_OPEN
+        (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
+        (1 << PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    ),
+    ( // BREAKDOWN_DOORS_STUCK_CLOSED
+        (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
+        (1 << PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    ),
+    ( // BREAKDOWN_DOORS_STUCK_OPEN
+        (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
+        (1 << PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    ),
+    ( // BREAKDOWN_VEHICLE_MALFUNCTION
+        (1 << PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE) |
+        (1 << PEEP_FIXING_FIX_VEHICLE_MALFUNCTION) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    ),
+    ( // BREAKDOWN_BRAKES_FAILURE
+        (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
+        (1 << PEEP_FIXING_FIX_STATION_BRAKES) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    ),
+    ( // BREAKDOWN_CONTROL_FAILURE
+        (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
+        (1 << PEEP_FIXING_FIX_STATION_END) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
+        (1 << PEEP_FIXING_FIX_STATION_START) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    ),
+    ( // INSPECTION
+        (1 << PEEP_FIXING_MOVE_TO_STATION_END) |
+        (1 << PEEP_FIXING_FIX_STATION_END) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_START) |
+        (1 << PEEP_FIXING_FIX_STATION_START) |
+        (1 << PEEP_FIXING_MOVE_TO_STATION_EXIT) |
+        (1 << PEEP_FIXING_FINISH_FIX_OR_INSPECT) |
+        (1 << PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT)
+    )
 };
+// clang-format on
 
 /**
  *
  *  rct2: 0x006C0E8B
  * Also used by inspecting.
  */
-void rct_peep::UpdateFixing(sint32 steps)
+void rct_peep::UpdateFixing(int32_t steps)
 {
-    Ride * ride = get_ride(current_ride);
+    Ride* ride = get_ride(current_ride);
 
     if (ride->type == RIDE_TYPE_NULL)
     {
@@ -2536,10 +2513,10 @@ void rct_peep::UpdateFixing(sint32 steps)
     }
 
     bool progressToNextSubstate = true;
-    bool firstRun               = true;
+    bool firstRun = true;
 
-    if ((state == PEEP_STATE_INSPECTING) &&
-        (ride->lifecycle_flags & ( RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
+    if ((state == PEEP_STATE_INSPECTING)
+        && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
     {
         // Ride has broken down since Mechanic was called to inspect it.
         // Mechanic identifies the breakdown and switches to fixing it.
@@ -2550,61 +2527,61 @@ void rct_peep::UpdateFixing(sint32 steps)
     {
         switch (sub_state)
         {
-        case PEEP_FIXING_ENTER_STATION:
-            next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
-            progressToNextSubstate = UpdateFixingEnterStation(ride);
-            break;
+            case PEEP_FIXING_ENTER_STATION:
+                next_flags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
+                progressToNextSubstate = UpdateFixingEnterStation(ride);
+                break;
 
-        case PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE:
-            progressToNextSubstate = UpdateFixingMoveToBrokenDownVehicle(firstRun, ride);
-            break;
+            case PEEP_FIXING_MOVE_TO_BROKEN_DOWN_VEHICLE:
+                progressToNextSubstate = UpdateFixingMoveToBrokenDownVehicle(firstRun, ride);
+                break;
 
-        case PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS:
-        case PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS:
-        case PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS:
-        case PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS:
-            progressToNextSubstate = UpdateFixingFixVehicle(firstRun, ride);
-            break;
+            case PEEP_FIXING_FIX_VEHICLE_CLOSED_RESTRAINTS:
+            case PEEP_FIXING_FIX_VEHICLE_CLOSED_DOORS:
+            case PEEP_FIXING_FIX_VEHICLE_OPEN_RESTRAINTS:
+            case PEEP_FIXING_FIX_VEHICLE_OPEN_DOORS:
+                progressToNextSubstate = UpdateFixingFixVehicle(firstRun, ride);
+                break;
 
-        case PEEP_FIXING_FIX_VEHICLE_MALFUNCTION:
-            progressToNextSubstate = UpdateFixingFixVehicleMalfunction(firstRun, ride);
-            break;
+            case PEEP_FIXING_FIX_VEHICLE_MALFUNCTION:
+                progressToNextSubstate = UpdateFixingFixVehicleMalfunction(firstRun, ride);
+                break;
 
-        case PEEP_FIXING_MOVE_TO_STATION_END:
-            progressToNextSubstate = UpdateFixingMoveToStationEnd(firstRun, ride);
-            break;
+            case PEEP_FIXING_MOVE_TO_STATION_END:
+                progressToNextSubstate = UpdateFixingMoveToStationEnd(firstRun, ride);
+                break;
 
-        case PEEP_FIXING_FIX_STATION_END:
-            progressToNextSubstate = UpdateFixingFixStationEnd(firstRun);
-            break;
+            case PEEP_FIXING_FIX_STATION_END:
+                progressToNextSubstate = UpdateFixingFixStationEnd(firstRun);
+                break;
 
-        case PEEP_FIXING_MOVE_TO_STATION_START:
-            progressToNextSubstate = UpdateFixingMoveToStationStart(firstRun, ride);
-            break;
+            case PEEP_FIXING_MOVE_TO_STATION_START:
+                progressToNextSubstate = UpdateFixingMoveToStationStart(firstRun, ride);
+                break;
 
-        case PEEP_FIXING_FIX_STATION_START:
-            progressToNextSubstate = UpdateFixingFixStationStart(firstRun, ride);
-            break;
+            case PEEP_FIXING_FIX_STATION_START:
+                progressToNextSubstate = UpdateFixingFixStationStart(firstRun, ride);
+                break;
 
-        case PEEP_FIXING_FIX_STATION_BRAKES:
-            progressToNextSubstate = UpdateFixingFixStationBrakes(firstRun, ride);
-            break;
+            case PEEP_FIXING_FIX_STATION_BRAKES:
+                progressToNextSubstate = UpdateFixingFixStationBrakes(firstRun, ride);
+                break;
 
-        case PEEP_FIXING_MOVE_TO_STATION_EXIT:
-            progressToNextSubstate = UpdateFixingMoveToStationExit(firstRun, ride);
-            break;
+            case PEEP_FIXING_MOVE_TO_STATION_EXIT:
+                progressToNextSubstate = UpdateFixingMoveToStationExit(firstRun, ride);
+                break;
 
-        case PEEP_FIXING_FINISH_FIX_OR_INSPECT:
-            progressToNextSubstate = UpdateFixingFinishFixOrInspect(firstRun, steps, ride);
-            break;
+            case PEEP_FIXING_FINISH_FIX_OR_INSPECT:
+                progressToNextSubstate = UpdateFixingFinishFixOrInspect(firstRun, steps, ride);
+                break;
 
-        case PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT:
-            progressToNextSubstate = UpdateFixingLeaveByEntranceExit(firstRun, ride);
-            break;
+            case PEEP_FIXING_LEAVE_BY_ENTRANCE_EXIT:
+                progressToNextSubstate = UpdateFixingLeaveByEntranceExit(firstRun, ride);
+                break;
 
-        default:
-            log_error("Invalid substate");
-            progressToNextSubstate = false;
+            default:
+                log_error("Invalid substate");
+                progressToNextSubstate = false;
         }
 
         firstRun = false;
@@ -2614,8 +2591,8 @@ void rct_peep::UpdateFixing(sint32 steps)
             break;
         }
 
-        sint32 subState                = sub_state;
-        uint32 sub_state_sequence_mask = FixingSubstatesForBreakdown[8];
+        int32_t subState = sub_state;
+        uint32_t sub_state_sequence_mask = FixingSubstatesForBreakdown[8];
 
         if (state != PEEP_STATE_INSPECTING)
         {
@@ -2635,7 +2612,7 @@ void rct_peep::UpdateFixing(sint32 steps)
  * rct2: 0x006C0EEC
  * fixing sub_state: enter_station - applies to fixing all break down reasons and ride inspections.
  */
-bool rct_peep::UpdateFixingEnterStation(Ride * ride)
+bool rct_peep::UpdateFixingEnterStation(Ride* ride)
 {
     ride->mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2648,11 +2625,11 @@ bool rct_peep::UpdateFixingEnterStation(Ride * ride)
  * fixing sub_state: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        rct_vehicle * vehicle = ride_get_broken_vehicle(ride);
+        rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
         if (vehicle == nullptr)
         {
             return true;
@@ -2665,7 +2642,7 @@ bool rct_peep::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride * ride)
                 break;
             }
 
-            uint8 trackType = vehicle->track_type >> 2;
+            uint8_t trackType = vehicle->track_type >> 2;
             if (trackType == TRACK_ELEM_END_STATION)
             {
                 break;
@@ -2684,17 +2661,17 @@ bool rct_peep::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride * ride)
             vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         }
 
-        LocationXY16 offset   = word_981D6C[direction];
-        destination_x         = (offset.x * -12) + vehicle->x;
-        destination_y         = (offset.y * -12) + vehicle->y;
+        LocationXY16 offset = word_981D6C[direction];
+        destination_x = (offset.x * -12) + vehicle->x;
+        destination_y = (offset.y * -12) + vehicle->y;
         destination_tolerance = 2;
     }
 
     Invalidate();
-    sint16 actionX, actionY, tmp_xy_distance;
+    int16_t actionX, actionY, tmp_xy_distance;
     if (UpdateAction(&actionX, &actionY, &tmp_xy_distance))
     {
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        sprite_move(actionX, actionY, z, (rct_sprite*)this);
         Invalidate();
         return false;
     }
@@ -2711,15 +2688,15 @@ bool rct_peep::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride * ride)
  * 4. doors stuck open.
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingFixVehicle(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
         sprite_direction = direction << 3;
 
-        action                     = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
+        action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
         action_sprite_image_offset = 0;
-        action_frame               = 0;
+        action_frame = 0;
         UpdateCurrentActionSpriteType();
         Invalidate();
     }
@@ -2731,13 +2708,13 @@ bool rct_peep::UpdateFixingFixVehicle(bool firstRun, Ride * ride)
 
     UpdateAction();
 
-    uint8 actionFrame = (action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
+    uint8_t actionFrame = (action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
     if (action_frame != actionFrame)
     {
         return false;
     }
 
-    rct_vehicle * vehicle = ride_get_broken_vehicle(ride);
+    rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
     if (vehicle == nullptr)
     {
         return true;
@@ -2753,14 +2730,14 @@ bool rct_peep::UpdateFixingFixVehicle(bool firstRun, Ride * ride)
  * fixing sub_state: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
-        sprite_direction           = direction << 3;
-        action                     = PEEP_ACTION_STAFF_FIX_3;
+        sprite_direction = direction << 3;
+        action = PEEP_ACTION_STAFF_FIX_3;
         action_sprite_image_offset = 0;
-        action_frame               = 0;
+        action_frame = 0;
 
         UpdateCurrentActionSpriteType();
         Invalidate();
@@ -2777,7 +2754,7 @@ bool rct_peep::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride * ride)
         return false;
     }
 
-    rct_vehicle * vehicle = ride_get_broken_vehicle(ride);
+    rct_vehicle* vehicle = ride_get_broken_vehicle(ride);
     if (vehicle == nullptr)
     {
         return true;
@@ -2798,10 +2775,11 @@ static constexpr const CoordsXY _StationFixingOffsets[] = {
 
 /**
  * rct2: 0x006C1114
- * fixing sub_state: move_to_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * fixing sub_state: move_to_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure,
+ * inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2816,19 +2794,19 @@ bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride * ride)
             return true;
         }
 
-        uint8  stationZ = ride->station_heights[current_ride_station];
-        uint16 stationX = stationPosition.x * 32;
-        uint16 stationY = stationPosition.y * 32;
+        uint8_t stationZ = ride->station_heights[current_ride_station];
+        uint16_t stationX = stationPosition.x * 32;
+        uint16_t stationY = stationPosition.y * 32;
 
-        rct_tile_element * tileElement = map_get_track_element_at(stationX, stationY, stationZ);
+        rct_tile_element* tileElement = map_get_track_element_at(stationX, stationY, stationZ);
         if (tileElement == nullptr)
         {
             log_error("Couldn't find tile_element");
             return false;
         }
 
-        sint32   trackDirection = tile_element_get_direction(tileElement);
-        CoordsXY offset         = _StationFixingOffsets[trackDirection];
+        int32_t trackDirection = tile_element_get_direction(tileElement);
+        CoordsXY offset = _StationFixingOffsets[trackDirection];
 
         stationX += 16 + offset.x;
         if (offset.x == 0)
@@ -2842,19 +2820,19 @@ bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride * ride)
             stationY = destination_y;
         }
 
-        destination_x         = stationX;
-        destination_y         = stationY;
+        destination_x = stationX;
+        destination_y = stationY;
         destination_tolerance = 2;
     }
 
     Invalidate();
-    sint16 actionX, actionY, tmp_distance;
+    int16_t actionX, actionY, tmp_distance;
     if (!UpdateAction(&actionX, &actionY, &tmp_distance))
     {
         return true;
     }
 
-    sprite_move(actionX, actionY, z, (rct_sprite *)this);
+    sprite_move(actionX, actionY, z, (rct_sprite*)this);
     Invalidate();
 
     return false;
@@ -2862,16 +2840,17 @@ bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride * ride)
 
 /**
  * rct2: 0x006C11F5
- * fixing sub_state: fix_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure, inspection.
+ * fixing sub_state: fix_station_end - applies to fixing station specific breakdowns: safety cut-out, control failure,
+ * inspection.
  * - see FixingSubstatesForBreakdown[]
  */
 bool rct_peep::UpdateFixingFixStationEnd(bool firstRun)
 {
     if (!firstRun)
     {
-        sprite_direction           = direction << 3;
-        action                     = PEEP_ACTION_STAFF_CHECKBOARD;
-        action_frame               = 0;
+        sprite_direction = direction << 3;
+        action = PEEP_ACTION_STAFF_CHECKBOARD;
+        action_frame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
@@ -2896,7 +2875,7 @@ bool rct_peep::UpdateFixingFixStationEnd(bool firstRun)
  * 3. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2911,25 +2890,25 @@ bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride * ride)
             return true;
         }
 
-        uint8 stationZ = ride->station_heights[current_ride_station];
+        uint8_t stationZ = ride->station_heights[current_ride_station];
 
         CoordsXYE input;
-        input.x       = stationPosition.x * 32;
-        input.y       = stationPosition.y * 32;
+        input.x = stationPosition.x * 32;
+        input.y = stationPosition.y * 32;
         input.element = map_get_track_element_at_from_ride(input.x, input.y, stationZ, current_ride);
         if (input.element == nullptr)
         {
             return true;
         }
 
-        uint8           stationDirection = 0;
+        uint8_t stationDirection = 0;
         track_begin_end trackBeginEnd;
         while (track_block_get_previous(input.x, input.y, input.element, &trackBeginEnd))
         {
             if (track_element_is_station(trackBeginEnd.begin_element))
             {
-                input.x       = trackBeginEnd.begin_x;
-                input.y       = trackBeginEnd.begin_y;
+                input.x = trackBeginEnd.begin_x;
+                input.y = trackBeginEnd.begin_y;
                 input.element = trackBeginEnd.begin_element;
 
                 stationDirection = tile_element_get_direction(trackBeginEnd.begin_element);
@@ -2940,8 +2919,8 @@ bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride * ride)
         }
 
         // loc_6C12ED:
-        uint16 destinationX = input.x + 16;
-        uint16 destinationY = input.y + 16;
+        uint16_t destinationX = input.x + 16;
+        uint16_t destinationY = input.y + 16;
 
         CoordsXY offset = _StationFixingOffsets[stationDirection];
 
@@ -2957,19 +2936,19 @@ bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride * ride)
             destinationY = destination_y;
         }
 
-        destination_x         = destinationX;
-        destination_y         = destinationY;
+        destination_x = destinationX;
+        destination_y = destinationY;
         destination_tolerance = 2;
     }
 
     Invalidate();
-    sint16 actionX, actionY, tmp_xy_distance;
+    int16_t actionX, actionY, tmp_xy_distance;
     if (!UpdateAction(&actionX, &actionY, &tmp_xy_distance))
     {
         return true;
     }
 
-    sprite_move(actionX, actionY, z, (rct_sprite *)this);
+    sprite_move(actionX, actionY, z, (rct_sprite*)this);
     Invalidate();
 
     return false;
@@ -2982,7 +2961,7 @@ bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride * ride)
  * 2. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingFixStationStart(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -2993,8 +2972,8 @@ bool rct_peep::UpdateFixingFixStationStart(bool firstRun, Ride * ride)
 
         sprite_direction = direction << 3;
 
-        action                     = PEEP_ACTION_STAFF_FIX;
-        action_frame               = 0;
+        action = PEEP_ACTION_STAFF_FIX;
+        action_frame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
@@ -3016,14 +2995,14 @@ bool rct_peep::UpdateFixingFixStationStart(bool firstRun, Ride * ride)
  * fixing sub_state: fix_station_brakes - applies to fixing brake failure
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingFixStationBrakes(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
         sprite_direction = direction << 3;
 
-        action                     = PEEP_ACTION_STAFF_FIX_GROUND;
-        action_frame               = 0;
+        action = PEEP_ACTION_STAFF_FIX_GROUND;
+        action_frame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
@@ -3042,8 +3021,7 @@ bool rct_peep::UpdateFixingFixStationBrakes(bool firstRun, Ride * ride)
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
     }
 
-    if (action_frame == 0x13 || action_frame == 0x19 || action_frame == 0x1F || action_frame == 0x25 ||
-        action_frame == 0x2B)
+    if (action_frame == 0x13 || action_frame == 0x19 || action_frame == 0x1F || action_frame == 0x25 || action_frame == 0x2B)
     {
         audio_play_sound_at_location(SOUND_MECHANIC_FIX, x, y, z);
     }
@@ -3056,7 +3034,7 @@ bool rct_peep::UpdateFixingFixStationBrakes(bool firstRun, Ride * ride)
  * fixing sub_state: move_to_station_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingMoveToStationExit(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -3071,8 +3049,8 @@ bool rct_peep::UpdateFixingMoveToStationExit(bool firstRun, Ride * ride)
             }
         }
 
-        uint16 stationX = stationPosition.x * 32;
-        uint16 stationY = stationPosition.y * 32;
+        uint16_t stationX = stationPosition.x * 32;
+        uint16_t stationY = stationPosition.y * 32;
 
         stationX += 16;
         stationY += 16;
@@ -3081,20 +3059,20 @@ bool rct_peep::UpdateFixingMoveToStationExit(bool firstRun, Ride * ride)
         stationX += stationPlatformDirection.x * 20;
         stationY += stationPlatformDirection.y * 20;
 
-        destination_x         = stationX;
-        destination_y         = stationY;
+        destination_x = stationX;
+        destination_y = stationY;
         destination_tolerance = 2;
     }
 
     Invalidate();
-    sint16 actionX, actionY, tmp_xy_distance;
+    int16_t actionX, actionY, tmp_xy_distance;
     if (!UpdateAction(&actionX, &actionY, &tmp_xy_distance))
     {
         return true;
     }
     else
     {
-        sprite_move(actionX, actionY, z, (rct_sprite *)this);
+        sprite_move(actionX, actionY, z, (rct_sprite*)this);
         Invalidate();
     }
 
@@ -3106,7 +3084,7 @@ bool rct_peep::UpdateFixingMoveToStationExit(bool firstRun, Ride * ride)
  * fixing sub_state: finish_fix_or_inspect - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingFinishFixOrInspect(bool firstRun, sint32 steps, Ride * ride)
+bool rct_peep::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride)
 {
     if (!firstRun)
     {
@@ -3125,9 +3103,9 @@ bool rct_peep::UpdateFixingFinishFixOrInspect(bool firstRun, sint32 steps, Ride 
         staff_rides_fixed++;
         window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
-        sprite_direction           = direction << 3;
-        action                     = PEEP_ACTION_STAFF_ANSWER_CALL_2;
-        action_frame               = 0;
+        sprite_direction = direction << 3;
+        action = PEEP_ACTION_STAFF_ANSWER_CALL_2;
+        action_frame = 0;
         action_sprite_image_offset = 0;
 
         UpdateCurrentActionSpriteType();
@@ -3150,7 +3128,7 @@ bool rct_peep::UpdateFixingFinishFixOrInspect(bool firstRun, sint32 steps, Ride 
  * fixing sub_state: leave_by_entrance_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool rct_peep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride * ride)
+bool rct_peep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 {
     if (!firstRun)
     {
@@ -3166,8 +3144,8 @@ bool rct_peep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride * ride)
             }
         }
 
-        uint16 exitX = exitPosition.x * 32;
-        uint16 exitY = exitPosition.y * 32;
+        uint16_t exitX = exitPosition.x * 32;
+        uint16_t exitY = exitPosition.y * 32;
 
         exitX += 16;
         exitY += 16;
@@ -3176,27 +3154,27 @@ bool rct_peep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride * ride)
         exitX -= ebx_direction.x * 19;
         exitY -= ebx_direction.y * 19;
 
-        destination_x         = exitX;
-        destination_y         = exitY;
+        destination_x = exitX;
+        destination_y = exitY;
         destination_tolerance = 2;
     }
 
     Invalidate();
-    sint16 actionX, actionY, xy_distance;
+    int16_t actionX, actionY, xy_distance;
     if (!UpdateAction(&actionX, &actionY, &xy_distance))
     {
         SetState(PEEP_STATE_FALLING);
         return false;
     }
 
-    uint16 stationHeight = ride->station_heights[current_ride_station] * 8;
+    uint16_t stationHeight = ride->station_heights[current_ride_station] * 8;
 
     if (xy_distance >= 16)
     {
         stationHeight += RideData5[ride->type].z;
     }
 
-    sprite_move(actionX, actionY, stationHeight, (rct_sprite *)this);
+    sprite_move(actionX, actionY, stationHeight, (rct_sprite*)this);
     Invalidate();
 
     return false;
@@ -3205,9 +3183,9 @@ bool rct_peep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride * ride)
 /**
  * rct2: 0x6B7588
  */
-void rct_peep::UpdateRideInspected(sint32 rideIndex)
+void rct_peep::UpdateRideInspected(int32_t rideIndex)
 {
-    Ride * ride = get_ride(rideIndex);
+    Ride* ride = get_ride(rideIndex);
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
 
     ride->reliability += ((100 - ride->reliability_percentage) / 4) * (scenario_rand() & 0xFF);

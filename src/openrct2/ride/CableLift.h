@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _CABLE_LIFT_H_
 #define _CABLE_LIFT_H_
@@ -20,8 +13,10 @@
 #include "../common.h"
 #include "Vehicle.h"
 
-rct_vehicle *cable_lift_segment_create(sint32 rideIndex, sint32 x, sint32 y, sint32 z, sint32 direction, uint16 var_44, sint32 remaining_distance, bool head);
-void cable_lift_update(rct_vehicle *vehicle);
-sint32 cable_lift_update_track_motion(rct_vehicle *cableLift);
+rct_vehicle* cable_lift_segment_create(
+    int32_t rideIndex, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance,
+    bool head);
+void cable_lift_update(rct_vehicle* vehicle);
+int32_t cable_lift_update_track_motion(rct_vehicle* cableLift);
 
 #endif

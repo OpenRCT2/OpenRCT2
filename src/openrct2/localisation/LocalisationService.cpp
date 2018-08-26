@@ -1,40 +1,36 @@
-#pragma region Copyright (c) 2018 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
-#include <stdexcept>
+#include "LocalisationService.h"
+
 #include "../Context.h"
+#include "../PlatformEnvironment.h"
 #include "../core/Path.hpp"
 #include "../interface/Fonts.h"
 #include "../object/ObjectManager.h"
-#include "../PlatformEnvironment.h"
 #include "Language.h"
 #include "LanguagePack.h"
-#include "LocalisationService.h"
 #include "StringIds.h"
+
+#include <stdexcept>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Localisation;
 
 static constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
-static constexpr uint16 MAX_OBJECT_CACHED_STRINGS = 2048;
+static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 2048;
 
 LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
-    for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID; stringId--)
+    for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID;
+         stringId--)
     {
         _availableObjectStringIds.push(stringId);
     }
@@ -45,9 +41,9 @@ LocalisationService::~LocalisationService()
 {
 }
 
-const char * LocalisationService::GetString(rct_string_id id) const
+const char* LocalisationService::GetString(rct_string_id id) const
 {
-    const char * result = nullptr;
+    const char* result = nullptr;
     if (id == STR_EMPTY)
     {
         result = "";
@@ -70,7 +66,7 @@ const char * LocalisationService::GetString(rct_string_id id) const
     return result;
 }
 
-std::string LocalisationService::GetLanguagePath(uint32 languageId) const
+std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
 {
     auto locale = std::string(LanguagesDescriptors[languageId].locale);
     auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
@@ -78,7 +74,7 @@ std::string LocalisationService::GetLanguagePath(uint32 languageId) const
     return languagePath;
 }
 
-void LocalisationService::OpenLanguage(sint32 id, IObjectManager& objectManager)
+void LocalisationService::OpenLanguage(int32_t id, IObjectManager& objectManager)
 {
     CloseLanguages();
     if (id == LANGUAGE_UNDEFINED)
@@ -90,7 +86,8 @@ void LocalisationService::OpenLanguage(sint32 id, IObjectManager& objectManager)
     if (id != LANGUAGE_ENGLISH_UK)
     {
         filename = GetLanguagePath(LANGUAGE_ENGLISH_UK);
-        _languageFallback = std::unique_ptr<ILanguagePack>(LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename.c_str()));
+        _languageFallback = std::unique_ptr<ILanguagePack>(
+            LanguagePackFactory::FromFile(LANGUAGE_ENGLISH_UK, filename.c_str()));
     }
 
     filename = GetLanguagePath(id);
@@ -116,7 +113,8 @@ void LocalisationService::CloseLanguages()
     _currentLanguage = LANGUAGE_UNDEFINED;
 }
 
-std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::GetLocalisedScenarioStrings(const std::string& scenarioFilename) const
+std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::GetLocalisedScenarioStrings(
+    const std::string& scenarioFilename) const
 {
     auto result0 = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename.c_str(), 0);
     auto result1 = _languageCurrent->GetScenarioOverrideStringId(scenarioFilename.c_str(), 1);
@@ -124,7 +122,7 @@ std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::Get
     return std::make_tuple(result0, result1, result2);
 }
 
-rct_string_id LocalisationService::GetObjectOverrideStringId(const char * identifier, uint8 index) const
+rct_string_id LocalisationService::GetObjectOverrideStringId(const char* identifier, uint8_t index) const
 {
     if (_languageCurrent == nullptr)
     {
@@ -153,7 +151,7 @@ void LocalisationService::FreeObjectString(rct_string_id stringId)
     }
 }
 
-sint32 LocalisationService_GetCurrentLanguage()
+int32_t LocalisationService_GetCurrentLanguage()
 {
     const auto& localisationService = GetContext()->GetLocalisationService();
     return localisationService.GetCurrentLanguage();

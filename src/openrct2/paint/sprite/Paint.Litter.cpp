@@ -1,25 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include "Paint.Sprite.h"
-#include "../../world/Sprite.h"
 #include "../../interface/Viewport.h"
+#include "../../world/Sprite.h"
 #include "../Paint.h"
+#include "Paint.Sprite.h"
 
-enum {
+enum
+{
     SPR_LITTER_SICK = 23101,
 
     SPR_LITTER_SICK_ALT = 23103,
@@ -45,37 +39,39 @@ enum {
     SPR_LITTER_EMPTY_BOWL_BLUE = 23129,
 };
 
-struct litter_sprite {
-    uint16 base_id;
-    uint8 direction_mask;
+struct litter_sprite
+{
+    uint16_t base_id;
+    uint8_t direction_mask;
 };
 
 /** rct2: 0x0097EF6C */
 static constexpr const litter_sprite litter_sprites[] = {
-    { SPR_LITTER_SICK,              0x1 },
-    { SPR_LITTER_SICK_ALT,          0x1 },
-    { SPR_LITTER_EMPTY_CAN,         0x1 },
-    { SPR_LITTER_RUBBISH,           0x1 },
-    { SPR_LITTER_EMPTY_BURGER_BOX,  0x1 },
-    { SPR_LITTER_EMPTY_CUP,         0x1 },
-    { SPR_LITTER_EMPTY_BOX,         0x1 },
-    { SPR_LITTER_EMPTY_BOTTLE,      0x1 },
-    { SPR_LITTER_EMPTY_BOWL_RED,    0x3 },
-    { SPR_LITTER_EMPTY_DRINK_CART,  0x3 },
-    { SPR_LITTER_EMPTY_JUICE_CUP,   0x3 },
-    { SPR_LITTER_EMPTY_BOWL_BLUE,   0x3 },
+    { SPR_LITTER_SICK, 0x1 },
+    { SPR_LITTER_SICK_ALT, 0x1 },
+    { SPR_LITTER_EMPTY_CAN, 0x1 },
+    { SPR_LITTER_RUBBISH, 0x1 },
+    { SPR_LITTER_EMPTY_BURGER_BOX, 0x1 },
+    { SPR_LITTER_EMPTY_CUP, 0x1 },
+    { SPR_LITTER_EMPTY_BOX, 0x1 },
+    { SPR_LITTER_EMPTY_BOTTLE, 0x1 },
+    { SPR_LITTER_EMPTY_BOWL_RED, 0x3 },
+    { SPR_LITTER_EMPTY_DRINK_CART, 0x3 },
+    { SPR_LITTER_EMPTY_JUICE_CUP, 0x3 },
+    { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
 };
 
 /**
  * Litter Paint Setup
  *  rct2: 0x006736FC
  */
-void litter_paint(paint_session * session, const rct_litter *litter, sint32 imageDirection)
+void litter_paint(paint_session* session, const rct_litter* litter, int32_t imageDirection)
 {
-    rct_drawpixelinfo *dpi;
+    rct_drawpixelinfo* dpi;
 
     dpi = session->DPI;
-    if (dpi->zoom_level != 0) return; // If zoomed at all no litter drawn
+    if (dpi->zoom_level != 0)
+        return; // If zoomed at all no litter drawn
 
     // litter has no sprite direction so remove that
     imageDirection >>= 3;
@@ -83,7 +79,7 @@ void litter_paint(paint_session * session, const rct_litter *litter, sint32 imag
     // anything that isn't required.
     imageDirection &= litter_sprites[litter->type].direction_mask;
 
-    uint32 image_id = imageDirection + litter_sprites[litter->type].base_id;
+    uint32_t image_id = imageDirection + litter_sprites[litter->type].base_id;
 
     // In the following call to sub_98197C, we add 4 (instead of 2) to the
     //  bound_box_offset_z to make sure litter is drawn on top of railways

@@ -1,30 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <time.h>
 #include "../Game.h"
-#include "../core/Math.hpp"
 #include "Date.h"
 #include "StringIds.h"
 
-uint16 gDateMonthTicks;
-uint16 gDateMonthsElapsed;
+#include <algorithm>
+#include <time.h>
+
+uint16_t gDateMonthTicks;
+uint16_t gDateMonthsElapsed;
 
 // rct2: 0x00993988
-const sint16 days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
+const int16_t days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
 
 // clang-format off
 const rct_string_id DateFormatStringIds[] = {
@@ -44,17 +38,17 @@ const rct_string_id DateFormatStringFormatIds[] = {
 
 openrct_timeofday gRealTimeOfDay;
 
-sint32 date_get_month(sint32 months)
+int32_t date_get_month(int32_t months)
 {
     return months % MONTH_COUNT;
 }
 
-sint32 date_get_year(sint32 months)
+int32_t date_get_year(int32_t months)
 {
     return months / MONTH_COUNT;
 }
 
-sint32 date_get_total_months(sint32 month, sint32 year)
+int32_t date_get_total_months(int32_t month, int32_t year)
 {
     return (year - 1) * MONTH_COUNT + month;
 }
@@ -70,18 +64,18 @@ void date_reset()
     gCurrentTicks = 0;
 }
 
-void date_set(sint32 year, sint32 month, sint32 day)
+void date_set(int32_t year, int32_t month, int32_t day)
 {
-    year = Math::Clamp(1, year, 8192);
-    month = Math::Clamp(1, month, (int)MONTH_COUNT);
-    day = Math::Clamp(1, day, (int)days_in_month[month - 1]);
+    year = std::clamp(year, 1, 8192);
+    month = std::clamp(month, 1, (int)MONTH_COUNT);
+    day = std::clamp(day, 1, (int)days_in_month[month - 1]);
     gDateMonthsElapsed = (year - 1) * MONTH_COUNT + month - 1;
     gDateMonthTicks = 0x10000 / days_in_month[month - 1] * (day - 1) + 4;
 }
 
 void date_update()
 {
-    sint32 monthTicks = gDateMonthTicks + 4;
+    int32_t monthTicks = gDateMonthTicks + 4;
     if (monthTicks >= 0x10000)
     {
         gDateMonthTicks = 0;
@@ -89,43 +83,43 @@ void date_update()
     }
     else
     {
-        gDateMonthTicks = floor2((uint16)monthTicks, 4);
+        gDateMonthTicks = floor2((uint16_t)monthTicks, 4);
     }
 }
 
 void date_update_real_time_of_day()
 {
     time_t timestamp = time(nullptr);
-    struct tm *now = localtime(&timestamp);
+    struct tm* now = localtime(&timestamp);
 
     gRealTimeOfDay.second = now->tm_sec;
     gRealTimeOfDay.minute = now->tm_min;
     gRealTimeOfDay.hour = now->tm_hour;
 }
 
-bool date_is_day_start(sint32 monthTicks)
+bool date_is_day_start(int32_t monthTicks)
 {
     if (monthTicks < 4)
     {
         return false;
     }
-    sint32 prevMonthTick = monthTicks - 4;
-    sint32 currentMonth = date_get_month(gDateMonthsElapsed);
-    sint32 currentDaysInMonth = days_in_month[currentMonth];
+    int32_t prevMonthTick = monthTicks - 4;
+    int32_t currentMonth = date_get_month(gDateMonthsElapsed);
+    int32_t currentDaysInMonth = days_in_month[currentMonth];
     return ((currentDaysInMonth * monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
 }
 
-bool date_is_week_start(sint32 monthTicks)
+bool date_is_week_start(int32_t monthTicks)
 {
     return (monthTicks & 0x3FFF) == 0;
 }
 
-bool date_is_fortnight_start(sint32 monthTicks)
+bool date_is_fortnight_start(int32_t monthTicks)
 {
     return (monthTicks & 0x7FFF) == 0;
 }
 
-bool date_is_month_start(sint32 monthTicks)
+bool date_is_month_start(int32_t monthTicks)
 {
     return (monthTicks == 0);
 }

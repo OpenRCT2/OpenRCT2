@@ -1,25 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <openrct2/common.h>
-#include <SDL2/SDL.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/audio/AudioSource.h>
 #include "AudioContext.h"
 #include "AudioFormat.h"
+
+#include <SDL2/SDL.h>
+#include <algorithm>
+#include <openrct2/audio/AudioSource.h>
+#include <openrct2/common.h>
 
 namespace OpenRCT2::Audio
 {
@@ -31,9 +25,9 @@ namespace OpenRCT2::Audio
     {
     private:
         AudioFormat _format = {};
-        SDL_RWops * _rw = nullptr;
-        uint64      _dataBegin = 0;
-        uint64      _dataLength = 0;
+        SDL_RWops* _rw = nullptr;
+        uint64_t _dataBegin = 0;
+        uint64_t _dataLength = 0;
 
     public:
         ~FileAudioSource()
@@ -41,7 +35,7 @@ namespace OpenRCT2::Audio
             Unload();
         }
 
-        uint64 GetLength() const override
+        uint64_t GetLength() const override
         {
             return _dataLength;
         }
@@ -51,17 +45,17 @@ namespace OpenRCT2::Audio
             return _format;
         }
 
-        size_t Read(void * dst, uint64 offset, size_t len) override
+        size_t Read(void* dst, uint64_t offset, size_t len) override
         {
             size_t bytesRead = 0;
-            sint64 currentPosition = SDL_RWtell(_rw);
+            int64_t currentPosition = SDL_RWtell(_rw);
             if (currentPosition != -1)
             {
-                size_t bytesToRead = (size_t)Math::Min<uint64>(len, _dataLength - offset);
-                sint64 dataOffset = _dataBegin + offset;
+                size_t bytesToRead = (size_t)std::min<uint64_t>(len, _dataLength - offset);
+                int64_t dataOffset = _dataBegin + offset;
                 if (currentPosition != dataOffset)
                 {
-                    sint64 newPosition = SDL_RWseek(_rw, dataOffset, SEEK_SET);
+                    int64_t newPosition = SDL_RWseek(_rw, dataOffset, SEEK_SET);
                     if (newPosition == -1)
                     {
                         return 0;
@@ -72,13 +66,13 @@ namespace OpenRCT2::Audio
             return bytesRead;
         }
 
-        bool LoadWAV(SDL_RWops * rw)
+        bool LoadWAV(SDL_RWops* rw)
         {
-            const uint32 DATA = 0x61746164;
-            const uint32 FMT  = 0x20746D66;
-            const uint32 RIFF = 0x46464952;
-            const uint32 WAVE = 0x45564157;
-            const uint16 pcmformat = 0x0001;
+            const uint32_t DATA = 0x61746164;
+            const uint32_t FMT = 0x20746D66;
+            const uint32_t RIFF = 0x46464952;
+            const uint32_t WAVE = 0x45564157;
+            const uint16_t pcmformat = 0x0001;
 
             Unload();
 
@@ -88,7 +82,7 @@ namespace OpenRCT2::Audio
             }
             _rw = rw;
 
-            uint32 chunkId = SDL_ReadLE32(rw);
+            uint32_t chunkId = SDL_ReadLE32(rw);
             if (chunkId != RIFF)
             {
                 log_verbose("Not a WAV file");
@@ -97,45 +91,47 @@ namespace OpenRCT2::Audio
 
             // Read and discard chunk size
             SDL_ReadLE32(rw);
-            uint32 chunkFormat = SDL_ReadLE32(rw);
+            uint32_t chunkFormat = SDL_ReadLE32(rw);
             if (chunkFormat != WAVE)
             {
                 log_verbose("Not in WAVE format");
                 return false;
             }
 
-            uint32 fmtChunkSize = FindChunk(rw, FMT);
+            uint32_t fmtChunkSize = FindChunk(rw, FMT);
             if (!fmtChunkSize)
             {
                 log_verbose("Could not find FMT chunk");
                 return false;
             }
 
-            uint64 chunkStart = SDL_RWtell(rw);
+            uint64_t chunkStart = SDL_RWtell(rw);
 
             WaveFormat waveFormat;
             SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
             SDL_RWseek(rw, chunkStart + fmtChunkSize, RW_SEEK_SET);
-            if (waveFormat.encoding != pcmformat) {
+            if (waveFormat.encoding != pcmformat)
+            {
                 log_verbose("Not in proper format");
                 return false;
             }
 
             _format.freq = waveFormat.frequency;
-            switch (waveFormat.bitspersample) {
-            case 8:
-                _format.format = AUDIO_U8;
-                break;
-            case 16:
-                _format.format = AUDIO_S16LSB;
-                break;
-            default:
-                log_verbose("Invalid bits per sample");
-                return false;
+            switch (waveFormat.bitspersample)
+            {
+                case 8:
+                    _format.format = AUDIO_U8;
+                    break;
+                case 16:
+                    _format.format = AUDIO_S16LSB;
+                    break;
+                default:
+                    log_verbose("Invalid bits per sample");
+                    return false;
             }
             _format.channels = waveFormat.channels;
 
-            uint32 dataChunkSize = FindChunk(rw, DATA);
+            uint32_t dataChunkSize = FindChunk(rw, DATA);
             if (dataChunkSize == 0)
             {
                 log_verbose("Could not find DATA chunk");
@@ -148,18 +144,18 @@ namespace OpenRCT2::Audio
         }
 
     private:
-        uint32 FindChunk(SDL_RWops * rw, uint32 wantedId)
+        uint32_t FindChunk(SDL_RWops* rw, uint32_t wantedId)
         {
-            uint32 subchunkId = SDL_ReadLE32(rw);
-            uint32 subchunkSize = SDL_ReadLE32(rw);
+            uint32_t subchunkId = SDL_ReadLE32(rw);
+            uint32_t subchunkSize = SDL_ReadLE32(rw);
             if (subchunkId == wantedId)
             {
                 return subchunkSize;
             }
-            const uint32 FACT = 0x74636166;
-            const uint32 LIST = 0x5453494c;
-            const uint32 BEXT = 0x74786562;
-            const uint32 JUNK = 0x4B4E554A;
+            const uint32_t FACT = 0x74636166;
+            const uint32_t LIST = 0x5453494c;
+            const uint32_t BEXT = 0x74786562;
+            const uint32_t JUNK = 0x4B4E554A;
             while (subchunkId == FACT || subchunkId == LIST || subchunkId == BEXT || subchunkId == JUNK)
             {
                 SDL_RWseek(rw, subchunkSize, RW_SEEK_CUR);
@@ -185,9 +181,9 @@ namespace OpenRCT2::Audio
         }
     };
 
-    IAudioSource * AudioSource::CreateStreamFromWAV(const std::string &path)
+    IAudioSource* AudioSource::CreateStreamFromWAV(const std::string& path)
     {
-        IAudioSource * source = nullptr;
+        IAudioSource* source = nullptr;
         SDL_RWops* rw = SDL_RWFromFile(path.c_str(), "rb");
         if (rw != nullptr)
         {
@@ -196,7 +192,7 @@ namespace OpenRCT2::Audio
         return source;
     }
 
-    IAudioSource * AudioSource::CreateStreamFromWAV(SDL_RWops * rw)
+    IAudioSource* AudioSource::CreateStreamFromWAV(SDL_RWops* rw)
     {
         auto source = new FileAudioSource();
         if (!source->LoadWAV(rw))

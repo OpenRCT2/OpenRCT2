@@ -1,25 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
 #include "../common.h"
 #include "TileElement.h"
 
-enum {
+enum
+{
     TERRAIN_GRASS,
     TERRAIN_SAND,
     TERRAIN_DIRT,
@@ -39,7 +33,8 @@ enum {
     TERRAIN_UNDERGROUND_VIEW,
 };
 
-enum {
+enum
+{
     TERRAIN_EDGE_ROCK,
     TERRAIN_EDGE_WOOD_RED,
     TERRAIN_EDGE_WOOD_BLACK,
@@ -62,7 +57,8 @@ enum {
     TERRAIN_EDGE_COUNT
 };
 
-enum {
+enum
+{
     GRASS_LENGTH_MOWED,
     GRASS_LENGTH_CLEAR_0,
     GRASS_LENGTH_CLEAR_1,
@@ -72,7 +68,8 @@ enum {
     GRASS_LENGTH_CLUMPS_2
 };
 
-enum {
+enum
+{
     OWNERSHIP_UNOWNED = 0,
     OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED = (1 << 4),
     OWNERSHIP_OWNED = (1 << 5),
@@ -80,7 +77,8 @@ enum {
     OWNERSHIP_AVAILABLE = (1 << 7)
 };
 
-enum {
+enum
+{
     TILE_ELEMENT_SLOPE_FLAT = 0x00,
     TILE_ELEMENT_SLOPE_ALL_CORNERS_UP = 0x0F,
 
@@ -105,17 +103,19 @@ enum {
 };
 
 // Surface
-#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG       0x10 // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG 0x10       // in rct_tile_element.properties.surface.slope
 #define TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK 0x0F // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_SLOPE_MASK          (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK     0xE0 // in rct_tile_tile_element_set_terrainelement.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK   0x1F // in rct_tile_element.properties.surface.terrain
-#define TILE_ELEMENT_SURFACE_TERRAIN_MASK        0xE0 // in rct_tile_element.properties.surface.terrain
+#define TILE_ELEMENT_SURFACE_SLOPE_MASK                                                                                        \
+    (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG                                                                                        \
+     | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)    // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK 0xE0   // in rct_tile_tile_element_set_terrainelement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK 0x1F // in rct_tile_element.properties.surface.terrain
+#define TILE_ELEMENT_SURFACE_TERRAIN_MASK 0xE0      // in rct_tile_element.properties.surface.terrain
 
-sint32 surface_get_terrain(const rct_tile_element * element);
-sint32 surface_get_terrain_edge(const rct_tile_element * element);
-void surface_set_terrain(rct_tile_element * element, sint32 terrain);
-void surface_set_terrain_edge(rct_tile_element * element, sint32 terrain);
+int32_t surface_get_terrain(const rct_tile_element* element);
+int32_t surface_get_terrain_edge(const rct_tile_element* element);
+void surface_set_terrain(rct_tile_element* element, int32_t terrain);
+void surface_set_terrain_edge(rct_tile_element* element, int32_t terrain);
 
 // ~Oli414: Needs to renamed. This function is specific to the surface object.
-sint32 surface_get_water_height(const rct_tile_element * tileElement); 
+int32_t surface_get_water_height(const rct_tile_element* tileElement);

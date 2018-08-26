@@ -1,17 +1,28 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
 #include "openrct2/localisation/LanguagePack.h"
+
 #include "openrct2/localisation/StringIds.h"
+
 #include <gtest/gtest.h>
 
 class LanguagePackTest : public testing::Test
 {
 protected:
-    static const utf8 *        LanguageEnGB;
+    static const utf8* LanguageEnGB;
     static const unsigned char LanguageZhTW[];
 };
 
 TEST_F(LanguagePackTest, create_empty)
 {
-    ILanguagePack * empty = LanguagePackFactory::FromText(0, "");
+    ILanguagePack* empty = LanguagePackFactory::FromText(0, "");
     ASSERT_EQ(empty->GetId(), 0);
     ASSERT_EQ(empty->GetCount(), 0);
     delete empty;
@@ -19,7 +30,7 @@ TEST_F(LanguagePackTest, create_empty)
 
 TEST_F(LanguagePackTest, create_mutable_id_1)
 {
-    ILanguagePack * lang = LanguagePackFactory::FromText(1, "STR_0000:\n");
+    ILanguagePack* lang = LanguagePackFactory::FromText(1, "STR_0000:\n");
     ASSERT_EQ(lang->GetId(), 1);
     ASSERT_EQ(lang->GetCount(), 1);
     ASSERT_STREQ(lang->GetString(0), nullptr);
@@ -31,7 +42,7 @@ TEST_F(LanguagePackTest, create_mutable_id_1)
 
 TEST_F(LanguagePackTest, language_pack_simple)
 {
-    ILanguagePack * lang = LanguagePackFactory::FromText(0, LanguageEnGB);
+    ILanguagePack* lang = LanguagePackFactory::FromText(0, LanguageEnGB);
     ASSERT_EQ(lang->GetId(), 0);
     ASSERT_EQ(lang->GetCount(), 4);
     ASSERT_STREQ(lang->GetString(2), "Spiral Roller Coaster");
@@ -48,7 +59,7 @@ TEST_F(LanguagePackTest, language_pack_simple)
 
 TEST_F(LanguagePackTest, language_pack_multibyte)
 {
-    ILanguagePack * lang = LanguagePackFactory::FromText(0, (const utf8 *)LanguageZhTW);
+    ILanguagePack* lang = LanguagePackFactory::FromText(0, (const utf8*)LanguageZhTW);
     ASSERT_EQ(lang->GetId(), 0);
     ASSERT_EQ(lang->GetCount(), 4);
     ASSERT_STREQ(lang->GetString(2), u8"懸吊式雲霄飛車");
@@ -61,23 +72,23 @@ TEST_F(LanguagePackTest, language_pack_multibyte)
     delete lang;
 }
 
-const utf8 * LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string id number.\n"
-                                              "# Everything after the colon and before the new line will be saved as the "
-                                              "string.\n"
-                                              "# Use # at the beginning of a line to leave a comment.\n"
-                                              "STR_0000    :\n"
-                                              "STR_0001    :{STRINGID} {COMMA16}\n"
-                                              "STR_0002    :Spiral Roller Coaster\n"
-                                              "STR_0003    :Stand-up Roller Coaster\n"
-                                              "<Arid Heights>\n"
-                                              "STR_SCNR    :Arid Heights scenario string\n"
-                                              "STR_PARK    :Arid Heights park string\n"
-                                              "STR_DTLS    :Free of any financial limits, your challenge is to develop "
-                                              "this desert park while keeping the guests happy\n"
-                                              "[CONDORRD]\n"
-                                              "STR_NAME    :my test ride\n"
-                                              "STR_DESC    :ride description\n"
-                                              "STR_CPTY    :ride capacity\n";
+const utf8* LanguagePackTest::LanguageEnGB = "# STR_XXXX part is read and XXXX becomes the string id number.\n"
+                                             "# Everything after the colon and before the new line will be saved as the "
+                                             "string.\n"
+                                             "# Use # at the beginning of a line to leave a comment.\n"
+                                             "STR_0000    :\n"
+                                             "STR_0001    :{STRINGID} {COMMA16}\n"
+                                             "STR_0002    :Spiral Roller Coaster\n"
+                                             "STR_0003    :Stand-up Roller Coaster\n"
+                                             "<Arid Heights>\n"
+                                             "STR_SCNR    :Arid Heights scenario string\n"
+                                             "STR_PARK    :Arid Heights park string\n"
+                                             "STR_DTLS    :Free of any financial limits, your challenge is to develop "
+                                             "this desert park while keeping the guests happy\n"
+                                             "[CONDORRD]\n"
+                                             "STR_NAME    :my test ride\n"
+                                             "STR_DESC    :ride description\n"
+                                             "STR_CPTY    :ride capacity\n";
 
 // This includes a few entries extracted from zh-TW localisation.
 // It has to be declared as `unsigned char`, or else the values overflow signed byte.
@@ -106,5 +117,5 @@ const unsigned char LanguagePackTest::LanguageZhTW[] = {
     0xa3, 0x9b, 0xe9, 0xa6, 0xb3, 0xe4, 0xb8, 0xad, 0xe9, 0xab, 0x94, 0xe9, 0xa9, 0x97, 0xe9, 0xa3, 0x9b, 0xe4, 0xb8, 0x80,
     0xe8, 0x88, 0xac, 0xe7, 0x9a, 0x84, 0xe5, 0xbf, 0xab, 0xe6, 0x84, 0x9f, 0x0a, 0x53, 0x54, 0x52, 0x5f, 0x43, 0x50, 0x54,
     0x59, 0x20, 0x20, 0x20, 0x20, 0x3a, 0xe6, 0xaf, 0x8f, 0xe8, 0xbb, 0x8a, 0xe5, 0x8d, 0xa1, 0x34, 0xe4, 0xbd, 0x8d, 0xe4,
-    0xb9, 0x98, 0xe5, 0xae, 0xa2, 0x0a, 0x00
+    0xb9, 0x98, 0xe5, 0xae, 0xa2, 0x0a, 0x00,
 };

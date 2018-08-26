@@ -1,23 +1,15 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
 #include "../common.h"
-
 #include "../drawing/Drawing.h"
 
 enum CLIMATE
@@ -54,34 +46,34 @@ enum RAIN_LEVEL
 
 struct WeatherState
 {
-    sint8   TemperatureDelta;
-    sint8   EffectLevel;
-    sint8   GloomLevel;
-    sint8   RainLevel;
-    uint32  SpriteId;
+    int8_t TemperatureDelta;
+    int8_t EffectLevel;
+    int8_t GloomLevel;
+    int8_t RainLevel;
+    uint32_t SpriteId;
 };
 
 struct ClimateState
 {
-    uint8 Weather;
-    sint8 Temperature;
-    uint8 WeatherEffect;
-    uint8 WeatherGloom;
-    uint8 RainLevel;
+    uint8_t Weather;
+    int8_t Temperature;
+    uint8_t WeatherEffect;
+    uint8_t WeatherGloom;
+    uint8_t RainLevel;
 };
 
-extern uint8        gClimate;
+extern uint8_t gClimate;
 extern ClimateState gClimateCurrent;
 extern ClimateState gClimateNext;
-extern uint16       gClimateUpdateTimer;
-extern uint16       gClimateLightningFlash;
+extern uint16_t gClimateUpdateTimer;
+extern uint16_t gClimateLightningFlash;
 
-sint32 climate_celsius_to_fahrenheit(sint32 celsius);
-void climate_reset(sint32 climate);
+int32_t climate_celsius_to_fahrenheit(int32_t celsius);
+void climate_reset(int32_t climate);
 void climate_update();
 void climate_update_sound();
-void climate_force_weather(uint8 weather);
+void climate_force_weather(uint8_t weather);
 
 bool climate_is_raining();
-FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState &state);
-uint32 climate_get_weather_sprite_id(const ClimateState &state);
+FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state);
+uint32_t climate_get_weather_sprite_id(const ClimateState& state);

@@ -1,39 +1,35 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #include "GameState.h"
+
 #include "Context.h"
-#include "core/Math.hpp"
 #include "Editor.h"
 #include "Input.h"
+#include "OpenRCT2.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "network/network.h"
-#include "OpenRCT2.h"
 #include "platform/Platform2.h"
 #include "scenario/Scenario.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequencePlayer.h"
+#include "ui/UiContext.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+
+#include <algorithm>
 
 using namespace OpenRCT2;
 
@@ -45,7 +41,7 @@ GameState::GameState()
 /**
  * Initialises the map, park etc. basically all S6 data.
  */
-void GameState::InitAll(sint32 mapSize)
+void GameState::InitAll(int32_t mapSize)
 {
     gInMapInitCode = true;
 
@@ -79,7 +75,7 @@ void GameState::Update()
 {
     gInUpdateCode = true;
 
-    uint32 numUpdates;
+    uint32_t numUpdates;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
@@ -87,7 +83,11 @@ void GameState::Update()
 
     if (game_is_not_paused() && gPreviewingTitleSequenceInGame)
     {
-        title_sequence_player_update((ITitleSequencePlayer *) title_get_sequence_player());
+        auto player = GetContext()->GetUiContext()->GetTitleSequencePlayer();
+        if (player != nullptr)
+        {
+            player->Update();
+        }
     }
 
     // Determine how many times we need to update the game
@@ -98,10 +98,11 @@ void GameState::Update()
     else
     {
         numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        numUpdates = Math::Clamp<uint32>(1, numUpdates, GAME_MAX_UPDATES);
+        numUpdates = std::clamp<uint32_t>(numUpdates, 1, GAME_MAX_UPDATES);
     }
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK)
+    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
+        && network_get_authstatus() == NETWORK_AUTH_OK)
     {
         if (network_get_server_tick() - gCurrentTicks >= 10)
         {
@@ -124,13 +125,12 @@ void GameState::Update()
     }
 
     // Update the game one or more times
-    for (uint32 i = 0; i < numUpdates; i++)
+    for (uint32_t i = 0; i < numUpdates; i++)
     {
         UpdateLogic();
         if (gGameSpeed == 1)
         {
-            if (input_get_state() == INPUT_STATE_RESET ||
-                input_get_state() == INPUT_STATE_NORMAL)
+            if (input_get_state() == INPUT_STATE_RESET || input_get_state() == INPUT_STATE_NORMAL)
             {
                 if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING))
                 {
@@ -176,9 +176,8 @@ void GameState::Update()
     }
 
     // Always perform autosave check, even when paused
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) &&
-        !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) &&
-        !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
+    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         scenario_autosave_check();
     }
@@ -186,7 +185,7 @@ void GameState::Update()
     window_dispatch_update_all();
 
     gGameCommandNestLevel = 0;
-    gInUpdateCode         = false;
+    gInUpdateCode = false;
 }
 
 void GameState::UpdateLogic()
@@ -197,9 +196,8 @@ void GameState::UpdateLogic()
 
     network_update();
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT &&
-        network_get_status() == NETWORK_STATUS_CONNECTED &&
-        network_get_authstatus() == NETWORK_AUTH_OK)
+    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
+        && network_get_authstatus() == NETWORK_AUTH_OK)
     {
         // Can't be in sync with server, round trips won't work if we are at same level.
         if (gCurrentTicks >= network_get_server_tick())
@@ -219,8 +217,6 @@ void GameState::UpdateLogic()
         // Check desync.
         network_check_desynchronization();
     }
-
-    sub_68B089();
 
     date_update();
     _date = Date(gDateMonthTicks, gDateMonthTicks);
@@ -254,16 +250,16 @@ void GameState::UpdateLogic()
     editor_open_windows_for_current_step();
 
     // Update windows
-    //window_dispatch_update_all();
+    // window_dispatch_update_all();
 
     if (gErrorType != ERROR_TYPE_NONE)
     {
         rct_string_id title_text = STR_UNABLE_TO_LOAD_FILE;
-        rct_string_id body_text  = gErrorStringId;
+        rct_string_id body_text = gErrorStringId;
         if (gErrorType == ERROR_TYPE_GENERIC)
         {
             title_text = gErrorStringId;
-            body_text  = 0xFFFF;
+            body_text = 0xFFFF;
         }
         gErrorType = ERROR_TYPE_NONE;
 

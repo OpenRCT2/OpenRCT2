@@ -1,42 +1,36 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include "../common.h"
+#include "Drawing.h"
+
 #include "../Context.h"
+#include "../OpenRCT2.h"
+#include "../common.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
-#include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/Water.h"
-#include "Drawing.h"
 
 // HACK These were originally passed back through registers
-sint32 gLastDrawStringX;
-sint32 gLastDrawStringY;
+int32_t gLastDrawStringX;
+int32_t gLastDrawStringY;
 
-sint16 gCurrentFontSpriteBase;
-uint16 gCurrentFontFlags;
+int16_t gCurrentFontSpriteBase;
+uint16_t gCurrentFontFlags;
 
-uint8 gGamePalette[256 * 4];
-uint32 gPaletteEffectFrame;
+uint8_t gGamePalette[256 * 4];
+uint32_t gPaletteEffectFrame;
 
-uint32 gPickupPeepImage;
-sint32 gPickupPeepX;
-sint32 gPickupPeepY;
+uint32_t gPickupPeepImage;
+int32_t gPickupPeepX;
+int32_t gPickupPeepY;
 
 /**
  * 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
@@ -44,7 +38,7 @@ sint32 gPickupPeepY;
  * rct2: 0x0009ABE0C
  */
 // clang-format off
-uint8 gPeepPalette[256] = {
+uint8_t gPeepPalette[256] = {
     0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
     0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
     0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
@@ -64,7 +58,7 @@ uint8 gPeepPalette[256] = {
 };
 
 /** rct2: 0x009ABF0C */
-uint8 gOtherPalette[256] = {
+uint8_t gOtherPalette[256] = {
     0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
     0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
     0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
@@ -84,7 +78,7 @@ uint8 gOtherPalette[256] = {
 };
 
 // Originally 0x9ABE04
-uint8 text_palette[0x8] = {
+uint8_t text_palette[0x8] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
@@ -273,7 +267,7 @@ const FILTER_PALETTE_ID GlassPaletteIds[COLOUR_COUNT] = {
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
-const uint16 palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
+const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -471,8 +465,10 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
 };
 // clang-format on
 
-void (*mask_fn)(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
-                uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap) = nullptr;
+void (*mask_fn)(
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+    = nullptr;
 
 void mask_init()
 {
@@ -493,12 +489,12 @@ void mask_init()
     }
 }
 
-void gfx_draw_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 colour)
+void gfx_draw_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t colour)
 {
     gfx_fill_rect(dpi, x, y, x, y, colour);
 }
 
-void gfx_filter_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, FILTER_PALETTE_ID palette)
+void gfx_filter_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, FILTER_PALETTE_ID palette)
 {
     gfx_filter_rect(dpi, x, y, x, y, palette);
 }
@@ -509,17 +505,18 @@ void gfx_filter_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, FILTER_PALETTE
  * a1 (ebx)
  * product (cl)
  */
-void gfx_transpose_palette(sint32 pal, uint8 product)
+void gfx_transpose_palette(int32_t pal, uint8_t product)
 {
-    const rct_g1_element * g1 = gfx_get_g1_element(pal);
+    const rct_g1_element* g1 = gfx_get_g1_element(pal);
     if (g1 != nullptr)
     {
-        sint32 width = g1->width;
-        sint32 x = g1->x_offset;
-        uint8 * dest_pointer = &gGamePalette[x * 4];
-        uint8 * source_pointer = g1->offset;
+        int32_t width = g1->width;
+        int32_t x = g1->x_offset;
+        uint8_t* dest_pointer = &gGamePalette[x * 4];
+        uint8_t* source_pointer = g1->offset;
 
-        for (; width > 0; width--) {
+        for (; width > 0; width--)
+        {
             dest_pointer[0] = (source_pointer[0] * product) >> 8;
             dest_pointer[1] = (source_pointer[1] * product) >> 8;
             dest_pointer[2] = (source_pointer[2] * product) >> 8;
@@ -536,26 +533,28 @@ void gfx_transpose_palette(sint32 pal, uint8 product)
  */
 void load_palette()
 {
-    if (gOpenRCT2NoGraphics) {
+    if (gOpenRCT2NoGraphics)
+    {
         return;
     }
 
-    auto water_type = (rct_water_type *)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
+    auto water_type = (rct_water_type*)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
 
-    uint32 palette = 0x5FC;
+    uint32_t palette = 0x5FC;
 
-    if (water_type != nullptr) {
-        openrct2_assert(water_type->image_id != (uint32)-1, "Failed to load water palette");
+    if (water_type != nullptr)
+    {
+        openrct2_assert(water_type->image_id != (uint32_t)-1, "Failed to load water palette");
         palette = water_type->image_id;
     }
 
-    const rct_g1_element * g1 = gfx_get_g1_element(palette);
+    const rct_g1_element* g1 = gfx_get_g1_element(palette);
     if (g1 != nullptr)
     {
-        sint32 width = g1->width;
-        sint32 x = g1->x_offset;
-        uint8 * src = g1->offset;
-        uint8 * dst = &gGamePalette[x * 4];
+        int32_t width = g1->width;
+        int32_t x = g1->x_offset;
+        uint8_t* src = g1->offset;
+        uint8_t* dst = &gGamePalette[x * 4];
         for (; width > 0; width--)
         {
             dst[0] = src[0];
@@ -579,18 +578,18 @@ void gfx_invalidate_screen()
 }
 
 /*
-*
-* rct2: 0x006EE53B
-* left (ax)
-* width (bx)
-* top (cx)
-* height (dx)
-* drawpixelinfo (edi)
-*/
-bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, sint32 x, sint32 y, sint32 width, sint32 height)
+ *
+ * rct2: 0x006EE53B
+ * left (ax)
+ * width (bx)
+ * top (cx)
+ * height (dx)
+ * drawpixelinfo (edi)
+ */
+bool clip_drawpixelinfo(rct_drawpixelinfo* dst, rct_drawpixelinfo* src, int32_t x, int32_t y, int32_t width, int32_t height)
 {
-    sint32 right = x + width;
-    sint32 bottom = y + height;
+    int32_t right = x + width;
+    int32_t bottom = y + height;
 
     dst->bits = src->bits;
     dst->x = src->x;
@@ -600,34 +599,39 @@ bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, sint32 x
     dst->pitch = src->pitch;
     dst->zoom_level = 0;
 
-    if (x > dst->x) {
-        uint16 clippedFromLeft = x - dst->x;
+    if (x > dst->x)
+    {
+        uint16_t clippedFromLeft = x - dst->x;
         dst->width -= clippedFromLeft;
         dst->x = x;
         dst->pitch += clippedFromLeft;
         dst->bits += clippedFromLeft;
     }
 
-    sint32 stickOutWidth = dst->x + dst->width - right;
-    if (stickOutWidth > 0) {
+    int32_t stickOutWidth = dst->x + dst->width - right;
+    if (stickOutWidth > 0)
+    {
         dst->width -= stickOutWidth;
         dst->pitch += stickOutWidth;
     }
 
-    if (y > dst->y) {
-        uint16 clippedFromTop = y - dst->y;
+    if (y > dst->y)
+    {
+        uint16_t clippedFromTop = y - dst->y;
         dst->height -= clippedFromTop;
         dst->y = y;
-        uint32 bitsPlus = (dst->pitch + dst->width) * clippedFromTop;
+        uint32_t bitsPlus = (dst->pitch + dst->width) * clippedFromTop;
         dst->bits += bitsPlus;
     }
 
-    sint32 bp = dst->y + dst->height - bottom;
-    if (bp > 0) {
+    int32_t bp = dst->y + dst->height - bottom;
+    if (bp > 0)
+    {
         dst->height -= bp;
     }
 
-    if (dst->width > 0 && dst->height > 0) {
+    if (dst->width > 0 && dst->height > 0)
+    {
         dst->x -= x;
         dst->y -= y;
         return true;
@@ -638,25 +642,25 @@ bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, sint32 x
 
 void gfx_invalidate_pickedup_peep()
 {
-    uint32 sprite = gPickupPeepImage;
+    uint32_t sprite = gPickupPeepImage;
     if (sprite != UINT32_MAX)
     {
-        const rct_g1_element * g1 = gfx_get_g1_element(sprite & 0x7FFFF);
+        const rct_g1_element* g1 = gfx_get_g1_element(sprite & 0x7FFFF);
         if (g1 != nullptr)
         {
-            sint32 left = gPickupPeepX + g1->x_offset;
-            sint32 top = gPickupPeepY + g1->y_offset;
-            sint32 right = left + g1->width;
-            sint32 bottom = top + g1->height;
+            int32_t left = gPickupPeepX + g1->x_offset;
+            int32_t top = gPickupPeepY + g1->y_offset;
+            int32_t right = left + g1->width;
+            int32_t bottom = top + g1->height;
             gfx_set_dirty_blocks(left, top, right, bottom);
         }
     }
 }
 
-void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi)
+void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
 {
-    if (gPickupPeepImage != UINT32_MAX) {
+    if (gPickupPeepImage != UINT32_MAX)
+    {
         gfx_draw_sprite(dpi, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
     }
 }
-

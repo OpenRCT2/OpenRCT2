@@ -1,22 +1,15 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef DISABLE_OPENGL
 
-#include "ApplyTransparencyShader.h"
+#    include "ApplyTransparencyShader.h"
 
 namespace
 {
@@ -25,17 +18,17 @@ namespace
         GLfloat position[2];
         GLfloat texturecoordinate[2];
     };
-}
+} // namespace
 
-constexpr VDStruct VertexData[4] =
-{
+constexpr VDStruct VertexData[4] = {
     { -1.0f, -1.0f, 0.0f, 0.0f },
-    {  1.0f, -1.0f, 1.0f, 0.0f },
-    { -1.0f,  1.0f, 0.0f, 1.0f },
-    {  1.0f,  1.0f, 1.0f, 1.0f },
+    { 1.0f, -1.0f, 1.0f, 0.0f },
+    { -1.0f, 1.0f, 0.0f, 1.0f },
+    { 1.0f, 1.0f, 1.0f, 1.0f },
 };
 
-ApplyTransparencyShader::ApplyTransparencyShader() : OpenGLShaderProgram("applytransparency")
+ApplyTransparencyShader::ApplyTransparencyShader()
+    : OpenGLShaderProgram("applytransparency")
 {
     GetLocations();
 
@@ -46,8 +39,9 @@ ApplyTransparencyShader::ApplyTransparencyShader() : OpenGLShaderProgram("applyt
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, position));
-    glVertexAttribPointer(vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, texturecoordinate));
+    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, position));
+    glVertexAttribPointer(
+        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, texturecoordinate));
 
     glEnableVertexAttribArray(vPosition);
     glEnableVertexAttribArray(vTextureCoordinate);
@@ -68,19 +62,18 @@ ApplyTransparencyShader::~ApplyTransparencyShader()
 
 void ApplyTransparencyShader::GetLocations()
 {
-    uOpaqueTex          = GetUniformLocation("uOpaqueTex");
-    uOpaqueDepth        = GetUniformLocation("uOpaqueDepth");
-    uTransparentTex     = GetUniformLocation("uTransparentTex");
-    uTransparentDepth   = GetUniformLocation("uTransparentDepth");
-    uPaletteTex         = GetUniformLocation("uPaletteTex");
+    uOpaqueTex = GetUniformLocation("uOpaqueTex");
+    uOpaqueDepth = GetUniformLocation("uOpaqueDepth");
+    uTransparentTex = GetUniformLocation("uTransparentTex");
+    uTransparentDepth = GetUniformLocation("uTransparentDepth");
+    uPaletteTex = GetUniformLocation("uPaletteTex");
 
-    vPosition           = GetAttributeLocation("vPosition");
-    vTextureCoordinate  = GetAttributeLocation("vTextureCoordinate");
+    vPosition = GetAttributeLocation("vPosition");
+    vTextureCoordinate = GetAttributeLocation("vTextureCoordinate");
 }
 
-void ApplyTransparencyShader::SetTextures(GLuint opaqueTex, GLuint opaqueDepth,
-                                          GLuint transparentTex, GLuint transparentDepth,
-                                          GLuint paletteTex)
+void ApplyTransparencyShader::SetTextures(
+    GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex)
 {
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, opaqueTex);
     OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, opaqueDepth);

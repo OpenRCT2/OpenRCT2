@@ -1,35 +1,28 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "Tables.h"
 
 #include "../common.h"
 #include "../core/Guard.hpp"
 #include "../core/Util.hpp"
-#include "Tables.h"
-
 #include "../interface/Colour.h"
-#include "RCT1.h"
 #include "../ride/Ride.h"
 #include "../world/Surface.h"
+#include "RCT1.h"
 
 // clang-format off
 namespace RCT1
 {
     colour_t GetColour(colour_t colour)
     {
-        static constexpr const uint8 map[] =
+        static constexpr const uint8_t map[] =
         {
             COLOUR_BLACK,
             COLOUR_GREY,
@@ -72,9 +65,9 @@ namespace RCT1
         return map[colour];
     }
 
-    uint8 GetPeepSpriteType(uint8 rct1SpriteType)
+    uint8_t GetPeepSpriteType(uint8_t rct1SpriteType)
     {
-        static constexpr const uint8 map[] =
+        static constexpr const uint8_t map[] =
         {
             PEEP_SPRITE_TYPE_NORMAL, // 0x00
             PEEP_SPRITE_TYPE_HANDYMAN, // 0x01
@@ -120,9 +113,9 @@ namespace RCT1
         return map[rct1SpriteType];
     }
 
-    uint8 GetTerrain(uint8 terrain)
+    uint8_t GetTerrain(uint8_t terrain)
     {
-        static constexpr const uint8 map[] =
+        static constexpr const uint8_t map[] =
         {
             TERRAIN_GRASS,
             TERRAIN_SAND,
@@ -145,9 +138,9 @@ namespace RCT1
         return map[terrain];
     }
 
-    uint8 GetTerrainEdge(uint8 terrainEdge)
+    uint8_t GetTerrainEdge(uint8_t terrainEdge)
     {
-        static constexpr const uint8 map[] =
+        static constexpr const uint8_t map[] =
         {
             TERRAIN_EDGE_ROCK,
             TERRAIN_EDGE_BRICK,
@@ -170,9 +163,9 @@ namespace RCT1
         return map[terrainEdge];
     }
 
-    uint8 GetRideType(uint8 rideType)
+    uint8_t GetRideType(uint8_t rideType)
     {
-        static uint8 map[] =
+        static uint8_t map[] =
         {
             RIDE_TYPE_WOODEN_ROLLER_COASTER,
             RIDE_TYPE_STAND_UP_ROLLER_COASTER,
@@ -265,7 +258,7 @@ namespace RCT1
         return map[rideType];
     }
 
-    RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8 vehicleType)
+    RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType)
     {
         static RCT1VehicleColourSchemeCopyDescriptor map[89] =
         {
@@ -364,7 +357,7 @@ namespace RCT1
         return map[vehicleType];
     }
 
-    bool RideTypeUsesVehicles(uint8 rideType)
+    bool RideTypeUsesVehicles(uint8_t rideType)
     {
         switch (rideType) {
         case RCT1_RIDE_TYPE_HEDGE_MAZE:
@@ -397,7 +390,7 @@ namespace RCT1
         }
     }
 
-    bool PathIsQueue(uint8 pathType)
+    bool PathIsQueue(uint8_t pathType)
     {
         switch (pathType) {
         case RCT1_FOOTPATH_TYPE_QUEUE_BLUE:
@@ -409,7 +402,7 @@ namespace RCT1
         return false;
     }
 
-    uint8 NormalisePathAddition(uint8 pathAdditionType)
+    uint8_t NormalisePathAddition(uint8_t pathAdditionType)
     {
         switch (pathAdditionType) {
         case RCT1_PATH_ADDITION_BROKEN_LAMP_1: return RCT1_PATH_ADDITION_LAMP_1;
@@ -422,9 +415,9 @@ namespace RCT1
         return pathAdditionType;
     }
 
-    uint8 GetVehicleSubEntryIndex(uint8 vehicleSubEntry)
+    uint8_t GetVehicleSubEntryIndex(uint8_t vehicleSubEntry)
     {
-        static constexpr const uint8 map[] =
+        static constexpr const uint8_t map[] =
         {
             0, // STEEL_RC_FRONT
             1, // STEEL_RC_CARRIAGE
@@ -686,7 +679,7 @@ namespace RCT1
         return map[vehicleSubEntry];
     }
 
-    const char * GetRideTypeObject(uint8 rideType)
+    const char * GetRideTypeObject(uint8_t rideType)
     {
         static constexpr const char * map[] =
         {
@@ -781,7 +774,7 @@ namespace RCT1
         return map[rideType];
     }
 
-    const char * GetVehicleObject(uint8 vehicleType)
+    const char * GetVehicleObject(uint8_t vehicleType)
     {
         static constexpr const char * map[] =
         {
@@ -880,7 +873,7 @@ namespace RCT1
         return map[vehicleType];
     }
 
-    const char * GetSmallSceneryObject(uint8 smallSceneryType)
+    const char * GetSmallSceneryObject(uint8_t smallSceneryType)
     {
         static constexpr const char * map[] =
         {
@@ -1132,7 +1125,7 @@ namespace RCT1
         return map[smallSceneryType];
     }
 
-    const char * GetLargeSceneryObject(uint8 largeSceneryType)
+    const char * GetLargeSceneryObject(uint8_t largeSceneryType)
     {
         static constexpr const char * map[] =
         {
@@ -1179,7 +1172,7 @@ namespace RCT1
         return map[largeSceneryType];
     }
 
-    const char * GetWallObject(uint8 wallType)
+    const char * GetWallObject(uint8_t wallType)
     {
         static constexpr const char * map[] =
         {
@@ -1283,7 +1276,7 @@ namespace RCT1
         return map[wallType];
     }
 
-    const char * GetPathObject(uint8 pathType)
+    const char * GetPathObject(uint8_t pathType)
     {
         static constexpr const char * map[] =
         {
@@ -1320,7 +1313,7 @@ namespace RCT1
         return map[pathType];
     }
 
-    const char * GetPathAddtionObject(uint8 pathAdditionType)
+    const char * GetPathAddtionObject(uint8_t pathAdditionType)
     {
         static constexpr const char * map[] =
         {
@@ -1343,7 +1336,7 @@ namespace RCT1
         return map[pathAdditionType];
     }
 
-    const char * GetSceneryGroupObject(uint8 sceneryGroupType)
+    const char * GetSceneryGroupObject(uint8_t sceneryGroupType)
     {
         static constexpr const char * map[] =
         {
@@ -1369,7 +1362,7 @@ namespace RCT1
         return map[sceneryGroupType];
     }
 
-    const char * GetWaterObject(uint8 waterType)
+    const char * GetWaterObject(uint8_t waterType)
     {
         static constexpr const char * map[] =
         {
@@ -1379,7 +1372,7 @@ namespace RCT1
         return map[waterType];
     }
 
-    const std::vector<const char *> GetSceneryObjects(uint8 sceneryType)
+    const std::vector<const char *> GetSceneryObjects(uint8_t sceneryType)
     {
         static const std::vector<const char *> map[] =
         {

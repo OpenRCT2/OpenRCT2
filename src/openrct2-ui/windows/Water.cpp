@@ -1,27 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <openrct2/Context.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
+#include <algorithm>
 #include <openrct2-ui/interface/LandTool.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Localisation.h>
 
 // clang-format off
 enum WINDOW_WATER_WIDGET_IDX {
@@ -88,7 +80,7 @@ static rct_window_event_list window_water_events = {
  *
  *  rct2: 0x006E6A40
  */
-rct_window * window_water_open()
+rct_window* window_water_open()
 {
     rct_window* window;
 
@@ -97,15 +89,7 @@ rct_window * window_water_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(
-        context_get_width() - 76,
-        29,
-        76,
-        77,
-        &window_water_events,
-        WC_WATER,
-        0
-    );
+    window = window_create(context_get_width() - 76, 29, 76, 77, &window_water_events, WC_WATER, 0);
     window->widgets = window_water_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
@@ -123,7 +107,7 @@ rct_window * window_water_open()
  *
  *  rct2: 0x006E6B65
  */
-static void window_water_close(rct_window *w)
+static void window_water_close(rct_window* w)
 {
     // If the tool wasn't changed, turn tool off
     if (water_tool_is_active())
@@ -134,57 +118,60 @@ static void window_water_close(rct_window *w)
  *
  *  rct2: 0x006E6B4E
  */
-static void window_water_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_water_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_PREVIEW:
-        window_water_inputsize(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_PREVIEW:
+            window_water_inputsize(w);
+            break;
     }
 }
 
-static void window_water_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_water_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    switch (widgetIndex) {
-    case WIDX_DECREMENT:
-        // Decrement land tool size
-        gLandToolSize = Math::Max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
+    switch (widgetIndex)
+    {
+        case WIDX_DECREMENT:
+            // Decrement land tool size
+            gLandToolSize = std::max(MINIMUM_TOOL_SIZE, gLandToolSize - 1);
 
-        // Invalidate the window
-        window_invalidate(w);
-        break;
-    case WIDX_INCREMENT:
-        // Increment land tool size
-        gLandToolSize = Math::Min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
+            // Invalidate the window
+            window_invalidate(w);
+            break;
+        case WIDX_INCREMENT:
+            // Increment land tool size
+            gLandToolSize = std::min(MAXIMUM_TOOL_SIZE, gLandToolSize + 1);
 
-        // Invalidate the window
-        window_invalidate(w);
-        break;
+            // Invalidate the window
+            window_invalidate(w);
+            break;
     }
 }
 
-static void window_water_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
+static void window_water_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    sint32 size;
+    int32_t size;
     char* end;
 
     if (widgetIndex != WIDX_PREVIEW || text == nullptr)
         return;
 
     size = strtol(text, &end, 10);
-    if (*end == '\0') {
-        size = Math::Max(MINIMUM_TOOL_SIZE,size);
-        size = Math::Min(MAXIMUM_TOOL_SIZE,size);
+    if (*end == '\0')
+    {
+        size = std::max(MINIMUM_TOOL_SIZE, size);
+        size = std::min(MAXIMUM_TOOL_SIZE, size);
         gLandToolSize = size;
 
         window_invalidate(w);
     }
 }
 
-static void window_water_inputsize(rct_window *w)
+static void window_water_inputsize(rct_window* w)
 {
     TextInputDescriptionArgs[0] = MINIMUM_TOOL_SIZE;
     TextInputDescriptionArgs[1] = MAXIMUM_TOOL_SIZE;
@@ -195,7 +182,7 @@ static void window_water_inputsize(rct_window *w)
  *
  *  rct2: 0x006E6BCE
  */
-static void window_water_update(rct_window *w)
+static void window_water_update(rct_window* w)
 {
     // Close window if another tool is open
     if (!water_tool_is_active())
@@ -206,7 +193,7 @@ static void window_water_update(rct_window *w)
  *
  *  rct2: 0x006E6AB8
  */
-static void window_water_invalidate(rct_window *w)
+static void window_water_invalidate(rct_window* w)
 {
     // Set the preview image button to be pressed down
     w->pressed_widgets |= (1 << WIDX_PREVIEW);
@@ -219,16 +206,17 @@ static void window_water_invalidate(rct_window *w)
  *
  *  rct2: 0x006E6ACF
  */
-static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    sint32 x, y;
+    int32_t x, y;
 
     x = w->x + (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2;
     y = w->y + (window_water_widgets[WIDX_PREVIEW].top + window_water_widgets[WIDX_PREVIEW].bottom) / 2;
 
     window_draw_widgets(w, dpi);
     // Draw number for tool sizes bigger than 7
-    if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE) {
+    if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+    {
         gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
     }
 
@@ -242,6 +230,4 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw lower cost amount
     if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
         gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gWaterToolLowerCost);
-
-
 }

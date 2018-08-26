@@ -1,30 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef DISABLE_OPENGL
 
-#include <algorithm>
-#include <memory>
-#include <openrct2/common.h>
-#include <SDL2/SDL_video.h>
-#include "OpenGLFramebuffer.h"
+#    include "OpenGLFramebuffer.h"
+
+#    include <SDL2/SDL_video.h>
+#    include <algorithm>
+#    include <memory>
+#    include <openrct2/common.h>
 
 constexpr GLuint BACKBUFFER_ID = 0;
 
-OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window * window)
+OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window* window)
 {
     _id = BACKBUFFER_ID;
     _texture = 0;
@@ -32,7 +26,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window * window)
     SDL_GetWindowSize(window, &_width, &_height);
 }
 
-OpenGLFramebuffer::OpenGLFramebuffer(sint32 width, sint32 height, bool depth, bool integer)
+OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, bool integer)
 {
     _width = width;
     _height = height;
@@ -91,19 +85,19 @@ void OpenGLFramebuffer::BindRead() const
     glBindFramebuffer(GL_READ_FRAMEBUFFER, _id);
 }
 
-void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
+void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo& dpi) const
 {
     assert(dpi.width == _width && dpi.height == _height);
 
-    auto pixels = std::make_unique<uint8[]>(_width * _height);
+    auto pixels = std::make_unique<uint8_t[]>(_width * _height);
     glBindTexture(GL_TEXTURE_2D, _texture);
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels.get());
 
     // Flip pixels vertically on copy
-    uint8 * src = pixels.get() + ((_height - 1) * _width);
-    uint8 * dst = dpi.bits;
-    for (sint32 y = 0; y < _height; y++)
+    uint8_t* src = pixels.get() + ((_height - 1) * _width);
+    uint8_t* dst = dpi.bits;
+    for (int32_t y = 0; y < _height; y++)
     {
         std::copy_n(src, _width, dst);
         src -= _width;
@@ -111,7 +105,7 @@ void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
     }
 }
 
-void OpenGLFramebuffer::SwapColourBuffer(OpenGLFramebuffer &other)
+void OpenGLFramebuffer::SwapColourBuffer(OpenGLFramebuffer& other)
 {
     std::swap(_texture, other._texture);
 
@@ -132,18 +126,15 @@ GLuint OpenGLFramebuffer::SwapDepthTexture(GLuint depth)
     return depth;
 }
 
-void OpenGLFramebuffer::Copy(OpenGLFramebuffer &src, GLenum filter)
+void OpenGLFramebuffer::Copy(OpenGLFramebuffer& src, GLenum filter)
 {
     BindDraw();
     src.BindRead();
-    glBlitFramebuffer(
-        0, 0, src.GetWidth(), src.GetHeight(),
-        0, 0, _width, _height, GL_COLOR_BUFFER_BIT, filter
-    );
+    glBlitFramebuffer(0, 0, src.GetWidth(), src.GetHeight(), 0, 0, _width, _height, GL_COLOR_BUFFER_BIT, filter);
     Bind();
 }
 
-GLuint OpenGLFramebuffer::CreateDepthTexture(sint32 width, sint32 height)
+GLuint OpenGLFramebuffer::CreateDepthTexture(int32_t width, int32_t height)
 {
     GLuint depth;
     glGenTextures(1, &depth);

@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
@@ -34,8 +27,8 @@ private:
         const std::function<void()> CompletionFn;
 
         TaskData(std::function<void()> workFn, std::function<void()> completionFn)
-            : WorkFn(workFn),
-              CompletionFn(completionFn)
+            : WorkFn(workFn)
+            , CompletionFn(completionFn)
         {
         }
     };
@@ -93,11 +86,7 @@ public:
         while (true)
         {
             // Wait for the queue to become empty or having completed tasks.
-            _condComplete.wait(lock, [this]()
-            {
-                return (_pending.empty() && _processing == 0) ||
-                        !_completed.empty();
-            });
+            _condComplete.wait(lock, [this]() { return (_pending.empty() && _processing == 0) || !_completed.empty(); });
 
             // Dispatch all completion callbacks if there are any.
             while (!_completed.empty())
@@ -125,9 +114,7 @@ public:
             }
 
             // If everything is empty and no more work has to be done we can stop waiting.
-            if (_completed.empty() &&
-                _pending.empty() &&
-                _processing == 0)
+            if (_completed.empty() && _pending.empty() && _processing == 0)
             {
                 break;
             }
@@ -146,11 +133,7 @@ private:
         do
         {
             // Wait for work or cancelation.
-            _condPending.wait(lock,
-                [this]()
-                {
-                    return _shouldStop || !_pending.empty();
-                });
+            _condPending.wait(lock, [this]() { return _shouldStop || !_pending.empty(); });
 
             if (!_pending.empty())
             {
@@ -170,7 +153,6 @@ private:
                 _processing--;
                 _condComplete.notify_one();
             }
-        }
-        while(!_shouldStop);
+        } while (!_shouldStop);
     }
 };

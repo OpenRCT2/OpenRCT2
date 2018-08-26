@@ -33,6 +33,11 @@
 		9308DA03209908090079EE96 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FB209908080079EE96 /* Surface.cpp */; };
 		9308DA04209908090079EE96 /* TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FC209908080079EE96 /* TileElement.h */; };
 		9308DA05209908090079EE96 /* Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FD209908090079EE96 /* Surface.h */; };
+		933CBDB520CB1ACD00134678 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB120CB1ACC00134678 /* Widget.cpp */; };
+		933CBDB620CB1ACD00134678 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB220CB1ACD00134678 /* Theme.cpp */; };
+		933CBDBB20CB1B3F00134678 /* TitleSequencePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB920CB1B3F00134678 /* TitleSequencePlayer.cpp */; };
+		933CBDBD20CB1BA900134678 /* ViewportInteraction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDBC20CB1BA900134678 /* ViewportInteraction.cpp */; };
+		933CBDBF20CB1BCA00134678 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDBE20CB1BCA00134678 /* Window.cpp */; };
 		933F2CB720935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
 		933F2CB920935653001B33FD /* LocalisationService.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933F2CB620935653001B33FD /* LocalisationService.cpp */; };
@@ -240,10 +245,7 @@
 		C688789220289B140084B384 /* FontFamilies.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E4200143C200A52E21 /* FontFamilies.cpp */; };
 		C688789320289B140084B384 /* Fonts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E6200143C200A52E21 /* Fonts.cpp */; };
 		C688789420289B140084B384 /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53E8200143C200A52E21 /* Screenshot.cpp */; };
-		C688789520289B140084B384 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EA200143C200A52E21 /* Theme.cpp */; };
 		C688789620289B140084B384 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EC200143C200A52E21 /* Viewport.cpp */; };
-		C688789720289B140084B384 /* ViewportInteraction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EE200143C200A52E21 /* ViewportInteraction.cpp */; };
-		C688789820289B140084B384 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EF200143C200A52E21 /* Widget.cpp */; };
 		C688789920289B140084B384 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53F1200143C200A52E21 /* Window.cpp */; };
 		C688789A20289B200084B384 /* ConversionTables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53C61FFF94F900A52E21 /* ConversionTables.cpp */; };
 		C688789B20289B200084B384 /* Convert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53AA1FFF935B00A52E21 /* Convert.cpp */; };
@@ -476,7 +478,6 @@
 		F76C87381EC4E88400FA49E2 /* TitleScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84FC1EC4E7CD00FA49E2 /* TitleScreen.cpp */; };
 		F76C873A1EC4E88400FA49E2 /* TitleSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84FE1EC4E7CD00FA49E2 /* TitleSequence.cpp */; };
 		F76C873C1EC4E88400FA49E2 /* TitleSequenceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85001EC4E7CD00FA49E2 /* TitleSequenceManager.cpp */; };
-		F76C873E1EC4E88400FA49E2 /* TitleSequencePlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85021EC4E7CD00FA49E2 /* TitleSequencePlayer.cpp */; };
 		F76C87451EC4E88400FA49E2 /* Version.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C850B1EC4E7CD00FA49E2 /* Version.cpp */; };
 		F76C88781EC5324E00FA49E2 /* AudioChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85821EC4E82600FA49E2 /* AudioChannel.cpp */; };
 		F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85831EC4E82600FA49E2 /* AudioContext.cpp */; };
@@ -674,12 +675,8 @@
 		4C7B53E7200143C200A52E21 /* Fonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fonts.h; sourceTree = "<group>"; };
 		4C7B53E8200143C200A52E21 /* Screenshot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screenshot.cpp; sourceTree = "<group>"; };
 		4C7B53E9200143C200A52E21 /* Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screenshot.h; sourceTree = "<group>"; };
-		4C7B53EA200143C200A52E21 /* Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
-		4C7B53EB200143C200A52E21 /* themes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = themes.h; sourceTree = "<group>"; };
 		4C7B53EC200143C200A52E21 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		4C7B53ED200143C200A52E21 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
-		4C7B53EE200143C200A52E21 /* ViewportInteraction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewportInteraction.cpp; sourceTree = "<group>"; };
-		4C7B53EF200143C200A52E21 /* Widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Widget.cpp; sourceTree = "<group>"; };
 		4C7B53F0200143C200A52E21 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
 		4C7B53F1200143C200A52E21 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		4C7B53F2200143C200A52E21 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
@@ -868,6 +865,13 @@
 		9308D9FB209908080079EE96 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
 		9308D9FC209908080079EE96 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
+		933CBDB120CB1ACC00134678 /* Widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Widget.cpp; sourceTree = "<group>"; };
+		933CBDB220CB1ACD00134678 /* Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
+		933CBDB320CB1ACD00134678 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
+		933CBDB920CB1B3F00134678 /* TitleSequencePlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleSequencePlayer.cpp; sourceTree = "<group>"; };
+		933CBDBA20CB1B3F00134678 /* TitleSequencePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleSequencePlayer.h; sourceTree = "<group>"; };
+		933CBDBC20CB1BA900134678 /* ViewportInteraction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewportInteraction.cpp; sourceTree = "<group>"; };
+		933CBDBE20CB1BCA00134678 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		933F2CB620935653001B33FD /* LocalisationService.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LocalisationService.cpp; sourceTree = "<group>"; };
 		933F2CBA20935668001B33FD /* LocalisationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalisationService.h; sourceTree = "<group>"; };
 		9344BEF720C1E6180047D165 /* Crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypt.h; sourceTree = "<group>"; };
@@ -1583,7 +1587,6 @@
 		F76C84FF1EC4E7CD00FA49E2 /* TitleSequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleSequence.h; sourceTree = "<group>"; };
 		F76C85001EC4E7CD00FA49E2 /* TitleSequenceManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TitleSequenceManager.cpp; sourceTree = "<group>"; };
 		F76C85011EC4E7CD00FA49E2 /* TitleSequenceManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleSequenceManager.h; sourceTree = "<group>"; };
-		F76C85021EC4E7CD00FA49E2 /* TitleSequencePlayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TitleSequencePlayer.cpp; sourceTree = "<group>"; };
 		F76C85031EC4E7CD00FA49E2 /* TitleSequencePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TitleSequencePlayer.h; sourceTree = "<group>"; };
 		F76C85051EC4E7CD00FA49E2 /* UiContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UiContext.h; sourceTree = "<group>"; };
 		F76C850B1EC4E7CD00FA49E2 /* Version.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
@@ -1702,6 +1705,16 @@
 			);
 			path = thirdparty;
 			sourceTree = "<group>";
+		};
+		933CBDB820CB1B3F00134678 /* title */ = {
+			isa = PBXGroup;
+			children = (
+				933CBDB920CB1B3F00134678 /* TitleSequencePlayer.cpp */,
+				933CBDBA20CB1B3F00134678 /* TitleSequencePlayer.h */,
+			);
+			name = title;
+			path = "src/openrct2-ui/title";
+			sourceTree = SOURCE_ROOT;
 		};
 		9350B44320B46E0800897BC5 /* unicode */ = {
 			isa = PBXGroup;
@@ -1985,8 +1998,13 @@
 				4C3B4235205914F7000C5BB7 /* InGameConsole.h */,
 				C68313D31FDB4F4C006DB3D8 /* LandTool.cpp */,
 				C68313D41FDB4F4C006DB3D8 /* LandTool.h */,
+				933CBDB220CB1ACD00134678 /* Theme.cpp */,
+				933CBDB320CB1ACD00134678 /* Theme.h */,
 				C67B28142002D67900109C93 /* Viewport.h */,
+				933CBDBC20CB1BA900134678 /* ViewportInteraction.cpp */,
+				933CBDB120CB1ACC00134678 /* Widget.cpp */,
 				C67B28122002D67900109C93 /* Widget.h */,
+				933CBDBE20CB1BCA00134678 /* Window.cpp */,
 				C67B28132002D67900109C93 /* Window.h */,
 			);
 			path = interface;
@@ -2503,12 +2521,8 @@
 				4C7B53E8200143C200A52E21 /* Screenshot.cpp */,
 				4C7B53E9200143C200A52E21 /* Screenshot.h */,
 				4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */,
-				4C7B53EA200143C200A52E21 /* Theme.cpp */,
-				4C7B53EB200143C200A52E21 /* themes.h */,
 				4C7B53EC200143C200A52E21 /* Viewport.cpp */,
 				4C7B53ED200143C200A52E21 /* Viewport.h */,
-				4C7B53EE200143C200A52E21 /* ViewportInteraction.cpp */,
-				4C7B53EF200143C200A52E21 /* Widget.cpp */,
 				4C7B53F0200143C200A52E21 /* Widget.h */,
 				C67B28182002D7F200109C93 /* Window_internal.h */,
 				4C7B53F1200143C200A52E21 /* Window.cpp */,
@@ -2952,7 +2966,6 @@
 				F76C84FF1EC4E7CD00FA49E2 /* TitleSequence.h */,
 				F76C85001EC4E7CD00FA49E2 /* TitleSequenceManager.cpp */,
 				F76C85011EC4E7CD00FA49E2 /* TitleSequenceManager.h */,
-				F76C85021EC4E7CD00FA49E2 /* TitleSequencePlayer.cpp */,
 				F76C85031EC4E7CD00FA49E2 /* TitleSequencePlayer.h */,
 			);
 			path = title;
@@ -3056,6 +3069,7 @@
 				F76C858D1EC4E82600FA49E2 /* drawing */,
 				F7CB86451EEDA1200030C877 /* input */,
 				C68313CF1FDB4F4C006DB3D8 /* interface */,
+				933CBDB820CB1B3F00134678 /* title */,
 				F7CB86401EEDA0E20030C877 /* windows */,
 				F76C858A1EC4E82600FA49E2 /* CursorData.cpp */,
 				F76C858B1EC4E82600FA49E2 /* CursorRepository.cpp */,
@@ -3422,7 +3436,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"1.0.2\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi";
+			shellScript = "version=\"1.0.6\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi";
 		};
 		C68B2D471EC790710020651C /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3468,7 +3482,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			showEnvVarsInLog = 0;
 		};
 		D4E09E831E049C0600F53CE3 /* Download Title Sequences */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3482,7 +3497,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"0.2.0\"\nzipname=\"title-sequence-v$version.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/title\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/title\" ]]; then rm -r \"${SRCROOT}/data/title\"; fi\nmkdir -p \"${SRCROOT}/data/title\"\n\ncurl -L -o \"${SRCROOT}/data/title/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/title\" \"${SRCROOT}/data/title/$zipname\"\nrm \"${SRCROOT}/data/title/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi";
+			shellScript = "version=\"0.1.2\"\nzipname=\"title-sequence-v$version.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/title\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/title\" ]]; then rm -r \"${SRCROOT}/data/title\"; fi\nmkdir -p \"${SRCROOT}/data/title\"\n\ncurl -L -o \"${SRCROOT}/data/title/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/title\" \"${SRCROOT}/data/title/$zipname\"\nrm \"${SRCROOT}/data/title/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3529,7 +3544,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			showEnvVarsInLog = 0;
 		};
 		F7D7748C1EC66E9300BE6EBC /* Get Git Variables */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3545,7 +3561,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_BRANCH \\\"$(git rev-parse --abbrev-ref HEAD)\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1 \\\"$(git rev-parse HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$(git rev-parse --short HEAD)\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -3571,6 +3588,7 @@
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
 				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
 				C68878C420289B710084B384 /* OpenGLAPI.cpp in Sources */,
+				933CBDBB20CB1B3F00134678 /* TitleSequencePlayer.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
 				C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
@@ -3596,10 +3614,12 @@
 				C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */,
 				C654DF371F69C0430040F43D /* Sign.cpp in Sources */,
 				93CBA4C920A7504500867D56 /* ImageImporter.cpp in Sources */,
+				933CBDB620CB1ACD00134678 /* Theme.cpp in Sources */,
 				93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */,
 				C68878CC20289B710084B384 /* SoftwareDrawingEngine.cpp in Sources */,
 				C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */,
 				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
+				933CBDBD20CB1BA900134678 /* ViewportInteraction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
 				C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */,
@@ -3642,6 +3662,7 @@
 				C68878C620289B710084B384 /* OpenGLFramebuffer.cpp in Sources */,
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,
 				9308DA01209908090079EE96 /* Surface.cpp in Sources */,
+				933CBDBF20CB1BCA00134678 /* Window.cpp in Sources */,
 				C68878C320289B710084B384 /* DrawRectShader.cpp in Sources */,
 				C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */,
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
@@ -3665,6 +3686,7 @@
 				C685E51A1F8907850090598F /* Staff.cpp in Sources */,
 				F76C888C1EC5324E00FA49E2 /* UiContext.cpp in Sources */,
 				C666EE7D1F37ACB10061AA04 /* TitleMenu.cpp in Sources */,
+				933CBDB520CB1ACD00134678 /* Widget.cpp in Sources */,
 				9308D9FE209908090079EE96 /* TileElement.cpp in Sources */,
 				F76C888D1EC5324E00FA49E2 /* UiContext.Linux.cpp in Sources */,
 				9346F9D8208A191900C77D91 /* Guest.cpp in Sources */,
@@ -3714,7 +3736,6 @@
 				F76C85BD1EC4E88300FA49E2 /* RootCommands.cpp in Sources */,
 				C688791320289B9B0084B384 /* HauntedHouse.cpp in Sources */,
 				C688786E20289A6F0084B384 /* Vehicle.cpp in Sources */,
-				C688789520289B140084B384 /* Theme.cpp in Sources */,
 				F76C85BE1EC4E88300FA49E2 /* ScreenshotCommands.cpp in Sources */,
 				C688786320289A0A0084B384 /* MapHelpers.cpp in Sources */,
 				F76C85BF1EC4E88300FA49E2 /* SpriteCommands.cpp in Sources */,
@@ -3864,7 +3885,6 @@
 				C688788F20289B140084B384 /* Chat.cpp in Sources */,
 				C688789A20289B200084B384 /* ConversionTables.cpp in Sources */,
 				C688791020289B9B0084B384 /* FerrisWheel.cpp in Sources */,
-				C688789820289B140084B384 /* Widget.cpp in Sources */,
 				C688791120289B9B0084B384 /* FlyingSaucers.cpp in Sources */,
 				C688784A202899B40084B384 /* input.cpp in Sources */,
 				F76C867D1EC4E88400FA49E2 /* StringTable.cpp in Sources */,
@@ -3929,7 +3949,6 @@
 				C688789920289B140084B384 /* Window.cpp in Sources */,
 				F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */,
 				F76C87381EC4E88400FA49E2 /* TitleScreen.cpp in Sources */,
-				C688789720289B140084B384 /* ViewportInteraction.cpp in Sources */,
 				F76C873A1EC4E88400FA49E2 /* TitleSequence.cpp in Sources */,
 				C6887852202899ED0084B384 /* TileInspector.cpp in Sources */,
 				F76C873C1EC4E88400FA49E2 /* TitleSequenceManager.cpp in Sources */,
@@ -3942,7 +3961,6 @@
 				C688786620289A430084B384 /* Intent.cpp in Sources */,
 				C68878E520289B9B0084B384 /* Platform.Android.cpp in Sources */,
 				C68878EA20289B9B0084B384 /* Shared.cpp in Sources */,
-				F76C873E1EC4E88400FA49E2 /* TitleSequencePlayer.cpp in Sources */,
 				F76C87451EC4E88400FA49E2 /* Version.cpp in Sources */,
 				9346F9D9208A191900C77D91 /* Guest.cpp in Sources */,
 				C688789C20289B200084B384 /* Currency.cpp in Sources */,

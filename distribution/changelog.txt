@@ -1,8 +1,52 @@
+0.2.0+ (in development)
+------------------------------------------------------------------------
+- Feature: [#5993] Ride window prices can now be set via text input.
+- Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
+- Feature: [#7658] Add option to always use system file browsing window.
+- Feature: [#7694] Debug option to visualize paths that the game detects as wide.
+- Feature: [#7713] The virtual floor now takes land ownership rights into account.
+- Feature: [#7771] Danish translation.
+- Feature: [#7797, #7802, #7821, #7830] Add sprite font glyphs for Danish, Norwegian, Russian, Turkish, Catalan and Romanian.
+- Feature: [#7848] Add a master volume slider to audio options screen.
+- Feature: [#7868] Placing scenery while holding shift now scales appropriately with zoom levels.
+- Feature: [#7882] Auto-detect Steam and GOG installations of RCT1.
+- Feature: [#7885] Turkish translation.
+- Fix: [#3177] Wrong keys displayed in shortcut menu.
+- Fix: [#4039] No sprite font glyph for German opening quotation mark.
+- Fix: [#5548] platform_get_locale_date_format is not implemented for Linux.
+- Fix: [#7204] Object source filters do not work for RCT1, AA and LL.
+- Fix: [#7440] Memory leak. All system memory used.
+- Fix: [#7462] Guest window goes beyond the map edge on a spiral slide.
+- Fix: [#7533] Screenshot is incorrectly named/file is not generated in CJK language.
+- Fix: [#7628] Always-researched items can be modified in the inventory list.
+- Fix: [#7643] No Money scenarios with funding set to zero.
+- Fix: [#7653] Finances money spinner is too narrow for big loans.
+- Fix: [#7673] Vehicle names are cut off in invention list.
+- Fix: [#7674] Rides show up as random numbers in guest's ride list.
+- Fix: [#7678] Crash when loading or starting a new game while having object selection window open.
+- Fix: [#7683] 'Arbitrary ride type' dropdown state is shared between windows.
+- Fix: [#7697] Some scenery groups in RCT1 saves are never invented.
+- Fix: [#7711] Inverted Hairpin Coaster allows building invisible banked pieces.
+- Fix: [#7734] Title sequence not included in macOS builds as of 0.2.0 release.
+- Fix: [#7756] Steam RCT2 path not correctly checked on macOS and Linux.
+- Fix: [#7765] Crash when opening ride list window on Windows Vista.
+- Fix: [#7773] Once research has been completed, player is still charged for research.
+- Fix: [#7786] Crash when importing a track design.
+- Fix: [#7793] Duplicate private keys generated.
+- Fix: [#7817] No sprite font glyph for interpunct.
+- Fix: [#7823] You can build mazes in pause mode.
+- Fix: [#7804] Russian ride descriptions are cut off.
+- Fix: [#7872] CJK tooltips are often cut off.
+- Fix: [#7895] Import of Mega Park and the RCT1 title music do not work on some RCT1 sources.
+- Improved: [#7899] Timestamps in the load/save screen are now displayed using local timezone instead of GMT.
+- Improved: [#7918] Better RCT2 detection if both disc and GOG/Steam versions are installed.
+
 0.2.0 (2018-06-10)
 ------------------------------------------------------------------------
 - Feature: [#1417] Allow saving track designs for flat rides.
 - Feature: [#1675] Auto-rotate shops to face footpaths.
 - Feature: [#3473] Add button in ride window's maintainance tab to refurbish the ride.
+- Feature: [#4143] New horizontal +/- spinner widgets to make adjusting values easier.
 - Feature: [#6510] Ability to select edges or a row of tiles by holding down Ctrl using the land tool.
 - Feature: [#7187] Option for early scenario completion.
 - Feature: [#7266] Make headless instances use an interactive terminal with access to the in-game console API.
@@ -11,7 +55,6 @@
 - Feature: [#7332] Keyboard shortcuts for view path issues and cutaway view.
 - Feature: [#7348] Add large half loops to the Vertical Drop Roller Coaster.
 - Feature: [#7459] Allow opening and closing of parks that use no money.
-- Feature: [#7579] New horizontal +/- spinner widgets to make adjusting values easier.
 - Fix: [#2053] When clearance checks are disabled, a track piece ghost can remove non-ghost track pieces.
 - Fix: [#2611] Some objects show (undefined string) instead of a description in Korean.
 - Fix: [#3596] Saving parks, landscapes and tracks with a period in the filenames don't get their extension.
@@ -22,7 +65,7 @@
 - Fix: [#6938] Banner do not correctly capitalise non-ASCII characters.
 - Fix: [#7176] Mechanics sometimes fall down from rides.
 - Fix: [#7303] Visual glitch with virtual floor near map edges.
-- Fix: [#7313] Loading an invalid path with openrct2 produces results different than expected.
+- Fix: [#7313] Loading an invalid path with OpenRCT2 produces results different than expected.
 - Fix: [#7327] Abstract scenery and stations don't get fully See-Through when hiding them (original bug).
 - Fix: [#7331] Invention list in scenario editor crashes upon removing previously-enabled ride/stall entries.
 - Fix: [#7341] Staff may auto-spawn on guests walking outside of paths.

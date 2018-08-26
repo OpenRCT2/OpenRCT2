@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
@@ -25,16 +18,16 @@ interface IStringReader
 {
     virtual ~IStringReader() = default;
 
-    virtual bool TryPeek(codepoint_t * outCodepoint)       abstract;
-    virtual bool TryRead(codepoint_t * outCodepoint)       abstract;
-    virtual void Skip()                                    abstract;
-    virtual bool CanRead()                           const abstract;
+    virtual bool TryPeek(codepoint_t * outCodepoint) abstract;
+    virtual bool TryRead(codepoint_t * outCodepoint) abstract;
+    virtual void Skip() abstract;
+    virtual bool CanRead() const abstract;
 };
 
 class UTF8StringReader final : public IStringReader
 {
 public:
-    explicit UTF8StringReader(const utf8 * text)
+    explicit UTF8StringReader(const utf8* text)
     {
         text = String::SkipBOM(text);
 
@@ -42,18 +35,20 @@ public:
         _current = text;
     }
 
-    bool TryPeek(codepoint_t * outCodepoint) override
+    bool TryPeek(codepoint_t* outCodepoint) override
     {
-        if (_current == nullptr) return false;
+        if (_current == nullptr)
+            return false;
 
         codepoint_t codepoint = String::GetNextCodepoint(_current);
         *outCodepoint = codepoint;
         return true;
     }
 
-    bool TryRead(codepoint_t * outCodepoint) override
+    bool TryRead(codepoint_t* outCodepoint) override
     {
-        if (_current == nullptr) return false;
+        if (_current == nullptr)
+            return false;
 
         codepoint_t codepoint = String::GetNextCodepoint(_current, &_current);
         *outCodepoint = codepoint;
@@ -77,6 +72,6 @@ public:
     }
 
 private:
-    const utf8 *_text;
-    const utf8 *_current;
+    const utf8* _text;
+    const utf8* _current;
 };

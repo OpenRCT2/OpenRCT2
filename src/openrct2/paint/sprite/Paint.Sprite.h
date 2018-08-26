@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _PAINT_SPRITE_H
 #define _PAINT_SPRITE_H
@@ -22,12 +15,12 @@
 
 struct paint_session;
 
-void sprite_paint_setup(paint_session * session, const uint16 x, const uint16 y);
+void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t y);
 
-void misc_paint(paint_session * session, const rct_sprite *misc, sint32 imageDirection);
-void litter_paint(paint_session * session, const rct_litter *litter, sint32 imageDirection);
-void peep_paint(paint_session * session, const rct_peep *peep, sint32 imageDirection);
+void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDirection);
+void litter_paint(paint_session* session, const rct_litter* litter, int32_t imageDirection);
+void peep_paint(paint_session* session, const rct_peep* peep, int32_t imageDirection);
 
-extern const uint32 vehicle_particle_base_sprites[5];
+extern const uint32_t vehicle_particle_base_sprites[5];
 
 #endif

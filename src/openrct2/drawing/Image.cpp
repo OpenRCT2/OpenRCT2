@@ -1,40 +1,33 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "../OpenRCT2.h"
+#include "../core/Console.hpp"
+#include "../core/Guard.hpp"
+#include "Drawing.h"
 
 #include <algorithm>
 #include <list>
-#include "../core/Console.hpp"
-#include "../core/Guard.hpp"
-#include "../OpenRCT2.h"
 
-#include "Drawing.h"
-
-constexpr uint32 BASE_IMAGE_ID = 29294;
-constexpr uint32 MAX_IMAGES = 262144;
-constexpr uint32 INVALID_IMAGE_ID = UINT32_MAX;
+constexpr uint32_t BASE_IMAGE_ID = 29294;
+constexpr uint32_t MAX_IMAGES = 262144;
+constexpr uint32_t INVALID_IMAGE_ID = UINT32_MAX;
 
 struct ImageList
 {
-    uint32 BaseId;
-    uint32 Count;
+    uint32_t BaseId;
+    uint32_t Count;
 };
 
-static bool                 _initialised = false;
+static bool _initialised = false;
 static std::list<ImageList> _freeLists;
-static uint32               _allocatedImageCount;
+static uint32_t _allocatedImageCount;
 
 #ifdef DEBUG
 static std::list<ImageList> _allocatedLists;
@@ -42,30 +35,24 @@ static std::list<ImageList> _allocatedLists;
 // MSVC's compiler doesn't support the [[maybe_unused]] attribute for unused static functions. Until this has been resolved, we
 // need to explicitly tell the compiler to temporarily disable the warning.
 // See discussion at https://github.com/OpenRCT2/OpenRCT2/pull/7617
-#pragma warning(push)
-#pragma warning(disable : 4505) // unreferenced local function has been removed
+#    pragma warning(push)
+#    pragma warning(disable : 4505) // unreferenced local function has been removed
 
-[[maybe_unused]] static bool AllocatedListContains(uint32 baseImageId, uint32 count)
+[[maybe_unused]] static bool AllocatedListContains(uint32_t baseImageId, uint32_t count)
 {
     bool contains = std::any_of(
-        _allocatedLists.begin(),
-        _allocatedLists.end(),
-        [baseImageId, count](const ImageList &imageList) -> bool
-        {
+        _allocatedLists.begin(), _allocatedLists.end(), [baseImageId, count](const ImageList& imageList) -> bool {
             return imageList.BaseId == baseImageId && imageList.Count == count;
         });
     return contains;
 }
 
-#pragma warning(pop)
+#    pragma warning(pop)
 
-static bool AllocatedListRemove(uint32 baseImageId, uint32 count)
+static bool AllocatedListRemove(uint32_t baseImageId, uint32_t count)
 {
     auto foundItem = std::find_if(
-        _allocatedLists.begin(),
-        _allocatedLists.end(),
-        [baseImageId, count](const ImageList &imageList) -> bool
-        {
+        _allocatedLists.begin(), _allocatedLists.end(), [baseImageId, count](const ImageList& imageList) -> bool {
             return imageList.BaseId == baseImageId && imageList.Count == count;
         });
     if (foundItem != _allocatedLists.end())
@@ -77,7 +64,7 @@ static bool AllocatedListRemove(uint32 baseImageId, uint32 count)
 }
 #endif
 
-static uint32 GetNumFreeImagesRemaining()
+static uint32_t GetNumFreeImagesRemaining()
 {
     return MAX_IMAGES - _allocatedImageCount;
 }
@@ -100,11 +87,7 @@ static void InitialiseImageList()
  */
 static void MergeFreeLists()
 {
-    _freeLists.sort(
-        [](const ImageList &a, const ImageList &b) -> bool
-        {
-            return a.BaseId < b.BaseId;
-        });
+    _freeLists.sort([](const ImageList& a, const ImageList& b) -> bool { return a.BaseId < b.BaseId; });
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
     {
         bool mergeHappened;
@@ -126,7 +109,7 @@ static void MergeFreeLists()
     }
 }
 
-static uint32 TryAllocateImageList(uint32 count)
+static uint32_t TryAllocateImageList(uint32_t count)
 {
     for (auto it = _freeLists.begin(); it != _freeLists.end(); it++)
     {
@@ -136,8 +119,7 @@ static uint32 TryAllocateImageList(uint32 count)
             _freeLists.erase(it);
             if (imageList.Count > count)
             {
-                ImageList remainder = { imageList.BaseId + count,
-                                        imageList.Count - count };
+                ImageList remainder = { imageList.BaseId + count, imageList.Count - count };
                 _freeLists.push_back(remainder);
             }
 
@@ -151,7 +133,7 @@ static uint32 TryAllocateImageList(uint32 count)
     return INVALID_IMAGE_ID;
 }
 
-static uint32 AllocateImageList(uint32 count)
+static uint32_t AllocateImageList(uint32_t count)
 {
     Guard::Assert(count != 0, GUARD_LINE);
 
@@ -160,8 +142,8 @@ static uint32 AllocateImageList(uint32 count)
         InitialiseImageList();
     }
 
-    uint32 baseImageId = INVALID_IMAGE_ID;
-    uint32 freeImagesRemaining = GetNumFreeImagesRemaining();
+    uint32_t baseImageId = INVALID_IMAGE_ID;
+    uint32_t freeImagesRemaining = GetNumFreeImagesRemaining();
     if (freeImagesRemaining >= count)
     {
         baseImageId = TryAllocateImageList(count);
@@ -175,7 +157,7 @@ static uint32 AllocateImageList(uint32 count)
     return baseImageId;
 }
 
-static void FreeImageList(uint32 baseImageId, uint32 count)
+static void FreeImageList(uint32_t baseImageId, uint32_t count)
 {
     Guard::Assert(_initialised, GUARD_LINE);
     Guard::Assert(baseImageId >= BASE_IMAGE_ID, GUARD_LINE);
@@ -204,22 +186,22 @@ static void FreeImageList(uint32 baseImageId, uint32 count)
     _freeLists.push_back({ baseImageId, count });
 }
 
-uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
+uint32_t gfx_object_allocate_images(const rct_g1_element* images, uint32_t count)
 {
     if (count == 0 || gOpenRCT2NoGraphics)
     {
         return INVALID_IMAGE_ID;
     }
 
-    uint32 baseImageId = AllocateImageList(count);
+    uint32_t baseImageId = AllocateImageList(count);
     if (baseImageId == INVALID_IMAGE_ID)
     {
         log_error("Reached maximum image limit.");
         return INVALID_IMAGE_ID;
     }
 
-    uint32 imageId = baseImageId;
-    for (uint32 i = 0; i < count; i++)
+    uint32_t imageId = baseImageId;
+    for (uint32_t i = 0; i < count; i++)
     {
         gfx_set_g1_element(imageId, &images[i]);
         drawing_engine_invalidate_image(imageId);
@@ -229,15 +211,15 @@ uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count)
     return baseImageId;
 }
 
-void gfx_object_free_images(uint32 baseImageId, uint32 count)
+void gfx_object_free_images(uint32_t baseImageId, uint32_t count)
 {
     if (baseImageId != 0 && baseImageId != INVALID_IMAGE_ID)
     {
         // Zero the G1 elements so we don't have invalid pointers
         // and data lying about
-        for (uint32 i = 0; i < count; i++)
+        for (uint32_t i = 0; i < count; i++)
         {
-            uint32 imageId = baseImageId + i;
+            uint32_t imageId = baseImageId + i;
             rct_g1_element g1 = {};
             gfx_set_g1_element(imageId, &g1);
             drawing_engine_invalidate_image(imageId);
@@ -258,4 +240,3 @@ void gfx_object_check_all_images_freed()
 #endif
     }
 }
-

@@ -1,147 +1,140 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "ShopItem.h"
 
 #include "../common.h"
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
-#include "ShopItem.h"
 
-uint32 gSamePriceThroughoutParkA;
-uint32 gSamePriceThroughoutParkB;
+uint32_t gSamePriceThroughoutParkA;
+uint32_t gSamePriceThroughoutParkB;
 
 /** rct2: 0x00982164 */
-static const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] =
-{
-    {  3, 14, 14, 14 }, // SHOP_ITEM_BALLOON
+static const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] = {
+    { 3, 14, 14, 14 },  // SHOP_ITEM_BALLOON
     { 15, 30, 30, 30 }, // SHOP_ITEM_TOY
-    {  1,  7,  7,  8 }, // SHOP_ITEM_MAP
-    {  2, 30, 30, 30 }, // SHOP_ITEM_PHOTO
+    { 1, 7, 7, 8 },     // SHOP_ITEM_MAP
+    { 2, 30, 30, 30 },  // SHOP_ITEM_PHOTO
     { 20, 35, 25, 50 }, // SHOP_ITEM_UMBRELLA
-    {  3, 12, 20, 10 }, // SHOP_ITEM_DRINK
-    {  5, 19, 19, 22 }, // SHOP_ITEM_BURGER
-    {  4, 16, 16, 18 }, // SHOP_ITEM_CHIPS
-    {  4, 10, 15,  6 }, // SHOP_ITEM_ICE_CREAM
-    {  3,  9,  9,  6 }, // SHOP_ITEM_CANDYFLOSS
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_CAN
-    {  0,  0,  0,  0 }, // SHOP_ITEM_RUBBISH
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BURGER_BOX
-    {  6, 21, 21, 25 }, // SHOP_ITEM_PIZZA
-    {  0,  0,  0,  0 }, // SHOP_ITEM_VOUCHER
-    {  5, 13, 13, 11 }, // SHOP_ITEM_POPCORN
-    {  5, 17, 17, 20 }, // SHOP_ITEM_HOT_DOG
+    { 3, 12, 20, 10 },  // SHOP_ITEM_DRINK
+    { 5, 19, 19, 22 },  // SHOP_ITEM_BURGER
+    { 4, 16, 16, 18 },  // SHOP_ITEM_CHIPS
+    { 4, 10, 15, 6 },   // SHOP_ITEM_ICE_CREAM
+    { 3, 9, 9, 6 },     // SHOP_ITEM_CANDYFLOSS
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_CAN
+    { 0, 0, 0, 0 },     // SHOP_ITEM_RUBBISH
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_BURGER_BOX
+    { 6, 21, 21, 25 },  // SHOP_ITEM_PIZZA
+    { 0, 0, 0, 0 },     // SHOP_ITEM_VOUCHER
+    { 5, 13, 13, 11 },  // SHOP_ITEM_POPCORN
+    { 5, 17, 17, 20 },  // SHOP_ITEM_HOT_DOG
     { 11, 22, 20, 18 }, // SHOP_ITEM_TENTACLE
-    {  9, 27, 32, 24 }, // SHOP_ITEM_HAT
-    {  4, 10, 10, 10 }, // SHOP_ITEM_TOFFEE_APPLE
+    { 9, 27, 32, 24 },  // SHOP_ITEM_HAT
+    { 4, 10, 10, 10 },  // SHOP_ITEM_TOFFEE_APPLE
     { 20, 37, 37, 37 }, // SHOP_ITEM_TSHIRT
-    {  4,  8,  7, 10 }, // SHOP_ITEM_DOUGHNUT
-    {  3, 11, 15, 20 }, // SHOP_ITEM_COFFEE
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_CUP
-    {  5, 19, 19, 22 }, // SHOP_ITEM_CHICKEN
-    {  4, 11, 21, 10 }, // SHOP_ITEM_LEMONADE
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BOX
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BOTTLE
-    {  0,  0,  0,  0 }, // 28
-    {  0,  0,  0,  0 }, // 29
-    {  0,  0,  0,  0 }, // 30
-    {  0,  0,  0,  0 }, // SHOP_ITEM_ADMISSION
-    {  2, 30, 30, 30 }, // SHOP_ITEM_PHOTO2
-    {  2, 30, 30, 30 }, // SHOP_ITEM_PHOTO3
-    {  2, 30, 30, 30 }, // SHOP_ITEM_PHOTO4
-    {  5, 11, 11, 11 }, // SHOP_ITEM_PRETZEL
-    {  4, 13, 13, 20 }, // SHOP_ITEM_CHOCOLATE
-    {  3, 10, 20, 10 }, // SHOP_ITEM_ICED_TEA
-    {  5, 13, 11, 14 }, // SHOP_ITEM_FUNNEL_CAKE
-    {  8, 15, 20, 12 }, // SHOP_ITEM_SUNGLASSES
-    {  7, 17, 17, 20 }, // SHOP_ITEM_BEEF_NOODLES
-    {  6, 17, 17, 20 }, // SHOP_ITEM_FRIED_RICE_NOODLES
-    {  4, 13, 13, 15 }, // SHOP_ITEM_WONTON_SOUP
-    {  5, 14, 14, 16 }, // SHOP_ITEM_MEATBALL_SOUP
-    {  4, 11, 19, 11 }, // SHOP_ITEM_FRUIT_JUICE
-    {  4, 10, 14, 10 }, // SHOP_ITEM_SOYBEAN_MILK
-    {  3, 11, 14, 11 }, // SHOP_ITEM_SUJEONGGWA
-    {  5, 19, 19, 17 }, // SHOP_ITEM_SUB_SANDWICH
-    {  4,  8,  8,  8 }, // SHOP_ITEM_COOKIE
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BOWL_RED
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_DRINK_CARTON
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_JUICE_CUP
-    {  5, 16, 16, 20 }, // SHOP_ITEM_ROAST_SAUSAGE
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BOWL_BLUE
+    { 4, 8, 7, 10 },    // SHOP_ITEM_DOUGHNUT
+    { 3, 11, 15, 20 },  // SHOP_ITEM_COFFEE
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_CUP
+    { 5, 19, 19, 22 },  // SHOP_ITEM_CHICKEN
+    { 4, 11, 21, 10 },  // SHOP_ITEM_LEMONADE
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_BOX
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_BOTTLE
+    { 0, 0, 0, 0 },     // 28
+    { 0, 0, 0, 0 },     // 29
+    { 0, 0, 0, 0 },     // 30
+    { 0, 0, 0, 0 },     // SHOP_ITEM_ADMISSION
+    { 2, 30, 30, 30 },  // SHOP_ITEM_PHOTO2
+    { 2, 30, 30, 30 },  // SHOP_ITEM_PHOTO3
+    { 2, 30, 30, 30 },  // SHOP_ITEM_PHOTO4
+    { 5, 11, 11, 11 },  // SHOP_ITEM_PRETZEL
+    { 4, 13, 13, 20 },  // SHOP_ITEM_CHOCOLATE
+    { 3, 10, 20, 10 },  // SHOP_ITEM_ICED_TEA
+    { 5, 13, 11, 14 },  // SHOP_ITEM_FUNNEL_CAKE
+    { 8, 15, 20, 12 },  // SHOP_ITEM_SUNGLASSES
+    { 7, 17, 17, 20 },  // SHOP_ITEM_BEEF_NOODLES
+    { 6, 17, 17, 20 },  // SHOP_ITEM_FRIED_RICE_NOODLES
+    { 4, 13, 13, 15 },  // SHOP_ITEM_WONTON_SOUP
+    { 5, 14, 14, 16 },  // SHOP_ITEM_MEATBALL_SOUP
+    { 4, 11, 19, 11 },  // SHOP_ITEM_FRUIT_JUICE
+    { 4, 10, 14, 10 },  // SHOP_ITEM_SOYBEAN_MILK
+    { 3, 11, 14, 11 },  // SHOP_ITEM_SUJEONGGWA
+    { 5, 19, 19, 17 },  // SHOP_ITEM_SUB_SANDWICH
+    { 4, 8, 8, 8 },     // SHOP_ITEM_COOKIE
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_BOWL_RED
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_DRINK_CARTON
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_JUICE_CUP
+    { 5, 16, 16, 20 },  // SHOP_ITEM_ROAST_SAUSAGE
+    { 0, 0, 0, 0 },     // SHOP_ITEM_EMPTY_BOWL_BLUE
 };
 
 // rct2: 0x00982358
-const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT] =
-{
-    MONEY(0,90),                        // SHOP_ITEM_BALLOON
-    MONEY(2,50),                        // SHOP_ITEM_TOY
-    MONEY(0,60),                        // SHOP_ITEM_MAP
-    MONEY(0,00),                        // SHOP_ITEM_PHOTO
-    MONEY(2,50),                        // SHOP_ITEM_UMBRELLA
-    MONEY(1,20),                        // SHOP_ITEM_DRINK
-    MONEY(1,50),                        // SHOP_ITEM_BURGER
-    MONEY(1,50),                        // SHOP_ITEM_CHIPS
-    MONEY(0,90),                        // SHOP_ITEM_ICE_CREAM
-    MONEY(0,80),                        // SHOP_ITEM_CANDYFLOSS
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_CAN
-    MONEY(0,00),                        // SHOP_ITEM_RUBBISH
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BURGER_BOX
-    MONEY(1,60),                        // SHOP_ITEM_PIZZA
-    MONEY(0,00),                        // SHOP_ITEM_VOUCHER
-    MONEY(1,20),                        // SHOP_ITEM_POPCORN
-    MONEY(1,00),                        // SHOP_ITEM_HOT_DOG
-    MONEY(1,50),                        // SHOP_ITEM_TENTACLE
-    MONEY(1,50),                        // SHOP_ITEM_HAT
-    MONEY(0,70),                        // SHOP_ITEM_TOFFEE_APPLE
-    MONEY(3,00),                        // SHOP_ITEM_TSHIRT
-    MONEY(0,70),                        // SHOP_ITEM_DOUGHNUT
-    MONEY(1,20),                        // SHOP_ITEM_COFFEE
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_CUP
-    MONEY(1,50),                        // SHOP_ITEM_CHICKEN
-    MONEY(1,20),                        // SHOP_ITEM_LEMONADE
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BOX
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BOTTLE
-    MONEY(0,00),                        // 28
-    MONEY(0,00),                        // 29
-    MONEY(0,00),                        // 30
-    MONEY(0,00),                        // 31
-    MONEY(0,00),                        // SHOP_ITEM_PHOTO2
-    MONEY(0,00),                        // SHOP_ITEM_PHOTO3
-    MONEY(0,00),                        // SHOP_ITEM_PHOTO4
-    MONEY(1,10),                        // SHOP_ITEM_PRETZEL
-    MONEY(1,20),                        // SHOP_ITEM_CHOCOLATE
-    MONEY(1,10),                        // SHOP_ITEM_ICED_TEA
-    MONEY(1,20),                        // SHOP_ITEM_FUNNEL_CAKE
-    MONEY(1,50),                        // SHOP_ITEM_SUNGLASSES
-    MONEY(1,50),                        // SHOP_ITEM_BEEF_NOODLES
-    MONEY(1,50),                        // SHOP_ITEM_FRIED_RICE_NOODLES
-    MONEY(1,50),                        // SHOP_ITEM_WONTON_SOUP
-    MONEY(1,50),                        // SHOP_ITEM_MEATBALL_SOUP
-    MONEY(1,20),                        // SHOP_ITEM_FRUIT_JUICE
-    MONEY(1,20),                        // SHOP_ITEM_SOYBEAN_MILK
-    MONEY(1,20),                        // SHOP_ITEM_SUJEONGGWA
-    MONEY(1,50),                        // SHOP_ITEM_SUB_SANDWICH
-    MONEY(0,70),                        // SHOP_ITEM_COOKIE
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BOWL_RED
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_DRINK_CARTON
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_JUICE_CUP
-    MONEY(1,50),                        // SHOP_ITEM_ROAST_SAUSAGE
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BOWL_BLUE
-    MONEY(0,00),                        // 54
-    MONEY(0,00),                        // 55
+const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT] = {
+    MONEY(0, 90), // SHOP_ITEM_BALLOON
+    MONEY(2, 50), // SHOP_ITEM_TOY
+    MONEY(0, 60), // SHOP_ITEM_MAP
+    MONEY(0, 00), // SHOP_ITEM_PHOTO
+    MONEY(2, 50), // SHOP_ITEM_UMBRELLA
+    MONEY(1, 20), // SHOP_ITEM_DRINK
+    MONEY(1, 50), // SHOP_ITEM_BURGER
+    MONEY(1, 50), // SHOP_ITEM_CHIPS
+    MONEY(0, 90), // SHOP_ITEM_ICE_CREAM
+    MONEY(0, 80), // SHOP_ITEM_CANDYFLOSS
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_CAN
+    MONEY(0, 00), // SHOP_ITEM_RUBBISH
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_BURGER_BOX
+    MONEY(1, 60), // SHOP_ITEM_PIZZA
+    MONEY(0, 00), // SHOP_ITEM_VOUCHER
+    MONEY(1, 20), // SHOP_ITEM_POPCORN
+    MONEY(1, 00), // SHOP_ITEM_HOT_DOG
+    MONEY(1, 50), // SHOP_ITEM_TENTACLE
+    MONEY(1, 50), // SHOP_ITEM_HAT
+    MONEY(0, 70), // SHOP_ITEM_TOFFEE_APPLE
+    MONEY(3, 00), // SHOP_ITEM_TSHIRT
+    MONEY(0, 70), // SHOP_ITEM_DOUGHNUT
+    MONEY(1, 20), // SHOP_ITEM_COFFEE
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_CUP
+    MONEY(1, 50), // SHOP_ITEM_CHICKEN
+    MONEY(1, 20), // SHOP_ITEM_LEMONADE
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_BOX
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_BOTTLE
+    MONEY(0, 00), // 28
+    MONEY(0, 00), // 29
+    MONEY(0, 00), // 30
+    MONEY(0, 00), // 31
+    MONEY(0, 00), // SHOP_ITEM_PHOTO2
+    MONEY(0, 00), // SHOP_ITEM_PHOTO3
+    MONEY(0, 00), // SHOP_ITEM_PHOTO4
+    MONEY(1, 10), // SHOP_ITEM_PRETZEL
+    MONEY(1, 20), // SHOP_ITEM_CHOCOLATE
+    MONEY(1, 10), // SHOP_ITEM_ICED_TEA
+    MONEY(1, 20), // SHOP_ITEM_FUNNEL_CAKE
+    MONEY(1, 50), // SHOP_ITEM_SUNGLASSES
+    MONEY(1, 50), // SHOP_ITEM_BEEF_NOODLES
+    MONEY(1, 50), // SHOP_ITEM_FRIED_RICE_NOODLES
+    MONEY(1, 50), // SHOP_ITEM_WONTON_SOUP
+    MONEY(1, 50), // SHOP_ITEM_MEATBALL_SOUP
+    MONEY(1, 20), // SHOP_ITEM_FRUIT_JUICE
+    MONEY(1, 20), // SHOP_ITEM_SOYBEAN_MILK
+    MONEY(1, 20), // SHOP_ITEM_SUJEONGGWA
+    MONEY(1, 50), // SHOP_ITEM_SUB_SANDWICH
+    MONEY(0, 70), // SHOP_ITEM_COOKIE
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_BOWL_RED
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_DRINK_CARTON
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_JUICE_CUP
+    MONEY(1, 50), // SHOP_ITEM_ROAST_SAUSAGE
+    MONEY(0, 00), // SHOP_ITEM_EMPTY_BOWL_BLUE
+    MONEY(0, 00), // 54
+    MONEY(0, 00), // 55
 };
 
+// clang-format off
 const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT] =
 {
     { STR_SHOP_ITEM_PRICE_LABEL_BALLOON,                STR_SHOP_ITEM_SINGULAR_BALLOON,             STR_SHOP_ITEM_PLURAL_BALLOON,               STR_SHOP_ITEM_INDEFINITE_BALLOON,               STR_SHOP_ITEM_DISPLAY_BALLOON               },
@@ -199,9 +192,9 @@ const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT] =
     { STR_SHOP_ITEM_PRICE_LABEL_ROAST_SAUSAGE,          STR_SHOP_ITEM_SINGULAR_ROAST_SAUSAGE,       STR_SHOP_ITEM_PLURAL_ROAST_SAUSAGE,         STR_SHOP_ITEM_INDEFINITE_ROAST_SAUSAGE,         STR_SHOP_ITEM_DISPLAY_ROAST_SAUSAGE         },
     { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOWL_BLUE,        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,     STR_SHOP_ITEM_PLURAL_EMPTY_BOWL_BLUE,       STR_SHOP_ITEM_INDEFINITE_EMPTY_BOWL_BLUE,       STR_SHOP_ITEM_DISPLAY_EMPTY_BOWL_BLUE       },
 };
+// clang-format on
 
-const uint32 ShopItemImage[SHOP_ITEM_COUNT] =
-{
+const uint32_t ShopItemImage[SHOP_ITEM_COUNT] = {
     SPR_SHOP_ITEM_BALLOON,
     SPR_SHOP_ITEM_TOY,
     SPR_SHOP_ITEM_MAP,
@@ -230,10 +223,10 @@ const uint32 ShopItemImage[SHOP_ITEM_COUNT] =
     SPR_SHOP_ITEM_LEMONADE,
     SPR_SHOP_ITEM_EMPTY_BOX,
     SPR_SHOP_ITEM_EMPTY_BOTTLE,
-    0,                                      // 28
-    0,                                      // 29
-    0,                                      // 30
-    0,                                      // 31
+    0, // 28
+    0, // 29
+    0, // 30
+    0, // 31
     SPR_SHOP_ITEM_PHOTO2,
     SPR_SHOP_ITEM_PHOTO3,
     SPR_SHOP_ITEM_PHOTO4,
@@ -258,33 +251,33 @@ const uint32 ShopItemImage[SHOP_ITEM_COUNT] =
     SPR_SHOP_ITEM_EMPTY_BOWL_BLUE,
 };
 
-money32 get_shop_item_cost(sint32 shopItem)
+money32 get_shop_item_cost(int32_t shopItem)
 {
     return ShopItemStats[shopItem].cost;
 }
 
-money16 get_shop_base_value(sint32 shopItem)
+money16 get_shop_base_value(int32_t shopItem)
 {
     return ShopItemStats[shopItem].base_value;
 }
 
-money16 get_shop_cold_value(sint32 shopItem)
+money16 get_shop_cold_value(int32_t shopItem)
 {
     return ShopItemStats[shopItem].cold_value;
 }
 
-money16 get_shop_hot_value(sint32 shopItem)
+money16 get_shop_hot_value(int32_t shopItem)
 {
     return ShopItemStats[shopItem].hot_value;
 }
 
-money32 shop_item_get_common_price(Ride* forRide, sint32 shopItem)
+money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem)
 {
     rct_ride_entry* rideEntry;
     Ride* ride;
-    sint32 i;
+    int32_t i;
 
-    FOR_ALL_RIDES(i, ride)
+    FOR_ALL_RIDES (i, ride)
     {
         if (ride != forRide)
         {
@@ -311,14 +304,14 @@ money32 shop_item_get_common_price(Ride* forRide, sint32 shopItem)
     return MONEY32_UNDEFINED;
 }
 
-bool shop_item_is_photo(sint32 shopItem)
+bool shop_item_is_photo(int32_t shopItem)
 {
     return (
-        shopItem == SHOP_ITEM_PHOTO || shopItem == SHOP_ITEM_PHOTO2 ||
-        shopItem == SHOP_ITEM_PHOTO3 || shopItem == SHOP_ITEM_PHOTO4);
+        shopItem == SHOP_ITEM_PHOTO || shopItem == SHOP_ITEM_PHOTO2 || shopItem == SHOP_ITEM_PHOTO3
+        || shopItem == SHOP_ITEM_PHOTO4);
 }
 
-bool shop_item_has_common_price(sint32 shopItem)
+bool shop_item_has_common_price(int32_t shopItem)
 {
     if (shopItem < 32)
     {
@@ -330,7 +323,7 @@ bool shop_item_has_common_price(sint32 shopItem)
     }
 }
 
-bool shop_item_is_food_or_drink(sint32 shopItem)
+bool shop_item_is_food_or_drink(int32_t shopItem)
 {
     switch (shopItem)
     {
@@ -368,7 +361,7 @@ bool shop_item_is_food_or_drink(sint32 shopItem)
     }
 }
 
-bool shop_item_is_food(sint32 shopItem)
+bool shop_item_is_food(int32_t shopItem)
 {
     switch (shopItem)
     {
@@ -398,7 +391,7 @@ bool shop_item_is_food(sint32 shopItem)
     }
 }
 
-bool shop_item_is_drink(sint32 shopItem)
+bool shop_item_is_drink(int32_t shopItem)
 {
     switch (shopItem)
     {
@@ -416,7 +409,7 @@ bool shop_item_is_drink(sint32 shopItem)
     }
 }
 
-bool shop_item_is_souvenir(sint32 shopItem)
+bool shop_item_is_souvenir(int32_t shopItem)
 {
     switch (shopItem)
     {

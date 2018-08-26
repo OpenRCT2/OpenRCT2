@@ -1,30 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <cstring>
-
-#include "../core/Console.hpp"
-#include "../core/Math.hpp"
-#include "../core/String.hpp"
-#include "../OpenRCT2.h"
 #include "CommandLine.hpp"
+
+#include "../OpenRCT2.h"
+#include "../core/Console.hpp"
+#include "../core/String.hpp"
+
+#include <algorithm>
+#include <cstring>
 
 #pragma region CommandLineArgEnumerator
 
-CommandLineArgEnumerator::CommandLineArgEnumerator(const char * const * arguments, sint32 count)
+CommandLineArgEnumerator::CommandLineArgEnumerator(const char* const* arguments, int32_t count)
 {
     _arguments = arguments;
     _count = count;
@@ -62,21 +56,21 @@ bool CommandLineArgEnumerator::TryPop()
     }
 }
 
-bool CommandLineArgEnumerator::TryPopInteger(sint32 * result)
+bool CommandLineArgEnumerator::TryPopInteger(int32_t* result)
 {
-    char const * arg;
+    char const* arg;
     if (TryPopString(&arg))
     {
-        *result = (sint32)atol(arg);
+        *result = (int32_t)atol(arg);
         return true;
     }
 
     return false;
 }
 
-bool CommandLineArgEnumerator::TryPopReal(float * result)
+bool CommandLineArgEnumerator::TryPopReal(float* result)
 {
-    char const * arg;
+    char const* arg;
     if (TryPopString(&arg))
     {
         *result = (float)atof(arg);
@@ -86,7 +80,7 @@ bool CommandLineArgEnumerator::TryPopReal(float * result)
     return false;
 }
 
-bool CommandLineArgEnumerator::TryPopString(const char * * result)
+bool CommandLineArgEnumerator::TryPopString(const char** result)
 {
     if (_index < _count)
     {
@@ -104,22 +98,24 @@ bool CommandLineArgEnumerator::TryPopString(const char * * result)
 
 namespace CommandLine
 {
-    constexpr const char * HelpText = "openrct2 -ha shows help for all commands. "
-                                      "openrct2 <command> -h will show help and details for a given command.";
+    constexpr const char* HelpText = "openrct2 -ha shows help for all commands. "
+                                     "openrct2 <command> -h will show help and details for a given command.";
 
-    static void   PrintHelpFor(const CommandLineCommand * commands);
-    static void   PrintOptions(const CommandLineOptionDefinition *options);
-    static void   PrintExamples(const CommandLineExample *examples);
-    static utf8 * GetOptionCaption(utf8 * buffer, size_t bufferSize, const CommandLineOptionDefinition *option);
+    static void PrintHelpFor(const CommandLineCommand* commands);
+    static void PrintOptions(const CommandLineOptionDefinition* options);
+    static void PrintExamples(const CommandLineExample* examples);
+    static utf8* GetOptionCaption(utf8* buffer, size_t bufferSize, const CommandLineOptionDefinition* option);
 
-    static const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, char shortName);
-    static const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, const char * longName);
+    static const CommandLineOptionDefinition* FindOption(const CommandLineOptionDefinition* options, char shortName);
+    static const CommandLineOptionDefinition* FindOption(const CommandLineOptionDefinition* options, const char* longName);
 
-    static bool ParseShortOption(const CommandLineOptionDefinition * options, CommandLineArgEnumerator *argEnumerator, const char *argument);
-    static bool ParseLongOption(const CommandLineOptionDefinition * options, CommandLineArgEnumerator * argEnumerator, const char * argument);
-    static bool ParseOptionValue(const CommandLineOptionDefinition * option, const char * valueString);
+    static bool ParseShortOption(
+        const CommandLineOptionDefinition* options, CommandLineArgEnumerator* argEnumerator, const char* argument);
+    static bool ParseLongOption(
+        const CommandLineOptionDefinition* options, CommandLineArgEnumerator* argEnumerator, const char* argument);
+    static bool ParseOptionValue(const CommandLineOptionDefinition* option, const char* valueString);
 
-    static bool HandleSpecialArgument(const char * argument);
+    static bool HandleSpecialArgument(const char* argument);
 
     void PrintHelp(bool allCommands)
     {
@@ -128,7 +124,7 @@ namespace CommandLine
 
         if (allCommands)
         {
-            for (const CommandLineCommand *command = RootCommands; command->Name != nullptr; command++)
+            for (const CommandLineCommand* command = RootCommands; command->Name != nullptr; command++)
             {
                 if (command->SubCommands != nullptr)
                 {
@@ -154,21 +150,21 @@ namespace CommandLine
         }
     }
 
-    static void PrintHelpFor(const CommandLineCommand * commands)
+    static void PrintHelpFor(const CommandLineCommand* commands)
     {
         // Print usage
-        const char * usageString = "usage: openrct2 ";
+        const char* usageString = "usage: openrct2 ";
         const size_t usageStringLength = String::LengthOf(usageString);
         Console::Write(usageString);
 
         // Get the largest command name length and parameter length
         size_t maxNameLength = 0;
         size_t maxParamsLength = 0;
-        const CommandLineCommand * command;
+        const CommandLineCommand* command;
         for (command = commands; command->Name != nullptr; command++)
         {
-            maxNameLength = Math::Max(maxNameLength, String::LengthOf(command->Name));
-            maxParamsLength = Math::Max(maxParamsLength, String::LengthOf(command->Parameters));
+            maxNameLength = std::max(maxNameLength, String::LengthOf(command->Name));
+            maxParamsLength = std::max(maxParamsLength, String::LengthOf(command->Parameters));
         }
 
         for (command = commands; command->Name != nullptr; command++)
@@ -205,17 +201,17 @@ namespace CommandLine
         }
     }
 
-    static void PrintOptions(const CommandLineOptionDefinition *options)
+    static void PrintOptions(const CommandLineOptionDefinition* options)
     {
         // Print options for main commands
         size_t maxOptionLength = 0;
-        const CommandLineOptionDefinition * option = options;
+        const CommandLineOptionDefinition* option = options;
         for (; option->Type != 255; option++)
         {
             char buffer[128];
             GetOptionCaption(buffer, sizeof(buffer), option);
             size_t optionCaptionLength = String::LengthOf(buffer);
-            maxOptionLength = Math::Max(maxOptionLength, optionCaptionLength);
+            maxOptionLength = std::max(maxOptionLength, optionCaptionLength);
         }
 
         option = options;
@@ -235,15 +231,15 @@ namespace CommandLine
         Console::WriteLine();
     }
 
-    static void PrintExamples(const CommandLineExample *examples)
+    static void PrintExamples(const CommandLineExample* examples)
     {
         size_t maxArgumentsLength = 0;
 
-        const CommandLineExample * example;
+        const CommandLineExample* example;
         for (example = examples; example->Arguments != nullptr; example++)
         {
             size_t argumentsLength = String::LengthOf(example->Arguments);
-            maxArgumentsLength = Math::Max(maxArgumentsLength, argumentsLength);
+            maxArgumentsLength = std::max(maxArgumentsLength, argumentsLength);
         }
 
         Console::WriteLine("examples:");
@@ -261,7 +257,7 @@ namespace CommandLine
         Console::WriteLine();
     }
 
-    static utf8 * GetOptionCaption(utf8 * buffer, size_t bufferSize, const CommandLineOptionDefinition *option)
+    static utf8* GetOptionCaption(utf8* buffer, size_t bufferSize, const CommandLineOptionDefinition* option)
     {
         buffer[0] = 0;
 
@@ -273,25 +269,26 @@ namespace CommandLine
         String::Append(buffer, bufferSize, "--");
         String::Append(buffer, bufferSize, option->LongName);
 
-        switch (option->Type) {
-        case CMDLINE_TYPE_INTEGER:
-            String::Append(buffer, bufferSize, "=<int>");
-            break;
-        case CMDLINE_TYPE_REAL:
-            String::Append(buffer, bufferSize, "=<real>");
-            break;
-        case CMDLINE_TYPE_STRING:
-            String::Append(buffer, bufferSize, "=<str>");
-            break;
+        switch (option->Type)
+        {
+            case CMDLINE_TYPE_INTEGER:
+                String::Append(buffer, bufferSize, "=<int>");
+                break;
+            case CMDLINE_TYPE_REAL:
+                String::Append(buffer, bufferSize, "=<real>");
+                break;
+            case CMDLINE_TYPE_STRING:
+                String::Append(buffer, bufferSize, "=<str>");
+                break;
         }
 
         return buffer;
     }
 
-    static const CommandLineCommand * FindCommandFor(const CommandLineCommand * commands, CommandLineArgEnumerator *argEnumerator)
+    static const CommandLineCommand* FindCommandFor(const CommandLineCommand* commands, CommandLineArgEnumerator* argEnumerator)
     {
         // Check if end of arguments or options have started
-        const char * firstArgument;
+        const char* firstArgument;
         if (!argEnumerator->TryPopString(&firstArgument))
         {
             return commands;
@@ -303,8 +300,8 @@ namespace CommandLine
         }
 
         // Search through defined commands for one that matches
-        const CommandLineCommand * fallback = nullptr;
-        const CommandLineCommand * command = commands;
+        const CommandLineCommand* fallback = nullptr;
+        const CommandLineCommand* command = commands;
         for (; command->Name != nullptr; command++)
         {
             if (command->Name[0] == '\0')
@@ -331,11 +328,11 @@ namespace CommandLine
         return fallback;
     }
 
-    static bool ParseOptions(const CommandLineOptionDefinition * options, CommandLineArgEnumerator *argEnumerator)
+    static bool ParseOptions(const CommandLineOptionDefinition* options, CommandLineArgEnumerator* argEnumerator)
     {
         bool firstOption = true;
 
-        const char * argument;
+        const char* argument;
         while (argEnumerator->TryPopString(&argument))
         {
             if (HandleSpecialArgument(argument))
@@ -375,13 +372,12 @@ namespace CommandLine
         return true;
     }
 
-    static bool ParseLongOption(const CommandLineOptionDefinition * options,
-                                CommandLineArgEnumerator *argEnumerator,
-                                const char *argument)
+    static bool ParseLongOption(
+        const CommandLineOptionDefinition* options, CommandLineArgEnumerator* argEnumerator, const char* argument)
     {
         // Get just the option name
         char optionName[64];
-        const char * equalsCh = strchr(argument, '=');
+        const char* equalsCh = strchr(argument, '=');
         if (equalsCh != nullptr)
         {
             String::Set(optionName, sizeof(optionName), argument, equalsCh - argument);
@@ -392,7 +388,7 @@ namespace CommandLine
         }
 
         // Find a matching option definition
-        const CommandLineOptionDefinition * option = FindOption(options, optionName);
+        const CommandLineOptionDefinition* option = FindOption(options, optionName);
         if (option == nullptr)
         {
             Console::Error::WriteLine("Unknown option: --%s", optionName);
@@ -407,7 +403,7 @@ namespace CommandLine
             }
             else
             {
-                const char * valueString = nullptr;
+                const char* valueString = nullptr;
                 if (!argEnumerator->TryPopString(&valueString))
                 {
                     Console::Error::WriteLine("Expected value for option: %s", optionName);
@@ -439,13 +435,12 @@ namespace CommandLine
         return true;
     }
 
-    static bool ParseShortOption(const CommandLineOptionDefinition * options,
-                                 CommandLineArgEnumerator *argEnumerator,
-                                 const char *argument)
+    static bool ParseShortOption(
+        const CommandLineOptionDefinition* options, CommandLineArgEnumerator* argEnumerator, const char* argument)
     {
-        const CommandLineOptionDefinition * option = nullptr;
+        const CommandLineOptionDefinition* option = nullptr;
 
-        const char * shortOption = &argument[1];
+        const char* shortOption = &argument[1];
         for (; *shortOption != '\0'; shortOption++)
         {
             option = FindOption(options, shortOption[0]);
@@ -469,7 +464,7 @@ namespace CommandLine
 
         if (option != nullptr && option->Type != CMDLINE_TYPE_SWITCH)
         {
-            const char * valueString = nullptr;
+            const char* valueString = nullptr;
             if (!argEnumerator->TryPopString(&valueString))
             {
                 Console::Error::WriteLine("Expected value for option: %c", option->ShortName);
@@ -485,30 +480,32 @@ namespace CommandLine
         return true;
     }
 
-    static bool ParseOptionValue(const CommandLineOptionDefinition * option, const char * valueString)
+    static bool ParseOptionValue(const CommandLineOptionDefinition* option, const char* valueString)
     {
-        if (option->OutAddress == nullptr) return true;
+        if (option->OutAddress == nullptr)
+            return true;
 
-        switch (option->Type) {
-        case CMDLINE_TYPE_SWITCH:
-            *((bool *)option->OutAddress) = true;
-            return true;
-        case CMDLINE_TYPE_INTEGER:
-            *((sint32 *)option->OutAddress) = (sint32)atol(valueString);
-            return true;
-        case CMDLINE_TYPE_REAL:
-            *((float *)option->OutAddress) = (float)atof(valueString);
-            return true;
-        case CMDLINE_TYPE_STRING:
-            *((utf8 * *)option->OutAddress) = String::Duplicate(valueString);
-            return true;
-        default:
-            Console::Error::WriteLine("Unknown CMDLINE_TYPE for: %s", option->LongName);
-            return false;
+        switch (option->Type)
+        {
+            case CMDLINE_TYPE_SWITCH:
+                *((bool*)option->OutAddress) = true;
+                return true;
+            case CMDLINE_TYPE_INTEGER:
+                *((int32_t*)option->OutAddress) = (int32_t)atol(valueString);
+                return true;
+            case CMDLINE_TYPE_REAL:
+                *((float*)option->OutAddress) = (float)atof(valueString);
+                return true;
+            case CMDLINE_TYPE_STRING:
+                *((utf8**)option->OutAddress) = String::Duplicate(valueString);
+                return true;
+            default:
+                Console::Error::WriteLine("Unknown CMDLINE_TYPE for: %s", option->LongName);
+                return false;
         }
     }
 
-    static bool HandleSpecialArgument([[maybe_unused]] const char * argument)
+    static bool HandleSpecialArgument([[maybe_unused]] const char* argument)
     {
 #ifdef __APPLE__
         if (String::Equals(argument, "-NSDocumentRevisionsDebugMode"))
@@ -523,9 +520,9 @@ namespace CommandLine
         return false;
     }
 
-    const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, char shortName)
+    const CommandLineOptionDefinition* FindOption(const CommandLineOptionDefinition* options, char shortName)
     {
-        for (const CommandLineOptionDefinition * option = options; option->Type != 255; option++)
+        for (const CommandLineOptionDefinition* option = options; option->Type != 255; option++)
         {
             if (option->ShortName == shortName)
             {
@@ -535,9 +532,9 @@ namespace CommandLine
         return nullptr;
     }
 
-    const CommandLineOptionDefinition * FindOption(const CommandLineOptionDefinition * options, const char * longName)
+    const CommandLineOptionDefinition* FindOption(const CommandLineOptionDefinition* options, const char* longName)
     {
-        for (const CommandLineOptionDefinition * option = options; option->Type != 255; option++)
+        for (const CommandLineOptionDefinition* option = options; option->Type != 255; option++)
         {
             if (String::Equals(option->LongName, longName))
             {
@@ -548,14 +545,14 @@ namespace CommandLine
     }
 } // namespace CommandLine
 
-sint32 cmdline_run(const char * * argv, sint32 argc)
+int32_t cmdline_run(const char** argv, int32_t argc)
 {
     auto argEnumerator = CommandLineArgEnumerator(argv, argc);
 
     // Pop process path
     argEnumerator.TryPop();
 
-    const CommandLineCommand * command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
+    const CommandLineCommand* command = CommandLine::FindCommandFor(CommandLine::RootCommands, &argEnumerator);
 
     if (command == nullptr)
     {
@@ -580,4 +577,3 @@ sint32 cmdline_run(const char * * argv, sint32 argc)
         return command->Func(&argEnumerator);
     }
 }
-

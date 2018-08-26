@@ -1,10 +1,20 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "AssertHelpers.hpp"
+#include "helpers/StringHelpers.hpp"
+
+#include <gtest/gtest.h>
+#include <openrct2/core/String.hpp>
 #include <string>
 #include <tuple>
 #include <utility>
-#include <gtest/gtest.h>
-#include <openrct2/core/String.hpp>
-#include "AssertHelpers.hpp"
-#include "helpers/StringHelpers.hpp"
 
 using TCase = std::tuple<std::string, std::string, std::string>;
 
@@ -16,22 +26,15 @@ class StringTest : public testing::TestWithParam<TCase>
 // Tests for String::Trim
 ///////////////////////////////////////////////////////////////////////////////
 
-INSTANTIATE_TEST_CASE_P(TrimData, StringTest, testing::Values(
-    // input                      after Trim       after TrimStart
-    TCase("string",               "string",        "string"),
-    TCase("  string",             "string",        "string"),
-    TCase("string  ",             "string",        "string  "),
-    TCase("   some   string  ",   "some   string", "some   string  "),
-    TCase("      ",               "",              ""),
-    TCase(" ストリング",         "ストリング",   "ストリング"),
-    TCase("ストリング ",         "ストリング",   "ストリング "),
-    TCase("　ストリング　",      "ストリング",   "ストリング　"),
-    TCase("　　　　",            "",              ""),
-    TCase("",                     "",              ""),
-    TCase("\n",                   "",              ""),
-    TCase("\n\n\n\r\n",           "",              ""),
-    TCase("\n\n\n\r\nstring\n\n", "string",        "string\n\n")
-));
+INSTANTIATE_TEST_CASE_P(
+    TrimData, StringTest,
+    testing::Values(
+        // input                      after Trim       after TrimStart
+        TCase("string", "string", "string"), TCase("  string", "string", "string"), TCase("string  ", "string", "string  "),
+        TCase("   some   string  ", "some   string", "some   string  "), TCase("      ", "", ""),
+        TCase(" ストリング", "ストリング", "ストリング"), TCase("ストリング ", "ストリング", "ストリング "),
+        TCase("　ストリング　", "ストリング", "ストリング　"), TCase("　　　　", "", ""), TCase("", "", ""),
+        TCase("\n", "", ""), TCase("\n\n\n\r\n", "", ""), TCase("\n\n\n\r\nstring\n\n", "string", "string\n\n")));
 TEST_P(StringTest, Trim)
 {
     auto testCase = GetParam();
@@ -67,7 +70,7 @@ TEST_F(StringTest, Split_ByColonColon)
 TEST_F(StringTest, Split_Empty)
 {
     auto actual = String::Split("", ".");
-    AssertVector<std::string>(actual, { });
+    AssertVector<std::string>(actual, {});
 }
 TEST_F(StringTest, Split_ByEmpty)
 {

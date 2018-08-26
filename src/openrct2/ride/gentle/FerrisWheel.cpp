@@ -1,34 +1,27 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../../world/Sprite.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
-#include "../../world/Sprite.h"
 
-static constexpr const uint8 edges_1x4_ne_sw[] = {
+static constexpr const uint8_t edges_1x4_ne_sw[] = {
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_NE,
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_SW,
 };
 
-static constexpr const uint8 edges_1x4_nw_se[] = {
+static constexpr const uint8_t edges_1x4_nw_se[] = {
     EDGE_NE | EDGE_SW,
     EDGE_NE | EDGE_SW | EDGE_NW,
     EDGE_NE | EDGE_SW,
@@ -37,10 +30,10 @@ static constexpr const uint8 edges_1x4_nw_se[] = {
 
 struct ferris_wheel_bound_box
 {
-    sint16 length_x;
-    sint16 length_y;
-    sint16 offset_x;
-    sint16 offset_y;
+    int16_t length_x;
+    int16_t length_y;
+    int16_t offset_x;
+    int16_t offset_y;
 };
 
 /** rct2: 0x008A8CA8 */
@@ -54,19 +47,19 @@ static ferris_wheel_bound_box ferris_wheel_data[] = {
 /**
  * rct2: 0x004C3874
  */
-static void paint_ferris_wheel_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 axisOffset,
-                                         uint16 height)
+static void paint_ferris_wheel_structure(
+    paint_session* session, uint8_t rideIndex, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    uint32 imageId, baseImageId;
+    uint32_t imageId, baseImageId;
 
-    const rct_tile_element * savedTileElement = static_cast<const rct_tile_element *>(session->CurrentlyDrawnItem);
+    const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
 
-    Ride *           ride      = get_ride(rideIndex);
-    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle *    vehicle   = nullptr;
+    Ride* ride = get_ride(rideIndex);
+    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    rct_vehicle* vehicle = nullptr;
 
-    sint8 xOffset = !(direction & 1) ? axisOffset : 0;
-    sint8 yOffset = (direction & 1) ? axisOffset : 0;
+    int8_t xOffset = !(direction & 1) ? axisOffset : 0;
+    int8_t yOffset = (direction & 1) ? axisOffset : 0;
 
     height += 7;
 
@@ -76,21 +69,21 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
     {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32 imageOffset = 0;
+    uint32_t imageOffset = 0;
     if (vehicle != nullptr)
     {
         imageOffset = vehicle->vehicle_sprite_type % 8;
     }
 
-    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
+    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
-        imageColourFlags =
-            SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
+            ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     ferris_wheel_bound_box boundBox = ferris_wheel_data[direction];
@@ -108,22 +101,22 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
-        for (sint32 i = 0; i < 32; i += 2)
+        for (int32_t i = 0; i < 32; i += 2)
         {
             if (vehicle->peep[i] == SPRITE_INDEX_NULL)
             {
                 continue;
             }
 
-            rct_peep * peep = GET_PEEP(vehicle->peep[i]);
+            rct_peep* peep = GET_PEEP(vehicle->peep[i]);
             if (peep->state != PEEP_STATE_ON_RIDE)
             {
                 continue;
             }
 
-            sint32 frameNum  = (vehicle->vehicle_sprite_type + i * 4) % 128;
+            int32_t frameNum = (vehicle->vehicle_sprite_type + i * 4) % 128;
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
-            imageId          = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
+            imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
             sub_98199C(
                 session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
                 boundBox.offset_y, height);
@@ -136,23 +129,19 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
         boundBox.offset_y, height);
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /**
  * rct2: 0x008A8EC4
  */
 static void paint_ferris_wheel(
-    paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
 {
-    uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
+    uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
-    sint32 edges;
+    int32_t edges;
     if (direction & 1)
     {
         edges = edges_1x4_nw_se[relativeTrackSequence];
@@ -162,16 +151,16 @@ static void paint_ferris_wheel(
         edges = edges_1x4_ne_sw[relativeTrackSequence];
     }
 
-    Ride *   ride     = get_ride(rideIndex);
+    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork);
 
-    uint32 imageId;
-    uint8  rotation    = session->CurrentRotation;
-    uint32 colourFlags = session->TrackColours[SCHEME_MISC];
+    uint32_t imageId;
+    uint8_t rotation = session->CurrentRotation;
+    uint32_t colourFlags = session->TrackColours[SCHEME_MISC];
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, rotation))
     {
         imageId = SPR_FENCE_ROPE_NW | colourFlags;
@@ -196,18 +185,18 @@ static void paint_ferris_wheel(
 
     switch (relativeTrackSequence)
     {
-    case 1:
-        paint_ferris_wheel_structure(session, rideIndex, direction, 48, height);
-        break;
-    case 2:
-        paint_ferris_wheel_structure(session, rideIndex, direction, 16, height);
-        break;
-    case 0:
-        paint_ferris_wheel_structure(session, rideIndex, direction, -16, height);
-        break;
-    case 3:
-        paint_ferris_wheel_structure(session, rideIndex, direction, -48, height);
-        break;
+        case 1:
+            paint_ferris_wheel_structure(session, rideIndex, direction, 48, height);
+            break;
+        case 2:
+            paint_ferris_wheel_structure(session, rideIndex, direction, 16, height);
+            break;
+        case 0:
+            paint_ferris_wheel_structure(session, rideIndex, direction, -16, height);
+            break;
+        case 3:
+            paint_ferris_wheel_structure(session, rideIndex, direction, -48, height);
+            break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -217,7 +206,7 @@ static void paint_ferris_wheel(
 /**
  * rct2: 0x008A8CC8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_4_C)
     {

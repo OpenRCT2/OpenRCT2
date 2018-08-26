@@ -1,52 +1,44 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include "../Context.h"
-#include "../ui/UiContext.h"
-#include "../interface/Screenshot.h"
-#include "../paint/Painter.h"
-#include "IDrawingContext.h"
-#include "IDrawingEngine.h"
 #include "NewDrawing.h"
 
+#include "../Context.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
+#include "../interface/Screenshot.h"
 #include "../localisation/StringIds.h"
+#include "../paint/Painter.h"
+#include "../ui/UiContext.h"
+#include "IDrawingContext.h"
+#include "IDrawingEngine.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
-rct_string_id DrawingEngineStringIds[] =
-{
+rct_string_id DrawingEngineStringIds[] = {
     STR_DRAWING_ENGINE_SOFTWARE,
     STR_DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
     STR_DRAWING_ENGINE_OPENGL,
 };
 
-sint32 drawing_engine_get_type()
+int32_t drawing_engine_get_type()
 {
     auto context = GetContext();
     return context->GetDrawingEngineType();
 }
 
-static IDrawingEngine * GetDrawingEngine()
+static IDrawingEngine* GetDrawingEngine()
 {
-    IDrawingEngine * result = nullptr;
+    IDrawingEngine* result = nullptr;
     auto context = GetContext();
     if (context != nullptr)
     {
@@ -55,7 +47,7 @@ static IDrawingEngine * GetDrawingEngine()
     return result;
 }
 
-bool drawing_engine_requires_new_window(sint32 srcEngine, sint32 dstEngine)
+bool drawing_engine_requires_new_window(int32_t srcEngine, int32_t dstEngine)
 {
 #ifdef _WIN32
     if (srcEngine != DRAWING_ENGINE_OPENGL && dstEngine != DRAWING_ENGINE_OPENGL)
@@ -92,7 +84,7 @@ void drawing_engine_resize()
     }
 }
 
-void drawing_engine_set_palette(const rct_palette_entry * colours)
+void drawing_engine_set_palette(const rct_palette_entry* colours)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -105,7 +97,7 @@ void drawing_engine_set_palette(const rct_palette_entry * colours)
     }
 }
 
-void drawing_engine_copy_rect(sint32 x, sint32 y, sint32 width, sint32 height, sint32 dx, sint32 dy)
+void drawing_engine_copy_rect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -127,7 +119,7 @@ void drawing_engine_dispose()
     }
 }
 
-rct_drawpixelinfo * drawing_engine_get_dpi()
+rct_drawpixelinfo* drawing_engine_get_dpi()
 {
     auto context = GetContext();
     auto drawingEngine = context->GetDrawingEngine();
@@ -145,7 +137,7 @@ bool drawing_engine_has_dirty_optimisations()
     return result;
 }
 
-void drawing_engine_invalidate_image(uint32 image)
+void drawing_engine_invalidate_image(uint32_t image)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -163,7 +155,7 @@ void drawing_engine_set_vsync(bool vsync)
     }
 }
 
-void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom)
+void gfx_set_dirty_blocks(int16_t left, int16_t top, int16_t right, int16_t bottom)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -176,87 +168,88 @@ void gfx_draw_all_dirty_blocks()
 {
 }
 
-void gfx_clear(rct_drawpixelinfo * dpi, uint8 paletteIndex)
+void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->Clear(paletteIndex);
     }
 }
 
-void gfx_fill_rect(rct_drawpixelinfo * dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, sint32 colour)
+void gfx_fill_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->FillRect(colour, left, top, right, bottom);
     }
 }
 
-void gfx_filter_rect(rct_drawpixelinfo * dpi, sint32 left, sint32 top, sint32 right, sint32 bottom, FILTER_PALETTE_ID palette)
+void gfx_filter_rect(
+    rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FILTER_PALETTE_ID palette)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->FilterRect(palette, left, top, right, bottom);
     }
 }
 
-void gfx_draw_line(rct_drawpixelinfo *dpi, sint32 x1, sint32 y1, sint32 x2, sint32 y2, sint32 colour)
+void gfx_draw_line(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawLine(colour, x1, y1, x2, y2);
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint32 tertiary_colour)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint32_t tertiary_colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawSprite(image, x, y, tertiary_colour);
     }
 }
 
-void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint8 * palette)
+void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t* palette)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawGlyph(image, x, y, palette);
     }
 }
 
-void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo * dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage)
+void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawSpriteRawMasked(x, y, maskImage, colourImage);
     }
 }
 
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo * dpi, sint32 image, sint32 x, sint32 y, uint8 colour)
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t colour)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        IDrawingContext * dc = drawingEngine->GetDrawingContext(dpi);
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
         dc->DrawSpriteSolid(image, x, y, colour);
     }
 }
 
-sint32 screenshot_dump()
+int32_t screenshot_dump()
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
@@ -265,4 +258,3 @@ sint32 screenshot_dump()
     }
     return false;
 }
-
