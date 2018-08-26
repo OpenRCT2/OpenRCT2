@@ -1578,6 +1578,12 @@ static void viewport_arrange_interaction_info(paint_session* session, uint32_t q
             next_ps = ps->var_20;
         }
 
+        if (ps == nullptr)
+        {
+            log_error("Invalid paint struct");
+            return;
+        }
+
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
             if (sub_679023(
@@ -1593,7 +1599,7 @@ static void viewport_arrange_interaction_info(paint_session* session, uint32_t q
  *
  *  rct2: 0x0068862C
  */
-void sub_68862C(paint_session *session)
+static void sub_68862C(paint_session *session)
 {
     uint32_t quadrantIndex = session->QuadrantBackIndex;
     do

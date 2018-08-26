@@ -363,8 +363,8 @@ struct ThreadData_t
     fnSorter sorter;
 };
 
-std::vector<ThreadData_t> _SorterThreadData;
-std::vector<std::thread> _SorterThreads;
+static std::vector<ThreadData_t> _SorterThreadData;
+static std::vector<std::thread> _SorterThreads;
 
 static void paint_sort_quadrant(paint_session* session, uint32_t quadrantIndex, fnSorter sorter)
 {
