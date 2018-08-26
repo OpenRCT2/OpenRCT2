@@ -77,7 +77,7 @@ static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi)
 
 static void paint_session_add_ps_to_quadrant(paint_session* session, paint_struct* ps, int32_t positionHash)
 {
-    uint32_t paintQuadrantIndex = std::clamp<uint32_t>(positionHash / 16, 0, (uint32_t)session->Quadrants.size() - 1);
+    uint32_t paintQuadrantIndex = std::clamp<uint32_t>(positionHash / 32, 0, (uint32_t)session->Quadrants.size() - 1);
     ps->quadrant_index = paintQuadrantIndex;
     session->Quadrants[paintQuadrantIndex].push_back(ps);
 
@@ -351,90 +351,57 @@ static void visitNode(paint_struct* ps, uint32_t& depth)
     ps->isoDepth = depth++;
 }
 
-/**
- *
- *  rct2: 0x00688217
- */
-void paint_session_arrange(paint_session* session)
+typedef bool (*fnSorter)(const paint_struct* a, const paint_struct* b);
+
+struct ThreadData_t
 {
-    const uint8_t rotation = get_current_rotation();
-    typedef bool (*fnSorter)(const paint_struct* a, const paint_struct* b);
+    bool dataAvailable;
+    bool exit;
 
-    fnSorter sorter = nullptr;
-    switch (rotation)
+    paint_session *session;
+    uint32_t quadrantIndex;
+    fnSorter sorter;
+};
+
+std::vector<ThreadData_t> _SorterThreadData;
+std::vector<std::thread> _SorterThreads;
+
+static void paint_sort_quadrant(paint_session* session, uint32_t quadrantIndex, fnSorter sorter)
+{
+    std::vector<paint_struct*>& psData = session->Quadrants[quadrantIndex];
+
+    for (size_t i = 0; i < psData.size(); i++)
     {
-        case 0:
-            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
-                return check_bounding_box<0>(a->bounds, b->bounds);
-            };
-            break;
-        case 1:
-            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
-                return check_bounding_box<1>(a->bounds, b->bounds);
-            };
-            break;
-        case 2:
-            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
-                return check_bounding_box<2>(a->bounds, b->bounds);
-            };
-            break;
-        case 3:
-            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
-                return check_bounding_box<3>(a->bounds, b->bounds);
-            };
-            break;
-    }
+        paint_struct* psA = psData[i];
+        psA->quadrant_flags = 0;
 
-    auto sortQuadrant = [&sorter](paint_session *session, uint32_t quadrantIndex)->void
-    {
-        std::vector<paint_struct*>& psData = session->Quadrants[quadrantIndex];
+        if (psA->behind == nullptr)
+            psA->behind = new std::vector<paint_struct*>();
+        psA->behind->clear();
 
-        for (size_t i = 0; i < psData.size(); i++)
+        for (size_t j = 0; j < psData.size(); j++)
         {
-            paint_struct* psA = psData[i];
-            psA->quadrant_flags = 0;
+            paint_struct* psB = psData[j];
 
-            if (psA->behind == nullptr)
-                psA->behind = new std::vector<paint_struct*>();
-            psA->behind->clear();
-
-            for (size_t j = 0; j < psData.size(); j++)
+            if (psA != psB && sorter(psA, psB))
             {
-                paint_struct* psB = psData[j];
-
-                if (psA != psB && sorter(psA, psB))
-                {
-                    psA->behind->push_back(psB);
-                }
+                psA->behind->push_back(psB);
             }
         }
+    }
 
-        uint32_t depth = 0;
-        for (size_t i = 0; i < psData.size(); i++)
-        {
-            visitNode(psData[i], depth);
-        }
-
-        std::sort(psData.begin(), psData.end(), [](const paint_struct* a, const paint_struct* b) -> bool {
-            return a->isoDepth < b->isoDepth;
-        });
-    };
-
-    //static JobPool sortJobs;
-
-    uint32_t quadrantIndex = session->QuadrantBackIndex;
-    do
+    uint32_t depth = 0;
+    for (size_t i = 0; i < psData.size(); i++)
     {
+        visitNode(psData[i], depth);
+    }
 
-        //sortJobs.AddTask(std::bind(sortQuadrant, session, quadrantIndex));
-        sortQuadrant(session, quadrantIndex);
-
-    } while (++quadrantIndex <= session->QuadrantFrontIndex);
-
-    //sortJobs.Join();
+    std::sort(psData.begin(), psData.end(), [](const paint_struct* a, const paint_struct* b) -> bool {
+        return a->isoDepth < b->isoDepth;
+    });
 }
 
-static void paint_draw_struct(paint_session *session, uint32_t viewFlags, paint_struct *ps)
+static void paint_draw_struct(paint_session* session, uint32_t viewFlags, paint_struct* ps)
 {
     int16_t x = ps->x;
     int16_t y = ps->y;
@@ -472,6 +439,143 @@ static void paint_draw_struct(paint_session *session, uint32_t viewFlags, paint_
     }
 }
 
+static void paint_draw_quadrant(paint_session* session, uint32_t viewFlags, uint32_t quadrantIndex)
+{
+    std::vector<paint_struct*>& psData = session->Quadrants[quadrantIndex];
+
+    for (size_t i = 0; i < psData.size(); i++)
+    {
+        paint_struct* psA = psData[i];
+        paint_draw_struct(session, viewFlags, psA);
+    }
+}
+
+static void paint_thread_worker(size_t dataIndex)
+{
+    ThreadData_t& data = _SorterThreadData[dataIndex];
+    do 
+    {
+        if (!data.dataAvailable)
+        {
+            std::this_thread::yield();
+            continue;
+        }
+
+        paint_sort_quadrant(data.session, data.quadrantIndex, data.sorter);
+
+        data.dataAvailable = false;
+
+    } while (data.exit == false);
+}
+
+static void paint_initialize_threads(paint_session* session, uint32_t numThreads = 2)
+{
+    if (_SorterThreadData.empty())
+    {
+        _SorterThreadData.resize(numThreads);
+
+        for (size_t i = 0; i < numThreads; i++)
+        {
+            auto& data = _SorterThreadData[i];
+            data.dataAvailable = false;
+            data.exit = false;
+            data.session = session;
+
+            _SorterThreads.emplace_back(paint_thread_worker, i);
+        }
+    }
+}
+
+static void paint_thread_enqueue_sort(paint_session* session, uint32_t quadrantIndex, fnSorter sorter)
+{
+    for (auto& data : _SorterThreadData)
+    {
+        if (data.dataAvailable)
+            continue;
+
+        data.quadrantIndex = quadrantIndex;
+        data.sorter = sorter;
+        data.dataAvailable = true;
+
+        return;
+    }
+
+    // No free threads available, do this ourself meanwhile.
+    paint_sort_quadrant(session, quadrantIndex, sorter);
+}
+
+static void paint_thread_wait(paint_session* session)
+{
+    for (auto& data : _SorterThreadData)
+    {
+        while (data.dataAvailable)
+        {
+            std::this_thread::yield();
+        }
+    }
+}
+
+/**
+ *
+ *  rct2: 0x00688217
+ */
+void paint_session_arrange(paint_session* session)
+{
+    const uint8_t rotation = get_current_rotation();
+
+    fnSorter sorter = nullptr;
+    switch (rotation)
+    {
+        case 0:
+            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
+                return check_bounding_box<0>(a->bounds, b->bounds);
+            };
+            break;
+        case 1:
+            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
+                return check_bounding_box<1>(a->bounds, b->bounds);
+            };
+            break;
+        case 2:
+            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
+                return check_bounding_box<2>(a->bounds, b->bounds);
+            };
+            break;
+        case 3:
+            sorter = [](const paint_struct* a, const paint_struct* b) -> bool {
+                return check_bounding_box<3>(a->bounds, b->bounds);
+            };
+            break;
+    }
+
+    // TODO: Add this to the options?
+    bool useMultithreading = true;
+
+    if (useMultithreading)
+    {
+        paint_initialize_threads(session);
+    }
+
+    uint32_t quadrantIndex = session->QuadrantBackIndex;
+    do
+    {
+        if (useMultithreading)
+        {
+            paint_thread_enqueue_sort(session, quadrantIndex, sorter);
+        }
+        else
+        {
+            paint_sort_quadrant(session, quadrantIndex, sorter);
+        }
+
+    } while (++quadrantIndex <= session->QuadrantFrontIndex);
+
+    if (useMultithreading)
+    {
+        paint_thread_wait(session);
+    }
+}
+
 /**
  *
  *  rct2: 0x00688485
@@ -481,22 +585,9 @@ void paint_draw_structs(paint_session* session, uint32_t viewFlags)
     uint32_t quadrantIndex = session->QuadrantBackIndex;
     do
     {
-        std::vector<paint_struct*>& psData = session->Quadrants[quadrantIndex];
-
-        for (size_t i = 0; i < psData.size(); i++)
-        {
-            paint_struct* psA = psData[i];
-            paint_draw_struct(session, viewFlags, psA);
-        }
+        paint_draw_quadrant(session, viewFlags, quadrantIndex);
 
     } while (++quadrantIndex <= session->QuadrantFrontIndex);
-
-    /*
-    for (auto* ps : session->PaintStructsSorted)
-    {
-        paint_draw_struct(session, viewFlags, ps);
-    }
-    */
 }
 
 /**

@@ -138,7 +138,7 @@ struct tunnel_entry
     uint8_t type;
 };
 
-#define MAX_PAINT_QUADRANTS 1024
+#define MAX_PAINT_QUADRANTS 512
 #define TUNNEL_MAX_COUNT 65
 
 struct paint_session
