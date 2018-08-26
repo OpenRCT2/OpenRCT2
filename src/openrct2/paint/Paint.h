@@ -14,8 +14,8 @@
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 
-#include <vector>
 #include <array>
+#include <vector>
 
 struct rct_tile_element;
 
@@ -76,13 +76,13 @@ struct paint_struct
     uint8_t quadrant_flags;
     attached_paint_struct* attached_ps; // 0x1C
     paint_struct* var_20;
-    uint8_t sprite_type;            // 0x28
+    uint8_t sprite_type; // 0x28
     uint8_t var_29;
     uint16_t pad_2A;
     uint16_t map_x;                // 0x2C
     uint16_t map_y;                // 0x2E
     rct_tile_element* tileElement; // 0x30 (or sprite pointer)
-    std::vector<paint_struct*> *behind;
+    std::vector<paint_struct*>* behind;
     uint32_t isoDepth;
 };
 #ifdef PLATFORM_32BIT
@@ -144,8 +144,8 @@ struct tunnel_entry
 struct paint_session
 {
     rct_drawpixelinfo* DPI;
-    //paint_entry PaintStructs[4000];
-    //paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
+    // paint_entry PaintStructs[4000];
+    // paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     std::array<paint_entry, 4000> PaintStructs;
     std::array<std::vector<paint_struct*>, MAX_PAINT_QUADRANTS> Quadrants;
     std::vector<paint_struct*> PaintStructsSorted;

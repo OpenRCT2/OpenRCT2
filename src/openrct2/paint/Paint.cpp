@@ -7,15 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Paint.h"
+
 #include "../config/Config.h"
+#include "../core/JobPool.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
-#include "Paint.h"
 #include "sprite/Paint.Sprite.h"
 #include "tile_element/Paint.TileElement.h"
-#include "../core/JobPool.hpp"
 
 #include <algorithm>
 
@@ -358,7 +359,7 @@ struct ThreadData_t
     bool dataAvailable;
     bool exit;
 
-    paint_session *session;
+    paint_session* session;
     uint32_t quadrantIndex;
     fnSorter sorter;
 };
@@ -453,7 +454,7 @@ static void paint_draw_quadrant(paint_session* session, uint32_t viewFlags, uint
 static void paint_thread_worker(size_t dataIndex)
 {
     ThreadData_t& data = _SorterThreadData[dataIndex];
-    do 
+    do
     {
         if (!data.dataAvailable)
         {

@@ -1599,7 +1599,7 @@ static void viewport_arrange_interaction_info(paint_session* session, uint32_t q
  *
  *  rct2: 0x0068862C
  */
-static void sub_68862C(paint_session *session)
+static void sub_68862C(paint_session* session)
 {
     uint32_t quadrantIndex = session->QuadrantBackIndex;
     do
