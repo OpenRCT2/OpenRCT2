@@ -1560,16 +1560,14 @@ static bool sub_679023(rct_drawpixelinfo* dpi, int32_t imageId, int32_t x, int32
     return sub_679074(dpi, imageId, x, y, palette);
 }
 
-/**
- *
- *  rct2: 0x0068862C
- */
-void sub_68862C(paint_session *session)
+static void viewport_arrange_interaction_info(paint_session* session, uint32_t quadrantIndex)
 {
-    //while ((ps = ps->next_quadrant_ps) != nullptr)
-    for (auto *ps : session->PaintStructsSorted)
+    std::vector<paint_struct*>& psData = session->Quadrants[quadrantIndex];
+
+    for (size_t i = 0; i < psData.size(); i++)
     {
-        paint_struct* old_ps = ps;
+        paint_struct* ps = psData[i];
+
         paint_struct* next_ps = ps;
         while (next_ps != nullptr)
         {
@@ -1588,9 +1586,21 @@ void sub_68862C(paint_session *session)
                 store_interaction_info(ps);
             }
         }
-
-        ps = old_ps;
     }
+}
+
+/**
+ *
+ *  rct2: 0x0068862C
+ */
+void sub_68862C(paint_session *session)
+{
+    uint32_t quadrantIndex = session->QuadrantBackIndex;
+    do
+    {
+        viewport_arrange_interaction_info(session, quadrantIndex);
+
+    } while (++quadrantIndex <= session->QuadrantFrontIndex);
 }
 
 /**
