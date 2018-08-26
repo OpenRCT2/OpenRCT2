@@ -1,4 +1,4 @@
-0.2.0+ (in development)
+0.2.1 (2018-08-26)
 ------------------------------------------------------------------------
 - Feature: [#5993] Ride window prices can now be set via text input.
 - Feature: [#6998] Guests now wait for passing vehicles before crossing railway tracks.
