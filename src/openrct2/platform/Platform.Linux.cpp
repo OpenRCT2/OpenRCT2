@@ -13,8 +13,10 @@
 #    include <pwd.h>
 #    if defined(__FreeBSD__)
 #        include <stddef.h>
+// clang format off
 #        include <sys/types.h>
 #        include <sys/sysctl.h>
+// clang format on
 #    endif // __FreeBSD__
 #    if defined(__linux__)
 // for PATH_MAX
