@@ -1181,8 +1181,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
         // This will send all custom objects to connected clients
         // TODO: fix it so custom objects negotiation is performed even in this case.
         auto context = GetContext();
-        auto objManager = context->GetObjectManager();
-        objects = objManager->GetPackableObjects();
+        auto& objManager = context->GetObjectManager();
+        objects = objManager.GetPackableObjects();
     }
 
     size_t out_size;
@@ -1938,8 +1938,8 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         chat_history_add(text);
 
         auto context = GetContext();
-        auto objManager = context->GetObjectManager();
-        auto objects = objManager->GetPackableObjects();
+        auto& objManager = context->GetObjectManager();
+        auto objects = objManager.GetPackableObjects();
         Server_Send_OBJECTS(connection, objects);
 
         // Log player joining event
@@ -2230,10 +2230,10 @@ bool Network::LoadMap(IStream* stream)
     try
     {
         auto context = GetContext();
-        auto objManager = context->GetObjectManager();
+        auto& objManager = context->GetObjectManager();
         auto importer = ParkImporter::CreateS6(context->GetObjectRepository(), context->GetObjectManager());
         auto loadResult = importer->LoadFromStream(stream, false);
-        objManager->LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+        objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
         importer->Import();
 
         sprite_position_tween_reset();

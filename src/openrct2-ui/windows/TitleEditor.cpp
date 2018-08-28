@@ -367,10 +367,10 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 auto hintPath = String::ToStd(handle->HintPath);
 
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-                auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+                auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
                 auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
                 auto result = parkImporter->LoadFromStream(stream, isScenario);
-                objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                 parkImporter->Import();
 
                 if (isScenario)

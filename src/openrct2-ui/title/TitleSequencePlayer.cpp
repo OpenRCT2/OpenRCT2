@@ -419,8 +419,8 @@ private:
                 auto parkImporter = ParkImporter::Create(path);
                 auto result = parkImporter->Load(path);
 
-                auto objectManager = GetContext()->GetObjectManager();
-                objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                auto& objectManager = GetContext()->GetObjectManager();
+                objectManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
 
                 parkImporter->Import();
             }
@@ -458,8 +458,8 @@ private:
                 auto parkImporter = ParkImporter::Create(hintPath);
                 auto result = parkImporter->LoadFromStream(stream, isScenario);
 
-                auto objectManager = GetContext()->GetObjectManager();
-                objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                auto& objectManager = GetContext()->GetObjectManager();
+                objectManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
 
                 parkImporter->Import();
             }
