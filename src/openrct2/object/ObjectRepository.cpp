@@ -651,8 +651,8 @@ void object_list_load()
     auto objectRepository = context->GetObjectRepository();
     objectRepository->LoadOrConstruct(localisationService.GetCurrentLanguage());
 
-    auto objectManager = context->GetObjectManager();
-    objectManager->UnloadAll();
+    auto& objectManager = context->GetObjectManager();
+    objectManager.UnloadAll();
 }
 
 void* object_repository_load_object(const rct_object_entry* objectEntry)

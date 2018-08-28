@@ -258,14 +258,11 @@ void scenery_remove_ghost_tool_placement()
 rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex)
 {
     rct_scenery_entry* result = nullptr;
-    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (objMgr != nullptr)
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
+    if (obj != nullptr)
     {
-        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
-        if (obj != nullptr)
-        {
-            result = (rct_scenery_entry*)obj->GetLegacyData();
-        }
+        result = (rct_scenery_entry*)obj->GetLegacyData();
     }
     return result;
 }
@@ -273,14 +270,11 @@ rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex)
 rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex)
 {
     rct_scenery_entry* result = nullptr;
-    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (objMgr != nullptr)
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
+    if (obj != nullptr)
     {
-        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
-        if (obj != nullptr)
-        {
-            result = (rct_scenery_entry*)obj->GetLegacyData();
-        }
+        result = (rct_scenery_entry*)obj->GetLegacyData();
     }
     return result;
 }
@@ -288,14 +282,11 @@ rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex)
 rct_scenery_entry* get_wall_entry(int32_t entryIndex)
 {
     rct_scenery_entry* result = nullptr;
-    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (objMgr != nullptr)
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_WALLS, entryIndex);
+    if (obj != nullptr)
     {
-        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_WALLS, entryIndex);
-        if (obj != nullptr)
-        {
-            result = (rct_scenery_entry*)obj->GetLegacyData();
-        }
+        result = (rct_scenery_entry*)obj->GetLegacyData();
     }
     return result;
 }
@@ -303,14 +294,11 @@ rct_scenery_entry* get_wall_entry(int32_t entryIndex)
 rct_scenery_entry* get_banner_entry(int32_t entryIndex)
 {
     rct_scenery_entry* result = nullptr;
-    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (objMgr != nullptr)
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_BANNERS, entryIndex);
+    if (obj != nullptr)
     {
-        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_BANNERS, entryIndex);
-        if (obj != nullptr)
-        {
-            result = (rct_scenery_entry*)obj->GetLegacyData();
-        }
+        result = (rct_scenery_entry*)obj->GetLegacyData();
     }
     return result;
 }
@@ -318,14 +306,11 @@ rct_scenery_entry* get_banner_entry(int32_t entryIndex)
 rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex)
 {
     rct_scenery_entry* result = nullptr;
-    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (objMgr != nullptr)
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATH_BITS, entryIndex);
+    if (obj != nullptr)
     {
-        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_PATH_BITS, entryIndex);
-        if (obj != nullptr)
-        {
-            result = (rct_scenery_entry*)obj->GetLegacyData();
-        }
+        result = (rct_scenery_entry*)obj->GetLegacyData();
     }
     return result;
 }
@@ -333,14 +318,11 @@ rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex)
 rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex)
 {
     rct_scenery_group_entry* result = nullptr;
-    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (objMgr != nullptr)
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SCENERY_GROUP, entryIndex);
+    if (obj != nullptr)
     {
-        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_SCENERY_GROUP, entryIndex);
-        if (obj != nullptr)
-        {
-            result = (rct_scenery_group_entry*)obj->GetLegacyData();
-        }
+        result = (rct_scenery_group_entry*)obj->GetLegacyData();
     }
     return result;
 }

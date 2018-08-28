@@ -334,7 +334,7 @@ private:
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
         auto context = OpenRCT2::GetContext();
-        context->GetObjectManager()->UnloadAll();
+        context->GetObjectManager().UnloadAll();
         context->GetGameState()->InitAll(mapSize);
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -1827,8 +1827,8 @@ private:
 
     void LoadObjects()
     {
-        auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
-        objectManager->LoadDefaultObjects();
+        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        objectManager.LoadDefaultObjects();
 
         LoadObjects(OBJECT_TYPE_RIDE, _rideEntries);
         LoadObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries);
@@ -1861,7 +1861,7 @@ private:
 
     void LoadObjects(uint8_t objectType, const std::vector<const char*>& entries)
     {
-        auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
         uint32_t entryIndex = 0;
         for (const char* objectName : entries)
@@ -1871,7 +1871,7 @@ private:
             std::copy_n(objectName, 8, entry.name);
             entry.checksum = 0;
 
-            Object* object = objectManager->LoadObject(&entry);
+            Object* object = objectManager.LoadObject(&entry);
             if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
             {
                 log_error("Failed to load %s.", objectName);
@@ -2865,19 +2865,19 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateS4()
 
 void load_from_sv4(const utf8* path)
 {
-    auto objectMgr = GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<S4Importer>();
     auto result = s4Importer->LoadSavedGame(path);
-    objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+    objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
     s4Importer->Import();
 }
 
 void load_from_sc4(const utf8* path)
 {
-    auto objectMgr = GetContext()->GetObjectManager();
+    auto& objectMgr = GetContext()->GetObjectManager();
     auto s4Importer = std::make_unique<S4Importer>();
     auto result = s4Importer->LoadScenario(path);
-    objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+    objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
     s4Importer->Import();
 }
 

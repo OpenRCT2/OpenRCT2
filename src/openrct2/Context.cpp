@@ -170,9 +170,9 @@ namespace OpenRCT2
             return *_localisationService;
         }
 
-        std::shared_ptr<IObjectManager> GetObjectManager() override
+        IObjectManager& GetObjectManager() override
         {
-            return _objectManager;
+            return *_objectManager;
         }
 
         std::shared_ptr<IObjectRepository> GetObjectRepository() override
@@ -496,7 +496,7 @@ namespace OpenRCT2
                     else
                     {
                         // Save is an S6 (RCT2 format)
-                        parkImporter = ParkImporter::CreateS6(_objectRepository, _objectManager);
+                        parkImporter = ParkImporter::CreateS6(_objectRepository, *_objectManager);
                     }
 
                     try

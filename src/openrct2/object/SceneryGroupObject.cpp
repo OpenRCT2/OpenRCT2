@@ -71,7 +71,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
 {
     auto context = GetContext();
     auto objectRepository = context->GetObjectRepository();
-    auto objectManager = context->GetObjectManager();
+    auto& objectManager = context->GetObjectManager();
 
     _legacyType.entry_count = 0;
     for (const auto& objectEntry : _items)
@@ -82,7 +82,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
         if (ori->LoadedObject == nullptr)
             continue;
 
-        uint16_t sceneryEntry = objectManager->GetLoadedObjectEntryIndex(ori->LoadedObject);
+        uint16_t sceneryEntry = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
         Guard::Assert(sceneryEntry != UINT8_MAX, GUARD_LINE);
 
         auto objectType = ori->ObjectEntry.flags & 0x0F;
