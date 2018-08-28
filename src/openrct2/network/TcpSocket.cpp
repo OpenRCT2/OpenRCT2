@@ -210,10 +210,13 @@ public:
                     (struct sockaddr*)&client_addr, client_len, hostName, sizeof(hostName), nullptr, 0,
                     NI_NUMERICHOST | NI_NUMERICSERV);
                 SetTCPNoDelay(socket, true);
-                tcpSocket = new TcpSocket(socket);
                 if (rc == 0)
                 {
-                    _hostName = std::string(hostName);
+                    tcpSocket = new TcpSocket(socket, hostName);
+                }
+                else
+                {
+                    tcpSocket = new TcpSocket(socket, "");
                 }
             }
         }
@@ -427,9 +430,10 @@ public:
     }
 
 private:
-    explicit TcpSocket(SOCKET socket)
+    explicit TcpSocket(SOCKET socket, const std::string& hostName)
     {
         _socket = socket;
+        _hostName = hostName;
         _status = SOCKET_STATUS_CONNECTED;
     }
 
