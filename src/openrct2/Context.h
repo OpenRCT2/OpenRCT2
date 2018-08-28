@@ -98,8 +98,8 @@ namespace OpenRCT2
         virtual GameState* GetGameState() abstract;
         virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
-        virtual std::shared_ptr<IObjectManager> GetObjectManager() abstract;
-        virtual std::shared_ptr<IObjectRepository> GetObjectRepository() abstract;
+        virtual IObjectManager& GetObjectManager() abstract;
+        virtual IObjectRepository& GetObjectRepository() abstract;
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual int32_t GetDrawingEngineType() abstract;

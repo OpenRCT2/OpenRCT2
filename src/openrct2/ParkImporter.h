@@ -66,7 +66,7 @@ namespace ParkImporter
     std::unique_ptr<IParkImporter> Create(const std::string& hintPath);
     std::unique_ptr<IParkImporter> CreateS4();
     std::unique_ptr<IParkImporter> CreateS6(
-        std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager);
+        IObjectRepository& objectRepository, IObjectManager& objectManager);
 
     bool ExtensionIsRCT1(const std::string& extension);
     bool ExtensionIsScenario(const std::string& extension);

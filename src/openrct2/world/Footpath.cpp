@@ -2612,14 +2612,11 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
 rct_footpath_entry* get_footpath_entry(int32_t entryIndex)
 {
     rct_footpath_entry* result = nullptr;
-    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (objMgr != nullptr)
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
+    if (obj != nullptr)
     {
-        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
-        if (obj != nullptr)
-        {
-            result = (rct_footpath_entry*)obj->GetLegacyData();
-        }
+        result = (rct_footpath_entry*)obj->GetLegacyData();
     }
     return result;
 }

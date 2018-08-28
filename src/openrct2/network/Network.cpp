@@ -1181,8 +1181,8 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
         // This will send all custom objects to connected clients
         // TODO: fix it so custom objects negotiation is performed even in this case.
         auto context = GetContext();
-        auto objManager = context->GetObjectManager();
-        objects = objManager->GetPackableObjects();
+        auto& objManager = context->GetObjectManager();
+        objects = objManager.GetPackableObjects();
     }
 
     size_t out_size;
@@ -1938,8 +1938,8 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         chat_history_add(text);
 
         auto context = GetContext();
-        auto objManager = context->GetObjectManager();
-        auto objects = objManager->GetPackableObjects();
+        auto& objManager = context->GetObjectManager();
+        auto objects = objManager.GetPackableObjects();
         Server_Send_OBJECTS(connection, objects);
 
         // Log player joining event
@@ -1960,7 +1960,7 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, [[maybe_unused]
 
 void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
 {
-    auto repo = GetContext()->GetObjectRepository();
+    auto& repo = GetContext()->GetObjectRepository();
     uint32_t size;
     packet >> size;
     log_verbose("client received object list, it has %u entries", size);
@@ -1979,7 +1979,7 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         std::string s(name, name + 8);
         uint32_t checksum, flags;
         packet >> checksum >> flags;
-        const ObjectRepositoryItem* ori = repo->FindObject(s.c_str());
+        const ObjectRepositoryItem* ori = repo.FindObject(s.c_str());
         // This could potentially request the object if checksums don't match, but since client
         // won't replace its version with server-provided one, we don't do that.
         if (ori == nullptr)
@@ -2016,14 +2016,14 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         return;
     }
     log_verbose("Client requested %u objects", size);
-    auto repo = GetContext()->GetObjectRepository();
+    auto& repo = GetContext()->GetObjectRepository();
     for (uint32_t i = 0; i < size; i++)
     {
         const char* name = (const char*)packet.Read(8);
         // This is required, as packet does not have null terminator
         std::string s(name, name + 8);
         log_verbose("Client requested object %s", s.c_str());
-        const ObjectRepositoryItem* item = repo->FindObject(s.c_str());
+        const ObjectRepositoryItem* item = repo.FindObject(s.c_str());
         if (item == nullptr)
         {
             log_warning("Client tried getting non-existent object %s from us.", s.c_str());
@@ -2230,10 +2230,10 @@ bool Network::LoadMap(IStream* stream)
     try
     {
         auto context = GetContext();
-        auto objManager = context->GetObjectManager();
-        auto importer = ParkImporter::CreateS6(context->GetObjectRepository(), context->GetObjectManager());
+        auto& objManager = context->GetObjectManager();
+        auto importer = ParkImporter::CreateS6(context->GetObjectRepository(), objManager);
         auto loadResult = importer->LoadFromStream(stream, false);
-        objManager->LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+        objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
         importer->Import();
 
         sprite_position_tween_reset();

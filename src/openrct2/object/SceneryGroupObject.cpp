@@ -70,19 +70,19 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 void SceneryGroupObject::UpdateEntryIndexes()
 {
     auto context = GetContext();
-    auto objectRepository = context->GetObjectRepository();
-    auto objectManager = context->GetObjectManager();
+    auto& objectRepository = context->GetObjectRepository();
+    auto& objectManager = context->GetObjectManager();
 
     _legacyType.entry_count = 0;
     for (const auto& objectEntry : _items)
     {
-        auto ori = objectRepository->FindObject(&objectEntry);
+        auto ori = objectRepository.FindObject(&objectEntry);
         if (ori == nullptr)
             continue;
         if (ori->LoadedObject == nullptr)
             continue;
 
-        uint16_t sceneryEntry = objectManager->GetLoadedObjectEntryIndex(ori->LoadedObject);
+        uint16_t sceneryEntry = objectManager.GetLoadedObjectEntryIndex(ori->LoadedObject);
         Guard::Assert(sceneryEntry != UINT8_MAX, GUARD_LINE);
 
         auto objectType = ori->ObjectEntry.flags & 0x0F;

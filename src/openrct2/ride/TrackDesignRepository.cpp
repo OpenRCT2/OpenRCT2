@@ -153,7 +153,7 @@ public:
     size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const override
     {
         size_t count = 0;
-        const auto repo = GetContext()->GetObjectRepository();
+        const auto& repo = GetContext()->GetObjectRepository();
 
         for (const auto& item : _items)
         {
@@ -165,7 +165,7 @@ public:
             bool entryIsNotSeparate = false;
             if (entry.empty())
             {
-                const ObjectRepositoryItem* ori = repo->FindObject(item.ObjectEntry.c_str());
+                const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
 
                 if (ori == nullptr || !RideGroupManager::RideTypeIsIndependent(rideType))
                     entryIsNotSeparate = true;
@@ -182,7 +182,7 @@ public:
     size_t GetCountForRideGroup(uint8_t rideType, const RideGroup* rideGroup) const override
     {
         size_t count = 0;
-        const auto repo = GetContext()->GetObjectRepository();
+        const auto& repo = GetContext()->GetObjectRepository();
 
         for (const auto& item : _items)
         {
@@ -191,7 +191,7 @@ public:
                 continue;
             }
 
-            const ObjectRepositoryItem* ori = repo->FindObject(item.ObjectEntry.c_str());
+            const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
             uint8_t rideGroupIndex = (ori != nullptr) ? ori->RideInfo.RideGroupIndex : 0;
             const RideGroup* itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
 
@@ -212,7 +212,7 @@ public:
     std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry) const override
     {
         std::vector<track_design_file_ref> refs;
-        const auto repo = GetContext()->GetObjectRepository();
+        const auto& repo = GetContext()->GetObjectRepository();
 
         for (const auto& item : _items)
         {
@@ -224,7 +224,7 @@ public:
             bool entryIsNotSeparate = false;
             if (entry.empty())
             {
-                const ObjectRepositoryItem* ori = repo->FindObject(item.ObjectEntry.c_str());
+                const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
 
                 if (ori == nullptr || !RideGroupManager::RideTypeIsIndependent(rideType))
                     entryIsNotSeparate = true;
@@ -245,7 +245,7 @@ public:
     std::vector<track_design_file_ref> GetItemsForRideGroup(uint8_t rideType, const RideGroup* rideGroup) const override
     {
         std::vector<track_design_file_ref> refs;
-        const auto repo = GetContext()->GetObjectRepository();
+        const auto& repo = GetContext()->GetObjectRepository();
 
         for (const auto& item : _items)
         {
@@ -254,7 +254,7 @@ public:
                 continue;
             }
 
-            const ObjectRepositoryItem* ori = repo->FindObject(item.ObjectEntry.c_str());
+            const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
             uint8_t rideGroupIndex = (ori != nullptr) ? ori->RideInfo.RideGroupIndex : 0;
             const RideGroup* itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
 
