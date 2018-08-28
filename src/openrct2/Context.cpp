@@ -83,7 +83,7 @@ namespace OpenRCT2
         std::shared_ptr<IUiContext> const _uiContext;
 
         // Services
-        std::shared_ptr<LocalisationService> _localisationService;
+        std::unique_ptr<LocalisationService> _localisationService;
         std::unique_ptr<IObjectRepository> _objectRepository;
         std::unique_ptr<IObjectManager> _objectManager;
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
@@ -128,7 +128,7 @@ namespace OpenRCT2
             : _env(env)
             , _audioContext(audioContext)
             , _uiContext(uiContext)
-            , _localisationService(std::make_shared<LocalisationService>(env))
+            , _localisationService(std::make_unique<LocalisationService>(env))
         {
             Instance = this;
         }
