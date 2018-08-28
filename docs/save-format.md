@@ -69,7 +69,7 @@ General:
   guest-initial-cash:           money16
   guest-initial-hunger:         uint8
   guest-initial-thirst:         uint8
-  guest-spawns:                 xy32
+  guest-spawns:                 xyzd32
   land-price:                   money32
   construction-rights-price:    money32
 
