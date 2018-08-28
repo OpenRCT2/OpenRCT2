@@ -84,8 +84,8 @@ namespace OpenRCT2
 
         // Services
         std::shared_ptr<LocalisationService> _localisationService;
-        std::shared_ptr<IObjectRepository> _objectRepository;
-        std::shared_ptr<IObjectManager> _objectManager;
+        std::unique_ptr<IObjectRepository> _objectRepository;
+        std::unique_ptr<IObjectManager> _objectManager;
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
 #ifdef __ENABLE_DISCORD__
@@ -309,8 +309,8 @@ namespace OpenRCT2
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
 
-            _objectRepository = std::shared_ptr<IObjectRepository>(CreateObjectRepository(_env));
-            _objectManager = std::shared_ptr<IObjectManager>(CreateObjectManager(_objectRepository));
+            _objectRepository = CreateObjectRepository(_env);
+            _objectManager = CreateObjectManager(*_objectRepository);
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
 #ifdef __ENABLE_DISCORD__
