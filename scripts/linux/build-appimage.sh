@@ -30,7 +30,7 @@ pushd "$BUILD_DIR"
 #see https://docs.appimage.org/packaging-guide/from-source/index.html for more information
 cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX=/usr -G Ninja
 
-ninja -v -j$(nproc)
+ninja -v
 DESTDIR=AppDir ninja install
 
 wget https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
