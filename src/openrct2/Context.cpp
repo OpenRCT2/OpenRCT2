@@ -135,6 +135,13 @@ namespace OpenRCT2
 
         ~Context() override
         {
+            // Requires this as otherwise it will try to access Instance from other destructors.
+            // after setting Instance to nullptr.
+            if (_objectManager)
+            {
+                _objectManager->UnloadAll();
+            }
+
             window_close_all();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
