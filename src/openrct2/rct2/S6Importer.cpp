@@ -843,8 +843,7 @@ public:
     }
 };
 
-std::unique_ptr<IParkImporter> ParkImporter::CreateS6(
-    IObjectRepository& objectRepository)
+std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
 {
     return std::make_unique<S6Importer>(objectRepository);
 }
