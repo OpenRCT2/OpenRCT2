@@ -136,7 +136,6 @@ namespace OpenRCT2
         ~Context() override
         {
             window_close_all();
-            object_manager_unload_all_objects();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
             gfx_unload_g1();
