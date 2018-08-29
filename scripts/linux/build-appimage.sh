@@ -10,7 +10,7 @@ else
     TEMP_BASE=/tmp
 fi
 
-BUILD_DIR=$(mktemp -d -p "$TEMP_BASE" AppImageUpdate-build-XXXXXX)
+BUILD_DIR=$(mktemp -d -p "$TEMP_BASE" OpenRCT2-appimage-build-XXXXXX)
 
 cleanup () {
     if [ -d "$BUILD_DIR" ]; then
@@ -26,20 +26,16 @@ OLD_CWD=$(readlink -f .)
 
 pushd "$BUILD_DIR"
 
-#wget https://raw.githubusercontent.com/wheybags/glibc_version_header/master/version_headers/force_link_glibc_2.27.h
-
-#flags="-include "$(readlink -f "force_link_glibc_2.27.h")
-CC=clang CXX=clang++ CFLAGS="$flags" CXXFLAGS="$flags" cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_EXE_LINKER_FLAGS="-pthread"
+# standard linuxdeploy pattern
+#see https://docs.appimage.org/packaging-guide/from-source/index.html for more information
+cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX=/usr
 
 make -j$(nproc) VERBOSE=1
 make install DESTDIR=AppDir
 
 wget https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod +x linuxdeploy*.AppImage
-./linuxdeploy*.AppImage --appimage-extract
-wget https://github.com/TheAssassin/linuxdeploy-plugin-checkrt/releases/download/continuous/linuxdeploy-plugin-checkrt-x86_64.sh
-chmod +x linuxdeploy-plugin-checkrt-*.sh
-mv linuxdeploy-plugin-checkrt-*.sh squashfs-root/usr/bin
-ARCH=x86_64 squashfs-root/AppRun --appdir AppDir/ --output appimage -l /lib/x86_64-linux-gnu/libz.so.1
+
+./linuxdeploy*.AppImage --appimage-extract-and-run --appdir AppDir/ --output appimage
 
 mv OpenRCT2*.AppImage "$OLD_CWD"/
