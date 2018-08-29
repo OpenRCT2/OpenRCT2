@@ -440,7 +440,6 @@ private:
                 }
                 else
                 {
-                    log_info("Ignoring missing STEX entry.");
                     entry = {};
                     continue;
                 }

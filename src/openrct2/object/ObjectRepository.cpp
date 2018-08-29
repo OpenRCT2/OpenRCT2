@@ -36,7 +36,6 @@
 #include "ObjectList.h"
 #include "ObjectManager.h"
 #include "RideObject.h"
-#include "StexObject.h"
 
 #include <algorithm>
 #include <memory>
@@ -671,7 +670,7 @@ void* object_repository_load_object(const rct_object_entry* objectEntry)
     return (void*)object;
 }
 
-void scenario_translate(scenario_index_entry* scenarioEntry, const rct_object_entry* stexObjectEntry)
+void scenario_translate(scenario_index_entry* scenarioEntry)
 {
     rct_string_id localisedStringIds[3];
     if (language_get_localised_scenario_strings(scenarioEntry->name, localisedStringIds))
@@ -683,30 +682,6 @@ void scenario_translate(scenario_index_entry* scenarioEntry, const rct_object_en
         if (localisedStringIds[2] != STR_NONE)
         {
             String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), language_get_string(localisedStringIds[2]));
-        }
-    }
-    else
-    {
-        // Checks for a scenario string object (possibly for localisation)
-        if ((stexObjectEntry->flags & 0xFF) != 255)
-        {
-            auto objectRepository = GetContext()->GetObjectRepository();
-            const ObjectRepositoryItem* ori = objectRepository->FindObject(stexObjectEntry);
-            if (ori != nullptr)
-            {
-                Object* object = objectRepository->LoadObject(ori);
-                if (object != nullptr)
-                {
-                    auto stexObject = static_cast<StexObject*>(object);
-                    auto scenarioName = stexObject->GetScenarioName();
-                    auto scenarioDetails = stexObject->GetScenarioDetails();
-
-                    String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName.c_str());
-                    String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails.c_str());
-
-                    delete object;
-                }
-            }
         }
     }
 }

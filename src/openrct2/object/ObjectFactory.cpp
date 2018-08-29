@@ -31,7 +31,6 @@
 #include "RideObject.h"
 #include "SceneryGroupObject.h"
 #include "SmallSceneryObject.h"
-#include "StexObject.h"
 #include "WallObject.h"
 #include "WaterObject.h"
 
@@ -200,23 +199,27 @@ namespace ObjectFactory
             auto chunkReader = SawyerChunkReader(&fs);
 
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
-            result = CreateObject(entry);
 
-            utf8 objectName[DAT_NAME_LENGTH + 1] = { 0 };
-            object_entry_get_name_fixed(objectName, sizeof(objectName), &entry);
-            log_verbose("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
-
-            auto chunk = chunkReader.ReadChunk();
-            log_verbose("  size: %zu", chunk->GetLength());
-
-            auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
-            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless, nullptr);
-            ReadObjectLegacy(result, &readContext, &chunkStream);
-            if (readContext.WasError())
+            if (object_entry_get_type(&entry) != OBJECT_TYPE_SCENARIO_TEXT)
             {
-                throw std::runtime_error("Object has errors");
+                result = CreateObject(entry);
+
+                utf8 objectName[DAT_NAME_LENGTH + 1] = { 0 };
+                object_entry_get_name_fixed(objectName, sizeof(objectName), &entry);
+                log_verbose("  entry: { 0x%08X, \"%s\", 0x%08X }", entry.flags, objectName, entry.checksum);
+
+                auto chunk = chunkReader.ReadChunk();
+                log_verbose("  size: %zu", chunk->GetLength());
+
+                auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
+                auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless, nullptr);
+                ReadObjectLegacy(result, &readContext, &chunkStream);
+                if (readContext.WasError())
+                {
+                    throw std::runtime_error("Object has errors");
+                }
+                result->SetSourceGames({ object_entry_get_source_game_legacy(&entry) });
             }
-            result->SetSourceGames({ object_entry_get_source_game_legacy(&entry) });
         }
         catch (const std::exception&)
         {
@@ -292,7 +295,7 @@ namespace ObjectFactory
                 result = new WaterObject(entry);
                 break;
             case OBJECT_TYPE_SCENARIO_TEXT:
-                result = new StexObject(entry);
+                result = nullptr;
                 break;
             default:
                 throw std::runtime_error("Invalid object type");

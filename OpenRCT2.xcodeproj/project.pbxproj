@@ -455,7 +455,6 @@
 		F76C86741EC4E88400FA49E2 /* RideObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84261EC4E7CC00FA49E2 /* RideObject.cpp */; };
 		F76C86761EC4E88400FA49E2 /* SceneryGroupObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84281EC4E7CC00FA49E2 /* SceneryGroupObject.cpp */; };
 		F76C86791EC4E88400FA49E2 /* SmallSceneryObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C842B1EC4E7CC00FA49E2 /* SmallSceneryObject.cpp */; };
-		F76C867B1EC4E88400FA49E2 /* StexObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C842D1EC4E7CC00FA49E2 /* StexObject.cpp */; };
 		F76C867D1EC4E88400FA49E2 /* StringTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C842F1EC4E7CC00FA49E2 /* StringTable.cpp */; };
 		F76C867F1EC4E88400FA49E2 /* WallObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84311EC4E7CC00FA49E2 /* WallObject.cpp */; };
 		F76C86811EC4E88400FA49E2 /* WaterObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84331EC4E7CC00FA49E2 /* WaterObject.cpp */; };
@@ -1541,8 +1540,6 @@
 		F76C842A1EC4E7CC00FA49E2 /* SceneryObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneryObject.h; sourceTree = "<group>"; };
 		F76C842B1EC4E7CC00FA49E2 /* SmallSceneryObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SmallSceneryObject.cpp; sourceTree = "<group>"; };
 		F76C842C1EC4E7CC00FA49E2 /* SmallSceneryObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SmallSceneryObject.h; sourceTree = "<group>"; };
-		F76C842D1EC4E7CC00FA49E2 /* StexObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StexObject.cpp; sourceTree = "<group>"; };
-		F76C842E1EC4E7CC00FA49E2 /* StexObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StexObject.h; sourceTree = "<group>"; };
 		F76C842F1EC4E7CC00FA49E2 /* StringTable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StringTable.cpp; sourceTree = "<group>"; };
 		F76C84301EC4E7CC00FA49E2 /* StringTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringTable.h; sourceTree = "<group>"; };
 		F76C84311EC4E7CC00FA49E2 /* WallObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = WallObject.cpp; sourceTree = "<group>"; };
@@ -2648,8 +2645,6 @@
 				F76C842A1EC4E7CC00FA49E2 /* SceneryObject.h */,
 				F76C842B1EC4E7CC00FA49E2 /* SmallSceneryObject.cpp */,
 				F76C842C1EC4E7CC00FA49E2 /* SmallSceneryObject.h */,
-				F76C842D1EC4E7CC00FA49E2 /* StexObject.cpp */,
-				F76C842E1EC4E7CC00FA49E2 /* StexObject.h */,
 				F76C842F1EC4E7CC00FA49E2 /* StringTable.cpp */,
 				F76C84301EC4E7CC00FA49E2 /* StringTable.h */,
 				F76C84311EC4E7CC00FA49E2 /* WallObject.cpp */,
@@ -3878,7 +3873,6 @@
 				C68878CD20289B9B0084B384 /* DefaultObjects.cpp in Sources */,
 				939A359A20C12FC800630B3F /* Paint.Litter.cpp in Sources */,
 				C688788220289ADE0084B384 /* Rect.cpp in Sources */,
-				F76C867B1EC4E88400FA49E2 /* StexObject.cpp in Sources */,
 				93F9DA3920B46FB800D1BE92 /* ObjectJsonHelpers.cpp in Sources */,
 				C688787320289A780084B384 /* RideRatings.cpp in Sources */,
 				C688790D20289B9B0084B384 /* CircusShow.cpp in Sources */,
