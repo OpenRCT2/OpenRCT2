@@ -57,16 +57,14 @@ class S6Importer final : public IParkImporter
 {
 private:
     IObjectRepository& _objectRepository;
-    IObjectManager& _objectManager;
 
     const utf8* _s6Path = nullptr;
     rct_s6_data _s6{};
     uint8_t _gameVersion = 0;
 
 public:
-    S6Importer(IObjectRepository& objectRepository, IObjectManager& objectManager)
+    S6Importer(IObjectRepository& objectRepository)
         : _objectRepository(objectRepository)
-        , _objectManager(objectManager)
     {
     }
 
@@ -846,15 +844,15 @@ public:
 };
 
 std::unique_ptr<IParkImporter> ParkImporter::CreateS6(
-    IObjectRepository& objectRepository, IObjectManager& objectManager)
+    IObjectRepository& objectRepository)
 {
-    return std::make_unique<S6Importer>(objectRepository, objectManager);
+    return std::make_unique<S6Importer>(objectRepository);
 }
 
 void load_from_sv6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
-    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository(), context->GetObjectManager());
+    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository());
     try
     {
         auto& objectMgr = context->GetObjectManager();
@@ -892,7 +890,7 @@ void load_from_sc6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
     auto& objManager = context->GetObjectManager();
-    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository(), objManager);
+    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository());
     try
     {
         auto result = s6Importer->LoadScenario(path);

@@ -495,7 +495,7 @@ namespace OpenRCT2
                     else
                     {
                         // Save is an S6 (RCT2 format)
-                        parkImporter = ParkImporter::CreateS6(*_objectRepository, *_objectManager);
+                        parkImporter = ParkImporter::CreateS6(*_objectRepository);
                     }
 
                     try

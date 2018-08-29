@@ -30,7 +30,7 @@ namespace ParkImporter
         else
         {
             auto context = OpenRCT2::GetContext();
-            parkImporter = CreateS6(context->GetObjectRepository(), context->GetObjectManager());
+            parkImporter = CreateS6(context->GetObjectRepository());
         }
         return parkImporter;
     }
