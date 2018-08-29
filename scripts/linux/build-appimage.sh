@@ -28,10 +28,10 @@ pushd "$BUILD_DIR"
 
 # standard linuxdeploy pattern
 #see https://docs.appimage.org/packaging-guide/from-source/index.html for more information
-cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX=/usr
+cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX=/usr -G Ninja
 
-make -j$(nproc) VERBOSE=1
-make install DESTDIR=AppDir
+ninja -v -j$(nproc)
+DESTDIR=AppDir ninja install
 
 wget https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod +x linuxdeploy*.AppImage
