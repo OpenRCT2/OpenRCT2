@@ -13,11 +13,8 @@
 #    include <pwd.h>
 #    if defined(__FreeBSD__)
 #        include <stddef.h>
-// clang-format off
-// formatting check is disabled so that u_int, typedef'd in sys/types.h may be included before including sys/sysctl.h
-#        include <sys/types.h>
+#        include <sys/param.h>
 #        include <sys/sysctl.h>
-// clang-format on
 #    endif // __FreeBSD__
 #    if defined(__linux__)
 // for PATH_MAX
