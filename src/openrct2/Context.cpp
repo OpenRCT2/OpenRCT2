@@ -962,12 +962,11 @@ namespace OpenRCT2
                 });
         }
 
-        void EnsureDirectoriesExist(const DIRBASE dirBase, const std::vector<DIRID> dirIds)
+        void EnsureDirectoriesExist(const DIRBASE dirBase, const std::initializer_list<DIRID>& dirIds)
         {
-            std::string path;
             for (const auto& dirId : dirIds)
             {
-                path = _env->GetDirectoryPath(dirBase, dirId);
+                auto path = _env->GetDirectoryPath(dirBase, dirId);
                 if (!platform_ensure_directory_exists(path.c_str()))
                     log_error("Unable to create directory '%s'.", path.c_str());
             }
