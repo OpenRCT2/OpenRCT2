@@ -353,6 +353,8 @@ namespace OpenRCT2
                 _uiContext->CreateWindow();
             }
 
+            EnsureCustomUserContentDirectories();
+
             // TODO Ideally we want to delay this until we show the title so that we can
             //      still open the game window and draw a progress screen for the creation
             //      of the object cache.
@@ -941,6 +943,36 @@ namespace OpenRCT2
             _uiContext->Update();
         }
 
+        /**
+         * Ensure that the custom user content folders are present
+         */
+        void EnsureCustomUserContentDirectories()
+        {
+            EnsureDirectories(
+                DIRBASE::USER,
+                {
+                    DIRID::OBJECT,
+                    DIRID::SAVE,
+                    DIRID::SCENARIO,
+                    DIRID::TRACK,
+                    DIRID::LANDSCAPE,
+                    DIRID::HEIGHTMAP,
+                    DIRID::THEME,
+                    DIRID::SEQUENCE,
+                });
+        }
+
+        void EnsureDirectories(const DIRBASE dirBase, const std::vector<DIRID> dirIds)
+        {
+            std::string path;
+            for (const auto& dirId : dirIds)
+            {
+                path = _env->GetDirectoryPath(dirBase, dirId);
+                if (!platform_ensure_directory_exists(path.c_str()))
+                    log_error("Unable to create directory '%s'.", path.c_str());
+            }
+        }
+       
         /**
          * Copy saved games and landscapes to user directory
          */
