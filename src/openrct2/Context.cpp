@@ -353,7 +353,7 @@ namespace OpenRCT2
                 _uiContext->CreateWindow();
             }
 
-            EnsureCustomUserContentDirectories();
+            EnsureUserContentDirectoriesExist();
 
             // TODO Ideally we want to delay this until we show the title so that we can
             //      still open the game window and draw a progress screen for the creation
@@ -946,9 +946,9 @@ namespace OpenRCT2
         /**
          * Ensure that the custom user content folders are present
          */
-        void EnsureCustomUserContentDirectories()
+        void EnsureUserContentDirectoriesExist()
         {
-            EnsureDirectories(
+            EnsureDirectoriesExist(
                 DIRBASE::USER,
                 {
                     DIRID::OBJECT,
@@ -962,7 +962,7 @@ namespace OpenRCT2
                 });
         }
 
-        void EnsureDirectories(const DIRBASE dirBase, const std::vector<DIRID> dirIds)
+        void EnsureDirectoriesExist(const DIRBASE dirBase, const std::vector<DIRID> dirIds)
         {
             std::string path;
             for (const auto& dirId : dirIds)
