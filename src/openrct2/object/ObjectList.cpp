@@ -169,8 +169,8 @@ void* object_entry_get_chunk(int32_t objectType, size_t index)
     }
 
     void* result = nullptr;
-    auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr->GetLoadedObject(objectIndex);
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objectMgr.GetLoadedObject(objectIndex);
     if (obj != nullptr)
     {
         result = obj->GetLegacyData();
@@ -181,8 +181,8 @@ void* object_entry_get_chunk(int32_t objectType, size_t index)
 const rct_object_entry* object_entry_get_entry(int32_t objectType, size_t index)
 {
     const rct_object_entry* result = nullptr;
-    auto objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr->GetLoadedObject(objectType, index);
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objectMgr.GetLoadedObject(objectType, index);
     if (obj != nullptr)
     {
         result = obj->GetObjectEntry();

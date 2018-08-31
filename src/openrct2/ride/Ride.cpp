@@ -233,15 +233,14 @@ Ride* get_ride(int32_t index)
 rct_ride_entry* get_ride_entry(int32_t index)
 {
     rct_ride_entry* result = nullptr;
-    auto objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    if (objMgr != nullptr)
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_RIDE, index);
+    if (obj != nullptr)
     {
-        auto obj = objMgr->GetLoadedObject(OBJECT_TYPE_RIDE, index);
-        if (obj != nullptr)
-        {
-            result = (rct_ride_entry*)obj->GetLegacyData();
-        }
+        result = (rct_ride_entry*)obj->GetLegacyData();
     }
+
     return result;
 }
 

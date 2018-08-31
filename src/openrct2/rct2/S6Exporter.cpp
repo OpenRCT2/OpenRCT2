@@ -101,8 +101,8 @@ void S6Exporter::Save(IStream* stream, bool isScenario)
     // 2: Write packed objects
     if (_s6.header.num_packed_objects > 0)
     {
-        auto objRepo = OpenRCT2::GetContext()->GetObjectRepository();
-        objRepo->WritePackedObjects(stream, ExportObjectsList);
+        auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
+        objRepo.WritePackedObjects(stream, ExportObjectsList);
     }
 
     // 3: Write available objects chunk
@@ -768,8 +768,8 @@ int32_t scenario_save(const utf8* path, int32_t flags)
     {
         if (flags & S6_SAVE_FLAG_EXPORT)
         {
-            auto objManager = OpenRCT2::GetContext()->GetObjectManager();
-            s6exporter->ExportObjectsList = objManager->GetPackableObjects();
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            s6exporter->ExportObjectsList = objManager.GetPackableObjects();
         }
         s6exporter->RemoveTracklessRides = true;
         s6exporter->Export();

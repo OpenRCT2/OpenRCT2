@@ -83,9 +83,9 @@ namespace OpenRCT2
         std::shared_ptr<IUiContext> const _uiContext;
 
         // Services
-        std::shared_ptr<LocalisationService> _localisationService;
-        std::shared_ptr<IObjectRepository> _objectRepository;
-        std::shared_ptr<IObjectManager> _objectManager;
+        std::unique_ptr<LocalisationService> _localisationService;
+        std::unique_ptr<IObjectRepository> _objectRepository;
+        std::unique_ptr<IObjectManager> _objectManager;
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
 #ifdef __ENABLE_DISCORD__
@@ -128,15 +128,21 @@ namespace OpenRCT2
             : _env(env)
             , _audioContext(audioContext)
             , _uiContext(uiContext)
-            , _localisationService(std::make_shared<LocalisationService>(env))
+            , _localisationService(std::make_unique<LocalisationService>(env))
         {
             Instance = this;
         }
 
         ~Context() override
         {
+            // Requires this as otherwise it will try to access Instance from other destructors.
+            // after setting Instance to nullptr.
+            if (_objectManager)
+            {
+                _objectManager->UnloadAll();
+            }
+
             window_close_all();
-            object_manager_unload_all_objects();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
             gfx_unload_g1();
@@ -170,14 +176,14 @@ namespace OpenRCT2
             return *_localisationService;
         }
 
-        std::shared_ptr<IObjectManager> GetObjectManager() override
+        IObjectManager& GetObjectManager() override
         {
-            return _objectManager;
+            return *_objectManager;
         }
 
-        std::shared_ptr<IObjectRepository> GetObjectRepository() override
+        IObjectRepository& GetObjectRepository() override
         {
-            return _objectRepository;
+            return *_objectRepository;
         }
 
         ITrackDesignRepository* GetTrackDesignRepository() override
@@ -309,8 +315,8 @@ namespace OpenRCT2
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
 
-            _objectRepository = std::shared_ptr<IObjectRepository>(CreateObjectRepository(_env));
-            _objectManager = std::shared_ptr<IObjectManager>(CreateObjectManager(_objectRepository));
+            _objectRepository = CreateObjectRepository(_env);
+            _objectManager = CreateObjectManager(*_objectRepository);
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
 #ifdef __ENABLE_DISCORD__
@@ -496,7 +502,7 @@ namespace OpenRCT2
                     else
                     {
                         // Save is an S6 (RCT2 format)
-                        parkImporter = ParkImporter::CreateS6(_objectRepository, _objectManager);
+                        parkImporter = ParkImporter::CreateS6(*_objectRepository);
                     }
 
                     try

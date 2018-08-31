@@ -33,15 +33,13 @@
 class ObjectManager final : public IObjectManager
 {
 private:
-    std::shared_ptr<IObjectRepository> _objectRepository;
+    IObjectRepository& _objectRepository;
     std::vector<Object*> _loadedObjects;
 
 public:
-    explicit ObjectManager(std::shared_ptr<IObjectRepository> objectRepository)
+    explicit ObjectManager(IObjectRepository& objectRepository)
         : _objectRepository(objectRepository)
     {
-        Guard::ArgumentNotNull(objectRepository);
-
         _loadedObjects.resize(OBJECT_ENTRY_COUNT);
 
         UpdateSceneryGroupIndexes();
@@ -79,7 +77,7 @@ public:
     Object* GetLoadedObject(const rct_object_entry* entry) override
     {
         Object* loadedObject = nullptr;
-        const ObjectRepositoryItem* ori = _objectRepository->FindObject(entry);
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
         if (ori != nullptr)
         {
             loadedObject = ori->LoadedObject;
@@ -101,7 +99,7 @@ public:
     Object* LoadObject(const rct_object_entry* entry) override
     {
         Object* loadedObject = nullptr;
-        const ObjectRepositoryItem* ori = _objectRepository->FindObject(entry);
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
         if (ori != nullptr)
         {
             loadedObject = ori->LoadedObject;
@@ -154,7 +152,7 @@ public:
         for (size_t i = 0; i < count; i++)
         {
             const rct_object_entry* entry = &entries[i];
-            const ObjectRepositoryItem* ori = _objectRepository->FindObject(entry);
+            const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
             if (ori != nullptr)
             {
                 Object* loadedObject = ori->LoadedObject;
@@ -200,10 +198,10 @@ public:
     std::vector<const ObjectRepositoryItem*> GetPackableObjects() override
     {
         std::vector<const ObjectRepositoryItem*> objects;
-        size_t numObjects = _objectRepository->GetNumObjects();
+        size_t numObjects = _objectRepository.GetNumObjects();
         for (size_t i = 0; i < numObjects; i++)
         {
-            const ObjectRepositoryItem* item = &_objectRepository->GetObjects()[i];
+            const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
             if (item->LoadedObject != nullptr && item->LoadedObject->GetLegacyData() != nullptr && IsObjectCustom(item))
             {
                 objects.push_back(item);
@@ -299,10 +297,10 @@ private:
         if (object != nullptr)
         {
             // TODO try to prevent doing a repository search
-            const ObjectRepositoryItem* ori = _objectRepository->FindObject(object->GetObjectEntry());
+            const ObjectRepositoryItem* ori = _objectRepository.FindObject(object->GetObjectEntry());
             if (ori != nullptr)
             {
-                _objectRepository->UnregisterLoadedObject(ori, object);
+                _objectRepository.UnregisterLoadedObject(ori, object);
             }
 
             // Because it's possible to have the same loaded object for multiple
@@ -430,7 +428,7 @@ private:
                 continue;
             }
 
-            ori = _objectRepository->FindObject(&entry);
+            ori = _objectRepository.FindObject(&entry);
             if (ori == nullptr)
             {
                 if (object_entry_get_type(&entry) != OBJECT_TYPE_SCENARIO_TEXT)
@@ -450,7 +448,7 @@ private:
                 loadedObject = ori->LoadedObject;
                 if (loadedObject == nullptr)
                 {
-                    loadedObject = _objectRepository->LoadObject(ori);
+                    loadedObject = _objectRepository.LoadObject(ori);
                     if (loadedObject == nullptr)
                     {
                         invalidEntries.push_back(entry);
@@ -474,7 +472,7 @@ private:
             const ObjectRepositoryItem* ori = nullptr;
             if (!object_entry_is_empty(entry))
             {
-                ori = _objectRepository->FindObject(entry);
+                ori = _objectRepository.FindObject(entry);
                 if (ori == nullptr && object_entry_get_type(entry) != OBJECT_TYPE_SCENARIO_TEXT)
                 {
                     missingObjects.push_back(*entry);
@@ -534,7 +532,7 @@ private:
                 loadedObject = ori->LoadedObject;
                 if (loadedObject == nullptr)
                 {
-                    loadedObject = _objectRepository->LoadObject(ori);
+                    loadedObject = _objectRepository.LoadObject(ori);
                     if (loadedObject == nullptr)
                     {
                         std::lock_guard<std::mutex> guard(commonMutex);
@@ -546,7 +544,7 @@ private:
                         std::lock_guard<std::mutex> guard(commonMutex);
                         loadedObjects.push_back(loadedObject);
                         // Connect the ori to the registered object
-                        _objectRepository->RegisterLoadedObject(ori, loadedObject);
+                        _objectRepository.RegisterLoadedObject(ori, loadedObject);
                     }
                 }
             }
@@ -582,13 +580,13 @@ private:
         if (loadedObject == nullptr)
         {
             // Try to load object
-            loadedObject = _objectRepository->LoadObject(ori);
+            loadedObject = _objectRepository.LoadObject(ori);
             if (loadedObject != nullptr)
             {
                 loadedObject->Load();
 
                 // Connect the ori to the registered object
-                _objectRepository->RegisterLoadedObject(ori, loadedObject);
+                _objectRepository.RegisterLoadedObject(ori, loadedObject);
             }
         }
         return loadedObject;
@@ -625,53 +623,50 @@ private:
     }
 };
 
-std::unique_ptr<IObjectManager> CreateObjectManager(std::shared_ptr<IObjectRepository> objectRepository)
+std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository)
 {
     return std::make_unique<ObjectManager>(objectRepository);
 }
 
 void* object_manager_get_loaded_object_by_index(size_t index)
 {
-    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager->GetLoadedObject(index);
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    Object* loadedObject = objectManager.GetLoadedObject(index);
     return (void*)loadedObject;
 }
 
 void* object_manager_get_loaded_object(const rct_object_entry* entry)
 {
-    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager->GetLoadedObject(entry);
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    Object* loadedObject = objectManager.GetLoadedObject(entry);
     return (void*)loadedObject;
 }
 
 uint8_t object_manager_get_loaded_object_entry_index(const void* loadedObject)
 {
-    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     const Object* object = static_cast<const Object*>(loadedObject);
-    uint8_t entryIndex = objectManager->GetLoadedObjectEntryIndex(object);
+    uint8_t entryIndex = objectManager.GetLoadedObjectEntryIndex(object);
     return entryIndex;
 }
 
 void* object_manager_load_object(const rct_object_entry* entry)
 {
-    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager->LoadObject(entry);
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    Object* loadedObject = objectManager.LoadObject(entry);
     return (void*)loadedObject;
 }
 
 void object_manager_unload_objects(const rct_object_entry* entries, size_t count)
 {
-    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    objectManager->UnloadObjects(entries, count);
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    objectManager.UnloadObjects(entries, count);
 }
 
 void object_manager_unload_all_objects()
 {
-    auto objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    if (objectManager != nullptr)
-    {
-        objectManager->UnloadAll();
-    }
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    objectManager.UnloadAll();
 }
 
 rct_string_id object_manager_get_source_game_string(const uint8_t sourceGame)

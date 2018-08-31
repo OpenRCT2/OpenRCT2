@@ -56,17 +56,15 @@
 class S6Importer final : public IParkImporter
 {
 private:
-    std::shared_ptr<IObjectRepository> const _objectRepository;
-    std::shared_ptr<IObjectManager> const _objectManager;
+    IObjectRepository& _objectRepository;
 
     const utf8* _s6Path = nullptr;
     rct_s6_data _s6{};
     uint8_t _gameVersion = 0;
 
 public:
-    S6Importer(std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager)
+    S6Importer(IObjectRepository& objectRepository)
         : _objectRepository(objectRepository)
-        , _objectManager(objectManager)
     {
     }
 
@@ -141,7 +139,7 @@ public:
         // TODO try to contain this more and not store objects until later
         for (uint16_t i = 0; i < _s6.header.num_packed_objects; i++)
         {
-            _objectRepository->ExportPackedObject(stream);
+            _objectRepository.ExportPackedObject(stream);
         }
 
         if (isScenario)
@@ -845,21 +843,20 @@ public:
     }
 };
 
-std::unique_ptr<IParkImporter> ParkImporter::CreateS6(
-    std::shared_ptr<IObjectRepository> objectRepository, std::shared_ptr<IObjectManager> objectManager)
+std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
 {
-    return std::make_unique<S6Importer>(objectRepository, objectManager);
+    return std::make_unique<S6Importer>(objectRepository);
 }
 
 void load_from_sv6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
-    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository(), context->GetObjectManager());
+    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository());
     try
     {
-        auto objectMgr = context->GetObjectManager();
+        auto& objectMgr = context->GetObjectManager();
         auto result = s6Importer->LoadSavedGame(path);
-        objectMgr->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+        objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
         sprite_position_tween_reset();
@@ -891,12 +888,12 @@ void load_from_sv6(const char* path)
 void load_from_sc6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
-    auto objManager = context->GetObjectManager();
-    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository(), context->GetObjectManager());
+    auto& objManager = context->GetObjectManager();
+    auto s6Importer = std::make_unique<S6Importer>(context->GetObjectRepository());
     try
     {
         auto result = s6Importer->LoadScenario(path);
-        objManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+        objManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
         s6Importer->Import();
         game_fix_save_vars();
         sprite_position_tween_reset();
