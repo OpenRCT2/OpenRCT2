@@ -1151,7 +1151,7 @@ STR_1770    :{SMALLFONT}{BLACK}Numero di oscillazioni complete
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Può esserci soltanto una sezione di foto-in-corsa per attrazione
 STR_1774    :Può esserci soltanto una salita per il traino con cavo per attrazione
-STR_1777    :{WINDOW_COLOUR_2}Musica
+STR_1777    :Musica attrazione
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Costume da panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Costume da tigre
@@ -2042,7 +2042,7 @@ STR_2703    :Ogni 15 minuti
 STR_2704    :Ogni 30 minuti
 STR_2705    :Ogni ora
 STR_2706    :Mai
-STR_2707    :Apri nuova finestra
+STR_2707    :Usa il file manager di sistema
 STR_2708    :{WINDOW_COLOUR_1}Sei sicuro di voler sovrascrivere {STRINGID}?
 STR_2709    :Sovrascrivi
 STR_2710    :Digitare il nome del file.
@@ -3732,6 +3732,10 @@ STR_6258    :Limpido (trasparente)
 STR_6259    :Disabilitato
 STR_6260    :Mostra celle bloccate
 STR_6261    :Mostra percorsi larghi
+STR_6262    :Volume principale
+STR_6263    :{SMALLFONT}{BLACK}Attiva/disattiva tutti i suoni
+STR_6264    :Usa sempre il file manager di sistema
+STR_6265    :{SMALLFONT}{BLACK}Se abilitato, viene usato il file manager del sistema operativo anziché quello di OpenRCT2.
 
 #############
 # Scenarios #
