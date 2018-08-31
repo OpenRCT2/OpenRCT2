@@ -972,7 +972,7 @@ namespace OpenRCT2
                     log_error("Unable to create directory '%s'.", path.c_str());
             }
         }
-       
+
         /**
          * Copy saved games and landscapes to user directory
          */
