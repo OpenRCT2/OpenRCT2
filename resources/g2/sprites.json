@@ -441,26 +441,26 @@
         "y_offset": 5
     },
     {
-        "path": "font/ae-uc-small.png",
+        "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/ae-small.png",
+        "path": "font/latin/ae-small.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/o-stroke-uc-small.png",
+        "path": "font/latin/o-stroke-uc-small.png",
         "x_offset": -1,
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/o-stroke-small.png",
+        "path": "font/latin/o-stroke-small.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
@@ -705,61 +705,61 @@
         "forceBmp": true
     },
     {
-        "path": "font/g-breve-uc-small.png",
+        "path": "font/latin/g-breve-uc-small.png",
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/i-with-dot-uc-small.png",
+        "path": "font/latin/i-with-dot-uc-small.png",
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/s-cedilla-uc-small.png",
+        "path": "font/latin/s-cedilla-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/g-breve-small.png",
+        "path": "font/latin/g-breve-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/i-without-dot-small.png",
+        "path": "font/latin/i-without-dot-small.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/s-cedilla-small.png",
+        "path": "font/latin/s-cedilla-small.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/interpunct-small.png",
+        "path": "font/latin/interpunct-small.png",
         "y_offset": 3,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/a-breve-uc-small.png",
+        "path": "font/latin/a-breve-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/t-comma-uc-small.png",
+        "path": "font/latin/t-comma-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/t-comma-small.png",
+        "path": "font/latin/t-comma-small.png",
         "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
@@ -771,50 +771,50 @@
         "forceBmp": true
     },
     {
-        "path": "font/c-caron-uc-small.png",
+        "path": "font/latin/c-caron-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/c-caron-small.png",
+        "path": "font/latin/c-caron-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/y-acute-uc-small.png",
+        "path": "font/latin/y-acute-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/y-acute-small.png",
+        "path": "font/latin/y-acute-small.png",
         "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/ae-uc-bold.png",
+        "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/ae-bold.png",
+        "path": "font/latin/ae-bold.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/o-stroke-uc-bold.png",
+        "path": "font/latin/o-stroke-uc-bold.png",
         "x_offset": -1,
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/o-stroke-bold.png",
+        "path": "font/latin/o-stroke-bold.png",
         "x_offset": 0,
         "y_offset": 2,
         "palette": "keep",
@@ -1060,61 +1060,61 @@
         "forceBmp": true
     },
     {
-        "path": "font/g-breve-uc-bold.png",
+        "path": "font/latin/g-breve-uc-bold.png",
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/i-with-dot-uc-bold.png",
+        "path": "font/latin/i-with-dot-uc-bold.png",
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/s-cedilla-uc-bold.png",
+        "path": "font/latin/s-cedilla-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/g-breve-bold.png",
+        "path": "font/latin/g-breve-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/i-without-dot-bold.png",
+        "path": "font/latin/i-without-dot-bold.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/s-cedilla-bold.png",
+        "path": "font/latin/s-cedilla-bold.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/interpunct-bold.png",
+        "path": "font/latin/interpunct-bold.png",
         "y_offset": 3,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/a-breve-uc-bold.png",
+        "path": "font/latin/a-breve-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/t-comma-uc-bold.png",
+        "path": "font/latin/t-comma-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/t-comma-bold.png",
+        "path": "font/latin/t-comma-bold.png",
         "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
@@ -1126,49 +1126,49 @@
         "forceBmp": true
     },
     {
-        "path": "font/c-caron-uc-bold.png",
+        "path": "font/latin/c-caron-uc-bold.png",
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/c-caron-bold.png",
+        "path": "font/latin/c-caron-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/y-acute-uc-bold.png",
+        "path": "font/latin/y-acute-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/y-acute-bold.png",
+        "path": "font/latin/y-acute-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/ae-uc-tiny.png",
+        "path": "font/latin/ae-uc-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/ae-tiny.png",
+        "path": "font/latin/ae-tiny.png",
         "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/o-stroke-uc-tiny.png",
+        "path": "font/latin/o-stroke-uc-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/o-stroke-tiny.png",
+        "path": "font/latin/o-stroke-tiny.png",
         "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
@@ -1423,61 +1423,61 @@
         "forceBmp": true
     },
     {
-        "path": "font/g-breve-uc-tiny.png",
+        "path": "font/latin/g-breve-uc-tiny.png",
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/i-with-dot-uc-tiny.png",
+        "path": "font/latin/i-with-dot-uc-tiny.png",
         "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/s-cedilla-uc-tiny.png",
+        "path": "font/latin/s-cedilla-uc-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/g-breve-tiny.png",
+        "path": "font/latin/g-breve-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/i-without-dot-tiny.png",
+        "path": "font/latin/i-without-dot-tiny.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/s-cedilla-tiny.png",
+        "path": "font/latin/s-cedilla-tiny.png",
         "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/interpunct-tiny.png",
+        "path": "font/latin/interpunct-tiny.png",
         "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/a-breve-uc-tiny.png",
+        "path": "font/latin/a-breve-uc-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/t-comma-uc-tiny.png",
+        "path": "font/latin/t-comma-uc-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/t-comma-tiny.png",
+        "path": "font/latin/t-comma-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
@@ -1489,25 +1489,25 @@
         "forceBmp": true
     },
     {
-        "path": "font/c-caron-uc-tiny.png",
+        "path": "font/latin/c-caron-uc-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/c-caron-tiny.png",
+        "path": "font/latin/c-caron-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/y-acute-uc-tiny.png",
+        "path": "font/latin/y-acute-uc-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
     {
-        "path": "font/y-acute-tiny.png",
+        "path": "font/latin/y-acute-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
