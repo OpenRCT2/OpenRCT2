@@ -385,6 +385,16 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
         case UNICODE_Y_ACUTE:
             return SPR_G2_Y_ACUTE_LOWER - SPR_CHAR_START;
 
+        // Hungarian
+        case UNICODE_O_DOUBLE_ACUTE_UC:
+            return SPR_G2_O_DOUBLE_ACUTE_UPPER - SPR_CHAR_START;
+        case UNICODE_O_DOUBLE_ACUTE:
+            return SPR_G2_O_DOUBLE_ACUTE_LOWER - SPR_CHAR_START;
+        case UNICODE_U_DOUBLE_ACUTE_UC:
+            return SPR_G2_U_DOUBLE_ACUTE_UPPER - SPR_CHAR_START;
+        case UNICODE_U_DOUBLE_ACUTE:
+            return SPR_G2_U_DOUBLE_ACUTE_LOWER - SPR_CHAR_START;
+
         default:
             if (codepoint < 32 || codepoint >= 256)
                 codepoint = '?';
@@ -568,6 +578,11 @@ bool font_supports_string_sprite(const utf8* text)
             case UNICODE_C_CARON:
             case UNICODE_Y_ACUTE_UC:
             case UNICODE_Y_ACUTE:
+
+            case UNICODE_O_DOUBLE_ACUTE_UC:
+            case UNICODE_O_DOUBLE_ACUTE:
+            case UNICODE_U_DOUBLE_ACUTE_UC:
+            case UNICODE_U_DOUBLE_ACUTE:
 
                 supported = true;
                 break;

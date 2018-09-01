@@ -317,4 +317,12 @@ enum UnicodeCzech
     UNICODE_Y_ACUTE = 253,
 };
 
+enum UnicodeHungarian
+{
+    UNICODE_O_DOUBLE_ACUTE_UC = 336,
+    UNICODE_O_DOUBLE_ACUTE = 337,
+    UNICODE_U_DOUBLE_ACUTE_UC = 368,
+    UNICODE_U_DOUBLE_ACUTE = 369,
+};
+
 #endif

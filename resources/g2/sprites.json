@@ -795,6 +795,30 @@
         "forceBmp": true
     },
     {
+        "path": "font/latin/o-double-acute-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/o-double-acute-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-double-acute-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-double-acute-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1145,6 +1169,30 @@
     },
     {
         "path": "font/latin/y-acute-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/o-double-acute-uc-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/o-double-acute-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-double-acute-uc-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-double-acute-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
@@ -1508,6 +1556,30 @@
     },
     {
         "path": "font/latin/y-acute-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/o-double-acute-uc-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/o-double-acute-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-double-acute-uc-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/u-double-acute-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
