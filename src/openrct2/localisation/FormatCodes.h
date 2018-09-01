@@ -309,4 +309,20 @@ enum UnicodePunctuation
     UNICODE_ELLIPSIS = 8230,
 };
 
+enum UnicodeCzech
+{
+    UNICODE_C_CARON_UC = 268,
+    UNICODE_C_CARON = 269,
+    UNICODE_Y_ACUTE_UC = 221,
+    UNICODE_Y_ACUTE = 253,
+};
+
+enum UnicodeHungarian
+{
+    UNICODE_O_DOUBLE_ACUTE_UC = 336,
+    UNICODE_O_DOUBLE_ACUTE = 337,
+    UNICODE_U_DOUBLE_ACUTE_UC = 368,
+    UNICODE_U_DOUBLE_ACUTE = 369,
+};
+
 #endif
