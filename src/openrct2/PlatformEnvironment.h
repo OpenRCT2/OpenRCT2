@@ -45,6 +45,7 @@ namespace OpenRCT2
         SHADER,      // Contains OpenGL shaders.
         THEME,       // Contains interface themes.
         TRACK,       // Contains track designs.
+        HEIGHTMAP,   // Contains heightmap data.
     };
 
     enum class PATHID

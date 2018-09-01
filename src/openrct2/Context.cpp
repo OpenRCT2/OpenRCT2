@@ -359,6 +359,8 @@ namespace OpenRCT2
                 _uiContext->CreateWindow();
             }
 
+            EnsureUserContentDirectoriesExist();
+
             // TODO Ideally we want to delay this until we show the title so that we can
             //      still open the game window and draw a progress screen for the creation
             //      of the object cache.
@@ -945,6 +947,35 @@ namespace OpenRCT2
             chat_update();
             _stdInOutConsole.ProcessEvalQueue();
             _uiContext->Update();
+        }
+
+        /**
+         * Ensure that the custom user content folders are present
+         */
+        void EnsureUserContentDirectoriesExist()
+        {
+            EnsureDirectoriesExist(
+                DIRBASE::USER,
+                {
+                    DIRID::OBJECT,
+                    DIRID::SAVE,
+                    DIRID::SCENARIO,
+                    DIRID::TRACK,
+                    DIRID::LANDSCAPE,
+                    DIRID::HEIGHTMAP,
+                    DIRID::THEME,
+                    DIRID::SEQUENCE,
+                });
+        }
+
+        void EnsureDirectoriesExist(const DIRBASE dirBase, const std::initializer_list<DIRID>& dirIds)
+        {
+            for (const auto& dirId : dirIds)
+            {
+                auto path = _env->GetDirectoryPath(dirBase, dirId);
+                if (!platform_ensure_directory_exists(path.c_str()))
+                    log_error("Unable to create directory '%s'.", path.c_str());
+            }
         }
 
         /**

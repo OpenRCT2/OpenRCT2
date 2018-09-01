@@ -209,6 +209,7 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
     "shaders",              // SHADER
     "themes",               // THEME
     "track",                // TRACK
+    "heightmap",            // HEIGHTMAP
 };
 
 const char * PlatformEnvironment::FileNames[] =
