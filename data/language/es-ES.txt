@@ -1150,7 +1150,7 @@ STR_1770    :{SMALLFONT}{BLACK}Número de balanceos completos
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Sólo se permite una sección de fotos por atracción.
 STR_1774    :Sólo un cable de elevación por atracción.
-STR_1777    :{WINDOW_COLOUR_2}Música de atracción
+STR_1777    :Música de atracción
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Disfraz de panda
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Disfraz de tigre
@@ -2039,7 +2039,7 @@ STR_2703    :Cada 15 minutos
 STR_2704    :Cada 30 minutos
 STR_2705    :Cada hora
 STR_2706    :Nunca
-STR_2707    :Abrir explorador de archivos
+STR_2707    :Usar explorador de archivos del sistema
 STR_2708    :{WINDOW_COLOUR_1}¿Estas seguro de sobrescribir {STRINGID}?
 STR_2709    :Sobrescribir
 STR_2710    :Ingresar nombre para este archivo:
@@ -3729,7 +3729,10 @@ STR_6258    :Transparente
 STR_6259    :Deshabilitado
 STR_6260    :Mostrar casillas bloqueadas
 STR_6261    :Mostrar caminos anchos
-
+STR_6262    :Volúmen Maestro
+STR_6263    :{SMALLFONT}{BLACK}Activar o desactivar todos los sonidos
+STR_6264    :Usar siempre explorador de archivos del sistema
+STR_6265    :{SMALLFONT}{BLACK}Al activarse, el explorador de archivos del SO será usado en lugar del de OpenRCT2.
 
 
 ##############
@@ -4234,7 +4237,7 @@ STR_DTLS    :Has heredado un gran castillo - tu trabajo es convertirlo en un peq
 <Dusty Greens>
 STR_SCNR    :Greens polvorientos
 STR_PARK    :Greens polvorientos
-STR_DTLS    :Situado cerca de una union de autopistas en el desierto, los Greens polvorientos es una oportunidad para llevar a un pequeño complejo de Golf a un pujante parque temático.
+STR_DTLS    :Situado cerca de una unión de autopistas en el desierto, los Greens polvorientos es una oportunidad para llevar a un pequeño complejo de Golf a un pujante parque temático.
 
 <Electric Fields>
 STR_SCNR    :Campos Eléctricos
@@ -4264,7 +4267,7 @@ STR_DTLS    :Constratado por una gran cadena de parque de atracciones, tu tarea 
 <Gravity Gardens>
 STR_SCNR    :Jardines Gravitacionales
 STR_PARK    :Jardines Gravitacionales
-STR_DTLS    :Tu desafío es contruir un parque de monstañas rusas en los bellos Jardines Gravitacionales - Ninguna otra atracción, sólo Montañas Rusas!
+STR_DTLS    :Tu desafío es construir un parque de montañas rusas en los bellos Jardines Gravitacionales - Ninguna otra atracción, sólo Montañas Rusas!
 
 <Infernal Views>
 STR_SCNR    :Vistas Infernales
