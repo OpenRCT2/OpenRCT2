@@ -32,6 +32,8 @@
 #    define OPENRCT2_ARCHITECTURE "mips64"
 #elif defined(__mips__)
 #    define OPENRCT2_ARCHITECTURE "mips"
+#elif defined(__riscv)
+#    define OPENRCT2_ARCHITECTURE "RISC-V"
 #endif
 #ifdef __EMSCRIPTEN__
 #    define OPENRCT2_ARCHITECTURE "Emscripten"
