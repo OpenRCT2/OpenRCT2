@@ -451,6 +451,7 @@ private:
         hints.ai_family = AF_UNSPEC;
         if (address == nullptr)
         {
+            hints.ai_family = AF_INET6;
             hints.ai_flags = AI_PASSIVE;
         }
 
