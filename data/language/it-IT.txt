@@ -3087,7 +3087,7 @@ STR_5576    :Porta:
 STR_5577    :Won sudcoreani (W)
 STR_5578    :Rubli russi (R)
 STR_5579    :Fattore di scala:
-STR_5580    :Corona ceca (Kc)
+STR_5580    :Corona ceca (Kč)
 STR_5581    :Mostra FPS
 STR_5582    :Blocca il mouse nella finestra
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

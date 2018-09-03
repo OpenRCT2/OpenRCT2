@@ -2642,7 +2642,7 @@ STR_5576    :Port:
 STR_5577    :Won południowokoreański (W)
 STR_5578    :Rosyjski rubel (R)
 STR_5579    :Współczynnik skali okna:
-STR_5580    :Korona czeska (Kc)
+STR_5580    :Korona czeska (Kč)
 STR_5581    :Pokaż licznik FPS
 STR_5582    :Nie pozwól na wyjście kursora poza okno
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

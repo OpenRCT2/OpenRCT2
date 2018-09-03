@@ -3084,7 +3084,7 @@ STR_5576    :ポート:
 STR_5577    :大韓民国ウォン (₩)
 STR_5578    :ロシア・ルーブル (₽)
 STR_5579    :ウインドウのスケール:
-STR_5580    :チェコ・コルナ (Kc)
+STR_5580    :チェコ・コルナ (Kč)
 STR_5581    :FPSを表示する
 STR_5582    :Trap mouse cursor in window
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

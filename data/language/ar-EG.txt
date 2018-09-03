@@ -3086,7 +3086,7 @@ STR_5576    :المنفذ:
 STR_5577    :South Korean Won (W)
 STR_5578    :الروبية الروسية (R)
 STR_5579    :معدل تكبير النافذه:
-STR_5580    :Czech koruna (Kc)
+STR_5580    :Czech koruna (Kč)
 STR_5581    :أظهر معدل الإطارات
 STR_5582    :Trap mouse cursor in window
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

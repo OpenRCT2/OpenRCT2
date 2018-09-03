@@ -3079,7 +3079,7 @@ STR_5576    :Porta:
 STR_5577    :Won Sul-Coreano(W)
 STR_5578    :Rublo Russo (R)
 STR_5579    :Fator escalar da janela:
-STR_5580    :Coroa Tcheca (Kc)
+STR_5580    :Coroa Tcheca (Kč)
 STR_5581    :Mostrar FPS
 STR_5582    :Manter ponteiro do mouse dentro da janela
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

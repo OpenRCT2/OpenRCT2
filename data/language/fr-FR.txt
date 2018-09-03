@@ -3087,7 +3087,7 @@ STR_5576    :Port :
 STR_5577    :Won Sud-Coréen (W)
 STR_5578    :Rouble Russe (R)
 STR_5579    :Mise à l'échelle :
-STR_5580    :Couronne Tchèque (Kc)
+STR_5580    :Couronne Tchèque (Kč)
 STR_5581    :Afficher les FPS
 STR_5582    :Toujours garder le curseur dans la fenêtre
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

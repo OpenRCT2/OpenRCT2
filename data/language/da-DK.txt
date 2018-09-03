@@ -3086,7 +3086,7 @@ STR_5576    :Port:
 STR_5577    :Syd Koreanske Won (W)
 STR_5578    :Russiske Rubler (R)
 STR_5579    :Vindues skalarings faktor:
-STR_5580    :Tjekkiske koruna (Kc)
+STR_5580    :Tjekkiske koruna (Kč)
 STR_5581    :Vis FPS
 STR_5582    :Lås musemarkør til vinduet
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

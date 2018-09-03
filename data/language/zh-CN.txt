@@ -3092,7 +3092,7 @@ STR_5576    :端口:
 STR_5577    :韩元 (W)
 STR_5578    :卢布 (R)
 STR_5579    :窗口缩放比例:
-STR_5580    :捷克克朗 (Kc)
+STR_5580    :捷克克朗 (Kč)
 STR_5581    :显示帧数
 STR_5582    :限制鼠标指针仅在窗口内移动
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

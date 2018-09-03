@@ -3081,7 +3081,7 @@ STR_5576    :Poort:
 STR_5577    :Zuid-Koreaanse won (W)
 STR_5578    :Russische roebel (R)
 STR_5579    :Vergrotingsfactor:
-STR_5580    :Tsjechische kroon (Kc)
+STR_5580    :Tsjechische kroon (Kč)
 STR_5581    :FPS tonen
 STR_5582    :Aanwijzer in venster vasthouden
 STR_5583    :{COMMA1DP16} m/s

@@ -3079,7 +3079,7 @@ STR_5576    :Port:
 STR_5577    :Güney Kore Wonu (W)
 STR_5578    :Rus Rublesi (R)
 STR_5579    :Pencere ölçeği:
-STR_5580    :Çek Korunası (Kc)
+STR_5580    :Çek Korunası (Kč)
 STR_5581    :FPS'yi göster
 STR_5582    :Mouse'ı pencere modunda kilitle
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}

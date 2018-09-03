@@ -3083,7 +3083,7 @@ STR_5576    :Puerto:
 STR_5577    :Won surcoreano (W)
 STR_5578    :Rublo ruso (R)
 STR_5579    :Factor escala ventana:
-STR_5580    :Corona checa (Kc)
+STR_5580    :Corona checa (Kč)
 STR_5581    :Mostrar FPS
 STR_5582    :Mantener puntero del ratón en ventana
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
