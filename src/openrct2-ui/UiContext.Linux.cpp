@@ -113,6 +113,11 @@ namespace OpenRCT2::Ui
             }
         }
 
+        void OpenFolder(const std::string& path) override
+        {
+            // TODO
+        }
+
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             std::string result;

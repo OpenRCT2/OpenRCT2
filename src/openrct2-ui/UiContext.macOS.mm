@@ -59,6 +59,15 @@ namespace OpenRCT2::Ui
             }
         }
 
+        void OpenFolder(const std::string& path) override
+        {
+            @autoreleasepool {
+                NSString* nsPath = [NSString stringWithUTF8String:path.c_str()];
+                NSURL *folderURL = [NSURL fileURLWithPath: nsPath];
+                [[NSWorkspace sharedWorkspace] openURL: folderURL];
+            }
+        }
+
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             @autoreleasepool {
