@@ -178,9 +178,10 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[1] = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
         gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
+        gDropdownItemsFormat[4] = STR_OPEN_CUSTOM_USER_FOLDER;
         window_dropdown_show_text(
             w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, TRANSLUCENT(w->colours[0]),
-            DROPDOWN_FLAG_STAY_OPEN, 4);
+            DROPDOWN_FLAG_STAY_OPEN, 5);
     }
 }
 
@@ -201,6 +202,9 @@ static void window_title_menu_dropdown(rct_window* w, rct_widgetindex widgetInde
                 break;
             case 3:
                 Editor::LoadTrackManager();
+                break;
+            case 4:
+                context_open_custom_user_content_folder();
                 break;
         }
     }

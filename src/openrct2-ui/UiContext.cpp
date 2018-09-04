@@ -581,6 +581,11 @@ public:
         _platformUiContext->ShowMessageBox(_window, message);
     }
 
+    void OpenFolder(const std::string& path) override
+    {
+        _platformUiContext->OpenFolder(path);
+    }
+
     std::string ShowFileDialog(const FileDialogDesc& desc) override
     {
         return _platformUiContext->ShowFileDialog(_window, desc);

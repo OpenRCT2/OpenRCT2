@@ -116,6 +116,7 @@ namespace OpenRCT2
         virtual void WriteLine(const std::string& s) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
+        virtual void OpenCustomUserContentFolder() abstract;
 
         /**
          * This is deprecated, use IPlatformEnvironment.
@@ -239,3 +240,4 @@ void context_quit();
 const utf8* context_get_path_legacy(int32_t pathId);
 bool context_load_park_from_file(const utf8* path);
 bool context_load_park_from_stream(void* stream);
+void context_open_custom_user_content_folder();

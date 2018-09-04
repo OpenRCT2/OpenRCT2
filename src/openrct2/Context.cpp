@@ -1029,6 +1029,11 @@ namespace OpenRCT2
             }
             delete scanner;
         }
+
+        void OpenCustomUserContentFolder() final override
+        {
+            _uiContext->OpenFolder(_env->GetDirectoryPath(DIRBASE::USER));
+        }
     };
 
     Context* Context::Instance = nullptr;
@@ -1260,6 +1265,11 @@ const utf8* context_get_path_legacy(int32_t pathId)
     auto path = GetContext()->GetPathLegacy(pathId);
     String::Set(result, sizeof(result), path.c_str());
     return result;
+}
+
+void context_open_custom_user_content_folder()
+{
+    GetContext()->OpenCustomUserContentFolder();
 }
 
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize)
