@@ -240,4 +240,3 @@ void context_quit();
 const utf8* context_get_path_legacy(int32_t pathId);
 bool context_load_park_from_file(const utf8* path);
 bool context_load_park_from_stream(void* stream);
-void context_open_custom_user_content_folder();

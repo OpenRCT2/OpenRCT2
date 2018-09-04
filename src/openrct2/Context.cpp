@@ -1267,11 +1267,6 @@ const utf8* context_get_path_legacy(int32_t pathId)
     return result;
 }
 
-void context_open_custom_user_content_folder()
-{
-    GetContext()->OpenCustomUserContentFolder();
-}
-
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize)
 {
     try
