@@ -116,7 +116,6 @@ namespace OpenRCT2
         virtual void WriteLine(const std::string& s) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
-        virtual void OpenCustomUserContentFolder() abstract;
 
         /**
          * This is deprecated, use IPlatformEnvironment.

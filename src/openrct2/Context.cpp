@@ -1029,11 +1029,6 @@ namespace OpenRCT2
             }
             delete scanner;
         }
-
-        void OpenCustomUserContentFolder() final override
-        {
-            _uiContext->OpenFolder(_env->GetDirectoryPath(DIRBASE::USER));
-        }
     };
 
     Context* Context::Instance = nullptr;

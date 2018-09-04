@@ -15,12 +15,11 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-//#include <openrct2-ui/UiContext.h>
-//#include <openrct2/ui/UiContext.h>
-//#include <openrct2/PlatformEnvironment.h>
+#include <openrct2/ui/UiContext.h>
 
 // clang-format off
 enum {
@@ -207,11 +206,10 @@ static void window_title_menu_dropdown(rct_window* w, rct_widgetindex widgetInde
                 Editor::LoadTrackManager();
                 break;
             case 4:
-                OpenRCT2::GetContext()->OpenCustomUserContentFolder();
-                /*auto context = OpenRCT2::GetContext();
+                auto context = OpenRCT2::GetContext();
                 auto env = context->GetPlatformEnvironment();
                 auto uiContext = context->GetUiContext();
-                uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));*/
+                uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
                 break;
         }
     }
