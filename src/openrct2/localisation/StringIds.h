@@ -3891,7 +3891,7 @@ enum
     STR_ALWAYS_NATIVE_LOADSAVE = 6264,
     STR_ALWAYS_NATIVE_LOADSAVE_TIP = 6265,
 
-    STR_OPEN_CUSTOM_USER_FOLDER = 6266,
+    STR_OPEN_USER_CONTENT_FOLDER = 6266,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
