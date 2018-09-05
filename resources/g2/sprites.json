@@ -819,6 +819,30 @@
         "forceBmp": true
     },
     {
+        "path": "font/latin/d-caron-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/d-caron-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/e-caron-uc-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/e-caron-small.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1193,6 +1217,30 @@
     },
     {
         "path": "font/latin/u-double-acute-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/d-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/d-caron-bold.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/e-caron-uc-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/e-caron-bold.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
@@ -1581,6 +1629,30 @@
     {
         "path": "font/latin/u-double-acute-tiny.png",
         "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/d-caron-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/d-caron-tiny.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/e-caron-uc-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/e-caron-tiny.png",
+        "y_offset": -1,
         "palette": "keep",
         "forceBmp": true
     }
