@@ -4111,6 +4111,11 @@ static money32 ride_set_setting(uint8_t rideIndex, uint8_t setting, uint8_t valu
                 return MONEY32_UNDEFINED;
             }
 
+            if (value == RIDE_INSPECTION_NEVER)
+            {
+                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
+            }
+
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
                 ride->inspection_interval = value;
