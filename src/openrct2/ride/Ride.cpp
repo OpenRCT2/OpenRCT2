@@ -2386,6 +2386,7 @@ static void ride_inspection_update(Ride* ride)
         ride->last_inspection--;
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride->inspection_interval];
+    // An inspection interval of 0 minutes means the ride is set to never be inspected.
     if (inspectionIntervalMinutes == 0)
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
