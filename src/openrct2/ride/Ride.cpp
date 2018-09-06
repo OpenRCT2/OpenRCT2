@@ -2386,8 +2386,10 @@ static void ride_inspection_update(Ride* ride)
         ride->last_inspection--;
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride->inspection_interval];
-    if (inspectionIntervalMinutes == 0)
+    if (inspectionIntervalMinutes == 0) {
+        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         return;
+    }
 
     if (RideAvailableBreakdowns[ride->type] == 0)
         return;

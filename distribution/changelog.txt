@@ -1,6 +1,7 @@
 0.2.1+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#7956, #7964] Add sprite font glyphs for Hungarian and some Czech letters.
+- Fix: [#7975] Inspection flag not cleared for rides which are set to never be inspected.
 - Improved: [#7930] Automatically create folders for custom content.
 - Removed: [#7929] Support for scenario text objects.
 
