@@ -189,6 +189,7 @@ private:
 
     GLuint _atlasesTexture = 0;
     GLint _atlasesTextureDimensions = 0;
+    GLuint _atlasesTextureCapacity = 0;
     GLuint _atlasesTextureIndices = 0;
     GLint _atlasesTextureIndicesLimit = 0;
     std::vector<Atlas> _atlases;

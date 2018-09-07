@@ -136,6 +136,7 @@ void TextureCache::CreateTextures()
 
         _initialized = true;
         _atlasesTextureIndices = 0;
+        _atlasesTextureCapacity = 0;
     }
 }
 
@@ -169,22 +170,33 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
 
     GLuint newIndices = _atlasesTextureIndices + newEntries;
 
-    // Retrieve current array data
-    auto oldPixels = std::vector<char>(_atlasesTextureDimensions * _atlasesTextureDimensions * _atlasesTextureIndices);
-    if (oldPixels.size() > 0)
+    std::vector<char> oldPixels;
+
+    if (newIndices > _atlasesTextureCapacity)
     {
-        glGetTexImage(GL_TEXTURE_2D_ARRAY, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+        // Retrieve current array data, growing buffer.
+        oldPixels.resize(_atlasesTextureDimensions * _atlasesTextureDimensions * _atlasesTextureCapacity);
+        if (oldPixels.size() > 0)
+        {
+            glGetTexImage(GL_TEXTURE_2D_ARRAY, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+        }
+
+        // Initial capacity will be 12 which covers most cases of a fully visible park.
+        _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1;
     }
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexImage3D(
-        GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, newIndices, 0, GL_RED_INTEGER,
-        GL_UNSIGNED_BYTE, nullptr);
+        GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureCapacity, 0,
+        GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
 
     // Restore old data
-    glTexSubImage3D(
-        GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,
-        GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+    if (oldPixels.size() > 0)
+    {
+        glTexSubImage3D(
+            GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,
+            GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+    }
 
     _atlasesTextureIndices = newIndices;
 }
