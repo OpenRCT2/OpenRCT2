@@ -2386,8 +2386,12 @@ static void ride_inspection_update(Ride* ride)
         ride->last_inspection--;
 
     int32_t inspectionIntervalMinutes = RideInspectionInterval[ride->inspection_interval];
+    // An inspection interval of 0 minutes means the ride is set to never be inspected.
     if (inspectionIntervalMinutes == 0)
+    {
+        ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         return;
+    }
 
     if (RideAvailableBreakdowns[ride->type] == 0)
         return;
@@ -4106,6 +4110,11 @@ static money32 ride_set_setting(uint8_t rideIndex, uint8_t setting, uint8_t valu
             {
                 log_warning("Invalid inspection interval.");
                 return MONEY32_UNDEFINED;
+            }
+
+            if (value == RIDE_INSPECTION_NEVER)
+            {
+                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
             }
 
             if (flags & GAME_COMMAND_FLAG_APPLY)
