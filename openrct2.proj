@@ -6,7 +6,6 @@
        - GIT_BRANCH
        - GIT_COMMIT_SHA1
        - GIT_DESCRIBE
-       - SIGN_PASSWORD
        - OPENRCT2_ORG_TOKEN
        - NO_NSIS: set to true to prevent the NSIS installer building
   -->
@@ -44,9 +43,6 @@
     <OutputDll>$(TargetDir)openrct2.dll</OutputDll>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
 
-    <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
-    <SignTimestampUrl>http://timestamp.comodoca.com/authenticode</SignTimestampUrl>
-
     <PublishPostfix>-$(Configuration)-$(Platform)</PublishPostfix>
     <PublishPostfix Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(PublishPostfix)-$(GIT_COMMIT_SHA1_SHORT)</PublishPostfix>
     <PublishPostfix>$(PublishPostfix.ToLower())</PublishPostfix>
@@ -80,9 +76,6 @@
 
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
-    <SignItems Include="$(OutputExe)" />
-    <SignItems Include="$(OutputCom)" />
-    <SignItems Include="$(OutputDll)" />
   </ItemGroup>
 
   <ItemGroup Label="Symbol Items">
@@ -155,7 +148,6 @@
       <CleanItems Include="$(ArtifactsDir)openrct2-symbols-$(Configuration)-$(Platform)*.zip" />
     </ItemGroup>
     <Delete Files="@(CleanItems)" />
-    <Delete Files="%(SignItems.Identity).signed" />
     <RemoveDir Directories="$(TargetDir)data" />
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
   </Target>
@@ -234,21 +226,6 @@
                         OutputDirectory="$(TargetDir)data\object" />
   </Target>
 
-  <!-- Target to sign OpenRCT2
-       This requires the project parameter SIGN_PASSWORD to be set -->
-  <Target Name="Sign" AfterTargets="Build" Inputs="@(SignItems)" Outputs="%(SignItems.Identity).signed"
-          Condition="'$(TestConfig)'!='true'">
-    <!-- <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." /> -->
-    <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
-             Importance="high" />
-    <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
-          Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) %(SignItems.Identity)"
-          StandardOutputImportance="low" />
-
-    <!-- Create a dummy file so that msbuild can use it to determine if the binary is newer than the last sign time -->
-    <Touch AlwaysCreate="true" Files="%(SignItems.Identity).signed" />
-  </Target>
-
   <!-- Target to publish OpenRCT2 as a portable zip -->
   <Target Name="PublishPortable" DependsOnTargets="Build;g2" Inputs="@(PublishItems)" Outputs="$(PublishZip)"
           Condition="'$(TestConfig)'!='true'">
@@ -285,14 +262,6 @@
          /DPLATFORM=$(Platform) ^
          $(NsisScript)"
           StandardOutputImportance="normal" />
-
-    <!-- Sign the installer -->
-    <!-- <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." /> -->
-    <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing $(PublishInstallerExeName)"
-             Importance="high" />
-    <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
-          Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) $(PublishInstallerExe)"
-          StandardOutputImportance="low" />
   </Target>
 
   <Target Name="PublishAll"
