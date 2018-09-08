@@ -5978,9 +5978,9 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     // Plot
     int32_t x = dpi->x;
     int32_t top, bottom;
-    // Uses the limits (used to draw high forces in red on measurement tab) to determine if line should be drawn red.
-    // By default they are kept 0 unless the graph type supports it.
-    int32_t intensityThresholdPositive = 0, intensityThresholdNegative = 0;
+    // Uses the force limits (used to draw extreme G's in red on measurement tab) to determine if line should be drawn red.
+    int32_t intensityThresholdPositive = 0;
+    int32_t intensityThresholdNegative = 0;
     for (int32_t width = 0; width < dpi->width; width++, x++)
     {
         if (x < 0 || x >= measurement->num_items - 1)
@@ -6011,48 +6011,48 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             default:
                 log_error("Wrong graph type %d", listType);
                 top = bottom = 0;
+                break;
         }
 
         // Adjust line to match graph widget position.
         top = widget->bottom - widget->top - top - 13;
         bottom = widget->bottom - widget->top - bottom - 13;
+        if (top > bottom)
+        {
+            std::swap(top, bottom);
+        }
 
-        // If red threshold is supported, adjust threshold line position as well. Otherwise, keep 0.
-        if (intensityThresholdPositive != 0 && intensityThresholdNegative != 0)
+        // Adjust threshold line position as well
+        if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
         {
             intensityThresholdPositive = widget->bottom - widget->top - intensityThresholdPositive - 13;
             intensityThresholdNegative = widget->bottom - widget->top - intensityThresholdNegative - 13;
         }
 
-        // Line is drawn from top to bottom.
-        if (top > bottom)
-        {
-            int32_t tmp = top;
-            top = bottom;
-            bottom = tmp;
-        }
+        const bool previousMeasurement = x > measurement->current_item;
 
         // Draw the current line in gray.
-        gfx_fill_rect(dpi, x, top, x, bottom, x > measurement->current_item ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
+        gfx_fill_rect(dpi, x, top, x, bottom, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
 
         // Draw red over extreme values (if supported by graph type).
-        if (intensityThresholdPositive != 0 && intensityThresholdNegative != 0)
+        if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
         {
-            // If line exceeds negative threshold (at bottom of graph).
-            if (top >= intensityThresholdNegative || bottom >= intensityThresholdNegative)
+            const auto redLineColour = previousMeasurement ? PALETTE_INDEX_171 : PALETTE_INDEX_173;
+
+            // Line exceeds negative threshold (at bottom of graph).
+            if (bottom >= intensityThresholdNegative)
             {
-                gfx_fill_rect(
-                    dpi, x, top >= intensityThresholdNegative ? top : intensityThresholdNegative, x,
-                    bottom >= intensityThresholdNegative ? bottom : intensityThresholdNegative,
-                    x > measurement->current_item ? PALETTE_INDEX_171 : PALETTE_INDEX_173);
+                const auto redLineTop = std::max(top, intensityThresholdNegative);
+                const auto redLineBottom = std::max(bottom, intensityThresholdNegative);
+                gfx_fill_rect(dpi, x, redLineTop, x, redLineBottom, redLineColour);
             }
-            // If line exceeds positive threshold (at top of graph).
-            if (top <= intensityThresholdPositive || bottom <= intensityThresholdPositive)
+
+            // Line exceeds positive threshold (at top of graph).
+            if (top <= intensityThresholdPositive)
             {
-                gfx_fill_rect(
-                    dpi, x, top <= intensityThresholdPositive ? top : intensityThresholdPositive, x,
-                    bottom <= intensityThresholdPositive ? bottom : intensityThresholdPositive,
-                    x > measurement->current_item ? PALETTE_INDEX_171 : PALETTE_INDEX_173);
+                const auto redLineTop = std::min(top, intensityThresholdPositive);
+                const auto redLineBottom = std::min(bottom, intensityThresholdPositive);
+                gfx_fill_rect(dpi, x, redLineTop, x, redLineBottom, redLineColour);
             }
         }
     }
