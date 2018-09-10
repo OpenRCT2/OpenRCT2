@@ -1203,8 +1203,8 @@ static constexpr const rct_window_graphs_y_axis window_graphs_y_axi[] = {
 };
 
 static constexpr auto RIDE_G_FORCES_RED_POS_VERTICAL = FIXED_2DP(5, 00);
-static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 00);
-static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 80);
+static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 50);
+static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 81);
 
 // Used for sorting the ride type cheat dropdown.
 struct RideTypeLabel
