@@ -114,7 +114,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     else
     {
         // 6DFFC2:
-        uint8_t ecx = (tileElement->GetSceneryQuadrant() + rotation) & 3;
+        uint8_t ecx = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) & 3;
         x_offset = ScenerySubTileOffsets[ecx].x;
         y_offset = ScenerySubTileOffsets[ecx].y;
         boxoffset.x = x_offset;
@@ -386,7 +386,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
             // 6E075C:
-            direction = (tileElement->GetSceneryQuadrant() + rotation) % 4;
+            direction = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) % 4;
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
             return;
@@ -404,7 +404,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     }
     if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
     {
-        direction = (tileElement->GetSceneryQuadrant() + rotation) % 4;
+        direction = (tileElement->AsSmallScenery()->GetSceneryQuadrant() + rotation) % 4;
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         return;

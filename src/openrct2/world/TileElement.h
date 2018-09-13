@@ -121,38 +121,6 @@ union rct_tile_element_properties
 };
 assert_struct_size(rct_tile_element_properties, 4);
 
-/**
- * Map element structure
- * size: 0x08
- */
-struct rct_tile_element
-{
-    uint8_t type;             // 0
-    uint8_t flags;            // 1
-    uint8_t base_height;      // 2
-    uint8_t clearance_height; // 3
-    rct_tile_element_properties properties;
-
-    uint8_t GetType() const;
-    void SetType(uint8_t newType);
-    uint8_t GetDirection() const;
-    void SetDirection(uint8_t direction);
-    uint8_t GetDirectionWithOffset(uint8_t offset) const;
-    bool IsLastForTile() const;
-    bool IsGhost() const;
-    uint8_t GetSceneryQuadrant() const;
-};
-assert_struct_size(rct_tile_element, 8);
-#pragma pack(pop)
-
-enum
-{
-    TILE_ELEMENT_QUADRANT_SW,
-    TILE_ELEMENT_QUADRANT_NW,
-    TILE_ELEMENT_QUADRANT_NE,
-    TILE_ELEMENT_QUADRANT_SE
-};
-
 enum
 {
     TILE_ELEMENT_TYPE_SURFACE = (0 << 2),
@@ -166,6 +134,143 @@ enum
     // The corrupt element type is used for skipping drawing other following
     // elements on a given tile.
     TILE_ELEMENT_TYPE_CORRUPT = (8 << 2),
+};
+
+enum class TileElementType : uint8_t
+{
+    Surface = (0 << 2),
+    Path = (1 << 2),
+    Track = (2 << 2),
+    SmallScenery = (3 << 2),
+    Entrance = (4 << 2),
+    Wall = (5 << 2),
+    LargeScenery = (6 << 2),
+    Banner = (7 << 2),
+    Corrupt = (8 << 2),
+};
+
+struct SurfaceElement;
+struct PathElement;
+struct TrackElement;
+struct SmallSceneryElement;
+struct LargeSceneryElement;
+struct WallElement;
+struct EntranceElement;
+struct BannerElement;
+struct CorruptElement;
+
+struct TileElementBase
+{
+    uint8_t type;             // 0
+    uint8_t flags;            // 1
+    uint8_t base_height;      // 2
+    uint8_t clearance_height; // 3
+
+    uint8_t GetType() const;
+    void SetType(uint8_t newType);
+    uint8_t GetDirection() const;
+    void SetDirection(uint8_t direction);
+    uint8_t GetDirectionWithOffset(uint8_t offset) const;
+    bool IsLastForTile() const;
+    bool IsGhost() const;
+};
+
+
+/**
+ * Map element structure
+ * size: 0x08
+ */
+struct rct_tile_element : public TileElementBase
+{
+    // TODO: Remove this field.
+    rct_tile_element_properties properties;
+
+    template<typename TType, TileElementType TClass>
+    TType* as() const
+    {
+        return (TileElementType)GetType() == TClass ? (TType*)this : nullptr;
+    }
+
+public:
+    SurfaceElement* AsSurface() const { return as<SurfaceElement, TileElementType::Surface>(); }
+    PathElement* AsPath() const { return as<PathElement, TileElementType::Path>(); }
+    TrackElement* AsTrack() const { return as<TrackElement, TileElementType::Track>(); }
+    SmallSceneryElement* AsSmallScenery() const { return as<SmallSceneryElement, TileElementType::SmallScenery>(); }
+    LargeSceneryElement* AsLargeScenery() const { return as<LargeSceneryElement, TileElementType::LargeScenery>(); }
+    WallElement* AsWall() const { return as<WallElement, TileElementType::Wall>(); }
+    EntranceElement* AsEntrance() const { return as<EntranceElement, TileElementType::Entrance>(); }
+    BannerElement* AsBanner() const { return as<BannerElement, TileElementType::Banner>(); }
+    CorruptElement* AsCorrupt() const { return as<CorruptElement, TileElementType::Corrupt>(); }
+};
+assert_struct_size(rct_tile_element, 8);
+
+struct SurfaceElement : TileElementBase
+{
+    rct_tile_element_surface_properties temp;
+};
+assert_struct_size(SurfaceElement, 8);
+
+struct PathElement : TileElementBase
+{
+    rct_tile_element_path_properties temp;
+};
+assert_struct_size(PathElement, 8);
+
+struct TrackElement : TileElementBase
+{
+    rct_tile_element_track_properties temp;
+};
+assert_struct_size(TrackElement, 8);
+
+struct SmallSceneryElement : TileElementBase
+{
+    rct_tile_element_scenery_properties temp;
+public:
+    uint8_t GetSceneryQuadrant() const;
+};
+assert_struct_size(SmallSceneryElement, 8);
+
+struct LargeSceneryElement : TileElementBase
+{
+    rct_tile_element_scenerymultiple_properties temp;
+};
+assert_struct_size(LargeSceneryElement, 8);
+
+struct WallElement : TileElementBase
+{
+    rct_tile_element_wall_properties temp;
+public:
+    uint8_t GetSlope() const;
+};
+assert_struct_size(WallElement, 8);
+
+struct EntranceElement : TileElementBase
+{
+    rct_tile_element_entrance_properties temp;
+};
+assert_struct_size(EntranceElement, 8);
+
+struct BannerElement : TileElementBase
+{
+    rct_tile_element_banner_properties temp;
+};
+assert_struct_size(BannerElement, 8);
+
+struct CorruptElement : TileElementBase
+{
+    uint8_t pad[4];
+};
+assert_struct_size(CorruptElement, 8);
+
+
+#pragma pack(pop)
+
+enum
+{
+    TILE_ELEMENT_QUADRANT_SW,
+    TILE_ELEMENT_QUADRANT_NW,
+    TILE_ELEMENT_QUADRANT_NE,
+    TILE_ELEMENT_QUADRANT_SE
 };
 
 enum
