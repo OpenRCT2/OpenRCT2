@@ -85,6 +85,9 @@ namespace OpenRCT2::Ui
         void ShowMessageBox(const std::string& /*message*/) override
         {
         }
+        void OpenFolder(const std::string& /*path*/) override
+        {
+        }
         std::string ShowFileDialog(const FileDialogDesc& /*desc*/) override
         {
             return std::string();

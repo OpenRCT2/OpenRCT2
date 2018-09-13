@@ -15,9 +15,11 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
 
 // clang-format off
 enum {
@@ -82,7 +84,7 @@ rct_window* window_title_menu_open()
     rct_window* window;
 
     window = window_create(
-        0, context_get_height() - 142, 0, 100, &window_title_menu_events, WC_TITLE_MENU,
+        0, context_get_height() - 154, 0, 100, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_title_menu_widgets;
     window->enabled_widgets
@@ -178,9 +180,10 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[1] = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
         gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
+        gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
         window_dropdown_show_text(
             w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, TRANSLUCENT(w->colours[0]),
-            DROPDOWN_FLAG_STAY_OPEN, 4);
+            DROPDOWN_FLAG_STAY_OPEN, 5);
     }
 }
 
@@ -201,6 +204,12 @@ static void window_title_menu_dropdown(rct_window* w, rct_widgetindex widgetInde
                 break;
             case 3:
                 Editor::LoadTrackManager();
+                break;
+            case 4:
+                auto context = OpenRCT2::GetContext();
+                auto env = context->GetPlatformEnvironment();
+                auto uiContext = context->GetUiContext();
+                uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
                 break;
         }
     }

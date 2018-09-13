@@ -91,6 +91,12 @@ namespace OpenRCT2::Ui
             MessageBoxW(hwnd, messageW.c_str(), L"OpenRCT2", MB_OK);
         }
 
+        void OpenFolder(const std::string& path) override
+        {
+            std::wstring pathW = String::ToUtf16(path);
+            ShellExecuteW(NULL, L"open", pathW.c_str(), NULL, NULL, SW_SHOWNORMAL);
+        }
+
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             std::wstring wcFilename = String::ToUtf16(desc.DefaultFilename);

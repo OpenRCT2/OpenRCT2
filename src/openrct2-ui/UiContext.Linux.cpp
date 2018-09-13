@@ -113,6 +113,12 @@ namespace OpenRCT2::Ui
             }
         }
 
+        void OpenFolder(const std::string& path) override
+        {
+            std::string cmd = String::Format("xdg-open %s", EscapePathForShell(path).c_str());
+            Execute(cmd);
+        }
+
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             std::string result;
@@ -369,6 +375,15 @@ namespace OpenRCT2::Ui
             std::string dialogMissingWarning = language_get_string(STR_MISSING_DIALOG_APPLICATION_ERROR);
             uiContext->ShowMessageBox(dialogMissingWarning);
             throw std::runtime_error(dialogMissingWarning);
+        }
+
+        static std::string EscapePathForShell(std::string path)
+        {
+            for (size_t index = 0; (index = path.find('"', index)) != std::string::npos; index += 2)
+            {
+                path.replace(index, 1, "\\\"");
+            }
+            return '"' + path + '"';
         }
     };
 
