@@ -377,27 +377,13 @@ namespace OpenRCT2::Ui
             throw std::runtime_error(dialogMissingWarning);
         }
 
-        static std::string EscapePathForShell(const std::string& path)
+        static std::string EscapePathForShell(std::string path)
         {
-            char output[256] = { 0 };
-            char* outputPtr = output;
-            *outputPtr = '"';
-            outputPtr++;
-
-            for (uint32_t i = 0; i < path.length(); i++)
+            for (size_t index = 0; (index = path.find('"', index)) != std::string::npos; index += 2)
             {
-                if (path[i] == '"')
-                {
-                    *outputPtr = '\\';
-                    outputPtr++;
-                }
-
-                *outputPtr = path[i];
-                outputPtr++;
+                path.replace(index, 1, "\\\"");
             }
-            *outputPtr = '"';
-
-            return std::string(output);
+            return '"' + path + '"';
         }
     };
 
