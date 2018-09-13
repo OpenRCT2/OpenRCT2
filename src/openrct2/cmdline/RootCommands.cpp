@@ -54,6 +54,7 @@ static bool _headless = false;
 static utf8* _password = nullptr;
 static utf8* _userDataPath = nullptr;
 static utf8* _openrctDataPath = nullptr;
+static utf8* _rct1DataPath = nullptr;
 static utf8* _rct2DataPath = nullptr;
 static bool _silentBreakpad = false;
 
@@ -74,6 +75,7 @@ static constexpr const CommandLineOptionDefinition StandardOptions[]
     { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
     { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
     { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
+    { CMDLINE_TYPE_STRING,  &_rct1DataPath,    NAC, "rct1-data-path",    "path to the RollerCoaster Tycoon 1 data directory (containing data/csg1.dat)" },
     { CMDLINE_TYPE_STRING,  &_rct2DataPath,    NAC, "rct2-data-path",    "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
 #ifdef USE_BREAKPAD
     { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
@@ -206,6 +208,12 @@ exitcode_t CommandLine::HandleCommandDefault()
         Path::GetAbsolute(absolutePath, Util::CountOf(absolutePath), _openrctDataPath);
         String::Set(gCustomOpenrctDataPath, Util::CountOf(gCustomOpenrctDataPath), absolutePath);
         Memory::Free(_openrctDataPath);
+    }
+
+    if (_rct1DataPath != nullptr)
+    {
+        String::Set(gCustomRCT1DataPath, Util::CountOf(gCustomRCT1DataPath), _rct1DataPath);
+        Memory::Free(_rct1DataPath);
     }
 
     if (_rct2DataPath != nullptr)

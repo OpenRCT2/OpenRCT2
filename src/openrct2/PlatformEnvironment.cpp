@@ -131,6 +131,10 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     basePaths[(size_t)DIRBASE::DOCUMENTATION] = Platform::GetDocsPath();
 
     // Override paths that have been specified via the command line
+    if (!String::IsNullOrEmpty(gCustomRCT1DataPath))
+    {
+        basePaths[(size_t)DIRBASE::RCT1] = gCustomRCT1DataPath;
+    }
     if (!String::IsNullOrEmpty(gCustomRCT2DataPath))
     {
         basePaths[(size_t)DIRBASE::RCT2] = gCustomRCT2DataPath;
@@ -160,8 +164,14 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     {
         config_save(configPath.c_str());
     }
-    env->SetBasePath(DIRBASE::RCT1, String::ToStd(gConfigGeneral.rct1_path));
-    env->SetBasePath(DIRBASE::RCT2, String::ToStd(gConfigGeneral.rct2_path));
+    if (String::IsNullOrEmpty(gCustomRCT1DataPath))
+    {
+        env->SetBasePath(DIRBASE::RCT1, String::ToStd(gConfigGeneral.rct1_path));
+    }
+    if (String::IsNullOrEmpty(gCustomRCT2DataPath))
+    {
+        env->SetBasePath(DIRBASE::RCT2, String::ToStd(gConfigGeneral.rct2_path));
+    }
 
     // Log base paths
     log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());

@@ -146,9 +146,10 @@ private:
         std::vector<std::string> files;
         for (const auto& directory : SearchPaths)
         {
-            log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), directory.c_str());
+            auto absoluteDirectory = Path::GetAbsolute(directory);
+            log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), absoluteDirectory.c_str());
 
-            auto pattern = Path::Combine(directory, _pattern);
+            auto pattern = Path::Combine(absoluteDirectory, _pattern);
             auto scanner = Path::ScanDirectory(pattern, true);
             while (scanner->Next())
             {

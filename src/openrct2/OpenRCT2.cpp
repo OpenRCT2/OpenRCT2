@@ -15,6 +15,7 @@ utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 utf8 gExePath[MAX_PATH];
 utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
 utf8 gCustomOpenrctDataPath[MAX_PATH] = { 0 };
+utf8 gCustomRCT1DataPath[MAX_PATH] = { 0 };
 utf8 gCustomRCT2DataPath[MAX_PATH] = { 0 };
 utf8 gCustomPassword[MAX_PATH] = { 0 };
 
