@@ -384,7 +384,7 @@ static money32 SmallSceneryPlace(
     type |= TILE_ELEMENT_TYPE_SMALL_SCENERY;
     type |= rotation;
     newElement->type = type;
-    newElement->properties.scenery.type = sceneryType;
+    newElement->AsSmallScenery()->SetEntryIndex(sceneryType);
     newElement->properties.scenery.age = 0;
     scenery_small_set_primary_colour(newElement, primaryColour);
     scenery_small_set_secondary_colour(newElement, secondaryColour);
@@ -563,5 +563,10 @@ uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 
 uint8_t SmallSceneryElement::GetEntryIndex() const
 {
-    return this->type;
+    return this->entryIndex;
+}
+
+void SmallSceneryElement::SetEntryIndex(uint8_t newIndex)
+{
+    this->entryIndex = newIndex;
 }

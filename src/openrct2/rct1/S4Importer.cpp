@@ -2729,8 +2729,11 @@ private:
             switch (tileElement->GetType())
             {
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                    tileElement->properties.scenery.type = _smallSceneryTypeToEntryMap[tileElement->AsSmallScenery()->GetEntryIndex()];
+                {
+                    uint8_t entryIndex = _smallSceneryTypeToEntryMap[tileElement->AsSmallScenery()->GetEntryIndex()];
+                    tileElement->AsSmallScenery()->SetEntryIndex(entryIndex);
                     break;
+                }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
                     uint8_t type = scenery_large_get_type(tileElement);

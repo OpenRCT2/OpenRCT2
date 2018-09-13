@@ -3464,7 +3464,7 @@ void map_obstruction_set_error_text(rct_tile_element* tileElement)
             set_format_arg(0, rct_string_id, sceneryEntry->name);
             break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            sceneryEntry = get_large_scenery_entry(tileElement->properties.scenery.type);
+            sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type);
             errorStringId = STR_X_IN_THE_WAY;
             set_format_arg(0, rct_string_id, sceneryEntry->name);
             break;
