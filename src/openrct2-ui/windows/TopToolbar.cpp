@@ -985,7 +985,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         {
-            rct_scenery_entry* scenery_entry = get_small_scenery_entry(tile_element->properties.scenery.type);
+            rct_scenery_entry* scenery_entry = tile_element->AsSmallScenery()->GetEntry();
 
             // If can't repaint
             if (!scenery_small_entry_has_flag(
@@ -995,7 +995,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
                 grid_x, 1 | (tile_element->type << 8), grid_y,
-                tile_element->base_height | (tile_element->properties.scenery.type << 8), GAME_COMMAND_SET_SCENERY_COLOUR, 0,
+                tile_element->base_height | (tile_element->AsSmallScenery()->GetEntryIndex() << 8), GAME_COMMAND_SET_SCENERY_COLOUR, 0,
                 gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
             break;
         }
@@ -1062,16 +1062,17 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         {
-            int32_t entryIndex = tileElement->properties.scenery.type;
+            SmallSceneryElement * sceneryElement = tileElement->AsSmallScenery();
+            int32_t entryIndex = sceneryElement->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_small_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
                 if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
                 {
-                    gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(tileElement)) & 3;
-                    gWindowSceneryPrimaryColour = scenery_small_get_primary_colour(tileElement);
-                    gWindowScenerySecondaryColour = scenery_small_get_secondary_colour(tileElement);
+                    gWindowSceneryRotation = sceneryElement->GetDirectionWithOffset(get_current_rotation());
+                    gWindowSceneryPrimaryColour = sceneryElement->GetPrimaryColour();
+                    gWindowScenerySecondaryColour = sceneryElement->GetSecondaryColour();
                     gWindowSceneryEyedropperEnabled = false;
                 }
             }

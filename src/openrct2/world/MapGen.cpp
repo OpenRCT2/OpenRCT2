@@ -250,7 +250,7 @@ static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
     SmallSceneryElement * sceneryElement = tileElement->AsSmallScenery();
     sceneryElement->SetEntryIndex(type);
     sceneryElement->SetAge(0);
-    scenery_small_set_primary_colour(tileElement, COLOUR_YELLOW);
+    sceneryElement->SetPrimaryColour(COLOUR_YELLOW);
 }
 
 /**

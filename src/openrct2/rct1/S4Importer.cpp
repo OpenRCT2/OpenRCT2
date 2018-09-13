@@ -2447,8 +2447,8 @@ private:
                 switch (tileElement->GetType())
                 {
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                        colour = RCT1::GetColour(scenery_small_get_primary_colour(tileElement));
-                        scenery_small_set_primary_colour(tileElement, colour);
+                        colour = RCT1::GetColour(tileElement->AsSmallScenery()->GetPrimaryColour());
+                        tileElement->AsSmallScenery()->SetPrimaryColour(colour);
 
                         // Copied from [rct2: 0x006A2956]
                         switch (tileElement->AsSmallScenery()->GetEntryIndex())
@@ -2458,12 +2458,12 @@ private:
                             case RCT1_SCENERY_GEOMETRIC_SCULPTURE_3:
                             case RCT1_SCENERY_GEOMETRIC_SCULPTURE_4:
                             case RCT1_SCENERY_GEOMETRIC_SCULPTURE_5:
-                                scenery_small_set_secondary_colour(tileElement, COLOUR_WHITE);
+                                tileElement->AsSmallScenery()->SetSecondaryColour(COLOUR_WHITE);
                                 break;
                             case RCT1_SCENERY_TULIPS_1:
                             case RCT1_SCENERY_TULIPS_2:
-                                scenery_small_set_primary_colour(tileElement, COLOUR_BRIGHT_RED);
-                                scenery_small_set_secondary_colour(tileElement, COLOUR_YELLOW);
+                                tileElement->AsSmallScenery()->SetPrimaryColour(COLOUR_BRIGHT_RED);
+                                tileElement->AsSmallScenery()->SetSecondaryColour(COLOUR_YELLOW);
                         }
                         break;
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:

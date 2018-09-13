@@ -10,8 +10,10 @@
 #include "SmallScenery.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
+#include "../object/ObjectManager.h"
 #include "../network/network.h"
 #include "../ride/TrackDesign.h"
 #include "Footpath.h"
@@ -142,8 +144,8 @@ static money32 SmallScenerySetColour(
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        scenery_small_set_primary_colour(tileElement, primaryColour);
-        scenery_small_set_secondary_colour(tileElement, secondaryColour);
+        tileElement->AsSmallScenery()->SetPrimaryColour(primaryColour);
+        tileElement->AsSmallScenery()->SetSecondaryColour(secondaryColour);
 
         map_invalidate_tile_full(x, y);
     }
@@ -387,13 +389,13 @@ static money32 SmallSceneryPlace(
     SmallSceneryElement * sceneryElement = newElement->AsSmallScenery();
     sceneryElement->SetEntryIndex(sceneryType);
     sceneryElement->SetAge(0);
-    scenery_small_set_primary_colour(newElement, primaryColour);
-    scenery_small_set_secondary_colour(newElement, secondaryColour);
+    sceneryElement->SetPrimaryColour(primaryColour);
+    sceneryElement->SetSecondaryColour(secondaryColour);
     newElement->clearance_height = newElement->base_height + ((sceneryEntry->small_scenery.height + 7) / 8);
 
     if (supportsRequired)
     {
-        scenery_small_set_supports_needed(newElement);
+        sceneryElement->SetNeedsSupports();
     }
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -447,7 +449,7 @@ int32_t map_place_scenery_clear_func(rct_tile_element** tile_element, int32_t x,
     if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
         return 1;
 
-    rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->AsSmallScenery()->GetEntryIndex());
+    rct_scenery_entry* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
@@ -481,7 +483,7 @@ int32_t map_place_non_scenery_clear_func(rct_tile_element** tile_element, int32_
     if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
 
-    rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->AsSmallScenery()->GetEntryIndex());
+    rct_scenery_entry* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
@@ -516,40 +518,6 @@ void game_command_place_scenery(
     *ebx = SmallSceneryPlace(
         *eax & 0xFFFF, *ecx & 0xFFFF, *ebp & 0xFFFF, *edx & 0xFF, *edi & 0xFF, (*ebx >> 8) & 0xFF, (*edx >> 8) & 0xFF,
         (*edi >> 16) & 0xFF, *ebx & 0xFF);
-}
-
-int32_t scenery_small_get_primary_colour(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.scenery.colour_1 & TILE_ELEMENT_COLOUR_MASK;
-}
-
-int32_t scenery_small_get_secondary_colour(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.scenery.colour_2 & TILE_ELEMENT_COLOUR_MASK;
-}
-
-void scenery_small_set_primary_colour(rct_tile_element* tileElement, uint32_t colour)
-{
-    assert(colour <= 31);
-    tileElement->properties.scenery.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
-    tileElement->properties.scenery.colour_1 |= colour;
-}
-
-void scenery_small_set_secondary_colour(rct_tile_element* tileElement, uint32_t colour)
-{
-    assert(colour <= 31);
-    tileElement->properties.scenery.colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
-    tileElement->properties.scenery.colour_2 |= colour;
-}
-
-bool scenery_small_get_supports_needed(const rct_tile_element* tileElement)
-{
-    return (bool)(tileElement->properties.scenery.colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
-}
-
-void scenery_small_set_supports_needed(rct_tile_element* tileElement)
-{
-    tileElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
 
 bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags)
@@ -594,7 +562,7 @@ void SmallSceneryElement::IncreaseAge(int32_t x, int32_t y)
         // Only invalidate tiles when scenery crosses the withering threshholds, and can be withered.
         if (newAge == SCENERY_WITHER_AGE_THRESHOLD_1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
         {
-            rct_scenery_entry* entry = get_small_scenery_entry(GetEntryIndex());
+            rct_scenery_entry* entry = GetEntry();
 
             if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
             {
@@ -602,4 +570,55 @@ void SmallSceneryElement::IncreaseAge(int32_t x, int32_t y)
             }
         }
     }
+}
+
+colour_t SmallSceneryElement::GetPrimaryColour() const
+{
+    return colour_1 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+colour_t SmallSceneryElement::GetSecondaryColour() const
+{
+    return colour_2 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+void SmallSceneryElement::SetPrimaryColour(colour_t colour)
+{
+    assert(colour <= 31);
+    colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_1 |= colour;
+}
+
+void SmallSceneryElement::SetSecondaryColour(colour_t colour)
+{
+    assert(colour <= 31);
+    colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_2 |= colour;
+}
+
+bool SmallSceneryElement::NeedsSupports() const
+{
+    return (bool)(colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+}
+
+void SmallSceneryElement::SetNeedsSupports()
+{
+    colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+}
+
+rct_scenery_entry* SmallSceneryElement::GetEntry() const
+{
+    return get_small_scenery_entry(entryIndex);
+}
+
+rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex)
+{
+    rct_scenery_entry* result = nullptr;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
+    if (obj != nullptr)
+    {
+        result = (rct_scenery_entry*)obj->GetLegacyData();
+    }
+    return result;
 }

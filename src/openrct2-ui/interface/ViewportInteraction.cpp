@@ -306,7 +306,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
+            sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
             if (sceneryEntry->wall.scrolling_mode != 255)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -345,7 +345,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
     switch (info->type)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
-            sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
+            sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
             return info->type;
@@ -383,13 +383,13 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
+            sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            sceneryEntry = get_large_scenery_entry(tileElement->properties.scenery.type & 0x3FF);
+            sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
             return info->type;
@@ -463,7 +463,7 @@ static void viewport_interaction_remove_scenery(rct_tile_element* tileElement, i
 {
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
     game_do_command(
-        x, (tileElement->type << 8) | 1, y, (tileElement->properties.scenery.type << 8) | tileElement->base_height,
+        x, (tileElement->type << 8) | 1, y, (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | tileElement->base_height,
         GAME_COMMAND_REMOVE_SCENERY, 0, 0);
 }
 

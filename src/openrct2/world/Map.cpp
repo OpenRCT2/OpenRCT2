@@ -1601,7 +1601,7 @@ static money32 map_set_land_height(int32_t flags, int32_t x, int32_t y, int32_t 
                 continue;
             if (height + 4 < tileElement->base_height)
                 continue;
-            rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
+            rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             if (sceneryEntry->small_scenery.height > 64 && gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
             {
                 map_obstruction_set_error_text(tileElement);
@@ -3440,7 +3440,7 @@ void map_obstruction_set_error_text(rct_tile_element* tileElement)
             set_format_arg(2, uint32_t, ride->name_arguments);
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-            sceneryEntry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
+            sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             errorStringId = STR_X_IN_THE_WAY;
             set_format_arg(0, rct_string_id, sceneryEntry->name);
             break;
@@ -4461,7 +4461,7 @@ bool map_surface_is_blocked(int16_t x, int16_t y)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             return true;
 
-        rct_scenery_entry* scenery = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
+        rct_scenery_entry* scenery = tileElement->AsSmallScenery()->GetEntry();
         if (scenery == nullptr)
         {
             return false;

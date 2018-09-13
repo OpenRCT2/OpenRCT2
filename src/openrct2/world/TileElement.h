@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+struct rct_scenery_entry;
+
 #pragma pack(push, 1)
 struct rct_tile_element_surface_properties
 {
@@ -61,15 +63,6 @@ struct rct_tile_element_track_properties
 };
 assert_struct_size(rct_tile_element_track_properties, 4);
 
-struct rct_tile_element_scenery_properties
-{
-    uint8_t type;     // 4
-    uint8_t age;      // 5
-    uint8_t colour_1; // 6
-    uint8_t colour_2; // 7
-};
-assert_struct_size(rct_tile_element_scenery_properties, 4);
-
 struct rct_tile_element_entrance_properties
 {
     uint8_t type;       // 4
@@ -113,7 +106,6 @@ union rct_tile_element_properties
     rct_tile_element_surface_properties surface;
     rct_tile_element_path_properties path;
     rct_tile_element_track_properties track;
-    rct_tile_element_scenery_properties scenery;
     rct_tile_element_entrance_properties entrance;
     rct_tile_element_wall_properties wall;
     rct_tile_element_scenerymultiple_properties scenerymultiple;
@@ -224,6 +216,7 @@ assert_struct_size(TrackElement, 8);
 
 struct SmallSceneryElement : TileElementBase
 {
+private:
     uint8_t entryIndex; // 4
     uint8_t age;        // 5
     uint8_t colour_1;   // 6
@@ -231,10 +224,17 @@ struct SmallSceneryElement : TileElementBase
 public:
     uint8_t GetEntryIndex() const;
     void SetEntryIndex(uint8_t newIndex);
+    rct_scenery_entry* GetEntry() const;
     uint8_t GetAge() const;
     void SetAge(uint8_t newAge);
-    uint8_t GetSceneryQuadrant() const;
     void IncreaseAge(int32_t x, int32_t y);
+    uint8_t GetSceneryQuadrant() const;
+    colour_t GetPrimaryColour() const;
+    void SetPrimaryColour(colour_t colour);
+    colour_t GetSecondaryColour() const;
+    void SetSecondaryColour(colour_t colour);
+    bool NeedsSupports() const;
+    void SetNeedsSupports();
 };
 assert_struct_size(SmallSceneryElement, 8);
 
@@ -269,8 +269,6 @@ struct CorruptElement : TileElementBase
     uint8_t pad[4];
 };
 assert_struct_size(CorruptElement, 8);
-
-
 #pragma pack(pop)
 
 enum

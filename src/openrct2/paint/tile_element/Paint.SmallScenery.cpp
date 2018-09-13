@@ -36,6 +36,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     {
         return;
     }
+    SmallSceneryElement * sceneryElement = tileElement->AsSmallScenery();
     // RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int32_t)tileElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
     LocationXYZ16 boxlength;
@@ -59,7 +60,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     }
     uint32_t dword_F64EB0 = baseImageid;
 
-    rct_scenery_entry* entry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
+    rct_scenery_entry* entry = tileElement->AsSmallScenery()->GetEntry();
 
     if (entry == nullptr)
     {
@@ -142,11 +143,11 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             baseImageid |= SPRITE_ID_PALETTE_COLOUR_2(
-                scenery_small_get_primary_colour(tileElement), scenery_small_get_secondary_colour(tileElement));
+                sceneryElement->GetPrimaryColour(), sceneryElement->GetSecondaryColour());
         }
         else
         {
-            baseImageid |= SPRITE_ID_PALETTE_COLOUR_1(scenery_small_get_primary_colour(tileElement));
+            baseImageid |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
         }
     }
     if (dword_F64EB0 != 0)
@@ -166,7 +167,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         {
             // Draw translucent overlay:
             // TODO: Name palette entries
-            int32_t image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[scenery_small_get_primary_colour(tileElement)] << 19)
+            int32_t image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[sceneryElement->GetPrimaryColour()] << 19)
                 + 0x40000004;
             sub_98199C(
                 session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -309,11 +310,11 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                     if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                     {
                         image_id |= SPRITE_ID_PALETTE_COLOUR_2(
-                            scenery_small_get_primary_colour(tileElement), scenery_small_get_secondary_colour(tileElement));
+                            sceneryElement->GetPrimaryColour(), sceneryElement->GetSecondaryColour());
                     }
                     else
                     {
-                        image_id |= SPRITE_ID_PALETTE_COLOUR_1(scenery_small_get_primary_colour(tileElement));
+                        image_id |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
                     }
                 }
                 if (dword_F64EB0 != 0)
@@ -336,7 +337,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         }
     }
     // 6E0556: Draw supports:
-    if (scenery_small_get_supports_needed(tileElement))
+    if (sceneryElement->NeedsSupports())
     {
         if (!(scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_SUPPORTS)))
         {
@@ -350,7 +351,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             uint32_t supportImageColourFlags = IMAGE_TYPE_REMAP;
             if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_PAINT_SUPPORTS))
             {
-                supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(scenery_small_get_primary_colour(tileElement));
+                supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
             }
             if (dword_F64EB0 != 0)
             {

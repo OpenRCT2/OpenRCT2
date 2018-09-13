@@ -116,7 +116,7 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
     rct_tile_element* tileElementAbove;
     rct_scenery_entry* sceneryEntry;
 
-    sceneryEntry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
+    sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
     if (sceneryEntry == nullptr)
     {
         return;
@@ -154,7 +154,7 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
                 tileElement->AsSmallScenery()->IncreaseAge(x, y);
                 return;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                sceneryEntry = get_small_scenery_entry(tileElementAbove->AsSmallScenery()->GetEntryIndex());
+                sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
                     tileElement->AsSmallScenery()->IncreaseAge(x, y);
@@ -229,18 +229,6 @@ void scenery_remove_ghost_tool_placement()
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_4;
         game_do_command(x, 105, y, z | (gSceneryPlaceRotation << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
     }
-}
-
-rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex)
-{
-    rct_scenery_entry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
-    if (obj != nullptr)
-    {
-        result = (rct_scenery_entry*)obj->GetLegacyData();
-    }
-    return result;
 }
 
 rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex)

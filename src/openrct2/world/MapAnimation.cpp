@@ -180,7 +180,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
         if (tileElement->flags & (1 << 4))
             continue;
 
-        sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
+        sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
         if (scenery_small_entry_has_flag(
                 sceneryEntry,
                 SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO
@@ -458,7 +458,7 @@ static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
-        sceneryEntry = get_large_scenery_entry(tileElement->properties.scenery.type & 0x3FF);
+        sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
         if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED)
         {
             int32_t z = tileElement->base_height * 8;
@@ -491,7 +491,7 @@ static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t bas
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
+        sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
         if (!(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
             continue;
 
@@ -551,7 +551,7 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
+        sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
 
         if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED) && sceneryEntry->wall.scrolling_mode == 255)
             continue;
