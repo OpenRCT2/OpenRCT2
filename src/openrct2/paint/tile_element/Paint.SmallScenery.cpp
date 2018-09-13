@@ -36,7 +36,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     {
         return;
     }
-    SmallSceneryElement * sceneryElement = tileElement->AsSmallScenery();
+    SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
     // RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (int32_t)tileElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
     LocationXYZ16 boxlength;
@@ -142,8 +142,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     {
         if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
-            baseImageid |= SPRITE_ID_PALETTE_COLOUR_2(
-                sceneryElement->GetPrimaryColour(), sceneryElement->GetSecondaryColour());
+            baseImageid |= SPRITE_ID_PALETTE_COLOUR_2(sceneryElement->GetPrimaryColour(), sceneryElement->GetSecondaryColour());
         }
         else
         {

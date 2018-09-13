@@ -13,8 +13,8 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
-#include "../object/ObjectManager.h"
 #include "../network/network.h"
+#include "../object/ObjectManager.h"
 #include "../ride/TrackDesign.h"
 #include "Footpath.h"
 #include "Map.h"
@@ -386,7 +386,7 @@ static money32 SmallSceneryPlace(
     type |= TILE_ELEMENT_TYPE_SMALL_SCENERY;
     type |= rotation;
     newElement->type = type;
-    SmallSceneryElement * sceneryElement = newElement->AsSmallScenery();
+    SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();
     sceneryElement->SetEntryIndex(sceneryType);
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(primaryColour);

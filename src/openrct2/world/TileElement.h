@@ -167,7 +167,6 @@ struct TileElementBase
     bool IsGhost() const;
 };
 
-
 /**
  * Map element structure
  * size: 0x08
@@ -177,22 +176,48 @@ struct rct_tile_element : public TileElementBase
     // TODO: Remove this field.
     rct_tile_element_properties properties;
 
-    template<typename TType, TileElementType TClass>
-    TType* as() const
+    template<typename TType, TileElementType TClass> TType* as() const
     {
         return (TileElementType)GetType() == TClass ? (TType*)this : nullptr;
     }
 
 public:
-    SurfaceElement* AsSurface() const { return as<SurfaceElement, TileElementType::Surface>(); }
-    PathElement* AsPath() const { return as<PathElement, TileElementType::Path>(); }
-    TrackElement* AsTrack() const { return as<TrackElement, TileElementType::Track>(); }
-    SmallSceneryElement* AsSmallScenery() const { return as<SmallSceneryElement, TileElementType::SmallScenery>(); }
-    LargeSceneryElement* AsLargeScenery() const { return as<LargeSceneryElement, TileElementType::LargeScenery>(); }
-    WallElement* AsWall() const { return as<WallElement, TileElementType::Wall>(); }
-    EntranceElement* AsEntrance() const { return as<EntranceElement, TileElementType::Entrance>(); }
-    BannerElement* AsBanner() const { return as<BannerElement, TileElementType::Banner>(); }
-    CorruptElement* AsCorrupt() const { return as<CorruptElement, TileElementType::Corrupt>(); }
+    SurfaceElement* AsSurface() const
+    {
+        return as<SurfaceElement, TileElementType::Surface>();
+    }
+    PathElement* AsPath() const
+    {
+        return as<PathElement, TileElementType::Path>();
+    }
+    TrackElement* AsTrack() const
+    {
+        return as<TrackElement, TileElementType::Track>();
+    }
+    SmallSceneryElement* AsSmallScenery() const
+    {
+        return as<SmallSceneryElement, TileElementType::SmallScenery>();
+    }
+    LargeSceneryElement* AsLargeScenery() const
+    {
+        return as<LargeSceneryElement, TileElementType::LargeScenery>();
+    }
+    WallElement* AsWall() const
+    {
+        return as<WallElement, TileElementType::Wall>();
+    }
+    EntranceElement* AsEntrance() const
+    {
+        return as<EntranceElement, TileElementType::Entrance>();
+    }
+    BannerElement* AsBanner() const
+    {
+        return as<BannerElement, TileElementType::Banner>();
+    }
+    CorruptElement* AsCorrupt() const
+    {
+        return as<CorruptElement, TileElementType::Corrupt>();
+    }
 };
 assert_struct_size(rct_tile_element, 8);
 
@@ -247,6 +272,7 @@ assert_struct_size(LargeSceneryElement, 8);
 struct WallElement : TileElementBase
 {
     rct_tile_element_wall_properties temp;
+
 public:
     uint8_t GetSlope() const;
 };

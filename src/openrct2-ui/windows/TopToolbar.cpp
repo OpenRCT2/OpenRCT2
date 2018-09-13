@@ -995,8 +995,8 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
                 grid_x, 1 | (tile_element->type << 8), grid_y,
-                tile_element->base_height | (tile_element->AsSmallScenery()->GetEntryIndex() << 8), GAME_COMMAND_SET_SCENERY_COLOUR, 0,
-                gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+                tile_element->base_height | (tile_element->AsSmallScenery()->GetEntryIndex() << 8),
+                GAME_COMMAND_SET_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
@@ -1062,7 +1062,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         {
-            SmallSceneryElement * sceneryElement = tileElement->AsSmallScenery();
+            SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
             int32_t entryIndex = sceneryElement->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_small_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
