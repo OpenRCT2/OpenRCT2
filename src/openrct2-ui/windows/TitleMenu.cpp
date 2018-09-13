@@ -84,7 +84,7 @@ rct_window* window_title_menu_open()
     rct_window* window;
 
     window = window_create(
-        0, context_get_height() - 142, 0, 100, &window_title_menu_events, WC_TITLE_MENU,
+        0, context_get_height() - 154, 0, 100, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_title_menu_widgets;
     window->enabled_widgets
