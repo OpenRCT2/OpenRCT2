@@ -19,6 +19,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
+#include <openrct2/network/network.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
@@ -137,6 +138,8 @@ static void window_staff_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
+static void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y);
 static void window_staff_overview_tool_abort(rct_window *w, rct_widgetindex widgetIndex);
 static void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_staff_overview_viewport_rotate(rct_window *w);
@@ -171,8 +174,8 @@ static rct_window_event_list window_staff_overview_events = {
     nullptr,
     window_staff_overview_tool_update,
     window_staff_overview_tool_down,
-    nullptr,
-    nullptr,
+    window_staff_overview_tool_drag,
+    window_staff_overview_tool_up,
     window_staff_overview_tool_abort,
     nullptr,
     nullptr,
@@ -289,6 +292,15 @@ static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
 // clang-format on
 
 static uint8_t _availableCostumes[ENTERTAINER_COSTUME_COUNT];
+
+enum class PatrolAreaValue
+{
+    UNSET = 0,
+    SET = 1,
+    NONE = -1,
+};
+
+static PatrolAreaValue _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
 
 /**
  *
@@ -1196,8 +1208,69 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         if (dest_x == LOCATION_NULL)
             return;
 
+        rct_sprite* sprite = try_get_sprite(w->number);
+        if (sprite == nullptr || sprite->IsPeep() == false)
+            return;
+
+        rct_peep& peep = sprite->peep;
+        if (peep.type != PEEP_TYPE_STAFF)
+            return;
+
+        if (staff_is_patrol_area_set(peep.staff_id, dest_x, dest_y) == true)
+        {
+            _staffPatrolAreaPaintValue = PatrolAreaValue::UNSET;
+        }
+        else
+        {
+            _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
+        }
         game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
     }
+}
+
+void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+{
+    if (widgetIndex != WIDX_PATROL)
+        return;
+
+    if (network_get_mode() != NETWORK_MODE_NONE)
+        return;
+
+    // This works only for singleplayer if the game_do_command can not be prevented
+    // to send packets more often than patrol area is updated.
+
+    if (_staffPatrolAreaPaintValue == PatrolAreaValue::NONE)
+        return; // Do nothing if we do not have a paintvalue(this should never happen)
+
+    int32_t dest_x, dest_y;
+    footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, nullptr, nullptr);
+
+    if (dest_x == LOCATION_NULL)
+        return;
+
+    rct_sprite* sprite = try_get_sprite(w->number);
+    if (sprite == nullptr || sprite->IsPeep() == false)
+        return;
+
+    rct_peep& peep = sprite->peep;
+    if (peep.type != PEEP_TYPE_STAFF)
+        return;
+
+    bool patrolAreaValue = staff_is_patrol_area_set(peep.staff_id, dest_x, dest_y);
+    if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue == true)
+        return; // Since area is already the value we want, skip...
+    if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && patrolAreaValue == false)
+        return; // Since area is already the value we want, skip...
+
+    game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
+}
+
+void window_staff_overview_tool_up(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
+{
+    if (widgetIndex != WIDX_PATROL)
+        return;
+
+    _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
 }
 
 /**
