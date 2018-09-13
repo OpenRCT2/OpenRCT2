@@ -142,8 +142,8 @@ void jumping_fountain_create(int32_t type, int32_t x, int32_t y, int32_t z, int3
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
         sprite_move(x, y, z, (rct_sprite*)jumpingFountain);
-        jumpingFountain->misc_identifier = type == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
-                                                                              : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
+        jumpingFountain->type = type == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
+                                                                   : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
         jumpingFountain->num_ticks_alive = 0;
         jumpingFountain->frame = 0;
     }
@@ -164,7 +164,7 @@ void jumping_fountain_update(rct_jumping_fountain* jumpingFountain)
     invalidate_sprite_0((rct_sprite*)jumpingFountain);
     jumpingFountain->frame++;
 
-    switch (jumpingFountain->misc_identifier)
+    switch (jumpingFountain->type)
     {
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
             if (jumpingFountain->frame == 11 && (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::FAST))
@@ -192,8 +192,8 @@ void jumping_fountain_update(rct_jumping_fountain* jumpingFountain)
 
 static int32_t jumping_fountain_get_type(const rct_jumping_fountain* jumpingFountain)
 {
-    int32_t type = jumpingFountain->misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ? JUMPING_FOUNTAIN_TYPE_SNOW
-                                                                                         : JUMPING_FOUNTAIN_TYPE_WATER;
+    int32_t type = jumpingFountain->type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ? JUMPING_FOUNTAIN_TYPE_SNOW
+                                                                              : JUMPING_FOUNTAIN_TYPE_WATER;
     return type;
 }
 

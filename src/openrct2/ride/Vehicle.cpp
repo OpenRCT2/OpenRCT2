@@ -834,7 +834,7 @@ rct_vehicle* try_get_vehicle(uint16_t spriteIndex)
     rct_sprite* sprite = try_get_sprite(spriteIndex);
     if (sprite == nullptr)
         return nullptr;
-    if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
+    if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
         return nullptr;
     return &sprite->vehicle;
 }
@@ -7235,7 +7235,7 @@ static void steam_particle_create(int16_t x, int16_t y, int16_t z)
         steam->sprite_height_negative = 18;
         steam->sprite_height_positive = 16;
         steam->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        steam->misc_identifier = SPRITE_MISC_STEAM_PARTICLE;
+        steam->type = SPRITE_MISC_STEAM_PARTICLE;
         steam->frame = 256;
         steam->time_to_move = 0;
         sprite_move(x, y, z, (rct_sprite*)steam);

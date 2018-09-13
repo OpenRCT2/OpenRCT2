@@ -15,7 +15,7 @@
 
 bool rct_sprite::IsBalloon()
 {
-    return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->balloon.misc_identifier == SPRITE_MISC_BALLOON;
+    return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->balloon.type == SPRITE_MISC_BALLOON;
 }
 
 rct_balloon* rct_sprite::AsBalloon()
@@ -111,7 +111,7 @@ void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopp
         sprite->balloon.sprite_height_positive = 11;
         sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
         sprite_move(x, y, z, sprite);
-        sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
+        sprite->balloon.type = SPRITE_MISC_BALLOON;
         sprite->balloon.time_to_move = 0;
         sprite->balloon.frame = 0;
         sprite->balloon.colour = colour;

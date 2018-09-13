@@ -1160,9 +1160,9 @@ void reset_all_sprite_quadrant_placements()
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
         rct_sprite* spr = get_sprite(i);
-        if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
         {
-            sprite_move(spr->unknown.x, spr->unknown.y, spr->unknown.z, spr);
+            sprite_move(spr->generic.x, spr->generic.y, spr->generic.z, spr);
         }
     }
 }

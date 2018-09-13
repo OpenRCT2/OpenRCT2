@@ -76,7 +76,7 @@ static constexpr const uint8_t * DuckAnimations[] =
 
 bool rct_sprite::IsDuck()
 {
-    return this->duck.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->duck.misc_identifier == SPRITE_MISC_DUCK;
+    return this->duck.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->duck.type == SPRITE_MISC_DUCK;
 }
 
 rct_duck* rct_sprite::AsDuck()
@@ -313,7 +313,7 @@ void create_duck(int32_t targetX, int32_t targetY)
     if (sprite != nullptr)
     {
         sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->duck.misc_identifier = SPRITE_MISC_DUCK;
+        sprite->duck.type = SPRITE_MISC_DUCK;
         sprite->duck.sprite_width = 9;
         sprite->duck.sprite_height_negative = 12;
         sprite->duck.sprite_height_positive = 9;
@@ -378,9 +378,9 @@ void duck_remove_all()
     for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL;
          spriteIndex = nextSpriteIndex)
     {
-        rct_unk_sprite* sprite = &(get_sprite(spriteIndex)->unknown);
+        rct_sprite_generic* sprite = &(get_sprite(spriteIndex)->generic);
         nextSpriteIndex = sprite->next;
-        if (sprite->misc_identifier == SPRITE_MISC_DUCK)
+        if (sprite->type == SPRITE_MISC_DUCK)
         {
             sprite_remove((rct_sprite*)sprite);
         }

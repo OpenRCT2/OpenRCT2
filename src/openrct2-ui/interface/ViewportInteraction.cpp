@@ -71,7 +71,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
     switch (info->type)
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            switch (sprite->unknown.sprite_identifier)
+            switch (sprite->generic.sprite_identifier)
             {
                 case SPRITE_IDENTIFIER_VEHICLE:
                     vehicle = &(sprite->vehicle);
@@ -135,7 +135,7 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
     switch (viewport_interaction_get_item_left(x, y, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            switch (info.sprite->unknown.sprite_identifier)
+            switch (info.sprite->generic.sprite_identifier)
             {
                 case SPRITE_IDENTIFIER_VEHICLE:
                 {
@@ -154,7 +154,7 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
                 case SPRITE_IDENTIFIER_MISC:
                     if (game_is_not_paused())
                     {
-                        switch (info.sprite->unknown.misc_identifier)
+                        switch (info.sprite->generic.type)
                         {
                             case SPRITE_MISC_BALLOON:
                                 game_do_command(
@@ -420,7 +420,7 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
             return 0;
 
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            if (info.sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            if (info.sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
                 ride_construct(info.sprite->vehicle.ride);
             break;
         case VIEWPORT_INTERACTION_ITEM_RIDE:

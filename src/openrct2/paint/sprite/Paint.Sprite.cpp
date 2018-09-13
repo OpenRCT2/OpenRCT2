@@ -49,13 +49,13 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
     const bool highlightPathIssues = (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
     for (const rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL;
-         sprite_idx = spr->unknown.next_in_quadrant)
+         sprite_idx = spr->generic.next_in_quadrant)
     {
         spr = get_sprite(sprite_idx);
 
         if (highlightPathIssues)
         {
-            if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (spr->generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 rct_peep* peep = (rct_peep*)spr;
                 if (!(peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_HANDYMAN))
@@ -63,7 +63,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                     continue;
                 }
             }
-            else if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_LITTER)
+            else if (spr->generic.sprite_identifier != SPRITE_IDENTIFIER_LITTER)
             {
                 continue;
             }
@@ -75,15 +75,15 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         // height of the slope element, and consequently clipped.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW))
         {
-            if (spr->unknown.z > (gClipHeight * 8))
+            if (spr->generic.z > (gClipHeight * 8))
             {
                 continue;
             }
-            if (spr->unknown.x / 32 < gClipSelectionA.x || spr->unknown.x / 32 > gClipSelectionB.x)
+            if (spr->generic.x / 32 < gClipSelectionA.x || spr->generic.x / 32 > gClipSelectionB.x)
             {
                 continue;
             }
-            if (spr->unknown.y / 32 < gClipSelectionA.y || spr->unknown.y / 32 > gClipSelectionB.y)
+            if (spr->generic.y / 32 < gClipSelectionA.y || spr->generic.y / 32 > gClipSelectionB.y)
             {
                 continue;
             }
@@ -91,23 +91,23 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
         dpi = session->DPI;
 
-        if (dpi->y + dpi->height <= spr->unknown.sprite_top || spr->unknown.sprite_bottom <= dpi->y
-            || dpi->x + dpi->width <= spr->unknown.sprite_left || spr->unknown.sprite_right <= dpi->x)
+        if (dpi->y + dpi->height <= spr->generic.sprite_top || spr->generic.sprite_bottom <= dpi->y
+            || dpi->x + dpi->width <= spr->generic.sprite_left || spr->generic.sprite_right <= dpi->x)
         {
             continue;
         }
 
         int32_t image_direction = session->CurrentRotation;
         image_direction <<= 3;
-        image_direction += spr->unknown.sprite_direction;
+        image_direction += spr->generic.sprite_direction;
         image_direction &= 0x1F;
 
         session->CurrentlyDrawnItem = spr;
-        session->SpritePosition.x = spr->unknown.x;
-        session->SpritePosition.y = spr->unknown.y;
+        session->SpritePosition.x = spr->generic.x;
+        session->SpritePosition.y = spr->generic.y;
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
 
-        switch (spr->unknown.sprite_identifier)
+        switch (spr->generic.sprite_identifier)
         {
             case SPRITE_IDENTIFIER_VEHICLE:
                 vehicle_paint(session, (rct_vehicle*)spr, image_direction);

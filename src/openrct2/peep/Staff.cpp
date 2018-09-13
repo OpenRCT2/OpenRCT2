@@ -467,7 +467,7 @@ void game_command_set_staff_patrol(
             return;
         }
         rct_sprite* sprite = get_sprite(sprite_id);
-        if (sprite->unknown.sprite_identifier != SPRITE_IDENTIFIER_PEEP || sprite->peep.type != PEEP_TYPE_STAFF)
+        if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_PEEP || sprite->peep.type != PEEP_TYPE_STAFF)
         {
             *ebx = MONEY32_UNDEFINED;
             log_warning("Invalid type of sprite %u for game command", sprite_id);
@@ -2292,11 +2292,11 @@ static int32_t peep_update_patrolling_find_sweeping(rct_peep* peep)
 
     uint16_t sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
 
-    for (rct_sprite* sprite = nullptr; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant)
+    for (rct_sprite* sprite = nullptr; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->generic.next_in_quadrant)
     {
         sprite = get_sprite(sprite_id);
 
-        if (sprite->unknown.linked_list_type_offset != SPRITE_LIST_LITTER * 2)
+        if (sprite->generic.linked_list_type_offset != SPRITE_LIST_LITTER * 2)
             continue;
 
         uint16_t z_diff = abs(peep->z - sprite->litter.z);

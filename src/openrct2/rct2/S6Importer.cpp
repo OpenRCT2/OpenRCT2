@@ -828,9 +828,9 @@ public:
     {
         // The number of riders might have overflown or underflown. Re-calculate the value.
         uint16_t numRiders = 0;
-        for (const rct_sprite sprite : _s6.sprites)
+        for (const rct_sprite& sprite : _s6.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (sprite.generic.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 if (sprite.peep.current_ride == rideIndex
                     && (sprite.peep.state == PEEP_STATE_ON_RIDE || sprite.peep.state == PEEP_STATE_ENTERING_RIDE))

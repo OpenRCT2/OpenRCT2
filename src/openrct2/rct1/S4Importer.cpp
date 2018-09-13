@@ -1322,7 +1322,7 @@ private:
         for (size_t i = 0; i < MAX_SPRITES; i++)
         {
             rct_sprite* sprite = get_sprite(i);
-            if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            if (sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
                 rct_vehicle* vehicle = (rct_vehicle*)sprite;
                 FixVehiclePeepLinks(vehicle, spriteIndexMap);
@@ -1650,11 +1650,11 @@ private:
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                rct_unk_sprite* dst = (rct_unk_sprite*)create_sprite(SPRITE_IDENTIFIER_MISC);
+                rct_sprite_generic* dst = (rct_sprite_generic*)create_sprite(SPRITE_IDENTIFIER_MISC);
                 move_sprite_to_list((rct_sprite*)dst, SPRITE_LIST_MISC * 2);
 
                 dst->sprite_identifier = src->sprite_identifier;
-                dst->misc_identifier = src->misc_identifier;
+                dst->type = src->misc_identifier;
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;

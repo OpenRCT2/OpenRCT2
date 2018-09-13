@@ -29,7 +29,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int3
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
         sprite_move(x, y, z, (rct_sprite*)sprite);
-        sprite->misc_identifier = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
+        sprite->type = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 
         sprite->frame = (scenario_rand() & 0xFF) * 12;
         sprite->time_to_live = (scenario_rand() & 0x7F) + 140;
@@ -114,7 +114,7 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle)
  */
 void crash_splash_create(int32_t x, int32_t y, int32_t z)
 {
-    rct_unk_sprite* sprite = (rct_unk_sprite*)create_sprite(2);
+    rct_sprite_generic* sprite = (rct_sprite_generic*)create_sprite(2);
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;
@@ -122,7 +122,7 @@ void crash_splash_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_positive = 16;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
         sprite_move(x, y, z + 3, (rct_sprite*)sprite);
-        sprite->misc_identifier = SPRITE_MISC_CRASH_SPLASH;
+        sprite->type = SPRITE_MISC_CRASH_SPLASH;
         sprite->frame = 0;
     }
 }

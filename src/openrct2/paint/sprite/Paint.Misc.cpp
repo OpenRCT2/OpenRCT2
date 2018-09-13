@@ -32,12 +32,12 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
 {
     rct_drawpixelinfo* dpi = session->DPI;
 
-    switch (misc->steam_particle.misc_identifier)
+    switch (misc->steam_particle.type)
     {
         case SPRITE_MISC_STEAM_PARTICLE: // 0
         {
             uint32_t imageId = 22637 + (misc->steam_particle.frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->generic.z);
             break;
         }
 
@@ -68,14 +68,14 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
             uint32_t imageId = vehicle_particle_base_sprites[particle.crashed_sprite_base] + particle.frame / 256;
             imageId = imageId | (particle.colour[0] << 19) | (particle.colour[1] << 24) | IMAGE_TYPE_REMAP
                 | IMAGE_TYPE_REMAP_2_PLUS;
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->generic.z);
             break;
         }
 
         case SPRITE_MISC_EXPLOSION_CLOUD: // 3
         {
-            uint32_t imageId = 22878 + (misc->unknown.frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z);
+            uint32_t imageId = 22878 + (misc->generic.frame / 256);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->generic.z);
             break;
         }
 
@@ -90,8 +90,8 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
         case SPRITE_MISC_EXPLOSION_FLARE: // 5
         {
             // Like a flare
-            uint32_t imageId = 22896 + (misc->unknown.frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z);
+            uint32_t imageId = 22896 + (misc->generic.frame / 256);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->generic.z);
             break;
         }
 
@@ -121,7 +121,7 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
                 al = al ^ 1;
             }
 
-            uint32_t baseImageId = (jumpingFountain.misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
+            uint32_t baseImageId = (jumpingFountain.type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
             uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain.frame;
             if (al & 1)
             {
