@@ -490,7 +490,7 @@ private:
                     break;
                 }
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                    AddEntryForSmallScenery(tileElement->properties.scenery.type);
+                    AddEntryForSmallScenery(tileElement->AsSmallScenery()->GetEntryIndex());
                     break;
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                     AddEntryForLargeScenery(scenery_large_get_type(tileElement));
@@ -2451,7 +2451,7 @@ private:
                         scenery_small_set_primary_colour(tileElement, colour);
 
                         // Copied from [rct2: 0x006A2956]
-                        switch (tileElement->properties.scenery.type)
+                        switch (tileElement->AsSmallScenery()->GetEntryIndex())
                         {
                             case RCT1_SCENERY_GEOMETRIC_SCULPTURE_1:
                             case RCT1_SCENERY_GEOMETRIC_SCULPTURE_2:
@@ -2729,7 +2729,7 @@ private:
             switch (tileElement->GetType())
             {
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                    tileElement->properties.scenery.type = _smallSceneryTypeToEntryMap[tileElement->properties.scenery.type];
+                    tileElement->properties.scenery.type = _smallSceneryTypeToEntryMap[tileElement->AsSmallScenery()->GetEntryIndex()];
                     break;
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {

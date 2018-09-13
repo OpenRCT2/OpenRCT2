@@ -78,7 +78,7 @@ static money32 SmallSceneryRemove(
             continue;
         if (tileElement->base_height != baseHeight)
             continue;
-        if (tileElement->properties.scenery.type != sceneryType)
+        if (tileElement->AsSmallScenery()->GetEntryIndex() != sceneryType)
             continue;
         if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
             continue;
@@ -446,7 +446,7 @@ int32_t map_place_scenery_clear_func(rct_tile_element** tile_element, int32_t x,
     if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
         return 1;
 
-    rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
+    rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->AsSmallScenery()->GetEntryIndex());
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
@@ -480,7 +480,7 @@ int32_t map_place_non_scenery_clear_func(rct_tile_element** tile_element, int32_
     if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
 
-    rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
+    rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->AsSmallScenery()->GetEntryIndex());
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
     {
@@ -554,4 +554,14 @@ void scenery_small_set_supports_needed(rct_tile_element* tileElement)
 bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags)
 {
     return (bool)(sceneryEntry->small_scenery.flags & flags);
+}
+
+uint8_t SmallSceneryElement::GetSceneryQuadrant() const
+{
+    return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+}
+
+uint8_t SmallSceneryElement::GetEntryIndex() const
+{
+    return this->type;
 }

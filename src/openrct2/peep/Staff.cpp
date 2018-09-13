@@ -1738,7 +1738,7 @@ void rct_peep::UpdateWatering()
             if (abs(((int32_t)next_z) - tile_element->base_height) > 4)
                 continue;
 
-            rct_scenery_entry* scenery_entry = get_small_scenery_entry(tile_element->properties.scenery.type);
+            rct_scenery_entry* scenery_entry = get_small_scenery_entry(tile_element->AsSmallScenery()->GetEntryIndex());
 
             if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
                 continue;
@@ -2152,7 +2152,7 @@ static int32_t peep_update_patrolling_find_watering(rct_peep* peep)
                 continue;
             }
 
-            rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tile_element->properties.scenery.type);
+            rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tile_element->AsSmallScenery()->GetEntryIndex());
 
             if (sceneryEntry == nullptr || !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
             {

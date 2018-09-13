@@ -1877,7 +1877,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, COLOUR_DARK_GREEN, x, y);
 
                 // Quadrant value
-                const rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
+                const rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
                 if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
                 {
                     int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
@@ -1890,7 +1890,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 }
 
                 // Scenery ID
-                int16_t idx = tileElement->properties.scenery.type;
+                int16_t idx = tileElement->AsSmallScenery()->GetEntryIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, &idx, COLOUR_DARK_GREEN, x, y + 22);
 
                 // Properties
@@ -2148,7 +2148,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_OBJECT_SELECTION_SMALL_SCENERY),
-                    language_get_string(get_small_scenery_entry(tileElement->properties.scenery.type)->name));
+                    language_get_string(get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex())->name));
                 typeName = buffer;
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -2157,7 +2157,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             case TILE_ELEMENT_TYPE_WALL:
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_TILE_INSPECTOR_WALL),
-                    language_get_string(get_wall_entry(tileElement->properties.scenery.type)->name));
+                    language_get_string(get_wall_entry(tileElement->AsSmallScenery()->GetEntryIndex())->name));
                 typeName = buffer;
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:

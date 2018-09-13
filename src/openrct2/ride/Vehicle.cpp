@@ -1842,7 +1842,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
             if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
-            rct_scenery_entry* scenery = get_small_scenery_entry(tile_element->properties.scenery.type);
+            rct_scenery_entry* scenery = get_small_scenery_entry(tile_element->AsSmallScenery()->GetEntryIndex());
             if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
             {
                 cover_found = true;

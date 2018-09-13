@@ -291,7 +291,7 @@ static void track_design_save_push_tile_element_desc(
 
 static void track_design_save_add_scenery(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t entryType = tileElement->properties.scenery.type;
+    int32_t entryType = tileElement->AsSmallScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8_t flags = 0;
@@ -485,7 +485,7 @@ static void track_design_save_pop_tile_element_desc(
 
 static void track_design_save_remove_scenery(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t entryType = tileElement->properties.scenery.type;
+    int32_t entryType = tileElement->AsSmallScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8_t flags = 0;

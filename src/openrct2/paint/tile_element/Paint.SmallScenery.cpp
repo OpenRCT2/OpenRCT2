@@ -59,7 +59,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     }
     uint32_t dword_F64EB0 = baseImageid;
 
-    rct_scenery_entry* entry = get_small_scenery_entry(tileElement->properties.scenery.type);
+    rct_scenery_entry* entry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
 
     if (entry == nullptr)
     {

@@ -118,7 +118,7 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
     rct_tile_element* tileElementAbove;
     rct_scenery_entry* sceneryEntry;
 
-    sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
+    sceneryEntry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
     if (sceneryEntry == nullptr)
     {
         return;
@@ -156,7 +156,7 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
                 scenery_increase_age(x, y, tileElement);
                 return;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                sceneryEntry = get_small_scenery_entry(tileElementAbove->properties.scenery.type);
+                sceneryEntry = get_small_scenery_entry(tileElementAbove->AsSmallScenery()->GetEntryIndex());
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
                     scenery_increase_age(x, y, tileElement);
@@ -183,7 +183,7 @@ void scenery_increase_age(int32_t x, int32_t y, rct_tile_element* tileElement)
         // Only invalidate tiles when scenery crosses the withering threshholds, and can be withered.
         if (newAge == SCENERY_WITHER_AGE_THRESHOLD_1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
         {
-            rct_scenery_entry* entry = get_small_scenery_entry(tileElement->properties.scenery.type);
+            rct_scenery_entry* entry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
 
             if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
             {

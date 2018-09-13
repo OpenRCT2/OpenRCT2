@@ -224,8 +224,12 @@ assert_struct_size(TrackElement, 8);
 
 struct SmallSceneryElement : TileElementBase
 {
-    rct_tile_element_scenery_properties temp;
+    uint8_t type;     // 4
+    uint8_t age;      // 5
+    uint8_t colour_1; // 6
+    uint8_t colour_2; // 7
 public:
+    uint8_t GetEntryIndex() const;
     uint8_t GetSceneryQuadrant() const;
 };
 assert_struct_size(SmallSceneryElement, 8);
