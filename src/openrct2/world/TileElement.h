@@ -230,8 +230,11 @@ struct SmallSceneryElement : TileElementBase
     uint8_t colour_2;   // 7
 public:
     uint8_t GetEntryIndex() const;
-    void SetEntryIndex(uint8_t entryIndex);
+    void SetEntryIndex(uint8_t newIndex);
+    uint8_t GetAge() const;
+    void SetAge(uint8_t newAge);
     uint8_t GetSceneryQuadrant() const;
+    void IncreaseAge(int32_t x, int32_t y);
 };
 assert_struct_size(SmallSceneryElement, 8);
 

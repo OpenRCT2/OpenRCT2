@@ -247,8 +247,9 @@ static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
     tileElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
 
     tileElement->type = TILE_ELEMENT_TYPE_SMALL_SCENERY | (util_rand() & 3);
-    tileElement->AsSmallScenery()->SetEntryIndex(type);
-    tileElement->properties.scenery.age = 0;
+    SmallSceneryElement * sceneryElement = tileElement->AsSmallScenery();
+    sceneryElement->SetEntryIndex(type);
+    sceneryElement->SetAge(0);
     scenery_small_set_primary_colour(tileElement, COLOUR_YELLOW);
 }
 

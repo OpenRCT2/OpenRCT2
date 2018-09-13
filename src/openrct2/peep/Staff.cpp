@@ -1743,7 +1743,7 @@ void rct_peep::UpdateWatering()
             if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
                 continue;
 
-            tile_element->properties.scenery.age = 0;
+            tile_element->AsSmallScenery()->SetAge(0);
             map_invalidate_tile_zoom0(actionX, actionY, tile_element->base_height * 8, tile_element->clearance_height * 8);
             staff_gardens_watered++;
             window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -2159,14 +2159,14 @@ static int32_t peep_update_patrolling_find_watering(rct_peep* peep)
                 continue;
             }
 
-            if (tile_element->properties.scenery.age < SCENERY_WITHER_AGE_THRESHOLD_2)
+            if (tile_element->AsSmallScenery()->GetAge() < SCENERY_WITHER_AGE_THRESHOLD_2)
             {
                 if (chosen_position >= 4)
                 {
                     continue;
                 }
 
-                if (tile_element->properties.scenery.age < SCENERY_WITHER_AGE_THRESHOLD_1)
+                if (tile_element->AsSmallScenery()->GetAge() < SCENERY_WITHER_AGE_THRESHOLD_1)
                 {
                     continue;
                 }

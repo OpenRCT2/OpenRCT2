@@ -1873,7 +1873,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Age
-                int16_t age = tileElement->properties.scenery.age;
+                int16_t age = tileElement->AsSmallScenery()->GetAge();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, COLOUR_DARK_GREEN, x, y);
 
                 // Quadrant value

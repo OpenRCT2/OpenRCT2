@@ -67,8 +67,6 @@ money32 gClearSceneryCost;
 // rct2: 0x009A3E74
 const LocationXY8 ScenerySubTileOffsets[] = { { 7, 7 }, { 7, 23 }, { 23, 23 }, { 23, 7 } };
 
-void scenery_increase_age(int32_t x, int32_t y, rct_tile_element* tileElement);
-
 void scenery_update_tile(int32_t x, int32_t y)
 {
     rct_tile_element* tileElement;
@@ -130,9 +128,9 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
     }
 
     if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED)
-        || (gClimateCurrent.Weather < WEATHER_RAIN) || (tileElement->properties.scenery.age < 5))
+        || (gClimateCurrent.Weather < WEATHER_RAIN) || (tileElement->AsSmallScenery()->GetAge() < 5))
     {
-        scenery_increase_age(x, y, tileElement);
+        tileElement->AsSmallScenery()->IncreaseAge(x, y);
         return;
     }
 
@@ -153,13 +151,13 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
             case TILE_ELEMENT_TYPE_ENTRANCE:
             case TILE_ELEMENT_TYPE_PATH:
                 map_invalidate_tile_zoom1(x, y, tileElementAbove->base_height * 8, tileElementAbove->clearance_height * 8);
-                scenery_increase_age(x, y, tileElement);
+                tileElement->AsSmallScenery()->IncreaseAge(x, y);
                 return;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 sceneryEntry = get_small_scenery_entry(tileElementAbove->AsSmallScenery()->GetEntryIndex());
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
-                    scenery_increase_age(x, y, tileElement);
+                    tileElement->AsSmallScenery()->IncreaseAge(x, y);
                     return;
                 }
                 break;
@@ -167,30 +165,8 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
     }
 
     // Reset age / water plant
-    tileElement->properties.scenery.age = 0;
+    tileElement->AsSmallScenery()->SetAge(0);
     map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
-}
-
-void scenery_increase_age(int32_t x, int32_t y, rct_tile_element* tileElement)
-{
-    if (tileElement->flags & SMALL_SCENERY_FLAG_ANIMATED)
-        return;
-
-    if (tileElement->properties.scenery.age < 255)
-    {
-        uint8_t newAge = tileElement->properties.scenery.age++;
-
-        // Only invalidate tiles when scenery crosses the withering threshholds, and can be withered.
-        if (newAge == SCENERY_WITHER_AGE_THRESHOLD_1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
-        {
-            rct_scenery_entry* entry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
-
-            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
-            {
-                map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
-            }
-        }
-    }
 }
 
 /**

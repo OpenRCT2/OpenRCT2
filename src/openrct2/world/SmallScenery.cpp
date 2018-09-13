@@ -384,8 +384,9 @@ static money32 SmallSceneryPlace(
     type |= TILE_ELEMENT_TYPE_SMALL_SCENERY;
     type |= rotation;
     newElement->type = type;
-    newElement->AsSmallScenery()->SetEntryIndex(sceneryType);
-    newElement->properties.scenery.age = 0;
+    SmallSceneryElement * sceneryElement = newElement->AsSmallScenery();
+    sceneryElement->SetEntryIndex(sceneryType);
+    sceneryElement->SetAge(0);
     scenery_small_set_primary_colour(newElement, primaryColour);
     scenery_small_set_secondary_colour(newElement, secondaryColour);
     newElement->clearance_height = newElement->base_height + ((sceneryEntry->small_scenery.height + 7) / 8);
@@ -569,4 +570,36 @@ uint8_t SmallSceneryElement::GetEntryIndex() const
 void SmallSceneryElement::SetEntryIndex(uint8_t newIndex)
 {
     this->entryIndex = newIndex;
+}
+
+uint8_t SmallSceneryElement::GetAge() const
+{
+    return this->age;
+}
+
+void SmallSceneryElement::SetAge(uint8_t newAge)
+{
+    this->age = newAge;
+}
+
+void SmallSceneryElement::IncreaseAge(int32_t x, int32_t y)
+{
+    if (flags & SMALL_SCENERY_FLAG_ANIMATED)
+        return;
+
+    if (age < 255)
+    {
+        uint8_t newAge = age++;
+
+        // Only invalidate tiles when scenery crosses the withering threshholds, and can be withered.
+        if (newAge == SCENERY_WITHER_AGE_THRESHOLD_1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
+        {
+            rct_scenery_entry* entry = get_small_scenery_entry(GetEntryIndex());
+
+            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
+            {
+                map_invalidate_tile_zoom1(x, y, base_height * 8, clearance_height * 8);
+            }
+        }
+    }
 }
