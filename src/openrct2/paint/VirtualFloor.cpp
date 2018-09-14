@@ -272,7 +272,7 @@ static void virtual_floor_get_tile_properties(
 
         if (elementType == TILE_ELEMENT_TYPE_WALL || elementType == TILE_ELEMENT_TYPE_BANNER)
         {
-            int32_t direction = tile_element_get_direction(tileElement);
+            int32_t direction = tileElement->GetDirection();
             *outOccupiedEdges |= 1 << direction;
             continue;
         }

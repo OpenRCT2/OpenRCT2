@@ -279,12 +279,12 @@ static money32 RideEntranceExitPlace(
             if (isExit)
             {
                 ride_set_exit_location(
-                    ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tile_element_get_direction(tileElement) });
+                    ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
             }
             else
             {
                 ride_set_entrance_location(
-                    ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tile_element_get_direction(tileElement) });
+                    ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
                 ride->last_peep_in_queue[stationNum] = SPRITE_INDEX_NULL;
                 ride->queue_length[stationNum] = 0;
 
@@ -546,7 +546,7 @@ void game_command_remove_ride_entrance_or_exit(
  */
 void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t direction = tile_element_get_direction(tileElement);
+    int32_t direction = tileElement->GetDirection();
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
@@ -582,7 +582,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* til
  */
 void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t direction = tile_element_get_direction(tileElement);
+    int32_t direction = tileElement->GetDirection();
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;

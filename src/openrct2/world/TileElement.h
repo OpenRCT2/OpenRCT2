@@ -357,12 +357,8 @@ enum
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
 
-int32_t tile_element_get_direction(const rct_tile_element* element);
-int32_t tile_element_get_direction_with_offset(const rct_tile_element* element, uint8_t offset);
 BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement);
-bool tile_element_is_ghost(const rct_tile_element* element);
 bool tile_element_is_underground(rct_tile_element* tileElement);
-bool tile_element_is_last_for_tile(const rct_tile_element* element);
 
 // ~Oli414: The banner functions should probably be part of banner.
 void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex bannerIndex);

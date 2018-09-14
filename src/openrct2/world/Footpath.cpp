@@ -949,7 +949,7 @@ void footpath_bridge_get_info_from_pos(
         int32_t directions = entrance_get_directions(*tileElement);
         if (directions & 0x0F)
         {
-            int32_t bx = tile_element_get_direction_with_offset(*tileElement, bitscanforward(directions));
+            int32_t bx = (*tileElement)->GetDirectionWithOffset(bitscanforward(directions));
             if (direction != nullptr)
                 *direction = bx;
             return;
@@ -1034,7 +1034,7 @@ bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t dire
             continue;
         if (z1 <= tileElement->base_height)
             continue;
-        if ((tile_element_get_direction(tileElement)) != direction)
+        if ((tileElement->GetDirection()) != direction)
             continue;
 
         return true;
@@ -1376,7 +1376,7 @@ static void loc_6A6D7E(
                         {
                             return;
                         }
-                        uint16_t dx = ((direction - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) ^ 2;
+                        uint16_t dx = ((direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) ^ 2;
                         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
                         {
                             return;
@@ -1391,7 +1391,7 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                     if (z == tileElement->base_height)
                     {
-                        if (entrance_has_direction(tileElement, (direction - tile_element_get_direction(tileElement)) ^ 2))
+                        if (entrance_has_direction(tileElement, (direction - tileElement->GetDirection()) ^ 2))
                         {
                             if (query)
                             {
@@ -1484,7 +1484,7 @@ static void loc_6A6C85(
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        if (!entrance_has_direction(tileElement, direction - tile_element_get_direction(tileElement)))
+        if (!entrance_has_direction(tileElement, direction - tileElement->GetDirection()))
         {
             return;
         }
@@ -1503,7 +1503,7 @@ static void loc_6A6C85(
         {
             return;
         }
-        uint16_t dx = (direction - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK;
+        uint16_t dx = (direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
         {
             return;
@@ -1758,7 +1758,7 @@ void footpath_update_queue_chains()
                 if (tileElement->properties.entrance.ride_index != rideIndex)
                     continue;
 
-                uint8_t direction = tile_element_get_direction_with_offset(tileElement, 2);
+                uint8_t direction = tileElement->GetDirectionWithOffset(2);
                 footpath_chain_ride_queue(rideIndex, i, location.x << 5, location.y << 5, tileElement, direction);
             } while (!(tileElement++)->IsLastForTile());
         }
@@ -2339,7 +2339,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
             if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 footpath_queue_chain_push(tileElement->properties.entrance.ride_index);
-                footpath_chain_ride_queue(255, 0, x, y, tileElement, tile_element_get_direction_with_offset(tileElement, 2));
+                footpath_chain_ride_queue(255, 0, x, y, tileElement, tileElement->GetDirectionWithOffset(2));
             }
             break;
     }
@@ -2479,7 +2479,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct
                     if (FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
                     {
                         uint16_t dx
-                            = ((coords.direction - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK);
+                            = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
                         if (FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))
                         {
                             // Track element has the flags required for the given direction
@@ -2491,7 +2491,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (tileElement->base_height == coords.z)
                 {
-                    if (entrance_has_direction(tileElement, coords.direction - tile_element_get_direction(tileElement)))
+                    if (entrance_has_direction(tileElement, coords.direction - tileElement->GetDirection()))
                     {
                         // Entrance wants to be connected towards the given direction
                         return true;
@@ -2600,7 +2600,7 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
     }
 
     // Only fix corners when needed, to avoid changing corners that have been set for its looks.
-    if (fixCorners && tile_element_is_ghost(tileElement))
+    if (fixCorners && tileElement->IsGhost())
     {
         footpath_fix_corners_around(x / 32, y / 32, tileElement);
     }

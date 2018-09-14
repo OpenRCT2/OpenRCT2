@@ -1104,7 +1104,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
                 int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
                 if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
                 {
-                    gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(tileElement)) & 3;
+                    gWindowSceneryRotation = (get_current_rotation() + tileElement->GetDirection()) & 3;
                     gWindowSceneryPrimaryColour = scenery_large_get_primary_colour(tileElement);
                     gWindowScenerySecondaryColour = scenery_large_get_secondary_colour(tileElement);
                     gWindowSceneryEyedropperEnabled = false;

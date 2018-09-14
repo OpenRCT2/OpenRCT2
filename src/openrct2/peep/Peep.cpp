@@ -2544,7 +2544,7 @@ static void peep_interact_with_entrance(
             return;
         }
 
-        uint8_t entranceDirection = tile_element_get_direction(tile_element);
+        uint8_t entranceDirection = tile_element->GetDirection();
         if (entranceDirection != peep->direction)
         {
             if ((entranceDirection ^ (1 << 1)) != peep->direction)

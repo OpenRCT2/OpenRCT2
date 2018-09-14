@@ -518,7 +518,7 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElem
  */
 void viewport_interaction_remove_park_entrance(rct_tile_element* tileElement, int32_t x, int32_t y)
 {
-    int32_t rotation = tile_element_get_direction_with_offset(tileElement, 1);
+    int32_t rotation = tileElement->GetDirectionWithOffset(1);
     switch (tileElement->properties.entrance.index & 0x0F)
     {
         case 1:
@@ -570,7 +570,7 @@ static void viewport_interaction_remove_large_scenery(rct_tile_element* tileElem
     {
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
-            x, 1 | (tile_element_get_direction(tileElement) << 8), y,
+            x, 1 | (tileElement->GetDirection() << 8), y,
             tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
     }
 }

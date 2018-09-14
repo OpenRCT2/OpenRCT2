@@ -105,11 +105,11 @@ private:
         rct_tile_element* footpathElement = nullptr;
         if (tileElement != nullptr)
         {
-            if (getGhostPath && tile_element_is_ghost(tileElement) == false)
+            if (getGhostPath && !tileElement->IsGhost())
             {
                 while (!(tileElement++)->IsLastForTile())
                 {
-                    if (tileElement->type != TILE_ELEMENT_TYPE_PATH && !tile_element_is_ghost(tileElement))
+                    if (tileElement->type != TILE_ELEMENT_TYPE_PATH && !tileElement->IsGhost())
                     {
                         continue;
                     }
@@ -132,7 +132,7 @@ private:
 
         bool isNotOwnedByPark = (GetFlags() & GAME_COMMAND_FLAG_5);
         bool moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY);
-        bool isGhost = (footpathElement == nullptr) || (tile_element_is_ghost(footpathElement));
+        bool isGhost = (footpathElement == nullptr) || (footpathElement->IsGhost());
 
         if (isNotOwnedByPark || moneyDisabled || isGhost)
         {

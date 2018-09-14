@@ -195,7 +195,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
             {
-                int32_t direction = tile_element_get_direction(tileElement);
+                int32_t direction = tileElement->GetDirection();
                 int32_t x2 = x - CoordsDirectionDelta[direction].x;
                 int32_t y2 = y - CoordsDirectionDelta[direction].y;
 

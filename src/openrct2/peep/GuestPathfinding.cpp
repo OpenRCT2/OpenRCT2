@@ -316,7 +316,7 @@ static uint8_t footpath_element_dest_in_dir(
                 switch (tileElement->properties.entrance.type)
                 {
                     case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                        direction = tile_element_get_direction(tileElement);
+                        direction = tileElement->GetDirection();
                         if (direction == chosenDirection)
                         {
                             *outRideIndex = tileElement->properties.entrance.ride_index;
@@ -324,7 +324,7 @@ static uint8_t footpath_element_dest_in_dir(
                         }
                         break;
                     case ENTRANCE_TYPE_RIDE_EXIT:
-                        direction = tile_element_get_direction(tileElement);
+                        direction = tileElement->GetDirection();
                         if (direction == chosenDirection)
                         {
                             *outRideIndex = tileElement->properties.entrance.ride_index;
@@ -681,7 +681,7 @@ static void peep_pathfind_heuristic_search(
                          * For mechanics heading for the ride entrance
                          * (in the case when the station has no exit),
                          * the goal is the ride entrance tile. */
-                        direction = tile_element_get_direction(tileElement);
+                        direction = tileElement->GetDirection();
                         if (direction == test_edge)
                         {
                             /* The rideIndex will be useful for
@@ -701,7 +701,7 @@ static void peep_pathfind_heuristic_search(
                     case ENTRANCE_TYPE_RIDE_EXIT:
                         /* For mechanics heading for the ride exit, the
                          * goal is the ride exit tile. */
-                        direction = tile_element_get_direction(tileElement);
+                        direction = tileElement->GetDirection();
                         if (direction == test_edge)
                         {
                             searchResult = PATH_SEARCH_RIDE_EXIT;
@@ -1749,7 +1749,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
     if (!found)
         return;
 
-    uint8_t direction = tile_element_get_direction_with_offset(tileElement, 2);
+    uint8_t direction = tileElement->GetDirectionWithOffset(2);
     rct_tile_element* lastPathElement = nullptr;
     rct_tile_element* firstPathElement = nullptr;
 

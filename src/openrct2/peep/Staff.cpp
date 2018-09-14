@@ -1952,7 +1952,7 @@ void rct_peep::UpdateHeadingToInspect()
             }
         }
 
-        direction = tile_element_get_direction(rideEntranceExitElement);
+        direction = rideEntranceExitElement->GetDirection();
 
         int32_t destX = next_x + 16 + word_981D6C[direction].x * 53;
         int32_t destY = next_y + 16 + word_981D6C[direction].y * 53;
@@ -2070,7 +2070,7 @@ void rct_peep::UpdateAnswering()
             }
         }
 
-        direction = tile_element_get_direction(rideEntranceExitElement);
+        direction = rideEntranceExitElement->GetDirection();
 
         int32_t destX = next_x + 16 + word_981D6C[direction].x * 53;
         int32_t destY = next_y + 16 + word_981D6C[direction].y * 53;
@@ -2805,7 +2805,7 @@ bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
             return false;
         }
 
-        int32_t trackDirection = tile_element_get_direction(tileElement);
+        int32_t trackDirection = tileElement->GetDirection();
         CoordsXY offset = _StationFixingOffsets[trackDirection];
 
         stationX += 16 + offset.x;
@@ -2911,7 +2911,7 @@ bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
                 input.y = trackBeginEnd.begin_y;
                 input.element = trackBeginEnd.begin_element;
 
-                stationDirection = tile_element_get_direction(trackBeginEnd.begin_element);
+                stationDirection = trackBeginEnd.begin_element->GetDirection();
                 continue;
             }
 

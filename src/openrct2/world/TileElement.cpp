@@ -59,21 +59,6 @@ uint8_t WallElement::GetSlope() const
     return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
 }
 
-int32_t tile_element_get_direction(const rct_tile_element* element)
-{
-    return element->GetDirection();
-}
-
-int32_t tile_element_get_direction_with_offset(const rct_tile_element* element, uint8_t offset)
-{
-    return element->GetDirectionWithOffset(offset);
-}
-
-bool tile_element_is_ghost(const rct_tile_element* element)
-{
-    return element->IsGhost();
-}
-
 bool tile_element_is_underground(rct_tile_element* tileElement)
 {
     do

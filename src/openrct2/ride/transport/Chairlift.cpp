@@ -139,7 +139,7 @@ static bool chairlift_paint_util_is_first_track(
         return false;
     }
 
-    CoordsXY delta = CoordsDirectionDelta[tile_element_get_direction(tileElement)];
+    CoordsXY delta = CoordsDirectionDelta[tileElement->GetDirection()];
     CoordsXY newPos = {
         static_cast<int32_t>(pos.x - delta.x),
         static_cast<int32_t>(pos.y - delta.y),
@@ -159,7 +159,7 @@ static bool chairlift_paint_util_is_last_track(
         return false;
     }
 
-    CoordsXY delta = CoordsDirectionDelta[tile_element_get_direction(tileElement)];
+    CoordsXY delta = CoordsDirectionDelta[tileElement->GetDirection()];
     CoordsXY newPos = {
         static_cast<int32_t>(pos.x + delta.x),
         static_cast<int32_t>(pos.y + delta.y),

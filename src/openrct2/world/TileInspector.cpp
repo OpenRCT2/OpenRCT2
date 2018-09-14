@@ -237,7 +237,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
             case TILE_ELEMENT_TYPE_ENTRANCE:
             {
                 // Update element rotation
-                newRotation = tile_element_get_direction_with_offset(tileElement, 1);
+                newRotation = tileElement->GetDirectionWithOffset(1);
                 tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
                 tileElement->type |= newRotation;
 
@@ -263,7 +263,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
             case TILE_ELEMENT_TYPE_TRACK:
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             case TILE_ELEMENT_TYPE_WALL:
-                newRotation = tile_element_get_direction_with_offset(tileElement, 1);
+                newRotation = tileElement->GetDirectionWithOffset(1);
                 tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
                 tileElement->type |= newRotation;
                 break;
@@ -677,12 +677,12 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
             case ENTRANCE_TYPE_RIDE_ENTRANCE:
                 ride_set_entrance_location(
                     ride, stationIndex,
-                    { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
+                    { x, y, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
                 break;
             case ENTRANCE_TYPE_RIDE_EXIT:
                 ride_set_exit_location(
                     ride, stationIndex,
-                    { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
+                    { x, y, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
                 break;
         }
 
@@ -741,13 +741,13 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
         int16_t originX = x << 5;
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
-        uint8_t rotation = tile_element_get_direction(trackElement);
+        uint8_t rotation = trackElement->GetDirection();
         uint8_t rideIndex = track_element_get_ride_index(trackElement);
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += tile_element_get_track_sequence(trackElement);
 
-        uint8_t originDirection = tile_element_get_direction(trackElement);
+        uint8_t originDirection = trackElement->GetDirection();
         switch (originDirection)
         {
             case 0:
@@ -809,7 +809,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((tile_element_get_direction(tileElement)) != rotation)
+                if ((tileElement->GetDirection()) != rotation)
                     continue;
 
                 if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
@@ -874,13 +874,13 @@ int32_t tile_inspector_track_set_chain(
         int16_t originX = x << 5;
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
-        uint8_t rotation = tile_element_get_direction(trackElement);
+        uint8_t rotation = trackElement->GetDirection();
         uint8_t rideIndex = track_element_get_ride_index(trackElement);
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += tile_element_get_track_sequence(trackElement);
 
-        uint8_t originDirection = tile_element_get_direction(trackElement);
+        uint8_t originDirection = trackElement->GetDirection();
         switch (originDirection)
         {
             case 0:
@@ -942,7 +942,7 @@ int32_t tile_inspector_track_set_chain(
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((tile_element_get_direction(tileElement)) != rotation)
+                if ((tileElement->GetDirection()) != rotation)
                     continue;
 
                 if (tile_element_get_track_sequence(tileElement) != trackBlock->index)

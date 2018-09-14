@@ -164,16 +164,6 @@ uint8_t TileElementBase::GetType() const
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
-int tile_element_get_direction(const rct_tile_element* element)
-{
-    return element->type & TILE_ELEMENT_DIRECTION_MASK;
-}
-
-int tile_element_get_direction_with_offset(const rct_tile_element* element, uint8_t offset)
-{
-    return ((element->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
-}
-
 rct_tile_element* map_get_first_element_at(int x, int y)
 {
     if (x < 0 || y < 0 || x > 255 || y > 255)

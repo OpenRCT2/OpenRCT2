@@ -2714,7 +2714,7 @@ private:
             gParkEntrances[entranceIndex].x = it.x * 32;
             gParkEntrances[entranceIndex].y = it.y * 32;
             gParkEntrances[entranceIndex].z = element->base_height * 8;
-            gParkEntrances[entranceIndex].direction = tile_element_get_direction(element);
+            gParkEntrances[entranceIndex].direction = element->GetDirection();
             entranceIndex++;
         }
     }

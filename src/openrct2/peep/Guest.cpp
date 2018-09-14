@@ -3463,7 +3463,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(rct_peep* peep, Ride* r
 
     rct_tile_element* tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
-    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
+    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
     peep->var_37 = (entrance_loc.direction << 2) | (direction_track << 4);
 
@@ -3519,7 +3519,7 @@ static void peep_update_ride_leave_entrance_waypoints(rct_peep* peep, Ride* ride
 
     rct_tile_element* tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
-    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element_get_direction(tile_element));
+    uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
     auto vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
     auto ride_entry = get_ride_entry(vehicle->ride_subtype);
@@ -4125,7 +4125,7 @@ void rct_peep::UpdateRideLeaveVehicle()
 
     rct_tile_element* trackElement = ride_get_station_start_track_element(ride, current_ride_station);
 
-    uint8_t station_direction = (trackElement == nullptr ? 0 : tile_element_get_direction(trackElement));
+    uint8_t station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
 
     vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 
@@ -6187,7 +6187,7 @@ static bool peep_should_watch_ride(rct_tile_element* tileElement)
     // as that may lead to a desync.
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
-        if (tile_element_is_ghost(tileElement))
+        if (tileElement->IsGhost())
             return false;
     }
 
@@ -6292,12 +6292,12 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tile_element_get_direction(tileElement) != edge)
+        if (tileElement->GetDirection() != edge)
             continue;
         auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6326,12 +6326,12 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tile_element_get_direction_with_offset(tileElement, 2) != edge)
+        if (tileElement->GetDirectionWithOffset(2) != edge)
             continue;
         auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6353,7 +6353,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
 
@@ -6398,7 +6398,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
         if (tileElement->clearance_height + 1 < peep->next_z)
@@ -6439,12 +6439,12 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tile_element_get_direction_with_offset(tileElement, 2) != edge)
+        if (tileElement->GetDirectionWithOffset(2) != edge)
             continue;
         auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6465,7 +6465,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
         if (tileElement->clearance_height + 1 < peep->next_z)
@@ -6509,7 +6509,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
         if (tileElement->clearance_height + 1 < peep->next_z)
@@ -6550,12 +6550,12 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tile_element_get_direction_with_offset(tileElement, 2) != edge)
+        if (tileElement->GetDirectionWithOffset(2) != edge)
             continue;
         auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6576,7 +6576,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
         if (tileElement->clearance_height + 1 < peep->next_z)

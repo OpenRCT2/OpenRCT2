@@ -933,7 +933,7 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
-    uint8_t entrance_direction = tile_element_get_direction(tileElement);
+    uint8_t entrance_direction = tileElement->GetDirection();
     maze->direction = entrance_direction;
     maze->type = 8;
     maze->x = (int8_t)((x - startX) / 32);
@@ -963,7 +963,7 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
-    uint8_t exit_direction = tile_element_get_direction(tileElement);
+    uint8_t exit_direction = tileElement->GetDirection();
     maze->direction = exit_direction;
     maze->type = 0x80;
     maze->x = (int8_t)((x - startX) / 32);
@@ -1014,7 +1014,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
 
     int32_t z = trackElement.element->base_height * 8;
     uint8_t track_type = track_element_get_type(trackElement.element);
-    uint8_t direction = tile_element_get_direction(trackElement.element);
+    uint8_t direction = trackElement.element->GetDirection();
     _trackSaveDirection = direction;
 
     if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
@@ -1073,7 +1073,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         }
 
         z = trackElement.element->base_height * 8;
-        direction = tile_element_get_direction(trackElement.element);
+        direction = trackElement.element->GetDirection();
         track_type = track_element_get_type(trackElement.element);
 
         if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
@@ -1132,7 +1132,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
             } while (!(tile_element++)->IsLastForTile());
             // Add something that stops this from walking off the end
 
-            uint8_t entrance_direction = tile_element_get_direction(tile_element);
+            uint8_t entrance_direction = tile_element->GetDirection();
             entrance_direction -= _trackSaveDirection;
             entrance_direction &= TILE_ELEMENT_DIRECTION_MASK;
             entrance->direction = entrance_direction;

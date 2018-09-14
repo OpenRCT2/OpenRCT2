@@ -78,7 +78,7 @@ void scenery_update_tile(int32_t x, int32_t y)
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
 
@@ -142,7 +142,7 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
 
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (tile_element_is_ghost(tileElementAbove))
+        if (tileElementAbove->IsGhost())
             continue;
 
         switch (tileElementAbove->GetType())

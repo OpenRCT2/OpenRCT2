@@ -1107,7 +1107,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         int32_t branch = -1;
         if ((tileElement->properties.surface.terrain & 0xE0) == 0)
         {
-            if (tile_element_get_direction(tileElement) == 0)
+            if (tileElement->GetDirection() == 0)
             {
                 if (zoomLevel == 0)
                 {

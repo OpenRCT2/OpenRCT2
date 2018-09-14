@@ -248,7 +248,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->base_height > gClipHeight))
             continue;
 
-        int32_t direction = tile_element_get_direction_with_offset(tile_element, rotation);
+        int32_t direction = tile_element->GetDirectionWithOffset(rotation);
         int32_t height = tile_element->base_height * 8;
 
         // If we are on a new height level, look through elements on the

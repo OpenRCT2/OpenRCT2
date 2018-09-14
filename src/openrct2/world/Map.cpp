@@ -851,7 +851,7 @@ void game_command_remove_large_scenery(
         if (scenery_large_get_sequence(tileElement) != tileIndex)
             continue;
 
-        if ((tile_element_get_direction(tileElement)) != tile_element_direction)
+        if ((tileElement->GetDirection()) != tile_element_direction)
             continue;
 
         // If we are removing ghost elements
@@ -925,7 +925,7 @@ void game_command_remove_large_scenery(
             if (sceneryElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 continue;
 
-            if (tile_element_get_direction(sceneryElement) != tile_element_direction)
+            if (sceneryElement->GetDirection() != tile_element_direction)
                 continue;
 
             if (scenery_large_get_sequence(sceneryElement) != i)
@@ -1129,7 +1129,7 @@ restart_from_beginning:
                 if (clear & (1 << 1))
                 {
                     int32_t eax = x * 32;
-                    int32_t ebx = flags | ((tile_element_get_direction(tileElement)) << 8);
+                    int32_t ebx = flags | ((tileElement->GetDirection()) << 8);
                     int32_t ecx = y * 32;
                     int32_t edx = tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8);
                     int32_t edi = 0, ebp = 0;
@@ -1305,7 +1305,7 @@ static money32 map_change_surface_style(
 
             if (surfaceStyle != 0xFF)
             {
-                uint8_t cur_terrain = (tile_element_get_direction(tileElement) << 3)
+                uint8_t cur_terrain = (tileElement->GetDirection() << 3)
                     | (tileElement->properties.surface.terrain >> 5);
 
                 if (surfaceStyle != cur_terrain)
@@ -1363,7 +1363,7 @@ static money32 map_change_surface_style(
             {
                 if (!(tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK))
                 {
-                    if (!(tile_element_get_direction(tileElement)))
+                    if (!(tileElement->GetDirection()))
                     {
                         if ((tileElement->properties.surface.grass_length & 7) != GRASS_LENGTH_CLEAR_0)
                         {
@@ -3767,7 +3767,7 @@ static void map_update_grass_length(int32_t x, int32_t y, rct_tile_element* tile
             if (tileElementAbove->GetType() == TILE_ELEMENT_TYPE_WALL)
                 continue;
             // Grass should not be affected by ghost elements.
-            if (tile_element_is_ghost(tileElementAbove))
+            if (tileElementAbove->IsGhost())
                 continue;
             if (z0 >= tileElementAbove->clearance_height)
                 continue;
@@ -3976,7 +3976,7 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
         {
-            int32_t rotation = tile_element_get_direction_with_offset(element, 1);
+            int32_t rotation = element->GetDirectionWithOffset(1);
             switch (element->properties.entrance.index & 0x0F)
             {
                 case 1:
@@ -4002,7 +4002,7 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
             game_do_command(
-                x, (GAME_COMMAND_FLAG_APPLY) | (tile_element_get_direction(element) << 8), y,
+                x, (GAME_COMMAND_FLAG_APPLY) | (element->GetDirection() << 8), y,
                 (element->base_height) | (scenery_large_get_sequence(element) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
@@ -4079,7 +4079,7 @@ rct_tile_element* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z,
             continue;
         if (scenery_large_get_sequence(tileElement) != sequence)
             continue;
-        if ((tile_element_get_direction(tileElement)) != direction)
+        if ((tileElement->GetDirection()) != direction)
             continue;
 
         return tileElement;
@@ -4554,7 +4554,7 @@ void game_command_set_sign_style(
         }
 
         if (!sign_set_colour(
-                banner->x * 32, banner->y * 32, tileElement->base_height, tile_element_get_direction(tileElement),
+                banner->x * 32, banner->y * 32, tileElement->base_height, tileElement->GetDirection(),
                 scenery_large_get_sequence(tileElement), mainColour, textColour))
         {
             *ebx = MONEY32_UNDEFINED;
@@ -4872,7 +4872,7 @@ rct_tile_element* map_get_track_element_at_with_direction_from_ride(
             continue;
         if (track_element_get_ride_index(tileElement) != rideIndex)
             continue;
-        if (tile_element_get_direction(tileElement) != direction)
+        if (tileElement->GetDirection() != direction)
             continue;
 
         return tileElement;
@@ -4913,7 +4913,7 @@ rct_tile_element* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (tile_element_get_direction(tileElement) != direction)
+        if (tileElement->GetDirection() != direction)
             continue;
 
         return tileElement;

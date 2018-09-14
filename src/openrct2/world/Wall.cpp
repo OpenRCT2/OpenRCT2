@@ -64,7 +64,7 @@ static bool WallCheckObstructionWithTrack(
 {
     int32_t trackType = track_element_get_type(trackElement);
     int32_t sequence = tile_element_get_track_sequence(trackElement);
-    int32_t direction = (edge - tile_element_get_direction(trackElement)) & TILE_ELEMENT_DIRECTION_MASK;
+    int32_t direction = (edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
     Ride* ride = get_ride(track_element_get_ride_index(trackElement));
 
     if (TrackIsAllowedWallEdges(ride->type, trackType, sequence, direction))
@@ -108,7 +108,7 @@ static bool WallCheckObstructionWithTrack(
         {
             if (!(TrackCoordinates[trackType].rotation_begin & 4))
             {
-                direction = tile_element_get_direction_with_offset(trackElement, 2);
+                direction = trackElement->GetDirectionWithOffset(2);
                 if (direction == edge)
                 {
                     const rct_preview_track* trackBlock = &TrackBlocks[trackType][sequence];
@@ -140,7 +140,7 @@ static bool WallCheckObstructionWithTrack(
         return false;
     }
 
-    direction = tile_element_get_direction(trackElement);
+    direction = trackElement->GetDirection();
     if (direction != edge)
     {
         return false;
@@ -183,7 +183,7 @@ static bool WallCheckObstruction(
             continue;
         if (elementType == TILE_ELEMENT_TYPE_WALL)
         {
-            int32_t direction = tile_element_get_direction(tileElement);
+            int32_t direction = tileElement->GetDirection();
             if (edge == direction)
             {
                 map_obstruction_set_error_text(tileElement);
@@ -212,7 +212,7 @@ static bool WallCheckObstruction(
                 entry = get_large_scenery_entry(entryType);
                 tile = &entry->large_scenery.tiles[sequence];
                 {
-                    int32_t direction = ((edge - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) + 8;
+                    int32_t direction = ((edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                     if (!(tile->flags & (1 << direction)))
                     {
                         map_obstruction_set_error_text(tileElement);
@@ -700,7 +700,7 @@ void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1
         if (tileElement->clearance_height <= z0 || tileElement->base_height >= z1)
             continue;
 
-        if (direction != tile_element_get_direction(tileElement))
+        if (direction != tileElement->GetDirection())
             continue;
 
         tile_element_remove_banner_entry(tileElement);
