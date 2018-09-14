@@ -755,7 +755,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
         switch (interactionType)
         {
             case VIEWPORT_INTERACTION_ITEM_TERRAIN:
-                slope = DefaultPathSlope[tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+                slope = DefaultPathSlope[tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
                 break;
             case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
                 slope = tileElement->properties.path.type
@@ -804,7 +804,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX,
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
     {
-        uint8_t slope = tileElement->properties.surface.slope;
+        uint8_t slope = tileElement->AsSurface()->GetSlope();
         if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             z += 2;
@@ -851,7 +851,7 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
     switch (interactionType)
     {
         case VIEWPORT_INTERACTION_ITEM_TERRAIN:
-            presentType = DefaultPathSlope[tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+            presentType = DefaultPathSlope[tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
             presentType = tileElement->properties.path.type
@@ -897,7 +897,7 @@ static void window_footpath_start_bridge_at_point(int32_t screenX, int32_t scree
     {
         // If we start the path on a slope, the arrow is slightly raised, so we
         // expect the path to be slightly raised as well.
-        uint8_t slope = tileElement->properties.surface.slope;
+        uint8_t slope = tileElement->AsSurface()->GetSlope();
         z = tileElement->base_height;
         if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {

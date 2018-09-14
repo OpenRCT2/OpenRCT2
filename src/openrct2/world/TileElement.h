@@ -10,19 +10,11 @@
 #pragma once
 
 #include "../common.h"
+#include "Location.hpp"
 
 struct rct_scenery_entry;
 
 #pragma pack(push, 1)
-struct rct_tile_element_surface_properties
-{
-    uint8_t slope;        // 4 0xE0 Edge Style, 0x1F Slope
-    uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
-    uint8_t grass_length; // 6
-    uint8_t ownership;    // 7
-};
-assert_struct_size(rct_tile_element_surface_properties, 4);
-
 struct rct_tile_element_path_properties
 {
     uint8_t type;      // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
@@ -96,7 +88,6 @@ assert_struct_size(rct_tile_element_banner_properties, 4);
 
 union rct_tile_element_properties
 {
-    rct_tile_element_surface_properties surface;
     rct_tile_element_path_properties path;
     rct_tile_element_track_properties track;
     rct_tile_element_entrance_properties entrance;
@@ -215,7 +206,33 @@ assert_struct_size(rct_tile_element, 8);
 
 struct SurfaceElement : TileElementBase
 {
-    rct_tile_element_surface_properties temp;
+private:
+    uint8_t slope;        // 4 0xE0 Edge Style, 0x1F Slope
+    uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
+    uint8_t grass_length; // 6
+    uint8_t ownership;    // 7
+public:
+    uint8_t GetSlope() const;
+    void SetSlope(uint8_t newSlope);
+
+    uint32_t GetSurfaceStyle() const;
+    void SetSurfaceStyle(uint32_t newStyle);
+    uint32_t GetEdgeStyle() const;
+    void SetEdgeStyle(uint32_t newStyle);
+
+    uint8_t GetGrassLength() const;
+    void SetGrassLength(uint8_t newLength);
+    void SetGrassLengthAndInvalidate(uint8_t newLength, CoordsXY coords);
+    void UpdateGrassLength(CoordsXY coords);
+
+    uint8_t GetOwnership() const;
+    void SetOwnership(uint8_t newOwnership);
+
+    uint32_t GetWaterHeight() const;
+    void SetWaterHeight(uint32_t newWaterHeight);
+
+    uint8_t GetParkFences() const;
+    void SetParkFences(uint8_t newParkFences);
 };
 assert_struct_size(SurfaceElement, 8);
 

@@ -1304,18 +1304,18 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
 
             rct_tile_element* tile_element = map_get_surface_element_at(mapCoord);
             int16_t map_height = tile_element->base_height * 8;
-            if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+            if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
                 map_height += 16;
-                if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
                     map_height += 16;
                 }
             }
 
-            if (surface_get_water_height(tile_element) > 0)
+            if (tile_element->AsSurface()->GetWaterHeight()  > 0)
             {
-                int16_t water_height = surface_get_water_height(tile_element);
+                int16_t water_height = tile_element->AsSurface()->GetWaterHeight() ;
                 water_height *= 16;
                 if (water_height > map_height)
                 {
@@ -1471,16 +1471,16 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                     }
 
                     int32_t height = tileElement->base_height * 8;
-                    if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                    if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     {
                         height += 16;
-                        if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+                        if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                         {
                             height += 16;
                         }
                     }
 
-                    uint8_t water_height = surface_get_water_height(tileElement) * 16;
+                    uint8_t water_height = tileElement->AsSurface()->GetWaterHeight()  * 16;
                     if (water_height > 0 && water_height > height)
                     {
                         height = water_height;
@@ -2330,10 +2330,11 @@ static void track_design_preview_clear_map()
         tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
         tile_element->base_height = 2;
         tile_element->clearance_height = 0;
-        tile_element->properties.surface.slope = 0;
-        tile_element->properties.surface.terrain = 0;
-        tile_element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-        tile_element->properties.surface.ownership = OWNERSHIP_OWNED;
+        tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+        tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
+        tile_element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+        tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+        tile_element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
     }
     map_update_tile_pointers();
 }

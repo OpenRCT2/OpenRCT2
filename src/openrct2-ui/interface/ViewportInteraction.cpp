@@ -639,7 +639,7 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
     int16_t originalZ = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER)
     {
-        originalZ = surface_get_water_height(myTileElement) << 4;
+        originalZ = myTileElement->AsSurface()->GetWaterHeight()  << 4;
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);

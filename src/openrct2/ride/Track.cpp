@@ -1274,7 +1274,7 @@ static money32 track_place(
         {
             tileElement = map_get_surface_element_at({ x, y });
 
-            uint8_t water_height = surface_get_water_height(tileElement) * 2;
+            uint8_t water_height = tileElement->AsSurface()->GetWaterHeight()  * 2;
             if (water_height == 0)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
@@ -1289,7 +1289,7 @@ static money32 track_place(
             water_height -= 2;
             if (water_height == tileElement->base_height)
             {
-                bh = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
+                bh = tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
                 if (bh == TILE_ELEMENT_SLOPE_W_CORNER_DN || bh == TILE_ELEMENT_SLOPE_S_CORNER_DN
                     || bh == TILE_ELEMENT_SLOPE_E_CORNER_DN || bh == TILE_ELEMENT_SLOPE_N_CORNER_DN)
                 {

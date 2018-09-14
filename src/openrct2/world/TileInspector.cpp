@@ -485,7 +485,7 @@ int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool showF
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         if (!showFences)
-            surfaceelement->properties.surface.ownership &= ~0x0F;
+            surfaceelement->AsSurface()->SetParkFences(0);
         else
             update_park_fences({ x << 5, y << 5 });
 
@@ -512,11 +512,11 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        const uint8_t originalSlope = surfaceElement->properties.surface.slope;
+        const uint8_t originalSlope = surfaceElement->AsSurface()->GetSlope();
         const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
 
-        surfaceElement->properties.surface.slope ^= 1 << cornerIndex;
-        if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        surfaceElement->AsSurface()->SetSlope(surfaceElement->AsSurface()->GetSlope() ^ (1 << cornerIndex));
+        if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }
@@ -526,28 +526,29 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
         }
 
         // All corners are raised
-        if ((surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        if ((surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
-            surfaceElement->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
+            uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
 
             if (diagonal)
             {
                 switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                 {
                     case TILE_ELEMENT_SLOPE_S_CORNER_DN:
-                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                        slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
                         break;
                     case TILE_ELEMENT_SLOPE_W_CORNER_DN:
-                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                        slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
                         break;
                     case TILE_ELEMENT_SLOPE_N_CORNER_DN:
-                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                        slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
                         break;
                     case TILE_ELEMENT_SLOPE_E_CORNER_DN:
-                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                        slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
                         break;
                 }
             }
+            surfaceElement->AsSurface()->SetSlope(slope);
 
             // Update base and clearance heights
             surfaceElement->base_height += 2;
@@ -577,12 +578,12 @@ int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t fla
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        surfaceElement->properties.surface.slope ^= TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
-        if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        surfaceElement->AsSurface()->SetSlope(surfaceElement->AsSurface()->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
+        if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 4;
         }
-        else if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        else if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }

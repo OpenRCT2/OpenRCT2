@@ -260,9 +260,9 @@ static money32 SmallSceneryPlace(
 
     rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
 
-    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surface_get_water_height(surfaceElement) > 0)
+    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->AsSurface()->GetWaterHeight()  > 0)
     {
-        int32_t water_height = (surface_get_water_height(surfaceElement) * 16) - 1;
+        int32_t water_height = (surfaceElement->AsSurface()->GetWaterHeight()  * 16) - 1;
         if (water_height > targetHeight)
         {
             gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
@@ -278,9 +278,9 @@ static money32 SmallSceneryPlace(
             return MONEY32_UNDEFINED;
         }
 
-        if (surfaceElement != nullptr && surface_get_water_height(surfaceElement) > 0)
+        if (surfaceElement != nullptr && surfaceElement->AsSurface()->GetWaterHeight()  > 0)
         {
-            if ((surface_get_water_height(surfaceElement) * 16) > targetHeight)
+            if ((surfaceElement->AsSurface()->GetWaterHeight()  * 16) > targetHeight)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_LAND;
                 return MONEY32_UNDEFINED;
@@ -290,7 +290,7 @@ static money32 SmallSceneryPlace(
 
     if (!gCheatsDisableClearanceChecks && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE))
         && !supportsRequired && !isOnWater && surfaceElement != nullptr
-        && (surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK))
+        && (surfaceElement->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
     {
         gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;
         return MONEY32_UNDEFINED;
@@ -303,7 +303,7 @@ static money32 SmallSceneryPlace(
         {
             if (surfaceElement != nullptr)
             {
-                if (surface_get_water_height(surfaceElement) || (surfaceElement->base_height * 8) != targetHeight)
+                if (surfaceElement->AsSurface()->GetWaterHeight()  || (surfaceElement->base_height * 8) != targetHeight)
                 {
                     gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;
                     return MONEY32_UNDEFINED;

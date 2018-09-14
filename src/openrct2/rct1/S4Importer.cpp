@@ -2410,10 +2410,11 @@ private:
                 nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
                 nextFreeTileElement->base_height = 2;
                 nextFreeTileElement->clearance_height = 0;
-                nextFreeTileElement->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
-                nextFreeTileElement->properties.surface.terrain = 0;
-                nextFreeTileElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-                nextFreeTileElement->properties.surface.ownership = 0;
+                nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+                nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
+                nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+                nextFreeTileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+                nextFreeTileElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
                 *tilePointer++ = nextFreeTileElement++;
             }
         }
@@ -2425,10 +2426,11 @@ private:
             nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
             nextFreeTileElement->base_height = 2;
             nextFreeTileElement->clearance_height = 0;
-            nextFreeTileElement->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
-            nextFreeTileElement->properties.surface.terrain = 0;
-            nextFreeTileElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-            nextFreeTileElement->properties.surface.ownership = 0;
+            nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+            nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
+            nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+            nextFreeTileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+            nextFreeTileElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
             *tilePointer++ = nextFreeTileElement++;
         }
 
@@ -2683,8 +2685,8 @@ private:
             rct_tile_element* element = it.element;
             if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             {
-                surface_set_terrain(element, RCT1::GetTerrain(surface_get_terrain(element)));
-                surface_set_terrain_edge(element, RCT1::GetTerrainEdge(surface_get_terrain_edge(element)));
+                element->AsSurface()->SetSurfaceStyle(RCT1::GetTerrain(element->AsSurface()->GetSurfaceStyle()));
+                element->AsSurface()->SetEdgeStyle(RCT1::GetTerrainEdge(element->AsSurface()->GetEdgeStyle()));
             }
         }
     }

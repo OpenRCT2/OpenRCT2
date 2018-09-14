@@ -1084,7 +1084,8 @@ void game_fix_save_vars()
             {
                 tileElement->base_height = 2;
                 tileElement->clearance_height = 2;
-                tileElement->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
+                tileElement->AsSurface()->SetSlope(0);
+                tileElement->AsSurface()->SetWaterHeight(0);
             }
         }
     }

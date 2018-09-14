@@ -7,51 +7,210 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../scenario/Scenario.h"
+#include "Location.hpp"
 #include "Surface.h"
+#include "Map.h"
 
-int32_t surface_get_terrain(const rct_tile_element* element)
+uint32_t SurfaceElement::GetSurfaceStyle() const
 {
-    int32_t terrain = (element->properties.surface.terrain >> 5) & 7;
-    if (element->type & 1)
-        terrain |= (1 << 3);
-    return terrain;
+    uint32_t retVal = (terrain >> 5) & 7;
+    if (type & 1)
+        retVal |= (1 << 3);
+    return retVal;
 }
 
-int32_t surface_get_terrain_edge(const rct_tile_element* element)
+uint32_t SurfaceElement::GetEdgeStyle() const
 {
-    int32_t terrain_edge = (element->properties.surface.slope >> 5) & 7;
-    if (element->type & 128)
+    uint32_t terrain_edge = (slope >> 5) & 7;
+    if (type & 128)
         terrain_edge |= (1 << 3);
     return terrain_edge;
 }
 
-void surface_set_terrain(rct_tile_element* element, int32_t terrain)
+void SurfaceElement::SetSurfaceStyle(uint32_t newStyle)
 {
     // Bit 3 for terrain is stored in element.type bit 0
-    if (terrain & 8)
-        element->type |= 1;
+    if (newStyle & 8)
+        type |= 1;
     else
-        element->type &= ~1;
+        type &= ~1;
 
     // Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
-    element->properties.surface.terrain &= ~0xE0;
-    element->properties.surface.terrain |= (terrain & 7) << 5;
+    terrain &= ~0xE0;
+    terrain |= (newStyle & 7) << 5;
 }
 
-void surface_set_terrain_edge(rct_tile_element* element, int32_t terrain)
+void SurfaceElement::SetEdgeStyle(uint32_t newStyle)
 {
     // Bit 3 for terrain is stored in element.type bit 7
-    if (terrain & 8)
-        element->type |= 128;
+    if (newStyle & 8)
+        type |= 128;
     else
-        element->type &= ~128;
+        type &= ~128;
 
     // Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
-    element->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
-    element->properties.surface.slope |= (terrain & 7) << 5;
+    slope &= ~TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
+    slope |= (newStyle & 7) << 5;
 }
 
-int32_t surface_get_water_height(const rct_tile_element* tileElement)
+uint32_t SurfaceElement::GetWaterHeight() const
 {
-    return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+    return terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+}
+
+void SurfaceElement::SetWaterHeight(uint32_t newWaterHeight)
+{
+    newWaterHeight &= 0x1F;
+    terrain &= ~TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+    terrain |= newWaterHeight;
+}
+
+uint8_t SurfaceElement::GetGrassLength() const
+{
+    return grass_length;
+}
+
+void SurfaceElement::SetGrassLength(uint8_t newLength)
+{
+    grass_length = newLength;
+}
+
+void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, CoordsXY coords)
+{
+    uint8_t oldLength = grass_length & 0x7;
+    uint8_t newLength = length & 0x7;
+
+    grass_length = length;
+
+    if (newLength == oldLength)
+    {
+        return;
+    }
+
+    // If the new grass length won't result in an actual visual change
+    // then skip invalidating the tile, no point
+    if (((oldLength > 0 && oldLength < 4) && (newLength > 0 && newLength < 4))
+        || ((oldLength > 3 && oldLength < 7) && (newLength > 3 && newLength < 7)))
+    {
+        return;
+    }
+
+    int32_t z = base_height * 8;
+    map_invalidate_tile(coords.x, coords.y, z, z + 16);
+}
+
+/**
+ *
+ *  rct2: 0x006647A1
+ */
+void SurfaceElement::UpdateGrassLength(CoordsXY coords)
+{
+    // Check if tile is grass
+    if (GetSurfaceStyle() != TERRAIN_GRASS)
+        return;
+
+    uint8_t grassLengthTmp = grass_length & 7;
+
+    // Check if grass is underwater or outside park
+    uint32_t waterHeight = GetWaterHeight()  * 2;
+    if (waterHeight > base_height || !map_is_location_in_park(coords))
+    {
+        if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
+            SetGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);
+
+        return;
+    }
+
+    // Grass can't grow any further than CLUMPS_2 but this code also cuts grass
+    // if there is an object placed on top of it.
+
+    int32_t z0 = base_height;
+    int32_t z1 = base_height + 2;
+    if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        z1 += 2;
+
+    // Check objects above grass
+    rct_tile_element* tileElementAbove = (rct_tile_element*)this;
+    for (;;)
+    {
+        if (tileElementAbove->flags & TILE_ELEMENT_FLAG_LAST_TILE)
+        {
+            // Grow grass
+
+            // Check interim grass lengths
+            uint8_t lengthNibble = (GetGrassLength() & 0xF0) >> 4;
+            if (lengthNibble < 0xF)
+            {
+                grass_length += 0x10;
+            }
+            else
+            {
+                // Zeros the length nibble
+                grass_length += 0x10;
+                grass_length ^= 8;
+                if (grass_length & 8)
+                {
+                    // Random growth rate (length nibble)
+                    grass_length |= scenario_rand() & 0x70;
+                }
+                else
+                {
+                    // Increase length if not at max length
+                    if (grassLengthTmp != GRASS_LENGTH_CLUMPS_2)
+                        SetGrassLengthAndInvalidate(grassLengthTmp + 1, coords);
+                }
+            }
+        }
+        else
+        {
+            tileElementAbove++;
+            if (tileElementAbove->GetType() == TILE_ELEMENT_TYPE_WALL)
+                continue;
+            // Grass should not be affected by ghost elements.
+            if (tileElementAbove->IsGhost())
+                continue;
+            if (z0 >= tileElementAbove->clearance_height)
+                continue;
+            if (z1 < tileElementAbove->base_height)
+                continue;
+
+            if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)
+                SetGrassLengthAndInvalidate(GRASS_LENGTH_CLEAR_0, coords);
+        }
+        break;
+    }
+}
+
+uint8_t SurfaceElement::GetOwnership() const
+{
+    return (ownership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
+}
+
+void SurfaceElement::SetOwnership(uint8_t newOwnership)
+{
+    ownership &= ~TILE_ELEMENT_SURFACE_OWNERSHIP_MASK;
+    ownership |= (newOwnership & TILE_ELEMENT_SURFACE_OWNERSHIP_MASK);
+}
+
+uint8_t SurfaceElement::GetParkFences() const
+{
+    return (ownership & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+}
+
+void SurfaceElement::SetParkFences(uint8_t newParkFences)
+{
+    ownership &= ~TILE_ELEMENT_SURFACE_PARK_FENCE_MASK;
+    ownership |= (newParkFences & TILE_ELEMENT_SURFACE_PARK_FENCE_MASK);
+}
+
+uint8_t SurfaceElement::GetSlope() const
+{
+    return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+}
+
+void SurfaceElement::SetSlope(uint8_t newSlope)
+{
+    slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
+    slope |= (newSlope | TILE_ELEMENT_SURFACE_SLOPE_MASK);
 }

@@ -1785,7 +1785,7 @@ static void footpath_fix_ownership(int32_t x, int32_t y)
         // If the tile is safe to own construction rights of, do not erase contruction rights.
         else
         {
-            ownership = surfaceElement->properties.surface.ownership;
+            ownership = surfaceElement->AsSurface()->GetOwnership();
             // You can't own the entrance path.
             if (ownership == OWNERSHIP_OWNED || ownership == OWNERSHIP_AVAILABLE)
             {

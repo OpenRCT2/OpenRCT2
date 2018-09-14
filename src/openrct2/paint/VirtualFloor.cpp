@@ -253,7 +253,7 @@ static void virtual_floor_get_tile_properties(
             {
                 *outBelowGround = true;
             }
-            else if (height < tileElement->base_height + 2 && tileElement->properties.surface.slope != 0)
+            else if (height < tileElement->base_height + 2 && tileElement->AsSurface()->GetSlope() != 0)
             {
                 *outBelowGround = true;
                 *outOccupied = true;

@@ -340,7 +340,7 @@ static money32 WallPlace(
         }
         position.z = surfaceElement->base_height * 8;
 
-        uint8_t slope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+        uint8_t slope = surfaceElement->AsSurface()->GetSlope();
         edgeSlope = EdgeSlopes[slope][edge & 3];
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {
@@ -355,9 +355,9 @@ static money32 WallPlace(
         return MONEY32_UNDEFINED;
     }
 
-    if (surface_get_water_height(surfaceElement) > 0)
+    if (surfaceElement->AsSurface()->GetWaterHeight()  > 0)
     {
-        uint16_t waterHeight = surface_get_water_height(surfaceElement) * 16;
+        uint16_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight()  * 16;
 
         if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {
@@ -377,7 +377,7 @@ static money32 WallPlace(
         uint8_t newEdge = (edge + 2) & 3;
         uint8_t newBaseHeight = surfaceElement->base_height;
         newBaseHeight += 2;
-        if (surfaceElement->properties.surface.slope & (1 << newEdge))
+        if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
         {
             if (position.z / 8 < newBaseHeight)
             {
@@ -385,14 +385,14 @@ static money32 WallPlace(
                 return MONEY32_UNDEFINED;
             }
 
-            if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 newEdge = (newEdge - 1) & 3;
 
-                if (surfaceElement->properties.surface.slope & (1 << newEdge))
+                if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
                 {
                     newEdge = (newEdge + 2) & 3;
-                    if (surfaceElement->properties.surface.slope & (1 << newEdge))
+                    if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
                     {
                         newBaseHeight += 2;
                         if (position.z / 8 < newBaseHeight)
@@ -407,7 +407,7 @@ static money32 WallPlace(
         }
 
         newEdge = (edge + 3) & 3;
-        if (surfaceElement->properties.surface.slope & (1 << newEdge))
+        if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
         {
             if (position.z / 8 < newBaseHeight)
             {
@@ -415,14 +415,14 @@ static money32 WallPlace(
                 return MONEY32_UNDEFINED;
             }
 
-            if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 newEdge = (newEdge - 1) & 3;
 
-                if (surfaceElement->properties.surface.slope & (1 << newEdge))
+                if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
                 {
                     newEdge = (newEdge + 2) & 3;
-                    if (surfaceElement->properties.surface.slope & (1 << newEdge))
+                    if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
                     {
                         newBaseHeight += 2;
                         if (position.z / 8 < newBaseHeight)

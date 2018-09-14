@@ -542,7 +542,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
                 {
                     proximity_score_increment(PROXIMITY_SURFACE_TOUCH);
                 }
-                waterHeight = surface_get_water_height(tileElement);
+                waterHeight = tileElement->AsSurface()->GetWaterHeight() ;
                 if (waterHeight != 0)
                 {
                     int32_t z = waterHeight * 16;

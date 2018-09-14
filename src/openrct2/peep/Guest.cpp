@@ -5253,7 +5253,7 @@ void rct_peep::UpdateWalking()
     {
         rct_tile_element* tile_element = map_get_surface_element_at({ next_x, next_y });
 
-        int32_t water_height = surface_get_water_height(tile_element);
+        int32_t water_height = tile_element->AsSurface()->GetWaterHeight() ;
         if (water_height)
         {
             Invalidate();

@@ -413,24 +413,24 @@ static void window_track_place_clear_provisional()
 static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
 {
     rct_tile_element* tileElement;
-    int32_t z;
+    uint32_t z;
 
     tileElement = map_get_surface_element_at(x >> 5, y >> 5);
     z = tileElement->base_height * 8;
 
     // Increase Z above slope
-    if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+    if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
     {
         z += 16;
 
         // Increase Z above double slope
-        if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             z += 16;
     }
 
     // Increase Z above water
-    if (surface_get_water_height(tileElement) > 0)
-        z = std::max(z, surface_get_water_height(tileElement) << 4);
+    if (tileElement->AsSurface()->GetWaterHeight()  > 0)
+        z = std::max(z, tileElement->AsSurface()->GetWaterHeight() << 4);
 
     return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
 }

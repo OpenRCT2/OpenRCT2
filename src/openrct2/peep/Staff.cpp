@@ -967,11 +967,10 @@ static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t v
 
         if (peep->GetNextIsSloped())
         {
-            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK)
-                != byte_98D800[peep->GetNextDirection()])
+            if (tileElement->AsSurface()->GetSlope() != byte_98D800[peep->GetNextDirection()])
                 return 0xFF;
         }
-        else if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
+        else if (tileElement->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
             return 0xFF;
     }
 
@@ -993,13 +992,13 @@ static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t v
 
         rct_tile_element* tileElement = map_get_surface_element_at(chosenTile);
 
-        if (surface_get_terrain(tileElement) != 0)
+        if (tileElement->AsSurface()->GetSurfaceStyle() != TERRAIN_GRASS)
             continue;
 
         if (abs(tileElement->base_height - peep->next_z) > 2)
             continue;
 
-        if ((tileElement->properties.surface.grass_length & 0x7) < GRASS_LENGTH_CLEAR_1)
+        if ((tileElement->AsSurface()->GetGrassLength() & 0x7) < GRASS_LENGTH_CLEAR_1)
             continue;
 
         return chosenDirection;
@@ -1680,9 +1679,9 @@ void rct_peep::UpdateMowing()
         for (; (tile_element->GetType() != TILE_ELEMENT_TYPE_SURFACE); tile_element++)
             ;
 
-        if ((tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK) == (TERRAIN_GRASS << 5))
+        if (tile_element->AsSurface()->GetSurfaceStyle() == TERRAIN_GRASS)
         {
-            tile_element->properties.surface.grass_length = GRASS_LENGTH_MOWED;
+            tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_MOWED);
             map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height * 8, tile_element->base_height * 8 + 16);
         }
         staff_lawns_mown++;
@@ -2266,10 +2265,10 @@ static int32_t peep_update_patrolling_find_grass(rct_peep* peep)
 
     rct_tile_element* tile_element = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
-    if ((tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_TERRAIN_MASK) != TERRAIN_GRASS)
+    if ((tile_element->AsSurface()->GetSurfaceStyle()) != TERRAIN_GRASS)
         return 0;
 
-    if ((tile_element->properties.surface.grass_length & 0x7) < GRASS_LENGTH_CLEAR_1)
+    if ((tile_element->AsSurface()->GetGrassLength() & 0x7) < GRASS_LENGTH_CLEAR_1)
         return 0;
 
     peep->SetState(PEEP_STATE_MOWING);
@@ -2368,7 +2367,7 @@ void rct_peep::UpdatePatrolling()
 
         if (tile_element != nullptr)
         {
-            int32_t water_height = surface_get_water_height(tile_element);
+            int32_t water_height = tile_element->AsSurface()->GetWaterHeight() ;
             if (water_height)
             {
                 Invalidate();
