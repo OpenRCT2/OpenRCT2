@@ -1116,7 +1116,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
 
                     // Set current value as checked
                     rct_tile_element* const tileElement = window_tile_inspector_get_selected_element(w);
-                    dropdown_set_checked(tileElement->GetSceneryQuadrant(), true);
+                    dropdown_set_checked(tileElement->AsWall()->GetSlope(), true);
                     break;
             } // switch widget index
             break;
@@ -1570,10 +1570,10 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_SCENERY_CHECK_QUARTER_W].top = GBBT(propertiesAnchor, 1) - 5 + 7 * 1;
             w->widgets[WIDX_SCENERY_CHECK_QUARTER_W].bottom = w->widgets[WIDX_SCENERY_CHECK_QUARTER_W].top + 13;
             // This gets the relative rotation, by subtracting the camera's rotation, and wrapping it between 0-3 inclusive
-            bool N = tileElement->GetSceneryQuadrant() == ((0 - get_current_rotation()) & 3);
-            bool E = tileElement->GetSceneryQuadrant() == ((1 - get_current_rotation()) & 3);
-            bool S = tileElement->GetSceneryQuadrant() == ((2 - get_current_rotation()) & 3);
-            bool W = tileElement->GetSceneryQuadrant() == ((3 - get_current_rotation()) & 3);
+            bool N = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((0 - get_current_rotation()) & 3);
+            bool E = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((1 - get_current_rotation()) & 3);
+            bool S = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((2 - get_current_rotation()) & 3);
+            bool W = tileElement->AsSmallScenery()->GetSceneryQuadrant() == ((3 - get_current_rotation()) & 3);
             widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_QUARTER_N, N);
             widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_QUARTER_E, E);
             widget_set_checkbox_value(w, WIDX_SCENERY_CHECK_QUARTER_S, S);
@@ -1620,7 +1620,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_WALL_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE].top = GBBT(propertiesAnchor, 1) + 3;
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE].bottom = GBBB(propertiesAnchor, 1) - 3;
-            w->widgets[WIDX_WALL_DROPDOWN_SLOPE].text = WallSlopeStringIds[tileElement->GetSceneryQuadrant()];
+            w->widgets[WIDX_WALL_DROPDOWN_SLOPE].text = WallSlopeStringIds[tileElement->AsWall()->GetSlope()];
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
             const uint8_t wallType = tileElement->properties.wall.type;
@@ -1873,14 +1873,14 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Age
-                int16_t age = tileElement->properties.scenery.age;
+                int16_t age = tileElement->AsSmallScenery()->GetAge();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, COLOUR_DARK_GREEN, x, y);
 
                 // Quadrant value
-                const rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
+                const rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
                 if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
                 {
-                    int16_t quadrant = tileElement->GetSceneryQuadrant();
+                    int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
                     static rct_string_id quadrant_string_idx[] = { STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
                                                                    STR_TILE_INSPECTOR_SCENERY_QUADRANT_NW,
                                                                    STR_TILE_INSPECTOR_SCENERY_QUADRANT_NE,
@@ -1890,7 +1890,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 }
 
                 // Scenery ID
-                int16_t idx = tileElement->properties.scenery.type;
+                int16_t idx = tileElement->AsSmallScenery()->GetEntryIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_ENTRY_IDX, &idx, COLOUR_DARK_GREEN, x, y + 22);
 
                 // Properties
@@ -2148,7 +2148,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_OBJECT_SELECTION_SMALL_SCENERY),
-                    language_get_string(get_small_scenery_entry(tileElement->properties.scenery.type)->name));
+                    language_get_string(get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex())->name));
                 typeName = buffer;
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -2157,7 +2157,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             case TILE_ELEMENT_TYPE_WALL:
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_TILE_INSPECTOR_WALL),
-                    language_get_string(get_wall_entry(tileElement->properties.scenery.type)->name));
+                    language_get_string(get_wall_entry(tileElement->properties.wall.type)->name));
                 typeName = buffer;
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:

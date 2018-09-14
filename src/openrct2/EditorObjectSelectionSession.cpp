@@ -143,7 +143,7 @@ void setup_in_use_selection_flags()
                 }
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                type = iter.element->properties.scenery.type;
+                type = iter.element->AsSmallScenery()->GetEntryIndex();
                 assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
                 Editor::SetSelectedObject(OBJECT_TYPE_SMALL_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;

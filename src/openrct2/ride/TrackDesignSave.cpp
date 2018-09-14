@@ -291,15 +291,16 @@ static void track_design_save_push_tile_element_desc(
 
 static void track_design_save_add_scenery(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t entryType = tileElement->properties.scenery.type;
+    SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
+    int32_t entryType = sceneryElement->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8_t flags = 0;
     flags |= tileElement->type & 3;
     flags |= (tileElement->type & 0xC0) >> 4;
 
-    uint8_t primaryColour = scenery_small_get_primary_colour(tileElement);
-    uint8_t secondaryColour = scenery_small_get_secondary_colour(tileElement);
+    uint8_t primaryColour = sceneryElement->GetPrimaryColour();
+    uint8_t secondaryColour = sceneryElement->GetSecondaryColour();
 
     track_design_save_push_tile_element(x, y, tileElement);
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);
@@ -485,7 +486,7 @@ static void track_design_save_pop_tile_element_desc(
 
 static void track_design_save_remove_scenery(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t entryType = tileElement->properties.scenery.type;
+    int32_t entryType = tileElement->AsSmallScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8_t flags = 0;

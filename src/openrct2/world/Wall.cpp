@@ -221,8 +221,7 @@ static bool WallCheckObstruction(
                 }
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                entryType = tileElement->properties.scenery.type;
-                entry = get_small_scenery_entry(entryType);
+                entry = tileElement->AsSmallScenery()->GetEntry();
                 if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
                 {
                     map_obstruction_set_error_text(tileElement);

@@ -51,11 +51,5 @@ enum
     MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS = (1 << 5),
 };
 
-int32_t scenery_small_get_primary_colour(const rct_tile_element* tileElement);
-int32_t scenery_small_get_secondary_colour(const rct_tile_element* tileElement);
-void scenery_small_set_primary_colour(rct_tile_element* tileElement, uint32_t colour);
-void scenery_small_set_secondary_colour(rct_tile_element* tileElement, uint32_t colour);
-bool scenery_small_get_supports_needed(const rct_tile_element* tileElement);
-void scenery_small_set_supports_needed(rct_tile_element* tileElement);
-
 bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags);
+rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex);
