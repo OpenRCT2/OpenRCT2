@@ -220,7 +220,7 @@ static int32_t tile_element_get_total_element_count(rct_tile_element* tileElemen
             return 1;
 
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             tile = sceneryEntry->large_scenery.tiles;
             elementCount = 0;
             do
@@ -312,13 +312,13 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
     int32_t x0, y0, z0, z;
     int32_t direction, sequence;
 
-    int32_t entryType = scenery_large_get_type(tileElement);
+    int32_t entryType = tileElement->AsLargeScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
     direction = tileElement->type & 3;
-    sequence = scenery_large_get_sequence(tileElement);
+    sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
@@ -342,8 +342,8 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
             if (sequence == 0)
             {
                 uint8_t flags = tileElement->type & 3;
-                uint8_t primaryColour = scenery_large_get_primary_colour(tileElement);
-                uint8_t secondaryColour = scenery_large_get_secondary_colour(tileElement);
+                uint8_t primaryColour = tileElement->AsLargeScenery()->GetPrimaryColour();
+                uint8_t secondaryColour = tileElement->AsLargeScenery()->GetSecondaryColour();
 
                 track_design_save_push_tile_element_desc(entry, x, y, z, flags, primaryColour, secondaryColour);
             }
@@ -503,13 +503,13 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_til
     int32_t x0, y0, z0, z;
     int32_t direction, sequence;
 
-    int32_t entryType = scenery_large_get_type(tileElement);
+    int32_t entryType = tileElement->AsLargeScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
     direction = tileElement->type & 3;
-    sequence = scenery_large_get_sequence(tileElement);
+    sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {

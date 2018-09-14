@@ -316,7 +316,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             break;
 
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry->large_scenery.scrolling_mode != 255)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -389,7 +389,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
             return info->type;
@@ -559,11 +559,11 @@ static void viewport_interaction_remove_park_wall(rct_tile_element* tileElement,
  */
 static void viewport_interaction_remove_large_scenery(rct_tile_element* tileElement, int32_t x, int32_t y)
 {
-    rct_scenery_entry* sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+    rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 
     if (sceneryEntry->large_scenery.scrolling_mode != 0xFF)
     {
-        BannerIndex bannerIndex = scenery_large_get_banner_id(tileElement);
+        BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
         context_open_detail_window(WD_SIGN, bannerIndex);
     }
     else
@@ -571,7 +571,7 @@ static void viewport_interaction_remove_large_scenery(rct_tile_element* tileElem
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
             x, 1 | (tileElement->GetDirection() << 8), y,
-            tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+            tileElement->base_height | (tileElement->AsLargeScenery()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
     }
 }
 

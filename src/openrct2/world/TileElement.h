@@ -85,13 +85,6 @@ struct rct_tile_element_wall_properties
 };
 assert_struct_size(rct_tile_element_wall_properties, 4);
 
-struct rct_tile_element_scenerymultiple_properties
-{
-    uint16_t type;     // 4
-    uint8_t colour[2]; // 6
-};
-assert_struct_size(rct_tile_element_scenerymultiple_properties, 4);
-
 struct rct_tile_element_banner_properties
 {
     BannerIndex index; // 4
@@ -108,7 +101,6 @@ union rct_tile_element_properties
     rct_tile_element_track_properties track;
     rct_tile_element_entrance_properties entrance;
     rct_tile_element_wall_properties wall;
-    rct_tile_element_scenerymultiple_properties scenerymultiple;
     rct_tile_element_banner_properties banner;
 };
 assert_struct_size(rct_tile_element_properties, 4);
@@ -265,7 +257,24 @@ assert_struct_size(SmallSceneryElement, 8);
 
 struct LargeSceneryElement : TileElementBase
 {
-    rct_tile_element_scenerymultiple_properties temp;
+private:
+    uint16_t entryIndex; // 4
+    uint8_t colour[2];   // 6
+public:
+    uint32_t GetEntryIndex() const;
+    void SetEntryIndex(uint32_t newIndex);
+    rct_scenery_entry* GetEntry() const;
+
+    uint16_t GetSequenceIndex() const;
+    void SetSequenceIndex(uint16_t newIndex);
+
+    colour_t GetPrimaryColour() const;
+    void SetPrimaryColour(colour_t colour);
+    colour_t GetSecondaryColour() const;
+    void SetSecondaryColour(colour_t colour);
+
+    BannerIndex GetBannerIndex() const;
+    void SetBannerIndex(BannerIndex newIndex);
 };
 assert_struct_size(LargeSceneryElement, 8);
 

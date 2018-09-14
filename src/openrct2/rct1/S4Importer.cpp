@@ -493,7 +493,7 @@ private:
                     AddEntryForSmallScenery(tileElement->AsSmallScenery()->GetEntryIndex());
                     break;
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                    AddEntryForLargeScenery(scenery_large_get_type(tileElement));
+                    AddEntryForLargeScenery(tileElement->AsLargeScenery()->GetEntryIndex());
                     break;
                 case TILE_ELEMENT_TYPE_WALL:
                 {
@@ -2467,11 +2467,11 @@ private:
                         }
                         break;
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                        colour = RCT1::GetColour(scenery_large_get_primary_colour(tileElement));
-                        scenery_large_set_primary_colour(tileElement, colour);
+                        colour = RCT1::GetColour(tileElement->AsLargeScenery()->GetPrimaryColour());
+                        tileElement->AsLargeScenery()->SetPrimaryColour(colour);
 
-                        colour = RCT1::GetColour(scenery_large_get_secondary_colour(tileElement));
-                        scenery_large_set_secondary_colour(tileElement, colour);
+                        colour = RCT1::GetColour(tileElement->AsLargeScenery()->GetSecondaryColour());
+                        tileElement->AsLargeScenery()->SetSecondaryColour(colour);
 
                         break;
                 }
@@ -2736,8 +2736,8 @@ private:
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
-                    uint8_t type = scenery_large_get_type(tileElement);
-                    scenery_large_set_type(tileElement, _largeSceneryTypeToEntryMap[type]);
+                    uint8_t type = tileElement->AsLargeScenery()->GetEntryIndex();
+                    tileElement->AsLargeScenery()->SetEntryIndex(_largeSceneryTypeToEntryMap[type]);
                     break;
                 }
             }

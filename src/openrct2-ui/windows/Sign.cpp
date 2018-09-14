@@ -160,10 +160,10 @@ rct_window* window_sign_open(rct_windownumber number)
     {
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
+            rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
             if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
             {
-                BannerIndex bannerIndex = scenery_large_get_banner_id(tile_element);
+                BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
 
                 if (bannerIndex == w->number)
                     break;
@@ -175,9 +175,9 @@ rct_window* window_sign_open(rct_windownumber number)
     int32_t view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
-    w->list_information_type = scenery_large_get_primary_colour(tile_element);
-    w->var_492 = scenery_large_get_secondary_colour(tile_element);
-    w->var_48C = scenery_large_get_type(tile_element);
+    w->list_information_type = tile_element->AsLargeScenery()->GetPrimaryColour();
+    w->var_492 = tile_element->AsLargeScenery()->GetSecondaryColour();
+    w->var_48C = tile_element->AsLargeScenery()->GetEntryIndex();
 
     view_x += 16;
     view_y += 16;
@@ -218,10 +218,10 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             {
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 {
-                    rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
+                    rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
                     if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
                     {
-                        BannerIndex bannerIndex = scenery_large_get_banner_id(tile_element);
+                        BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
                         if (bannerIndex == w->number)
                             break;
                     }
@@ -230,7 +230,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
             game_do_command(
                 x, 1 | (tile_element->GetDirection() << 8), y,
-                tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY,
+                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY,
                 0, 0);
             break;
         case WIDX_SIGN_TEXT:

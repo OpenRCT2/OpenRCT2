@@ -207,8 +207,8 @@ static bool WallCheckObstruction(
                 }
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                entryType = scenery_large_get_type(tileElement);
-                sequence = scenery_large_get_sequence(tileElement);
+                entryType = tileElement->AsLargeScenery()->GetEntryIndex();
+                sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
                 entry = get_large_scenery_entry(entryType);
                 tile = &entry->large_scenery.tiles[sequence];
                 {

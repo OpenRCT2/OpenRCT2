@@ -2015,18 +2015,19 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Type
-                int16_t largeSceneryType = scenery_large_get_type(tileElement);
+                auto sceneryElement = tileElement->AsLargeScenery();
+                int16_t largeSceneryType = sceneryElement->GetEntryIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, COLOUR_DARK_GREEN, x, y);
 
                 // Part ID
-                int16_t pieceID = scenery_large_get_sequence(tileElement);
+                int16_t pieceID = sceneryElement->GetSequenceIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, COLOUR_DARK_GREEN, x, y + 11);
 
                 // Banner info
-                rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+                rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
                 if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF)
                 {
-                    const BannerIndex bannerIndex = scenery_large_get_banner_id(tileElement);
+                    const BannerIndex bannerIndex = sceneryElement->GetBannerIndex();
                     rct_string_id* string = &gBanners[bannerIndex].string_idx;
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, string, COLOUR_DARK_GREEN, x, y + 22);
                 }

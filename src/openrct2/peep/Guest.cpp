@@ -6372,7 +6372,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            if (!(get_large_scenery_entry(scenery_large_get_type(tileElement))->large_scenery.flags
+            if (!(tileElement->AsLargeScenery()->GetEntry()->large_scenery.flags
                   & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
@@ -6483,7 +6483,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            auto sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+            auto sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (!(sceneryEntry == nullptr || sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
@@ -6594,7 +6594,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            if (!(get_large_scenery_entry(scenery_large_get_type(tileElement))->large_scenery.flags
+            if (!(tileElement->AsLargeScenery()->GetEntry()->large_scenery.flags
                   & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;

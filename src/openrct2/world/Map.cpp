@@ -848,10 +848,10 @@ void game_command_remove_large_scenery(
         if (tileElement->base_height != base_height)
             continue;
 
-        if (scenery_large_get_sequence(tileElement) != tileIndex)
+        if (tileElement->AsLargeScenery()->GetSequenceIndex() != tileIndex)
             continue;
 
-        if ((tileElement->GetDirection()) != tile_element_direction)
+        if (tileElement->GetDirection() != tile_element_direction)
             continue;
 
         // If we are removing ghost elements
@@ -873,7 +873,7 @@ void game_command_remove_large_scenery(
         tile_element_remove_banner_entry(tileElement);
     }
 
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+    rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
     LocationXYZ16 firstTile = {
         scenery_entry->large_scenery.tiles[tileIndex].x_offset, scenery_entry->large_scenery.tiles[tileIndex].y_offset,
         static_cast<int16_t>((base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset)
@@ -928,7 +928,7 @@ void game_command_remove_large_scenery(
             if (sceneryElement->GetDirection() != tile_element_direction)
                 continue;
 
-            if (scenery_large_get_sequence(sceneryElement) != i)
+            if (sceneryElement->AsLargeScenery()->GetSequenceIndex() != i)
                 continue;
 
             if (sceneryElement->base_height != currentTile.z / 8)
@@ -1002,7 +1002,7 @@ void game_command_set_large_scenery_colour(
         return;
     }
 
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
+    rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
 
     // Work out the base tile coordinates (Tile with index 0)
     LocationXYZ16 baseTile = {
@@ -1040,8 +1040,8 @@ void game_command_set_large_scenery_colour(
             rct_tile_element* tileElement = map_get_large_scenery_segment(
                 currentTile.x, currentTile.y, base_height, tile_element_direction, i);
 
-            scenery_large_set_primary_colour(tileElement, colour1);
-            scenery_large_set_secondary_colour(tileElement, colour2);
+            tileElement->AsLargeScenery()->SetPrimaryColour(colour1);
+            tileElement->AsLargeScenery()->SetSecondaryColour(colour2);
 
             map_invalidate_tile_full(currentTile.x, currentTile.y);
         }
@@ -1131,7 +1131,7 @@ restart_from_beginning:
                     int32_t eax = x * 32;
                     int32_t ebx = flags | ((tileElement->GetDirection()) << 8);
                     int32_t ecx = y * 32;
-                    int32_t edx = tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8);
+                    int32_t edx = tileElement->base_height | (tileElement->AsLargeScenery()->GetSequenceIndex() << 8);
                     int32_t edi = 0, ebp = 0;
                     cost = game_do_command(eax, ebx | (1 << 7), ecx, edx, GAME_COMMAND_REMOVE_LARGE_SCENERY, edi, ebp);
 
@@ -3079,15 +3079,16 @@ void game_command_place_large_scenery(
             new_tile_element->clearance_height = zHigh;
             new_tile_element->type = TILE_ELEMENT_TYPE_LARGE_SCENERY | rotation;
 
-            scenery_large_set_type(new_tile_element, entry_index);
-            scenery_large_set_sequence(new_tile_element, tile_num);
+            auto newSceneryElement = new_tile_element->AsLargeScenery();
+            newSceneryElement->SetEntryIndex(entry_index);
+            newSceneryElement->SetSequenceIndex(tile_num);
 
-            scenery_large_set_primary_colour(new_tile_element, colour1);
-            scenery_large_set_secondary_colour(new_tile_element, colour2);
+            newSceneryElement->SetPrimaryColour(colour1);
+            newSceneryElement->SetSecondaryColour(colour2);
 
             if (banner_id != BANNER_INDEX_NULL)
             {
-                scenery_large_set_banner_id(new_tile_element, banner_id);
+                newSceneryElement->SetBannerIndex(banner_id);
             }
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -3464,8 +3465,7 @@ void map_obstruction_set_error_text(rct_tile_element* tileElement)
             set_format_arg(0, rct_string_id, sceneryEntry->name);
             break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            // Fixme: replace by proper call.
-            sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             errorStringId = STR_X_IN_THE_WAY;
             set_format_arg(0, rct_string_id, sceneryEntry->name);
             break;
@@ -4003,7 +4003,7 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
             game_do_command(
                 x, (GAME_COMMAND_FLAG_APPLY) | (element->GetDirection() << 8), y,
-                (element->base_height) | (scenery_large_get_sequence(element) << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+                (element->base_height) | (element->AsLargeScenery()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
@@ -4077,7 +4077,7 @@ rct_tile_element* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z,
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (scenery_large_get_sequence(tileElement) != sequence)
+        if (tileElement->AsLargeScenery()->GetSequenceIndex() != sequence)
             continue;
         if ((tileElement->GetDirection()) != direction)
             continue;
@@ -4197,7 +4197,7 @@ bool map_large_scenery_get_origin(
     if (tileElement == nullptr)
         return false;
 
-    sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+    sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     tile = &sceneryEntry->large_scenery.tiles[sequence];
 
     offsetX = tile->x_offset;
@@ -4230,7 +4230,7 @@ bool sign_set_colour(
         return false;
     }
 
-    sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+    sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     sceneryTiles = sceneryEntry->large_scenery.tiles;
 
     // Iterate through each tile of the large scenery element
@@ -4247,8 +4247,8 @@ bool sign_set_colour(
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
         if (tileElement != nullptr)
         {
-            scenery_large_set_primary_colour(tileElement, mainColour);
-            scenery_large_set_secondary_colour(tileElement, textColour);
+            tileElement->AsLargeScenery()->SetPrimaryColour(mainColour);
+            tileElement->AsLargeScenery()->SetSecondaryColour(textColour);
 
             map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         }
@@ -4555,7 +4555,7 @@ void game_command_set_sign_style(
 
         if (!sign_set_colour(
                 banner->x * 32, banner->y * 32, tileElement->base_height, tileElement->GetDirection(),
-                scenery_large_get_sequence(tileElement), mainColour, textColour))
+                tileElement->AsLargeScenery()->GetSequenceIndex(), mainColour, textColour))
         {
             *ebx = MONEY32_UNDEFINED;
             return;
