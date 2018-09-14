@@ -1010,7 +1010,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
                 grid_x, 1 | (gWindowSceneryPrimaryColour << 8), grid_y,
-                (tile_element->type & TILE_ELEMENT_DIRECTION_MASK) | (tile_element->base_height << 8),
+                tile_element->GetDirection() | (tile_element->base_height << 8),
                 GAME_COMMAND_SET_WALL_COLOUR, 0, gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
             break;
         }
