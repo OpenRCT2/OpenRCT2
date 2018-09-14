@@ -3893,6 +3893,8 @@ enum
 
     STR_OPEN_USER_CONTENT_FOLDER = 6266,
 
+    STR_SHORTCUT_OPEN_TILE_INSPECTOR = 6267,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

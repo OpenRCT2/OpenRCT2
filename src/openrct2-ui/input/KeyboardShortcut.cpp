@@ -749,6 +749,14 @@ static void shortcut_highlight_path_issues_toggle()
     toggle_view_flag(VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 }
 
+static void shortcut_open_tile_inspector()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    context_open_window(WC_TILE_INSPECTOR);
+}
+
 namespace
 {
     const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -821,6 +829,7 @@ namespace
         shortcut_gridlines_toggle,
         shortcut_view_clipping,
         shortcut_highlight_path_issues_toggle,
+        shortcut_open_tile_inspector,
     };
 } // anonymous namespace
 
