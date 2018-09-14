@@ -751,7 +751,7 @@ static void shortcut_highlight_path_issues_toggle()
 
 static void shortcut_open_tile_inspector()
 {
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO || !gConfigGeneral.debugging_tools)
         return;
 
     context_open_window(WC_TILE_INSPECTOR);
