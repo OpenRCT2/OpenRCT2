@@ -272,6 +272,7 @@ private:
         return MONEY32_UNDEFINED;
     }
 
+    // Demolishes the track and returns the refund price
     money32 DemolishTracks() const
     {
         money32 refundPrice = 0;
@@ -281,9 +282,11 @@ private:
 
         tile_element_iterator it;
 
+        // Check for track pieces to delete.
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
+            // Check if tile is a track type.
             if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
@@ -328,6 +331,23 @@ private:
                     break;
             }
 
+            tile_element_iterator_restart_for_tile(&it);
+        }
+
+        // Check for entrances to delete.
+        tile_element_iterator_begin(&it);
+        while (tile_element_iterator_next(&it))
+        {
+            if (it.element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+                continue;
+
+            if (entrance_element_get_type(it.element) == ENTRANCE_TYPE_PARK_ENTRANCE)
+                continue;
+
+            if (track_element_get_ride_index(it.element) != _rideIndex)
+                continue;
+
+            tile_element_remove(it.element);
             tile_element_iterator_restart_for_tile(&it);
         }
 
