@@ -2157,7 +2157,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             case TILE_ELEMENT_TYPE_WALL:
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_TILE_INSPECTOR_WALL),
-                    language_get_string(get_wall_entry(tileElement->AsSmallScenery()->GetEntryIndex())->name));
+                    language_get_string(get_wall_entry(tileElement->properties.wall.type)->name));
                 typeName = buffer;
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:

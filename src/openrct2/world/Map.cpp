@@ -3459,7 +3459,7 @@ void map_obstruction_set_error_text(rct_tile_element* tileElement)
             }
             break;
         case TILE_ELEMENT_TYPE_WALL:
-            sceneryEntry = get_wall_entry(tileElement->AsSmallScenery()->GetEntryIndex());
+            sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
             errorStringId = STR_X_IN_THE_WAY;
             set_format_arg(0, rct_string_id, sceneryEntry->name);
             break;
