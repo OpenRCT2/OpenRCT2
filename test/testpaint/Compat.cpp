@@ -331,3 +331,23 @@ TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationInd
 {
     return ride->exits[stationIndex];
 }
+
+uint8_t TileElementBase::GetDirection() const
+{
+    return this->type & TILE_ELEMENT_DIRECTION_MASK;
+}
+
+uint8_t TileElementBase::GetDirectionWithOffset(uint8_t offset) const
+{
+    return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
+}
+
+uint8_t SurfaceElement::GetSlope() const
+{
+    return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+}
+
+uint32_t SurfaceElement::GetWaterHeight() const
+{
+    return terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
+}
