@@ -278,13 +278,11 @@ static money32 RideEntranceExitPlace(
 
             if (isExit)
             {
-                ride_set_exit_location(
-                    ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
+                ride_set_exit_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
             }
             else
             {
-                ride_set_entrance_location(
-                    ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
+                ride_set_entrance_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
                 ride->last_peep_in_queue[stationNum] = SPRITE_INDEX_NULL;
                 ride->queue_length[stationNum] = 0;
 

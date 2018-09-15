@@ -260,9 +260,9 @@ static money32 SmallSceneryPlace(
 
     rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
 
-    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->AsSurface()->GetWaterHeight()  > 0)
+    if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->AsSurface()->GetWaterHeight() > 0)
     {
-        int32_t water_height = (surfaceElement->AsSurface()->GetWaterHeight()  * 16) - 1;
+        int32_t water_height = (surfaceElement->AsSurface()->GetWaterHeight() * 16) - 1;
         if (water_height > targetHeight)
         {
             gGameCommandErrorText = STR_CANT_BUILD_THIS_UNDERWATER;
@@ -278,7 +278,7 @@ static money32 SmallSceneryPlace(
             return MONEY32_UNDEFINED;
         }
 
-        if (surfaceElement != nullptr && surfaceElement->AsSurface()->GetWaterHeight()  > 0)
+        if (surfaceElement != nullptr && surfaceElement->AsSurface()->GetWaterHeight() > 0)
         {
             if ((surfaceElement->AsSurface()->GetWaterHeight() * 16) > targetHeight)
             {
@@ -303,7 +303,7 @@ static money32 SmallSceneryPlace(
         {
             if (surfaceElement != nullptr)
             {
-                if (surfaceElement->AsSurface()->GetWaterHeight()  || (surfaceElement->base_height * 8) != targetHeight)
+                if (surfaceElement->AsSurface()->GetWaterHeight() || (surfaceElement->base_height * 8) != targetHeight)
                 {
                     gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;
                     return MONEY32_UNDEFINED;

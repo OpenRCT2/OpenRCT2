@@ -281,7 +281,8 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
         case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
+                surfaceElement->SetOwnership(
+                    surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
                 update_park_fences_around_tile({ x, y });
             }
             return 0;

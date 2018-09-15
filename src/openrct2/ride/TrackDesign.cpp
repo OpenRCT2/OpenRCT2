@@ -1313,9 +1313,9 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                 }
             }
 
-            if (tile_element->AsSurface()->GetWaterHeight()  > 0)
+            if (tile_element->AsSurface()->GetWaterHeight() > 0)
             {
-                int16_t water_height = tile_element->AsSurface()->GetWaterHeight() ;
+                int16_t water_height = tile_element->AsSurface()->GetWaterHeight();
                 water_height *= 16;
                 if (water_height > map_height)
                 {
@@ -1480,7 +1480,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                         }
                     }
 
-                    uint8_t water_height = tileElement->AsSurface()->GetWaterHeight()  * 16;
+                    uint8_t water_height = tileElement->AsSurface()->GetWaterHeight() * 16;
                     if (water_height > 0 && water_height > height)
                     {
                         height = water_height;

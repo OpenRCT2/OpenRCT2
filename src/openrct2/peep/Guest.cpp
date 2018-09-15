@@ -5253,7 +5253,7 @@ void rct_peep::UpdateWalking()
     {
         rct_tile_element* tile_element = map_get_surface_element_at({ next_x, next_y });
 
-        int32_t water_height = tile_element->AsSurface()->GetWaterHeight() ;
+        int32_t water_height = tile_element->AsSurface()->GetWaterHeight();
         if (water_height)
         {
             Invalidate();
@@ -6372,8 +6372,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            if (!(tileElement->AsLargeScenery()->GetEntry()->large_scenery.flags
-                  & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            if (!(tileElement->AsLargeScenery()->GetEntry()->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
@@ -6594,8 +6593,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            if (!(tileElement->AsLargeScenery()->GetEntry()->large_scenery.flags
-                  & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            if (!(tileElement->AsLargeScenery()->GetEntry()->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }

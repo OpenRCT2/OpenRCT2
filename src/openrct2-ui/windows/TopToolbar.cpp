@@ -1010,8 +1010,8 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
                 grid_x, 1 | (gWindowSceneryPrimaryColour << 8), grid_y,
-                tile_element->GetDirection() | (tile_element->base_height << 8),
-                GAME_COMMAND_SET_WALL_COLOUR, 0, gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
+                tile_element->GetDirection() | (tile_element->base_height << 8), GAME_COMMAND_SET_WALL_COLOUR, 0,
+                gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
@@ -1373,7 +1373,7 @@ static void sub_6E1F34(
                 }
 
                 gSceneryPlaceZ = 0;
-                uint16_t water_height = tile_element->AsSurface()->GetWaterHeight() ;
+                uint16_t water_height = tile_element->AsSurface()->GetWaterHeight();
                 if (water_height != 0)
                 {
                     gSceneryPlaceZ = water_height * 16;

@@ -1036,7 +1036,7 @@ void rct_peep::UpdateFalling()
                 // If the surface is water check to see if we could be drowning
                 if (tile_element->AsSurface()->GetWaterHeight() > 0)
                 {
-                    int32_t height = tile_element->AsSurface()->GetWaterHeight()  * 16;
+                    int32_t height = tile_element->AsSurface()->GetWaterHeight() * 16;
 
                     if (height - 4 >= z && height < z + 20)
                     {
@@ -3243,7 +3243,7 @@ void rct_peep::PerformNextAction(uint8_t& pathing_result, rct_tile_element*& til
                 return;
             }
 
-            int16_t water_height = tileElement->AsSurface()->GetWaterHeight() ;
+            int16_t water_height = tileElement->AsSurface()->GetWaterHeight();
             if (water_height)
             {
                 peep_return_to_centre_of_tile(this);

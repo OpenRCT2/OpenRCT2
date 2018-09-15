@@ -1274,7 +1274,7 @@ static money32 track_place(
         {
             tileElement = map_get_surface_element_at({ x, y });
 
-            uint8_t water_height = tileElement->AsSurface()->GetWaterHeight()  * 2;
+            uint8_t water_height = tileElement->AsSurface()->GetWaterHeight() * 2;
             if (water_height == 0)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;

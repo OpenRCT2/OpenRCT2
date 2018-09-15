@@ -429,7 +429,7 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
     }
 
     // Increase Z above water
-    if (tileElement->AsSurface()->GetWaterHeight()  > 0)
+    if (tileElement->AsSurface()->GetWaterHeight() > 0)
         z = std::max(z, tileElement->AsSurface()->GetWaterHeight() << 4);
 
     return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);

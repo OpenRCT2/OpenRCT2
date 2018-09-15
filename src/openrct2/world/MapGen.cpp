@@ -317,7 +317,7 @@ static void mapgen_place_trees()
             rct_tile_element* tileElement = map_get_surface_element_at(x, y);
 
             // Exclude water tiles
-            if (tileElement->AsSurface()->GetWaterHeight()  > 0)
+            if (tileElement->AsSurface()->GetWaterHeight() > 0)
                 continue;
 
             pos.x = x;

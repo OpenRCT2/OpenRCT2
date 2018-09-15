@@ -2478,8 +2478,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct
                     const uint8_t trackSequence = tile_element_get_track_sequence(tileElement);
                     if (FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
                     {
-                        uint16_t dx
-                            = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
+                        uint16_t dx = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
                         if (FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))
                         {
                             // Track element has the flags required for the given direction

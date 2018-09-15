@@ -691,7 +691,7 @@ static void viewport_surface_draw_tile_side_bottom(
 
     if (isWater)
     {
-        uint8_t waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() ;
+        uint8_t waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight();
         if (waterHeight == height && !neighbourIsClippedAway)
         {
             // Don't draw the edge when the neighbour's water level is the same
@@ -899,7 +899,7 @@ static void viewport_surface_draw_tile_side_top(
     {
         if (isWater)
         {
-            waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight() ;
+            waterHeight = neighbour.tile_element->AsSurface()->GetWaterHeight();
             if (dl == waterHeight)
             {
                 return;
@@ -1314,9 +1314,9 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 int32_t local_surfaceShape = surfaceShape;
                 int32_t local_height = height;
                 // Water tool
-                if (tileElement->AsSurface()->GetWaterHeight()  > 0)
+                if (tileElement->AsSurface()->GetWaterHeight() > 0)
                 {
-                    int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight()  * 16;
+                    int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight() * 16;
                     if (waterHeight > height)
                     {
                         local_height += 16;
@@ -1408,7 +1408,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         viewport_surface_draw_land_side_top(
             session, EDGE_TOPLEFT, height / 16, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
         viewport_surface_draw_land_side_top(
-            session, EDGE_TOPRIGHT, height / 16, edgeStyle , tileDescriptors[0], tileDescriptors[4]);
+            session, EDGE_TOPRIGHT, height / 16, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
         viewport_surface_draw_land_side_bottom(
             session, EDGE_BOTTOMLEFT, height / 16, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
         viewport_surface_draw_land_side_bottom(
@@ -1418,13 +1418,13 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         memcpy(session->RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
     }
 
-    if (tileElement->AsSurface()->GetWaterHeight()  > 0)
+    if (tileElement->AsSurface()->GetWaterHeight() > 0)
     {
         // loc_6615A9: (water height)
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
         const uint16_t localHeight = height + 16;
-        const uint16_t waterHeight = tileElement->AsSurface()->GetWaterHeight()  * 16;
+        const uint16_t waterHeight = tileElement->AsSurface()->GetWaterHeight() * 16;
 
         if (!gTrackDesignSaveMode)
         {

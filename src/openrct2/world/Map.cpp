@@ -482,7 +482,7 @@ int32_t tile_element_height(int32_t x, int32_t y)
         return 16;
     }
 
-    uint32_t height = (tileElement->AsSurface()->GetWaterHeight()  << 20) | (tileElement->base_height << 3);
+    uint32_t height = (tileElement->AsSurface()->GetWaterHeight() << 20) | (tileElement->base_height << 3);
 
     uint32_t slope = tileElement->AsSurface()->GetSlope();
     uint8_t extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
@@ -1627,7 +1627,7 @@ static money32 map_set_land_height(int32_t flags, int32_t x, int32_t y, int32_t 
     rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
     if (surfaceElement->type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT)
     {
-        uint32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() ;
+        uint32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
         if (waterHeight != 0)
         {
             if (style & 0x1F)
@@ -1983,7 +1983,7 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
             {
                 uint8_t height = tile_element->base_height;
                 if (tile_element->AsSurface()->GetWaterHeight() > 0)
-                    height = tile_element->AsSurface()->GetWaterHeight()  * 2;
+                    height = tile_element->AsSurface()->GetWaterHeight() * 2;
                 if (max_height > height)
                     max_height = height;
             }
@@ -1999,7 +1999,7 @@ money32 raise_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
             {
                 if (tile_element->base_height <= max_height)
                 {
-                    uint8_t height = tile_element->AsSurface()->GetWaterHeight() ;
+                    uint8_t height = tile_element->AsSurface()->GetWaterHeight();
                     if (height != 0)
                     {
                         height *= 2;
@@ -2075,7 +2075,7 @@ money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
             rct_tile_element* tile_element = map_get_surface_element_at({ xi, yi });
             if (tile_element != nullptr)
             {
-                uint8_t height = tile_element->AsSurface()->GetWaterHeight() ;
+                uint8_t height = tile_element->AsSurface()->GetWaterHeight();
                 if (height != 0)
                 {
                     height *= 2;
@@ -2093,7 +2093,7 @@ money32 lower_water(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint8_t flag
             rct_tile_element* tile_element = map_get_surface_element_at({ xi, yi });
             if (tile_element != nullptr)
             {
-                uint8_t height = tile_element->AsSurface()->GetWaterHeight() ;
+                uint8_t height = tile_element->AsSurface()->GetWaterHeight();
                 if (height != 0)
                 {
                     height *= 2;
@@ -2797,9 +2797,9 @@ void game_command_set_water_height(
     rct_tile_element* tile_element = map_get_surface_element_at({ x, y });
     int32_t zHigh = tile_element->base_height;
     int32_t zLow = base_height;
-    if (tile_element->AsSurface()->GetWaterHeight()  > 0)
+    if (tile_element->AsSurface()->GetWaterHeight() > 0)
     {
-        zHigh = tile_element->AsSurface()->GetWaterHeight()  * 2;
+        zHigh = tile_element->AsSurface()->GetWaterHeight() * 2;
     }
     if (zLow > zHigh)
     {
@@ -3495,7 +3495,7 @@ bool map_can_construct_with_clear_at(
             }
             continue;
         }
-        water_height = tileElement->AsSurface()->GetWaterHeight()  * 2;
+        water_height = tileElement->AsSurface()->GetWaterHeight() * 2;
         if (water_height && water_height > zLow && tileElement->base_height < zHigh)
         {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
@@ -3520,8 +3520,7 @@ bool map_can_construct_with_clear_at(
 
         // Only allow building crossings directly on a flat surface tile.
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE
-            && (tileElement->AsSurface()->GetSlope()) == TILE_ELEMENT_SLOPE_FLAT
-            && tileElement->base_height == zLow)
+            && (tileElement->AsSurface()->GetSlope()) == TILE_ELEMENT_SLOPE_FLAT && tileElement->base_height == zLow)
         {
             canBuildCrossing = true;
         }
@@ -3665,7 +3664,7 @@ void map_update_tiles()
         SurfaceElement* tileElement = map_get_surface_element_at(x, y)->AsSurface();
         if (tileElement != nullptr)
         {
-            tileElement->UpdateGrassLength({x * 32, y * 32});
+            tileElement->UpdateGrassLength({ x * 32, y * 32 });
             scenery_update_tile(x * 32, y * 32);
         }
 
@@ -3868,7 +3867,8 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
             game_do_command(
                 x, (GAME_COMMAND_FLAG_APPLY) | (element->GetDirection() << 8), y,
-                (element->base_height) | (element->AsLargeScenery()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+                (element->base_height) | (element->AsLargeScenery()->GetSequenceIndex() << 8),
+                GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
@@ -4303,7 +4303,7 @@ bool map_surface_is_blocked(int16_t x, int16_t y)
         return true;
     }
 
-    int16_t water_height = tileElement->AsSurface()->GetWaterHeight() ;
+    int16_t water_height = tileElement->AsSurface()->GetWaterHeight();
     water_height *= 2;
     if (water_height > tileElement->base_height)
         return true;

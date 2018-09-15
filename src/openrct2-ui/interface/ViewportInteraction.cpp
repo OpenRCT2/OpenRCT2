@@ -571,7 +571,8 @@ static void viewport_interaction_remove_large_scenery(rct_tile_element* tileElem
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
             x, 1 | (tileElement->GetDirection() << 8), y,
-            tileElement->base_height | (tileElement->AsLargeScenery()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+            tileElement->base_height | (tileElement->AsLargeScenery()->GetSequenceIndex() << 8),
+            GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
     }
 }
 
@@ -639,7 +640,7 @@ void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_
     int16_t originalZ = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER)
     {
-        originalZ = myTileElement->AsSurface()->GetWaterHeight()  << 4;
+        originalZ = myTileElement->AsSurface()->GetWaterHeight() << 4;
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);

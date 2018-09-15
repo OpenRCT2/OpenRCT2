@@ -7,9 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Surface.h"
+
 #include "../scenario/Scenario.h"
 #include "Location.hpp"
-#include "Surface.h"
 #include "Map.h"
 
 uint32_t SurfaceElement::GetSurfaceStyle() const
@@ -113,7 +114,7 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
     uint8_t grassLengthTmp = grass_length & 7;
 
     // Check if grass is underwater or outside park
-    uint32_t waterHeight = GetWaterHeight()  * 2;
+    uint32_t waterHeight = GetWaterHeight() * 2;
     if (waterHeight > base_height || !map_is_location_in_park(coords))
     {
         if (grassLengthTmp != GRASS_LENGTH_CLEAR_0)

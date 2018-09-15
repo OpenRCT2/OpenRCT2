@@ -231,8 +231,6 @@ void scenery_remove_ghost_tool_placement()
     }
 }
 
-
-
 rct_scenery_entry* get_wall_entry(int32_t entryIndex)
 {
     rct_scenery_entry* result = nullptr;

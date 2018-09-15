@@ -355,9 +355,9 @@ static money32 WallPlace(
         return MONEY32_UNDEFINED;
     }
 
-    if (surfaceElement->AsSurface()->GetWaterHeight()  > 0)
+    if (surfaceElement->AsSurface()->GetWaterHeight() > 0)
     {
-        uint16_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight()  * 16;
+        uint16_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() * 16;
 
         if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {

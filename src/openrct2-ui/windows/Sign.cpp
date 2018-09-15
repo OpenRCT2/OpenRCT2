@@ -230,8 +230,8 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
             game_do_command(
                 x, 1 | (tile_element->GetDirection() << 8), y,
-                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_LARGE_SCENERY,
-                0, 0);
+                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8),
+                GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
             break;
         case WIDX_SIGN_TEXT:
             if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)

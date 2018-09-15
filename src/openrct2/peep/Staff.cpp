@@ -2367,7 +2367,7 @@ void rct_peep::UpdatePatrolling()
 
         if (tile_element != nullptr)
         {
-            int32_t water_height = tile_element->AsSurface()->GetWaterHeight() ;
+            int32_t water_height = tile_element->AsSurface()->GetWaterHeight();
             if (water_height)
             {
                 Invalidate();
