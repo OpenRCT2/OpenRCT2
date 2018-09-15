@@ -694,18 +694,18 @@ void map_update_path_wide_flags()
  */
 int32_t map_height_from_slope(int32_t x, int32_t y, int32_t slope)
 {
-    if (!(slope & TILE_ELEMENT_SLOPE_S_CORNER_UP))
+    if (!(slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED))
         return 0;
 
-    switch (slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP)
+    switch (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
     {
-        case TILE_ELEMENT_SLOPE_FLAT:
+        case 0:
             return (31 - (x & 31)) / 2;
-        case TILE_ELEMENT_SLOPE_N_CORNER_UP:
+        case 1:
             return (y & 31) / 2;
-        case TILE_ELEMENT_SLOPE_E_CORNER_UP:
+        case 2:
             return (x & 31) / 2;
-        case TILE_ELEMENT_SLOPE_NE_SIDE_UP:
+        case 3:
             return (31 - (y & 31)) / 2;
     }
     return 0;
