@@ -1021,7 +1021,7 @@ void rct_peep::UpdateFalling()
             // If a path check if we are on it
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
-                int32_t height = map_height_from_slope(x, y, tile_element->AsSurface()->GetSlope())
+                int32_t height = map_height_from_slope(x, y, tile_element->properties.path.type)
                     + tile_element->base_height * 8;
 
                 if (height < z - 1 || height > z + 4)
