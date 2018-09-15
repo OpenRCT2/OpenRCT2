@@ -154,7 +154,7 @@ static money32 SmallScenerySetColour(
 }
 
 static money32 SmallSceneryPlace(
-    int16_t x, int16_t y, int16_t targetHeight, uint8_t quadrant, uint8_t rotation, uint8_t sceneryType, uint8_t primaryColour,
+    int16_t x, int16_t y, uint16_t targetHeight, uint8_t quadrant, uint8_t rotation, uint8_t sceneryType, uint8_t primaryColour,
     uint8_t secondaryColour, uint8_t flags)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
@@ -280,7 +280,7 @@ static money32 SmallSceneryPlace(
 
         if (surfaceElement != nullptr && surfaceElement->AsSurface()->GetWaterHeight()  > 0)
         {
-            if ((surfaceElement->AsSurface()->GetWaterHeight()  * 16) > targetHeight)
+            if ((surfaceElement->AsSurface()->GetWaterHeight() * 16) > targetHeight)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_LAND;
                 return MONEY32_UNDEFINED;
