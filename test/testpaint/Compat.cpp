@@ -240,11 +240,6 @@ void tile_element_decrement_onride_photo_timout(rct_tile_element* tileElement)
     }
 }
 
-int32_t surface_get_water_height(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
-}
-
 bool ride_type_has_flag(int rideType, int flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;
