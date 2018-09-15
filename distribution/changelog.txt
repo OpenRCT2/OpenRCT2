@@ -8,6 +8,7 @@
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.
 - Improved: [#7980] Show the full path of the scenario in the scenario select window.
+- Improved: [#7993] Allow assigning a keyboard shortcut for opening the tile inspector.
 - Removed: [#7929] Support for scenario text objects.
 
 0.2.1 (2018-08-26)
