@@ -2822,6 +2822,10 @@ void game_command_set_water_height(
             {
                 tile_element->AsSurface()->SetWaterHeight(base_height / 2);
             }
+            else
+            {
+                tile_element->AsSurface()->SetWaterHeight(0);
+            }
             map_invalidate_tile_full(x, y);
         }
         *ebx = 250;
