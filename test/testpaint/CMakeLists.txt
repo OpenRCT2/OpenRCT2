@@ -18,7 +18,7 @@ add_custom_command(
     DEPENDS ${OPENRCT2_EXE}
 )
 add_custom_target(segfiles DEPENDS openrct2_text openrct2_data)
-if (NOT USE_MMAP)
+if (NOT USE_MMAP AND FORCE32)
     set(OBJ_FORMAT "elf32-i386")
     set(LINKER_SCRIPT "ld_script_i386.xc")
     if (APPLE)
@@ -92,6 +92,11 @@ if (NOT MINGW AND NOT MSVC)
     target_link_libraries(testpaint ${ICU_LIBRARIES})
 endif ()
 
-set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES -D__TESTPAINT__ -Wno-unused")
-set_target_properties(testpaint PROPERTIES LINK_FLAGS ${RCT2_SEGMENT_LINKER_FLAGS})
+# Only use custom linker script for 32 bit builds. For 64 bit builds, it should still _compile_.
+if (FORCE32)
+    set_target_properties(testpaint PROPERTIES LINK_FLAGS ${RCT2_SEGMENT_LINKER_FLAGS})
+else ()
+    set(TESTPAINT_64BIT_FLAGS "-Wno-int-to-pointer-cast -fpermissive -Wno-error")
+endif ()
+set_target_properties(testpaint PROPERTIES COMPILE_FLAGS "-DNO_VEHICLES -D__TESTPAINT__ -Wno-unused ${TESTPAINT_64BIT_FLAGS}")
 add_dependencies(testpaint segfiles)

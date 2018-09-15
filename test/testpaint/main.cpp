@@ -451,6 +451,10 @@ static void TestGeneralSupportHeightCall()
 
 int main(int argc, char* argv[])
 {
+#if !defined(__i386__)
+    fprintf(stderr, "Testpaint can only be properly executed on x86\n");
+    return 1;
+#else
     TestGeneralSupportHeightCall();
 
     std::vector<TestCase> testCases;
@@ -636,4 +640,5 @@ int main(int argc, char* argv[])
     }
 
     return 0;
+#endif
 }
