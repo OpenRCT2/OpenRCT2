@@ -266,7 +266,7 @@ static void colour_char(uint8_t colour, const uint16_t* current_font_flags, uint
         colour32 = ((uint32_t*)g1->offset)[colour & 0xFF];
     }
 
-    if (!(*current_font_flags & 2))
+    if (!(*current_font_flags & TEXT_DRAW_FLAG_OUTLINE))
     {
         colour32 = colour32 & 0x0FF0000FF;
     }
