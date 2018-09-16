@@ -1701,8 +1701,7 @@ void footpath_chain_ride_queue(
         if (lastPathElement->AsPath()->IsQueue())
         {
             lastPathElement->properties.path.type |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
-            lastPathElement->type &= 0x3F;                                      // Clear the ride sign direction
-            footpath_element_set_direction(lastPathElement, lastPathDirection); // set the ride sign direction
+            lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
 
             map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, lastPathX, lastPathY, lastPathElement->base_height);
         }
@@ -2058,15 +2057,15 @@ void PathElement::SetEntryIndex(uint8_t newEntryIndex)
     entryIndex |= (newEntryIndex << 4);
 }
 
-uint8_t footpath_element_get_direction(const rct_tile_element* tileElement)
+uint8_t PathElement::GetQueueBannerDirection() const
 {
-    return ((tileElement->type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
+    return ((type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
 }
 
-void footpath_element_set_direction(rct_tile_element* tileElement, uint8_t direction)
+void PathElement::SetQueueBannerDirection(uint8_t direction)
 {
-    tileElement->type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
-    tileElement->type |= (direction << 6);
+    type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
+    type |= (direction << 6);
 }
 
 /**

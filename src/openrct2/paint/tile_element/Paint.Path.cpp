@@ -409,7 +409,7 @@ static void sub_6A4101(
             return;
         }
 
-        uint8_t direction = footpath_element_get_direction(tile_element);
+        uint8_t direction = tile_element->AsPath()->GetQueueBannerDirection();
         // Draw ride sign
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         if (tile_element->AsPath()->IsSloped())

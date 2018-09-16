@@ -201,7 +201,10 @@ public:
     uint8_t GetEntryIndex() const;
     rct_footpath_entry* GetEntry() const;
     void SetEntryIndex(uint8_t newIndex);
-    
+
+    uint8_t GetQueueBannerDirection() const;
+    void SetQueueBannerDirection(uint8_t direction);
+
     bool IsSloped() const;
     void SetSloped(bool isSloped);
 

@@ -2929,7 +2929,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
         uint8_t stationNum = (tile_element->properties.path.additions & 0x70) >> 4;
 
         if ((tile_element->properties.path.type & (1 << 3)) // Queue has the ride sign on it
-            && (footpath_element_get_direction(tile_element)
+            && (tile_element->AsPath()->GetQueueBannerDirection()
                 == ((peep->direction) ^ 2)) // Ride sign is facing the direction the peep is walking
         )
         {

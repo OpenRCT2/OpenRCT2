@@ -148,7 +148,7 @@ static bool map_animation_invalidate_queue_banner(int32_t x, int32_t y, int32_t 
         if (!tileElement->AsPath()->HasQueueBanner())
             continue;
 
-        int32_t direction = (footpath_element_get_direction(tileElement) + get_current_rotation()) & 3;
+        int32_t direction = (tileElement->AsPath()->GetQueueBannerDirection() + get_current_rotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST)
         {
             baseZ = tileElement->base_height * 8;
