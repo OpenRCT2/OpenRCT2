@@ -259,7 +259,7 @@ static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z)
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (footpath_element_path_scenery_is_ghost(tileElement))
+        if (tileElement->AsPath()->AdditionIsGhost())
             continue;
         if (!footpath_element_has_path_scenery(tileElement))
             continue;

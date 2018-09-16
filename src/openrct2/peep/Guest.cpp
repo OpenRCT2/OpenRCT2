@@ -641,7 +641,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
 
                         // Check if the footpath has a queue line TV monitor on it
                         if (footpath_element_has_path_scenery(tileElement)
-                            && !footpath_element_path_scenery_is_ghost(tileElement))
+                            && !tileElement->AsPath()->AdditionIsGhost())
                         {
                             uint8_t pathSceneryIndex = footpath_element_get_path_scenery_index(tileElement);
                             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
@@ -2726,7 +2726,7 @@ static uint8_t peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int1
                         {
                             return PEEP_THOUGHT_TYPE_NONE;
                         }
-                        if (footpath_element_path_scenery_is_ghost(tileElement))
+                        if (tileElement->AsPath()->AdditionIsGhost())
                             break;
 
                         if (scenery->path_bit.flags
@@ -5320,7 +5320,7 @@ void rct_peep::UpdateWalking()
 
     if (footpath_element_has_path_scenery(tileElement))
     {
-        if (!footpath_element_path_scenery_is_ghost(tileElement))
+        if (!tileElement->AsPath()->AdditionIsGhost())
         {
             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
             if (sceneryEntry == nullptr)
@@ -5772,7 +5772,7 @@ void rct_peep::UpdateUsingBin()
                 return;
             }
 
-            if (footpath_element_path_scenery_is_ghost(tileElement))
+            if (tileElement->AsPath()->AdditionIsGhost())
             {
                 StateReset();
                 return;
@@ -5930,7 +5930,7 @@ bool rct_peep::UpdateWalkingFindBench()
     if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return false;
 
-    if (footpath_element_path_scenery_is_ghost(tileElement))
+    if (tileElement->AsPath()->AdditionIsGhost())
         return false;
 
     int32_t edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
@@ -6029,7 +6029,7 @@ bool rct_peep::UpdateWalkingFindBin()
     if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return false;
 
-    if (footpath_element_path_scenery_is_ghost(tileElement))
+    if (tileElement->AsPath()->AdditionIsGhost())
         return false;
 
     int32_t edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
@@ -6126,7 +6126,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
     if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return;
 
-    if (footpath_element_path_scenery_is_ghost(tileElement))
+    if (tileElement->AsPath()->AdditionIsGhost())
         return;
 
     int32_t edges = tileElement->properties.path.edges & 0xF;

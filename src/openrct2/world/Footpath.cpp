@@ -365,16 +365,16 @@ static money32 footpath_element_update(
 
             // There is nothing yet - check if we should place a ghost
             if (flags & GAME_COMMAND_FLAG_APPLY)
-                footpath_scenery_set_is_ghost(tileElement, true);
+                tileElement->AsPath()->SetAdditionIsGhost(true);
         }
 
         if (!(flags & GAME_COMMAND_FLAG_APPLY))
             return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 
         if ((pathItemType != 0 && !(flags & GAME_COMMAND_FLAG_GHOST))
-            || (pathItemType == 0 && footpath_element_path_scenery_is_ghost(tileElement)))
+            || (pathItemType == 0 && tileElement->AsPath()->AdditionIsGhost()))
         {
-            footpath_scenery_set_is_ghost(tileElement, false);
+            tileElement->AsPath()->SetAdditionIsGhost(false);
         }
 
         footpath_element_set_path_scenery(tileElement, pathItemType);
@@ -2025,18 +2025,16 @@ uint8_t footpath_element_get_path_scenery_index(const rct_tile_element* tileElem
     return footpath_element_get_path_scenery(tileElement) - 1;
 }
 
-bool footpath_element_path_scenery_is_ghost(const rct_tile_element* tileElement)
+bool PathElement::AdditionIsGhost() const
 {
-    return (tileElement->properties.path.additions & FOOTPATH_ADDITION_FLAG_IS_GHOST) != 0;
+    return (additions & FOOTPATH_ADDITION_FLAG_IS_GHOST) != 0;
 }
 
-void footpath_scenery_set_is_ghost(rct_tile_element* tileElement, bool isGhost)
+void PathElement::SetAdditionIsGhost(bool isGhost)
 {
-    // Remove ghost flag
-    tileElement->properties.path.additions &= ~FOOTPATH_ADDITION_FLAG_IS_GHOST;
-    // Set flag if it should be a ghost
+    additions &= ~FOOTPATH_ADDITION_FLAG_IS_GHOST;
     if (isGhost)
-        tileElement->properties.path.additions |= FOOTPATH_ADDITION_FLAG_IS_GHOST;
+        additions |= FOOTPATH_ADDITION_FLAG_IS_GHOST;
 }
 
 uint8_t footpath_element_get_type(const rct_tile_element* tileElement)

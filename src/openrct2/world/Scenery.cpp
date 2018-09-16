@@ -88,7 +88,7 @@ void scenery_update_tile(int32_t x, int32_t y)
         }
         else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            if (footpath_element_has_path_scenery(tileElement) && !footpath_element_path_scenery_is_ghost(tileElement))
+            if (footpath_element_has_path_scenery(tileElement) && !tileElement->AsPath()->AdditionIsGhost())
             {
                 rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
                 if (sceneryEntry != nullptr)

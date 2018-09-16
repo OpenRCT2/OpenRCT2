@@ -207,6 +207,9 @@ public:
     void SetIsQueue(bool isQueue);
     bool HasQueueBanner() const;
 
+    bool AdditionIsGhost() const;
+    void SetAdditionIsGhost(bool isGhost);
+    
     uint8_t GetRCT1PathType() const;
 };
 assert_struct_size(PathElement, 8);

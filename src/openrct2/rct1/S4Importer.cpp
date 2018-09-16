@@ -2511,7 +2511,7 @@ private:
                         tileElement->AsPath()->SetIsQueue(true);
                     }
 
-                    footpath_scenery_set_is_ghost(tileElement, false);
+                    tileElement->AsPath()->SetAdditionIsGhost(false);
 
                     // Additions
                     uint8_t additionType = footpath_element_get_path_scenery(tileElement);

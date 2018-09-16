@@ -163,8 +163,6 @@ bool footpath_element_has_path_scenery(const rct_tile_element* tileElement);
 uint8_t footpath_element_get_path_scenery(const rct_tile_element* tileElement);
 void footpath_element_set_path_scenery(rct_tile_element* tileElement, uint8_t pathSceneryType);
 uint8_t footpath_element_get_path_scenery_index(const rct_tile_element* tileElement);
-bool footpath_element_path_scenery_is_ghost(const rct_tile_element* tileElement);
-void footpath_scenery_set_is_ghost(rct_tile_element* tileElement, bool isGhost);
 void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElement);
 int32_t entrance_get_directions(const rct_tile_element* tileElement);
 

@@ -1818,7 +1818,7 @@ void rct_peep::UpdateEmptyingBin()
 
         rct_scenery_entry* scenery_entry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
         if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & (1 << 5)
-            || footpath_element_path_scenery_is_ghost(tile_element))
+            || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
             return;
@@ -2220,7 +2220,7 @@ static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
     if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return 0;
 
-    if (footpath_element_path_scenery_is_ghost(tileElement))
+    if (tileElement->AsPath()->AdditionIsGhost())
         return 0;
 
     uint8_t bin_positions = tileElement->properties.path.edges & 0xF;

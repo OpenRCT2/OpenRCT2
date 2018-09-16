@@ -817,7 +817,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
         imageFlags = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
     }
 
-    if (footpath_element_path_scenery_is_ghost(tile_element))
+    if (tile_element->AsPath()->AdditionIsGhost())
     {
         sceneryImageFlags = CONSTRUCTION_MARKER;
     }
