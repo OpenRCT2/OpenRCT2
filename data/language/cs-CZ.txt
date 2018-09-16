@@ -3735,6 +3735,7 @@ STR_6263    :{SMALLFONT}{BLACK}Zapnout/vypnout všechny zvuky
 STR_6264    :Používat systémového průzkumníka souborů
 STR_6265    :{SMALLFONT}{BLACK}Výběr souborů bude vždy používat systémový dialog průzkumníka souborů namísto průzkumníka OpenRCT2.
 STR_6266    :Otevřít složku s uživatelským obsahem
+STR_6267    :Otevřít průzkumníka dlaždic
 
 ###############################################################################
 ## RCT2 Scenarios
