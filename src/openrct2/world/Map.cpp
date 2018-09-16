@@ -1200,8 +1200,7 @@ money32 map_clear_scenery(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_
     {
         for (x = x0; x <= x1; x += 32)
         {
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode
-                || map_is_location_owned_or_has_rights(x, y))
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_in_park({ x, y }))
             {
                 cost = map_clear_scenery_from_tile(x / 32, y / 32, clear, flags);
                 if (cost != MONEY32_UNDEFINED)
