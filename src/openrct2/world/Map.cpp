@@ -342,13 +342,16 @@ void map_init(int32_t size)
     for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
     {
         rct_tile_element* tile_element = &gTileElements[i];
+        memset(tile_element, 0, sizeof(rct_tile_element));
         tile_element->type = (TILE_ELEMENT_TYPE_SURFACE << 2);
         tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
         tile_element->base_height = 14;
         tile_element->clearance_height = 14;
+        tile_element->AsSurface()->SetWaterHeight(0);
         tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
         tile_element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+        tile_element->AsSurface()->SetParkFences(0);
         tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
         tile_element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
     }
