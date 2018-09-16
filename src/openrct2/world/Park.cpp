@@ -173,7 +173,7 @@ void update_park_fences(const CoordsXY coords)
     if (surfaceElement == nullptr)
         return;
 
-    uint8_t newOwnership = surfaceElement->AsSurface()->GetOwnership();
+    uint8_t newFences = 0;
     if ((surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED) == 0)
     {
         bool fenceRequired = true;
@@ -202,34 +202,34 @@ void update_park_fences(const CoordsXY coords)
             rct_string_id previous_error = gGameCommandErrorText;
             if (map_is_location_in_park({ coords.x - 32, coords.y }))
             {
-                newOwnership |= 0x8;
+                newFences |= 0x8;
             }
 
             if (map_is_location_in_park({ coords.x, coords.y - 32 }))
             {
-                newOwnership |= 0x4;
+                newFences |= 0x4;
             }
 
             if (map_is_location_in_park({ coords.x + 32, coords.y }))
             {
-                newOwnership |= 0x2;
+                newFences |= 0x2;
             }
 
             if (map_is_location_in_park({ coords.x, coords.y + 32 }))
             {
-                newOwnership |= 0x1;
+                newFences |= 0x1;
             }
 
             gGameCommandErrorText = previous_error;
         }
     }
 
-    if (surfaceElement->AsSurface()->GetOwnership() != newOwnership)
+    if (surfaceElement->AsSurface()->GetParkFences() != newFences)
     {
         int32_t z0 = surfaceElement->base_height * 8;
         int32_t z1 = z0 + 16;
         map_invalidate_tile(coords.x, coords.y, z0, z1);
-        surfaceElement->AsSurface()->SetOwnership(newOwnership);
+        surfaceElement->AsSurface()->SetParkFences(newFences);
     }
 }
 
