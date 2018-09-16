@@ -699,13 +699,13 @@ int32_t map_height_from_slope(int32_t x, int32_t y, int32_t slope)
 
     switch (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
     {
-        case 0:
+        case TILE_ELEMENT_DIRECTION_WEST:
             return (31 - (x & 31)) / 2;
-        case 1:
+        case TILE_ELEMENT_DIRECTION_NORTH:
             return (y & 31) / 2;
-        case 2:
+        case TILE_ELEMENT_DIRECTION_EAST:
             return (x & 31) / 2;
-        case 3:
+        case TILE_ELEMENT_DIRECTION_SOUTH:
             return (31 - (y & 31)) / 2;
     }
     return 0;
