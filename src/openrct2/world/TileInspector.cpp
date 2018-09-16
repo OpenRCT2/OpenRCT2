@@ -515,7 +515,8 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
         const uint8_t originalSlope = surfaceElement->AsSurface()->GetSlope();
         const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
 
-        surfaceElement->AsSurface()->SetSlope(surfaceElement->AsSurface()->GetSlope() ^ (1 << cornerIndex));
+        uint8_t newSlope = surfaceElement->AsSurface()->GetSlope() ^ (1 << cornerIndex);
+        surfaceElement->AsSurface()->SetSlope(newSlope);
         if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
@@ -578,7 +579,8 @@ int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t fla
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        surfaceElement->AsSurface()->SetSlope(surfaceElement->AsSurface()->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
+        uint8_t newSlope = surfaceElement->AsSurface()->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+        surfaceElement->AsSurface()->SetSlope(newSlope);
         if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 4;
