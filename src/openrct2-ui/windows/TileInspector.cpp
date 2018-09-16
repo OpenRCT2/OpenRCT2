@@ -1809,7 +1809,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Path name
-                rct_string_id pathNameId = get_footpath_entry(footpath_element_get_type(tileElement))->string_idx;
+                rct_string_id pathNameId = tileElement->AsPath()->GetEntry()->string_idx;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, COLOUR_DARK_GREEN, x, y);
 
                 // Path addition

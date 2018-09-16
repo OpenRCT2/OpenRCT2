@@ -568,7 +568,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
                 break;
             case TILE_ELEMENT_TYPE_PATH:
                 // Bonus for normal path
-                if (footpath_element_get_type(tileElement) != 0)
+                if (tileElement->AsPath()->GetEntryIndex() != 0)
                 {
                     if (tileElement->clearance_height == inputTileElement->base_height)
                     {

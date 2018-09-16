@@ -2505,7 +2505,7 @@ private:
                     tileElement->SetDirection(0);
                     tileElement->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
 
-                    footpath_element_set_type(tileElement, entryIndex);
+                    tileElement->AsPath()->SetEntryIndex(entryIndex);
                     if (RCT1::PathIsQueue(pathType))
                     {
                         tileElement->AsPath()->SetIsQueue(true);

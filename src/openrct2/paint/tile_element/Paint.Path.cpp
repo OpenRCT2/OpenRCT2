@@ -920,8 +920,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
         sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2);
     }
 
-    uint8_t pathType = footpath_element_get_type(tile_element);
-    rct_footpath_entry* footpathEntry = get_footpath_entry(pathType);
+    rct_footpath_entry* footpathEntry = tile_element->AsPath()->GetEntry();
 
     if (footpathEntry != nullptr)
     {

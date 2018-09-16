@@ -1454,7 +1454,7 @@ static void sub_6E1F34(
                             & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK))
                 << 8;
             *parameter_2 = tile_element->base_height;
-            *parameter_2 |= ((footpath_element_get_type(tile_element)) << 8);
+            *parameter_2 |= (tile_element->AsPath()->GetEntryIndex() << 8);
             if (tile_element->AsPath()->IsQueue())
             {
                 *parameter_2 |= LOCATION_NULL;

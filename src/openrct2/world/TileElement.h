@@ -13,6 +13,7 @@
 #include "Location.hpp"
 
 struct rct_scenery_entry;
+struct rct_footpath_entry;
 
 #pragma pack(push, 1)
 struct rct_tile_element_path_properties
@@ -197,6 +198,10 @@ private:
     };
 
 public:
+    uint8_t GetEntryIndex() const;
+    rct_footpath_entry* GetEntry() const;
+    void SetEntryIndex(uint8_t newIndex);
+    
     bool IsSloped() const;
     void SetSloped(bool isSloped);
 

@@ -267,7 +267,7 @@ static money32 footpath_element_insert(
             assert(tileElement != nullptr);
             tileElement->type = TILE_ELEMENT_TYPE_PATH;
             tileElement->clearance_height = z + 4 + ((slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP) ? 2 : 0);
-            footpath_element_set_type(tileElement, type);
+            tileElement->AsPath()->SetEntryIndex(type);
             tileElement->properties.path.type |= (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
             if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
                 tileElement->AsPath()->SetIsQueue(true);
@@ -302,7 +302,7 @@ static money32 footpath_element_update(
     const int32_t newFootpathType = (type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
     const bool newPathIsQueue = ((type >> 7) == 1);
 
-    if (footpath_element_get_type(tileElement) != newFootpathType || tileElement->AsPath()->IsQueue() != newPathIsQueue)
+    if (tileElement->AsPath()->GetEntryIndex() != newFootpathType || tileElement->AsPath()->IsQueue() != newPathIsQueue)
     {
         gFootpathPrice += MONEY(6, 00);
     }
@@ -401,7 +401,7 @@ static money32 footpath_element_update(
         if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
             footpath_remove_edges_at(x, y, tileElement);
 
-        footpath_element_set_type(tileElement, type);
+        tileElement->AsPath()->SetEntryIndex(type);
 
         tileElement->type = (tileElement->type & 0xFE) | (type >> 7);
         tileElement->AsPath()->SetAddition(pathItemType);
@@ -2042,15 +2042,20 @@ void PathElement::SetAdditionIsGhost(bool isGhost)
         additions |= FOOTPATH_ADDITION_FLAG_IS_GHOST;
 }
 
-uint8_t footpath_element_get_type(const rct_tile_element* tileElement)
+uint8_t PathElement::GetEntryIndex() const
 {
-    return (tileElement->properties.path.type & FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
+    return (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
 }
 
-void footpath_element_set_type(rct_tile_element* tileElement, uint8_t type)
+rct_footpath_entry* PathElement::GetEntry() const
 {
-    tileElement->properties.path.type &= ~FOOTPATH_PROPERTIES_TYPE_MASK;
-    tileElement->properties.path.type |= (type << 4);
+    return get_footpath_entry(GetEntryIndex());
+}
+
+void PathElement::SetEntryIndex(uint8_t newEntryIndex)
+{
+    entryIndex &= ~FOOTPATH_PROPERTIES_TYPE_MASK;
+    entryIndex |= (newEntryIndex << 4);
 }
 
 uint8_t footpath_element_get_direction(const rct_tile_element* tileElement)
