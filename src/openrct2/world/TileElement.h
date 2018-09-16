@@ -200,6 +200,9 @@ public:
     bool IsSloped() const;
     void SetSloped(bool isSloped);
 
+    bool IsWide() const;
+    void SetWide(bool isWide);
+
     bool IsQueue() const;
     void SetIsQueue(bool isQueue);
     bool HasQueueBanner() const;

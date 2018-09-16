@@ -155,12 +155,10 @@ bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
 int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags);
 uint8_t footpath_element_get_slope_direction(const rct_tile_element* tileElement);
-bool footpath_element_is_wide(const rct_tile_element* tileElement);
 uint8_t footpath_element_get_type(const rct_tile_element* tileElement);
 void footpath_element_set_type(rct_tile_element* tileElement, uint8_t type);
 uint8_t footpath_element_get_direction(const rct_tile_element* tileElement);
 void footpath_element_set_direction(rct_tile_element* tileElement, uint8_t direction);
-void footpath_element_set_wide(rct_tile_element* tileElement, bool isWide);
 bool footpath_element_has_path_scenery(const rct_tile_element* tileElement);
 uint8_t footpath_element_get_path_scenery(const rct_tile_element* tileElement);
 void footpath_element_set_path_scenery(rct_tile_element* tileElement, uint8_t pathSceneryType);

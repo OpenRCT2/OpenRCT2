@@ -244,7 +244,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, rct_tile_el
             continue;
         if (!is_valid_path_z_and_direction(nextTileElement, loc.z, chosenDirection))
             continue;
-        if (footpath_element_is_wide(nextTileElement))
+        if (nextTileElement->AsPath()->IsWide())
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
         if (nextTileElement->AsPath()->IsQueue() && nextTileElement->properties.path.ride_index != 0xFF)
@@ -338,7 +338,7 @@ static uint8_t footpath_element_dest_in_dir(
             case TILE_ELEMENT_TYPE_PATH:
                 if (!is_valid_path_z_and_direction(tileElement, loc.z, chosenDirection))
                     continue;
-                if (footpath_element_is_wide(tileElement))
+                if (tileElement->AsPath()->IsWide())
                     return PATH_SEARCH_WIDE;
 
                 uint8_t edges = path_get_permitted_edges(tileElement);
@@ -589,7 +589,7 @@ static void peep_pathfind_heuristic_search(
     uint8_t searchResult = PATH_SEARCH_FAILED;
 
     bool currentElementIsWide
-        = (footpath_element_is_wide(currentTileElement)
+        = (currentTileElement->AsPath()->IsWide()
            && !staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, currentTileElement));
 
     loc += TileDirectionDelta[test_edge];
@@ -725,7 +725,7 @@ static void peep_pathfind_heuristic_search(
                 // Path may be sloped, so set z to path base height.
                 loc.z = tileElement->base_height;
 
-                if (footpath_element_is_wide(tileElement))
+                if (tileElement->AsPath()->IsWide())
                 {
                     /* Check if staff can ignore this wide flag. */
                     if (!staff_can_ignore_wide_flag(peep, loc.x * 32, loc.y * 32, loc.z, tileElement))

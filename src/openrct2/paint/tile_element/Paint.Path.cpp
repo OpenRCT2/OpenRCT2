@@ -835,7 +835,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
     }
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
-    if (gPaintWidePathsAsGhost && footpath_element_is_wide(tile_element))
+    if (gPaintWidePathsAsGhost && tile_element->AsPath()->IsWide())
     {
         imageFlags &= 0x7FFFF;
         imageFlags |= CONSTRUCTION_MARKER;

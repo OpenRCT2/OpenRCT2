@@ -1992,16 +1992,16 @@ bool PathElement::HasQueueBanner() const
     return (entryIndex & FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
 }
 
-bool footpath_element_is_wide(const rct_tile_element* tileElement)
+bool PathElement::IsWide() const
 {
-    return (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
+    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
 }
 
-void footpath_element_set_wide(rct_tile_element* tileElement, bool isWide)
+void PathElement::SetWide(bool isWide)
 {
-    tileElement->type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+    type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
     if (isWide)
-        tileElement->type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+        type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
 }
 
 bool footpath_element_has_path_scenery(const rct_tile_element* tileElement)
@@ -2074,7 +2074,7 @@ static void footpath_clear_wide(int32_t x, int32_t y)
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        footpath_element_set_wide(tileElement, false);
+        tileElement->AsPath()->SetWide(false);
     } while (!(tileElement++)->IsLastForTile());
 }
 
@@ -2183,7 +2183,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             F3EFA5 |= 0x80;
             if (pathList[7] != nullptr)
             {
-                if (footpath_element_is_wide(pathList[7]))
+                if ((pathList[7])->AsPath()->IsWide())
                 {
                     F3EFA5 &= ~0x80;
                 }
@@ -2195,7 +2195,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             F3EFA5 |= 0x2;
             if (pathList[1] != nullptr)
             {
-                if (footpath_element_is_wide(pathList[1]))
+                if ((pathList[1])->AsPath()->IsWide())
                 {
                     F3EFA5 &= ~0x2;
                 }
@@ -2232,11 +2232,11 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             //}
         }
 
-        if ((F3EFA5 & 0x80) && (pathList[7] != nullptr) && !(footpath_element_is_wide(pathList[7])))
+        if ((F3EFA5 & 0x80) && (pathList[7] != nullptr) && !(pathList[7])->AsPath()->IsWide())
         {
-            if ((F3EFA5 & 2) && (pathList[0] != nullptr) && (!footpath_element_is_wide(pathList[0]))
+            if ((F3EFA5 & 2) && (pathList[0] != nullptr) && !(pathList[0])->AsPath()->IsWide()
                 && ((pathList[0]->properties.path.edges & 6) == 6) && // N E
-                (pathList[1] != nullptr) && (!footpath_element_is_wide(pathList[1])))
+                (pathList[1] != nullptr) && !(pathList[1])->AsPath()->IsWide())
             {
                 F3EFA5 |= 0x1;
             }
@@ -2246,9 +2246,9 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
              * is always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
-            if ((F3EFA5 & 0x20) && (pathList[6] != nullptr) && (!footpath_element_is_wide(pathList[6]))
+            if ((F3EFA5 & 0x20) && (pathList[6] != nullptr) && !(pathList[6])->AsPath()->IsWide()
                 && ((pathList[6]->properties.path.edges & 3) == 3) && // N W
-                (pathList[5] != nullptr) && (true || !footpath_element_is_wide(pathList[5])))
+                (pathList[5] != nullptr) && (true || !(pathList[5])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x40;
             }
@@ -2260,11 +2260,11 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
          * are always false due to the tile update order
          * in combination with reset tiles.
          * Short circuit the logic appropriately. */
-        if ((F3EFA5 & 0x8) && (pathList[3] != nullptr) && (true || !footpath_element_is_wide(pathList[3])))
+        if ((F3EFA5 & 0x8) && (pathList[3] != nullptr) && (true || !(pathList[3])->AsPath()->IsWide()))
         {
-            if ((F3EFA5 & 2) && (pathList[2] != nullptr) && (true || !footpath_element_is_wide(pathList[2]))
+            if ((F3EFA5 & 2) && (pathList[2] != nullptr) && (true || !(pathList[2])->AsPath()->IsWide())
                 && ((pathList[2]->properties.path.edges & 0xC) == 0xC) && (pathList[1] != nullptr)
-                && (!footpath_element_is_wide(pathList[1])))
+                && (!(pathList[1])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x4;
             }
@@ -2275,9 +2275,9 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
              * are always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
-            if ((F3EFA5 & 0x20) && (pathList[4] != nullptr) && (true || !footpath_element_is_wide(pathList[4]))
+            if ((F3EFA5 & 0x20) && (pathList[4] != nullptr) && (true || !(pathList[4])->AsPath()->IsWide())
                 && ((pathList[4]->properties.path.edges & 9) == 9) && (pathList[5] != nullptr)
-                && (true || !footpath_element_is_wide(pathList[5])))
+                && (true || !(pathList[5])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x10;
             }
@@ -2299,7 +2299,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         {
             uint8_t e = tileElement->properties.path.edges;
             if ((e != 0b10101111) && (e != 0b01011111) && (e != 0b11101111))
-                footpath_element_set_wide(tileElement, true);
+                tileElement->AsPath()->SetWide(true);
         }
     } while (!(tileElement++)->IsLastForTile());
 }

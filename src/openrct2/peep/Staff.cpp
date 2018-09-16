@@ -737,7 +737,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
                 pathcount++;
             }
 
-            if (footpath_element_is_wide(test_element))
+            if (test_element->AsPath()->IsWide())
             {
                 if (!widefound)
                 {
