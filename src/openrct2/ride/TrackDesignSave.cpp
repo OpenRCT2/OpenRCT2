@@ -375,8 +375,9 @@ static void track_design_save_add_footpath(int32_t x, int32_t y, rct_tile_elemen
 
     uint8_t flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
-    flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
+    if (tileElement->AsPath()->IsSloped())
+        flags |= 0b00010000;
     if (tileElement->AsPath()->IsQueue())
         flags |= 1 << 7;
 

@@ -2881,7 +2881,7 @@ void load_from_sc4(const utf8* path)
 uint8_t PathElement::GetRCT1PathType() const
 {
     uint8_t pathColour = type & 3;
-    uint8_t pathType2 = (pathType & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
+    uint8_t pathType2 = (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
 
     pathType2 = pathType2 | pathColour;
     return pathType2;

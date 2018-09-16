@@ -707,7 +707,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
             continue;
         }
 
-        if (footpath_element_is_sloped(path))
+        if (path->AsPath()->IsSloped())
         {
             if (footpath_element_get_slope_direction(path) == adjac_dir)
             {

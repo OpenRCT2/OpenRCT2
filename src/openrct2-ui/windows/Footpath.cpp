@@ -824,7 +824,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX,
  */
 static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 {
-    int32_t interactionType, presentType, selectedType, z, cost;
+    int32_t interactionType, currentType, selectedType, z, cost;
     rct_tile_element* tileElement;
 
     if (_footpathErrorOccured)
@@ -847,15 +847,18 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
     }
 
     // Set path
-    presentType = 0;
+    currentType = 0;
     switch (interactionType)
     {
         case VIEWPORT_INTERACTION_ITEM_TERRAIN:
-            presentType = DefaultPathSlope[tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+            currentType = DefaultPathSlope[tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            presentType = tileElement->properties.path.type
-                & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
+            currentType = tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+            if (tileElement->AsPath()->IsSloped())
+            {
+                currentType |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+            }
             break;
     }
     z = tileElement->base_height;
@@ -863,7 +866,7 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    cost = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY);
+    cost = footpath_place(selectedType, x, y, z, currentType, GAME_COMMAND_FLAG_APPLY);
 
     if (cost == MONEY32_UNDEFINED)
     {

@@ -866,7 +866,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             {
                 case WIDX_PATH_CHECK_SLOPED:
                     window_tile_inspector_path_set_sloped(
-                        windowTileInspectorSelectedIndex, !footpath_element_is_sloped(tileElement));
+                        windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsSloped());
                     break;
                 case WIDX_PATH_CHECK_EDGE_E:
                 case WIDX_PATH_CHECK_EDGE_S:
@@ -1514,7 +1514,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_PATH_CHECK_EDGE_W].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_W].top + 13;
             w->widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 2) + 7 * 1;
             w->widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
-            widget_set_checkbox_value(w, WIDX_PATH_CHECK_SLOPED, footpath_element_is_sloped(tileElement));
+            widget_set_checkbox_value(w, WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
             widget_set_checkbox_value(
                 w, WIDX_PATH_CHECK_EDGE_NE, tileElement->properties.path.edges & (1 << ((0 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(

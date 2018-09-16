@@ -134,7 +134,7 @@ void map_update_tile_pointers();
 rct_tile_element* map_get_first_element_at(int32_t x, int32_t y);
 rct_tile_element* map_get_nth_element_at(int32_t x, int32_t y, int32_t n);
 void map_set_tile_elements(int32_t x, int32_t y, rct_tile_element* elements);
-int32_t map_height_from_slope(int32_t x, int32_t y, int32_t slope);
+int32_t map_height_from_slope(CoordsXY coords, int32_t slope, bool isSloped);
 BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
 rct_tile_element* map_get_surface_element_at(int32_t x, int32_t y);
 rct_tile_element* map_get_surface_element_at(CoordsXY coords);

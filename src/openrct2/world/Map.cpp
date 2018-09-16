@@ -632,7 +632,7 @@ bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirecti
         rct_tile_element_path_properties props = tileElement->properties.path;
         uint8_t pathDirection = props.type & 3;
 
-        if (footpath_element_is_sloped(tileElement))
+        if (tileElement->AsPath()->IsSloped())
         {
             if (pathDirection == faceDirection)
             {
@@ -694,21 +694,21 @@ void map_update_path_wide_flags()
  *
  *  rct2: 0x006A7B84
  */
-int32_t map_height_from_slope(int32_t x, int32_t y, int32_t slope)
+int32_t map_height_from_slope(const CoordsXY coords, int32_t slope, bool isSloped)
 {
-    if (!(slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED))
+    if (!isSloped)
         return 0;
 
     switch (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
     {
         case TILE_ELEMENT_DIRECTION_WEST:
-            return (31 - (x & 31)) / 2;
+            return (31 - (coords.x & 31)) / 2;
         case TILE_ELEMENT_DIRECTION_NORTH:
-            return (y & 31) / 2;
+            return (coords.y & 31) / 2;
         case TILE_ELEMENT_DIRECTION_EAST:
-            return (x & 31) / 2;
+            return (coords.x & 31) / 2;
         case TILE_ELEMENT_DIRECTION_SOUTH:
-            return (31 - (y & 31)) / 2;
+            return (31 - (coords.y & 31)) / 2;
     }
     return 0;
 }
@@ -3587,7 +3587,7 @@ bool map_can_construct_with_clear_at(
                 // Crossing mode 1: building track over path
                 if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_PATH
                     && tileElement->base_height == zLow && !tileElement->AsPath()->IsQueue()
-                    && !footpath_element_is_sloped(tileElement))
+                    && !tileElement->AsPath()->IsSloped())
                 {
                     continue;
                 }

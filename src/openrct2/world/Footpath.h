@@ -154,8 +154,6 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
 int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags);
-bool footpath_element_is_sloped(const rct_tile_element* tileElement);
-void footpath_element_set_sloped(rct_tile_element* tileElement, bool isSloped);
 uint8_t footpath_element_get_slope_direction(const rct_tile_element* tileElement);
 bool footpath_element_has_queue_banner(const rct_tile_element* tileElement);
 bool footpath_element_is_wide(const rct_tile_element* tileElement);

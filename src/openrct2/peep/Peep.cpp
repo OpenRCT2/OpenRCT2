@@ -1021,7 +1021,7 @@ void rct_peep::UpdateFalling()
             // If a path check if we are on it
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
-                int32_t height = map_height_from_slope(x, y, tile_element->properties.path.type)
+                int32_t height = map_height_from_slope({x, y}, tile_element->properties.path.type, tile_element->AsPath()->IsSloped())
                     + tile_element->base_height * 8;
 
                 if (height < z - 1 || height > z + 4)
@@ -2634,7 +2634,7 @@ static void peep_interact_with_entrance(
             if (nextTileElement->AsPath()->IsQueue())
                 continue;
 
-            if (footpath_element_is_sloped(nextTileElement))
+            if (nextTileElement->AsPath()->IsSloped())
             {
                 uint8_t slopeDirection = footpath_element_get_slope_direction(nextTileElement);
                 if (slopeDirection == entranceDirection)
@@ -3093,7 +3093,7 @@ static bool peep_interact_with_shop(rct_peep* peep, int16_t x, int16_t y, rct_ti
 
 bool is_valid_path_z_and_direction(rct_tile_element* tileElement, int32_t currentZ, int32_t currentDirection)
 {
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
     {
         int32_t slopeDirection = footpath_element_get_slope_direction(tileElement);
         if (slopeDirection == currentDirection)
@@ -3457,8 +3457,7 @@ int32_t rct_peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
     int32_t height = next_z * 8;
     uint8_t slope = GetNextDirection();
-    slope |= GetNextIsSloped() ? (1 << 2) : 0;
-    return height + map_height_from_slope(tile_x, tile_y, slope);
+    return height + map_height_from_slope({tile_x, tile_y}, slope, GetNextIsSloped());
 }
 
 /**
