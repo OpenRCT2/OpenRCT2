@@ -213,5 +213,5 @@ uint8_t SurfaceElement::GetSlope() const
 void SurfaceElement::SetSlope(uint8_t newSlope)
 {
     slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
-    slope |= (newSlope | TILE_ELEMENT_SURFACE_SLOPE_MASK);
+    slope |= (newSlope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
 }
