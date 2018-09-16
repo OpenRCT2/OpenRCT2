@@ -271,7 +271,7 @@ static money32 footpath_element_insert(
             tileElement->properties.path.type |= (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
             if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
                 tileElement->AsPath()->SetIsQueue(true);
-            tileElement->properties.path.additions = pathItemType;
+            tileElement->AsPath()->SetAddition(pathItemType);
             tileElement->properties.path.addition_status = 255;
             tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -650,7 +650,7 @@ static money32 footpath_place_from_track(
             tileElement->clearance_height = z + 4 + ((slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) ? 2 : 0);
             tileElement->properties.path.type = (type << 4) | (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
             tileElement->type |= type >> 7;
-            tileElement->properties.path.additions = 0;
+            tileElement->AsPath()->SetAddition(0);
             tileElement->properties.path.addition_status = 255;
             tileElement->properties.path.edges = edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
             tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
@@ -1672,8 +1672,7 @@ void footpath_chain_ride_queue(
             tileElement->properties.path.type &= ~FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
             tileElement->properties.path.edges |= (1 << (direction ^ 2));
             tileElement->properties.path.ride_index = rideIndex;
-            tileElement->properties.path.additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
-            tileElement->properties.path.additions |= (entranceIndex << 4) & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
+            tileElement->AsPath()->SetStationIndex(entranceIndex);
 
             map_invalidate_element(x, y, tileElement);
 
@@ -1989,6 +1988,17 @@ void PathElement::SetIsQueue(bool isQueue)
 bool PathElement::HasQueueBanner() const
 {
     return (entryIndex & FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
+}
+
+uint8_t PathElement::GetStationIndex() const
+{
+    return (additions & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;
+}
+
+void PathElement::SetStationIndex(uint8_t newStationIndex)
+{
+    additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
+    additions |= ((newStationIndex << 4) & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK);
 }
 
 bool PathElement::IsWide() const

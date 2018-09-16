@@ -479,7 +479,7 @@ private:
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
-                    uint8_t pathAdditionsType = tileElement->properties.path.additions & 0x0F;
+                    uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
 
                     AddEntryForPath(pathType);
                     AddEntryForPathAddition(pathAdditionsType);
