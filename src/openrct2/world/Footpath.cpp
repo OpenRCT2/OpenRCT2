@@ -308,7 +308,7 @@ static money32 footpath_element_update(
     }
     else if (pathItemType != 0)
     {
-        if (!(flags & GAME_COMMAND_FLAG_GHOST) && footpath_element_get_path_scenery(tileElement) == pathItemType
+        if (!(flags & GAME_COMMAND_FLAG_GHOST) && tileElement->AsPath()->GetAddition() == pathItemType
             && !(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN))
         {
             if (flags & GAME_COMMAND_FLAG_4)
@@ -357,7 +357,7 @@ static money32 footpath_element_update(
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             // Check if there is something on the path already
-            if (footpath_element_has_path_scenery(tileElement))
+            if (tileElement->AsPath()->HasAddition())
             {
                 gGameCommandErrorText = STR_NONE;
                 return MONEY32_UNDEFINED;
@@ -377,7 +377,7 @@ static money32 footpath_element_update(
             tileElement->AsPath()->SetAdditionIsGhost(false);
         }
 
-        footpath_element_set_path_scenery(tileElement, pathItemType);
+        tileElement->AsPath()->SetAddition(pathItemType);
         tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
         if (pathItemType != 0)
         {
@@ -404,7 +404,7 @@ static money32 footpath_element_update(
         footpath_element_set_type(tileElement, type);
 
         tileElement->type = (tileElement->type & 0xFE) | (type >> 7);
-        footpath_element_set_path_scenery(tileElement, pathItemType);
+        tileElement->AsPath()->SetAddition(pathItemType);
         tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
 
         loc_6A6620(flags, x, y, tileElement);
@@ -2004,25 +2004,30 @@ void PathElement::SetWide(bool isWide)
         type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
 }
 
-bool footpath_element_has_path_scenery(const rct_tile_element* tileElement)
+bool PathElement::HasAddition() const
 {
-    return footpath_element_get_path_scenery(tileElement) != 0;
+    return (additions & FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK) != 0;
 }
 
-uint8_t footpath_element_get_path_scenery(const rct_tile_element* tileElement)
+uint8_t PathElement::GetAddition() const
 {
-    return tileElement->properties.path.additions & FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
+    return additions & FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
 }
 
-void footpath_element_set_path_scenery(rct_tile_element* tileElement, uint8_t pathSceneryType)
+uint8_t PathElement::GetAdditionEntryIndex() const
 {
-    tileElement->properties.path.additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
-    tileElement->properties.path.additions |= pathSceneryType;
+    return GetAddition() - 1;
 }
 
-uint8_t footpath_element_get_path_scenery_index(const rct_tile_element* tileElement)
+rct_scenery_entry* PathElement::GetAdditionEntry() const
 {
-    return footpath_element_get_path_scenery(tileElement) - 1;
+    return get_footpath_item_entry(GetAdditionEntryIndex());
+}
+
+void PathElement::SetAddition(uint8_t newAddition)
+{
+    additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
+    additions |= newAddition;
 }
 
 bool PathElement::AdditionIsGhost() const

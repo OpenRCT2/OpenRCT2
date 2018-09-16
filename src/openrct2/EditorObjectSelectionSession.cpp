@@ -136,9 +136,9 @@ void setup_in_use_selection_flags()
                 assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
                 Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
 
-                if (footpath_element_has_path_scenery(iter.element))
+                if (iter.element->AsPath()->HasAddition())
                 {
-                    uint8_t path_additions = footpath_element_get_path_scenery_index(iter.element);
+                    uint8_t path_additions = iter.element->AsPath()->GetAdditionEntryIndex();
                     Editor::SetSelectedObject(OBJECT_TYPE_PATH_BITS, path_additions, OBJECT_SELECTION_FLAG_SELECTED);
                 }
                 break;

@@ -2514,7 +2514,7 @@ private:
                     tileElement->AsPath()->SetAdditionIsGhost(false);
 
                     // Additions
-                    uint8_t additionType = footpath_element_get_path_scenery(tileElement);
+                    uint8_t additionType = tileElement->AsPath()->GetAddition();
                     if (additionType != RCT1_PATH_ADDITION_NONE)
                     {
                         uint8_t normalisedType = RCT1::NormalisePathAddition(additionType);
@@ -2523,7 +2523,7 @@ private:
                         {
                             tileElement->flags |= TILE_ELEMENT_FLAG_BROKEN;
                         }
-                        footpath_element_set_path_scenery(tileElement, entryIndex + 1);
+                        tileElement->AsPath()->SetAddition(entryIndex + 1);
                     }
                     break;
                 }

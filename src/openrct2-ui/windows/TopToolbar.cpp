@@ -1129,7 +1129,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
         {
-            int32_t entryIndex = footpath_element_get_path_scenery_index(tileElement);
+            int32_t entryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {

@@ -682,7 +682,7 @@ static void sub_6A3F61(
     {
         if (!gTrackDesignSaveMode)
         {
-            if (footpath_element_has_path_scenery(tile_element))
+            if (tile_element->AsPath()->HasAddition())
             {
                 session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
                 if (sceneryImageFlags != 0)
@@ -691,8 +691,7 @@ static void sub_6A3F61(
                 }
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
-                rct_scenery_entry* sceneryEntry = get_footpath_item_entry(
-                    footpath_element_get_path_scenery_index(tile_element));
+                rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
 
                 if ((gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
                     && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -939,9 +938,9 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        if (footpath_element_has_path_scenery(tile_element) && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN))
+        if (tile_element->AsPath()->HasAddition() && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN))
         {
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+            rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)
             {
                 if (!(tile_element->properties.path.edges & EDGE_NE))

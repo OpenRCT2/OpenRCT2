@@ -640,10 +640,10 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                             continue;
 
                         // Check if the footpath has a queue line TV monitor on it
-                        if (footpath_element_has_path_scenery(tileElement)
+                        if (tileElement->AsPath()->HasAddition()
                             && !tileElement->AsPath()->AdditionIsGhost())
                         {
-                            uint8_t pathSceneryIndex = footpath_element_get_path_scenery_index(tileElement);
+                            uint8_t pathSceneryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
                             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
                             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN)
                             {
@@ -2718,10 +2718,10 @@ static uint8_t peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int1
                 switch (tileElement->GetType())
                 {
                     case TILE_ELEMENT_TYPE_PATH:
-                        if (!footpath_element_has_path_scenery(tileElement))
+                        if (!tileElement->AsPath()->HasAddition())
                             break;
 
-                        scenery = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+                        scenery = tileElement->AsPath()->GetAdditionEntry();
                         if (scenery == nullptr)
                         {
                             return PEEP_THOUGHT_TYPE_NONE;
@@ -5318,11 +5318,11 @@ void rct_peep::UpdateWalking()
 
     int32_t positions_free = 15;
 
-    if (footpath_element_has_path_scenery(tileElement))
+    if (tileElement->AsPath()->HasAddition())
     {
         if (!tileElement->AsPath()->AdditionIsGhost())
         {
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+            rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
             if (sceneryEntry == nullptr)
             {
                 return;
@@ -5753,13 +5753,13 @@ void rct_peep::UpdateUsingBin()
                 }
             }
 
-            if (!footpath_element_has_path_scenery(tileElement))
+            if (!tileElement->AsPath()->HasAddition())
             {
                 StateReset();
                 return;
             }
 
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+            rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
             if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
             {
                 StateReset();
@@ -5920,9 +5920,9 @@ bool rct_peep::UpdateWalkingFindBench()
         }
     }
 
-    if (!footpath_element_has_path_scenery(tileElement))
+    if (!tileElement->AsPath()->HasAddition())
         return false;
-    rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
 
     if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
         return false;
@@ -6015,9 +6015,9 @@ bool rct_peep::UpdateWalkingFindBin()
         }
     }
 
-    if (!footpath_element_has_path_scenery(tileElement))
+    if (!tileElement->AsPath()->HasAddition())
         return false;
-    rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
     if (sceneryEntry == nullptr)
     {
         return false;
@@ -6116,9 +6116,9 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
         }
     }
 
-    if (!footpath_element_has_path_scenery(tileElement))
+    if (!tileElement->AsPath()->HasAddition())
         return;
-    rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))
         return;

@@ -202,10 +202,16 @@ public:
 
     bool IsWide() const;
     void SetWide(bool isWide);
-
+    
     bool IsQueue() const;
     void SetIsQueue(bool isQueue);
     bool HasQueueBanner() const;
+
+    bool HasAddition() const;
+    uint8_t GetAddition() const;
+    uint8_t GetAdditionEntryIndex() const;
+    rct_scenery_entry* GetAdditionEntry() const;
+    void SetAddition(uint8_t newAddition);
 
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);

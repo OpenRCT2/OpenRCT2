@@ -261,10 +261,10 @@ static bool is_jumping_fountain(int32_t type, int32_t x, int32_t y, int32_t z)
             continue;
         if (tileElement->AsPath()->AdditionIsGhost())
             continue;
-        if (!footpath_element_has_path_scenery(tileElement))
+        if (!tileElement->AsPath()->HasAddition())
             continue;
 
-        uint8_t additionIndex = footpath_element_get_path_scenery_index(tileElement);
+        uint8_t additionIndex = tileElement->AsPath()->GetAdditionEntryIndex();
         rct_scenery_entry* sceneryEntry = get_footpath_item_entry(additionIndex);
         if (sceneryEntry != reinterpret_cast<void*>(-1) && sceneryEntry->path_bit.flags & pathBitFlagMask)
         {
