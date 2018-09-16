@@ -404,7 +404,7 @@ static void sub_6A4101(
             }
         }
 
-        if (!footpath_element_has_queue_banner(tile_element))
+        if (!tile_element->AsPath()->HasQueueBanner())
         {
             return;
         }

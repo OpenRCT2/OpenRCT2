@@ -1987,9 +1987,9 @@ void PathElement::SetIsQueue(bool isQueue)
         type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
 }
 
-bool footpath_element_has_queue_banner(const rct_tile_element* tileElement)
+bool PathElement::HasQueueBanner() const
 {
-    return (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
+    return (entryIndex & FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
 }
 
 bool footpath_element_is_wide(const rct_tile_element* tileElement)

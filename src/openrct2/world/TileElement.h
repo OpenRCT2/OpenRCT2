@@ -187,9 +187,9 @@ assert_struct_size(SurfaceElement, 8);
 struct PathElement : TileElementBase
 {
 private:
-    uint8_t entryIndex;      // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
-    uint8_t additions; // 5
-    uint8_t edges;     // 6
+    uint8_t entryIndex; // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
+    uint8_t additions;  // 5
+    uint8_t edges;      // 6
     union
     {
         uint8_t additionStatus; // 7
@@ -197,12 +197,13 @@ private:
     };
 
 public:
-    bool IsQueue() const;
-    void SetIsQueue(bool isQueue);
-
     bool IsSloped() const;
     void SetSloped(bool isSloped);
-    
+
+    bool IsQueue() const;
+    void SetIsQueue(bool isQueue);
+    bool HasQueueBanner() const;
+
     uint8_t GetRCT1PathType() const;
 };
 assert_struct_size(PathElement, 8);
