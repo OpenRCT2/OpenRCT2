@@ -971,7 +971,7 @@ STR_1586    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 탑승 사진은 가격
 STR_1587    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 프레첼은 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1588    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 핫 초코는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1589    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 아이스 티는 가격이 참 적당한 것 같아{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 휜넬 케이크는 가격이 참 적당한 것 같아{ENDQUOTES}
+STR_1590    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 퍼넬 케이크는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1591    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 선글라스는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1592    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 고기국수는 가격이 참 적당한 것 같아{ENDQUOTES}
 STR_1593    :{SMALLFONT}{OPENQUOTES}{STRINGID}에서 산 볶음쌀국수은 가격이 참 적당한 것 같아{ENDQUOTES}
@@ -1003,7 +1003,7 @@ STR_1618    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 탑승 사진에 돈을 쓰고
 STR_1619    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 프레첼에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1620    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 핫 초코에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1621    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 아이스 티에 돈을 쓰고 싶지 않아{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 휜넬 케이크에 돈을 쓰고 싶지 않아{ENDQUOTES}
+STR_1622    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 퍼넬 케이크에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1623    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 선글라스에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1624    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 고기 국수에 돈을 쓰고 싶지 않아{ENDQUOTES}
 STR_1625    :{SMALLFONT}{OPENQUOTES}{STRINGID}의 볶음쌀국수에 돈을 쓰고 싶지 않아{ENDQUOTES}
@@ -1474,7 +1474,7 @@ STR_2099    :빈 병
 STR_2103    :{WINDOW_COLOUR_2}프레첼 가격:
 STR_2104    :{WINDOW_COLOUR_2}핫초코 가격:
 STR_2105    :{WINDOW_COLOUR_2}아이스 티 가격:
-STR_2106    :{WINDOW_COLOUR_2}휜넬 케이크 가격:
+STR_2106    :{WINDOW_COLOUR_2}퍼넬 케이크 가격:
 STR_2107    :{WINDOW_COLOUR_2}선글라스 가격:
 STR_2108    :{WINDOW_COLOUR_2}고기 국수 가격:
 STR_2109    :{WINDOW_COLOUR_2}볶음쌀국수 가격:
@@ -1493,7 +1493,7 @@ STR_2121    :{WINDOW_COLOUR_2}
 STR_2125    :프레첼
 STR_2126    :핫초코
 STR_2127    :아이스 티
-STR_2128    :휜넬 케이크
+STR_2128    :퍼넬 케이크
 STR_2129    :선글라스
 STR_2130    :고기 국수
 STR_2131    :볶음쌀국수
@@ -1512,7 +1512,7 @@ STR_2143    :빈 사발
 STR_2147    :프레첼
 STR_2148    :핫초코
 STR_2149    :아이스 티
-STR_2150    :휜넬 케이크
+STR_2150    :퍼넬 케이크
 STR_2151    :선글라스
 STR_2152    :고기 국수
 STR_2153    :볶음쌀국수
@@ -1531,7 +1531,7 @@ STR_2165    :빈 사발
 STR_2169    :프레첼
 STR_2170    :핫초코
 STR_2171    :아이스 티
-STR_2172    :휜넬 케이크
+STR_2172    :퍼넬 케이크
 STR_2173    :선글라스
 STR_2174    :고기 국수
 STR_2175    :볶음쌀국수
@@ -1550,7 +1550,7 @@ STR_2187    :빈 사발
 STR_2191    :프레첼
 STR_2192    :핫초코
 STR_2193    :아이스 티
-STR_2194    :휜넬 케이크
+STR_2194    :퍼넬 케이크
 STR_2195    :선글라스
 STR_2196    :고기 국수
 STR_2197    :볶음쌀국수
@@ -3735,6 +3735,7 @@ STR_6263    :{SMALLFONT}{BLACK}모든 소리를 켜거나 끕니다.
 STR_6264    :항상 운영체제 파일 브라우저 사용
 STR_6265    :{SMALLFONT}{BLACK}이 설정을 켜면, OpenRCT2 자체 창 대신 운영체제 파일 브라우저를 사용합니다.
 STR_6266    :커스텀 콘텐츠 폴더 열기
+STR_6267    :칸 조사 창 열기
 
 
 #############

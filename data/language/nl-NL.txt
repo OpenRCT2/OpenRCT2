@@ -3319,7 +3319,7 @@ STR_5851    :{SMALLFONT}{BLACK}Stelt het standaardinspectie-interval voor nieuwe
 STR_5852    :{SMALLFONT}{BLACK}Stelt de naam van het Twitch.tv-kanaal in waarmee moet worden geïntegreerd.
 STR_5853    :{SMALLFONT}{BLACK}Geluidseffecten in-/uitschakelen.
 STR_5854    :{SMALLFONT}{BLACK}Attractiemuziek in-/uitschakelen.
-STR_5855    :{SMALLFONT}{BLACK}Stelt in of er volledige scherm, een randloos venster of een regulier venster moet worden gebruikt.
+STR_5855    :{SMALLFONT}{BLACK}Stelt in of er volledig scherm, een randloos venster of een regulier venster moet worden gebruikt.
 STR_5856    :{SMALLFONT}{BLACK}Stelt de gebruikte schermresolutie bij volledig scherm in.
 STR_5857    :{SMALLFONT}{BLACK}Spelopties
 STR_5858    :{SMALLFONT}{BLACK}Leidt de grafische uitvoer door de GPU. Dit verbetert de compatibiliteit met schermopnamesoftware, maar kan de prestaties iets verminderen.
@@ -3729,6 +3729,8 @@ STR_6262    :Hoofdvolume
 STR_6263    :{SMALLFONT}{BLACK}Alle geluiden en muziek in/uitschakelen.
 STR_6264    :Altijd systeembestandsbrowser gebruiken
 STR_6265    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zal de bestandsbrowser van je systeem gebruikt worden in plaats van de ingebouwde bestandsbrowser van OpenRCT2 zelf.
+STR_6266    :Map voor custom content openen
+STR_6267    :Vakinspecteur openen
 
 #############
 # Scenarios #
