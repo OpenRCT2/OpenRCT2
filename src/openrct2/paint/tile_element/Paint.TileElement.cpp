@@ -216,9 +216,9 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
     element--;
 
-    if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE && (surface_get_water_height(element) > 0))
+    if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE && (element->AsSurface()->GetWaterHeight() > 0))
     {
-        max_height = surface_get_water_height(element) * 2;
+        max_height = element->AsSurface()->GetWaterHeight() * 2;
     }
 
     max_height *= 8;
@@ -248,7 +248,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->base_height > gClipHeight))
             continue;
 
-        int32_t direction = tile_element_get_direction_with_offset(tile_element, rotation);
+        int32_t direction = tile_element->GetDirectionWithOffset(rotation);
         int32_t height = tile_element->base_height * 8;
 
         // If we are on a new height level, look through elements on the

@@ -1197,14 +1197,14 @@ static void place_park_entrance_get_map_position(
         return;
 
     tileElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
-    *mapZ = surface_get_water_height(tileElement);
+    *mapZ = tileElement->AsSurface()->GetWaterHeight();
     if (*mapZ == 0)
     {
         *mapZ = tileElement->base_height / 2;
-        if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+        if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
         {
             (*mapZ)++;
-            if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 (*mapZ)++;
             }
@@ -1280,9 +1280,9 @@ static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y)
     mapZ = tileElement->base_height * 8;
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
     {
-        if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
+        if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
             mapZ += 16;
-        if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        if (tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             mapZ += 16;
     }
 
@@ -1542,11 +1542,11 @@ static constexpr const uint8_t RideColourKey[] = {
 static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
 {
     rct_tile_element* tileElement = map_get_surface_element_at(c);
-    uint16_t colour = TerrainColour[surface_get_terrain(tileElement)];
-    if (surface_get_water_height(tileElement) > 0)
+    uint16_t colour = TerrainColour[tileElement->AsSurface()->GetSurfaceStyle()];
+    if (tileElement->AsSurface()->GetWaterHeight() > 0)
         colour = WaterColour;
 
-    if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
+    if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
         colour = MAP_COLOUR_UNOWNED(colour);
 
     const int32_t maxSupportedTileElementType = (int32_t)Util::CountOf(ElementTypeAddColour);
@@ -1577,10 +1577,10 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
         switch (tileElement->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:
-                if (surface_get_water_height(tileElement) > 0)
+                if (tileElement->AsSurface()->GetWaterHeight() > 0)
                     // Why is this a different water colour as above (195)?
                     colourB = MAP_COLOUR(PALETTE_INDEX_194);
-                if (!(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
+                if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
                     colourB = MAP_COLOUR_UNOWNED(colourB);
                 break;
             case TILE_ELEMENT_TYPE_PATH:

@@ -1476,18 +1476,18 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].bottom = w->widgets[WIDX_SURFACE_CHECK_DIAGONAL].top + 13;
             widget_set_checkbox_value(
                 w, WIDX_SURFACE_CHECK_CORNER_N,
-                tileElement->properties.surface.slope & (1 << ((2 - get_current_rotation()) & 3)));
+                tileElement->AsSurface()->GetSlope() & (1 << ((2 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
                 w, WIDX_SURFACE_CHECK_CORNER_E,
-                tileElement->properties.surface.slope & (1 << ((3 - get_current_rotation()) & 3)));
+                tileElement->AsSurface()->GetSlope() & (1 << ((3 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
                 w, WIDX_SURFACE_CHECK_CORNER_S,
-                tileElement->properties.surface.slope & (1 << ((0 - get_current_rotation()) & 3)));
+                tileElement->AsSurface()->GetSlope() & (1 << ((0 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
                 w, WIDX_SURFACE_CHECK_CORNER_W,
-                tileElement->properties.surface.slope & (1 << ((1 - get_current_rotation()) & 3)));
+                tileElement->AsSurface()->GetSlope() & (1 << ((1 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
-                w, WIDX_SURFACE_CHECK_DIAGONAL, tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
+                w, WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
             break;
         case TILE_INSPECTOR_PAGE_PATH:
             w->widgets[WIDX_PATH_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -1757,33 +1757,33 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Terrain texture name
-                rct_string_id terrainNameId = TerrainTypeStringIds[surface_get_terrain(tileElement)];
+                rct_string_id terrainNameId = TerrainTypeStringIds[tileElement->AsSurface()->GetSurfaceStyle()];
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, COLOUR_DARK_GREEN, x, y);
 
                 // Edge texture name
-                int32_t idx = surface_get_terrain_edge(tileElement);
+                uint32_t idx = tileElement->AsSurface()->GetEdgeStyle();
                 openrct2_assert(
                     (uint32_t)idx < Util::CountOf(TerrainEdgeTypeStringIds),
                     "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
-                rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[surface_get_terrain_edge(tileElement)];
+                rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[tileElement->AsSurface()->GetEdgeStyle()];
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_DARK_GREEN, x, y + 11);
 
                 // Land ownership
                 rct_string_id landOwnership;
-                if (tileElement->properties.surface.ownership & OWNERSHIP_OWNED)
+                if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
                     landOwnership = STR_LAND_OWNED;
-                else if (tileElement->properties.surface.ownership & OWNERSHIP_AVAILABLE)
+                else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_AVAILABLE)
                     landOwnership = STR_LAND_SALE;
-                else if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+                else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
                     landOwnership = STR_CONSTRUCTION_RIGHTS_OWNED;
-                else if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+                else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
                     landOwnership = STR_CONSTRUCTION_RIGHTS_SALE;
                 else
                     landOwnership = STR_TILE_INSPECTOR_LAND_NOT_OWNED_AND_NOT_AVAILABLE;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_OWNERSHIP, &landOwnership, COLOUR_DARK_GREEN, x, y + 22);
 
                 // Water level
-                int32_t waterLevel = surface_get_water_height(tileElement);
+                uint32_t waterLevel = tileElement->AsSurface()->GetWaterHeight();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_WATER_LEVEL, &waterLevel, COLOUR_DARK_GREEN, x, y + 33);
 
                 // Properties
@@ -2015,18 +2015,19 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Type
-                int16_t largeSceneryType = scenery_large_get_type(tileElement);
+                auto sceneryElement = tileElement->AsLargeScenery();
+                int16_t largeSceneryType = sceneryElement->GetEntryIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, COLOUR_DARK_GREEN, x, y);
 
                 // Part ID
-                int16_t pieceID = scenery_large_get_sequence(tileElement);
+                int16_t pieceID = sceneryElement->GetSequenceIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, COLOUR_DARK_GREEN, x, y + 11);
 
                 // Banner info
-                rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+                rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
                 if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF)
                 {
-                    const BannerIndex bannerIndex = scenery_large_get_banner_id(tileElement);
+                    const BannerIndex bannerIndex = sceneryElement->GetBannerIndex();
                     rct_string_id* string = &gBanners[bannerIndex].string_idx;
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, string, COLOUR_DARK_GREEN, x, y + 22);
                 }

@@ -509,7 +509,7 @@ static void ride_ratings_score_close_proximity_loops(rct_tile_element* inputTile
         int32_t y = gRideRatingsCalcData.proximity_y;
         ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
 
-        int32_t direction = tile_element_get_direction(inputTileElement);
+        int32_t direction = inputTileElement->GetDirection();
         x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
         y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
         ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
@@ -542,7 +542,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
                 {
                     proximity_score_increment(PROXIMITY_SURFACE_TOUCH);
                 }
-                waterHeight = surface_get_water_height(tileElement);
+                waterHeight = tileElement->AsSurface()->GetWaterHeight();
                 if (waterHeight != 0)
                 {
                     int32_t z = waterHeight * 16;
@@ -687,7 +687,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
         } // switch tileElement->GetType
     } while (!(tileElement++)->IsLastForTile());
 
-    uint8_t direction = tile_element_get_direction(inputTileElement);
+    uint8_t direction = inputTileElement->GetDirection();
     ride_ratings_score_close_proximity_in_direction(inputTileElement, (direction + 1) & 3);
     ride_ratings_score_close_proximity_in_direction(inputTileElement, (direction - 1) & 3);
     ride_ratings_score_close_proximity_loops(inputTileElement);

@@ -64,7 +64,7 @@ static bool WallCheckObstructionWithTrack(
 {
     int32_t trackType = track_element_get_type(trackElement);
     int32_t sequence = tile_element_get_track_sequence(trackElement);
-    int32_t direction = (edge - tile_element_get_direction(trackElement)) & TILE_ELEMENT_DIRECTION_MASK;
+    int32_t direction = (edge - trackElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
     Ride* ride = get_ride(track_element_get_ride_index(trackElement));
 
     if (TrackIsAllowedWallEdges(ride->type, trackType, sequence, direction))
@@ -108,7 +108,7 @@ static bool WallCheckObstructionWithTrack(
         {
             if (!(TrackCoordinates[trackType].rotation_begin & 4))
             {
-                direction = tile_element_get_direction_with_offset(trackElement, 2);
+                direction = trackElement->GetDirectionWithOffset(2);
                 if (direction == edge)
                 {
                     const rct_preview_track* trackBlock = &TrackBlocks[trackType][sequence];
@@ -140,7 +140,7 @@ static bool WallCheckObstructionWithTrack(
         return false;
     }
 
-    direction = tile_element_get_direction(trackElement);
+    direction = trackElement->GetDirection();
     if (direction != edge)
     {
         return false;
@@ -183,7 +183,7 @@ static bool WallCheckObstruction(
             continue;
         if (elementType == TILE_ELEMENT_TYPE_WALL)
         {
-            int32_t direction = tile_element_get_direction(tileElement);
+            int32_t direction = tileElement->GetDirection();
             if (edge == direction)
             {
                 map_obstruction_set_error_text(tileElement);
@@ -207,12 +207,12 @@ static bool WallCheckObstruction(
                 }
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                entryType = scenery_large_get_type(tileElement);
-                sequence = scenery_large_get_sequence(tileElement);
+                entryType = tileElement->AsLargeScenery()->GetEntryIndex();
+                sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
                 entry = get_large_scenery_entry(entryType);
                 tile = &entry->large_scenery.tiles[sequence];
                 {
-                    int32_t direction = ((edge - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) + 8;
+                    int32_t direction = ((edge - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) + 8;
                     if (!(tile->flags & (1 << direction)))
                     {
                         map_obstruction_set_error_text(tileElement);
@@ -340,7 +340,7 @@ static money32 WallPlace(
         }
         position.z = surfaceElement->base_height * 8;
 
-        uint8_t slope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+        uint8_t slope = surfaceElement->AsSurface()->GetSlope();
         edgeSlope = EdgeSlopes[slope][edge & 3];
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {
@@ -355,9 +355,9 @@ static money32 WallPlace(
         return MONEY32_UNDEFINED;
     }
 
-    if (surface_get_water_height(surfaceElement) > 0)
+    if (surfaceElement->AsSurface()->GetWaterHeight() > 0)
     {
-        uint16_t waterHeight = surface_get_water_height(surfaceElement) * 16;
+        uint16_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight() * 16;
 
         if (position.z < waterHeight && !gCheatsDisableClearanceChecks)
         {
@@ -377,7 +377,7 @@ static money32 WallPlace(
         uint8_t newEdge = (edge + 2) & 3;
         uint8_t newBaseHeight = surfaceElement->base_height;
         newBaseHeight += 2;
-        if (surfaceElement->properties.surface.slope & (1 << newEdge))
+        if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
         {
             if (position.z / 8 < newBaseHeight)
             {
@@ -385,14 +385,14 @@ static money32 WallPlace(
                 return MONEY32_UNDEFINED;
             }
 
-            if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 newEdge = (newEdge - 1) & 3;
 
-                if (surfaceElement->properties.surface.slope & (1 << newEdge))
+                if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
                 {
                     newEdge = (newEdge + 2) & 3;
-                    if (surfaceElement->properties.surface.slope & (1 << newEdge))
+                    if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
                     {
                         newBaseHeight += 2;
                         if (position.z / 8 < newBaseHeight)
@@ -407,7 +407,7 @@ static money32 WallPlace(
         }
 
         newEdge = (edge + 3) & 3;
-        if (surfaceElement->properties.surface.slope & (1 << newEdge))
+        if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
         {
             if (position.z / 8 < newBaseHeight)
             {
@@ -415,14 +415,14 @@ static money32 WallPlace(
                 return MONEY32_UNDEFINED;
             }
 
-            if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+            if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 newEdge = (newEdge - 1) & 3;
 
-                if (surfaceElement->properties.surface.slope & (1 << newEdge))
+                if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
                 {
                     newEdge = (newEdge + 2) & 3;
-                    if (surfaceElement->properties.surface.slope & (1 << newEdge))
+                    if (surfaceElement->AsSurface()->GetSlope() & (1 << newEdge))
                     {
                         newBaseHeight += 2;
                         if (position.z / 8 < newBaseHeight)
@@ -700,7 +700,7 @@ void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1
         if (tileElement->clearance_height <= z0 || tileElement->base_height >= z1)
             continue;
 
-        if (direction != tile_element_get_direction(tileElement))
+        if (direction != tileElement->GetDirection())
             continue;
 
         tile_element_remove_banner_entry(tileElement);

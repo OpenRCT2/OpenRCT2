@@ -9,64 +9,83 @@
 
 #include "LargeScenery.h"
 
+#include "../Context.h"
 #include "../common.h"
+#include "../object/ObjectManager.h"
 #include "TileElement.h"
 
-colour_t scenery_large_get_primary_colour(const rct_tile_element* tileElement)
+colour_t LargeSceneryElement::GetPrimaryColour() const
 {
-    return tileElement->properties.scenerymultiple.colour[0] & TILE_ELEMENT_COLOUR_MASK;
+    return colour[0] & TILE_ELEMENT_COLOUR_MASK;
 }
 
-colour_t scenery_large_get_secondary_colour(const rct_tile_element* tileElement)
+colour_t LargeSceneryElement::GetSecondaryColour() const
 {
-    return tileElement->properties.scenerymultiple.colour[1] & TILE_ELEMENT_COLOUR_MASK;
+    return colour[1] & TILE_ELEMENT_COLOUR_MASK;
 }
 
-void scenery_large_set_primary_colour(rct_tile_element* tileElement, colour_t colour)
+void LargeSceneryElement::SetPrimaryColour(colour_t newColour)
 {
-    assert(colour <= 31);
-    tileElement->properties.scenerymultiple.colour[0] &= ~TILE_ELEMENT_COLOUR_MASK;
-    tileElement->properties.scenerymultiple.colour[0] |= colour;
+    assert(newColour <= 31);
+    colour[0] &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour[0] |= newColour;
 }
 
-void scenery_large_set_secondary_colour(rct_tile_element* tileElement, colour_t colour)
+void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
 {
-    assert(colour <= 31);
-    tileElement->properties.scenerymultiple.colour[1] &= ~TILE_ELEMENT_COLOUR_MASK;
-    tileElement->properties.scenerymultiple.colour[1] |= colour;
+    assert(newColour <= 31);
+    colour[1] &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour[1] |= newColour;
 }
 
-BannerIndex scenery_large_get_banner_id(const rct_tile_element* tileElement)
+BannerIndex LargeSceneryElement::GetBannerIndex() const
 {
-    return (tileElement->type & 0xC0) | (((tileElement->properties.scenerymultiple.colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2)
-        | (((tileElement->properties.scenerymultiple.colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return (entryIndex & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2)
+        | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
 
-void scenery_large_set_banner_id(rct_tile_element* tileElement, BannerIndex bannerIndex)
+void LargeSceneryElement::SetBannerIndex(BannerIndex newIndex)
 {
-    tileElement->type |= bannerIndex & 0xC0;
-    tileElement->properties.scenerymultiple.colour[0] |= (bannerIndex & 0x38) << 2;
-    tileElement->properties.scenerymultiple.colour[1] |= (bannerIndex & 7) << 5;
+    entryIndex |= newIndex & 0xC0;
+    colour[0] |= (newIndex & 0x38) << 2;
+    colour[1] |= (newIndex & 7) << 5;
 }
 
-int32_t scenery_large_get_type(const rct_tile_element* tileElement)
+uint32_t LargeSceneryElement::GetEntryIndex() const
 {
-    return (tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+    return entryIndex & TILE_ELEMENT_LARGE_TYPE_MASK;
 }
 
-int32_t scenery_large_get_sequence(const rct_tile_element* tileElement)
+rct_scenery_entry* LargeSceneryElement::GetEntry() const
 {
-    return (tileElement->properties.scenerymultiple.type >> 10);
+    return get_large_scenery_entry(GetEntryIndex());
 }
 
-void scenery_large_set_type(rct_tile_element* tileElement, uint16_t type)
+uint16_t LargeSceneryElement::GetSequenceIndex() const
 {
-    tileElement->properties.scenerymultiple.type &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
-    tileElement->properties.scenerymultiple.type |= (type & TILE_ELEMENT_LARGE_TYPE_MASK);
+    return (entryIndex >> 10);
 }
 
-void scenery_large_set_sequence(rct_tile_element* tileElement, uint16_t sequence)
+void LargeSceneryElement::SetEntryIndex(uint32_t newIndex)
 {
-    tileElement->properties.scenerymultiple.type &= TILE_ELEMENT_LARGE_TYPE_MASK;
-    tileElement->properties.scenerymultiple.type |= (sequence << 10);
+    entryIndex &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
+    entryIndex |= (newIndex & TILE_ELEMENT_LARGE_TYPE_MASK);
+}
+
+void LargeSceneryElement::SetSequenceIndex(uint16_t sequence)
+{
+    entryIndex &= TILE_ELEMENT_LARGE_TYPE_MASK;
+    entryIndex |= (sequence << 10);
+}
+
+rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex)
+{
+    rct_scenery_entry* result = nullptr;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
+    if (obj != nullptr)
+    {
+        result = (rct_scenery_entry*)obj->GetLegacyData();
+    }
+    return result;
 }

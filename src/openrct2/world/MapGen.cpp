@@ -121,8 +121,8 @@ void mapgen_generate_blank(mapgen_settings* settings)
         for (x = 1; x < settings->mapSize - 1; x++)
         {
             tileElement = map_get_surface_element_at(x, y);
-            surface_set_terrain(tileElement, settings->floor);
-            surface_set_terrain_edge(tileElement, settings->wall);
+            tileElement->AsSurface()->SetSurfaceStyle(settings->floor);
+            tileElement->AsSurface()->SetEdgeStyle(settings->wall);
             tileElement->base_height = settings->height;
             tileElement->clearance_height = settings->height;
         }
@@ -172,8 +172,8 @@ void mapgen_generate(mapgen_settings* settings)
         for (x = 1; x < mapSize - 1; x++)
         {
             tileElement = map_get_surface_element_at(x, y);
-            surface_set_terrain(tileElement, floorTexture);
-            surface_set_terrain_edge(tileElement, wallTexture);
+            tileElement->AsSurface()->SetSurfaceStyle(floorTexture);
+            tileElement->AsSurface()->SetEdgeStyle(wallTexture);
             tileElement->base_height = settings->height;
             tileElement->clearance_height = settings->height;
         }
@@ -220,7 +220,7 @@ void mapgen_generate(mapgen_settings* settings)
             tileElement = map_get_surface_element_at(x, y);
 
             if (tileElement->base_height < waterLevel + 6)
-                surface_set_terrain(tileElement, beachTexture);
+                tileElement->AsSurface()->SetSurfaceStyle(beachTexture);
         }
     }
 
@@ -317,7 +317,7 @@ static void mapgen_place_trees()
             rct_tile_element* tileElement = map_get_surface_element_at(x, y);
 
             // Exclude water tiles
-            if (surface_get_water_height(tileElement) > 0)
+            if (tileElement->AsSurface()->GetWaterHeight() > 0)
                 continue;
 
             pos.x = x;
@@ -349,7 +349,7 @@ static void mapgen_place_trees()
 
         int32_t type = -1;
         rct_tile_element* tileElement = map_get_surface_element_at(pos.x, pos.y);
-        switch (surface_get_terrain(tileElement))
+        switch (tileElement->AsSurface()->GetSurfaceStyle())
         {
             case TERRAIN_GRASS:
             case TERRAIN_DIRT:
@@ -399,7 +399,7 @@ static void mapgen_set_water_level(int32_t waterLevel)
         {
             tileElement = map_get_surface_element_at(x, y);
             if (tileElement->base_height < waterLevel)
-                tileElement->properties.surface.terrain |= (waterLevel / 2);
+                tileElement->AsSurface()->SetWaterHeight(waterLevel / 2);
         }
     }
 }
@@ -464,14 +464,18 @@ static void mapgen_set_height()
             tileElement->base_height = std::max(2, baseHeight * 2);
             tileElement->clearance_height = tileElement->base_height;
 
+            uint8_t currentSlope = tileElement->AsSurface()->GetSlope();
+
             if (q00 > baseHeight)
-                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                currentSlope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
             if (q01 > baseHeight)
-                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                currentSlope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
             if (q10 > baseHeight)
-                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                currentSlope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
             if (q11 > baseHeight)
-                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                currentSlope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+
+            tileElement->AsSurface()->SetSlope(currentSlope);
         }
     }
 }
@@ -830,7 +834,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
             // Set water level
             if (surfaceElement->base_height < settings->water_level)
             {
-                surfaceElement->properties.surface.terrain |= settings->water_level / 2;
+                surfaceElement->AsSurface()->SetWaterHeight(settings->water_level / 2);
             }
         }
     }

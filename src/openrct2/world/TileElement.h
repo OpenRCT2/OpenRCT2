@@ -10,19 +10,11 @@
 #pragma once
 
 #include "../common.h"
+#include "Location.hpp"
 
 struct rct_scenery_entry;
 
 #pragma pack(push, 1)
-struct rct_tile_element_surface_properties
-{
-    uint8_t slope;        // 4 0xE0 Edge Style, 0x1F Slope
-    uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
-    uint8_t grass_length; // 6
-    uint8_t ownership;    // 7
-};
-assert_struct_size(rct_tile_element_surface_properties, 4);
-
 struct rct_tile_element_path_properties
 {
     uint8_t type;      // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
@@ -85,13 +77,6 @@ struct rct_tile_element_wall_properties
 };
 assert_struct_size(rct_tile_element_wall_properties, 4);
 
-struct rct_tile_element_scenerymultiple_properties
-{
-    uint16_t type;     // 4
-    uint8_t colour[2]; // 6
-};
-assert_struct_size(rct_tile_element_scenerymultiple_properties, 4);
-
 struct rct_tile_element_banner_properties
 {
     BannerIndex index; // 4
@@ -103,12 +88,10 @@ assert_struct_size(rct_tile_element_banner_properties, 4);
 
 union rct_tile_element_properties
 {
-    rct_tile_element_surface_properties surface;
     rct_tile_element_path_properties path;
     rct_tile_element_track_properties track;
     rct_tile_element_entrance_properties entrance;
     rct_tile_element_wall_properties wall;
-    rct_tile_element_scenerymultiple_properties scenerymultiple;
     rct_tile_element_banner_properties banner;
 };
 assert_struct_size(rct_tile_element_properties, 4);
@@ -223,7 +206,33 @@ assert_struct_size(rct_tile_element, 8);
 
 struct SurfaceElement : TileElementBase
 {
-    rct_tile_element_surface_properties temp;
+private:
+    uint8_t slope;        // 4 0xE0 Edge Style, 0x1F Slope
+    uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
+    uint8_t grass_length; // 6
+    uint8_t ownership;    // 7
+public:
+    uint8_t GetSlope() const;
+    void SetSlope(uint8_t newSlope);
+
+    uint32_t GetSurfaceStyle() const;
+    void SetSurfaceStyle(uint32_t newStyle);
+    uint32_t GetEdgeStyle() const;
+    void SetEdgeStyle(uint32_t newStyle);
+
+    uint8_t GetGrassLength() const;
+    void SetGrassLength(uint8_t newLength);
+    void SetGrassLengthAndInvalidate(uint8_t newLength, CoordsXY coords);
+    void UpdateGrassLength(CoordsXY coords);
+
+    uint8_t GetOwnership() const;
+    void SetOwnership(uint8_t newOwnership);
+
+    uint32_t GetWaterHeight() const;
+    void SetWaterHeight(uint32_t newWaterHeight);
+
+    uint8_t GetParkFences() const;
+    void SetParkFences(uint8_t newParkFences);
 };
 assert_struct_size(SurfaceElement, 8);
 
@@ -265,7 +274,24 @@ assert_struct_size(SmallSceneryElement, 8);
 
 struct LargeSceneryElement : TileElementBase
 {
-    rct_tile_element_scenerymultiple_properties temp;
+private:
+    uint16_t entryIndex; // 4
+    uint8_t colour[2];   // 6
+public:
+    uint32_t GetEntryIndex() const;
+    void SetEntryIndex(uint32_t newIndex);
+    rct_scenery_entry* GetEntry() const;
+
+    uint16_t GetSequenceIndex() const;
+    void SetSequenceIndex(uint16_t newIndex);
+
+    colour_t GetPrimaryColour() const;
+    void SetPrimaryColour(colour_t colour);
+    colour_t GetSecondaryColour() const;
+    void SetSecondaryColour(colour_t colour);
+
+    BannerIndex GetBannerIndex() const;
+    void SetBannerIndex(BannerIndex newIndex);
 };
 assert_struct_size(LargeSceneryElement, 8);
 
@@ -357,12 +383,8 @@ enum
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
 
-int32_t tile_element_get_direction(const rct_tile_element* element);
-int32_t tile_element_get_direction_with_offset(const rct_tile_element* element, uint8_t offset);
 BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement);
-bool tile_element_is_ghost(const rct_tile_element* element);
 bool tile_element_is_underground(rct_tile_element* tileElement);
-bool tile_element_is_last_for_tile(const rct_tile_element* element);
 
 // ~Oli414: The banner functions should probably be part of banner.
 void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex bannerIndex);

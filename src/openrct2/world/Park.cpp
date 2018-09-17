@@ -173,8 +173,8 @@ void update_park_fences(const CoordsXY coords)
     if (surfaceElement == nullptr)
         return;
 
-    uint8_t newOwnership = surfaceElement->properties.surface.ownership & 0xF0;
-    if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0)
+    uint8_t newFences = 0;
+    if ((surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED) == 0)
     {
         bool fenceRequired = true;
 
@@ -202,34 +202,34 @@ void update_park_fences(const CoordsXY coords)
             rct_string_id previous_error = gGameCommandErrorText;
             if (map_is_location_in_park({ coords.x - 32, coords.y }))
             {
-                newOwnership |= 0x8;
+                newFences |= 0x8;
             }
 
             if (map_is_location_in_park({ coords.x, coords.y - 32 }))
             {
-                newOwnership |= 0x4;
+                newFences |= 0x4;
             }
 
             if (map_is_location_in_park({ coords.x + 32, coords.y }))
             {
-                newOwnership |= 0x2;
+                newFences |= 0x2;
             }
 
             if (map_is_location_in_park({ coords.x, coords.y + 32 }))
             {
-                newOwnership |= 0x1;
+                newFences |= 0x1;
             }
 
             gGameCommandErrorText = previous_error;
         }
     }
 
-    if (surfaceElement->properties.surface.ownership != newOwnership)
+    if (surfaceElement->AsSurface()->GetParkFences() != newFences)
     {
         int32_t z0 = surfaceElement->base_height * 8;
         int32_t z1 = z0 + 16;
         map_invalidate_tile(coords.x, coords.y, z0, z1);
-        surfaceElement->properties.surface.ownership = newOwnership;
+        surfaceElement->AsSurface()->SetParkFences(newFences);
     }
 }
 
@@ -254,45 +254,46 @@ void park_set_name(const char* name)
 
 static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t setting, int32_t flags)
 {
-    rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
+    SurfaceElement* surfaceElement = map_get_surface_element_at({ x, y })->AsSurface();
     if (surfaceElement == nullptr)
         return MONEY32_UNDEFINED;
 
     switch (setting)
     {
         case BUY_LAND_RIGHTS_FLAG_BUY_LAND: // 0
-            if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) != 0)
+            if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) != 0)
             { // If the land is already owned
                 return 0;
             }
 
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
-                || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0)
+                || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
             {
                 gGameCommandErrorText = STR_LAND_NOT_FOR_SALE;
                 return MONEY32_UNDEFINED;
             }
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                surfaceElement->properties.surface.ownership |= OWNERSHIP_OWNED;
+                surfaceElement->SetOwnership(OWNERSHIP_OWNED);
                 update_park_fences_around_tile({ x, y });
             }
             return gLandPrice;
         case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                surfaceElement->properties.surface.ownership &= ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                surfaceElement->SetOwnership(
+                    surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
                 update_park_fences_around_tile({ x, y });
             }
             return 0;
         case BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS: // 2
-            if ((surfaceElement->properties.surface.ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
+            if ((surfaceElement->GetOwnership() & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
             { // If the land or construction rights are already owned
                 return 0;
             }
 
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
-                || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
+                || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
             {
                 gGameCommandErrorText = STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE;
                 return MONEY32_UNDEFINED;
@@ -300,7 +301,7 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
 
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                 uint16_t baseHeight = surfaceElement->base_height * 8;
                 map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
             }
@@ -308,7 +309,7 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
         case BUY_LAND_RIGHTS_FLAG_UNOWN_CONSTRUCTION_RIGHTS: // 3
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                surfaceElement->properties.surface.ownership &= ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
+                surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
                 uint16_t baseHeight = surfaceElement->base_height * 8;
                 map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
             }
@@ -316,7 +317,7 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
         case BUY_LAND_RIGHTS_FLAG_SET_FOR_SALE: // 4
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                surfaceElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
+                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
                 uint16_t baseHeight = surfaceElement->base_height * 8;
                 map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
             }
@@ -324,7 +325,7 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
         case BUY_LAND_RIGHTS_FLAG_SET_CONSTRUCTION_RIGHTS_FOR_SALE: // 5
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
+                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
                 uint16_t baseHeight = surfaceElement->base_height * 8;
                 map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
             }
@@ -349,7 +350,7 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
             }
 
             uint8_t newOwnership = (flags & 0xFF00) >> 4;
-            if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0))
+            if (newOwnership == surfaceElement->GetOwnership())
             {
                 return 0;
             }
@@ -392,8 +393,7 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
                     }
                 }
             }
-            surfaceElement->properties.surface.ownership &= 0x0F;
-            surfaceElement->properties.surface.ownership |= newOwnership;
+            surfaceElement->SetOwnership(newOwnership);
             update_park_fences_around_tile({ x, y });
             gMapLandRightsUpdateSuccess = true;
             return 0;
@@ -637,7 +637,7 @@ int32_t Park::CalculateParkSize() const
     {
         if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
-            if (it.element->properties.surface.ownership & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
+            if (it.element->AsSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
             {
                 tiles++;
             }

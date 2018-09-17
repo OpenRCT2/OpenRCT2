@@ -493,7 +493,7 @@ private:
                     AddEntryForSmallScenery(tileElement->AsSmallScenery()->GetEntryIndex());
                     break;
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                    AddEntryForLargeScenery(scenery_large_get_type(tileElement));
+                    AddEntryForLargeScenery(tileElement->AsLargeScenery()->GetEntryIndex());
                     break;
                 case TILE_ELEMENT_TYPE_WALL:
                 {
@@ -2410,10 +2410,11 @@ private:
                 nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
                 nextFreeTileElement->base_height = 2;
                 nextFreeTileElement->clearance_height = 0;
-                nextFreeTileElement->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
-                nextFreeTileElement->properties.surface.terrain = 0;
-                nextFreeTileElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-                nextFreeTileElement->properties.surface.ownership = 0;
+                nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+                nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
+                nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+                nextFreeTileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+                nextFreeTileElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
                 *tilePointer++ = nextFreeTileElement++;
             }
         }
@@ -2425,10 +2426,11 @@ private:
             nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
             nextFreeTileElement->base_height = 2;
             nextFreeTileElement->clearance_height = 0;
-            nextFreeTileElement->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
-            nextFreeTileElement->properties.surface.terrain = 0;
-            nextFreeTileElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-            nextFreeTileElement->properties.surface.ownership = 0;
+            nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+            nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
+            nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+            nextFreeTileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+            nextFreeTileElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
             *tilePointer++ = nextFreeTileElement++;
         }
 
@@ -2467,11 +2469,11 @@ private:
                         }
                         break;
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                        colour = RCT1::GetColour(scenery_large_get_primary_colour(tileElement));
-                        scenery_large_set_primary_colour(tileElement, colour);
+                        colour = RCT1::GetColour(tileElement->AsLargeScenery()->GetPrimaryColour());
+                        tileElement->AsLargeScenery()->SetPrimaryColour(colour);
 
-                        colour = RCT1::GetColour(scenery_large_get_secondary_colour(tileElement));
-                        scenery_large_set_secondary_colour(tileElement, colour);
+                        colour = RCT1::GetColour(tileElement->AsLargeScenery()->GetSecondaryColour());
+                        tileElement->AsLargeScenery()->SetSecondaryColour(colour);
 
                         break;
                 }
@@ -2683,8 +2685,8 @@ private:
             rct_tile_element* element = it.element;
             if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             {
-                surface_set_terrain(element, RCT1::GetTerrain(surface_get_terrain(element)));
-                surface_set_terrain_edge(element, RCT1::GetTerrainEdge(surface_get_terrain_edge(element)));
+                element->AsSurface()->SetSurfaceStyle(RCT1::GetTerrain(element->AsSurface()->GetSurfaceStyle()));
+                element->AsSurface()->SetEdgeStyle(RCT1::GetTerrainEdge(element->AsSurface()->GetEdgeStyle()));
             }
         }
     }
@@ -2714,7 +2716,7 @@ private:
             gParkEntrances[entranceIndex].x = it.x * 32;
             gParkEntrances[entranceIndex].y = it.y * 32;
             gParkEntrances[entranceIndex].z = element->base_height * 8;
-            gParkEntrances[entranceIndex].direction = tile_element_get_direction(element);
+            gParkEntrances[entranceIndex].direction = element->GetDirection();
             entranceIndex++;
         }
     }
@@ -2736,8 +2738,8 @@ private:
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
-                    uint8_t type = scenery_large_get_type(tileElement);
-                    scenery_large_set_type(tileElement, _largeSceneryTypeToEntryMap[type]);
+                    uint8_t type = tileElement->AsLargeScenery()->GetEntryIndex();
+                    tileElement->AsLargeScenery()->SetEntryIndex(_largeSceneryTypeToEntryMap[type]);
                     break;
                 }
             }

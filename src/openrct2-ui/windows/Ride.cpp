@@ -4267,7 +4267,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
         return;
 
     z = tileElement->base_height * 8;
-    direction = tile_element_get_direction(tileElement);
+    direction = tileElement->GetDirection();
     sub_6C683D(&x, &y, &z, direction, track_element_get_type(tileElement), newColourScheme, nullptr, 4);
 }
 

@@ -225,8 +225,8 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         return;
     }
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
-    uint32_t sequenceNum = scenery_large_get_sequence(tileElement);
-    rct_scenery_entry* entry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+    uint32_t sequenceNum = tileElement->AsLargeScenery()->GetSequenceIndex();
+    rct_scenery_entry* entry = tileElement->AsLargeScenery()->GetEntry();
     if (entry == nullptr)
         return;
 
@@ -234,7 +234,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     rct_large_scenery_tile* tile = &entry->large_scenery.tiles[sequenceNum];
     uint32_t dword_F4387C = 0;
     image_id |= SPRITE_ID_PALETTE_COLOUR_2(
-        scenery_large_get_primary_colour(tileElement), scenery_large_get_secondary_colour(tileElement));
+        tileElement->AsLargeScenery()->GetPrimaryColour(), tileElement->AsLargeScenery()->GetSecondaryColour());
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;
     if (gTrackDesignSaveMode)
@@ -285,7 +285,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     {
         if (entry->large_scenery.tiles[1].x_offset != (int16_t)(uint16_t)0xFFFF)
         {
-            int32_t sequenceDirection = (scenery_large_get_sequence(tileElement) - 1) & 3;
+            int32_t sequenceDirection = (tileElement->AsLargeScenery()->GetSequenceIndex() - 1) & 3;
             if (sequenceDirection != direction)
             {
                 large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
@@ -302,13 +302,13 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         // Draw sign text:
         set_format_arg(0, uint32_t, 0);
         set_format_arg(4, uint32_t, 0);
-        int32_t textColour = scenery_large_get_secondary_colour(tileElement);
+        int32_t textColour = tileElement->AsLargeScenery()->GetSecondaryColour();
         if (dword_F4387C)
         {
             textColour = COLOUR_GREY;
         }
         textColour = (textColour << 19) | IMAGE_TYPE_REMAP;
-        BannerIndex bannerIndex = scenery_large_get_banner_id(tileElement);
+        BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
         rct_banner* banner = &gBanners[bannerIndex];
         rct_string_id stringId = banner->string_idx;
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
@@ -405,7 +405,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
-    uint8_t sequenceDirection2 = (scenery_large_get_sequence(tileElement) - 1) & 3;
+    uint8_t sequenceDirection2 = (tileElement->AsLargeScenery()->GetSequenceIndex() - 1) & 3;
     if (sequenceDirection2 != direction)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
@@ -414,7 +414,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     // Draw scrolling text:
     set_format_arg(0, uint32_t, 0);
     set_format_arg(4, uint32_t, 0);
-    uint8_t textColour = scenery_large_get_secondary_colour(tileElement);
+    uint8_t textColour = tileElement->AsLargeScenery()->GetSecondaryColour();
     if (dword_F4387C)
     {
         textColour = COLOUR_GREY;
@@ -425,7 +425,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     }
     // 6B809A:
     set_format_arg(7, uint8_t, textColour);
-    BannerIndex bannerIndex = scenery_large_get_banner_id(tileElement);
+    BannerIndex bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
     uint16_t scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
     rct_banner* banner = &gBanners[bannerIndex];
     set_format_arg(0, rct_string_id, banner->string_idx);

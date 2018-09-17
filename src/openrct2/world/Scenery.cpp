@@ -78,7 +78,7 @@ void scenery_update_tile(int32_t x, int32_t y)
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(tileElement))
+            if (tileElement->IsGhost())
                 continue;
         }
 
@@ -142,7 +142,7 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
 
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (tile_element_is_ghost(tileElementAbove))
+        if (tileElementAbove->IsGhost())
             continue;
 
         switch (tileElementAbove->GetType())
@@ -229,18 +229,6 @@ void scenery_remove_ghost_tool_placement()
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_4;
         game_do_command(x, 105, y, z | (gSceneryPlaceRotation << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
     }
-}
-
-rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex)
-{
-    rct_scenery_entry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
-    if (obj != nullptr)
-    {
-        result = (rct_scenery_entry*)obj->GetLegacyData();
-    }
-    return result;
 }
 
 rct_scenery_entry* get_wall_entry(int32_t entryIndex)

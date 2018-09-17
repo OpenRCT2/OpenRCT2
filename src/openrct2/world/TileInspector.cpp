@@ -237,7 +237,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
             case TILE_ELEMENT_TYPE_ENTRANCE:
             {
                 // Update element rotation
-                newRotation = tile_element_get_direction_with_offset(tileElement, 1);
+                newRotation = tileElement->GetDirectionWithOffset(1);
                 tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
                 tileElement->type |= newRotation;
 
@@ -263,7 +263,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
             case TILE_ELEMENT_TYPE_TRACK:
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             case TILE_ELEMENT_TYPE_WALL:
-                newRotation = tile_element_get_direction_with_offset(tileElement, 1);
+                newRotation = tileElement->GetDirectionWithOffset(1);
                 tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
                 tileElement->type |= newRotation;
                 break;
@@ -485,7 +485,7 @@ int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool showF
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         if (!showFences)
-            surfaceelement->properties.surface.ownership &= ~0x0F;
+            surfaceelement->AsSurface()->SetParkFences(0);
         else
             update_park_fences({ x << 5, y << 5 });
 
@@ -512,11 +512,12 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        const uint8_t originalSlope = surfaceElement->properties.surface.slope;
+        const uint8_t originalSlope = surfaceElement->AsSurface()->GetSlope();
         const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
 
-        surfaceElement->properties.surface.slope ^= 1 << cornerIndex;
-        if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        uint8_t newSlope = surfaceElement->AsSurface()->GetSlope() ^ (1 << cornerIndex);
+        surfaceElement->AsSurface()->SetSlope(newSlope);
+        if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }
@@ -526,28 +527,29 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
         }
 
         // All corners are raised
-        if ((surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        if ((surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
-            surfaceElement->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
+            uint8_t slope = TILE_ELEMENT_SLOPE_FLAT;
 
             if (diagonal)
             {
                 switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                 {
                     case TILE_ELEMENT_SLOPE_S_CORNER_DN:
-                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                        slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP;
                         break;
                     case TILE_ELEMENT_SLOPE_W_CORNER_DN:
-                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                        slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
                         break;
                     case TILE_ELEMENT_SLOPE_N_CORNER_DN:
-                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
+                        slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
                         break;
                     case TILE_ELEMENT_SLOPE_E_CORNER_DN:
-                        surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                        slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
                         break;
                 }
             }
+            surfaceElement->AsSurface()->SetSlope(slope);
 
             // Update base and clearance heights
             surfaceElement->base_height += 2;
@@ -577,12 +579,13 @@ int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t fla
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        surfaceElement->properties.surface.slope ^= TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
-        if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
+        uint8_t newSlope = surfaceElement->AsSurface()->GetSlope() ^ TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+        surfaceElement->AsSurface()->SetSlope(newSlope);
+        if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 4;
         }
-        else if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+        else if (surfaceElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }
@@ -676,13 +679,11 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
         {
             case ENTRANCE_TYPE_RIDE_ENTRANCE:
                 ride_set_entrance_location(
-                    ride, stationIndex,
-                    { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
+                    ride, stationIndex, { x, y, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
                 break;
             case ENTRANCE_TYPE_RIDE_EXIT:
                 ride_set_exit_location(
-                    ride, stationIndex,
-                    { x, y, entranceElement->base_height, (uint8_t)tile_element_get_direction(entranceElement) });
+                    ride, stationIndex, { x, y, entranceElement->base_height, (uint8_t)entranceElement->GetDirection() });
                 break;
         }
 
@@ -741,13 +742,13 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
         int16_t originX = x << 5;
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
-        uint8_t rotation = tile_element_get_direction(trackElement);
+        uint8_t rotation = trackElement->GetDirection();
         uint8_t rideIndex = track_element_get_ride_index(trackElement);
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += tile_element_get_track_sequence(trackElement);
 
-        uint8_t originDirection = tile_element_get_direction(trackElement);
+        uint8_t originDirection = trackElement->GetDirection();
         switch (originDirection)
         {
             case 0:
@@ -809,7 +810,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((tile_element_get_direction(tileElement)) != rotation)
+                if ((tileElement->GetDirection()) != rotation)
                     continue;
 
                 if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
@@ -874,13 +875,13 @@ int32_t tile_inspector_track_set_chain(
         int16_t originX = x << 5;
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
-        uint8_t rotation = tile_element_get_direction(trackElement);
+        uint8_t rotation = trackElement->GetDirection();
         uint8_t rideIndex = track_element_get_ride_index(trackElement);
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += tile_element_get_track_sequence(trackElement);
 
-        uint8_t originDirection = tile_element_get_direction(trackElement);
+        uint8_t originDirection = trackElement->GetDirection();
         switch (originDirection)
         {
             case 0:
@@ -942,7 +943,7 @@ int32_t tile_inspector_track_set_chain(
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((tile_element_get_direction(tileElement)) != rotation)
+                if ((tileElement->GetDirection()) != rotation)
                     continue;
 
                 if (tile_element_get_track_sequence(tileElement) != trackBlock->index)

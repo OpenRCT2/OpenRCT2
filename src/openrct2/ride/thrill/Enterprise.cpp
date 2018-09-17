@@ -39,7 +39,7 @@ static void paint_enterprise_structure(
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32_t imageOffset = tile_element_get_direction_with_offset(tileElement, session->CurrentRotation);
+    uint32_t imageOffset = tileElement->GetDirectionWithOffset(session->CurrentRotation);
     if (vehicle != nullptr)
     {
         imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + session->CurrentRotation) % 4);

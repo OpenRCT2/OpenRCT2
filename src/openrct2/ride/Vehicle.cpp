@@ -4663,7 +4663,7 @@ static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
-            int32_t waterZ = surface_get_water_height(tileElement) * 2;
+            int32_t waterZ = tileElement->AsSurface()->GetWaterHeight() * 2;
             if (location.z != waterZ)
             {
                 return false;

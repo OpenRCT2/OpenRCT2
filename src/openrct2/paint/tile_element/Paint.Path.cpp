@@ -860,15 +860,14 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
         {
             // Diagonal path
 
-            if ((surface->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK)
-                != byte_98D800[footpath_element_get_slope_direction(tile_element)])
+            if (surface->AsSurface()->GetSlope() != byte_98D800[footpath_element_get_slope_direction(tile_element)])
             {
                 word_F3F038 = true;
             }
         }
         else
         {
-            if (surface->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK)
+            if (surface->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
             {
                 word_F3F038 = true;
             }

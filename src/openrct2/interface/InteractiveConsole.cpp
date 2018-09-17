@@ -1146,7 +1146,7 @@ static int32_t cc_remove_park_fences(
         if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
         {
             // Remove all park fence flags
-            it.element->properties.surface.ownership &= 0xF0;
+            it.element->AsSurface()->SetParkFences(0);
         }
     } while (tile_element_iterator_next(&it));
 

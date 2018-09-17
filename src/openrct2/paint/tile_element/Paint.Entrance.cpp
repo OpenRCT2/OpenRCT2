@@ -46,7 +46,7 @@ static void ride_entrance_exit_paint(
             lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
         }
 
-        switch (tile_element_get_direction(tile_element))
+        switch (tile_element->GetDirection())
         {
             case 0:
                 lightfx_add_3d_light_magic_from_drawing_tile(

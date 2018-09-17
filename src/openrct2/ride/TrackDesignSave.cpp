@@ -220,7 +220,7 @@ static int32_t tile_element_get_total_element_count(rct_tile_element* tileElemen
             return 1;
 
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
+            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             tile = sceneryEntry->large_scenery.tiles;
             elementCount = 0;
             do
@@ -312,13 +312,13 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
     int32_t x0, y0, z0, z;
     int32_t direction, sequence;
 
-    int32_t entryType = scenery_large_get_type(tileElement);
+    int32_t entryType = tileElement->AsLargeScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
     direction = tileElement->type & 3;
-    sequence = scenery_large_get_sequence(tileElement);
+    sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
@@ -342,8 +342,8 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
             if (sequence == 0)
             {
                 uint8_t flags = tileElement->type & 3;
-                uint8_t primaryColour = scenery_large_get_primary_colour(tileElement);
-                uint8_t secondaryColour = scenery_large_get_secondary_colour(tileElement);
+                uint8_t primaryColour = tileElement->AsLargeScenery()->GetPrimaryColour();
+                uint8_t secondaryColour = tileElement->AsLargeScenery()->GetSecondaryColour();
 
                 track_design_save_push_tile_element_desc(entry, x, y, z, flags, primaryColour, secondaryColour);
             }
@@ -503,13 +503,13 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_til
     int32_t x0, y0, z0, z;
     int32_t direction, sequence;
 
-    int32_t entryType = scenery_large_get_type(tileElement);
+    int32_t entryType = tileElement->AsLargeScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
     direction = tileElement->type & 3;
-    sequence = scenery_large_get_sequence(tileElement);
+    sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
     {
@@ -933,7 +933,7 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
-    uint8_t entrance_direction = tile_element_get_direction(tileElement);
+    uint8_t entrance_direction = tileElement->GetDirection();
     maze->direction = entrance_direction;
     maze->type = 8;
     maze->x = (int8_t)((x - startX) / 32);
@@ -963,7 +963,7 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
 
-    uint8_t exit_direction = tile_element_get_direction(tileElement);
+    uint8_t exit_direction = tileElement->GetDirection();
     maze->direction = exit_direction;
     maze->type = 0x80;
     maze->x = (int8_t)((x - startX) / 32);
@@ -1014,7 +1014,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
 
     int32_t z = trackElement.element->base_height * 8;
     uint8_t track_type = track_element_get_type(trackElement.element);
-    uint8_t direction = tile_element_get_direction(trackElement.element);
+    uint8_t direction = trackElement.element->GetDirection();
     _trackSaveDirection = direction;
 
     if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
@@ -1073,7 +1073,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         }
 
         z = trackElement.element->base_height * 8;
-        direction = tile_element_get_direction(trackElement.element);
+        direction = trackElement.element->GetDirection();
         track_type = track_element_get_type(trackElement.element);
 
         if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
@@ -1132,7 +1132,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
             } while (!(tile_element++)->IsLastForTile());
             // Add something that stops this from walking off the end
 
-            uint8_t entrance_direction = tile_element_get_direction(tile_element);
+            uint8_t entrance_direction = tile_element->GetDirection();
             entrance_direction -= _trackSaveDirection;
             entrance_direction &= TILE_ELEMENT_DIRECTION_MASK;
             entrance->direction = entrance_direction;

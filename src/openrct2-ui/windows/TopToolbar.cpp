@@ -1010,13 +1010,13 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
                 grid_x, 1 | (gWindowSceneryPrimaryColour << 8), grid_y,
-                (tile_element->type & TILE_ELEMENT_DIRECTION_MASK) | (tile_element->base_height << 8),
-                GAME_COMMAND_SET_WALL_COLOUR, 0, gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
+                tile_element->GetDirection() | (tile_element->base_height << 8), GAME_COMMAND_SET_WALL_COLOUR, 0,
+                gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         {
-            rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
+            rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
 
             // If can't repaint
             if (!(scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
@@ -1025,7 +1025,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
                 grid_x, 1 | (tile_element->GetDirection() << 8), grid_y,
-                tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
+                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8),
                 GAME_COMMAND_SET_LARGE_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
             break;
         }
@@ -1097,16 +1097,16 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         {
-            int32_t entryIndex = scenery_large_get_type(tileElement);
+            int32_t entryIndex = tileElement->AsLargeScenery()->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_large_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
                 if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
                 {
-                    gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(tileElement)) & 3;
-                    gWindowSceneryPrimaryColour = scenery_large_get_primary_colour(tileElement);
-                    gWindowScenerySecondaryColour = scenery_large_get_secondary_colour(tileElement);
+                    gWindowSceneryRotation = (get_current_rotation() + tileElement->GetDirection()) & 3;
+                    gWindowSceneryPrimaryColour = tileElement->AsLargeScenery()->GetPrimaryColour();
+                    gWindowScenerySecondaryColour = tileElement->AsLargeScenery()->GetSecondaryColour();
                     gWindowSceneryEyedropperEnabled = false;
                 }
             }
@@ -1373,7 +1373,7 @@ static void sub_6E1F34(
                 }
 
                 gSceneryPlaceZ = 0;
-                uint16_t water_height = surface_get_water_height(tile_element);
+                uint16_t water_height = tile_element->AsSurface()->GetWaterHeight();
                 if (water_height != 0)
                 {
                     gSceneryPlaceZ = water_height * 16;

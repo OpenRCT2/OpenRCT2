@@ -607,7 +607,7 @@ static rct_tile_element* find_station_element(int32_t x, int32_t y, int32_t z, i
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tile_element_get_direction(tileElement) != direction)
+        if (tileElement->GetDirection() != direction)
             continue;
         if (track_element_get_ride_index(tileElement) != rideIndex)
             continue;
@@ -1274,7 +1274,7 @@ static money32 track_place(
         {
             tileElement = map_get_surface_element_at({ x, y });
 
-            uint8_t water_height = surface_get_water_height(tileElement) * 2;
+            uint8_t water_height = tileElement->AsSurface()->GetWaterHeight() * 2;
             if (water_height == 0)
             {
                 gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
@@ -1289,7 +1289,7 @@ static money32 track_place(
             water_height -= 2;
             if (water_height == tileElement->base_height)
             {
-                bh = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
+                bh = tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
                 if (bh == TILE_ELEMENT_SLOPE_W_CORNER_DN || bh == TILE_ELEMENT_SLOPE_S_CORNER_DN
                     || bh == TILE_ELEMENT_SLOPE_E_CORNER_DN || bh == TILE_ELEMENT_SLOPE_N_CORNER_DN)
                 {
@@ -1606,7 +1606,7 @@ static money32 track_remove(
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if ((tile_element_get_direction(tileElement)) != rotation)
+        if ((tileElement->GetDirection()) != rotation)
             continue;
 
         if (tile_element_get_track_sequence(tileElement) != sequence)
@@ -1650,7 +1650,7 @@ static money32 track_remove(
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
     trackBlock += tile_element_get_track_sequence(tileElement);
 
-    uint8_t originDirection = tile_element_get_direction(tileElement);
+    uint8_t originDirection = tileElement->GetDirection();
     switch (originDirection)
     {
         case 0:
@@ -1719,7 +1719,7 @@ static money32 track_remove(
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if ((tile_element_get_direction(tileElement)) != rotation)
+            if ((tileElement->GetDirection()) != rotation)
                 continue;
 
             if (tile_element_get_track_sequence(tileElement) != trackBlock->index)

@@ -1021,7 +1021,7 @@ void rct_peep::UpdateFalling()
             // If a path check if we are on it
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
-                int32_t height = map_height_from_slope(x, y, tile_element->properties.surface.slope)
+                int32_t height = map_height_from_slope(x, y, tile_element->properties.path.type)
                     + tile_element->base_height * 8;
 
                 if (height < z - 1 || height > z + 4)
@@ -1034,9 +1034,9 @@ void rct_peep::UpdateFalling()
             else if (tile_element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             {
                 // If the surface is water check to see if we could be drowning
-                if (surface_get_water_height(tile_element) > 0)
+                if (tile_element->AsSurface()->GetWaterHeight() > 0)
                 {
-                    int32_t height = surface_get_water_height(tile_element) * 16;
+                    int32_t height = tile_element->AsSurface()->GetWaterHeight() * 16;
 
                     if (height - 4 >= z && height < z + 20)
                     {
@@ -2544,7 +2544,7 @@ static void peep_interact_with_entrance(
             return;
         }
 
-        uint8_t entranceDirection = tile_element_get_direction(tile_element);
+        uint8_t entranceDirection = tile_element->GetDirection();
         if (entranceDirection != peep->direction)
         {
             if ((entranceDirection ^ (1 << 1)) != peep->direction)
@@ -3243,7 +3243,7 @@ void rct_peep::PerformNextAction(uint8_t& pathing_result, rct_tile_element*& til
                 return;
             }
 
-            int16_t water_height = surface_get_water_height(tileElement);
+            int16_t water_height = tileElement->AsSurface()->GetWaterHeight();
             if (water_height)
             {
                 peep_return_to_centre_of_tile(this);

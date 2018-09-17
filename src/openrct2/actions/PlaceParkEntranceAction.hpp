@@ -19,6 +19,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
+#include "../world/Surface.h"
 #include "GameAction.h"
 
 struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult>
@@ -176,8 +177,8 @@ public:
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                rct_tile_element* surfaceElement = map_get_surface_element_at(entranceLoc);
-                surfaceElement->properties.surface.ownership = 0;
+                SurfaceElement* surfaceElement = map_get_surface_element_at(entranceLoc)->AsSurface();
+                surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
             }
 
             rct_tile_element* newElement = tile_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);

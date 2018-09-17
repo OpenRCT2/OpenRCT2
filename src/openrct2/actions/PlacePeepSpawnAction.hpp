@@ -16,6 +16,7 @@
 #include "../management/Finance.h"
 #include "../world/Footpath.h"
 #include "../world/Park.h"
+#include "../world/Surface.h"
 #include "GameAction.h"
 
 static int32_t _nextPeepSpawnIndex = 0;
@@ -87,7 +88,7 @@ public:
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
-        if (surfaceMapElement->properties.surface.ownership & 0xF0)
+        if (surfaceMapElement->AsSurface()->GetOwnership() != OWNERSHIP_UNOWNED)
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);

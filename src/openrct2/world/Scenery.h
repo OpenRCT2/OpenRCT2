@@ -300,7 +300,6 @@ void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
-rct_scenery_entry* get_large_scenery_entry(int32_t entryIndex);
 rct_scenery_entry* get_wall_entry(int32_t entryIndex);
 rct_scenery_entry* get_banner_entry(int32_t entryIndex);
 rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex);

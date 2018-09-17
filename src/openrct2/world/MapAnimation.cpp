@@ -16,6 +16,7 @@
 #include "../ride/Track.h"
 #include "../world/Wall.h"
 #include "Footpath.h"
+#include "LargeScenery.h"
 #include "Map.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
@@ -195,7 +196,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused())
             {
-                int32_t direction = tile_element_get_direction(tileElement);
+                int32_t direction = tileElement->GetDirection();
                 int32_t x2 = x - CoordsDirectionDelta[direction].x;
                 int32_t y2 = y - CoordsDirectionDelta[direction].y;
 
@@ -458,7 +459,7 @@ static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
-        sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+        sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
         if (sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_ANIMATED)
         {
             int32_t z = tileElement->base_height * 8;

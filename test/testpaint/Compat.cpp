@@ -164,16 +164,6 @@ uint8_t TileElementBase::GetType() const
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
-int tile_element_get_direction(const rct_tile_element* element)
-{
-    return element->type & TILE_ELEMENT_DIRECTION_MASK;
-}
-
-int tile_element_get_direction_with_offset(const rct_tile_element* element, uint8_t offset)
-{
-    return ((element->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
-}
-
 rct_tile_element* map_get_first_element_at(int x, int y)
 {
     if (x < 0 || y < 0 || x > 255 || y > 255)
@@ -248,11 +238,6 @@ void tile_element_decrement_onride_photo_timout(rct_tile_element* tileElement)
     {
         tileElement->properties.track.sequence -= (1 << 4);
     }
-}
-
-int32_t surface_get_water_height(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
 }
 
 bool ride_type_has_flag(int rideType, int flag)
@@ -345,4 +330,24 @@ TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t statio
 TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex)
 {
     return ride->exits[stationIndex];
+}
+
+uint8_t TileElementBase::GetDirection() const
+{
+    return this->type & TILE_ELEMENT_DIRECTION_MASK;
+}
+
+uint8_t TileElementBase::GetDirectionWithOffset(uint8_t offset) const
+{
+    return ((this->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
+}
+
+uint8_t SurfaceElement::GetSlope() const
+{
+    return (slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
+}
+
+uint32_t SurfaceElement::GetWaterHeight() const
+{
+    return terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
 }

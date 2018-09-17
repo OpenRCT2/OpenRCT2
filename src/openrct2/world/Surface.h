@@ -108,14 +108,9 @@ enum
 #define TILE_ELEMENT_SURFACE_SLOPE_MASK                                                                                        \
     (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG                                                                                        \
      | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)    // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK 0xE0   // in rct_tile_tile_element_set_terrainelement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK 0xE0   // in rct_tile_element.properties.surface.slope
 #define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK 0x1F // in rct_tile_element.properties.surface.terrain
 #define TILE_ELEMENT_SURFACE_TERRAIN_MASK 0xE0      // in rct_tile_element.properties.surface.terrain
 
-int32_t surface_get_terrain(const rct_tile_element* element);
-int32_t surface_get_terrain_edge(const rct_tile_element* element);
-void surface_set_terrain(rct_tile_element* element, int32_t terrain);
-void surface_set_terrain_edge(rct_tile_element* element, int32_t terrain);
-
-// ~Oli414: Needs to renamed. This function is specific to the surface object.
-int32_t surface_get_water_height(const rct_tile_element* tileElement);
+#define TILE_ELEMENT_SURFACE_OWNERSHIP_MASK 0xF0
+#define TILE_ELEMENT_SURFACE_PARK_FENCE_MASK 0x0F
