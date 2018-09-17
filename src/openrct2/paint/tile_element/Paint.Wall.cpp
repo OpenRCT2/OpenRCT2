@@ -158,7 +158,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
-    rct_scenery_entry* sceneryEntry = get_wall_entry(tile_element->properties.wall.type);
+    rct_scenery_entry* sceneryEntry = tile_element->AsWall()->GetEntry();
     if (sceneryEntry == nullptr)
     {
         return;
@@ -214,7 +214,8 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         LocationXYZ16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
         uint8_t animationFrame = tile_element->AsWall()->GetAnimationFrame();
         // Add the direction as well
-        animationFrame |= (tile_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
+        if (tile_element->AsWall()->AnimationIsBackwards())
+            animationFrame |= (1 << 4);
         uint32_t imageId;
         switch (direction)
         {
@@ -429,7 +430,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
     uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
 
-    uint8_t bannerIndex = tile_element->properties.wall.banner_index;
+    uint8_t bannerIndex = tile_element->AsWall()->GetBannerIndex();
     rct_banner* banner = &gBanners[bannerIndex];
 
     set_format_arg(0, rct_string_id, banner->string_idx);

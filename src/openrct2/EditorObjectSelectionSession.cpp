@@ -161,7 +161,7 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_WALL:
-                type = iter.element->properties.wall.type;
+                type = iter.element->AsWall()->GetEntryIndex();
                 assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
                 Editor::SetSelectedObject(OBJECT_TYPE_WALLS, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;

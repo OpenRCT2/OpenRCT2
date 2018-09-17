@@ -6299,7 +6299,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
             continue;
         if (tileElement->GetDirection() != edge)
             continue;
-        auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
+        auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         if (peep->next_z + 4 <= tileElement->base_height)
@@ -6333,7 +6333,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
             continue;
         if (tileElement->GetDirectionWithOffset(2) != edge)
             continue;
-        auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
+        auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
@@ -6411,7 +6411,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
         {
-            auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
+            auto wallEntry = tileElement->AsWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             {
                 continue;
@@ -6445,7 +6445,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
             continue;
         if (tileElement->GetDirectionWithOffset(2) != edge)
             continue;
-        auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
+        auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         if (peep->next_z + 6 <= tileElement->base_height)
@@ -6522,7 +6522,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
         {
-            auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
+            auto wallEntry = tileElement->AsWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             {
                 continue;
@@ -6556,7 +6556,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
             continue;
         if (tileElement->GetDirectionWithOffset(2) != edge)
             continue;
-        auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
+        auto wallEntry = tileElement->AsWall()->GetEntry();
         if (wallEntry == nullptr || (wallEntry->wall.flags2 & WALL_SCENERY_2_IS_OPAQUE))
             continue;
         if (peep->next_z + 8 <= tileElement->base_height)

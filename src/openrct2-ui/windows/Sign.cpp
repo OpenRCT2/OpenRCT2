@@ -410,10 +410,10 @@ rct_window* window_sign_small_open(rct_windownumber number)
     {
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
         {
-            rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
+            rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
             if (scenery_entry->wall.scrolling_mode != 0xFF)
             {
-                if (tile_element->properties.wall.banner_index == w->number)
+                if (tile_element->AsWall()->GetBannerIndex() == w->number)
                     break;
             }
         }
@@ -425,7 +425,7 @@ rct_window* window_sign_small_open(rct_windownumber number)
 
     w->list_information_type = tile_element->AsWall()->GetPrimaryColour();
     w->var_492 = tile_element->AsWall()->GetSecondaryColour();
-    w->var_48C = tile_element->properties.wall.type;
+    w->var_48C = tile_element->AsWall()->GetEntryIndex();
 
     view_x += 16;
     view_y += 16;
@@ -468,10 +468,10 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
             {
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_WALL)
                 {
-                    rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
+                    rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
                     if (scenery_entry->wall.scrolling_mode != 0xFF)
                     {
-                        if (tile_element->properties.wall.banner_index == w->number)
+                        if (tile_element->AsWall()->GetBannerIndex() == w->number)
                             break;
                     }
                 }

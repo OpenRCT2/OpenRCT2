@@ -1623,7 +1623,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE].text = WallSlopeStringIds[tileElement->AsWall()->GetSlope()];
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].top = GBBT(propertiesAnchor, 1) + 4;
             w->widgets[WIDX_WALL_DROPDOWN_SLOPE_BUTTON].bottom = GBBB(propertiesAnchor, 1) - 4;
-            const uint8_t wallType = tileElement->properties.wall.type;
+            const uint8_t wallType = tileElement->AsWall()->GetEntryIndex();
             const rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
             const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
             // Wall slope dropdown
@@ -1978,7 +1978,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Type
-                int16_t wallType = tileElement->properties.wall.type;
+                int16_t wallType = tileElement->AsWall()->GetEntryIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, COLOUR_DARK_GREEN, x, y);
 
                 // Banner info
@@ -1987,7 +1987,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     gfx_draw_string_left(
                         dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT,
-                        &gBanners[tileElement->properties.wall.banner_index].string_idx, COLOUR_DARK_GREEN, x, y + 11);
+                        &gBanners[tileElement->AsWall()->GetBannerIndex()].string_idx, COLOUR_DARK_GREEN, x, y + 11);
                 }
                 else
                 {
@@ -2158,7 +2158,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             case TILE_ELEMENT_TYPE_WALL:
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_TILE_INSPECTOR_WALL),
-                    language_get_string(get_wall_entry(tileElement->properties.wall.type)->name));
+                    language_get_string(tileElement->AsWall()->GetEntry()->name));
                 typeName = buffer;
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:

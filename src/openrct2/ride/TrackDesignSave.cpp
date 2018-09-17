@@ -354,7 +354,7 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
 
 static void track_design_save_add_wall(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t entryType = tileElement->properties.wall.type;
+    int32_t entryType = tileElement->AsWall()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
 
     uint8_t flags = 0;
@@ -542,7 +542,7 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_til
 
 static void track_design_save_remove_wall(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t entryType = tileElement->properties.wall.type;
+    int32_t entryType = tileElement->AsWall()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
 
     uint8_t flags = 0;

@@ -522,13 +522,13 @@ static money32 WallPlace(
 
         if (wallAcrossTrack)
         {
-            tileElement->properties.wall.animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
+            tileElement->AsWall()->SetAcrossTrack(true);
         }
 
-        tileElement->properties.wall.type = wallType;
+        tileElement->AsWall()->SetEntryIndex(wallType);
         if (bannerIndex != 0xFF)
         {
-            tileElement->properties.wall.banner_index = bannerIndex;
+            tileElement->AsWall()->SetBannerIndex(bannerIndex);
         }
 
         if (wallEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
@@ -584,7 +584,7 @@ static money32 WallSetColour(
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_scenery_entry* scenery_entry = get_wall_entry(wallElement->properties.wall.type);
+        rct_scenery_entry* scenery_entry = wallElement->AsWall()->GetEntry();
         wallElement->AsWall()->SetPrimaryColour(primaryColour);
         wallElement->AsWall()->SetSecondaryColour(secondaryColour);
 
@@ -761,4 +761,53 @@ void WallElement::SetAnimationFrame(uint8_t frameNum)
 {
     animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
     animation |= (frameNum & 0xF) << 3;
+}
+
+uint8_t WallElement::GetEntryIndex() const
+{
+    return entryIndex;
+}
+
+rct_scenery_entry* WallElement::GetEntry() const
+{
+    return get_wall_entry(entryIndex);
+}
+
+void WallElement::SetEntryIndex(uint8_t newIndex)
+{
+    entryIndex = newIndex;
+}
+
+BannerIndex WallElement::GetBannerIndex() const
+{
+    return banner_index;
+}
+
+void WallElement::SetBannerIndex(BannerIndex newIndex)
+{
+    banner_index = newIndex;
+}
+
+bool WallElement::IsAcrossTrack() const
+{
+    return (animation & WALL_ANIMATION_FLAG_ACROSS_TRACK) != 0;
+}
+
+void WallElement::SetAcrossTrack(bool acrossTrack)
+{
+    animation &= ~WALL_ANIMATION_FLAG_ACROSS_TRACK;
+    if (acrossTrack)
+        animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
+}
+
+bool WallElement::AnimationIsBackwards() const
+{
+    return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
+}
+
+void WallElement::SetAnimationIsBackwards(bool isBackwards)
+{
+    animation &= ~WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
+    if (isBackwards)
+        animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
 }

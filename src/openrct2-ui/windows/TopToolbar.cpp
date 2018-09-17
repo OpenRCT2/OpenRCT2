@@ -1001,7 +1001,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
         {
-            rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
+            rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
 
             // If can't repaint
             if (!(scenery_entry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
@@ -1080,7 +1080,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
         {
-            int32_t entryIndex = tileElement->properties.wall.type;
+            int32_t entryIndex = tileElement->AsWall()->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_wall_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {

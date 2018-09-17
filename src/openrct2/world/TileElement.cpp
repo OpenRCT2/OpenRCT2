@@ -78,11 +78,11 @@ BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement)
 
             return tileElement->AsLargeScenery()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_WALL:
-            sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
+            sceneryEntry = tileElement->AsWall()->GetEntry();
             if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == 0xFF)
                 return BANNER_INDEX_NULL;
 
-            return tileElement->properties.wall.banner_index;
+            return tileElement->AsWall()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_BANNER:
             return tileElement->properties.banner.index;
         default:
@@ -95,7 +95,7 @@ void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex ba
     switch (tileElement->GetType())
     {
         case TILE_ELEMENT_TYPE_WALL:
-            tileElement->properties.wall.banner_index = bannerIndex;
+            tileElement->AsWall()->SetBannerIndex(bannerIndex);
             break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             tileElement->AsLargeScenery()->SetBannerIndex(bannerIndex);
