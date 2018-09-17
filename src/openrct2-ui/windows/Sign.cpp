@@ -423,8 +423,8 @@ rct_window* window_sign_small_open(rct_windownumber number)
     int32_t view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
-    w->list_information_type = wall_get_primary_colour(tile_element);
-    w->var_492 = wall_get_secondary_colour(tile_element);
+    w->list_information_type = tile_element->AsWall()->GetPrimaryColour();
+    w->var_492 = tile_element->AsWall()->GetSecondaryColour();
     w->var_48C = tile_element->properties.wall.type;
 
     view_x += 16;

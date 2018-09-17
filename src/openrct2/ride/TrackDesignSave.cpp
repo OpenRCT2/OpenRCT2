@@ -359,10 +359,10 @@ static void track_design_save_add_wall(int32_t x, int32_t y, rct_tile_element* t
 
     uint8_t flags = 0;
     flags |= tileElement->type & 3;
-    flags |= wall_get_tertiary_colour(tileElement) << 2;
+    flags |= tileElement->AsWall()->GetTertiaryColour() << 2;
 
-    uint8_t secondaryColour = wall_get_secondary_colour(tileElement);
-    uint8_t primaryColour = wall_get_primary_colour(tileElement);
+    uint8_t secondaryColour = tileElement->AsWall()->GetSecondaryColour();
+    uint8_t primaryColour = tileElement->AsWall()->GetPrimaryColour();
 
     track_design_save_push_tile_element(x, y, tileElement);
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);
@@ -547,7 +547,7 @@ static void track_design_save_remove_wall(int32_t x, int32_t y, rct_tile_element
 
     uint8_t flags = 0;
     flags |= tileElement->type & 3;
-    flags |= wall_get_tertiary_colour(tileElement) << 2;
+    flags |= tileElement->AsWall()->GetTertiaryColour() << 2;
 
     track_design_save_pop_tile_element(x, y, tileElement);
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags);

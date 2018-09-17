@@ -4408,8 +4408,8 @@ void game_command_set_sign_style(
             *ebx = 0;
             return;
         }
-        wall_set_primary_colour(tileElement, mainColour);
-        wall_set_secondary_colour(tileElement, textColour);
+        tileElement->AsWall()->SetPrimaryColour(mainColour);
+        tileElement->AsWall()->SetSecondaryColour(textColour);
 
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
     }

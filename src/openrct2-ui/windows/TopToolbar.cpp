@@ -1087,9 +1087,9 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
                 int32_t sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_WALLS, entryIndex);
                 if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
                 {
-                    gWindowSceneryPrimaryColour = wall_get_primary_colour(tileElement);
-                    gWindowScenerySecondaryColour = wall_get_secondary_colour(tileElement);
-                    gWindowSceneryTertiaryColour = wall_get_tertiary_colour(tileElement);
+                    gWindowSceneryPrimaryColour = tileElement->AsWall()->GetPrimaryColour();
+                    gWindowScenerySecondaryColour = tileElement->AsWall()->GetSecondaryColour();
+                    gWindowSceneryTertiaryColour = tileElement->AsWall()->GetTertiaryColour();
                     gWindowSceneryEyedropperEnabled = false;
                 }
             }

@@ -170,20 +170,20 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         frameNum = (gCurrentTicks & 7) * 2;
     }
 
-    int32_t primaryColour = wall_get_primary_colour(tile_element);
+    int32_t primaryColour = tile_element->AsWall()->GetPrimaryColour();
     uint32_t imageColourFlags = primaryColour << 19 | IMAGE_TYPE_REMAP;
     uint32_t dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
     {
-        uint8_t secondaryColour = wall_get_secondary_colour(tile_element);
+        uint8_t secondaryColour = tile_element->AsWall()->GetSecondaryColour();
         imageColourFlags |= secondaryColour << 24 | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32_t tertiaryColour = 0;
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
-        tertiaryColour = wall_get_tertiary_colour(tile_element);
+        tertiaryColour = tile_element->AsWall()->GetTertiaryColour();
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
@@ -413,7 +413,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     set_format_arg(0, uint32_t, 0);
     set_format_arg(4, uint32_t, 0);
 
-    uint8_t secondaryColour = wall_get_secondary_colour(tile_element);
+    uint8_t secondaryColour = tile_element->AsWall()->GetSecondaryColour();
 
     if (dword_141F710 != 0)
     {
