@@ -1487,7 +1487,7 @@ static money32 track_place(
         }
         else
         {
-            track_element_set_seat_rotation(tileElement, seatRotation);
+            tileElement->AsTrack()->SetSeatRotation(seatRotation);
         }
 
         if (liftHillAndAlternativeState & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
@@ -2222,15 +2222,15 @@ bool track_element_has_speed_setting(uint8_t trackType)
     return trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BOOSTER;
 }
 
-uint8_t track_element_get_seat_rotation(const rct_tile_element* tileElement)
+uint8_t TrackElement::GetSeatRotation() const
 {
-    return tileElement->properties.track.colour >> 4;
+    return colour >> 4;
 }
 
-void track_element_set_seat_rotation(rct_tile_element* tileElement, uint8_t seatRotation)
+void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    tileElement->properties.track.colour &= 0x0F;
-    tileElement->properties.track.colour |= (seatRotation << 4);
+    colour &= 0x0F;
+    colour |= (newSeatRotation << 4);
 }
 
 uint8_t track_element_get_colour_scheme(const rct_tile_element* tileElement)

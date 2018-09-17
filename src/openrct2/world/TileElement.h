@@ -260,6 +260,9 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
     
+    uint8_t GetSeatRotation() const;
+    void SetSeatRotation(uint8_t newSeatRotation);
+    
     // Used in RCT1, will be reintroduced at some point.
     // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
     uint8_t GetDoorAState() const;

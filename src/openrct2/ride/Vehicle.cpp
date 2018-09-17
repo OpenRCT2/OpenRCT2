@@ -8113,7 +8113,7 @@ loc_6DB41D:
     trackType = tileElement->AsTrack()->GetTrackType();
     if (trackType != TRACK_ELEM_BRAKES)
     {
-        vehicle->target_seat_rotation = track_element_get_seat_rotation(tileElement);
+        vehicle->target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
     vehicle->track_direction = regs.bl & 3;
     vehicle->track_type |= trackType << 2;
@@ -8531,7 +8531,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     trackType = tileElement->AsTrack()->GetTrackType();
     if (trackType != TRACK_ELEM_BRAKES)
     {
-        vehicle->target_seat_rotation = track_element_get_seat_rotation(tileElement);
+        vehicle->target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
     direction &= 3;
     vehicle->track_type = trackType << 2;
@@ -9155,7 +9155,7 @@ loc_6DCA9A:
     }
 
     vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (direction & 3);
-    vehicle->var_CF = track_element_get_seat_rotation(tileElement) << 1;
+    vehicle->var_CF = tileElement->AsTrack()->GetSeatRotation() << 1;
 
     // There are two bytes before the move info list
     regs.ax = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);

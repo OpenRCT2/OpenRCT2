@@ -566,8 +566,6 @@ void game_command_set_brakes_speed(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 bool track_element_is_booster(uint8_t rideType, uint8_t trackType);
 bool track_element_has_speed_setting(uint8_t trackType);
-uint8_t track_element_get_seat_rotation(const rct_tile_element* tileElement);
-void track_element_set_seat_rotation(rct_tile_element* tileElement, uint8_t seatRotation);
 uint8_t track_element_get_colour_scheme(const rct_tile_element* tileElement);
 void track_element_set_colour_scheme(rct_tile_element* tileElement, uint8_t colourScheme);
 int32_t tile_element_get_station(const rct_tile_element* tileElement);

@@ -1052,7 +1052,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         }
         else
         {
-            bh = track_element_get_seat_rotation(trackElement.element);
+            bh = trackElement.element->AsTrack()->GetSeatRotation();
         }
 
         uint8_t flags = (trackElement.element->type & (1 << 7)) | bh;

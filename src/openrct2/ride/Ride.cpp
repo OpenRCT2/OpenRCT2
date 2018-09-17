@@ -1398,7 +1398,7 @@ int32_t sub_6C683D(
         }
         if (flags & (1 << 5))
         {
-            track_element_set_seat_rotation(tileElement, (uint8_t)(extra_params & 0xFF));
+            tileElement->AsTrack()->SetSeatRotation((uint8_t)(extra_params & 0xFF));
         }
 
         if (flags & (1 << 3))
