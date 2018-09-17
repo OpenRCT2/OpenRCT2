@@ -7453,7 +7453,6 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
 
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
-        // FIXME: Likely an implementation typo, should probably be true!
         tileElement->AsWall()->SetAnimationIsBackwards(false);
         tileElement->AsWall()->SetAnimationFrame(1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
@@ -7541,7 +7540,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
     }
     else
     {
-        tileElement->AsWall()->SetAnimationIsBackwards(false);
+        tileElement->AsWall()->SetAnimationIsBackwards(true);
         tileElement->AsWall()->SetAnimationFrame(6);
         vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
