@@ -1457,7 +1457,7 @@ static money32 track_place(
         }
         tileElement->type = map_type;
 
-        tile_element_set_track_sequence(tileElement, trackBlock->index);
+        tileElement->AsTrack()->SetSequenceIndex(trackBlock->index);
         track_element_set_ride_index(tileElement, rideIndex);
         tileElement->AsTrack()->SetTrackType(type);
 
@@ -1609,7 +1609,7 @@ static money32 track_remove(
         if ((tileElement->GetDirection()) != rotation)
             continue;
 
-        if (tile_element_get_track_sequence(tileElement) != sequence)
+        if (tileElement->AsTrack()->GetSequenceIndex() != sequence)
             continue;
 
         if (tileElement->IsGhost() != isGhost)
@@ -1648,7 +1648,7 @@ static money32 track_remove(
 
     Ride* ride = get_ride(rideIndex);
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-    trackBlock += tile_element_get_track_sequence(tileElement);
+    trackBlock += tileElement->AsTrack()->GetSequenceIndex();
 
     uint8_t originDirection = tileElement->GetDirection();
     switch (originDirection)
@@ -1722,7 +1722,7 @@ static money32 track_remove(
             if (tileElement->GetDirection() != rotation)
                 continue;
 
-            if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
+            if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
                 continue;
 
             if (tileElement->AsTrack()->GetTrackType() != type)
@@ -1751,7 +1751,7 @@ static money32 track_remove(
             entranceDirections = TrackSequenceProperties[type][0];
         }
 
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tile_element_get_track_sequence(tileElement) == 0))
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element(x, y, z / 8, rotation, rideIndex, 0))
             {
@@ -1776,7 +1776,7 @@ static money32 track_remove(
         if (!(flags & GAME_COMMAND_FLAG_APPLY))
             continue;
 
-        if (entranceDirections & (1 << 4) && (tile_element_get_track_sequence(tileElement) == 0))
+        if (entranceDirections & (1 << 4) && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element(x, y, z / 8, rotation, rideIndex, GAME_COMMAND_FLAG_APPLY))
             {
@@ -2250,15 +2250,15 @@ void tile_element_set_station(rct_tile_element* tileElement, uint32_t stationInd
     tileElement->properties.track.sequence |= (stationIndex << 4);
 }
 
-int32_t tile_element_get_track_sequence(const rct_tile_element* tileElement)
+uint8_t TrackElement::GetSequenceIndex() const
 {
-    return tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
 }
 
-void tile_element_set_track_sequence(rct_tile_element* tileElement, int32_t trackSequence)
+void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
 }
 
 bool tile_element_get_green_light(const rct_tile_element* tileElement)
@@ -2282,7 +2282,8 @@ int32_t tile_element_get_brake_booster_speed(const rct_tile_element* tileElement
 
 void tile_element_set_brake_booster_speed(rct_tile_element* tileElement, int32_t speed)
 {
-    tileElement->properties.track.sequence = tile_element_get_track_sequence(tileElement) | ((speed >> 1) << 4);
+    tileElement->properties.track.sequence &= ~0b11110000;
+    tileElement->properties.track.sequence |= ((speed >> 1) << 4);
 }
 
 bool tile_element_is_taking_photo(const rct_tile_element* tileElement)

@@ -743,7 +743,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
         uint8_t rideIndex = track_element_get_ride_index(trackElement);
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-        trackBlock += tile_element_get_track_sequence(trackElement);
+        trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
         switch (originDirection)
@@ -807,10 +807,10 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((tileElement->GetDirection()) != rotation)
+                if (tileElement->GetDirection() != rotation)
                     continue;
 
-                if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
+                if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
                     continue;
 
                 if (tileElement->AsTrack()->GetTrackType() != type)
@@ -876,7 +876,7 @@ int32_t tile_inspector_track_set_chain(
         uint8_t rideIndex = track_element_get_ride_index(trackElement);
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-        trackBlock += tile_element_get_track_sequence(trackElement);
+        trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
         switch (originDirection)
@@ -940,10 +940,10 @@ int32_t tile_inspector_track_set_chain(
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((tileElement->GetDirection()) != rotation)
+                if (tileElement->GetDirection() != rotation)
                     continue;
 
-                if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
+                if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
                     continue;
 
                 if (tileElement->AsTrack()->GetTrackType() != type)

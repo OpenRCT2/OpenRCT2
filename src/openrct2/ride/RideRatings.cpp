@@ -210,7 +210,7 @@ static void ride_ratings_update_state_2()
             continue;
 
         if (trackType == 255
-            || (tile_element_get_track_sequence(tileElement) == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
+            || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
             if (trackType == TRACK_ELEM_END_STATION)
             {
@@ -601,7 +601,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
                 int32_t trackType = tileElement->AsTrack()->GetTrackType();
                 if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
                 {
-                    int32_t sequence = tile_element_get_track_sequence(tileElement);
+                    int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
                     if (sequence == 3 || sequence == 6)
                     {
                         if (tileElement->base_height - inputTileElement->clearance_height <= 10)

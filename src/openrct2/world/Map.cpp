@@ -4669,7 +4669,7 @@ rct_tile_element* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int
             continue;
         if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
-        if (tile_element_get_track_sequence(tileElement) != sequence)
+        if (tileElement->AsTrack()->GetSequenceIndex() != sequence)
             continue;
 
         return tileElement;

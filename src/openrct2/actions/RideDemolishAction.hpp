@@ -317,7 +317,7 @@ private:
             {
                 money32 removePrice = game_do_command(
                     x, GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8), y,
-                    type | (tile_element_get_track_sequence(it.element) << 8), GAME_COMMAND_REMOVE_TRACK, z, 0);
+                    type | (it.element->AsTrack()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_TRACK, z, 0);
 
                 if (removePrice == MONEY32_UNDEFINED)
                     tile_element_remove(it.element);

@@ -185,17 +185,6 @@ void tile_element_set_station(rct_tile_element* tileElement, uint32_t stationInd
     tileElement->properties.track.sequence |= (stationIndex << 4);
 }
 
-int32_t tile_element_get_track_sequence(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-}
-
-void tile_element_set_track_sequence(rct_tile_element* tileElement, int trackSequence)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
-}
-
 bool tile_element_get_green_light(const rct_tile_element* tileElement)
 {
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
@@ -217,7 +206,8 @@ int tile_element_get_brake_booster_speed(const rct_tile_element* tileElement)
 
 void tile_element_set_brake_booster_speed(rct_tile_element* tileElement, int speed)
 {
-    tileElement->properties.track.sequence = tile_element_get_track_sequence(tileElement) | ((speed >> 1) << 4);
+    tileElement->properties.track.sequence &= ~0b11110000;
+    tileElement->properties.track.sequence |= ((speed >> 1) << 4);
 }
 
 bool tile_element_is_taking_photo(const rct_tile_element* tileElement)
@@ -300,6 +290,17 @@ uint8_t TrackElement::GetTrackType() const
 void TrackElement::SetTrackType(uint8_t newType)
 {
     trackType = newType;
+}
+
+uint8_t TrackElement::GetSequenceIndex() const
+{
+    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+}
+
+void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
 }
 
 uint8_t track_element_get_ride_index(const rct_tile_element* tileElement)

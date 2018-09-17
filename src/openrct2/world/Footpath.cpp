@@ -1371,7 +1371,7 @@ static void loc_6A6D7E(
                         }
 
                         const uint8_t trackType = tileElement->AsTrack()->GetTrackType();
-                        const uint8_t trackSequence = tile_element_get_track_sequence(tileElement);
+                        const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
                         {
                             return;
@@ -1498,7 +1498,7 @@ static void loc_6A6C85(
             return;
         }
         const uint8_t trackType = tileElement->AsTrack()->GetTrackType();
-        const uint8_t trackSequence = tile_element_get_track_sequence(tileElement);
+        const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
         {
             return;
@@ -2475,7 +2475,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct
                         break;
 
                     const uint8_t trackType = tileElement->AsTrack()->GetTrackType();
-                    const uint8_t trackSequence = tile_element_get_track_sequence(tileElement);
+                    const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                     if (FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
                     {
                         uint16_t dx = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);

@@ -572,8 +572,6 @@ uint8_t track_element_get_colour_scheme(const rct_tile_element* tileElement);
 void track_element_set_colour_scheme(rct_tile_element* tileElement, uint8_t colourScheme);
 int32_t tile_element_get_station(const rct_tile_element* tileElement);
 void tile_element_set_station(rct_tile_element* tileElement, uint32_t stationIndex);
-int32_t tile_element_get_track_sequence(const rct_tile_element* tileElement);
-void tile_element_set_track_sequence(rct_tile_element* tileElement, int32_t trackSequence);
 bool tile_element_get_green_light(const rct_tile_element* tileElement);
 void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight);
 int32_t tile_element_get_brake_booster_speed(const rct_tile_element* tileElement);

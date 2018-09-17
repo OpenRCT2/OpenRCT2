@@ -558,7 +558,7 @@ bool track_block_get_next_from_zero(
         if (track_element_get_ride_index(tileElement) != rideIndex)
             continue;
 
-        if (tile_element_get_track_sequence(tileElement) != 0)
+        if (tileElement->AsTrack()->GetSequenceIndex() != 0)
             continue;
 
         if (tileElement->IsGhost() != isGhost)
@@ -607,7 +607,7 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     Ride* ride = get_ride(rideIndex);
 
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, input->element->AsTrack()->GetTrackType());
-    uint8_t sequence = tile_element_get_track_sequence(input->element);
+    uint8_t sequence = input->element->AsTrack()->GetSequenceIndex();
     trackBlock += sequence;
 
     const rct_track_coordinates* trackCoordinate = get_track_coord_from_ride(ride, input->element->AsTrack()->GetTrackType());
@@ -697,7 +697,7 @@ bool track_block_get_previous_from_zero(
         const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
         const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(ride, tileElement->AsTrack()->GetTrackType());
 
-        nextTrackBlock += tile_element_get_track_sequence(tileElement);
+        nextTrackBlock += tileElement->AsTrack()->GetSequenceIndex();
         if ((nextTrackBlock + 1)->index != 255)
             continue;
 
@@ -768,7 +768,7 @@ bool track_block_get_previous(int32_t x, int32_t y, rct_tile_element* tileElemen
     Ride* ride = get_ride(rideIndex);
 
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
-    uint8_t sequence = tile_element_get_track_sequence(tileElement);
+    uint8_t sequence = tileElement->AsTrack()->GetSequenceIndex();
     trackBlock += sequence;
 
     const rct_track_coordinates* trackCoordinate = get_track_coord_from_ride(ride, tileElement->AsTrack()->GetTrackType());
@@ -1290,7 +1290,7 @@ int32_t sub_6C683D(
             continue;
 
         successTileElement = tileElement;
-        if (tile_element_get_track_sequence(tileElement) == 0)
+        if (tileElement->AsTrack()->GetSequenceIndex() == 0)
             break;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -1301,7 +1301,7 @@ int32_t sub_6C683D(
     // Possibly z should be & 0xF8
     const rct_preview_track* trackBlock = get_track_def_from_ride_index(track_element_get_ride_index(tileElement), type);
 
-    int32_t sequence = tile_element_get_track_sequence(tileElement);
+    int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
     uint8_t mapDirection = tileElement->GetDirection();
 
     switch (mapDirection)
@@ -1366,7 +1366,7 @@ int32_t sub_6C683D(
             if ((tileElement->GetDirection()) != direction)
                 continue;
 
-            if (tile_element_get_track_sequence(tileElement) != trackBlock[i].index)
+            if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock[i].index)
                 continue;
 
             if (type == tileElement->AsTrack()->GetTrackType())
@@ -1472,7 +1472,7 @@ void ride_remove_provisional_track_piece()
             int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
                 | GAME_COMMAND_FLAG_GHOST;
             uint8_t trackType = next_track.element->AsTrack()->GetTrackType();
-            int32_t trackSequence = tile_element_get_track_sequence(next_track.element);
+            int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
             game_do_command(
                 next_track.x, flags | ((direction & 3) << 8), next_track.y, trackType | (trackSequence << 8),
                 GAME_COMMAND_REMOVE_TRACK, z, 0);
@@ -5140,7 +5140,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
                             continue;
                         if (tileElement->AsTrack()->GetTrackType() != trackType)
                             continue;
-                        if (tile_element_get_track_sequence(tileElement) != 0)
+                        if (tileElement->AsTrack()->GetSequenceIndex() != 0)
                             continue;
                         if (tileElement->base_height != trackBeginEnd.begin_z / 8)
                             continue;
@@ -7157,7 +7157,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
 
                     int32_t eax = (direction + 2 - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
                     if (FlatRideTrackSequenceProperties[tileElement->AsTrack()->GetTrackType()]
-                                                       [tile_element_get_track_sequence(tileElement)]
+                                                       [tileElement->AsTrack()->GetSequenceIndex()]
                         & (1 << eax))
                     {
                         gRideEntranceExitPlaceDirection = direction ^ 2;
@@ -8010,7 +8010,7 @@ void sub_6CB945(int32_t rideIndex)
                         continue;
                     if (track_element_get_ride_index(tileElement) != rideIndex)
                         continue;
-                    if (tile_element_get_track_sequence(tileElement) != 0)
+                    if (tileElement->AsTrack()->GetSequenceIndex() != 0)
                         continue;
                     if (!(TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
                         continue;
@@ -8140,7 +8140,7 @@ void sub_6CB945(int32_t rideIndex)
                     continue;
 
                 uint8_t trackType = trackElement->AsTrack()->GetTrackType();
-                uint8_t trackSequence = tile_element_get_track_sequence(trackElement);
+                uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
 
                 uint8_t direction = (tileElement->GetDirection() - trackElement->GetDirectionWithOffset(2)) & 3;
 
