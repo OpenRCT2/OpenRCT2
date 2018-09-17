@@ -284,7 +284,7 @@ assert_struct_size(LargeSceneryElement, 8);
 
 struct WallElement : TileElementBase
 {
-//private:
+private:
     uint8_t entryIndex; // 4
     union
     {
