@@ -2330,12 +2330,12 @@ void TrackElement::SetTrackType(uint8_t newType)
     trackType = newType;
 }
 
-uint8_t track_element_get_door_a_state(const rct_tile_element* tileElement)
+uint8_t TrackElement::GetDoorAState() const
 {
-    return (tileElement->properties.track.colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+    return (colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
 }
 
-uint8_t track_element_get_door_b_state(const rct_tile_element* tileElement)
+uint8_t TrackElement::GetDoorBState() const
 {
-    return (tileElement->properties.track.colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+    return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }

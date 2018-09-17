@@ -259,6 +259,11 @@ public:
     
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
+    
+    // Used in RCT1, will be reintroduced at some point.
+    // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
+    uint8_t GetDoorAState() const;
+    uint8_t GetDoorBState() const;
 };
 assert_struct_size(TrackElement, 8);
 
