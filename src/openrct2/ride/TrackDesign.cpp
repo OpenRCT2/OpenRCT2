@@ -2106,7 +2106,7 @@ static money32 place_maze_design(uint8_t flags, uint8_t rideIndex, uint16_t maze
         rct_tile_element* tileElement = tile_element_insert(fx >> 5, fy >> 5, fz, 15);
         tileElement->clearance_height = fz + 4;
         tileElement->type = TILE_ELEMENT_TYPE_TRACK;
-        track_element_set_type(tileElement, TRACK_ELEM_MAZE);
+        tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
         track_element_set_ride_index(tileElement, rideIndex);
         tileElement->properties.track.maze_entry = mazeEntry;
         if (flags & GAME_COMMAND_FLAG_GHOST)

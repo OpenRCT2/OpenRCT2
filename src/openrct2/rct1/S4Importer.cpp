@@ -2841,7 +2841,7 @@ private:
                         if (!track_element_is_lift_hill(tileElement))
                             continue;
 
-                        uint8_t trackType = track_element_get_type(tileElement);
+                        uint8_t trackType = tileElement->AsTrack()->GetTrackType();
                         switch (trackType)
                         {
                             case TRACK_ELEM_25_DEG_UP_TO_FLAT:

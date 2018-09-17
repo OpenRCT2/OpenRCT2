@@ -292,6 +292,16 @@ uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement)
     return tileElement->properties.track.maze_entry;
 }
 
+uint8_t TrackElement::GetTrackType() const
+{
+    return trackType;
+}
+
+void TrackElement::SetTrackType(uint8_t newType)
+{
+    trackType = newType;
+}
+
 uint8_t track_element_get_ride_index(const rct_tile_element* tileElement)
 {
     return tileElement->properties.track.ride_index;
@@ -300,16 +310,6 @@ uint8_t track_element_get_ride_index(const rct_tile_element* tileElement)
 void track_element_set_ride_index(rct_tile_element* tileElement, uint8_t rideIndex)
 {
     tileElement->properties.track.ride_index = rideIndex;
-}
-
-uint8_t track_element_get_type(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.type;
-}
-
-void track_element_set_type(rct_tile_element* tileElement, uint8_t type)
-{
-    tileElement->properties.track.type = type;
 }
 
 void track_element_set_cable_lift(rct_tile_element* trackElement)

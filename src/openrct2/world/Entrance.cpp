@@ -559,7 +559,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* til
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE)
+        if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_MAZE)
             continue;
 
         // Each maze element is split into 4 sections with 4 different walls
@@ -595,7 +595,7 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileEle
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE)
+        if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_MAZE)
             continue;
 
         // Each maze element is split into 4 sections with 4 different walls

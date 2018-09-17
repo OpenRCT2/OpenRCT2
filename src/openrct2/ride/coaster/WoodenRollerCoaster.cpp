@@ -471,7 +471,7 @@ static void wooden_rc_track_station(
         { SPR_WOODEN_RC_STATION_NW_SE, SPR_WOODEN_RC_STATION_RAILS_NW_SE },
     };
 
-    int32_t trackType = track_element_get_type(tileElement);
+    int32_t trackType = tileElement->AsTrack()->GetTrackType();
     if (trackType == TRACK_ELEM_END_STATION)
     {
         wooden_rc_track_paint(

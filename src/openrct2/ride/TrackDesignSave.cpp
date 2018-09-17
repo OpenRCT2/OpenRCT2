@@ -1013,7 +1013,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
     ride_get_start_of_track(&trackElement);
 
     int32_t z = trackElement.element->base_height * 8;
-    uint8_t track_type = track_element_get_type(trackElement.element);
+    uint8_t track_type = trackElement.element->AsTrack()->GetTrackType();
     uint8_t direction = trackElement.element->GetDirection();
     _trackSaveDirection = direction;
 
@@ -1023,7 +1023,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         return 0;
     }
 
-    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[track_element_get_type(trackElement.element)];
+    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackElement.element->AsTrack()->GetTrackType()];
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
@@ -1039,7 +1039,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
     rct_td6_track_element* track = td6->track_elements;
     do
     {
-        track->type = track_element_get_type(trackElement.element);
+        track->type = trackElement.element->AsTrack()->GetTrackType();
         if (track->type == TRACK_ELEM_255)
         {
             track->type = TRACK_ELEM_255_ALIAS;
@@ -1074,7 +1074,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
 
         z = trackElement.element->base_height * 8;
         direction = trackElement.element->GetDirection();
-        track_type = track_element_get_type(trackElement.element);
+        track_type = trackElement.element->AsTrack()->GetTrackType();
 
         if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
         {

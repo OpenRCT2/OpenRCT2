@@ -355,7 +355,7 @@ static void paint_go_karts_station(
     uint32_t imageId;
     const uint32_t(*sprites)[2] = go_karts_track_pieces_starting_grid;
 
-    if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
     {
         sprites = go_karts_track_pieces_starting_grid_end;
     }
@@ -406,7 +406,7 @@ static void paint_go_karts_station(
         track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, height);
     }
 
-    if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
     {
         const bool hasGreenLight = tile_element_get_green_light(tileElement);
 

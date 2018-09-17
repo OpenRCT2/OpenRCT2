@@ -446,7 +446,7 @@ private:
         {
             rct_tile_element tileElement = {};
             tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-            track_element_set_type(&tileElement, trackType);
+            tileElement.AsTrack()->SetTrackType(trackType);
             tileElement.base_height = 3;
             if (_invertedTrack)
             {

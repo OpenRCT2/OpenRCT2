@@ -210,7 +210,7 @@ static void ride_ratings_update_state_2()
             continue;
 
         if (trackType == 255
-            || (tile_element_get_track_sequence(tileElement) == 0 && trackType == track_element_get_type(tileElement)))
+            || (tile_element_get_track_sequence(tileElement) == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
             if (trackType == TRACK_ELEM_END_STATION)
             {
@@ -249,7 +249,7 @@ static void ride_ratings_update_state_2()
             gRideRatingsCalcData.proximity_x = x;
             gRideRatingsCalcData.proximity_y = y;
             gRideRatingsCalcData.proximity_z = z;
-            gRideRatingsCalcData.proximity_track_type = track_element_get_type(tileElement);
+            gRideRatingsCalcData.proximity_track_type = tileElement->AsTrack()->GetTrackType();
             return;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -313,7 +313,7 @@ static void ride_ratings_update_state_5()
         if (tileElement->base_height != z)
             continue;
 
-        if (trackType == 255 || trackType == track_element_get_type(tileElement))
+        if (trackType == 255 || trackType == tileElement->AsTrack()->GetTrackType())
         {
             ride_ratings_score_close_proximity(tileElement);
 
@@ -338,7 +338,7 @@ static void ride_ratings_update_state_5()
             gRideRatingsCalcData.proximity_x = x;
             gRideRatingsCalcData.proximity_y = y;
             gRideRatingsCalcData.proximity_z = z;
-            gRideRatingsCalcData.proximity_track_type = track_element_get_type(trackBeginEnd.begin_element);
+            gRideRatingsCalcData.proximity_track_type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             return;
         }
     } while (!(tileElement++)->IsLastForTile());
@@ -483,8 +483,8 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element* in
                     if (zDiff >= 0 && zDiff <= 16)
                     {
                         proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
-                        if (track_element_get_type(tileElement) == TRACK_ELEM_LEFT_VERTICAL_LOOP
-                            || track_element_get_type(tileElement) == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+                        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_VERTICAL_LOOP
+                            || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
                         {
                             proximity_score_increment(PROXIMITY_INTERSECTING_VERTICAL_LOOP);
                         }
@@ -502,7 +502,7 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element* in
  */
 static void ride_ratings_score_close_proximity_loops(rct_tile_element* inputTileElement)
 {
-    int32_t trackType = track_element_get_type(inputTileElement);
+    int32_t trackType = inputTileElement->AsTrack()->GetTrackType();
     if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
     {
         int32_t x = gRideRatingsCalcData.proximity_x;
@@ -598,7 +598,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
             {
-                int32_t trackType = track_element_get_type(tileElement);
+                int32_t trackType = tileElement->AsTrack()->GetTrackType();
                 if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
                 {
                     int32_t sequence = tile_element_get_track_sequence(tileElement);
@@ -638,7 +638,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
                 }
                 else
                 {
-                    trackType = track_element_get_type(tileElement);
+                    trackType = tileElement->AsTrack()->GetTrackType();
                     bool isStation
                         = (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
                            || trackType == TRACK_ELEM_BEGIN_STATION);

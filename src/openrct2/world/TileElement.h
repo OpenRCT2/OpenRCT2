@@ -230,7 +230,35 @@ assert_struct_size(PathElement, 8);
 
 struct TrackElement : TileElementBase
 {
-    rct_tile_element_track_properties temp;
+    uint8_t trackType; // 4
+    union
+    {
+        struct
+        {
+            // The lower 4 bits are the track sequence.
+            // The upper 4 bits are either station bits or on-ride photo bits.
+            //
+            // Station bits:
+            // - Bit 8 marks green light
+            // - Bit 5-7 are station index.
+            //
+            // On-ride photo bits:
+            // - Bits 7 and 8 are never set
+            // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
+            // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
+            uint8_t sequence; // 5.
+            uint8_t colour;   // 6
+        };
+        uint16_t mazeEntry; // 5
+    };
+    uint8_t rideIndex; // 7
+    
+public:
+    uint8_t GetTrackType() const;
+    void SetTrackType(uint8_t newEntryIndex);
+    
+    uint8_t GetSequenceIndex() const;
+    void SetSequenceIndex(uint8_t newSequenceIndex);
 };
 assert_struct_size(TrackElement, 8);
 

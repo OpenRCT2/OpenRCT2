@@ -3598,7 +3598,7 @@ bool map_can_construct_with_clear_at(
                 // Crossing mode 2: building path over track
                 else if (
                     crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
-                    && tileElement->base_height == zLow && track_element_get_type(tileElement) == TRACK_ELEM_FLAT)
+                    && tileElement->base_height == zLow && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
                 {
                     Ride* ride = get_ride(track_element_get_ride_index(tileElement));
                     if (ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
@@ -4641,7 +4641,7 @@ rct_tile_element* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (track_element_get_type(tileElement) != trackType)
+        if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
 
         return tileElement;
@@ -4667,7 +4667,7 @@ rct_tile_element* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (track_element_get_type(tileElement) != trackType)
+        if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
         if (tile_element_get_track_sequence(tileElement) != sequence)
             continue;
@@ -4696,7 +4696,7 @@ rct_tile_element* map_get_track_element_at_of_type_from_ride(
             continue;
         if (track_element_get_ride_index(tileElement) != rideIndex)
             continue;
-        if (track_element_get_type(tileElement) != trackType)
+        if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
 
         return tileElement;

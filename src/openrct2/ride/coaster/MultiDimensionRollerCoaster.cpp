@@ -117,7 +117,7 @@ static void multi_dimension_rc_track_station(
 
     LocationXY16 position = session->MapPosition;
 
-    if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
     {
         sub_98197C_rotated(
             session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 26, 1, height, 0, 3,

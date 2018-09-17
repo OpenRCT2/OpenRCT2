@@ -271,7 +271,7 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
 
     rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-    track_element_set_type(&tileElement, trackType);
+    tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
@@ -433,7 +433,7 @@ static uint8_t TestTrackElementSegmentSupportHeight(
 
     rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-    track_element_set_type(&tileElement, trackType);
+    tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
@@ -519,7 +519,7 @@ static uint8_t TestTrackElementGeneralSupportHeight(
 
     rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-    track_element_set_type(&tileElement, trackType);
+    tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
@@ -619,7 +619,7 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
 
     rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-    track_element_set_type(&tileElement, trackType);
+    tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
@@ -746,7 +746,7 @@ static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackTy
 
     rct_tile_element tileElement = {};
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-    track_element_set_type(&tileElement, trackType);
+    tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 

@@ -1420,7 +1420,7 @@ static void paint_miniature_railway_track_left_eighth_to_diag(
     const uint8_t supportType[4][5] = { { 0, 0, 3, 5, 1 }, { 1, 1, 4, 2, 0 }, { 0, 0, 5, 3, 1 }, { 1, 1, 2, 4, 0 } };
 
     bool isSupported = false;
-    bool isRightEighthToOrthog = track_element_get_type(tileElement) == TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL;
+    bool isRightEighthToOrthog = tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isRightEighthToOrthog)
@@ -1556,7 +1556,7 @@ static void paint_miniature_railway_track_right_eighth_to_diag(
     const uint8_t supportType[4][5] = { { 0, 0, 2, 4, 1 }, { 1, 1, 3, 5, 0 }, { 0, 0, 4, 2, 1 }, { 1, 1, 5, 3, 0 } };
 
     bool isSupported = false;
-    bool isLeftEighthToOrthog = track_element_get_type(tileElement) == TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL;
+    bool isLeftEighthToOrthog = tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL;
     // Right eighth to orthogonal calls this function but we do not want to have a support call for it
     // for track sequence 4
     if (trackSequence != 4 || !isLeftEighthToOrthog)

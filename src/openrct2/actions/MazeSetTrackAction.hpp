@@ -231,7 +231,7 @@ public:
             tileElement->clearance_height = clearanceHeight;
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
-            track_element_set_type(tileElement, TRACK_ELEM_MAZE);
+            tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
             track_element_set_ride_index(tileElement, _rideIndex);
             tileElement->properties.track.maze_entry = 0xFFFF;
 

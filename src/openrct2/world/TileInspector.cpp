@@ -735,7 +735,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        uint8_t type = track_element_get_type(trackElement);
+        uint8_t type = trackElement->AsTrack()->GetTrackType();
         int16_t originX = x << 5;
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
@@ -813,7 +813,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
                 if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
                     continue;
 
-                if (track_element_get_type(tileElement) != type)
+                if (tileElement->AsTrack()->GetTrackType() != type)
                     continue;
 
                 found = true;
@@ -868,7 +868,7 @@ int32_t tile_inspector_track_set_chain(
             return 0;
         }
 
-        uint8_t type = track_element_get_type(trackElement);
+        uint8_t type = trackElement->AsTrack()->GetTrackType();
         int16_t originX = x << 5;
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
@@ -946,7 +946,7 @@ int32_t tile_inspector_track_set_chain(
                 if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
                     continue;
 
-                if (track_element_get_type(tileElement) != type)
+                if (tileElement->AsTrack()->GetTrackType() != type)
                     continue;
 
                 found = true;

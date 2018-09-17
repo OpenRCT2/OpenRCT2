@@ -198,7 +198,7 @@ static void wild_mouse_track_station(
         SPR_STATION_BASE_B_NW_SE,
     };
 
-    int32_t trackType = track_element_get_type(tileElement);
+    int32_t trackType = tileElement->AsTrack()->GetTrackType();
     sub_98197C_rotated(
         session, direction, baseImageIds[direction] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 2, height - 2, 0, 2,
         height);

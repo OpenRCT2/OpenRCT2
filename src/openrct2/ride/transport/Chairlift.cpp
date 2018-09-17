@@ -134,7 +134,7 @@ static const rct_tile_element* chairlift_paint_util_map_get_track_element_at_fro
 static bool chairlift_paint_util_is_first_track(
     uint8_t rideIndex, const rct_tile_element* tileElement, LocationXY16 pos, uint8_t trackType)
 {
-    if (track_element_get_type(tileElement) != TRACK_ELEM_BEGIN_STATION)
+    if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_BEGIN_STATION)
     {
         return false;
     }
@@ -154,7 +154,7 @@ static bool chairlift_paint_util_is_first_track(
 static bool chairlift_paint_util_is_last_track(
     uint8_t rideIndex, const rct_tile_element* tileElement, LocationXY16 pos, uint8_t trackType)
 {
-    if (track_element_get_type(tileElement) != TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_END_STATION)
     {
         return false;
     }
@@ -176,7 +176,7 @@ static void chairlift_paint_station_ne_sw(
     const rct_tile_element* tileElement)
 {
     const LocationXY16 pos = session->MapPosition;
-    uint8_t trackType = track_element_get_type(tileElement);
+    uint8_t trackType = tileElement->AsTrack()->GetTrackType();
     Ride* ride = get_ride(rideIndex);
     uint32_t imageId;
 
@@ -267,7 +267,7 @@ static void chairlift_paint_station_se_nw(
     const rct_tile_element* tileElement)
 {
     const LocationXY16 pos = session->MapPosition;
-    uint8_t trackType = track_element_get_type(tileElement);
+    uint8_t trackType = tileElement->AsTrack()->GetTrackType();
     Ride* ride = get_ride(rideIndex);
     uint32_t imageId;
 

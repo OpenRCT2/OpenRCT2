@@ -88,7 +88,7 @@ void bolliger_mabillard_track_station(
         { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
     };
 
-    if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
     {
         sub_98197C_rotated(
             session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,

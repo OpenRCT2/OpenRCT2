@@ -275,7 +275,7 @@ static bool map_animation_invalidate_track_waterfall(int32_t x, int32_t y, int32
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (track_element_get_type(tileElement) == TRACK_ELEM_WATERFALL)
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_WATERFALL)
         {
             int32_t z = tileElement->base_height * 8;
             map_invalidate_tile_zoom1(x, y, z + 14, z + 46);
@@ -302,7 +302,7 @@ static bool map_animation_invalidate_track_rapids(int32_t x, int32_t y, int32_t 
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (track_element_get_type(tileElement) == TRACK_ELEM_RAPIDS)
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RAPIDS)
         {
             int32_t z = tileElement->base_height * 8;
             map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
@@ -331,7 +331,7 @@ static bool map_animation_invalidate_track_onridephoto(int32_t x, int32_t y, int
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (track_element_get_type(tileElement) == TRACK_ELEM_ON_RIDE_PHOTO)
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
         {
             map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
             if (game_is_paused())
@@ -369,7 +369,7 @@ static bool map_animation_invalidate_track_whirlpool(int32_t x, int32_t y, int32
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (track_element_get_type(tileElement) == TRACK_ELEM_WHIRLPOOL)
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_WHIRLPOOL)
         {
             int32_t z = tileElement->base_height * 8;
             map_invalidate_tile_zoom1(x, y, z + 14, z + 18);
@@ -396,7 +396,7 @@ static bool map_animation_invalidate_track_spinningtunnel(int32_t x, int32_t y, 
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (track_element_get_type(tileElement) == TRACK_ELEM_SPINNING_TUNNEL)
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_SPINNING_TUNNEL)
         {
             int32_t z = tileElement->base_height * 8;
             map_invalidate_tile_zoom1(x, y, z + 14, z + 32);

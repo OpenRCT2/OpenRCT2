@@ -88,7 +88,7 @@ static void mine_train_rc_track_station(
     sub_98197C_rotated(
         session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2,
         height);
-    if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
     {
         sub_98199C_rotated(
             session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 0,

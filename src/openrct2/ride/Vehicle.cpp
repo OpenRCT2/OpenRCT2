@@ -3126,7 +3126,7 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle)
 
     if (tileElement->clearance_height == (tileElement + 1)->base_height)
     {
-        if (track_element_get_type(tileElement + 1) == TRACK_ELEM_TOWER_SECTION)
+        if ((tileElement + 1)->AsTrack()->GetTrackType() == TRACK_ELEM_TOWER_SECTION)
         {
             return false;
         }
@@ -3142,7 +3142,7 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle)
         return true;
     }
 
-    return track_element_get_type(tileElement + 2) != TRACK_ELEM_TOWER_SECTION;
+    return (tileElement + 2)->AsTrack()->GetTrackType() != TRACK_ELEM_TOWER_SECTION;
 }
 
 /**
@@ -4278,7 +4278,7 @@ static void loc_6DA9F9(rct_vehicle* vehicle, int32_t x, int32_t y, int32_t bx, i
         rct_tile_element* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
 
         Ride* ride = get_ride(vehicle->ride);
-        vehicle->track_type = (track_element_get_type(tileElement) << 2) | (ride->boat_hire_return_direction & 3);
+        vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
 
         vehicle->track_progress = 0;
         vehicle->status = VEHICLE_STATUS_TRAVELLING;
@@ -6783,7 +6783,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehic
     tileElement->flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
     map_invalidate_element(x, y, tileElement);
 
-    int32_t trackType = track_element_get_type(tileElement);
+    int32_t trackType = tileElement->AsTrack()->GetTrackType();
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
     {
         Ride* ride = get_ride(vehicle->ride);
@@ -7476,7 +7476,7 @@ static bool loc_6DB38B(rct_vehicle* vehicle, rct_tile_element* tileElement)
     int32_t bankStart = track_get_actual_bank_3(vehicle, tileElement);
 
     // Get vangle
-    int32_t trackType = track_element_get_type(tileElement);
+    int32_t trackType = tileElement->AsTrack()->GetTrackType();
     int32_t vangleStart = TrackDefinitions[trackType].vangle_start;
 
     return vangleStart == _vehicleVAngleEndF64E36 && bankStart == _vehicleBankEndF64E37;
@@ -8033,8 +8033,8 @@ loc_6DB358:
     regs.edx = z;
     regs.bl = direction;
 }
-    if (track_element_get_type(tileElement) == TRACK_ELEM_LEFT_REVERSER
-        || track_element_get_type(tileElement) == TRACK_ELEM_RIGHT_REVERSER)
+    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_REVERSER
+        || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_REVERSER)
     {
         if (!vehicle->is_child && vehicle->velocity <= 0x30000)
         {
@@ -8073,7 +8073,7 @@ loc_6DB41D:
     }
     if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART) && vehicle->var_CD < 7)
     {
-        trackType = track_element_get_type(tileElement);
+        trackType = tileElement->AsTrack()->GetTrackType();
         if (trackType == TRACK_ELEM_FLAT)
         {
             loc_6DB481(vehicle);
@@ -8110,7 +8110,7 @@ loc_6DB41D:
         vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
     }
 
-    trackType = track_element_get_type(tileElement);
+    trackType = tileElement->AsTrack()->GetTrackType();
     if (trackType != TRACK_ELEM_BRAKES)
     {
         vehicle->target_seat_rotation = track_element_get_seat_rotation(tileElement);
@@ -8427,7 +8427,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         }
         tileElement = trackBeginEnd.begin_element;
 
-        trackType = track_element_get_type(tileElement);
+        trackType = tileElement->AsTrack()->GetTrackType();
         if (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER)
         {
             return false;
@@ -8504,7 +8504,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         {
             if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
-                trackType = track_element_get_type(tileElement);
+                trackType = tileElement->AsTrack()->GetTrackType();
                 if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_DOWN))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
@@ -8528,7 +8528,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         }
     }
 
-    trackType = track_element_get_type(tileElement);
+    trackType = tileElement->AsTrack()->GetTrackType();
     if (trackType != TRACK_ELEM_BRAKES)
     {
         vehicle->target_seat_rotation = track_element_get_seat_rotation(tileElement);
@@ -8903,7 +8903,7 @@ loc_6DC476:
     }
 
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
-    vehicle->track_type = (track_element_get_type(tileElement) << 2) | (direction & 3);
+    vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (direction & 3);
     vehicle->var_CF = tile_element_get_brake_booster_speed(tileElement);
     regs.ax = 0;
 
@@ -9154,7 +9154,7 @@ loc_6DCA9A:
         }
     }
 
-    vehicle->track_type = (track_element_get_type(tileElement) << 2) | (direction & 3);
+    vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (direction & 3);
     vehicle->var_CF = track_element_get_seat_rotation(tileElement) << 1;
 
     // There are two bytes before the move info list

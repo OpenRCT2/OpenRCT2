@@ -256,15 +256,15 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle)
             if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
                 return false;
 
-            if (TrackDefinitions[track_element_get_type(output.element)].vangle_start != _vehicleVAngleEndF64E36
-                || TrackDefinitions[track_element_get_type(output.element)].bank_start != _vehicleBankEndF64E37)
+            if (TrackDefinitions[output.element->AsTrack()->GetTrackType()].vangle_start != _vehicleVAngleEndF64E36
+                || TrackDefinitions[output.element->AsTrack()->GetTrackType()].bank_start != _vehicleBankEndF64E37)
                 return false;
 
             vehicle->track_x = output.x;
             vehicle->track_y = output.y;
             vehicle->track_z = outputZ;
             vehicle->track_direction = outputDirection;
-            vehicle->track_type |= track_element_get_type(output.element) << 2;
+            vehicle->track_type |= output.element->AsTrack()->GetTrackType() << 2;
             trackProgress = 0;
         }
 
@@ -329,17 +329,17 @@ static bool sub_6DF21B_loop(rct_vehicle* vehicle)
             if (!track_block_get_previous(input.x, input.y, input.element, &output))
                 return false;
 
-            if (TrackDefinitions[track_element_get_type(output.begin_element)].vangle_end != _vehicleVAngleEndF64E36
-                || TrackDefinitions[track_element_get_type(output.begin_element)].bank_end != _vehicleBankEndF64E37)
+            if (TrackDefinitions[output.begin_element->AsTrack()->GetTrackType()].vangle_end != _vehicleVAngleEndF64E36
+                || TrackDefinitions[output.begin_element->AsTrack()->GetTrackType()].bank_end != _vehicleBankEndF64E37)
                 return false;
 
             vehicle->track_x = output.begin_x;
             vehicle->track_y = output.begin_y;
             vehicle->track_z = output.begin_z;
             vehicle->track_direction = output.begin_direction;
-            vehicle->track_type |= track_element_get_type(output.begin_element) << 2;
+            vehicle->track_type |= output.begin_element->AsTrack()->GetTrackType() << 2;
 
-            if (track_element_get_type(output.begin_element) == TRACK_ELEM_END_STATION)
+            if (output.begin_element->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }

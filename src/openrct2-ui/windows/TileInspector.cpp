@@ -1852,7 +1852,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 set_format_arg(0 + sizeof(rct_string_id), uint32_t, ride->name_arguments);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 22);
                 // Track
-                int16_t trackType = track_element_get_type(tileElement);
+                int16_t trackType = tileElement->AsTrack()->GetTrackType();
                 int16_t sequenceNumber = tile_element_get_track_sequence(tileElement);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_DARK_GREEN, x, y + 33);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_DARK_GREEN, x, y + 44);
