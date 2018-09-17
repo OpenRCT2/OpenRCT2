@@ -20,7 +20,4 @@ enum
     WALL_ANIMATION_FLAG_ALL_FLAGS = WALL_ANIMATION_FLAG_ACROSS_TRACK | WALL_ANIMATION_FLAG_DIRECTION_BACKWARD
 };
 
-uint8_t wall_get_animation_frame(const rct_tile_element* fenceElement);
-void wall_set_animation_frame(rct_tile_element* wallElement, uint8_t frameNum);
-
 money32 wall_remove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t flags);

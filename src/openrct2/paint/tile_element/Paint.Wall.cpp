@@ -212,7 +212,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     {
         LocationXYZ16 offset;
         LocationXYZ16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-        uint8_t animationFrame = wall_get_animation_frame(tile_element);
+        uint8_t animationFrame = tile_element->AsWall()->GetAnimationFrame();
         // Add the direction as well
         animationFrame |= (tile_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
         uint32_t imageId;

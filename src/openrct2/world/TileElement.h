@@ -317,6 +317,12 @@ public:
     void SetSecondaryColour(colour_t newColour);
     colour_t GetTertiaryColour() const;
     void SetTertiaryColour(colour_t newColour);
+
+    uint8_t GetAnimationFrame() const;
+    void SetAnimationFrame(uint8_t frameNum);
+
+    int32_t GetRCT1WallType(int32_t edge) const;
+    colour_t GetRCT1WallColour() const;
 };
 assert_struct_size(WallElement, 8);
 

@@ -596,17 +596,6 @@ static money32 WallSetColour(
     return 0;
 }
 
-uint8_t wall_get_animation_frame(const rct_tile_element* wallElement)
-{
-    return (wallElement->properties.wall.animation >> 3) & 0xF;
-}
-
-void wall_set_animation_frame(rct_tile_element* wallElement, uint8_t frameNum)
-{
-    wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
-    wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;
-}
-
 /**
  *
  *  rct2: 0x006E588E
@@ -759,4 +748,15 @@ void WallElement::SetTertiaryColour(colour_t newColour)
     assert(newColour <= 31);
     colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
     colour_3 |= newColour;
+}
+
+uint8_t WallElement::GetAnimationFrame() const
+{
+    return (animation >> 3) & 0xF;
+}
+
+void WallElement::SetAnimationFrame(uint8_t frameNum)
+{
+    animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
+    animation |= (frameNum & 0xF) << 3;
 }
