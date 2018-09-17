@@ -2244,23 +2244,6 @@ void track_element_set_colour_scheme(rct_tile_element* tileElement, uint8_t colo
     tileElement->properties.track.colour |= (colourScheme & 0x3);
 }
 
-void tile_element_set_station(rct_tile_element* tileElement, uint32_t stationIndex)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    tileElement->properties.track.sequence |= (stationIndex << 4);
-}
-
-uint8_t TrackElement::GetSequenceIndex() const
-{
-    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-}
-
-void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
-{
-    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
-}
-
 bool tile_element_get_green_light(const rct_tile_element* tileElement)
 {
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
@@ -2329,6 +2312,28 @@ uint8_t TrackElement::GetTrackType() const
 void TrackElement::SetTrackType(uint8_t newType)
 {
     trackType = newType;
+}
+
+uint8_t TrackElement::GetSequenceIndex() const
+{
+    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+}
+
+void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+}
+
+uint8_t TrackElement::GetStationIndex() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+}
+
+void TrackElement::SetStationIndex(uint8_t newStationIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    sequence |= (newStationIndex << 4);
 }
 
 uint8_t TrackElement::GetDoorAState() const

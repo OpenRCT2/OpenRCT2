@@ -3557,7 +3557,7 @@ static void ride_station_set_map_tooltip(rct_tile_element* tileElement)
     rideIndex = track_element_get_ride_index(tileElement);
     ride = get_ride(rideIndex);
 
-    stationIndex = tile_element_get_station(tileElement);
+    stationIndex = tileElement->AsTrack()->GetStationIndex();
     for (i = stationIndex; i >= 0; i--)
         if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
             stationIndex--;
@@ -3585,7 +3585,7 @@ static void ride_entrance_set_map_tooltip(rct_tile_element* tileElement)
     ride = get_ride(rideIndex);
 
     // Get the station
-    stationIndex = tile_element_get_station(tileElement);
+    stationIndex = tileElement->AsEntrance()->GetStationIndex();
     for (i = stationIndex; i >= 0; i--)
         if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
             stationIndex--;
@@ -3619,7 +3619,7 @@ static void ride_entrance_set_map_tooltip(rct_tile_element* tileElement)
     else
     {
         // Get the station
-        stationIndex = tile_element_get_station(tileElement);
+        stationIndex = tileElement->AsEntrance()->GetStationIndex();
         for (i = stationIndex; i >= 0; i--)
             if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
                 stationIndex--;
@@ -4873,7 +4873,7 @@ static rct_vehicle* vehicle_create_car(
         vehicle->track_x = x;
         vehicle->track_y = y;
         vehicle->track_z = z;
-        vehicle->current_station = tile_element_get_station(tileElement);
+        vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
 
         z += RideData5[ride->type].z_offset;
 
@@ -4966,7 +4966,7 @@ static rct_vehicle* vehicle_create_car(
         y += word_9A2A60[direction].y;
         vehicle->track_z = tileElement->base_height * 8;
 
-        vehicle->current_station = tile_element_get_station(tileElement);
+        vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
         z = tileElement->base_height * 8;
         z += RideData5[ride->type].z_offset;
 
@@ -7085,7 +7085,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
                     }
                     else
                     {
-                        gRideEntranceExitPlaceStationIndex = tile_element_get_station(tileElement);
+                        gRideEntranceExitPlaceStationIndex = tileElement->AsTrack()->GetStationIndex();
                     }
                 }
             }
@@ -7152,7 +7152,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
                         *outDirection = direction ^ 2;
                         return;
                     }
-                    if (tile_element_get_station(tileElement) != gRideEntranceExitPlaceStationIndex)
+                    if (tileElement->AsTrack()->GetStationIndex() != gRideEntranceExitPlaceStationIndex)
                         continue;
 
                     int32_t eax = (direction + 2 - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK;
@@ -7201,7 +7201,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
                     continue;
                 if (track_element_get_ride_index(tileElement) != gRideEntranceExitPlaceRideIndex)
                     continue;
-                if (tile_element_get_station(tileElement) != gRideEntranceExitPlaceStationIndex)
+                if (tileElement->AsTrack()->GetStationIndex() != gRideEntranceExitPlaceStationIndex)
                     continue;
 
                 switch (tileElement->AsTrack()->GetTrackType())
@@ -8024,7 +8024,7 @@ void sub_6CB945(int32_t rideIndex)
                     break;
                 }
 
-                tile_element_set_station(tileElement, stationId);
+                tileElement->AsTrack()->SetStationIndex(stationId);
                 direction = tileElement->GetDirection();
 
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
@@ -8065,7 +8065,7 @@ void sub_6CB945(int32_t rideIndex)
                     break;
                 }
 
-                tile_element_set_station(tileElement, stationId);
+                tileElement->AsTrack()->SetStationIndex(stationId);
             }
         }
     }
@@ -8152,7 +8152,7 @@ void sub_6CB945(int32_t rideIndex)
                 uint8_t stationId = 0;
                 if (trackType != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
                 {
-                    stationId = tile_element_get_station(trackElement);
+                    stationId = trackElement->AsTrack()->GetStationIndex();
                 }
 
                 if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
@@ -8777,7 +8777,7 @@ void determine_ride_entrance_and_exit_locations()
                 tileElement = map_get_ride_entrance_element_at(entranceLoc.x * 32, entranceLoc.y * 32, entranceLoc.z, false);
 
                 if (tileElement == nullptr || tileElement->properties.entrance.ride_index != rideIndex
-                    || tile_element_get_station(tileElement) != stationIndex)
+                    || tileElement->AsEntrance()->GetStationIndex() != stationIndex)
                 {
                     fixEntrance = true;
                 }
@@ -8792,7 +8792,7 @@ void determine_ride_entrance_and_exit_locations()
                 tileElement = map_get_ride_exit_element_at(exitLoc.x * 32, exitLoc.y * 32, entranceLoc.z, false);
 
                 if (tileElement == nullptr || tileElement->properties.entrance.ride_index != rideIndex
-                    || tile_element_get_station(tileElement) != stationIndex)
+                    || tileElement->AsEntrance()->GetStationIndex() != stationIndex)
                 {
                     fixExit = true;
                 }
@@ -8829,7 +8829,7 @@ void determine_ride_entrance_and_exit_locations()
                             {
                                 continue;
                             }
-                            if (tile_element_get_station(tileElement) != stationIndex)
+                            if (tileElement->AsEntrance()->GetStationIndex() != stationIndex)
                             {
                                 continue;
                             }

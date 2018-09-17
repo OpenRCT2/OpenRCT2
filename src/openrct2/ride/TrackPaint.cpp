@@ -223,7 +223,7 @@ bool track_paint_util_has_fence(
     int32_t entranceX = (position.x / 32) + offset.x;
     int32_t entranceY = (position.y / 32) + offset.y;
 
-    int32_t entranceId = tile_element_get_station(tileElement);
+    int32_t entranceId = tileElement->AsTrack()->GetStationIndex();
     const TileCoordsXYZD entrance = ride_get_entrance_location(ride, entranceId);
     const TileCoordsXYZD exit = ride_get_exit_location(ride, entranceId);
 

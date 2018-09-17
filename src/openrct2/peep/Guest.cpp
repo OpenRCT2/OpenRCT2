@@ -4046,7 +4046,7 @@ void rct_peep::UpdateRideLeaveVehicle()
                         break;
                 }
 
-                uint8_t stationIndex = tile_element_get_station(inner_map);
+                uint8_t stationIndex = inner_map->AsTrack()->GetStationIndex();
                 if (stationIndex == current_ride_station)
                     break;
             }

@@ -2752,7 +2752,7 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
      * to sync with adjacent stations, so it will return true.
      * Still to determine if a vehicle to sync can be identified. */
 
-    int32_t stationIndex = tile_element_get_station(tileElement);
+    int32_t stationIndex = tileElement->AsTrack()->GetStationIndex();
 
     rct_synchronised_vehicle* sv = _lastSynchronisedVehicle;
     sv->ride_id = rideIndex;
@@ -4001,7 +4001,7 @@ loc_6D8E36:
         return;
     }
 
-    vehicle->current_station = tile_element_get_station(tileElement);
+    vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
     vehicle->num_laps++;
 
     if (vehicle->sub_state != 0)
@@ -7881,7 +7881,7 @@ static void sub_6DBF3E(rct_vehicle* vehicle)
 
     if (_vehicleStationIndex == 0xFF)
     {
-        _vehicleStationIndex = tile_element_get_station(tileElement);
+        _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
     }
 
     if (trackType == TRACK_ELEM_TOWER_BASE && vehicle == gCurrentVehicle)

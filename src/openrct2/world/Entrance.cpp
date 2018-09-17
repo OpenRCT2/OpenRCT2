@@ -365,7 +365,7 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, u
             if (tile_element_get_ride_index(tileElement) != rideIndex)
                 continue;
 
-            if (tile_element_get_station(tileElement) != stationNum)
+            if (tileElement->AsEntrance()->GetStationIndex() != stationNum)
                 continue;
 
             if (flags & GAME_COMMAND_FLAG_5 && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
@@ -629,4 +629,15 @@ void fix_park_entrance_locations(void)
             entrance.x = LOCATION_NULL;
         }
     }
+}
+
+uint8_t EntranceElement::GetStationIndex() const
+{
+    return (temp.index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+}
+
+void EntranceElement::SetStationIndex(uint8_t stationIndex)
+{
+    temp.index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    temp.index |= (stationIndex << 4);
 }

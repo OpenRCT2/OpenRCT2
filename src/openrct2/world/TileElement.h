@@ -260,6 +260,15 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
     
+    uint8_t GetRideIndex() const;
+    void SetRideIndex(uint8_t newRideIndex);
+    
+    uint8_t GetColourScheme() const;
+    void SetColourScheme(uint8_t newColourScheme);
+    
+    uint8_t GetStationIndex() const;
+    void SetStationIndex(uint8_t newStationIndex);
+    
     uint8_t GetSeatRotation() const;
     void SetSeatRotation(uint8_t newSeatRotation);
     
@@ -364,6 +373,9 @@ assert_struct_size(WallElement, 8);
 struct EntranceElement : TileElementBase
 {
     rct_tile_element_entrance_properties temp;
+public:
+    uint8_t GetStationIndex() const;
+    void SetStationIndex(uint8_t stationIndex);
 };
 assert_struct_size(EntranceElement, 8);
 

@@ -3096,11 +3096,6 @@ void game_command_place_large_scenery(
     }
 }
 
-int32_t tile_element_get_station(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
-}
-
 /**
  *
  *  rct2: 0x0068B280

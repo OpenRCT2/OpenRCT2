@@ -1634,12 +1634,17 @@ static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIn
 
 rct_window* window_ride_open_track(rct_tile_element* tileElement)
 {
+    // This function *should* only be called with an EntranceElement or TrackElement.
     int32_t rideIndex = track_element_get_ride_index(tileElement);
-    if ((tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
-        || (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         // Open ride window in station view
-        return window_ride_open_station(rideIndex, tile_element_get_station(tileElement));
+        return window_ride_open_station(rideIndex, tileElement->AsEntrance()->GetStationIndex());
+    }
+    else if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+    {
+        // Open ride window in station view
+        return window_ride_open_station(rideIndex, tileElement->AsTrack()->GetStationIndex());
     }
     else
     {

@@ -174,17 +174,6 @@ rct_tile_element* map_get_first_element_at(int x, int y)
     return gTileElementTilePointers[x + y * 256];
 }
 
-int tile_element_get_station(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
-}
-
-void tile_element_set_station(rct_tile_element* tileElement, uint32_t stationIndex)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    tileElement->properties.track.sequence |= (stationIndex << 4);
-}
-
 bool tile_element_get_green_light(const rct_tile_element* tileElement)
 {
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;

@@ -214,7 +214,7 @@ static void ride_ratings_update_state_2()
         {
             if (trackType == TRACK_ELEM_END_STATION)
             {
-                int32_t entranceIndex = tile_element_get_station(tileElement);
+                int32_t entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 if (ride_get_entrance_location(rideIndex, entranceIndex).isNull())
                 {

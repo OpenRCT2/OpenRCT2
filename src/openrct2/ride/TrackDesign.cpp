@@ -1563,7 +1563,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                             continue;
                         }
 
-                        int32_t stationIndex = tile_element_get_station(tile_element);
+                        int32_t stationIndex = tile_element->AsTrack()->GetStationIndex();
                         uint8_t bl = 1;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                         {
