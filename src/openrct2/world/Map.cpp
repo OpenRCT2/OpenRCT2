@@ -3749,6 +3749,7 @@ void map_extend_boundary_surface()
         newTileElement->SetEdgeStyle(existingTileElement->GetEdgeStyle());
         newTileElement->SetGrassLength(existingTileElement->GetGrassLength());
         newTileElement->SetOwnership(OWNERSHIP_UNOWNED);
+        newTileElement->SetWaterHeight(existingTileElement->GetWaterHeight());
 
         z = existingTileElement->base_height;
         slope = existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_NW_SIDE_UP;
@@ -3791,6 +3792,7 @@ void map_extend_boundary_surface()
         newTileElement->SetEdgeStyle(existingTileElement->GetEdgeStyle());
         newTileElement->SetGrassLength(existingTileElement->GetGrassLength());
         newTileElement->SetOwnership(OWNERSHIP_UNOWNED);
+        newTileElement->SetWaterHeight(existingTileElement->GetWaterHeight());
 
         z = existingTileElement->base_height;
         slope = existingTileElement->GetSlope() & TILE_ELEMENT_SLOPE_NE_SIDE_UP;
@@ -3841,6 +3843,8 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
             element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
             element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
             element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+            element->AsSurface()->SetParkFences(0);
+            element->AsSurface()->SetWaterHeight(0);
             // Because this element is not completely removed, the pointer must be updated manually
             // The rest of the elements are removed from the array, so the pointer doesn't need to be updated.
             (*elementPtr)++;

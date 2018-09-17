@@ -565,26 +565,26 @@ static void viewport_surface_smoothen_edge(
         return;
     }
 
-    uint8_t waterHeight = 0, cl = 0;
+    uint8_t dh = 0, cl = 0;
     switch (edge)
     {
         case EDGE_BOTTOMLEFT:
-            waterHeight = byte_97B524[byte_97B444[self.slope]];
+            dh = byte_97B524[byte_97B444[self.slope]];
             cl = byte_97B54A[byte_97B444[neighbour.slope]];
             break;
 
         case EDGE_TOPLEFT:
-            waterHeight = byte_97B537[byte_97B444[self.slope]];
+            dh = byte_97B537[byte_97B444[self.slope]];
             cl = byte_97B55D[byte_97B444[neighbour.slope]];
             break;
 
         case EDGE_BOTTOMRIGHT:
-            waterHeight = byte_97B55D[byte_97B444[self.slope]];
+            dh = byte_97B55D[byte_97B444[self.slope]];
             cl = byte_97B537[byte_97B444[neighbour.slope]];
             break;
 
         case EDGE_TOPRIGHT:
-            waterHeight = byte_97B54A[byte_97B444[self.slope]];
+            dh = byte_97B54A[byte_97B444[self.slope]];
             cl = byte_97B524[byte_97B444[neighbour.slope]];
             break;
     }
@@ -592,7 +592,7 @@ static void viewport_surface_smoothen_edge(
     if (self.terrain == neighbour.terrain)
     {
         // same tint
-        if (cl == waterHeight)
+        if (cl == dh)
             return;
 
         if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN_SELF)
