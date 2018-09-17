@@ -749,3 +749,53 @@ void game_command_set_wall_colour(
         *eax & 0xFFFF, *ecx & 0xFFFF, (*edx >> 8) & 0xFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebp & 0xFF, (*ebp >> 8) & 0xFF,
         *ebx & 0xFF);
 }
+
+uint8_t WallElement::GetSlope() const
+{
+    return (type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+}
+
+void WallElement::SetSlope(uint8_t newSlope)
+{
+    type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    type |= (newSlope << 6);
+}
+
+colour_t WallElement::GetPrimaryColour() const
+{
+    return colour_1 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+colour_t WallElement::GetSecondaryColour() const
+{
+    uint8_t secondaryColour = (colour_1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
+    secondaryColour |= (flags & 0x60) >> 2;
+    return secondaryColour;
+}
+
+colour_t WallElement::GetTertiaryColour() const
+{
+    return colour_3 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+void WallElement::SetPrimaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_1 |= newColour;
+}
+
+void WallElement::SetSecondaryColour(colour_t newColour)
+{
+    colour_1 &= TILE_ELEMENT_COLOUR_MASK;
+    colour_1 |= (newColour & 0x7) << 5;
+    flags &= ~0x60;
+    flags |= (newColour & 0x18) << 2;
+}
+
+void WallElement::SetTertiaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_3 |= newColour;
+}

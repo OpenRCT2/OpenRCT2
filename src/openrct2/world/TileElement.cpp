@@ -54,11 +54,6 @@ bool TileElementBase::IsGhost() const
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
-uint8_t WallElement::GetSlope() const
-{
-    return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
-}
-
 bool tile_element_is_underground(rct_tile_element* tileElement)
 {
     do
