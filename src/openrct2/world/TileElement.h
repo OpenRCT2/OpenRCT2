@@ -263,6 +263,7 @@ public:
     void SetAge(uint8_t newAge);
     void IncreaseAge(int32_t x, int32_t y);
     uint8_t GetSceneryQuadrant() const;
+    void SetSceneryQuadrant(uint8_t newQuadrant);
     colour_t GetPrimaryColour() const;
     void SetPrimaryColour(colour_t colour);
     colour_t GetSecondaryColour() const;

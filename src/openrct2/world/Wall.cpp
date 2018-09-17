@@ -512,8 +512,10 @@ static money32 WallPlace(
         map_animation_create(MAP_ANIMATION_TYPE_WALL, position.x, position.y, position.z / 8);
 
         tileElement->clearance_height = clearanceHeight;
-
-        tileElement->type = edgeSlope | edge | TILE_ELEMENT_TYPE_WALL;
+        tileElement->SetType(TILE_ELEMENT_TYPE_WALL);
+        tileElement->SetDirection(edge);
+        // TODO: Normalise the edge slope code.
+        tileElement->AsWall()->SetSlope(edgeSlope >> 6);
 
         tileElement->AsWall()->SetPrimaryColour(primaryColour);
         tileElement->AsWall()->SetSecondaryColour(secondaryColour);

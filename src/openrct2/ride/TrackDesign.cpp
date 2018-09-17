@@ -2327,7 +2327,7 @@ static void track_design_preview_clear_map()
     {
         rct_tile_element* tile_element = &gTileElements[i];
         memset(tile_element, 0, sizeof(rct_tile_element));
-        tile_element->type = TILE_ELEMENT_TYPE_SURFACE;
+        tile_element->SetType(TILE_ELEMENT_TYPE_SURFACE);
         tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
         tile_element->base_height = 2;
         tile_element->clearance_height = 0;

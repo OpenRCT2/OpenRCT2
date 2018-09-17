@@ -730,7 +730,7 @@ static void window_tile_inspector_entrance_make_usable(int32_t elementIndex)
 static void window_tile_inspector_wall_set_slope(int32_t elementIndex, int32_t slopeValue)
 {
     // Make sure only the correct bits are set
-    openrct2_assert((slopeValue & 0xC0) == slopeValue, "slopeValue doesn't match its mask");
+    openrct2_assert((slopeValue & 3) == slopeValue, "slopeValue doesn't match its mask");
 
     game_do_command(
         TILE_INSPECTOR_WALL_SET_SLOPE, GAME_COMMAND_FLAG_APPLY, windowTileInspectorTileX | (windowTileInspectorTileY << 8),
@@ -1189,7 +1189,7 @@ static void window_tile_inspector_dropdown(rct_window* w, rct_widgetindex widget
             switch (widgetIndex)
             {
                 case WIDX_WALL_DROPDOWN_SLOPE_BUTTON:
-                    window_tile_inspector_wall_set_slope(windowTileInspectorSelectedIndex, dropdownIndex << 6);
+                    window_tile_inspector_wall_set_slope(windowTileInspectorSelectedIndex, dropdownIndex);
                     break;
             }
             break;

@@ -300,11 +300,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     switch (direction)
     {
         case 0:
-            if (tile_element->type & 0x80)
+            if (tile_element->AsWall()->GetSlope() == 2)
             {
                 imageOffset = 3;
             }
-            else if (tile_element->type & 0x40)
+            else if (tile_element->AsWall()->GetSlope() == 1)
             {
                 imageOffset = 5;
             }
@@ -319,11 +319,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 1:
-            if (tile_element->type & 0x80)
+            if (tile_element->AsWall()->GetSlope() == 2)
             {
                 imageOffset = 2;
             }
-            else if (tile_element->type & 0x40)
+            else if (tile_element->AsWall()->GetSlope() == 1)
             {
                 imageOffset = 4;
             }
@@ -353,11 +353,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 2:
-            if (tile_element->type & 0x80)
+            if (tile_element->AsWall()->GetSlope() == 2)
             {
                 imageOffset = 5;
             }
-            else if (tile_element->type & 0x40)
+            else if (tile_element->AsWall()->GetSlope() == 1)
             {
                 imageOffset = 3;
             }
@@ -377,11 +377,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 3:
-            if (tile_element->type & 0x80)
+            if (tile_element->AsWall()->GetSlope() == 2)
             {
                 imageOffset = 4;
             }
-            else if (tile_element->type & 0x40)
+            else if (tile_element->AsWall()->GetSlope() == 1)
             {
                 imageOffset = 2;
             }

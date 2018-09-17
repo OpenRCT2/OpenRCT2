@@ -2846,7 +2846,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
      *  is found we allow for space between that and the next.
      */
 
-    int32_t direction = (tileElement->type + 1) & 3;
+    int32_t direction = tileElement->GetDirectionWithOffset(1);
     int32_t spaceBetween;
     int32_t maxCheckDistance = RIDE_ADJACENCY_CHECK_DISTANCE;
 

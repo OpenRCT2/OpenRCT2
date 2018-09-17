@@ -92,7 +92,7 @@ int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIn
             log_warning("Failed to insert corrupt element.");
             return MONEY32_UNDEFINED;
         }
-        corruptElement->type = TILE_ELEMENT_TYPE_CORRUPT;
+        corruptElement->SetType(TILE_ELEMENT_TYPE_CORRUPT);
 
         // Set the base height to be the same as the selected element
         rct_tile_element* const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
@@ -238,8 +238,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
             {
                 // Update element rotation
                 newRotation = tileElement->GetDirectionWithOffset(1);
-                tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
-                tileElement->type |= newRotation;
+                tileElement->SetDirection(newRotation);
 
                 // Update ride's known entrance/exit rotation
                 Ride* ride = get_ride(tileElement->properties.entrance.ride_index);
@@ -264,8 +263,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             case TILE_ELEMENT_TYPE_WALL:
                 newRotation = tileElement->GetDirectionWithOffset(1);
-                tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
-                tileElement->type |= newRotation;
+                tileElement->SetDirection(newRotation);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
             {
@@ -708,8 +706,7 @@ int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Set new slope value
-        wallElement->type &= ~0xC0;
-        wallElement->type |= slopeValue;
+        wallElement->AsWall()->SetSlope(slopeValue);
 
         map_invalidate_tile_full(x << 5, y << 5);
 
@@ -994,8 +991,7 @@ int32_t tile_inspector_scenery_set_quarter_location(
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Set quadrant index
-        tileElement->type &= ~TILE_ELEMENT_QUADRANT_MASK;
-        tileElement->type |= quarterIndex << 6;
+        tileElement->AsSmallScenery()->SetSceneryQuadrant(quarterIndex);
 
         // Update collision
         tileElement->flags &= 0xF0;
