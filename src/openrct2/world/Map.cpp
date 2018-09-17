@@ -3369,6 +3369,7 @@ rct_tile_element* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t f
 
     // Insert new map element
     insertedElement = newTileElement;
+    newTileElement->type = 0;
     newTileElement->base_height = z;
     newTileElement->flags = flags;
     newTileElement->clearance_height = z;
