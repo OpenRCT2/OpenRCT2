@@ -512,26 +512,28 @@ static money32 WallPlace(
         map_animation_create(MAP_ANIMATION_TYPE_WALL, position.x, position.y, position.z / 8);
 
         tileElement->clearance_height = clearanceHeight;
+        tileElement->SetType(TILE_ELEMENT_TYPE_WALL);
+        tileElement->SetDirection(edge);
+        // TODO: Normalise the edge slope code.
+        tileElement->AsWall()->SetSlope(edgeSlope >> 6);
 
-        tileElement->type = edgeSlope | edge | TILE_ELEMENT_TYPE_WALL;
-
-        wall_set_primary_colour(tileElement, primaryColour);
-        wall_set_secondary_colour(tileElement, secondaryColour);
+        tileElement->AsWall()->SetPrimaryColour(primaryColour);
+        tileElement->AsWall()->SetSecondaryColour(secondaryColour);
 
         if (wallAcrossTrack)
         {
-            tileElement->properties.wall.animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
+            tileElement->AsWall()->SetAcrossTrack(true);
         }
 
-        tileElement->properties.wall.type = wallType;
+        tileElement->AsWall()->SetEntryIndex(wallType);
         if (bannerIndex != 0xFF)
         {
-            tileElement->properties.wall.banner_index = bannerIndex;
+            tileElement->AsWall()->SetBannerIndex(bannerIndex);
         }
 
         if (wallEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
         {
-            wall_set_tertiary_colour(tileElement, tertiaryColour);
+            tileElement->AsWall()->SetTertiaryColour(tertiaryColour);
         }
 
         if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -582,68 +584,18 @@ static money32 WallSetColour(
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_scenery_entry* scenery_entry = get_wall_entry(wallElement->properties.wall.type);
-        wall_set_primary_colour(wallElement, primaryColour);
-        wall_set_secondary_colour(wallElement, secondaryColour);
+        rct_scenery_entry* scenery_entry = wallElement->AsWall()->GetEntry();
+        wallElement->AsWall()->SetPrimaryColour(primaryColour);
+        wallElement->AsWall()->SetSecondaryColour(secondaryColour);
 
         if (scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
         {
-            wall_set_tertiary_colour(wallElement, tertiaryColour);
+            wallElement->AsWall()->SetTertiaryColour(tertiaryColour);
         }
         map_invalidate_tile_zoom1(x, y, z, z + 72);
     }
 
     return 0;
-}
-
-uint8_t wall_get_animation_frame(const rct_tile_element* wallElement)
-{
-    return (wallElement->properties.wall.animation >> 3) & 0xF;
-}
-
-void wall_set_animation_frame(rct_tile_element* wallElement, uint8_t frameNum)
-{
-    wallElement->properties.wall.animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
-    wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;
-}
-
-colour_t wall_get_primary_colour(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.wall.colour_1 & TILE_ELEMENT_COLOUR_MASK;
-}
-
-colour_t wall_get_secondary_colour(const rct_tile_element* wallElement)
-{
-    uint8_t secondaryColour = (wallElement->properties.wall.colour_1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
-    secondaryColour |= (wallElement->flags & 0x60) >> 2;
-    return secondaryColour;
-}
-
-colour_t wall_get_tertiary_colour(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.wall.colour_3 & TILE_ELEMENT_COLOUR_MASK;
-}
-
-void wall_set_primary_colour(rct_tile_element* tileElement, colour_t colour)
-{
-    assert(colour <= 31);
-    tileElement->properties.wall.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
-    tileElement->properties.wall.colour_1 |= colour;
-}
-
-void wall_set_secondary_colour(rct_tile_element* wallElement, colour_t secondaryColour)
-{
-    wallElement->properties.wall.colour_1 &= TILE_ELEMENT_COLOUR_MASK;
-    wallElement->properties.wall.colour_1 |= (secondaryColour & 0x7) << 5;
-    wallElement->flags &= ~0x60;
-    wallElement->flags |= (secondaryColour & 0x18) << 2;
-}
-
-void wall_set_tertiary_colour(rct_tile_element* tileElement, colour_t colour)
-{
-    assert(colour <= 31);
-    tileElement->properties.wall.colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
-    tileElement->properties.wall.colour_3 |= colour;
 }
 
 /**
@@ -748,4 +700,114 @@ void game_command_set_wall_colour(
     *ebx = WallSetColour(
         *eax & 0xFFFF, *ecx & 0xFFFF, (*edx >> 8) & 0xFF, *edx & 0xFF, (*ebx >> 8) & 0xFF, *ebp & 0xFF, (*ebp >> 8) & 0xFF,
         *ebx & 0xFF);
+}
+
+uint8_t WallElement::GetSlope() const
+{
+    return (type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+}
+
+void WallElement::SetSlope(uint8_t newSlope)
+{
+    type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    type |= (newSlope << 6);
+}
+
+colour_t WallElement::GetPrimaryColour() const
+{
+    return colour_1 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+colour_t WallElement::GetSecondaryColour() const
+{
+    uint8_t secondaryColour = (colour_1 & ~TILE_ELEMENT_COLOUR_MASK) >> 5;
+    secondaryColour |= (flags & 0x60) >> 2;
+    return secondaryColour;
+}
+
+colour_t WallElement::GetTertiaryColour() const
+{
+    return colour_3 & TILE_ELEMENT_COLOUR_MASK;
+}
+
+void WallElement::SetPrimaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_1 |= newColour;
+}
+
+void WallElement::SetSecondaryColour(colour_t newColour)
+{
+    colour_1 &= TILE_ELEMENT_COLOUR_MASK;
+    colour_1 |= (newColour & 0x7) << 5;
+    flags &= ~0x60;
+    flags |= (newColour & 0x18) << 2;
+}
+
+void WallElement::SetTertiaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
+    colour_3 |= newColour;
+}
+
+uint8_t WallElement::GetAnimationFrame() const
+{
+    return (animation >> 3) & 0xF;
+}
+
+void WallElement::SetAnimationFrame(uint8_t frameNum)
+{
+    animation &= WALL_ANIMATION_FLAG_ALL_FLAGS;
+    animation |= (frameNum & 0xF) << 3;
+}
+
+uint8_t WallElement::GetEntryIndex() const
+{
+    return entryIndex;
+}
+
+rct_scenery_entry* WallElement::GetEntry() const
+{
+    return get_wall_entry(entryIndex);
+}
+
+void WallElement::SetEntryIndex(uint8_t newIndex)
+{
+    entryIndex = newIndex;
+}
+
+BannerIndex WallElement::GetBannerIndex() const
+{
+    return banner_index;
+}
+
+void WallElement::SetBannerIndex(BannerIndex newIndex)
+{
+    banner_index = newIndex;
+}
+
+bool WallElement::IsAcrossTrack() const
+{
+    return (animation & WALL_ANIMATION_FLAG_ACROSS_TRACK) != 0;
+}
+
+void WallElement::SetAcrossTrack(bool acrossTrack)
+{
+    animation &= ~WALL_ANIMATION_FLAG_ACROSS_TRACK;
+    if (acrossTrack)
+        animation |= WALL_ANIMATION_FLAG_ACROSS_TRACK;
+}
+
+bool WallElement::AnimationIsBackwards() const
+{
+    return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
+}
+
+void WallElement::SetAnimationIsBackwards(bool isBackwards)
+{
+    animation &= ~WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
+    if (isBackwards)
+        animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
 }

@@ -492,7 +492,7 @@ static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t bas
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
+        sceneryEntry = tileElement->AsWall()->GetEntry();
         if (!(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
             continue;
 
@@ -503,7 +503,7 @@ static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t bas
 
         bool invalidate = false;
 
-        uint8_t currentFrame = wall_get_animation_frame(tileElement);
+        uint8_t currentFrame = tileElement->AsWall()->GetAnimationFrame();
         if (currentFrame != 0)
         {
             if (currentFrame == 15)
@@ -523,7 +523,7 @@ static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t bas
                 }
             }
         }
-        wall_set_animation_frame(tileElement, currentFrame);
+        tileElement->AsWall()->SetAnimationFrame(currentFrame);
         if (invalidate)
         {
             int32_t z = tileElement->base_height * 8;
@@ -552,7 +552,7 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
+        sceneryEntry = tileElement->AsWall()->GetEntry();
 
         if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED) && sceneryEntry->wall.scrolling_mode == 255)
             continue;

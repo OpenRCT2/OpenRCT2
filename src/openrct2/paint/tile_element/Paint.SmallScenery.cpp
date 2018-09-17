@@ -288,7 +288,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     // 6E01F8:
                     frame += ((session->SpritePosition.x / 4) + (session->SpritePosition.y / 4));
-                    frame += (tileElement->type & 0xC0) / 16;
+                    frame += tileElement->AsSmallScenery()->GetSceneryQuadrant() << 2;
                 }
                 // 6E0222:
                 uint16_t delay = entry->small_scenery.animation_delay & 0xFF;

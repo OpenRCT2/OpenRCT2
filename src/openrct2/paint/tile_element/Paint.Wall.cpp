@@ -158,7 +158,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
-    rct_scenery_entry* sceneryEntry = get_wall_entry(tile_element->properties.wall.type);
+    rct_scenery_entry* sceneryEntry = tile_element->AsWall()->GetEntry();
     if (sceneryEntry == nullptr)
     {
         return;
@@ -170,20 +170,20 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         frameNum = (gCurrentTicks & 7) * 2;
     }
 
-    int32_t primaryColour = wall_get_primary_colour(tile_element);
+    int32_t primaryColour = tile_element->AsWall()->GetPrimaryColour();
     uint32_t imageColourFlags = primaryColour << 19 | IMAGE_TYPE_REMAP;
     uint32_t dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
     {
-        uint8_t secondaryColour = wall_get_secondary_colour(tile_element);
+        uint8_t secondaryColour = tile_element->AsWall()->GetSecondaryColour();
         imageColourFlags |= secondaryColour << 24 | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32_t tertiaryColour = 0;
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
-        tertiaryColour = wall_get_tertiary_colour(tile_element);
+        tertiaryColour = tile_element->AsWall()->GetTertiaryColour();
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
@@ -212,9 +212,10 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     {
         LocationXYZ16 offset;
         LocationXYZ16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-        uint8_t animationFrame = wall_get_animation_frame(tile_element);
+        uint8_t animationFrame = tile_element->AsWall()->GetAnimationFrame();
         // Add the direction as well
-        animationFrame |= (tile_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
+        if (tile_element->AsWall()->AnimationIsBackwards())
+            animationFrame |= (1 << 4);
         uint32_t imageId;
         switch (direction)
         {
@@ -300,11 +301,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     switch (direction)
     {
         case 0:
-            if (tile_element->type & 0x80)
+            if (tile_element->AsWall()->GetSlope() == 2)
             {
                 imageOffset = 3;
             }
-            else if (tile_element->type & 0x40)
+            else if (tile_element->AsWall()->GetSlope() == 1)
             {
                 imageOffset = 5;
             }
@@ -319,11 +320,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 1:
-            if (tile_element->type & 0x80)
+            if (tile_element->AsWall()->GetSlope() == 2)
             {
                 imageOffset = 2;
             }
-            else if (tile_element->type & 0x40)
+            else if (tile_element->AsWall()->GetSlope() == 1)
             {
                 imageOffset = 4;
             }
@@ -353,11 +354,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 2:
-            if (tile_element->type & 0x80)
+            if (tile_element->AsWall()->GetSlope() == 2)
             {
                 imageOffset = 5;
             }
-            else if (tile_element->type & 0x40)
+            else if (tile_element->AsWall()->GetSlope() == 1)
             {
                 imageOffset = 3;
             }
@@ -377,11 +378,11 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             break;
 
         case 3:
-            if (tile_element->type & 0x80)
+            if (tile_element->AsWall()->GetSlope() == 2)
             {
                 imageOffset = 4;
             }
-            else if (tile_element->type & 0x40)
+            else if (tile_element->AsWall()->GetSlope() == 1)
             {
                 imageOffset = 2;
             }
@@ -413,7 +414,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     set_format_arg(0, uint32_t, 0);
     set_format_arg(4, uint32_t, 0);
 
-    uint8_t secondaryColour = wall_get_secondary_colour(tile_element);
+    uint8_t secondaryColour = tile_element->AsWall()->GetSecondaryColour();
 
     if (dword_141F710 != 0)
     {
@@ -429,7 +430,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
     uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
 
-    uint8_t bannerIndex = tile_element->properties.wall.banner_index;
+    uint8_t bannerIndex = tile_element->AsWall()->GetBannerIndex();
     rct_banner* banner = &gBanners[bannerIndex];
 
     set_format_arg(0, rct_string_id, banner->string_idx);

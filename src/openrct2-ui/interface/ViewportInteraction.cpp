@@ -306,7 +306,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
+            sceneryEntry = tileElement->AsWall()->GetEntry();
             if (sceneryEntry->wall.scrolling_mode != 255)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -383,7 +383,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
+            sceneryEntry = tileElement->AsWall()->GetEntry();
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
             return info->type;
@@ -540,10 +540,10 @@ void viewport_interaction_remove_park_entrance(rct_tile_element* tileElement, in
  */
 static void viewport_interaction_remove_park_wall(rct_tile_element* tileElement, int32_t x, int32_t y)
 {
-    rct_scenery_entry* sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
+    rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
     if (sceneryEntry->wall.scrolling_mode != 0xFF)
     {
-        context_open_detail_window(WD_SIGN_SMALL, tileElement->properties.wall.banner_index);
+        context_open_detail_window(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex());
     }
     else
     {

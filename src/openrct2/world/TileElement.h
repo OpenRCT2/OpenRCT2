@@ -64,19 +64,6 @@ struct rct_tile_element_entrance_properties
 };
 assert_struct_size(rct_tile_element_entrance_properties, 4);
 
-struct rct_tile_element_wall_properties
-{
-    uint8_t type; // 4
-    union
-    {
-        uint8_t colour_3;         // 5
-        BannerIndex banner_index; // 5
-    };
-    uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
-    uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
-};
-assert_struct_size(rct_tile_element_wall_properties, 4);
-
 struct rct_tile_element_banner_properties
 {
     BannerIndex index; // 4
@@ -91,7 +78,6 @@ union rct_tile_element_properties
     rct_tile_element_path_properties path;
     rct_tile_element_track_properties track;
     rct_tile_element_entrance_properties entrance;
-    rct_tile_element_wall_properties wall;
     rct_tile_element_banner_properties banner;
 };
 assert_struct_size(rct_tile_element_properties, 4);
@@ -263,6 +249,7 @@ public:
     void SetAge(uint8_t newAge);
     void IncreaseAge(int32_t x, int32_t y);
     uint8_t GetSceneryQuadrant() const;
+    void SetSceneryQuadrant(uint8_t newQuadrant);
     colour_t GetPrimaryColour() const;
     void SetPrimaryColour(colour_t colour);
     colour_t GetSecondaryColour() const;
@@ -297,10 +284,44 @@ assert_struct_size(LargeSceneryElement, 8);
 
 struct WallElement : TileElementBase
 {
-    rct_tile_element_wall_properties temp;
+private:
+    uint8_t entryIndex; // 4
+    union
+    {
+        uint8_t colour_3;         // 5
+        BannerIndex banner_index; // 5
+    };
+    uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
+    uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 
 public:
+    uint8_t GetEntryIndex() const;
+    void SetEntryIndex(uint8_t newIndex);
+    rct_scenery_entry* GetEntry() const;
+
     uint8_t GetSlope() const;
+    void SetSlope(uint8_t newslope);
+
+    colour_t GetPrimaryColour() const;
+    void SetPrimaryColour(colour_t newColour);
+    colour_t GetSecondaryColour() const;
+    void SetSecondaryColour(colour_t newColour);
+    colour_t GetTertiaryColour() const;
+    void SetTertiaryColour(colour_t newColour);
+
+    uint8_t GetAnimationFrame() const;
+    void SetAnimationFrame(uint8_t frameNum);
+
+    BannerIndex GetBannerIndex() const;
+    void SetBannerIndex(BannerIndex newIndex);
+
+    bool IsAcrossTrack() const;
+    void SetAcrossTrack(bool acrossTrack);
+    bool AnimationIsBackwards() const;
+    void SetAnimationIsBackwards(bool isBackwards);
+
+    int32_t GetRCT1WallType(int32_t edge) const;
+    colour_t GetRCT1WallColour() const;
 };
 assert_struct_size(WallElement, 8);
 

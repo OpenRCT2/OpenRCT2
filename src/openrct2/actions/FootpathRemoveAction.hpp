@@ -109,7 +109,7 @@ private:
             {
                 while (!(tileElement++)->IsLastForTile())
                 {
-                    if (tileElement->type != TILE_ELEMENT_TYPE_PATH && !tileElement->IsGhost())
+                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH && !tileElement->IsGhost())
                     {
                         continue;
                     }

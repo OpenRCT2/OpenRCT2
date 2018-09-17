@@ -61,8 +61,6 @@
 using namespace OpenRCT2;
 
 static uint8_t GetPathType(rct_tile_element* tileElement);
-static int32_t GetWallType(rct_tile_element* tileElement, int32_t edge);
-static uint8_t GetWallColour(rct_tile_element* tileElement);
 
 class EntryList
 {
@@ -499,7 +497,7 @@ private:
                 {
                     for (int32_t edge = 0; edge < 4; edge++)
                     {
-                        int32_t type = GetWallType(tileElement, edge);
+                        int32_t type = tileElement->AsWall()->GetRCT1WallType(edge);
 
                         if (type != -1)
                         {
@@ -2406,10 +2404,11 @@ private:
             // Fill the rest of the row with blank tiles
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                nextFreeTileElement->type = TILE_ELEMENT_TYPE_SURFACE;
+                memset(nextFreeTileElement, 0, sizeof(rct_tile_element));
+                nextFreeTileElement->SetType(TILE_ELEMENT_TYPE_SURFACE);
                 nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
                 nextFreeTileElement->base_height = 2;
-                nextFreeTileElement->clearance_height = 0;
+                nextFreeTileElement->clearance_height = 2;
                 nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
                 nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
                 nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
@@ -2422,10 +2421,11 @@ private:
         // 128 extra rows left to fill with blank tiles
         for (int32_t y = 0; y < 128 * 256; y++)
         {
-            nextFreeTileElement->type = TILE_ELEMENT_TYPE_SURFACE;
+            memset(nextFreeTileElement, 0, sizeof(rct_tile_element));
+            nextFreeTileElement->SetType(TILE_ELEMENT_TYPE_SURFACE);
             nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
             nextFreeTileElement->base_height = 2;
-            nextFreeTileElement->clearance_height = 0;
+            nextFreeTileElement->clearance_height = 2;
             nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
             nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
             nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
@@ -2573,11 +2573,11 @@ private:
 
                         for (int32_t edge = 0; edge < 4; edge++)
                         {
-                            int32_t type = GetWallType(&originalTileElement, edge);
+                            int32_t type = originalTileElement.AsWall()->GetRCT1WallType(edge);
 
                             if (type != -1)
                             {
-                                int32_t colourA = RCT1::GetColour(GetWallColour(&originalTileElement));
+                                int32_t colourA = RCT1::GetColour(originalTileElement.AsWall()->GetRCT1WallColour());
                                 int32_t colourB = 0;
                                 int32_t colourC = 0;
                                 ConvertWall(&type, &colourA, &colourB);
@@ -2895,10 +2895,10 @@ static uint8_t GetPathType(rct_tile_element* tileElement)
     return pathType;
 }
 
-static int32_t GetWallType(rct_tile_element* tileElement, int32_t edge)
+int32_t WallElement::GetRCT1WallType(int32_t edge) const
 {
-    uint8_t var_05 = tileElement->properties.wall.colour_3;
-    uint16_t var_06 = tileElement->properties.wall.colour_1 | (tileElement->properties.wall.animation << 8);
+    uint8_t var_05 = colour_3;
+    uint16_t var_06 = colour_1 | (animation << 8);
 
     int32_t typeA = (var_05 >> (edge * 2)) & 3;
     int32_t typeB = (var_06 >> (edge * 4)) & 0x0F;
@@ -2913,7 +2913,7 @@ static int32_t GetWallType(rct_tile_element* tileElement, int32_t edge)
     }
 }
 
-static uint8_t GetWallColour(rct_tile_element* tileElement)
+colour_t WallElement::GetRCT1WallColour() const
 {
-    return ((tileElement->type & 0xC0) >> 3) | ((tileElement->properties.wall.type & 0xE0) >> 5);
+    return ((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5);
 }

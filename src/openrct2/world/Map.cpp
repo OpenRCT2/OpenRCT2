@@ -3442,7 +3442,7 @@ void map_obstruction_set_error_text(rct_tile_element* tileElement)
             }
             break;
         case TILE_ELEMENT_TYPE_WALL:
-            sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
+            sceneryEntry = tileElement->AsWall()->GetEntry();
             errorStringId = STR_X_IN_THE_WAY;
             set_format_arg(0, rct_string_id, sceneryEntry->name);
             break;
@@ -4388,10 +4388,10 @@ void game_command_set_sign_style(
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
                 continue;
 
-            rct_scenery_entry* scenery_entry = get_wall_entry(tileElement->properties.wall.type);
+            rct_scenery_entry* scenery_entry = tileElement->AsWall()->GetEntry();
             if (scenery_entry->wall.scrolling_mode == 0xFF)
                 continue;
-            if (tileElement->properties.wall.banner_index != bannerId)
+            if (tileElement->AsWall()->GetBannerIndex() != bannerId)
                 continue;
             wall_found = true;
             break;
@@ -4408,8 +4408,8 @@ void game_command_set_sign_style(
             *ebx = 0;
             return;
         }
-        wall_set_primary_colour(tileElement, mainColour);
-        wall_set_secondary_colour(tileElement, textColour);
+        tileElement->AsWall()->SetPrimaryColour(mainColour);
+        tileElement->AsWall()->SetSecondaryColour(textColour);
 
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
     }

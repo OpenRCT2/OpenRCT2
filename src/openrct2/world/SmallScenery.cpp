@@ -76,7 +76,7 @@ static money32 SmallSceneryRemove(
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
-        if ((tileElement->type >> 6) != quadrant)
+        if ((tileElement->AsSmallScenery()->GetSceneryQuadrant()) != quadrant)
             continue;
         if (tileElement->base_height != baseHeight)
             continue;
@@ -382,11 +382,10 @@ static money32 SmallSceneryPlace(
     rct_tile_element* newElement = tile_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
     assert(newElement != nullptr);
     gSceneryTileElement = newElement;
-    uint8_t type = quadrant << 6;
-    type |= TILE_ELEMENT_TYPE_SMALL_SCENERY;
-    type |= rotation;
-    newElement->type = type;
     SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();
+    newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
+    newElement->AsSmallScenery()->SetSceneryQuadrant(quadrant);
+    newElement->SetDirection(rotation);
     sceneryElement->SetEntryIndex(sceneryType);
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(primaryColour);
@@ -528,6 +527,12 @@ bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_
 uint8_t SmallSceneryElement::GetSceneryQuadrant() const
 {
     return (this->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
+}
+
+void SmallSceneryElement::SetSceneryQuadrant(uint8_t newQuadrant)
+{
+    type &= ~TILE_ELEMENT_QUADRANT_MASK;
+    type |= (newQuadrant << 6);
 }
 
 uint8_t SmallSceneryElement::GetEntryIndex() const
