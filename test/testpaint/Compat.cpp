@@ -174,20 +174,6 @@ rct_tile_element* map_get_first_element_at(int x, int y)
     return gTileElementTilePointers[x + y * 256];
 }
 
-bool tile_element_get_green_light(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
-}
-
-void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    if (greenLight)
-    {
-        tileElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    }
-}
-
 bool ride_type_has_flag(int rideType, int flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;
@@ -232,16 +218,6 @@ void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
     sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
     sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
-}
-
-uint8_t track_element_get_ride_index(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.ride_index;
-}
-
-void track_element_set_ride_index(rct_tile_element* tileElement, uint8_t rideIndex)
-{
-    tileElement->properties.track.ride_index = rideIndex;
 }
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)

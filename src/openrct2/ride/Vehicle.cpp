@@ -9961,9 +9961,9 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
                 xyElement.element = output.begin_element;
             }
 
-            if (xyElement.element->properties.track.type == TRACK_ELEM_BEGIN_STATION
-                || xyElement.element->properties.track.type == TRACK_ELEM_MIDDLE_STATION
-                || xyElement.element->properties.track.type == TRACK_ELEM_END_STATION)
+            if (xyElement.element->AsTrack()->GetTrackType() == TRACK_ELEM_BEGIN_STATION
+                || xyElement.element->AsTrack()->GetTrackType() == TRACK_ELEM_MIDDLE_STATION
+                || xyElement.element->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
             {
                 break;
             }

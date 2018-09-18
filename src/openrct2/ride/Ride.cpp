@@ -1242,7 +1242,7 @@ void ride_clear_blocked_tiles(int32_t rideIndex)
             {
                 do
                 {
-                    if (element->GetType() == TILE_ELEMENT_TYPE_TRACK && element->properties.track.ride_index == rideIndex)
+                    if (element->GetType() == TILE_ELEMENT_TYPE_TRACK && element->AsTrack()->GetRideIndex() == rideIndex)
                     {
                         // Unblock footpath element that is at same position
                         auto footpathElement = map_get_footpath_element(x, y, element->base_height);
@@ -5964,7 +5964,7 @@ int32_t ride_get_refund_price(int32_t ride_id)
     {
         addedcost = game_do_command(
             trackElement.x, GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | (direction << 8), trackElement.y,
-            trackElement.element->properties.track.type | ((trackElement.element->AsTrack()->GetSequenceIndex()) << 8),
+            trackElement.element->AsTrack()->GetTrackType() | ((trackElement.element->AsTrack()->GetSequenceIndex()) << 8),
             GAME_COMMAND_REMOVE_TRACK, trackElement.element->base_height * 8, 0);
 
         cost += (addedcost == MONEY32_UNDEFINED) ? 0 : addedcost;

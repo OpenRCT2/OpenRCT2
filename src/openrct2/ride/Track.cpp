@@ -2226,16 +2226,6 @@ uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement)
     return tileElement->properties.track.maze_entry;
 }
 
-uint8_t track_element_get_ride_index(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.ride_index;
-}
-
-void track_element_set_ride_index(rct_tile_element* tileElement, uint8_t rideIndex)
-{
-    tileElement->properties.track.ride_index = rideIndex;
-}
-
 uint8_t TrackElement::GetTrackType() const
 {
     return trackType;
