@@ -184,14 +184,60 @@ int16_t get_height_marker_offset()
     return 0;
 }
 
-bool track_element_is_lift_hill(const rct_tile_element* trackElement)
-{
-    return trackElement->type & 0x80;
-}
-
 bool is_csg_loaded()
 {
     return false;
+}
+
+uint8_t TrackElement::GetSeatRotation() const
+{
+    return colour >> 4;
+}
+
+void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
+{
+    colour &= 0x0F;
+    colour |= (newSeatRotation << 4);
+}
+
+bool TrackElement::IsTakingPhoto() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
+}
+
+void TrackElement::SetPhotoTimeout()
+{
+    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (3 << 4);
+}
+
+void TrackElement::DecrementPhotoTimeout()
+{
+    // We should only touch the upper 4 bits, avoid underflow into the lower 4.
+    if (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
+    {
+        sequence -= (1 << 4);
+    }
+}
+
+uint16_t TrackElement::GetMazeEntry() const
+{
+    return mazeEntry;
+}
+
+void TrackElement::SetMazeEntry(uint16_t newMazeEntry)
+{
+    mazeEntry = newMazeEntry;
+}
+
+void TrackElement::MazeEntryAdd(uint16_t addVal)
+{
+    mazeEntry |= addVal;
+}
+
+void TrackElement::MazeEntrySubtract(uint16_t subVal)
+{
+    mazeEntry &= ~subVal;
 }
 
 uint8_t TrackElement::GetTrackType() const
@@ -213,6 +259,121 @@ void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
     sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
     sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+}
+
+uint8_t TrackElement::GetStationIndex() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+}
+
+void TrackElement::SetStationIndex(uint8_t newStationIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    sequence |= (newStationIndex << 4);
+}
+
+uint8_t TrackElement::GetDoorAState() const
+{
+    return (colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+}
+
+uint8_t TrackElement::GetDoorBState() const
+{
+    return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+}
+
+uint8_t TrackElement::GetRideIndex() const
+{
+    return rideIndex;
+}
+
+void TrackElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
+}
+
+uint8_t TrackElement::GetColourScheme() const
+{
+    return colour & 0x3;
+
+}
+
+void TrackElement::SetColourScheme(uint8_t newColourScheme)
+{
+    colour &= ~0x3;
+    colour |= (newColourScheme & 0x3);
+}
+
+bool TrackElement::HasCableLift() const
+{
+    return colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void TrackElement::SetHasCableLift(bool on)
+{
+    colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    if (on)
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+bool TrackElement::IsInverted() const
+{
+    return colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+}
+
+void TrackElement::SetInverted(bool inverted)
+{
+    if (inverted)
+    {
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+    else
+    {
+        colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+}
+
+uint8_t TrackElement::GetBrakeBoosterSpeed() const
+{
+    return (sequence >> 4) << 1;
+}
+
+void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
+{
+    sequence &= ~0b11110000;
+    sequence |= ((speed >> 1) << 4);
+}
+
+uint8_t TrackElement::HasGreenLight() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+
+}
+
+void TrackElement::SetHasGreenLight(uint8_t greenLight)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    if (greenLight)
+    {
+        sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    }
+}
+
+bool TrackElement::HasChain() const
+{
+    return type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+}
+
+void TrackElement::SetHasChain(bool on)
+{
+    if (on)
+    {
+        type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    }
+    else
+    {
+        type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    }
 }
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
