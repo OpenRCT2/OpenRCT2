@@ -382,10 +382,10 @@ static money32 SmallSceneryPlace(
     rct_tile_element* newElement = tile_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
     assert(newElement != nullptr);
     gSceneryTileElement = newElement;
-    SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();
     newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
-    newElement->AsSmallScenery()->SetSceneryQuadrant(quadrant);
     newElement->SetDirection(rotation);
+    SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();
+    sceneryElement->SetSceneryQuadrant(quadrant);
     sceneryElement->SetEntryIndex(sceneryType);
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(primaryColour);
