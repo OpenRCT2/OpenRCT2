@@ -24,7 +24,7 @@ static void multi_dimension_rc_track_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         if (tileElement->AsTrack()->HasChain())
         {
@@ -166,7 +166,7 @@ static void multi_dimension_rc_track_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         if (tileElement->AsTrack()->HasChain())
         {
@@ -301,7 +301,7 @@ static void multi_dimension_rc_track_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -382,7 +382,7 @@ static void multi_dimension_rc_track_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         if (tileElement->AsTrack()->HasChain())
         {
@@ -517,7 +517,7 @@ static void multi_dimension_rc_track_25_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -608,7 +608,7 @@ static void multi_dimension_rc_track_60_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -723,7 +723,7 @@ static void multi_dimension_rc_track_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         if (tileElement->AsTrack()->HasChain())
         {
@@ -908,7 +908,7 @@ static void multi_dimension_rc_track_left_quarter_turn_5(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -1284,7 +1284,7 @@ static void multi_dimension_rc_track_flat_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -1364,7 +1364,7 @@ static void multi_dimension_rc_track_flat_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -1444,7 +1444,7 @@ static void multi_dimension_rc_track_left_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -1524,7 +1524,7 @@ static void multi_dimension_rc_track_right_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -1604,7 +1604,7 @@ static void multi_dimension_rc_track_banked_left_quarter_turn_5(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -1982,7 +1982,7 @@ static void multi_dimension_rc_track_left_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2093,7 +2093,7 @@ static void multi_dimension_rc_track_right_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2204,7 +2204,7 @@ static void multi_dimension_rc_track_25_deg_up_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2315,7 +2315,7 @@ static void multi_dimension_rc_track_25_deg_up_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2462,7 +2462,7 @@ static void multi_dimension_rc_track_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2546,7 +2546,7 @@ static void multi_dimension_rc_track_s_bend_left(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -2861,7 +2861,7 @@ static void multi_dimension_rc_track_s_bend_right(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -3176,7 +3176,7 @@ static void multi_dimension_rc_track_left_quarter_turn_3(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -3422,7 +3422,7 @@ static void multi_dimension_rc_track_left_quarter_turn_3_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -4847,7 +4847,7 @@ static void multi_dimension_rc_track_brakes(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -4907,7 +4907,7 @@ static void multi_dimension_rc_track_on_ride_photo(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -5010,7 +5010,7 @@ static void multi_dimension_rc_track_90_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -5099,7 +5099,7 @@ static void multi_dimension_rc_track_60_deg_up_to_90_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -5197,7 +5197,7 @@ static void multi_dimension_rc_track_90_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -5278,7 +5278,7 @@ static void multi_dimension_rc_track_60_deg_down_to_90_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -5365,7 +5365,7 @@ static void multi_dimension_rc_track_left_eighth_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -5670,7 +5670,7 @@ static void multi_dimension_rc_track_right_eighth_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -5993,7 +5993,7 @@ static void multi_dimension_rc_track_left_eighth_bank_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -6299,7 +6299,7 @@ static void multi_dimension_rc_track_right_eighth_bank_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -6625,7 +6625,7 @@ static void multi_dimension_rc_track_diag_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -6917,7 +6917,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -7209,7 +7209,7 @@ static void multi_dimension_rc_track_diag_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -7375,7 +7375,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -7667,7 +7667,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -7833,7 +7833,7 @@ static void multi_dimension_rc_track_diag_60_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -7999,7 +7999,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -8291,7 +8291,7 @@ static void multi_dimension_rc_track_diag_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -8527,7 +8527,7 @@ static void multi_dimension_rc_track_diag_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -8693,7 +8693,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -8925,7 +8925,7 @@ static void multi_dimension_rc_track_diag_25_deg_down_to_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -9091,7 +9091,7 @@ static void multi_dimension_rc_track_diag_60_deg_down_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -9257,7 +9257,7 @@ static void multi_dimension_rc_track_diag_25_deg_down_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -9493,7 +9493,7 @@ static void multi_dimension_rc_track_diag_flat_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -9663,7 +9663,7 @@ static void multi_dimension_rc_track_diag_flat_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -9833,7 +9833,7 @@ static void multi_dimension_rc_track_diag_left_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -10003,7 +10003,7 @@ static void multi_dimension_rc_track_diag_right_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -10173,7 +10173,7 @@ static void multi_dimension_rc_track_diag_left_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -10342,7 +10342,7 @@ static void multi_dimension_rc_track_diag_right_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -10511,7 +10511,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -10680,7 +10680,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -10849,7 +10849,7 @@ static void multi_dimension_rc_track_diag_left_bank_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -11011,7 +11011,7 @@ static void multi_dimension_rc_track_diag_right_bank_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -11173,7 +11173,7 @@ static void multi_dimension_rc_track_diag_25_deg_down_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -11342,7 +11342,7 @@ static void multi_dimension_rc_track_diag_25_deg_down_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -11511,7 +11511,7 @@ static void multi_dimension_rc_track_diag_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -11678,7 +11678,7 @@ static void multi_dimension_rc_track_diag_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12289,7 +12289,7 @@ static void multi_dimension_rc_track_multidim_inverted_flat_to_90_deg_quarter_lo
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12488,7 +12488,7 @@ static void multi_dimension_rc_track_block_brakes(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -12545,7 +12545,7 @@ static void multi_dimension_rc_track_multidim_90_deg_up_to_inverted_flat_quarter
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12740,7 +12740,7 @@ static void multi_dimension_rc_track_multidim_flat_to_90_deg_down_quarter_loop(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12939,7 +12939,7 @@ static void multi_dimension_rc_track_elem_255(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {

@@ -8053,7 +8053,7 @@ loc_6DB358:
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (track_element_is_inverted(tileElement))
+            if (tileElement->AsTrack()->IsInverted())
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
@@ -8434,7 +8434,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         }
 
         bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
-            ^ track_element_is_inverted(tileElement);
+            ^ tileElement->AsTrack()->IsInverted();
         int32_t bank = TrackDefinitions[trackType].bank_end;
         bank = track_get_actual_bank_2(ride->type, isInverted, bank);
         int32_t vAngle = TrackDefinitions[trackType].vangle_end;
@@ -8447,7 +8447,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (track_element_is_inverted(tileElement))
+            if (tileElement->AsTrack()->IsInverted())
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
@@ -8880,7 +8880,7 @@ loc_6DC476:
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (track_element_is_inverted(tileElement))
+            if (tileElement->AsTrack()->IsInverted())
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
@@ -9131,7 +9131,7 @@ loc_6DCA9A:
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (track_element_is_inverted(tileElement))
+            if (tileElement->AsTrack()->IsInverted())
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }

@@ -1492,7 +1492,7 @@ static money32 track_place(
 
         if (liftHillAndAlternativeState & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
         {
-            track_element_set_inverted(tileElement, true);
+            tileElement->AsTrack()->SetInverted(true);
         }
         tileElement->AsTrack()->SetColourScheme(colour);
 
@@ -2099,27 +2099,10 @@ bool track_element_is_block_start(rct_tile_element* trackElement)
     return false;
 }
 
-bool track_element_is_inverted(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-}
-
-void track_element_set_inverted(rct_tile_element* tileElement, bool inverted)
-{
-    if (inverted)
-    {
-        tileElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-    }
-    else
-    {
-        tileElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-    }
-}
-
 int32_t track_get_actual_bank(rct_tile_element* tileElement, int32_t bank)
 {
     Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-    bool isInverted = track_element_is_inverted(tileElement);
+    bool isInverted = tileElement->AsTrack()->IsInverted();
     return track_get_actual_bank_2(ride->type, isInverted, bank);
 }
 
@@ -2145,7 +2128,7 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
 int32_t track_get_actual_bank_3(rct_vehicle* vehicle, rct_tile_element* tileElement)
 {
     bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
-        ^ track_element_is_inverted(tileElement);
+        ^ tileElement->AsTrack()->IsInverted();
     int32_t trackType = tileElement->AsTrack()->GetTrackType();
     int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
     int32_t bankStart = TrackDefinitions[trackType].bank_start;
@@ -2352,4 +2335,21 @@ void TrackElement::SetHasCableLift(bool on)
     colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
     if (on)
         colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+bool TrackElement::IsInverted() const
+{
+    return colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+}
+
+void TrackElement::SetInverted(bool inverted)
+{
+    if (inverted)
+    {
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+    else
+    {
+        colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
 }

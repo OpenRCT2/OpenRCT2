@@ -274,6 +274,9 @@ public:
 
     bool HasCableLift() const;
     void SetHasCableLift(bool on);
+    
+    bool IsInverted() const;
+    void SetInverted(bool inverted);
 
     uint8_t GetSeatRotation() const;
     void SetSeatRotation(uint8_t newSeatRotation);

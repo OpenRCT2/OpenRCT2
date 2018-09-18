@@ -1605,7 +1605,7 @@ void ride_construction_set_default_next_piece()
             _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
             if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
             {
-                if (track_element_is_inverted(tileElement))
+                if (tileElement->AsTrack()->IsInverted())
                 {
                     _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
                 }
@@ -1672,7 +1672,7 @@ void ride_construction_set_default_next_piece()
             _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
             if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
             {
-                if (track_element_is_inverted(tileElement))
+                if (tileElement->AsTrack()->IsInverted())
                 {
                     _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
                 }
@@ -4980,7 +4980,7 @@ static rct_vehicle* vehicle_create_car(
         vehicle->update_flags = VEHICLE_UPDATE_FLAG_1;
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
         {
-            if (track_element_is_inverted(tileElement))
+            if (tileElement->AsTrack()->IsInverted())
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }

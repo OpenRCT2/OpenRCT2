@@ -148,7 +148,7 @@ private:
             if (_rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || _rideType == RIDE_TYPE_FLYING_ROLLER_COASTER
                 || _rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER)
             {
-                WriteLine(1, "if (!track_element_is_inverted(tileElement)) {");
+                WriteLine(1, "if (!tileElement->AsTrack()->IsInverted()) {");
                 _invertedTrack = false;
                 GenerateTrackFunctionBody(2, trackType);
                 WriteLine(1, "} else {");
@@ -450,7 +450,7 @@ private:
             tileElement.base_height = 3;
             if (_invertedTrack)
             {
-                track_element_set_inverted(&tileElement, true);
+                tileElement.AsTrack()->SetInverted(true);
             }
             g_currently_drawn_item = &tileElement;
 

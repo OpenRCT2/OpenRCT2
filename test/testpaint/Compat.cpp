@@ -234,23 +234,6 @@ bool track_element_is_lift_hill(const rct_tile_element* trackElement)
     return trackElement->type & 0x80;
 }
 
-bool track_element_is_inverted(const rct_tile_element* trackElement)
-{
-    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-}
-
-void track_element_set_inverted(rct_tile_element* tileElement, bool inverted)
-{
-    if (inverted)
-    {
-        tileElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-    }
-    else
-    {
-        tileElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-    }
-}
-
 bool is_csg_loaded()
 {
     return false;

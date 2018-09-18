@@ -540,8 +540,6 @@ void track_get_front(CoordsXYE* input, CoordsXYE* output);
 bool track_element_is_block_start(rct_tile_element* trackElement);
 bool track_element_is_covered(int32_t trackElementType);
 bool track_element_is_station(rct_tile_element* trackElement);
-bool track_element_is_inverted(const rct_tile_element* tileElement);
-void track_element_set_inverted(rct_tile_element* tileElement, bool inverted);
 
 int32_t track_get_actual_bank(rct_tile_element* tileElement, int32_t bank);
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank);
