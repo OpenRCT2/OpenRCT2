@@ -28,33 +28,6 @@ struct rct_tile_element_path_properties
 };
 assert_struct_size(rct_tile_element_path_properties, 4);
 
-struct rct_tile_element_track_properties
-{
-    uint8_t type; // 4
-    union
-    {
-        struct
-        {
-            // The lower 4 bits are the track sequence.
-            // The upper 4 bits are either station bits or on-ride photo bits.
-            //
-            // Station bits:
-            // - Bit 8 marks green light
-            // - Bit 5-7 are station index.
-            //
-            // On-ride photo bits:
-            // - Bits 7 and 8 are never set
-            // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
-            // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
-            uint8_t sequence; // 5.
-            uint8_t colour;   // 6
-        };
-        uint16_t maze_entry; // 5
-    };
-    uint8_t ride_index; // 7
-};
-assert_struct_size(rct_tile_element_track_properties, 4);
-
 struct rct_tile_element_entrance_properties
 {
     uint8_t type;       // 4
@@ -76,7 +49,6 @@ assert_struct_size(rct_tile_element_banner_properties, 4);
 union rct_tile_element_properties
 {
     rct_tile_element_path_properties path;
-    rct_tile_element_track_properties track;
     rct_tile_element_entrance_properties entrance;
     rct_tile_element_banner_properties banner;
 };
