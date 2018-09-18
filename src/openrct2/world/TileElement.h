@@ -286,6 +286,10 @@ public:
 
     uint8_t GetSeatRotation() const;
     void SetSeatRotation(uint8_t newSeatRotation);
+
+    bool IsTakingPhoto() const;
+    void SetPhotoTimeout();
+    void DecrementPhotoTimeout();
     
     // Used in RCT1, will be reintroduced at some point.
     // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)

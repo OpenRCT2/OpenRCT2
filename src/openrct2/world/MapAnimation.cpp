@@ -338,9 +338,9 @@ static bool map_animation_invalidate_track_onridephoto(int32_t x, int32_t y, int
             {
                 return false;
             }
-            if (tile_element_is_taking_photo(tileElement))
+            if (tileElement->AsTrack()->IsTakingPhoto())
             {
-                tile_element_decrement_onride_photo_timout(tileElement);
+                tileElement->AsTrack()->DecrementPhotoTimeout();
                 return false;
             }
             else

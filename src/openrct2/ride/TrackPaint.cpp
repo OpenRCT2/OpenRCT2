@@ -2026,7 +2026,7 @@ void track_paint_util_onride_photo_small_paint(
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_SE_NW, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_E, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_E },
     };
 
-    bool takingPhoto = tile_element_is_taking_photo(tileElement);
+    bool takingPhoto = tileElement->AsTrack()->IsTakingPhoto();
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_MISC];
     uint32_t flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | session->TrackColours[SCHEME_MISC];
     switch (direction)
@@ -2064,7 +2064,7 @@ void track_paint_util_onride_photo_paint(
         { SPR_ON_RIDE_PHOTO_SIGN_SE_NW, SPR_ON_RIDE_PHOTO_CAMERA_E, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_E },
     };
 
-    bool takingPhoto = tile_element_is_taking_photo(tileElement);
+    bool takingPhoto = tileElement->AsTrack()->IsTakingPhoto();
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_MISC];
     uint32_t flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | session->TrackColours[SCHEME_MISC];
     switch (direction)

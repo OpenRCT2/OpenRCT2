@@ -188,26 +188,6 @@ void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight
     }
 }
 
-bool tile_element_is_taking_photo(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
-}
-
-void tile_element_set_onride_photo_timeout(rct_tile_element* tileElement)
-{
-    tileElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (3 << 4);
-}
-
-void tile_element_decrement_onride_photo_timout(rct_tile_element* tileElement)
-{
-    // We should only touch the upper 4 bits, avoid underflow into the lower 4.
-    if (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
-    {
-        tileElement->properties.track.sequence -= (1 << 4);
-    }
-}
-
 bool ride_type_has_flag(int rideType, int flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;

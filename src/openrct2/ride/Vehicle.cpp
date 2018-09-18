@@ -7505,7 +7505,7 @@ static void loc_6DB481(rct_vehicle* vehicle)
  */
 static void vehicle_trigger_on_ride_photo(rct_vehicle* vehicle, rct_tile_element* tileElement)
 {
-    tile_element_set_onride_photo_timeout(tileElement);
+    tileElement->AsTrack()->SetPhotoTimeout();
 
     map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, vehicle->track_x, vehicle->track_y, tileElement->base_height);
 }
