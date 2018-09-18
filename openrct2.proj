@@ -65,9 +65,9 @@
     <LibsSha1 Condition="'$(Platform)'=='Win32'">5266545ca3034f9718729c7841d0352ed866db39</LibsSha1>
     <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v18/openrct2-libs-v18-x64-windows-static-winssl.zip</LibsUrl>
     <LibsSha1 Condition="'$(Platform)'=='x64'">4a122221e000b26067c8a4d06d2f053f27fe3f39</LibsSha1>
-    <GtestVersion>58f3f1005cffce8a9d005d0361d3471cd9947501</GtestVersion>
-    <GtestUrl>https://github.com/google/googletest/archive/58f3f1005cffce8a9d005d0361d3471cd9947501.zip</GtestUrl>
-    <GtestSha1>06eaed284e3b709db06c9205ca4d8def8330123f</GtestSha1>
+    <GtestVersion>2fe3bd994b3189899d93f1d5a881e725e046fdc2</GtestVersion>
+    <GtestUrl>https://github.com/google/googletest/archive/$(GtestVersion).zip</GtestUrl>
+    <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2/title-sequence-v0.1.2.zip</TitleSequencesUrl>
     <TitleSequencesSha1>1136ef92bfb05cd1cba9831ba6dc4a653d87a246</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.6/objects.zip</ObjectsUrl>
