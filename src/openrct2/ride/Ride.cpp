@@ -5964,7 +5964,7 @@ int32_t ride_get_refund_price(int32_t ride_id)
     {
         addedcost = game_do_command(
             trackElement.x, GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | (direction << 8), trackElement.y,
-            trackElement.element->properties.track.type | ((trackElement.element->properties.track.sequence & 0xF) << 8),
+            trackElement.element->properties.track.type | ((trackElement.element->AsTrack()->GetSequenceIndex()) << 8),
             GAME_COMMAND_REMOVE_TRACK, trackElement.element->base_height * 8, 0);
 
         cost += (addedcost == MONEY32_UNDEFINED) ? 0 : addedcost;
