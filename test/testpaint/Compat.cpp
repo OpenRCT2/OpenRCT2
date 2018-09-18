@@ -188,17 +188,6 @@ void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight
     }
 }
 
-int tile_element_get_brake_booster_speed(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence >> 4) << 1;
-}
-
-void tile_element_set_brake_booster_speed(rct_tile_element* tileElement, int speed)
-{
-    tileElement->properties.track.sequence &= ~0b11110000;
-    tileElement->properties.track.sequence |= ((speed >> 1) << 4);
-}
-
 bool tile_element_is_taking_photo(const rct_tile_element* tileElement)
 {
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;

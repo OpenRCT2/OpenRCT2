@@ -1048,7 +1048,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         uint8_t bh;
         if (track_element_has_speed_setting(track->type))
         {
-            bh = tile_element_get_brake_booster_speed(trackElement.element) >> 1;
+            bh = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
         }
         else
         {
@@ -1058,7 +1058,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         uint8_t flags = (trackElement.element->type & (1 << 7)) | bh;
         flags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
         if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE
-            && tileElement->AsTrack()->IsInverted())
+            && trackElement.element->AsTrack()->IsInverted())
         {
             flags |= TRACK_ELEMENT_FLAG_INVERTED;
         }

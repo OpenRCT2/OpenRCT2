@@ -561,8 +561,6 @@ bool track_element_is_booster(uint8_t rideType, uint8_t trackType);
 bool track_element_has_speed_setting(uint8_t trackType);
 bool tile_element_get_green_light(const rct_tile_element* tileElement);
 void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight);
-int32_t tile_element_get_brake_booster_speed(const rct_tile_element* tileElement);
-void tile_element_set_brake_booster_speed(rct_tile_element* tileElement, int32_t speed);
 bool tile_element_is_taking_photo(const rct_tile_element* tileElement);
 void tile_element_set_onride_photo_timeout(rct_tile_element* tileElement);
 void tile_element_decrement_onride_photo_timout(rct_tile_element* tileElement);

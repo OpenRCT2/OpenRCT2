@@ -8117,7 +8117,7 @@ loc_6DB41D:
     }
     vehicle->track_direction = regs.bl & 3;
     vehicle->track_type |= trackType << 2;
-    vehicle->brake_speed = tile_element_get_brake_booster_speed(tileElement);
+    vehicle->brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
     {
         vehicle_trigger_on_ride_photo(vehicle, tileElement);
@@ -8536,7 +8536,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
     direction &= 3;
     vehicle->track_type = trackType << 2;
     vehicle->track_direction |= direction;
-    vehicle->brake_speed = tile_element_get_brake_booster_speed(tileElement);
+    vehicle->brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
 
     // There are two bytes before the move info list
     uint16_t trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
@@ -8904,7 +8904,7 @@ loc_6DC476:
 
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
     vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (direction & 3);
-    vehicle->var_CF = tile_element_get_brake_booster_speed(tileElement);
+    vehicle->var_CF = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     regs.ax = 0;
 
 loc_6DC743:

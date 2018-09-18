@@ -1483,7 +1483,7 @@ static money32 track_place(
         }
         if (track_element_has_speed_setting(type))
         {
-            tile_element_set_brake_booster_speed(tileElement, brakeSpeed);
+            tileElement->AsTrack()->SetBrakeBoosterSpeed(brakeSpeed);
         }
         else
         {
@@ -1926,7 +1926,7 @@ void game_command_set_brakes_speed(
         if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
 
-        tile_element_set_brake_booster_speed(tileElement, brakesSpeed);
+        tileElement->AsTrack()->SetBrakeBoosterSpeed(brakesSpeed);
 
         break;
     } while (!(tileElement++)->IsLastForTile());
@@ -2215,17 +2215,6 @@ void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight
     }
 }
 
-int32_t tile_element_get_brake_booster_speed(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence >> 4) << 1;
-}
-
-void tile_element_set_brake_booster_speed(rct_tile_element* tileElement, int32_t speed)
-{
-    tileElement->properties.track.sequence &= ~0b11110000;
-    tileElement->properties.track.sequence |= ((speed >> 1) << 4);
-}
-
 bool tile_element_is_taking_photo(const rct_tile_element* tileElement)
 {
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
@@ -2352,4 +2341,15 @@ void TrackElement::SetInverted(bool inverted)
     {
         colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
     }
+}
+
+uint8_t TrackElement::GetBrakeBoosterSpeed() const
+{
+    return (sequence >> 4) << 1;
+}
+
+void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
+{
+    sequence &= ~0b11110000;
+    sequence |= ((speed >> 1) << 4);
 }

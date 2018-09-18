@@ -2483,7 +2483,7 @@ void window_ride_construction_update_active_elements_impl()
         {
             _selectedTrackType = tileElement->AsTrack()->GetTrackType();
             if (track_element_has_speed_setting(tileElement->AsTrack()->GetTrackType()))
-                _currentBrakeSpeed2 = tile_element_get_brake_booster_speed(tileElement);
+                _currentBrakeSpeed2 = tileElement->AsTrack()->GetBrakeBoosterSpeed();
             _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
         }
     }
