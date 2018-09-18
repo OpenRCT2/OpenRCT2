@@ -36,7 +36,7 @@ static void paint_crooked_house_structure(
 {
     const rct_tile_element* original_tile_element = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
 
-    Ride* ride = get_ride(track_element_get_ride_index(original_tile_element));
+    Ride* ride = get_ride(original_tile_element->AsTrack()->GetRideIndex());
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
 

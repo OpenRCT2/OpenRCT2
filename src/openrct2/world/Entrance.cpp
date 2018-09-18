@@ -548,14 +548,14 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* til
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
-    int32_t rideIndex = track_element_get_ride_index(tileElement);
+    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (track_element_get_ride_index(tileElement) != rideIndex)
+        if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -584,14 +584,14 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileEle
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
-    int32_t rideIndex = track_element_get_ride_index(tileElement);
+    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (track_element_get_ride_index(tileElement) != rideIndex)
+        if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
         if (tileElement->base_height != z)
             continue;

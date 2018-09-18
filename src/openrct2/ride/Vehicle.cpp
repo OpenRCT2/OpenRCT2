@@ -2740,7 +2740,7 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
         return false;
     }
 
-    int32_t rideIndex = track_element_get_ride_index(tileElement);
+    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
     Ride* ride = get_ride(rideIndex);
     if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
@@ -8050,7 +8050,7 @@ loc_6DB358:
     // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
     {
-        int32_t rideType = get_ride(track_element_get_ride_index(tileElement))->type;
+        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (track_element_is_inverted(tileElement))
@@ -8123,7 +8123,7 @@ loc_6DB41D:
         vehicle_trigger_on_ride_photo(vehicle, tileElement);
     }
     {
-        uint16_t rideType = get_ride(track_element_get_ride_index(tileElement))->type;
+        uint16_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_STEEL_WILD_MOUSE)
         {
             vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
@@ -8876,7 +8876,7 @@ loc_6DC476:
     }
 
     {
-        int32_t rideType = get_ride(track_element_get_ride_index(tileElement))->type;
+        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
@@ -9127,7 +9127,7 @@ loc_6DCA9A:
     }
 
     {
-        int32_t rideType = get_ride(track_element_get_ride_index(tileElement))->type;
+        int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {

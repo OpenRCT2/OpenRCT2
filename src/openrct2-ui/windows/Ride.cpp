@@ -1470,7 +1470,7 @@ static void window_ride_update_overall_view(uint8_t ride_index)
         if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (track_element_get_ride_index(it.element) != ride_index)
+        if (it.element->AsTrack()->GetRideIndex() != ride_index)
             continue;
 
         int32_t x = it.x * 32;
@@ -1635,7 +1635,7 @@ static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIn
 rct_window* window_ride_open_track(rct_tile_element* tileElement)
 {
     // This function *should* only be called with an EntranceElement or TrackElement.
-    int32_t rideIndex = track_element_get_ride_index(tileElement);
+    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         // Open ride window in station view
@@ -4266,7 +4266,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
 
     if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
         return;
-    if (track_element_get_ride_index(tileElement) != w->number)
+    if (tileElement->AsTrack()->GetRideIndex() != w->number)
         return;
     if (track_element_get_colour_scheme(tileElement) == newColourScheme)
         return;

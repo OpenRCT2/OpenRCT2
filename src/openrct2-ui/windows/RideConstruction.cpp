@@ -2430,7 +2430,7 @@ static void sub_6CBCE2(
         track_element_set_inverted(&_tempTrackTileElement, (edx & 0x20000) ? true : false);
         track_element_set_colour_scheme(&_tempTrackTileElement, RIDE_COLOUR_SCHEME_MAIN);
         // Skipping seat rotation, should not be necessary for a temporary piece.
-        track_element_set_ride_index(&_tempTrackTileElement, rideIndex);
+        _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
         // Draw this map tile
         sub_68B2B7(session, x, y);

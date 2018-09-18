@@ -574,8 +574,3 @@ bool tile_element_is_taking_photo(const rct_tile_element* tileElement);
 void tile_element_set_onride_photo_timeout(rct_tile_element* tileElement);
 void tile_element_decrement_onride_photo_timout(rct_tile_element* tileElement);
 uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement);
-uint8_t track_element_get_ride_index(const rct_tile_element* tileElement);
-void track_element_set_ride_index(rct_tile_element* tileElement, uint8_t rideIndex);
-
-uint8_t track_element_get_door_a_state(const rct_tile_element* tileElement);
-uint8_t track_element_get_door_b_state(const rct_tile_element* tileElement);

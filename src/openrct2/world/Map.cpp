@@ -1602,7 +1602,7 @@ static money32 map_set_land_height(int32_t flags, int32_t x, int32_t y, int32_t 
         {
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
             {
-                int32_t rideIndex = track_element_get_ride_index(tileElement);
+                int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                 Ride* ride = get_ride(rideIndex);
                 if (ride != nullptr)
                 {
@@ -3413,7 +3413,7 @@ void map_obstruction_set_error_text(rct_tile_element* tileElement)
             errorStringId = STR_FOOTPATH_IN_THE_WAY;
             break;
         case TILE_ELEMENT_TYPE_TRACK:
-            ride = get_ride(track_element_get_ride_index(tileElement));
+            ride = get_ride(tileElement->AsTrack()->GetRideIndex());
             errorStringId = STR_X_IN_THE_WAY;
             set_format_arg(0, rct_string_id, ride->name);
             set_format_arg(2, uint32_t, ride->name_arguments);
@@ -3596,7 +3596,7 @@ bool map_can_construct_with_clear_at(
                     crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
                     && tileElement->base_height == zLow && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
                 {
-                    Ride* ride = get_ride(track_element_get_ride_index(tileElement));
+                    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                     if (ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
                     {
                         continue;
@@ -4690,7 +4690,7 @@ rct_tile_element* map_get_track_element_at_of_type_from_ride(
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (track_element_get_ride_index(tileElement) != rideIndex)
+        if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
         if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
@@ -4716,7 +4716,7 @@ rct_tile_element* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (track_element_get_ride_index(tileElement) != rideIndex)
+        if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
 
         return tileElement;
@@ -4742,7 +4742,7 @@ rct_tile_element* map_get_track_element_at_with_direction_from_ride(
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (track_element_get_ride_index(tileElement) != rideIndex)
+        if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
         if (tileElement->GetDirection() != direction)
             continue;

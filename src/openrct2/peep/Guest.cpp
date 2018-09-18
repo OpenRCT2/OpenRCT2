@@ -1624,7 +1624,7 @@ void rct_peep::PickRideToGoOn()
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        int32_t rideIndex = track_element_get_ride_index(tileElement);
+                        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                         rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                     } while (!(tileElement++)->IsLastForTile());
                 }
@@ -2745,7 +2745,7 @@ static uint8_t peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int1
                         num_scenery++;
                         break;
                     case TILE_ELEMENT_TYPE_TRACK:
-                        ride = get_ride(track_element_get_ride_index(tileElement));
+                        ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                         if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RIDE_STATUS_CLOSED
                             && !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
                         {
@@ -2957,7 +2957,7 @@ static void peep_head_for_nearest_ride_type(rct_peep* peep, int32_t rideType)
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        int32_t rideIndex = track_element_get_ride_index(tileElement);
+                        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                         ride = get_ride(rideIndex);
                         if (ride->type == rideType)
                         {
@@ -3086,7 +3086,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep* peep, int32_t rideTy
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        int32_t rideIndex = track_element_get_ride_index(tileElement);
+                        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                         ride = get_ride(rideIndex);
                         if (ride_type_has_flag(ride->type, rideTypeFlags))
                         {
@@ -6181,7 +6181,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
  */
 static bool peep_should_watch_ride(rct_tile_element* tileElement)
 {
-    Ride* ride = get_ride(track_element_get_ride_index(tileElement));
+    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
 
     // Ghosts are purely this-client-side and should not cause any interaction,
     // as that may lead to a desync.
@@ -6236,9 +6236,9 @@ static bool peep_should_watch_ride(rct_tile_element* tileElement)
 
 bool loc_690FD0(rct_peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, rct_tile_element* tileElement)
 {
-    Ride* ride = get_ride(track_element_get_ride_index(tileElement));
+    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
 
-    *rideToView = track_element_get_ride_index(tileElement);
+    *rideToView = tileElement->AsTrack()->GetRideIndex();
     if (ride->excitement == RIDE_RATING_UNDEFINED)
     {
         *rideSeatToView = 1;

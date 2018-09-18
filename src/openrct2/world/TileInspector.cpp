@@ -740,7 +740,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
-        uint8_t rideIndex = track_element_get_ride_index(trackElement);
+        uint8_t rideIndex = trackElement->AsTrack()->GetRideIndex();
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
@@ -873,7 +873,7 @@ int32_t tile_inspector_track_set_chain(
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
-        uint8_t rideIndex = track_element_get_ride_index(trackElement);
+        uint8_t rideIndex = trackElement->AsTrack()->GetRideIndex();
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();

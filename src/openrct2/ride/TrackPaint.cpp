@@ -2141,7 +2141,7 @@ void track_paint_util_left_corkscrew_up_supports(paint_session* session, uint8_t
  */
 void track_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tileElement)
 {
-    int32_t rideIndex = track_element_get_ride_index(tileElement);
+    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
     Ride* ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL)
     {

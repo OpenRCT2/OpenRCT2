@@ -614,7 +614,7 @@ static bool scenario_prepare_rides_for_save()
 
             if (isFiveCoasterObjective)
             {
-                ride = get_ride(track_element_get_ride_index(it.element));
+                ride = get_ride(it.element->AsTrack()->GetRideIndex());
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)

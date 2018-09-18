@@ -431,7 +431,7 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element* in
                 }
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
-                if (track_element_get_ride_index(inputTileElement) != track_element_get_ride_index(tileElement))
+                if (inputTileElement->AsTrack()->GetRideIndex() != tileElement->AsTrack()->GetRideIndex())
                 {
                     if (abs((int32_t)inputTileElement->base_height - (int32_t)tileElement->base_height) <= 2)
                     {
@@ -610,7 +610,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
                         }
                     }
                 }
-                if (track_element_get_ride_index(inputTileElement) != track_element_get_ride_index(tileElement))
+                if (inputTileElement->AsTrack()->GetRideIndex() != tileElement->AsTrack()->GetRideIndex())
                 {
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_ABOVE_OR_BELOW);
                     if (tileElement->clearance_height == inputTileElement->base_height)

@@ -304,7 +304,7 @@ private:
             if (tile_type != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if (track_element_get_ride_index(it.element) != _rideIndex)
+            if (it.element->AsTrack()->GetRideIndex() != _rideIndex)
                 continue;
 
             int32_t x = it.x * 32, y = it.y * 32;

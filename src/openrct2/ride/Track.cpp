@@ -609,7 +609,7 @@ static rct_tile_element* find_station_element(int32_t x, int32_t y, int32_t z, i
             continue;
         if (tileElement->GetDirection() != direction)
             continue;
-        if (track_element_get_ride_index(tileElement) != rideIndex)
+        if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
         if (!track_element_is_station(tileElement))
             continue;
@@ -1458,7 +1458,7 @@ static money32 track_place(
         tileElement->type = map_type;
 
         tileElement->AsTrack()->SetSequenceIndex(trackBlock->index);
-        track_element_set_ride_index(tileElement, rideIndex);
+        tileElement->AsTrack()->SetRideIndex(rideIndex);
         tileElement->AsTrack()->SetTrackType(type);
 
         if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -1642,7 +1642,7 @@ static money32 track_remove(
         return MONEY32_UNDEFINED;
     }
 
-    uint8_t rideIndex = track_element_get_ride_index(tileElement);
+    uint8_t rideIndex = tileElement->AsTrack()->GetRideIndex();
     type = tileElement->AsTrack()->GetTrackType();
     bool isLiftHill = tileElement->AsTrack()->HasChain();
 
@@ -2133,7 +2133,7 @@ void track_element_set_inverted(rct_tile_element* tileElement, bool inverted)
 
 int32_t track_get_actual_bank(rct_tile_element* tileElement, int32_t bank)
 {
-    Ride* ride = get_ride(track_element_get_ride_index(tileElement));
+    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     bool isInverted = track_element_is_inverted(tileElement);
     return track_get_actual_bank_2(ride->type, isInverted, bank);
 }
@@ -2162,7 +2162,7 @@ int32_t track_get_actual_bank_3(rct_vehicle* vehicle, rct_tile_element* tileElem
     bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
         ^ track_element_is_inverted(tileElement);
     int32_t trackType = tileElement->AsTrack()->GetTrackType();
-    int32_t rideType = get_ride(track_element_get_ride_index(tileElement))->type;
+    int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
     int32_t bankStart = TrackDefinitions[trackType].bank_start;
     return track_get_actual_bank_2(rideType, isInverted, bankStart);
 }
@@ -2345,3 +2345,14 @@ uint8_t TrackElement::GetDoorBState() const
 {
     return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }
+
+uint8_t TrackElement::GetRideIndex() const
+{
+    return rideIndex;
+}
+
+void TrackElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
+}
+

@@ -2853,7 +2853,7 @@ private:
                                 continue;
                         }
 
-                        uint8_t rideIndex = track_element_get_ride_index(tileElement);
+                        uint8_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                         Ride* ride = get_ride(rideIndex);
                         ride->num_block_brakes++;
                     }

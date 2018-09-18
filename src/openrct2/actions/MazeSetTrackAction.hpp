@@ -232,7 +232,7 @@ public:
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
             tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
-            track_element_set_ride_index(tileElement, _rideIndex);
+            tileElement->AsTrack()->SetRideIndex(_rideIndex);
             tileElement->properties.track.maze_entry = 0xFFFF;
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
