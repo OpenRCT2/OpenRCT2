@@ -1649,7 +1649,7 @@ void ride_construction_set_default_next_piece()
             // Set track slope and lift hill
             _currentTrackSlopeEnd = slope;
             _previousTrackSlopeEnd = slope;
-            _currentTrackLiftHill = track_element_is_lift_hill(tileElement) && slope != TRACK_SLOPE_DOWN_25
+            _currentTrackLiftHill = tileElement->AsTrack()->HasChain() && slope != TRACK_SLOPE_DOWN_25
                 && slope != TRACK_SLOPE_DOWN_60;
             break;
         case RIDE_CONSTRUCTION_STATE_BACK:
@@ -1718,7 +1718,7 @@ void ride_construction_set_default_next_piece()
             _previousTrackSlopeEnd = slope;
             if (!gCheatsEnableChainLiftOnAllTrack)
             {
-                _currentTrackLiftHill = track_element_is_lift_hill(tileElement);
+                _currentTrackLiftHill = tileElement->AsTrack()->HasChain();
             }
             break;
     }
@@ -4415,7 +4415,7 @@ static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
                 *output = it.current;
                 return 0;
             }
-            if (track_element_is_lift_hill(it.last.element) && type != TRACK_ELEM_LEFT_CURVED_LIFT_HILL
+            if (it.last.element->AsTrack()->HasChain() && type != TRACK_ELEM_LEFT_CURVED_LIFT_HILL
                 && type != TRACK_ELEM_RIGHT_CURVED_LIFT_HILL)
             {
                 gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
@@ -5120,7 +5120,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
         {
             case TRACK_ELEM_25_DEG_UP_TO_FLAT:
             case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-                if (track_element_is_lift_hill(trackElement))
+                if (trackElement->AsTrack()->HasChain())
                 {
                     outXYElement->x = x;
                     outXYElement->y = y;
@@ -5130,7 +5130,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
                 break;
             case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-                if (track_element_is_lift_hill(trackElement))
+                if (trackElement->AsTrack()->HasChain())
                 {
                     rct_tile_element* tileElement = map_get_first_element_at(
                         trackBeginEnd.begin_x >> 5, trackBeginEnd.begin_y >> 5);

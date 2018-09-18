@@ -860,9 +860,9 @@ int32_t tile_inspector_track_set_chain(
         if (!entireTrackBlock)
         {
             // Set chain for only the selected piece
-            if (track_element_is_lift_hill(trackElement) != setChain)
+            if (trackElement->AsTrack()->HasChain() != setChain)
             {
-                trackElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+                trackElement->AsTrack()->SetHasChain(setChain);
             }
 
             return 0;
@@ -967,7 +967,7 @@ int32_t tile_inspector_track_set_chain(
             // Keep?
             // invalidate_test_results(rideIndex);
 
-            if (track_element_is_lift_hill(tileElement) != setChain)
+            if (tileElement->AsTrack()->HasChain() != setChain)
             {
                 tileElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
             }

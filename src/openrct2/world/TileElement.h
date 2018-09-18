@@ -268,7 +268,10 @@ public:
     
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
-    
+
+    bool HasChain() const;
+    void SetHasChain(bool on);
+
     uint8_t GetSeatRotation() const;
     void SetSeatRotation(uint8_t newSeatRotation);
     

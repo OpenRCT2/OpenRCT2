@@ -1644,7 +1644,7 @@ static money32 track_remove(
 
     uint8_t rideIndex = track_element_get_ride_index(tileElement);
     type = tileElement->AsTrack()->GetTrackType();
-    bool isLiftHill = track_element_is_lift_hill(tileElement);
+    bool isLiftHill = tileElement->AsTrack()->HasChain();
 
     Ride* ride = get_ride(rideIndex);
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
@@ -2056,20 +2056,20 @@ void track_get_front(CoordsXYE* input, CoordsXYE* output)
     *output = lastTrack;
 }
 
-bool track_element_is_lift_hill(const rct_tile_element* trackElement)
+bool TrackElement::HasChain() const
 {
-    return trackElement->type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    return type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
 }
 
-void track_element_set_lift_hill(rct_tile_element* trackElement, bool on)
+void TrackElement::SetHasChain(bool on)
 {
     if (on)
     {
-        trackElement->type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
     }
     else
     {
-        trackElement->type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
     }
 }
 
@@ -2090,7 +2090,7 @@ bool track_element_is_block_start(rct_tile_element* trackElement)
         case TRACK_ELEM_60_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            if (track_element_is_lift_hill(trackElement))
+            if (trackElement->AsTrack()->HasChain())
             {
                 return true;
             }

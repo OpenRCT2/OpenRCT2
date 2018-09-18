@@ -26,7 +26,7 @@ static void multi_dimension_rc_track_flat(
 {
     if (!track_element_is_inverted(tileElement))
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -168,7 +168,7 @@ static void multi_dimension_rc_track_25_deg_up(
 {
     if (!track_element_is_inverted(tileElement))
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -384,7 +384,7 @@ static void multi_dimension_rc_track_flat_to_25_deg_up(
 {
     if (!track_element_is_inverted(tileElement))
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -725,7 +725,7 @@ static void multi_dimension_rc_track_25_deg_up_to_flat(
 {
     if (!track_element_is_inverted(tileElement))
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -6630,7 +6630,7 @@ static void multi_dimension_rc_track_diag_flat(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6658,7 +6658,7 @@ static void multi_dimension_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6686,7 +6686,7 @@ static void multi_dimension_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6714,7 +6714,7 @@ static void multi_dimension_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6776,7 +6776,7 @@ static void multi_dimension_rc_track_diag_flat(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6804,7 +6804,7 @@ static void multi_dimension_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6832,7 +6832,7 @@ static void multi_dimension_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6860,7 +6860,7 @@ static void multi_dimension_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6922,7 +6922,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6950,7 +6950,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -6978,7 +6978,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7006,7 +7006,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7068,7 +7068,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7096,7 +7096,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7124,7 +7124,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7152,7 +7152,7 @@ static void multi_dimension_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7380,7 +7380,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7408,7 +7408,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7436,7 +7436,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7464,7 +7464,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7526,7 +7526,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7554,7 +7554,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7582,7 +7582,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -7610,7 +7610,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8004,7 +8004,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8032,7 +8032,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8060,7 +8060,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8088,7 +8088,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8150,7 +8150,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8178,7 +8178,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8206,7 +8206,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8234,7 +8234,7 @@ static void multi_dimension_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8296,7 +8296,7 @@ static void multi_dimension_rc_track_diag_25_deg_down(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8324,7 +8324,7 @@ static void multi_dimension_rc_track_diag_25_deg_down(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8352,7 +8352,7 @@ static void multi_dimension_rc_track_diag_25_deg_down(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8380,7 +8380,7 @@ static void multi_dimension_rc_track_diag_25_deg_down(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8698,7 +8698,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_down(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8725,7 +8725,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_down(
                     0);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8752,7 +8752,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_down(
                     0);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8779,7 +8779,7 @@ static void multi_dimension_rc_track_diag_flat_to_25_deg_down(
                     0);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9262,7 +9262,7 @@ static void multi_dimension_rc_track_diag_25_deg_down_to_flat(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9290,7 +9290,7 @@ static void multi_dimension_rc_track_diag_25_deg_down_to_flat(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9318,7 +9318,7 @@ static void multi_dimension_rc_track_diag_25_deg_down_to_flat(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9346,7 +9346,7 @@ static void multi_dimension_rc_track_diag_25_deg_down_to_flat(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {

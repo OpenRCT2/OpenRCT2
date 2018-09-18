@@ -190,7 +190,7 @@ static void wooden_wild_mouse_track_25_deg_up(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
 
@@ -230,7 +230,7 @@ static void wooden_wild_mouse_track_60_deg_up(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
     {
@@ -278,7 +278,7 @@ static void wooden_wild_mouse_track_flat_to_25_deg_up(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
 
@@ -318,7 +318,7 @@ static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId;
     if (direction == 0 || direction == 3)
     {
@@ -369,7 +369,7 @@ static void wooden_wild_mouse_track_60_deg_to_25_deg_up(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId;
     if (direction == 0 || direction == 3)
     {
@@ -421,7 +421,7 @@ static void wooden_wild_mouse_track_25_deg_up_to_flat(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
 
@@ -617,7 +617,7 @@ static void wooden_wild_mouse_track_flat_to_60_deg_up(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId;
     if (direction == 0 || direction == 3)
     {
@@ -668,7 +668,7 @@ static void wooden_wild_mouse_track_60_deg_up_to_flat(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId;
     if (direction == 0 || direction == 3)
     {

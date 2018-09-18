@@ -368,7 +368,7 @@ static void dinghy_slide_track_flat(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
@@ -436,7 +436,7 @@ static void dinghy_slide_track_25_deg_up(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
@@ -517,7 +517,7 @@ static void dinghy_slide_track_flat_to_25_deg_up(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
@@ -634,7 +634,7 @@ static void dinghy_slide_track_25_deg_up_to_flat(
         },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 

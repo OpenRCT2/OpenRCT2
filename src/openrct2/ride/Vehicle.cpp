@@ -6686,7 +6686,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
             if (ride_is_block_sectioned(ride))
             {
-                if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || track_element_is_lift_hill(trackElement))
+                if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackElement->AsTrack()->HasChain())
                 {
                     if (trackElement->flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED)
                     {
@@ -8105,7 +8105,7 @@ loc_6DB41D:
     // loc_6DB500
     // Update VEHICLE_UPDATE_FLAG_ON_LIFT_HILL
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
     }
@@ -8498,7 +8498,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
         }
     }
 
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         if (_vehicleVelocityF64E08 < 0)
         {

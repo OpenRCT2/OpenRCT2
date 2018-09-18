@@ -2420,7 +2420,7 @@ static void sub_6CBCE2(
         // Set the temporary track element
         _tempTrackTileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
         _tempTrackTileElement.SetDirection(trackDirection);
-        track_element_set_lift_hill(&_tempTrackTileElement, (edx & 0x10000) ? true : false);
+        _tempTrackTileElement.AsTrack()->SetHasChain((edx & 0x10000) ? true : false);
         _tempTrackTileElement.flags = (bl & 0x0F) | TILE_ELEMENT_FLAG_LAST_TILE;
         _tempTrackTileElement.base_height = baseZ;
         _tempTrackTileElement.clearance_height = clearanceZ;

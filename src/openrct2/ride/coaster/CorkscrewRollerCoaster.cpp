@@ -24,7 +24,7 @@ static void corkscrew_rc_track_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -114,7 +114,7 @@ static void corkscrew_rc_track_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -184,7 +184,7 @@ static void corkscrew_rc_track_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -254,7 +254,7 @@ static void corkscrew_rc_track_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -324,7 +324,7 @@ static void corkscrew_rc_track_25_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -402,7 +402,7 @@ static void corkscrew_rc_track_60_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -480,7 +480,7 @@ static void corkscrew_rc_track_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -5527,7 +5527,7 @@ static void corkscrew_rc_track_diag_flat(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5554,7 +5554,7 @@ static void corkscrew_rc_track_diag_flat(
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5581,7 +5581,7 @@ static void corkscrew_rc_track_diag_flat(
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5608,7 +5608,7 @@ static void corkscrew_rc_track_diag_flat(
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5673,7 +5673,7 @@ static void corkscrew_rc_track_diag_25_deg_up(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5700,7 +5700,7 @@ static void corkscrew_rc_track_diag_25_deg_up(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5727,7 +5727,7 @@ static void corkscrew_rc_track_diag_25_deg_up(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5754,7 +5754,7 @@ static void corkscrew_rc_track_diag_25_deg_up(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5819,7 +5819,7 @@ static void corkscrew_rc_track_diag_60_deg_up(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5846,7 +5846,7 @@ static void corkscrew_rc_track_diag_60_deg_up(
             paint_util_set_general_support_height(session, height + 104, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5873,7 +5873,7 @@ static void corkscrew_rc_track_diag_60_deg_up(
             paint_util_set_general_support_height(session, height + 104, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5900,7 +5900,7 @@ static void corkscrew_rc_track_diag_60_deg_up(
             paint_util_set_general_support_height(session, height + 104, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5965,7 +5965,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_up(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -5992,7 +5992,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_up(
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6019,7 +6019,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_up(
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6046,7 +6046,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_up(
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6111,7 +6111,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_60_deg_up(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6138,7 +6138,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_60_deg_up(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6165,7 +6165,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_60_deg_up(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6192,7 +6192,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_60_deg_up(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6257,7 +6257,7 @@ static void corkscrew_rc_track_diag_60_deg_up_to_25_deg_up(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6284,7 +6284,7 @@ static void corkscrew_rc_track_diag_60_deg_up_to_25_deg_up(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6311,7 +6311,7 @@ static void corkscrew_rc_track_diag_60_deg_up_to_25_deg_up(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6338,7 +6338,7 @@ static void corkscrew_rc_track_diag_60_deg_up_to_25_deg_up(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6403,7 +6403,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_flat(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6430,7 +6430,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_flat(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6457,7 +6457,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_flat(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6484,7 +6484,7 @@ static void corkscrew_rc_track_diag_25_deg_up_to_flat(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6549,7 +6549,7 @@ static void corkscrew_rc_track_diag_25_deg_down(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6576,7 +6576,7 @@ static void corkscrew_rc_track_diag_25_deg_down(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6603,7 +6603,7 @@ static void corkscrew_rc_track_diag_25_deg_down(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6630,7 +6630,7 @@ static void corkscrew_rc_track_diag_25_deg_down(
             paint_util_set_general_support_height(session, height + 56, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6695,7 +6695,7 @@ static void corkscrew_rc_track_diag_60_deg_down(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6722,7 +6722,7 @@ static void corkscrew_rc_track_diag_60_deg_down(
             paint_util_set_general_support_height(session, height + 104, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6749,7 +6749,7 @@ static void corkscrew_rc_track_diag_60_deg_down(
             paint_util_set_general_support_height(session, height + 104, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6776,7 +6776,7 @@ static void corkscrew_rc_track_diag_60_deg_down(
             paint_util_set_general_support_height(session, height + 104, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6841,7 +6841,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_down(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6867,7 +6867,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_down(
                 session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6893,7 +6893,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_down(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6919,7 +6919,7 @@ static void corkscrew_rc_track_diag_flat_to_25_deg_down(
                 session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -6985,7 +6985,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_60_deg_down(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7012,7 +7012,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_60_deg_down(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7039,7 +7039,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_60_deg_down(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7066,7 +7066,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_60_deg_down(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7131,7 +7131,7 @@ static void corkscrew_rc_track_diag_60_deg_down_to_25_deg_down(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7158,7 +7158,7 @@ static void corkscrew_rc_track_diag_60_deg_down_to_25_deg_down(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7185,7 +7185,7 @@ static void corkscrew_rc_track_diag_60_deg_down_to_25_deg_down(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7212,7 +7212,7 @@ static void corkscrew_rc_track_diag_60_deg_down_to_25_deg_down(
             paint_util_set_general_support_height(session, height + 72, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7277,7 +7277,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_flat(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7304,7 +7304,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_flat(
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 1:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7331,7 +7331,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_flat(
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 2:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {
@@ -7358,7 +7358,7 @@ static void corkscrew_rc_track_diag_25_deg_down_to_flat(
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 3:
-            if (track_element_is_lift_hill(tileElement))
+            if (tileElement->AsTrack()->HasChain())
             {
                 switch (direction)
                 {

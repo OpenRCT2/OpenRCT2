@@ -533,7 +533,7 @@ private:
 
             if (!CompareFunctionCalls(calls, chainLiftCalls))
             {
-                WriteLine(tabs, "} else if (track_element_is_lift_hill(tileElement)) {");
+                WriteLine(tabs, "} else if (tileElement->AsTrack()->HasChain()) {");
                 GenerateCalls(tabs + 1, chainLiftCalls, height);
             }
 
@@ -543,7 +543,7 @@ private:
         }
         else if (!CompareFunctionCalls(calls, chainLiftCalls))
         {
-            WriteLine(tabs, "if (track_element_is_lift_hill(tileElement)) {");
+            WriteLine(tabs, "if (tileElement->AsTrack()->HasChain()) {");
             GenerateCalls(tabs + 1, chainLiftCalls, height);
             WriteLine(tabs, "} else {");
             GenerateCalls(tabs + 1, calls, height);
