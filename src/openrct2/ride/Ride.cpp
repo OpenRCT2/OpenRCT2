@@ -1394,7 +1394,7 @@ int32_t sub_6C683D(
         }
         if (flags & (1 << 2))
         {
-            track_element_set_colour_scheme(tileElement, (uint8_t)(extra_params & 0xFF));
+            tileElement->AsTrack()->SetColourScheme((uint8_t)(extra_params & 0xFF));
         }
         if (flags & (1 << 5))
         {

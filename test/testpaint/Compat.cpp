@@ -261,11 +261,6 @@ bool is_csg_loaded()
     return false;
 }
 
-uint8_t track_element_get_colour_scheme(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.colour & 0x3;
-}
-
 uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement)
 {
     return tileElement->properties.track.maze_entry;

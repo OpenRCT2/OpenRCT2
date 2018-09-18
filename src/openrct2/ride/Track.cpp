@@ -1494,7 +1494,7 @@ static money32 track_place(
         {
             track_element_set_inverted(tileElement, true);
         }
-        track_element_set_colour_scheme(tileElement, colour);
+        tileElement->AsTrack()->SetColourScheme(colour);
 
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
@@ -2233,17 +2233,6 @@ void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
     colour |= (newSeatRotation << 4);
 }
 
-uint8_t track_element_get_colour_scheme(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.colour & 0x3;
-}
-
-void track_element_set_colour_scheme(rct_tile_element* tileElement, uint8_t colourScheme)
-{
-    tileElement->properties.track.colour &= ~0x3;
-    tileElement->properties.track.colour |= (colourScheme & 0x3);
-}
-
 bool tile_element_get_green_light(const rct_tile_element* tileElement)
 {
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
@@ -2356,3 +2345,14 @@ void TrackElement::SetRideIndex(uint8_t newRideIndex)
     rideIndex = newRideIndex;
 }
 
+uint8_t TrackElement::GetColourScheme() const
+{
+    return colour & 0x3;
+
+}
+
+void TrackElement::SetColourScheme(uint8_t newColourScheme)
+{
+    colour &= ~0x3;
+    colour |= (newColourScheme & 0x3);
+}

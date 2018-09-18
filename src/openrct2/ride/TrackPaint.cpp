@@ -2164,7 +2164,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
     {
         int32_t trackType = tileElement->AsTrack()->GetTrackType();
         int32_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
-        int32_t trackColourScheme = track_element_get_colour_scheme(tileElement);
+        int32_t trackColourScheme = tileElement->AsTrack()->GetColourScheme();
 
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0)
         {

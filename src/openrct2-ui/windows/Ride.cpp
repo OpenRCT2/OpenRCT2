@@ -4268,7 +4268,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
         return;
     if (tileElement->AsTrack()->GetRideIndex() != w->number)
         return;
-    if (track_element_get_colour_scheme(tileElement) == newColourScheme)
+    if (tileElement->AsTrack()->GetColourScheme() == newColourScheme)
         return;
 
     z = tileElement->base_height * 8;
