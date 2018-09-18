@@ -2974,10 +2974,10 @@ STR_5465    :Clima
 STR_5466    :Empleados
 STR_5467    :ALT + 
 STR_5468    :Mensajes recientes
-STR_5469    :Desplazar mapa arriba
-STR_5470    :Desplazar mapa izq.
-STR_5471    :Desplazar mapa abajo
-STR_5472    :Desplazar mapa derecha
+STR_5469    :Desplazar mapa hacia arriba
+STR_5470    :Desplazar mapa hacia la izq.
+STR_5471    :Desplazar mapa hacia abajo
+STR_5472    :Desplazar mapa hacia la derecha
 STR_5473    :Alternar día y noche
 STR_5474    :Mostrar texto de letreros en mayúscula
 STR_5475    :{COMMA16} semanas
@@ -3122,12 +3122,14 @@ STR_5615    :L
 STR_5616    :{SMALLFONT}{BLACK}Último elemento para bandera de cuadricula.
 STR_5617    :{SMALLFONT}{BLACK}Mover elementos selec. arriba.
 STR_5618    :{SMALLFONT}{BLACK}Mover elementos selec. abajo.
+#Estas lineas son en inglés
 STR_5619    :RollerCoaster Tycoon
 STR_5620    :Added Attractions
 STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
+#
 STR_5625    :Parques {OPENQUOTES}Reales{ENDQUOTES}
 STR_5626    :Otros parques
 STR_5627    :Agrupar lista de escenarios:
@@ -3729,12 +3731,12 @@ STR_6258    :Transparente
 STR_6259    :Deshabilitado
 STR_6260    :Mostrar casillas bloqueadas
 STR_6261    :Mostrar caminos anchos
-STR_6262    :Volúmen Maestro
+STR_6262    :Volumen Maestro
 STR_6263    :{SMALLFONT}{BLACK}Activar o desactivar todos los sonidos
 STR_6264    :Usar siempre explorador de archivos del sistema
 STR_6265    :{SMALLFONT}{BLACK}Al activarse, el explorador de archivos del SO será usado en lugar del de OpenRCT2.
-STR_6266    :Abrir carpeta de mods
-
+STR_6266    :Abrir carpeta de contenido personalizado
+STR_6267    :Abrir inspector de cuadrícula
 
 ##############
 # Escenarios #
