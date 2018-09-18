@@ -540,9 +540,6 @@ void track_get_front(CoordsXYE* input, CoordsXYE* output);
 bool track_element_is_block_start(rct_tile_element* trackElement);
 bool track_element_is_covered(int32_t trackElementType);
 bool track_element_is_station(rct_tile_element* trackElement);
-bool track_element_is_cable_lift(const rct_tile_element* trackElement);
-void track_element_set_cable_lift(rct_tile_element* trackElement);
-void track_element_clear_cable_lift(rct_tile_element* trackElement);
 bool track_element_is_inverted(const rct_tile_element* tileElement);
 void track_element_set_inverted(rct_tile_element* tileElement, bool inverted);
 

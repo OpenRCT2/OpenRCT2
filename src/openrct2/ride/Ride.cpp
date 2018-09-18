@@ -1403,11 +1403,11 @@ int32_t sub_6C683D(
 
         if (flags & (1 << 3))
         {
-            track_element_set_cable_lift(tileElement);
+            tileElement->AsTrack()->SetHasCableLift(true);
         }
         if (flags & (1 << 4))
         {
-            track_element_clear_cable_lift(tileElement);
+            tileElement->AsTrack()->SetHasCableLift(false);
         }
     }
 

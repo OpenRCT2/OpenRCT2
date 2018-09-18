@@ -272,6 +272,9 @@ public:
     bool HasChain() const;
     void SetHasChain(bool on);
 
+    bool HasCableLift() const;
+    void SetHasCableLift(bool on);
+
     uint8_t GetSeatRotation() const;
     void SetSeatRotation(uint8_t newSeatRotation);
     

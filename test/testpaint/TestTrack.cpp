@@ -70,11 +70,11 @@ public:
     {
         if (variant == 0)
         {
-            track_element_clear_cable_lift(tileElement);
+            tileElement->AsTrack()->SetHasCableLift(false);
         }
         else
         {
-            track_element_set_cable_lift(tileElement);
+            tileElement->AsTrack()->SetHasCableLift(true);
         }
     }
 };
@@ -142,11 +142,11 @@ public:
     {
         if (variant == 0)
         {
-            track_element_clear_cable_lift(tileElement);
+            tileElement->AsTrack()->SetHasCableLift(false);
         }
         else
         {
-            track_element_set_cable_lift(tileElement);
+            tileElement->AsTrack()->SetHasCableLift(true);
         }
     }
 };

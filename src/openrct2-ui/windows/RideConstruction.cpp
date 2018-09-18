@@ -2426,7 +2426,7 @@ static void sub_6CBCE2(
         _tempTrackTileElement.clearance_height = clearanceZ;
         _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
         _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
-        track_element_clear_cable_lift(&_tempTrackTileElement);
+        _tempTrackTileElement.AsTrack()->SetHasCableLift(false);
         track_element_set_inverted(&_tempTrackTileElement, (edx & 0x20000) ? true : false);
         _tempTrackTileElement.AsTrack()->SetColourScheme(RIDE_COLOUR_SCHEME_MAIN);
         // Skipping seat rotation, should not be necessary for a temporary piece.

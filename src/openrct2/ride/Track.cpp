@@ -2099,21 +2099,6 @@ bool track_element_is_block_start(rct_tile_element* trackElement)
     return false;
 }
 
-bool track_element_is_cable_lift(const rct_tile_element* trackElement)
-{
-    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
-void track_element_set_cable_lift(rct_tile_element* trackElement)
-{
-    trackElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
-void track_element_clear_cable_lift(rct_tile_element* trackElement)
-{
-    trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
 bool track_element_is_inverted(const rct_tile_element* tileElement)
 {
     return tileElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
@@ -2355,4 +2340,16 @@ void TrackElement::SetColourScheme(uint8_t newColourScheme)
 {
     colour &= ~0x3;
     colour |= (newColourScheme & 0x3);
+}
+
+bool TrackElement::HasCableLift() const
+{
+    return colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void TrackElement::SetHasCableLift(bool on)
+{
+    colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    if (on)
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }

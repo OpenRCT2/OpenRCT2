@@ -24,7 +24,7 @@ static void giga_rc_track_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_cable_lift(tileElement))
+    if (tileElement->AsTrack()->HasCableLift())
     {
         switch (direction)
         {
@@ -133,7 +133,7 @@ static void giga_rc_track_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_cable_lift(tileElement))
+    if (tileElement->AsTrack()->HasCableLift())
     {
         switch (direction)
         {
@@ -229,7 +229,7 @@ static void giga_rc_track_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_cable_lift(tileElement))
+    if (tileElement->AsTrack()->HasCableLift())
     {
         switch (direction)
         {
@@ -299,7 +299,7 @@ static void giga_rc_track_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_cable_lift(tileElement))
+    if (tileElement->AsTrack()->HasCableLift())
     {
         switch (direction)
         {
@@ -395,7 +395,7 @@ static void giga_rc_track_25_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_cable_lift(tileElement))
+    if (tileElement->AsTrack()->HasCableLift())
     {
         switch (direction)
         {
@@ -473,7 +473,7 @@ static void giga_rc_track_60_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_cable_lift(tileElement))
+    if (tileElement->AsTrack()->HasCableLift())
     {
         switch (direction)
         {
@@ -551,7 +551,7 @@ static void giga_rc_track_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_cable_lift(tileElement))
+    if (tileElement->AsTrack()->HasCableLift())
     {
         switch (direction)
         {
@@ -3944,7 +3944,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(
     switch (trackSequence)
     {
         case 0:
-            if (track_element_is_cable_lift(tileElement))
+            if (tileElement->AsTrack()->HasCableLift())
             {
                 switch (direction)
                 {
@@ -4015,7 +4015,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 1:
-            if (track_element_is_cable_lift(tileElement))
+            if (tileElement->AsTrack()->HasCableLift())
             {
                 switch (direction)
                 {
@@ -4082,7 +4082,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 2:
-            if (track_element_is_cable_lift(tileElement))
+            if (tileElement->AsTrack()->HasCableLift())
             {
                 switch (direction)
                 {
@@ -4149,7 +4149,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 3:
-            if (track_element_is_cable_lift(tileElement))
+            if (tileElement->AsTrack()->HasCableLift())
             {
                 switch (direction)
                 {

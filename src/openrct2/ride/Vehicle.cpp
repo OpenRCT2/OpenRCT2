@@ -2566,7 +2566,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
                 vehicle->track_x, vehicle->track_y, vehicle->track_z, vehicle->ride, (uint8_t)(vehicle->track_direction & 0x3),
                 &track, &z, &direction, false))
         {
-            if (track_element_is_cable_lift(track.element))
+            if (track.element->AsTrack()->HasCableLift())
             {
                 vehicle->status = VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT;
             }

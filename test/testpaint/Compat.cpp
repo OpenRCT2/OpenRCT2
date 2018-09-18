@@ -234,11 +234,6 @@ bool track_element_is_lift_hill(const rct_tile_element* trackElement)
     return trackElement->type & 0x80;
 }
 
-bool track_element_is_cable_lift(const rct_tile_element* trackElement)
-{
-    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
 bool track_element_is_inverted(const rct_tile_element* trackElement)
 {
     return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
@@ -295,16 +290,6 @@ uint8_t track_element_get_ride_index(const rct_tile_element* tileElement)
 void track_element_set_ride_index(rct_tile_element* tileElement, uint8_t rideIndex)
 {
     tileElement->properties.track.ride_index = rideIndex;
-}
-
-void track_element_set_cable_lift(rct_tile_element* trackElement)
-{
-    trackElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
-void track_element_clear_cable_lift(rct_tile_element* trackElement)
-{
-    trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
