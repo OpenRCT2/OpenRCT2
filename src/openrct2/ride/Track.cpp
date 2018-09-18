@@ -2221,9 +2221,24 @@ void TrackElement::DecrementPhotoTimeout()
     }
 }
 
-uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement)
+uint16_t TrackElement::GetMazeEntry() const
 {
-    return tileElement->properties.track.maze_entry;
+    return mazeEntry;
+}
+
+void TrackElement::SetMazeEntry(uint16_t newMazeEntry)
+{
+    mazeEntry = newMazeEntry;
+}
+
+void TrackElement::MazeEntryAdd(uint16_t addVal)
+{
+    mazeEntry |= addVal;
+}
+
+void TrackElement::MazeEntrySubtract(uint16_t subVal)
+{
+    mazeEntry &= ~subVal;
 }
 
 uint8_t TrackElement::GetTrackType() const

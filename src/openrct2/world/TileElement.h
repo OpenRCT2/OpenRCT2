@@ -287,6 +287,11 @@ public:
     uint8_t GetSeatRotation() const;
     void SetSeatRotation(uint8_t newSeatRotation);
 
+    uint16_t GetMazeEntry() const;
+    void SetMazeEntry(uint16_t newMazeEntry);
+    void MazeEntryAdd(uint16_t addVal);
+    void MazeEntrySubtract(uint16_t subVal);
+
     bool IsTakingPhoto() const;
     void SetPhotoTimeout();
     void DecrementPhotoTimeout();

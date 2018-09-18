@@ -4754,7 +4754,7 @@ void rct_peep::UpdateRideMazePathfinding()
 
     } while (!(tileElement++)->IsLastForTile());
 
-    uint16_t mazeEntry = track_element_get_maze_entry(tileElement);
+    uint16_t mazeEntry = tileElement->AsTrack()->GetMazeEntry();
     uint16_t openHedges = 0;
     // var_37 is 3, 7, 11 or 15
 

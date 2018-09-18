@@ -565,9 +565,9 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* til
         // Each maze element is split into 4 sections with 4 different walls
         uint8_t mazeSection = direction * 4;
         // Add the top outer wall
-        tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 9) & 0x0F));
+        tileElement->AsTrack()->MazeEntryAdd(1 << ((mazeSection + 9) & 0x0F));
         // Add the bottom outer wall
-        tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 12) & 0x0F));
+        tileElement->AsTrack()->MazeEntryAdd(1 << ((mazeSection + 12) & 0x0F));
 
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         return;
@@ -601,15 +601,15 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileEle
         // Each maze element is split into 4 sections with 4 different walls
         uint8_t mazeSection = direction * 4;
         // Remove the top outer wall
-        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 9) & 0x0F));
+        tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 9) & 0x0F));
         // Remove the bottom outer wall
-        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 12) & 0x0F));
+        tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 12) & 0x0F));
         // Remove the intersecting wall
-        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 10) & 0x0F));
+        tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 10) & 0x0F));
         // Remove the top hedge section
-        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 11) & 0x0F));
+        tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 11) & 0x0F));
         // Remove the bottom hedge section
-        tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 15) & 0x0F));
+        tileElement->AsTrack()->MazeEntrySubtract(1 << ((mazeSection + 15) & 0x0F));
 
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         return;

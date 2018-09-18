@@ -194,11 +194,6 @@ bool is_csg_loaded()
     return false;
 }
 
-uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.maze_entry;
-}
-
 uint8_t TrackElement::GetTrackType() const
 {
     return trackType;

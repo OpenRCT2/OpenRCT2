@@ -892,7 +892,7 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
                 if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
                     continue;
 
-                maze->maze_entry = track_element_get_maze_entry(tileElement);
+                maze->maze_entry = tileElement->AsTrack()->GetMazeEntry();
                 maze->x = (x - startX) / 32;
                 maze->y = (y - startY) / 32;
                 maze++;

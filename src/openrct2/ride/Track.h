@@ -559,4 +559,3 @@ void game_command_set_brakes_speed(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 bool track_element_is_booster(uint8_t rideType, uint8_t trackType);
 bool track_element_has_speed_setting(uint8_t trackType);
-uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement);
