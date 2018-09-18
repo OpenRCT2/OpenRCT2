@@ -3581,7 +3581,7 @@ static void ride_entrance_set_map_tooltip(rct_tile_element* tileElement)
     int32_t i, rideIndex, stationIndex;
     Ride* ride;
 
-    rideIndex = tileElement->AsTrack()->GetRideIndex();
+    rideIndex = tileElement->properties.entrance.ride_index;
     ride = get_ride(rideIndex);
 
     // Get the station
