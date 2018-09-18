@@ -281,6 +281,9 @@ public:
     uint8_t GetBrakeBoosterSpeed() const;
     void SetBrakeBoosterSpeed(uint8_t speed);
 
+    uint8_t HasGreenLight() const;
+    void SetHasGreenLight(uint8_t greenLight);
+
     uint8_t GetSeatRotation() const;
     void SetSeatRotation(uint8_t newSeatRotation);
     

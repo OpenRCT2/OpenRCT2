@@ -559,8 +559,6 @@ void game_command_set_brakes_speed(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 bool track_element_is_booster(uint8_t rideType, uint8_t trackType);
 bool track_element_has_speed_setting(uint8_t trackType);
-bool tile_element_get_green_light(const rct_tile_element* tileElement);
-void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight);
 bool tile_element_is_taking_photo(const rct_tile_element* tileElement);
 void tile_element_set_onride_photo_timeout(rct_tile_element* tileElement);
 void tile_element_decrement_onride_photo_timout(rct_tile_element* tileElement);

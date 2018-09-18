@@ -2201,20 +2201,6 @@ void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
     colour |= (newSeatRotation << 4);
 }
 
-bool tile_element_get_green_light(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
-}
-
-void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    if (greenLight)
-    {
-        tileElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    }
-}
-
 bool tile_element_is_taking_photo(const rct_tile_element* tileElement)
 {
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
@@ -2352,4 +2338,19 @@ void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
     sequence &= ~0b11110000;
     sequence |= ((speed >> 1) << 4);
+}
+
+uint8_t TrackElement::HasGreenLight() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+
+}
+
+void TrackElement::SetHasGreenLight(uint8_t greenLight)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    if (greenLight)
+    {
+        sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    }
 }

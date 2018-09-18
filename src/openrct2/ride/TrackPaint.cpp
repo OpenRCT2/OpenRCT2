@@ -326,7 +326,7 @@ static void track_paint_util_draw_station_impl(
     LocationXY16 position = session->MapPosition;
     Ride* ride = get_ride(rideIndex);
     const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = tile_element_get_green_light(tileElement);
+    const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
     bool hasFence;
     uint32_t imageId;
@@ -531,7 +531,7 @@ void track_paint_util_draw_station_inverted(
     LocationXY16 position = session->MapPosition;
     Ride* ride = get_ride(rideIndex);
     const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = tile_element_get_green_light(tileElement);
+    const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
     bool hasFence;
     uint32_t imageId;

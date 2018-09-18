@@ -408,7 +408,7 @@ static void paint_go_karts_station(
 
     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
     {
-        const bool hasGreenLight = tile_element_get_green_light(tileElement);
+        const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
         switch (direction)
         {
