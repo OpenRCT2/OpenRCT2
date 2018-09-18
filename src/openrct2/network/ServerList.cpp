@@ -27,20 +27,23 @@ std::vector<server_entry> server_list_read()
     {
         auto env = GetContext()->GetPlatformEnvironment();
         auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
-        auto fs = FileStream(path, FILE_MODE_OPEN);
-        auto numEntries = fs.ReadValue<uint32_t>();
-        for (size_t i = 0; i < numEntries; i++)
+        if (platform_file_exists(path.c_str()))
         {
-            server_entry serverInfo;
-            serverInfo.address = fs.ReadString();
-            serverInfo.name = fs.ReadString();
-            serverInfo.requiresPassword = false;
-            serverInfo.description = fs.ReadString();
-            serverInfo.version = String::Duplicate("");
-            serverInfo.favourite = true;
-            serverInfo.players = 0;
-            serverInfo.maxplayers = 0;
-            entries.push_back(std::move(serverInfo));
+            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto numEntries = fs.ReadValue<uint32_t>();
+            for (size_t i = 0; i < numEntries; i++)
+            {
+                server_entry serverInfo;
+                serverInfo.address = fs.ReadString();
+                serverInfo.name = fs.ReadString();
+                serverInfo.requiresPassword = false;
+                serverInfo.description = fs.ReadString();
+                serverInfo.version = String::Duplicate("");
+                serverInfo.favourite = true;
+                serverInfo.players = 0;
+                serverInfo.maxplayers = 0;
+                entries.push_back(std::move(serverInfo));
+            }
         }
     }
     catch (const std::exception& e)

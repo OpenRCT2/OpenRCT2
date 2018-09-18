@@ -564,8 +564,15 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         char* directoryPath = path_get_directory(spriteDescriptionPath);
 
         json_error_t error;
-        json_t* sprite_list = json_load_file(spriteDescriptionPath, JSON_REJECT_DUPLICATES, &error);
+        auto fp = fopen(spriteDescriptionPath, "rb");
+        if (fp == nullptr)
+        {
+            fprintf(stderr, "Unable to read sprite description file: %s\n", spriteDescriptionPath);
+            return -1;
+        }
 
+        json_t* sprite_list = json_loadf(fp, JSON_REJECT_DUPLICATES, &error);
+        fclose(fp);
         if (sprite_list == nullptr)
         {
             fprintf(

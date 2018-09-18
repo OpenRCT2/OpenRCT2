@@ -509,15 +509,16 @@ datetime64 platform_get_datetime_now_utc()
 
 utf8* platform_get_username()
 {
-    static char username[UNLEN + 1];
-
+    static wchar_t usernameW[UNLEN + 1];
     DWORD usernameLength = UNLEN + 1;
-    if (!GetUserName(username, &usernameLength))
+    if (!GetUserNameW(usernameW, &usernameLength))
     {
         return nullptr;
     }
 
-    return username;
+    static std::string username;
+    username = widechar_to_utf8(usernameW);
+    return username.data();
 }
 
 bool platform_process_is_elevated()
