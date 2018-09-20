@@ -8,28 +8,28 @@ STR_0003    :Montanha-Russa em Pé
 STR_0004    :Montanha-Russa de Balanço Suspensa
 STR_0005    :Montanha-Russa Invertida
 STR_0006    :Montanha-Russa Junior
-STR_0007    :Ferrovia em Miniatura
+STR_0007    :Miniferrovia
 STR_0008    :Monotrilho
 STR_0009    :Mini-Montanha Suspensa
-STR_0010    :Passeio de Barco
+STR_0010    :Aluguel de Barcos
 STR_0011    :Rato Maluco de Madeira
 STR_0012    :Corrida de Obstáculos
 STR_0013    :Passeio de Carro
-STR_0014    :Queda-Livre Lançada
+STR_0014    :Queda-Livre Acelerada
 STR_0015    :Montanha de Trenó
 STR_0016    :Torre de Observação
 STR_0017    :Montanha-Russa de Looping
 STR_0018    :Escorregador de Barcos
-STR_0019    :Montanha-Russa de Trem de Mina
+STR_0019    :Montanha-Russa de Vagão de Mina
 STR_0020    :Teleférico
-STR_0021    :Montanha-Russa de Parafuso
+STR_0021    :Montanha-Russa Saca-rolhas
 STR_0022    :Labirinto
-STR_0023    :Escorregador em Espiral
+STR_0023    :Tobogã Espiral
 STR_0024    :Karts
-STR_0025    :Canal de Troncos
-STR_0026    :Correnteza Veloz
+STR_0025    :Trenó Aquático
+STR_0026    :Corredeiras de Rio
 STR_0027    :Carrinho de Bate-Bate
-STR_0028    :Barco Pirata
+STR_0028    :Barco Viking
 STR_0029    :Navio de Balanço Reverso
 STR_0030    :Barraca de Comida
 STR_0031    :Barraca Desconhecida (1D)
@@ -43,8 +43,8 @@ STR_0038    :Banheiros
 STR_0039    :Roda Gigante
 STR_0040    :Simulador de Movimento
 STR_0041    :Cinema 3D
-STR_0042    :Top Spin
-STR_0043    :Giroscópio Humano
+STR_0042    :Gira-Gira
+STR_0043    :Anéis Espaciais
 STR_0044    :Montanha de Queda-Livre Reversa
 STR_0045    :Elevador
 STR_0046    :Montanha-Russa de Queda Vertical 
@@ -136,9 +136,9 @@ STR_0553    :Anéis giratórios concêntricos que permitem aos passageiros rodar
 STR_0554    :O carro é acelerado para fora da estação em uma longa pista reta usando Motores de Indução Linear, então vai direto para o pico da pista vertical, caindo em queda livre para voltar à estação
 STR_0555    :Visitantes passeiam dentro de um elevador para cima ou para baixo em uma torre vertical para ir de um andar ao outro
 STR_0556    :Carros muito largos descem por uma pista completamente vertical para uma melhor experiência de uma montanha-russa em queda livre
-STR_0557    :Um A.T.M. (caixa eletrônico) para os visitantes usarem caso eles fiquem sem dinheiro
-STR_0558    :Passageiros andam num par de assentos rodando nos extremos de três longos braços rotatórios
-STR_0559    :Grande prédio tematizado contendo corredores e salas assustadoras
+STR_0557    :Um caixa eletrônico para os visitantes usarem caso fiquem sem dinheiro
+STR_0558    :Passageiros andam em pares de cadeiras que giram na extremidade de três braços giratórios.
+STR_0559    :Grande prédio temático que contém corredores fantasmagóricos e salas assustadoras
 STR_0560    :Um lugar para visitantes doentes se recuperarem rapidamente
 STR_0561    :Show de circo com animais dentro de uma tenda grande
 STR_0562    :Carros motorizados percorrem uma pista de vários níveis passando por cenários assustadores e efeitos especiais
@@ -223,28 +223,28 @@ STR_0818    :Set
 STR_0819    :Out
 STR_0820    :Nov
 STR_0821    :Dez
-STR_0822    :Impossível acessar o arquivo de gráficos
+STR_0822    :Impossível acessar arquivo de dados gráficos
 STR_0823    :Arquivo de dados ausente ou inacessível
 STR_0824    :{BLACK}{CROSS}
 STR_0825    :Nome escolhido já está em uso
-STR_0826    :Muitos nomes definidos
+STR_0826    :Foram definidos nomes em excesso
 STR_0827    :Dinheiro insuficiente - requer {CURRENCY2DP}
 STR_0828    :{SMALLFONT}{BLACK}Fechar Janela
-STR_0829    :{SMALLFONT}{BLACK}Título da janela - Arraste para mover a janela
-STR_0830    :{SMALLFONT}{BLACK}Aumentar Zoom
-STR_0831    :{SMALLFONT}{BLACK}Reduzir Zoom
+STR_0829    :{SMALLFONT}{BLACK}Barra de título da janela - Arraste para mover a janela
+STR_0830    :{SMALLFONT}{BLACK}Aproximar Vista
+STR_0831    :{SMALLFONT}{BLACK}Afastar Vista
 STR_0832    :{SMALLFONT}{BLACK}Girar visão em 90{DEGREE} no sentido horário
 STR_0833    :{SMALLFONT}{BLACK}Pausar Jogo
 STR_0834    :{SMALLFONT}{BLACK}Opções de disco e jogo
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :Sobre 'OpenRCT2'
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, todos os direitos reservados
+STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, Todos os direitos reservados
 STR_0851    :{WINDOW_COLOUR_2}Projetado e programado por Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}Gráficos por Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}Som e músicas por Allister Brimble
+STR_0852    :{WINDOW_COLOUR_2}Gráficos de Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}Som e músicas de Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Sons adicionais gravados por David Ellis
-STR_0855    :{WINDOW_COLOUR_2}Representação por Jacqui Lyons na Marjacq Ltd.
+STR_0855    :{WINDOW_COLOUR_2}Representação de Jacqui Lyons da Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Obrigado a:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0865    :{STRINGID}
@@ -462,7 +462,7 @@ STR_1078    :Rotação para frente
 STR_1079    :Rotação para trás
 STR_1080    :Filme: {ENDQUOTES}Aviadores Vingadores{ENDQUOTES}
 STR_1081    :Filme em 3D: {ENDQUOTES}Caudas de Rato{ENDQUOTES}
-STR_1082    :Modo giroscópio humano
+STR_1082    :Modo anéis espaciais
 STR_1083    :Modo iniciante
 STR_1084    :Lançamento por indução linear
 STR_1085    :Filme: {ENDQUOTES}Pilotos de Emoção{ENDQUOTES}
@@ -720,21 +720,21 @@ STR_1336    :{STRINGID} - Estação {POP16}{COMMA16} Entrada
 STR_1337    :{STRINGID} - Saída{POP16}{POP16}
 STR_1338    :{STRINGID} - Estação {POP16}{COMMA16} Saída
 STR_1339    :{BLACK}Nenhum resultado de teste ainda...
-STR_1340    :{WINDOW_COLOUR_2}Vel. Máx.: {BLACK}{VELOCITY}
+STR_1340    :{WINDOW_COLOUR_2}Velocidade máx.: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Duração da atração: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
 STR_1343    :{DURATION} / 
-STR_1344    :{WINDOW_COLOUR_2}Comprimento da atração: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
+STR_1344    :{WINDOW_COLOUR_2}Estensão do percurso: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
-STR_1347    :{WINDOW_COLOUR_2}Velocidade Média: {BLACK}{VELOCITY}
-STR_1348    :{WINDOW_COLOUR_2}Máx. G vertical positivo: {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Máx. G vertical positivo: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1350    :{WINDOW_COLOUR_2}Máx. G vertical negativo: {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Máx. G vertical negativo: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1352    :{WINDOW_COLOUR_2}Máx. G lateral: {BLACK}{COMMA2DP32}g
-STR_1353    :{WINDOW_COLOUR_2}Máx. G lateral: {OUTLINE}{RED}{COMMA2DP32}g
-STR_1354    :{WINDOW_COLOUR_2}Queda mais alta: {BLACK}{LENGTH}
+STR_1347    :{WINDOW_COLOUR_2}Velocidade média: {BLACK}{VELOCITY}
+STR_1348    :{WINDOW_COLOUR_2}G vertical positivo máx.: {BLACK}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}G vertical positivo máx.: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1350    :{WINDOW_COLOUR_2}G vertical negativo máx.: {BLACK}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}G vertical negativo máx.: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1352    :{WINDOW_COLOUR_2}G lateral máx.: {BLACK}{COMMA2DP32}g
+STR_1353    :{WINDOW_COLOUR_2}G lateral máx.: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1354    :{WINDOW_COLOUR_2}Altura da queda mais alta: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Quedas: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversões: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Túneis: {BLACK}{COMMA16}
@@ -1030,7 +1030,7 @@ STR_1646    :
 STR_1647    :
 STR_1648    :{SMALLFONT}{OPENQUOTES}Socorro! Me solte!{ENDQUOTES}
 STR_1649    :{SMALLFONT}{OPENQUOTES}Estou ficando sem dinheiro!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Uma nova atração está sendo construída!{ENDQUOTES}
+STR_1650    :{SMALLFONT}{OPENQUOTES}Uau! Uma nova atração está sendo construída!{ENDQUOTES}
 STR_1653    :{SMALLFONT}{OPENQUOTES}...e aqui estamos no {STRINGID}!{ENDQUOTES}
 STR_1654    :{WINDOW_COLOUR_2}Pensamentos recentes:
 STR_1655    :{SMALLFONT}{BLACK}Construir caminho no terreno
@@ -1070,7 +1070,7 @@ STR_1688    :Tamanho da base 4 x 1
 STR_1689    :Freios Bloqueadores
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Custo: {BLACK}{CURRENCY}
-STR_1692    :{WINDOW_COLOUR_2}  Custo: {BLACK}de {CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  Custo de: {BLACK}{CURRENCY}
 STR_1693    :{SMALLFONT}{BLACK}Visitantes
 STR_1694    :{SMALLFONT}{BLACK}Funcionários
 STR_1695    :{SMALLFONT}{BLACK}Receita e gastos
@@ -1203,7 +1203,7 @@ STR_1828    :Satisfação
 STR_1829    :Lucro
 STR_1830    :Tamanho da fila
 STR_1831    :Tempo na fila
-STR_1832    :Confiança
+STR_1832    :Confiabilidade
 STR_1833    :Tempo ocioso
 STR_1834    :Atração favorita de visitantes
 STR_1835    :Popularidade: Desconhecido
@@ -1266,16 +1266,16 @@ STR_1894    :{WINDOW_COLOUR_2}{STRINGID} vendido: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Construir uma nova atração
 STR_1896    :{WINDOW_COLOUR_2}Receitas/Despesas
 STR_1897    :{WINDOW_COLOUR_2}Construções
-STR_1898    :{WINDOW_COLOUR_2}Func. das atrações
+STR_1898    :{WINDOW_COLOUR_2}Custos operacionais
 STR_1899    :{WINDOW_COLOUR_2}Compra de terrenos
 STR_1900    :{WINDOW_COLOUR_2}Paisagismo
 STR_1901    :{WINDOW_COLOUR_2}Entradas no parque
 STR_1902    :{WINDOW_COLOUR_2}Atrações
 STR_1903    :{WINDOW_COLOUR_2}Vendas das lojas
 STR_1904    :{WINDOW_COLOUR_2}Estoque das lojas
-STR_1905    :{WINDOW_COLOUR_2}Vendas de Comidas
-STR_1906    :{WINDOW_COLOUR_2}Estoque de Comidas
-STR_1907    :{WINDOW_COLOUR_2}Funcionários
+STR_1905    :{WINDOW_COLOUR_2}Vendas comida/bebida
+STR_1906    :{WINDOW_COLOUR_2}Estoque comida/bebida
+STR_1907    :{WINDOW_COLOUR_2}Salários
 STR_1908    :{WINDOW_COLOUR_2}Marketing
 STR_1909    :{WINDOW_COLOUR_2}Pesquisa
 STR_1910    :{WINDOW_COLOUR_2}Juros de empréstimos
@@ -1284,7 +1284,7 @@ STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
-STR_1916    :{WINDOW_COLOUR_2}crédito:
+STR_1916    :{WINDOW_COLOUR_2}Crédito:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :O banco se nega a emprestar mais dinheiro!
 STR_1919    :Não possui dinheiro suficiente!
@@ -1610,8 +1610,8 @@ STR_2254    :Atrações Tranquilas
 STR_2255    :Montanhas-Russas
 STR_2256    :Atrações Emocionantes
 STR_2257    :Atrações Aquáticas
-STR_2258    :Lojas & Barracas
-STR_2259    :Cenário & Tematização
+STR_2258    :Lojas e Barracas
+STR_2259    :Cenário e Tematização
 STR_2260    :Nenhum financiamento
 STR_2261    :Financiamento mínimo
 STR_2262    :Financiamento normal
@@ -1623,7 +1623,7 @@ STR_2267    :Atualmente em desenvolvimento
 STR_2268    :Último desenvolvimento
 STR_2269    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID}
 STR_2270    :{WINDOW_COLOUR_2}Progresso: {BLACK}{STRINGID}
-STR_2271    :{WINDOW_COLOUR_2}Esperado: {BLACK}{STRINGID}
+STR_2271    :{WINDOW_COLOUR_2}Previsto: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Atrações:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Cenário/tematização:{NEWLINE}{BLACK}{STRINGID}
 STR_2274    :{SMALLFONT}{BLACK}Mostrar detalhes desta invenção ou desenvolvimento
@@ -1666,7 +1666,7 @@ STR_2311    :{WINDOW_COLOUR_2}Emoção: {BLACK}{COMMA2DP32} (aprox.)
 STR_2312    :{WINDOW_COLOUR_2}Intensidade: {BLACK}{COMMA2DP32} (aprox.)
 STR_2313    :{WINDOW_COLOUR_2}Náusea: {BLACK}{COMMA2DP32} (aprox.)
 STR_2314    :{WINDOW_COLOUR_2}Comprimento da atração: {BLACK}{STRINGID}
-STR_2315    :{WINDOW_COLOUR_2}Custo: {BLACK}em torno de {CURRENCY}
+STR_2315    :{WINDOW_COLOUR_2}Custo aproximado: {BLACK}{CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espaço necessário: {BLACK}{COMMA16} x {COMMA16} blocos
 STR_2321    :{WINDOW_COLOUR_2}Número de atrações: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Funcionário: {BLACK}{COMMA16}
@@ -2119,8 +2119,8 @@ STR_2791    :Inserir nome
 STR_2792    :Por favor, insira o seu nome {NEWLINE}para a lista de cenário:
 STR_2793    :{SMALLFONT}(Completado por {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completado por: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} com o valor da empresa de: {BLACK}{CURRENCY}
-STR_2795    :Organizar
-STR_2796    :{SMALLFONT}{BLACK}Organiza lista de atrações usando o tipo de informação exibida
+STR_2795    :Ordenar
+STR_2796    :{SMALLFONT}{BLACK}Ordenar a lista de atrações de acordo com o tipo de informação exibido
 STR_2797    :Mover câmera quando o cursor estiver na borda da tela
 STR_2798    :{SMALLFONT}{BLACK}Move a câmera quando o cursor do mouse estiver na borda da tela
 STR_2799    :{SMALLFONT}{BLACK}Visualiza ou muda atribuições de teclas de controle
@@ -2138,13 +2138,13 @@ STR_2810    :{RED}Os visitantes estão com sede e não conseguem encontrar nenhu
 STR_2811    :{RED}Os visitantes estão reclamando porque não conseguem encontrar banheiros em seu parque
 STR_2812    :{RED}Os visitantes estão ficando perdidos ou presos. Verifique se o a organização das calçadas do seu parque pode ser melhorada para ajudar os visitantes a voltarem ao seu rumo
 STR_2813    :{RED}O preço do ingresso do parque está muito caro! Diminua ou melhore o valor do parque para atrair mais visitantes
-STR_2814    :{WINDOW_COLOUR_2}Prêmio de parque mais desarrumado
-STR_2815    :{WINDOW_COLOUR_2}Prêmio de parque mais arrumado
-STR_2816    :{WINDOW_COLOUR_2}Prêmio para o parque com as melhores montanhas-russas
-STR_2817    :{WINDOW_COLOUR_2}Prêmio de parque com melhor valor
-STR_2818    :{WINDOW_COLOUR_2}Prêmio de parque mais bonito
-STR_2819    :{WINDOW_COLOUR_2}Prêmio de parque com pior valor
-STR_2820    :{WINDOW_COLOUR_2}Prêmio de parque mais seguro
+STR_2814    :{WINDOW_COLOUR_2}Prêmio do parque mais sujo
+STR_2815    :{WINDOW_COLOUR_2}Prêmio do parque mais limpo
+STR_2816    :{WINDOW_COLOUR_2}Prêmio pelo parque com as melhores montanhas-russas
+STR_2817    :{WINDOW_COLOUR_2}Prêmio do parque de maior valor
+STR_2818    :{WINDOW_COLOUR_2}Prêmio do parque mais bonito
+STR_2819    :{WINDOW_COLOUR_2}Prêmio do parque de menor valor
+STR_2820    :{WINDOW_COLOUR_2}Prêmio do parque mais seguro
 STR_2821    :{WINDOW_COLOUR_2}Prêmio de melhores funcionários
 STR_2822    :{WINDOW_COLOUR_2}Prêmio de melhor comida de parque
 STR_2823    :{WINDOW_COLOUR_2}Prêmio de pior comida de parque
@@ -2155,35 +2155,35 @@ STR_2827    :{WINDOW_COLOUR_2}Prêmio de melhores atrações personalizadas
 STR_2828    :{WINDOW_COLOUR_2}Prêmio de atração com esquema de cor mais deslumbrante
 STR_2829    :{WINDOW_COLOUR_2}Prêmio de parque com traçado mais confuso
 STR_2830    :{WINDOW_COLOUR_2}Prêmio de melhores atrações tranquilas
-STR_2831    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais desarrumado do país'!
-STR_2832    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais arrumado do país'!
-STR_2833    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com as melhores montanhas-russas'!
-STR_2834    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com o melhor valor do país'!
-STR_2835    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais bonito do país'!
-STR_2836    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com o pior valor do país'!
-STR_2837    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais seguro do país'!
-STR_2838    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com os melhores funcionários'!
-STR_2839    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com a melhor comida do país'!
-STR_2840    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com a pior comida do país'!
-STR_2841    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com as melhores instalações sanitárias do país'!
-STR_2842    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque mais decepcionante do país'!
-STR_2843    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com as melhores atrações aquáticas do país'!
-STR_2844    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com as melhores atrações customizadas'!
-STR_2845    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com a escolha de esquemas de cores mais deslumbrante'!
-STR_2846    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com o traçado mais confuso'!
+STR_2831    :{TOPAZ}Seu parque foi premiado como o mais sujo do país!
+STR_2832    :{TOPAZ}Seu parque foi premiado como o mais limpo do país!
+STR_2833    :{TOPAZ}Seu parque foi premiado por ter as melhores montanhas-russas!
+STR_2834    :{TOPAZ}Seu parque foi premiado como o de maior valor do país!
+STR_2835    :{TOPAZ}Seu parque foi premiado como o mais bonito do país!
+STR_2836    :{TOPAZ}Seu parque foi premiado como o de menor valor do país!
+STR_2837    :{TOPAZ}Seu parque foi premiado como o mais seguro do país!
+STR_2838    :{TOPAZ}Seu parque foi premiado por ter os melhores funcionários!
+STR_2839    :{TOPAZ}Seu parque foi premiado por ter a melhor comida do país!
+STR_2840    :{TOPAZ}Seu parque foi premiado por ter a pior comida do país!
+STR_2841    :{TOPAZ}Seu parque foi premiado por ter as melhores instalações sanitárias do país!
+STR_2842    :{TOPAZ}Seu parque foi premiado por ser o mais decepcionante do país!
+STR_2843    :{TOPAZ}Seu parque foi premiado por ter as melhores atrações aquáticas do país!
+STR_2844    :{TOPAZ}Seu parque foi premiado por ter as melhores atrações pesonalizadas!
+STR_2845    :{TOPAZ}Seu parque foi premiado por ter a escolha de esquemas de cores mais deslumbrante!
+STR_2846    :{TOPAZ}Seu parque foi premiado por ter o traçado mais confuso'!
 STR_2847    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com as melhores atrações tranquilas'!
-STR_2848    :{WINDOW_COLOUR_2}Não há prêmios recentes
+STR_2848    :{WINDOW_COLOUR_2}Nenhum prêmio recente
 STR_2849    :Novo cenário instalado com sucesso
 STR_2850    :Novo projeto de pista instalado com sucesso
 STR_2851    :Cenário já instalado
 STR_2852    :Projeto de pista já instalado
-STR_2853    :Proibido por autoridades locais!
+STR_2853    :Proibido pelas autoridades locais!
 STR_2854    :{RED}Os visitantes não conseguem entrar em {STRINGID}!{NEWLINE}Construa um caminho até a entrada do brinquedo!
 STR_2855    :{RED}{STRINGID} não tem um caminho de saída!{NEWLINE}Construa um caminho a partir da saída da atração
-STR_2858    :Impossível começar uma campanha de marketing...
+STR_2858    :Impossível iniciar campanha de marketing...
 STR_2861    :{WINDOW_COLOUR_2}Licenciado para Infogrames Interactive Inc.
-STR_2862    :Reconhecimentos de música...
-STR_2863    :Reconhecimentos de música
+STR_2862    :Créditos das músicas...
+STR_2863    :Créditos das músicas
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) sem direitos autorais
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) sem direitos autorais
@@ -2195,8 +2195,8 @@ STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Traditional)
 STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) sem direitos autorais
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) sem direitos autorais
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
-STR_2875    :{WINDOW_COLOUR_2}Gravações originais (P) 1976 C.J.Mears Organization, usado com consentimento
-STR_2876    :{WINDOW_COLOUR_2}Música de Título do RollerCoaster Tycoon 2:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
+STR_2875    :{WINDOW_COLOUR_2}Gravações originais (P) 1976 C.J.Mears Organization, usado com autorização
+STR_2876    :{WINDOW_COLOUR_2}Música Título - RollerCoaster Tycoon 2: (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
 STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
 STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
 STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) direitos autorais {COPYRIGHT} Chris Sawyer
@@ -2231,7 +2231,7 @@ STR_2971    :Esquema de cor principal
 STR_2972    :Esquema de cor alternativo 1
 STR_2973    :Esquema de cor alternativo 2
 STR_2974    :Esquema de cor alternativo 3
-STR_2975    :{SMALLFONT}{BLACK}Selecione qual esquema de cor mudar, ou usar para pintar atração
+STR_2975    :{SMALLFONT}{BLACK}Selecione qual esquema de cor mudar, ou usar para pintar a atração
 STR_2976    :{SMALLFONT}{BLACK}Pintar uma área individual desta atração usando o esquema de cor selecionado
 STR_2977    :Nome do Funcionário
 STR_2978    :Inserir novo nove para este funcionário:
@@ -3564,7 +3564,7 @@ STR_6100    :Você desconectou do servidor.
 STR_6101    :Atrações não perdem valor ao longo do{NEWLINE}tempo
 STR_6102    :{SMALLFONT}{BLACK}O valor de uma atração não diminuirá com o tempo, então visitantes não pensarão de repente que uma atração é muito cara.
 STR_6103    :{SMALLFONT}{BLACK}Esta opção é desabilitada durante jogo de rede.
-STR_6104    :Montanha-Russa Parafuso
+STR_6104    :Montanha-Russa Saca-Rolhas
 STR_6105    :Hiper Montanha-Russa
 STR_6106    :Passeio de carro
 STR_6107    :Caminhões Monstruosos

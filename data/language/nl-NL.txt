@@ -4650,6 +4650,12 @@ STR_NAME    :Dak
 [XXBBBR01]
 STR_NAME    :Basisblok
 
+[ACWW33]
+STR_NAME    :Muur van houten palen
+
+[ACWWF32]
+STR_NAME    :Hek van houten palen
+
 ## End CC
 
 
