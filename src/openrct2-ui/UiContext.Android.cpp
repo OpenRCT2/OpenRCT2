@@ -59,6 +59,10 @@ namespace OpenRCT2::Ui
 
             return "/sdcard/rct2";
         }
+
+        void OpenFolder(const std::string& path) override
+        {
+        }
     };
 
     IPlatformUiContext* CreatePlatformUiContext()
