@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '28.0.2'
 
     defaultConfig {
         applicationId 'website.openrct2'
@@ -42,6 +42,13 @@ android {
         }
         release {
             signingConfig signingConfigs.debug
+        }
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        full {
+            dimension "version"
         }
     }
 
