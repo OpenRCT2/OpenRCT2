@@ -930,7 +930,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
                 {
                     char* lineCh = buffer;
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-                    lineCh = utf8_write_codepoint(lineCh, FORMAT_TICK);
+                    lineCh = utf8_write_codepoint(lineCh, UnicodeChar::tick);
                     gfx_draw_string(dpi, buffer, COLOUR_BLACK, 0, y);
                 }
             }

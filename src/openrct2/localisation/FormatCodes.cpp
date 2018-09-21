@@ -38,7 +38,6 @@ static constexpr const format_code_token format_code_tokens[] = {
     { FORMAT_WINDOW_COLOUR_3,           "WINDOW_COLOUR_3"       },
     { FORMAT_NEWLINE_X_Y,               "NEWLINE_X_Y"           },
     { FORMAT_INLINE_SPRITE,             "INLINE_SPRITE"         },
-    { FORMAT_ENDQUOTES,                 "ENDQUOTES"             },
     { FORMAT_COMMA32,                   "COMMA32"               },
     { FORMAT_INT32,                     "INT32"                 },
     { FORMAT_COMMA2DP32,                "COMMA2DP32"            },
@@ -72,27 +71,6 @@ static constexpr const format_code_token format_code_tokens[] = {
     { FORMAT_LIGHTPINK,                 "LIGHTPINK"             },
     { FORMAT_PEARLAQUA,                 "PEARLAQUA"             },
     { FORMAT_PALESILVER,                "PALESILVER"            },
-    { FORMAT_UP,                        "UP"                    },
-    { FORMAT_POUND,                     "POUND"                 },
-    { FORMAT_YEN,                       "YEN"                   },
-    { FORMAT_COPYRIGHT,                 "COPYRIGHT"             },
-    { FORMAT_DOWN,                      "DOWN"                  },
-    { FORMAT_LEFTGUILLEMET,             "LEFTGUILLEMET"         },
-    { FORMAT_TICK,                      "TICK"                  },
-    { FORMAT_CROSS,                     "CROSS"                 },
-    { FORMAT_RIGHT,                     "RIGHT"                 },
-    { FORMAT_DEGREE,                    "DEGREE"                },
-    { FORMAT_SQUARED,                   "SQUARED"               },
-    { FORMAT_OPENQUOTES,                "OPENQUOTES"            },
-    { FORMAT_EURO,                      "EURO"                  },
-    { FORMAT_APPROX,                    "APPROX"                },
-    { FORMAT_POWERNEGATIVEONE,          "POWERNEGATIVEONE"      },
-    { FORMAT_BULLET,                    "BULLET"                },
-    { FORMAT_RIGHTGUILLEMET,            "RIGHTGUILLEMET"        },
-    { FORMAT_SMALLUP,                   "SMALLUP"               },
-    { FORMAT_SMALLDOWN,                 "SMALLDOWN"             },
-    { FORMAT_LEFT,                      "LEFT"                  },
-    { FORMAT_INVERTEDQUESTION,          "INVERTEDQUESTION"      },
     { FORMAT_COMMA1DP16,                "COMMA1DP16"            }
 };
 // clang-format on
@@ -121,21 +99,21 @@ bool utf8_should_use_sprite_for_codepoint(int32_t codepoint)
 {
     switch (codepoint)
     {
-        case FORMAT_UP:
-        case FORMAT_DOWN:
-        case FORMAT_LEFTGUILLEMET:
-        case FORMAT_TICK:
-        case FORMAT_CROSS:
-        case FORMAT_RIGHT:
-        case FORMAT_RIGHTGUILLEMET:
-        case FORMAT_SMALLUP:
-        case FORMAT_SMALLDOWN:
-        case FORMAT_LEFT:
-        case FORMAT_OPENQUOTES:
-        case FORMAT_ENDQUOTES:
-        case FORMAT_GERMAN_OPENQUOTES:
-        case UNICODE_DINGBATS_PLUS:
-        case UNICODE_DINGBATS_MINUS:
+        case UnicodeChar::up:
+        case UnicodeChar::down:
+        case UnicodeChar::leftguillemet:
+        case UnicodeChar::tick:
+        case UnicodeChar::cross:
+        case UnicodeChar::right:
+        case UnicodeChar::rightguillemet:
+        case UnicodeChar::small_up:
+        case UnicodeChar::small_down:
+        case UnicodeChar::left:
+        case UnicodeChar::quote_open:
+        case UnicodeChar::quote_close:
+        case UnicodeChar::german_quote_open:
+        case UnicodeChar::plus:
+        case UnicodeChar::minus:
             return true;
         default:
             return false;

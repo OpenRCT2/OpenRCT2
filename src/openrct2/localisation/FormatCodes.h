@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _FORMAT_CODES_H_
-#define _FORMAT_CODES_H_
+#pragma once
 
 #include "../common.h"
 
@@ -94,45 +93,6 @@ enum
     FORMAT_PALESILVER,
     FORMAT_COLOUR_CODE_END = FORMAT_PALESILVER,
 
-    // Extra non-ASCII characters
-    FORMAT_INVERTEDEXCLAMATION = 161,
-    FORMAT_POUND = 163,
-    FORMAT_YEN = 165,
-    FORMAT_COPYRIGHT = 169,
-    FORMAT_LEFTGUILLEMET = 171,
-    FORMAT_DEGREE = 176,
-    FORMAT_SQUARED = 178,
-    FORMAT_RIGHTGUILLEMET = 187,
-    FORMAT_INVERTEDQUESTION = 191,
-
-    FORMAT_SINGLE_OPENQUOTE = 8216,
-    FORMAT_SINGLE_ENDQUOTE = 8217,
-    FORMAT_GERMAN_SINGLE_OPENQUOTE = 8218,
-    FORMAT_OPENQUOTES = 8220,
-    FORMAT_ENDQUOTES = 8221,
-    FORMAT_GERMAN_OPENQUOTES = 8222,
-
-    FORMAT_BULLET = 8226,
-    FORMAT_POWERNEGATIVEONE = 8315,
-    FORMAT_EURO = 8364,
-
-    FORMAT_APPROX = 8776,
-
-    FORMAT_UP = 9650,
-    FORMAT_RIGHT = 9654,
-    FORMAT_DOWN = 9660,
-    FORMAT_LEFT = 9664,
-
-    FORMAT_SMALLUP = 9652,
-    FORMAT_SMALLDOWN = 9662,
-
-    FORMAT_TICK = 10003,
-    FORMAT_CROSS = 0x274C,
-
-    FORMAT_SYMBOL_RAILWAY = 128740,
-    FORMAT_SYMBOL_ROAD = 128739,
-    FORMAT_SYMBOL_FLAG = 128681,
-
     // Format codes that need suitable Unicode allocations
     FORMAT_COMMA1DP16 = 20004
 };
@@ -158,171 +118,159 @@ enum RCT2Polish
     RCT2_Z_ACUTE = 254,  // 0xFE
 };
 
-enum UnicodePolish
+namespace UnicodeChar
 {
-    UNICODE_A_OGONEK_UC = 260,
-    UNICODE_C_ACUTE_UC = 262,
-    UNICODE_E_OGONEK_UC = 280,
-    UNICODE_N_ACUTE_UC = 323,
-    UNICODE_L_STROKE_UC = 321,
-    UNICODE_S_ACUTE_UC = 346,
-    UNICODE_Z_DOT_UC = 379,
-    UNICODE_Z_ACUTE_UC = 377,
+    // Latin alphabet
+    constexpr char32_t ae_uc = 0xC6;
+    constexpr char32_t o_stroke_uc = 0xD8;
+    constexpr char32_t y_acute_uc = 0xDD;
+    constexpr char32_t ae = 0xE6;
+    constexpr char32_t o_stroke = 0xF8;
+    constexpr char32_t y_acute = 0xFD;
+    constexpr char32_t a_breve_uc = 0x102;
+    constexpr char32_t a_breve = 0x103;
+    constexpr char32_t a_ogonek_uc = 0x104;
+    constexpr char32_t a_ogonek = 0x105;
+    constexpr char32_t c_acute_uc = 0x106;
+    constexpr char32_t c_acute = 0x107;
+    constexpr char32_t c_caron_uc = 0x10C;
+    constexpr char32_t c_caron = 0x10D;
+    constexpr char32_t e_ogonek_uc = 0x118;
+    constexpr char32_t e_ogonek = 0x119;
+    constexpr char32_t g_breve_uc = 0x11E;
+    constexpr char32_t g_breve = 0x11F;
+    constexpr char32_t i_with_dot_uc = 0x130;
+    constexpr char32_t i_without_dot = 0x131;
+    constexpr char32_t l_stroke_uc = 0x141;
+    constexpr char32_t l_stroke = 0x142;
+    constexpr char32_t n_acute_uc = 0x143;
+    constexpr char32_t n_acute = 0x144;
+    constexpr char32_t o_double_acute_uc = 0x150;
+    constexpr char32_t o_double_acute = 0x151;
+    constexpr char32_t s_acute_uc = 0x15A;
+    constexpr char32_t s_acute = 0x15B;
+    constexpr char32_t s_cedilla_uc = 0x15E;
+    constexpr char32_t s_cedilla = 0x15F;
+    constexpr char32_t u_double_acute_uc = 0x170;
+    constexpr char32_t u_double_acute = 0x171;
+    constexpr char32_t z_acute_uc = 0x179;
+    constexpr char32_t z_acute = 0x17A;
+    constexpr char32_t z_dot_uc = 0x17B;
+    constexpr char32_t z_dot = 0x17C;
+    constexpr char32_t f_with_hook_uc = 0x191;
+    constexpr char32_t s_comma_uc = 0x218;
+    constexpr char32_t s_comma = 0x219;
+    constexpr char32_t t_comma_uc = 0x21A;
+    constexpr char32_t t_comma = 0x21B;
+    constexpr char32_t sharp_s_uc = 0x1E9E;
 
-    UNICODE_A_OGONEK = 261,
-    UNICODE_C_ACUTE = 263,
-    UNICODE_E_OGONEK = 281,
-    UNICODE_N_ACUTE = 324,
-    UNICODE_L_STROKE = 322,
-    UNICODE_S_ACUTE = 347,
-    UNICODE_Z_DOT = 380,
-    UNICODE_Z_ACUTE = 378,
-};
+    // Cyrillic alphabet
+    constexpr char32_t cyrillic_io_uc = 0x401;
+    constexpr char32_t cyrillic_a_uc = 0x410;
+    constexpr char32_t cyrillic_be_uc = 0x411;
+    constexpr char32_t cyrillic_ve_uc = 0x412;
+    constexpr char32_t cyrillic_ghe_uc = 0x413;
+    constexpr char32_t cyrillic_de_uc = 0x414;
+    constexpr char32_t cyrillic_ie_uc = 0x415;
+    constexpr char32_t cyrillic_zhe_uc = 0x416;
+    constexpr char32_t cyrillic_ze_uc = 0x417;
+    constexpr char32_t cyrillic_i_uc = 0x418;
+    constexpr char32_t cyrillic_short_i_uc = 0x419;
+    constexpr char32_t cyrillic_ka_uc = 0x41A;
+    constexpr char32_t cyrillic_el_uc = 0x41B;
+    constexpr char32_t cyrillic_em_uc = 0x41C;
+    constexpr char32_t cyrillic_en_uc = 0x41D;
+    constexpr char32_t cyrillic_o_uc = 0x41E;
+    constexpr char32_t cyrillic_pe_uc = 0x41F;
+    constexpr char32_t cyrillic_er_uc = 0x420;
+    constexpr char32_t cyrillic_es_uc = 0x421;
+    constexpr char32_t cyrillic_te_uc = 0x422;
+    constexpr char32_t cyrillic_u_uc = 0x423;
+    constexpr char32_t cyrillic_ef_uc = 0x424;
+    constexpr char32_t cyrillic_ha_uc = 0x425;
+    constexpr char32_t cyrillic_tse_uc = 0x426;
+    constexpr char32_t cyrillic_che_uc = 0x427;
+    constexpr char32_t cyrillic_sha_uc = 0x428;
+    constexpr char32_t cyrillic_shcha_uc = 0x429;
+    constexpr char32_t cyrillic_hard_sign_uc = 0x42A;
+    constexpr char32_t cyrillic_yeru_uc = 0x42B;
+    constexpr char32_t cyrillic_soft_sign_uc = 0x42C;
+    constexpr char32_t cyrillic_e_uc = 0x42D;
+    constexpr char32_t cyrillic_yu_uc = 0x42E;
+    constexpr char32_t cyrillic_ya_uc = 0x42F;
 
-enum UnicodeCatalan
-{
-    UNICODE_INTERPUNCT = 183,
-};
+    constexpr char32_t cyrillic_a = 0x430;
+    constexpr char32_t cyrillic_be = 0x431;
+    constexpr char32_t cyrillic_ve = 0x432;
+    constexpr char32_t cyrillic_ghe = 0x433;
+    constexpr char32_t cyrillic_de = 0x434;
+    constexpr char32_t cyrillic_ie = 0x435;
+    constexpr char32_t cyrillic_zhe = 0x436;
+    constexpr char32_t cyrillic_ze = 0x437;
+    constexpr char32_t cyrillic_i = 0x438;
+    constexpr char32_t cyrillic_short_i = 0x439;
+    constexpr char32_t cyrillic_ka = 0x43A;
+    constexpr char32_t cyrillic_el = 0x43B;
+    constexpr char32_t cyrillic_em = 0x43C;
+    constexpr char32_t cyrillic_en = 0x43D;
+    constexpr char32_t cyrillic_o = 0x43E;
+    constexpr char32_t cyrillic_pe = 0x43F;
+    constexpr char32_t cyrillic_er = 0x440;
+    constexpr char32_t cyrillic_es = 0x441;
+    constexpr char32_t cyrillic_te = 0x442;
+    constexpr char32_t cyrillic_u = 0x443;
+    constexpr char32_t cyrillic_ef = 0x444;
+    constexpr char32_t cyrillic_ha = 0x445;
+    constexpr char32_t cyrillic_tse = 0x446;
+    constexpr char32_t cyrillic_che = 0x447;
+    constexpr char32_t cyrillic_sha = 0x448;
+    constexpr char32_t cyrillic_shcha = 0x449;
+    constexpr char32_t cyrillic_hard_sign = 0x44A;
+    constexpr char32_t cyrillic_yeru = 0x44B;
+    constexpr char32_t cyrillic_soft_sign = 0x44C;
+    constexpr char32_t cyrillic_e = 0x44D;
+    constexpr char32_t cyrillic_yu = 0x44E;
+    constexpr char32_t cyrillic_ya = 0x44F;
 
-enum UnicodeGerman
-{
-    UNICODE_CAPITAL_SHARP_S = 0x1E9E,
-};
+    constexpr char32_t cyrillic_io = 0x451;
 
-enum UnicodeNorwegianDanish
-{
-    UNICODE_AE_UC = 198,
-    UNICODE_O_STROKE_UC = 216,
-    UNICODE_AE = 230,
-    UNICODE_O_STROKE = 248,
-};
+    // Punctuation
+    constexpr char32_t leftguillemet = 0xAB;
+    constexpr char32_t rightguillemet = 0xBB;
+    constexpr char32_t interpunct = 0x49F;
+    constexpr char32_t single_quote_open = 0x2018;
+    constexpr char32_t single_quote_end = 0x2019;
+    constexpr char32_t single_german_quote_open = 0x201A;
+    constexpr char32_t german_quote_open = 0x201E;
+    constexpr char32_t bullet = 0x2022;
+    constexpr char32_t ellipsis = 0x2026;
+    constexpr char32_t quote_open = 0x201C;
+    constexpr char32_t quote_close = 0x201D;
 
-enum UnicodeCyrillic
-{
-    UNICODE_CYRILLIC_A_UC = 1040,
-    UNICODE_CYRILLIC_BE_UC = 1041,
-    UNICODE_CYRILLIC_VE_UC = 1042,
-    UNICODE_CYRILLIC_GHE_UC = 1043,
-    UNICODE_CYRILLIC_DE_UC = 1044,
-    UNICODE_CYRILLIC_IE_UC = 1045,
-    UNICODE_CYRILLIC_ZHE_UC = 1046,
-    UNICODE_CYRILLIC_ZE_UC = 1047,
-    UNICODE_CYRILLIC_I_UC = 1048,
-    UNICODE_CYRILLIC_SHORT_I_UC = 1049,
-    UNICODE_CYRILLIC_KA_UC = 1050,
-    UNICODE_CYRILLIC_EL_UC = 1051,
-    UNICODE_CYRILLIC_EM_UC = 1052,
-    UNICODE_CYRILLIC_EN_UC = 1053,
-    UNICODE_CYRILLIC_O_UC = 1054,
-    UNICODE_CYRILLIC_PE_UC = 1055,
-    UNICODE_CYRILLIC_ER_UC = 1056,
-    UNICODE_CYRILLIC_ES_UC = 1057,
-    UNICODE_CYRILLIC_TE_UC = 1058,
-    UNICODE_CYRILLIC_U_UC = 1059,
-    UNICODE_CYRILLIC_EF_UC = 1060,
-    UNICODE_CYRILLIC_HA_UC = 1061,
-    UNICODE_CYRILLIC_TSE_UC = 1062,
-    UNICODE_CYRILLIC_CHE_UC = 1063,
-    UNICODE_CYRILLIC_SHA_UC = 1064,
-    UNICODE_CYRILLIC_SHCHA_UC = 1065,
-    UNICODE_CYRILLIC_HARD_SIGN_UC = 1066,
-    UNICODE_CYRILLIC_YERU_UC = 1067,
-    UNICODE_CYRILLIC_SOFT_SIGN_UC = 1068,
-    UNICODE_CYRILLIC_E_UC = 1069,
-    UNICODE_CYRILLIC_YU_UC = 1070,
-    UNICODE_CYRILLIC_YA_UC = 1071,
+    // Currency
+    constexpr char32_t guilder = 0x192;
+    constexpr char32_t euro = 0x20AC;
 
-    UNICODE_CYRILLIC_A = 1072,
-    UNICODE_CYRILLIC_BE = 1073,
-    UNICODE_CYRILLIC_VE = 1074,
-    UNICODE_CYRILLIC_GHE = 1075,
-    UNICODE_CYRILLIC_DE = 1076,
-    UNICODE_CYRILLIC_IE = 1077,
-    UNICODE_CYRILLIC_ZHE = 1078,
-    UNICODE_CYRILLIC_ZE = 1079,
-    UNICODE_CYRILLIC_I = 1080,
-    UNICODE_CYRILLIC_SHORT_I = 1081,
-    UNICODE_CYRILLIC_KA = 1082,
-    UNICODE_CYRILLIC_EL = 1083,
-    UNICODE_CYRILLIC_EM = 1084,
-    UNICODE_CYRILLIC_EN = 1085,
-    UNICODE_CYRILLIC_O = 1086,
-    UNICODE_CYRILLIC_PE = 1087,
-    UNICODE_CYRILLIC_ER = 1088,
-    UNICODE_CYRILLIC_ES = 1089,
-    UNICODE_CYRILLIC_TE = 1090,
-    UNICODE_CYRILLIC_U = 1091,
-    UNICODE_CYRILLIC_EF = 1092,
-    UNICODE_CYRILLIC_HA = 1093,
-    UNICODE_CYRILLIC_TSE = 1094,
-    UNICODE_CYRILLIC_CHE = 1095,
-    UNICODE_CYRILLIC_SHA = 1096,
-    UNICODE_CYRILLIC_SHCHA = 1097,
-    UNICODE_CYRILLIC_HARD_SIGN = 1098,
-    UNICODE_CYRILLIC_YERU = 1099,
-    UNICODE_CYRILLIC_SOFT_SIGN = 1100,
-    UNICODE_CYRILLIC_E = 1101,
-    UNICODE_CYRILLIC_YU = 1102,
-    UNICODE_CYRILLIC_YA = 1103,
+    // Dingbats
+    constexpr char32_t up = 0x25B2;
+    constexpr char32_t small_up = 0x25B4;
+    constexpr char32_t right = 0x25B6;
+    constexpr char32_t down = 0x25BC;
+    constexpr char32_t small_down = 0x25BE;
+    constexpr char32_t left = 0x25C0;
+    constexpr char32_t air = 0x2601;
+    constexpr char32_t tick = 0x2713;
+    constexpr char32_t plus = 0x2795;
+    constexpr char32_t minus = 0x2796;
 
-    UNICODE_CYRILLIC_IO_UC = 1025,
-    UNICODE_CYRILLIC_IO = 1105,
+    // Emoji
+    constexpr char32_t cross = 0x274C;
+    constexpr char32_t variation_selector = 0xFE0F;
+    constexpr char32_t water = 0x1F30A;
+    constexpr char32_t road = 0x1F6E3;
+    constexpr char32_t railway = 0x1F6E4;
 
-};
+    // Misc
+    constexpr char32_t superscript_minus_one = 0x207B;
 
-enum UnicodeTurkish
-{
-    UNICODE_G_BREVE_UC = 286,
-    UNICODE_G_BREVE = 287,
-    UNICODE_I_WITH_DOT_UC = 304,
-    UNICODE_I_WITHOUT_DOT = 305,
-    UNICODE_S_CEDILLA_UC = 350,
-    UNICODE_S_CEDILLA = 351,
-};
-
-enum UnicodeRomanian
-{
-    UNICODE_A_BREVE_UC = 258,
-    UNICODE_A_BREVE = 259,
-    UNICODE_S_COMMA_UC = 536,
-    UNICODE_S_COMMA = 537,
-    UNICODE_T_COMMA_UC = 538,
-    UNICODE_T_COMMA = 539,
-};
-
-enum UnicodeDingbats
-{
-    UNICODE_DINGBATS_PLUS = 0x2795,
-    UNICODE_DINGBATS_MINUS = 0x2796,
-};
-
-enum UnicodeCurrency
-{
-    UNICODE_GUILDER_SIGN = 402,
-
-    // Not a currency sign, but the guilder sign will be capitalised to this.
-    UNICODE_F_WITH_HOOK_UC = 401,
-};
-
-enum UnicodePunctuation
-{
-    UNICODE_ELLIPSIS = 8230,
-};
-
-enum UnicodeCzech
-{
-    UNICODE_C_CARON_UC = 268,
-    UNICODE_C_CARON = 269,
-    UNICODE_Y_ACUTE_UC = 221,
-    UNICODE_Y_ACUTE = 253,
-};
-
-enum UnicodeHungarian
-{
-    UNICODE_O_DOUBLE_ACUTE_UC = 336,
-    UNICODE_O_DOUBLE_ACUTE = 337,
-    UNICODE_U_DOUBLE_ACUTE_UC = 368,
-    UNICODE_U_DOUBLE_ACUTE = 369,
-};
-
-#endif
+}; // namespace UnicodeChar
