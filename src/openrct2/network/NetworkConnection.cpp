@@ -156,11 +156,8 @@ void NetworkConnection::SetLastDisconnectReason(const utf8* src)
 {
     if (src == nullptr)
     {
-        if (_lastDisconnectReason)
-        {
-            delete[] _lastDisconnectReason;
-            _lastDisconnectReason = nullptr;
-        }
+        delete[] _lastDisconnectReason;
+        _lastDisconnectReason = nullptr;
         return;
     }
 
