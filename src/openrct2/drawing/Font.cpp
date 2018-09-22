@@ -17,6 +17,8 @@
 #include "Drawing.h"
 #include "TTF.h"
 
+#include <map>
+
 static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
 
 static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT][FONT_SPRITE_GLYPH_COUNT];
@@ -25,6 +27,156 @@ static uint8_t _additionalSpriteFontCharacterWidth[FONT_SIZE_COUNT][SPR_G2_GLYPH
 #ifndef NO_TTF
 TTFFontSetDescriptor* gCurrentTTFFontSet;
 #endif // NO_TTF
+
+static const std::map<char32_t, int32_t> codepointOffsetMap = {
+    { UnicodeChar::ae_uc, SPR_G2_AE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::o_stroke_uc, SPR_G2_O_STROKE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::y_acute_uc, SPR_G2_Y_ACUTE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::ae, SPR_G2_AE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::o_stroke, SPR_G2_O_STROKE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::y_acute, SPR_G2_Y_ACUTE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::a_breve_uc, SPR_G2_A_BREVE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::a_breve, 226 - CS_SPRITE_FONT_OFFSET }, // Render as â, no visual difference in the RCT font
+    { UnicodeChar::a_ogonek_uc, CSChar::a_ogonek_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::a_ogonek, CSChar::a_ogonek - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::c_acute_uc, CSChar::c_acute_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::c_acute, CSChar::c_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::c_caron_uc, SPR_G2_C_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::c_caron, SPR_G2_C_CARON_LOWER - SPR_CHAR_START },
+    { UnicodeChar::e_ogonek_uc, CSChar::e_ogonek_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::e_ogonek, CSChar::e_ogonek - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::g_breve_uc, SPR_G2_G_BREVE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::g_breve, SPR_G2_G_BREVE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::i_with_dot_uc, SPR_G2_I_WITH_DOT_UPPER - SPR_CHAR_START },
+    { UnicodeChar::i_without_dot, SPR_G2_I_WITHOUT_DOT_LOWER - SPR_CHAR_START },
+    { UnicodeChar::l_stroke_uc, CSChar::l_stroke_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::l_stroke, CSChar::l_stroke - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::n_acute_uc, CSChar::n_acute_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::n_acute, CSChar::n_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::o_double_acute_uc, SPR_G2_O_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::o_double_acute, SPR_G2_O_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::s_acute_uc, CSChar::s_acute_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::s_acute, CSChar::s_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::s_cedilla_uc, SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START },
+    { UnicodeChar::s_cedilla, SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::u_double_acute_uc, SPR_G2_U_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::u_double_acute, SPR_G2_U_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::z_acute_uc, CSChar::z_acute_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::z_acute, CSChar::z_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::z_dot_uc, CSChar::z_dot_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::z_dot, CSChar::z_dot - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::f_with_hook_uc, 'F' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::s_comma_uc, SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START }, // No visual difference
+    { UnicodeChar::s_comma, SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START },    // Ditto
+    { UnicodeChar::t_comma_uc, SPR_G2_T_COMMA_UPPER - SPR_CHAR_START },
+    { UnicodeChar::t_comma, SPR_G2_T_COMMA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::sharp_s_uc, 223 - CS_SPRITE_FONT_OFFSET },
+
+    // Cyrillic alphabet
+    { UnicodeChar::cyrillic_io_uc, 203 - CS_SPRITE_FONT_OFFSET }, // Looks just like Ë
+    { UnicodeChar::cyrillic_a_uc, 'A' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_be_uc, SPR_G2_CYRILLIC_BE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ve_uc, 'B' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_ghe_uc, SPR_G2_CYRILLIC_GHE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_de_uc, SPR_G2_CYRILLIC_DE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ie_uc, 'E' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_zhe_uc, SPR_G2_CYRILLIC_ZHE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ze_uc, SPR_G2_CYRILLIC_ZE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_i_uc, SPR_G2_CYRILLIC_I_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_short_i_uc, SPR_G2_CYRILLIC_SHORT_I_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ka_uc, 'K' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_el_uc, SPR_G2_CYRILLIC_EL_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_em_uc, 'M' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_en_uc, 'H' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_o_uc, 'O' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_pe_uc, SPR_G2_CYRILLIC_PE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_er_uc, 'P' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_es_uc, 'C' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_te_uc, 'T' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_u_uc, SPR_G2_CYRILLIC_U_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ef_uc, SPR_G2_CYRILLIC_EF_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ha_uc, 'X' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_tse_uc, SPR_G2_CYRILLIC_TSE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_che_uc, SPR_G2_CYRILLIC_CHE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_sha_uc, SPR_G2_CYRILLIC_SHA_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_shcha_uc, SPR_G2_CYRILLIC_SHCHA_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_hard_sign_uc, SPR_G2_CYRILLIC_HARD_SIGN_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_yeru_uc, SPR_G2_CYRILLIC_YERU_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_soft_sign_uc, SPR_G2_CYRILLIC_SOFT_SIGN_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_e_uc, SPR_G2_CYRILLIC_E_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_yu_uc, SPR_G2_CYRILLIC_YU_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ya_uc, SPR_G2_CYRILLIC_YA_UPPER - SPR_CHAR_START },
+
+    { UnicodeChar::cyrillic_a, 'a' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_be, SPR_G2_CYRILLIC_BE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ve, SPR_G2_CYRILLIC_VE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ghe, SPR_G2_CYRILLIC_GHE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_de, SPR_G2_CYRILLIC_DE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ie, 'e' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_zhe, SPR_G2_CYRILLIC_ZHE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ze, SPR_G2_CYRILLIC_ZE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_i, SPR_G2_CYRILLIC_I_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_short_i, SPR_G2_CYRILLIC_SHORT_I_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ka, SPR_G2_CYRILLIC_KA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_el, SPR_G2_CYRILLIC_EL_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_em, SPR_G2_CYRILLIC_EM_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_en, SPR_G2_CYRILLIC_EN_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_o, 'o' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_pe, SPR_G2_CYRILLIC_PE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_er, 'p' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_es, 'c' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_te, SPR_G2_CYRILLIC_TE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_u, 'y' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_ef, SPR_G2_CYRILLIC_EF_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ha, 'x' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_tse, SPR_G2_CYRILLIC_TSE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_che, SPR_G2_CYRILLIC_CHE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_sha, SPR_G2_CYRILLIC_SHA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_shcha, SPR_G2_CYRILLIC_SHCHA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_hard_sign, SPR_G2_CYRILLIC_HARD_SIGN_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_yeru, SPR_G2_CYRILLIC_YERU_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_soft_sign, SPR_G2_CYRILLIC_SOFT_SIGN_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_e, SPR_G2_CYRILLIC_E_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_yu, SPR_G2_CYRILLIC_YU_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ya, SPR_G2_CYRILLIC_YA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_io, 235 - CS_SPRITE_FONT_OFFSET }, // Looks just like ë
+
+    // Punctuation
+    { UnicodeChar::interpunct, SPR_G2_INTERPUNCT - SPR_CHAR_START },
+    { UnicodeChar::single_quote_open, '`' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::single_quote_end, '\'' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::single_german_quote_open, ',' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::german_quote_open, SPR_G2_GERMAN_OPENQUOTES - SPR_CHAR_START },
+    { UnicodeChar::bullet, CSChar::bullet - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::ellipsis, SPR_G2_ELLIPSIS - SPR_CHAR_START },
+    { UnicodeChar::quote_open, CSChar::quote_open - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::quote_close, CSChar::quote_close - CS_SPRITE_FONT_OFFSET },
+
+    // Currency
+    { UnicodeChar::guilder, SPR_G2_GUILDER_SIGN - SPR_CHAR_START },
+    { UnicodeChar::euro, CSChar::euro - CS_SPRITE_FONT_OFFSET },
+
+    // Dingbats
+    { UnicodeChar::up, CSChar::up - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::small_up, CSChar::small_up - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::right, CSChar::right - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::down, CSChar::down - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::small_down, CSChar::small_down - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::left, CSChar::left - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::air, CSChar::air - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::tick, CSChar::tick - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::plus, '+' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::minus, '-' - CS_SPRITE_FONT_OFFSET },
+
+    // Emoji
+    { UnicodeChar::cross, CSChar::cross - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::water, CSChar::water - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::road, CSChar::road - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::railway, CSChar::railway - CS_SPRITE_FONT_OFFSET },
+
+    // Misc
+    { UnicodeChar::superscript_minus_one, CSChar::superscript_minus_one - CS_SPRITE_FONT_OFFSET },
+};
 
 /**
  *
@@ -72,315 +224,14 @@ void font_sprite_initialise_characters()
 
 int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
 {
-    switch (codepoint)
-    {
-        case UnicodeChar::quote_close:
-            return 34 - 32;
+    auto result = codepointOffsetMap.find(codepoint);
+    if (result != codepointOffsetMap.end())
+        return result->second;
 
-        case UnicodeChar::up:
-            return 160 - 32;
+    if (codepoint < 32 || codepoint >= 256)
+        codepoint = '?';
 
-        case UnicodeChar::down:
-            return 170 - 32;
-        case UnicodeChar::tick:
-            return 172 - 32;
-        case UnicodeChar::cross:
-            return 173 - 32;
-
-        case UnicodeChar::right:
-            return 175 - 32;
-        case UnicodeChar::railway:
-            return 177 - 32;
-
-        case UnicodeChar::quote_open:
-            return 180 - 32;
-        case UnicodeChar::euro:
-            return 181 - 32;
-        case UnicodeChar::road:
-            return 182 - 32;
-        case UnicodeChar::air:
-            return 183 - 32;
-        case UnicodeChar::water:
-            return 184 - 32;
-        case UnicodeChar::superscript_minus_one:
-            return 185 - 32;
-        case UnicodeChar::bullet:
-            return 186 - 32;
-        case UnicodeChar::small_up:
-            return 188 - 32;
-        case UnicodeChar::small_down:
-            return 189 - 32;
-        case UnicodeChar::left:
-            return 190 - 32;
-
-        case UnicodeChar::a_ogonek_uc:
-            return RCT2_A_OGONEK_UC - 32;
-        case UnicodeChar::c_acute_uc:
-            return RCT2_C_ACUTE_UC - 32;
-        case UnicodeChar::e_ogonek_uc:
-            return RCT2_E_OGONEK_UC - 32;
-        case UnicodeChar::n_acute_uc:
-            return RCT2_N_ACUTE_UC - 32;
-        case UnicodeChar::l_stroke_uc:
-            return RCT2_L_STROKE_UC - 32;
-        case UnicodeChar::s_acute_uc:
-            return RCT2_S_ACUTE_UC - 32;
-        case UnicodeChar::z_dot_uc:
-            return RCT2_Z_DOT_UC - 32;
-        case UnicodeChar::z_acute_uc:
-            return RCT2_Z_ACUTE_UC - 32;
-
-        case UnicodeChar::a_ogonek:
-            return RCT2_A_OGONEK - 32;
-        case UnicodeChar::c_acute:
-            return RCT2_C_ACUTE - 32;
-        case UnicodeChar::e_ogonek:
-            return RCT2_E_OGONEK - 32;
-        case UnicodeChar::n_acute:
-            return RCT2_N_ACUTE - 32;
-        case UnicodeChar::l_stroke:
-            return RCT2_L_STROKE - 32;
-        case UnicodeChar::s_acute:
-            return RCT2_S_ACUTE - 32;
-        case UnicodeChar::z_dot:
-            return RCT2_Z_DOT - 32;
-        case UnicodeChar::z_acute:
-            return RCT2_Z_ACUTE - 32;
-
-        // Render capital sharp-S (ẞ) with lowercase sprite (ß)
-        case UnicodeChar::sharp_s_uc:
-            return 223 - 32;
-
-        // Norwegian/Danish
-        case UnicodeChar::ae_uc:
-            return SPR_G2_AE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::o_stroke_uc:
-            return SPR_G2_O_STROKE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::ae:
-            return SPR_G2_AE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::o_stroke:
-            return SPR_G2_O_STROKE_LOWER - SPR_CHAR_START;
-
-        case UnicodeChar::plus:
-            return 11;
-        case UnicodeChar::minus:
-            return 13;
-
-        // Cyrillic
-        case UnicodeChar::cyrillic_a_uc:
-            return 'A' - 32;
-        case UnicodeChar::cyrillic_be_uc:
-            return SPR_G2_CYRILLIC_BE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ve_uc:
-            return 'B' - 32;
-        case UnicodeChar::cyrillic_ghe_uc:
-            return SPR_G2_CYRILLIC_GHE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_de_uc:
-            return SPR_G2_CYRILLIC_DE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ie_uc:
-            return 'E' - 32;
-        case UnicodeChar::cyrillic_zhe_uc:
-            return SPR_G2_CYRILLIC_ZHE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ze_uc:
-            return SPR_G2_CYRILLIC_ZE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_i_uc:
-            return SPR_G2_CYRILLIC_I_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_short_i_uc:
-            return SPR_G2_CYRILLIC_SHORT_I_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ka_uc:
-            return 'K' - 32;
-        case UnicodeChar::cyrillic_el_uc:
-            return SPR_G2_CYRILLIC_EL_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_em_uc:
-            return 'M' - 32;
-        case UnicodeChar::cyrillic_en_uc:
-            return 'H' - 32;
-        case UnicodeChar::cyrillic_o_uc:
-            return 'O' - 32;
-        case UnicodeChar::cyrillic_pe_uc:
-            return SPR_G2_CYRILLIC_PE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_er_uc:
-            return 'P' - 32;
-        case UnicodeChar::cyrillic_es_uc:
-            return 'C' - 32;
-        case UnicodeChar::cyrillic_te_uc:
-            return 'T' - 32;
-        case UnicodeChar::cyrillic_u_uc:
-            return SPR_G2_CYRILLIC_U_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ef_uc:
-            return SPR_G2_CYRILLIC_EF_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ha_uc:
-            return 'X' - 32;
-        case UnicodeChar::cyrillic_tse_uc:
-            return SPR_G2_CYRILLIC_TSE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_che_uc:
-            return SPR_G2_CYRILLIC_CHE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_sha_uc:
-            return SPR_G2_CYRILLIC_SHA_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_shcha_uc:
-            return SPR_G2_CYRILLIC_SHCHA_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_hard_sign_uc:
-            return SPR_G2_CYRILLIC_HARD_SIGN_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_yeru_uc:
-            return SPR_G2_CYRILLIC_YERU_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_soft_sign_uc:
-            return SPR_G2_CYRILLIC_SOFT_SIGN_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_e_uc:
-            return SPR_G2_CYRILLIC_E_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_yu_uc:
-            return SPR_G2_CYRILLIC_YU_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ya_uc:
-            return SPR_G2_CYRILLIC_YA_UPPER - SPR_CHAR_START;
-
-        case UnicodeChar::cyrillic_a:
-            return 'a' - 32;
-        case UnicodeChar::cyrillic_be:
-            return SPR_G2_CYRILLIC_BE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ve:
-            return SPR_G2_CYRILLIC_VE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ghe:
-            return SPR_G2_CYRILLIC_GHE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_de:
-            return SPR_G2_CYRILLIC_DE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ie:
-            return 'e' - 32;
-        case UnicodeChar::cyrillic_zhe:
-            return SPR_G2_CYRILLIC_ZHE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ze:
-            return SPR_G2_CYRILLIC_ZE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_i:
-            return SPR_G2_CYRILLIC_I_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_short_i:
-            return SPR_G2_CYRILLIC_SHORT_I_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ka:
-            return SPR_G2_CYRILLIC_KA_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_el:
-            return SPR_G2_CYRILLIC_EL_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_em:
-            return SPR_G2_CYRILLIC_EM_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_en:
-            return SPR_G2_CYRILLIC_EN_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_o:
-            return 'o' - 32;
-        case UnicodeChar::cyrillic_pe:
-            return SPR_G2_CYRILLIC_PE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_er:
-            return 'p' - 32;
-        case UnicodeChar::cyrillic_es:
-            return 'c' - 32;
-        case UnicodeChar::cyrillic_te:
-            return SPR_G2_CYRILLIC_TE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_u:
-            return 'y' - 32;
-        case UnicodeChar::cyrillic_ef:
-            return SPR_G2_CYRILLIC_EF_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ha:
-            return 'x' - 32;
-        case UnicodeChar::cyrillic_tse:
-            return SPR_G2_CYRILLIC_TSE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_che:
-            return SPR_G2_CYRILLIC_CHE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_sha:
-            return SPR_G2_CYRILLIC_SHA_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_shcha:
-            return SPR_G2_CYRILLIC_SHCHA_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_hard_sign:
-            // Not a typo, there is no glyph, use the upper case variant.
-            return SPR_G2_CYRILLIC_HARD_SIGN_UPPER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_yeru:
-            return SPR_G2_CYRILLIC_YERU_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_soft_sign:
-            return SPR_G2_CYRILLIC_SOFT_SIGN_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_e:
-            return SPR_G2_CYRILLIC_E_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_yu:
-            return SPR_G2_CYRILLIC_YU_LOWER - SPR_CHAR_START;
-        case UnicodeChar::cyrillic_ya:
-            return SPR_G2_CYRILLIC_YA_LOWER - SPR_CHAR_START;
-
-        // Looks just like Ë.
-        case UnicodeChar::cyrillic_io_uc:
-            return 171;
-        case UnicodeChar::cyrillic_io:
-            return 203;
-
-        case UnicodeChar::german_quote_open:
-            return SPR_G2_GERMAN_OPENQUOTES - SPR_CHAR_START;
-
-        case UnicodeChar::single_quote_open:
-            return 64;
-        case UnicodeChar::single_quote_end:
-            return 7;
-        case UnicodeChar::single_german_quote_open:
-            return 12;
-
-        case UnicodeChar::guilder:
-            return SPR_G2_GUILDER_SIGN - SPR_CHAR_START;
-
-        // Turkish
-        case UnicodeChar::g_breve_uc:
-            return SPR_G2_G_BREVE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::i_with_dot_uc:
-            return SPR_G2_I_WITH_DOT_UPPER - SPR_CHAR_START;
-        case UnicodeChar::s_cedilla_uc:
-            return SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START;
-        case UnicodeChar::g_breve:
-            return SPR_G2_G_BREVE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::i_without_dot:
-            return SPR_G2_I_WITHOUT_DOT_LOWER - SPR_CHAR_START;
-        case UnicodeChar::s_cedilla:
-            return SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START;
-
-        case UnicodeChar::interpunct:
-            return SPR_G2_INTERPUNCT - SPR_CHAR_START;
-        case UnicodeChar::ellipsis:
-            return SPR_G2_ELLIPSIS - SPR_CHAR_START;
-
-        // Romanian
-        case UnicodeChar::a_breve_uc:
-            return SPR_G2_A_BREVE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::a_breve:
-            // Render as â, there is no visual difference on this scale.
-            return 194;
-        case UnicodeChar::s_comma_uc:
-            // Also no visual difference.
-            return SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START;
-        case UnicodeChar::s_comma:
-            return SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START;
-        case UnicodeChar::t_comma_uc:
-            return SPR_G2_T_COMMA_UPPER - SPR_CHAR_START;
-        case UnicodeChar::t_comma:
-            return SPR_G2_T_COMMA_LOWER - SPR_CHAR_START;
-
-        // This is to catch capitalised versions of the guilder sign
-        case UnicodeChar::f_with_hook_uc:
-            return 'F' - 32;
-
-        // Czech
-        case UnicodeChar::c_caron_uc:
-            return SPR_G2_C_CARON_UPPER - SPR_CHAR_START;
-        case UnicodeChar::c_caron:
-            return SPR_G2_C_CARON_LOWER - SPR_CHAR_START;
-        case UnicodeChar::y_acute_uc:
-            return SPR_G2_Y_ACUTE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::y_acute:
-            return SPR_G2_Y_ACUTE_LOWER - SPR_CHAR_START;
-
-        // Hungarian
-        case UnicodeChar::o_double_acute_uc:
-            return SPR_G2_O_DOUBLE_ACUTE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::o_double_acute:
-            return SPR_G2_O_DOUBLE_ACUTE_LOWER - SPR_CHAR_START;
-        case UnicodeChar::u_double_acute_uc:
-            return SPR_G2_U_DOUBLE_ACUTE_UPPER - SPR_CHAR_START;
-        case UnicodeChar::u_double_acute:
-            return SPR_G2_U_DOUBLE_ACUTE_LOWER - SPR_CHAR_START;
-
-        default:
-            if (codepoint < 32 || codepoint >= 256)
-                codepoint = '?';
-            return codepoint - 32;
-    }
+    return codepoint - 32;
 }
 
 int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoint)
@@ -481,105 +332,16 @@ bool font_supports_string_sprite(const utf8* text)
     while ((codepoint = utf8_get_next(src, &src)) != 0)
     {
         bool supported = false;
-        switch (codepoint)
+
+        if ((codepoint >= 32 && codepoint < 256)
+            || (codepoint >= UnicodeChar::cyrillic_a_uc && codepoint <= UnicodeChar::cyrillic_ya))
         {
-            // Latin alphabet
-            case UnicodeChar::ae_uc:
-            case UnicodeChar::o_stroke_uc:
-            case UnicodeChar::y_acute_uc:
-            case UnicodeChar::ae:
-            case UnicodeChar::o_stroke:
-            case UnicodeChar::y_acute:
-            case UnicodeChar::a_breve_uc:
-            case UnicodeChar::a_breve:
-            case UnicodeChar::a_ogonek_uc:
-            case UnicodeChar::a_ogonek:
-            case UnicodeChar::c_acute_uc:
-            case UnicodeChar::c_acute:
-            case UnicodeChar::c_caron_uc:
-            case UnicodeChar::c_caron:
-            case UnicodeChar::e_ogonek_uc:
-            case UnicodeChar::e_ogonek:
-            case UnicodeChar::g_breve_uc:
-            case UnicodeChar::g_breve:
-            case UnicodeChar::i_with_dot_uc:
-            case UnicodeChar::i_without_dot:
-            case UnicodeChar::l_stroke_uc:
-            case UnicodeChar::l_stroke:
-            case UnicodeChar::n_acute_uc:
-            case UnicodeChar::n_acute:
-            case UnicodeChar::o_double_acute_uc:
-            case UnicodeChar::o_double_acute:
-            case UnicodeChar::s_acute_uc:
-            case UnicodeChar::s_acute:
-            case UnicodeChar::s_cedilla_uc:
-            case UnicodeChar::s_cedilla:
-            case UnicodeChar::u_double_acute_uc:
-            case UnicodeChar::u_double_acute:
-            case UnicodeChar::z_acute_uc:
-            case UnicodeChar::z_acute:
-            case UnicodeChar::z_dot_uc:
-            case UnicodeChar::z_dot:
-            case UnicodeChar::f_with_hook_uc:
-            case UnicodeChar::s_comma_uc:
-            case UnicodeChar::s_comma:
-            case UnicodeChar::t_comma_uc:
-            case UnicodeChar::t_comma:
-            case UnicodeChar::sharp_s_uc:
-
-                // Cyrillic alphabet
-            case UnicodeChar::cyrillic_io_uc:
-            case UnicodeChar::cyrillic_io:
-
-                // Punctuation
-            case UnicodeChar::leftguillemet:
-            case UnicodeChar::rightguillemet:
-            case UnicodeChar::interpunct:
-            case UnicodeChar::single_quote_open:
-            case UnicodeChar::single_quote_end:
-            case UnicodeChar::single_german_quote_open:
-            case UnicodeChar::german_quote_open:
-            case UnicodeChar::bullet:
-            case UnicodeChar::ellipsis:
-            case UnicodeChar::quote_open:
-            case UnicodeChar::quote_close:
-
-                // Currency
-            case UnicodeChar::guilder:
-            case UnicodeChar::euro:
-
-                // Dingbats
-            case UnicodeChar::up:
-            case UnicodeChar::small_up:
-            case UnicodeChar::right:
-            case UnicodeChar::down:
-            case UnicodeChar::small_down:
-            case UnicodeChar::left:
-            case UnicodeChar::air:
-            case UnicodeChar::tick:
-            case UnicodeChar::plus:
-            case UnicodeChar::minus:
-
-                // Emoji
-            case UnicodeChar::cross:
-            case UnicodeChar::variation_selector:
-            case UnicodeChar::water:
-            case UnicodeChar::road:
-            case UnicodeChar::railway:
-
-                // Misc
-            case UnicodeChar::superscript_minus_one:
-
-                supported = true;
-                break;
-            default:
-                if ((codepoint >= 32 && codepoint < 256)
-                    || (codepoint >= UnicodeChar::cyrillic_a_uc && codepoint <= UnicodeChar::cyrillic_ya))
-                {
-                    supported = true;
-                }
-                break;
+            supported = true;
         }
+
+        auto result = codepointOffsetMap.find(codepoint);
+        if (result != codepointOffsetMap.end())
+            supported = true;
 
         if (!supported)
         {
