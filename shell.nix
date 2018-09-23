@@ -12,9 +12,6 @@
   import pinnedPkgs {}
  )
 }:
-let
-  a = "d";
-in
 pkgs.stdenv.mkDerivation {
   name = "openrct";
   src = builtins.filterSource
