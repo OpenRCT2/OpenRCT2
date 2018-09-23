@@ -114,8 +114,12 @@ struct TileElementBase
  */
 struct rct_tile_element : public TileElementBase
 {
-    // TODO: Remove this field.
-    rct_tile_element_properties properties;
+    union
+    {
+        uint8_t pad_04[4];
+        // TODO: Remove this field.
+        rct_tile_element_properties properties;
+    };
 
     template<typename TType, TileElementType TClass> TType* as() const
     {
@@ -159,6 +163,8 @@ public:
     {
         return as<CorruptElement, TileElementType::Corrupt>();
     }
+
+    void ClearAs(uint8_t newType);
 };
 assert_struct_size(rct_tile_element, 8);
 

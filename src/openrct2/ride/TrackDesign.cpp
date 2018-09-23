@@ -2326,11 +2326,8 @@ static void track_design_preview_clear_map()
     for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
     {
         rct_tile_element* tile_element = &gTileElements[i];
-        memset(tile_element, 0, sizeof(rct_tile_element));
-        tile_element->SetType(TILE_ELEMENT_TYPE_SURFACE);
+        tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
         tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
-        tile_element->base_height = 2;
-        tile_element->clearance_height = 0;
         tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         tile_element->AsSurface()->SetWaterHeight(0);
         tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);

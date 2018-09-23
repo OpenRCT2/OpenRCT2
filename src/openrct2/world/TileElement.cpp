@@ -139,3 +139,12 @@ uint8_t tile_element_get_ride_index(const rct_tile_element* tileElement)
             return 0xFF;
     }
 }
+
+void rct_tile_element::ClearAs(uint8_t newType)
+{
+    type = newType;
+    flags = 0;
+    base_height = 2;
+    clearance_height = 2;
+    memset(pad_04, 0, sizeof(pad_04));
+}
