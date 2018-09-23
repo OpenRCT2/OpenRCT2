@@ -17,7 +17,7 @@ struct encoding_convert_entry
     uint32_t unicode;
 };
 
-extern const encoding_convert_entry RCT2ToUnicodeTable[256];
+extern const encoding_convert_entry RCT2ToUnicodeTable[];
 
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
 uint32_t encoding_convert_unicode_to_rct2(uint32_t unicode);
