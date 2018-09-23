@@ -384,6 +384,12 @@ TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationInd
     return ride->exits[stationIndex];
 }
 
+void TileElementBase::SetType(uint8_t newType)
+{
+    this->type &= ~TILE_ELEMENT_TYPE_MASK;
+    this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
+}
+
 uint8_t TileElementBase::GetDirection() const
 {
     return this->type & TILE_ELEMENT_DIRECTION_MASK;

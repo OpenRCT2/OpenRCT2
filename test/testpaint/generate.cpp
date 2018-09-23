@@ -445,6 +445,7 @@ private:
         for (int direction = 0; direction < 4; direction++)
         {
             rct_tile_element tileElement = {};
+            tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
             tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
             tileElement.AsTrack()->SetTrackType(trackType);
             tileElement.base_height = 3;
