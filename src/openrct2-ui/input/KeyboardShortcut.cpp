@@ -757,6 +757,14 @@ static void shortcut_open_tile_inspector()
     context_open_window(WC_TILE_INSPECTOR);
 }
 
+static void shortcut_advance_to_next_tick()
+{
+    if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
+        return;
+
+    gDoSingleUpdate = true;
+}
+
 namespace
 {
     const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -830,6 +838,7 @@ namespace
         shortcut_view_clipping,
         shortcut_highlight_path_issues_toggle,
         shortcut_open_tile_inspector,
+        shortcut_advance_to_next_tick,
     };
 } // anonymous namespace
 
