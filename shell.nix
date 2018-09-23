@@ -12,7 +12,7 @@
  )
 }:
 pkgs.stdenv.mkDerivation {
-  name = "openrct";
+  name = "openrct2";
   src = builtins.filterSource
     (path: type:
       baseNameOf path != ".git" &&
