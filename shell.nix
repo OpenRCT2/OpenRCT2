@@ -36,7 +36,8 @@ pkgs.stdenv.mkDerivation {
 	pkgs.pkgconfig
 	pkgs.xorg.libpthreadstubs
 ] ++ (pkgs.stdenv.lib.optionals pkgs.stdenv.isDarwin [
-    pkgs.Foundation # osX hacks
+    pkgs.darwin.apple_sdk.frameworks.Foundation # osX hacks
+    pkgs.darwin.apple_sdk.frameworks.AppKit
     pkgs.libobjc ]
   );
 }
