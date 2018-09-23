@@ -548,7 +548,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* til
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
-    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    int32_t rideIndex = tileElement->properties.entrance.ride_index;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -584,7 +584,7 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileEle
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
-    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    int32_t rideIndex = tileElement->properties.entrance.ride_index;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
