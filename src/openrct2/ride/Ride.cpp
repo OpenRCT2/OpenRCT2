@@ -565,7 +565,8 @@ bool track_block_get_next_from_zero(
             continue;
 
         const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
-        const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(ride, tileElement->AsTrack()->GetTrackType());
+        const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(
+            ride, tileElement->AsTrack()->GetTrackType());
 
         uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_begin)
             | (nextTrackCoordinate->rotation_begin & (1 << 2));
@@ -695,7 +696,8 @@ bool track_block_get_previous_from_zero(
             continue;
 
         const rct_preview_track* nextTrackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
-        const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(ride, tileElement->AsTrack()->GetTrackType());
+        const rct_track_coordinates* nextTrackCoordinate = get_track_coord_from_ride(
+            ride, tileElement->AsTrack()->GetTrackType());
 
         nextTrackBlock += tileElement->AsTrack()->GetSequenceIndex();
         if ((nextTrackBlock + 1)->index != 255)
@@ -739,7 +741,8 @@ bool track_block_get_previous_from_zero(
         }
 
         outTrackBeginEnd->begin_z = tileElement->base_height * 8;
-        outTrackBeginEnd->begin_z += get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType())->z - nextTrackBlock->z;
+        outTrackBeginEnd->begin_z += get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType())->z
+            - nextTrackBlock->z;
 
         outTrackBeginEnd->begin_direction = nextRotation;
         outTrackBeginEnd->end_direction = directionStart ^ (1 << 1);

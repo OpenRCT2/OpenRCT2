@@ -224,20 +224,20 @@ struct TrackElement : TileElementBase
         uint16_t mazeEntry; // 5
     };
     uint8_t rideIndex; // 7
-    
+
 public:
     uint8_t GetTrackType() const;
     void SetTrackType(uint8_t newEntryIndex);
-    
+
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
-    
+
     uint8_t GetRideIndex() const;
     void SetRideIndex(uint8_t newRideIndex);
-    
+
     uint8_t GetColourScheme() const;
     void SetColourScheme(uint8_t newColourScheme);
-    
+
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
 
@@ -267,7 +267,7 @@ public:
     bool IsTakingPhoto() const;
     void SetPhotoTimeout();
     void DecrementPhotoTimeout();
-    
+
     // Used in RCT1, will be reintroduced at some point.
     // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
     uint8_t GetDoorAState() const;
@@ -369,6 +369,7 @@ assert_struct_size(WallElement, 8);
 struct EntranceElement : TileElementBase
 {
     rct_tile_element_entrance_properties temp;
+
 public:
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t stationIndex);

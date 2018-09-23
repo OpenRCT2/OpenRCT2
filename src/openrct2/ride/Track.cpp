@@ -2296,7 +2296,6 @@ void TrackElement::SetRideIndex(uint8_t newRideIndex)
 uint8_t TrackElement::GetColourScheme() const
 {
     return colour & 0x3;
-
 }
 
 void TrackElement::SetColourScheme(uint8_t newColourScheme)
@@ -2348,7 +2347,6 @@ void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 uint8_t TrackElement::HasGreenLight() const
 {
     return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
-
 }
 
 void TrackElement::SetHasGreenLight(uint8_t greenLight)
