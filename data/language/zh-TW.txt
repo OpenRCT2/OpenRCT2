@@ -225,7 +225,7 @@ STR_0820    :11月
 STR_0821    :12月
 STR_0822    :無法讀取圖像檔案
 STR_0823    :缺少或不能讀取檔案
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :此名字已被使用
 STR_0826    :太多名稱被命名
 STR_0827    :沒有足夠現金 - 需要{CURRENCY2DP}
@@ -233,14 +233,14 @@ STR_0828    :{SMALLFONT}{BLACK}關閉視窗
 STR_0829    :{SMALLFONT}{BLACK}視窗標題 - 拖曳此來移動本視窗
 STR_0830    :{SMALLFONT}{BLACK}放大檢視區域
 STR_0831    :{SMALLFONT}{BLACK}縮小檢視區域
-STR_0832    :{SMALLFONT}{BLACK}將檢視區域順時針旋轉90{DEGREE}
+STR_0832    :{SMALLFONT}{BLACK}將檢視區域順時針旋轉90°
 STR_0833    :{SMALLFONT}{BLACK}暫停遊戲
 STR_0834    :{SMALLFONT}{BLACK}硬碟及遊戲選項
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :有關'OpenRCT2'
-STR_0850    :{WINDOW_COLOUR_2}版權商標 {COPYRIGHT} 2002 Chris Sawyer, 版權所有
+STR_0850    :{WINDOW_COLOUR_2}版權商標 © 2002 Chris Sawyer, 版權所有
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
@@ -259,7 +259,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :太低!
 STR_0878    :太高!
 STR_0879    :不能降低此地...
@@ -337,22 +337,22 @@ STR_0952    :離開遊戲
 STR_0953    :載入地形
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}選擇此軌道的座位旋轉角度
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :取消
 STR_0973    :確定
 STR_0974    :遊樂設施
@@ -365,8 +365,8 @@ STR_0980    :建造新的剌激類遊樂設施
 STR_0981    :建造新的水文類遊樂設施
 STR_0982    :建造新的商店及攤販
 STR_0983    :研究及開發
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :太多遊樂設施/店鋪...
 STR_0988    :不能興建遊樂設施/店鋪...
@@ -461,14 +461,14 @@ STR_1076    :店面模式
 STR_1077    :旋轉模式
 STR_1078    :向前旋轉
 STR_1079    :向後旋轉
-STR_1080    :電影: {ENDQUOTES}飛行師復仇記{ENDQUOTES}
-STR_1081    :3D電影: {ENDQUOTES}鼠尾擺擺擺{ENDQUOTES}
+STR_1080    :電影: ”飛行師復仇記”
+STR_1081    :3D電影: ”鼠尾擺擺擺”
 STR_1082    :太空飛輪模式
 STR_1083    :初學者模式
 STR_1084    :直線電動機發車
-STR_1085    :電影: {ENDQUOTES}驚天乘客{ENDQUOTES}
-STR_1086    :3D電影: {ENDQUOTES}追風者{ENDQUOTES}
-STR_1087    :3D電影: {ENDQUOTES}太空海盜{ENDQUOTES}
+STR_1085    :電影: ”驚天乘客”
+STR_1086    :3D電影: ”追風者”
+STR_1087    :3D電影: ”太空海盜”
 STR_1088    :剌激模式
 STR_1089    :狂暴模式
 STR_1090    :鬼屋模式
@@ -524,7 +524,7 @@ STR_1139    :{SMALLFONT}{BLACK}選擇支撐顏色
 STR_1140    :{SMALLFONT}{BLACK}選擇有關車卡顏色調配的選項
 STR_1141    :{SMALLFONT}{BLACK}選擇要修改的車卡/列車
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :不能建造/移動這個遊樂設施的入口...
 STR_1145    :不能建造/移動這個遊樂設施的出口...
 STR_1146    :尚未建造入口
@@ -538,7 +538,7 @@ STR_1153    :在設施軌道上標記高度
 STR_1154    :在土地上標記高度
 STR_1155    :在道路上標記高度
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :不能移除...
 STR_1159    :{SMALLFONT}{BLACK}放置景物, 花圃及其他裝飾物
 STR_1160    :{SMALLFONT}{BLACK}創造或調整湖泊及水塘
@@ -708,7 +708,7 @@ STR_1323    :場地
 STR_1324    :{COMMA16}個場地
 STR_1325    :{COMMA16}個場地
 STR_1326    :場地{COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}將物件旋轉90{DEGREE}
+STR_1327    :{SMALLFONT}{BLACK}將物件旋轉90°
 STR_1328    :需要升高或降低土地
 STR_1329    :{WINDOW_COLOUR_2}發車速度:
 STR_1330    :{SMALLFONT}{BLACK}離開車站時的最高速度
@@ -785,7 +785,7 @@ STR_1400    :入口
 STR_1401    :出口
 STR_1402    :{SMALLFONT}{BLACK}建造或移動遊樂設施的入口
 STR_1403    :{SMALLFONT}{BLACK}建造或移動遊樂設施的出口
-STR_1404    :{SMALLFONT}{BLACK}90{DEGREE}旋轉
+STR_1404    :{SMALLFONT}{BLACK}90°旋轉
 STR_1405    :{SMALLFONT}{BLACK}反轉鬼影
 STR_1406    :{SMALLFONT}{BLACK}使用/棄用景物 (如果這個軌道設計附帶景物)
 STR_1407    :{WINDOW_COLOUR_2}建造此軌道...
@@ -861,131 +861,131 @@ STR_1476    :{WINDOW_COLOUR_2}刺激度: {BLACK}暫無
 STR_1477    :{WINDOW_COLOUR_2}刺激度: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}噁心度: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}噁心度: {BLACK}暫無
-STR_1480    :{SMALLFONT}{OPENQUOTES}我已經沒錢去乘坐{STRINGID}了{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}我已經花光我的錢了{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}我感到不適{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}我感到非常不適{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}我想去試試比{STRINGID}更刺激的遊樂設施{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}對我來說, {STRINGID}看起來太刺激了{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}我還未吃/喝完我的{STRINGID}{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}只是看著{STRINGID}已經讓我感到不適{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去乘坐{STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}我想回家{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID}真的是超值{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}我已經擁有{STRINGID}了{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}我已經不夠錢從{STRINGID}購買東西了{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}我還未餓{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}我還未渴{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}救命! 我快要溺死了!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}我迷路了!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID}真棒{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}我輪候{STRINGID}很長時間了{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}我累了{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}我餓了{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}我渴了{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}我要上廁所{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}我找不到{STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢去使用{STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}我不會在下雨時乘坐{STRINGID}{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}這裡真多垃圾{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}我找不到樂園出口{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}我想從{STRINGID}中下來{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}我想從{STRINGID}中出來{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}我不會乘坐{STRINGID} - 它一點都不安全{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}這道路真是令人噁心{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}這裡實在太擠迫了{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}這裡真多被刻意毀壞的設施{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}這裡的景色真是美不勝收!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}這樂園真是又整齊又乾淨{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}這些跳躍噴泉真棒{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}這裡播放的音樂挺不錯{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}這個由{STRINGID}購買的氣球真的是超值{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}這隻由{STRINGID}購買的毛公仔真的是超值{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}這份由{STRINGID}購買的樂園地圖真的是超值{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}這張由{STRINGID}購買的即時照片真的是超值{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}這把由{STRINGID}購買的雨傘真的是超值{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的飲料真的是超值{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}這個由{STRINGID}購買的漢堡真的是超值{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}這客由{STRINGID}購買的薯條真的是超值{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}這個由{STRINGID}購買的冰淇淋真的是超值{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}這個由{STRINGID}購買的棉花糖真的是超值{ENDQUOTES}
+STR_1480    :{SMALLFONT}“我已經沒錢去乘坐{STRINGID}了”
+STR_1481    :{SMALLFONT}“我已經花光我的錢了”
+STR_1482    :{SMALLFONT}“我感到不適”
+STR_1483    :{SMALLFONT}“我感到非常不適”
+STR_1484    :{SMALLFONT}“我想去試試比{STRINGID}更刺激的遊樂設施”
+STR_1485    :{SMALLFONT}“對我來說, {STRINGID}看起來太刺激了”
+STR_1486    :{SMALLFONT}“我還未吃/喝完我的{STRINGID}”
+STR_1487    :{SMALLFONT}“只是看著{STRINGID}已經讓我感到不適”
+STR_1488    :{SMALLFONT}“我不會花這麼多錢去乘坐{STRINGID}”
+STR_1489    :{SMALLFONT}“我想回家”
+STR_1490    :{SMALLFONT}“{STRINGID}真的是超值”
+STR_1491    :{SMALLFONT}“我已經擁有{STRINGID}了”
+STR_1492    :{SMALLFONT}“我已經不夠錢從{STRINGID}購買東西了”
+STR_1493    :{SMALLFONT}“我還未餓”
+STR_1494    :{SMALLFONT}“我還未渴”
+STR_1495    :{SMALLFONT}“救命! 我快要溺死了!”
+STR_1496    :{SMALLFONT}“我迷路了!”
+STR_1497    :{SMALLFONT}“{STRINGID}真棒”
+STR_1498    :{SMALLFONT}“我輪候{STRINGID}很長時間了”
+STR_1499    :{SMALLFONT}“我累了”
+STR_1500    :{SMALLFONT}“我餓了”
+STR_1501    :{SMALLFONT}“我渴了”
+STR_1502    :{SMALLFONT}“我要上廁所”
+STR_1503    :{SMALLFONT}“我找不到{STRINGID}”
+STR_1504    :{SMALLFONT}“我不會花這麼多錢去使用{STRINGID}”
+STR_1505    :{SMALLFONT}“我不會在下雨時乘坐{STRINGID}”
+STR_1506    :{SMALLFONT}“這裡真多垃圾”
+STR_1507    :{SMALLFONT}“我找不到樂園出口”
+STR_1508    :{SMALLFONT}“我想從{STRINGID}中下來”
+STR_1509    :{SMALLFONT}“我想從{STRINGID}中出來”
+STR_1510    :{SMALLFONT}“我不會乘坐{STRINGID} - 它一點都不安全”
+STR_1511    :{SMALLFONT}“這道路真是令人噁心”
+STR_1512    :{SMALLFONT}“這裡實在太擠迫了”
+STR_1513    :{SMALLFONT}“這裡真多被刻意毀壞的設施”
+STR_1514    :{SMALLFONT}“這裡的景色真是美不勝收!”
+STR_1515    :{SMALLFONT}“這樂園真是又整齊又乾淨”
+STR_1516    :{SMALLFONT}“這些跳躍噴泉真棒”
+STR_1517    :{SMALLFONT}“這裡播放的音樂挺不錯”
+STR_1518    :{SMALLFONT}“這個由{STRINGID}購買的氣球真的是超值”
+STR_1519    :{SMALLFONT}“這隻由{STRINGID}購買的毛公仔真的是超值”
+STR_1520    :{SMALLFONT}“這份由{STRINGID}購買的樂園地圖真的是超值”
+STR_1521    :{SMALLFONT}“這張由{STRINGID}購買的即時照片真的是超值”
+STR_1522    :{SMALLFONT}“這把由{STRINGID}購買的雨傘真的是超值”
+STR_1523    :{SMALLFONT}“這杯由{STRINGID}購買的飲料真的是超值”
+STR_1524    :{SMALLFONT}“這個由{STRINGID}購買的漢堡真的是超值”
+STR_1525    :{SMALLFONT}“這客由{STRINGID}購買的薯條真的是超值”
+STR_1526    :{SMALLFONT}“這個由{STRINGID}購買的冰淇淋真的是超值”
+STR_1527    :{SMALLFONT}“這個由{STRINGID}購買的棉花糖真的是超值”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的批薩真的是超值{ENDQUOTES}
+STR_1531    :{SMALLFONT}“這件由{STRINGID}購買的批薩真的是超值”
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}這客由{STRINGID}購買的爆米花真的是超值{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}這隻由{STRINGID}購買的熱狗真的是超值{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}這隻由{STRINGID}購買的觸手真的是超值{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}這頂由{STRINGID}購買的帽子真的是超值{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}這個由{STRINGID}購買的太妃蘋果糖真的是超值{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的T恤真的是超值{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的甜甜圈真的是超值{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的咖啡真的是超值{ENDQUOTES}
+STR_1533    :{SMALLFONT}“這客由{STRINGID}購買的爆米花真的是超值”
+STR_1534    :{SMALLFONT}“這隻由{STRINGID}購買的熱狗真的是超值”
+STR_1535    :{SMALLFONT}“這隻由{STRINGID}購買的觸手真的是超值”
+STR_1536    :{SMALLFONT}“這頂由{STRINGID}購買的帽子真的是超值”
+STR_1537    :{SMALLFONT}“這個由{STRINGID}購買的太妃蘋果糖真的是超值”
+STR_1538    :{SMALLFONT}“這件由{STRINGID}購買的T恤真的是超值”
+STR_1539    :{SMALLFONT}“這件由{STRINGID}購買的甜甜圈真的是超值”
+STR_1540    :{SMALLFONT}“這杯由{STRINGID}購買的咖啡真的是超值”
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}這客由{STRINGID}購買的炸雞真的是超值{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的檸檬水真的是超值{ENDQUOTES}
+STR_1542    :{SMALLFONT}“這客由{STRINGID}購買的炸雞真的是超值”
+STR_1543    :{SMALLFONT}“這杯由{STRINGID}購買的檸檬水真的是超值”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}嘩!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}奇怪, 我覺得有人在悄悄地監視我{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一個氣球{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一隻毛公仔{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一份樂園地圖{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一張即時照片{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一把雨傘{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一杯飲料{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一個漢堡{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一客薯條{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一個冰淇淋{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一球棉花糖{ENDQUOTES}
+STR_1550    :{SMALLFONT}“嘩!”
+STR_1551    :{SMALLFONT}“奇怪, 我覺得有人在悄悄地監視我”
+STR_1552    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個氣球”
+STR_1553    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一隻毛公仔”
+STR_1554    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一份樂園地圖”
+STR_1555    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一張即時照片”
+STR_1556    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一把雨傘”
+STR_1557    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯飲料”
+STR_1558    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個漢堡”
+STR_1559    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客薯條”
+STR_1560    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個冰淇淋”
+STR_1561    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一球棉花糖”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一件批薩{ENDQUOTES}
+STR_1565    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件批薩”
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一客爆米花{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一隻熱狗{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一隻觸手{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一頂帽子{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一個太妃蘋果糖{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一件T恤{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一件甜甜圈{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一杯咖啡{ENDQUOTES}
+STR_1567    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客爆米花”
+STR_1568    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一隻熱狗”
+STR_1569    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一隻觸手”
+STR_1570    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一頂帽子”
+STR_1571    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個太妃蘋果糖”
+STR_1572    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件T恤”
+STR_1573    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件甜甜圈”
+STR_1574    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯咖啡”
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一客炸雞{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一杯檸檬水{ENDQUOTES}
+STR_1576    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客炸雞”
+STR_1577    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯檸檬水”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}這張由{STRINGID}購買的即時照片真的是超值{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}這張由{STRINGID}購買的即時照片真的是超值{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}這張由{STRINGID}購買的即時照片真的是超值{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的椒鹽卷餅真的是超值{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的熱巧克力真的是超值{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的冰紅茶真的是超值{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}這個由{STRINGID}購買的漏斗蛋糕真的是超值{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}這副由{STRINGID}購買的太陽眼鏡真的是超值{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}這份由{STRINGID}購買的牛肉麵真的是超值{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}這份由{STRINGID}購買的炒米粉真的是超值{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}這客由{STRINGID}購買的湯雲吞真的是超值{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}這客由{STRINGID}購買的肉丸湯真的是超值{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的果汁真的是超值{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的豆漿真的是超值{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}這杯由{STRINGID}購買的水正果真的是超值{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的潛艇三文治真的是超值{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}這件由{STRINGID}購買的曲奇真的是超值{ENDQUOTES}
+STR_1584    :{SMALLFONT}“這張由{STRINGID}購買的即時照片真的是超值”
+STR_1585    :{SMALLFONT}“這張由{STRINGID}購買的即時照片真的是超值”
+STR_1586    :{SMALLFONT}“這張由{STRINGID}購買的即時照片真的是超值”
+STR_1587    :{SMALLFONT}“這件由{STRINGID}購買的椒鹽卷餅真的是超值”
+STR_1588    :{SMALLFONT}“這杯由{STRINGID}購買的熱巧克力真的是超值”
+STR_1589    :{SMALLFONT}“這杯由{STRINGID}購買的冰紅茶真的是超值”
+STR_1590    :{SMALLFONT}“這個由{STRINGID}購買的漏斗蛋糕真的是超值”
+STR_1591    :{SMALLFONT}“這副由{STRINGID}購買的太陽眼鏡真的是超值”
+STR_1592    :{SMALLFONT}“這份由{STRINGID}購買的牛肉麵真的是超值”
+STR_1593    :{SMALLFONT}“這份由{STRINGID}購買的炒米粉真的是超值”
+STR_1594    :{SMALLFONT}“這客由{STRINGID}購買的湯雲吞真的是超值”
+STR_1595    :{SMALLFONT}“這客由{STRINGID}購買的肉丸湯真的是超值”
+STR_1596    :{SMALLFONT}“這杯由{STRINGID}購買的果汁真的是超值”
+STR_1597    :{SMALLFONT}“這杯由{STRINGID}購買的豆漿真的是超值”
+STR_1598    :{SMALLFONT}“這杯由{STRINGID}購買的水正果真的是超值”
+STR_1599    :{SMALLFONT}“這件由{STRINGID}購買的潛艇三文治真的是超值”
+STR_1600    :{SMALLFONT}“這件由{STRINGID}購買的曲奇真的是超值”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}這條由{STRINGID}購買的烤香腸真的是超值{ENDQUOTES}
+STR_1604    :{SMALLFONT}“這條由{STRINGID}購買的烤香腸真的是超值”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -997,27 +997,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一張即時照片{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一張即時照片{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一張即時照片{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一件椒鹽卷餅{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一杯熱巧克力{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一杯冰紅茶{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一個漏斗蛋糕{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一副太陽眼鏡{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一份牛肉麵{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一份炒米粉{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一客湯雲吞{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一客肉丸湯{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一杯果汁{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一杯豆漿{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一杯水正果{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一件潛艇三文治{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一件曲奇{ENDQUOTES}
+STR_1616    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一張即時照片”
+STR_1617    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一張即時照片”
+STR_1618    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一張即時照片”
+STR_1619    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件椒鹽卷餅”
+STR_1620    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯熱巧克力”
+STR_1621    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯冰紅茶”
+STR_1622    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一個漏斗蛋糕”
+STR_1623    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一副太陽眼鏡”
+STR_1624    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一份牛肉麵”
+STR_1625    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一份炒米粉”
+STR_1626    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客湯雲吞”
+STR_1627    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一客肉丸湯”
+STR_1628    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯果汁”
+STR_1629    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯豆漿”
+STR_1630    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一杯水正果”
+STR_1631    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件潛艇三文治”
+STR_1632    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一件曲奇”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}我不會花這麼多錢在{STRINGID}購買一條烤香腸{ENDQUOTES}
+STR_1636    :{SMALLFONT}“我不會花這麼多錢在{STRINGID}購買一條烤香腸”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1029,11 +1029,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}救命! 放我下去!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}我花光了我身上的錢了!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}嘩! 嶄新的遊樂設施在建造中呢!{ENDQUOTES}
+STR_1648    :{SMALLFONT}“救命! 放我下去!”
+STR_1649    :{SMALLFONT}“我花光了我身上的錢了!”
+STR_1650    :{SMALLFONT}“嘩! 嶄新的遊樂設施在建造中呢!”
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}{OPENQUOTES}...然而, 現在我們已經在{STRINGID}之上!{ENDQUOTES}
+STR_1653    :{SMALLFONT}“...然而, 現在我們已經在{STRINGID}之上!”
 STR_1654    :{WINDOW_COLOUR_2}最近的想法:
 STR_1655    :{SMALLFONT}{BLACK}在地上建造道路
 STR_1656    :{SMALLFONT}{BLACK}建造橋樑或隧道
@@ -1443,11 +1443,11 @@ STR_2068    :一客炸雞
 STR_2069    :一杯檸檬水
 STR_2070    :一個空盒子
 STR_2071    :一個空瓶子
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES}氣球
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES}毛公仔
+STR_2072    :“{STRINGID}”氣球
+STR_2073    :“{STRINGID}”毛公仔
 STR_2074    :{STRINGID}的地圖
 STR_2075    :{STRINGID}的即時照片
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES}雨傘
+STR_2076    :“{STRINGID}”雨傘
 STR_2077    :飲料
 STR_2078    :漢堡
 STR_2079    :薯條
@@ -1461,9 +1461,9 @@ STR_2086    :{STRINGID}的優惠卷
 STR_2087    :爆米花
 STR_2088    :熱狗
 STR_2089    :觸手
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES}帽子
+STR_2090    :“{STRINGID}”帽子
 STR_2091    :太妃蘋果糖
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES}T恤
+STR_2092    :“{STRINGID}”T恤
 STR_2093    :甜甜圈
 STR_2094    :咖啡
 STR_2095    :空杯子
@@ -1572,8 +1572,8 @@ STR_2212    :{SMALLFONT}{BLACK}列出樂園內的安全警衛
 STR_2213    :{SMALLFONT}{BLACK}列出樂園內的表演人員
 STR_2214    :遊戲暫停時無法建造任何物件!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID}, {STRINGID}的一部份, 尚未返回到{STRINGID}!{NEWLINE}檢查是否被卡住或被停止了
 STR_2219    :{RED}{COMMA16}人已喪生於{STRINGID}的意外中
 STR_2220    :{WINDOW_COLOUR_2}樂園評價: {BLACK}{COMMA16}
@@ -1674,7 +1674,7 @@ STR_2315    :{WINDOW_COLOUR_2}建造費用: {BLACK}約{CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}需要空間: {BLACK}{COMMA16} x {COMMA16}格
 STR_2321    :{WINDOW_COLOUR_2}遊樂設施/店鋪數目: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}員工數目: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}樂園大小: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}樂園大小: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}樂園大小: {BLACK}{COMMA32}平方英尺
 STR_2325    :{SMALLFONT}{BLACK}購買土地來擴展樂園
 STR_2326    :{SMALLFONT}{BLACK}購買建造權來准許在樂園範圍外的空中或地底建造物件
@@ -1685,16 +1685,16 @@ STR_2330    :{WINDOW_COLOUR_2}溫度單位:
 STR_2331    :{WINDOW_COLOUR_2}高度標記單位:
 STR_2332    :單位
 STR_2333    :聲效
-STR_2334    :英鎊 ({POUND})
+STR_2334    :英鎊 (£)
 STR_2335    :美金 ($)
 STR_2336    :法郎 (F)
 STR_2337    :馬克 (DM)
-STR_2338    :日元 ({YEN})
+STR_2338    :日元 (¥)
 STR_2339    :比塞塔 (Pts)
 STR_2340    :裡拉 (L)
 STR_2341    :荷蘭盾 (ƒ)
 STR_2342    :克朗 (kr)
-STR_2343    :歐元 ({EURO})
+STR_2343    :歐元 (€)
 STR_2344    :英制
 STR_2345    :公制
 STR_2347    :{RED}{STRINGID}已被溺死!
@@ -1715,8 +1715,8 @@ STR_2362    :{SMALLFONT}{BLACK}開啟/關閉土地邊緣平滑化
 STR_2363    :土地上的網格
 STR_2364    :{SMALLFONT}{BLACK}開啟/關閉土地上的網格
 STR_2365    :銀行拒絕增加你的貸款額!
-STR_2366    :攝氏 ({DEGREE}C)
-STR_2367    :華氏 ({DEGREE}F)
+STR_2366    :攝氏 (°C)
+STR_2367    :華氏 (°F)
 STR_2368    :無
 STR_2369    :低
 STR_2370    :普通
@@ -2083,7 +2083,7 @@ STR_2743    :請複製夢幻遊樂園(RCT1)文件夾中的'data/css17.dat'到模
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
+STR_2747    :”
 STR_2749    :我的新劇情
 # New strings used in the cheats window previously these were ???
 STR_2750    :移到所有物件至最頂部
@@ -2105,7 +2105,7 @@ STR_2774    :全螢幕
 STR_2775    :全螢幕 (無邊框視窗)
 STR_2776    :語言:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :額外檢視視窗#{COMMA16}
 STR_2780    :新的額外檢視視窗
 # End of new strings
@@ -2113,7 +2113,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :更改鍵盤快捷鍵
-STR_2785    :{WINDOW_COLOUR_2}請按下屬於下列快捷鍵的新鍵位:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}請按下屬於下列快捷鍵的新鍵位:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}按一下快捷鍵的描述來選擇新的鍵位
 STR_2787    :{WINDOW_COLOUR_2}樂園價值: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}恭喜您!{NEWLINE}{BLACK}你已經達到你的目標, 並令公司價值增至 {CURRENCY} !
@@ -2200,37 +2200,37 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) 無版權
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) 無版權
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (傳統樂曲)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2901    :{WINDOW_COLOUR_2}(音樂採樣承蒙Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer 版權所有
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) {COPYRIGHT} Chris Sawyer 版權所有
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) © Chris Sawyer 版權所有
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) © Chris Sawyer 版權所有
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2901    :{WINDOW_COLOUR_2}(音樂採樣承蒙Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer 版權所有
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) © Chris Sawyer 版權所有
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) © Chris Sawyer 版權所有
 STR_2971    :主要色彩選配
 STR_2972    :額外色彩選配1
 STR_2973    :額外色彩選配2
@@ -2323,7 +2323,7 @@ STR_3063    :{SMALLFONT}{BLACK}水濺軌道 (軌道半浸於水中)
 STR_3064    :新手級樂園
 STR_3065    :挑戰級樂園
 STR_3066    :專家級樂園
-STR_3067    :{OPENQUOTES}真實{ENDQUOTES}樂園
+STR_3067    :“真實”樂園
 STR_3068    :其他樂園
 STR_3069    :最上的區域
 STR_3070    :斜坡至平面
@@ -2885,8 +2885,8 @@ STR_5371    :選取物件
 STR_5372    :滑鼠左鍵拖拉
 STR_5373    :名稱 {STRINGID}
 STR_5374    :日期 {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}儲存
 STR_5378    :{SMALLFONT}{BLACK}主選單動畫劇本
 STR_5379    :{SMALLFONT}{BLACK}跳至下一個等待(Wait)命令
@@ -3091,7 +3091,7 @@ STR_5579    :顥示縮放因子:
 STR_5580    :捷克克朗 (Kč)
 STR_5581    :顥示每秒顯示張數
 STR_5582    :限制滑鼠游標於視窗中移動
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}移除遊樂設施的運行限制, 例如容許鏈條上拉速度高達{VELOCITY}
 STR_5586    :自動開啟商店及攤販
@@ -3133,7 +3133,7 @@ STR_5621    :夢幻遊樂園: 資料片2
 STR_5622    :模擬樂園2
 STR_5623    :瘋狂世界
 STR_5624    :時空歷險
-STR_5625    :{OPENQUOTES}真實的{ENDQUOTES}樂園
+STR_5625    :“真實的”樂園
 STR_5626    :其他樂園
 STR_5627    :樂園列表的排序方式:
 STR_5628    :出處的遊戲
@@ -3235,7 +3235,7 @@ STR_5758    :{OUTLINE}{GREEN}{STRING}已加入遊戲
 STR_5759    :下載劇情中... ({INT32} / {INT32}) KiB
 STR_5760    :港幣 (HK$)
 STR_5761    :新台幣 (NT$)
-STR_5762    :人民幣 (CN{YEN})
+STR_5762    :人民幣 (CN¥)
 STR_5763    :所有檔案
 STR_5764    :不正確的遊樂設施類別
 STR_5765    :無法修改不正確類別的遊樂設施
@@ -3286,8 +3286,8 @@ STR_5809    :{WINDOW_COLOUR_2}訪客資訊中心及其他設施數目: {BLACK}{C
 STR_5810    :去除有關列車的限制
 STR_5811    :{SMALLFONT}{BLACK}勾選後, 你可以選擇高達每列車255車卡及每遊樂設施31輛列車/艘小船
 STR_5812    :顯示多人連線模式的視窗
-STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
-STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5813    :“{STRING}”
+STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}在遊戲中顯示每秒顯示張數數目
 STR_5816    :{SMALLFONT}{BLACK}設置縮放遊戲的比例.{NEWLINE}於高解析度時遊玩非常有用
@@ -3530,7 +3530,7 @@ STR_6055    :OpenRCT2 高度點陣圖檔案
 STR_6056    :{SMALLFONT}{BLACK}靜音
 STR_6057    :{SMALLFONT}{BLACK}在工具列上顯示單獨的靜音按鈕
 STR_6058    :靜音
-STR_6059    :{RIGHTGUILLEMET}
+STR_6059    :»
 STR_6060    :遊客購買東西時顯示動畫
 STR_6061    :{SMALLFONT}{BLACK}當遊客購買東西時{NEWLINE}顯示金錢動畫效果.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
@@ -3609,7 +3609,7 @@ STR_6134    :清除景物
 STR_6135    :客戶端發送了不正確的要求
 STR_6136    :伺服器發送了不正確的要求
 STR_6137    :OpenRCT2, 一個免費及開放原始碼的模擬樂園2複製品.
-STR_6138    :OpenRCT2由眾多志願者一起開發, 完整的列表可於 {OPENQUOTES}contributors.md{ENDQUOTES} 找到. 請訪問 http://github.com/OpenRCT2/OpenRCT2 以便獲取更多資訊
+STR_6138    :OpenRCT2由眾多志願者一起開發, 完整的列表可於 “contributors.md” 找到. 請訪問 http://github.com/OpenRCT2/OpenRCT2 以便獲取更多資訊
 STR_6139    :所有的產品及公司名稱皆屬其擁有者所有. 使用那些名稱並不暗示或代表本項目與他們有任何聯繫.
 STR_6140    :更新日誌...
 STR_6141    :夢幻遊樂園(RCT1)式的底部工具列
@@ -3635,7 +3635,7 @@ STR_6160    :{WINDOW_COLOUR_2}可供使用的車輛種類: {BLACK}{STRING}
 STR_6161    :啟用/禁用網格顯示
 STR_6162    :旋轉小野鼠
 STR_6163    :以老鼠為造型的車輛急速駛過急彎及短下坡, 柔柔地轉動使乘客失去方向感
-STR_6164    :{WHITE}{CROSS}
+STR_6164    :{WHITE}❌
 STR_6165    :使用垂直同步
 STR_6166    :{SMALLFONT}{BLACK}將每影格與螢幕的更新頻率同步, 以避免畫面撕裂.
 STR_6167    :{SMALLFONT}{BLACK}進階

@@ -12,15 +12,15 @@ STR_0007    :Ferrocarril en miniatura
 STR_0008    :Monorail
 STR_0009    :Minimuntanya russa suspesa
 STR_0010    :Passeig en bot
-STR_0011    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET} de fusta
-STR_0012    :Cursa {LEFTGUILLEMET}Steeplechase{RIGHTGUILLEMET}
+STR_0011    :«Wild Mouse» de fusta
+STR_0012    :Cursa «Steeplechase»
 STR_0013    :Atracció de cotxes
 STR_0014    :Caiguda lliure propulsada
-STR_0015    :Muntanya russa {LEFTGUILLEMET}Bobsleigh{RIGHTGUILLEMET}
+STR_0015    :Muntanya russa «Bobsleigh»
 STR_0016    :Torre d'observació
 STR_0017    :Muntanya russa amb inversions
 STR_0018    :Tobogan aquàtic amb bots inflables
-STR_0019    :Muntanya russa {LEFTGUILLEMET}Tren de la mina{RIGHTGUILLEMET}
+STR_0019    :Muntanya russa «Tren de la mina»
 STR_0020    :Telecadira
 STR_0021    :Muntanya russa amb tirabuixons
 STR_0022    :Laberint
@@ -57,12 +57,12 @@ STR_0052    :Tren fantasma
 STR_0053    :Muntanya russa Tornado
 STR_0054    :Muntanya russa de fusta
 STR_0055    :Muntanya russa de fricció lateral
-STR_0056    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET} d'acer
+STR_0056    :«Wild Mouse» d'acer
 STR_0057    :Muntanya russa multidimensió
 STR_0058    :Atracció desconeguda (38)
 STR_0059    :Muntanya russa voladora
 STR_0060    :Atracció desconeguda (3A)
-STR_0061    :{LEFTGUILLEMET}Virginia Reel{RIGHTGUILLEMET}
+STR_0061    :«Virginia Reel»
 STR_0062    :Bots amb remullada
 STR_0063    :Minihelicòpters
 STR_0064    :Muntanya russa amb passatgers gitats
@@ -121,7 +121,7 @@ STR_0535    :Bots amb forma de tronc circulen a través d'una via d'aigua. Quan 
 STR_0536    :Bots inflables circulars arrossegats per l'aigua a través d'un canal. Les cascades i els ràpids esquitxen i entusiasmen als passatgers.
 STR_0537    :Cotxes de xoc elèctrics que condueixen els passatgers.
 STR_0538    :Vaixell pirata enorme que es balanceja d'un costat a l'altre.
-STR_0539    :El vaixell està unit a un braç amb un contrapès a l'altre extrem. El vaixell es balanceja i arriba a fer una volta de 360{DEGREE}.
+STR_0539    :El vaixell està unit a un braç amb un contrapès a l'altre extrem. El vaixell es balanceja i arriba a fer una volta de 360°.
 STR_0540    :Un estand on els visitants poden comprar menjar.
 STR_0542    :Un estand per comprar begudes.
 STR_0544    :Un estand que ven objectes de record de la visita al parc.
@@ -142,8 +142,8 @@ STR_0559    :Edifici enorme de temàtica terrorífica amb passadissos esgarrifos
 STR_0560    :Un lloc que els visitants amb nàusees visiten per recuperar-se més de pressa.
 STR_0561    :Espectacle de circ dins d'una tenda enorme.
 STR_0562    :Els vagons autopropulsats viatgen per una via a diferents nivells que recorre paisatges fantasmagòrics amb efectes especials.
-STR_0563    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats, així com d'una part {LEFTGUILLEMET}a l'aire lliure{RIGHTGUILLEMET} damunt dels turons.
-STR_0564    :Movent-se per vies de fusta, aquesta muntanya russa és ràpida, rústica, sorollosa i dóna una sensació d'experiència {LEFTGUILLEMET}fora de control{RIGHTGUILLEMET} a l'aire lliure.
+STR_0563    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats, així com d'una part «a l'aire lliure» damunt dels turons.
+STR_0564    :Movent-se per vies de fusta, aquesta muntanya russa és ràpida, rústica, sorollosa i dóna una sensació d'experiència «fora de control» a l'aire lliure.
 STR_0565    :Una muntanya russa senzilla de fusta que només és capaç de fer inclinacions i girs suaus, mentre que els vagons es mantenen a la via mitjançant la gravetat i unes rodes laterals de fricció.
 STR_0566    :Els vagons individuals giren per un difícil tram zigzaguejant amb girs pronunciats i caigudes brusques curtes.
 STR_0567    :Seient suspesos a ambdós laterals de la via, els passatgers són penjats cap per avall mentre són sotmesos a caigudes pronunciades i passen per inversions.
@@ -153,7 +153,7 @@ STR_0572    :Bots de gran capacitat que es mouen per un canal d'aigua, propulsat
 STR_0573    :Disposa de vagons amb forma d'helicòpters que es mouen per una via d'acer controlats pels pedals dels passatgers.
 STR_0574    :Els passatgers estan lligats amb arnesos especials cara avall, movent-se per una via amb girs i inversions o bé d'esquena o bé de cara al terra.
 STR_0575    :Transport de persones pel parc a través de vagons suspesos que circulen per un únic rail.
-STR_0577    :Vagons que circulen per vies de fusta, fent girs de 180{DEGREE} en seccions especials.
+STR_0577    :Vagons que circulen per vies de fusta, fent girs de 180° en seccions especials.
 STR_0578    :Els vagons circulen per anelles circulars, passant per baixades i girs bruscos.
 STR_0579    :Els visitants podran gaudir d'una tranquil·la partida de minigolf.
 STR_0580    :Muntanya russa gegant d'acer capaç de suaus baixades i pujades de més de 90 m.
@@ -225,7 +225,7 @@ STR_0820    :Nov.
 STR_0821    :Des.
 STR_0822    :No s'ha pogut accedir a l'arxiu de gràfics.
 STR_0823    :Falta o no es pot accedir a l'arxiu de dades.
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :El nom ja està usant-se.
 STR_0826    :S'estan usant massa noms.
 STR_0827    :No hi ha prou diners - fan falta {CURRENCY2DP}.
@@ -233,14 +233,14 @@ STR_0828    :{SMALLFONT}{BLACK}Tanca la finestra.
 STR_0829    :{SMALLFONT}{BLACK}Títol - Arrossegueu-lo per moure la finestra.
 STR_0830    :{SMALLFONT}{BLACK}Apropa la vista.
 STR_0831    :{SMALLFONT}{BLACK}Allunya la vista.
-STR_0832    :{SMALLFONT}{BLACK}Gira la càmera 90{DEGREE} en sentit horari.
+STR_0832    :{SMALLFONT}{BLACK}Gira la càmera 90° en sentit horari.
 STR_0833    :{SMALLFONT}{BLACK}Posa la partida en pausa.
 STR_0834    :{SMALLFONT}{BLACK}Opcions del joc i de la partida
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0847    :Quant a l'{LEFTGUILLEMET}OpenRCT2{RIGHTGUILLEMET}
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer. Tots els drets reservats.
+STR_0847    :Quant a l'«OpenRCT2»
+STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer. Tots els drets reservats.
 STR_0851    :{WINDOW_COLOUR_2}Dissenyat i programat per en Chris Sawyer.
 STR_0852    :{WINDOW_COLOUR_2}Gràfics d'en Simon Foster.
 STR_0853    :{WINDOW_COLOUR_2}So i música de l'Allister Brimble.
@@ -259,7 +259,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :Massa baix!
 STR_0878    :Massa alt!
 STR_0879    :El terreny no es pot baixar...
@@ -273,7 +273,7 @@ STR_0887    :Surt de l'editor d'escenaris
 STR_0888    :Surt de l'editor de circuits
 STR_0889    :Surt de l'administrador de circuits
 STR_0891    :Captura de pantalla
-STR_0892    :S'ha desat la captura de pantalla com a {LEFTGUILLEMET}{STRINGID}{RIGHTGUILLEMET}.
+STR_0892    :S'ha desat la captura de pantalla com a «{STRINGID}».
 STR_0893    :La captura de pantalla no s'ha pogut fer.
 STR_0894    :L'àrea de dades de paisatge està plena.
 STR_0895    :No es pot construir part a sobre i part sota terra.
@@ -310,8 +310,8 @@ STR_0925    :{SMALLFONT}{BLACK}Helicoide cap amunt
 STR_0926    :No es pot treure...
 STR_0927    :Això no es pot construir aquí...
 STR_0928    :{SMALLFONT}{BLACK}Cadena elevadora per pujar vagons per un pendent.
-STR_0929    :Corba en {LEFTGUILLEMET}S{RIGHTGUILLEMET} (a l'esquerra)
-STR_0930    :Corba en {LEFTGUILLEMET}S{RIGHTGUILLEMET} (a la dreta)
+STR_0929    :Corba en «S» (a l'esquerra)
+STR_0930    :Corba en «S» (a la dreta)
 STR_0931    :Inversió vertical (a l'esquerra)
 STR_0932    :Inversió vertical (a la dreta)
 STR_0933    :Abans puja o baixa el terreny.
@@ -337,22 +337,22 @@ STR_0952    :Surt del joc
 STR_0953    :Carrega un paisatge
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Seleccioneu l'angle de rotació dels seients per a aquesta secció de via.
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :Cancel·la
 STR_0973    :D'acord
 STR_0974    :Atraccions
@@ -365,8 +365,8 @@ STR_0980    :Atraccions intenses
 STR_0981    :Atraccions aquàtiques
 STR_0982    :Botigues i estands
 STR_0983    :Recerca i desenvolupament
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Hi ha massa atraccions, botigues i estands.
 STR_0988    :No es pot crear aquesta nova atracció...
@@ -461,14 +461,14 @@ STR_1076    :Mode botiga
 STR_1077    :Mode rotació
 STR_1078    :Rotació cap endavant
 STR_1079    :Rotació cap enrere
-STR_1080    :Pel·lícula: {ENDQUOTES}Aviadors venjadors{ENDQUOTES}
-STR_1081    :Pel·lícula 3D: {ENDQUOTES}Contes de ratolins{ENDQUOTES}
+STR_1080    :Pel·lícula: ”Aviadors venjadors”
+STR_1081    :Pel·lícula 3D: ”Contes de ratolins”
 STR_1082    :Mode giroscopi
 STR_1083    :Mode principiant
 STR_1084    :Llançament impulsat per motors d'inducció lineal
-STR_1085    :Pel·lícula: {ENDQUOTES}Els passatgers més valents{ENDQUOTES}
-STR_1086    :Pel·lícula 3D: {ENDQUOTES}Caçadors de tempestes{ENDQUOTES}
-STR_1087    :Pel·lícula 3D: {ENDQUOTES}Invasors de l'espai{ENDQUOTES}
+STR_1085    :Pel·lícula: ”Els passatgers més valents”
+STR_1086    :Pel·lícula 3D: ”Caçadors de tempestes”
+STR_1087    :Pel·lícula 3D: ”Invasors de l'espai”
 STR_1088    :Mode intens
 STR_1089    :Mode berserker
 STR_1090    :Mode casa encantada
@@ -524,7 +524,7 @@ STR_1139    :{SMALLFONT}{BLACK}Seleccioneu el color dels suports
 STR_1140    :{SMALLFONT}{BLACK}Seleccioneu l'esquema de colors dels vagons
 STR_1141    :{SMALLFONT}{BLACK}Seleccioneu quin vehicle o tren s'ha de modificar
 STR_1142    :{MOVE_X}{10}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :No es pot construir/moure l'entrada d'aquesta atracció...
 STR_1145    :No es pot construir/moure la sortida d'aquesta atracció...
 STR_1146    :Encara no se n'ha construït l'entrada
@@ -538,7 +538,7 @@ STR_1153    :Marques d'alçada en les vies de les atraccions
 STR_1154    :Marques d'alçada al terreny
 STR_1155    :Marques d'alçada als camins
 STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Això no es pot treure...
 STR_1159    :{SMALLFONT}{BLACK}Afegeix decoracions, jardins i altres accessoris.
 STR_1160    :{SMALLFONT}{BLACK}Crea i ajusta llacs i zones d'aigua.
@@ -708,7 +708,7 @@ STR_1323    :Camins
 STR_1324    :{COMMA16} camí
 STR_1325    :{COMMA16} camins
 STR_1326    :Camí {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Gira els objectes 90{DEGREE}.
+STR_1327    :{SMALLFONT}{BLACK}Gira els objectes 90°.
 STR_1328    :Fa falta que el terreny estigui anivellat.
 STR_1329    :{WINDOW_COLOUR_2}Velocitat de llançament:
 STR_1330    :{SMALLFONT}{BLACK}Velocitat màxima durant la sortida de l'estació.
@@ -739,7 +739,7 @@ STR_1354    :{WINDOW_COLOUR_2}Longitud de la caiguda més gran: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Caigudes: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Forats: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Temps total de {LEFTGUILLEMET}vol{RIGHTGUILLEMET}: {BLACK}{COMMA2DP32} s
+STR_1358    :{WINDOW_COLOUR_2}Temps total de «vol»: {BLACK}{COMMA2DP32} s
 STR_1359    :{WINDOW_COLOUR_2}Temps d'espera: {BLACK}{COMMA16} min
 STR_1360    :{WINDOW_COLOUR_2}Temps d'espera: {BLACK}{COMMA16} min
 STR_1361    :La velocitat no es pot canviar...
@@ -758,8 +758,8 @@ STR_1373    :Mitja volta llarga (a l'esquerra)
 STR_1374    :Mitja volta llarga (a la dreta)
 STR_1375    :Transferència superior
 STR_1376    :Transferència inferior
-STR_1377    :Inversió de 360{DEGREE} (a l'esquerra)
-STR_1378    :Inversió de 360{DEGREE} (a la dreta)
+STR_1377    :Inversió de 360° (a l'esquerra)
+STR_1378    :Inversió de 360° (a la dreta)
 STR_1379    :Inversió (a l'esquerra)
 STR_1380    :Inversió (a la dreta)
 STR_1381    :Pujada amb corba (a l'esquerra)
@@ -785,7 +785,7 @@ STR_1400    :Entrada
 STR_1401    :Sortida
 STR_1402    :{SMALLFONT}{BLACK}Construïu o moveu l'entrada de l'atracció.
 STR_1403    :{SMALLFONT}{BLACK}Construïu o moveu la sortida de l'atracció.
-STR_1404    :{SMALLFONT}{BLACK}Gira 90{DEGREE}
+STR_1404    :{SMALLFONT}{BLACK}Gira 90°
 STR_1405    :{SMALLFONT}{BLACK}Reflexa (simetria axial)
 STR_1406    :{SMALLFONT}{BLACK}Mostra o amaga el decorat (si n'hi ha de disponible per aquest disseny).
 STR_1407    :{WINDOW_COLOUR_2}Construeix...
@@ -841,8 +841,8 @@ STR_1456    :{WINDOW_COLOUR_2}Diners gastats: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Diners a la butxaca: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Temps al parc: {BLACK}{REALTIME}
 STR_1459    :Estil de via
-STR_1460    :{SMALLFONT}{BLACK}Via oberta en forma d'{LEFTGUILLEMET}U{RIGHTGUILLEMET}
-STR_1461    :{SMALLFONT}{BLACK}Via tancada en forma d'{LEFTGUILLEMET}O{RIGHTGUILLEMET}
+STR_1460    :{SMALLFONT}{BLACK}Via oberta en forma d'«U»
+STR_1461    :{SMALLFONT}{BLACK}Via tancada en forma d'«O»
 STR_1462    :Massa inclinat per usar cadenes d'elevació
 STR_1463    :Visitants
 STR_1464    :Hèlix amunt (petita)
@@ -861,131 +861,131 @@ STR_1476    :{WINDOW_COLOUR_2}Nivell d'intensitat: {BLACK}Encara no se sap
 STR_1477    :{WINDOW_COLOUR_2}Nivell d'intensitat: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nivell de nàusea: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nivell de nàusea: {BLACK}Encara no se sap
-STR_1480    :{SMALLFONT}{OPENQUOTES}No puc pagar {STRINGID}{ENDQUOTES}.
-STR_1481    :{SMALLFONT}{OPENQUOTES}He gastat tots els diners{ENDQUOTES}.
-STR_1482    :{SMALLFONT}{OPENQUOTES}Estic marejat{ENDQUOTES}.
-STR_1483    :{SMALLFONT}{OPENQUOTES}Estic molt marejat{ENDQUOTES}.
-STR_1484    :{SMALLFONT}{OPENQUOTES}Vull provar alguna atracció més intensa que {STRINGID}{ENDQUOTES}.
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} sembla massa intensa per mi{ENDQUOTES}.
-STR_1486    :{SMALLFONT}{OPENQUOTES}Encara no m'he acabat {STRINGID}{ENDQUOTES}.
-STR_1487    :{SMALLFONT}{OPENQUOTES}Em marejo només veure {STRINGID}{ENDQUOTES}.
-STR_1488    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per pujar a {STRINGID}{ENDQUOTES}.
-STR_1489    :{SMALLFONT}{OPENQUOTES}Vull anar-me'n a casa{ENDQUOTES}.
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} està bé de preu{ENDQUOTES}.
-STR_1491    :{SMALLFONT}{OPENQUOTES}Ja tinc {STRINGID}{ENDQUOTES}.
-STR_1492    :{SMALLFONT}{OPENQUOTES}No em puc permetre {STRINGID}{ENDQUOTES}.
-STR_1493    :{SMALLFONT}{OPENQUOTES}No tinc gana{ENDQUOTES}.
-STR_1494    :{SMALLFONT}{OPENQUOTES}No tinc set{ENDQUOTES}.
-STR_1495    :{SMALLFONT}{OPENQUOTES}Ajuda! M'ofego!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}M'he perdut!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} ha estat bé{ENDQUOTES}.
-STR_1498    :{SMALLFONT}{OPENQUOTES}He fet cua per {STRINGID} durant una eternitat{ENDQUOTES}.
-STR_1499    :{SMALLFONT}{OPENQUOTES}Estic cansat{ENDQUOTES}.
-STR_1500    :{SMALLFONT}{OPENQUOTES}Tinc gana{ENDQUOTES}.
-STR_1501    :{SMALLFONT}{OPENQUOTES}Tinc set{ENDQUOTES}.
-STR_1502    :{SMALLFONT}{OPENQUOTES}He d'anar al lavabo{ENDQUOTES}.
-STR_1503    :{SMALLFONT}{OPENQUOTES}No puc trobar {STRINGID}{ENDQUOTES}.
-STR_1504    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per {STRINGID}{ENDQUOTES}.
-STR_1505    :{SMALLFONT}{OPENQUOTES}No vull pujar a {STRINGID} mentre plou{ENDQUOTES}.
-STR_1506    :{SMALLFONT}{OPENQUOTES}Això està molt brut{ENDQUOTES}.
-STR_1507    :{SMALLFONT}{OPENQUOTES}No puc trobar la sortida{ENDQUOTES}.
-STR_1508    :{SMALLFONT}{OPENQUOTES}Vull baixar de {STRINGID}{ENDQUOTES}.
-STR_1509    :{SMALLFONT}{OPENQUOTES}Vull sortir de {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}No pujaré a {STRINGID} - No és gens segur{ENDQUOTES}.
-STR_1511    :{SMALLFONT}{OPENQUOTES}Aquest camí és repugnant{ENDQUOTES}.
-STR_1512    :{SMALLFONT}{OPENQUOTES}Això és angoixant. Hi ha massa gent{ENDQUOTES}.
-STR_1513    :{SMALLFONT}{OPENQUOTES}Aquí hi ha molt vandalisme{ENDQUOTES}.
-STR_1514    :{SMALLFONT}{OPENQUOTES}Aquestes vistes són impressionants!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}Aquest parc està molt net i força endreçat{ENDQUOTES}.
-STR_1516    :{SMALLFONT}{OPENQUOTES}Aquests salts de les fonts són magnífics{ENDQUOTES}.
-STR_1517    :{SMALLFONT}{OPENQUOTES}La música és agradable{ENDQUOTES}.
-STR_1518    :{SMALLFONT}{OPENQUOTES}Aquest globus de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1519    :{SMALLFONT}{OPENQUOTES}Aquesta joguina de peluix de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1520    :{SMALLFONT}{OPENQUOTES}Aquest parc del mapa de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1521    :{SMALLFONT}{OPENQUOTES}Aquesta foto de record de l'atracció {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1522    :{SMALLFONT}{OPENQUOTES}Aquest paraigües de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1523    :{SMALLFONT}{OPENQUOTES}Aquesta beguda de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1524    :{SMALLFONT}{OPENQUOTES}Aquesta hamburguesa de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1525    :{SMALLFONT}{OPENQUOTES}Aquestes patates fregides de {STRINGID} estan bé de preu{ENDQUOTES}.
-STR_1526    :{SMALLFONT}{OPENQUOTES}Aquest gelat de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1527    :{SMALLFONT}{OPENQUOTES}Aquest cotó fluix de sucre{STRINGID} està bé de preu{ENDQUOTES}.
+STR_1480    :{SMALLFONT}“No puc pagar {STRINGID}”.
+STR_1481    :{SMALLFONT}“He gastat tots els diners”.
+STR_1482    :{SMALLFONT}“Estic marejat”.
+STR_1483    :{SMALLFONT}“Estic molt marejat”.
+STR_1484    :{SMALLFONT}“Vull provar alguna atracció més intensa que {STRINGID}”.
+STR_1485    :{SMALLFONT}“{STRINGID} sembla massa intensa per mi”.
+STR_1486    :{SMALLFONT}“Encara no m'he acabat {STRINGID}”.
+STR_1487    :{SMALLFONT}“Em marejo només veure {STRINGID}”.
+STR_1488    :{SMALLFONT}“No penso pagar tant per pujar a {STRINGID}”.
+STR_1489    :{SMALLFONT}“Vull anar-me'n a casa”.
+STR_1490    :{SMALLFONT}“{STRINGID} està bé de preu”.
+STR_1491    :{SMALLFONT}“Ja tinc {STRINGID}”.
+STR_1492    :{SMALLFONT}“No em puc permetre {STRINGID}”.
+STR_1493    :{SMALLFONT}“No tinc gana”.
+STR_1494    :{SMALLFONT}“No tinc set”.
+STR_1495    :{SMALLFONT}“Ajuda! M'ofego!”
+STR_1496    :{SMALLFONT}“M'he perdut!”
+STR_1497    :{SMALLFONT}“{STRINGID} ha estat bé”.
+STR_1498    :{SMALLFONT}“He fet cua per {STRINGID} durant una eternitat”.
+STR_1499    :{SMALLFONT}“Estic cansat”.
+STR_1500    :{SMALLFONT}“Tinc gana”.
+STR_1501    :{SMALLFONT}“Tinc set”.
+STR_1502    :{SMALLFONT}“He d'anar al lavabo”.
+STR_1503    :{SMALLFONT}“No puc trobar {STRINGID}”.
+STR_1504    :{SMALLFONT}“No penso pagar tant per {STRINGID}”.
+STR_1505    :{SMALLFONT}“No vull pujar a {STRINGID} mentre plou”.
+STR_1506    :{SMALLFONT}“Això està molt brut”.
+STR_1507    :{SMALLFONT}“No puc trobar la sortida”.
+STR_1508    :{SMALLFONT}“Vull baixar de {STRINGID}”.
+STR_1509    :{SMALLFONT}“Vull sortir de {STRINGID}”
+STR_1510    :{SMALLFONT}“No pujaré a {STRINGID} - No és gens segur”.
+STR_1511    :{SMALLFONT}“Aquest camí és repugnant”.
+STR_1512    :{SMALLFONT}“Això és angoixant. Hi ha massa gent”.
+STR_1513    :{SMALLFONT}“Aquí hi ha molt vandalisme”.
+STR_1514    :{SMALLFONT}“Aquestes vistes són impressionants!”
+STR_1515    :{SMALLFONT}“Aquest parc està molt net i força endreçat”.
+STR_1516    :{SMALLFONT}“Aquests salts de les fonts són magnífics”.
+STR_1517    :{SMALLFONT}“La música és agradable”.
+STR_1518    :{SMALLFONT}“Aquest globus de {STRINGID} està bé de preu”.
+STR_1519    :{SMALLFONT}“Aquesta joguina de peluix de {STRINGID} està bé de preu”.
+STR_1520    :{SMALLFONT}“Aquest parc del mapa de {STRINGID} està bé de preu”.
+STR_1521    :{SMALLFONT}“Aquesta foto de record de l'atracció {STRINGID} està bé de preu”.
+STR_1522    :{SMALLFONT}“Aquest paraigües de {STRINGID} està bé de preu”.
+STR_1523    :{SMALLFONT}“Aquesta beguda de {STRINGID} està bé de preu”.
+STR_1524    :{SMALLFONT}“Aquesta hamburguesa de {STRINGID} està bé de preu”.
+STR_1525    :{SMALLFONT}“Aquestes patates fregides de {STRINGID} estan bé de preu”.
+STR_1526    :{SMALLFONT}“Aquest gelat de {STRINGID} està bé de preu”.
+STR_1527    :{SMALLFONT}“Aquest cotó fluix de sucre{STRINGID} està bé de preu”.
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}Aquest tros de pizza de {STRINGID} està bé de preu{ENDQUOTES}.
+STR_1531    :{SMALLFONT}“Aquest tros de pizza de {STRINGID} està bé de preu”.
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}Aquestes crispetes de {STRINGID} estan bé de preu{ENDQUOTES}.
-STR_1534    :{SMALLFONT}{OPENQUOTES}Aquest entrepà de salsitxa de Frankfurt {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1535    :{SMALLFONT}{OPENQUOTES}Aquest tentacle de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1536    :{SMALLFONT}{OPENQUOTES}Aquesta gorra de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1537    :{SMALLFONT}{OPENQUOTES}Aquesta poma de caramel {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1538    :{SMALLFONT}{OPENQUOTES}Aquesta samarreta de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1539    :{SMALLFONT}{OPENQUOTES}Aquest dònut de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1540    :{SMALLFONT}{OPENQUOTES}Aquest cafè de {STRINGID} està bé de preu{ENDQUOTES}.
+STR_1533    :{SMALLFONT}“Aquestes crispetes de {STRINGID} estan bé de preu”.
+STR_1534    :{SMALLFONT}“Aquest entrepà de salsitxa de Frankfurt {STRINGID} està bé de preu”.
+STR_1535    :{SMALLFONT}“Aquest tentacle de {STRINGID} està bé de preu”.
+STR_1536    :{SMALLFONT}“Aquesta gorra de {STRINGID} està bé de preu”.
+STR_1537    :{SMALLFONT}“Aquesta poma de caramel {STRINGID} està bé de preu”.
+STR_1538    :{SMALLFONT}“Aquesta samarreta de {STRINGID} està bé de preu”.
+STR_1539    :{SMALLFONT}“Aquest dònut de {STRINGID} està bé de preu”.
+STR_1540    :{SMALLFONT}“Aquest cafè de {STRINGID} està bé de preu”.
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}Aquest pollastre fregit de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1543    :{SMALLFONT}{OPENQUOTES}Aquesta llimonada {STRINGID} està bé de preu{ENDQUOTES}.
+STR_1542    :{SMALLFONT}“Aquest pollastre fregit de {STRINGID} està bé de preu”.
+STR_1543    :{SMALLFONT}“Aquesta llimonada {STRINGID} està bé de preu”.
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Vaja!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}Tinc l'estranya sensació que algú m'està vigilant{ENDQUOTES}.
-STR_1552    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un globus de {STRINGID}{ENDQUOTES}.
-STR_1553    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una joguina de peluix {STRINGID}{ENDQUOTES}.
-STR_1554    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un mapa del parc de {STRINGID}{ENDQUOTES}.
-STR_1555    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una foto de record de {STRINGID}{ENDQUOTES}.
-STR_1556    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un paraigües de {STRINGID}{ENDQUOTES}.
-STR_1557    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una beguda de {STRINGID}{ENDQUOTES}.
-STR_1558    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una hamburguesa de {STRINGID}{ENDQUOTES}.
-STR_1559    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per unes patates fregides {STRINGID}{ENDQUOTES}.
-STR_1560    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un gelat de {STRINGID}{ENDQUOTES}.
-STR_1561    :{SMALLFONT}{OPENQUOTES}No penso pagar tant pel cotó fluix de caramel de {STRINGID}{ENDQUOTES}.
+STR_1550    :{SMALLFONT}“Vaja!”
+STR_1551    :{SMALLFONT}“Tinc l'estranya sensació que algú m'està vigilant”.
+STR_1552    :{SMALLFONT}“No penso pagar tant per un globus de {STRINGID}”.
+STR_1553    :{SMALLFONT}“No penso pagar tant per una joguina de peluix {STRINGID}”.
+STR_1554    :{SMALLFONT}“No penso pagar tant per un mapa del parc de {STRINGID}”.
+STR_1555    :{SMALLFONT}“No penso pagar tant per una foto de record de {STRINGID}”.
+STR_1556    :{SMALLFONT}“No penso pagar tant per un paraigües de {STRINGID}”.
+STR_1557    :{SMALLFONT}“No penso pagar tant per una beguda de {STRINGID}”.
+STR_1558    :{SMALLFONT}“No penso pagar tant per una hamburguesa de {STRINGID}”.
+STR_1559    :{SMALLFONT}“No penso pagar tant per unes patates fregides {STRINGID}”.
+STR_1560    :{SMALLFONT}“No penso pagar tant per un gelat de {STRINGID}”.
+STR_1561    :{SMALLFONT}“No penso pagar tant pel cotó fluix de caramel de {STRINGID}”.
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un tros de pizza de {STRINGID}{ENDQUOTES}.
+STR_1565    :{SMALLFONT}“No penso pagar tant per un tros de pizza de {STRINGID}”.
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per unes crispetes de {STRINGID}{ENDQUOTES}.
-STR_1568    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un entrepà de salsitxa de Frankfurt de {STRINGID}{ENDQUOTES}.
-STR_1569    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un tentacle de {STRINGID}{ENDQUOTES}.
-STR_1570    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una gorra de {STRINGID}{ENDQUOTES}.
-STR_1571    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una poma de caramel de {STRINGID}{ENDQUOTES}.
-STR_1572    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una samarreta de {STRINGID}{ENDQUOTES}.
-STR_1573    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un dònut de {STRINGID}{ENDQUOTES}.
-STR_1574    :{SMALLFONT}{OPENQUOTES}No penso pagar tant pel cafè de {STRINGID}{ENDQUOTES}.
+STR_1567    :{SMALLFONT}“No penso pagar tant per unes crispetes de {STRINGID}”.
+STR_1568    :{SMALLFONT}“No penso pagar tant per un entrepà de salsitxa de Frankfurt de {STRINGID}”.
+STR_1569    :{SMALLFONT}“No penso pagar tant per un tentacle de {STRINGID}”.
+STR_1570    :{SMALLFONT}“No penso pagar tant per una gorra de {STRINGID}”.
+STR_1571    :{SMALLFONT}“No penso pagar tant per una poma de caramel de {STRINGID}”.
+STR_1572    :{SMALLFONT}“No penso pagar tant per una samarreta de {STRINGID}”.
+STR_1573    :{SMALLFONT}“No penso pagar tant per un dònut de {STRINGID}”.
+STR_1574    :{SMALLFONT}“No penso pagar tant pel cafè de {STRINGID}”.
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}No penso pagar tant pel pollastre fregit de {STRINGID}{ENDQUOTES}.
-STR_1577    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una llimonada de {STRINGID}{ENDQUOTES}.
+STR_1576    :{SMALLFONT}“No penso pagar tant pel pollastre fregit de {STRINGID}”.
+STR_1577    :{SMALLFONT}“No penso pagar tant per una llimonada de {STRINGID}”.
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}Aquesta foto de record de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1585    :{SMALLFONT}{OPENQUOTES}Aquesta foto de record de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1586    :{SMALLFONT}{OPENQUOTES}Aquesta foto de record de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1587    :{SMALLFONT}{OPENQUOTES}Aquesta galeta pretzel de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1588    :{SMALLFONT}{OPENQUOTES}Aquesta xocolata calenta de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1589    :{SMALLFONT}{OPENQUOTES}Aquest te gelat de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1590    :{SMALLFONT}{OPENQUOTES}Aquest xurro de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1591    :{SMALLFONT}{OPENQUOTES}Aquestes ulleres de sol de {STRINGID} estan bé de preu{ENDQUOTES}.
-STR_1592    :{SMALLFONT}{OPENQUOTES}Aquests fideus xinesos amb vedella de {STRINGID} estan bé de preu{ENDQUOTES}.
-STR_1593    :{SMALLFONT}{OPENQUOTES}Aquests fideus xinesos d'arròs fregits de {STRINGID} estan bé de preu{ENDQUOTES}.
-STR_1594    :{SMALLFONT}{OPENQUOTES}Aquesta sopa de wonton de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1595    :{SMALLFONT}{OPENQUOTES}Aquesta sopa de mandonguilles de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1596    :{SMALLFONT}{OPENQUOTES}Aquest suc de fruita de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1597    :{SMALLFONT}{OPENQUOTES}Aquesta llet de soia de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1598    :{SMALLFONT}{OPENQUOTES}Aquest sujeonggwa de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1599    :{SMALLFONT}{OPENQUOTES}Aquest sandvitx submarí de {STRINGID} està bé de preu{ENDQUOTES}.
-STR_1600    :{SMALLFONT}{OPENQUOTES}Aquesta galeta de {STRINGID} està bé de preu{ENDQUOTES}.
+STR_1584    :{SMALLFONT}“Aquesta foto de record de {STRINGID} està bé de preu”.
+STR_1585    :{SMALLFONT}“Aquesta foto de record de {STRINGID} està bé de preu”.
+STR_1586    :{SMALLFONT}“Aquesta foto de record de {STRINGID} està bé de preu”.
+STR_1587    :{SMALLFONT}“Aquesta galeta pretzel de {STRINGID} està bé de preu”.
+STR_1588    :{SMALLFONT}“Aquesta xocolata calenta de {STRINGID} està bé de preu”.
+STR_1589    :{SMALLFONT}“Aquest te gelat de {STRINGID} està bé de preu”.
+STR_1590    :{SMALLFONT}“Aquest xurro de {STRINGID} està bé de preu”.
+STR_1591    :{SMALLFONT}“Aquestes ulleres de sol de {STRINGID} estan bé de preu”.
+STR_1592    :{SMALLFONT}“Aquests fideus xinesos amb vedella de {STRINGID} estan bé de preu”.
+STR_1593    :{SMALLFONT}“Aquests fideus xinesos d'arròs fregits de {STRINGID} estan bé de preu”.
+STR_1594    :{SMALLFONT}“Aquesta sopa de wonton de {STRINGID} està bé de preu”.
+STR_1595    :{SMALLFONT}“Aquesta sopa de mandonguilles de {STRINGID} està bé de preu”.
+STR_1596    :{SMALLFONT}“Aquest suc de fruita de {STRINGID} està bé de preu”.
+STR_1597    :{SMALLFONT}“Aquesta llet de soia de {STRINGID} està bé de preu”.
+STR_1598    :{SMALLFONT}“Aquest sujeonggwa de {STRINGID} està bé de preu”.
+STR_1599    :{SMALLFONT}“Aquest sandvitx submarí de {STRINGID} està bé de preu”.
+STR_1600    :{SMALLFONT}“Aquesta galeta de {STRINGID} està bé de preu”.
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Aquesta salsitxa rostida de {STRINGID} està bé de preu{ENDQUOTES}.
+STR_1604    :{SMALLFONT}“Aquesta salsitxa rostida de {STRINGID} està bé de preu”.
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -997,27 +997,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una foto de record de {STRINGID}{ENDQUOTES}.
-STR_1617    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una foto de record de {STRINGID}{ENDQUOTES}.
-STR_1618    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una foto de record de {STRINGID}{ENDQUOTES}.
-STR_1619    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una galeta pretzel de {STRINGID}{ENDQUOTES}.
-STR_1620    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una xocolata calenta de {STRINGID}{ENDQUOTES}.
-STR_1621    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un te gelat de {STRINGID}{ENDQUOTES}.
-STR_1622    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un xurro de {STRINGID}{ENDQUOTES}.
-STR_1623    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per unes ulleres de sol {STRINGID}{ENDQUOTES}.
-STR_1624    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per uns fideus xinesos amb vedella de {STRINGID}{ENDQUOTES}.
-STR_1625    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per uns fideus xinesos d'arròs fregits de {STRINGID}{ENDQUOTES}.
-STR_1626    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una sopa wonton de {STRINGID}{ENDQUOTES}.
-STR_1627    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una sopa de mandonguilles de {STRINGID}{ENDQUOTES}.
-STR_1628    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un suc de fruita de {STRINGID}{ENDQUOTES}.
-STR_1629    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per la llet de soia de {STRINGID}{ENDQUOTES}.
-STR_1630    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un sujeonggwa de {STRINGID}{ENDQUOTES}.
-STR_1631    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per un sandvitx submarí de {STRINGID}{ENDQUOTES}.
-STR_1632    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una galeta de {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}“No penso pagar tant per una foto de record de {STRINGID}”.
+STR_1617    :{SMALLFONT}“No penso pagar tant per una foto de record de {STRINGID}”.
+STR_1618    :{SMALLFONT}“No penso pagar tant per una foto de record de {STRINGID}”.
+STR_1619    :{SMALLFONT}“No penso pagar tant per una galeta pretzel de {STRINGID}”.
+STR_1620    :{SMALLFONT}“No penso pagar tant per una xocolata calenta de {STRINGID}”.
+STR_1621    :{SMALLFONT}“No penso pagar tant per un te gelat de {STRINGID}”.
+STR_1622    :{SMALLFONT}“No penso pagar tant per un xurro de {STRINGID}”.
+STR_1623    :{SMALLFONT}“No penso pagar tant per unes ulleres de sol {STRINGID}”.
+STR_1624    :{SMALLFONT}“No penso pagar tant per uns fideus xinesos amb vedella de {STRINGID}”.
+STR_1625    :{SMALLFONT}“No penso pagar tant per uns fideus xinesos d'arròs fregits de {STRINGID}”.
+STR_1626    :{SMALLFONT}“No penso pagar tant per una sopa wonton de {STRINGID}”.
+STR_1627    :{SMALLFONT}“No penso pagar tant per una sopa de mandonguilles de {STRINGID}”.
+STR_1628    :{SMALLFONT}“No penso pagar tant per un suc de fruita de {STRINGID}”.
+STR_1629    :{SMALLFONT}“No penso pagar tant per la llet de soia de {STRINGID}”.
+STR_1630    :{SMALLFONT}“No penso pagar tant per un sujeonggwa de {STRINGID}”.
+STR_1631    :{SMALLFONT}“No penso pagar tant per un sandvitx submarí de {STRINGID}”.
+STR_1632    :{SMALLFONT}“No penso pagar tant per una galeta de {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}No penso pagar tant per una salsitxa rostida de {STRINGID}{ENDQUOTES}.
+STR_1636    :{SMALLFONT}“No penso pagar tant per una salsitxa rostida de {STRINGID}”.
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1029,10 +1029,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Ajuda! Baixeu-me!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}M'estic quedant sense diners!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Ostres! Estan construint una atracció nova!{ENDQUOTES}
-STR_1653    :{SMALLFONT}{OPENQUOTES}...i aquí estem en {STRINGID}!{ENDQUOTES}
+STR_1648    :{SMALLFONT}“Ajuda! Baixeu-me!”
+STR_1649    :{SMALLFONT}“M'estic quedant sense diners!”
+STR_1650    :{SMALLFONT}“Ostres! Estan construint una atracció nova!”
+STR_1653    :{SMALLFONT}“...i aquí estem en {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Pensaments recents:
 STR_1655    :{SMALLFONT}{BLACK}Construeix camí al terra
 STR_1656    :{SMALLFONT}{BLACK}Construeix camí al pont o al túnel
@@ -1442,11 +1442,11 @@ STR_2068    :una ració de pollastre fregit
 STR_2069    :una mica de llimonada
 STR_2070    :una capsa buida
 STR_2071    :una ampolla buida
-STR_2072    :Globus de {OPENQUOTES}{STRINGID}{ENDQUOTES}
-STR_2073    :Joguina de peluix de {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2072    :Globus de “{STRINGID}”
+STR_2073    :Joguina de peluix de “{STRINGID}”
 STR_2074    :Mapa de {STRINGID}
 STR_2075    :Foto de record de {STRINGID}
-STR_2076    :Paraigües de {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2076    :Paraigües de “{STRINGID}”
 STR_2077    :Beguda
 STR_2078    :Hamburguesa
 STR_2079    :Patates fregides
@@ -1460,9 +1460,9 @@ STR_2086    :Cupó de {STRINGID}
 STR_2087    :Crispetes
 STR_2088    :Entrepà de salsitxa de Frankfurt
 STR_2089    :Tentacle
-STR_2090    :Gorra de {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2090    :Gorra de “{STRINGID}”
 STR_2091    :Poma de caramel
-STR_2092    :Samarreta de {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2092    :Samarreta de “{STRINGID}”
 STR_2093    :Dònut
 STR_2094    :Cafè
 STR_2095    :Tassa buida
@@ -1571,8 +1571,8 @@ STR_2212    :{SMALLFONT}{BLACK}Mostra una llista dels guardes de seguretat del p
 STR_2213    :{SMALLFONT}{BLACK}Mostra una llista dels animadors del parc.
 STR_2214    :No es pot construir mentre la partida està en pausa!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} de {STRINGID} encara no ha tornat a {STRINGID}!{NEWLINE}Comproveu què li ha passat.
 STR_2219    :{RED}{COMMA16} persones han mort en l'accident de {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{COMMA16}
@@ -1673,8 +1673,8 @@ STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}al voltant de {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Espai necessari: {BLACK}{COMMA16} x {COMMA16} blocs
 STR_2321    :{WINDOW_COLOUR_2}Nombre d'atraccions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Empleats: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Extensió del parc: {BLACK}{COMMA32} m{SQUARED}
-STR_2324    :{WINDOW_COLOUR_2}Mida del parc: {BLACK}{COMMA32} ft{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Extensió del parc: {BLACK}{COMMA32} m²
+STR_2324    :{WINDOW_COLOUR_2}Mida del parc: {BLACK}{COMMA32} ft²
 STR_2325    :{SMALLFONT}{BLACK}Compreu terreny per estendre el parc.
 STR_2326    :{SMALLFONT}{BLACK}Compreu drets de construcció per construir per dalt i per baix del terreny exterior del parc.
 STR_2327    :Opcions
@@ -1684,16 +1684,16 @@ STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Marques d'alçada:
 STR_2332    :Unitats
 STR_2333    :Efectes de so
-STR_2334    :Lliura ({POUND})
+STR_2334    :Lliura (£)
 STR_2335    :Dòlar ($)
 STR_2336    :Franc (F)
 STR_2337    :Marc alemà (DM)
-STR_2338    :Yen ({YEN})
+STR_2338    :Yen (¥)
 STR_2339    :Pesseta (Pts) revisar!!!!
 STR_2340    :Lliura (L)
 STR_2341    :Florí (ƒ)
 STR_2342    :Corona sueca (kr)
-STR_2343    :Euro ({EURO})
+STR_2343    :Euro (€)
 STR_2344    :Imperial
 STR_2345    :Mètric
 STR_2347    :{RED}{STRINGID} s'ha ofegat!
@@ -1714,8 +1714,8 @@ STR_2362    :{SMALLFONT}{BLACK}Activa o desactiva el suavitzat de les vores de l
 STR_2363    :Mostra la quadrícula
 STR_2364    :{SMALLFONT}{BLACK}Mostra o amaga la quadrícula del terreny.
 STR_2365    :El banc no vol prestar-vos més diners!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :Celsius (°C)
+STR_2367    :Fahrenheit (°F)
 STR_2368    :Cap
 STR_2369    :Baix
 STR_2370    :Mitjà
@@ -1823,8 +1823,8 @@ STR_2481    :{SMALLFONT}{BLACK}Mostra el gràfic de l'acceleració lateral respe
 STR_2482    :{SMALLFONT}{BLACK}Benefici: {CURRENCY} per setmana.   Valoració del parc: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Benefici setmanal: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Benefici setmanal: {RED}{CURRENCY2DP}
-STR_2487    :Mostra els noms {LEFTGUILLEMET}reals{RIGHTGUILLEMET} dels visitants
-STR_2488    :{SMALLFONT}{BLACK}Alterna entre mostrar els noms {LEFTGUILLEMET}reals{RIGHTGUILLEMET} dels visitants o el nombre que se li ha assignat.
+STR_2487    :Mostra els noms «reals» dels visitants
+STR_2488    :{SMALLFONT}{BLACK}Alterna entre mostrar els noms «reals» dels visitants o el nombre que se li ha assignat.
 STR_2489    :Dreceres de teclat...
 STR_2490    :Dreceres de teclat
 STR_2491    :Reinicia les tecles
@@ -2077,12 +2077,12 @@ STR_2738    :Música del menú principal:
 STR_2739    :Cap
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :El fitxer {LEFTGUILLEMET}css50.dat{RIGHTGUILLEMET} no s'ha trobat.
-STR_2743    :Copieu {LEFTGUILLEMET}data/css17.dat{RIGHTGUILLEMET} de la vostra instal·lació del RCT1 en {LEFTGUILLEMET}data/css50.dat{RIGHTGUILLEMET} a la instal·lació del RCT2, o establiu correctament el camí del RCT1 a la pestanya d'altres opcions.
+STR_2742    :El fitxer «css50.dat» no s'ha trobat.
+STR_2743    :Copieu «data/css17.dat» de la vostra instal·lació del RCT1 en «data/css50.dat» a la instal·lació del RCT2, o establiu correctament el camí del RCT1 a la pestanya d'altres opcions.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
+STR_2747    :”
 STR_2749    :El meu nou escenari
 # New strings used in the cheats window previously these were ???
 STR_2750    :Moure tots els ítems cap amunt
@@ -2104,7 +2104,7 @@ STR_2774    :Pantalla completa
 STR_2775    :Pantalla completa (sense vores)
 STR_2776    :Idioma:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Vista #{COMMA16}
 STR_2780    :Vista extra
 # End of new strings
@@ -2112,7 +2112,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Canvia la drecera de teclat
-STR_2785    :{WINDOW_COLOUR_2}Premeu la nova drecera de teclat per:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Premeu la nova drecera de teclat per:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Feu clic a la descripció d'una drecera per canviar-ne les tecles assignades.
 STR_2787    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Felicitats!{NEWLINE}{BLACK}Heu aconseguit el vostre objectiu amb un valor d'empresa de {CURRENCY}!
@@ -2158,23 +2158,23 @@ STR_2827    :{WINDOW_COLOUR_2}Premi als millors dissenys d'atraccions
 STR_2828    :{WINDOW_COLOUR_2}Premi als esquemes de colors més treballats
 STR_2829    :{WINDOW_COLOUR_2}Premi als camins més confusos
 STR_2830    :{WINDOW_COLOUR_2}Premi al parc amb millors atraccions suaus
-STR_2831    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més brut{RIGHTGUILLEMET}!
-STR_2832    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més net{RIGHTGUILLEMET}!
-STR_2833    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millors muntanyes russes{RIGHTGUILLEMET}!
-STR_2834    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més valorat{RIGHTGUILLEMET}!
-STR_2835    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més bonic{RIGHTGUILLEMET}!
-STR_2836    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc menys valorat{RIGHTGUILLEMET}!
-STR_2837    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més segur{RIGHTGUILLEMET}!
-STR_2838    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi a la millor plantilla{RIGHTGUILLEMET}!
-STR_2839    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millor menjar{RIGHTGUILLEMET}!
-STR_2840    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb pitjor menjar{RIGHTGUILLEMET}!
-STR_2841    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millors lavabos{RIGHTGUILLEMET}!
-STR_2842    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc més decebedor{RIGHTGUILLEMET}!
-STR_2843    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millors atraccions aquàtiques{RIGHTGUILLEMET}!
-STR_2844    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi als millors dissenys d'atraccions{RIGHTGUILLEMET}!
-STR_2845    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi als esquemes de colors més treballats{RIGHTGUILLEMET}!
-STR_2846    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi als camins més confusos{RIGHTGUILLEMET}!
-STR_2847    :{TOPAZ}El vostre parc ha rebut el {LEFTGUILLEMET}Premi al parc amb millors atraccions suaus{RIGHTGUILLEMET}!
+STR_2831    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més brut»!
+STR_2832    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més net»!
+STR_2833    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors muntanyes russes»!
+STR_2834    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més valorat»!
+STR_2835    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més bonic»!
+STR_2836    :{TOPAZ}El vostre parc ha rebut el «Premi al parc menys valorat»!
+STR_2837    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més segur»!
+STR_2838    :{TOPAZ}El vostre parc ha rebut el «Premi a la millor plantilla»!
+STR_2839    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millor menjar»!
+STR_2840    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb pitjor menjar»!
+STR_2841    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors lavabos»!
+STR_2842    :{TOPAZ}El vostre parc ha rebut el «Premi al parc més decebedor»!
+STR_2843    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors atraccions aquàtiques»!
+STR_2844    :{TOPAZ}El vostre parc ha rebut el «Premi als millors dissenys d'atraccions»!
+STR_2845    :{TOPAZ}El vostre parc ha rebut el «Premi als esquemes de colors més treballats»!
+STR_2846    :{TOPAZ}El vostre parc ha rebut el «Premi als camins més confusos»!
+STR_2847    :{TOPAZ}El vostre parc ha rebut el «Premi al parc amb millors atraccions suaus»!
 STR_2848    :{WINDOW_COLOUR_2}Sense premis recents
 STR_2849    :S'ha instal·lat un nou escenari.
 STR_2850    :S'ha instal·lat un nou disseny de via.
@@ -2199,37 +2199,37 @@ STR_2872    :{WINDOW_COLOUR_2}Obertura - Poet and Peasant:   (Suppe) sense copyr
 STR_2873    :{WINDOW_COLOUR_2}Popurri de valsos:   (Johann Strauss) sense copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (tradicional)
 STR_2875    :{WINDOW_COLOUR_2}Gravacions originals (P) 1976 C.J.Mears Organization, amb els permisos corresponents
-STR_2876    :{WINDOW_COLOUR_2}Música principal del RollerCoaster Tycoon 2:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Mostres cortesia de Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, interpretat per Peter James Adcock) enregistraments {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}Música principal del RollerCoaster Tycoon 2:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(Mostres cortesia de Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, interpretat per Peter James Adcock) enregistraments © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Esquema de color principal
 STR_2972    :Esquema de color alternatiu 1
 STR_2973    :Esquema de color alternatiu 2
@@ -2246,7 +2246,7 @@ STR_2983    :Escriviu el nou text del cartell:
 STR_2984    :No es pot establir aquest text per al cartell...
 STR_2985    :Cartell
 STR_2986    :{SMALLFONT}{BLACK}Canvia el text del cartell.
-STR_2987    :{SMALLFONT}{BLACK}Canvia el text del cartell a {LEFTGUILLEMET}No passeu{RIGHTGUILLEMET}.
+STR_2987    :{SMALLFONT}{BLACK}Canvia el text del cartell a «No passeu».
 STR_2988    :{SMALLFONT}{BLACK}Elimina el cartell.
 STR_2989    :{SMALLFONT}{BLACK}Seleccioneu el color principal.
 STR_2990    :{SMALLFONT}{BLACK}Seleccioneu el color del text.
@@ -2322,7 +2322,7 @@ STR_3063    :{SMALLFONT}{BLACK}Canal d'aigua (via submergida)
 STR_3064    :Parcs per principiants
 STR_3065    :Parcs desafiants
 STR_3066    :Parcs per experts
-STR_3067    :Parcs {OPENQUOTES}reals{ENDQUOTES}
+STR_3067    :Parcs “reals”
 STR_3068    :Altres parcs
 STR_3069    :Secció superior
 STR_3070    :Nivella la inclinació
@@ -2684,7 +2684,7 @@ STR_5170    :{SMALLFONT}{BLACK}Posa el nom dels usuaris del xat del Twitch als v
 STR_5171    :Vigila als usuaris del xat
 STR_5172    :{SMALLFONT}{BLACK}Vigila i dóna informació rellevant de què fan els visitants que porten el nom d'algun usuari del xat del Twitch.
 STR_5173    :Mostra el xat com a notícies
-STR_5174    :{SMALLFONT}{BLACK}Mostra els missatges del xat del Twitch precedits per {LEFTGUILLEMET}!news{RIGHTGUILLEMET} per rebre les notificacions durant la partida.
+STR_5174    :{SMALLFONT}{BLACK}Mostra els missatges del xat del Twitch precedits per «!news» per rebre les notificacions durant la partida.
 STR_5175    :Escriu el nom del canal Twitch
 STR_5176    :Activa la integració del Twitch
 STR_5177    :Mode de pantalla:
@@ -2883,8 +2883,8 @@ STR_5371    :Selecció d'objectes
 STR_5372    :Inverteix el desplaçament amb el ratolí
 STR_5373    :Nom {STRINGID}
 STR_5374    :Data {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Desades
 STR_5378    :{SMALLFONT}{BLACK}Instruccions
 STR_5379    :{SMALLFONT}{BLACK}Avança a la pròxima ordre d'espera.
@@ -2911,7 +2911,7 @@ STR_5399    :Prem el botó de parada per continuar editant-la.
 STR_5400    :Aquesta seqüència no es pot editar.
 STR_5401    :Crea una nova seqüència per al menú principal i poder fer-hi canvis.
 STR_5402    :No s'ha pogut carregar la seqüència per al menú principal.
-STR_5403    :Potser no hi ha cap ordre de {LEFTGUILLEMET}Carrega{RIGHTGUILLEMET} o d'{LEFTGUILLEMET}Espera{RIGHTGUILLEMET} o bé la partida desada no és vàlida.
+STR_5403    :Potser no hi ha cap ordre de «Carrega» o d'«Espera» o bé la partida desada no és vàlida.
 STR_5404    :El nom ja existeix.
 STR_5405    :Escriviu un nom per a la partida
 STR_5406    :Escriviu un nom per a la seqüència
@@ -2947,7 +2947,7 @@ STR_5435    :Canvia el nom de la desada
 STR_5436    :Edita seqüències del menú principal...
 STR_5437    :No s'ha escollit cap desada
 STR_5438    :No es poden fer canvis mentre l'editor d'ordres estigui obert.
-STR_5439    :Cal una ordre d'espera d'almenys 4 segons per a una ordre de {LEFTGUILLEMET}Torna a començar{RIGHTGUILLEMET}.
+STR_5439    :Cal una ordre d'espera d'almenys 4 segons per a una ordre de «Torna a començar».
 STR_5440    :Minimitza la pantalla completa si es perd el focus
 STR_5441    :{SMALLFONT}{BLACK}Identifica les atraccions per tipus de via.{NEWLINE}Així els vehicles després{NEWLINE}poden modificar-se (com al RCT1).
 STR_5442    :Força la valoració del parc:
@@ -3089,7 +3089,7 @@ STR_5579    :Factor d'escala:
 STR_5580    :Corona txeca (Kč)
 STR_5581    :Mostra els FPS
 STR_5582    :Mantén el punter dins la finestra
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16}m/s
 STR_5584    :Sistema internacional
 STR_5585    :{SMALLFONT}{BLACK}Desbloca els límits operatius de funcionament, permetent que les cadenes d'elevació puguin funcionar a {VELOCITY}.
 STR_5586    :Obre automàticament estands i botigues
@@ -3131,7 +3131,7 @@ STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :Parcs {OPENQUOTES}reals{ENDQUOTES}
+STR_5625    :Parcs “reals”
 STR_5626    :Altres parcs
 STR_5627    :Agrupa la llista d'escenaris per:
 STR_5628    :Joc original
@@ -3233,7 +3233,7 @@ STR_5758    :{OUTLINE}{GREEN}{STRING} s'ha unit a la partida.
 STR_5759    :S'està descarregant el mapa... ({INT32}/{INT32} KiB)
 STR_5760    :Dòlars de Hong Kong(HK$)
 STR_5761    :Nou dòlar de Taiwan(NT$)
-STR_5762    :Iuan xinès (CN{YEN})
+STR_5762    :Iuan xinès (CN¥)
 STR_5763    :Tots els arxius
 STR_5764    :Tipus d'atracció no vàlida
 STR_5765    :Per editar una atracció, cal que tingui un tipus vàlid.
@@ -3253,7 +3253,7 @@ STR_5778    :Construït fa {COMMA16} anys
 STR_5779    :Ingressos: {CURRENCY2DP} per hora
 STR_5780    :Cost de funcionament: {CURRENCY2DP} per hora
 STR_5781    :Cost de funcionament desconegut
-STR_5782    :Esteu connectat. Premeu {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} per xatejar.
+STR_5782    :Esteu connectat. Premeu «{STRING}» per xatejar.
 STR_5783    :{WINDOW_COLOUR_2}Escenari blocat
 STR_5784    :{BLACK}Completeu els escenaris anteriors per desblocar-lo.
 STR_5785    :No es pot canviar el nom del grup...
@@ -3262,7 +3262,7 @@ STR_5787    :{COMMA32} jugadors connectats
 STR_5788    :Interval de revisió per defecte:
 STR_5789    :Desactiva els efectes de llamps
 STR_5790    :{SMALLFONT}{BLACK}Activa l'estil de pagaments del RCT1{NEWLINE}(es podran editar tant els preus d'entrada al parc com el de les entrades a les atraccions).
-STR_5791    :{SMALLFONT}{BLACK}Estableix la fiabilitat de totes les atraccions al 100%{NEWLINE}i n'estableix la data de construcció a {LEFTGUILLEMET}aquest any{RIGHTGUILLEMET}.
+STR_5791    :{SMALLFONT}{BLACK}Estableix la fiabilitat de totes les atraccions al 100%{NEWLINE}i n'estableix la data de construcció a «aquest any».
 STR_5792    :{SMALLFONT}{BLACK}Repara atraccions avariades
 STR_5793    :{SMALLFONT}{BLACK}Esborra l'historial de sinistres de les atraccions,{NEWLINE}i els visitants no es queixaran de que no són segures.
 STR_5794    :{SMALLFONT}{BLACK}Alguns escenaris desactiven l'edició{NEWLINE}d'algunes atraccions del parc.{NEWLINE}Aquesta trampa elimina aquesta restricció.
@@ -3284,13 +3284,13 @@ STR_5809    :{WINDOW_COLOUR_2}Nombre de quioscos d'informació i altres instal·
 STR_5810    :Desactiva els límits de vehicles
 STR_5811    :{SMALLFONT}{BLACK}Si s'activa, podeu tenir{NEWLINE}fins a 255 vagons per tren{NEWLINE}i 31 trens per atracció.
 STR_5812    :Mostra la finestra multijugador
-STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
-STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5813    :“{STRING}”
+STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra el comptador de FPS del joc.
 STR_5816    :{SMALLFONT}{BLACK}Estableix la relació d'escala del joc.{NEWLINE}Sol ser útil quan es juga amb{NEWLINE}pantalles d'alta resolució.
-STR_5817    :{SMALLFONT}{BLACK}Estableix el tipus d'escalat de la interfície gràfica. Requereix renderitzat per maquinari.{NEWLINE}El mètode lineal és més suau, però la imatge pot semblar borrosa. El mètode {LEFTGUILLEMET}Nearest Neighbour suau{RIGHTGUILLEMET} crea imatges nítides, però pot causar problemes de rendiment.
+STR_5817    :{SMALLFONT}{BLACK}Estableix el tipus d'escalat de la interfície gràfica. Requereix renderitzat per maquinari.{NEWLINE}El mètode lineal és més suau, però la imatge pot semblar borrosa. El mètode «Nearest Neighbour suau» crea imatges nítides, però pot causar problemes de rendiment.
 STR_5819    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s'activa l'Steam.
 STR_5820    :{SMALLFONT}{BLACK}Minimitza el joc si es perd el focus{NEWLINE}mentre s'està en mode de pantalla completa.
 STR_5822    :{SMALLFONT}{BLACK}Mostra el cicle dia/nit.{NEWLINE}El cicle sencer equival a un mes a la partida.
@@ -3303,11 +3303,11 @@ STR_5828    :{SMALLFONT}{BLACK}Canvia les unitats que s'usen per mesurar distàn
 STR_5829    :{SMALLFONT}{BLACK}Canvia el format de moneda. Els efectes són només visuals, ja que no s'aplica cap tipus de canvi.
 STR_5830    :{SMALLFONT}{BLACK}Canvia l'idioma de la interfície.
 STR_5831    :{SMALLFONT}{BLACK}Canvia la unitat de mesura{NEWLINE}de la temperatura.
-STR_5832    :{SMALLFONT}{BLACK}Mostra les alçades com a unitats genèriques (-2, -1, 0, +1, +2...){NEWLINE}en lloc d'emprar unitats de distància especificades en {LEFTGUILLEMET}Longitud i velocitat{RIGHTGUILLEMET}.
+STR_5832    :{SMALLFONT}{BLACK}Mostra les alçades com a unitats genèriques (-2, -1, 0, +1, +2...){NEWLINE}en lloc d'emprar unitats de distància especificades en «Longitud i velocitat».
 STR_5833    :{SMALLFONT}{BLACK}Canvia el format de les dates.
 STR_5834    :{SMALLFONT}{BLACK}Trieu quin dispositiu de so ha de fer servir l'OpenRCT2.
 STR_5835    :{SMALLFONT}{BLACK}Silencia el joc si la finestra perd el focus.
-STR_5836    :{SMALLFONT}{BLACK}Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema de l'RCT1, cal que copieu {LEFTGUILLEMET}data/css17.dat{RIGHTGUILLEMET} de la carpeta del RCT1 al directori del RCT2 com a {LEFTGUILLEMET}data/css50.dat{RIGHTGUILLEMET}, o bé establiu correctament la carpeta del RCT1 a la pestanya d'altres opcions.
+STR_5836    :{SMALLFONT}{BLACK}Seleccioneu la peça de música per al menú principal.{NEWLINE}Si seleccioneu el tema de l'RCT1, cal que copieu «data/css17.dat» de la carpeta del RCT1 al directori del RCT2 com a «data/css50.dat», o bé establiu correctament la carpeta del RCT1 a la pestanya d'altres opcions.
 STR_5837    :{SMALLFONT}{BLACK}Crea i gestiona els temes de la interfície personalitzats.
 STR_5838    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de finances a la barra d'eines.
 STR_5839    :{SMALLFONT}{BLACK}Mostra un botó per a la finestra de recerques a la barra d'eines.
@@ -3472,7 +3472,7 @@ STR_5998    :Afegeix diners
 STR_5999    :Estableix quantitat de diners
 STR_6000    :Introduïu el valor nou
 STR_6001    :Activa els efectes d'il·luminació (experimental)
-STR_6002    :{SMALLFONT}{BLACK}Els fanals i atraccions encendran els seus llums per la nit.{NEWLINE}Cal que s'activi i utilitzi el motor gràfic de {LEFTGUILLEMET}Renderitzat per maquinari{RIGHTGUILLEMET}.
+STR_6002    :{SMALLFONT}{BLACK}Els fanals i atraccions encendran els seus llums per la nit.{NEWLINE}Cal que s'activi i utilitzi el motor gràfic de «Renderitzat per maquinari».
 STR_6003    :Vista retallada
 STR_6004    :Vista retallada
 STR_6005    :Activa la vista retallada
@@ -3529,7 +3529,7 @@ STR_6055    :Fitxer de mapa d'alçades de l'OpenRCT2
 STR_6056    :{SMALLFONT}{BLACK}Botó de silenci
 STR_6057    :{SMALLFONT}{BLACK}Mostra un botó a la barra d'eines per activar o silenciar el so.
 STR_6058    :Silencia
-STR_6059    :{RIGHTGUILLEMET}
+STR_6059    :»
 STR_6060    :Mostra animacions de compres
 STR_6061    :{SMALLFONT}{BLACK}Mostra un efecte mostrant les compres{NEWLINE}que fan els visitants.
 STR_6062    :{OUTLINE}{GREEN}+{CURRENCY2DP}
@@ -3540,34 +3540,34 @@ STR_6066    :{SMALLFONT}{BLACK}Registra totes les accions d'usuari en un arxiu a
 STR_6067    :S'ha iniciat el servidor.
 STR_6068    :S'ha apagat el servidor.
 STR_6069    :El/la {STRING} està expulsat per en/la {STRING}.
-STR_6070    :El/la {STRING} ha estat afegit al grup {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} per en/la {STRING}.
-STR_6071    :El/la {STRING} ha creat un grup de jugadors nou: {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}
-STR_6072    :El/la {STRING} ha esborrat el grup de jugadors {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6073    :El/la {STRING} ha editat els permisos del grup de jugadors {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6074    :El/la {STRING} ha canviat el nom del grup de {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6075    :El/la {STRING} ha canviat el grup de jugadors per defecte a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6076    :El/la {STRING} ha usat/commutat la trampa {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6070    :El/la {STRING} ha estat afegit al grup «{STRING}» per en/la {STRING}.
+STR_6071    :El/la {STRING} ha creat un grup de jugadors nou: «{STRING}»
+STR_6072    :El/la {STRING} ha esborrat el grup de jugadors «{STRING}».
+STR_6073    :El/la {STRING} ha editat els permisos del grup de jugadors «{STRING}».
+STR_6074    :El/la {STRING} ha canviat el nom del grup de «{STRING}» a «{STRING}».
+STR_6075    :El/la {STRING} ha canviat el grup de jugadors per defecte a «{STRING}».
+STR_6076    :El/la {STRING} ha usat/commutat la trampa «{STRING}».
 STR_6077    :Afegeix diners
-STR_6078    :El/la {STRING} ha construït l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6079    :El/la {STRING} ha retirat l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6080    :El/la {STRING} ha modificat l'aparença de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6081    :El/la {STRING} ha tancat l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6082    :El/la {STRING} ha obert l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6083    :El/la {STRING} ha posat en prova l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6084    :El/la {STRING} ha modificat les opcions dels vehicles de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6085    :El/la {STRING} ha modificat les opcions d'atracció de {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6086    :El/la {STRING} ha canviat el nom de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6087    :El/la {STRING} ha canviat el preu de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {STRING}
-STR_6088    :El/la {STRING} ha canviat el preu secundari de l'atracció {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {STRING}.
-STR_6089    :El/la {STRING} ha canviat el nom del parc {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET} a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6078    :El/la {STRING} ha construït l'atracció «{STRING}».
+STR_6079    :El/la {STRING} ha retirat l'atracció «{STRING}».
+STR_6080    :El/la {STRING} ha modificat l'aparença de l'atracció «{STRING}».
+STR_6081    :El/la {STRING} ha tancat l'atracció «{STRING}».
+STR_6082    :El/la {STRING} ha obert l'atracció «{STRING}».
+STR_6083    :El/la {STRING} ha posat en prova l'atracció «{STRING}».
+STR_6084    :El/la {STRING} ha modificat les opcions dels vehicles de l'atracció «{STRING}».
+STR_6085    :El/la {STRING} ha modificat les opcions d'atracció de «{STRING}».
+STR_6086    :El/la {STRING} ha canviat el nom de l'atracció «{STRING}» a «{STRING}».
+STR_6087    :El/la {STRING} ha canviat el preu de l'atracció «{STRING}» a {STRING}
+STR_6088    :El/la {STRING} ha canviat el preu secundari de l'atracció «{STRING}» a {STRING}.
+STR_6089    :El/la {STRING} ha canviat el nom del parc «{STRING}» a «{STRING}».
 STR_6090    :El/la {STRING} ha obert el parc.
 STR_6091    :El/la {STRING} ha tancat el parc.
 STR_6092    :El/la {STRING} ha canviat el preu de l'entrada al parc a {STRING}.
 STR_6093    :El/la {STRING} ha afegit decoracions.
 STR_6094    :El/la {STRING} ha tret decoracions.
 STR_6095    :El/la {STRING} ha editat decoracions.
-STR_6096    :El/la {STRING} ha canviat el nom del senyal a {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
-STR_6097    :El/la {STRING} ha construït una peça de la via de {LEFTGUILLEMET}{STRING}{RIGHTGUILLEMET}.
+STR_6096    :El/la {STRING} ha canviat el nom del senyal a «{STRING}».
+STR_6097    :El/la {STRING} ha construït una peça de la via de «{STRING}».
 STR_6098    :El/la {STRING} ha tret una peça de via.
 STR_6099    :Us heu connectat al servidor.
 STR_6100    :Us heu desconnectat del servidor.
@@ -3587,7 +3587,7 @@ STR_6113    :Una muntanya russa alta sense inversions, amb llargues caigudes, al
 STR_6114    :Els passatgers viatgen poc a poc en vehicles autopropulsats sobre la ruta que segueix la via.
 STR_6115    :Camions 4x4 gegants i autopropulsats que poden pujar per pendents empinades.
 STR_6116    :Muntanya russa amb vagons amples que llisca per una via d'acer llisa, passant per una bona varietat d'inversions.
-STR_6117    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats, així com d'una part {LEFTGUILLEMET}a l'aire lliure{RIGHTGUILLEMET} damunt dels turons.
+STR_6117    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats, així com d'una part «a l'aire lliure» damunt dels turons.
 STR_6118    :Muntanya russa suau per gent que encara no s'atreveix amb muntanyes russes grans.
 STR_6119    :Una muntanya russa barata i fàcil de construir, però amb una alçada limitada.
 STR_6120    :{BABYBLUE}Nou vehicle disponible per {STRINGID}:{NEWLINE}{STRINGID}
@@ -3608,7 +3608,7 @@ STR_6134    :Neteja les decoracions
 STR_6135    :El client ha enviat una sol·licitud no vàlida.
 STR_6136    :El servidor ha enviat una sol·licitud no vàlida.
 STR_6137    :OpenRCT2, un clon de codi obert del Roller Coaster Tycoon 2.
-STR_6138    :L'OpenRCT2 és obra de molts autors. En trobareu una llista completa en {OPENQUOTES}contributors.md{ENDQUOTES}. Per més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
+STR_6138    :L'OpenRCT2 és obra de molts autors. En trobareu una llista completa en “contributors.md”. Per més informació, visiteu http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tots els noms de productes i de noms de companyies pertanyen als seus propietaris. L'ús d'aquests noms no n'implica cap tipus d'afiliació o promoció.
 STR_6140    :Registre de canvis...
 STR_6141    :Barra d'eines inferior del RCT1
@@ -3629,12 +3629,12 @@ STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·
 STR_6156    :El nom està reservat.
 STR_6157    :Consola
 STR_6158    :Aquest arxiu no s'ha pogut carregar...{NEWLINE}Versió RCTC incompatible: {COMMA16}
-STR_6159    :{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} suau
+STR_6159    :«Nearest Neighbour» suau
 STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
-STR_6162    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET} giratori
+STR_6162    :«Wild Mouse» giratori
 STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument per desorientar els passatgers.
-STR_6164    :{WHITE}{CROSS}
+STR_6164    :{WHITE}❌
 STR_6165    :Sincronització vertical
 STR_6166    :{SMALLFONT}{BLACK}Sincronitza cada fotograma anb la freqüència del monitor, evitant l'efecte de pantalla partida.
 STR_6167    :{SMALLFONT}{BLACK}Avançat
@@ -3756,7 +3756,7 @@ STR_DTLS    :Construïu un parc temàtic des de l'inici al voltant d'un llac.
 <Diamond Heights>
 STR_SCNR    :Els cims diamantins
 STR_PARK    :Els cims diamantins
-STR_DTLS    :{LEFTGUILLEMET}Els cims diamantins{RIGHTGUILLEMET} ja és un parc exitós amb grans atraccions. Desenvolupeu-lo i dobleu-ne el valor.
+STR_DTLS    :«Els cims diamantins» ja és un parc exitós amb grans atraccions. Desenvolupeu-lo i dobleu-ne el valor.
 
 <Evergreen Gardens>
 STR_SCNR    :Els jardins perennes
@@ -3977,7 +3977,7 @@ STR_DTLS    :L'autoritat local no permetrà campanyes de màrqueting. El parc ha
 <Giggle Downs>
 STR_SCNR    :Baixades de riure
 STR_PARK    :Baixades de riure
-STR_DTLS    :Un {LEFTGUILLEMET}steeplechase{RIGHTGUILLEMET} de quatre carrils és la peça centra d'aquest parc en expansió.
+STR_DTLS    :Un «steeplechase» de quatre carrils és la peça centra d'aquest parc en expansió.
 
 <Mineral Park>
 STR_SCNR    :Parc mineral
@@ -4170,8 +4170,8 @@ STR_DTLS    :
 ## Misc parks from RCT1
 # Had no details
 <Fort Anachronism>
-STR_SCNR    :El castell {LEFTGUILLEMET}Fort Anachronism{RIGHTGUILLEMET}
-STR_PARK    :El castell {LEFTGUILLEMET}Fort Anachronism{RIGHTGUILLEMET}
+STR_SCNR    :El castell «Fort Anachronism»
+STR_PARK    :El castell «Fort Anachronism»
 STR_DTLS    :
 
 ###############################################################################
@@ -4235,7 +4235,7 @@ STR_DTLS    :Heu heretat aquest enorme castell. La vostra feina consisteix en co
 <Dusty Greens>
 STR_SCNR    :Verds polsosos
 STR_PARK    :Verds polsosos
-STR_DTLS    :Situat prop d'una sortida d'autopista al mig del desert, {LEFTGUILLEMET}Verds polsosos{RIGHTGUILLEMET} és una oportunitat per desenvolupar un petit complex amb un camp de golf i convertir-lo en un parc temàtic pròsper.
+STR_DTLS    :Situat prop d'una sortida d'autopista al mig del desert, «Verds polsosos» és una oportunitat per desenvolupar un petit complex amb un camp de golf i convertir-lo en un parc temàtic pròsper.
 
 <Electric Fields>
 STR_SCNR    :Camps elèctrics
@@ -4255,7 +4255,7 @@ STR_DTLS    :Un complex abandonat és una oportunitat per construir un parc d'at
 <Fungus Woods>
 STR_SCNR    :Boscos rancis
 STR_PARK    :Boscos rancis
-STR_DTLS    :Amb només atraccions de fusta i d'estil antic, el repte consisteix en construir un parc temàtic pròsper als {LEFTGUILLEMET}Boscos rancis{RIGHTGUILLEMET}.
+STR_DTLS    :Amb només atraccions de fusta i d'estil antic, el repte consisteix en construir un parc temàtic pròsper als «Boscos rancis».
 
 <Ghost Town>
 STR_SCNR    :El poble fantasma
@@ -4378,7 +4378,7 @@ STR_DTLS    :Heu de construir un parc en el terreny limitat en les dues bandes d
 <North America - Rollercoaster Heaven>
 STR_SCNR    :Nord-amèrica - Rollercoaster Heaven
 STR_PARK    :Rollercoaster Heaven
-STR_DTLS    :Sou un magnat de les finances competent en període sabàtic que desitja usar el seu temps en transformar el parc de la ciutat en el {LEFTGUILLEMET}Rollercoaster Heaven{RIGHTGUILLEMET}. I els diners no importen!
+STR_DTLS    :Sou un magnat de les finances competent en període sabàtic que desitja usar el seu temps en transformar el parc de la ciutat en el «Rollercoaster Heaven». I els diners no importen!
 
 <South America - Inca Lost City>
 STR_SCNR    :Sud-amèrica - La ciutat inca perduda
@@ -4406,7 +4406,7 @@ STR_DTLS    :Els membres locals de la societat de representacions de batalles es
 <Dark Age - Robin Hood>
 STR_SCNR    :Medieval - Robin Hood
 STR_PARK    :El bosc de Sherwood
-STR_DTLS    :Per robar als rics i repartir-ho entre els pobres, heu decidit juntament amb els vostres {LEFTGUILLEMET}homes feliços{RIGHTGUILLEMET} construir un parc temàtic al bosc de Sherwood.
+STR_DTLS    :Per robar als rics i repartir-ho entre els pobres, heu decidit juntament amb els vostres «homes feliços» construir un parc temàtic al bosc de Sherwood.
 
 <Future - First Encounters>
 STR_SCNR    :Futurístic - Primers encontres
@@ -4449,12 +4449,12 @@ STR_PARK    :Alcatraz
 STR_DTLS    :La infame Illa Presó, la població de la qual fa molt temps creixia gràcies a contrabandistes i estafadors, està en venda. Heu decidit convertir-la en una atracció turística de primer ordre, i no us preocupeu pels diners.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Els {LEFTGUILLEMET}Roaring Twenties{RIGHTGUILLEMET} - La Copa Schneider
+STR_SCNR    :Els «Roaring Twenties» - La Copa Schneider
 STR_PARK    :Costa Schneider
 STR_DTLS    :El 25è aniversari de la victòria del vostre avi a la Copa Schneider serà d'aquí pocs anys. L'honorareu construint un parc on la temàtica serà la famosa cursa d'hidroavions.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Els {LEFTGUILLEMET}Roaring Twenties{RIGHTGUILLEMET} - Gratacels
+STR_SCNR    :Els «Roaring Twenties» - Gratacels
 STR_PARK    :Metròpoli
 STR_DTLS    :Disposeu d'un solar buit prop de la zona pobra de la població. Per treure profit d'aquests terrenys urbans, construïu un parc en forma de gratacels inspirat en el desorbitat art decó dels anys vint.
 

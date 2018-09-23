@@ -227,7 +227,7 @@ STR_0820    :Marras
 STR_0821    :Joulu
 STR_0822    :Grafiikkadatatiedostoa ei saada auki
 STR_0823    :Puuttuva tai käyttökelvoton datatiedosto
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :Nimi on jo käytössä
 STR_0826    :Liian monta nimeä määritetty
 STR_0827    :Rahaa ei ole tarpeeksi - tarvitaan {CURRENCY2DP}
@@ -235,14 +235,14 @@ STR_0828    :{SMALLFONT}{BLACK}Sulje ikkuna
 STR_0829    :{SMALLFONT}{BLACK}Ikkunan otsikko - Vedä tätä liikuttaaksesi ikkunaa
 STR_0830    :{SMALLFONT}{BLACK}Suurenna
 STR_0831    :{SMALLFONT}{BLACK}Pienennä
-STR_0832    :{SMALLFONT}{BLACK}Käännä 90{DEGREE} myötäpäivään
+STR_0832    :{SMALLFONT}{BLACK}Käännä 90° myötäpäivään
 STR_0833    :{SMALLFONT}{BLACK}Pysäytä peli
 STR_0834    :{SMALLFONT}{BLACK}Levy- ja peliasetukset
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Lisätietoja 'OpenRCT2'
-STR_0850    :{WINDOW_COLOUR_2}Tekijänoikeus {COPYRIGHT} 2002 Chris Sawyer, kaikki oikeudet pidetään
+STR_0850    :{WINDOW_COLOUR_2}Tekijänoikeus © 2002 Chris Sawyer, kaikki oikeudet pidetään
 STR_0851    :{WINDOW_COLOUR_2}Suunnitellut ja ohjelmoinut Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafiikka Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Äänet ja musiikki Allister Brimble
@@ -261,7 +261,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :Liian matala !
 STR_0878    :Liian korkea !
 STR_0879    :Maata ei voi alentaa tästä...
@@ -339,22 +339,22 @@ STR_0952    :Lopeta peli
 STR_0953    :Lataa maisema
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Valitse istuimen kiertokulma tähän radan osioon
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :Peruuta
 STR_0973    :OK
 STR_0974    :Laitteet
@@ -367,8 +367,8 @@ STR_0980    :Uusia jännittäviä laitteita
 STR_0981    :Uusia vesilaitteita
 STR_0982    :Uusia kauppoja ja kojuja
 STR_0983    :Tutkimustyö & kehittely
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Liian monta laitetta/kohdetta
 STR_0988    :Ei pysty luomaan uutta laitetta/kohdetta...
@@ -463,14 +463,14 @@ STR_1076    :Kojutoimintatila
 STR_1077    :Pyörimistoimintatila
 STR_1078    :Kiertosuunta eteenpäin
 STR_1079    :Kiertosuunta taaksepäin
-STR_1080    :Elokuva: {ENDQUOTES}Kostavat lentäjät{ENDQUOTES}
-STR_1081    :3D-elokuva: {ENDQUOTES}Hiiren hännät{ENDQUOTES}
+STR_1080    :Elokuva: ”Kostavat lentäjät”
+STR_1081    :3D-elokuva: ”Hiiren hännät”
 STR_1082    :Avaruusrenkaat -toimintatila
 STR_1083    :Aloittelijoille -toimintatila
 STR_1084    :Induktiomoottorilaukaisu
-STR_1085    :Elokuva: {ENDQUOTES}Jännityksen rakastajat{ENDQUOTES}
-STR_1086    :3D-elokuva: {ENDQUOTES}Myrskyn jahtaajat{ENDQUOTES}
-STR_1087    :3D-elokuva: {ENDQUOTES}Avaruusryöstäjät{ENDQUOTES}
+STR_1085    :Elokuva: ”Jännityksen rakastajat”
+STR_1086    :3D-elokuva: ”Myrskyn jahtaajat”
+STR_1087    :3D-elokuva: ”Avaruusryöstäjät”
 STR_1088    :Intensiivinen toimintatila
 STR_1089    :Hullu toimintatila
 STR_1090    :Kummitustalo -toimintatila
@@ -526,7 +526,7 @@ STR_1139    :{SMALLFONT}{BLACK}Valitse tukirakenteiden väri
 STR_1140    :{SMALLFONT}{BLACK}Valitse ajoneuvon väriteema
 STR_1141    :{SMALLFONT}{BLACK}Valitse mitä ajoneuvoa/junaa muutetaan
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :Ei pysty rakentamaan/siirtämään tämän laitteen/kohteen sisäänkäyntiä...
 STR_1145    :Ei pysty rakentamaan/siirtämään tämän laitteen/kohteen uloskäyntiä...
 STR_1146    :Sisäänkäyntiä ei ole vielä rakennettu
@@ -540,7 +540,7 @@ STR_1153    :Korkeusmerkinnät laitteiden radoissa
 STR_1154    :Korkeusmerkinnät maanpinnassa
 STR_1155    :Korkeusmerkinnät poluissa
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Tämän poistaminen ei onnistu...
 STR_1159    :{SMALLFONT}{BLACK}Luo maisemaa, kasvillisuutta ja kaikenlaisia tilpehöörejä.
 STR_1160    :{SMALLFONT}{BLACK}Luo/säädä järviä ja vettä
@@ -710,7 +710,7 @@ STR_1323    :Rataa
 STR_1324    :{COMMA16} rata
 STR_1325    :{COMMA16} rataa
 STR_1326    :Rata {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Käännä esineitä 90{DEGREE}
+STR_1327    :{SMALLFONT}{BLACK}Käännä esineitä 90°
 STR_1328    :Vaaditaan tasainen maa
 STR_1329    :{WINDOW_COLOUR_2}Lähtönopeus:
 STR_1330    :{SMALLFONT}{BLACK}Enimmäisnopeus kun lähdetään asemalta
@@ -788,7 +788,7 @@ STR_1400    :Sisäänkäynti
 STR_1401    :Uloskäynti
 STR_1402    :{SMALLFONT}{BLACK}Rakenna tai siirrä sisäänkäynti laitteeseen/kohteeseen
 STR_1403    :{SMALLFONT}{BLACK}Rakenna tai siirrä uloskäynti laitteesta/kohteesta
-STR_1404    :{SMALLFONT}{BLACK}Käännä 90{DEGREE}
+STR_1404    :{SMALLFONT}{BLACK}Käännä 90°
 STR_1405    :{SMALLFONT}{BLACK}Peilaa kuva
 STR_1406    :{SMALLFONT}{BLACK}Vaihda maisema päälle/pois (vain jos saatavilla tälle suunnitelmalle)
 STR_1407    :{WINDOW_COLOUR_2}Rakenna tämä...
@@ -865,131 +865,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensiteettiarvosana: {BLACK}Ei viellä saatavill
 STR_1477    :{WINDOW_COLOUR_2}Intensiteettiarvosana: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Pahoinvoinnin arvosana: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Pahoinvoinnin arvosana: {BLACK}Ei viellä saatavilla
-STR_1480    :{SMALLFONT}{OPENQUOTES}Minulla ei ole varaa mennä {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}Kulutin kaikki rahani{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}Voin pahoin{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}Voin erittäin pahoin{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}Tahdon mennä johonkin jännittävämpään kuin {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} näyttää liian hurjalta minulle{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}En ole syönyt/juonut {STRINGID} loppuun vielä{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Pelkästään {STRINGID} katsominen saa minut voimaan pahoin{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}En aio maksaa noin paljon päästäkseni {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}Haluan kotiin{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} on todella hyvän arvoinen{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}Minulla on jo {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}Minulla ei ole varaa ostaa {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}Minulla ei ole nälkä{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}Minulla ei ole jano{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Apua! Hukun!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}Olen eksynyt!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} oli mahtava{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}Olen jonottanut ikuisuuden kohteeseen {STRINGID}{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}Olen väsynyt{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}Minulla on nälkä{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}Minulla on jano{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}Minun tarvitsee käydä vessassa{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}En löydä {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}En aio maksaa noin paljon käyttääkseni {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}Täällä sataa, en halua mennä kohteeseen {STRINGID}{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}Täällä on todella paljon roskaa{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}En löydä puiston uloskäyntiä{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}Tahdon pois kohteesta {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}Tahdon ulos kohteesta {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}En mene kohteeseen {STRINGID} - Se ei ole turvallinen{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}Tämä tie on kuvottava{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}Täällä on liikaa tungosta{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}Täällä on todella paljon ilkivaltaa{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Mahtava maisema!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}Tämä puisto on todella puhdas ja siisti{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}Hyppivät suihkulähteet ovat todella mahtavia!{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}Täällä oleva musiikki on mukavaa{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}Tämä ilmapallo kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}Tämä pehmolelu kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Tämä puiston kartta kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}Tämä kuva kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}Tämä sateenvarjo kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}Tämä juoma kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}Tämä hampurilainen kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}Nämä ranskalaiset kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}Tämä jäätelö kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}Tämä hattara kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
+STR_1480    :{SMALLFONT}“Minulla ei ole varaa mennä {STRINGID}”
+STR_1481    :{SMALLFONT}“Kulutin kaikki rahani”
+STR_1482    :{SMALLFONT}“Voin pahoin”
+STR_1483    :{SMALLFONT}“Voin erittäin pahoin”
+STR_1484    :{SMALLFONT}“Tahdon mennä johonkin jännittävämpään kuin {STRINGID}”
+STR_1485    :{SMALLFONT}“{STRINGID} näyttää liian hurjalta minulle”
+STR_1486    :{SMALLFONT}“En ole syönyt/juonut {STRINGID} loppuun vielä”
+STR_1487    :{SMALLFONT}“Pelkästään {STRINGID} katsominen saa minut voimaan pahoin”
+STR_1488    :{SMALLFONT}“En aio maksaa noin paljon päästäkseni {STRINGID}”
+STR_1489    :{SMALLFONT}“Haluan kotiin”
+STR_1490    :{SMALLFONT}“{STRINGID} on todella hyvän arvoinen”
+STR_1491    :{SMALLFONT}“Minulla on jo {STRINGID}”
+STR_1492    :{SMALLFONT}“Minulla ei ole varaa ostaa {STRINGID}”
+STR_1493    :{SMALLFONT}“Minulla ei ole nälkä”
+STR_1494    :{SMALLFONT}“Minulla ei ole jano”
+STR_1495    :{SMALLFONT}“Apua! Hukun!”
+STR_1496    :{SMALLFONT}“Olen eksynyt!”
+STR_1497    :{SMALLFONT}“{STRINGID} oli mahtava”
+STR_1498    :{SMALLFONT}“Olen jonottanut ikuisuuden kohteeseen {STRINGID}”
+STR_1499    :{SMALLFONT}“Olen väsynyt”
+STR_1500    :{SMALLFONT}“Minulla on nälkä”
+STR_1501    :{SMALLFONT}“Minulla on jano”
+STR_1502    :{SMALLFONT}“Minun tarvitsee käydä vessassa”
+STR_1503    :{SMALLFONT}“En löydä {STRINGID}”
+STR_1504    :{SMALLFONT}“En aio maksaa noin paljon käyttääkseni {STRINGID}”
+STR_1505    :{SMALLFONT}“Täällä sataa, en halua mennä kohteeseen {STRINGID}”
+STR_1506    :{SMALLFONT}“Täällä on todella paljon roskaa”
+STR_1507    :{SMALLFONT}“En löydä puiston uloskäyntiä”
+STR_1508    :{SMALLFONT}“Tahdon pois kohteesta {STRINGID}”
+STR_1509    :{SMALLFONT}“Tahdon ulos kohteesta {STRINGID}”
+STR_1510    :{SMALLFONT}“En mene kohteeseen {STRINGID} - Se ei ole turvallinen”
+STR_1511    :{SMALLFONT}“Tämä tie on kuvottava”
+STR_1512    :{SMALLFONT}“Täällä on liikaa tungosta”
+STR_1513    :{SMALLFONT}“Täällä on todella paljon ilkivaltaa”
+STR_1514    :{SMALLFONT}“Mahtava maisema!”
+STR_1515    :{SMALLFONT}“Tämä puisto on todella puhdas ja siisti”
+STR_1516    :{SMALLFONT}“Hyppivät suihkulähteet ovat todella mahtavia!”
+STR_1517    :{SMALLFONT}“Täällä oleva musiikki on mukavaa”
+STR_1518    :{SMALLFONT}“Tämä ilmapallo kojusta {STRINGID} on todella hyvän hintainen”
+STR_1519    :{SMALLFONT}“Tämä pehmolelu kojusta {STRINGID} on todella hyvän hintainen”
+STR_1520    :{SMALLFONT}“Tämä puiston kartta kojusta {STRINGID} on todella hyvän hintainen”
+STR_1521    :{SMALLFONT}“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
+STR_1522    :{SMALLFONT}“Tämä sateenvarjo kojusta {STRINGID} on todella hyvän hintainen”
+STR_1523    :{SMALLFONT}“Tämä juoma kojusta {STRINGID} on todella hyvän hintainen”
+STR_1524    :{SMALLFONT}“Tämä hampurilainen kojusta {STRINGID} on todella hyvän hintainen”
+STR_1525    :{SMALLFONT}“Nämä ranskalaiset kojusta {STRINGID} on todella hyvän hintainen”
+STR_1526    :{SMALLFONT}“Tämä jäätelö kojusta {STRINGID} on todella hyvän hintainen”
+STR_1527    :{SMALLFONT}“Tämä hattara kojusta {STRINGID} on todella hyvän hintainen”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}Tämä pitsa kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
+STR_1531    :{SMALLFONT}“Tämä pitsa kojusta {STRINGID} on todella hyvän hintainen”
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}Tämä popcorn kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}Tämä nakkisämpylä kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}Tämä lonkero kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}Tämä hattu kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Tämä toffeeomena kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}Tämä t-paita kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}Tämä donitsi kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}Tämä kahvi kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
+STR_1533    :{SMALLFONT}“Tämä popcorn kojusta {STRINGID} on todella hyvän hintainen”
+STR_1534    :{SMALLFONT}“Tämä nakkisämpylä kojusta {STRINGID} on todella hyvän hintainen”
+STR_1535    :{SMALLFONT}“Tämä lonkero kojusta {STRINGID} on todella hyvän hintainen”
+STR_1536    :{SMALLFONT}“Tämä hattu kojusta {STRINGID} on todella hyvän hintainen”
+STR_1537    :{SMALLFONT}“Tämä toffeeomena kojusta {STRINGID} on todella hyvän hintainen”
+STR_1538    :{SMALLFONT}“Tämä t-paita kojusta {STRINGID} on todella hyvän hintainen”
+STR_1539    :{SMALLFONT}“Tämä donitsi kojusta {STRINGID} on todella hyvän hintainen”
+STR_1540    :{SMALLFONT}“Tämä kahvi kojusta {STRINGID} on todella hyvän hintainen”
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}Tämä friteerattu kana kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}Tämä limonaati {STRINGID} on todella hyvän hintainen{ENDQUOTES}
+STR_1542    :{SMALLFONT}“Tämä friteerattu kana kojusta {STRINGID} on todella hyvän hintainen”
+STR_1543    :{SMALLFONT}“Tämä limonaati {STRINGID} on todella hyvän hintainen”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Vau!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}Minulla on outo fiilis että joku katselee minua{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon ilmapallosta kojussa {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon pehmolelusta kojussa {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon puiston kartasta kojussa {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kuvasta kojussa {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon sateenvarjosta kojussa {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon juomasta kojussa {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hampurilaisesta kojussa {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon ranskalaisista kojussa {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon jäätelöstä kojussa {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hattarasta kojussa {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}“Vau!”
+STR_1551    :{SMALLFONT}“Minulla on outo fiilis että joku katselee minua”
+STR_1552    :{SMALLFONT}“En maksa noin paljon ilmapallosta kojussa {STRINGID}”
+STR_1553    :{SMALLFONT}“En maksa noin paljon pehmolelusta kojussa {STRINGID}”
+STR_1554    :{SMALLFONT}“En maksa noin paljon puiston kartasta kojussa {STRINGID}”
+STR_1555    :{SMALLFONT}“En maksa noin paljon kuvasta kojussa {STRINGID}”
+STR_1556    :{SMALLFONT}“En maksa noin paljon sateenvarjosta kojussa {STRINGID}”
+STR_1557    :{SMALLFONT}“En maksa noin paljon juomasta kojussa {STRINGID}”
+STR_1558    :{SMALLFONT}“En maksa noin paljon hampurilaisesta kojussa {STRINGID}”
+STR_1559    :{SMALLFONT}“En maksa noin paljon ranskalaisista kojussa {STRINGID}”
+STR_1560    :{SMALLFONT}“En maksa noin paljon jäätelöstä kojussa {STRINGID}”
+STR_1561    :{SMALLFONT}“En maksa noin paljon hattarasta kojussa {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon pitsasta kojussa {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}“En maksa noin paljon pitsasta kojussa {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon popcornista kojussa {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon nakkisämpylästä kojussa {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon lonkerosta kojussa {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hatusta kojussa {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon toffeeomenasta kojussa {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon t-paidasta kojussa {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon donitsista kojussa {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kahvista kojussa {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}“En maksa noin paljon popcornista kojussa {STRINGID}”
+STR_1568    :{SMALLFONT}“En maksa noin paljon nakkisämpylästä kojussa {STRINGID}”
+STR_1569    :{SMALLFONT}“En maksa noin paljon lonkerosta kojussa {STRINGID}”
+STR_1570    :{SMALLFONT}“En maksa noin paljon hatusta kojussa {STRINGID}”
+STR_1571    :{SMALLFONT}“En maksa noin paljon toffeeomenasta kojussa {STRINGID}”
+STR_1572    :{SMALLFONT}“En maksa noin paljon t-paidasta kojussa {STRINGID}”
+STR_1573    :{SMALLFONT}“En maksa noin paljon donitsista kojussa {STRINGID}”
+STR_1574    :{SMALLFONT}“En maksa noin paljon kahvista kojussa {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon friteeratusta kanasta kojussa {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon limonaadista kojussa {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}“En maksa noin paljon friteeratusta kanasta kojussa {STRINGID}”
+STR_1577    :{SMALLFONT}“En maksa noin paljon limonaadista kojussa {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}Tämä kuva kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}Tämä kuva kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}Tämä kuva kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}Tämä viipurinrinkeli kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}Tämä kuuma kaakao kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}Tämä jäätee kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Tämä tippaleipä kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}TNämä aurinkolasit kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}Nämä häränlihanuudelit kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}Nämä paistetut riisinuudelit kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}Tämä wontonkeitto kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}Tämä lihapullakeitto kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}Tämä hedelmämehu kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}Tämä soijamaito kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}Tämä sujongkwa kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}Tämä pantonki kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}Tämä keksi kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
+STR_1584    :{SMALLFONT}“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
+STR_1585    :{SMALLFONT}“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
+STR_1586    :{SMALLFONT}“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
+STR_1587    :{SMALLFONT}“Tämä viipurinrinkeli kojusta {STRINGID} on todella hyvän hintainen”
+STR_1588    :{SMALLFONT}“Tämä kuuma kaakao kojusta {STRINGID} on todella hyvän hintainen”
+STR_1589    :{SMALLFONT}“Tämä jäätee kojusta {STRINGID} on todella hyvän hintainen”
+STR_1590    :{SMALLFONT}“Tämä tippaleipä kojusta {STRINGID} on todella hyvän hintainen”
+STR_1591    :{SMALLFONT}“TNämä aurinkolasit kojusta {STRINGID} on todella hyvän hintainen”
+STR_1592    :{SMALLFONT}“Nämä häränlihanuudelit kojusta {STRINGID} on todella hyvän hintainen”
+STR_1593    :{SMALLFONT}“Nämä paistetut riisinuudelit kojusta {STRINGID} on todella hyvän hintainen”
+STR_1594    :{SMALLFONT}“Tämä wontonkeitto kojusta {STRINGID} on todella hyvän hintainen”
+STR_1595    :{SMALLFONT}“Tämä lihapullakeitto kojusta {STRINGID} on todella hyvän hintainen”
+STR_1596    :{SMALLFONT}“Tämä hedelmämehu kojusta {STRINGID} on todella hyvän hintainen”
+STR_1597    :{SMALLFONT}“Tämä soijamaito kojusta {STRINGID} on todella hyvän hintainen”
+STR_1598    :{SMALLFONT}“Tämä sujongkwa kojusta {STRINGID} on todella hyvän hintainen”
+STR_1599    :{SMALLFONT}“Tämä pantonki kojusta {STRINGID} on todella hyvän hintainen”
+STR_1600    :{SMALLFONT}“Tämä keksi kojusta {STRINGID} on todella hyvän hintainen”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Tämä grillattu makkara kojusta {STRINGID} on todella hyvän hintainen{ENDQUOTES}
+STR_1604    :{SMALLFONT}“Tämä grillattu makkara kojusta {STRINGID} on todella hyvän hintainen”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1001,27 +1001,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kuvasta kojussa {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kuvasta kojussa {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kuvasta kojussa {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon viipurinrinkelistä kojussa {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon kaakaosta kojussa {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon jääteestä kojussa {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon tippaleivästä kojussa {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon aurinkolaseista kojussa {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon härkänuudeleista kojussa {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon paistetusta riisinuudeleista kojussa {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon wontonkeitosta kojussa {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon lihapullakeitosta kojussa {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon hedelmämehusta kojussa {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon soijamaidosta kojussa {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon sujongkwasta kojussa {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon patongista kojussa {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon keksistä kojussa {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}“En maksa noin paljon kuvasta kojussa {STRINGID}”
+STR_1617    :{SMALLFONT}“En maksa noin paljon kuvasta kojussa {STRINGID}”
+STR_1618    :{SMALLFONT}“En maksa noin paljon kuvasta kojussa {STRINGID}”
+STR_1619    :{SMALLFONT}“En maksa noin paljon viipurinrinkelistä kojussa {STRINGID}”
+STR_1620    :{SMALLFONT}“En maksa noin paljon kaakaosta kojussa {STRINGID}”
+STR_1621    :{SMALLFONT}“En maksa noin paljon jääteestä kojussa {STRINGID}”
+STR_1622    :{SMALLFONT}“En maksa noin paljon tippaleivästä kojussa {STRINGID}”
+STR_1623    :{SMALLFONT}“En maksa noin paljon aurinkolaseista kojussa {STRINGID}”
+STR_1624    :{SMALLFONT}“En maksa noin paljon härkänuudeleista kojussa {STRINGID}”
+STR_1625    :{SMALLFONT}“En maksa noin paljon paistetusta riisinuudeleista kojussa {STRINGID}”
+STR_1626    :{SMALLFONT}“En maksa noin paljon wontonkeitosta kojussa {STRINGID}”
+STR_1627    :{SMALLFONT}“En maksa noin paljon lihapullakeitosta kojussa {STRINGID}”
+STR_1628    :{SMALLFONT}“En maksa noin paljon hedelmämehusta kojussa {STRINGID}”
+STR_1629    :{SMALLFONT}“En maksa noin paljon soijamaidosta kojussa {STRINGID}”
+STR_1630    :{SMALLFONT}“En maksa noin paljon sujongkwasta kojussa {STRINGID}”
+STR_1631    :{SMALLFONT}“En maksa noin paljon patongista kojussa {STRINGID}”
+STR_1632    :{SMALLFONT}“En maksa noin paljon keksistä kojussa {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}En maksa noin paljon grillatusta makkarasta kojussa {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}“En maksa noin paljon grillatusta makkarasta kojussa {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1033,11 +1033,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Auta! Laske minut alas!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}Rahat ovat loppumassa!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Vau! Uutta laitetta rakennetaan!{ENDQUOTES}
+STR_1648    :{SMALLFONT}“Auta! Laske minut alas!”
+STR_1649    :{SMALLFONT}“Rahat ovat loppumassa!”
+STR_1650    :{SMALLFONT}“Vau! Uutta laitetta rakennetaan!”
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}{OPENQUOTES}...ja tässä me olemme {STRINGID}!{ENDQUOTES}
+STR_1653    :{SMALLFONT}“...ja tässä me olemme {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Viimeisimmät ajatukset:
 STR_1655    :{SMALLFONT}{BLACK}Rakenna jalkakäytävä maahan
 STR_1656    :{SMALLFONT}{BLACK}Rakenna jalkakäytävätunneli tai -silta
@@ -1447,11 +1447,11 @@ STR_2068    :Paistettua kanaa
 STR_2069    :Limonaadia
 STR_2070    :Tyhjä rasia
 STR_2071    :Tyhjä pullo
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Ilmapallo
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Pehmolelu
+STR_2072    :“{STRINGID}” Ilmapallo
+STR_2073    :“{STRINGID}” Pehmolelu
 STR_2074    :{STRINGID}:n Kartta
 STR_2075    :Kuva {STRINGID}:sta
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Sateenvarjo
+STR_2076    :“{STRINGID}” Sateenvarjo
 STR_2077    :Juoma
 STR_2078    :Hampurilainen
 STR_2079    :Sipsejä
@@ -1465,9 +1465,9 @@ STR_2086    :{STRINGID} -kuponki
 STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Lonkero
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hattu
+STR_2090    :“{STRINGID}” Hattu
 STR_2091    :Toffeeomena
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-paita
+STR_2092    :“{STRINGID}” T-paita
 STR_2093    :Donitsi
 STR_2094    :Kahvi
 STR_2095    :Tyhjä tölkki
@@ -1576,8 +1576,8 @@ STR_2212    :{SMALLFONT}{BLACK}Näytä puiston vartijat
 STR_2213    :{SMALLFONT}{BLACK}Näytä puiston viihdyttäjät
 STR_2214    :Rakentaminen ei ole mahdollista pelin ollessa pysäytettynä!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOU1R_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOU1R_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} ihmistä kuoli tapaturmassa kohteessa {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Puiston luokitus: {BLACK}{COMMA16}
@@ -1678,7 +1678,7 @@ STR_2315    :{WINDOW_COLOUR_2}Kustannus: {BLACK}noin {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Tilaa tarvitaan: {BLACK}{COMMA16} x {COMMA16} neliötä
 STR_2321    :{WINDOW_COLOUR_2}Laitteiden/kohteiden määrä: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Henkilökunta: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Osta maata laajentaakseen puistoa
 STR_2326    :{SMALLFONT}{BLACK}Osta rakennusoikeudet maan päälle tai alle puiston ulkopuolella
@@ -1689,16 +1689,16 @@ STR_2330    :{WINDOW_COLOUR_2}Lämpötila:
 STR_2331    :{WINDOW_COLOUR_2}Korkeusmerkinnät:
 STR_2332    :Yksikkö
 STR_2333    :Ääni
-STR_2334    :Punta ({POUND})
+STR_2334    :Punta (£)
 STR_2335    :Dollari ($)
 STR_2336    :Frangi (F)
 STR_2337    :Saksanmarkka (DM)
-STR_2338    :Jen ({YEN})
+STR_2338    :Jen (¥)
 STR_2339    :Peseta (Pts)
 STR_2340    :Liira (L)
 STR_2341    :Guldeni (ƒ)
 STR_2342    :Kruunu (kr)
-STR_2343    :Euro ({EURO})
+STR_2343    :Euro (€)
 STR_2344    :Brittiläinen
 STR_2345    :Metrinen
 STR_2347    :{RED}{STRINGID} on hukkunut!
@@ -1719,8 +1719,8 @@ STR_2362    :{SMALLFONT}{BLACK}Kytke maan ruutujen pehmennys päälle/pois
 STR_2363    :Ruudukko maan päällä
 STR_2364    :{SMALLFONT}{BLACK}Kytke maan päällinen ruudukko päälle/pois
 STR_2365    :Pankki ei suostu korottamaan lainaasi!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :Celsius (°C)
+STR_2367    :Fahrenheit (°F)
 STR_2368    :Ei mitään
 STR_2369    :Matala
 STR_2370    :Tyydyttävä
@@ -2087,7 +2087,7 @@ STR_2743    :Kopioi data\css17.dat RCT1-asennuksestasi tiedostoon data\css50.dat
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
+STR_2747    :”
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Siirrä kaikki esineet ylös
@@ -2109,7 +2109,7 @@ STR_2774    :Koko näyttö
 STR_2775    :Koko näyttö (työpöytä)
 STR_2776    :Kieli:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Ikkuna #{COMMA16}
 STR_2780    :Ylimääräinen ikkuna
 # End of new strings
@@ -2117,7 +2117,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Muuta näppäimistön pikanäppäintä
-STR_2785    :{WINDOW_COLOUR_2}Paina uusi näppäinyhdistelmä toiminnolle:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Paina uusi näppäinyhdistelmä toiminnolle:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Paina pikanäppäimen kuvausta valitaksesi uuden näppäinyhdistelmän
 STR_2787    :{WINDOW_COLOUR_2}Puiston arvo: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Onnittelut !{NEWLINE}{BLACK}Saavutit tavoitteesi ! Yhtiösi arvo: {CURRENCY} !
@@ -2204,37 +2204,37 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyrig
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Perinteinen)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) tekijänoikeus {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) tekijänoikeus © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) tekijänoikeus © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) tekijänoikeus © Chris Sawyer
 STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
@@ -2327,7 +2327,7 @@ STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
 STR_3064    :Aloittajan puistot
 STR_3065    :Haastavat puistot
 STR_3066    :Asiantuntijan puistot
-STR_3067    :{OPENQUOTES}Oikeat{ENDQUOTES} puistot
+STR_3067    :“Oikeat” puistot
 STR_3068    :Muut puistot
 STR_3069    :Top Section
 STR_3070    :Slope to Level
@@ -2887,8 +2887,8 @@ STR_5371    :Object Selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Nimi {STRINGID}
 STR_5374    :Päiväys {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Tallenteet
 STR_5378    :{SMALLFONT}{BLACK}Komentosarja
 STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command

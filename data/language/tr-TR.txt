@@ -225,7 +225,7 @@ STR_0820    :Kas
 STR_0821    :Ara
 STR_0822    :Bu grafiğe ulaşılamıyor
 STR_0823    :Dosya bulunamadı veya açılamıyor
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :Bu isim kullanılmakta
 STR_0826    :Çok fazla isim belirlendi
 STR_0827    :Paranız yersiz - {CURRENCY2DP} lazım
@@ -233,13 +233,13 @@ STR_0828    :{SMALLFONT}{BLACK}Pencereyi kapat
 STR_0829    :{SMALLFONT}{BLACK}Pencere ismi - Pencereyi oynatmak için tutunuz ve çekiniz
 STR_0830    :{SMALLFONT}{BLACK}Görüntüyü yakınlaştır
 STR_0831    :{SMALLFONT}{BLACK}Görüntüyü uzaklaştır
-STR_0832    :{SMALLFONT}{BLACK}Görüntüyü 90{DEGREE} çevir
+STR_0832    :{SMALLFONT}{BLACK}Görüntüyü 90° çevir
 STR_0833    :{SMALLFONT}{BLACK}Oyunu durdur
 STR_0834    :{SMALLFONT}{BLACK}Oyun ve kayıt seçenekleri
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :OpenRCT2 hakkında
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
+STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Programlama ve tasarlama: Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafik: Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Ses ve Müzik: Allister Brimble
@@ -258,7 +258,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :Çok alçak!
 STR_0878    :Çok yüksek!
 STR_0879    :Arazı bu bölümde alçaltılamaz
@@ -336,22 +336,22 @@ STR_0952    :Oyunu kapat
 STR_0953    :Arazi yükle
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Bu kesim için koltuk eğim dereceseni seçiniz
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :Iptal
 STR_0973    :Tamam
 STR_0974    :Aletler
@@ -364,8 +364,8 @@ STR_0980    :Heyecanlı aletler
 STR_0981    :Sulu aletler ve trenler
 STR_0982    :Dükkanlar ve standlar
 STR_0983    :Araştırma ve Geliştirme
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Çok fazla alet var
 STR_0988    :Yeni alet inşa edilemedi
@@ -460,14 +460,14 @@ STR_1076    :Stand modu
 STR_1077    :Rotasyon modu
 STR_1078    :Ileriye rotasyon
 STR_1079    :Geriye rotasyon
-STR_1080    :Film: {ENDQUOTES}Intikamcı Pilotlar{ENDQUOTES}
-STR_1081    :3D-Film: {ENDQUOTES}Fare Kuyrukları{ENDQUOTES}
+STR_1080    :Film: ”Intikamcı Pilotlar”
+STR_1081    :3D-Film: ”Fare Kuyrukları”
 STR_1082    :Astronot Antremanı modu
 STR_1083    :Acemi modu
 STR_1084    :LIM ile başlangıç
-STR_1085    :Film: {ENDQUOTES}Çılgın Kaptan{ENDQUOTES}
-STR_1086    :3D-Film: {ENDQUOTES}Savşcılar{ENDQUOTES}
-STR_1087    :3D-Film: {ENDQUOTES}Uzay Eşkiyaları{ENDQUOTES}
+STR_1085    :Film: ”Çılgın Kaptan”
+STR_1086    :3D-Film: ”Savşcılar”
+STR_1087    :3D-Film: ”Uzay Eşkiyaları”
 STR_1088    :Ölçülü mod
 STR_1089    :Aşırı mod
 STR_1090    :Perili ev modu
@@ -523,7 +523,7 @@ STR_1139    :{SMALLFONT}{BLACK}Desteklerin rengini seçiniz
 STR_1140    :{SMALLFONT}{BLACK}Bu araç için renk seçiniz
 STR_1141    :{SMALLFONT}{BLACK}Modife etmek istediğiniz vagonu seçiniz
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :Bu aletin girşi değiştirilemiyor veya inşa edilemiyor...
 STR_1145    :Bu aletin çıkışı değiştirilemiyor veya inşa edilemiyor...
 STR_1146    :Giriş inşa edilmeli
@@ -537,7 +537,7 @@ STR_1153    :Alet yüksekliklerini göster
 STR_1154    :Arazı yüksekliklerini göster
 STR_1155    :Yol yüksekliklerini göster
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Silinemedi...
 STR_1159    :{SMALLFONT}{BLACK}Dekorasyonlar, çiçekler veya diğer cisimler
 STR_1160    :{SMALLFONT}{BLACK}Su ayarları 
@@ -707,7 +707,7 @@ STR_1323    :Kurslar
 STR_1324    :{COMMA16} Kurs
 STR_1325    :{COMMA16} Kurs
 STR_1326    :Kurs {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Cisimleri 90{DEGREE} çevir
+STR_1327    :{SMALLFONT}{BLACK}Cisimleri 90° çevir
 STR_1328    :Düz arazi şart
 STR_1329    :{WINDOW_COLOUR_2}Başlangıç hızı:
 STR_1330    :{SMALLFONT}{BLACK}Istasyonu hangi hız ile{NEWLINE}terk edeceğini seçiniz
@@ -784,7 +784,7 @@ STR_1400    :Giriş
 STR_1401    :Çıkış
 STR_1402    :{SMALLFONT}{BLACK}Aletin girişini inşa ediniz veya değiştiriniz
 STR_1403    :{SMALLFONT}{BLACK}Aletin çıkışını inşa ediniz veya değiştiriniz
-STR_1404    :{SMALLFONT}{BLACK}90{DEGREE} çeviriniz
+STR_1404    :{SMALLFONT}{BLACK}90° çeviriniz
 STR_1405    :{SMALLFONT}{BLACK}Aleti yansıtınız
 STR_1406    :{SMALLFONT}{BLACK}Dekorasyonu aç/kapat (hazır dekorasyon varsa)
 STR_1407    :{WINDOW_COLOUR_2}Bunu inşa ediniz...
@@ -860,131 +860,131 @@ STR_1476    :{WINDOW_COLOUR_2}Şiddet oranı: {BLACK}Ölçülüyor
 STR_1477    :{WINDOW_COLOUR_2}Şiddet oranı: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Bulantı oranı: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Bulantı oranı: {BLACK}Ölçülüyor
-STR_1480    :{SMALLFONT}{OPENQUOTES}{STRINGID} için param yetmiyor{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}Tüm paramı harcadım{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}Midem bulanıyor{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}Midem çok fena{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}{STRINGID} aletinden daha heyecanlı bir alete binmek istiyorum{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} çok korkunç görünüyor{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}Bunu daha bitirmedim ({STRINGID}){ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Üf, {STRINGID} aletini izlerken bile midem bulanıyor{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}Buna bu kadar para harcamam ({STRINGID}){ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}Eve gitmek istiyorum{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} fiyatına değer{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}Bundan var bile bende ({STRINGID}){ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}{STRINGID} için param yetmiyor{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}Aç değilim{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}Susamadım{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Imdat!Boğuluyorum!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}Kayıp oldum!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} süperdi!{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}{STRINGID} için çok fazla bekledim{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}Uykum geldi{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}Acıkdım{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}Susadım{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}Tuvalete gitmem lazim{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}{STRINGID} aletini bulamıyorum{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}Buna bu kadar para harcamam ({STRINGID}){ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}{STRINGID} aletine yağmur yağdığı sürece binmem {ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}Burada çöp sorunu çok aşırı{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}Park çıkışını bulamıyorum{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}{STRINGID} aletini terk etmek istiyorum{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}{STRINGID} aletinden inmek istiyorum{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}{STRINGID} güvenli olmadığı sürece binmem{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}Bu yol berbat bir vaziyetde{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}Burada çok insan var{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}Buradaki vandalizm felaket{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Harika bir manzara!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}Bu Park gerçekden çok derli ve toplu{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}Bu çeşmeler harika{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}Müzik hoşuma gitti{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} balonu fiyatına değer{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} oyuncağı fiyatına değer{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} haritası fiyatına değer{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} fotoğrafı fiyatına değer{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} şemsiyesi fiyatına değer{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} içeceği fiyatına değer{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} burgeri fiyatına değer{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} patatesi fiyatına değer{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} dondurması fiyatına değer{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} pamuk şekeri fiyatına değer{ENDQUOTES}
+STR_1480    :{SMALLFONT}“{STRINGID} için param yetmiyor”
+STR_1481    :{SMALLFONT}“Tüm paramı harcadım”
+STR_1482    :{SMALLFONT}“Midem bulanıyor”
+STR_1483    :{SMALLFONT}“Midem çok fena”
+STR_1484    :{SMALLFONT}“{STRINGID} aletinden daha heyecanlı bir alete binmek istiyorum”
+STR_1485    :{SMALLFONT}“{STRINGID} çok korkunç görünüyor”
+STR_1486    :{SMALLFONT}“Bunu daha bitirmedim ({STRINGID})”
+STR_1487    :{SMALLFONT}“Üf, {STRINGID} aletini izlerken bile midem bulanıyor”
+STR_1488    :{SMALLFONT}“Buna bu kadar para harcamam ({STRINGID})”
+STR_1489    :{SMALLFONT}“Eve gitmek istiyorum”
+STR_1490    :{SMALLFONT}“{STRINGID} fiyatına değer”
+STR_1491    :{SMALLFONT}“Bundan var bile bende ({STRINGID})”
+STR_1492    :{SMALLFONT}“{STRINGID} için param yetmiyor”
+STR_1493    :{SMALLFONT}“Aç değilim”
+STR_1494    :{SMALLFONT}“Susamadım”
+STR_1495    :{SMALLFONT}“Imdat!Boğuluyorum!”
+STR_1496    :{SMALLFONT}“Kayıp oldum!”
+STR_1497    :{SMALLFONT}“{STRINGID} süperdi!”
+STR_1498    :{SMALLFONT}“{STRINGID} için çok fazla bekledim”
+STR_1499    :{SMALLFONT}“Uykum geldi”
+STR_1500    :{SMALLFONT}“Acıkdım”
+STR_1501    :{SMALLFONT}“Susadım”
+STR_1502    :{SMALLFONT}“Tuvalete gitmem lazim”
+STR_1503    :{SMALLFONT}“{STRINGID} aletini bulamıyorum”
+STR_1504    :{SMALLFONT}“Buna bu kadar para harcamam ({STRINGID})”
+STR_1505    :{SMALLFONT}“{STRINGID} aletine yağmur yağdığı sürece binmem ”
+STR_1506    :{SMALLFONT}“Burada çöp sorunu çok aşırı”
+STR_1507    :{SMALLFONT}“Park çıkışını bulamıyorum”
+STR_1508    :{SMALLFONT}“{STRINGID} aletini terk etmek istiyorum”
+STR_1509    :{SMALLFONT}“{STRINGID} aletinden inmek istiyorum”
+STR_1510    :{SMALLFONT}“{STRINGID} güvenli olmadığı sürece binmem”
+STR_1511    :{SMALLFONT}“Bu yol berbat bir vaziyetde”
+STR_1512    :{SMALLFONT}“Burada çok insan var”
+STR_1513    :{SMALLFONT}“Buradaki vandalizm felaket”
+STR_1514    :{SMALLFONT}“Harika bir manzara!”
+STR_1515    :{SMALLFONT}“Bu Park gerçekden çok derli ve toplu”
+STR_1516    :{SMALLFONT}“Bu çeşmeler harika”
+STR_1517    :{SMALLFONT}“Müzik hoşuma gitti”
+STR_1518    :{SMALLFONT}“Bu {STRINGID} balonu fiyatına değer”
+STR_1519    :{SMALLFONT}“Bu {STRINGID} oyuncağı fiyatına değer”
+STR_1520    :{SMALLFONT}“Bu {STRINGID} haritası fiyatına değer”
+STR_1521    :{SMALLFONT}“Bu {STRINGID} fotoğrafı fiyatına değer”
+STR_1522    :{SMALLFONT}“Bu {STRINGID} şemsiyesi fiyatına değer”
+STR_1523    :{SMALLFONT}“Bu {STRINGID} içeceği fiyatına değer”
+STR_1524    :{SMALLFONT}“Bu {STRINGID} burgeri fiyatına değer”
+STR_1525    :{SMALLFONT}“Bu {STRINGID} patatesi fiyatına değer”
+STR_1526    :{SMALLFONT}“Bu {STRINGID} dondurması fiyatına değer”
+STR_1527    :{SMALLFONT}“Bu {STRINGID} pamuk şekeri fiyatına değer”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} pizzası fiyatına değer{ENDQUOTES}
+STR_1531    :{SMALLFONT}“Bu {STRINGID} pizzası fiyatına değer”
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} patlamış mısırı fiyatına değer{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} Hot Dogu fiyatına değer{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} deniz ürünleri fiyatına değer{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} şapkası fiyatına değer{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} şeker elması fiyatına değer{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} tişörü fiyatına değer{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} donutı fiyatına değer{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} kahvesi fiyatına değer{ENDQUOTES}
+STR_1533    :{SMALLFONT}“Bu {STRINGID} patlamış mısırı fiyatına değer”
+STR_1534    :{SMALLFONT}“Bu {STRINGID} Hot Dogu fiyatına değer”
+STR_1535    :{SMALLFONT}“Bu {STRINGID} deniz ürünleri fiyatına değer”
+STR_1536    :{SMALLFONT}“Bu {STRINGID} şapkası fiyatına değer”
+STR_1537    :{SMALLFONT}“Bu {STRINGID} şeker elması fiyatına değer”
+STR_1538    :{SMALLFONT}“Bu {STRINGID} tişörü fiyatına değer”
+STR_1539    :{SMALLFONT}“Bu {STRINGID} donutı fiyatına değer”
+STR_1540    :{SMALLFONT}“Bu {STRINGID} kahvesi fiyatına değer”
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} kızarmış tavuğu fiyatına değer{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} limonatası fiyatına değer{ENDQUOTES}
+STR_1542    :{SMALLFONT}“Bu {STRINGID} kızarmış tavuğu fiyatına değer”
+STR_1543    :{SMALLFONT}“Bu {STRINGID} limonatası fiyatına değer”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}Sanki birisi beni gözetliyormuş gibime geliyor{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata balon almam: {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata oyuncak almam: {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata harita almam: {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata fotoğraf almam: {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata şemsiye almam: {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata içecek almam: {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata balon almam: {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata patates almam: {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata dondurma almam: {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata pamuk şeker almam: {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}“Wow!”
+STR_1551    :{SMALLFONT}“Sanki birisi beni gözetliyormuş gibime geliyor”
+STR_1552    :{SMALLFONT}“Buradan bu fiyata balon almam: {STRINGID}”
+STR_1553    :{SMALLFONT}“Buradan bu fiyata oyuncak almam: {STRINGID}”
+STR_1554    :{SMALLFONT}“Buradan bu fiyata harita almam: {STRINGID}”
+STR_1555    :{SMALLFONT}“Buradan bu fiyata fotoğraf almam: {STRINGID}”
+STR_1556    :{SMALLFONT}“Buradan bu fiyata şemsiye almam: {STRINGID}”
+STR_1557    :{SMALLFONT}“Buradan bu fiyata içecek almam: {STRINGID}”
+STR_1558    :{SMALLFONT}“Buradan bu fiyata balon almam: {STRINGID}”
+STR_1559    :{SMALLFONT}“Buradan bu fiyata patates almam: {STRINGID}”
+STR_1560    :{SMALLFONT}“Buradan bu fiyata dondurma almam: {STRINGID}”
+STR_1561    :{SMALLFONT}“Buradan bu fiyata pamuk şeker almam: {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata pizza almam: {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}“Buradan bu fiyata pizza almam: {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata patlamış mısır almam: {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata Hot Dog almam: {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata deniz ürünleri almam: {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata şapka almam: {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata elmalı şeker almam: {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata tişört almam: {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata donut almam: {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata kahve almam: {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}“Buradan bu fiyata patlamış mısır almam: {STRINGID}”
+STR_1568    :{SMALLFONT}“Buradan bu fiyata Hot Dog almam: {STRINGID}”
+STR_1569    :{SMALLFONT}“Buradan bu fiyata deniz ürünleri almam: {STRINGID}”
+STR_1570    :{SMALLFONT}“Buradan bu fiyata şapka almam: {STRINGID}”
+STR_1571    :{SMALLFONT}“Buradan bu fiyata elmalı şeker almam: {STRINGID}”
+STR_1572    :{SMALLFONT}“Buradan bu fiyata tişört almam: {STRINGID}”
+STR_1573    :{SMALLFONT}“Buradan bu fiyata donut almam: {STRINGID}”
+STR_1574    :{SMALLFONT}“Buradan bu fiyata kahve almam: {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata tavuk almam: {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata limonata almam: {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}“Buradan bu fiyata tavuk almam: {STRINGID}”
+STR_1577    :{SMALLFONT}“Buradan bu fiyata limonata almam: {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}Bu aletin fotoğrafı fiyatına değer: {STRINGID}{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}Bu aletin fotoğrafı fiyatına değer: {STRINGID}{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}{STRINGID} aletinin fotoğrafı fiyatına değer{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} simidi fiyatına değer{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} sıcak çikolatası fiyatına değer{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} ice tea'si fiyatına değer{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} keki fiyatına değer{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} güneş gözlüğü fiyatına değer{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} kıymalı makarnası fiyatına değer{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} kızarmış makarnası fiyatına değer{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} Won Ton çorbası fiyatına değer{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} sulu köftesi fiyatına değer{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} meyve suyu fiyatına değer{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} soya sütü fiyatına değer{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} sujongkwa'sı fiyatına değer{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} sandviçi fiyatına değer{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} bisküvisi fiyatına değer{ENDQUOTES}
+STR_1584    :{SMALLFONT}“Bu aletin fotoğrafı fiyatına değer: {STRINGID}”
+STR_1585    :{SMALLFONT}“Bu aletin fotoğrafı fiyatına değer: {STRINGID}”
+STR_1586    :{SMALLFONT}“{STRINGID} aletinin fotoğrafı fiyatına değer”
+STR_1587    :{SMALLFONT}“Bu {STRINGID} simidi fiyatına değer”
+STR_1588    :{SMALLFONT}“Bu {STRINGID} sıcak çikolatası fiyatına değer”
+STR_1589    :{SMALLFONT}“Bu {STRINGID} ice tea'si fiyatına değer”
+STR_1590    :{SMALLFONT}“Bu {STRINGID} keki fiyatına değer”
+STR_1591    :{SMALLFONT}“Bu {STRINGID} güneş gözlüğü fiyatına değer”
+STR_1592    :{SMALLFONT}“Bu {STRINGID} kıymalı makarnası fiyatına değer”
+STR_1593    :{SMALLFONT}“Bu {STRINGID} kızarmış makarnası fiyatına değer”
+STR_1594    :{SMALLFONT}“Bu {STRINGID} Won Ton çorbası fiyatına değer”
+STR_1595    :{SMALLFONT}“Bu {STRINGID} sulu köftesi fiyatına değer”
+STR_1596    :{SMALLFONT}“Bu {STRINGID} meyve suyu fiyatına değer”
+STR_1597    :{SMALLFONT}“Bu {STRINGID} soya sütü fiyatına değer”
+STR_1598    :{SMALLFONT}“Bu {STRINGID} sujongkwa'sı fiyatına değer”
+STR_1599    :{SMALLFONT}“Bu {STRINGID} sandviçi fiyatına değer”
+STR_1600    :{SMALLFONT}“Bu {STRINGID} bisküvisi fiyatına değer”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Bu {STRINGID} sosisi fiyatına değer{ENDQUOTES}
+STR_1604    :{SMALLFONT}“Bu {STRINGID} sosisi fiyatına değer”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -996,27 +996,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata fotoğraf almam:{STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata fotoğraf almam:{STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata fotoğraf almam:{STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata simit almam:{STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata sıcak çikolata almam:{STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata ice tea almam:{STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata kek almam:{STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata güneş gözlüğü almam:{STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata kıymalı makarna almam:{STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata kızarmış makarna almam:{STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata Won Ton çorbası almam:{STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata sulu köfte almam:{STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata meyve suyu almam:{STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata soya sütü almam:{STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata Sujongkwa almam:{STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata sandviç almam:{STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata bisküvi almam:{STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}“Buradan bu fiyata fotoğraf almam:{STRINGID}”
+STR_1617    :{SMALLFONT}“Buradan bu fiyata fotoğraf almam:{STRINGID}”
+STR_1618    :{SMALLFONT}“Buradan bu fiyata fotoğraf almam:{STRINGID}”
+STR_1619    :{SMALLFONT}“Buradan bu fiyata simit almam:{STRINGID}”
+STR_1620    :{SMALLFONT}“Buradan bu fiyata sıcak çikolata almam:{STRINGID}”
+STR_1621    :{SMALLFONT}“Buradan bu fiyata ice tea almam:{STRINGID}”
+STR_1622    :{SMALLFONT}“Buradan bu fiyata kek almam:{STRINGID}”
+STR_1623    :{SMALLFONT}“Buradan bu fiyata güneş gözlüğü almam:{STRINGID}”
+STR_1624    :{SMALLFONT}“Buradan bu fiyata kıymalı makarna almam:{STRINGID}”
+STR_1625    :{SMALLFONT}“Buradan bu fiyata kızarmış makarna almam:{STRINGID}”
+STR_1626    :{SMALLFONT}“Buradan bu fiyata Won Ton çorbası almam:{STRINGID}”
+STR_1627    :{SMALLFONT}“Buradan bu fiyata sulu köfte almam:{STRINGID}”
+STR_1628    :{SMALLFONT}“Buradan bu fiyata meyve suyu almam:{STRINGID}”
+STR_1629    :{SMALLFONT}“Buradan bu fiyata soya sütü almam:{STRINGID}”
+STR_1630    :{SMALLFONT}“Buradan bu fiyata Sujongkwa almam:{STRINGID}”
+STR_1631    :{SMALLFONT}“Buradan bu fiyata sandviç almam:{STRINGID}”
+STR_1632    :{SMALLFONT}“Buradan bu fiyata bisküvi almam:{STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}Buradan bu fiyata sosis almam:{STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}“Buradan bu fiyata sosis almam:{STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1028,10 +1028,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Imdat! Yere bırakın beni!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}Param bitiyor!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Yeni alet inşa ediliyor!{ENDQUOTES}
-STR_1653    :{SMALLFONT}{OPENQUOTES}...sonunda varabildim! ({STRINGID}){ENDQUOTES}
+STR_1648    :{SMALLFONT}“Imdat! Yere bırakın beni!”
+STR_1649    :{SMALLFONT}“Param bitiyor!”
+STR_1650    :{SMALLFONT}“Wow! Yeni alet inşa ediliyor!”
+STR_1653    :{SMALLFONT}“...sonunda varabildim! ({STRINGID})”
 STR_1654    :{WINDOW_COLOUR_2}Şu anki düşünceleri:
 STR_1655    :{SMALLFONT}{BLACK}Yolu yer seviyesine inşa et
 STR_1656    :{SMALLFONT}{BLACK}Eğimli yol veya köprü/tünel inşa et
@@ -1439,11 +1439,11 @@ STR_2068    :Tavuk
 STR_2069    :Limonata
 STR_2070    :Boş kutu
 STR_2071    :Boş şişe
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} balonu
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} oyuncağı
+STR_2072    :“{STRINGID}” balonu
+STR_2073    :“{STRINGID}” oyuncağı
 STR_2074    :{STRINGID} haritası
 STR_2075    :{STRINGID} fotoğrafı
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} şemsiyesi
+STR_2076    :“{STRINGID}” şemsiyesi
 STR_2077    :Içecek
 STR_2078    :Burger
 STR_2079    :Cips
@@ -1457,9 +1457,9 @@ STR_2086    :{STRINGID} kuponu
 STR_2087    :Patlamış mısır
 STR_2088    :Hot Dog
 STR_2089    :Deniz ürünü
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} şapkası
+STR_2090    :“{STRINGID}” şapkası
 STR_2091    :Elmalı şeker
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} tişörtü
+STR_2092    :“{STRINGID}” tişörtü
 STR_2093    :Donut
 STR_2094    :Kahve
 STR_2095    :Boş bardak
@@ -1568,8 +1568,8 @@ STR_2212    :{SMALLFONT}{BLACK}Parkdaki tüm güvenlikler
 STR_2213    :{SMALLFONT}{BLACK}Parkdaki tüm animatörler
 STR_2214    :Oyun durudurulduğu sürece inşa edilemiyor!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} aletinde {STRINGID} halen {STRINGID}a dönmedi!{NEWLINE}Aleti kontrol ediniz
 STR_2219    :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
 STR_2220    :{WINDOW_COLOUR_2}Park değerlendirmesi: {BLACK}{COMMA16}
@@ -1670,7 +1670,7 @@ STR_2315    :{WINDOW_COLOUR_2}Maliyet: {BLACK} yaklaşık {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Gerekli alan: {BLACK}{COMMA16} x {COMMA16} blok
 STR_2321    :{WINDOW_COLOUR_2}Alet sayısı: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Işci: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Satılık arazi var ise yeni arazi satın alınız
 STR_2326    :{SMALLFONT}{BLACK}Var ise inşa izni satın alınız
@@ -1679,18 +1679,18 @@ STR_2328    :{WINDOW_COLOUR_2}Para birimi:
 STR_2329    :{WINDOW_COLOUR_2}Mesafe ve hız birimi:
 STR_2330    :{WINDOW_COLOUR_2}Sıcaklık ölçüm birimi:
 STR_2331    :{WINDOW_COLOUR_2}Yükseklik birimi:
-STR_2332    :{OPENQUOTES}General Units{ENDQUOTES}
+STR_2332    :“General Units”
 STR_2333    :Ses efektleri
-STR_2334    :Pounds ({POUND})
+STR_2334    :Pounds (£)
 STR_2335    :Dollar ($)
 STR_2336    :Franc (F)
 STR_2337    :Alman Markı (DM)
-STR_2338    :Yen ({YEN})
+STR_2338    :Yen (¥)
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
 STR_2341    :Gulden (fl.)
 STR_2342    :Kron (kr)
-STR_2343    :Euro ({EURO})
+STR_2343    :Euro (€)
 STR_2344    :Amerikan sistemi
 STR_2345    :Metrik sistemi
 STR_2347    :{RED}{STRINGID} boğuldu!
@@ -1711,8 +1711,8 @@ STR_2362    :{SMALLFONT}{BLACK}Döşeme kenarı düzleştirmeyi aç/kapat
 STR_2363    :Zemin çizgisini göster
 STR_2364    :{SMALLFONT}{BLACK}Yerin üzerine inşayı kolaylaştırmak için parmaklık şeklinde çizgiler oluşturuluyor 
 STR_2365    :Banka daha fazla kredi vermiyor!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :Celsius (°C)
+STR_2367    :Fahrenheit (°F)
 STR_2368    :Yok
 STR_2369    :Düşük
 STR_2370    :Normal
@@ -2079,7 +2079,7 @@ STR_2743    :RCT1 klasöründen 'data/css17.dat' kopyalayıp RCT2 'data/css50.da
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
+STR_2747    :”
 STR_2749    :Yeni senaryom
 # New strings used in the cheats window previously these were ???
 STR_2750    :Tümü yukarı aktar
@@ -2101,7 +2101,7 @@ STR_2774    :Fullscreen
 STR_2775    :Fullscreen (kenarsız)
 STR_2776    :Dil:
 STR_2777    :{MOVE_X}{10}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Görüntü alanı #{COMMA16}
 STR_2780    :Ekstra görüntü alanı
 # End of new strings
@@ -2109,7 +2109,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Tuş ayarını değiştiriniz
-STR_2785    :{WINDOW_COLOUR_2}Bu kısaltma için yeni tuş giriniz:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Bu kısaltma için yeni tuş giriniz:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Tuşu değiştirmek için buraya basınız
 STR_2787    :{WINDOW_COLOUR_2}Park değeri: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Tebrikler !{NEWLINE}{BLACK}Park değeri hedefinizi {CURRENCY} ile tamamladınız!
@@ -2196,37 +2196,37 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyrig
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Ana renkler
 STR_2972    :Alternatif renkler 1
 STR_2973    :Alternatif renkler 2
@@ -2319,7 +2319,7 @@ STR_3063    :{SMALLFONT}{BLACK}Sulu ray
 STR_3064    :Acemi parkları
 STR_3065    :Deneyimli parkları
 STR_3066    :Profesyonel parkları
-STR_3067    :{OPENQUOTES}Gerçek{ENDQUOTES} parklar
+STR_3067    :“Gerçek” parklar
 STR_3068    :Diğer parklar
 STR_3069    :Üst bölüm
 STR_3070    :Eğimli ray
@@ -2876,8 +2876,8 @@ STR_5371    :Alet/Dükkan/Cisim seçenekleri
 STR_5372    :Sağ mouse tuşu ile ekran kaydırmasını ters çevir
 STR_5373    :Dosya ismi {STRINGID}
 STR_5374    :Tarih {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Kayıtlı oyunlar
 STR_5378    :{SMALLFONT}{BLACK}Başlık dizisi senaryosu
 STR_5379    :{SMALLFONT}{BLACK}Bir sonraki bekleme komutuna geçiniz
@@ -3082,7 +3082,7 @@ STR_5579    :Pencere ölçeği:
 STR_5580    :Çek Korunası (Kč)
 STR_5581    :FPS'yi göster
 STR_5582    :Mouse'ı pencere modunda kilitle
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Bu hile ile kısıtlı rotasyon sayısı, tırmanma zincirlerinin ve hızlandırıcıların hız kısıtması vs. gibi sınırlandırlmalar kaldırılıyor
 STR_5586    :Otomatik dükkan/stand açma
@@ -3224,7 +3224,7 @@ STR_5758    :{OUTLINE}{GREEN}{STRING} servere katıldı
 STR_5759    :Harita indiriliyor ... ({INT32} / {INT32}) KiB
 STR_5760    :Hong Kong Doları (HK$)
 STR_5761    :Yeni Taiwan Doları (NT$)
-STR_5762    :Çin Yuanı (CN{YEN})
+STR_5762    :Çin Yuanı (CN¥)
 STR_5763    :Tüm dosyalar
 STR_5764    :Geçersiz alet türü
 STR_5765    :Geçersiz alet türü değiştirilemez
@@ -3274,8 +3274,8 @@ STR_5809    :{WINDOW_COLOUR_2}Diğer tesis sayısı: {BLACK}{COMMA16}
 STR_5810    :Araç sınırlamasını sıra dışı bırak
 STR_5811    :{SMALLFONT}{BLACK}Bu hile ile alet başı{NEWLINE}255 vagon ve 31 tren kadar{NEWLINE}araç kullanablirsiniz
 STR_5812    :Multiplayer penceresi
-STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
-STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5813    :“{STRING}”
+STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}FPS'yi göster
@@ -3293,7 +3293,7 @@ STR_5828    :{SMALLFONT}{BLACK}Mesafe ve hız biriminin hangi sisteme göre uygu
 STR_5829    :{SMALLFONT}{BLACK}Kullanmak istediğiniz para birimini seçiniz
 STR_5830    :{SMALLFONT}{BLACK}Kullanmak istediğiniz dili seçiniz
 STR_5831    :{SMALLFONT}{BLACK}Kullanmak istediğiniz sıcaklık ölçüm birimini seçiniz
-STR_5832    :{SMALLFONT}{BLACK}Yükseklik birimin {OPENQUOTES}Mesafe ve Hız{ENDQUOTES} bölümünde seçdiğiniz gibi gerçek birim olarak veya {OPENQUOTES}General Units{ENDQUOTES} olarak ölçülmesini seçiniz. {OPENQUOTES}General Units{ENDQUOTES} birimi, yüksekliği blok olarak ölçmekde
+STR_5832    :{SMALLFONT}{BLACK}Yükseklik birimin “Mesafe ve Hız” bölümünde seçdiğiniz gibi gerçek birim olarak veya “General Units” olarak ölçülmesini seçiniz. “General Units” birimi, yüksekliği blok olarak ölçmekde
 STR_5833    :{SMALLFONT}{BLACK}Kullanmak istediğiniz tarih formatını seçiniz
 STR_5834    :{SMALLFONT}{BLACK}Kullanmak istediğiniz ses aygıtını seçiniz
 STR_5835    :{SMALLFONT}{BLACK}Oyun penceresi simge durumuna getirildiğinde oyununu sesini kıs
@@ -3468,7 +3468,7 @@ STR_6004    :Kesik Görüntüleme
 STR_6005    :Etkinleştir
 STR_6006    :{SMALLFONT}{BLACK}Kesik Görüntüleme sadece seçdiğiniz zeminin üzerinde veya altında bulunanları göstermekde
 STR_6007    :Yükseklik
-STR_6008    :{SMALLFONT}{BLACK}Burayı tıklayarak {OPENQUOTES}Raw value{ENDQUOTES} veya gerçek birim arası değiştiriniz{NEWLINE}{OPENQUOTES}Raw value{ENDQUOTES} yüksekliği bloklara benzer bir şekilde gösterir
+STR_6008    :{SMALLFONT}{BLACK}Burayı tıklayarak “Raw value” veya gerçek birim arası değiştiriniz{NEWLINE}“Raw value” yüksekliği bloklara benzer bir şekilde gösterir
 STR_6009    :{SMALLFONT}{BLACK}Kesmek istediğiniz yüksekliğini seçiniz
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
@@ -3519,7 +3519,7 @@ STR_6055    :OpenRCT2 harita dosyası
 STR_6056    :{SMALLFONT}{BLACK}Oyunun sesini kapatınız
 STR_6057    :{SMALLFONT}{BLACK}Üst araç çubuğunda 'Ses Kapatma' simgesini göster/gizle
 STR_6058    :Ses kapatma
-STR_6059    :{RIGHTGUILLEMET}
+STR_6059    :»
 STR_6060    :Müşteriler birşey satın aldığında animasyon göster
 STR_6061    :{SMALLFONT}{BLACK}Müşteriler herhangi birşey satın aldığında{NEWLINE}fiyatlar animasyon olarak gösterilecekdir
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
@@ -3598,7 +3598,7 @@ STR_6134    :Cisim silme
 STR_6135    :Client geçersiz istek gönderdi
 STR_6136    :Server geçersiz istek gönderdi
 STR_6137    :OpenRCT2, ücretsiz ve kaynağı açık olan Roller Coaster Tycoon 2 kopyasıdır
-STR_6138    :OpenRCT2 bir çok kişinin yardımı ile oluşturulan bir proje. Tüm kişiler listesi {OPENQUOTES}contributors.md{ENDQUOTES} dosyasında bulunmakda. Daha fazla bilgi için http://github.com/OpenRCT2/OpenRCT2 sayfasına giriniz
+STR_6138    :OpenRCT2 bir çok kişinin yardımı ile oluşturulan bir proje. Tüm kişiler listesi “contributors.md” dosyasında bulunmakda. Daha fazla bilgi için http://github.com/OpenRCT2/OpenRCT2 sayfasına giriniz
 STR_6139    :Tüm ürün ve şirket isimleri kendi sahiplerine aittir. Bunların kullanımı, onlar tarafından herhangi bir bağlılık veya onaylama anlamına gelmez.
 STR_6140    :Değişiklikler...
 STR_6141    :RCT1 tarzı alt araç cubuğu
@@ -3624,7 +3624,7 @@ STR_6160    :{WINDOW_COLOUR_2}Mevcut araçlar/tasarımlar: {BLACK}{STRING}
 STR_6161    :Zemin çizgisi
 STR_6162    :Rotasyonlu Vahşi Fare
 STR_6163    :Tekli vagonlar zig zag bir şeritde keskin virajlardan döner ve dik eğilimlerden iner. Ayrıyeten koltuklar heyecanı artdırmak için rotasyon yapar
-STR_6164    :{WHITE}{CROSS}
+STR_6164    :{WHITE}❌
 STR_6165    :Vertical sync aç/kapat
 STR_6166    :{SMALLFONT}{BLACK}Ekranın yırtılmasını önleyerek monitörün yenileme hızına göre her kareyi senkronize eder.
 STR_6167    :{SMALLFONT}{BLACK}Gelişmiş

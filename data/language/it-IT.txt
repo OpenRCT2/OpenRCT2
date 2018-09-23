@@ -180,37 +180,37 @@ STR_0770    :Vigilante {INT32}
 STR_0771    :Intrattenitore {INT32}
 STR_0777    :Parco senza nome{POP16}{POP16}
 STR_0778    :Cartello
-STR_0779    :1{DEGREE}
-STR_0780    :2{DEGREE}
-STR_0781    :3{DEGREE}
-STR_0782    :4{DEGREE}
-STR_0783    :5{DEGREE}
-STR_0784    :6{DEGREE}
-STR_0785    :7{DEGREE}
-STR_0786    :8{DEGREE}
-STR_0787    :9{DEGREE}
-STR_0788    :10{DEGREE}
-STR_0789    :11{DEGREE}
-STR_0790    :12{DEGREE}
-STR_0791    :13{DEGREE}
-STR_0792    :14{DEGREE}
-STR_0793    :15{DEGREE}
-STR_0794    :16{DEGREE}
-STR_0795    :17{DEGREE}
-STR_0796    :18{DEGREE}
-STR_0797    :19{DEGREE}
-STR_0798    :20{DEGREE}
-STR_0799    :21{DEGREE}
-STR_0800    :22{DEGREE}
-STR_0801    :23{DEGREE}
-STR_0802    :24{DEGREE}
-STR_0803    :25{DEGREE}
-STR_0804    :26{DEGREE}
-STR_0805    :27{DEGREE}
-STR_0806    :28{DEGREE}
-STR_0807    :29{DEGREE}
-STR_0808    :30{DEGREE}
-STR_0809    :31{DEGREE}
+STR_0779    :1°
+STR_0780    :2°
+STR_0781    :3°
+STR_0782    :4°
+STR_0783    :5°
+STR_0784    :6°
+STR_0785    :7°
+STR_0786    :8°
+STR_0787    :9°
+STR_0788    :10°
+STR_0789    :11°
+STR_0790    :12°
+STR_0791    :13°
+STR_0792    :14°
+STR_0793    :15°
+STR_0794    :16°
+STR_0795    :17°
+STR_0796    :18°
+STR_0797    :19°
+STR_0798    :20°
+STR_0799    :21°
+STR_0800    :22°
+STR_0801    :23°
+STR_0802    :24°
+STR_0803    :25°
+STR_0804    :26°
+STR_0805    :27°
+STR_0806    :28°
+STR_0807    :29°
+STR_0808    :30°
+STR_0809    :31°
 STR_0810    :Gen
 STR_0811    :Feb
 STR_0812    :Mar
@@ -225,7 +225,7 @@ STR_0820    :Nov
 STR_0821    :Dic
 STR_0822    :Impossibile accedere ai file della grafica
 STR_0823    :File mancante o inaccessibile
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :Il nome scelto è già in uso
 STR_0826    :I nomi scelti sono troppi
 STR_0827    :Denaro insufficiente - Costo: {CURRENCY2DP}
@@ -233,14 +233,14 @@ STR_0828    :{SMALLFONT}{BLACK}Chiudi la finestra
 STR_0829    :{SMALLFONT}{BLACK}Titolo della finestra - Trascinarlo per spostare la finestra
 STR_0830    :{SMALLFONT}{BLACK}Zoom in avanti
 STR_0831    :{SMALLFONT}{BLACK}Zoom indietro
-STR_0832    :{SMALLFONT}{BLACK}Ruota di 90{DEGREE} in senso orario
+STR_0832    :{SMALLFONT}{BLACK}Ruota di 90° in senso orario
 STR_0833    :{SMALLFONT}{BLACK}Metti in pausa
 STR_0834    :{SMALLFONT}{BLACK}Opzioni di gioco e del disco
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Informazioni su 'OpenRCT2'
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, tutti i diritti riservati
+STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, tutti i diritti riservati
 STR_0851    :{WINDOW_COLOUR_2}Design e programmazione di Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafica di Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Effetti sonori e musica di Allister Brimble
@@ -259,7 +259,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :Troppo basso!
 STR_0878    :Troppo alto!
 STR_0879    :Impossibile abbassare il terreno in questo punto...
@@ -273,7 +273,7 @@ STR_0887    :Abbandona l'editor degli scenari
 STR_0888    :Abbandona l'editor dei percorsi
 STR_0889    :Abbandona il programma di progettazione dei percorsi
 STR_0891    :Schermata
-STR_0892    :Schermata salvata su disco come {OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_0892    :Schermata salvata su disco come “{STRINGID}”
 STR_0893    :Cattura della schermata fallita!
 STR_0894    :Area dati per i paesaggi piena!
 STR_0895    :Non si può costruire contemporaneamente sopra e sotto il livello del terreno
@@ -337,22 +337,22 @@ STR_0952    :Esci dal gioco
 STR_0953    :Carica un paesaggio
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Seleziona l'angolo di rotazione dei sedili in questa sezione del tracciato
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :Annulla
 STR_0973    :OK
 STR_0974    :Attrazioni
@@ -365,8 +365,8 @@ STR_0980    :Nuove attrazioni eccitanti
 STR_0981    :Nuove attrazioni acquatiche
 STR_0982    :Nuovi negozi e chioschi
 STR_0983    :Ricerca & Sviluppo
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Troppe attrazioni
 STR_0988    :Impossibile creare nuove attrazioni...
@@ -461,15 +461,15 @@ STR_1076    :Modalità negozi
 STR_1077    :Modalità rotazione
 STR_1078    :Rotazione in avanti
 STR_1079    :Rotazione all'indietro
-STR_1080    :Film: {ENDQUOTES}La vendetta degli aviatori{ENDQUOTES}
+STR_1080    :Film: ”La vendetta degli aviatori”
 # Il gioco di parole inglese "Mouse tails" ("code di topo", che suona come "storie di topo" e anche come "code di mouse") è intraducibile, se qualcuno ha un'idea migliore ben venga
-STR_1081    :Film 3D: {ENDQUOTES}Code di topo{ENDQUOTES}
+STR_1081    :Film 3D: ”Code di topo”
 STR_1082    :Modalità anelli spaziali
 STR_1083    :Modalità principianti
 STR_1084    :Lancio con Motore a Induzione Lineare
-STR_1085    :Film: {ENDQUOTES}Attrazioni da paura{ENDQUOTES}
-STR_1086    :Film 3D: {ENDQUOTES}Via con la tempesta{ENDQUOTES}
-STR_1087    :Film 3D: {ENDQUOTES}Visitatori dallo spazio{ENDQUOTES}
+STR_1085    :Film: ”Attrazioni da paura”
+STR_1086    :Film 3D: ”Via con la tempesta”
+STR_1087    :Film 3D: ”Visitatori dallo spazio”
 STR_1088    :Modalità intensa
 STR_1089    :Modalità berserk
 STR_1090    :Modalità casa stregata
@@ -525,7 +525,7 @@ STR_1139    :{SMALLFONT}{BLACK}Scegli il colore della struttura di supporto
 STR_1140    :{SMALLFONT}{BLACK}Scegli il modello decorativo del veicolo
 STR_1141    :{SMALLFONT}{BLACK}Scegli quale veicolo/treno modificare
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :Impossibile costruire/spostare l'entrata di quest'attrazione...
 STR_1145    :Impossibile costruire/spostare l'uscita di quest'attrazione...
 STR_1146    :Entrata non ancora costruita
@@ -539,7 +539,7 @@ STR_1153    :Altezza indicata sul tracciato
 STR_1154    :Altezza indicata sul terreno
 STR_1155    :Altezza indicata sui sentieri
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Impossibile cancellarlo...
 STR_1159    :{SMALLFONT}{BLACK}Colloca lo scenario, i giardini e gli altri accessori
 STR_1160    :{SMALLFONT}{BLACK}Crea/regola i laghi e gli specchi d'acqua
@@ -709,7 +709,7 @@ STR_1323    :Buche
 STR_1324    :{COMMA16}buca
 STR_1325    :{COMMA16}buche
 STR_1326    :Buca {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Ruota gli oggetti di 90{DEGREE}
+STR_1327    :{SMALLFONT}{BLACK}Ruota gli oggetti di 90°
 STR_1328    :Prima è necessario livellare il terreno
 STR_1329    :{WINDOW_COLOUR_2}Veloc. di lancio:
 STR_1330    :{SMALLFONT}{BLACK}Massima velocità alla partenza dalla stazione
@@ -786,7 +786,7 @@ STR_1400    :Entrata
 STR_1401    :Uscita
 STR_1402    :{SMALLFONT}{BLACK}Costruisci o sposta l'entrata dell'attrazione
 STR_1403    :{SMALLFONT}{BLACK}Costruisci o sposta l'uscita dell'attrazione
-STR_1404    :{SMALLFONT}{BLACK}Ruota di 90{DEGREE}
+STR_1404    :{SMALLFONT}{BLACK}Ruota di 90°
 STR_1405    :{SMALLFONT}{BLACK}Immagine speculare
 STR_1406    :{SMALLFONT}{BLACK}Attiva/disattiva lo scenario (se disponibile in fase di progettazione)
 STR_1407    :{WINDOW_COLOUR_2}Costruiscilo...
@@ -862,131 +862,131 @@ STR_1476    :{WINDOW_COLOUR_2}Livello d'intensità: {BLACK}Non disponibile
 STR_1477    :{WINDOW_COLOUR_2}Livello d'intensità: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}Non disponibile
-STR_1480    :{SMALLFONT}{OPENQUOTES}Non posso permettermi {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}Ho speso tutti i miei soldi{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}Mi sento male{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}Mi sento molto male{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}Voglio provare qualcosa di più eccitante {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID}sembra troppo intenso per me{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}Non ho ancora finito {STRINGID}{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Solo guardando {STRINGID} mi sento male{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}Non pagherò così tanto per andare su {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}Voglio tornare a casa{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} è a buon mercato{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}Ho già: {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}Non posso permettermi: {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}Non ho fame{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}Non ho sete{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Aiuto!!! Sto annegando!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}Mi sono perso!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} è stato divertentissimo{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}Sono in fila per {STRINGID} da secoli{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}Sono stanco{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}Ho fame{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}Ho sete{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}Devo andare in bagno{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}Non riesco a trovare: {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}Non pagherò così tanto per usare: {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}Non andrò su {STRINGID} durante un temporale{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}C'è troppa spazzatura in giro{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}Non riesco a trovare l'uscita del parco{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}Voglio scendere da {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}Voglio uscire da {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}Non andrò su {STRINGID} - Non è sicuro{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}Questo percorso è disgustoso{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}È troppo affollato qui{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}Ci sono troppi atti vandalici{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Bello scenario!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}Questo parco è davvero pulito e ordinato{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}Le fontane zampillanti sono fantastiche{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}La musica qui è gradevole{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}Questo palloncino comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}Questo peluche comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Questa mappa del parco comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da  {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}Quest'ombrello comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}Questa bevanda comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}Questo panino comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}Queste patatine comprate da {STRINGID} costano davvero poco{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}Questo gelato comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}Questo zucchero filato comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1480    :{SMALLFONT}“Non posso permettermi {STRINGID}”
+STR_1481    :{SMALLFONT}“Ho speso tutti i miei soldi”
+STR_1482    :{SMALLFONT}“Mi sento male”
+STR_1483    :{SMALLFONT}“Mi sento molto male”
+STR_1484    :{SMALLFONT}“Voglio provare qualcosa di più eccitante {STRINGID}”
+STR_1485    :{SMALLFONT}“{STRINGID}sembra troppo intenso per me”
+STR_1486    :{SMALLFONT}“Non ho ancora finito {STRINGID}”
+STR_1487    :{SMALLFONT}“Solo guardando {STRINGID} mi sento male”
+STR_1488    :{SMALLFONT}“Non pagherò così tanto per andare su {STRINGID}”
+STR_1489    :{SMALLFONT}“Voglio tornare a casa”
+STR_1490    :{SMALLFONT}“{STRINGID} è a buon mercato”
+STR_1491    :{SMALLFONT}“Ho già: {STRINGID}”
+STR_1492    :{SMALLFONT}“Non posso permettermi: {STRINGID}”
+STR_1493    :{SMALLFONT}“Non ho fame”
+STR_1494    :{SMALLFONT}“Non ho sete”
+STR_1495    :{SMALLFONT}“Aiuto!!! Sto annegando!”
+STR_1496    :{SMALLFONT}“Mi sono perso!”
+STR_1497    :{SMALLFONT}“{STRINGID} è stato divertentissimo”
+STR_1498    :{SMALLFONT}“Sono in fila per {STRINGID} da secoli”
+STR_1499    :{SMALLFONT}“Sono stanco”
+STR_1500    :{SMALLFONT}“Ho fame”
+STR_1501    :{SMALLFONT}“Ho sete”
+STR_1502    :{SMALLFONT}“Devo andare in bagno”
+STR_1503    :{SMALLFONT}“Non riesco a trovare: {STRINGID}”
+STR_1504    :{SMALLFONT}“Non pagherò così tanto per usare: {STRINGID}”
+STR_1505    :{SMALLFONT}“Non andrò su {STRINGID} durante un temporale”
+STR_1506    :{SMALLFONT}“C'è troppa spazzatura in giro”
+STR_1507    :{SMALLFONT}“Non riesco a trovare l'uscita del parco”
+STR_1508    :{SMALLFONT}“Voglio scendere da {STRINGID}”
+STR_1509    :{SMALLFONT}“Voglio uscire da {STRINGID}”
+STR_1510    :{SMALLFONT}“Non andrò su {STRINGID} - Non è sicuro”
+STR_1511    :{SMALLFONT}“Questo percorso è disgustoso”
+STR_1512    :{SMALLFONT}“È troppo affollato qui”
+STR_1513    :{SMALLFONT}“Ci sono troppi atti vandalici”
+STR_1514    :{SMALLFONT}“Bello scenario!”
+STR_1515    :{SMALLFONT}“Questo parco è davvero pulito e ordinato”
+STR_1516    :{SMALLFONT}“Le fontane zampillanti sono fantastiche”
+STR_1517    :{SMALLFONT}“La musica qui è gradevole”
+STR_1518    :{SMALLFONT}“Questo palloncino comprato da {STRINGID} costa davvero poco”
+STR_1519    :{SMALLFONT}“Questo peluche comprato da {STRINGID} costa davvero poco”
+STR_1520    :{SMALLFONT}“Questa mappa del parco comprata da {STRINGID} costa davvero poco”
+STR_1521    :{SMALLFONT}“Questa foto-in-corsa comprata da  {STRINGID} costa davvero poco”
+STR_1522    :{SMALLFONT}“Quest'ombrello comprato da {STRINGID} costa davvero poco”
+STR_1523    :{SMALLFONT}“Questa bevanda comprata da {STRINGID} costa davvero poco”
+STR_1524    :{SMALLFONT}“Questo panino comprato da {STRINGID} costa davvero poco”
+STR_1525    :{SMALLFONT}“Queste patatine comprate da {STRINGID} costano davvero poco”
+STR_1526    :{SMALLFONT}“Questo gelato comprato da {STRINGID} costa davvero poco”
+STR_1527    :{SMALLFONT}“Questo zucchero filato comprato da {STRINGID} costa davvero poco”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}Questa pizza comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1531    :{SMALLFONT}“Questa pizza comprata da {STRINGID} costa davvero poco”
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}Questi pop-corn comprati da {STRINGID} costano davvero poco{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}Questo hot dog comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}Questo tentacolo comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}Questo cappellino comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Questa mela caramellata comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}Questa maglietta comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}Questa ciambella comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}Questo caffè comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1533    :{SMALLFONT}“Questi pop-corn comprati da {STRINGID} costano davvero poco”
+STR_1534    :{SMALLFONT}“Questo hot dog comprato da {STRINGID} costa davvero poco”
+STR_1535    :{SMALLFONT}“Questo tentacolo comprato da {STRINGID} costa davvero poco”
+STR_1536    :{SMALLFONT}“Questo cappellino comprato da {STRINGID} costa davvero poco”
+STR_1537    :{SMALLFONT}“Questa mela caramellata comprata da {STRINGID} costa davvero poco”
+STR_1538    :{SMALLFONT}“Questa maglietta comprata da {STRINGID} costa davvero poco”
+STR_1539    :{SMALLFONT}“Questa ciambella comprata da {STRINGID} costa davvero poco”
+STR_1540    :{SMALLFONT}“Questo caffè comprato da {STRINGID} costa davvero poco”
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}Questo pollo fritto comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}Questa limonata comprata da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1542    :{SMALLFONT}“Questo pollo fritto comprato da {STRINGID} costa davvero poco”
+STR_1543    :{SMALLFONT}“Questa limonata comprata da {STRINGID} costa davvero poco”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}Ho la strana sensazione che qualcuno mi stia osservando{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un palloncino da {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un peluche da {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una mappa del parco da {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un ombrello da {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una bevanda da {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un panino da {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto delle patatine da {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un gelato da {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto dello zucchero filato da {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}“Wow!”
+STR_1551    :{SMALLFONT}“Ho la strana sensazione che qualcuno mi stia osservando”
+STR_1552    :{SMALLFONT}“Non ho intenzione di pagare così tanto un palloncino da {STRINGID}”
+STR_1553    :{SMALLFONT}“Non ho intenzione di pagare così tanto un peluche da {STRINGID}”
+STR_1554    :{SMALLFONT}“Non ho intenzione di pagare così tanto una mappa del parco da {STRINGID}”
+STR_1555    :{SMALLFONT}“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
+STR_1556    :{SMALLFONT}“Non ho intenzione di pagare così tanto un ombrello da {STRINGID}”
+STR_1557    :{SMALLFONT}“Non ho intenzione di pagare così tanto una bevanda da {STRINGID}”
+STR_1558    :{SMALLFONT}“Non ho intenzione di pagare così tanto un panino da {STRINGID}”
+STR_1559    :{SMALLFONT}“Non ho intenzione di pagare così tanto delle patatine da {STRINGID}”
+STR_1560    :{SMALLFONT}“Non ho intenzione di pagare così tanto un gelato da {STRINGID}”
+STR_1561    :{SMALLFONT}“Non ho intenzione di pagare così tanto dello zucchero filato da {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto per una pizza da {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}“Non ho intenzione di pagare così tanto per una pizza da {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto dei pop-corn da {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un hot dog da {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un tentacolo da {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un cappellino da {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una mela caramellata da {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una maglietta da {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una ciambella da {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un caffè da {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}“Non ho intenzione di pagare così tanto dei pop-corn da {STRINGID}”
+STR_1568    :{SMALLFONT}“Non ho intenzione di pagare così tanto un hot dog da {STRINGID}”
+STR_1569    :{SMALLFONT}“Non ho intenzione di pagare così tanto un tentacolo da {STRINGID}”
+STR_1570    :{SMALLFONT}“Non ho intenzione di pagare così tanto un cappellino da {STRINGID}”
+STR_1571    :{SMALLFONT}“Non ho intenzione di pagare così tanto una mela caramellata da {STRINGID}”
+STR_1572    :{SMALLFONT}“Non ho intenzione di pagare così tanto una maglietta da {STRINGID}”
+STR_1573    :{SMALLFONT}“Non ho intenzione di pagare così tanto una ciambella da {STRINGID}”
+STR_1574    :{SMALLFONT}“Non ho intenzione di pagare così tanto un caffè da {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto del pollo fritto da {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto della limonata da {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}“Non ho intenzione di pagare così tanto del pollo fritto da {STRINGID}”
+STR_1577    :{SMALLFONT}“Non ho intenzione di pagare così tanto della limonata da {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}Questa foto-in-corsa comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}Questo biscottino comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}Questa cioccolata calda comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}Questo tè freddo comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Questa torta a ciambella comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}Questi occhiali da sole comprati da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}Questi spaghetti al ragù comprati da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}Questi spaghetti di riso fritto comprati da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}Questa zuppa di wonton comprata da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}Queste polpette in salsa comprate da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}Questo succo di frutta comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}Questo latte di soia comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}Questo sujongkwa {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}Questo sandwich comprato da {STRINGID} costa davvero poco{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}Questo biscotto comprato da {STRINGID} costa davvero poco{ENDQUOTES}
+STR_1584    :{SMALLFONT}“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
+STR_1585    :{SMALLFONT}“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
+STR_1586    :{SMALLFONT}“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
+STR_1587    :{SMALLFONT}“Questo biscottino comprato da {STRINGID} costa davvero poco”
+STR_1588    :{SMALLFONT}“Questa cioccolata calda comprata da {STRINGID} costa davvero poco”
+STR_1589    :{SMALLFONT}“Questo tè freddo comprato da {STRINGID} costa davvero poco”
+STR_1590    :{SMALLFONT}“Questa torta a ciambella comprata da {STRINGID} costa davvero poco”
+STR_1591    :{SMALLFONT}“Questi occhiali da sole comprati da {STRINGID} costa davvero poco”
+STR_1592    :{SMALLFONT}“Questi spaghetti al ragù comprati da {STRINGID} costa davvero poco”
+STR_1593    :{SMALLFONT}“Questi spaghetti di riso fritto comprati da {STRINGID} costa davvero poco”
+STR_1594    :{SMALLFONT}“Questa zuppa di wonton comprata da {STRINGID} costa davvero poco”
+STR_1595    :{SMALLFONT}“Queste polpette in salsa comprate da {STRINGID} costa davvero poco”
+STR_1596    :{SMALLFONT}“Questo succo di frutta comprato da {STRINGID} costa davvero poco”
+STR_1597    :{SMALLFONT}“Questo latte di soia comprato da {STRINGID} costa davvero poco”
+STR_1598    :{SMALLFONT}“Questo sujongkwa {STRINGID} costa davvero poco”
+STR_1599    :{SMALLFONT}“Questo sandwich comprato da {STRINGID} costa davvero poco”
+STR_1600    :{SMALLFONT}“Questo biscotto comprato da {STRINGID} costa davvero poco”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Queste salsicce comprate da {STRINGID} costano davvero poco{ENDQUOTES}
+STR_1604    :{SMALLFONT}“Queste salsicce comprate da {STRINGID} costano davvero poco”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -998,27 +998,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un biscottino da {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una cioccolata calda da {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto del tè freddo da {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto una torta a ciambella da {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un paio di occhiali da sole da {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto degli spaghetti al ragù da {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto degli spaghetti di riso fritto da {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto della zuppa di wonton da {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto delle polpette in salsa da {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un succo di frutta da {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto del latte di soia da {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un sujongkwa da {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un sandwich da {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto un biscotto da {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
+STR_1617    :{SMALLFONT}“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
+STR_1618    :{SMALLFONT}“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
+STR_1619    :{SMALLFONT}“Non ho intenzione di pagare così tanto un biscottino da {STRINGID}”
+STR_1620    :{SMALLFONT}“Non ho intenzione di pagare così tanto una cioccolata calda da {STRINGID}”
+STR_1621    :{SMALLFONT}“Non ho intenzione di pagare così tanto del tè freddo da {STRINGID}”
+STR_1622    :{SMALLFONT}“Non ho intenzione di pagare così tanto una torta a ciambella da {STRINGID}”
+STR_1623    :{SMALLFONT}“Non ho intenzione di pagare così tanto un paio di occhiali da sole da {STRINGID}”
+STR_1624    :{SMALLFONT}“Non ho intenzione di pagare così tanto degli spaghetti al ragù da {STRINGID}”
+STR_1625    :{SMALLFONT}“Non ho intenzione di pagare così tanto degli spaghetti di riso fritto da {STRINGID}”
+STR_1626    :{SMALLFONT}“Non ho intenzione di pagare così tanto della zuppa di wonton da {STRINGID}”
+STR_1627    :{SMALLFONT}“Non ho intenzione di pagare così tanto delle polpette in salsa da {STRINGID}”
+STR_1628    :{SMALLFONT}“Non ho intenzione di pagare così tanto un succo di frutta da {STRINGID}”
+STR_1629    :{SMALLFONT}“Non ho intenzione di pagare così tanto del latte di soia da {STRINGID}”
+STR_1630    :{SMALLFONT}“Non ho intenzione di pagare così tanto un sujongkwa da {STRINGID}”
+STR_1631    :{SMALLFONT}“Non ho intenzione di pagare così tanto un sandwich da {STRINGID}”
+STR_1632    :{SMALLFONT}“Non ho intenzione di pagare così tanto un biscotto da {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}Non ho intenzione di pagare così tanto delle salsicce da {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}“Non ho intenzione di pagare così tanto delle salsicce da {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1030,10 +1030,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Aiuto! Voglio scendere!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}Sto finendo i soldi!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! Presto ci sarà una nuova attrazione!{ENDQUOTES}
-STR_1653    :{SMALLFONT}{OPENQUOTES}...e qui siamo su {STRINGID}!{ENDQUOTES}
+STR_1648    :{SMALLFONT}“Aiuto! Voglio scendere!”
+STR_1649    :{SMALLFONT}“Sto finendo i soldi!”
+STR_1650    :{SMALLFONT}“Wow! Presto ci sarà una nuova attrazione!”
+STR_1653    :{SMALLFONT}“...e qui siamo su {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Pensieri più recenti:
 STR_1655    :{SMALLFONT}{BLACK}Costruisci un sentiero sul terreno
 STR_1656    :{SMALLFONT}{BLACK}Costruisci un ponte o una galleria
@@ -1443,11 +1443,11 @@ STR_2068    :del pollo fritto
 STR_2069    :della limonata
 STR_2070    :una scatola vuota
 STR_2071    :una bottiglia vuota
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Palloncino
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Peluche
+STR_2072    :“{STRINGID}” Palloncino
+STR_2073    :“{STRINGID}” Peluche
 STR_2074    :Mappa di {STRINGID}
 STR_2075    :Foto-in-corsa di {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Ombrello
+STR_2076    :“{STRINGID}” Ombrello
 STR_2077    :Bevanda
 STR_2078    :Panino
 STR_2079    :Patatine
@@ -1461,9 +1461,9 @@ STR_2086    :Buono-sconto per {STRINGID}
 STR_2087    :Pop-corn
 STR_2088    :Hot dog
 STR_2089    :Tentacolo
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cappellino
+STR_2090    :“{STRINGID}” Cappellino
 STR_2091    :Mela caramellata
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Maglietta
+STR_2092    :“{STRINGID}” Maglietta
 STR_2093    :Ciambella
 STR_2094    :Caffè
 STR_2095    :Tazzina vuota
@@ -1572,8 +1572,8 @@ STR_2212    :{SMALLFONT}{BLACK}Mostra la lista dei vigilanti del parco
 STR_2213    :{SMALLFONT}{BLACK}Mostra la lista degli intrattenitori del parco
 STR_2214    :Non è possibile costruire quando il gioco è in pausa!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} sull'attrazione {STRINGID} non ha ancora fatto ritorno presso: {STRINGID}!{NEWLINE}Controlla se si è bloccato o se è entrato in stallo
 STR_2219    :{RED}{COMMA16} persone sono rimaste uccise in un incidente su {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valutazione del parco: {BLACK}{COMMA16}
@@ -1674,7 +1674,7 @@ STR_2315    :{WINDOW_COLOUR_2}Costo: {BLACK}circa {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Spazio richiesto: {BLACK}{COMMA16} x {COMMA16} blocchi
 STR_2321    :{WINDOW_COLOUR_2}Numero di attrazioni: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Dimensioni del parco: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Compra del terreno per estendere il parco
 STR_2326    :{SMALLFONT}{BLACK}Compra dei diritti di costruzione per permettere la costruzione sopra o sotto il terreno al di fuori del parco
@@ -1685,16 +1685,16 @@ STR_2330    :{WINDOW_COLOUR_2}Temperatura:
 STR_2331    :{WINDOW_COLOUR_2}Indicazioni altezza:
 STR_2332    :Unità
 STR_2333    :Impostazioni audio
-STR_2334    :Sterline ({POUND})
+STR_2334    :Sterline (£)
 STR_2335    :Dollari ($)
 STR_2336    :Franchi (F)
 STR_2337    :Marchi tedeschi (DM)
-STR_2338    :Yen ({YEN})
+STR_2338    :Yen (¥)
 STR_2339    :Pesetas (Pts)
 STR_2340    :Lire (L)
 STR_2341    :Fiorini (ƒ)
 STR_2342    :Corone (kr)
-STR_2343    :Euro ({EURO})
+STR_2343    :Euro (€)
 STR_2344    :Imperiale
 STR_2345    :Metrico
 STR_2347    :{RED}{STRINGID} è annegato!
@@ -1715,8 +1715,8 @@ STR_2362    :{SMALLFONT}{BLACK}Attiva/disattiva l'addolcimento degli spigoli del
 STR_2363    :Griglia sovrapposta al paesaggio
 STR_2364    :{SMALLFONT}{BLACK}Attiva/disattiva la griglia sovrapposta al paesaggio
 STR_2365    :La banca si rifiuta di concedere altri prestiti!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :Celsius (°C)
+STR_2367    :Fahrenheit (°F)
 STR_2368    :Nessuno
 STR_2369    :Basso
 STR_2370    :Medio
@@ -1824,8 +1824,8 @@ STR_2481    :{SMALLFONT}{BLACK}Mostra il grafico dell'accelerazione laterale nel
 STR_2482    :{SMALLFONT}{BLACK}Profitto: {CURRENCY} alla settimana,  valore del parco: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Profitto settimanale: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Profitto settimanale: {RED}{CURRENCY2DP}
-STR_2487    :Mostra i {OPENQUOTES}veri{ENDQUOTES} nomi dei visitatori
-STR_2488    :{SMALLFONT}{BLACK}Svaria tra i {OPENQUOTES}veri{ENDQUOTES} nomi dei visitatori e i loro numeri
+STR_2487    :Mostra i “veri” nomi dei visitatori
+STR_2488    :{SMALLFONT}{BLACK}Svaria tra i “veri” nomi dei visitatori e i loro numeri
 STR_2489    :Tasti rapidi
 STR_2490    :Tasti rapidi
 STR_2491    :Ripristina
@@ -2082,7 +2082,7 @@ STR_2743    :Copiare 'data/css17.dat' dalla cartella di installazione di RCT1 co
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
+STR_2747    :”
 STR_2749    :Nuovo scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Sposta tutti gli elementi sopra
@@ -2104,14 +2104,14 @@ STR_2774    :A schermo intero
 STR_2775    :A schermo intero (desktop)
 STR_2776    :Lingua:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Finestra #{COMMA16}
 STR_2780    :Finestra extra
 STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Modifica la scorciatoia
-STR_2785    :{WINDOW_COLOUR_2}Premi il nuovo tasto-scorciatoia per : {NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Premi il nuovo tasto-scorciatoia per : {NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Clicca sulla descrizione della scorciatoia per selezionare un nuovo tasto
 STR_2787    :{WINDOW_COLOUR_2}Valore del parco: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Congratulazioni!{NEWLINE}{BLACK}Hai raggiunto il tuo obiettivo: una società del valore di {CURRENCY}!
@@ -2157,23 +2157,23 @@ STR_2827    :{WINDOW_COLOUR_2}Premio migliori attrazioni personalizzate
 STR_2828    :{WINDOW_COLOUR_2}Premio colori più sgargianti
 STR_2829    :{WINDOW_COLOUR_2}Premio parco più confuso
 STR_2830    :{WINDOW_COLOUR_2}Premio migliori attrazioni tranquille
-STR_2831    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco più sporco del paese{ENDQUOTES}!
-STR_2832    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco più pulito del paese{ENDQUOTES}!
-STR_2833    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con i migliori ottovolanti{ENDQUOTES}!
-STR_2834    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Miglior parco del paese{ENDQUOTES}!
-STR_2835    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco più bello del paese{ENDQUOTES}!
-STR_2836    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Peggior parco del paese{ENDQUOTES}!
-STR_2837    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco più sicuro del paese{ENDQUOTES}!
-STR_2838    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con il miglior personale{ENDQUOTES}!
-STR_2839    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con il miglior cibo in tutto il paese{ENDQUOTES}!
-STR_2840    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con il peggior cibo in tutto il paese{ENDQUOTES}!
-STR_2841    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con i migliori servizi igienici in tutto il paese{ENDQUOTES}!
-STR_2842    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco più deludente del paese{ENDQUOTES}!
-STR_2843    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con le migliori attrazioni acquatiche del paese{ENDQUOTES}!
-STR_2844    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con le migliori attrazioni personalizzate del paese{ENDQUOTES}!
-STR_2845    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con i colori più sconvolgenti di tutto paese{ENDQUOTES}!
-STR_2846    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco più confuso{ENDQUOTES}!
-STR_2847    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il {OPENQUOTES}Parco con le migliori attrazioni tranquille del paese{ENDQUOTES}!
+STR_2831    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco più sporco del paese”!
+STR_2832    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco più pulito del paese”!
+STR_2833    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con i migliori ottovolanti”!
+STR_2834    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Miglior parco del paese”!
+STR_2835    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco più bello del paese”!
+STR_2836    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Peggior parco del paese”!
+STR_2837    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco più sicuro del paese”!
+STR_2838    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con il miglior personale”!
+STR_2839    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con il miglior cibo in tutto il paese”!
+STR_2840    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con il peggior cibo in tutto il paese”!
+STR_2841    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con i migliori servizi igienici in tutto il paese”!
+STR_2842    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco più deludente del paese”!
+STR_2843    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con le migliori attrazioni acquatiche del paese”!
+STR_2844    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con le migliori attrazioni personalizzate del paese”!
+STR_2845    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con i colori più sconvolgenti di tutto paese”!
+STR_2846    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco più confuso”!
+STR_2847    :{TOPAZ}Il tuo parco ha ricevuto un premio essendo stato valutato il “Parco con le migliori attrazioni tranquille del paese”!
 STR_2848    :{WINDOW_COLOUR_2}Nessun premio di recente
 STR_2849    :Installazione del nuovo scenario eseguita correttamente
 STR_2850    :Installazione del nuovo progetto di tracciato eseguita correttamente
@@ -2198,37 +2198,37 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Il poeta e il Contadino:   (Suppe) senz
 STR_2873    :{WINDOW_COLOUR_2}Medley di waltzer:   (Johann Strauss) senza copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradizionale)
 STR_2875    :{WINDOW_COLOUR_2}Orginal Recordings (P) 1976 C.J.Mears Organisation, usati per loro concessione
-STR_2876    :{WINDOW_COLOUR_2}Musica dei titoli di RollerCoaster Tycoon 2:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, eseguita da Peter James Adcock) registrazione {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}Musica dei titoli di RollerCoaster Tycoon 2:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, eseguita da Peter James Adcock) registrazione © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Modello decorativo principale
 STR_2972    :Modello decorativo alternativo 1
 STR_2973    :Modello decorativo alternativo 2
@@ -2245,7 +2245,7 @@ STR_2983    :Digita il testo di questa insegna:
 STR_2984    :Impossibile fissare il testo dell'insegna...
 STR_2985    :Insegna
 STR_2986    :{SMALLFONT}{BLACK}Modifica il testo dell'insegna
-STR_2987    :{SMALLFONT}{BLACK}Imposta quest'insegna come cartello di {OPENQUOTES}Vietato l'ingresso{ENDQUOTES} per i visitatori
+STR_2987    :{SMALLFONT}{BLACK}Imposta quest'insegna come cartello di “Vietato l'ingresso” per i visitatori
 STR_2988    :{SMALLFONT}{BLACK}Demolisci questa insegna
 STR_2989    :{SMALLFONT}{BLACK}Scegli il colore principale
 STR_2990    :{SMALLFONT}{BLACK}Scegli il colore del testo
@@ -2321,7 +2321,7 @@ STR_3063    :{SMALLFONT}{BLACK}Canale d'acqua (tracciato immerso)
 STR_3064    :Parchi per principianti
 STR_3065    :Parchi impegnativi
 STR_3066    :Parchi per esperti
-STR_3067    :{OPENQUOTES}Veri{ENDQUOTES} parchi
+STR_3067    :“Veri” parchi
 STR_3068    :Altri parchi
 STR_3069    :Sezione superiore
 STR_3070    :Pendio a livellare
@@ -2475,7 +2475,7 @@ STR_3235    :{SMALLFONT}{BLACK}Mostra le opzioni sulle finanze
 STR_3236    :{SMALLFONT}{BLACK}Mostra le opzioni sui visitatori
 STR_3237    :{SMALLFONT}{BLACK}Mostra le opzioni sul parco
 STR_3238    :Niente denaro
-STR_3239    :{SMALLFONT}{BLACK}Rendi questo parco un parco {OPENQUOTES}senza denaro{ENDQUOTES} e senza restrizioni finanziarie
+STR_3239    :{SMALLFONT}{BLACK}Rendi questo parco un parco “senza denaro” e senza restrizioni finanziarie
 STR_3240    :{WINDOW_COLOUR_2}Denaro iniziale:
 STR_3241    :{WINDOW_COLOUR_2}Prestito iniziale:
 STR_3242    :{WINDOW_COLOUR_2}Prestito massimo:
@@ -2884,8 +2884,8 @@ STR_5371    :Selezione oggetti
 STR_5372    :Inverti direzione trascinamento con clic destro
 STR_5373    :Nome {STRINGID}
 STR_5374    :Data {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Salva
 STR_5378    :{SMALLFONT}{BLACK}Script
 STR_5379    :{SMALLFONT}{BLACK}Salta al successivo comando di attesa
@@ -3067,7 +3067,7 @@ STR_5556    :{SMALLFONT}{BLACK}Caccia giocatore
 STR_5557    :Rimani connesso in caso di asincronia (multigiocatore)
 STR_5558    :È necessario riavviare il gioco per attivare questa opzione
 STR_5559    :Ispezioni ogni 10 min.
-STR_5560    :{SMALLFONT}{BLACK}Imposta l'intervallo di ispezione a {OPENQUOTES}Ogni 10 minuti{ENDQUOTES} su tutte le attrazioni
+STR_5560    :{SMALLFONT}{BLACK}Imposta l'intervallo di ispezione a “Ogni 10 minuti” su tutte le attrazioni
 STR_5561    :Caricamento lingua fallito
 STR_5562    :ATTENZIONE!
 STR_5563    :Questa funzionalità è instabile, utilizzarla con attenzione.
@@ -3090,7 +3090,7 @@ STR_5579    :Fattore di scala:
 STR_5580    :Corona ceca (Kč)
 STR_5581    :Mostra FPS
 STR_5582    :Blocca il mouse nella finestra
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Sblocca i limiti delle attrazioni, permettendo cose come la {VELOCITY} nelle salite
 STR_5586    :Apri automaticamente negozi e chioschi
@@ -3132,7 +3132,7 @@ STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :Parchi {OPENQUOTES}veri{ENDQUOTES}
+STR_5625    :Parchi “veri”
 STR_5626    :Altri parchi
 STR_5627    :Raggruppa lista scenari per:
 STR_5628    :Gioco di origine
@@ -3234,7 +3234,7 @@ STR_5758    :{OUTLINE}{GREEN}{STRING} è entrato in gioco
 STR_5759    :Scaricamento mappa ... ({INT32} / {INT32}) KiB
 STR_5760    :Dollari di Hong Kong (HK$)
 STR_5761    :Nuovi dollari taiwanesi (NT$)
-STR_5762    :Yuan cinesi (CN{YEN})
+STR_5762    :Yuan cinesi (CN¥)
 STR_5763    :Tutti i file
 STR_5764    :Tipo di attrazione non valida
 STR_5765    :Non è possibile modificare attrazioni non valide
@@ -3254,7 +3254,7 @@ STR_5778    :Costruito: {COMMA16} anni fa
 STR_5779    :Guadagno: {CURRENCY2DP} all'ora
 STR_5780    :Costo mantenimento: {CURRENCY2DP} all'ora
 STR_5781    :Costo mantenimento: Sconosciuto
-STR_5782    :Ora si è connessi. Premere {OPENQUOTES}{STRING}{ENDQUOTES} per chattare.
+STR_5782    :Ora si è connessi. Premere “{STRING}” per chattare.
 STR_5783    :{WINDOW_COLOUR_2}Scenario bloccato
 STR_5784    :{BLACK}Completare gli scenari precedenti per sbloccare questo.
 STR_5785    :Impossibile rinominare il gruppo...
@@ -3263,7 +3263,7 @@ STR_5787    :{COMMA32} giocatori connessi
 STR_5788    :Ispeziona attrazioni:
 STR_5789    :Disattiva effetto fulmine
 STR_5790    :{SMALLFONT}{BLACK}Attiva/disattiva i prezzi di RCT1{NEWLINE}(es. sia prezzo di ingresso che prezzo sulle attrazioni)
-STR_5791    :{SMALLFONT}{BLACK}Imposta l'affidabilità di tutte le attrazioni a 100%{NEWLINE}e reimposta la loro data di costruzione a {OPENQUOTES}quest'anno{ENDQUOTES}
+STR_5791    :{SMALLFONT}{BLACK}Imposta l'affidabilità di tutte le attrazioni a 100%{NEWLINE}e reimposta la loro data di costruzione a “quest'anno”
 STR_5792    :{SMALLFONT}{BLACK}Aggiusta tutte le attrazioni rotte
 STR_5793    :{SMALLFONT}{BLACK}Pulisce lo storico degli incidenti di questa attrazione,{NEWLINE}affinché i visitatori non si lamentino che non è sicura
 STR_5794    :{SMALLFONT}{BLACK}Alcuni scenari disattivano la modifica{NEWLINE}dei percorsi già presenti nel parco.{NEWLINE}Questa opzione la riattiva
@@ -3285,8 +3285,8 @@ STR_5809    :{WINDOW_COLOUR_2}Numero di punti informativi e altri servizi: {BLAC
 STR_5810    :Disabilita limiti veicoli
 STR_5811    :{SMALLFONT}{BLACK}Se selezionato, si possono avere fino a{NEWLINE}255 carrelli per treno e 31{NEWLINE}treni per attrazione
 STR_5812    :Mostra la finestra multigiocatore
-STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
-STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5813    :“{STRING}”
+STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra il contatore FPS mentre si gioca
 STR_5816    :{SMALLFONT}{BLACK}Imposta il rapporto a cui il gioco viene scalato.{NEWLINE}Utile quando si gioca ad alte risoluzioni
@@ -3303,7 +3303,7 @@ STR_5828    :{SMALLFONT}{BLACK}Cambia quale formato di misurazione è usato per 
 STR_5829    :{SMALLFONT}{BLACK}Cambia la moneta in uso. Soltanto visuale, non effettua una vera conversione
 STR_5830    :{SMALLFONT}{BLACK}Cambia la lingua utilizzata
 STR_5831    :{SMALLFONT}{BLACK}Cambia il formato della{NEWLINE}temperatura visualizzata
-STR_5832    :{SMALLFONT}{BLACK}Mostra l'altezza in unità generiche invece del formato impostato in {OPENQUOTES}Distanze e velocità{ENDQUOTES}
+STR_5832    :{SMALLFONT}{BLACK}Mostra l'altezza in unità generiche invece del formato impostato in “Distanze e velocità”
 STR_5833    :{SMALLFONT}{BLACK}Cambia il formato della data utilizzato
 STR_5834    :{SMALLFONT}{BLACK}Seleziona il dispositivo audio utilizzato da OpenRCT2
 STR_5835    :{SMALLFONT}{BLACK}Disattiva l'audio del gioco se la finestra perde il focus
@@ -3529,7 +3529,7 @@ STR_6055    :File di heightmap di OpenRCT2
 STR_6056    :{SMALLFONT}{BLACK}Muto
 STR_6057    :{SMALLFONT}{BLACK}Mostra un bottone separato per l'opzione Muto nella barra degli strumenti
 STR_6058    :Muto
-STR_6059    :{RIGHTGUILLEMET}
+STR_6059    :»
 STR_6060    :Mostra animazione per acquisti dei visitatori
 STR_6061    :{SMALLFONT}{BLACK}Mostra l'effetto dei soldi animato{NEWLINE}quando i visitatori effettuano acquisti.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
@@ -3608,7 +3608,7 @@ STR_6134    :Rimuovi scenario
 STR_6135    :Il client ha inviato una richiesta non valida
 STR_6136    :Il server ha inviato una richiesta non valida
 STR_6137    :OpenRCT2, un clone libero e open-source di Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare nel file {OPENQUOTES}contributors.md{ENDQUOTES}. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
+STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare nel file “contributors.md”. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tutti i nomi di prodotti e aziende appartengono ai rispettivi proprietari. Il loro uso non implica alcuna affiliazione o approvazione da parte di essi.
 STR_6140    :Storico delle modifiche...
 STR_6141    :Barra degli strumenti inferiore alla RCT1
@@ -3634,7 +3634,7 @@ STR_6160    :{WINDOW_COLOUR_2}Veicoli disponibili: {BLACK}{STRING}
 STR_6161    :Mostra/nascondi griglia
 STR_6162    :Topo tutto matto rotante
 STR_6163    :Carrelli a forma di topo corrono lungo curve strette e brevi cadute, ruotando per disorientare i passeggeri
-STR_6164    :{WHITE}{CROSS}
+STR_6164    :{WHITE}❌
 STR_6165    :Usa sincronizz. verticale
 STR_6166    :{SMALLFONT}{BLACK}Sincronizza i frame alla frequenza di aggiornamento dello schermo, per prevenire gli artefatti grafici (tearing).
 STR_6167    :{SMALLFONT}{BLACK}Avanzate

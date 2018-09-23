@@ -225,7 +225,7 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Kan ikke tilgå grafik data fil
 STR_0823    :Manglende eller utilgængelig data fil
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :Valgte navn er allerede i brug
 STR_0826    :For mange navne defineret
 STR_0827    :Ikke penge nok - Der kræves {CURRENCY2DP}
@@ -233,14 +233,14 @@ STR_0828    :{SMALLFONT}{BLACK}Luk vindue
 STR_0829    :{SMALLFONT}{BLACK}Vindues titel - Træk her for at flytte vinduet
 STR_0830    :{SMALLFONT}{BLACK}Zoom ind
 STR_0831    :{SMALLFONT}{BLACK}Zoom ud
-STR_0832    :{SMALLFONT}{BLACK}Roter synsvinklen 90{DEGREE} med uret
+STR_0832    :{SMALLFONT}{BLACK}Roter synsvinklen 90° med uret
 STR_0833    :{SMALLFONT}{BLACK}Sæt spillet på pause
 STR_0834    :{SMALLFONT}{BLACK}Disk og spil indstillinger
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Om 'OpenRCT2'
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle rettigheder forbeholdt
+STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, alle rettigheder forbeholdt
 STR_0851    :{WINDOW_COLOUR_2}Designet og programmeret af Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafik af Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Lyd og musik af Allister Brimble
@@ -259,7 +259,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :For lavt !
 STR_0878    :For højt !
 STR_0879    :Kan ikke sænke landskabet her...
@@ -337,22 +337,22 @@ STR_0952    :Afslut spil
 STR_0953    :Hent Landskab
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Vælg sæde rotation for denne banesektion
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :Afbryd
 STR_0973    :OK
 STR_0974    :Forlystelser
@@ -365,8 +365,8 @@ STR_0980    :Nye Vilde Forlystelser
 STR_0981    :Nye Vand Forlystelser
 STR_0982    :Nye Butikker & Boder
 STR_0983    :Forskning og Udvikling
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :For mange Forlystelser/attraktioner
 STR_0988    :Kan ikke oprette ny forlystelse/attraktion...
@@ -461,14 +461,14 @@ STR_1076    :Butiks bod tilstand
 STR_1077    :Rotations tilstand
 STR_1078    :Fremad rotation
 STR_1079    :Baglæns rotation
-STR_1080    :Film: {ENDQUOTES}Avenging aviators{ENDQUOTES}
-STR_1081    :3D film: {ENDQUOTES}Mouse tails{ENDQUOTES}
+STR_1080    :Film: ”Avenging aviators”
+STR_1081    :3D film: ”Mouse tails”
 STR_1082    :Space rings tilstand
 STR_1083    :Begynder tilstand
 STR_1084    :LIM-drevet afsendelse
-STR_1085    :Film: {ENDQUOTES}Thrill riders{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Storm chasers{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
+STR_1085    :Film: ”Thrill riders”
+STR_1086    :3D film: ”Storm chasers”
+STR_1087    :3D film: ”Space raiders”
 STR_1088    :Intens tilstand
 STR_1089    :Bersærk tilstand
 STR_1090    :Spøgelseshus tilstand
@@ -524,7 +524,7 @@ STR_1139    :{SMALLFONT}{BLACK}Vælg Stilads farve
 STR_1140    :{SMALLFONT}{BLACK}Vælg vogn farve skema
 STR_1141    :{SMALLFONT}{BLACK}Vælg hvilket vogn/tog at modificere
 STR_1142    :{MOVE_X}{10}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Kan ikke bygge/flytte indgangen for denne forlystelse/attraktion...
 STR_1145    :Kan ikke bygge/flytte udgangen for denne  forlystelse/attraktion...
 STR_1146    :Indgang ikke bygget endnu
@@ -538,7 +538,7 @@ STR_1153    :Højdeangivelse på forlystelses skinner
 STR_1154    :Højdeangivelse på land
 STR_1155    :Højdeangivelse på stier
 STR_1156    :{MOVE_X}{10}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Kan ikke fjerne dette...
 STR_1159    :{SMALLFONT}{BLACK}Placer sceneri, haver, og andet pynt
 STR_1160    :{SMALLFONT}{BLACK}lav/juster søer og vand
@@ -708,7 +708,7 @@ STR_1323    :Baner
 STR_1324    :{COMMA16} bane
 STR_1325    :{COMMA16} baner
 STR_1326    :Bane {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Roter objekts med 90{DEGREE}
+STR_1327    :{SMALLFONT}{BLACK}Roter objekts med 90°
 STR_1328    :Fladt land påkrævet
 STR_1329    :{WINDOW_COLOUR_2}Afsendelses hastighed:
 STR_1330    :{SMALLFONT}{BLACK}Maksimum hastighed ved afgang fra stationen
@@ -785,7 +785,7 @@ STR_1400    :Indgang
 STR_1401    :Udgang
 STR_1402    :{SMALLFONT}{BLACK}Byg eller flyt indgangen til forlystelse/attraktion
 STR_1403    :{SMALLFONT}{BLACK}Byg eller flyt udgangen fra forlystelse/attraktion
-STR_1404    :{SMALLFONT}{BLACK}Roter 90{DEGREE}
+STR_1404    :{SMALLFONT}{BLACK}Roter 90°
 STR_1405    :{SMALLFONT}{BLACK}Spejlvend billede
 STR_1406    :{SMALLFONT}{BLACK}Slå sceneri til/fra (hvis muligt for dette design)
 STR_1407    :{WINDOW_COLOUR_2}Byg denne...
@@ -861,132 +861,132 @@ STR_1476    :{WINDOW_COLOUR_2}Intensitet bedømmelse: {BLACK}Ikke tilgængelig e
 STR_1477    :{WINDOW_COLOUR_2}Intensitet bedømmelse: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Kvalme bedømmelse: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Kvalme bedømmelse: {BLACK}Ikke tilgængelig endnu
-STR_1480    :{SMALLFONT}{OPENQUOTES}Jeg har ikke råd til {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}Jeg har brugt alle min penge{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}Jeg har det dårligt{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}Jeg har det virkelig dårligt{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}Jeg vil gerne prøve noget vildere end {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} ser for intens ud til mig {ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}Jeg er ikke færdig med min {STRINGID} endnu{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Bare jeg kigge på {STRINGID} får jeg det dårligt{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for at komme op i {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}Jeg vil gerne hjem{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} er rigtig god{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}Jeg har allerede {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}Jeg har ikke råd til {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}Jeg er ikke sulten{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}Jeg er ikke tørstig{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Hjælp! jeg drukner!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}JEg er faret vild!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} var fantastisk{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}Jeg har stået i kø til {STRINGID}, i en evighed{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}Jeg er træt{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}Jeg er sulten{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}Jeg er tørstig{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}Jeg skal på toilet{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}Jeg kan ikke finde {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget, for at bruge {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke have en tur i {STRINGID} imens det regner{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}Der er alt for meget affald her{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}Jeg kan ikke finde park udgangen{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}Jeg vil gerne af {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}Jeg vil gerne ud af {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke have en tur i {STRINGID} - Den er ikke sikker{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}Gangstien her er virkelig ulækker{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}Der er alt for overfyldt af folk her{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}Der er for mange ødelagte ting her{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Fantastisk sceneri!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}Denne park er virkelig flot og veldholdt{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}De hoppende fontæner er flotte{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}Musikken er god her{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}Ballonen fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}Krammedyret fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Park kortet fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}On-ride billedet fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}Paraplyen fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}Drikken fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}Burgeren {STRINGID} er et godt køb{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}Pommes fritterne fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}Isen fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}Candyfloss'en fra {STRINGID} er et godt køb{ENDQUOTES}
+STR_1480    :{SMALLFONT}“Jeg har ikke råd til {STRINGID}”
+STR_1481    :{SMALLFONT}“Jeg har brugt alle min penge”
+STR_1482    :{SMALLFONT}“Jeg har det dårligt”
+STR_1483    :{SMALLFONT}“Jeg har det virkelig dårligt”
+STR_1484    :{SMALLFONT}“Jeg vil gerne prøve noget vildere end {STRINGID}”
+STR_1485    :{SMALLFONT}“{STRINGID} ser for intens ud til mig ”
+STR_1486    :{SMALLFONT}“Jeg er ikke færdig med min {STRINGID} endnu”
+STR_1487    :{SMALLFONT}“Bare jeg kigge på {STRINGID} får jeg det dårligt”
+STR_1488    :{SMALLFONT}“Jeg vil ikke betale så meget for at komme op i {STRINGID}”
+STR_1489    :{SMALLFONT}“Jeg vil gerne hjem”
+STR_1490    :{SMALLFONT}“{STRINGID} er rigtig god”
+STR_1491    :{SMALLFONT}“Jeg har allerede {STRINGID}”
+STR_1492    :{SMALLFONT}“Jeg har ikke råd til {STRINGID}”
+STR_1493    :{SMALLFONT}“Jeg er ikke sulten”
+STR_1494    :{SMALLFONT}“Jeg er ikke tørstig”
+STR_1495    :{SMALLFONT}“Hjælp! jeg drukner!”
+STR_1496    :{SMALLFONT}“JEg er faret vild!”
+STR_1497    :{SMALLFONT}“{STRINGID} var fantastisk”
+STR_1498    :{SMALLFONT}“Jeg har stået i kø til {STRINGID}, i en evighed”
+STR_1499    :{SMALLFONT}“Jeg er træt”
+STR_1500    :{SMALLFONT}“Jeg er sulten”
+STR_1501    :{SMALLFONT}“Jeg er tørstig”
+STR_1502    :{SMALLFONT}“Jeg skal på toilet”
+STR_1503    :{SMALLFONT}“Jeg kan ikke finde {STRINGID}”
+STR_1504    :{SMALLFONT}“Jeg vil ikke betale så meget, for at bruge {STRINGID}”
+STR_1505    :{SMALLFONT}“Jeg vil ikke have en tur i {STRINGID} imens det regner”
+STR_1506    :{SMALLFONT}“Der er alt for meget affald her”
+STR_1507    :{SMALLFONT}“Jeg kan ikke finde park udgangen”
+STR_1508    :{SMALLFONT}“Jeg vil gerne af {STRINGID}”
+STR_1509    :{SMALLFONT}“Jeg vil gerne ud af {STRINGID}”
+STR_1510    :{SMALLFONT}“Jeg vil ikke have en tur i {STRINGID} - Den er ikke sikker”
+STR_1511    :{SMALLFONT}“Gangstien her er virkelig ulækker”
+STR_1512    :{SMALLFONT}“Der er alt for overfyldt af folk her”
+STR_1513    :{SMALLFONT}“Der er for mange ødelagte ting her”
+STR_1514    :{SMALLFONT}“Fantastisk sceneri!”
+STR_1515    :{SMALLFONT}“Denne park er virkelig flot og veldholdt”
+STR_1516    :{SMALLFONT}“De hoppende fontæner er flotte”
+STR_1517    :{SMALLFONT}“Musikken er god her”
+STR_1518    :{SMALLFONT}“Ballonen fra {STRINGID} er et godt køb”
+STR_1519    :{SMALLFONT}“Krammedyret fra {STRINGID} er et godt køb”
+STR_1520    :{SMALLFONT}“Park kortet fra {STRINGID} er et godt køb”
+STR_1521    :{SMALLFONT}“On-ride billedet fra {STRINGID} er et godt køb”
+STR_1522    :{SMALLFONT}“Paraplyen fra {STRINGID} er et godt køb”
+STR_1523    :{SMALLFONT}“Drikken fra {STRINGID} er et godt køb”
+STR_1524    :{SMALLFONT}“Burgeren {STRINGID} er et godt køb”
+STR_1525    :{SMALLFONT}“Pommes fritterne fra {STRINGID} er et godt køb”
+STR_1526    :{SMALLFONT}“Isen fra {STRINGID} er et godt køb”
+STR_1527    :{SMALLFONT}“Candyfloss'en fra {STRINGID} er et godt køb”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}Pizza'en fra {STRINGID} er et godt køb{ENDQUOTES}
+STR_1531    :{SMALLFONT}“Pizza'en fra {STRINGID} er et godt køb”
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}Popcorn'ene fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}Denne Hot dog fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}Denne tentakel fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}Hatten fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Det kandiserede æble fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}T-shirt'en fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}Doughnut'en fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}Kaffen fra {STRINGID} er et godt køb{ENDQUOTES}
+STR_1533    :{SMALLFONT}“Popcorn'ene fra {STRINGID} er et godt køb”
+STR_1534    :{SMALLFONT}“Denne Hot dog fra {STRINGID} er et godt køb”
+STR_1535    :{SMALLFONT}“Denne tentakel fra {STRINGID} er et godt køb”
+STR_1536    :{SMALLFONT}“Hatten fra {STRINGID} er et godt køb”
+STR_1537    :{SMALLFONT}“Det kandiserede æble fra {STRINGID} er et godt køb”
+STR_1538    :{SMALLFONT}“T-shirt'en fra {STRINGID} er et godt køb”
+STR_1539    :{SMALLFONT}“Doughnut'en fra {STRINGID} er et godt køb”
+STR_1540    :{SMALLFONT}“Kaffen fra {STRINGID} er et godt køb”
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}Grill kyllingen fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}Lemonaden fra {STRINGID} er et godt køb{ENDQUOTES}
+STR_1542    :{SMALLFONT}“Grill kyllingen fra {STRINGID} er et godt køb”
+STR_1543    :{SMALLFONT}“Lemonaden fra {STRINGID} er et godt køb”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}Jeg har en under fornemmelse, af at der er nogen, der holder øje med mig{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en ballon fra {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for et krammedyr fra {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for et park kort fra {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en paraply fra{STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en drik fra {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en burger fra {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for pommes fritter fra {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for an is fra {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for candyfloss fra {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}“Wow!”
+STR_1551    :{SMALLFONT}“Jeg har en under fornemmelse, af at der er nogen, der holder øje med mig”
+STR_1552    :{SMALLFONT}“Jeg vil ikke betale så meget for en ballon fra {STRINGID}”
+STR_1553    :{SMALLFONT}“Jeg vil ikke betale så meget for et krammedyr fra {STRINGID}”
+STR_1554    :{SMALLFONT}“Jeg vil ikke betale så meget for et park kort fra {STRINGID}”
+STR_1555    :{SMALLFONT}“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
+STR_1556    :{SMALLFONT}“Jeg vil ikke betale så meget for en paraply fra{STRINGID}”
+STR_1557    :{SMALLFONT}“Jeg vil ikke betale så meget for en drik fra {STRINGID}”
+STR_1558    :{SMALLFONT}“Jeg vil ikke betale så meget for en burger fra {STRINGID}”
+STR_1559    :{SMALLFONT}“Jeg vil ikke betale så meget for pommes fritter fra {STRINGID}”
+STR_1560    :{SMALLFONT}“Jeg vil ikke betale så meget for an is fra {STRINGID}”
+STR_1561    :{SMALLFONT}“Jeg vil ikke betale så meget for candyfloss fra {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for pizza fra {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}“Jeg vil ikke betale så meget for pizza fra {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for popcorn fra {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en hot dog fra {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}“Jeg vil ikke betale så meget for popcorn fra {STRINGID}”
+STR_1568    :{SMALLFONT}“Jeg vil ikke betale så meget for en hot dog fra {STRINGID}”
 
-STR_1569    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en tentakel fra {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en hat fra {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for et kandiseret æble fra {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en T-shirt fra {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en doughnut fra {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget kaffe fra {STRINGID}{ENDQUOTES}
+STR_1569    :{SMALLFONT}“Jeg vil ikke betale så meget for en tentakel fra {STRINGID}”
+STR_1570    :{SMALLFONT}“Jeg vil ikke betale så meget for en hat fra {STRINGID}”
+STR_1571    :{SMALLFONT}“Jeg vil ikke betale så meget for et kandiseret æble fra {STRINGID}”
+STR_1572    :{SMALLFONT}“Jeg vil ikke betale så meget for en T-shirt fra {STRINGID}”
+STR_1573    :{SMALLFONT}“Jeg vil ikke betale så meget for en doughnut fra {STRINGID}”
+STR_1574    :{SMALLFONT}“Jeg vil ikke betale så meget kaffe fra {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for grill kylling fra {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for lemonade fra {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}“Jeg vil ikke betale så meget for grill kylling fra {STRINGID}”
+STR_1577    :{SMALLFONT}“Jeg vil ikke betale så meget for lemonade fra {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}Dette on-ride billede fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}Dette on-ride billede fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}Dette on-ride billede fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}Denne pretzel fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}Den varme chokolade fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}Is the'en fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Churrios'ene fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}Solbrillerne fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}Nudlerne fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}De ristede ris nuddler fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}Wonton suppen fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}Kødbolle suppen fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}Frugt juicen fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}Soya mælken fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}Sujeonggwa'en fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}Sandwich'en fra {STRINGID} er et godt køb{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}Småkagen fra {STRINGID} er et godt køb{ENDQUOTES}
+STR_1584    :{SMALLFONT}“Dette on-ride billede fra {STRINGID} er et godt køb”
+STR_1585    :{SMALLFONT}“Dette on-ride billede fra {STRINGID} er et godt køb”
+STR_1586    :{SMALLFONT}“Dette on-ride billede fra {STRINGID} er et godt køb”
+STR_1587    :{SMALLFONT}“Denne pretzel fra {STRINGID} er et godt køb”
+STR_1588    :{SMALLFONT}“Den varme chokolade fra {STRINGID} er et godt køb”
+STR_1589    :{SMALLFONT}“Is the'en fra {STRINGID} er et godt køb”
+STR_1590    :{SMALLFONT}“Churrios'ene fra {STRINGID} er et godt køb”
+STR_1591    :{SMALLFONT}“Solbrillerne fra {STRINGID} er et godt køb”
+STR_1592    :{SMALLFONT}“Nudlerne fra {STRINGID} er et godt køb”
+STR_1593    :{SMALLFONT}“De ristede ris nuddler fra {STRINGID} er et godt køb”
+STR_1594    :{SMALLFONT}“Wonton suppen fra {STRINGID} er et godt køb”
+STR_1595    :{SMALLFONT}“Kødbolle suppen fra {STRINGID} er et godt køb”
+STR_1596    :{SMALLFONT}“Frugt juicen fra {STRINGID} er et godt køb”
+STR_1597    :{SMALLFONT}“Soya mælken fra {STRINGID} er et godt køb”
+STR_1598    :{SMALLFONT}“Sujeonggwa'en fra {STRINGID} er et godt køb”
+STR_1599    :{SMALLFONT}“Sandwich'en fra {STRINGID} er et godt køb”
+STR_1600    :{SMALLFONT}“Småkagen fra {STRINGID} er et godt køb”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Den ristede pølse fra {STRINGID} er et godt køb{ENDQUOTES}
+STR_1604    :{SMALLFONT}“Den ristede pølse fra {STRINGID} er et godt køb”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -998,27 +998,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en pretzel fra {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for varm chokolade fra {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for is the fra {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en churrio fra {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for solbriller fra {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for nudler fra {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for ristede ris nudler fra {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for wonton suppe fra {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for kødbolle suppe fra {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for frugt juice fra {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for soya mælk fra {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for sujeonggwa fra {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en sandwich fra {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en småkage fra {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
+STR_1617    :{SMALLFONT}“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
+STR_1618    :{SMALLFONT}“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
+STR_1619    :{SMALLFONT}“Jeg vil ikke betale så meget for en pretzel fra {STRINGID}”
+STR_1620    :{SMALLFONT}“Jeg vil ikke betale så meget for varm chokolade fra {STRINGID}”
+STR_1621    :{SMALLFONT}“Jeg vil ikke betale så meget for is the fra {STRINGID}”
+STR_1622    :{SMALLFONT}“Jeg vil ikke betale så meget for en churrio fra {STRINGID}”
+STR_1623    :{SMALLFONT}“Jeg vil ikke betale så meget for solbriller fra {STRINGID}”
+STR_1624    :{SMALLFONT}“Jeg vil ikke betale så meget for nudler fra {STRINGID}”
+STR_1625    :{SMALLFONT}“Jeg vil ikke betale så meget for ristede ris nudler fra {STRINGID}”
+STR_1626    :{SMALLFONT}“Jeg vil ikke betale så meget for wonton suppe fra {STRINGID}”
+STR_1627    :{SMALLFONT}“Jeg vil ikke betale så meget for kødbolle suppe fra {STRINGID}”
+STR_1628    :{SMALLFONT}“Jeg vil ikke betale så meget for frugt juice fra {STRINGID}”
+STR_1629    :{SMALLFONT}“Jeg vil ikke betale så meget for soya mælk fra {STRINGID}”
+STR_1630    :{SMALLFONT}“Jeg vil ikke betale så meget for sujeonggwa fra {STRINGID}”
+STR_1631    :{SMALLFONT}“Jeg vil ikke betale så meget for en sandwich fra {STRINGID}”
+STR_1632    :{SMALLFONT}“Jeg vil ikke betale så meget for en småkage fra {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}Jeg vil ikke betale så meget for en ristet pølse fra {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}“Jeg vil ikke betale så meget for en ristet pølse fra {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1030,10 +1030,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Hjælp! Sæt mig ned!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}Jeg er ved at løbe tør for penge!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! en ny forlystelse er ved at blive bygget!{ENDQUOTES}
-STR_1653    :{SMALLFONT}{OPENQUOTES}...og her er vi på {STRINGID}!{ENDQUOTES}
+STR_1648    :{SMALLFONT}“Hjælp! Sæt mig ned!”
+STR_1649    :{SMALLFONT}“Jeg er ved at løbe tør for penge!”
+STR_1650    :{SMALLFONT}“Wow! en ny forlystelse er ved at blive bygget!”
+STR_1653    :{SMALLFONT}“...og her er vi på {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Seneste tanker:
 STR_1655    :{SMALLFONT}{BLACK}Konstruer gangsti på land
 STR_1656    :{SMALLFONT}{BLACK}Konstruer tunnel eller bro gangsti
@@ -1444,11 +1444,11 @@ STR_2068    :noget grillkylling
 STR_2069    :noget lemonade
 STR_2070    :en tom æske
 STR_2071    :en tom flaske
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloner
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Krammedyr
+STR_2072    :“{STRINGID}” Balloner
+STR_2073    :“{STRINGID}” Krammedyr
 STR_2074    :Kort over {STRINGID}
 STR_2075    :On-Ride foto fra {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Paraply
+STR_2076    :“{STRINGID}” Paraply
 STR_2077    :Drik
 STR_2078    :Burger
 STR_2079    :Pommes fritter
@@ -1462,9 +1462,9 @@ STR_2086    :Værdikupon til {STRINGID}
 STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Tentakel
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
+STR_2090    :“{STRINGID}” Hat
 STR_2091    :Kandiseret Æble
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
+STR_2092    :“{STRINGID}” T-Shirt
 STR_2093    :Doughnut
 STR_2094    :Kaffe
 STR_2095    :Tom kop
@@ -1573,8 +1573,8 @@ STR_2212    :{SMALLFONT}{BLACK}Vis liste over Sikkerhedsvagter i parken
 STR_2213    :{SMALLFONT}{BLACK}Vis liste over entertainere i parken
 STR_2214    :Konstruktion er ikke muligt, når spillet er sat på pause!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} på {STRINGID} er ikke kommet tilbage til {STRINGID} Endnu!{NEWLINE}Kontroller omm den sidder fast erler er strandet
 STR_2219    :{RED}{COMMA16} personer er døde i ulykken på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Vurdering: {BLACK}{COMMA16}
@@ -1675,7 +1675,7 @@ STR_2315    :{WINDOW_COLOUR_2}Pris: {BLACK}omkring {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Krævet plads: {BLACK}{COMMA16} x {COMMA16} felter
 STR_2321    :{WINDOW_COLOUR_2}Antal forlystelser/attraktioner: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personale: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Park størrelse: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Park størrelse: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park størrelse: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Køb land for at udvide parken
 STR_2326    :{SMALLFONT}{BLACK}Køb byggetilladelse, for at få lov til at bygge over og under land, uden for parken
@@ -1686,16 +1686,16 @@ STR_2330    :{WINDOW_COLOUR_2}Temperatur:
 STR_2331    :{WINDOW_COLOUR_2}Højdeangivelse:
 STR_2332    :Enheder
 STR_2333    :Lydeffekter
-STR_2334    :Pund ({POUND})
+STR_2334    :Pund (£)
 STR_2335    :Dollars ($)
 STR_2336    :Franc (F)
 STR_2337    :Deutsche mark (DM)
-STR_2338    :Yen ({YEN})
+STR_2338    :Yen (¥)
 STR_2339    :Pesetas (Pts)
 STR_2340    :Lire (L)
 STR_2341    :Gylden (ƒ)
 STR_2342    :Krone (kr)
-STR_2343    :Euros ({EURO})
+STR_2343    :Euros (€)
 STR_2344    :Imperialistisk
 STR_2345    :Metrisk
 STR_2347    :{RED}{STRINGID} er druknet!
@@ -1716,8 +1716,8 @@ STR_2362    :{SMALLFONT}{BLACK}skift imellem glatte kanter på landskabet
 STR_2363    :gitterlinjer på landskabet
 STR_2364    :{SMALLFONT}{BLACK}Skift imellem gitterlinjer på landskabet
 STR_2365    :Banken afviser at forhøje dit lån!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :Celsius (°C)
+STR_2367    :Fahrenheit (°F)
 STR_2368    :Ingen
 STR_2369    :Lav
 STR_2370    :Medium
@@ -2084,7 +2084,7 @@ STR_2743    :Kopier 'data/css17.dat' fra din RCT1 installation til 'data/css50.d
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
+STR_2747    :”
 STR_2749    :Mit nye scenarie
 # New strings used in the cheats window previously these were ???
 STR_2750    :Flyt alle enheder til toppen
@@ -2106,7 +2106,7 @@ STR_2774    :Fuldskærm
 STR_2775    :Fuldskærm (kantløst vindue)
 STR_2776    :Sprog:
 STR_2777    :{MOVE_X}{10}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Visning #{COMMA16}
 STR_2780    :Ekstra visning
 # End of new strings
@@ -2114,7 +2114,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Skift tastatur genvej
-STR_2785    :{WINDOW_COLOUR_2}tryk på den nye genvej for:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}tryk på den nye genvej for:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Klik på genvejsbeskrivelsen og vælg en ny tast
 STR_2787    :{WINDOW_COLOUR_2}Park værdi: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Tillykke !{NEWLINE}{BLACK}Du har nået dit mål med en virksomheds værdi på {CURRENCY} !
@@ -2201,37 +2201,37 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyrig
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Grundfarveskema
 STR_2972    :Alternativ farveskema 1
 STR_2973    :Alternativ farveskema 2
@@ -2324,7 +2324,7 @@ STR_3063    :{SMALLFONT}{BLACK}Vandkanal (undervandsbane)
 STR_3064    :Begynder Parker
 STR_3065    :Udfordrende Parker
 STR_3066    :Ekspert Parker
-STR_3067    :{OPENQUOTES}Virkelige{ENDQUOTES} Parker
+STR_3067    :“Virkelige” Parker
 STR_3068    :Andre Parker
 STR_3069    :Top valgte
 STR_3070    :Hældning til niveau
@@ -2883,8 +2883,8 @@ STR_5371    :Objekt udvælgelse
 STR_5372    :Omvendt højre muse træk
 STR_5373    :Navn {STRINGID}
 STR_5374    :Dato {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Gemte
 STR_5378    :{SMALLFONT}{BLACK}Script
 STR_5379    :{SMALLFONT}{BLACK}Skip til næste ventekommando
@@ -3089,7 +3089,7 @@ STR_5579    :Vindues skalarings faktor:
 STR_5580    :Tjekkiske koruna (Kč)
 STR_5581    :Vis FPS
 STR_5582    :Lås musemarkør til vinduet
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Åben butikker og boder automatisk
@@ -3131,7 +3131,7 @@ STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :{OPENQUOTES}Rigtige {ENDQUOTES} Parker
+STR_5625    :“Rigtige ” Parker
 STR_5626    :Andre Parker
 STR_5627    :Grupper scenarie lister efter:
 STR_5628    :Kilde spil
@@ -3233,7 +3233,7 @@ STR_5758    :{OUTLINE}{GREEN}{STRING} har sluttet sig til spillet
 STR_5759    :Henter kortet ... ({INT32} / {INT32}) KB
 STR_5760    :Hong Kong Dollars (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
-STR_5762    :Chinese Yuan (CN{YEN})
+STR_5762    :Chinese Yuan (CN¥)
 STR_5763    :Alle filer
 STR_5764    :Ugyldig forlystelses type
 STR_5765    :Kan ikke redigere ugyldige forlystelses typer
@@ -3262,7 +3262,7 @@ STR_5787    :{COMMA32} Spillere online
 STR_5788    :Standard inspektions interval:
 STR_5789    :Deaktiver lyseffekter
 STR_5790    :{SMALLFONT}{BLACK}Skift imellem RCT1-stil prissætning{NEWLINE}(f.eks. både forlystelse pris og entrépris)
-STR_5791    :{SMALLFONT}{BLACK}Sætter pålideligheden af alle forlystelser til 100%{NEWLINE}og nulstiller alle byggedatoer til {OPENQUOTES}dette år{ENDQUOTES}
+STR_5791    :{SMALLFONT}{BLACK}Sætter pålideligheden af alle forlystelser til 100%{NEWLINE}og nulstiller alle byggedatoer til “dette år”
 STR_5792    :{SMALLFONT}{BLACK}Reparerer alle forlystelser der er brudt sammen
 STR_5793    :{SMALLFONT}{BLACK}Nulstiller ulykke statistikken for forlystelsen,{NEWLINE}så gæster ikke klager over at den er for usikker
 STR_5794    :{SMALLFONT}{BLACK}Nogle scenarier deaktiverer redigering af nogle {NEWLINE}af forlystelserne allerede i parken.{NEWLINE}Denne snydefunktion fjerner begrænsningen
@@ -3284,8 +3284,8 @@ STR_5809    :{WINDOW_COLOUR_2}Antal information kiosker og andre faciliteter: {B
 STR_5810    :Deaktiver vogn begrænsninger
 STR_5811    :{SMALLFONT}{BLACK}Hvis det er markeret, kan du have op til{NEWLINE}255 vogne per tog, og{newline}31 tog per tur
 STR_5812    :Vis multiplayer vindue
-STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
-STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5813    :“{STRING}”
+STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
@@ -3303,7 +3303,7 @@ STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for dista
 STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
 STR_5830    :{SMALLFONT}{BLACK}Changes what language is used
 STR_5831    :{SMALLFONT}{BLACK}Changes what format the{NEWLINE}temperature is displayed in
-STR_5832    :{SMALLFONT}{BLACK}Vis height as generic units instead of measurement format set under {OPENQUOTES}Distance and Speed{ENDQUOTES}
+STR_5832    :{SMALLFONT}{BLACK}Vis height as generic units instead of measurement format set under “Distance and Speed”
 STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
 STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
 STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
@@ -3529,7 +3529,7 @@ STR_6055    :OpenRCT2 Heightmap File
 STR_6056    :{SMALLFONT}{BLACK}Mute
 STR_6057    :{SMALLFONT}{BLACK}Vis a separate button for the Mute Option in the toolbar
 STR_6058    :Mute
-STR_6059    :{RIGHTGUILLEMET}
+STR_6059    :»
 STR_6060    :Vis guest purchases as animation
 STR_6061    :{SMALLFONT}{BLACK}Vis animated money effect{NEWLINE}when guests make purchases.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
@@ -3608,7 +3608,7 @@ STR_6134    :Clear Scenery
 STR_6135    :Client sent invalid request
 STR_6136    :Server sent invalid request
 STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in {OPENQUOTES}contributors.md{ENDQUOTES}. For more information, visit http://github.com/OpenRCT2/OpenRCT2
+STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 STR_6140    :Changelog...
 STR_6141    :RCT1 Bottom Toolbar
@@ -3634,7 +3634,7 @@ STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
 STR_6161    :Gridlines display toggle
 STR_6162    :Spinning Wild Mouse
 STR_6163    :Mouse shaped cars speed through tight corners and short drops, gently spinning around to disorientate the riders
-STR_6164    :{WHITE}{CROSS}
+STR_6164    :{WHITE}❌
 STR_6165    :Use vertical sync
 STR_6166    :{SMALLFONT}{BLACK}Synchronises each frame displayed to the monitor's refresh rate, preventing screen tearing.
 STR_6167    :{SMALLFONT}{BLACK}Advanced

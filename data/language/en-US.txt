@@ -79,7 +79,7 @@ STR_1400    :Entrance
 STR_1401    :Exit
 STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
 STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
-STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
+STR_1404    :{SMALLFONT}{BLACK}Rotate 90°
 STR_1405    :{SMALLFONT}{BLACK}Mirror image
 STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
 STR_1407    :{WINDOW_COLOUR_2}Build this...
@@ -155,131 +155,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
 STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}I've spent all my money{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}I feel sick{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}I feel very sick{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}I want to go on something more thrilling than {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} looks too intense for me{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}I haven't finished my {STRINGID} yet{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Just looking at {STRINGID} makes me feel sick{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to go on {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}I want to go home{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is really good value{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}I've already got {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}I'm not hungry{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}I'm not thirsty{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Help! I'm drowning!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}I'm lost!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was great{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the bathroom{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}The litter here is really bad{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}I can't find the park exit{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}I want to get off {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}I want to get out of {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}This path is disgusting{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}It's too crowded here{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}The vandalism here is really bad{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Great scenery!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}This park is really clean and tidy{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}The jumping fountains are great{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}This balloon from {STRINGID} is really good value{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}This cuddly toy from {STRINGID} is really good value{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}This park map from {STRINGID} is really good value{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}These fries from {STRINGID} are really good value{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}This cotton candy from {STRINGID} is really good value{ENDQUOTES}
+STR_1480    :{SMALLFONT}“I can't afford {STRINGID}”
+STR_1481    :{SMALLFONT}“I've spent all my money”
+STR_1482    :{SMALLFONT}“I feel sick”
+STR_1483    :{SMALLFONT}“I feel very sick”
+STR_1484    :{SMALLFONT}“I want to go on something more thrilling than {STRINGID}”
+STR_1485    :{SMALLFONT}“{STRINGID} looks too intense for me”
+STR_1486    :{SMALLFONT}“I haven't finished my {STRINGID} yet”
+STR_1487    :{SMALLFONT}“Just looking at {STRINGID} makes me feel sick”
+STR_1488    :{SMALLFONT}“I'm not paying that much to go on {STRINGID}”
+STR_1489    :{SMALLFONT}“I want to go home”
+STR_1490    :{SMALLFONT}“{STRINGID} is really good value”
+STR_1491    :{SMALLFONT}“I've already got {STRINGID}”
+STR_1492    :{SMALLFONT}“I can't afford {STRINGID}”
+STR_1493    :{SMALLFONT}“I'm not hungry”
+STR_1494    :{SMALLFONT}“I'm not thirsty”
+STR_1495    :{SMALLFONT}“Help! I'm drowning!”
+STR_1496    :{SMALLFONT}“I'm lost!”
+STR_1497    :{SMALLFONT}“{STRINGID} was great”
+STR_1498    :{SMALLFONT}“I've been queuing for {STRINGID} for ages”
+STR_1499    :{SMALLFONT}“I'm tired”
+STR_1500    :{SMALLFONT}“I'm hungry”
+STR_1501    :{SMALLFONT}“I'm thirsty”
+STR_1502    :{SMALLFONT}“I need to go to the bathroom”
+STR_1503    :{SMALLFONT}“I can't find {STRINGID}”
+STR_1504    :{SMALLFONT}“I'm not paying that much to use {STRINGID}”
+STR_1505    :{SMALLFONT}“I'm not going on {STRINGID} while it's raining”
+STR_1506    :{SMALLFONT}“The litter here is really bad”
+STR_1507    :{SMALLFONT}“I can't find the park exit”
+STR_1508    :{SMALLFONT}“I want to get off {STRINGID}”
+STR_1509    :{SMALLFONT}“I want to get out of {STRINGID}”
+STR_1510    :{SMALLFONT}“I'm not going on {STRINGID} - It isn't safe”
+STR_1511    :{SMALLFONT}“This path is disgusting”
+STR_1512    :{SMALLFONT}“It's too crowded here”
+STR_1513    :{SMALLFONT}“The vandalism here is really bad”
+STR_1514    :{SMALLFONT}“Great scenery!”
+STR_1515    :{SMALLFONT}“This park is really clean and tidy”
+STR_1516    :{SMALLFONT}“The jumping fountains are great”
+STR_1517    :{SMALLFONT}“The music is nice here”
+STR_1518    :{SMALLFONT}“This balloon from {STRINGID} is really good value”
+STR_1519    :{SMALLFONT}“This cuddly toy from {STRINGID} is really good value”
+STR_1520    :{SMALLFONT}“This park map from {STRINGID} is really good value”
+STR_1521    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
+STR_1522    :{SMALLFONT}“This umbrella from {STRINGID} is really good value”
+STR_1523    :{SMALLFONT}“This drink from {STRINGID} is really good value”
+STR_1524    :{SMALLFONT}“This burger from {STRINGID} is really good value”
+STR_1525    :{SMALLFONT}“These fries from {STRINGID} are really good value”
+STR_1526    :{SMALLFONT}“This ice cream from {STRINGID} is really good value”
+STR_1527    :{SMALLFONT}“This cotton candy from {STRINGID} is really good value”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}This pizza from {STRINGID} is really good value{ENDQUOTES}
+STR_1531    :{SMALLFONT}“This pizza from {STRINGID} is really good value”
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good value{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}This candy apple from {STRINGID} is really good value{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}This donut from {STRINGID} is really good value{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
+STR_1533    :{SMALLFONT}“This popcorn from {STRINGID} is really good value”
+STR_1534    :{SMALLFONT}“This hot dog from {STRINGID} is really good value”
+STR_1535    :{SMALLFONT}“This tentacle from {STRINGID} is really good value”
+STR_1536    :{SMALLFONT}“This hat from {STRINGID} is really good value”
+STR_1537    :{SMALLFONT}“This candy apple from {STRINGID} is really good value”
+STR_1538    :{SMALLFONT}“This T-shirt from {STRINGID} is really good value”
+STR_1539    :{SMALLFONT}“This donut from {STRINGID} is really good value”
+STR_1540    :{SMALLFONT}“This coffee from {STRINGID} is really good value”
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}This fried chicken from {STRINGID} is really good value{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}This lemonade from {STRINGID} is really good value{ENDQUOTES}
+STR_1542    :{SMALLFONT}“This fried chicken from {STRINGID} is really good value”
+STR_1543    :{SMALLFONT}“This lemonade from {STRINGID} is really good value”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fries from {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for cotton candy from {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}“Wow!”
+STR_1551    :{SMALLFONT}“I have the strangest feeling someone is watching me”
+STR_1552    :{SMALLFONT}“I'm not paying that much for a balloon from {STRINGID}”
+STR_1553    :{SMALLFONT}“I'm not paying that much for a cuddly toy from {STRINGID}”
+STR_1554    :{SMALLFONT}“I'm not paying that much for a park map from {STRINGID}”
+STR_1555    :{SMALLFONT}“I'm not paying that much for an on-ride photo from {STRINGID}”
+STR_1556    :{SMALLFONT}“I'm not paying that much for an umbrella from {STRINGID}”
+STR_1557    :{SMALLFONT}“I'm not paying that much for a drink from {STRINGID}”
+STR_1558    :{SMALLFONT}“I'm not paying that much for a burger from {STRINGID}”
+STR_1559    :{SMALLFONT}“I'm not paying that much for fries from {STRINGID}”
+STR_1560    :{SMALLFONT}“I'm not paying that much for an ice cream from {STRINGID}”
+STR_1561    :{SMALLFONT}“I'm not paying that much for cotton candy from {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for pizza from {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}“I'm not paying that much for pizza from {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a candy apple from {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a donut from {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}“I'm not paying that much for popcorn from {STRINGID}”
+STR_1568    :{SMALLFONT}“I'm not paying that much for a hot dog from {STRINGID}”
+STR_1569    :{SMALLFONT}“I'm not paying that much for tentacle from {STRINGID}”
+STR_1570    :{SMALLFONT}“I'm not paying that much for a hat from {STRINGID}”
+STR_1571    :{SMALLFONT}“I'm not paying that much for a candy apple from {STRINGID}”
+STR_1572    :{SMALLFONT}“I'm not paying that much for a T-shirt from {STRINGID}”
+STR_1573    :{SMALLFONT}“I'm not paying that much for a donut from {STRINGID}”
+STR_1574    :{SMALLFONT}“I'm not paying that much for coffee from {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried chicken from {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for lemonade from {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}“I'm not paying that much for fried chicken from {STRINGID}”
+STR_1577    :{SMALLFONT}“I'm not paying that much for lemonade from {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is really good value{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is really good value{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is really good value{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake from {STRINGID} is really good value{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses from {STRINGID} are really good value{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujeonggwa from {STRINGID} is really good value{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
+STR_1584    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
+STR_1585    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
+STR_1586    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
+STR_1587    :{SMALLFONT}“This pretzel from {STRINGID} is really good value”
+STR_1588    :{SMALLFONT}“This hot chocolate from {STRINGID} is really good value”
+STR_1589    :{SMALLFONT}“This iced tea from {STRINGID} is really good value”
+STR_1590    :{SMALLFONT}“This funnel cake from {STRINGID} is really good value”
+STR_1591    :{SMALLFONT}“These sunglasses from {STRINGID} are really good value”
+STR_1592    :{SMALLFONT}“These beef noodles from {STRINGID} are really good value”
+STR_1593    :{SMALLFONT}“These fried rice noodles from {STRINGID} are really good value”
+STR_1594    :{SMALLFONT}“This wonton soup from {STRINGID} is really good value”
+STR_1595    :{SMALLFONT}“This meatball soup from {STRINGID} is really good value”
+STR_1596    :{SMALLFONT}“This fruit juice from {STRINGID} is really good value”
+STR_1597    :{SMALLFONT}“This soybean milk from {STRINGID} is really good value”
+STR_1598    :{SMALLFONT}“This sujeonggwa from {STRINGID} is really good value”
+STR_1599    :{SMALLFONT}“This sub sandwich from {STRINGID} is really good value”
+STR_1600    :{SMALLFONT}“This cookie from {STRINGID} is really good value”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}This roast sausage from {STRINGID} are really good value{ENDQUOTES}
+STR_1604    :{SMALLFONT}“This roast sausage from {STRINGID} are really good value”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -291,27 +291,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a pretzel from {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for hot chocolate from {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for iced tea from {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a funnel cake from {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sunglasses from {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for beef noodles from {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried rice noodles from {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup from {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujeonggwa from {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}“I'm not paying that much for an on-ride photo from {STRINGID}”
+STR_1617    :{SMALLFONT}“I'm not paying that much for an on-ride photo from {STRINGID}”
+STR_1618    :{SMALLFONT}“I'm not paying that much for an on-ride photo from {STRINGID}”
+STR_1619    :{SMALLFONT}“I'm not paying that much for a pretzel from {STRINGID}”
+STR_1620    :{SMALLFONT}“I'm not paying that much for hot chocolate from {STRINGID}”
+STR_1621    :{SMALLFONT}“I'm not paying that much for iced tea from {STRINGID}”
+STR_1622    :{SMALLFONT}“I'm not paying that much for a funnel cake from {STRINGID}”
+STR_1623    :{SMALLFONT}“I'm not paying that much for sunglasses from {STRINGID}”
+STR_1624    :{SMALLFONT}“I'm not paying that much for beef noodles from {STRINGID}”
+STR_1625    :{SMALLFONT}“I'm not paying that much for fried rice noodles from {STRINGID}”
+STR_1626    :{SMALLFONT}“I'm not paying that much for wonton soup from {STRINGID}”
+STR_1627    :{SMALLFONT}“I'm not paying that much for meatball soup from {STRINGID}”
+STR_1628    :{SMALLFONT}“I'm not paying that much for fruit juice from {STRINGID}”
+STR_1629    :{SMALLFONT}“I'm not paying that much for soybean milk from {STRINGID}”
+STR_1630    :{SMALLFONT}“I'm not paying that much for sujeonggwa from {STRINGID}”
+STR_1631    :{SMALLFONT}“I'm not paying that much for a sub sandwich from {STRINGID}”
+STR_1632    :{SMALLFONT}“I'm not paying that much for a cookie from {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a roast sausage from {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}“I'm not paying that much for a roast sausage from {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -323,11 +323,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
+STR_1648    :{SMALLFONT}“Help! Put me down!”
+STR_1649    :{SMALLFONT}“I'm running out of cash!”
+STR_1650    :{SMALLFONT}“Wow! A new ride being built!”
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
+STR_1653    :{SMALLFONT}“...and here we are on {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
 STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
 STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
@@ -722,11 +722,11 @@ STR_2068    :some Fried Chicken
 STR_2069    :some Lemonade
 STR_2070    :an Empty Box
 STR_2071    :an Empty Bottle
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
+STR_2072    :“{STRINGID}” Balloon
+STR_2073    :“{STRINGID}” Cuddly Toy
 STR_2074    :Map of {STRINGID}
 STR_2075    :On-Ride Photo of {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
+STR_2076    :“{STRINGID}” Umbrella
 STR_2077    :Drink
 STR_2078    :Burger
 STR_2079    :Fries
@@ -740,9 +740,9 @@ STR_2086    :Voucher for {STRINGID}
 STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Tentacle
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
+STR_2090    :“{STRINGID}” Hat
 STR_2091    :Candy Apple
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
+STR_2092    :“{STRINGID}” T-Shirt
 STR_2093    :Donut
 STR_2094    :Coffee
 STR_2095    :Empty Cup

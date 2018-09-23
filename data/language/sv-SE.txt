@@ -226,7 +226,7 @@ STR_0820    :Nov
 STR_0821    :Dec
 STR_0822    :Kan inte komma åt grafikfilen
 STR_0823    :Saknad eller otillgänglig datafil
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :Det valda namnet används redan
 STR_0826    :För många namn är definierade
 STR_0827    :Inte tillräckligt med pengar - det behövs {CURRENCY2DP}
@@ -234,13 +234,13 @@ STR_0828    :{SMALLFONT}{BLACK}Stäng fönster
 STR_0829    :{SMALLFONT}{BLACK}Fönstertitel - Dra för att flytta fönstret
 STR_0830    :{SMALLFONT}{BLACK}Zooma in
 STR_0831    :{SMALLFONT}{BLACK}Zooma ut
-STR_0832    :{SMALLFONT}{BLACK}Rotera vyn 90{DEGREE} medurs
+STR_0832    :{SMALLFONT}{BLACK}Rotera vyn 90° medurs
 STR_0833    :{SMALLFONT}{BLACK}Pausa spelet
 STR_0834    :{SMALLFONT}{BLACK}Inställningar
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :Om 'OpenRCT2'
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alla rättigheter förbehålls
+STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, alla rättigheter förbehålls
 STR_0851    :{WINDOW_COLOUR_2}Designat och programmerat av Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafik av Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Ljud och musik av Allister Brimble
@@ -259,7 +259,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :För lågt !
 STR_0878    :För högt !
 STR_0879    :Kan inte sänka landnivån här...
@@ -337,22 +337,22 @@ STR_0952    :Avsluta Spel
 STR_0953    :Ladda Landskap
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Välj säteslutningen för den här sektionen
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :Avbryt
 STR_0973    :OK
 STR_0974    :Åkturer
@@ -365,8 +365,8 @@ STR_0980    :Nya Spännande Åkturer
 STR_0981    :Nya Vattenåkturer
 STR_0982    :Nya Affärer & Stånd
 STR_0983    :Forskning & Utveckling
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :För många åkturer/attraktioner
 STR_0988    :Kan inte skapa ny åktur/attraktion...
@@ -461,14 +461,14 @@ STR_1076    :Stånd
 STR_1077    :Rotationsläge
 STR_1078    :Rotation framåt
 STR_1079    :Rotation bakåt
-STR_1080    :Film: {ENDQUOTES}Glödande Glajjor{ENDQUOTES}
-STR_1081    :3D-film: {ENDQUOTES}Mussvansar{ENDQUOTES}
+STR_1080    :Film: ”Glödande Glajjor”
+STR_1081    :3D-film: ”Mussvansar”
 STR_1082    :Rymdringar
 STR_1083    :Nybörjarläge
 STR_1084    :LIM-accelererad start
-STR_1085    :Film: {ENDQUOTES}Spänning i Farten{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Stormjägarna{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Rymdrädarna{ENDQUOTES}
+STR_1085    :Film: ”Spänning i Farten”
+STR_1086    :3D film: ”Stormjägarna”
+STR_1087    :3D film: ”Rymdrädarna”
 STR_1088    :Intensivt läge
 STR_1089    :Berserkläge
 STR_1090    :Spökhuset
@@ -524,7 +524,7 @@ STR_1139    :{SMALLFONT}{BLACK}Välj färg för stödpelare
 STR_1140    :{SMALLFONT}{BLACK}Välj färgpalett för fordon
 STR_1141    :{SMALLFONT}{BLACK}Välj vilket fordon/tåg som ska modifieras
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :Kan inte bygga/flytta ingången för den här åkturen/attraktionen...
 STR_1145    :Kan inte bygga/flytta utgången för den här åkturen/attraktionen...
 STR_1146    :Ingången är inte byggd
@@ -538,7 +538,7 @@ STR_1153    :Höjdmarkeringar på Åkturer
 STR_1154    :Höjdmarkeringar på Land
 STR_1155    :Höjdmarkeringar på Gångvägar
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Kan inte ta bort detta...
 STR_1159    :{SMALLFONT}{BLACK}Placera dekorationer, trädgårdar och andra tillbehör
 STR_1160    :{SMALLFONT}{BLACK}Skapa/justera sjöar och vatten
@@ -708,7 +708,7 @@ STR_1323    :Banor
 STR_1324    :{COMMA16} bana
 STR_1325    :{COMMA16} banor
 STR_1326    :Bana {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Rotera objekt 90{DEGREE}
+STR_1327    :{SMALLFONT}{BLACK}Rotera objekt 90°
 STR_1328    :Platt land krävs
 STR_1329    :{WINDOW_COLOUR_2}Starthastighet:
 STR_1330    :{SMALLFONT}{BLACK}Maxhastighet när tåget lämnar stationen
@@ -785,7 +785,7 @@ STR_1400    :Ingång
 STR_1401    :Utgång
 STR_1402    :{SMALLFONT}{BLACK}Bygg eller flytta ingången till åkturen/attraktionen
 STR_1403    :{SMALLFONT}{BLACK}Bygg eller flytta utgången till åkturen/attraktionen
-STR_1404    :{SMALLFONT}{BLACK}Rotera 90{DEGREE}
+STR_1404    :{SMALLFONT}{BLACK}Rotera 90°
 STR_1405    :{SMALLFONT}{BLACK}Spegla
 STR_1406    :{SMALLFONT}{BLACK}Dölj/visa dekorationer (om de finns på designen)
 STR_1407    :{WINDOW_COLOUR_2}Bygg detta...
@@ -861,131 +861,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensitetsnivå: {BLACK}Inte tillgänglig
 STR_1477    :{WINDOW_COLOUR_2}Intensitetsnivå: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Illamåendenivå: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Illamåendenivå: {BLACK}Inte tillgänglig
-STR_1480    :{SMALLFONT}{OPENQUOTES}Jag har inte råd med {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}Jag har spenderat alla mina pengar{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}Jag mår illa{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}Jag mår riktigt illa{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}Jag vill åka något mer spännande än {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} ser för intensiv ut för mig{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}Jag är inte klar med min {STRINGID} än{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Bara att kolla på {STRINGID} får mig att må illa{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}Jag vill gå hem{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} är verkligen värd{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}Jag har redan {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}Jag har inte råd med {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}Jag är inte hungrig{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}Jag är inte törstig{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Hjälp! Jag drunknar!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}Jag har tappat bort mig!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} var superkul{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}Jag har köat till {STRINGID} i åratal{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}Jag är trött{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}Jag är hungrig{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}Jag är törstig{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}Jag måste gå på toa{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}Jag kan inte hitta {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för att använda {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}Jag tänker inte åka {STRINGID} när det regnar{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}Nedskräpningen här är hemsk{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}Jag kan inte hitta parkutgången{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}Jag vill hoppa av {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}Jag vill ut ur {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}Jag tänker inte åka {STRINGID} - Det är inte säkert nog{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}Den här gångvägen är vidrig{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}Det är för mycket folk här{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}Skadegörelsen här är verkligen illa{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Snygga dekorationer!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}Den här parken är verkligen ren och fin{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}Fontänerna är fantastiska{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}Musiken här är trevlig{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}Ballongen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}Kramdjuret från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}Kartan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}Fotot från åkturen {STRINGID} var verkligen värt pengarna{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}Paraplyet från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}Drickan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}Hamburgaren från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}Pommes fritesen från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}Glassen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}Sockervadden från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1480    :{SMALLFONT}“Jag har inte råd med {STRINGID}”
+STR_1481    :{SMALLFONT}“Jag har spenderat alla mina pengar”
+STR_1482    :{SMALLFONT}“Jag mår illa”
+STR_1483    :{SMALLFONT}“Jag mår riktigt illa”
+STR_1484    :{SMALLFONT}“Jag vill åka något mer spännande än {STRINGID}”
+STR_1485    :{SMALLFONT}“{STRINGID} ser för intensiv ut för mig”
+STR_1486    :{SMALLFONT}“Jag är inte klar med min {STRINGID} än”
+STR_1487    :{SMALLFONT}“Bara att kolla på {STRINGID} får mig att må illa”
+STR_1488    :{SMALLFONT}“Jag tänker inte betala så mycket för {STRINGID}”
+STR_1489    :{SMALLFONT}“Jag vill gå hem”
+STR_1490    :{SMALLFONT}“{STRINGID} är verkligen värd”
+STR_1491    :{SMALLFONT}“Jag har redan {STRINGID}”
+STR_1492    :{SMALLFONT}“Jag har inte råd med {STRINGID}”
+STR_1493    :{SMALLFONT}“Jag är inte hungrig”
+STR_1494    :{SMALLFONT}“Jag är inte törstig”
+STR_1495    :{SMALLFONT}“Hjälp! Jag drunknar!”
+STR_1496    :{SMALLFONT}“Jag har tappat bort mig!”
+STR_1497    :{SMALLFONT}“{STRINGID} var superkul”
+STR_1498    :{SMALLFONT}“Jag har köat till {STRINGID} i åratal”
+STR_1499    :{SMALLFONT}“Jag är trött”
+STR_1500    :{SMALLFONT}“Jag är hungrig”
+STR_1501    :{SMALLFONT}“Jag är törstig”
+STR_1502    :{SMALLFONT}“Jag måste gå på toa”
+STR_1503    :{SMALLFONT}“Jag kan inte hitta {STRINGID}”
+STR_1504    :{SMALLFONT}“Jag tänker inte betala så mycket för att använda {STRINGID}”
+STR_1505    :{SMALLFONT}“Jag tänker inte åka {STRINGID} när det regnar”
+STR_1506    :{SMALLFONT}“Nedskräpningen här är hemsk”
+STR_1507    :{SMALLFONT}“Jag kan inte hitta parkutgången”
+STR_1508    :{SMALLFONT}“Jag vill hoppa av {STRINGID}”
+STR_1509    :{SMALLFONT}“Jag vill ut ur {STRINGID}”
+STR_1510    :{SMALLFONT}“Jag tänker inte åka {STRINGID} - Det är inte säkert nog”
+STR_1511    :{SMALLFONT}“Den här gångvägen är vidrig”
+STR_1512    :{SMALLFONT}“Det är för mycket folk här”
+STR_1513    :{SMALLFONT}“Skadegörelsen här är verkligen illa”
+STR_1514    :{SMALLFONT}“Snygga dekorationer!”
+STR_1515    :{SMALLFONT}“Den här parken är verkligen ren och fin”
+STR_1516    :{SMALLFONT}“Fontänerna är fantastiska”
+STR_1517    :{SMALLFONT}“Musiken här är trevlig”
+STR_1518    :{SMALLFONT}“Ballongen från {STRINGID} var verkligen värd pengarna”
+STR_1519    :{SMALLFONT}“Kramdjuret från {STRINGID} var verkligen värt pengarna”
+STR_1520    :{SMALLFONT}“Kartan från {STRINGID} var verkligen värd pengarna”
+STR_1521    :{SMALLFONT}“Fotot från åkturen {STRINGID} var verkligen värt pengarna”
+STR_1522    :{SMALLFONT}“Paraplyet från {STRINGID} var verkligen värt pengarna”
+STR_1523    :{SMALLFONT}“Drickan från {STRINGID} var verkligen värd pengarna”
+STR_1524    :{SMALLFONT}“Hamburgaren från {STRINGID} var verkligen värd pengarna”
+STR_1525    :{SMALLFONT}“Pommes fritesen från {STRINGID} var verkligen värda pengarna”
+STR_1526    :{SMALLFONT}“Glassen från {STRINGID} var verkligen värd pengarna”
+STR_1527    :{SMALLFONT}“Sockervadden från {STRINGID} var verkligen värd pengarna”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}Pizzan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1531    :{SMALLFONT}“Pizzan från {STRINGID} var verkligen värd pengarna”
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}Popcornen från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}Varmkorven från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}Tentakeln från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}Hatten från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}Kanderat äpplet från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}T-shirten från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}Munken från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}Kaffet från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
+STR_1533    :{SMALLFONT}“Popcornen från {STRINGID} var verkligen värda pengarna”
+STR_1534    :{SMALLFONT}“Varmkorven från {STRINGID} var verkligen värd pengarna”
+STR_1535    :{SMALLFONT}“Tentakeln från {STRINGID} var verkligen värd pengarna”
+STR_1536    :{SMALLFONT}“Hatten från {STRINGID} var verkligen värd pengarna”
+STR_1537    :{SMALLFONT}“Kanderat äpplet från {STRINGID} var verkligen värt pengarna”
+STR_1538    :{SMALLFONT}“T-shirten från {STRINGID} var verkligen värd pengarna”
+STR_1539    :{SMALLFONT}“Munken från {STRINGID} var verkligen värd pengarna”
+STR_1540    :{SMALLFONT}“Kaffet från {STRINGID} var verkligen värt pengarna”
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}Friterade kycklingen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}Saften från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1542    :{SMALLFONT}“Friterade kycklingen från {STRINGID} var verkligen värd pengarna”
+STR_1543    :{SMALLFONT}“Saften från {STRINGID} var verkligen värd pengarna”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}Det känns som att någon iakttar mig{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en ballong från {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett mjukisdjur från {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en karta från {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett paraply från {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en dricka från {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en hamburgare från {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för pommes frites från {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en glass från {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för sockervadd från {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}“Wow!”
+STR_1551    :{SMALLFONT}“Det känns som att någon iakttar mig”
+STR_1552    :{SMALLFONT}“Jag tänker inte betala så mycket för en ballong från {STRINGID}”
+STR_1553    :{SMALLFONT}“Jag tänker inte betala så mycket för ett mjukisdjur från {STRINGID}”
+STR_1554    :{SMALLFONT}“Jag tänker inte betala så mycket för en karta från {STRINGID}”
+STR_1555    :{SMALLFONT}“Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
+STR_1556    :{SMALLFONT}“Jag tänker inte betala så mycket för ett paraply från {STRINGID}”
+STR_1557    :{SMALLFONT}“Jag tänker inte betala så mycket för en dricka från {STRINGID}”
+STR_1558    :{SMALLFONT}“Jag tänker inte betala så mycket för en hamburgare från {STRINGID}”
+STR_1559    :{SMALLFONT}“Jag tänker inte betala så mycket för pommes frites från {STRINGID}”
+STR_1560    :{SMALLFONT}“Jag tänker inte betala så mycket för en glass från {STRINGID}”
+STR_1561    :{SMALLFONT}“Jag tänker inte betala så mycket för sockervadd från {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för pizza from {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}“Jag tänker inte betala så mycket för pizza from {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för popcorn från {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en varmkorv från {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för tentakel från {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en hatt från {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett kanderat äpple från {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en T-shirt från {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en munk från {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en kaffe från {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}“Jag tänker inte betala så mycket för popcorn från {STRINGID}”
+STR_1568    :{SMALLFONT}“Jag tänker inte betala så mycket för en varmkorv från {STRINGID}”
+STR_1569    :{SMALLFONT}“Jag tänker inte betala så mycket för tentakel från {STRINGID}”
+STR_1570    :{SMALLFONT}“Jag tänker inte betala så mycket för en hatt från {STRINGID}”
+STR_1571    :{SMALLFONT}“Jag tänker inte betala så mycket för ett kanderat äpple från {STRINGID}”
+STR_1572    :{SMALLFONT}“Jag tänker inte betala så mycket för en T-shirt från {STRINGID}”
+STR_1573    :{SMALLFONT}“Jag tänker inte betala så mycket för en munk från {STRINGID}”
+STR_1574    :{SMALLFONT}“Jag tänker inte betala så mycket för en kaffe från {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för friterad kyckling från {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för saft från {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}“Jag tänker inte betala så mycket för friterad kyckling från {STRINGID}”
+STR_1577    :{SMALLFONT}“Jag tänker inte betala så mycket för saft från {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}Fotot från åkturen {STRINGID} var verkligen värt pengarna{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}Fotot från åkturen {STRINGID} var verkligen värt pengarna{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}Fotot från åkturen {STRINGID} var verkligen värt pengarna{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}Kringlan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}Varma chokladen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}Istéet från {STRINGID} var verkligen värt pengarna{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}Struvan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}Solglasögonen från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}Biffnudlarna från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}De stekta nudlarna från {STRINGID} var verkligen värda pengarna{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}Wontonsoppan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}Köttbullssoppan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}Fruktjuicen från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}Sojamjölken från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}Sujeonggwan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}Mackan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}Kakan från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1584    :{SMALLFONT}“Fotot från åkturen {STRINGID} var verkligen värt pengarna”
+STR_1585    :{SMALLFONT}“Fotot från åkturen {STRINGID} var verkligen värt pengarna”
+STR_1586    :{SMALLFONT}“Fotot från åkturen {STRINGID} var verkligen värt pengarna”
+STR_1587    :{SMALLFONT}“Kringlan från {STRINGID} var verkligen värd pengarna”
+STR_1588    :{SMALLFONT}“Varma chokladen från {STRINGID} var verkligen värd pengarna”
+STR_1589    :{SMALLFONT}“Istéet från {STRINGID} var verkligen värt pengarna”
+STR_1590    :{SMALLFONT}“Struvan från {STRINGID} var verkligen värd pengarna”
+STR_1591    :{SMALLFONT}“Solglasögonen från {STRINGID} var verkligen värda pengarna”
+STR_1592    :{SMALLFONT}“Biffnudlarna från {STRINGID} var verkligen värda pengarna”
+STR_1593    :{SMALLFONT}“De stekta nudlarna från {STRINGID} var verkligen värda pengarna”
+STR_1594    :{SMALLFONT}“Wontonsoppan från {STRINGID} var verkligen värd pengarna”
+STR_1595    :{SMALLFONT}“Köttbullssoppan från {STRINGID} var verkligen värd pengarna”
+STR_1596    :{SMALLFONT}“Fruktjuicen från {STRINGID} var verkligen värd pengarna”
+STR_1597    :{SMALLFONT}“Sojamjölken från {STRINGID} var verkligen värd pengarna”
+STR_1598    :{SMALLFONT}“Sujeonggwan från {STRINGID} var verkligen värd pengarna”
+STR_1599    :{SMALLFONT}“Mackan från {STRINGID} var verkligen värd pengarna”
+STR_1600    :{SMALLFONT}“Kakan från {STRINGID} var verkligen värd pengarna”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}Ugnskorven från {STRINGID} var verkligen värd pengarna{ENDQUOTES}
+STR_1604    :{SMALLFONT}“Ugnskorven från {STRINGID} var verkligen värd pengarna”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -997,27 +997,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en kringla från {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för varm choklad från {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för isté från {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en struva från {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för solglasögon från {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för biffnudlar från {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för stekta nudlar från {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för wontonsoppa från {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för köttbullssoppa från {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för fruktjuice från {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för sojamjölk från {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för sujeonggwa från {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en macka från {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en kaka från {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}“Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
+STR_1617    :{SMALLFONT}“Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
+STR_1618    :{SMALLFONT}“Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
+STR_1619    :{SMALLFONT}“Jag tänker inte betala så mycket för en kringla från {STRINGID}”
+STR_1620    :{SMALLFONT}“Jag tänker inte betala så mycket för varm choklad från {STRINGID}”
+STR_1621    :{SMALLFONT}“Jag tänker inte betala så mycket för isté från {STRINGID}”
+STR_1622    :{SMALLFONT}“Jag tänker inte betala så mycket för en struva från {STRINGID}”
+STR_1623    :{SMALLFONT}“Jag tänker inte betala så mycket för solglasögon från {STRINGID}”
+STR_1624    :{SMALLFONT}“Jag tänker inte betala så mycket för biffnudlar från {STRINGID}”
+STR_1625    :{SMALLFONT}“Jag tänker inte betala så mycket för stekta nudlar från {STRINGID}”
+STR_1626    :{SMALLFONT}“Jag tänker inte betala så mycket för wontonsoppa från {STRINGID}”
+STR_1627    :{SMALLFONT}“Jag tänker inte betala så mycket för köttbullssoppa från {STRINGID}”
+STR_1628    :{SMALLFONT}“Jag tänker inte betala så mycket för fruktjuice från {STRINGID}”
+STR_1629    :{SMALLFONT}“Jag tänker inte betala så mycket för sojamjölk från {STRINGID}”
+STR_1630    :{SMALLFONT}“Jag tänker inte betala så mycket för sujeonggwa från {STRINGID}”
+STR_1631    :{SMALLFONT}“Jag tänker inte betala så mycket för en macka från {STRINGID}”
+STR_1632    :{SMALLFONT}“Jag tänker inte betala så mycket för en kaka från {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}Jag tänker inte betala så mycket för en ugnskorv från {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}“Jag tänker inte betala så mycket för en ugnskorv från {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1029,10 +1029,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Hjälp! Släpp ner mig!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}Jag börjar få slut på pengar!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! De bygger en ny åktur!{ENDQUOTES}
-STR_1653    :{SMALLFONT}{OPENQUOTES}...och nu är vi på {STRINGID}!{ENDQUOTES}
+STR_1648    :{SMALLFONT}“Hjälp! Släpp ner mig!”
+STR_1649    :{SMALLFONT}“Jag börjar få slut på pengar!”
+STR_1650    :{SMALLFONT}“Wow! De bygger en ny åktur!”
+STR_1653    :{SMALLFONT}“...och nu är vi på {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Nyliga tankar:
 STR_1655    :{SMALLFONT}{BLACK}Bygg gångväg på land
 STR_1656    :{SMALLFONT}{BLACK}Bygg en bro eller tunnel
@@ -1440,11 +1440,11 @@ STR_2068    :Friterad Kyckling
 STR_2069    :Saft
 STR_2070    :en Tom Låda
 STR_2071    :en Tomflaska
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Ballong
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Mjukisdjur
+STR_2072    :“{STRINGID}” Ballong
+STR_2073    :“{STRINGID}” Mjukisdjur
 STR_2074    :Karta över {STRINGID}
 STR_2075    :Åktursfoto från {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Paraply
+STR_2076    :“{STRINGID}” Paraply
 STR_2077    :Dricka
 STR_2078    :Hamburgare
 STR_2079    :Pommes Frites
@@ -1458,9 +1458,9 @@ STR_2086    :Kupong för {STRINGID}
 STR_2087    :Popcorn
 STR_2088    :Varmkorv
 STR_2089    :Tentakel
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hatt
+STR_2090    :“{STRINGID}” Hatt
 STR_2091    :Kanderat Äpple
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
+STR_2092    :“{STRINGID}” T-Shirt
 STR_2093    :Munk
 STR_2094    :Kaffe
 STR_2095    :Tom Mugg
@@ -1569,8 +1569,8 @@ STR_2212    :{SMALLFONT}{BLACK}Visa en lista över alla säkerhetsvakter
 STR_2213    :{SMALLFONT}{BLACK}Visa en lista över alla underhållare
 STR_2214    :Konstruktion är inte möjligt när spelet är pausat!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} på {STRINGID} har inte kommit tillbaka till {STRINGID} än!{NEWLINE}Kolla om den är fast
 STR_2219    :{RED}{COMMA16} personer har dött i en olycka på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkomdöme: {BLACK}{COMMA16}
@@ -1671,7 +1671,7 @@ STR_2315    :{WINDOW_COLOUR_2}Kostnad: {BLACK}ca {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Storlek: {BLACK}{COMMA16} x {COMMA16} blocks
 STR_2321    :{WINDOW_COLOUR_2}Antal åkturer/attraktioner: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Parkstorlek: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Köp land för att utöka parken
 STR_2326    :{SMALLFONT}{BLACK}Köp bygglov för att tillåta konstruktion över eller under land utanför parken
@@ -1682,16 +1682,16 @@ STR_2330    :{WINDOW_COLOUR_2}Temperatur:
 STR_2331    :{WINDOW_COLOUR_2}Höjdmarkeringar:
 STR_2332    :Enheter
 STR_2333    :Ljudeffekter
-STR_2334    :Pund ({POUND})
+STR_2334    :Pund (£)
 STR_2335    :Dollar ($)
 STR_2336    :Franc (F)
 STR_2337    :Deutschmark (DM)
-STR_2338    :Yen ({YEN})
+STR_2338    :Yen (¥)
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
 STR_2341    :Guilders (ƒ)
 STR_2342    :Kronor (kr)
-STR_2343    :Euro ({EURO})
+STR_2343    :Euro (€)
 STR_2344    :Brittiska
 STR_2345    :Meter
 STR_2347    :{RED}{STRINGID} har drunknat!
@@ -1712,8 +1712,8 @@ STR_2362    :{SMALLFONT}{BLACK}Sätt på/av terrängkantutjämning
 STR_2363    :Rutmönster på terräng
 STR_2364    :{SMALLFONT}{BLACK}Sätt på/av rutmönster på terrängen
 STR_2365    :Banken vägrar att utöka ditt lån!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :Celsius (°C)
+STR_2367    :Fahrenheit (°F)
 STR_2368    :Ingen
 STR_2369    :Låg
 STR_2370    :Mellan
@@ -2079,7 +2079,7 @@ STR_2743    :Kopiera 'data/css17.dat' från din RCT1-installation till 'data/css
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
+STR_2747    :”
 STR_2749    :Mitt nya scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Flytta alla föremål till toppen
@@ -2102,7 +2102,7 @@ STR_2774    :Fullskärm
 STR_2775    :Fönster (Utan kanter)
 STR_2776    :Språk:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
 STR_2779    :Bildskärm #{COMMA16}
 STR_2780    :Extra bildskärm
@@ -2110,7 +2110,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Ändra snabbtangenter
-STR_2785    :{WINDOW_COLOUR_2}Välj ny snabbtangent för:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Välj ny snabbtangent för:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Klicka på en beskrivning för att välja en ny snabbtangent
 STR_2787    :{WINDOW_COLOUR_2}Parkvärde: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Grattis !{NEWLINE}{BLACK}Du uppnådde ditt mål med ett företagsvärde på {CURRENCY} !
@@ -2197,37 +2197,37 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyrig
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Huvudfärg
 STR_2972    :Andra färg
 STR_2973    :Tredje färg
@@ -2320,7 +2320,7 @@ STR_3063    :{SMALLFONT}{BLACK}Vattenkanal (spår under vatten)
 STR_3064    :Nybörjarparker
 STR_3065    :Utmanande Parker
 STR_3066    :Expertparker
-STR_3067    :{OPENQUOTES}Riktiga{ENDQUOTES} Parker
+STR_3067    :“Riktiga” Parker
 STR_3068    :Andra Parker
 STR_3069    :Toppsektion
 STR_3070    :Sluttning till platt
@@ -2881,8 +2881,8 @@ STR_5371    :Objektväljare
 STR_5372    :Invertera höger musdragning
 STR_5373    :Namn {STRINGID}
 STR_5374    :Datum {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Sparfiler
 STR_5378    :{SMALLFONT}{BLACK}Skript
 STR_5379    :{SMALLFONT}{BLACK}Skippa till nästa vänta-kommando
@@ -3087,7 +3087,7 @@ STR_5579    :Fönsterskalning:
 STR_5580    :Tjeckisk koruna (Kč)
 STR_5581    :Visa FPS
 STR_5582    :Behåll muspekaren i spelet
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Avaktivera åkturernas hastighetsgränser, vilket tillåter till exempel {VELOCITY} kedjehastigheter
 STR_5586    :Öppna butiker och stånd automatiskt
@@ -3129,7 +3129,7 @@ STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :{OPENQUOTES}Riktiga{ENDQUOTES} Parker
+STR_5625    :“Riktiga” Parker
 STR_5626    :Andra parker
 STR_5627    :Sortera scenarion via:
 STR_5628    :Spelpaket
@@ -3231,7 +3231,7 @@ STR_5758    :{OUTLINE}{GREEN}{STRING} har anslutit till spelet
 STR_5759    :Laddar ner banan ... ({INT32} / {INT32}) KiB
 STR_5760    :Hong Kong Dollar (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
-STR_5762    :Kinesiska Yuan (CN{YEN})
+STR_5762    :Kinesiska Yuan (CN¥)
 STR_5763    :Alla filer
 STR_5764    :Ogiltig åkturstyp
 STR_5765    :Kan inte redigera åkturer av okänd typ
@@ -3282,8 +3282,8 @@ STR_5809    :{WINDOW_COLOUR_2}Antal informationskioskar och toaletter: {BLACK}{C
 STR_5810    :Avaktivera gränsen för vagnar per tåg
 STR_5811    :{SMALLFONT}{BLACK}Om ikryssad kan du ha upp till{NEWLINE}255 vagnar per tåg och{NEWLINE}31 tåg per attraktion
 STR_5812    :Visa flerspelarfönstret
-STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
-STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5813    :“{STRING}”
+STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Visa FPS-mätare i spelet
 STR_5816    :{SMALLFONT}{BLACK}Sätter skalan i spelet.{NEWLINE}Mest användbar när du spelar i{NEWLINE}hög upplösning
@@ -3526,7 +3526,7 @@ STR_6055    :OpenRCT2 Höjdkart-filer
 STR_6056    :{SMALLFONT}{BLACK}Tysta
 STR_6057    :{SMALLFONT}{BLACK}Visa en knapp för att 'Tysta' spelet i verktygsfältet
 STR_6058    :Tysta
-STR_6059    :{RIGHTGUILLEMET}
+STR_6059    :»
 STR_6060    :Visa animation när gäster spenderar pengar
 STR_6061    :{SMALLFONT}{BLACK}Visar en animerad effekt när gästerna gör ett köp.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
@@ -3605,7 +3605,7 @@ STR_6134    :Rensa dekoration
 STR_6135    :Klient skickade ogiltig begäran
 STR_6136    :Server skickade ogiltig begäran
 STR_6137    :OpenRCT2, en gratis klon med öppen källkod av Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 är ett samarbete med flera deltagare, en lista med alla deltagare kan hittas i {OPENQUOTES}contributors.md{ENDQUOTES}. För mer information, besök http://github.com/OpenRCT2/OpenRCT2
+STR_6138    :OpenRCT2 är ett samarbete med flera deltagare, en lista med alla deltagare kan hittas i “contributors.md”. För mer information, besök http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alla produkter och företagsnamn tillhör deras respektive innehavare och ägare. Användningen av dem är ingen anknytning eller bekräftelse från respektive innehavare.
 STR_6140    :Ändringslogg...
 STR_6141    :RCT1-bottens Verktygsfält
@@ -3631,7 +3631,7 @@ STR_6160    :{WINDOW_COLOUR_2}Tillgängliga fordon: {BLACK}{STRING}
 STR_6161    :Växla rutmönster på terräng
 STR_6162    :Snurrande vilda musen
 STR_6163    :Musformade vagnar susar förbi snäva kurvor och korta stup medan vagnen försiktigt snurrar för att desorientera passagerarna
-STR_6164    :{WHITE}{CROSS}
+STR_6164    :{WHITE}❌
 STR_6165    :Använd Vertical Sync (V-sync)
 STR_6166    :{SMALLFONT}{BLACK}Synkroniserar varje bild som ritas med skärmens "refresh rate", vilket förhindrar "Screen tearing".
 STR_6167    :{SMALLFONT}{BLACK}Avancerat

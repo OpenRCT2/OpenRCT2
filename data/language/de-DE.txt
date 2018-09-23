@@ -225,7 +225,7 @@ STR_0820    :Nov
 STR_0821    :Dez
 STR_0822    :Zugriff auf Grafikdatei nicht möglich
 STR_0823    :Datei fehlt oder kann nicht aufgerufen werden
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :Der gewählte Name wird bereits verwendet
 STR_0826    :Es sind zu viele Namen definiert
 STR_0827    :Nicht genügend Geld - erforderlich sind {CURRENCY2DP}
@@ -233,13 +233,13 @@ STR_0828    :{SMALLFONT}{BLACK}Fenster schließen
 STR_0829    :{SMALLFONT}{BLACK}Fenstertitel - Ziehen Sie hier, um{NEWLINE}das Fenster zu verschieben
 STR_0830    :{SMALLFONT}{BLACK}Ansicht heranzoomen
 STR_0831    :{SMALLFONT}{BLACK}Ansicht wegzoomen
-STR_0832    :{SMALLFONT}{BLACK}Ansicht um 90{DEGREE} im Uhrzeigersinn drehen
+STR_0832    :{SMALLFONT}{BLACK}Ansicht um 90° im Uhrzeigersinn drehen
 STR_0833    :{SMALLFONT}{BLACK}Spiel pausieren
 STR_0834    :{SMALLFONT}{BLACK}Speicher- und Spieloptionen
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :Über „OpenRCT2“
-STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, alle Rechte vorbehalten
+STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, alle Rechte vorbehalten
 STR_0851    :{WINDOW_COLOUR_2}Entworfen und programmiert von Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafik von Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Sound und Musik von Allister Brimble
@@ -258,7 +258,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :Zu niedrig!
 STR_0878    :Zu hoch!
 STR_0879    :Gelände kann hier nicht gesenkt werden...
@@ -336,22 +336,22 @@ STR_0952    :Spiel beenden
 STR_0953    :Landschaft laden
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Wählen Sie den Sitzrotationswinkel für diesen Streckenabschnitt
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :Abbrechen
 STR_0973    :OK
 STR_0974    :Bahnen
@@ -364,8 +364,8 @@ STR_0980    :Neue aufregende Fahrten
 STR_0981    :Neue Wasserbahnen
 STR_0982    :Neue Läden & Stände
 STR_0983    :Forschung & Entwicklung
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Zu viele Attraktionen
 STR_0988    :Neue Attraktion kann nicht erstellt werden...
@@ -523,7 +523,7 @@ STR_1139    :{SMALLFONT}{BLACK}Farbe der Trägerstruktur auswählen
 STR_1140    :{SMALLFONT}{BLACK}Schemaoption für Fahrzeugfarbe auswählen
 STR_1141    :{SMALLFONT}{BLACK}Zu modifizierendes Fahrzeug auswählen
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :Eingang für diese Attraktion kann nicht gebaut/verschoben werden...
 STR_1145    :Ausgang für diese Attraktion kann nicht gebaut/verschoben werden...
 STR_1146    :Eingang noch nicht gebaut
@@ -537,7 +537,7 @@ STR_1153    :Höhenmarkierungen an Fahrstrecken
 STR_1154    :Höhenmarkierungen auf dem Gelände
 STR_1155    :Höhenmarkierungen an Fußwegen
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Kann nicht entfernt werden...
 STR_1159    :{SMALLFONT}{BLACK}Platzieren Sie Szenerien, Beete{NEWLINE}und andere Objekte
 STR_1160    :{SMALLFONT}{BLACK}Seen & Wasseranlagen erstellen/anpassen
@@ -707,7 +707,7 @@ STR_1323    :Kurse
 STR_1324    :{COMMA16} Kurs
 STR_1325    :{COMMA16} Kurse
 STR_1326    :Kurs {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Objekte um 90{DEGREE} drehen
+STR_1327    :{SMALLFONT}{BLACK}Objekte um 90° drehen
 STR_1328    :Ebenes Land erforderlich
 STR_1329    :{WINDOW_COLOUR_2}Startgeschwindigkeit:
 STR_1330    :{SMALLFONT}{BLACK}Höchstgeschwindigkeit beim{NEWLINE}Verlassen der Station
@@ -784,7 +784,7 @@ STR_1400    :Eingang
 STR_1401    :Ausgang
 STR_1402    :{SMALLFONT}{BLACK}Eingang zur Attraktion bauen oder verlegen
 STR_1403    :{SMALLFONT}{BLACK}Ausgang von Attraktion bauen oder verlegen
-STR_1404    :{SMALLFONT}{BLACK}Um 90{DEGREE} drehen
+STR_1404    :{SMALLFONT}{BLACK}Um 90° drehen
 STR_1405    :{SMALLFONT}{BLACK}Spiegelbild
 STR_1406    :{SMALLFONT}{BLACK}Szenerie ein-/ausschalten (falls{NEWLINE}für diesen Entwurf verfügbar)
 STR_1407    :{WINDOW_COLOUR_2}Dies bauen...
@@ -1569,8 +1569,8 @@ STR_2212    :{SMALLFONT}{BLACK}Liste der Aufseher im Park anzeigen
 STR_2213    :{SMALLFONT}{BLACK}Liste der Animateure im Park anzeigen
 STR_2214    :Konstruktion während des Pausemodus nicht möglich!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} bei {STRINGID} ist noch nicht zu {STRINGID} zurückgekehrt!{NEWLINE}Überprüfen Sie, ob es steckengeblieben ist oder angehalten hat
 STR_2219    :{RED}{COMMA16} Menschen sind in einem Unfall bei {STRINGID} gestorben
 STR_2220    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{COMMA16}
@@ -1671,7 +1671,7 @@ STR_2315    :{WINDOW_COLOUR_2}Kosten: {BLACK}ungefähr {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Erforderlicher Platz: {BLACK}{COMMA16} x {COMMA16} Blöcke
 STR_2321    :{WINDOW_COLOUR_2}Anzahl der Attraktionen: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personal: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Parkgröße: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Parkgröße: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Parkgröße: {BLACK}{COMMA32}Quadratfuß
 STR_2325    :{SMALLFONT}{BLACK}Land für Parkvergrößerung kaufen
 STR_2326    :{SMALLFONT}{BLACK}Kaufen Sie Baurechte für Bauten über oder unter dem Gelände außerhalb des Parks
@@ -1682,16 +1682,16 @@ STR_2330    :{WINDOW_COLOUR_2}Temperatur:
 STR_2331    :{WINDOW_COLOUR_2}Höhenmarkierungen:
 STR_2332    :Einheiten
 STR_2333    :Soundeffekte
-STR_2334    :Pfund ({POUND})
+STR_2334    :Pfund (£)
 STR_2335    :Dollar ($)
 STR_2336    :Franc (F)
 STR_2337    :Deutsche Mark (DM)
-STR_2338    :Yen ({YEN})
+STR_2338    :Yen (¥)
 STR_2339    :Peseten (Pts)
 STR_2340    :Lire (L)
 STR_2341    :Gulden (ƒ)
 STR_2342    :Kronen (kr)
-STR_2343    :Euro ({EURO})
+STR_2343    :Euro (€)
 STR_2344    :Englisch
 STR_2345    :Metrisch
 STR_2347    :{RED}{STRINGID} ist ertrunken!
@@ -1712,8 +1712,8 @@ STR_2362    :{SMALLFONT}{BLACK}Kantenglättung des Landschaftsquadrats ein-/auss
 STR_2363    :Gitterlinien auf Landschaft
 STR_2364    :{SMALLFONT}{BLACK}Gitterlinien bei Landschaft ein-/ausblenden
 STR_2365    :Die Bank will Ihr Darlehen nicht erhöhen!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :Celsius (°C)
+STR_2367    :Fahrenheit (°F)
 STR_2368    :Keine
 STR_2369    :Niedrig
 STR_2370    :Durchschnitt
@@ -2081,7 +2081,7 @@ STR_2743    :Kopieren Sie „data/css17.dat“ aus Ihrem RCT1-Verzeichnis nach �
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
+STR_2747    :”
 STR_2749    :Mein neues Szenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Alle Objekte nach oben bewegen
@@ -2103,7 +2103,7 @@ STR_2774    :Vollbild
 STR_2775    :Vollbild (Randlos)
 STR_2776    :Sprache:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Ansichtsfenster {COMMA16}
 STR_2780    :Extra Ansichtsfenster
 # End of new strings
@@ -2198,37 +2198,37 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) kein Copyri
 STR_2873    :{WINDOW_COLOUR_2}Walzermedley:   (Johann Strauss) kein Copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditionell)
 STR_2875    :{WINDOW_COLOUR_2}Originalaufnahmen (P) 1976 C.J.Mears Organisation, mit freundlicher Genehmigung
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Titelmusik:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) Copyright {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Titelmusik:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) Copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) Copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) Copyright © Chris Sawyer
 STR_2901    :{WINDOW_COLOUR_2}(Auszüge mit freundlicher Genehmigung von Spectrasonics “Liquid Grooves“)
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, gespielt von Peter James Adcock) Aufnahme {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) Copyright {COPYRIGHT} Chris Sawyer
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, gespielt von Peter James Adcock) Aufnahme © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) Copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) Copyright © Chris Sawyer
 STR_2971    :Hauptfarbschema
 STR_2972    :Alternatives Farbschema 1
 STR_2973    :Alternatives Farbschema 2
@@ -2879,8 +2879,8 @@ STR_5371    :Objektauswahl
 STR_5372    :Ziehen mit rechter Maustaste umkehren
 STR_5373    :Name {STRINGID}
 STR_5374    :Datum {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Gespeicherte Spiele
 STR_5378    :{SMALLFONT}{BLACK}Skript
 STR_5379    :{SMALLFONT}{BLACK}Zum nächsten „Warten“-Befehl springen
@@ -3085,7 +3085,7 @@ STR_5579    :Skalierungsfaktor:
 STR_5580    :Tschechische Krone (Kč)
 STR_5581    :FPS anzeigen
 STR_5582    :Mauszeiger im Fenster fangen
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Hebt Beschränkungen von Attraktionen auf, um Dinge wie {VELOCITY} schnelle Lifthügel zu erlauben
 STR_5586    :Läden und Stände automatisch öffnen
@@ -3227,7 +3227,7 @@ STR_5758    :{OUTLINE}{GREEN}{STRING} hat das Spiel betreten
 STR_5759    :Karte herunterladen ... ({INT32} / {INT32}) KiB
 STR_5760    :Hongkong-Dollar (HK$)
 STR_5761    :Neuer Taiwan-Dollar (NT$)
-STR_5762    :Chinesischer Yuan (CN{YEN})
+STR_5762    :Chinesischer Yuan (CN¥)
 STR_5763    :Alle Dateien
 STR_5764    :Ungültiger Bahntyp
 STR_5765    :Kann Bahnen eines ungültigen Typs nicht bearbeiten
@@ -3521,7 +3521,7 @@ STR_6055    :Höhenkarte für OpenRCT2
 STR_6056    :{SMALLFONT}{BLACK}Ton ein-/ausschalten
 STR_6057    :{SMALLFONT}{BLACK}Zeigt für die Stummschaltung in der Symbolleiste eine gesonderte{NEWLINE}Schaltfläche an
 STR_6058    :Stummschaltung
-STR_6059    :{RIGHTGUILLEMET}
+STR_6059    :»
 STR_6060    :Besucherkäufe als Animation anzeigen
 STR_6061    :{SMALLFONT}{BLACK}Ein animierter Geldeffekt wird angezeigt, wenn Besucher Käufe tätigen
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
@@ -3625,7 +3625,7 @@ STR_6160    :{WINDOW_COLOUR_2}Verfügbare Fahrzeuge: {BLACK}{STRING}
 STR_6161    :Gitternetzlinien ein-/ausblenden
 STR_6162    :Rotierende Wilde Maus
 STR_6163    :Mausförmige Wagen rasen um enge Kurven und kurze Gefälle herunter, wobei sie sich sanft drehen, um die Fahrgäste zu desorientieren
-STR_6164    :{WHITE}{CROSS}
+STR_6164    :{WHITE}❌
 STR_6165    :Vertikale Synchronisation verwenden
 STR_6166    :{SMALLFONT}{BLACK}Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen Tearing
 STR_6167    :{SMALLFONT}{BLACK}Erweitert
