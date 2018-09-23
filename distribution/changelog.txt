@@ -1,5 +1,6 @@
 0.2.1+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#7726] Add shortcut to advance one tick.
 - Feature: [#7956, #7964] Add sprite font glyphs for Hungarian and some Czech letters.
 - Feature: [#7971] Toolbox option to open custom content folder.
 - Feature: [#7980] Allow data path for RCT1 to be specified by a command line argument.
@@ -19,7 +20,6 @@
 - Feature: [#7658] Add option to always use system file browsing window.
 - Feature: [#7694] Debug option to visualize paths that the game detects as wide.
 - Feature: [#7713] The virtual floor now takes land ownership rights into account.
-- Feature: [#7726] Add shortcut to advance one tick.
 - Feature: [#7771] Danish translation.
 - Feature: [#7797, #7802, #7821, #7830] Add sprite font glyphs for Danish, Norwegian, Russian, Turkish, Catalan and Romanian.
 - Feature: [#7848] Add a master volume slider to audio options screen.
