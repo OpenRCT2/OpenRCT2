@@ -4,6 +4,7 @@
 - Feature: [#7956, #7964] Add sprite font glyphs for Hungarian and some Czech letters.
 - Feature: [#7971] Toolbox option to open custom content folder.
 - Feature: [#7980] Allow data path for RCT1 to be specified by a command line argument.
+- Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
 - Fix: [#7828] Copied entrances and exits stay when demolishing ride.
 - Fix: [#7954] Key validation fails on Windows due to non-ASCII user / player name.
 - Fix: [#7975] Inspection flag not cleared for rides which are set to never be inspected (Original bug).
@@ -12,6 +13,7 @@
 - Improved: [#7930] Automatically create folders for custom content.
 - Improved: [#7980] Show the full path of the scenario in the scenario select window.
 - Improved: [#7993] Allow assigning a keyboard shortcut for opening the tile inspector.
+- Improved: Almost completely new Hungarian translation.
 - Removed: [#7929] Support for scenario text objects.
 
 0.2.1 (2018-08-26)
