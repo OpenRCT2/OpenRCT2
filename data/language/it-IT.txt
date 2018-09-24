@@ -3736,6 +3736,8 @@ STR_6262    :Volume principale
 STR_6263    :{SMALLFONT}{BLACK}Attiva/disattiva tutti i suoni
 STR_6264    :Usa sempre il file manager di sistema
 STR_6265    :{SMALLFONT}{BLACK}Se abilitato, viene usato il file manager del sistema operativo anziché quello di OpenRCT2.
+STR_6266    :Apri la cartella dei contenuti personalizzati
+STR_6267    :Apri analizzatore celle
 
 #############
 # Scenarios #

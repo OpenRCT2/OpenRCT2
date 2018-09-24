@@ -47,7 +47,7 @@ STR_0042    :Topp spinn
 STR_0043    :Romringer
 STR_0044    :Bakvendt fritt fall-bane
 STR_0045    :Heis
-STR_0046    :Vertikalt fall berg-og-dal-bane
+STR_0046    :Vertikalt-fall berg-og-dal-bane
 STR_0047    :Bankautomat
 STR_0048    :Twister
 STR_0049    :Spøkelseshus
@@ -2823,8 +2823,8 @@ STR_5309    :OpenRCT2
 STR_5310    :Random
 STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :Show console
-STR_5313    :Show tile inspector
-STR_5314    :Tile inspector
+STR_5313    :Vis ruteinspektør
+STR_5314    :Ruteinspektør
 STR_5315    :Grass
 STR_5316    :Sand
 STR_5317    :Dirt
@@ -3737,7 +3737,9 @@ STR_6261    :Vis brede stier
 STR_6262    :Hovedvolum
 STR_6263    :{SMALLFONT}{BLACK}Skru all lyd av/på
 STR_6264    :Alltid bruk systemets fildialog
-STR_6265    :{SMALLFONT}{BLACK}Alltid ta i bruk systemets egne fildialog-vindu istedenfor den fra OpenRCT2.
+STR_6265    :{SMALLFONT}{BLACK}Alltid ta i bruk systemets egne fildialog-vindu istedenfor det fra OpenRCT2.
+STR_6266    :Åpne mappen for egendefinerte spillressurser
+STR_6267    :Åpne ruteinspektør
 
 #############
 # Scenarios #
@@ -3747,7 +3749,7 @@ STR_6265    :{SMALLFONT}{BLACK}Alltid ta i bruk systemets egne fildialog-vindu i
 <Forest Frontiers>
 STR_SCNR    :Forest Frontiers
 STR_PARK    :Forest Frontiers
-STR_DTLS    :Bygg en blomstrende fornøyelsespark i en stor lysning langt inne i skogen
+STR_DTLS    :Bygg en blomstrende fornøyelsespark i en stor lysning dypt inni skogen
 
 <Dynamite Dunes>
 STR_SCNR    :Dynamite Dunes
@@ -3757,12 +3759,12 @@ STR_DTLS    :Denne ørken-fornøyelsesparken har kun én berg-og-dal-bane, men s
 <Leafy Lake>
 STR_SCNR    :Leafy Lake
 STR_PARK    :Leafy Lake
-STR_DTLS    :Bygg en fornøyelsespark rundt en stor innsjø fra bunnen av
+STR_DTLS    :Fra bunnen av, bygg en fornøyelsespark rundt en stor innsjø
 
 <Diamond Heights>
 STR_SCNR    :Diamond Heights
 STR_PARK    :Diamond Heights
-STR_DTLS    :Diamond Heights er allerede en vellykket fornøyelsespark med flotte attraksjoner – videreutvikle den til det dobbelte i verdi
+STR_DTLS    :Diamond Heights er allerede en vellykket fornøyelsespark med flotte attraksjoner – Målet ditt er å doble parkens verdi
 
 <Evergreen Gardens>
 STR_SCNR    :Evergreen Gardens
@@ -3772,12 +3774,12 @@ STR_DTLS    :Konverter den praktfulle parken Evergreen Gardens til en blomstrend
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Utvid Bumbly Beach sin lille fornøyelsespark til å bli storslått
+STR_DTLS    :Utvid den lille fornøyelsesparken i Bumbly Beach til å bli en storslått versjon av seg selv
 
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
 STR_PARK    :Trinity Islands
-STR_DTLS    :En liten øysamling er basisen for denne nye parken
+STR_DTLS    :En liten øysamling er grunnlaget for denne nye parken
 
 <Katie's Dreamland>
 STR_SCNR    :Katie's Dreamland
@@ -3792,27 +3794,27 @@ STR_DTLS    :En liten og trang fornøyelsespark som trenger massiv utvidelse
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :White Water Park
-STR_DTLS    :En park med forteffelige vannbaserte attraksjoner som trenger utvidelse
+STR_DTLS    :En park med forteffelige vannbaserte attraksjoner trenger utvidelse
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
 STR_PARK    :Millennium Mines
-STR_DTLS    :Konverter en forlatt gruve fra en døende turistattraksjon til en massiv fornøyelsespark
+STR_DTLS    :Konverter en forlatt gruve fra en turistattraksjon til en fornøyelsespark
 
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :Karts & Coasters
-STR_DTLS    :En bortgjemt park i skogen, med kun go karts og tre-berg-og-dal-baner
+STR_DTLS    :En stor bortgjemt park i skogen, med kun go karts og tre-berg-og-dal-baner
 
 <Mel's World>
 STR_SCNR    :Mel's World
 STR_PARK    :Mel's World
-STR_DTLS    :Denne fornøyelsesparken har et par veldesignede moderne attraksjoner, men masse rom for utvidelse
+STR_DTLS    :Denne fornøyelsesparken har allerede et par veldesignede moderne attraksjoner, men stort rom for utvidelse
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
 STR_PARK    :Mystic Mountain
-STR_DTLS    :I Mystic Mountains skogledde åser skal du bygge en fornøyelsespark fra bunnen av 
+STR_DTLS    :Bygg en fornøyelsespark fra bunnen av i Mystic Mountains skogkledde åser
 
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
@@ -3822,32 +3824,32 @@ STR_DTLS    :Konverter disse egyptiske ruinene til en blomstrende fornøyelsespa
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
 STR_PARK    :Crumbly Woods
-STR_DTLS    :En stor park med gode, men eldene attraksjoner – Erstatt the gamle attraksjonene eller legg til nye for å gjøre denne parken mer populær
+STR_DTLS    :En stor park med gode, men aldrende attraksjoner – Erstatt de gamle attraksjonene eller bygg nye for å gjøre parken mer populær
 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
 STR_PARK    :Paradise Pier
-STR_DTLS    :Gjør om denne sløve byens brygge til en tiltrekkende attraksjon
+STR_DTLS    :Gjør om denne døsige byens brygge til en tiltrekkende attraksjon
 
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
 STR_PARK    :Lightning Peaks
-STR_DTLS    :Lightning Peaks praktfulle fjell er allerede populære hos turgåere og turister – Bruk den tilgjengelige landmassen til å tiltrekke et nytt spenningssøkende klientell
+STR_DTLS    :Lightning Peaks sine praktfulle fjell er allerede populære hos turgåere og turister – Bruk det tilgjengelige arealet til å tiltrekke et nytt spenningssøkende klientell
 
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
 STR_PARK    :Ivory Towers
-STR_DTLS    :En veletablert park med et par problemer
+STR_DTLS    :En veletablert park med noen problemer
 
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valleys lokale myndigheter tillater hverken landskapsendring eller trefelling – Likevel skal du utvikle området til å bli en stor fornøyelesspark
+STR_DTLS    :De lokale myndighetene i Rainbow Valley tillater hverken endringer i landskapet eller felling av trær, men du må utvikle området til å bli en stor fornøyelsespark
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
 STR_PARK    :Thunder Rock
-STR_DTLS    :Thunder Rock er ørkenens midtpunkt og en stor turistattraksjon – Bruk det tilgjengelige området til å bygge attraksjoner for å tiltrekke flere turister
+STR_DTLS    :Thunder Rock er ørkenens midtpunkt og en stor turistattraksjon – Bruk det tilgjengelige området til å bygge attraksjoner for å tiltrekke flere folk
 
 <Mega Park>
 STR_SCNR    :Mega Park
@@ -3858,304 +3860,304 @@ STR_DTLS    :Bare for gøy!
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+STR_DTLS    :Videreutvikle sjøklippene til å bli en flott fornøyelsespark
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :En gigangisk duellerende stål-berg-og-dal-bane er sentral i denne store parken
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
 STR_PARK    :Canary Mines
-STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its miniature railway and a pair of vertical drop roller coasters
+STR_DTLS    :Denne forlatte gruven er et godt utgangspunkt for en god turistattraksjon, allerede med en miniatyrtogbane og et par vertikalt-fall berg-og-dal-baner
 
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+STR_DTLS    :Du får utvikle en gammel ubrukt bro til en fornøyelsespark
 
 <Funtopia>
 STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
-STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+STR_DTLS    :Denne parken som dekker begge sider av en motorvei har allerede flere aktive attraksjoner
 
 <Haunted Harbour>
 STR_SCNR    :Haunted Harbour
 STR_PARK    :Haunted Harbour
-STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+STR_DTLS    :De lokale myndighetene har gått med på å selge land billig, gitt at enkelte attraksjoner bevares
 
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :Fun Fortress
-STR_DTLS    :This castle is all yours to turn into a theme park
+STR_DTLS    :Du får gjøre dette slottet om til en fornøyelsespark
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :Future World
-STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+STR_DTLS    :Denne framtidsparken med sitt utenomjordiske landskap har stor plass for nye attraksjoner
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :Gentle Glen
-STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+STR_DTLS    :Det er din jobb å utvide denne parken med rolige attraksjoner, etter preferansene til regionens innbyggere
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
 STR_PARK    :Jolly Jungle
-STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+STR_DTLS    :Dypt i jungelen er det et passende område for en fornøyelsespark
 
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :A series of stepped lakes form the basis for this new park
+STR_DTLS    :En rekke paternostersjøer danner grunnlaget for denne nye parken
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
 STR_PARK    :Sprightly Park
-STR_DTLS    :This elderly park has many historical rides but is badly in debt
+STR_DTLS    :Denne eldre parken har har flere historiske attraksjoner, men er i dyp gjeld
 
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :Magic Quarters
-STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+STR_DTLS    :Et stort landområde har blitt klargjort og delvis pyntet, klar for at du skal utvikle det til en fornøyelsespark
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+STR_DTLS    :En blomstrende fruktgård har bygget en togbane for ekstra inntekt - Din jobb er å utvikle den til en fullverdig fornøyelsespark
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+STR_DTLS    :Området rundt en demning er tilgjengelig for fornøyelsesparken din
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :A vast canyon is yours to turn into a theme park
+STR_DTLS    :Du får bygge ut en enorm kløft til en fornøyelsespark
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+STR_DTLS    :En gigantisk pyramide har blitt satt opp for at du skal kunne bygge attraksjoner skjermet fra det våte klimaet
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :De lokale myndighetene tillater ikke at du bygger høyere enn trærne i denne parken
 
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+STR_DTLS    :Videreutvikle denne romerparken ved å bygge spennende attraksjoner
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Denne parken bygd delvis på en liten øyrekke har allerede et par store berg-og-dal-baner
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
 STR_PARK    :Adrenaline Heights
-STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+STR_DTLS    :Bygg en park som appellerer til de høye intensitetskravene til den lokale befolkningen
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
 STR_PARK    :Utopia
-STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+STR_DTLS    :En oase midt i ørkenen byr på en uvanlig mulighet for en fornøyelsespark
 
 <Rotting Heights>
 STR_SCNR    :Rotting Heights
 STR_PARK    :Rotting Heights
-STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+STR_DTLS    :Kan du gjenopplive den fordums storheten til denne falleferdige og gjengrodde fornøyelsesparken?
 
 <Fiasco Forest>
 STR_SCNR    :Fiasco Forest
 STR_PARK    :Fiasco Forest
-STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+STR_DTLS    :Du har begrenset tid og budsjett til å fikse problemene til denne parken full av dårlig designet og farlige attraksjoner
 
 <Pickle Park>
 STR_SCNR    :Pickle Park
 STR_PARK    :Pickle Park
-STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+STR_DTLS    :De lokale myndighetene tillater ikke reklame så denne parken må overleve på ryktet alene
 
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :Midtpunktet i denne voksende parken er et firefelts hinderløp
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
 STR_PARK    :Mineral Park
-STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+STR_DTLS    :Gjør dette forlatte steinbruddet til et sted som trekker spenningssøkende turister
 
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+STR_DTLS    :Du har begrensede midler, men ubegrenset tid, til å gjøre denne fjellsiden til en enorm berg-og-dal-bane-park
 
 <Urban Park>
 STR_SCNR    :Urban Park
 STR_PARK    :Urban Park
-STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+STR_DTLS    :En liten park har laget en avtale med nærmeste by som tillater bygging inne i byen
 
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
-STR_DTLS    :A large garden park needs turning into a thriving theme park
+STR_DTLS    :En stor hagepark trenger å gjøres om til en blomstrende fornøyelsespark
 
 
 ## Loopy Landscapes
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :En samling isfjell danner en kald setting for denne ambisiøse fornøyelsesparken
 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :Omgivelsene for denne berg-og-dal-bane-utfordringen er en sovende vulkan 
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :Utfordringen din er å bygge en ørkenpark med høye krav, fri for finansielle begrensinger
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :Din oppgave er å bygge en massiv park fylt med berg-og-dal-baner midt i Razor Rocks
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :En stor innsjø i et eldgammelt krater er settingen for denne parken
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+STR_DTLS    :Denne store parken har allerede en utmerket hyper-berg-og-dal-bane, din oppgave er å gjøre massiv profitt
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
 STR_PARK    :Paradise Pier 2
-STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+STR_DTLS    :Paradise Pier har utvidet sitt netverk av gangbroer over sjøen, som du skal bruke for å utvide parken
 
 <Dragon's Cove>
 STR_SCNR    :Dragon's Cove
 STR_PARK    :Dragon's Cove
-STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+STR_DTLS    :Bygg derg-og-dal-baner i denne bukta
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
 STR_PARK    :Good Knight Park
-STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+STR_DTLS    :Et slott med et par berg-og-dal-baner trenger din hjelp for å utvide til en stor fornøyelsespark
 
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :A park which has much of its footpaths and coasters underground
+STR_DTLS    :En park hvor de fleste gangstier og berg-og-dal-baner er under bakken
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
 STR_PARK    :Grand Glacier
-STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+STR_DTLS    :Bygg en fornøyelsespark i denne isbre-dalen
 
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :Bygg et underholdningssenter for å holde folk glade i en fjern verden hvor penger ikke finnes
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
 STR_PARK    :Dusty Desert
-STR_DTLS    :Five coasters require completion in this desert park
+STR_DTLS    :Ferdigstill fem berg-og-dal-baner i denne ørkenparken
 
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :This historical park is only allowed to build older-styled rides
+STR_DTLS    :I denne historiske parken får du kun bygge attraksjoner i eldre stil
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :Utvikle denne utenomjordiske parken for å maksimere inntektene
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :Sunny Swamps
-STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+STR_DTLS    :Denne velpyntede fornøyelsesparken har allerede flere attraksjoner, men stor plass for utvidelse
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :En skumel park med en gigantisk berg-og-dal-bane som midtpunkt
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+STR_DTLS    :To store steinformasjoner stikker ut av sanden, hvor starten på en fornøyelsespark er bygget
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In this large park you must design and build ten large coasters
+STR_DTLS    :I denne store parken må du designe og bygge ti store berg-og-dal-baner
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island
 STR_PARK    :Pleasure Island
-STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+STR_DTLS    :En lang tynn øy blir utfordrende omgivelser for å bygge et utvalg berg-og-dal-baner
 
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
 STR_PARK    :Icicle Worlds
-STR_DTLS    :An icy landscape needs turning into a thriving theme park
+STR_DTLS    :Dette islandskapet trenger å bli gjort om til en blomstrende fornøyelsespark
 
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :Southern Sands
-STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+STR_DTLS    :Du får utvide en ørkenpark med et par smarte berg-og-dal-baner
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
 STR_PARK    :Tiny Towers
-STR_DTLS    :In this tiny park you must finish building the five existing coasters
+STR_DTLS    :I denne lille parken må du fullføre de fem eksisterende berg-og-dal-banene
 
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :Nevermore Park
-STR_DTLS    :A large park with a novel transportation system around its edge
+STR_DTLS    :En stor park med et nyskapende transportsystem rundt periferien
 
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :This large island is all yours to develop as an amusement park
+STR_DTLS    :Du har en stor øy helt for deg selv til å utvikle en fornøyelsespark
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
 STR_PARK    :Urban Jungle
-STR_DTLS    :A giant abandoned skyscraper is a unique opportunity for a theme park developer
+STR_DTLS    :En gigantisk forlatt skyskraper er en unik mulighet for en fornøyelsesparkentrepenør
 
 <Terror Town>
 STR_SCNR    :Terror Town
 STR_PARK    :Terror Town
-STR_DTLS    :This urban area is all yours to develop into an amusement park
+STR_DTLS    :Du får utvikle en fornøyelsespark i dette urbane området
 
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
 STR_PARK    :Megaworld Park
-STR_DTLS    :A giant park already packed full of rides needs improving
+STR_DTLS    :En gigantisk park allerede stappfull av attraksjoner trenger forbedring
 
 <Venus Ponds>
 STR_SCNR    :Venus Ponds
 STR_PARK    :Venus Ponds
-STR_DTLS    :On a far-away planet this area of land needs turning into a theme park
+STR_DTLS    :På en planet langt, langt borte må du gjøre om et landområde til en fornøyelsespark
 
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Try to create the world's smallest profitable park
+STR_DTLS    :Prøv å lage verdens minste lønnsomme park
 
 ## Real Parks from RCT1
 # None of them had details
