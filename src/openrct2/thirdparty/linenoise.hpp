@@ -131,6 +131,8 @@
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
+// OpenRCT2: Windows.h defines `interface` too without checking if it exists already, so we we have to undefine it first
+#undef interface
 #include <windows.h>
 #include <io.h>
 #ifndef STDIN_FILENO
@@ -248,10 +250,10 @@ const WCHAR G1[] =
 // color constants
 
 #define FOREGROUND_BLACK 0
-#define FOREGROUND_WHITE FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE
+#define FOREGROUND_WHITE (FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE)
 
 #define BACKGROUND_BLACK 0
-#define BACKGROUND_WHITE BACKGROUND_RED|BACKGROUND_GREEN|BACKGROUND_BLUE
+#define BACKGROUND_WHITE (BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE)
 
 const BYTE foregroundcolor[8] =
     {

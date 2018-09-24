@@ -1,32 +1,25 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
+#include "../Cheats.h"
+#include "../OpenRCT2.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/StringIds.h"
-#include "../OpenRCT2.h"
+#include "../management/Finance.h"
+#include "../world/Footpath.h"
+#include "../world/Park.h"
+#include "../world/Surface.h"
 #include "GameAction.h"
 
-#include "../Cheats.h"
-#include "../management/Finance.h"
-#include "../world/Park.h"
-#include "../world/Footpath.h"
-
-static sint32 _nextPeepSpawnIndex = 0;
+static int32_t _nextPeepSpawnIndex = 0;
 
 struct PlacePeepSpawnAction : public GameActionBase<GAME_COMMAND_PLACE_PEEP_SPAWN, GameActionResult>
 {
@@ -34,13 +27,15 @@ private:
     CoordsXYZD _location;
 
 public:
-    PlacePeepSpawnAction() {}
-    PlacePeepSpawnAction(CoordsXYZD location) :
-        _location(location)
+    PlacePeepSpawnAction()
+    {
+    }
+    PlacePeepSpawnAction(CoordsXYZD location)
+        : _location(location)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -56,7 +51,8 @@ public:
     {
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NOT_IN_EDITOR_MODE, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::NOT_IN_EDITOR_MODE, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
@@ -70,25 +66,32 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
-        if (_location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16) || _location.y >= (gMapSizeUnits - 16))
+        if (_location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
+            || _location.y >= (gMapSizeUnits - 16))
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         rct_tile_element *mapElement, *surfaceMapElement;
         // Verify footpath exists at location, and retrieve coordinates
         mapElement = map_get_path_element_at(_location.x >> 5, _location.y >> 5, _location.z / 8);
-        if (mapElement == nullptr) {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+        if (mapElement == nullptr)
+        {
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
 
         // Verify location is unowned
         surfaceMapElement = map_get_surface_element_at(_location.x >> 5, _location.y >> 5);
-        if (surfaceMapElement == nullptr) {
+        if (surfaceMapElement == nullptr)
+        {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
-        if (surfaceMapElement->properties.surface.ownership & 0xF0) {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
+        if (surfaceMapElement->AsSurface()->GetOwnership() != OWNERSHIP_UNOWNED)
+        {
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
         }
 
         return std::make_unique<GameActionResult>();
@@ -103,9 +106,11 @@ public:
         gCommandPosition.z = _location.z / 8;
 
         // Find empty or next appropriate peep spawn to use
-        sint32 peepSpawnIndex = -1;
-        for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
-            if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED) {
+        int32_t peepSpawnIndex = -1;
+        for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
+        {
+            if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED)
+            {
                 peepSpawnIndex = i;
                 break;
             }
@@ -118,14 +123,14 @@ public:
             _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
 
             // Before the new location is set, clear the old location
-            sint32 prevX = gPeepSpawns[peepSpawnIndex].x;
+            int32_t prevX = gPeepSpawns[peepSpawnIndex].x;
             gPeepSpawns[peepSpawnIndex].x = PEEP_SPAWN_UNDEFINED;
 
             map_invalidate_tile_full(prevX, gPeepSpawns[peepSpawnIndex].y);
         }
 
         // Shift the spawn point to the middle of the tile
-        sint32 middleX, middleY;
+        int32_t middleX, middleY;
         middleX = _location.x + 16 + (word_981D6C[_location.direction].x * 15);
         middleY = _location.y + 16 + (word_981D6C[_location.direction].y * 15);
 

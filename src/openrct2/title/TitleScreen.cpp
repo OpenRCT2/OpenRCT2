@@ -1,55 +1,53 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include "../config/Config.h"
+#include "TitleScreen.h"
+
 #include "../Context.h"
-#include "../core/Console.hpp"
-#include "../interface/Screenshot.h"
-#include "../network/network.h"
+#include "../Game.h"
+#include "../GameState.h"
+#include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../audio/audio.h"
+#include "../config/Config.h"
+#include "../core/Console.hpp"
+#include "../drawing/Drawing.h"
+#include "../interface/Screenshot.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
+#include "../localisation/Localisation.h"
+#include "../network/network.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
-#include "TitleScreen.h"
+#include "../ui/UiContext.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 
-#include "../audio/audio.h"
-#include "../drawing/Drawing.h"
-#include "../Game.h"
-#include "../Input.h"
-#include "../interface/Viewport.h"
-#include "../interface/Window.h"
-#include "../localisation/Localisation.h"
+using namespace OpenRCT2;
 
 // TODO Remove when no longer required.
-static TitleScreen * _singleton = nullptr;
+bool gPreviewingTitleSequenceInGame;
+static TitleScreen* _singleton = nullptr;
 
-TitleScreen::TitleScreen()
+TitleScreen::TitleScreen(GameState& gameState)
+    : _gameState(gameState)
 {
     _singleton = this;
 }
 
 TitleScreen::~TitleScreen()
 {
-    delete _sequencePlayer;
     _singleton = nullptr;
 }
 
-ITitleSequencePlayer * TitleScreen::GetSequencePlayer()
+ITitleSequencePlayer* TitleScreen::GetSequencePlayer()
 {
     return _sequencePlayer;
 }
@@ -85,7 +83,7 @@ void TitleScreen::StopPreviewingSequence()
 {
     if (_previewingSequence)
     {
-        rct_window * mainWindow = window_get_main();
+        rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
             window_unfollow_sprite(mainWindow);
@@ -126,7 +124,7 @@ void TitleScreen::Load()
 
     network_close();
     audio_stop_all_music_and_sounds();
-    game_init_all(150);
+    GetContext()->GetGameState()->InitAll(150);
     viewport_init_all();
     context_open_window(WC_MAIN_WINDOW);
     CreateWindows();
@@ -164,13 +162,14 @@ void TitleScreen::Update()
         TryLoadSequence();
         _sequencePlayer->Update();
 
-        sint32 numUpdates = 1;
-        if (gGameSpeed > 1) {
+        int32_t numUpdates = 1;
+        if (gGameSpeed > 1)
+        {
             numUpdates = 1 << (gGameSpeed - 1);
         }
-        for (sint32 i = 0; i < numUpdates; i++)
+        for (int32_t i = 0; i < numUpdates; i++)
         {
-            game_logic_update();
+            _gameState.UpdateLogic();
         }
         update_palette_effects();
         // update_rain_animation();
@@ -196,7 +195,7 @@ void TitleScreen::ChangePresetSequence(size_t preset)
         return;
     }
 
-    const utf8 * configId = title_sequence_manager_get_config_id(preset);
+    const utf8* configId = title_sequence_manager_get_config_id(preset);
     SafeFree(gConfigInterface.current_title_sequence_preset);
     gConfigInterface.current_title_sequence_preset = _strdup(configId);
 
@@ -223,8 +222,7 @@ void TitleScreen::TitleInitialise()
 {
     if (_sequencePlayer == nullptr)
     {
-        IScenarioRepository * scenarioRepository = GetScenarioRepository();
-        _sequencePlayer = CreateTitleSequencePlayer(scenarioRepository);
+        _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
     }
     size_t seqId = title_get_config_sequence();
     if (seqId == SIZE_MAX)
@@ -235,8 +233,7 @@ void TitleScreen::TitleInitialise()
             seqId = 0;
         }
     }
-    ChangePresetSequence((sint32)seqId);
-    TryLoadSequence();
+    ChangePresetSequence((int32_t)seqId);
 }
 
 bool TitleScreen::TryLoadSequence(bool loadPreview)
@@ -255,7 +252,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
                     if (targetSequence != _currentSequence && !loadPreview)
                     {
                         // Forcefully change the preset to a preset that works.
-                        const utf8 * configId = title_sequence_manager_get_config_id(targetSequence);
+                        const utf8* configId = title_sequence_manager_get_config_id(targetSequence);
                         SafeFree(gConfigInterface.current_title_sequence_preset);
                         gConfigInterface.current_title_sequence_preset = _strdup(configId);
                     }
@@ -264,8 +261,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
                     return true;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;
-            }
-            while (targetSequence != _currentSequence && !loadPreview);
+            } while (targetSequence != _currentSequence && !loadPreview);
         }
         Console::Error::WriteLine("Unable to play any title sequences.");
         _sequencePlayer->Eject();
@@ -273,7 +269,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            game_init_all(150);
+            GetContext()->GetGameState()->InitAll(150);
         }
         return false;
     }
@@ -296,9 +292,9 @@ void title_create_windows()
     }
 }
 
-void * title_get_sequence_player()
+void* title_get_sequence_player()
 {
-    void * result = nullptr;
+    void* result = nullptr;
     if (_singleton != nullptr)
     {
         result = _singleton->GetSequencePlayer();
@@ -373,12 +369,12 @@ bool title_is_previewing_sequence()
     return false;
 }
 
-void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
+void DrawOpenRCT2(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
 {
     utf8 buffer[256];
 
     // Write format codes
-    utf8 * ch = buffer;
+    utf8* ch = buffer;
     ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
     ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
     ch = utf8_write_codepoint(ch, FORMAT_WHITE);
@@ -388,11 +384,10 @@ void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
 
     // Invalidate screen area
-    sint16 width = (sint16)gfx_get_string_width(buffer);
+    int16_t width = (int16_t)gfx_get_string_width(buffer);
     gfx_set_dirty_blocks(x, y, x + width, y + 30); // 30 is an arbitrary height to catch both strings
 
     // Write platform information
     snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5);
 }
-

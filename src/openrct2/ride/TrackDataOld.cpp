@@ -1,24 +1,17 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "TrackData.h"
 
 /** rct2: 0x008A42F4 */
 // clang-format off
-static constexpr const uint32 _OldSpiralRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSpiralRollerCoasterTrackPaintFunctions[256] = {
     0x008A4ABC, // TRACK_ELEM_FLAT
     0x008A4D0C, // TRACK_ELEM_END_STATION
     0x008A4D1C, // TRACK_ELEM_BEGIN_STATION
@@ -278,7 +271,7 @@ static constexpr const uint32 _OldSpiralRollerCoasterTrackPaintFunctions[256] = 
 };
 
 /** rct2: 0x008A6DB0 */
-static constexpr const uint32 _OldStandUpRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldStandUpRollerCoasterTrackPaintFunctions[256] = {
     0x008A7114, // TRACK_ELEM_FLAT
     0x008A7384, // TRACK_ELEM_END_STATION
     0x008A7394, // TRACK_ELEM_BEGIN_STATION
@@ -538,7 +531,7 @@ static constexpr const uint32 _OldStandUpRollerCoasterTrackPaintFunctions[256] =
 };
 
 /** rct2: 0x008A85E4 */
-static constexpr const uint32 _OldSuspendedSwingingCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSuspendedSwingingCoasterTrackPaintFunctions[256] = {
     0x008A8958, // TRACK_ELEM_FLAT
     0x008A8AA8, // TRACK_ELEM_END_STATION
     0x008A8AB8, // TRACK_ELEM_BEGIN_STATION
@@ -798,7 +791,7 @@ static constexpr const uint32 _OldSuspendedSwingingCoasterTrackPaintFunctions[25
 };
 
 /** rct2: 0x008A8EE4 */
-static constexpr const uint32 _OldInvertedRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldInvertedRollerCoasterTrackPaintFunctions[256] = {
     0x008A92E8, // TRACK_ELEM_FLAT
     0x008A9558, // TRACK_ELEM_END_STATION
     0x008A9568, // TRACK_ELEM_BEGIN_STATION
@@ -1058,7 +1051,7 @@ static constexpr const uint32 _OldInvertedRollerCoasterTrackPaintFunctions[256] 
 };
 
 /** rct2: 0x008AAA0C */
-static constexpr const uint32 _OldJuniorRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldJuniorRollerCoasterTrackPaintFunctions[256] = {
     0x008AAD80, // TRACK_ELEM_FLAT
     0x008AAE70, // TRACK_ELEM_END_STATION
     0x008AAE80, // TRACK_ELEM_BEGIN_STATION
@@ -1318,7 +1311,7 @@ static constexpr const uint32 _OldJuniorRollerCoasterTrackPaintFunctions[256] = 
 };
 
 /** rct2: 0x008ACE48 */
-static constexpr const uint32 _OldMiniatureRailwayTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMiniatureRailwayTrackPaintFunctions[256] = {
     0x008AD0C0, // TRACK_ELEM_FLAT
     0x008AD170, // TRACK_ELEM_END_STATION
     0x008AD180, // TRACK_ELEM_BEGIN_STATION
@@ -1578,7 +1571,7 @@ static constexpr const uint32 _OldMiniatureRailwayTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008ADF34 */
-static constexpr const uint32 _OldMonorailTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMonorailTrackPaintFunctions[256] = {
     0x008AE1AC, // TRACK_ELEM_FLAT
     0x008AE25C, // TRACK_ELEM_END_STATION
     0x008AE26C, // TRACK_ELEM_BEGIN_STATION
@@ -1838,7 +1831,7 @@ static constexpr const uint32 _OldMonorailTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008AFC24 */
-static constexpr const uint32 _OldMiniSuspendedCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMiniSuspendedCoasterTrackPaintFunctions[256] = {
     0x008AFE9C, // TRACK_ELEM_FLAT
     0x008AFF4C, // TRACK_ELEM_END_STATION
     0x008AFF5C, // TRACK_ELEM_BEGIN_STATION
@@ -2098,7 +2091,7 @@ static constexpr const uint32 _OldMiniSuspendedCoasterTrackPaintFunctions[256] =
 };
 
 /** rct2: 0x008B0D60 */
-static constexpr const uint32 _OldBoatHireTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldBoatHireTrackPaintFunctions[256] = {
     0x008B0E40, // TRACK_ELEM_FLAT
     0x008B0E50, // TRACK_ELEM_END_STATION
     0x008B0E60, // TRACK_ELEM_BEGIN_STATION
@@ -2358,7 +2351,7 @@ static constexpr const uint32 _OldBoatHireTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A534C */
-static constexpr const uint32 _OldWoodenWildMouseTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldWoodenWildMouseTrackPaintFunctions[256] = {
     0x008A5464, // TRACK_ELEM_FLAT
     0x008A5534, // TRACK_ELEM_END_STATION
     0x008A5544, // TRACK_ELEM_BEGIN_STATION
@@ -2618,7 +2611,7 @@ static constexpr const uint32 _OldWoodenWildMouseTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A5634 */
-static constexpr const uint32 _OldSteeplechaseTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSteeplechaseTrackPaintFunctions[256] = {
     0x008A59A8, // TRACK_ELEM_FLAT
     0x008A5A58, // TRACK_ELEM_END_STATION
     0x008A5A68, // TRACK_ELEM_BEGIN_STATION
@@ -2878,7 +2871,7 @@ static constexpr const uint32 _OldSteeplechaseTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x006F7000 */
-static constexpr const uint32 _OldCarRideTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldCarRideTrackPaintFunctions[256] = {
     0x006F72C8, // TRACK_ELEM_FLAT
     0x006F7338, // TRACK_ELEM_END_STATION
     0x006F7348, // TRACK_ELEM_BEGIN_STATION
@@ -3138,7 +3131,7 @@ static constexpr const uint32 _OldCarRideTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x006FD0E8 */
-static constexpr const uint32 _OldLaunchedFreefallTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldLaunchedFreefallTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -3398,7 +3391,7 @@ static constexpr const uint32 _OldLaunchedFreefallTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x006FE240 */
-static constexpr const uint32 _OldBobsleighCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldBobsleighCoasterTrackPaintFunctions[256] = {
     0x006FE5B4, // TRACK_ELEM_FLAT
     0x006FE764, // TRACK_ELEM_END_STATION
     0x006FE774, // TRACK_ELEM_BEGIN_STATION
@@ -3658,7 +3651,7 @@ static constexpr const uint32 _OldBobsleighCoasterTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0070DC5C */
-static constexpr const uint32 _OldObservationTowerTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldObservationTowerTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -3918,7 +3911,7 @@ static constexpr const uint32 _OldObservationTowerTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A5B88 */
-static constexpr const uint32 _OldLoopingRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldLoopingRollerCoasterTrackPaintFunctions[256] = {
     0x008A6370, // TRACK_ELEM_FLAT
     0x008A6600, // TRACK_ELEM_END_STATION
     0x008A6610, // TRACK_ELEM_BEGIN_STATION
@@ -4178,7 +4171,7 @@ static constexpr const uint32 _OldLoopingRollerCoasterTrackPaintFunctions[256] =
 };
 
 /** rct2: 0x0070EDB4 */
-static constexpr const uint32 _OldDinghySlideTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldDinghySlideTrackPaintFunctions[256] = {
     0x0070EF20, // TRACK_ELEM_FLAT
     0x0070F030, // TRACK_ELEM_END_STATION
     0x0070F040, // TRACK_ELEM_BEGIN_STATION
@@ -4438,7 +4431,7 @@ static constexpr const uint32 _OldDinghySlideTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0071BC40 */
-static constexpr const uint32 _OldMineTrainCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMineTrainCoasterTrackPaintFunctions[256] = {
     0x0071BFA4, // TRACK_ELEM_FLAT
     0x0071C154, // TRACK_ELEM_END_STATION
     0x0071C164, // TRACK_ELEM_BEGIN_STATION
@@ -4698,7 +4691,7 @@ static constexpr const uint32 _OldMineTrainCoasterTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00743EC8 */
-static constexpr const uint32 _OldChairliftTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldChairliftTrackPaintFunctions[256] = {
     0x00743FC8, // TRACK_ELEM_FLAT
     0x00743F98, // TRACK_ELEM_END_STATION
     0x00743FA8, // TRACK_ELEM_BEGIN_STATION
@@ -4958,7 +4951,7 @@ static constexpr const uint32 _OldChairliftTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A7784 */
-static constexpr const uint32 _OldCorkscrewRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldCorkscrewRollerCoasterTrackPaintFunctions[256] = {
     0x008A7AF8, // TRACK_ELEM_FLAT
     0x008A7D68, // TRACK_ELEM_END_STATION
     0x008A7D78, // TRACK_ELEM_BEGIN_STATION
@@ -5218,7 +5211,7 @@ static constexpr const uint32 _OldCorkscrewRollerCoasterTrackPaintFunctions[256]
 };
 
 /** rct2: 0x008A81E8 */
-static constexpr const uint32 _OldMazeTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMazeTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -5478,7 +5471,7 @@ static constexpr const uint32 _OldMazeTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0074840C */
-static constexpr const uint32 _OldSpiralSlideTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSpiralSlideTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -5738,7 +5731,7 @@ static constexpr const uint32 _OldSpiralSlideTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0074A668 */
-static constexpr const uint32 _OldGoKartsTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldGoKartsTrackPaintFunctions[256] = {
     0x0074A748, // TRACK_ELEM_FLAT
     0x0074A7B8, // TRACK_ELEM_END_STATION
     0x0074A7C8, // TRACK_ELEM_BEGIN_STATION
@@ -5998,7 +5991,7 @@ static constexpr const uint32 _OldGoKartsTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0074DDEC */
-static constexpr const uint32 _OldLogFlumeTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldLogFlumeTrackPaintFunctions[256] = {
     0x0074E0B0, // TRACK_ELEM_FLAT
     0x0074E140, // TRACK_ELEM_END_STATION
     0x0074E150, // TRACK_ELEM_BEGIN_STATION
@@ -6258,7 +6251,7 @@ static constexpr const uint32 _OldLogFlumeTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0075745C */
-static constexpr const uint32 _OldRiverRapidsTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldRiverRapidsTrackPaintFunctions[256] = {
     0x00757650, // TRACK_ELEM_FLAT
     0x007576C0, // TRACK_ELEM_END_STATION
     0x007576D0, // TRACK_ELEM_BEGIN_STATION
@@ -6518,7 +6511,7 @@ static constexpr const uint32 _OldRiverRapidsTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0075C9D0 */
-static constexpr const uint32 _OldDodgemsTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldDodgemsTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -6778,7 +6771,7 @@ static constexpr const uint32 _OldDodgemsTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A83E0 */
-static constexpr const uint32 _OldPirateShipTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldPirateShipTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -7038,7 +7031,7 @@ static constexpr const uint32 _OldPirateShipTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00760070 */
-static constexpr const uint32 _OldSwingingInverterShipTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSwingingInverterShipTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -7302,7 +7295,7 @@ static constexpr const uint32 _OldSwingingInverterShipTrackPaintFunctions[256] =
  *
  * rct2: 0x00761160
  */
-static constexpr const uint32 _OldShopTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldShopTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -7562,7 +7555,7 @@ static constexpr const uint32 _OldShopTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0076190C */
-static constexpr const uint32 _OldMerryGoRoundTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMerryGoRoundTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -7826,7 +7819,7 @@ static constexpr const uint32 _OldMerryGoRoundTrackPaintFunctions[256] = {
  *
  * rct2: 0x00762D44
  */
-static constexpr const uint32 _OldFacilityTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldFacilityTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -8086,7 +8079,7 @@ static constexpr const uint32 _OldFacilityTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A8CC8 */
-static constexpr const uint32 _OldFerrisWheelTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldFerrisWheelTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -8346,7 +8339,7 @@ static constexpr const uint32 _OldFerrisWheelTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00763520 */
-static constexpr const uint32 _OldMotionSimulatorTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMotionSimulatorTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -8606,7 +8599,7 @@ static constexpr const uint32 _OldMotionSimulatorTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0076554C */
-static constexpr const uint32 _Old3DCinemaTrackPaintFunctions[256] = {
+static constexpr const uint32_t _Old3DCinemaTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -8866,7 +8859,7 @@ static constexpr const uint32 _Old3DCinemaTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0076659C */
-static constexpr const uint32 _OldTopSpinTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldTopSpinTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -9126,7 +9119,7 @@ static constexpr const uint32 _OldTopSpinTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00767A40 */
-static constexpr const uint32 _OldSpaceRingsTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSpaceRingsTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -9386,7 +9379,7 @@ static constexpr const uint32 _OldSpaceRingsTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00768BAC */
-static constexpr const uint32 _OldReverseFreefallCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldReverseFreefallCoasterTrackPaintFunctions[256] = {
     0x00768DB4, // TRACK_ELEM_FLAT
     0x00768DC4, // TRACK_ELEM_END_STATION
     0x00768DD4, // TRACK_ELEM_BEGIN_STATION
@@ -9646,7 +9639,7 @@ static constexpr const uint32 _OldReverseFreefallCoasterTrackPaintFunctions[256]
 };
 
 /** rct2: 0x0076C5BC */
-static constexpr const uint32 _OldLiftTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldLiftTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -9906,7 +9899,7 @@ static constexpr const uint32 _OldLiftTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A9C08 */
-static constexpr const uint32 _OldVerticalDropRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldVerticalDropRollerCoasterTrackPaintFunctions[256] = {
     0x008AA00C, // TRACK_ELEM_FLAT
     0x008AA25C, // TRACK_ELEM_END_STATION
     0x008AA26C, // TRACK_ELEM_BEGIN_STATION
@@ -10166,7 +10159,7 @@ static constexpr const uint32 _OldVerticalDropRollerCoasterTrackPaintFunctions[2
 };
 
 /** rct2: 0x0076D658 */
-static constexpr const uint32 _OldTwistTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldTwistTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -10426,7 +10419,7 @@ static constexpr const uint32 _OldTwistTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0076E7B0 */
-static constexpr const uint32 _OldHauntedHouseTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldHauntedHouseTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -10686,7 +10679,7 @@ static constexpr const uint32 _OldHauntedHouseTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0076F8D4 */
-static constexpr const uint32 _OldCircusShowTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldCircusShowTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -10946,7 +10939,7 @@ static constexpr const uint32 _OldCircusShowTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00770924 */
-static constexpr const uint32 _OldGhostTrainTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldGhostTrainTrackPaintFunctions[256] = {
     0x00770BEC, // TRACK_ELEM_FLAT
     0x00770C5C, // TRACK_ELEM_END_STATION
     0x00770C6C, // TRACK_ELEM_BEGIN_STATION
@@ -11206,7 +11199,7 @@ static constexpr const uint32 _OldGhostTrainTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008AB2A0 */
-static constexpr const uint32 _OldTwisterRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldTwisterRollerCoasterTrackPaintFunctions[256] = {
     0x008AB6A4, // TRACK_ELEM_FLAT
     0x008AB8F4, // TRACK_ELEM_END_STATION
     0x008AB904, // TRACK_ELEM_BEGIN_STATION
@@ -11466,7 +11459,7 @@ static constexpr const uint32 _OldTwisterRollerCoasterTrackPaintFunctions[256] =
 };
 
 /** rct2: 0x008AC164 */
-static constexpr const uint32 _OldWoodenRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldWoodenRollerCoasterTrackPaintFunctions[256] = {
     0x008AC568, // TRACK_ELEM_FLAT
     0x008AC7B8, // TRACK_ELEM_END_STATION
     0x008AC7C8, // TRACK_ELEM_BEGIN_STATION
@@ -11726,7 +11719,7 @@ static constexpr const uint32 _OldWoodenRollerCoasterTrackPaintFunctions[256] = 
 };
 
 /** rct2: 0x00778124 */
-static constexpr const uint32 _OldSideFrictionRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSideFrictionRollerCoasterTrackPaintFunctions[256] = {
     0x0077839C, // TRACK_ELEM_FLAT
     0x007784AC, // TRACK_ELEM_END_STATION
     0x007784BC, // TRACK_ELEM_BEGIN_STATION
@@ -11986,7 +11979,7 @@ static constexpr const uint32 _OldSideFrictionRollerCoasterTrackPaintFunctions[2
 };
 
 /** rct2: 0x0078AE80 */
-static constexpr const uint32 _OldWildMouseTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldWildMouseTrackPaintFunctions[256] = {
     0x0078B1E4, // TRACK_ELEM_FLAT
     0x0078B2B4, // TRACK_ELEM_END_STATION
     0x0078B2C4, // TRACK_ELEM_BEGIN_STATION
@@ -12246,7 +12239,7 @@ static constexpr const uint32 _OldWildMouseTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00792978 */
-static constexpr const uint32 _OldMultiDimensionRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctions[256] = {
     0x00792D88, // TRACK_ELEM_FLAT
     0x00792F98, // TRACK_ELEM_END_STATION
     0x00792FA8, // TRACK_ELEM_BEGIN_STATION
@@ -12506,7 +12499,7 @@ static constexpr const uint32 _OldMultiDimensionRollerCoasterTrackPaintFunctions
 };
 
 /** rct2: 0x007C6C00 */
-static constexpr const uint32 _OldFlyingRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldFlyingRollerCoasterTrackPaintFunctions[256] = {
     0x007C6FF4, // TRACK_ELEM_FLAT
     0x007C7244, // TRACK_ELEM_END_STATION
     0x007C7254, // TRACK_ELEM_BEGIN_STATION
@@ -12766,7 +12759,7 @@ static constexpr const uint32 _OldFlyingRollerCoasterTrackPaintFunctions[256] = 
 };
 
 /** rct2: 0x00811184 */
-static constexpr const uint32 _OldVirginiaReelTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldVirginiaReelTrackPaintFunctions[256] = {
     0x00811264, // TRACK_ELEM_FLAT
     0x008112D4, // TRACK_ELEM_END_STATION
     0x008112E4, // TRACK_ELEM_BEGIN_STATION
@@ -13026,7 +13019,7 @@ static constexpr const uint32 _OldVirginiaReelTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008164AC */
-static constexpr const uint32 _OldSplashBoatsTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSplashBoatsTrackPaintFunctions[256] = {
     0x00816584, // TRACK_ELEM_FLAT
     0x00816614, // TRACK_ELEM_END_STATION
     0x00816624, // TRACK_ELEM_BEGIN_STATION
@@ -13286,7 +13279,7 @@ static constexpr const uint32 _OldSplashBoatsTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0081F268 */
-static constexpr const uint32 _OldMiniHelicoptersTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMiniHelicoptersTrackPaintFunctions[256] = {
     0x0081F348, // TRACK_ELEM_FLAT
     0x0081F3B8, // TRACK_ELEM_END_STATION
     0x0081F3C8, // TRACK_ELEM_BEGIN_STATION
@@ -13546,7 +13539,7 @@ static constexpr const uint32 _OldMiniHelicoptersTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008245A8 */
-static constexpr const uint32 _OldLayDownRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldLayDownRollerCoasterTrackPaintFunctions[256] = {
     0x0082491C, // TRACK_ELEM_FLAT
     0x00824B8C, // TRACK_ELEM_END_STATION
     0x00824B9C, // TRACK_ELEM_BEGIN_STATION
@@ -13806,7 +13799,7 @@ static constexpr const uint32 _OldLayDownRollerCoasterTrackPaintFunctions[256] =
 };
 
 /** rct2: 0x0086347C */
-static constexpr const uint32 _OldSuspendedMonorailTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSuspendedMonorailTrackPaintFunctions[256] = {
     0x008636F4, // TRACK_ELEM_FLAT
     0x008637A4, // TRACK_ELEM_END_STATION
     0x008637B4, // TRACK_ELEM_BEGIN_STATION
@@ -14066,7 +14059,7 @@ static constexpr const uint32 _OldSuspendedMonorailTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0086E2F8 */
-static constexpr const uint32 _OldReverserRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldReverserRollerCoasterTrackPaintFunctions[256] = {
     0x0086E65C, // TRACK_ELEM_FLAT
     0x0086E70C, // TRACK_ELEM_END_STATION
     0x0086E71C, // TRACK_ELEM_BEGIN_STATION
@@ -14326,7 +14319,7 @@ static constexpr const uint32 _OldReverserRollerCoasterTrackPaintFunctions[256] 
 };
 
 /** rct2: 0x00876618 */
-static constexpr const uint32 _OldHeartlineTwisterCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldHeartlineTwisterCoasterTrackPaintFunctions[256] = {
     0x0087694C, // TRACK_ELEM_FLAT
     0x00876A1C, // TRACK_ELEM_END_STATION
     0x00876A2C, // TRACK_ELEM_BEGIN_STATION
@@ -14586,7 +14579,7 @@ static constexpr const uint32 _OldHeartlineTwisterCoasterTrackPaintFunctions[256
 };
 
 /** rct2: 0x0087EDC4 */
-static constexpr const uint32 _OldMiniGolfTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMiniGolfTrackPaintFunctions[256] = {
     0x0087F10C, // TRACK_ELEM_FLAT
     0x0087F17C, // TRACK_ELEM_END_STATION
     0x0087F18C, // TRACK_ELEM_BEGIN_STATION
@@ -14846,7 +14839,7 @@ static constexpr const uint32 _OldMiniGolfTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008AD280 */
-static constexpr const uint32 _OldGigaCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldGigaCoasterTrackPaintFunctions[256] = {
     0x008AD674, // TRACK_ELEM_FLAT
     0x008AD8C4, // TRACK_ELEM_END_STATION
     0x008AD8D4, // TRACK_ELEM_BEGIN_STATION
@@ -15106,7 +15099,7 @@ static constexpr const uint32 _OldGigaCoasterTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00886074 */
-static constexpr const uint32 _OldRoToDropTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldRoToDropTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -15366,7 +15359,7 @@ static constexpr const uint32 _OldRoToDropTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00887208 */
-static constexpr const uint32 _OldFlyingSaucersTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldFlyingSaucersTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -15626,7 +15619,7 @@ static constexpr const uint32 _OldFlyingSaucersTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x00889C28 */
-static constexpr const uint32 _OldCrookedHouseTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldCrookedHouseTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -15886,7 +15879,7 @@ static constexpr const uint32 _OldCrookedHouseTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0088AC88 */
-static constexpr const uint32 _OldMonorailCyclesTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMonorailCyclesTrackPaintFunctions[256] = {
     0x0088AD48, // TRACK_ELEM_FLAT
     0x0088AD58, // TRACK_ELEM_END_STATION
     0x0088AD68, // TRACK_ELEM_BEGIN_STATION
@@ -16146,7 +16139,7 @@ static constexpr const uint32 _OldMonorailCyclesTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008AE36C */
-static constexpr const uint32 _OldCompactInvertedCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldCompactInvertedCoasterTrackPaintFunctions[256] = {
     0x008AE6E0, // TRACK_ELEM_FLAT
     0x008AE950, // TRACK_ELEM_END_STATION
     0x008AE960, // TRACK_ELEM_BEGIN_STATION
@@ -16406,7 +16399,7 @@ static constexpr const uint32 _OldCompactInvertedCoasterTrackPaintFunctions[256]
 };
 
 /** rct2: 0x008AEDE0 */
-static constexpr const uint32 _OldWaterCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldWaterCoasterTrackPaintFunctions[256] = {
     0x008AF154, // TRACK_ELEM_FLAT
     0x008AF2A4, // TRACK_ELEM_END_STATION
     0x008AF2B4, // TRACK_ELEM_BEGIN_STATION
@@ -16666,7 +16659,7 @@ static constexpr const uint32 _OldWaterCoasterTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008AF764 */
-static constexpr const uint32 _OldAirPoweredVerticalCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldAirPoweredVerticalCoasterTrackPaintFunctions[256] = {
     0x008AFAD4, // TRACK_ELEM_FLAT
     0x008AFAE4, // TRACK_ELEM_END_STATION
     0x008AFAF4, // TRACK_ELEM_BEGIN_STATION
@@ -16926,7 +16919,7 @@ static constexpr const uint32 _OldAirPoweredVerticalCoasterTrackPaintFunctions[2
 };
 
 /** rct2: 0x00890940 */
-static constexpr const uint32 _OldInvertedHairpinCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldInvertedHairpinCoasterTrackPaintFunctions[256] = {
     0x00890CB4, // TRACK_ELEM_FLAT
     0x00890D84, // TRACK_ELEM_END_STATION
     0x00890D94, // TRACK_ELEM_BEGIN_STATION
@@ -17186,7 +17179,7 @@ static constexpr const uint32 _OldInvertedHairpinCoasterTrackPaintFunctions[256]
 };
 
 /** rct2: 0x00898384 */
-static constexpr const uint32 _OldMagicCarpetTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMagicCarpetTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -17446,7 +17439,7 @@ static constexpr const uint32 _OldMagicCarpetTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008995D4 */
-static constexpr const uint32 _OldSubmarineRideTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSubmarineRideTrackPaintFunctions[256] = {
     0x008996B4, // TRACK_ELEM_FLAT
     0x008996C4, // TRACK_ELEM_END_STATION
     0x008996D4, // TRACK_ELEM_BEGIN_STATION
@@ -17706,7 +17699,7 @@ static constexpr const uint32 _OldSubmarineRideTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0089B0C0 */
-static constexpr const uint32 _OldRiverRaftsTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldRiverRaftsTrackPaintFunctions[256] = {
     0x0089B170, // TRACK_ELEM_FLAT
     0x0089B1A0, // TRACK_ELEM_END_STATION
     0x0089B1B0, // TRACK_ELEM_BEGIN_STATION
@@ -17966,7 +17959,7 @@ static constexpr const uint32 _OldRiverRaftsTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A13B4 */
-static constexpr const uint32 _OldEnterpriseTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldEnterpriseTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -18226,7 +18219,7 @@ static constexpr const uint32 _OldEnterpriseTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008B005C */
-static constexpr const uint32 _OldInvertedImpulseCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldInvertedImpulseCoasterTrackPaintFunctions[256] = {
     0x008B0460, // TRACK_ELEM_FLAT
     0x008B0470, // TRACK_ELEM_END_STATION
     0x008B0480, // TRACK_ELEM_BEGIN_STATION
@@ -18486,7 +18479,7 @@ static constexpr const uint32 _OldInvertedImpulseCoasterTrackPaintFunctions[256]
 };
 
 /** rct2: 0x008A46D8 */
-static constexpr const uint32 _OldMiniRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMiniRollerCoasterTrackPaintFunctions[256] = {
     0x008A4ABC, // TRACK_ELEM_FLAT
     0x008A4D0C, // TRACK_ELEM_END_STATION
     0x008A4D1C, // TRACK_ELEM_BEGIN_STATION
@@ -18746,7 +18739,7 @@ static constexpr const uint32 _OldMiniRollerCoasterTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008B0610 */
-static constexpr const uint32 _OldMineRideTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldMineRideTrackPaintFunctions[256] = {
     0x008B08D0, // TRACK_ELEM_FLAT
     0x008B0A80, // TRACK_ELEM_END_STATION
     0x008B0A90, // TRACK_ELEM_BEGIN_STATION
@@ -19006,7 +18999,7 @@ static constexpr const uint32 _OldMineRideTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A5F6C */
-static constexpr const uint32 _OldLimLaunchedRollerCoasterTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[256] = {
     0x008A6370, // TRACK_ELEM_FLAT
     0x008A6D50, // TRACK_ELEM_END_STATION
     0x008A6D60, // TRACK_ELEM_BEGIN_STATION
@@ -19265,9 +19258,9 @@ static constexpr const uint32 _OldLimLaunchedRollerCoasterTrackPaintFunctions[25
     0,
 };
 
-static constexpr const uint32 _null[256] = {0};
+static constexpr const uint32_t _null[256] = {0};
 
-const uint32 * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
+const uint32_t * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
     _OldSpiralRollerCoasterTrackPaintFunctions,             // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     _OldStandUpRollerCoasterTrackPaintFunctions,            // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     _OldSuspendedSwingingCoasterTrackPaintFunctions,        // RIDE_TYPE_SUSPENDED_SWINGING_COASTER

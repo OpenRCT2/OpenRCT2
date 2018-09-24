@@ -1,89 +1,86 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "../common.h"
 
 #ifdef _WIN32
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
+#    define WIN32_LEAN_AND_MEAN
+#    include <windows.h>
 #else
-    #include <unistd.h>
+#    include <unistd.h>
 #endif
 
-#include <stdlib.h>
-#include <time.h>
 #include "../Context.h"
+#include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
-#include "../Game.h"
 #include "../localisation/Currency.h"
 #include "../localisation/Localisation.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "platform.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 #ifdef __APPLE__
-    #include <mach/mach_time.h>
-    #include <AvailabilityMacros.h>
-    #ifndef __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
-        #error Missing __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ define
-    #endif
+#    include <AvailabilityMacros.h>
+#    include <mach/mach_time.h>
+#    ifndef __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__
+#        error Missing __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ define
+#    endif
 #endif
 
 #if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-    static mach_timebase_info_data_t _mach_base_info = { 0 };
+static mach_timebase_info_data_t _mach_base_info = {};
 #endif
 
-#if !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700) || (defined(__APPLE__) && defined(__MACH__)))
-char * strndup(const char * src, size_t size)
+#if !(                                                                                                                         \
+    (defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700)               \
+    || (defined(__APPLE__) && defined(__MACH__)))
+char* strndup(const char* src, size_t size)
 {
     size_t len = strnlen(src, size);
-    char * dst = (char *)malloc(len + 1);
+    char* dst = (char*)malloc(len + 1);
 
     if (dst == nullptr)
     {
         return nullptr;
     }
 
-    dst      = (char *)memcpy(dst, src, len);
+    dst = (char*)memcpy(dst, src, len);
     dst[len] = '\0';
     return dst;
 }
-#endif // !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700) || (defined(__APPLE__) && defined(__MACH__)))
+#endif // !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700) ||
+       // (defined(__APPLE__) && defined(__MACH__)))
 
 #ifdef _WIN32
-static uint32        _frequency = 0;
+static uint32_t _frequency = 0;
 static LARGE_INTEGER _entryTimestamp;
 #endif
 
-using update_palette_func = void (*)(const uint8 *, sint32, sint32);
+using update_palette_func = void (*)(const uint8_t*, int32_t, int32_t);
 
 rct_palette_entry gPalette[256];
 
-void platform_update_palette(const uint8 * colours, sint32 start_index, sint32 num_colours)
+void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_t num_colours)
 {
     colours += start_index * 4;
 
-    for (sint32 i = start_index; i < num_colours + start_index; i++)
+    for (int32_t i = start_index; i < num_colours + start_index; i++)
     {
-        uint8 r = colours[2];
-        uint8 g = colours[1];
-        uint8 b = colours[0];
+        uint8_t r = colours[2];
+        uint8_t g = colours[1];
+        uint8_t b = colours[0];
 
 #ifdef __ENABLE_LIGHTFX__
         if (lightfx_is_available())
@@ -102,18 +99,18 @@ void platform_update_palette(const uint8 * colours, sint32 start_index, sint32 n
             }
         }
 
-        gPalette[i].red   = r;
+        gPalette[i].red = r;
         gPalette[i].green = g;
-        gPalette[i].blue  = b;
+        gPalette[i].blue = b;
         gPalette[i].alpha = 0;
         colours += 4;
     }
 
     // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
     gPalette[255].alpha = 0;
-    gPalette[255].red   = 255;
+    gPalette[255].red = 255;
     gPalette[255].green = 255;
-    gPalette[255].blue  = 255;
+    gPalette[255].blue = 255;
 
     if (!gOpenRCT2Headless)
     {
@@ -123,7 +120,7 @@ void platform_update_palette(const uint8 * colours, sint32 start_index, sint32 n
 
 void platform_toggle_windowed_mode()
 {
-    sint32 targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
+    int32_t targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
     context_set_fullscreen_mode(targetMode);
     gConfigGeneral.fullscreen_mode = targetMode;
     config_save_default();
@@ -151,12 +148,12 @@ static void platform_ticks_init()
 #ifdef _WIN32
     LARGE_INTEGER freq;
     QueryPerformanceFrequency(&freq);
-    _frequency = (uint32)(freq.QuadPart / 1000);
+    _frequency = (uint32_t)(freq.QuadPart / 1000);
     QueryPerformanceCounter(&_entryTimestamp);
 #endif
 }
 
-uint32 platform_get_ticks()
+uint32_t platform_get_ticks()
 {
 #ifdef _WIN32
     LARGE_INTEGER pfc;
@@ -165,9 +162,9 @@ uint32 platform_get_ticks()
     LARGE_INTEGER runningDelta;
     runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
 
-    return (uint32)(runningDelta.QuadPart / _frequency);
+    return (uint32_t)(runningDelta.QuadPart / _frequency);
 #elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-    return (uint32)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
+    return (uint32_t)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
 #else
     struct timespec ts;
     if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
@@ -175,11 +172,11 @@ uint32 platform_get_ticks()
         log_fatal("clock_gettime failed");
         exit(-1);
     }
-    return (uint32)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+    return (uint32_t)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #endif
 }
 
-void platform_sleep(uint32 ms)
+void platform_sleep(uint32_t ms)
 {
 #ifdef _WIN32
     Sleep(ms);
@@ -188,14 +185,14 @@ void platform_sleep(uint32 ms)
 #endif
 }
 
-uint8 platform_get_currency_value(const char * currCode)
+uint8_t platform_get_currency_value(const char* currCode)
 {
     if (currCode == nullptr || strlen(currCode) < 3)
     {
         return CURRENCY_POUNDS;
     }
 
-    for (sint32 currency = 0; currency < CURRENCY_END; ++currency)
+    for (int32_t currency = 0; currency < CURRENCY_END; ++currency)
     {
         if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
         {

@@ -1,30 +1,23 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
 #include "../common.h"
 
-#define AUDIO_DEVICE_NAME_SIZE      256
-#define AUDIO_MAX_RIDE_MUSIC        2
-#define AUDIO_MAX_VEHICLE_SOUNDS    14
-#define NUM_DEFAULT_MUSIC_TRACKS    46
-#define AUDIO_PLAY_AT_CENTRE        0x8000
-#define AUDIO_PLAY_AT_LOCATION      0x8001
-#define SOUND_ID_NULL               0xFFFF
+#define AUDIO_DEVICE_NAME_SIZE 256
+#define AUDIO_MAX_RIDE_MUSIC 2
+#define AUDIO_MAX_VEHICLE_SOUNDS 14
+#define NUM_DEFAULT_MUSIC_TRACKS 46
+#define AUDIO_PLAY_AT_CENTRE 0x8000
+#define AUDIO_PLAY_AT_LOCATION 0x8001
+#define SOUND_ID_NULL 0xFFFF
 
 struct audio_device
 {
@@ -33,55 +26,55 @@ struct audio_device
 
 struct rct_ride_music
 {
-    uint8 ride_id;
-    uint8 tune_id;
-    sint16 volume;
-    sint16 pan;
-    uint16 frequency;
+    uint8_t ride_id;
+    uint8_t tune_id;
+    int16_t volume;
+    int16_t pan;
+    uint16_t frequency;
     void* sound_channel;
 };
 
 struct rct_ride_music_info
 {
-    uint8 path_id;
-    uint32 offset;
-    uint32 length;
+    uint8_t path_id;
+    uint32_t offset;
+    uint32_t length;
 };
 
 struct rct_ride_music_params
 {
-    uint8 ride_id;
-    uint8 tune_id;
-    sint32 offset;
-    sint16 volume;
-    sint16 pan;
-    uint16 frequency;
+    uint8_t ride_id;
+    uint8_t tune_id;
+    int32_t offset;
+    int16_t volume;
+    int16_t pan;
+    uint16_t frequency;
 };
 
 struct rct_vehicle_sound
 {
-    uint16 id;
-    sint16 volume;
-    uint16 sound1_id;
-    sint16 sound1_volume;
-    sint16 sound1_pan;
-    uint16 sound1_freq;
-    uint16 sound2_id;
-    sint16 sound2_volume;
-    sint16 sound2_pan;
-    uint16 sound2_freq;
+    uint16_t id;
+    int16_t volume;
+    uint16_t sound1_id;
+    int16_t sound1_volume;
+    int16_t sound1_pan;
+    uint16_t sound1_freq;
+    uint16_t sound2_id;
+    int16_t sound2_volume;
+    int16_t sound2_pan;
+    uint16_t sound2_freq;
     void* sound1_channel;
     void* sound2_channel;
 };
 
 struct rct_vehicle_sound_params
 {
-    uint16 id;
-    sint16 pan_x;
-    sint16 pan_y;
-    uint16 frequency;
-    sint16 volume;
-    uint16 priority;
+    uint16_t id;
+    int16_t pan_x;
+    int16_t pan_y;
+    uint16_t frequency;
+    int16_t volume;
+    uint16_t priority;
 };
 
 enum RCT2_SOUND
@@ -152,104 +145,104 @@ enum RCT2_SOUND
     SOUND_MAXID
 };
 
-extern audio_device *   gAudioDevices;
-extern sint32           gAudioDeviceCount;
-extern sint32           gAudioCurrentDevice;
+extern audio_device* gAudioDevices;
+extern int32_t gAudioDeviceCount;
+extern int32_t gAudioCurrentDevice;
 
-extern bool     gGameSoundsOff;
-extern sint32   gVolumeAdjustZoom;
+extern bool gGameSoundsOff;
+extern int32_t gVolumeAdjustZoom;
 
-extern void *   gTitleMusicChannel;
-extern void *   gRainSoundChannel;
+extern void* gTitleMusicChannel;
+extern void* gRainSoundChannel;
 
-extern rct_ride_music           gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-extern rct_ride_music_info      gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
-extern rct_ride_music_params    gRideMusicParamsList[6];
-extern rct_ride_music_params *  gRideMusicParamsListEnd;
+extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
+extern rct_ride_music_info gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
+extern rct_ride_music_params gRideMusicParamsList[6];
+extern rct_ride_music_params* gRideMusicParamsListEnd;
 
-extern rct_vehicle_sound            gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
-extern rct_vehicle_sound_params     gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
-extern rct_vehicle_sound_params *   gVehicleSoundParamsListEnd;
+extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
+extern rct_vehicle_sound_params gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
+extern rct_vehicle_sound_params* gVehicleSoundParamsListEnd;
 
 /**
-* Deregisters the audio device.
-* rct2: 0x006BAB21
-*/
+ * Deregisters the audio device.
+ * rct2: 0x006BAB21
+ */
 void audio_close();
 /**
-* Initialises the audio subsystem.
-*/
+ * Initialises the audio subsystem.
+ */
 void audio_init();
 /**
-* Loads the ride sounds and info.
-* rct2: 0x006BA8E0
-*/
+ * Loads the ride sounds and info.
+ * rct2: 0x006BA8E0
+ */
 void audio_init_ride_sounds_and_info();
 /**
-* Loads the ride sounds.
-* rct2: 0x006BA9B5
-*/
-void audio_init_ride_sounds(sint32 device);
+ * Loads the ride sounds.
+ * rct2: 0x006BA9B5
+ */
+void audio_init_ride_sounds(int32_t device);
 /**
-* Temporarily stops playing sounds until audio_unpause_sounds() is called.
-* rct2: 0x006BABB4
-*/
+ * Temporarily stops playing sounds until audio_unpause_sounds() is called.
+ * rct2: 0x006BABB4
+ */
 void audio_pause_sounds();
 /**
-* Plays the specified sound.
-* @param soundId The sound effect to play.
-* @param volume The volume at which the sound effect should be played.
-* @param pan The pan at which the sound effect should be played. If set to anything other than AUDIO_PLAY_AT_CENTRE, plays the
-* sound at a position relative to the centre of the viewport.
-* @return 0 if the sound was not out of range; otherwise, soundId.
-*/
-sint32 audio_play_sound(sint32 soundId, sint32 volume, sint32 pan);
+ * Plays the specified sound.
+ * @param soundId The sound effect to play.
+ * @param volume The volume at which the sound effect should be played.
+ * @param pan The pan at which the sound effect should be played. If set to anything other than AUDIO_PLAY_AT_CENTRE, plays the
+ * sound at a position relative to the centre of the viewport.
+ * @return 0 if the sound was not out of range; otherwise, soundId.
+ */
+int32_t audio_play_sound(int32_t soundId, int32_t volume, int32_t pan);
 /**
-* Plays the specified sound at a virtual location.
-* @param soundId The sound effect to play.
-* @param x The x coordinate of the location.
-* @param y The y coordinate of the location.
-* @param z The z coordinate of the location.
-* @return 0 if the sound was not out of range; otherwise, soundId.
-*/
-sint32 audio_play_sound_at_location(sint32 soundId, sint16 x, sint16 y, sint16 z);
+ * Plays the specified sound at a virtual location.
+ * @param soundId The sound effect to play.
+ * @param x The x coordinate of the location.
+ * @param y The y coordinate of the location.
+ * @param z The z coordinate of the location.
+ * @return 0 if the sound was not out of range; otherwise, soundId.
+ */
+int32_t audio_play_sound_at_location(int32_t soundId, int16_t x, int16_t y, int16_t z);
 /**
-* Populates the gAudioDevices array with the available audio devices.
-*/
+ * Populates the gAudioDevices array with the available audio devices.
+ */
 void audio_populate_devices();
 /**
-* Starts playing the title music.
-* rct2: 0x006BD0F8
-*/
+ * Starts playing the title music.
+ * rct2: 0x006BD0F8
+ */
 void audio_start_title_music();
 /**
-* Stops the rain sound effect from playing.
-*/
+ * Stops the rain sound effect from playing.
+ */
 void audio_stop_rain_sound();
 /**
-* Stops ride music from playing.
-* rct2: 0x006BCA9F
-*/
+ * Stops ride music from playing.
+ * rct2: 0x006BCA9F
+ */
 void audio_stop_ride_music();
 /**
-* Stops the title music from playing.
-* rct2: 0x006BD0BD
-*/
+ * Stops the title music from playing.
+ * rct2: 0x006BD0BD
+ */
 void audio_stop_title_music();
 /**
-* Stops vehicle sounds from playing.
-* rct2: 0x006BABDF
-*/
+ * Stops vehicle sounds from playing.
+ * rct2: 0x006BABDF
+ */
 void audio_stop_vehicle_sounds();
 /**
-* Toggles whether all sounds should be played.
-* rct2: 0x006BAB8A
-*/
+ * Toggles whether all sounds should be played.
+ * rct2: 0x006BAB8A
+ */
 void audio_toggle_all_sounds();
 /**
-* Resumes playing sounds that had been paused by a call to audio_pause_sounds().
-* rct2: 0x006BABD8
-*/
+ * Resumes playing sounds that had been paused by a call to audio_pause_sounds().
+ * rct2: 0x006BABD8
+ */
 void audio_unpause_sounds();
 
 void audio_stop_all_music_and_sounds();

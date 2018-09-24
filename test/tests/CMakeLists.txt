@@ -76,6 +76,8 @@ set(COMMON_TEST_SOURCES
     "${ROOT_DIR}/src/openrct2/core/Guard.cpp"
     "${ROOT_DIR}/src/openrct2/core/String.cpp"
     "${ROOT_DIR}/src/openrct2/Diagnostic.cpp"
+    "${ROOT_DIR}/src/openrct2/localisation/ConversionTables.cpp"
+    "${ROOT_DIR}/src/openrct2/localisation/Convert.cpp"
     "${ROOT_DIR}/src/openrct2/localisation/FormatCodes.cpp"
     "${ROOT_DIR}/src/openrct2/localisation/UTF8.cpp"
     "${ROOT_DIR}/src/openrct2/util/Util.cpp"
@@ -88,6 +90,12 @@ add_library(test-common STATIC ${COMMON_TEST_SOURCES})
 # Setup testdata. It should be fine here, as the only way to reach here is by explicitly requesting tests.
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata" "${CMAKE_CURRENT_BINARY_DIR}/testdata")
 install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E create_symlink \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/openrct2\" \"${CMAKE_CURRENT_BINARY_DIR}/data\")")
+
+if (NOT MINGW AND NOT MSVC)
+    # For unicode code page conversion (required for ini and string tests)
+    find_package(ICU 59.0 REQUIRED COMPONENTS uc)
+    target_link_libraries(test-common ${ICU_LIBRARIES})
+endif ()
 
 # Start of our tests
 
@@ -139,6 +147,25 @@ add_executable(test_string ${STRING_TEST_SOURCES})
 target_link_libraries(test_string ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME string COMMAND test_string)
 
+# Localisation test
+set(STRING_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/Localisation.cpp")
+add_executable(test_localisation ${STRING_TEST_SOURCES})
+target_link_libraries(test_localisation ${GTEST_LIBRARIES} test-common ${LDL} z)
+add_test(NAME localisation COMMAND test_localisation)
+
+if (NOT DISABLE_NETWORK)
+    # Crypt tests
+    add_executable(test_crypt "${CMAKE_CURRENT_LIST_DIR}/CryptTests.cpp"
+                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+    target_link_libraries(test_crypt ${GTEST_LIBRARIES} libopenrct2)
+    add_test(NAME Crypt COMMAND test_crypt)
+endif ()
+
+# ImageImporter tests
+add_executable(test_imageimporter "${CMAKE_CURRENT_LIST_DIR}/ImageImporterTests.cpp"
+                                  "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+target_link_libraries(test_imageimporter ${GTEST_LIBRARIES} libopenrct2)
+add_test(NAME ImageImporter COMMAND test_imageimporter)
 
 # Ride ratings test
 set(RIDE_RATINGS_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/RideRatings.cpp"

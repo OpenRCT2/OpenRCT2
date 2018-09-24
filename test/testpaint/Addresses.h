@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _ADDRESSES_H_
 #define _ADDRESSES_H_
@@ -20,19 +13,19 @@
 #include <openrct2/common.h>
 
 #ifdef USE_MMAP
-    #if defined(PLATFORM_64BIT)
-        #define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
-    #elif defined(PLATFORM_32BIT)
-        #define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x09000000)
-    #else
-        #error "Unknown platform"
-    #endif
+#    if defined(PLATFORM_64BIT)
+#        define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
+#    elif defined(PLATFORM_32BIT)
+#        define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x09000000)
+#    else
+#        error "Unknown platform"
+#    endif
 #else
-    #define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x8a4000)
+#    define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x8a4000)
 #endif
 
-#define RCT2_ADDRESS(address, type)             ((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address)))
-#define RCT2_GLOBAL(address, type)              (*((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address))))
+#define RCT2_ADDRESS(address, type) ((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address)))
+#define RCT2_GLOBAL(address, type) (*((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address))))
 
 /**
  * Returns the flags register
@@ -46,8 +39,7 @@
  * P = Parity flag
  * All other bits are undefined.
  */
-sint32 RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sint32 _ecx, sint32 _edx, sint32 _esi, sint32 _edi, sint32 _ebp);
-
-
+int32_t RCT2_CALLPROC_X(
+    int32_t address, int32_t _eax, int32_t _ebx, int32_t _ecx, int32_t _edx, int32_t _esi, int32_t _edi, int32_t _ebp);
 
 #endif

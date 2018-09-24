@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
@@ -32,18 +25,20 @@
 struct RideSetNameAction : public GameActionBase<GAME_COMMAND_SET_RIDE_NAME, GameActionResult>
 {
 private:
-    sint32 _rideIndex = -1;
+    int32_t _rideIndex = -1;
     std::string _name;
 
 public:
-    RideSetNameAction() {}
-    RideSetNameAction(sint32 rideIndex, const std::string& name)
-        : _rideIndex(rideIndex),
-        _name(name)
+    RideSetNameAction()
+    {
+    }
+    RideSetNameAction(int32_t rideIndex, const std::string& name)
+        : _rideIndex(rideIndex)
+        , _name(name)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -57,7 +52,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Ride *ride = get_ride(_rideIndex);
+        Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
@@ -66,10 +61,12 @@ public:
 
         if (_name.empty())
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_INVALID_RIDE_ATTRACTION_NAME);
+            return std::make_unique<GameActionResult>(
+                GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_INVALID_RIDE_ATTRACTION_NAME);
         }
 
-        rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId = user_string_allocate(
+            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
@@ -82,9 +79,10 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
+        rct_string_id newUserStringId = user_string_allocate(
+            USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
 
-        Ride *ride = get_ride(_rideIndex);
+        Ride* ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);

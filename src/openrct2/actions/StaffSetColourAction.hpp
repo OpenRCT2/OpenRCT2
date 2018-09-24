@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
@@ -30,18 +23,20 @@
 struct StaffSetColourAction : public GameActionBase<GAME_COMMAND_SET_STAFF_COLOUR, GameActionResult>
 {
 private:
-    uint8 _staffType;
-    uint8 _colour;
+    uint8_t _staffType;
+    uint8_t _colour;
 
 public:
-    StaffSetColourAction() {}
-    StaffSetColourAction(uint8 staffType, uint8 colour)
-        : _staffType(staffType),
-          _colour(colour)
+    StaffSetColourAction()
+    {
+    }
+    StaffSetColourAction(uint8_t staffType, uint8_t colour)
+        : _staffType(staffType)
+        , _colour(colour)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -54,9 +49,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_staffType != STAFF_TYPE_HANDYMAN &&
-            _staffType != STAFF_TYPE_MECHANIC &&
-            _staffType != STAFF_TYPE_SECURITY)
+        if (_staffType != STAFF_TYPE_HANDYMAN && _staffType != STAFF_TYPE_MECHANIC && _staffType != STAFF_TYPE_SECURITY)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
@@ -72,9 +65,9 @@ public:
         }
 
         // Update each staff member's uniform
-        sint32 spriteIndex;
-        rct_peep * peep;
-        FOR_ALL_PEEPS(spriteIndex, peep)
+        int32_t spriteIndex;
+        rct_peep* peep;
+        FOR_ALL_PEEPS (spriteIndex, peep)
         {
             if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == _staffType)
             {

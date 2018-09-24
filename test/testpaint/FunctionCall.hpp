@@ -1,23 +1,17 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
-#include <openrct2/common.h>
 #include "TestPaint.hpp"
+
+#include <openrct2/common.h>
 
 enum
 {
@@ -36,29 +30,30 @@ enum
 
 struct function_call
 {
-    uint8 function;
+    uint8_t function;
     struct paint
     {
-        uint32 image_id;
+        uint32_t image_id;
         LocationXY16 offset;
         LocationXYZ16 bound_box_length;
-        sint16 z_offset;
+        int16_t z_offset;
         LocationXYZ16 bound_box_offset;
-        uint32 rotation;
+        uint32_t rotation;
         paint_struct output_struct;
     } paint;
     struct supports
     {
         int type;
-        uint8 segment;
+        uint8_t segment;
         int special;
         int height;
-        uint32 colour_flags;
-        sint32 prepend_to;
+        uint32_t colour_flags;
+        int32_t prepend_to;
     } supports;
 };
 
-class FunctionCall {
+class FunctionCall
+{
 public:
     static bool AssertsEquals(function_call expected, function_call actual);
     static bool AssertsEquals(std::vector<function_call> expected, std::vector<function_call> actual);

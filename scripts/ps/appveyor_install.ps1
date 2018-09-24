@@ -12,19 +12,6 @@ function Check-ExitCode
     }
 }
 
-if ($env:ENCKEY -and -not $testing)
-{
-    if (-not (Test-Path "secure-file"))
-    {
-        Write-Host "Downloading secure-file from NuGet..." -ForegroundColor Cyan
-        nuget install secure-file -ExcludeVersion
-    }
-    
-    Write-Host "Decrypting code signing key..."            -ForegroundColor Cyan
-    secure-file\tools\secure-file -decrypt distribution\windows\code-sign-key-openrct2.org.pfx.enc -secret $env:ENCKEY
-    Check-ExitCode
-}
-
 # Check if OpenRCT2.org API security token is available
 if (${env:OPENRCT2_ORG_TOKEN} -and -not $testing)
 {
@@ -66,3 +53,4 @@ if (${env:APPVEYOR_REPO_TAG} -ne "true")
     $env:GIT_BRANCH = $env:APPVEYOR_REPO_BRANCH
 }
 $env:GIT_COMMIT_SHA1 = $env:APPVEYOR_REPO_COMMIT
+$env:GIT_DESCRIBE = (git describe HEAD | sed -E "s/-g.+$//")

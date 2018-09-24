@@ -1,30 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
-#include <string>
-#include <vector>
 #include "../common.h"
 #include "../localisation/Language.h"
+
+#include <string>
+#include <vector>
 
 interface IReadObjectContext;
 interface IStream;
 
-enum OBJ_STRING_ID : uint8
+enum OBJ_STRING_ID : uint8_t
 {
     OBJ_STRING_ID_UNKNOWN = 255,
     OBJ_STRING_ID_NAME = 0,
@@ -38,8 +32,8 @@ enum OBJ_STRING_ID : uint8
 
 struct StringTableEntry
 {
-    uint8       Id          = OBJ_STRING_ID_UNKNOWN;
-    uint8       LanguageId  = LANGUAGE_UNDEFINED;
+    uint8_t Id = OBJ_STRING_ID_UNKNOWN;
+    uint8_t LanguageId = LANGUAGE_UNDEFINED;
     std::string Text;
 };
 
@@ -50,11 +44,12 @@ private:
 
 public:
     StringTable() = default;
-    StringTable(const StringTable &) = delete;
-    StringTable & operator=(const StringTable &) = delete;
+    StringTable(const StringTable&) = delete;
+    StringTable& operator=(const StringTable&) = delete;
 
-    void            Read(IReadObjectContext * context, IStream * stream, uint8 id);
-    void            Sort();
-    std::string     GetString(uint8 id) const;
-    void            SetString(uint8 id, uint8 language, const std::string &text);
+    void Read(IReadObjectContext* context, IStream* stream, uint8_t id);
+    void Sort();
+    std::string GetString(uint8_t id) const;
+    std::string GetString(uint8_t language, uint8_t id) const;
+    void SetString(uint8_t id, uint8_t language, const std::string& text);
 };

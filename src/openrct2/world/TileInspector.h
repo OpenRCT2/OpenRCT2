@@ -1,25 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
 #include "../common.h"
 #include "Map.h"
 
-enum TILE_INSPECTOR_ELEMENT_TYPE {
+enum TILE_INSPECTOR_ELEMENT_TYPE
+{
     TILE_INSPECTOR_ELEMENT_ANY = 0,
     TILE_INSPECTOR_ELEMENT_SURFACE,
     TILE_INSPECTOR_ELEMENT_PATH,
@@ -32,7 +26,8 @@ enum TILE_INSPECTOR_ELEMENT_TYPE {
     TILE_INSPECTOR_ELEMENT_CORRUPT,
 };
 
-enum TILE_INSPECTOR_INSTRUCTION_TYPE {
+enum TILE_INSPECTOR_INSTRUCTION_TYPE
+{
     TILE_INSPECTOR_ANY_REMOVE,
     TILE_INSPECTOR_ANY_SWAP,
     TILE_INSPECTOR_ANY_INSERT_CORRUPT,
@@ -55,23 +50,27 @@ enum TILE_INSPECTOR_INSTRUCTION_TYPE {
     TILE_INSPECTOR_CORRUPT_CLAMP,
 };
 
-sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex, sint32 flags);
-sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex, sint32 flags);
-sint32 tile_inspector_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second, sint32 flags);
-sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex, sint32 flags);
-sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element element, sint32 flags);
-sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags);
-sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementIndex, sint8 heightOffset, sint32 flags);
-sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool enabled, sint32 flags);
-sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerIndex, sint32 flags);
-sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags);
-sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, bool sloped, sint32 flags);
-sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, sint32 cornerIndex, sint32 flags);
-sint32 tile_inspector_entrance_make_usable(sint32 x, sint32 y, sint32 elementIndex, sint32 flags);
-sint32 tile_inspector_wall_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags);
-sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elementIndex, sint8 offset, sint32 flags);
-sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, bool entireTrackBlock, bool setChain, sint32 flags);
-sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 elementIndex, sint32 quarterIndex, sint32 flags);
-sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 elementIndex, sint32 quarterIndex, sint32 flags);
-sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 elementIndex, sint32 edgeIndex, sint32 flags);
-sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 elementIndex, sint32 flags);
+int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIndex, int32_t flags);
+int32_t tile_inspector_remove_element_at(int32_t x, int32_t y, int16_t elementIndex, int32_t flags);
+int32_t tile_inspector_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t second, int32_t flags);
+int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);
+int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, rct_tile_element element, int32_t flags);
+int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags);
+int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elementIndex, int8_t heightOffset, int32_t flags);
+int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool enabled, int32_t flags);
+int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t cornerIndex, int32_t flags);
+int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t flags);
+int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementIndex, bool sloped, int32_t flags);
+int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t cornerIndex, int32_t flags);
+int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);
+int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex, int32_t slopeValue, int32_t flags);
+int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t elementIndex, int8_t offset, int32_t flags);
+int32_t tile_inspector_track_set_chain(
+    int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain, int32_t flags);
+int32_t tile_inspector_scenery_set_quarter_location(
+    int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags);
+int32_t tile_inspector_scenery_set_quarter_collision(
+    int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags);
+int32_t tile_inspector_banner_toggle_blocking_edge(
+    int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags);
+int32_t tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);

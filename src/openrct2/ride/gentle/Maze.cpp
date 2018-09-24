@@ -1,23 +1,16 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "../../interface/Viewport.h"
-#include "../../paint/tile_element/Surface.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../../paint/tile_element/Paint.Surface.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../Track.h"
@@ -27,8 +20,8 @@ enum
 {
     SPR_MAZE_BASE_HEDGE = 21938,
     SPR_MAZE_BASE_BRICK = 21951,
-    SPR_MAZE_BASE_ICE   = 21964,
-    SPR_MAZE_BASE_WOOD  = 21977,
+    SPR_MAZE_BASE_ICE = 21964,
+    SPR_MAZE_BASE_WOOD = 21977,
 };
 
 enum
@@ -52,40 +45,36 @@ enum
  * rct: 0x004ACF4A
  */
 static void maze_paint_setup(
-    paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
 {
-    uint16 maze_entry = track_element_get_maze_entry(tileElement);
-    maze_entry        = rol16(maze_entry, direction * 4);
+    uint16_t maze_entry = track_element_get_maze_entry(tileElement);
+    maze_entry = rol16(maze_entry, direction * 4);
 
-    uint32 rotation = session->CurrentRotation;
+    uint32_t rotation = session->CurrentRotation;
     // draw ground
-    sint32 image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
+    int32_t image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
     sub_98196C(session, image_id, 0, 0, 32, 32, 0, height);
 
     wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
-    sint32 base_image_id = 0;
+    int32_t base_image_id = 0;
     switch (get_ride(rideIndex)->track_colour_supports[0])
     {
-    case 0:
-        base_image_id = SPR_MAZE_BASE_BRICK;
-        break;
-    case 1:
-        base_image_id = SPR_MAZE_BASE_HEDGE;
-        break;
-    case 2:
-        base_image_id = SPR_MAZE_BASE_ICE;
-        break;
-    case 3:
-        base_image_id = SPR_MAZE_BASE_WOOD;
-        break;
+        case 0:
+            base_image_id = SPR_MAZE_BASE_BRICK;
+            break;
+        case 1:
+            base_image_id = SPR_MAZE_BASE_HEDGE;
+            break;
+        case 2:
+            base_image_id = SPR_MAZE_BASE_ICE;
+            break;
+        case 3:
+            base_image_id = SPR_MAZE_BASE_WOOD;
+            break;
     }
 
     base_image_id |= session->TrackColours[SCHEME_MISC];
@@ -170,7 +159,8 @@ static void maze_paint_setup(
     if (maze_entry & (MAZE_ENTRY_FLAG_9 | MAZE_ENTRY_FLAG_10 | MAZE_ENTRY_FLAG_12))
         sub_98197C(session, base_image_id + SPR_MAZE_OFFSET_COLUMN_BOTTOM_LEFT, 30, 14, 1, 2, 9, height, 30, 15, height + 2);
 
-    if (maze_entry & (MAZE_ENTRY_FLAG_2 | MAZE_ENTRY_FLAG_6 | MAZE_ENTRY_FLAG_10 | MAZE_ENTRY_FLAG_14)) {
+    if (maze_entry & (MAZE_ENTRY_FLAG_2 | MAZE_ENTRY_FLAG_6 | MAZE_ENTRY_FLAG_10 | MAZE_ENTRY_FLAG_14))
+    {
         sub_98197C(session, base_image_id + SPR_MAZE_OFFSET_COLUMN_CENTRE, 14, 14, 2, 2, 8, height, 15, 15, height + 2);
 
         paint_util_set_segment_support_height(session, SEGMENT_C4, height + 12, 0x20);
@@ -182,7 +172,7 @@ static void maze_paint_setup(
 /**
  * rct2: 0x008A81E8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_maze(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType, int32_t direction)
 {
     if (trackType != TRACK_ELEM_MAZE)
     {

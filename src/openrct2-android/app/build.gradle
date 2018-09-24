@@ -10,12 +10,12 @@ android {
         targetSdkVersion 25
 
         versionCode 2
-        versionName '0.1.3'
+        versionName '0.2.1'
 
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=c++_shared'
-                targets 'openrct2', 'openrct2-ui'
+                targets 'openrct2', 'openrct2-ui', 'openrct2-cli'
             }
         }
     }
@@ -91,7 +91,7 @@ android.applicationVariants.all { variant ->
             into "$variant.mergeAssets.outputDir/data/title"
         }
         download {
-            src 'https://github.com/OpenRCT2/objects/releases/download/v1.0/objects.zip'
+            src 'https://github.com/OpenRCT2/objects/releases/download/v1.0.6/objects.zip'
             dest new File(buildDir, 'objects.zip')
         }
         copy {

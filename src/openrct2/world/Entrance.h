@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _ENTRANCE_H_
 #define _ENTRANCE_H_
@@ -21,37 +14,39 @@
 #include "Location.hpp"
 
 #pragma pack(push, 1)
-struct rct_entrance_type {
-    rct_string_id string_idx;   // 0x00
-    uint32 image_id;            // 0x02
-    uint8 scrolling_mode;       // 0x06
-    uint8 text_height;          // 0x07
+struct rct_entrance_type
+{
+    rct_string_id string_idx; // 0x00
+    uint32_t image_id;        // 0x02
+    uint8_t scrolling_mode;   // 0x06
+    uint8_t text_height;      // 0x07
 };
 assert_struct_size(rct_entrance_type, 8);
 #pragma pack(pop)
 
-void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_command_remove_park_entrance(
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 
 struct rct_tile_element;
 
 extern bool gParkEntranceGhostExists;
 extern LocationXYZ16 gParkEntranceGhostPosition;
-extern uint8 gParkEntranceGhostDirection;
+extern uint8_t gParkEntranceGhostDirection;
 
 #define MAX_PARK_ENTRANCES 4
 
 extern CoordsXYZD gParkEntrances[MAX_PARK_ENTRANCES];
 
 extern CoordsXYZD gRideEntranceExitGhostPosition;
-extern uint8 gRideEntranceExitGhostStationIndex;
+extern uint8_t gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();
-money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction);
-money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction);
+money32 park_entrance_place_ghost(int32_t x, int32_t y, int32_t z, int32_t direction);
+money32 place_park_entrance(int16_t x, int16_t y, int16_t z, uint8_t direction);
 
 void reset_park_entrance();
-void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileElement);
-void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileElement);
+void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* tileElement);
+void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileElement);
 
 void fix_park_entrance_locations();
 

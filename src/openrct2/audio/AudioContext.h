@@ -1,66 +1,58 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
-#include <string>
-#include <vector>
 #include "../common.h"
 
-namespace OpenRCT2
+#include <memory>
+#include <string>
+#include <vector>
+
+namespace OpenRCT2::Audio
 {
-    namespace Audio
+    interface IAudioChannel;
+    interface IAudioMixer;
+    interface IAudioSource;
+
+    /**
+     * Audio services for playing music and sound effects.
+     */
+    interface IAudioContext
     {
-        interface IAudioChannel;
-        interface IAudioMixer;
-        interface IAudioSource;
+        virtual ~IAudioContext() = default;
 
-        /**
-         * Audio services for playing music and sound effects.
-         */
-        interface IAudioContext
-        {
-            virtual ~IAudioContext() = default;
+        virtual IAudioMixer* GetMixer() abstract;
 
-            virtual IAudioMixer * GetMixer() abstract;
+        virtual std::vector<std::string> GetOutputDevices() abstract;
+        virtual void SetOutputDevice(const std::string& deviceName) abstract;
 
-            virtual std::vector<std::string> GetOutputDevices() abstract;
-            virtual void SetOutputDevice(const std::string &deviceName) abstract;
+        virtual IAudioSource* CreateStreamFromWAV(const std::string& path) abstract;
 
-            virtual IAudioSource * CreateStreamFromWAV(const std::string &path) abstract;
+        virtual void StartTitleMusic() abstract;
 
+        virtual IAudioChannel* PlaySound(int32_t soundId, int32_t volume, int32_t pan) abstract;
+        virtual IAudioChannel* PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) abstract;
+        virtual IAudioChannel* PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) abstract;
 
-            virtual void StartTitleMusic() abstract;
+        virtual void ToggleAllSounds() abstract;
+        virtual void PauseSounds() abstract;
+        virtual void UnpauseSounds() abstract;
 
-            virtual IAudioChannel * PlaySound(sint32 soundId, sint32 volume, sint32 pan) abstract;
-            virtual IAudioChannel * PlaySoundAtLocation(sint32 soundId, sint16 x, sint16 y, sint16 z) abstract;
-            virtual IAudioChannel * PlaySoundPanned(sint32 soundId, sint32 pan, sint16 x, sint16 y, sint16 z) abstract;
+        virtual void StopAll() abstract;
+        virtual void StopCrowdSound() abstract;
+        virtual void StopRainSound() abstract;
+        virtual void StopRideMusic() abstract;
+        virtual void StopTitleMusic() abstract;
+        virtual void StopVehicleSounds() abstract;
+    };
 
-            virtual void ToggleAllSounds() abstract;
-            virtual void PauseSounds() abstract;
-            virtual void UnpauseSounds() abstract;
+    std::unique_ptr<IAudioContext> CreateDummyAudioContext();
 
-            virtual void StopAll() abstract;
-            virtual void StopCrowdSound() abstract;
-            virtual void StopRainSound() abstract;
-            virtual void StopRideMusic() abstract;
-            virtual void StopTitleMusic() abstract;
-            virtual void StopVehicleSounds() abstract;
-        };
-
-        IAudioContext * CreateDummyAudioContext();
-    }
-}
+} // namespace OpenRCT2::Audio

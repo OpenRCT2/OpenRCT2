@@ -1,25 +1,23 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "Park.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
+#include "../Date.h"
+#include "../Game.h"
+#include "../GameState.h"
+#include "../OpenRCT2.h"
 #include "../config/Config.h"
-#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
-#include "../Game.h"
 #include "../interface/Colour.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -29,45 +27,48 @@
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../network/network.h"
-#include "../OpenRCT2.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
+#include "../windows/Intent.h"
 #include "Entrance.h"
 #include "Map.h"
-#include "Park.h"
 #include "Sprite.h"
-#include "../windows/Intent.h"
-#include "../Context.h"
+#include "Surface.h"
+
+#include <algorithm>
+
+using namespace OpenRCT2;
 
 rct_string_id gParkName;
-uint32 gParkNameArgs;
-uint32 gParkFlags;
-uint16 gParkRating;
+uint32_t gParkNameArgs;
+uint32_t gParkFlags;
+uint16_t gParkRating;
 money16 gParkEntranceFee;
-uint16 gParkSize;
+uint16_t gParkSize;
 money16 gLandPrice;
 money16 gConstructionRightsPrice;
 
-uint32 gTotalAdmissions;
+uint32_t gTotalAdmissions;
 money32 gTotalIncomeFromAdmissions;
 
 money32 gParkValue;
 money32 gCompanyValue;
 
-sint16 gParkRatingCasualtyPenalty;
-uint8 gParkRatingHistory[32];
-uint8 gGuestsInParkHistory[32];
+int16_t gParkRatingCasualtyPenalty;
+uint8_t gParkRatingHistory[32];
+uint8_t gGuestsInParkHistory[32];
 
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
-static sint32 _forcedParkRating = -1;
+static int32_t _forcedParkRating = -1;
 
 /**
  * In a difficult guest generation scenario, no guests will be generated if over this value.
  */
-sint32 _suggestedGuestMaximum;
+int32_t _suggestedGuestMaximum;
 
 /**
  * Probability out of 65535, of gaining a new guest per game tick.
@@ -75,283 +76,7 @@ sint32 _suggestedGuestMaximum;
  * With a full park rating, non-overpriced entrance fee, less guests than the suggested maximum and four positive awards,
  * approximately 1 guest per second can be generated (+60 guests in one minute).
  */
-sint32 _guestGenerationProbability;
-
-sint32 park_is_open()
-{
-    return (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
-}
-
-/**
- *
- *  rct2: 0x00667132
- */
-void park_init()
-{
-    sint32 i;
-
-    gUnk13CA740 = 0;
-    gParkName = STR_UNNAMED_PARK;
-    gStaffHandymanColour = COLOUR_BRIGHT_RED;
-    gStaffMechanicColour = COLOUR_LIGHT_BLUE;
-    gStaffSecurityColour = COLOUR_YELLOW;
-    gNumGuestsInPark = 0;
-    gNumGuestsInParkLastWeek = 0;
-    gNumGuestsHeadingForPark = 0;
-    gGuestChangeModifier = 0;
-    gParkRating = 0;
-    _guestGenerationProbability = 0;
-    gTotalRideValueForMoney = 0;
-    gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
-
-    for (i = 0; i < 20; i++)
-        gMarketingCampaignDaysLeft[i] = 0;
-
-    research_reset_items();
-    finance_init();
-
-    set_every_ride_type_not_invented();
-
-    set_all_scenery_items_invented();
-
-    gParkEntranceFee = MONEY(10, 00);
-
-    for (auto &peepSpawn : gPeepSpawns)
-    {
-        peepSpawn.x = PEEP_SPAWN_UNDEFINED;
-    }
-
-    gResearchPriorities =
-        (1 << RESEARCH_CATEGORY_TRANSPORT) |
-        (1 << RESEARCH_CATEGORY_GENTLE) |
-        (1 << RESEARCH_CATEGORY_ROLLERCOASTER) |
-        (1 << RESEARCH_CATEGORY_THRILL) |
-        (1 << RESEARCH_CATEGORY_WATER) |
-        (1 << RESEARCH_CATEGORY_SHOP) |
-        (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
-    gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
-
-    gGuestInitialCash = MONEY(50,00); // Cash per guest (average)
-    gGuestInitialHappiness = calculate_guest_initial_happiness(50); // 50%
-    gGuestInitialHunger = 200;
-    gGuestInitialThirst = 200;
-    gScenarioObjectiveType = OBJECTIVE_GUESTS_BY;
-    gScenarioObjectiveYear = 4;
-    gScenarioObjectiveNumGuests = 1000;
-    gLandPrice = MONEY(90, 00);
-    gConstructionRightsPrice = MONEY(40,00);
-    gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
-    park_reset_history();
-    finance_reset_history();
-    award_reset();
-
-    gS6Info.name[0] = '\0';
-    format_string(gS6Info.details, 256, STR_NO_DETAILS_YET, nullptr);
-}
-
-/**
- *
- *  rct2: 0x0066729F
- */
-void park_reset_history()
-{
-    for (sint32 i = 0; i < 32; i++) {
-        gParkRatingHistory[i] = 255;
-        gGuestsInParkHistory[i] = 255;
-    }
-}
-
-/**
- *
- *  rct2: 0x0066A348
- */
-sint32 park_calculate_size()
-{
-    sint32 tiles;
-    tile_element_iterator it;
-
-    tiles = 0;
-    tile_element_iterator_begin(&it);
-    do {
-        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SURFACE) {
-            if (it.element->properties.surface.ownership & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED)) {
-                tiles++;
-            }
-        }
-    } while (tile_element_iterator_next(&it));
-
-    if (tiles != gParkSize) {
-        gParkSize = tiles;
-        window_invalidate_by_class(WC_PARK_INFORMATION);
-    }
-
-    return tiles;
-}
-
-/**
- *
- *  rct2: 0x00669EAA
- */
-sint32 calculate_park_rating()
-{
-    if (_forcedParkRating >= 0)
-        return _forcedParkRating;
-
-    sint32 result;
-
-    result = 1150;
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
-        result = 1050;
-
-    // Guests
-    {
-        rct_peep* peep;
-        uint16 spriteIndex;
-        sint32 num_happy_peeps;
-        sint32 num_lost_guests;
-
-        // -150 to +3 based on a range of guests from 0 to 2000
-        result -= 150 - (Math::Min((uint16)2000, gNumGuestsInPark) / 13);
-
-        // Find the number of happy peeps and the number of peeps who can't find the park exit
-        num_happy_peeps = 0;
-        num_lost_guests = 0;
-        FOR_ALL_GUESTS(spriteIndex, peep) {
-            if (peep->outside_of_park != 0)
-                continue;
-            if (peep->happiness > 128)
-                num_happy_peeps++;
-            if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
-                num_lost_guests++;
-        }
-
-        // Peep happiness -500 to +0
-        result -= 500;
-
-        if (gNumGuestsInPark > 0)
-            result += 2 * Math::Min(250, (num_happy_peeps * 300) / gNumGuestsInPark);
-
-        // Up to 25 guests can be lost without affecting the park rating.
-        if (num_lost_guests > 25)
-            result -= (num_lost_guests - 25) * 7;
-    }
-
-    // Rides
-    {
-        sint32 i;
-        sint32 total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0;
-        sint32 num_rides, num_exciting_rides = 0;
-        Ride* ride;
-
-        num_rides = 0;
-        FOR_ALL_RIDES(i, ride)
-        {
-            total_ride_uptime += 100 - ride->downtime;
-
-            if (ride->excitement != RIDE_RATING_UNDEFINED)
-            {
-                total_ride_excitement += ride->excitement / 8;
-                total_ride_intensity += ride->intensity / 8;
-                num_exciting_rides++;
-            }
-            num_rides++;
-        }
-        result -= 200;
-        if (num_rides > 0)
-            result += (total_ride_uptime / num_rides) * 2;
-
-        result -= 100;
-
-        if (num_exciting_rides > 0)
-        {
-            sint32 average_excitement = total_ride_excitement / num_exciting_rides;
-            sint32 average_intensity = total_ride_intensity / num_exciting_rides;
-
-            average_excitement -= 46;
-            if (average_excitement < 0)
-            {
-                average_excitement = -average_excitement;
-            }
-
-            average_intensity -= 65;
-            if (average_intensity < 0)
-            {
-                average_intensity = -average_intensity;
-            }
-
-            average_excitement = Math::Min((average_excitement / 2), 50);
-            average_intensity = Math::Min((average_intensity / 2), 50);
-            result += 100 - average_excitement - average_intensity;
-        }
-
-        total_ride_excitement = Math::Min(1000, total_ride_excitement);
-        total_ride_intensity = Math::Min(1000, total_ride_intensity);
-        result -= 200 - ((total_ride_excitement + total_ride_intensity) / 10);
-    }
-
-    // Litter
-    {
-        rct_litter* litter;
-        uint16 sprite_idx;
-        sint16 num_litter;
-
-        num_litter = 0;
-        for (sprite_idx = gSpriteListHead[SPRITE_LIST_LITTER]; sprite_idx != SPRITE_INDEX_NULL; sprite_idx = litter->next) {
-            litter = &(get_sprite(sprite_idx)->litter);
-
-            // Ignore recently dropped litter
-            if (litter->creationTick - gScenarioTicks >= 7680)
-                num_litter++;
-        }
-        result -= 600 - (4 * (150 - Math::Min((sint16)150, num_litter)));
-    }
-
-    result -= gParkRatingCasualtyPenalty;
-    result = Math::Clamp(0, result, 999);
-    return result;
-}
-
-static money32 calculate_ride_value(Ride *ride)
-{
-    if (ride->type == RIDE_TYPE_NULL)
-        return 0;
-    if (ride->value == RIDE_VALUE_UNDEFINED)
-        return 0;
-
-    // Fair value * (...)
-    return (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
-}
-
-/**
- *
- *  rct2: 0x0066A3F6
- */
-money32 calculate_park_value()
-{
-
-    // Sum ride values
-    money32 result = 0;
-    for (sint32 i = 0; i < 255; i++) {
-        Ride* ride = get_ride(i);
-        result += calculate_ride_value(ride);
-    }
-
-    // +7.00 per guest
-    result += gNumGuestsInPark * MONEY(7, 00);
-
-    return result;
-}
-
-/**
- * Calculate the company value.
- * Cash + Park Value - Loan
- *
- *  rct2: 0x0066A498
- */
-money32 calculate_company_value()
-{
-    return gCash + gParkValue - gBankLoan;
-}
+int32_t _guestGenerationProbability;
 
 /**
  *
@@ -361,296 +86,30 @@ void reset_park_entry()
 {
     gParkName = 0;
     reset_park_entrance();
-    for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
+    for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
+    {
         gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
     }
 }
 
 /**
- * Calculates the probability of a new guest. Also sets total ride value and suggested guest maximum.
- * Total ride value should probably be set elsewhere, as it's not just used for guest generation.
- * Suggested guest maximum should probably be an output result, not a global.
- * @returns A probability out of 65535
- *  rct2: 0x0066730A
- */
-static sint32 park_calculate_guest_generation_probability()
-{
-    uint32 probability;
-    sint32 i, suggestedMaxGuests;
-    money16 totalRideValueForMoney;
-    Ride *ride;
-
-    // Calculate suggested guest maximum (based on ride type) and total ride value
-    suggestedMaxGuests = 0;
-    totalRideValueForMoney = 0;
-    FOR_ALL_RIDES(i, ride) {
-        if (ride->status != RIDE_STATUS_OPEN)
-            continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-            continue;
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-            continue;
-
-        // Add guest score for ride type
-        suggestedMaxGuests += rideBonusValue[ride->type];
-
-        // Add ride value
-        if (ride->value != RIDE_VALUE_UNDEFINED) {
-            money16 rideValueForMoney = (money16)(ride->value - ride->price);
-            if (rideValueForMoney > 0) {
-                totalRideValueForMoney += rideValueForMoney * 2;
-            }
-        }
-    }
-
-    // If difficult guest generation, extra guests are available for good rides
-    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
-        suggestedMaxGuests = Math::Min(suggestedMaxGuests, 1000);
-        FOR_ALL_RIDES(i, ride) {
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-                continue;
-            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
-                continue;
-
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
-                continue;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
-                continue;
-            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
-                continue;
-            if (ride->length[0] < (600 << 16))
-                continue;
-            if (ride->excitement < RIDE_RATING(6,00))
-                continue;
-
-            // Bonus guests for good ride
-            suggestedMaxGuests += rideBonusValue[ride->type] * 2;
-        }
-    }
-
-    suggestedMaxGuests = Math::Min(suggestedMaxGuests, 65535);
-    gTotalRideValueForMoney = totalRideValueForMoney;
-    _suggestedGuestMaximum = suggestedMaxGuests;
-
-    // Begin with 50 + park rating
-    probability = 50 + Math::Clamp(0u, gParkRating - 200u, 650u);
-
-    // The more guests, the lower the chance of a new one
-    sint32 numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
-    if (numGuests > suggestedMaxGuests) {
-        probability /= 4;
-
-        // Even lower for difficult guest generation
-        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
-            probability /= 4;
-    }
-
-    // Reduces chance for any more than 7000 guests
-    if (numGuests > 7000)
-        probability /= 4;
-
-    // Penalty for overpriced entrance fee relative to total ride value
-    money16 entranceFee = park_get_entrance_fee();
-    if (entranceFee > totalRideValueForMoney) {
-        probability /= 4;
-
-        // Extra penalty for very overpriced entrance fee
-        if (entranceFee / 2 > totalRideValueForMoney)
-            probability /= 4;
-    }
-
-    // Reward or penalties for park awards
-    for (i = 0; i < MAX_AWARDS; i++) {
-        Award *award = &gCurrentAwards[i];
-        if (award->Time == 0)
-            continue;
-
-        // +/- 0.25% of the probability
-        if (award_is_positive(award->Type))
-            probability += probability / 4;
-        else
-            probability -= probability / 4;
-    }
-
-    return probability;
-}
-
-/**
  * Choose a random peep spawn and iterates through until defined spawn is found.
  */
-static uint32 get_random_peep_spawn_index()
+static uint32_t get_random_peep_spawn_index()
 {
-    uint32 spawnIndexList[MAX_PEEP_SPAWNS];
-    uint32 numSpawns = map_get_available_peep_spawn_index_list(spawnIndexList);
-    if (numSpawns > 0) {
+    uint32_t spawnIndexList[MAX_PEEP_SPAWNS];
+    uint32_t numSpawns = map_get_available_peep_spawn_index_list(spawnIndexList);
+    if (numSpawns > 0)
+    {
         return spawnIndexList[scenario_rand() % numSpawns];
     }
-    else {
+    else
+    {
         return 0;
     }
 }
 
-rct_peep *park_generate_new_guest()
-{
-    rct_peep *peep = nullptr;
-    PeepSpawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
-
-    if (spawn.x != 0xFFFF) {
-        spawn.direction ^= 2;
-        peep = peep_generate(spawn.x, spawn.y, spawn.z);
-        if (peep != nullptr) {
-            peep->sprite_direction = spawn.direction << 3;
-
-            // Get the centre point of the tile the peep is on
-            peep->destination_x = (peep->x & 0xFFE0) + 16;
-            peep->destination_y = (peep->y & 0xFFE0) + 16;
-
-            peep->destination_tolerance = 5;
-            peep->direction = spawn.direction;
-            peep->var_37 = 0;
-            peep->state = PEEP_STATE_ENTERING_PARK;
-        }
-    }
-
-    return peep;
-}
-
-static rct_peep *park_generate_new_guest_due_to_campaign(sint32 campaign)
-{
-    rct_peep *peep = park_generate_new_guest();
-    if (peep != nullptr)
-        marketing_set_guest_campaign(peep, campaign);
-    return peep;
-}
-
-static void park_generate_new_guests()
-{
-    // Generate a new guest for some probability
-    if ((sint32)(scenario_rand() & 0xFFFF) < _guestGenerationProbability) {
-        sint32 difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
-        if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
-            park_generate_new_guest();
-    }
-
-    // Extra guests generated by advertising campaigns
-    sint32 campaign;
-    for (campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++) {
-        if (gMarketingCampaignDaysLeft[campaign] != 0) {
-            // Random chance of guest generation
-            if ((sint32)(scenario_rand() & 0xFFFF) < marketing_get_campaign_guest_generation_probability(campaign))
-                park_generate_new_guest_due_to_campaign(campaign);
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x006674F7
- */
-void park_update()
-{
-    if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-        return;
-
-    // Every 5 seconds approximately
-    if (gCurrentTicks % 512 == 0) {
-        gParkRating = calculate_park_rating();
-        gParkValue = calculate_park_value();
-        gCompanyValue = calculate_company_value();
-        window_invalidate_by_class(WC_FINANCES);
-        _guestGenerationProbability = park_calculate_guest_generation_probability();
-        auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-        context_broadcast_intent(&intent);
-    }
-
-    // Generate new guests
-    park_generate_new_guests();
-}
-
-uint8 calculate_guest_initial_happiness(uint8 percentage) {
-    if (percentage < 15) {
-        // There is a minimum of 15% happiness
-        percentage = 15;
-    }
-    else if (percentage > 98) {
-        // There is a maximum of 98% happiness
-        percentage = 98;
-    }
-
-    /* The percentages follow this sequence:
-        15 17 18 20 21 23 25 26 28 29 31 32 34 36 37 39 40 42 43 45 47 48 50 51 53...
-
-        This sequence can be defined as PI*(9+n)/2 (the value is floored)
-        */
-    uint8 n;
-    for (n = 1; n < 55; n++) {
-        if ((3.14159*(9 + n)) / 2 >= percentage) {
-            return (9 + n) * 4;
-        }
-    }
-    return 40; // This is the lowest possible value
-}
-
-/**
- *
- *  rct2: 0x0066A231
- */
-void park_update_histories()
-{
-    sint32 guestsInPark = gNumGuestsInPark;
-    sint32 lastGuestsInPark = gNumGuestsInParkLastWeek;
-    gNumGuestsInParkLastWeek = guestsInPark;
-    auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
-    context_broadcast_intent(&intent);
-
-    sint32 changeInGuestsInPark = guestsInPark - lastGuestsInPark;
-    sint32 guestChangeModifier = 1;
-    if (changeInGuestsInPark > -20) {
-        guestChangeModifier++;
-        if (changeInGuestsInPark < 20)
-            guestChangeModifier = 0;
-    }
-    gGuestChangeModifier = guestChangeModifier;
-
-    // Update park rating history
-    for (sint32 i = 31; i > 0; i--)
-        gParkRatingHistory[i] = gParkRatingHistory[i - 1];
-    gParkRatingHistory[0] = calculate_park_rating() / 4;
-    window_invalidate_by_class(WC_PARK_INFORMATION);
-
-    // Update guests in park history
-    for (sint32 i = 31; i > 0; i--)
-        gGuestsInParkHistory[i] = gGuestsInParkHistory[i - 1];
-    gGuestsInParkHistory[0] = Math::Min(guestsInPark, 5000) / 20;
-    window_invalidate_by_class(WC_PARK_INFORMATION);
-
-    // Update current cash history
-    for (sint32 i = 127; i > 0; i--)
-        gCashHistory[i] = gCashHistory[i - 1];
-    gCashHistory[0] = gCash - gBankLoan;
-    window_invalidate_by_class(WC_FINANCES);
-
-    // Update weekly profit history
-    money32 currentWeeklyProfit = gWeeklyProfitAverageDividend;
-    if (gWeeklyProfitAverageDivisor != 0) {
-        currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
-    }
-
-    for (sint32 i = 127; i > 0; i--)
-        gWeeklyProfitHistory[i] = gWeeklyProfitHistory[i - 1];
-    gWeeklyProfitHistory[0] = currentWeeklyProfit;
-
-    gWeeklyProfitAverageDividend = 0;
-    gWeeklyProfitAverageDivisor = 0;
-    window_invalidate_by_class(WC_FINANCES);
-
-    // Update park value history
-    for (sint32 i = 127; i > 0; i--)
-        gParkValueHistory[i] = gParkValueHistory[i - 1];
-    gParkValueHistory[0] = gParkValue;
-}
-
-void park_set_open(sint32 open)
+void park_set_open(int32_t open)
 {
     game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, open << 8, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
 }
@@ -660,129 +119,130 @@ void park_set_open(sint32 open)
  *  rct2: 0x00669D4A
  */
 void game_command_set_park_open(
-    [[maybe_unused]] sint32 * eax,
-    sint32 *                  ebx,
-    [[maybe_unused]] sint32 * ecx,
-    sint32 *                  edx,
-    [[maybe_unused]] sint32 * esi,
-    sint32 *                  edi,
-    [[maybe_unused]] sint32 * ebp)
+    [[maybe_unused]] int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi,
+    int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
-    if (!(*ebx & GAME_COMMAND_FLAG_APPLY)) {
+    if (!(*ebx & GAME_COMMAND_FLAG_APPLY))
+    {
         *ebx = 0;
         return;
     }
 
-    sint32 dh = (*edx >> 8) & 0xFF;
+    int32_t dh = (*edx >> 8) & 0xFF;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_PARK_ENTRANCE_TICKETS;
-    switch (dh) {
-    case 0:
-        if (gParkFlags & PARK_FLAGS_PARK_OPEN) {
-            gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
-        }
-        break;
-    case 1:
-        if (!(gParkFlags & PARK_FLAGS_PARK_OPEN)) {
-            gParkFlags |= PARK_FLAGS_PARK_OPEN;
-            window_invalidate_by_class(WC_PARK_INFORMATION);
-        }
-        break;
-    case 2:
-        gSamePriceThroughoutParkA = *edi;
-        window_invalidate_by_class(WC_RIDE);
-        break;
-    case 3:
-        gSamePriceThroughoutParkB = *edi;
-        window_invalidate_by_class(WC_RIDE);
-        break;
+    switch (dh)
+    {
+        case 0:
+            if (gParkFlags & PARK_FLAGS_PARK_OPEN)
+            {
+                gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+            break;
+        case 1:
+            if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
+            {
+                gParkFlags |= PARK_FLAGS_PARK_OPEN;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+            break;
+        case 2:
+            gSamePriceThroughoutParkA = *edi;
+            window_invalidate_by_class(WC_RIDE);
+            break;
+        case 3:
+            gSamePriceThroughoutParkB = *edi;
+            window_invalidate_by_class(WC_RIDE);
+            break;
     }
 
     *ebx = 0;
 }
 
 /**
-*
-*  rct2: 0x00664D05
-*/
-void update_park_fences(sint32 x, sint32 y)
+ *
+ *  rct2: 0x00664D05
+ */
+void update_park_fences(const CoordsXY coords)
 {
-    if (x > 0x1FFF)
-        return;
-    if (y > 0x1FFF)
+    if (map_is_edge(coords))
         return;
 
-    // When setting the ownership of map edges
-    if (x <= 0 || x >= gMapSizeUnits)
-        return;
-    if (y <= 0 || y >= gMapSizeUnits)
+    rct_tile_element* surfaceElement = map_get_surface_element_at(coords);
+    if (surfaceElement == nullptr)
         return;
 
-    rct_tile_element* sufaceElement = map_get_surface_element_at({x, y});
-    if (sufaceElement == nullptr)return;
+    uint8_t newFences = 0;
+    if ((surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED) == 0)
+    {
+        bool fenceRequired = true;
 
-    uint8 newOwnership = sufaceElement->properties.surface.ownership & 0xF0;
-    if ((sufaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
-        uint8 fence_required = 1;
-
-        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
         // If an entrance element do not place flags around surface
-        do {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        do
+        {
+            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
             if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if (!(tileElement->flags & TILE_ELEMENT_FLAG_GHOST)) {
-                fence_required = 0;
+            if (!(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            {
+                fenceRequired = false;
                 break;
             }
-        } while (!tile_element_is_last_for_tile(tileElement++));
+        } while (!(tileElement++)->IsLastForTile());
 
-        if (fence_required) {
+        if (fenceRequired)
+        {
             // As map_is_location_in_park sets the error text
             // will require to back it up.
             rct_string_id previous_error = gGameCommandErrorText;
-            if (map_is_location_in_park(x - 32, y)){
-                newOwnership |= 0x8;
+            if (map_is_location_in_park({ coords.x - 32, coords.y }))
+            {
+                newFences |= 0x8;
             }
 
-            if (map_is_location_in_park(x, y - 32)){
-                newOwnership |= 0x4;
+            if (map_is_location_in_park({ coords.x, coords.y - 32 }))
+            {
+                newFences |= 0x4;
             }
 
-            if (map_is_location_in_park(x + 32, y)){
-                newOwnership |= 0x2;
+            if (map_is_location_in_park({ coords.x + 32, coords.y }))
+            {
+                newFences |= 0x2;
             }
 
-            if (map_is_location_in_park(x, y + 32)){
-                newOwnership |= 0x1;
+            if (map_is_location_in_park({ coords.x, coords.y + 32 }))
+            {
+                newFences |= 0x1;
             }
 
             gGameCommandErrorText = previous_error;
         }
     }
 
-    if (sufaceElement->properties.surface.ownership != newOwnership) {
-        sint32 z0 = sufaceElement->base_height * 8;
-        sint32 z1 = z0 + 16;
-        map_invalidate_tile(x, y, z0, z1);
-        sufaceElement->properties.surface.ownership = newOwnership;
+    if (surfaceElement->AsSurface()->GetParkFences() != newFences)
+    {
+        int32_t z0 = surfaceElement->base_height * 8;
+        int32_t z1 = z0 + 16;
+        map_invalidate_tile(coords.x, coords.y, z0, z1);
+        surfaceElement->AsSurface()->SetParkFences(newFences);
     }
 }
 
-void update_park_fences_around_tile(sint32 x, sint32 y)
+void update_park_fences_around_tile(const CoordsXY coords)
 {
-    update_park_fences(x, y);
-    update_park_fences(x + 32, y);
-    update_park_fences(x - 32, y);
-    update_park_fences(x, y + 32);
-    update_park_fences(x, y - 32);
+    update_park_fences(coords);
+    update_park_fences({ coords.x + 32, coords.y });
+    update_park_fences({ coords.x - 32, coords.y });
+    update_park_fences({ coords.x, coords.y + 32 });
+    update_park_fences({ coords.x, coords.y - 32 });
 }
 
-void park_set_name(const char *name)
+void park_set_name(const char* name)
 {
     auto nameId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER, name);
     if (nameId != 0)
@@ -792,141 +252,167 @@ void park_set_name(const char *name)
     }
 }
 
-static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, sint32 flags) {
-    rct_tile_element* surfaceElement = map_get_surface_element_at({x, y});
+static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t setting, int32_t flags)
+{
+    SurfaceElement* surfaceElement = map_get_surface_element_at({ x, y })->AsSurface();
     if (surfaceElement == nullptr)
         return MONEY32_UNDEFINED;
 
-    switch (setting) {
-    case BUY_LAND_RIGHTS_FLAG_BUY_LAND: // 0
-        if ((surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED) != 0) { // If the land is already owned
+    switch (setting)
+    {
+        case BUY_LAND_RIGHTS_FLAG_BUY_LAND: // 0
+            if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) != 0)
+            { // If the land is already owned
+                return 0;
+            }
+
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
+                || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
+            {
+                gGameCommandErrorText = STR_LAND_NOT_FOR_SALE;
+                return MONEY32_UNDEFINED;
+            }
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->SetOwnership(OWNERSHIP_OWNED);
+                update_park_fences_around_tile({ x, y });
+            }
+            return gLandPrice;
+        case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->SetOwnership(
+                    surfaceElement->GetOwnership() & ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
+                update_park_fences_around_tile({ x, y });
+            }
             return 0;
-        }
+        case BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS: // 2
+            if ((surfaceElement->GetOwnership() & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0)
+            { // If the land or construction rights are already owned
+                return 0;
+            }
 
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) == 0) {
-            gGameCommandErrorText = STR_LAND_NOT_FOR_SALE;
-            return MONEY32_UNDEFINED;
-        }
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership |= OWNERSHIP_OWNED;
-            update_park_fences_around_tile(x, y);
-        }
-        return gLandPrice;
-    case BUY_LAND_RIGHTS_FLAG_UNOWN_TILE: // 1
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership &= ~(OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
-            update_park_fences_around_tile(x, y);
-        }
-        return 0;
-    case BUY_LAND_RIGHTS_FLAG_BUY_CONSTRUCTION_RIGHTS: // 2
-        if ((surfaceElement->properties.surface.ownership & (OWNERSHIP_OWNED | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)) != 0) { // If the land or construction rights are already owned
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
+                || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
+            {
+                gGameCommandErrorText = STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE;
+                return MONEY32_UNDEFINED;
+            }
+
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
+            return gConstructionRightsPrice;
+        case BUY_LAND_RIGHTS_FLAG_UNOWN_CONSTRUCTION_RIGHTS: // 3
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->SetOwnership(surfaceElement->GetOwnership() & ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED);
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
             return 0;
-        }
-
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || (surfaceElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0) {
-            gGameCommandErrorText = STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE;
-            return MONEY32_UNDEFINED;
-        }
-
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
-            uint16 baseHeight = surfaceElement->base_height * 8;
-            map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-        }
-        return gConstructionRightsPrice;
-    case BUY_LAND_RIGHTS_FLAG_UNOWN_CONSTRUCTION_RIGHTS: // 3
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership &= ~OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
-            uint16 baseHeight = surfaceElement->base_height * 8;
-            map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-        }
-        return 0;
-    case BUY_LAND_RIGHTS_FLAG_SET_FOR_SALE: // 4
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;
-            uint16 baseHeight = surfaceElement->base_height * 8;
-            map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-        }
-        return 0;
-    case BUY_LAND_RIGHTS_FLAG_SET_CONSTRUCTION_RIGHTS_FOR_SALE: // 5
-        if (flags & GAME_COMMAND_FLAG_APPLY) {
-            surfaceElement->properties.surface.ownership |= OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE;
-            uint16 baseHeight = surfaceElement->base_height * 8;
-            map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
-        }
-        return 0;
-    case BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS:
+        case BUY_LAND_RIGHTS_FLAG_SET_FOR_SALE: // 4
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_AVAILABLE);
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
+            return 0;
+        case BUY_LAND_RIGHTS_FLAG_SET_CONSTRUCTION_RIGHTS_FOR_SALE: // 5
+            if (flags & GAME_COMMAND_FLAG_APPLY)
+            {
+                surfaceElement->SetOwnership(surfaceElement->GetOwnership() | OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE);
+                uint16_t baseHeight = surfaceElement->base_height * 8;
+                map_invalidate_tile(x, y, baseHeight, baseHeight + 16);
+            }
+            return 0;
+        case BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS:
         {
-            if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+            if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
+            {
                 return MONEY32_UNDEFINED;
             }
 
-            if (x <= 0 || y <= 0) {
+            if (x <= 0 || y <= 0)
+            {
                 gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
                 return MONEY32_UNDEFINED;
             }
 
-            if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
+            if (x >= gMapSizeUnits || y >= gMapSizeUnits)
+            {
                 gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
                 return MONEY32_UNDEFINED;
             }
 
-            uint8 newOwnership = (flags & 0xFF00) >> 4;
-            if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0)) {
+            uint8_t newOwnership = (flags & 0xFF00) >> 4;
+            if (newOwnership == surfaceElement->GetOwnership())
+            {
                 return 0;
             }
 
             rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
-            do {
-                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
+            do
+            {
+                if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+                {
                     // Do not allow ownership of park entrance.
                     if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
                         return 0;
                     // Allow construction rights available / for sale on park entrances on surface.
                     // There is no need to check the height if newOwnership is 0 (unowned and no rights available).
-                    if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED ||
-                         newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) &&
-                        (tileElement->base_height - 3 > surfaceElement->base_height ||
-                         tileElement->base_height < surfaceElement->base_height))
+                    if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED
+                         || newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+                        && (tileElement->base_height - 3 > surfaceElement->base_height
+                            || tileElement->base_height < surfaceElement->base_height))
                         return 0;
                 }
-            } while (!tile_element_is_last_for_tile(tileElement++));
+            } while (!(tileElement++)->IsLastForTile());
 
-            if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+            if (!(flags & GAME_COMMAND_FLAG_APPLY))
+            {
                 return gLandPrice;
             }
 
-            if ((newOwnership & 0xF0) != 0) {
-                PeepSpawn *peepSpawns = gPeepSpawns;
+            if ((newOwnership & 0xF0) != 0)
+            {
+                PeepSpawn* peepSpawns = gPeepSpawns;
 
-                for (uint8 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
-                    if (x == (peepSpawns[i].x & 0xFFE0)) {
-                        if (y == (peepSpawns[i].y & 0xFFE0)) {
+                for (uint8_t i = 0; i < MAX_PEEP_SPAWNS; ++i)
+                {
+                    if (x == (peepSpawns[i].x & 0xFFE0))
+                    {
+                        if (y == (peepSpawns[i].y & 0xFFE0))
+                        {
                             peepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
                         }
                     }
                 }
             }
-            surfaceElement->properties.surface.ownership &= 0x0F;
-            surfaceElement->properties.surface.ownership |= newOwnership;
-            update_park_fences_around_tile(x, y);
+            surfaceElement->SetOwnership(newOwnership);
+            update_park_fences_around_tile({ x, y });
             gMapLandRightsUpdateSuccess = true;
             return 0;
         }
-    default:
-        log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
-        assert(false);
-        return MONEY32_UNDEFINED;
+        default:
+            log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
+            assert(false);
+            return MONEY32_UNDEFINED;
     }
 }
 
-sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 setting, sint32 flags)
+int32_t map_buy_land_rights(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int32_t setting, int32_t flags)
 {
-    sint32 x, y, z;
+    int32_t x, y, z;
     money32 totalCost, cost;
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
-    if (x1 == 0 && y1 == 0) {
+    if (x1 == 0 && y1 == 0)
+    {
         x1 = x0;
         y1 = y0;
     }
@@ -941,9 +427,12 @@ sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 se
     // Game command modified to accept selection size
     totalCost = 0;
     gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || game_is_not_paused() || gCheatsBuildInPauseMode) {
-        for (y = y0; y <= y1; y += 32) {
-            for (x = x0; x <= x1; x += 32) {
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0 || game_is_not_paused() || gCheatsBuildInPauseMode)
+    {
+        for (y = y0; y <= y1; y += 32)
+        {
+            for (x = x0; x <= x1; x += 32)
+            {
                 cost = map_buy_land_rights_for_tile(x, y, setting, flags);
                 if (cost != MONEY32_UNDEFINED)
                 {
@@ -957,41 +446,35 @@ sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 se
 }
 
 /**
-*
-*  rct2: 0x006649BD
-*/
+ *
+ *  rct2: 0x006649BD
+ */
 void game_command_buy_land_rights(
-    sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, [[maybe_unused]] sint32 * esi, sint32 * edi, sint32 * ebp)
+    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi, int32_t* ebp)
 {
-    sint32 flags = *ebx & 0xFFFF;
+    int32_t flags = *ebx & 0xFFFF;
 
-    *ebx = map_buy_land_rights(
-        (*eax & 0xFFFF),
-        (*ecx & 0xFFFF),
-        (*edi & 0xFFFF),
-        (*ebp & 0xFFFF),
-        (*edx & 0x00FF),
-        flags
-    );
+    *ebx = map_buy_land_rights((*eax & 0xFFFF), (*ecx & 0xFFFF), (*edi & 0xFFFF), (*ebp & 0xFFFF), (*edx & 0x00FF), flags);
 
     // Too expensive to always call in map_buy_land_rights.
     // It's already counted when the park is loaded, after
     // that it should only be called for user actions.
-    if (flags & GAME_COMMAND_FLAG_APPLY) {
+    if (flags & GAME_COMMAND_FLAG_APPLY)
+    {
         map_count_remaining_land_rights();
     }
 }
 
-
-void set_forced_park_rating(sint32 rating)
+void set_forced_park_rating(int32_t rating)
 {
     _forcedParkRating = rating;
-    gParkRating = calculate_park_rating();
+    auto& park = GetContext()->GetGameState()->GetPark();
+    gParkRating = park.CalculateParkRating();
     auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
     context_broadcast_intent(&intent);
 }
 
-sint32 get_forced_park_rating()
+int32_t get_forced_park_rating()
 {
     return _forcedParkRating;
 }
@@ -1033,4 +516,593 @@ bool park_entry_price_unlocked()
         return true;
     }
     return false;
+}
+
+bool Park::IsOpen() const
+{
+    return (gParkFlags & PARK_FLAGS_PARK_OPEN) != 0;
+}
+
+uint16_t Park::GetParkRating() const
+{
+    return gParkRating;
+}
+
+money32 Park::GetParkValue() const
+{
+    return gParkValue;
+}
+
+money32 Park::GetCompanyValue() const
+{
+    return gCompanyValue;
+}
+
+void Park::Initialise()
+{
+    gUnk13CA740 = 0;
+    gParkName = STR_UNNAMED_PARK;
+    gStaffHandymanColour = COLOUR_BRIGHT_RED;
+    gStaffMechanicColour = COLOUR_LIGHT_BLUE;
+    gStaffSecurityColour = COLOUR_YELLOW;
+    gNumGuestsInPark = 0;
+    gNumGuestsInParkLastWeek = 0;
+    gNumGuestsHeadingForPark = 0;
+    gGuestChangeModifier = 0;
+    gParkRating = 0;
+    _guestGenerationProbability = 0;
+    gTotalRideValueForMoney = 0;
+    gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+
+    for (size_t i = 0; i < 20; i++)
+    {
+        gMarketingCampaignDaysLeft[i] = 0;
+    }
+
+    research_reset_items();
+    finance_init();
+
+    set_every_ride_type_not_invented();
+
+    set_all_scenery_items_invented();
+
+    gParkEntranceFee = MONEY(10, 00);
+
+    for (auto& peepSpawn : gPeepSpawns)
+    {
+        peepSpawn.x = PEEP_SPAWN_UNDEFINED;
+    }
+
+    gResearchPriorities = (1 << RESEARCH_CATEGORY_TRANSPORT) | (1 << RESEARCH_CATEGORY_GENTLE)
+        | (1 << RESEARCH_CATEGORY_ROLLERCOASTER) | (1 << RESEARCH_CATEGORY_THRILL) | (1 << RESEARCH_CATEGORY_WATER)
+        | (1 << RESEARCH_CATEGORY_SHOP) | (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
+    gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
+
+    gGuestInitialCash = MONEY(50, 00);
+    gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
+    gGuestInitialHunger = 200;
+    gGuestInitialThirst = 200;
+    gScenarioObjectiveType = OBJECTIVE_GUESTS_BY;
+    gScenarioObjectiveYear = 4;
+    gScenarioObjectiveNumGuests = 1000;
+    gLandPrice = MONEY(90, 00);
+    gConstructionRightsPrice = MONEY(40, 00);
+    gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
+    ResetHistories();
+    finance_reset_history();
+    award_reset();
+
+    gS6Info.name[0] = '\0';
+    format_string(gS6Info.details, 256, STR_NO_DETAILS_YET, nullptr);
+}
+
+void Park::Update(const Date& date)
+{
+    // Every ~13 seconds
+    if (gCurrentTicks % 512 == 0)
+    {
+        gParkRating = CalculateParkRating();
+        gParkValue = CalculateParkValue();
+        gCompanyValue = CalculateCompanyValue();
+        gTotalRideValueForMoney = CalculateTotalRideValueForMoney();
+        _suggestedGuestMaximum = CalculateSuggestedMaxGuests();
+        _guestGenerationProbability = CalculateGuestGenerationProbability();
+
+        window_invalidate_by_class(WC_FINANCES);
+        auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
+        context_broadcast_intent(&intent);
+    }
+    // Every ~102 seconds
+    if (gCurrentTicks % 4096 == 0)
+    {
+        gParkSize = CalculateParkSize();
+        window_invalidate_by_class(WC_PARK_INFORMATION);
+    }
+    // Every new week
+    if (date.IsWeekStart())
+    {
+        UpdateHistories();
+    }
+    GenerateGuests();
+}
+
+int32_t Park::CalculateParkSize() const
+{
+    int32_t tiles;
+    tile_element_iterator it;
+
+    tiles = 0;
+    tile_element_iterator_begin(&it);
+    do
+    {
+        if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        {
+            if (it.element->AsSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
+            {
+                tiles++;
+            }
+        }
+    } while (tile_element_iterator_next(&it));
+
+    if (tiles != gParkSize)
+    {
+        gParkSize = tiles;
+        window_invalidate_by_class(WC_PARK_INFORMATION);
+    }
+
+    return tiles;
+}
+
+int32_t Park::CalculateParkRating() const
+{
+    if (_forcedParkRating >= 0)
+    {
+        return _forcedParkRating;
+    }
+
+    int32_t result = 1150;
+    if (gParkFlags & PARK_FLAGS_DIFFICULT_PARK_RATING)
+    {
+        result = 1050;
+    }
+
+    // Guests
+    {
+        // -150 to +3 based on a range of guests from 0 to 2000
+        result -= 150 - (std::min<int16_t>(2000, gNumGuestsInPark) / 13);
+
+        // Find the number of happy peeps and the number of peeps who can't find the park exit
+        int32_t happyGuestCount = 0;
+        int32_t lostGuestCount = 0;
+        uint16_t spriteIndex;
+        rct_peep* peep;
+        FOR_ALL_GUESTS (spriteIndex, peep)
+        {
+            if (peep->outside_of_park == 0)
+            {
+                if (peep->happiness > 128)
+                {
+                    happyGuestCount++;
+                }
+                if ((peep->peep_flags & PEEP_FLAGS_LEAVING_PARK) && (peep->peep_is_lost_countdown < 90))
+                {
+                    lostGuestCount++;
+                }
+            }
+        }
+
+        // Peep happiness -500 to +0
+        result -= 500;
+        if (gNumGuestsInPark > 0)
+        {
+            result += 2 * std::min(250, (happyGuestCount * 300) / gNumGuestsInPark);
+        }
+
+        // Up to 25 guests can be lost without affecting the park rating.
+        if (lostGuestCount > 25)
+        {
+            result -= (lostGuestCount - 25) * 7;
+        }
+    }
+
+    // Rides
+    {
+        int32_t rideCount = 0;
+        int32_t excitingRideCount = 0;
+        int32_t totalRideUptime = 0;
+        int32_t totalRideIntensity = 0;
+        int32_t totalRideExcitement = 0;
+
+        int32_t i;
+        Ride* ride;
+        FOR_ALL_RIDES (i, ride)
+        {
+            totalRideUptime += 100 - ride->downtime;
+            if (ride->excitement != RIDE_RATING_UNDEFINED)
+            {
+                totalRideExcitement += ride->excitement / 8;
+                totalRideIntensity += ride->intensity / 8;
+                excitingRideCount++;
+            }
+            rideCount++;
+        }
+        result -= 200;
+        if (rideCount > 0)
+        {
+            result += (totalRideUptime / rideCount) * 2;
+        }
+        result -= 100;
+        if (excitingRideCount > 0)
+        {
+            int32_t averageExcitement = totalRideExcitement / excitingRideCount;
+            int32_t averageIntensity = totalRideIntensity / excitingRideCount;
+
+            averageExcitement -= 46;
+            if (averageExcitement < 0)
+            {
+                averageExcitement = -averageExcitement;
+            }
+
+            averageIntensity -= 65;
+            if (averageIntensity < 0)
+            {
+                averageIntensity = -averageIntensity;
+            }
+
+            averageExcitement = std::min(averageExcitement / 2, 50);
+            averageIntensity = std::min(averageIntensity / 2, 50);
+            result += 100 - averageExcitement - averageIntensity;
+        }
+
+        totalRideExcitement = std::min<int16_t>(1000, totalRideExcitement);
+        totalRideIntensity = std::min<int16_t>(1000, totalRideIntensity);
+        result -= 200 - ((totalRideExcitement + totalRideIntensity) / 10);
+    }
+
+    // Litter
+    {
+        rct_litter* litter;
+        int32_t litterCount = 0;
+        for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL;
+             spriteIndex = litter->next)
+        {
+            litter = &(get_sprite(spriteIndex)->litter);
+
+            // Ignore recently dropped litter
+            if (litter->creationTick - gScenarioTicks >= 7680)
+            {
+                litterCount++;
+            }
+        }
+        result -= 600 - (4 * (150 - std::min<int32_t>(150, litterCount)));
+    }
+
+    result -= gParkRatingCasualtyPenalty;
+    result = std::clamp(result, 0, 999);
+    return result;
+}
+
+money32 Park::CalculateParkValue() const
+{
+    money32 result = 0;
+
+    // Sum ride values
+    for (int32_t i = 0; i < MAX_RIDES; i++)
+    {
+        auto ride = get_ride(i);
+        result += CalculateRideValue(ride);
+    }
+
+    // +7.00 per guest
+    result += gNumGuestsInPark * MONEY(7, 00);
+
+    return result;
+}
+
+money32 Park::CalculateRideValue(const Ride* ride) const
+{
+    money32 result = 0;
+    if (ride->type != RIDE_TYPE_NULL && ride->value != RIDE_VALUE_UNDEFINED)
+    {
+        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rideBonusValue[ride->type] * 4);
+    }
+    return result;
+}
+
+money32 Park::CalculateCompanyValue() const
+{
+    return finance_get_current_cash() + gParkValue - gBankLoan;
+}
+
+money16 Park::CalculateTotalRideValueForMoney() const
+{
+    money16 totalRideValue = 0;
+    int32_t i;
+    Ride* ride;
+    FOR_ALL_RIDES (i, ride)
+    {
+        if (ride->status != RIDE_STATUS_OPEN)
+            continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            continue;
+
+        // Add ride value
+        if (ride->value != RIDE_VALUE_UNDEFINED)
+        {
+            money16 rideValue = (money16)(ride->value - ride->price);
+            if (rideValue > 0)
+            {
+                totalRideValue += rideValue * 2;
+            }
+        }
+    }
+    return totalRideValue;
+}
+
+uint32_t Park::CalculateSuggestedMaxGuests() const
+{
+    uint32_t suggestedMaxGuests = 0;
+
+    // TODO combine the two ride loops
+    int32_t i;
+    Ride* ride;
+    FOR_ALL_RIDES (i, ride)
+    {
+        if (ride->status != RIDE_STATUS_OPEN)
+            continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+            continue;
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+            continue;
+
+        // Add guest score for ride type
+        suggestedMaxGuests += rideBonusValue[ride->type];
+    }
+
+    // If difficult guest generation, extra guests are available for good rides
+    if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+    {
+        suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 1000);
+        FOR_ALL_RIDES (i, ride)
+        {
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
+                continue;
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
+                continue;
+            if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+                continue;
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+                continue;
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+                continue;
+            if (ride->length[0] < (600 << 16))
+                continue;
+            if (ride->excitement < RIDE_RATING(6, 00))
+                continue;
+
+            // Bonus guests for good ride
+            suggestedMaxGuests += rideBonusValue[ride->type] * 2;
+        }
+    }
+
+    suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 65535);
+    return suggestedMaxGuests;
+}
+
+uint32_t Park::CalculateGuestGenerationProbability() const
+{
+    // Begin with 50 + park rating
+    uint32_t probability = 50 + std::clamp(gParkRating - 200, 0, 650);
+
+    // The more guests, the lower the chance of a new one
+    int32_t numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
+    if (numGuests > _suggestedGuestMaximum)
+    {
+        probability /= 4;
+        // Even lower for difficult guest generation
+        if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
+        {
+            probability /= 4;
+        }
+    }
+
+    // Reduces chance for any more than 7000 guests
+    if (numGuests > 7000)
+    {
+        probability /= 4;
+    }
+
+    // Penalty for overpriced entrance fee relative to total ride value
+    money16 entranceFee = park_get_entrance_fee();
+    if (entranceFee > gTotalRideValueForMoney)
+    {
+        probability /= 4;
+        // Extra penalty for very overpriced entrance fee
+        if (entranceFee / 2 > gTotalRideValueForMoney)
+        {
+            probability /= 4;
+        }
+    }
+
+    // Reward or penalties for park awards
+    for (size_t i = 0; i < MAX_AWARDS; i++)
+    {
+        const auto award = &gCurrentAwards[i];
+        if (award->Time != 0)
+        {
+            // +/- 0.25% of the probability
+            if (award_is_positive(award->Type))
+            {
+                probability += probability / 4;
+            }
+            else
+            {
+                probability -= probability / 4;
+            }
+        }
+    }
+
+    return probability;
+}
+
+uint8_t Park::CalculateGuestInitialHappiness(uint8_t percentage)
+{
+    percentage = std::clamp<uint8_t>(percentage, 15, 98);
+
+    // The percentages follow this sequence:
+    //   15 17 18 20 21 23 25 26 28 29 31 32 34 36 37 39 40 42 43 45 47 48 50 51 53...
+    // This sequence can be defined as PI*(9+n)/2 (the value is floored)
+    for (uint8_t n = 1; n < 55; n++)
+    {
+        if ((3.14159 * (9 + n)) / 2 >= percentage)
+        {
+            return (9 + n) * 4;
+        }
+    }
+
+    // This is the lowest possible value:
+    return 40;
+}
+
+void Park::GenerateGuests()
+{
+    // Generate a new guest for some probability
+    if ((int32_t)(scenario_rand() & 0xFFFF) < _guestGenerationProbability)
+    {
+        bool difficultGeneration = (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) != 0;
+        if (!difficultGeneration || _suggestedGuestMaximum + 150 >= gNumGuestsInPark)
+        {
+            GenerateGuest();
+        }
+    }
+
+    // Extra guests generated by advertising campaigns
+    for (int32_t campaign = 0; campaign < ADVERTISING_CAMPAIGN_COUNT; campaign++)
+    {
+        if (gMarketingCampaignDaysLeft[campaign] != 0)
+        {
+            // Random chance of guest generation
+            if ((int32_t)(scenario_rand() & 0xFFFF) < marketing_get_campaign_guest_generation_probability(campaign))
+            {
+                GenerateGuestFromCampaign(campaign);
+            }
+        }
+    }
+}
+
+rct_peep* Park::GenerateGuestFromCampaign(int32_t campaign)
+{
+    auto peep = GenerateGuest();
+    if (peep != nullptr)
+    {
+        marketing_set_guest_campaign(peep, campaign);
+    }
+    return peep;
+}
+
+rct_peep* Park::GenerateGuest()
+{
+    rct_peep* peep = nullptr;
+    PeepSpawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
+
+    if (spawn.x != PEEP_SPAWN_UNDEFINED)
+    {
+        spawn.direction ^= 2;
+        peep = peep_generate(spawn.x, spawn.y, spawn.z);
+        if (peep != nullptr)
+        {
+            peep->sprite_direction = spawn.direction << 3;
+
+            // Get the centre point of the tile the peep is on
+            peep->destination_x = (peep->x & 0xFFE0) + 16;
+            peep->destination_y = (peep->y & 0xFFE0) + 16;
+
+            peep->destination_tolerance = 5;
+            peep->direction = spawn.direction;
+            peep->var_37 = 0;
+            peep->state = PEEP_STATE_ENTERING_PARK;
+        }
+    }
+    return peep;
+}
+
+template<typename T, size_t TSize> static void HistoryPushRecord(T history[TSize], T newItem)
+{
+    for (size_t i = TSize - 1; i > 0; i--)
+    {
+        history[i] = history[i - 1];
+    }
+    history[0] = newItem;
+}
+
+void Park::ResetHistories()
+{
+    for (size_t i = 0; i < 32; i++)
+    {
+        gParkRatingHistory[i] = 255;
+        gGuestsInParkHistory[i] = 255;
+    }
+}
+
+void Park::UpdateHistories()
+{
+    uint8_t guestChangeModifier = 1;
+    int32_t changeInGuestsInPark = (int32_t)gNumGuestsInPark - (int32_t)gNumGuestsInParkLastWeek;
+    if (changeInGuestsInPark > -20)
+    {
+        guestChangeModifier++;
+        if (changeInGuestsInPark < 20)
+        {
+            guestChangeModifier = 0;
+        }
+    }
+    gGuestChangeModifier = guestChangeModifier;
+    gNumGuestsInParkLastWeek = gNumGuestsInPark;
+
+    // Update park rating, guests in park and current cash history
+    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, CalculateParkRating() / 4);
+    HistoryPushRecord<uint8_t, 32>(gGuestsInParkHistory, std::min<uint16_t>(gNumGuestsInPark, 5000) / 20);
+    HistoryPushRecord<money32, 128>(gCashHistory, finance_get_current_cash() - gBankLoan);
+
+    // Update weekly profit history
+    money32 currentWeeklyProfit = gWeeklyProfitAverageDividend;
+    if (gWeeklyProfitAverageDivisor != 0)
+    {
+        currentWeeklyProfit /= gWeeklyProfitAverageDivisor;
+    }
+    HistoryPushRecord<money32, 128>(gWeeklyProfitHistory, currentWeeklyProfit);
+    gWeeklyProfitAverageDividend = 0;
+    gWeeklyProfitAverageDivisor = 0;
+
+    // Update park value history
+    HistoryPushRecord<money32, 128>(gParkValueHistory, gParkValue);
+
+    // Invalidate relevant windows
+    auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
+    context_broadcast_intent(&intent);
+    window_invalidate_by_class(WC_PARK_INFORMATION);
+    window_invalidate_by_class(WC_FINANCES);
+}
+
+int32_t park_is_open()
+{
+    return GetContext()->GetGameState()->GetPark().IsOpen();
+}
+
+int32_t park_calculate_size()
+{
+    auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
+    if (tiles != gParkSize)
+    {
+        gParkSize = tiles;
+        window_invalidate_by_class(WC_PARK_INFORMATION);
+    }
+    return tiles;
+}
+
+uint8_t calculate_guest_initial_happiness(uint8_t percentage)
+{
+    return Park::CalculateGuestInitialHappiness(percentage);
 }

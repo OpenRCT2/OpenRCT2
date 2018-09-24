@@ -1,51 +1,46 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
-#include <vector>
 #include "../common.h"
+
+#include <vector>
 
 namespace RCT1
 {
-    struct RCT1VehicleColourSchemeCopyDescriptor {
-        sint8 colour1, colour2, colour3;
+    struct RCT1VehicleColourSchemeCopyDescriptor
+    {
+        int8_t colour1, colour2, colour3;
     };
 
     colour_t GetColour(colour_t colour);
-    uint8 GetPeepSpriteType(uint8 rct1SpriteType);
-    uint8 GetTerrain(uint8 terrain);
-    uint8 GetTerrainEdge(uint8 terrainEdge);
+    uint8_t GetPeepSpriteType(uint8_t rct1SpriteType);
+    uint8_t GetTerrain(uint8_t terrain);
+    uint8_t GetTerrainEdge(uint8_t terrainEdge);
 
-    uint8 GetRideType(uint8 rideType);
-    RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8 vehicleType);
-    bool RideTypeUsesVehicles(uint8 rideType);
-    bool PathIsQueue(uint8 pathType);
-    uint8 NormalisePathAddition(uint8 pathAdditionType);
-    uint8 GetVehicleSubEntryIndex(uint8 vehicleSubEntry);
+    uint8_t GetRideType(uint8_t rideType);
+    RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType);
+    bool RideTypeUsesVehicles(uint8_t rideType);
+    bool PathIsQueue(uint8_t pathType);
+    uint8_t NormalisePathAddition(uint8_t pathAdditionType);
+    uint8_t GetVehicleSubEntryIndex(uint8_t vehicleSubEntry);
 
-    const char * GetRideTypeObject(uint8 rideType);
-    const char * GetVehicleObject(uint8 vehicleType);
-    const char * GetSmallSceneryObject(uint8 smallSceneryType);
-    const char * GetLargeSceneryObject(uint8 largeSceneryType);
-    const char * GetWallObject(uint8 wallType);
-    const char * GetPathObject(uint8 pathType);
-    const char * GetPathAddtionObject(uint8 pathAdditionType);
-    const char * GetSceneryGroupObject(uint8 sceneryGroupType);
-    const char * GetWaterObject(uint8 waterType);
+    const char* GetRideTypeObject(uint8_t rideType);
+    const char* GetVehicleObject(uint8_t vehicleType);
+    const char* GetSmallSceneryObject(uint8_t smallSceneryType);
+    const char* GetLargeSceneryObject(uint8_t largeSceneryType);
+    const char* GetWallObject(uint8_t wallType);
+    const char* GetPathObject(uint8_t pathType);
+    const char* GetPathAddtionObject(uint8_t pathAdditionType);
+    const char* GetSceneryGroupObject(uint8_t sceneryGroupType);
+    const char* GetWaterObject(uint8_t waterType);
 
-    const std::vector<const char *> GetSceneryObjects(uint8 sceneryType);
-}
+    const std::vector<const char*> GetSceneryObjects(uint8_t sceneryType);
+} // namespace RCT1

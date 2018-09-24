@@ -8,15 +8,16 @@ RUN mkdir build \
  && ninja -k0 install
 
 # Build runtime image
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN apt-get install --no-install-recommends -y rsync ca-certificates libjansson4 libpng12-0 libzip4 libcurl3 libfreetype6 libfontconfig1
+RUN apt-get install --no-install-recommends -y rsync ca-certificates libjansson4 libpng16-16 libzip4 libcurl4 libfreetype6 libfontconfig1
 
 # Install OpenRCT2
 COPY --from=build-env /openrct2-install /openrct2-install
 RUN rsync -a /openrct2-install/* / \
- && rm -rf /openrct2-install
+ && rm -rf /openrct2-install \
+ && openrct2-cli --version
 
 # Done
 ENTRYPOINT ["openrct2-cli"]

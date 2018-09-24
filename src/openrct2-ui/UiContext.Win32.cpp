@@ -1,43 +1,39 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #ifdef _WIN32
 
-#ifdef __MINGW32__
+#    ifdef __MINGW32__
 // 0x0600 == vista
-#define WINVER 0x0600
-#define _WIN32_WINNT 0x0600
-#endif // __MINGW32__
+#        define WINVER 0x0600
+#        define _WIN32_WINNT 0x0600
+#    endif // __MINGW32__
 
-#include <sstream>
-#include <openrct2/common.h>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/core/Path.hpp>
-#include <openrct2/core/String.hpp>
-#include <openrct2/ui/UiContext.h>
-#include "UiContext.h"
+// Windows.h needs to be included first
+#    include <windows.h>
+#    undef CreateWindow
 
-#undef interface
-#include <windows.h>
-#include <shlobj.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_syswm.h>
+// Then the rest
+#    include "UiContext.h"
+
+#    include <SDL2/SDL.h>
+#    include <SDL2/SDL_syswm.h>
+#    include <algorithm>
+#    include <openrct2/common.h>
+#    include <openrct2/core/Path.hpp>
+#    include <openrct2/core/String.hpp>
+#    include <openrct2/ui/UiContext.h>
+#    include <shlobj.h>
+#    include <sstream>
 
 // Native resource IDs
-#include "../../resources/resource.h"
+#    include "../../resources/resource.h"
 
 static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
 {
@@ -54,7 +50,7 @@ static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
     return pszPath;
 }
 
-namespace OpenRCT2 { namespace Ui
+namespace OpenRCT2::Ui
 {
     class Win32Context : public IPlatformUiContext
     {
@@ -67,7 +63,7 @@ namespace OpenRCT2 { namespace Ui
             _win32module = GetModuleHandleA(nullptr);
         }
 
-        void SetWindowIcon(SDL_Window * window) override
+        void SetWindowIcon(SDL_Window* window) override
         {
             if (_win32module != nullptr)
             {
@@ -88,24 +84,30 @@ namespace OpenRCT2 { namespace Ui
             return (GetModuleHandleA("GameOverlayRenderer.dll") != nullptr);
         }
 
-        void ShowMessageBox(SDL_Window * window, const std::string &message) override
+        void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
             HWND hwnd = GetHWND(window);
             std::wstring messageW = String::ToUtf16(message);
             MessageBoxW(hwnd, messageW.c_str(), L"OpenRCT2", MB_OK);
         }
 
-        std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc &desc) override
+        void OpenFolder(const std::string& path) override
+        {
+            std::wstring pathW = String::ToUtf16(path);
+            ShellExecuteW(NULL, L"open", pathW.c_str(), NULL, NULL, SW_SHOWNORMAL);
+        }
+
+        std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             std::wstring wcFilename = String::ToUtf16(desc.DefaultFilename);
-            wcFilename.resize(Math::Max<size_t>(wcFilename.size(), MAX_PATH));
+            wcFilename.resize(std::max<size_t>(wcFilename.size(), MAX_PATH));
 
             std::wstring wcTitle = String::ToUtf16(desc.Title);
             std::wstring wcInitialDirectory = String::ToUtf16(desc.InitialDirectory);
             std::wstring wcFilters = GetFilterString(desc.Filters);
 
             // Set open file name options
-            OPENFILENAMEW openFileName = { 0 };
+            OPENFILENAMEW openFileName = {};
             openFileName.lStructSize = sizeof(OPENFILENAMEW);
             openFileName.hwndOwner = GetHWND(window);
             openFileName.lpstrTitle = wcTitle.c_str();
@@ -137,10 +139,10 @@ namespace OpenRCT2 { namespace Ui
                 std::string resultExtension = Path::GetExtension(resultFilename);
                 if (resultExtension.empty())
                 {
-                    sint32 filterIndex = openFileName.nFilterIndex - 1;
+                    int32_t filterIndex = openFileName.nFilterIndex - 1;
 
                     assert(filterIndex >= 0);
-                    assert(filterIndex < (sint32)desc.Filters.size());
+                    assert(filterIndex < (int32_t)desc.Filters.size());
 
                     std::string pattern = desc.Filters[filterIndex].Pattern;
                     std::string patternExtension = Path::GetExtension(pattern);
@@ -153,17 +155,16 @@ namespace OpenRCT2 { namespace Ui
             return resultFilename;
         }
 
-        std::string ShowDirectoryDialog(SDL_Window * window, const std::string &title) override
+        std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
         {
             std::string result;
 
             // Initialize COM and get a pointer to the shell memory allocator
             LPMALLOC lpMalloc;
-            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)) &&
-                SUCCEEDED(SHGetMalloc(&lpMalloc)))
+            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)) && SUCCEEDED(SHGetMalloc(&lpMalloc)))
             {
                 std::wstring titleW = String::ToUtf16(title);
-                BROWSEINFOW bi = { 0 };
+                BROWSEINFOW bi = {};
                 bi.lpszTitle = titleW.c_str();
                 bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE | BIF_NONEWFOLDERBUTTON;
 
@@ -188,7 +189,7 @@ namespace OpenRCT2 { namespace Ui
         }
 
     private:
-        HWND GetHWND(SDL_Window * window)
+        HWND GetHWND(SDL_Window* window)
         {
             HWND result = nullptr;
             if (window != nullptr)
@@ -211,19 +212,16 @@ namespace OpenRCT2 { namespace Ui
             std::wstringstream filtersb;
             for (auto filter : filters)
             {
-                filtersb << String::ToUtf16(filter.Name)
-                         << '\0'
-                         << String::ToUtf16(filter.Pattern)
-                         << '\0';
+                filtersb << String::ToUtf16(filter.Name) << '\0' << String::ToUtf16(filter.Pattern) << '\0';
             }
             return filtersb.str();
         }
     };
 
-    IPlatformUiContext * CreatePlatformUiContext()
+    IPlatformUiContext* CreatePlatformUiContext()
     {
         return new Win32Context();
     }
-} }
+} // namespace OpenRCT2::Ui
 
 #endif // _WIN32

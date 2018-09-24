@@ -1,5 +1,5 @@
 # CMAKE project for libopenrct2 (core OpenRCT2 component)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.7)
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -59,8 +59,8 @@ if (NOT DISABLE_TTF)
 endif ()
 
 # Sources
-file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
-                                        "${CMAKE_CURRENT_LIST_DIR}/*.h"
+file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
+file(GLOB_RECURSE OPENRCT2_CORE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
 if (APPLE)
     file(GLOB_RECURSE OPENRCT2_CORE_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
@@ -93,7 +93,7 @@ endif ()
 
 if (NOT DISABLE_NETWORK)
     if (WIN32)
-        target_link_libraries(${PROJECT} ws2_32)
+        target_link_libraries(${PROJECT} ws2_32 crypt32 wldap32 version winmm imm32)
     endif ()
 
     # our HTTP implementation requires use of threads
@@ -107,6 +107,16 @@ if (NOT DISABLE_NETWORK)
     else ()
         target_link_libraries(${PROJECT} ${LIBCURL_LIBRARIES}
                                          ${OPENSSL_LIBRARIES})
+    endif ()
+endif ()
+
+if (NOT MINGW AND NOT MSVC)
+    # For unicode code page conversion.
+    find_package(ICU 59.0 REQUIRED COMPONENTS uc)
+    if (STATIC)
+        target_link_libraries(${PROJECT} ${ICU_STATIC_LIBRARIES})
+    else ()
+        target_link_libraries(${PROJECT} ${ICU_LIBRARIES})
     endif ()
 endif ()
 
@@ -131,17 +141,12 @@ if (NOT DISABLE_TTF)
     endif ()
 endif ()
 
-if (UNIX OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
-    find_library(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
-    target_link_libraries(${PROJECT} ${ICONV_LIBRARIES})
-endif()
-
 if (HAVE_DISCORD_RPC)
     target_link_libraries(libopenrct2 discord-rpc)
 endif()
 
 # Includes
-target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
+target_include_directories(${PROJECT} PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(${PROJECT} PUBLIC ${JANSSON_INCLUDE_DIRS})
 target_include_directories(${PROJECT} PRIVATE ${PNG_INCLUDE_DIRS}
                                               ${ZLIB_INCLUDE_DIRS})
@@ -157,20 +162,46 @@ if (NOT DISABLE_TTF)
         target_include_directories(${PROJECT} PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
     endif ()
 endif ()
+if (NOT MINGW AND NOT MSVC)
+    target_include_directories(${PROJECT} SYSTEM PRIVATE ${ICU_INCLUDE_DIRS})
+endif ()
 
 # To avoid unnecessary rebuilds set the current branch and
 # short sha1 only for the two files that use these
 # definitions: Version.cpp and Crash/Platform.cpp
-set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp PROPERTY
-    COMPILE_DEFINITIONS OPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
+set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
+    PROPERTY COMPILE_DEFINITIONS
+    OPENRCT2_VERSION_TAG="${OPENRCT2_VERSION_TAG}")
+
+if (NOT OPENRCT2_BRANCH STREQUAL "master")
+    set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
+        APPEND PROPERTY COMPILE_DEFINITIONS
+        OPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
+endif()
+
 if (NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "HEAD")
-    set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp
-    ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp APPEND PROPERTY
-    COMPILE_DEFINITIONS OPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
+    set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp
+        APPEND PROPERTY COMPILE_DEFINITIONS
+        OPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
 endif()
 
 if((X86 OR X86_64) AND NOT MSVC)
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/SSE41Drawing.cpp PROPERTIES COMPILE_FLAGS -msse4.1)
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/drawing/AVX2Drawing.cpp PROPERTIES COMPILE_FLAGS -mavx2)
 endif()
+
+# Add headers check to verify all headers carry their dependencies.
+# Only valid for Clang for now:
+# - GCC 8 does not support -Wno-pragma-once-outside-header
+# - Other compilers status unknown
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    add_library(${PROJECT}-headers-check OBJECT ${OPENRCT2_CORE_HEADERS})
+    set_target_properties(${PROJECT}-headers-check PROPERTIES LINKER_LANGUAGE CXX)
+    set_source_files_properties(${OPENRCT2_CORE_HEADERS} PROPERTIES LANGUAGE CXX)
+    add_definitions("-x c++ -Wno-pragma-once-outside-header -Wno-unused-const-variable")
+    get_target_property(LIBOPENRCT2_INCLUDE_DIRS ${PROJECT} INCLUDE_DIRECTORIES)
+    set_target_properties(${PROJECT}-headers-check PROPERTIES INCLUDE_DIRECTORIES "${LIBOPENRCT2_INCLUDE_DIRS}")
+else ()
+    # Dummy target to ease invocation
+    add_custom_target(${PROJECT}-headers-check)
+endif ()

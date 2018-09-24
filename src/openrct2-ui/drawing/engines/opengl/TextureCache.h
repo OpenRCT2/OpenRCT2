@@ -1,39 +1,34 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
+#include "GLSLTypes.h"
+#include "OpenGLAPI.h"
+
+#include <SDL2/SDL_pixels.h>
+#include <algorithm>
+#include <array>
+#include <openrct2/common.h>
 #include <unordered_map>
 #include <vector>
-#include <array>
-#include <SDL2/SDL_pixels.h>
-#include <openrct2/common.h>
-#include "OpenGLAPI.h"
-#include "GLSLTypes.h"
 
 struct rct_drawpixelinfo;
 
 struct GlyphId
 {
-    uint32 Image;
-    uint64 Palette;
+    uint32_t Image;
+    uint64_t Palette;
 
     struct Hash
     {
-        size_t operator()(const GlyphId &k) const
+        size_t operator()(const GlyphId& k) const
         {
             size_t hash = k.Image * 7;
             hash += (k.Palette & 0xFFFFFFFF) * 13;
@@ -44,21 +39,20 @@ struct GlyphId
 
     struct Equal
     {
-        bool operator()(const GlyphId &lhs, const GlyphId &rhs) const
+        bool operator()(const GlyphId& lhs, const GlyphId& rhs) const
         {
-           return lhs.Image == rhs.Image &&
-                  lhs.Palette == rhs.Palette;
+            return lhs.Image == rhs.Image && lhs.Palette == rhs.Palette;
         }
     };
 };
 
 // This is the maximum width and height of each atlas, basically the
 // granularity at which new atlases are allocated (2048 -> 4 MB of VRAM)
-constexpr sint32 TEXTURE_CACHE_MAX_ATLAS_SIZE = 2048;
+constexpr int32_t TEXTURE_CACHE_MAX_ATLAS_SIZE = 2048;
 
 // Pixel dimensions of smallest supported slots in texture atlases
 // Must be a power of 2!
-constexpr sint32 TEXTURE_CACHE_SMALLEST_SLOT = 32;
+constexpr int32_t TEXTURE_CACHE_SMALLEST_SLOT = 32;
 
 struct BasicTextureInfo
 {
@@ -71,7 +65,7 @@ struct AtlasTextureInfo : public BasicTextureInfo
 {
     GLuint slot;
     ivec4 bounds;
-    uint32 image;
+    uint32_t image;
 };
 
 // Represents a texture atlas that images of a given maximum size can be allocated from
@@ -80,23 +74,23 @@ struct AtlasTextureInfo : public BasicTextureInfo
 class Atlas final
 {
 private:
-    GLuint _index       = 0;
-    sint32 _imageSize   = 0;
-    sint32 _atlasWidth  = 0;
-    sint32 _atlasHeight = 0;
+    GLuint _index = 0;
+    int32_t _imageSize = 0;
+    int32_t _atlasWidth = 0;
+    int32_t _atlasHeight = 0;
     std::vector<GLuint> _freeSlots;
 
-    sint32 _cols = 0;
-    sint32 _rows = 0;
+    int32_t _cols = 0;
+    int32_t _rows = 0;
 
 public:
-    Atlas(GLuint index, sint32 imageSize)
+    Atlas(GLuint index, int32_t imageSize)
     {
         _index = index;
         _imageSize = imageSize;
     }
 
-    void Initialise(sint32 atlasWidth, sint32 atlasHeight)
+    void Initialise(int32_t atlasWidth, int32_t atlasHeight)
     {
         _atlasWidth = atlasWidth;
         _atlasHeight = atlasHeight;
@@ -111,7 +105,7 @@ public:
         }
     }
 
-    AtlasTextureInfo Allocate(sint32 actualWidth, sint32 actualHeight)
+    AtlasTextureInfo Allocate(int32_t actualWidth, int32_t actualHeight)
     {
         assert(_freeSlots.size() > 0);
 
@@ -138,38 +132,38 @@ public:
 
     // Checks if specified image would be tightly packed in this atlas
     // by checking if it is within the right power of 2 range
-    bool IsImageSuitable(sint32 actualWidth, sint32 actualHeight) const
+    bool IsImageSuitable(int32_t actualWidth, int32_t actualHeight) const
     {
-        sint32 imageOrder = CalculateImageSizeOrder(actualWidth, actualHeight);
-        sint32 atlasOrder = (sint32) log2(_imageSize);
+        int32_t imageOrder = CalculateImageSizeOrder(actualWidth, actualHeight);
+        int32_t atlasOrder = (int32_t)log2(_imageSize);
 
         return imageOrder == atlasOrder;
     }
 
-    sint32 GetFreeSlots() const
+    int32_t GetFreeSlots() const
     {
-        return (sint32) _freeSlots.size();
+        return (int32_t)_freeSlots.size();
     }
 
-    static sint32 CalculateImageSizeOrder(sint32 actualWidth, sint32 actualHeight)
+    static int32_t CalculateImageSizeOrder(int32_t actualWidth, int32_t actualHeight)
     {
-        sint32 actualSize = std::max(actualWidth, actualHeight);
+        int32_t actualSize = std::max(actualWidth, actualHeight);
 
-        if (actualSize < TEXTURE_CACHE_SMALLEST_SLOT) {
+        if (actualSize < TEXTURE_CACHE_SMALLEST_SLOT)
+        {
             actualSize = TEXTURE_CACHE_SMALLEST_SLOT;
         }
 
-        return (sint32) ceil(log2f((float) actualSize));
+        return (int32_t)ceil(log2f((float)actualSize));
     }
 
 private:
-    ivec4 GetSlotCoordinates(GLuint slot, sint32 actualWidth, sint32 actualHeight) const
+    ivec4 GetSlotCoordinates(GLuint slot, int32_t actualWidth, int32_t actualHeight) const
     {
-        sint32 row = slot / _cols;
-        sint32 col = slot % _cols;
+        int32_t row = slot / _cols;
+        int32_t col = slot % _cols;
 
-        return ivec4
-        {
+        return ivec4{
             _imageSize * col,
             _imageSize * row,
             _imageSize * col + actualWidth,
@@ -179,12 +173,11 @@ private:
 
     vec4 NormalizeCoordinates(const ivec4& coords) const
     {
-        return vec4
-        {
-            coords.x / (float) _atlasWidth,
-            coords.y / (float) _atlasHeight,
-            coords.z / (float) _atlasWidth,
-            coords.w / (float) _atlasHeight,
+        return vec4{
+            coords.x / (float)_atlasWidth,
+            coords.y / (float)_atlasHeight,
+            coords.z / (float)_atlasWidth,
+            coords.w / (float)_atlasHeight,
         };
     }
 };
@@ -192,41 +185,42 @@ private:
 class TextureCache final
 {
 private:
-    bool _initialized                 = false;
+    bool _initialized = false;
 
-    GLuint _atlasesTexture            = 0;
-    GLint _atlasesTextureDimensions   = 0;
-    GLuint _atlasesTextureIndices     = 0;
+    GLuint _atlasesTexture = 0;
+    GLint _atlasesTextureDimensions = 0;
+    GLuint _atlasesTextureCapacity = 0;
+    GLuint _atlasesTextureIndices = 0;
     GLint _atlasesTextureIndicesLimit = 0;
     std::vector<Atlas> _atlases;
     std::unordered_map<GlyphId, AtlasTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
     std::vector<AtlasTextureInfo> _textureCache;
-    std::array<uint32, 0x7FFFF> _indexMap;
+    std::array<uint32_t, 0x7FFFF> _indexMap;
 
-    GLuint _paletteTexture            = 0;
+    GLuint _paletteTexture = 0;
 
 public:
     TextureCache();
     ~TextureCache();
-    void InvalidateImage(uint32 image);
-    BasicTextureInfo GetOrLoadImageTexture(uint32 image);
-    BasicTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
+    void InvalidateImage(uint32_t image);
+    BasicTextureInfo GetOrLoadImageTexture(uint32_t image);
+    BasicTextureInfo GetOrLoadGlyphTexture(uint32_t image, uint8_t* palette);
 
     GLuint GetAtlasesTexture();
     GLuint GetPaletteTexture();
-    static GLint PaletteToY(uint32 palette);
+    static GLint PaletteToY(uint32_t palette);
 
 private:
     void CreateTextures();
     void GeneratePaletteTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
-    AtlasTextureInfo LoadImageTexture(uint32 image);
-    AtlasTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
-    AtlasTextureInfo AllocateImage(sint32 imageWidth, sint32 imageHeight);
-    rct_drawpixelinfo GetImageAsDPI(uint32 image, uint32 tertiaryColour);
-    rct_drawpixelinfo GetGlyphAsDPI(uint32 image, uint8 * palette);
+    AtlasTextureInfo LoadImageTexture(uint32_t image);
+    AtlasTextureInfo LoadGlyphTexture(uint32_t image, uint8_t* palette);
+    AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
+    rct_drawpixelinfo GetImageAsDPI(uint32_t image, uint32_t tertiaryColour);
+    rct_drawpixelinfo GetGlyphAsDPI(uint32_t image, uint8_t* palette);
     void FreeTextures();
 
-    static rct_drawpixelinfo CreateDPI(sint32 width, sint32 height);
+    static rct_drawpixelinfo CreateDPI(int32_t width, int32_t height);
     static void DeleteDPI(rct_drawpixelinfo dpi);
 };

@@ -1,25 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _DATE_H_
 #define _DATE_H_
 
 #include "../common.h"
 
-enum {
+enum
+{
     MONTH_MARCH,
     MONTH_APRIL,
     MONTH_MAY,
@@ -32,38 +26,40 @@ enum {
     MONTH_COUNT
 };
 
-enum {
+enum
+{
     DATE_FORMAT_DAY_MONTH_YEAR,
     DATE_FORMAT_MONTH_DAY_YEAR,
     DATE_FORMAT_YEAR_MONTH_DAY,
     DATE_FORMAT_YEAR_DAY_MONTH
 };
 
-struct openrct_timeofday {
-    uint8 second;
-    uint8 minute;
-    uint8 hour;
+struct openrct_timeofday
+{
+    uint8_t second;
+    uint8_t minute;
+    uint8_t hour;
 };
 
-extern const sint16 days_in_month[MONTH_COUNT];
+extern const int16_t days_in_month[MONTH_COUNT];
 extern const rct_string_id DateFormatStringIds[];
 extern const rct_string_id DateFormatStringFormatIds[];
 
-extern uint16 gDateMonthTicks;
-extern uint16 gDateMonthsElapsed;
+extern uint16_t gDateMonthTicks;
+extern uint16_t gDateMonthsElapsed;
 
 extern openrct_timeofday gRealTimeOfDay;
 
-sint32 date_get_month(sint32 months);
-sint32 date_get_year(sint32 months);
-sint32 date_get_total_months(sint32 month, sint32 year);
+int32_t date_get_month(int32_t months);
+int32_t date_get_year(int32_t months);
+int32_t date_get_total_months(int32_t month, int32_t year);
 void date_reset();
 void date_update();
-void date_set(sint32 year, sint32 month, sint32 day);
+void date_set(int32_t year, int32_t month, int32_t day);
 void date_update_real_time_of_day();
-bool date_is_day_start(sint32 monthTicks);
-bool date_is_week_start(sint32 monthTicks);
-bool date_is_fortnight_start(sint32 monthTicks);
-bool date_is_month_start(sint32 monthTicks);
+bool date_is_day_start(int32_t monthTicks);
+bool date_is_week_start(int32_t monthTicks);
+bool date_is_fortnight_start(int32_t monthTicks);
+bool date_is_month_start(int32_t monthTicks);
 
 #endif

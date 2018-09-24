@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 /**
  * Whether a particular ride has a running track or not. Will probably end up
@@ -24,14 +17,16 @@
  * https://gist.github.com/kevinburke/eaeb1d8149a6eef0dcc1
  */
 
+#include "RideData.h"
+
 #include "../audio/audio.h"
 #include "../core/Util.hpp"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
 #include "../sprites.h"
 #include "Ride.h"
+#include "ShopItem.h"
 #include "Track.h"
-#include "RideData.h"
 
 // clang-format off
 const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
@@ -135,7 +130,7 @@ const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
  *
  * data generation script: https://gist.github.com/kevinburke/6bcf4a8fcc95faad7bac
  */
-const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT] = {
+const uint8_t initialUpkeepCosts[RIDE_TYPE_COUNT] = {
     41, // 00 Spiral Roller coaster
     40, // 01 Stand Up Coaster
     40, // 02 Suspended Swinging
@@ -229,7 +224,7 @@ const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT] = {
     42, // 5a LIM Launched Roller Coaster
 };
 
-const uint8 costPerTrackPiece[RIDE_TYPE_COUNT] = {
+const uint8_t costPerTrackPiece[RIDE_TYPE_COUNT] = {
     80, // 00 Spiral Roller coaster
     80, // 01 Stand Up Coaster
     80, // 02 Suspended Swinging
@@ -326,7 +321,7 @@ const uint8 costPerTrackPiece[RIDE_TYPE_COUNT] = {
 /**
  * Data initially at 0x0097E3B4
  */
-const uint8 costPerVehicle[RIDE_TYPE_COUNT] = {
+const uint8_t costPerVehicle[RIDE_TYPE_COUNT] = {
     10, // 00 Spiral Roller coaster
     10, // 01 Stand Up Coaster
     20, // 02 Suspended Swinging
@@ -519,7 +514,7 @@ const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT] = {
 };
 
 /* Data at 0x0097E3B8 */
-const uint8 costPerStation[RIDE_TYPE_COUNT] = {
+const uint8_t costPerStation[RIDE_TYPE_COUNT] = {
     10, // 00 Spiral Roller coaster
     10, // 01 Stand Up Coaster
     10, // 02 Suspended Swinging
@@ -614,7 +609,7 @@ const uint8 costPerStation[RIDE_TYPE_COUNT] = {
 };
 
 // Data at 0x0097D21E
-const uint8 rideBonusValue[RIDE_TYPE_COUNT] = {
+const uint8_t rideBonusValue[RIDE_TYPE_COUNT] = {
     85,  // 00 Spiral Roller coaster
     90,  // 01 Stand Up Coaster
     90,  // 02 Suspended Swinging
@@ -917,7 +912,7 @@ const rct_ride_name RideNaming[] =  {
  *
  *  rct2: 0x0097C8AC
  */
-const uint8 RideAvailableModes[] = {
+const uint8_t RideAvailableModes[] = {
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 00 Spiral Roller coaster
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 01 Stand Up Coaster
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 02 Suspended Swinging
@@ -1011,11 +1006,11 @@ const uint8 RideAvailableModes[] = {
     RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF                                           // 5a LIM Launched Roller Coaster
 };
 
-const uint8 AllRideModesAvailable[] = {
+const uint8_t AllRideModesAvailable[] = {
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE, RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, RIDE_MODE_SHUTTLE, RIDE_MODE_NORMAL, RIDE_MODE_BOAT_HIRE, RIDE_MODE_UPWARD_LAUNCH, RIDE_MODE_ROTATING_LIFT, RIDE_MODE_STATION_TO_STATION, RIDE_MODE_SINGLE_RIDE_PER_ADMISSION, RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION, RIDE_MODE_MAZE, RIDE_MODE_RACE, RIDE_MODE_BUMPERCAR, RIDE_MODE_SWING, RIDE_MODE_SHOP_STALL, RIDE_MODE_ROTATION, RIDE_MODE_FORWARD_ROTATION, RIDE_MODE_BACKWARD_ROTATION, RIDE_MODE_FILM_AVENGING_AVIATORS, RIDE_MODE_3D_FILM_MOUSE_TAILS, RIDE_MODE_SPACE_RINGS, RIDE_MODE_BEGINNERS, RIDE_MODE_LIM_POWERED_LAUNCH, RIDE_MODE_FILM_THRILL_RIDERS, RIDE_MODE_3D_FILM_STORM_CHASERS, RIDE_MODE_3D_FILM_SPACE_RAIDERS, RIDE_MODE_INTENSE, RIDE_MODE_BERSERK, RIDE_MODE_HAUNTED_HOUSE, RIDE_MODE_CIRCUS_SHOW, RIDE_MODE_DOWNWARD_LAUNCH, RIDE_MODE_CROOKED_HOUSE, RIDE_MODE_FREEFALL_DROP, RIDE_MODE_POWERED_LAUNCH, RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED, 0xFF
 };
 
-const uint8 RideAvailableBreakdowns[] = {
+const uint8_t RideAvailableBreakdowns[] = {
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),                                                                                       // 00 Spiral Roller coaster
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 01 Stand Up Coaster
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 02 Suspended Swinging
@@ -1370,7 +1365,7 @@ const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
     {   12,     128,    3,      255,    2,      1,      39,     0   },  // RIDE_TYPE_CIRCUS
     {   8,      24,     6,      2,      7,      30,     50,     0   },  // RIDE_TYPE_GHOST_TRAIN
     {   54,     24,     8,      31,     9,      55,     120,    0   },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
-    {   41,     24,     8,      15,     11,     50,     105,    0   },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
+    {   41,     24,     8,      19,     11,     50,     105,    0   },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
     {   15,     24,     4,      15,     11,     37,     65,     0   },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
     {   16,     24,     4,      4,      7,      40,     55,     0   },  // RIDE_TYPE_STEEL_WILD_MOUSE
     {   40,     24,     8,      78,     11,     50,     100,    0   },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
@@ -1409,181 +1404,6 @@ const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
     {   13,     24,     9,      27,     11,     40,     70,     0   },  // RIDE_TYPE_MINE_RIDE
     {   16,     24,     4,      4,      7,      40,     55,     0   },  // RIDE_TYPE_59
     {   35,     24,     5,      18,     7,      50,     95,     0   },  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
-};
-
-
-// rct2: 0x00982358
-const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT] = {
-    MONEY(0,90),                        // SHOP_ITEM_BALLOON
-    MONEY(2,50),                        // SHOP_ITEM_TOY
-    MONEY(0,60),                        // SHOP_ITEM_MAP
-    MONEY(0,00),                        // SHOP_ITEM_PHOTO
-    MONEY(2,50),                        // SHOP_ITEM_UMBRELLA
-    MONEY(1,20),                        // SHOP_ITEM_DRINK
-    MONEY(1,50),                        // SHOP_ITEM_BURGER
-    MONEY(1,50),                        // SHOP_ITEM_CHIPS
-    MONEY(0,90),                        // SHOP_ITEM_ICE_CREAM
-    MONEY(0,80),                        // SHOP_ITEM_CANDYFLOSS
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_CAN
-    MONEY(0,00),                        // SHOP_ITEM_RUBBISH
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BURGER_BOX
-    MONEY(1,60),                        // SHOP_ITEM_PIZZA
-    MONEY(0,00),                        // SHOP_ITEM_VOUCHER
-    MONEY(1,20),                        // SHOP_ITEM_POPCORN
-    MONEY(1,00),                        // SHOP_ITEM_HOT_DOG
-    MONEY(1,50),                        // SHOP_ITEM_TENTACLE
-    MONEY(1,50),                        // SHOP_ITEM_HAT
-    MONEY(0,70),                        // SHOP_ITEM_TOFFEE_APPLE
-    MONEY(3,00),                        // SHOP_ITEM_TSHIRT
-    MONEY(0,70),                        // SHOP_ITEM_DOUGHNUT
-    MONEY(1,20),                        // SHOP_ITEM_COFFEE
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_CUP
-    MONEY(1,50),                        // SHOP_ITEM_CHICKEN
-    MONEY(1,20),                        // SHOP_ITEM_LEMONADE
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BOX
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BOTTLE
-    MONEY(0,00),                        // 28
-    MONEY(0,00),                        // 29
-    MONEY(0,00),                        // 30
-    MONEY(0,00),                        // 31
-    MONEY(0,00),                        // SHOP_ITEM_PHOTO2
-    MONEY(0,00),                        // SHOP_ITEM_PHOTO3
-    MONEY(0,00),                        // SHOP_ITEM_PHOTO4
-    MONEY(1,10),                        // SHOP_ITEM_PRETZEL
-    MONEY(1,20),                        // SHOP_ITEM_CHOCOLATE
-    MONEY(1,10),                        // SHOP_ITEM_ICED_TEA
-    MONEY(1,20),                        // SHOP_ITEM_FUNNEL_CAKE
-    MONEY(1,50),                        // SHOP_ITEM_SUNGLASSES
-    MONEY(1,50),                        // SHOP_ITEM_BEEF_NOODLES
-    MONEY(1,50),                        // SHOP_ITEM_FRIED_RICE_NOODLES
-    MONEY(1,50),                        // SHOP_ITEM_WONTON_SOUP
-    MONEY(1,50),                        // SHOP_ITEM_MEATBALL_SOUP
-    MONEY(1,20),                        // SHOP_ITEM_FRUIT_JUICE
-    MONEY(1,20),                        // SHOP_ITEM_SOYBEAN_MILK
-    MONEY(1,20),                        // SHOP_ITEM_SUJEONGGWA
-    MONEY(1,50),                        // SHOP_ITEM_SUB_SANDWICH
-    MONEY(0,70),                        // SHOP_ITEM_COOKIE
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BOWL_RED
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_DRINK_CARTON
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_JUICE_CUP
-    MONEY(1,50),                        // SHOP_ITEM_ROAST_SAUSAGE
-    MONEY(0,00),                        // SHOP_ITEM_EMPTY_BOWL_BLUE
-    MONEY(0,00),                        // 54
-    MONEY(0,00),                        // 55
-};
-
-const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT] = {
-    { STR_SHOP_ITEM_PRICE_LABEL_BALLOON,                STR_SHOP_ITEM_SINGULAR_BALLOON,             STR_SHOP_ITEM_PLURAL_BALLOON,               STR_SHOP_ITEM_INDEFINITE_BALLOON,               STR_SHOP_ITEM_DISPLAY_BALLOON               },
-    { STR_SHOP_ITEM_PRICE_LABEL_CUDDLY_TOY,             STR_SHOP_ITEM_SINGULAR_CUDDLY_TOY,          STR_SHOP_ITEM_PLURAL_CUDDLY_TOY,            STR_SHOP_ITEM_INDEFINITE_CUDDLY_TOY,            STR_SHOP_ITEM_DISPLAY_CUDDLY_TOY            },
-    { STR_SHOP_ITEM_PRICE_LABEL_PARK_MAP,               STR_SHOP_ITEM_SINGULAR_PARK_MAP,            STR_SHOP_ITEM_PLURAL_PARK_MAP,              STR_SHOP_ITEM_INDEFINITE_PARK_MAP,              STR_SHOP_ITEM_DISPLAY_PARK_MAP              },
-    { STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO,          STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,       STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,         STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,         STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO         },
-    { STR_SHOP_ITEM_PRICE_LABEL_UMBRELLA,               STR_SHOP_ITEM_SINGULAR_UMBRELLA,            STR_SHOP_ITEM_PLURAL_UMBRELLA,              STR_SHOP_ITEM_INDEFINITE_UMBRELLA,              STR_SHOP_ITEM_DISPLAY_UMBRELLA              },
-    { STR_SHOP_ITEM_PRICE_LABEL_DRINK,                  STR_SHOP_ITEM_SINGULAR_DRINK,               STR_SHOP_ITEM_PLURAL_DRINK,                 STR_SHOP_ITEM_INDEFINITE_DRINK,                 STR_SHOP_ITEM_DISPLAY_DRINK                 },
-    { STR_SHOP_ITEM_PRICE_LABEL_BURGER,                 STR_SHOP_ITEM_SINGULAR_BURGER,              STR_SHOP_ITEM_PLURAL_BURGER,                STR_SHOP_ITEM_INDEFINITE_BURGER,                STR_SHOP_ITEM_DISPLAY_BURGER                },
-    { STR_SHOP_ITEM_PRICE_LABEL_CHIPS,                  STR_SHOP_ITEM_SINGULAR_CHIPS,               STR_SHOP_ITEM_PLURAL_CHIPS,                 STR_SHOP_ITEM_INDEFINITE_CHIPS,                 STR_SHOP_ITEM_DISPLAY_CHIPS                 },
-    { STR_SHOP_ITEM_PRICE_LABEL_ICE_CREAM,              STR_SHOP_ITEM_SINGULAR_ICE_CREAM,           STR_SHOP_ITEM_PLURAL_ICE_CREAM,             STR_SHOP_ITEM_INDEFINITE_ICE_CREAM,             STR_SHOP_ITEM_DISPLAY_ICE_CREAM             },
-    { STR_SHOP_ITEM_PRICE_LABEL_CANDYFLOSS,             STR_SHOP_ITEM_SINGULAR_CANDYFLOSS,          STR_SHOP_ITEM_PLURAL_CANDYFLOSS,            STR_SHOP_ITEM_INDEFINITE_CANDYFLOSS,            STR_SHOP_ITEM_DISPLAY_CANDYFLOSS            },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_CAN,              STR_SHOP_ITEM_SINGULAR_EMPTY_CAN,           STR_SHOP_ITEM_PLURAL_EMPTY_CAN,             STR_SHOP_ITEM_INDEFINITE_EMPTY_CAN,             STR_SHOP_ITEM_DISPLAY_EMPTY_CAN             },
-    { STR_SHOP_ITEM_PRICE_LABEL_RUBBISH,                STR_SHOP_ITEM_SINGULAR_RUBBISH,             STR_SHOP_ITEM_PLURAL_RUBBISH,               STR_SHOP_ITEM_INDEFINITE_RUBBISH,               STR_SHOP_ITEM_DISPLAY_RUBBISH               },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BURGER_BOX,       STR_SHOP_ITEM_SINGULAR_EMPTY_BURGER_BOX,    STR_SHOP_ITEM_PLURAL_EMPTY_BURGER_BOX,      STR_SHOP_ITEM_INDEFINITE_EMPTY_BURGER_BOX,      STR_SHOP_ITEM_DISPLAY_EMPTY_BURGER_BOX      },
-    { STR_SHOP_ITEM_PRICE_LABEL_PIZZA,                  STR_SHOP_ITEM_SINGULAR_PIZZA,               STR_SHOP_ITEM_PLURAL_PIZZA,                 STR_SHOP_ITEM_INDEFINITE_PIZZA,                 STR_SHOP_ITEM_DISPLAY_PIZZA                 },
-    { STR_SHOP_ITEM_PRICE_LABEL_VOUCHER,                STR_SHOP_ITEM_SINGULAR_VOUCHER,             STR_SHOP_ITEM_PLURAL_VOUCHER,               STR_SHOP_ITEM_INDEFINITE_VOUCHER,               STR_SHOP_ITEM_DISPLAY_VOUCHER               },
-    { STR_SHOP_ITEM_PRICE_LABEL_POPCORN,                STR_SHOP_ITEM_SINGULAR_POPCORN,             STR_SHOP_ITEM_PLURAL_POPCORN,               STR_SHOP_ITEM_INDEFINITE_POPCORN,               STR_SHOP_ITEM_DISPLAY_POPCORN               },
-    { STR_SHOP_ITEM_PRICE_LABEL_HOT_DOG,                STR_SHOP_ITEM_SINGULAR_HOT_DOG,             STR_SHOP_ITEM_PLURAL_HOT_DOG,               STR_SHOP_ITEM_INDEFINITE_HOT_DOG,               STR_SHOP_ITEM_DISPLAY_HOT_DOG               },
-    { STR_SHOP_ITEM_PRICE_LABEL_TENTACLE,               STR_SHOP_ITEM_SINGULAR_TENTACLE,            STR_SHOP_ITEM_PLURAL_TENTACLE,              STR_SHOP_ITEM_INDEFINITE_TENTACLE,              STR_SHOP_ITEM_DISPLAY_TENTACLE              },
-    { STR_SHOP_ITEM_PRICE_LABEL_HAT,                    STR_SHOP_ITEM_SINGULAR_HAT,                 STR_SHOP_ITEM_PLURAL_HAT,                   STR_SHOP_ITEM_INDEFINITE_HAT,                   STR_SHOP_ITEM_DISPLAY_HAT                   },
-    { STR_SHOP_ITEM_PRICE_LABEL_TOFFEE_APPLE,           STR_SHOP_ITEM_SINGULAR_TOFFEE_APPLE,        STR_SHOP_ITEM_PLURAL_TOFFEE_APPLE,          STR_SHOP_ITEM_INDEFINITE_TOFFEE_APPLE,          STR_SHOP_ITEM_DISPLAY_TOFFEE_APPLE          },
-    { STR_SHOP_ITEM_PRICE_LABEL_T_SHIRT,                STR_SHOP_ITEM_SINGULAR_T_SHIRT,             STR_SHOP_ITEM_PLURAL_T_SHIRT,               STR_SHOP_ITEM_INDEFINITE_T_SHIRT,               STR_SHOP_ITEM_DISPLAY_T_SHIRT               },
-    { STR_SHOP_ITEM_PRICE_LABEL_DOUGHNUT,               STR_SHOP_ITEM_SINGULAR_DOUGHNUT,            STR_SHOP_ITEM_PLURAL_DOUGHNUT,              STR_SHOP_ITEM_INDEFINITE_DOUGHNUT,              STR_SHOP_ITEM_DISPLAY_DOUGHNUT              },
-    { STR_SHOP_ITEM_PRICE_LABEL_COFFEE,                 STR_SHOP_ITEM_SINGULAR_COFFEE,              STR_SHOP_ITEM_PLURAL_COFFEE,                STR_SHOP_ITEM_INDEFINITE_COFFEE,                STR_SHOP_ITEM_DISPLAY_COFFEE                },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_CUP,              STR_SHOP_ITEM_SINGULAR_EMPTY_CUP,           STR_SHOP_ITEM_PLURAL_EMPTY_CUP,             STR_SHOP_ITEM_INDEFINITE_EMPTY_CUP,             STR_SHOP_ITEM_DISPLAY_EMPTY_CUP             },
-    { STR_SHOP_ITEM_PRICE_LABEL_FRIED_CHICKEN,          STR_SHOP_ITEM_SINGULAR_FRIED_CHICKEN,       STR_SHOP_ITEM_PLURAL_FRIED_CHICKEN,         STR_SHOP_ITEM_INDEFINITE_FRIED_CHICKEN,         STR_SHOP_ITEM_DISPLAY_FRIED_CHICKEN         },
-    { STR_SHOP_ITEM_PRICE_LABEL_LEMONADE,               STR_SHOP_ITEM_SINGULAR_LEMONADE,            STR_SHOP_ITEM_PLURAL_LEMONADE,              STR_SHOP_ITEM_INDEFINITE_LEMONADE,              STR_SHOP_ITEM_DISPLAY_LEMONADE              },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOX,              STR_SHOP_ITEM_SINGULAR_EMPTY_BOX,           STR_SHOP_ITEM_PLURAL_EMPTY_BOX,             STR_SHOP_ITEM_INDEFINITE_EMPTY_BOX,             STR_SHOP_ITEM_DISPLAY_EMPTY_BOX             },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOTTLE,           STR_SHOP_ITEM_SINGULAR_EMPTY_BOTTLE,        STR_SHOP_ITEM_PLURAL_EMPTY_BOTTLE,          STR_SHOP_ITEM_INDEFINITE_EMPTY_BOTTLE,          STR_SHOP_ITEM_DISPLAY_EMPTY_BOTTLE          },
-    { STR_NONE,                                         STR_NONE,                                   STR_NONE,                                   STR_NONE,                                       STR_NONE                                    },
-    { STR_NONE,                                         STR_NONE,                                   STR_NONE,                                   STR_NONE,                                       STR_NONE                                    },
-    { STR_NONE,                                         STR_NONE,                                   STR_NONE,                                   STR_NONE,                                       STR_NONE                                    },
-    { STR_NONE,                                         STR_NONE,                                   STR_NONE,                                   STR_NONE,                                       STR_NONE                                    },
-    { STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO,          STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,       STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,         STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,         STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO         },
-    { STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO,          STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,       STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,         STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,         STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO         },
-    { STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO,          STR_SHOP_ITEM_SINGULAR_ON_RIDE_PHOTO,       STR_SHOP_ITEM_PLURAL_ON_RIDE_PHOTO,         STR_SHOP_ITEM_INDEFINITE_ON_RIDE_PHOTO,         STR_SHOP_ITEM_DISPLAY_ON_RIDE_PHOTO         },
-    { STR_SHOP_ITEM_PRICE_LABEL_PRETZEL,                STR_SHOP_ITEM_SINGULAR_PRETZEL,             STR_SHOP_ITEM_PLURAL_PRETZEL,               STR_SHOP_ITEM_INDEFINITE_PRETZEL,               STR_SHOP_ITEM_DISPLAY_PRETZEL               },
-    { STR_SHOP_ITEM_PRICE_LABEL_HOT_CHOCOLATE,          STR_SHOP_ITEM_SINGULAR_HOT_CHOCOLATE,       STR_SHOP_ITEM_PLURAL_HOT_CHOCOLATE,         STR_SHOP_ITEM_INDEFINITE_HOT_CHOCOLATE,         STR_SHOP_ITEM_DISPLAY_HOT_CHOCOLATE         },
-    { STR_SHOP_ITEM_PRICE_LABEL_ICED_TEA,               STR_SHOP_ITEM_SINGULAR_ICED_TEA,            STR_SHOP_ITEM_PLURAL_ICED_TEA,              STR_SHOP_ITEM_INDEFINITE_ICED_TEA,              STR_SHOP_ITEM_DISPLAY_ICED_TEA              },
-    { STR_SHOP_ITEM_PRICE_LABEL_FUNNEL_CAKE,            STR_SHOP_ITEM_SINGULAR_FUNNEL_CAKE,         STR_SHOP_ITEM_PLURAL_FUNNEL_CAKE,           STR_SHOP_ITEM_INDEFINITE_FUNNEL_CAKE,           STR_SHOP_ITEM_DISPLAY_FUNNEL_CAKE           },
-    { STR_SHOP_ITEM_PRICE_LABEL_SUNGLASSES,             STR_SHOP_ITEM_SINGULAR_SUNGLASSES,          STR_SHOP_ITEM_PLURAL_SUNGLASSES,            STR_SHOP_ITEM_INDEFINITE_SUNGLASSES,            STR_SHOP_ITEM_DISPLAY_SUNGLASSES            },
-    { STR_SHOP_ITEM_PRICE_LABEL_BEEF_NOODLES,           STR_SHOP_ITEM_SINGULAR_BEEF_NOODLES,        STR_SHOP_ITEM_PLURAL_BEEF_NOODLES,          STR_SHOP_ITEM_INDEFINITE_BEEF_NOODLES,          STR_SHOP_ITEM_DISPLAY_BEEF_NOODLES          },
-    { STR_SHOP_ITEM_PRICE_LABEL_FRIED_RICE_NOODLES,     STR_SHOP_ITEM_SINGULAR_FRIED_RICE_NOODLES,  STR_SHOP_ITEM_PLURAL_FRIED_RICE_NOODLES,    STR_SHOP_ITEM_INDEFINITE_FRIED_RICE_NOODLES,    STR_SHOP_ITEM_DISPLAY_FRIED_RICE_NOODLES    },
-    { STR_SHOP_ITEM_PRICE_LABEL_WONTON_SOUP,            STR_SHOP_ITEM_SINGULAR_WONTON_SOUP,         STR_SHOP_ITEM_PLURAL_WONTON_SOUP,           STR_SHOP_ITEM_INDEFINITE_WONTON_SOUP,           STR_SHOP_ITEM_DISPLAY_WONTON_SOUP           },
-    { STR_SHOP_ITEM_PRICE_LABEL_MEATBALL_SOUP,          STR_SHOP_ITEM_SINGULAR_MEATBALL_SOUP,       STR_SHOP_ITEM_PLURAL_MEATBALL_SOUP,         STR_SHOP_ITEM_INDEFINITE_MEATBALL_SOUP,         STR_SHOP_ITEM_DISPLAY_MEATBALL_SOUP         },
-    { STR_SHOP_ITEM_PRICE_LABEL_FRUIT_JUICE,            STR_SHOP_ITEM_SINGULAR_FRUIT_JUICE,         STR_SHOP_ITEM_PLURAL_FRUIT_JUICE,           STR_SHOP_ITEM_INDEFINITE_FRUIT_JUICE,           STR_SHOP_ITEM_DISPLAY_FRUIT_JUICE           },
-    { STR_SHOP_ITEM_PRICE_LABEL_SOYBEAN_MILK,           STR_SHOP_ITEM_SINGULAR_SOYBEAN_MILK,        STR_SHOP_ITEM_PLURAL_SOYBEAN_MILK,          STR_SHOP_ITEM_INDEFINITE_SOYBEAN_MILK,          STR_SHOP_ITEM_DISPLAY_SOYBEAN_MILK          },
-    { STR_SHOP_ITEM_PRICE_LABEL_SUJONGKWA,              STR_SHOP_ITEM_SINGULAR_SUJONGKWA,           STR_SHOP_ITEM_PLURAL_SUJONGKWA,             STR_SHOP_ITEM_INDEFINITE_SUJONGKWA,             STR_SHOP_ITEM_DISPLAY_SUJONGKWA             },
-    { STR_SHOP_ITEM_PRICE_LABEL_SUB_SANDWICH,           STR_SHOP_ITEM_SINGULAR_SUB_SANDWICH,        STR_SHOP_ITEM_PLURAL_SUB_SANDWICH,          STR_SHOP_ITEM_INDEFINITE_SUB_SANDWICH,          STR_SHOP_ITEM_DISPLAY_SUB_SANDWICH          },
-    { STR_SHOP_ITEM_PRICE_LABEL_COOKIE,                 STR_SHOP_ITEM_SINGULAR_COOKIE,              STR_SHOP_ITEM_PLURAL_COOKIE,                STR_SHOP_ITEM_INDEFINITE_COOKIE,                STR_SHOP_ITEM_DISPLAY_COOKIE                },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOWL_RED,         STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_RED,      STR_SHOP_ITEM_PLURAL_EMPTY_BOWL_RED,        STR_SHOP_ITEM_INDEFINITE_EMPTY_BOWL_RED,        STR_SHOP_ITEM_DISPLAY_EMPTY_BOWL_RED        },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_DRINK_CARTON,     STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,  STR_SHOP_ITEM_PLURAL_EMPTY_DRINK_CARTON,    STR_SHOP_ITEM_INDEFINITE_EMPTY_DRINK_CARTON,    STR_SHOP_ITEM_DISPLAY_EMPTY_DRINK_CARTON    },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_JUICE_CUP,        STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,     STR_SHOP_ITEM_PLURAL_EMPTY_JUICE_CUP,       STR_SHOP_ITEM_INDEFINITE_EMPTY_JUICE_CUP,       STR_SHOP_ITEM_DISPLAY_EMPTY_JUICE_CUP       },
-    { STR_SHOP_ITEM_PRICE_LABEL_ROAST_SAUSAGE,          STR_SHOP_ITEM_SINGULAR_ROAST_SAUSAGE,       STR_SHOP_ITEM_PLURAL_ROAST_SAUSAGE,         STR_SHOP_ITEM_INDEFINITE_ROAST_SAUSAGE,         STR_SHOP_ITEM_DISPLAY_ROAST_SAUSAGE         },
-    { STR_SHOP_ITEM_PRICE_LABEL_EMPTY_BOWL_BLUE,        STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE,     STR_SHOP_ITEM_PLURAL_EMPTY_BOWL_BLUE,       STR_SHOP_ITEM_INDEFINITE_EMPTY_BOWL_BLUE,       STR_SHOP_ITEM_DISPLAY_EMPTY_BOWL_BLUE       },
-};
-
-const uint32 ShopItemImage[SHOP_ITEM_COUNT] = {
-    SPR_SHOP_ITEM_BALLOON,
-    SPR_SHOP_ITEM_TOY,
-    SPR_SHOP_ITEM_MAP,
-    SPR_SHOP_ITEM_PHOTO,
-    SPR_SHOP_ITEM_UMBRELLA,
-    SPR_SHOP_ITEM_DRINK,
-    SPR_SHOP_ITEM_BURGER,
-    SPR_SHOP_ITEM_CHIPS,
-    SPR_SHOP_ITEM_ICE_CREAM,
-    SPR_SHOP_ITEM_CANDYFLOSS,
-    SPR_SHOP_ITEM_EMPTY_CAN,
-    SPR_SHOP_ITEM_RUBBISH,
-    SPR_SHOP_ITEM_EMPTY_BURGER_BOX,
-    SPR_SHOP_ITEM_PIZZA,
-    SPR_SHOP_ITEM_VOUCHER,
-    SPR_SHOP_ITEM_POPCORN,
-    SPR_SHOP_ITEM_HOT_DOG,
-    SPR_SHOP_ITEM_TENTACLE,
-    SPR_SHOP_ITEM_HAT,
-    SPR_SHOP_ITEM_TOFFEE_APPLE,
-    SPR_SHOP_ITEM_TSHIRT,
-    SPR_SHOP_ITEM_DOUGHNUT,
-    SPR_SHOP_ITEM_COFFEE,
-    SPR_SHOP_ITEM_EMPTY_CUP,
-    SPR_SHOP_ITEM_CHICKEN,
-    SPR_SHOP_ITEM_LEMONADE,
-    SPR_SHOP_ITEM_EMPTY_BOX,
-    SPR_SHOP_ITEM_EMPTY_BOTTLE,
-    0,                                      // 28
-    0,                                      // 29
-    0,                                      // 30
-    0,                                      // 31
-    SPR_SHOP_ITEM_PHOTO2,
-    SPR_SHOP_ITEM_PHOTO3,
-    SPR_SHOP_ITEM_PHOTO4,
-    SPR_SHOP_ITEM_PRETZEL,
-    SPR_SHOP_ITEM_CHOCOLATE,
-    SPR_SHOP_ITEM_ICED_TEA,
-    SPR_SHOP_ITEM_FUNNEL_CAKE,
-    SPR_SHOP_ITEM_SUNGLASSES,
-    SPR_SHOP_ITEM_BEEF_NOODLES,
-    SPR_SHOP_ITEM_FRIED_RICE_NOODLES,
-    SPR_SHOP_ITEM_WONTON_SOUP,
-    SPR_SHOP_ITEM_MEATBALL_SOUP,
-    SPR_SHOP_ITEM_FRUIT_JUICE,
-    SPR_SHOP_ITEM_SOYBEAN_MILK,
-    SPR_SHOP_ITEM_SUJEONGGWA,
-    SPR_SHOP_ITEM_SUB_SANDWICH,
-    SPR_SHOP_ITEM_COOKIE,
-    SPR_SHOP_ITEM_EMPTY_BOWL_RED,
-    SPR_SHOP_ITEM_EMPTY_DRINK_CARTON,
-    SPR_SHOP_ITEM_EMPTY_JUICE_CUP,
-    SPR_SHOP_ITEM_ROAST_SAUSAGE,
-    SPR_SHOP_ITEM_EMPTY_BOWL_BLUE,
 };
 
 const rct_ride_entry_vehicle CableLiftVehicle = {
@@ -1633,14 +1453,14 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
 };
 
 /* rct2: 0x009A0AA0 */
-const uint16 RideFilmLength[3] = {
+const uint16_t RideFilmLength[3] = {
     5000, // MOUSE_TAILS
     6000, // STORM_CHASERS
     7000  // SPACE_RAIDERS
 };
 
 /* rct2: 0x009A0AC4 */
-const uint16 RideCrookedHouseLength[1] = {
+const uint16_t RideCrookedHouseLength[1] = {
     600
 };
 
@@ -1740,7 +1560,7 @@ const rct_ride_lift_data RideLiftData[] = {
 };
 
 /** rct2: 0x0097D7CB */
-const sint32 RidePhotoItems[] = {
+const int32_t RidePhotoItems[] = {
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     SHOP_ITEM_PHOTO2,   // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
@@ -2434,66 +2254,8 @@ const rct_ride_properties RideProperties[RIDE_TYPE_COUNT] = {
                 10, 31,  26, 18,  18, 0 },  // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
-/** rct2: 0x00982164 */
-const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] = {
-    {  3, 14, 14, 14 }, // SHOP_ITEM_BALLOON
-    { 15, 30, 30, 30 }, // SHOP_ITEM_TOY
-    {  1,  7,  7,  8 }, // SHOP_ITEM_MAP
-    {  2, 30, 30, 30 }, // SHOP_ITEM_PHOTO
-    { 20, 35, 25, 50 }, // SHOP_ITEM_UMBRELLA
-    {  3, 12, 20, 10 }, // SHOP_ITEM_DRINK
-    {  5, 19, 19, 22 }, // SHOP_ITEM_BURGER
-    {  4, 16, 16, 18 }, // SHOP_ITEM_CHIPS
-    {  4, 10, 15,  6 }, // SHOP_ITEM_ICE_CREAM
-    {  3,  9,  9,  6 }, // SHOP_ITEM_CANDYFLOSS
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_CAN
-    {  0,  0,  0,  0 }, // SHOP_ITEM_RUBBISH
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BURGER_BOX
-    {  6, 21, 21, 25 }, // SHOP_ITEM_PIZZA
-    {  0,  0,  0,  0 }, // SHOP_ITEM_VOUCHER
-    {  5, 13, 13, 11 }, // SHOP_ITEM_POPCORN
-    {  5, 17, 17, 20 }, // SHOP_ITEM_HOT_DOG
-    { 11, 22, 20, 18 }, // SHOP_ITEM_TENTACLE
-    {  9, 27, 32, 24 }, // SHOP_ITEM_HAT
-    {  4, 10, 10, 10 }, // SHOP_ITEM_TOFFEE_APPLE
-    { 20, 37, 37, 37 }, // SHOP_ITEM_TSHIRT
-    {  4,  8,  7, 10 }, // SHOP_ITEM_DOUGHNUT
-    {  3, 11, 15, 20 }, // SHOP_ITEM_COFFEE
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_CUP
-    {  5, 19, 19, 22 }, // SHOP_ITEM_CHICKEN
-    {  4, 11, 21, 10 }, // SHOP_ITEM_LEMONADE
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BOX
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BOTTLE
-    {  0,  0,  0,  0 }, // 28
-    {  0,  0,  0,  0 }, // 29
-    {  0,  0,  0,  0 }, // 30
-    {  0,  0,  0,  0 }, // SHOP_ITEM_ADMISSION
-    {  2, 30, 30, 30 }, // SHOP_ITEM_PHOTO2
-    {  2, 30, 30, 30 }, // SHOP_ITEM_PHOTO3
-    {  2, 30, 30, 30 }, // SHOP_ITEM_PHOTO4
-    {  5, 11, 11, 11 }, // SHOP_ITEM_PRETZEL
-    {  4, 13, 13, 20 }, // SHOP_ITEM_CHOCOLATE
-    {  3, 10, 20, 10 }, // SHOP_ITEM_ICED_TEA
-    {  5, 13, 11, 14 }, // SHOP_ITEM_FUNNEL_CAKE
-    {  8, 15, 20, 12 }, // SHOP_ITEM_SUNGLASSES
-    {  7, 17, 17, 20 }, // SHOP_ITEM_BEEF_NOODLES
-    {  6, 17, 17, 20 }, // SHOP_ITEM_FRIED_RICE_NOODLES
-    {  4, 13, 13, 15 }, // SHOP_ITEM_WONTON_SOUP
-    {  5, 14, 14, 16 }, // SHOP_ITEM_MEATBALL_SOUP
-    {  4, 11, 19, 11 }, // SHOP_ITEM_FRUIT_JUICE
-    {  4, 10, 14, 10 }, // SHOP_ITEM_SOYBEAN_MILK
-    {  3, 11, 14, 11 }, // SHOP_ITEM_SUJEONGGWA
-    {  5, 19, 19, 17 }, // SHOP_ITEM_SUB_SANDWICH
-    {  4,  8,  8,  8 }, // SHOP_ITEM_COOKIE
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BOWL_RED
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_DRINK_CARTON
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_JUICE_CUP
-    {  5, 16, 16, 20 }, // SHOP_ITEM_ROAST_SAUSAGE
-    {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_BOWL_BLUE
-};
-
 /** rct2: 0x0097CC68 */
-const uint8 RideConstructionDefaultTrackType[] = {
+const uint8_t RideConstructionDefaultTrackType[] = {
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
@@ -2587,7 +2349,7 @@ const uint8 RideConstructionDefaultTrackType[] = {
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
-#define TRACK_COLOUR_PRESETS(...)       {static_cast<uint8>(Util::CountOf<track_colour>({__VA_ARGS__})), {__VA_ARGS__}}
+#define TRACK_COLOUR_PRESETS(...)       {static_cast<uint8_t>(Util::CountOf<track_colour>({__VA_ARGS__})), {__VA_ARGS__}}
 
 #define DEFAULT_FLAT_RIDE_COLOUR_PRESET TRACK_COLOUR_PRESETS( { COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW } )
 #define DEFAULT_STALL_COLOUR_PRESET     TRACK_COLOUR_PRESETS( { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED } )

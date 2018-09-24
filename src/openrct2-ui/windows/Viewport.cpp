@@ -1,31 +1,24 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <openrct2-ui/windows/Window.h>
-
-#include <openrct2/audio/audio.h>
-#include <openrct2/Game.h>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Game.h>
+#include <openrct2/audio/audio.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/sprites.h>
 
 #define INITIAL_WIDTH 500
 #define INITIAL_HEIGHT 350
 
+// clang-format off
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -86,35 +79,28 @@ static rct_window_event_list window_viewport_events = {
     window_viewport_paint,
     nullptr
 };
+// clang-format on
 
-static sint32 _viewportNumber = 1;
+static int32_t _viewportNumber = 1;
 
 /**
  * Creates a custom viewport window.
  */
-rct_window * window_viewport_open()
+rct_window* window_viewport_open()
 {
-    rct_window *w = window_create_auto_pos(
-        INITIAL_WIDTH, INITIAL_HEIGHT,
-        &window_viewport_events,
-        WC_VIEWPORT,
-        WF_RESIZABLE
-    );
+    rct_window* w = window_create_auto_pos(INITIAL_WIDTH, INITIAL_HEIGHT, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
     w->widgets = window_viewport_widgets;
-    w->enabled_widgets =
-        (1 << WIDX_CLOSE) |
-        (1 << WIDX_ZOOM_IN) |
-        (1 << WIDX_ZOOM_OUT) |
-        (1 << WIDX_LOCATE);
+    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT) | (1 << WIDX_LOCATE);
     w->number = _viewportNumber++;
 
     // Create viewport
     viewport_create(w, w->x, w->y, w->width, w->height, 0, 128 * 32, 128 * 32, 0, 1, -1);
-    rct_window *mainWindow = window_get_main();
-    if (mainWindow != nullptr) {
-        rct_viewport *mainViewport = mainWindow->viewport;
-        sint32 x = mainViewport->view_x + (mainViewport->view_width / 2);
-        sint32 y = mainViewport->view_y + (mainViewport->view_height / 2);
+    rct_window* mainWindow = window_get_main();
+    if (mainWindow != nullptr)
+    {
+        rct_viewport* mainViewport = mainWindow->viewport;
+        int32_t x = mainViewport->view_x + (mainViewport->view_width / 2);
+        int32_t y = mainViewport->view_y + (mainViewport->view_height / 2);
         w->saved_view_x = x - (w->viewport->view_width / 2);
         w->saved_view_y = y - (w->viewport->view_height / 2);
     }
@@ -124,7 +110,7 @@ rct_window * window_viewport_open()
     return w;
 }
 
-static void window_viewport_anchor_border_widgets(rct_window *w)
+static void window_viewport_anchor_border_widgets(rct_window* w)
 {
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -135,65 +121,72 @@ static void window_viewport_anchor_border_widgets(rct_window *w)
     w->widgets[WIDX_CLOSE].right = w->width - 3;
 }
 
-static void window_viewport_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_window *mainWindow;
-    sint16 x, y;
+    rct_window* mainWindow;
+    int16_t x, y;
 
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_ZOOM_IN:
-        if (w->viewport != nullptr && w->viewport->zoom > 0) {
-            w->viewport->zoom--;
-            window_invalidate(w);
-        }
-        break;
-    case WIDX_ZOOM_OUT:
-        if (w->viewport != nullptr && w->viewport->zoom < 3) {
-            w->viewport->zoom++;
-            window_invalidate(w);
-        }
-        break;
-    case WIDX_LOCATE:
-        mainWindow = window_get_main();
-        if (mainWindow != nullptr) {
-            get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, nullptr, nullptr, nullptr);
-            window_scroll_to_location(mainWindow, x, y, tile_element_height(x, y));
-        }
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_ZOOM_IN:
+            if (w->viewport != nullptr && w->viewport->zoom > 0)
+            {
+                w->viewport->zoom--;
+                window_invalidate(w);
+            }
+            break;
+        case WIDX_ZOOM_OUT:
+            if (w->viewport != nullptr && w->viewport->zoom < 3)
+            {
+                w->viewport->zoom++;
+                window_invalidate(w);
+            }
+            break;
+        case WIDX_LOCATE:
+            mainWindow = window_get_main();
+            if (mainWindow != nullptr)
+            {
+                get_map_coordinates_from_pos(
+                    w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, nullptr, nullptr,
+                    nullptr);
+                window_scroll_to_location(mainWindow, x, y, tile_element_height(x, y));
+            }
+            break;
     }
 }
 
-static void window_viewport_resize(rct_window *w)
+static void window_viewport_resize(rct_window* w)
 {
     w->flags |= WF_RESIZABLE;
     window_set_resize(w, 200, 200, 2000, 2000);
 }
 
-static void window_viewport_update(rct_window *w)
+static void window_viewport_update(rct_window* w)
 {
-    rct_window *mainWindow;
+    rct_window* mainWindow;
 
     mainWindow = window_get_main();
     if (mainWindow == nullptr)
         return;
 
-    if (w->viewport->flags != mainWindow->viewport->flags) {
+    if (w->viewport->flags != mainWindow->viewport->flags)
+    {
         w->viewport->flags = mainWindow->viewport->flags;
         window_invalidate(w);
     }
 
     // Not sure how to invalidate part of the viewport that has changed, this will have to do for now
-    //widget_invalidate(w, WIDX_VIEWPORT);
+    // widget_invalidate(w, WIDX_VIEWPORT);
 }
 
-static void window_viewport_invalidate(rct_window *w)
+static void window_viewport_invalidate(rct_window* w)
 {
-    rct_widget *viewportWidget;
-    rct_viewport *viewport;
-    sint32 i;
+    rct_widget* viewportWidget;
+    rct_viewport* viewport;
+    int32_t i;
 
     viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
     viewport = w->viewport;
@@ -202,13 +195,14 @@ static void window_viewport_invalidate(rct_window *w)
     window_viewport_anchor_border_widgets(w);
     viewportWidget->right = w->width - 26;
     viewportWidget->bottom = w->height - 3;
-    for (i = WIDX_ZOOM_IN; i <= WIDX_LOCATE; i++) {
+    for (i = WIDX_ZOOM_IN; i <= WIDX_LOCATE; i++)
+    {
         window_viewport_widgets[i].left = w->width - 25;
         window_viewport_widgets[i].right = w->width - 2;
     }
 
     // Set title
-    set_format_arg(0, uint32, w->number);
+    set_format_arg(0, uint32_t, w->number);
 
     // Set disabled widgets
     w->disabled_widgets = 0;
@@ -225,7 +219,7 @@ static void window_viewport_invalidate(rct_window *w)
     viewport->view_height = viewport->height << viewport->zoom;
 }
 
-static void window_viewport_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_viewport_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 

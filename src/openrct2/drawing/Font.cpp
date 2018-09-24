@@ -1,35 +1,186 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "Font.h"
 
 #include "../core/Util.hpp"
-#include "../localisation/ConversionTables.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
+#include "../localisation/LocalisationService.h"
 #include "../sprites.h"
 #include "Drawing.h"
-#include "Font.h"
 #include "TTF.h"
 
-static constexpr const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
+#include <map>
 
-static uint8 _spriteFontCharacterWidths[896];
+static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
+
+static uint8_t _spriteFontCharacterWidths[FONT_SIZE_COUNT][FONT_SPRITE_GLYPH_COUNT];
+static uint8_t _additionalSpriteFontCharacterWidth[FONT_SIZE_COUNT][SPR_G2_GLYPH_COUNT] = {};
 
 #ifndef NO_TTF
-TTFFontSetDescriptor *gCurrentTTFFontSet;
+TTFFontSetDescriptor* gCurrentTTFFontSet;
 #endif // NO_TTF
+
+static const std::map<char32_t, int32_t> codepointOffsetMap = {
+    { UnicodeChar::ae_uc, SPR_G2_AE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::o_stroke_uc, SPR_G2_O_STROKE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::y_acute_uc, SPR_G2_Y_ACUTE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::ae, SPR_G2_AE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::o_stroke, SPR_G2_O_STROKE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::y_acute, SPR_G2_Y_ACUTE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::a_breve_uc, SPR_G2_A_BREVE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::a_breve, 226 - CS_SPRITE_FONT_OFFSET }, // Render as â, no visual difference in the RCT font
+    { UnicodeChar::a_ogonek_uc, CSChar::a_ogonek_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::a_ogonek, CSChar::a_ogonek - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::c_acute_uc, CSChar::c_acute_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::c_acute, CSChar::c_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::c_caron_uc, SPR_G2_C_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::c_caron, SPR_G2_C_CARON_LOWER - SPR_CHAR_START },
+    { UnicodeChar::d_caron_uc, SPR_G2_D_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::d_caron, SPR_G2_D_CARON_LOWER - SPR_CHAR_START },
+    { UnicodeChar::e_ogonek_uc, CSChar::e_ogonek_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::e_ogonek, CSChar::e_ogonek - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::e_caron_uc, SPR_G2_E_CARON_UPPER - SPR_CHAR_START },
+    { UnicodeChar::e_caron, SPR_G2_E_CARON_LOWER - SPR_CHAR_START },
+    { UnicodeChar::g_breve_uc, SPR_G2_G_BREVE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::g_breve, SPR_G2_G_BREVE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::i_with_dot_uc, SPR_G2_I_WITH_DOT_UPPER - SPR_CHAR_START },
+    { UnicodeChar::i_without_dot, SPR_G2_I_WITHOUT_DOT_LOWER - SPR_CHAR_START },
+    { UnicodeChar::l_stroke_uc, CSChar::l_stroke_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::l_stroke, CSChar::l_stroke - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::n_acute_uc, CSChar::n_acute_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::n_acute, CSChar::n_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::o_double_acute_uc, SPR_G2_O_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::o_double_acute, SPR_G2_O_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::s_acute_uc, CSChar::s_acute_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::s_acute, CSChar::s_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::s_cedilla_uc, SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START },
+    { UnicodeChar::s_cedilla, SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::u_double_acute_uc, SPR_G2_U_DOUBLE_ACUTE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::u_double_acute, SPR_G2_U_DOUBLE_ACUTE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::z_acute_uc, CSChar::z_acute_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::z_acute, CSChar::z_acute - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::z_dot_uc, CSChar::z_dot_uc - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::z_dot, CSChar::z_dot - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::f_with_hook_uc, 'F' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::s_comma_uc, SPR_G2_S_CEDILLA_UPPER - SPR_CHAR_START }, // No visual difference
+    { UnicodeChar::s_comma, SPR_G2_S_CEDILLA_LOWER - SPR_CHAR_START },    // Ditto
+    { UnicodeChar::t_comma_uc, SPR_G2_T_COMMA_UPPER - SPR_CHAR_START },
+    { UnicodeChar::t_comma, SPR_G2_T_COMMA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::sharp_s_uc, 223 - CS_SPRITE_FONT_OFFSET },
+
+    // Cyrillic alphabet
+    { UnicodeChar::cyrillic_io_uc, 203 - CS_SPRITE_FONT_OFFSET }, // Looks just like Ë
+    { UnicodeChar::cyrillic_a_uc, 'A' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_be_uc, SPR_G2_CYRILLIC_BE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ve_uc, 'B' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_ghe_uc, SPR_G2_CYRILLIC_GHE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_de_uc, SPR_G2_CYRILLIC_DE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ie_uc, 'E' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_zhe_uc, SPR_G2_CYRILLIC_ZHE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ze_uc, SPR_G2_CYRILLIC_ZE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_i_uc, SPR_G2_CYRILLIC_I_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_short_i_uc, SPR_G2_CYRILLIC_SHORT_I_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ka_uc, 'K' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_el_uc, SPR_G2_CYRILLIC_EL_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_em_uc, 'M' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_en_uc, 'H' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_o_uc, 'O' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_pe_uc, SPR_G2_CYRILLIC_PE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_er_uc, 'P' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_es_uc, 'C' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_te_uc, 'T' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_u_uc, SPR_G2_CYRILLIC_U_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ef_uc, SPR_G2_CYRILLIC_EF_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ha_uc, 'X' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_tse_uc, SPR_G2_CYRILLIC_TSE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_che_uc, SPR_G2_CYRILLIC_CHE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_sha_uc, SPR_G2_CYRILLIC_SHA_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_shcha_uc, SPR_G2_CYRILLIC_SHCHA_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_hard_sign_uc, SPR_G2_CYRILLIC_HARD_SIGN_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_yeru_uc, SPR_G2_CYRILLIC_YERU_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_soft_sign_uc, SPR_G2_CYRILLIC_SOFT_SIGN_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_e_uc, SPR_G2_CYRILLIC_E_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_yu_uc, SPR_G2_CYRILLIC_YU_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ya_uc, SPR_G2_CYRILLIC_YA_UPPER - SPR_CHAR_START },
+
+    { UnicodeChar::cyrillic_a, 'a' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_be, SPR_G2_CYRILLIC_BE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ve, SPR_G2_CYRILLIC_VE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ghe, SPR_G2_CYRILLIC_GHE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_de, SPR_G2_CYRILLIC_DE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ie, 'e' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_zhe, SPR_G2_CYRILLIC_ZHE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ze, SPR_G2_CYRILLIC_ZE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_i, SPR_G2_CYRILLIC_I_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_short_i, SPR_G2_CYRILLIC_SHORT_I_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ka, SPR_G2_CYRILLIC_KA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_el, SPR_G2_CYRILLIC_EL_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_em, SPR_G2_CYRILLIC_EM_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_en, SPR_G2_CYRILLIC_EN_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_o, 'o' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_pe, SPR_G2_CYRILLIC_PE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_er, 'p' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_es, 'c' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_te, SPR_G2_CYRILLIC_TE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_u, 'y' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_ef, SPR_G2_CYRILLIC_EF_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ha, 'x' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::cyrillic_tse, SPR_G2_CYRILLIC_TSE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_che, SPR_G2_CYRILLIC_CHE_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_sha, SPR_G2_CYRILLIC_SHA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_shcha, SPR_G2_CYRILLIC_SHCHA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_hard_sign, SPR_G2_CYRILLIC_HARD_SIGN_UPPER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_yeru, SPR_G2_CYRILLIC_YERU_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_soft_sign, SPR_G2_CYRILLIC_SOFT_SIGN_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_e, SPR_G2_CYRILLIC_E_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_yu, SPR_G2_CYRILLIC_YU_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_ya, SPR_G2_CYRILLIC_YA_LOWER - SPR_CHAR_START },
+    { UnicodeChar::cyrillic_io, 235 - CS_SPRITE_FONT_OFFSET }, // Looks just like ë
+
+    // Punctuation
+    { UnicodeChar::interpunct, SPR_G2_INTERPUNCT - SPR_CHAR_START },
+    { UnicodeChar::single_quote_open, '`' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::single_quote_end, '\'' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::single_german_quote_open, ',' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::german_quote_open, SPR_G2_GERMAN_OPENQUOTES - SPR_CHAR_START },
+    { UnicodeChar::bullet, CSChar::bullet - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::ellipsis, SPR_G2_ELLIPSIS - SPR_CHAR_START },
+    { UnicodeChar::quote_open, CSChar::quote_open - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::quote_close, CSChar::quote_close - CS_SPRITE_FONT_OFFSET },
+
+    // Currency
+    { UnicodeChar::guilder, SPR_G2_GUILDER_SIGN - SPR_CHAR_START },
+    { UnicodeChar::euro, CSChar::euro - CS_SPRITE_FONT_OFFSET },
+
+    // Dingbats
+    { UnicodeChar::up, CSChar::up - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::small_up, CSChar::small_up - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::right, CSChar::right - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::down, CSChar::down - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::small_down, CSChar::small_down - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::left, CSChar::left - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::air, CSChar::air - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::tick, CSChar::tick - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::plus, '+' - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::minus, '-' - CS_SPRITE_FONT_OFFSET },
+
+    // Emoji
+    { UnicodeChar::cross, CSChar::cross - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::water, CSChar::water - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::road, CSChar::road - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::railway, CSChar::railway - CS_SPRITE_FONT_OFFSET },
+
+    // Misc
+    { UnicodeChar::superscript_minus_one, CSChar::superscript_minus_one - CS_SPRITE_FONT_OFFSET },
+};
 
 /**
  *
@@ -37,131 +188,134 @@ TTFFontSetDescriptor *gCurrentTTFFontSet;
  */
 void font_sprite_initialise_characters()
 {
-    uint8* pCharacterWidth = _spriteFontCharacterWidths;
-    for (sint32 fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++) {
-        sint32 glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
-        for (uint8 glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++) {
-            const rct_g1_element * g1 = gfx_get_g1_element(glyphIndex + SPR_CHAR_START + glyphOffset);
+    for (int32_t fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++)
+    {
+        int32_t glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
+        for (uint8_t glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++)
+        {
+            const rct_g1_element* g1 = gfx_get_g1_element(glyphIndex + SPR_CHAR_START + glyphOffset);
+            int32_t width = 0;
             if (g1 != nullptr)
             {
-                sint32 width = g1->width + 2 * g1->x_offset;
-                width += fontSize == FONT_SIZE_BIG ? 1 : -1;
-                if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
-                    width = 0;
+                if (glyphIndex < (FORMAT_ARGUMENT_CODE_START - 32) || glyphIndex >= (FORMAT_COLOUR_CODE_END - 32))
+                {
+                    width = (g1->width + 2 * g1->x_offset) - 1;
                 }
-                *pCharacterWidth++ = (uint8)width;
             }
+
+            _spriteFontCharacterWidths[fontSize][glyphIndex] = (uint8_t)width;
+        }
+    }
+
+    for (uint8_t fontSize : { FONT_SIZE_SMALL, FONT_SIZE_MEDIUM, FONT_SIZE_TINY })
+    {
+        int32_t glyphOffset = fontSize * SPR_G2_GLYPH_COUNT;
+        for (int32_t glyphIndex = 0; glyphIndex < SPR_G2_GLYPH_COUNT; glyphIndex++)
+        {
+            const rct_g1_element* g1 = gfx_get_g1_element(glyphIndex + SPR_G2_CHAR_BEGIN + glyphOffset);
+            int32_t width = 0;
+            if (g1 != nullptr)
+            {
+                width = g1->width + (2 * g1->x_offset) - 1;
+            }
+
+            _additionalSpriteFontCharacterWidth[fontSize][glyphIndex] = (uint8_t)width;
         }
     }
 
     scrolling_text_initialise_bitmaps();
 }
 
-sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
+int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
 {
-    switch (codepoint) {
-    case FORMAT_ENDQUOTES: return 34 - 32;
+    auto result = codepointOffsetMap.find(codepoint);
+    if (result != codepointOffsetMap.end())
+        return result->second;
 
-    case FORMAT_UP: return 160 - 32;
-    case FORMAT_INVERTEDEXCLAMATION: return 160 - 32;
-    case FORMAT_POUND: return 163 - 32;
+    if (codepoint < 32 || codepoint >= 256)
+        codepoint = '?';
 
-    case FORMAT_YEN: return 165 - 32;
-
-
-
-    case FORMAT_COPYRIGHT: return 169 - 32;
-    case FORMAT_DOWN: return 170 - 32;
-    case FORMAT_LEFTGUILLEMET: return 171 - 32;
-    case FORMAT_TICK: return 172 - 32;
-    case FORMAT_CROSS: return 173 - 32;
-
-    case FORMAT_RIGHT: return 175 - 32;
-    case FORMAT_DEGREE: return 176 - 32;
-    case FORMAT_SYMBOL_RAILWAY: return 177 - 32;
-    case FORMAT_SQUARED: return 178 - 32;
-
-    case FORMAT_OPENQUOTES: return 180 - 32;
-    case FORMAT_EURO: return 181 - 32;
-    case FORMAT_SYMBOL_ROAD: return 182 - 32;
-    case FORMAT_SYMBOL_FLAG: return 183 - 32;
-    case FORMAT_APPROX: return 184 - 32;
-    case FORMAT_POWERNEGATIVEONE: return 185 - 32;
-    case FORMAT_BULLET: return 186 - 32;
-    case FORMAT_RIGHTGUILLEMET: return 187 - 32;
-    case FORMAT_SMALLUP: return 188 - 32;
-    case FORMAT_SMALLDOWN: return 189 - 32;
-    case FORMAT_LEFT: return 190 - 32;
-    case FORMAT_INVERTEDQUESTION: return 191 - 32;
-
-    case UNICODE_A_OGONEK_UC: return RCT2_A_OGONEK_UC - 32;
-    case UNICODE_C_ACUTE_UC: return RCT2_C_ACUTE_UC - 32;
-    case UNICODE_E_OGONEK_UC: return RCT2_E_OGONEK_UC - 32;
-    case UNICODE_N_ACUTE_UC: return RCT2_N_ACUTE_UC - 32;
-    case UNICODE_L_STROKE_UC: return RCT2_L_STROKE_UC - 32;
-    case UNICODE_S_ACUTE_UC: return RCT2_S_ACUTE_UC - 32;
-    case UNICODE_Z_DOT_UC: return RCT2_Z_DOT_UC - 32;
-    case UNICODE_Z_ACUTE_UC: return RCT2_Z_ACUTE_UC - 32;
-
-    case UNICODE_A_OGONEK: return RCT2_A_OGONEK - 32;
-    case UNICODE_C_ACUTE: return RCT2_C_ACUTE - 32;
-    case UNICODE_E_OGONEK: return RCT2_E_OGONEK - 32;
-    case UNICODE_N_ACUTE: return RCT2_N_ACUTE - 32;
-    case UNICODE_L_STROKE: return RCT2_L_STROKE - 32;
-    case UNICODE_S_ACUTE: return RCT2_S_ACUTE - 32;
-    case UNICODE_Z_DOT: return RCT2_Z_DOT - 32;
-    case UNICODE_Z_ACUTE: return RCT2_Z_ACUTE - 32;
-
-    default:
-        if (codepoint < 32 || codepoint >= 256) codepoint = '?';
-        return codepoint - 32;
-    }
+    return codepoint - 32;
 }
 
-sint32 font_sprite_get_codepoint_width(uint16 fontSpriteBase, sint32 codepoint)
+int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoint)
 {
-    if (fontSpriteBase == (uint16)FONT_SPRITE_BASE_MEDIUM_DARK ||
-        fontSpriteBase == (uint16)FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK)
+    if (fontSpriteBase == (uint16_t)FONT_SPRITE_BASE_MEDIUM_DARK
+        || fontSpriteBase == (uint16_t)FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK)
     {
-        fontSpriteBase = (uint16)FONT_SPRITE_BASE_MEDIUM;
+        fontSpriteBase = (uint16_t)FONT_SPRITE_BASE_MEDIUM;
     }
 
-    sint32 spriteFontIdx = fontSpriteBase + font_sprite_get_codepoint_offset(codepoint);
-    if (spriteFontIdx < 0 || spriteFontIdx >= (sint32)Util::CountOf(_spriteFontCharacterWidths))
+    int32_t glyphIndex = font_sprite_get_codepoint_offset(codepoint);
+    int32_t baseFontIndex = font_get_font_index_from_sprite_base(fontSpriteBase);
+    if (glyphIndex >= FONT_SPRITE_GLYPH_COUNT)
     {
-        log_warning("Invalid font index %u", spriteFontIdx);
-        spriteFontIdx = 0;
+        glyphIndex = (SPR_CHAR_START + glyphIndex) - SPR_G2_CHAR_BEGIN;
+
+        if (glyphIndex >= (int32_t)Util::CountOf(_additionalSpriteFontCharacterWidth[baseFontIndex]))
+        {
+            log_warning("Invalid glyph index %u", glyphIndex);
+            glyphIndex = 0;
+        }
+        return _additionalSpriteFontCharacterWidth[baseFontIndex][glyphIndex];
     }
-    return _spriteFontCharacterWidths[spriteFontIdx];
+    else if (glyphIndex < 0 || glyphIndex >= (int32_t)FONT_SPRITE_GLYPH_COUNT)
+    {
+        log_warning("Invalid glyph index %u", glyphIndex);
+        glyphIndex = 0;
+    }
+    return _spriteFontCharacterWidths[baseFontIndex][glyphIndex];
 }
 
-sint32 font_sprite_get_codepoint_sprite(sint32 fontSpriteBase, sint32 codepoint)
+int32_t font_sprite_get_codepoint_sprite(int32_t fontSpriteBase, int32_t codepoint)
 {
-    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)));
+    auto codePointOffset = font_sprite_get_codepoint_offset(codepoint);
+    if (codePointOffset > FONT_SPRITE_GLYPH_COUNT)
+    {
+        fontSpriteBase = font_get_font_index_from_sprite_base(fontSpriteBase) * SPR_G2_GLYPH_COUNT;
+    }
+
+    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + codePointOffset));
 }
 
-sint32 font_get_size_from_sprite_base(uint16 spriteBase)
+int32_t font_get_font_index_from_sprite_base(uint16_t spriteBase)
 {
-    switch (spriteBase) {
-    case FONT_SPRITE_BASE_TINY:
-        return 0;
-    case FONT_SPRITE_BASE_SMALL:
-        return 1;
-    default:
-    case FONT_SPRITE_BASE_MEDIUM:
-        return 2;
-    case FONT_SPRITE_BASE_BIG:
-        return 3;
+    switch (spriteBase)
+    {
+        case FONT_SPRITE_BASE_TINY:
+            return FONT_SIZE_TINY;
+        case FONT_SPRITE_BASE_SMALL:
+            return FONT_SIZE_SMALL;
+        default:
+        case FONT_SPRITE_BASE_MEDIUM:
+            return FONT_SIZE_MEDIUM;
     }
 }
 
-sint32 font_get_line_height(sint32 fontSpriteBase)
+int32_t font_get_size_from_sprite_base(uint16_t spriteBase)
 {
-    sint32 fontSize = font_get_size_from_sprite_base(fontSpriteBase);
+    switch (spriteBase)
+    {
+        case FONT_SPRITE_BASE_TINY:
+            return 0;
+        case FONT_SPRITE_BASE_SMALL:
+            return 1;
+        default:
+        case FONT_SPRITE_BASE_MEDIUM:
+            return 2;
+    }
+}
+
+int32_t font_get_line_height(int32_t fontSpriteBase)
+{
+    int32_t fontSize = font_get_size_from_sprite_base(fontSpriteBase);
 #ifndef NO_TTF
-    if (gUseTrueTypeFont) {
+    if (LocalisationService_UseTrueTypeFont())
+    {
         return gCurrentTTFFontSet->size[fontSize].line_height;
-    } else {
+    }
+    else
+    {
 #endif // NO_TTF
         return SpriteFontLineHeight[fontSize];
 #ifndef NO_TTF
@@ -169,92 +323,54 @@ sint32 font_get_line_height(sint32 fontSpriteBase)
 #endif // NO_TTF
 }
 
-sint32 font_get_line_height_small(sint32 fontSpriteBase)
+int32_t font_get_line_height_small(int32_t fontSpriteBase)
 {
     return font_get_line_height(fontSpriteBase) / 2;
 }
 
-bool font_supports_string_sprite(const utf8 *text)
+bool font_supports_string_sprite(const utf8* text)
 {
-    const utf8 *src = text;
+    const utf8* src = text;
 
-    uint32 codepoint;
-    while ((codepoint = utf8_get_next(src, &src)) != 0) {
+    uint32_t codepoint;
+    while ((codepoint = utf8_get_next(src, &src)) != 0)
+    {
         bool supported = false;
-        switch (codepoint) {
-        case FORMAT_ENDQUOTES:
-        case FORMAT_UP:
-        case FORMAT_INVERTEDEXCLAMATION:
-        case FORMAT_POUND:
-        case FORMAT_YEN:
-        case FORMAT_COPYRIGHT:
-        case FORMAT_DOWN:
-        case FORMAT_LEFTGUILLEMET:
-        case FORMAT_TICK:
-        case FORMAT_CROSS:
-        case FORMAT_RIGHT:
-        case FORMAT_DEGREE:
-        case FORMAT_SYMBOL_RAILWAY:
-        case FORMAT_SQUARED:
-        case FORMAT_OPENQUOTES:
-        case FORMAT_EURO:
-        case FORMAT_SYMBOL_ROAD:
-        case FORMAT_SYMBOL_FLAG:
-        case FORMAT_APPROX:
-        case FORMAT_POWERNEGATIVEONE:
-        case FORMAT_BULLET:
-        case FORMAT_RIGHTGUILLEMET:
-        case FORMAT_SMALLUP:
-        case FORMAT_SMALLDOWN:
-        case FORMAT_LEFT:
-        case FORMAT_INVERTEDQUESTION:
 
-        case UNICODE_A_OGONEK_UC:
-        case UNICODE_C_ACUTE_UC:
-        case UNICODE_E_OGONEK_UC:
-        case UNICODE_N_ACUTE_UC:
-        case UNICODE_L_STROKE_UC:
-        case UNICODE_S_ACUTE_UC:
-        case UNICODE_Z_DOT_UC:
-        case UNICODE_Z_ACUTE_UC:
-
-        case UNICODE_A_OGONEK:
-        case UNICODE_C_ACUTE:
-        case UNICODE_E_OGONEK:
-        case UNICODE_N_ACUTE:
-        case UNICODE_L_STROKE:
-        case UNICODE_S_ACUTE:
-        case UNICODE_Z_DOT:
-        case UNICODE_Z_ACUTE:
-
+        if ((codepoint >= 32 && codepoint < 256)
+            || (codepoint >= UnicodeChar::cyrillic_a_uc && codepoint <= UnicodeChar::cyrillic_ya))
+        {
             supported = true;
-            break;
-        default:
-            if (codepoint >= 32 && codepoint < 256) {
-                supported = true;
-            }
-            break;
         }
-        if (!supported) {
+
+        auto result = codepointOffsetMap.find(codepoint);
+        if (result != codepointOffsetMap.end())
+            supported = true;
+
+        if (!supported)
+        {
             return false;
         }
     }
     return true;
 }
 
-bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
+bool font_supports_string_ttf(const utf8* text, int32_t fontSize)
 {
 #ifndef NO_TTF
-    const utf8 *src = text;
-    const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
-    if (font == nullptr) {
+    const utf8* src = text;
+    const TTF_Font* font = gCurrentTTFFontSet->size[fontSize].font;
+    if (font == nullptr)
+    {
         return false;
     }
 
-    uint32 codepoint;
-    while ((codepoint = utf8_get_next(src, &src)) != 0) {
+    uint32_t codepoint;
+    while ((codepoint = utf8_get_next(src, &src)) != 0)
+    {
         bool supported = ttf_provides_glyph(font, codepoint);
-        if (!supported) {
+        if (!supported)
+        {
             return false;
         }
     }
@@ -264,11 +380,14 @@ bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
 #endif // NO_TTF
 }
 
-bool font_supports_string(const utf8 *text, sint32 fontSize)
+bool font_supports_string(const utf8* text, int32_t fontSize)
 {
-    if (gUseTrueTypeFont) {
+    if (LocalisationService_UseTrueTypeFont())
+    {
         return font_supports_string_ttf(text, fontSize);
-    } else {
+    }
+    else
+    {
         return font_supports_string_sprite(text);
     }
 }

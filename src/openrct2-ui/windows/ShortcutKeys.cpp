@@ -1,26 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <openrct2/config/Config.h>
-#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include "Window.h"
 
+#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Localisation.h>
 
 #define WW 420
 #define WH 280
@@ -28,6 +21,7 @@
 #define WW_SC_MAX 1200
 #define WH_SC_MAX 800
 
+// clang-format off
 enum WINDOW_SHORTCUT_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -50,11 +44,10 @@ static void window_shortcut_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_shortcut_resize(rct_window *w);
 static void window_shortcut_invalidate(rct_window *w);
 static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_shortcut_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
-static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
-static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
-static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_shortcut_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void window_shortcut_scrollmousedown(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_shortcut_scrollmouseover(rct_window *w, int32_t scrollIndex, int32_t x, int32_t y);
+static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_shortcut_events = {
     nullptr,
@@ -79,7 +72,7 @@ static rct_window_event_list window_shortcut_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_shortcut_tooltip,
+    nullptr,
     nullptr,
     nullptr,
     window_shortcut_invalidate,
@@ -155,16 +148,18 @@ const rct_string_id ShortcutStringIds[SHORTCUT_COUNT] = {
     STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE,
     STR_SHORTCUT_VIEW_CLIPPING,
     STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,
+    STR_SHORTCUT_OPEN_TILE_INSPECTOR,
+    STR_ADVANCE_TO_NEXT_TICK,
 };
-
+// clang-format on
 
 /**
  *
  *  rct2: 0x006E3884
  */
-rct_window * window_shortcut_keys_open()
+rct_window* window_shortcut_keys_open()
 {
-    rct_window * w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+    rct_window* w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
     if (w == nullptr)
     {
         w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
@@ -184,29 +179,30 @@ rct_window * window_shortcut_keys_open()
 }
 
 /**
-*
-*  rct2: 0x006E39E4
-*/
-static void window_shortcut_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+ *
+ *  rct2: 0x006E39E4
+ */
+static void window_shortcut_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex){
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_RESET:
-        keyboard_shortcuts_reset();
-        keyboard_shortcuts_save();
-        window_invalidate(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_RESET:
+            keyboard_shortcuts_reset();
+            keyboard_shortcuts_save();
+            window_invalidate(w);
+            break;
     }
 }
 
-static void window_shortcut_resize(rct_window *w)
+static void window_shortcut_resize(rct_window* w)
 {
     window_set_resize(w, w->min_width, w->min_height, w->max_width, w->max_height);
 }
 
-static void window_shortcut_invalidate(rct_window *w)
+static void window_shortcut_invalidate(rct_window* w)
 {
     window_shortcut_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_shortcut_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -220,39 +216,30 @@ static void window_shortcut_invalidate(rct_window *w)
 }
 
 /**
-*
-*  rct2: 0x006E38E0
-*/
-static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ *  rct2: 0x006E38E0
+ */
+static void window_shortcut_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 }
 
 /**
-*
-*  rct2: 0x006E3A0C
-*/
-static void window_shortcut_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
-{
-    set_format_arg(0, rct_string_id, STR_LIST);
-}
-
-/**
-*
-*  rct2: 0x006E3A07
-*/
-static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
+ *
+ *  rct2: 0x006E3A07
+ */
+static void window_shortcut_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
 
 /**
-*
-*  rct2: 0x006E3A3E
-*/
-static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+ *
+ *  rct2: 0x006E3A3E
+ */
+static void window_shortcut_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 selected_item = (y - 1) / SCROLLABLE_ROW_HEIGHT;
+    int32_t selected_item = (y - 1) / SCROLLABLE_ROW_HEIGHT;
     if (selected_item >= w->no_list_items)
         return;
 
@@ -260,12 +247,12 @@ static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, s
 }
 
 /**
-*
-*  rct2: 0x006E3A16
-*/
-static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
+ *
+ *  rct2: 0x006E3A16
+ */
+static void window_shortcut_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    sint32 selected_item = (y - 1) / SCROLLABLE_ROW_HEIGHT;
+    int32_t selected_item = (y - 1) / SCROLLABLE_ROW_HEIGHT;
     if (selected_item >= w->no_list_items)
         return;
 
@@ -278,13 +265,13 @@ static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, s
  *
  *  rct2: 0x006E38E6
  */
-static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
+static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-    for (sint32 i = 0; i < w->no_list_items; ++i)
+    for (int32_t i = 0; i < w->no_list_items; ++i)
     {
-        sint32 y = 1 + i * SCROLLABLE_ROW_HEIGHT;
+        int32_t y = 1 + i * SCROLLABLE_ROW_HEIGHT;
         if (y > dpi->y + dpi->height)
         {
             break;
@@ -295,7 +282,7 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
             continue;
         }
 
-        sint32 format = STR_BLACK_STRING;
+        int32_t format = STR_BLACK_STRING;
         if (i == w->selected_list_item)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
@@ -308,7 +295,7 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         set_format_arg(0, rct_string_id, STR_SHORTCUT_ENTRY_FORMAT);
         set_format_arg(2, rct_string_id, ShortcutStringIds[i]);
         set_format_arg(4, rct_string_id, STR_STRING);
-        set_format_arg(6, char *, templateString);
+        set_format_arg(6, char*, templateString);
         gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
     }
 }

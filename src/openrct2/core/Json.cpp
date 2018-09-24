@@ -1,29 +1,23 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "Json.hpp"
 
 #include "FileStream.hpp"
-#include "Json.hpp"
 #include "Memory.hpp"
 #include "String.hpp"
 
 namespace Json
 {
-    json_t * ReadFromFile(const utf8 * path, size_t maxSize)
+    json_t* ReadFromFile(const utf8* path, size_t maxSize)
     {
-        json_t  * json = nullptr;
+        json_t* json = nullptr;
         auto fs = FileStream(path, FILE_MODE_OPEN);
 
         size_t fileLength = (size_t)fs.GetLength();
@@ -32,7 +26,7 @@ namespace Json
             throw IOException("Json file too large.");
         }
 
-        utf8 * fileData = Memory::Allocate<utf8>(fileLength + 1);
+        utf8* fileData = Memory::Allocate<utf8>(fileLength + 1);
         fs.Read(fileData, fileLength);
         fileData[fileLength] = '\0';
 
@@ -48,14 +42,26 @@ namespace Json
         return json;
     }
 
-    void WriteToFile(const utf8 * path, const json_t * json, size_t flags)
+    void WriteToFile(const utf8* path, const json_t* json, size_t flags)
     {
         // Serialise JSON
-        const char * jsonOutput = json_dumps(json, flags);
+        const char* jsonOutput = json_dumps(json, flags);
 
         // Write to file
         auto fs = FileStream(path, FILE_MODE_WRITE);
         size_t jsonOutputSize = String::SizeOf(jsonOutput);
         fs.Write(jsonOutput, jsonOutputSize);
     }
-}
+
+    json_t* FromString(const std::string& raw)
+    {
+        json_t* root;
+        json_error_t error;
+        root = json_loads(raw.c_str(), 0, &error);
+        if (root == nullptr)
+        {
+            throw JsonException(&error);
+        }
+        return root;
+    }
+} // namespace Json

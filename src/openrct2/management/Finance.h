@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
@@ -20,9 +13,10 @@
 #include "../peep/Staff.h"
 #include "Research.h"
 
-using rct_expenditure_type = sint32;
+using rct_expenditure_type = int32_t;
 
-enum {
+enum
+{
     RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION,
     RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS,
     RCT_EXPENDITURE_TYPE_LAND_PURCHASE,
@@ -49,7 +43,7 @@ extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 extern money32 gInitialCash;
 extern money32 gCash;
 extern money32 gBankLoan;
-extern uint8 gBankLoanInterestRate;
+extern uint8_t gBankLoanInterestRate;
 extern money32 gMaxBankLoan;
 extern money32 gCurrentExpenditure;
 extern money32 gCurrentProfit;
@@ -61,13 +55,13 @@ extern money32 gCurrentProfit;
 extern money32 gHistoricalProfit;
 
 extern money32 gWeeklyProfitAverageDividend;
-extern uint16 gWeeklyProfitAverageDivisor;
+extern uint16_t gWeeklyProfitAverageDivisor;
 extern money32 gCashHistory[FINANCE_GRAPH_SIZE];
 extern money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 extern money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
 extern money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_COUNT];
 
-extern uint8 gCommandExpenditureType;
+extern uint8_t gCommandExpenditureType;
 
 void finance_payment(money32 amount, rct_expenditure_type type);
 void finance_pay_wages();

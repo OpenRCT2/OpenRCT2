@@ -1,41 +1,35 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _VEHICLE_DATA_H
 #define _VEHICLE_DATA_H
 
 #include "../common.h"
 
-extern const uint8 * Rotation1TimeToSpriteMaps[];
-extern const uint8 * Rotation2TimeToSpriteMaps[];
-extern const uint8 * Rotation3TimeToSpriteMaps[];
+extern const uint8_t* Rotation1TimeToSpriteMaps[];
+extern const uint8_t* Rotation2TimeToSpriteMaps[];
+extern const uint8_t* Rotation3TimeToSpriteMaps[];
 
-struct top_spin_time_to_sprite_map {
-    uint8 arm_rotation;
-    uint8 bank_rotation;
+struct top_spin_time_to_sprite_map
+{
+    uint8_t arm_rotation;
+    uint8_t bank_rotation;
 };
 
-extern const top_spin_time_to_sprite_map * TopSpinTimeToSpriteMaps[];
+extern const top_spin_time_to_sprite_map* TopSpinTimeToSpriteMaps[];
 
-extern const uint8 MotionSimulatorTimeToSpriteMap[];
-extern const sint32 MotionSimulatorTimeToSpriteMapCount;
+extern const uint8_t MotionSimulatorTimeToSpriteMap[];
+extern const int32_t MotionSimulatorTimeToSpriteMapCount;
 
-extern const sint32 dword_9A2930[];
-extern const sint32 dword_9A2970[];
+extern const int32_t dword_9A2930[];
+extern const int32_t dword_9A2970[];
 
-extern const sint32 SpriteDirectionToSoundDirection[];
+extern const int32_t SpriteDirectionToSoundDirection[];
 
 #endif

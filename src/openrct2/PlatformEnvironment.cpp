@@ -1,26 +1,20 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
+#include "PlatformEnvironment.h"
+
+#include "OpenRCT2.h"
 #include "config/Config.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "OpenRCT2.h"
-#include "platform/platform.h"
 #include "platform/Platform2.h"
-#include "PlatformEnvironment.h"
+#include "platform/platform.h"
 
 using namespace OpenRCT2;
 
@@ -32,7 +26,7 @@ private:
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
     {
-        for (sint32 i = 0; i < DIRBASE_COUNT; i++)
+        for (int32_t i = 0; i < DIRBASE_COUNT; i++)
         {
             _basePath[i] = basePaths[i];
         }
@@ -46,18 +40,19 @@ public:
     std::string GetDirectoryPath(DIRBASE base, DIRID did) const override
     {
         auto basePath = GetDirectoryPath(base);
-        const utf8 * directoryName;
-        switch (base) {
-        default:
-        case DIRBASE::RCT1:
-        case DIRBASE::RCT2:
-            directoryName = DirectoryNamesRCT2[(size_t)did];
-            break;
-        case DIRBASE::OPENRCT2:
-        case DIRBASE::USER:
-        case DIRBASE::CONFIG:
-            directoryName = DirectoryNamesOpenRCT2[(size_t)did];
-            break;
+        const utf8* directoryName;
+        switch (base)
+        {
+            default:
+            case DIRBASE::RCT1:
+            case DIRBASE::RCT2:
+                directoryName = DirectoryNamesRCT2[(size_t)did];
+                break;
+            case DIRBASE::OPENRCT2:
+            case DIRBASE::USER:
+            case DIRBASE::CONFIG:
+                directoryName = DirectoryNamesOpenRCT2[(size_t)did];
+                break;
         }
 
         return Path::Combine(basePath, directoryName);
@@ -71,47 +66,47 @@ public:
         return Path::Combine(basePath, fileName);
     }
 
-    void SetBasePath(DIRBASE base, const std::string &path) override
+    void SetBasePath(DIRBASE base, const std::string& path) override
     {
         _basePath[(size_t)base] = path;
     }
 
 private:
-    static const char * DirectoryNamesRCT2[];
-    static const char * DirectoryNamesOpenRCT2[];
-    static const char * FileNames[];
+    static const char* DirectoryNamesRCT2[];
+    static const char* DirectoryNamesOpenRCT2[];
+    static const char* FileNames[];
 
     static DIRBASE GetDefaultBaseDirectory(PATHID pathid)
     {
         switch (pathid)
         {
-        case PATHID::CONFIG:
-        case PATHID::CONFIG_KEYBOARD:
-            return DIRBASE::CONFIG;
-        case PATHID::CACHE_OBJECTS:
-        case PATHID::CACHE_TRACKS:
-        case PATHID::CACHE_SCENARIOS:
-            return DIRBASE::CACHE;
-        case PATHID::MP_DAT:
-            return DIRBASE::RCT1;
-        case PATHID::SCORES_RCT2:
-            return DIRBASE::RCT2;
-        case PATHID::CHANGELOG:
-            return DIRBASE::DOCUMENTATION;
-        case PATHID::NETWORK_GROUPS:
-        case PATHID::NETWORK_SERVERS:
-        case PATHID::NETWORK_USERS:
-        case PATHID::SCORES:
-        case PATHID::SCORES_LEGACY:
-        default:
-            return DIRBASE::USER;
+            case PATHID::CONFIG:
+            case PATHID::CONFIG_KEYBOARD:
+                return DIRBASE::CONFIG;
+            case PATHID::CACHE_OBJECTS:
+            case PATHID::CACHE_TRACKS:
+            case PATHID::CACHE_SCENARIOS:
+                return DIRBASE::CACHE;
+            case PATHID::MP_DAT:
+                return DIRBASE::RCT1;
+            case PATHID::SCORES_RCT2:
+                return DIRBASE::RCT2;
+            case PATHID::CHANGELOG:
+                return DIRBASE::DOCUMENTATION;
+            case PATHID::NETWORK_GROUPS:
+            case PATHID::NETWORK_SERVERS:
+            case PATHID::NETWORK_USERS:
+            case PATHID::SCORES:
+            case PATHID::SCORES_LEGACY:
+            default:
+                return DIRBASE::USER;
         }
     }
 };
 
-IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
+std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment(DIRBASE_VALUES basePaths)
 {
-    return new PlatformEnvironment(basePaths);
+    return std::make_unique<PlatformEnvironment>(basePaths);
 }
 
 static std::string GetOpenRCT2DirectoryName()
@@ -123,7 +118,7 @@ static std::string GetOpenRCT2DirectoryName()
 #endif
 }
 
-IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
+std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
 {
     auto subDirectory = GetOpenRCT2DirectoryName();
 
@@ -136,6 +131,10 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
     basePaths[(size_t)DIRBASE::DOCUMENTATION] = Platform::GetDocsPath();
 
     // Override paths that have been specified via the command line
+    if (!String::IsNullOrEmpty(gCustomRCT1DataPath))
+    {
+        basePaths[(size_t)DIRBASE::RCT1] = gCustomRCT1DataPath;
+    }
     if (!String::IsNullOrEmpty(gCustomRCT2DataPath))
     {
         basePaths[(size_t)DIRBASE::RCT2] = gCustomRCT2DataPath;
@@ -165,8 +164,14 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
     {
         config_save(configPath.c_str());
     }
-    env->SetBasePath(DIRBASE::RCT1, String::ToStd(gConfigGeneral.rct1_path));
-    env->SetBasePath(DIRBASE::RCT2, String::ToStd(gConfigGeneral.rct2_path));
+    if (String::IsNullOrEmpty(gCustomRCT1DataPath))
+    {
+        env->SetBasePath(DIRBASE::RCT1, String::ToStd(gConfigGeneral.rct1_path));
+    }
+    if (String::IsNullOrEmpty(gCustomRCT2DataPath))
+    {
+        env->SetBasePath(DIRBASE::RCT2, String::ToStd(gConfigGeneral.rct2_path));
+    }
 
     // Log base paths
     log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());
@@ -214,6 +219,7 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
     "shaders",              // SHADER
     "themes",               // THEME
     "track",                // TRACK
+    "heightmap",            // HEIGHTMAP
 };
 
 const char * PlatformEnvironment::FileNames[] =
@@ -223,7 +229,7 @@ const char * PlatformEnvironment::FileNames[] =
     "objects.idx",          // CACHE_OBJECTS
     "tracks.idx",           // CACHE_TRACKS
     "scenarios.idx",        // CACHE_SCENARIOS
-    "RCTdeluxe_install" PATH_SEPARATOR "Data" PATH_SEPARATOR "mp.dat", // MP_DAT
+    "Data" PATH_SEPARATOR "mp.dat", // MP_DAT
     "groups.json",          // NETWORK_GROUPS
     "servers.cfg",          // NETWORK_SERVERS
     "users.json",           // NETWORK_USERS

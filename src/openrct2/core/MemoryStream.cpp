@@ -1,26 +1,20 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
+
+#include "MemoryStream.h"
+
+#include "Memory.hpp"
 
 #include <algorithm>
 #include <cstring>
-#include "Math.hpp"
-#include "Memory.hpp"
-#include "MemoryStream.h"
 
-MemoryStream::MemoryStream(const MemoryStream &copy)
+MemoryStream::MemoryStream(const MemoryStream& copy)
 {
     _access = copy._access;
     _dataCapacity = copy._dataCapacity;
@@ -41,7 +35,7 @@ MemoryStream::MemoryStream(size_t capacity)
     _position = _data;
 }
 
-MemoryStream::MemoryStream(void * data, size_t dataSize, uint8 access)
+MemoryStream::MemoryStream(void* data, size_t dataSize, uint8_t access)
 {
     _access = access;
     _dataCapacity = dataSize;
@@ -50,8 +44,8 @@ MemoryStream::MemoryStream(void * data, size_t dataSize, uint8 access)
     _position = _data;
 }
 
-MemoryStream::MemoryStream(const void * data, size_t dataSize)
-    : MemoryStream((void *)data, dataSize, MEMORY_ACCESS::READ)
+MemoryStream::MemoryStream(const void* data, size_t dataSize)
+    : MemoryStream((void*)data, dataSize, MEMORY_ACCESS::READ)
 {
 }
 
@@ -66,19 +60,19 @@ MemoryStream::~MemoryStream()
     _data = nullptr;
 }
 
-const void * MemoryStream::GetData() const
+const void* MemoryStream::GetData() const
 {
     return _data;
 }
 
-void * MemoryStream::GetDataCopy() const
+void* MemoryStream::GetDataCopy() const
 {
     auto result = Memory::Allocate<void>(_dataSize);
     std::memcpy(result, _data, _dataSize);
     return result;
 }
 
-void * MemoryStream::TakeData()
+void* MemoryStream::TakeData()
 {
     _access &= ~MEMORY_ACCESS::OWNER;
     return _data;
@@ -94,35 +88,36 @@ bool MemoryStream::CanWrite() const
     return (_access & MEMORY_ACCESS::WRITE) != 0;
 }
 
-uint64 MemoryStream::GetLength() const
+uint64_t MemoryStream::GetLength() const
 {
     return _dataSize;
 }
 
-uint64 MemoryStream::GetPosition() const
+uint64_t MemoryStream::GetPosition() const
 {
-    return (uint64)((uintptr_t)_position - (uintptr_t)_data);
+    return (uint64_t)((uintptr_t)_position - (uintptr_t)_data);
 }
 
-void MemoryStream::SetPosition(uint64 position)
+void MemoryStream::SetPosition(uint64_t position)
 {
     Seek(position, STREAM_SEEK_BEGIN);
 }
 
-void MemoryStream::Seek(sint64 offset, sint32 origin)
+void MemoryStream::Seek(int64_t offset, int32_t origin)
 {
-    uint64 newPosition;
-    switch (origin) {
-    default:
-    case STREAM_SEEK_BEGIN:
-        newPosition = offset;
-        break;
-    case STREAM_SEEK_CURRENT:
-        newPosition = GetPosition() + offset;
-        break;
-    case STREAM_SEEK_END:
-        newPosition = _dataSize + offset;
-        break;
+    uint64_t newPosition;
+    switch (origin)
+    {
+        default:
+        case STREAM_SEEK_BEGIN:
+            newPosition = offset;
+            break;
+        case STREAM_SEEK_CURRENT:
+            newPosition = GetPosition() + offset;
+            break;
+        case STREAM_SEEK_END:
+            newPosition = _dataSize + offset;
+            break;
     }
 
     if (newPosition > _dataSize)
@@ -132,30 +127,30 @@ void MemoryStream::Seek(sint64 offset, sint32 origin)
     _position = (void*)((uintptr_t)_data + (uintptr_t)newPosition);
 }
 
-void MemoryStream::Read(void * buffer, uint64 length)
+void MemoryStream::Read(void* buffer, uint64_t length)
 {
-    uint64 position = GetPosition();
+    uint64_t position = GetPosition();
     if (position + length > _dataSize)
     {
         throw IOException("Attempted to read past end of stream.");
     }
 
-    std::copy_n((const uint8 *)_position, length, (uint8 *)buffer);
+    std::copy_n((const uint8_t*)_position, length, (uint8_t*)buffer);
     _position = (void*)((uintptr_t)_position + length);
 }
 
-uint64 MemoryStream::TryRead(void * buffer, uint64 length)
+uint64_t MemoryStream::TryRead(void* buffer, uint64_t length)
 {
-    uint64 remainingBytes = GetLength() - GetPosition();
-    uint64 bytesToRead = Math::Min(length, remainingBytes);
+    uint64_t remainingBytes = GetLength() - GetPosition();
+    uint64_t bytesToRead = std::min(length, remainingBytes);
     Read(buffer, bytesToRead);
     return bytesToRead;
 }
 
-void MemoryStream::Write(const void * buffer, uint64 length)
+void MemoryStream::Write(const void* buffer, uint64_t length)
 {
-    uint64 position = GetPosition();
-    uint64 nextPosition = position + length;
+    uint64_t position = GetPosition();
+    uint64_t nextPosition = position + length;
     if (nextPosition > _dataCapacity)
     {
         if (_access & MEMORY_ACCESS::OWNER)
@@ -168,24 +163,24 @@ void MemoryStream::Write(const void * buffer, uint64 length)
         }
     }
 
-    std::copy_n((const uint8 *)buffer, length, (uint8 *)_position);
+    std::copy_n((const uint8_t*)buffer, length, (uint8_t*)_position);
     _position = (void*)((uintptr_t)_position + length);
-    _dataSize = Math::Max<size_t>(_dataSize, (size_t)nextPosition);
+    _dataSize = std::max<size_t>(_dataSize, (size_t)nextPosition);
 }
 
 void MemoryStream::EnsureCapacity(size_t capacity)
 {
     if (_dataCapacity < capacity)
     {
-        size_t newCapacity = Math::Max<size_t>(8, _dataCapacity);
+        size_t newCapacity = std::max<size_t>(8, _dataCapacity);
         while (newCapacity < capacity)
         {
             newCapacity *= 2;
         }
 
-        uint64 position = GetPosition();
+        uint64_t position = GetPosition();
         _dataCapacity = newCapacity;
         _data = Memory::Reallocate(_data, _dataCapacity);
-        _position = (void *)((uintptr_t)_data + (uintptr_t)position);
+        _position = (void*)((uintptr_t)_data + (uintptr_t)position);
     }
 }

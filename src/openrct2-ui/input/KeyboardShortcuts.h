@@ -1,31 +1,25 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
+#include <memory>
 #include <openrct2/common.h>
 
-#define SHIFT   0x100
-#define CTRL    0x200
-#define ALT     0x400
-#define CMD     0x800
+#define SHIFT 0x100
+#define CTRL 0x200
+#define ALT 0x400
+#define CMD 0x800
 #ifdef __MACOSX__
-    #define PLATFORM_MODIFIER CMD
+#    define PLATFORM_MODIFIER CMD
 #else
-    #define PLATFORM_MODIFIER CTRL
+#    define PLATFORM_MODIFIER CTRL
 #endif
 
 enum
@@ -99,6 +93,8 @@ enum
     SHORTCUT_GRIDLINES_DISPLAY_TOGGLE,
     SHORTCUT_VIEW_CLIPPING,
     SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE,
+    SHORTCUT_TILE_INSPECTOR,
+    SHORTCUT_ADVANCE_TO_NEXT_TICK,
 
     SHORTCUT_COUNT,
 
@@ -116,41 +112,42 @@ namespace OpenRCT2
         class KeyboardShortcuts
         {
         private:
-            constexpr static sint32 CURRENT_FILE_VERSION = 1;
-            static const uint16 DefaultKeys[SHORTCUT_COUNT];
+            constexpr static int32_t CURRENT_FILE_VERSION = 1;
+            static const uint16_t DefaultKeys[SHORTCUT_COUNT];
 
-            IPlatformEnvironment * const _env;
-            uint16 _keys[SHORTCUT_COUNT];
+            std::shared_ptr<IPlatformEnvironment> const _env;
+            uint16_t _keys[SHORTCUT_COUNT];
 
         public:
-            KeyboardShortcuts(IPlatformEnvironment * env);
+            KeyboardShortcuts(const std::shared_ptr<IPlatformEnvironment>& env);
+            ~KeyboardShortcuts();
 
             void Reset();
             bool Load();
             bool Save();
 
-            std::string GetShortcutString(sint32 shortcut) const;
+            std::string GetShortcutString(int32_t shortcut) const;
 
-            void Set(sint32 key);
-            sint32 GetFromKey(sint32 key);
-            void GetKeyboardMapScroll(const uint8 * keysState, sint32 * x, sint32 * y) const;
+            void Set(int32_t key);
+            int32_t GetFromKey(int32_t key);
+            void GetKeyboardMapScroll(const uint8_t* keysState, int32_t* x, int32_t* y) const;
         };
-    }
-}
+    } // namespace Input
+} // namespace OpenRCT2
 
 /** The current shortcut being changed. */
-extern uint8 gKeyboardShortcutChangeId;
+extern uint8_t gKeyboardShortcutChangeId;
 extern const rct_string_id ShortcutStringIds[SHORTCUT_COUNT];
 
 void keyboard_shortcuts_reset();
 bool keyboard_shortcuts_load();
 bool keyboard_shortcuts_save();
-void keyboard_shortcuts_set(sint32 key);
-sint32 keyboard_shortcuts_get_from_key(sint32 key);
-void keyboard_shortcuts_format_string(char * buffer, size_t bufferSize, sint32 shortcut);
+void keyboard_shortcuts_set(int32_t key);
+int32_t keyboard_shortcuts_get_from_key(int32_t key);
+void keyboard_shortcuts_format_string(char* buffer, size_t bufferSize, int32_t shortcut);
 
-void keyboard_shortcut_handle(sint32 key);
-void keyboard_shortcut_handle_command(sint32 shortcutIndex);
-void keyboard_shortcut_format_string(char *buffer, size_t size, uint16 shortcutKey);
+void keyboard_shortcut_handle(int32_t key);
+void keyboard_shortcut_handle_command(int32_t shortcutIndex);
+void keyboard_shortcut_format_string(char* buffer, size_t size, uint16_t shortcutKey);
 
-void get_keyboard_map_scroll(const uint8 * keysState, sint32 * x, sint32 * y);
+void get_keyboard_map_scroll(const uint8_t* keysState, int32_t* x, int32_t* y);

@@ -1,27 +1,20 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
-
-#include <openrct2-ui/windows/Window.h>
 
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/drawing/Drawing.h>
 
+// clang-format off
 static char _password[33];
 
 enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
@@ -77,16 +70,17 @@ static rct_window_event_list window_network_status_events = {
     window_network_status_paint,
     nullptr
 };
+// clang-format on
 
 static close_callback _onClose = nullptr;
 
-rct_window * window_network_status_open(const char* text, close_callback onClose)
+rct_window* window_network_status_open(const char* text, close_callback onClose)
 {
     _onClose = onClose;
     safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
 
     // Check if window is already open
-    rct_window *window = window_bring_to_front_by_class_with_flags(WC_NETWORK_STATUS, 0);
+    rct_window* window = window_bring_to_front_by_class_with_flags(WC_NETWORK_STATUS, 0);
     if (window != nullptr)
         return window;
 
@@ -115,7 +109,7 @@ void window_network_status_close()
     window_close_by_class(WC_NETWORK_STATUS);
 }
 
-rct_window * window_network_status_open_password()
+rct_window* window_network_status_open_password()
 {
     rct_window* window;
     window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
@@ -127,44 +121,50 @@ rct_window * window_network_status_open_password()
     return window;
 }
 
-static void window_network_status_onclose(rct_window *w)
+static void window_network_status_onclose(rct_window* w)
 {
-    if (_onClose != nullptr) {
+    if (_onClose != nullptr)
+    {
         _onClose();
     }
 }
 
-static void window_network_status_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_network_status_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
     }
 }
 
-static void window_network_status_update(rct_window *w)
+static void window_network_status_update(rct_window* w)
 {
     widget_invalidate(w, WIDX_BACKGROUND);
 }
 
-static void window_network_status_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
+static void window_network_status_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     _password[0] = '\0';
-    switch (widgetIndex) {
-    case WIDX_PASSWORD:
-        if (text != nullptr)
-            safe_strcpy(_password, text, sizeof(_password));
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_PASSWORD:
+            if (text != nullptr)
+                safe_strcpy(_password, text, sizeof(_password));
+            break;
     }
-    if (text == nullptr) {
+    if (text == nullptr)
+    {
         network_shutdown_client();
-    } else {
+    }
+    else
+    {
         network_send_password(_password);
     }
 }
 
-static void window_network_status_invalidate(rct_window *w)
+static void window_network_status_invalidate(rct_window* w)
 {
     window_network_status_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_network_status_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -173,7 +173,7 @@ static void window_network_status_invalidate(rct_window *w)
     window_network_status_widgets[WIDX_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
 }
 
-static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_network_status_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -182,8 +182,8 @@ static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi)
     lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
     safe_strcpy(lineCh, window_network_status_text, sizeof(buffer) - (lineCh - buffer));
     gfx_clip_string(buffer, w->widgets[WIDX_BACKGROUND].right - 50);
-    sint32 x = w->x + (w->width / 2);
-    sint32 y = w->y + (w->height / 2);
+    int32_t x = w->x + (w->width / 2);
+    int32_t y = w->y + (w->height / 2);
     x -= gfx_get_string_width(buffer) / 2;
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
 }

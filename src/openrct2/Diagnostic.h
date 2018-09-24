@@ -1,25 +1,19 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _DIAGNOSTIC_H_
 #define _DIAGNOSTIC_H_
 
-#include "common.h"
+#include <cstdint>
 
-enum DIAGNOSTIC_LEVEL {
+enum DIAGNOSTIC_LEVEL
+{
     DIAGNOSTIC_LEVEL_FATAL,
     DIAGNOSTIC_LEVEL_ERROR,
     DIAGNOSTIC_LEVEL_WARNING,
@@ -51,45 +45,48 @@ enum DIAGNOSTIC_LEVEL {
  */
 
 #if defined(DEBUG)
-    #if DEBUG > 0
-        #define DEBUG_LEVEL_1 1
-        #if DEBUG > 1
-            #define DEBUG_LEVEL_2 1
-            #if DEBUG > 2
-                #define DEBUG_LEVEL_3 1
-            #else
-                #define DEBUG_LEVEL_3 0
-            #endif // DEBUG > 2
-        #else
-            #define DEBUG_LEVEL_3 0
-            #define DEBUG_LEVEL_2 0
-        #endif // DEBUG > 1
-    #else
-        #define DEBUG_LEVEL_1 0
-        #define DEBUG_LEVEL_2 0
-        #define DEBUG_LEVEL_3 0
-    #endif // DEBUG > 0
+#    if DEBUG > 0
+#        define DEBUG_LEVEL_1 1
+#        if DEBUG > 1
+#            define DEBUG_LEVEL_2 1
+#            if DEBUG > 2
+#                define DEBUG_LEVEL_3 1
+#            else
+#                define DEBUG_LEVEL_3 0
+#            endif // DEBUG > 2
+#        else
+#            define DEBUG_LEVEL_3 0
+#            define DEBUG_LEVEL_2 0
+#        endif // DEBUG > 1
+#    else
+#        define DEBUG_LEVEL_1 0
+#        define DEBUG_LEVEL_2 0
+#        define DEBUG_LEVEL_3 0
+#    endif // DEBUG > 0
 #else
-    #define DEBUG_LEVEL_3 0
-    #define DEBUG_LEVEL_2 0
-    #define DEBUG_LEVEL_1 0
+#    define DEBUG_LEVEL_3 0
+#    define DEBUG_LEVEL_2 0
+#    define DEBUG_LEVEL_1 0
 #endif // defined(DEBUG)
 
 extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
-void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char *format, ...);
-void diagnostic_log_with_location(DIAGNOSTIC_LEVEL diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);
+void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char* format, ...);
+void diagnostic_log_with_location(
+    DIAGNOSTIC_LEVEL diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...);
 
 #ifdef _MSC_VER
-#define diagnostic_log_macro(level, format, ...)    diagnostic_log_with_location(level, __FILE__, __FUNCTION__, __LINE__, format, ## __VA_ARGS__)
+#    define diagnostic_log_macro(level, format, ...)                                                                           \
+        diagnostic_log_with_location(level, __FILE__, __FUNCTION__, __LINE__, format, ##__VA_ARGS__)
 #else
-    #define diagnostic_log_macro(level, format, ...)    diagnostic_log_with_location(level, __FILE__, __func__, __LINE__, format, ## __VA_ARGS__)
+#    define diagnostic_log_macro(level, format, ...)                                                                           \
+        diagnostic_log_with_location(level, __FILE__, __func__, __LINE__, format, ##__VA_ARGS__)
 #endif // _MSC_VER
 
-#define log_fatal(format, ...)      diagnostic_log_macro(DIAGNOSTIC_LEVEL_FATAL, format, ## __VA_ARGS__)
-#define log_error(format, ...)      diagnostic_log_macro(DIAGNOSTIC_LEVEL_ERROR, format, ## __VA_ARGS__)
-#define log_warning(format, ...)    diagnostic_log_macro(DIAGNOSTIC_LEVEL_WARNING, format, ## __VA_ARGS__)
-#define log_verbose(format, ...)    diagnostic_log(DIAGNOSTIC_LEVEL_VERBOSE, format, ## __VA_ARGS__)
-#define log_info(format, ...)       diagnostic_log_macro(DIAGNOSTIC_LEVEL_INFORMATION, format, ## __VA_ARGS__)
+#define log_fatal(format, ...) diagnostic_log_macro(DIAGNOSTIC_LEVEL_FATAL, format, ##__VA_ARGS__)
+#define log_error(format, ...) diagnostic_log_macro(DIAGNOSTIC_LEVEL_ERROR, format, ##__VA_ARGS__)
+#define log_warning(format, ...) diagnostic_log_macro(DIAGNOSTIC_LEVEL_WARNING, format, ##__VA_ARGS__)
+#define log_verbose(format, ...) diagnostic_log(DIAGNOSTIC_LEVEL_VERBOSE, format, ##__VA_ARGS__)
+#define log_info(format, ...) diagnostic_log_macro(DIAGNOSTIC_LEVEL_INFORMATION, format, ##__VA_ARGS__)
 
 #endif

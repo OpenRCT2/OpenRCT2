@@ -1,26 +1,20 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
 #ifndef NO_RCT2
 
-#include <openrct2/common.h>
+#    include <openrct2/common.h>
 
-enum {
+enum
+{
     X86_FLAG_CARRY = 1 << 0,
     X86_FLAG_PARITY = 1 << 2,
 
@@ -30,7 +24,7 @@ enum {
     X86_FLAG_SIGN = 1 << 7,
 };
 
-using hook_function = uint8 (*)(registers * regs);
+using hook_function = uint8_t (*)(registers* regs);
 
 void addhook(uintptr_t address, hook_function function);
 

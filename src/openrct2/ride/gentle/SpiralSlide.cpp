@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
@@ -22,21 +15,21 @@
 
 enum
 {
-    SPIRAL_SLIDE_LEFT_R0   = 20548,
+    SPIRAL_SLIDE_LEFT_R0 = 20548,
     SPIRAL_SLIDE_CENTRE_R0 = 20549,
-    SPIRAL_SLIDE_RIGHT_R0  = 20550,
+    SPIRAL_SLIDE_RIGHT_R0 = 20550,
 
-    SPIRAL_SLIDE_LEFT_R1   = 20551,
+    SPIRAL_SLIDE_LEFT_R1 = 20551,
     SPIRAL_SLIDE_CENTRE_R1 = 20552,
-    SPIRAL_SLIDE_RIGHT_R1  = 20553,
+    SPIRAL_SLIDE_RIGHT_R1 = 20553,
 
-    SPIRAL_SLIDE_LEFT_R2   = 20554,
+    SPIRAL_SLIDE_LEFT_R2 = 20554,
     SPIRAL_SLIDE_CENTRE_R2 = 20555,
-    SPIRAL_SLIDE_RIGHT_R2  = 20556,
+    SPIRAL_SLIDE_RIGHT_R2 = 20556,
 
-    SPIRAL_SLIDE_LEFT_R3   = 20557,
+    SPIRAL_SLIDE_LEFT_R3 = 20557,
     SPIRAL_SLIDE_CENTRE_R3 = 20558,
-    SPIRAL_SLIDE_RIGHT_R3  = 20559,
+    SPIRAL_SLIDE_RIGHT_R3 = 20559,
 
     SPIRAL_SLIDE_INSIDE_R1 = 20560,
     SPIRAL_SLIDE_INSIDE_R2 = 20561,
@@ -44,23 +37,19 @@ enum
     SPIRAL_SLIDE_BASE_A = 20562,
     SPIRAL_SLIDE_BASE_B = 20563,
 
-    SPIRAL_SLIDE_FENCE_TOP_RIGHT    = 20564,
+    SPIRAL_SLIDE_FENCE_TOP_RIGHT = 20564,
     SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT = 20565,
-    SPIRAL_SLIDE_FENCE_BOTTOM_LEFT  = 20566,
-    SPIRAL_SLIDE_FENCE_TOP_LEFT     = 20567,
+    SPIRAL_SLIDE_FENCE_BOTTOM_LEFT = 20566,
+    SPIRAL_SLIDE_FENCE_TOP_LEFT = 20567,
 
     SPIRAL_SLIDE_PEEP = 20568, // 46 sprites per direction
 };
 
 static void spiral_slide_paint_tile_right(
-    paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
 {
-    uint32 image_id = 0;
+    uint32_t image_id = 0;
 
     if (direction == 0)
         image_id = SPIRAL_SLIDE_RIGHT_R0 | session->TrackColours[SCHEME_TRACK];
@@ -75,14 +64,10 @@ static void spiral_slide_paint_tile_right(
 }
 
 static void spiral_slide_paint_tile_left(
-    paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
 {
-    uint32 image_id = 0;
+    uint32_t image_id = 0;
 
     if (direction == 0)
         image_id = SPIRAL_SLIDE_LEFT_R0 | session->TrackColours[SCHEME_TRACK];
@@ -97,16 +82,12 @@ static void spiral_slide_paint_tile_left(
 }
 
 static void spiral_slide_paint_tile_front(
-    paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
 {
-    uint32 image_id = 0;
+    uint32_t image_id = 0;
 
-    Ride * ride = get_ride(rideIndex);
+    Ride* ride = get_ride(rideIndex);
 
     if (direction == 1)
     {
@@ -140,10 +121,10 @@ static void spiral_slide_paint_tile_front(
         sub_98197C(session, image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3);
     }
 
-    rct_drawpixelinfo * dpi = session->Unk140E9A8;
+    rct_drawpixelinfo* dpi = session->DPI;
     if (dpi->zoom_level == 0 && ride->slide_in_use != 0)
     {
-        uint8 slide_progress = ride->spiral_slide_progress;
+        uint8_t slide_progress = ride->spiral_slide_progress;
         if (slide_progress != 0)
         {
             slide_progress--;
@@ -156,38 +137,37 @@ static void spiral_slide_paint_tile_front(
 
         if (slide_progress < 46)
         {
-
-            sint32       offset            = SPIRAL_SLIDE_PEEP + 46 * direction;
-            CoordsXYZ boundingBox       = { 0, 0, 108 };
-            CoordsXYZ boundingBoxOffset = { 0, 0, static_cast<sint16>(height + 3) };
+            int32_t offset = SPIRAL_SLIDE_PEEP + 46 * direction;
+            CoordsXYZ boundingBox = { 0, 0, 108 };
+            CoordsXYZ boundingBoxOffset = { 0, 0, static_cast<int16_t>(height + 3) };
 
             if (direction == 0)
             {
                 boundingBoxOffset.x = 0;
                 boundingBoxOffset.y = 8;
-                boundingBox.y       = 8;
-                boundingBox.x       = 16;
+                boundingBox.y = 8;
+                boundingBox.x = 16;
             }
             else if (direction == 1)
             {
                 boundingBoxOffset.x = 14;
                 boundingBoxOffset.y = 0;
-                boundingBox.y       = 2;
-                boundingBox.x       = 16;
+                boundingBox.y = 2;
+                boundingBox.x = 16;
             }
             else if (direction == 2)
             {
                 boundingBoxOffset.x = 0;
                 boundingBoxOffset.y = 14;
-                boundingBox.y       = 16;
-                boundingBox.x       = 2;
+                boundingBox.y = 16;
+                boundingBox.x = 2;
             }
             else if (direction == 3)
             {
                 boundingBoxOffset.x = 8;
                 boundingBoxOffset.y = 0;
-                boundingBox.y       = 16;
-                boundingBox.x       = 8;
+                boundingBox.y = 16;
+                boundingBox.x = 8;
             }
 
             image_id = (offset + slide_progress) | (ride->slide_peep_t_shirt_colour << 19) | (1 << 29);
@@ -199,7 +179,7 @@ static void spiral_slide_paint_tile_front(
     }
 }
 
-static constexpr const uint32 spiral_slide_fence_sprites[] = {
+static constexpr const uint32_t spiral_slide_fence_sprites[] = {
     SPIRAL_SLIDE_FENCE_TOP_RIGHT,
     SPIRAL_SLIDE_FENCE_BOTTOM_RIGHT,
     SPIRAL_SLIDE_FENCE_BOTTOM_LEFT,
@@ -210,23 +190,19 @@ static constexpr const uint32 spiral_slide_fence_sprites[] = {
  * rct: 0x007485C8
  */
 static void paint_spiral_slide(
-    paint_session *          session,
-    uint8                    rideIndex,
-    uint8                    trackSequence,
-    uint8                    direction,
-    sint32                   height,
-    const rct_tile_element * tileElement)
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 
-    sint32   edges    = edges_2x2[trackSequence];
-    Ride *   ride     = get_ride(rideIndex);
+    int32_t edges = edges_2x2[trackSequence];
+    Ride* ride = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     // Base
-    uint32 imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
+    uint32_t imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     track_paint_util_paint_fences(
@@ -235,15 +211,15 @@ static void paint_spiral_slide(
 
     switch (trackSequence)
     {
-    case 1:
-        spiral_slide_paint_tile_right(session, rideIndex, trackSequence, direction, height, tileElement);
-        break;
-    case 2:
-        spiral_slide_paint_tile_left(session, rideIndex, trackSequence, direction, height, tileElement);
-        break;
-    case 3:
-        spiral_slide_paint_tile_front(session, rideIndex, trackSequence, direction, height, tileElement);
-        break;
+        case 1:
+            spiral_slide_paint_tile_right(session, rideIndex, trackSequence, direction, height, tileElement);
+            break;
+        case 2:
+            spiral_slide_paint_tile_left(session, rideIndex, trackSequence, direction, height, tileElement);
+            break;
+        case 3:
+            spiral_slide_paint_tile_front(session, rideIndex, trackSequence, direction, height, tileElement);
+            break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -253,7 +229,7 @@ static void paint_spiral_slide(
 /**
  * rct2: 0x0074840C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_2_X_2)
     {

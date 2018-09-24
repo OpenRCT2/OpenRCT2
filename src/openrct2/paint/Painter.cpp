@@ -1,57 +1,49 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include "../config/Config.h"
-#include "../drawing/IDrawingEngine.h"
-#include "../OpenRCT2.h"
-#include "../title/TitleScreen.h"
-#include "../ui/UiContext.h"
 #include "Painter.h"
 
-#include "../drawing/Drawing.h"
 #include "../Game.h"
-#include "../interface/Chat.h"
-#include "../interface/Console.h"
 #include "../Intro.h"
-#include "../localisation/Language.h"
+#include "../OpenRCT2.h"
+#include "../config/Config.h"
+#include "../drawing/Drawing.h"
+#include "../drawing/IDrawingEngine.h"
+#include "../interface/Chat.h"
+#include "../interface/InteractiveConsole.h"
 #include "../localisation/FormatCodes.h"
+#include "../localisation/Language.h"
+#include "../title/TitleScreen.h"
+#include "../ui/UiContext.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Paint;
 using namespace OpenRCT2::Ui;
 
-Painter::Painter(IUiContext * uiContext)
+Painter::Painter(const std::shared_ptr<IUiContext>& uiContext)
     : _uiContext(uiContext)
 {
 }
 
-void Painter::Paint(IDrawingEngine * de)
+void Painter::Paint(IDrawingEngine& de)
 {
-    auto dpi = de->GetDrawingPixelInfo();
+    auto dpi = de.GetDrawingPixelInfo();
     if (gIntroState != INTRO_STATE_NONE)
     {
         intro_draw(dpi);
     }
     else
     {
-        de->PaintWindows();
+        de.PaintWindows();
 
         update_palette_effects();
-        chat_draw(dpi);
         _uiContext->Draw(dpi);
 
         if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !title_should_hide_version_info())
@@ -62,7 +54,7 @@ void Painter::Paint(IDrawingEngine * de)
         gfx_draw_pickedup_peep(dpi);
         gfx_invalidate_pickedup_peep();
 
-        de->PaintRain();
+        de.PaintRain();
     }
 
     if (gConfigGeneral.show_fps)
@@ -72,17 +64,17 @@ void Painter::Paint(IDrawingEngine * de)
     gCurrentDrawCount++;
 }
 
-void Painter::PaintFPS(rct_drawpixelinfo * dpi)
+void Painter::PaintFPS(rct_drawpixelinfo* dpi)
 {
-    sint32 x = _uiContext->GetWidth() / 2;
-    sint32 y = 2;
+    int32_t x = _uiContext->GetWidth() / 2;
+    int32_t y = 2;
 
     // Measure FPS
     MeasureFPS();
 
     // Format string
     utf8 buffer[64] = { 0 };
-    utf8 * ch = buffer;
+    utf8* ch = buffer;
     ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
     ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
     ch = utf8_write_codepoint(ch, FORMAT_WHITE);
@@ -90,7 +82,7 @@ void Painter::PaintFPS(rct_drawpixelinfo * dpi)
     snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
 
     // Draw Text
-    sint32 stringWidth = gfx_get_string_width(buffer);
+    int32_t stringWidth = gfx_get_string_width(buffer);
     x = x - (stringWidth / 2);
     gfx_draw_string(dpi, buffer, 0, x, y);
 

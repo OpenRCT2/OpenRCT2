@@ -1,57 +1,59 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
-#include <map>
-#include <string>
 #include "../common.h"
 #include "../interface/Window.h"
 
+#include <map>
+#include <string>
+
 struct IntentData
 {
-    enum DATATYPE { DT_INT, DT_STRING, DT_POINTER, DT_CLOSE_CALLBACK } type;
+    enum DATATYPE
+    {
+        DT_INT,
+        DT_STRING,
+        DT_POINTER,
+        DT_CLOSE_CALLBACK
+    } type;
 
-    union {
-        uint32 unsignedInt;
-        sint32 signedInt;
+    union
+    {
+        uint32_t unsignedInt;
+        int32_t signedInt;
     } intVal;
     std::string stringVal;
     close_callback closeCallbackVal;
-    void * pointerVal;
+    void* pointerVal;
 };
 
 class Intent
 {
 private:
     rct_windowclass _Class;
-    std::map<uint32, IntentData> _Data;
+    std::map<uint32_t, IntentData> _Data;
+
 public:
     explicit Intent(rct_windowclass windowclass);
     rct_windowclass GetWindowClass() const;
-    void * GetPointerExtra(uint32 key) const;
-    std::string GetStringExtra(uint32 key) const;
-    uint32 GetUIntExtra(uint32 key) const;
-    sint32 GetSIntExtra(uint32 key) const;
-    close_callback GetCloseCallbackExtra(uint32 key) const;
-    Intent * putExtra(uint32 key, uint32 value);
-    Intent * putExtra(uint32 key, void * value);
-    Intent * putExtra(uint32 key, sint32 value);
-    Intent * putExtra(uint32 key, std::string value);
-    Intent * putExtra(uint32 key, close_callback value);
+    void* GetPointerExtra(uint32_t key) const;
+    std::string GetStringExtra(uint32_t key) const;
+    uint32_t GetUIntExtra(uint32_t key) const;
+    int32_t GetSIntExtra(uint32_t key) const;
+    close_callback GetCloseCallbackExtra(uint32_t key) const;
+    Intent* putExtra(uint32_t key, uint32_t value);
+    Intent* putExtra(uint32_t key, void* value);
+    Intent* putExtra(uint32_t key, int32_t value);
+    Intent* putExtra(uint32_t key, std::string value);
+    Intent* putExtra(uint32_t key, close_callback value);
 };
 
 enum
@@ -81,6 +83,7 @@ enum
     INTENT_ACTION_REFRESH_NEW_RIDES,
     INTENT_ACTION_REFRESH_RIDE_LIST,
     INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION,
+    INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS,
     INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES,
     INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS,
     INTENT_ACTION_INIT_SCENERY,
@@ -89,10 +92,9 @@ enum
     INTENT_ACTION_INVALIDATE_TICKER_NEWS,
     INTENT_ACTION_REFRESH_GUEST_LIST,
     INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD,
-    INTENT_ACTION_SET_TILE_INSPECTOR_PAGE,
-    INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS,
     INTENT_ACTION_REFRESH_STAFF_LIST,
     INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW,
+    INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE,
     INTENT_ACTION_UPDATE_CLIMATE,
     INTENT_ACTION_UPDATE_GUEST_COUNT,
     INTENT_ACTION_UPDATE_PARK_RATING,

@@ -1,40 +1,34 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
+#include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
 #include "../network/network.h"
-#include "../OpenRCT2.h"
 #include "CommandLine.hpp"
 
-static exitcode_t HandleUri(const std::string &uri);
+static exitcode_t HandleUri(const std::string& uri);
 
 #ifndef DISABLE_NETWORK
-static exitcode_t HandleUriJoin(const std::vector<std::string> &args);
-static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, sint32 * outPort, sint32 defaultPort);
+static exitcode_t HandleUriJoin(const std::vector<std::string>& args);
+static bool TryParseHostnamePort(
+    const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort);
 #endif
 
-exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
+exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator* enumerator)
 {
-    const utf8 * uri;
+    const utf8* uri;
     if (enumerator->TryPopString(&uri))
     {
         if (String::StartsWith(uri, "openrct2://"))
         {
-            const utf8 * uriCommand = uri + 11;
+            const utf8* uriCommand = uri + 11;
             return HandleUri(uriCommand);
         }
     }
@@ -43,11 +37,11 @@ exitcode_t CommandLine::HandleCommandUri(CommandLineArgEnumerator * enumerator)
     return EXITCODE_FAIL;
 }
 
-static exitcode_t HandleUri(const std::string &uri)
+static exitcode_t HandleUri(const std::string& uri)
 {
     exitcode_t result = EXITCODE_CONTINUE;
     auto args = String::Split(uri, "/");
-    if (args.size() > 0)
+    if (!args.empty())
     {
 #ifndef DISABLE_NETWORK
         std::string arg = args[0];
@@ -62,10 +56,10 @@ static exitcode_t HandleUri(const std::string &uri)
 
 #ifndef DISABLE_NETWORK
 
-static exitcode_t HandleUriJoin(const std::vector<std::string> &args)
+static exitcode_t HandleUriJoin(const std::vector<std::string>& args)
 {
     std::string hostname;
-    sint32 port;
+    int32_t port;
     if (args.size() > 1 && TryParseHostnamePort(args[1], &hostname, &port, NETWORK_DEFAULT_PORT))
     {
         // Set the network start configuration
@@ -81,13 +75,14 @@ static exitcode_t HandleUriJoin(const std::vector<std::string> &args)
     }
 }
 
-static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * outHostname, sint32 * outPort, sint32 defaultPort)
+static bool TryParseHostnamePort(
+    const std::string& hostnamePort, std::string* outHostname, int32_t* outPort, int32_t defaultPort)
 {
     try
     {
         // Argument is in hostname:port format, so we need to split
         std::string hostname = hostnamePort;
-        sint32 port = defaultPort;
+        int32_t port = defaultPort;
         size_t colonIndex = hostnamePort.find_first_of(':');
         if (colonIndex != std::string::npos)
         {
@@ -98,7 +93,7 @@ static bool TryParseHostnamePort(const std::string &hostnamePort, std::string * 
         *outHostname = hostname;
         return true;
     }
-    catch (const std::exception &)
+    catch (const std::exception&)
     {
         return false;
     }

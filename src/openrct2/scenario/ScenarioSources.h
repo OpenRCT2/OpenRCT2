@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #pragma once
 
@@ -20,24 +13,23 @@
 
 struct source_desc
 {
-    const utf8 * title;
-    uint8        id;
-    uint8        source;
-    sint32       index;
-    uint8        category;
+    const utf8* title;
+    uint8_t id;
+    uint8_t source;
+    int32_t index;
+    uint8_t category;
 };
 
 namespace ScenarioSources
 {
-    bool TryGetByName(const utf8 * name, source_desc * outDesc);
-    bool TryGetById(uint8 id, source_desc * outDesc);
-    void NormaliseName(utf8 * buffer, size_t bufferSize, const utf8 * name);
-}
+    bool TryGetByName(const utf8* name, source_desc* outDesc);
+    bool TryGetById(uint8_t id, source_desc* outDesc);
+    void NormaliseName(utf8* buffer, size_t bufferSize, const utf8* name);
+} // namespace ScenarioSources
 
-bool scenario_get_source_desc(const utf8 *name, source_desc *outDesc);
-bool scenario_get_source_desc_by_id(uint8 id, source_desc *outDesc);
-void scenario_normalise_name(utf8 *buffer, size_t bufferSize, utf8 *name);
-
+bool scenario_get_source_desc(const utf8* name, source_desc* outDesc);
+bool scenario_get_source_desc_by_id(uint8_t id, source_desc* outDesc);
+void scenario_normalise_name(utf8* buffer, size_t bufferSize, utf8* name);
 
 // RCT1 scenario index map
 enum
@@ -106,7 +98,7 @@ enum
     SC_ROMAN_VILLAGE,
     SC_SWAMP_COVE,
     SC_ADRENALINE_HEIGHTS,
-    SC_UTOPIA,
+    SC_UTOPIA_PARK,
     SC_ROTTING_HEIGHTS,
     SC_FIASCO_FOREST,
     SC_PICKLE_PARK,

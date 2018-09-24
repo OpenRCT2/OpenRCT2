@@ -1,38 +1,32 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <algorithm>
-#include <vector>
+#include "TestPaint.hpp"
 
-#include "Hook.h"
 #include "GeneralSupportHeightCall.hpp"
+#include "Hook.h"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
-#include "TestPaint.hpp"
 #include "Utils.hpp"
 
+#include <algorithm>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/Supports.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/interface/Viewport.h>
+#include <vector>
 
 namespace TestPaint
 {
-    void ResetEnvironment() {
+    void ResetEnvironment()
+    {
         gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 
@@ -46,23 +40,23 @@ namespace TestPaint
         gPaintSession.TrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
         gPaintSession.TrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
 
-        rct_drawpixelinfo dpi = { 0 };
+        rct_drawpixelinfo dpi = {};
         dpi.zoom_level = 1;
         RCT2_Unk140E9A8 = &dpi;
-        gPaintSession.Unk140E9A8 = &dpi;
+        gPaintSession.DPI = &dpi;
 
         {
-            Ride ride = {0};
+            Ride ride = {};
             ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
-            static rct_ride_entry rideEntry = {0};
-            rct_ride_entry_vehicle vehicleEntry { 0 };
+            static rct_ride_entry rideEntry = {};
+            rct_ride_entry_vehicle vehicleEntry{};
             vehicleEntry.base_image_id = 0x70000;
             rideEntry.vehicles[0] = vehicleEntry;
             gRideList[0] = ride;
             gRideEntries[0] = &rideEntry;
         }
         {
-            rct2_ride ride = {0};
+            rct2_ride ride = {};
             ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
             RCT2_Rides[0] = ride;
         }
@@ -77,13 +71,15 @@ namespace TestPaint
         RCT2_ScenarioTicks = 0;
     }
 
-    void ResetTunnels() {
+    void ResetTunnels()
+    {
         gLeftTunnelCount = 0;
         gRightTunnelCount = 0;
         gPaintSession.LeftTunnelCount = 0;
         gPaintSession.RightTunnelCount = 0;
 
-        for (int i = 0; i < TUNNEL_MAX_COUNT; i++) {
+        for (int i = 0; i < TUNNEL_MAX_COUNT; i++)
+        {
             gLeftTunnels[i].height = 0;
             gLeftTunnels[i].type = 0;
             gRightTunnels[i].height = 0;
@@ -104,7 +100,8 @@ namespace TestPaint
         gPaintSession.RightTunnels[0].type = 0xFF;
     }
 
-    void ResetSupportHeights() {
+    void ResetSupportHeights()
+    {
         for (int s = 0; s < 9; ++s)
         {
             gSupportSegments[s].height = 0;
@@ -121,8 +118,8 @@ namespace TestPaint
 
     struct IgnoredEntry
     {
-        uint8 Direction;
-        uint8 TrackSequence;
+        uint8_t Direction;
+        uint8_t TrackSequence;
     };
 
     static bool _ignoredAll;
@@ -134,7 +131,7 @@ namespace TestPaint
         _ignoredEntries.clear();
     }
 
-    void testIgnore(uint8 direction, uint8 trackSequence)
+    void testIgnore(uint8_t direction, uint8_t trackSequence)
     {
         _ignoredEntries.push_back({ direction, trackSequence });
     }
@@ -144,27 +141,27 @@ namespace TestPaint
         _ignoredAll = true;
     }
 
-    bool testIsIgnored(uint8 direction, uint8 trackSequence)
+    bool testIsIgnored(uint8_t direction, uint8_t trackSequence)
     {
-        if (_ignoredAll) return true;
-        for (const IgnoredEntry &entry : _ignoredEntries)
+        if (_ignoredAll)
+            return true;
+        for (const IgnoredEntry& entry : _ignoredEntries)
         {
-            if (entry.Direction == direction &&
-                entry.TrackSequence == trackSequence)
+            if (entry.Direction == direction && entry.TrackSequence == trackSequence)
             {
                 return true;
             }
         }
         return false;
     }
-}
+} // namespace TestPaint
 
 void testpaint_clear_ignore()
 {
     TestPaint::testClearIgnore();
 }
 
-void testpaint_ignore(uint8 direction, uint8 trackSequence)
+void testpaint_ignore(uint8_t direction, uint8_t trackSequence)
 {
     TestPaint::testIgnore(direction, trackSequence);
 }
@@ -174,7 +171,7 @@ void testpaint_ignore_all()
     TestPaint::testIgnoreAll();
 }
 
-bool testpaint_is_ignored(uint8 direction, uint8 trackSequence)
+bool testpaint_is_ignored(uint8_t direction, uint8_t trackSequence)
 {
     return TestPaint::testIsIgnored(direction, trackSequence);
 }

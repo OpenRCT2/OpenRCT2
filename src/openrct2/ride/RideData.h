@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
 #ifndef _RIDE_DATA_H_
 #define _RIDE_DATA_H_
@@ -20,7 +13,8 @@
 #include "../common.h"
 #include "Ride.h"
 
-struct ride_component_name {
+struct ride_component_name
+{
     rct_string_id singular;
     rct_string_id plural;
     rct_string_id capitalised;
@@ -30,7 +24,8 @@ struct ride_component_name {
     rct_string_id number;
 };
 
-enum RIDE_COMPONENT_TYPE {
+enum RIDE_COMPONENT_TYPE
+{
     RIDE_COMPONENT_TYPE_TRAIN,
     RIDE_COMPONENT_TYPE_BOAT,
     RIDE_COMPONENT_TYPE_TRACK,
@@ -48,65 +43,64 @@ enum RIDE_COMPONENT_TYPE {
     RIDE_COMPONENT_TYPE_COUNT
 };
 
-struct rct_ride_name_convention {
+struct rct_ride_name_convention
+{
     RIDE_COMPONENT_TYPE vehicle;
     RIDE_COMPONENT_TYPE structure;
     RIDE_COMPONENT_TYPE station;
 };
 
-struct rct_ride_entrance_definition {
-    uint32 sprite_index;
-    uint16 height;
-    uint16 scrolling_mode;
-    uint32 base_image_id;
+struct rct_ride_entrance_definition
+{
+    uint32_t sprite_index;
+    uint16_t height;
+    uint16_t scrolling_mode;
+    uint32_t base_image_id;
     rct_string_id string_id;
-    uint16 colour_use_flags;
+    uint16_t colour_use_flags;
 };
 
-struct rct_shop_item_string_types {
-    rct_string_id price_label;      // Balloon price:
-    rct_string_id singular;         // Balloon
-    rct_string_id plural;           // Balloons
-    rct_string_id indefinite;       // a Balloon
-    rct_string_id display;          // "Diamond Heights" Balloon
+struct rct_ride_data_4
+{
+    uint8_t price;
+    uint8_t price_secondary;
+    uint16_t flags;
+    uint8_t default_music;
+    uint8_t alternate_type;
+    uint8_t pad[2] = {};
 };
 
-struct rct_ride_data_4 {
-    uint8 price;
-    uint8 price_secondary;
-    uint16 flags;
-    uint8 default_music;
-    uint8 alternate_type;
-    uint8 pad[2];
+struct ride_cost
+{
+    uint16_t track_price;
+    uint16_t support_price;
 };
 
-struct ride_cost {
-    uint16 track_price;
-    uint16 support_price;
+struct rct_ride_data_5
+{
+    uint8_t max_height;
+    uint8_t clearance_height;
+    int8_t z_offset;
+    uint8_t max_mass;
+    uint8_t z;
+    uint8_t price;
+    uint8_t bonus_value; // Deprecated. Use rideBonusValue instead
+    uint8_t pad = 0;
 };
 
-struct rct_ride_data_5 {
-    uint8 max_height;
-    uint8 clearance_height;
-    sint8 z_offset;
-    uint8 max_mass;
-    uint8 z;
-    uint8 price;
-    uint8 bonus_value;      // Deprecated. Use rideBonusValue instead
-    uint8 pad;
+struct rct_ride_lift_data
+{
+    uint8_t sound_id;
+    uint8_t minimum_speed;
+    uint8_t maximum_speed;
 };
 
-struct rct_ride_lift_data {
-    uint8 sound_id;
-    uint8 minimum_speed;
-    uint8 maximum_speed;
-};
-
-enum {
+enum
+{
     RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK = (1 << 0),
     RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT = (1 << 1),
     RIDE_TYPE_FLAG4_ALLOW_MUSIC = (1 << 2),
-    RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE = (1 << 3),  // Used by the Flying RC, Lay-down RC, Multi-dimension RC
+    RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE = (1 << 3), // Used by the Flying RC, Lay-down RC, Multi-dimension RC
     RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES = (1 << 4),
     RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT = (1 << 5),
     RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS = (1 << 6),
@@ -121,57 +115,45 @@ enum {
     RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED = (1 << 15), // This is only set on the Flying RC and its alternative type.
 };
 
-enum {
+enum
+{
     RIDE_TYPE_NO_ALTERNATIVES = 0,
     RIDE_TYPE_ALTERNATIVE_TRACK_PIECES = 1, // Dinghy slide and Water Coaster
     RIDE_TYPE_ALTERNATIVE_TRACK_TYPE = 2,   // Flying RC, Lay-down RC, Multi-dimension RC
 };
 
-struct rct_shop_item_stats {
-    uint16 cost;
-    uint16 base_value;
-    uint16 hot_value;
-    uint16 cold_value;
-};
-
 extern const bool hasRunningTrack[RIDE_TYPE_COUNT];
-extern const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT];
-extern const uint8 costPerTrackPiece[RIDE_TYPE_COUNT];
+extern const uint8_t initialUpkeepCosts[RIDE_TYPE_COUNT];
+extern const uint8_t costPerTrackPiece[RIDE_TYPE_COUNT];
 
-extern const uint8 costPerVehicle[RIDE_TYPE_COUNT];
+extern const uint8_t costPerVehicle[RIDE_TYPE_COUNT];
 extern const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT];
-extern const uint8 costPerStation[RIDE_TYPE_COUNT];
-extern const uint8 rideBonusValue[RIDE_TYPE_COUNT];
+extern const uint8_t costPerStation[RIDE_TYPE_COUNT];
+extern const uint8_t rideBonusValue[RIDE_TYPE_COUNT];
 
 extern const ride_component_name RideComponentNames[RIDE_COMPONENT_TYPE_COUNT];
 extern const rct_ride_name_convention RideNameConvention[RIDE_TYPE_COUNT];
 extern const rct_ride_name RideNaming[RIDE_TYPE_COUNT];
-extern const uint8 RideAvailableModes[];
-extern const uint8 AllRideModesAvailable[];
-extern const uint8 RideAvailableBreakdowns[];
+extern const uint8_t RideAvailableModes[];
+extern const uint8_t AllRideModesAvailable[];
+extern const uint8_t RideAvailableBreakdowns[];
 
 extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
 extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 
 extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];
-extern const sint32 RidePhotoItems[RIDE_TYPE_COUNT];
+extern const int32_t RidePhotoItems[RIDE_TYPE_COUNT];
 extern const ride_cost RideTrackCosts[RIDE_TYPE_COUNT];
 extern const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT];
 
-extern const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT];
-extern const rct_shop_item_string_types ShopItemStringIds[SHOP_ITEM_COUNT];
-extern const uint32 ShopItemImage[SHOP_ITEM_COUNT];
-
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
-extern const uint16 RideFilmLength[3];
-extern const uint16 RideCrookedHouseLength[1];
+extern const uint16_t RideFilmLength[3];
+extern const uint16_t RideCrookedHouseLength[1];
 
 extern const rating_tuple RideRatings[RIDE_TYPE_COUNT];
 
-extern const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT];
-
-extern const uint8 RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
+extern const uint8_t RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
 
 extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 

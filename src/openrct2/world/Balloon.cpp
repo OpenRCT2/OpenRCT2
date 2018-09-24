@@ -1,51 +1,42 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
-
-#include "../network/network.h"
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #include "../audio/audio.h"
+#include "../network/network.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "Sprite.h"
 
 bool rct_sprite::IsBalloon()
 {
-    return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC &&
-           this->balloon.misc_identifier == SPRITE_MISC_BALLOON;
+    return this->balloon.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->balloon.type == SPRITE_MISC_BALLOON;
 }
 
-rct_balloon * rct_sprite::AsBalloon()
+rct_balloon* rct_sprite::AsBalloon()
 {
-    rct_balloon * result = nullptr;
+    rct_balloon* result = nullptr;
     if (IsBalloon())
     {
-        result = (rct_balloon *)this;
+        result = (rct_balloon*)this;
     }
     return result;
 }
 
 void rct_balloon::Update()
 {
-    invalidate_sprite_2((rct_sprite *)this);
+    invalidate_sprite_2((rct_sprite*)this);
     if (popped == 1)
     {
         frame++;
         if (frame >= 5)
         {
-            sprite_remove((rct_sprite *)this);
+            sprite_remove((rct_sprite*)this);
         }
     }
     else
@@ -57,7 +48,7 @@ void rct_balloon::Update()
             frame++;
             sprite_move(x, y, z + 1, (rct_sprite*)this);
 
-            sint32 maxZ = 1967 - ((x ^ y) & 31);
+            int32_t maxZ = 1967 - ((x ^ y) & 31);
             if (z >= maxZ)
             {
                 Pop();
@@ -72,15 +63,15 @@ void rct_balloon::Press()
     {
         // There is a random chance that pressing the balloon will not pop it
         // and instead shift it slightly
-        uint32 random = scenario_rand();
+        uint32_t random = scenario_rand();
         if ((sprite_index & 7) || (random & 0xFFFF) < 0x2000)
         {
             Pop();
         }
         else
         {
-            sint16 shift = ((random & 0x80000000) ? -6 : 6);
-            sprite_move(x + shift, y, z, (rct_sprite *)this);
+            int16_t shift = ((random & 0x80000000) ? -6 : 6);
+            sprite_move(x + shift, y, z, (rct_sprite*)this);
         }
     }
 }
@@ -92,9 +83,9 @@ void rct_balloon::Pop()
     audio_play_sound_at_location(SOUND_BALLOON_POP, x, y, z);
 }
 
-static money32 game_command_balloon_press(uint16 spriteIndex, uint8 flags)
+static money32 game_command_balloon_press(uint16_t spriteIndex, uint8_t flags)
 {
-    rct_sprite * sprite = try_get_sprite(spriteIndex);
+    rct_sprite* sprite = try_get_sprite(spriteIndex);
     if (sprite == nullptr || !sprite->IsBalloon())
     {
         log_error("Tried getting invalid sprite for balloon: %u", spriteIndex);
@@ -104,14 +95,13 @@ static money32 game_command_balloon_press(uint16 spriteIndex, uint8 flags)
     {
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            sprite->AsBalloon()
-                ->Press();
+            sprite->AsBalloon()->Press();
         }
         return 0;
     }
 }
 
-void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped)
+void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped)
 {
     rct_sprite* sprite = create_sprite(2);
     if (sprite != nullptr)
@@ -121,7 +111,7 @@ void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped)
         sprite->balloon.sprite_height_positive = 11;
         sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
         sprite_move(x, y, z, sprite);
-        sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
+        sprite->balloon.type = SPRITE_MISC_BALLOON;
         sprite->balloon.time_to_move = 0;
         sprite->balloon.frame = 0;
         sprite->balloon.colour = colour;
@@ -129,19 +119,14 @@ void create_balloon(sint32 x, sint32 y, sint32 z, sint32 colour, bool isPopped)
     }
 }
 
-void balloon_update(rct_balloon * balloon)
+void balloon_update(rct_balloon* balloon)
 {
     balloon->Update();
 }
 
 void game_command_balloon_press(
-    sint32 *                  eax,
-    sint32 *                  ebx,
-    [[maybe_unused]] sint32 * ecx,
-    [[maybe_unused]] sint32 * edx,
-    [[maybe_unused]] sint32 * esi,
-    [[maybe_unused]] sint32 * edi,
-    [[maybe_unused]] sint32 * ebp)
+    int32_t* eax, int32_t* ebx, [[maybe_unused]] int32_t* ecx, [[maybe_unused]] int32_t* edx, [[maybe_unused]] int32_t* esi,
+    [[maybe_unused]] int32_t* edi, [[maybe_unused]] int32_t* ebp)
 {
     *ebx = game_command_balloon_press(*eax & 0xFFFF, *ebx & 0xFF);
 }

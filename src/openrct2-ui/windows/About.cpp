@@ -1,32 +1,26 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
-
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/Context.h>
-#include <openrct2/drawing/Drawing.h>
-#include <openrct2-ui/windows/Window.h>
 
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/sprites.h>
 
 #define WW 400
 #define WH 350
 #define TABHEIGHT 50
 
+// clang-format off
 enum
 {
     WINDOW_ABOUT_PAGE_OPENRCT2,
@@ -78,7 +72,7 @@ static rct_widget *window_about_page_widgets[] = {
 #define DEFAULT_ENABLED_WIDGETS \
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_ABOUT_OPENRCT2) | (1ULL << WIDX_TAB_ABOUT_RCT2)
 
-static uint64 window_about_page_enabled_widgets[] = {
+static uint64_t window_about_page_enabled_widgets[] = {
     DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_CHANGELOG),
     DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_MUSIC_CREDITS),
 };
@@ -156,14 +150,15 @@ static rct_window_event_list *window_about_page_events[] = {
     &window_about_openrct2_events,
     &window_about_rct2_events,
 };
+// clang-format on
 
-static void window_about_set_page(rct_window *w, sint32 page);
+static void window_about_set_page(rct_window* w, int32_t page);
 
 /**
  *
  *  rct2: 0x0066D2AC
  */
-rct_window * window_about_open()
+rct_window* window_about_open()
 {
     rct_window* window;
 
@@ -172,13 +167,7 @@ rct_window * window_about_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(
-        WW,
-        WH,
-        window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2],
-        WC_ABOUT,
-        0
-    );
+    window = window_create_centred(WW, WH, window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
 
     window_about_set_page(window, WINDOW_ABOUT_PAGE_OPENRCT2);
 
@@ -192,27 +181,28 @@ rct_window * window_about_open()
 
 #pragma region OpenRCT2
 
-static void window_about_openrct2_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_TAB_ABOUT_OPENRCT2:
-    case WIDX_TAB_ABOUT_RCT2:
-        window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
-        break;
-    case WIDX_CHANGELOG:
-        context_open_window(WC_CHANGELOG);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_TAB_ABOUT_OPENRCT2:
+        case WIDX_TAB_ABOUT_RCT2:
+            window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
+            break;
+        case WIDX_CHANGELOG:
+            context_open_window(WC_CHANGELOG);
+            break;
     }
 }
 
-static void window_about_openrct2_common_paint(rct_window * w, rct_drawpixelinfo * dpi)
+static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    sint32 x1, x2, y;
+    int32_t x1, x2, y;
 
     x1 = w->x + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->left + 45;
     x2 = w->x + (&w->widgets[WIDX_TAB_ABOUT_RCT2])->left + 45;
@@ -225,14 +215,14 @@ static void window_about_openrct2_common_paint(rct_window * w, rct_drawpixelinfo
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x2, y, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
 }
 
-static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    sint32 x, y, width;
+    int32_t x, y, width;
     rct_size16 logoSize;
 
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     x = w->x + (w->width / 2);
     y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight;
@@ -245,18 +235,19 @@ static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += logoSize.height + lineHeight * 2;
 
     // About OpenRCT2 text
-    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2]) + lineHeight + 5;
+    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2])
+        + lineHeight + 5;
 
     // Copyright disclaimer; hidden when using truetype fonts to prevent
     // the text from overlapping the changelog button.
-    if (!gUseTrueTypeFont)
+    if (!LocalisationService_UseTrueTypeFont())
     {
         gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
     }
 
     // Version info
     utf8 buffer[256];
-    utf8 *ch = buffer;
+    utf8* ch = buffer;
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
     gfx_draw_string_centred_wrapped(dpi, &ch, x, w->y + WH - 25, width, STR_STRING, w->colours[2]);
 }
@@ -269,19 +260,20 @@ static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x0066D4D5
  */
-static void window_about_rct2_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_about_rct2_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
-        window_close(w);
-        break;
-    case WIDX_TAB_ABOUT_OPENRCT2:
-    case WIDX_TAB_ABOUT_RCT2:
-        window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
-        break;
-    case WIDX_MUSIC_CREDITS:
-        context_open_window(WC_MUSIC_CREDITS);
-        break;
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            break;
+        case WIDX_TAB_ABOUT_OPENRCT2:
+        case WIDX_TAB_ABOUT_RCT2:
+            window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
+            break;
+        case WIDX_MUSIC_CREDITS:
+            context_open_window(WC_MUSIC_CREDITS);
+            break;
     }
 }
 
@@ -289,9 +281,9 @@ static void window_about_rct2_mouseup(rct_window *w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x0066D321
  */
-static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    sint32 x, y, yPage;
+    int32_t x, y, yPage;
 
     window_about_openrct2_common_paint(w, dpi);
 
@@ -300,7 +292,7 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
     x = w->x + 200;
     y = yPage + 5;
 
-    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     // Credits
     gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, COLOUR_BLACK, nullptr);
@@ -329,7 +321,7 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma endregion RCT2
 
-static void window_about_set_page(rct_window *w, sint32 page)
+static void window_about_set_page(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;

@@ -1,18 +1,11 @@
-#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
-* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
-*
-* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
-* For more information, visit https://github.com/OpenRCT2/OpenRCT2
-*
-* OpenRCT2 is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* A full copy of the GNU General Public License can be found in licence.txt
-*****************************************************************************/
-#pragma endregion
+ * Copyright (c) 2014-2018 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
 
 #pragma once
 
@@ -35,13 +28,15 @@ private:
     std::string _name;
 
 public:
-    ParkSetNameAction() {}
+    ParkSetNameAction()
+    {
+    }
     ParkSetNameAction(const std::string& name)
         : _name(name)
     {
     }
 
-    uint16 GetActionFlags() const override
+    uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
@@ -91,8 +86,8 @@ public:
         gParkName = newNameId;
 
         // Log park rename command if we are in multiplayer and logging is enabled
-        if ((network_get_mode() == NETWORK_MODE_CLIENT ||
-             network_get_mode() == NETWORK_MODE_SERVER) && gConfigNetwork.log_server_actions)
+        if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER)
+            && gConfigNetwork.log_server_actions)
         {
             LogAction(oldName);
         }
@@ -109,19 +104,15 @@ private:
         return buffer;
     }
 
-    void LogAction(const std::string &oldName) const
+    void LogAction(const std::string& oldName) const
     {
         // Get player name
         auto playerIndex = network_get_player_index(game_command_playerid);
         auto playerName = network_get_player_name(playerIndex);
 
         char logMessage[256];
-        const char * args[3] = {
-            playerName,
-            oldName.c_str(),
-            _name.c_str()
-        };
-        format_string(logMessage, sizeof(logMessage), STR_LOG_PARK_NAME, (void *)args);
+        const char* args[3] = { playerName, oldName.c_str(), _name.c_str() };
+        format_string(logMessage, sizeof(logMessage), STR_LOG_PARK_NAME, (void*)args);
         network_append_server_log(logMessage);
     }
 };

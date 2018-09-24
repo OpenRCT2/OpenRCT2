@@ -5,7 +5,7 @@
        - GIT_TAG
        - GIT_BRANCH
        - GIT_COMMIT_SHA1
-       - SIGN_PASSWORD
+       - GIT_DESCRIBE
        - OPENRCT2_ORG_TOKEN
        - NO_NSIS: set to true to prevent the NSIS installer building
   -->
@@ -18,7 +18,7 @@
     <Platform Condition="'$(PLATFORM)'==''">x64</Platform>
     <GIT_COMMIT_SHA1_SHORT Condition="'$(GIT_COMMIT_SHA1)'!=''">$(GIT_COMMIT_SHA1.Substring(0, 7))</GIT_COMMIT_SHA1_SHORT>
 
-    <Version>0.1.3</Version>
+    <Version>0.2.1</Version>
     <VersionExtra Condition="'$(GIT_BRANCH)'!=''">-$(GIT_BRANCH)-$(GIT_COMMIT_SHA1_SHORT)</VersionExtra>
     <VersionExtra Condition="'$(GIT_TAG)'!=''"></VersionExtra>
     <TargetLibsVersion>16</TargetLibsVersion>
@@ -28,6 +28,8 @@
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_BRANCH)'!=''">/D "OPENRCT2_BRANCH=\"$(GIT_BRANCH)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1)'!=''">/D "OPENRCT2_COMMIT_SHA1=\"$(GIT_COMMIT_SHA1)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">/D "OPENRCT2_COMMIT_SHA1_SHORT=\"$(GIT_COMMIT_SHA1_SHORT)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(GIT_DESCRIBE)'!=''">/D "OPENRCT2_VERSION_TAG=\"$(GIT_DESCRIBE)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(Configuration)'=='Release'">/D "USE_BREAKPAD" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
 
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <DistDir>$(RootDir)distribution\</DistDir>
@@ -40,9 +42,6 @@
     <OutputCom>$(TargetDir)openrct2.com</OutputCom>
     <OutputDll>$(TargetDir)openrct2.dll</OutputDll>
     <g2Output>$(TargetDir)data\g2.dat</g2Output>
-
-    <SignCertificate Condition="'$(SignCertificate)'==''">$(DistDir)windows\code-sign-key-openrct2.org.pfx</SignCertificate>
-    <SignTimestampUrl>http://timestamp.comodoca.com/authenticode</SignTimestampUrl>
 
     <PublishPostfix>-$(Configuration)-$(Platform)</PublishPostfix>
     <PublishPostfix Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(PublishPostfix)-$(GIT_COMMIT_SHA1_SHORT)</PublishPostfix>
@@ -62,24 +61,21 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v16/openrct2-libs-v16-x86-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">827d86c1571bb73504b23929746b20d8094aae40</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v16/openrct2-libs-v16-x64-windows-static-winssl.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">5904b7e0562ace419b7c87d618e5ad00ba664b36</LibsSha1>
-    <GtestVersion>1.8.0</GtestVersion>
-    <GtestUrl>https://github.com/google/googletest/archive/release-1.8.0.zip</GtestUrl>
-    <GtestSha1>667f873ab7a4d246062565fad32fb6d8e203ee73</GtestSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v18/openrct2-libs-v18-x86-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">5266545ca3034f9718729c7841d0352ed866db39</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v18/openrct2-libs-v18-x64-windows-static-winssl.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">4a122221e000b26067c8a4d06d2f053f27fe3f39</LibsSha1>
+    <GtestVersion>2fe3bd994b3189899d93f1d5a881e725e046fdc2</GtestVersion>
+    <GtestUrl>https://github.com/google/googletest/archive/$(GtestVersion).zip</GtestUrl>
+    <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2/title-sequence-v0.1.2.zip</TitleSequencesUrl>
     <TitleSequencesSha1>1136ef92bfb05cd1cba9831ba6dc4a653d87a246</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0/objects.zip</ObjectsUrl>
-    <ObjectsSha1>4f670859b5f37f85e0c3d755b1cb75e839c989a6</ObjectsSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.6/objects.zip</ObjectsUrl>
+    <ObjectsSha1>61c70237814dc0f5aee5e9219f2ff232ea1a6111</ObjectsSha1>
   </PropertyGroup>
 
   <ItemGroup>
     <g2Inputs Include="$(RootDir)resources\g2\*" />
-    <SignItems Include="$(OutputExe)" />
-    <SignItems Include="$(OutputCom)" />
-    <SignItems Include="$(OutputDll)" />
   </ItemGroup>
 
   <ItemGroup Label="Symbol Items">
@@ -134,7 +130,7 @@
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(RootDir)lib" />
     <PropertyGroup>
-      <GtestSrc>$(RootDir)lib\googletest-release-$(GtestVersion)</GtestSrc>
+      <GtestSrc>$(RootDir)lib\googletest-$(GtestVersion)</GtestSrc>
       <GtestDst>$(RootDir)lib\googletest</GtestDst>
     </PropertyGroup>
     <Exec Command="cmd /c &quot;if exist &quot;$(GtestSrc)&quot; ( rmdir /S /Q &quot;$(GtestDst)&quot; 2> nul &amp; move &quot;$(GtestSrc)&quot; &quot;$(GtestDst)&quot; )&quot;" />
@@ -152,7 +148,6 @@
       <CleanItems Include="$(ArtifactsDir)openrct2-symbols-$(Configuration)-$(Platform)*.zip" />
     </ItemGroup>
     <Delete Files="@(CleanItems)" />
-    <Delete Files="%(SignItems.Identity).signed" />
     <RemoveDir Directories="$(TargetDir)data" />
     <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
   </Target>
@@ -161,6 +156,7 @@
     <PropertyGroup>
       <BuildString Condition="'$(GIT_COMMIT_SHA1_SHORT)'!=''">$(GIT_COMMIT_SHA1_SHORT)</BuildString>
       <BuildString Condition="'$(GIT_BRANCH)'!=''">$(BuildString) ($(GIT_BRANCH))</BuildString>
+      <BuildString Condition="'$(GIT_DESCRIBE)'!=''">$(BuildString) ($(GIT_DESCRIBE))</BuildString>
     </PropertyGroup>
     <ItemGroup>
       <DataItems Include="$(RootDir)data\**\*" />
@@ -198,7 +194,7 @@
   </Target>
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
-  <Target Name="g2" DependsOnTargets="Build" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
+  <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
           Condition="'$(TestConfig)'!='true'">
     <Message Text="Building g2.dat..." Importance="high" />
     <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
@@ -228,21 +224,6 @@
                         Sha1="$(ObjectsSha1)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(TargetDir)data\object" />
-  </Target>
-
-  <!-- Target to sign OpenRCT2
-       This requires the project parameter SIGN_PASSWORD to be set -->
-  <Target Name="Sign" AfterTargets="Build" Inputs="@(SignItems)" Outputs="%(SignItems.Identity).signed"
-          Condition="'$(TestConfig)'!='true'">
-    <!-- <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of %(SignItems.Filename)%(SignItems.Extension)." /> -->
-    <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing %(SignItems.Filename)%(SignItems.Extension)"
-             Importance="high" />
-    <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
-          Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) %(SignItems.Identity)"
-          StandardOutputImportance="low" />
-
-    <!-- Create a dummy file so that msbuild can use it to determine if the binary is newer than the last sign time -->
-    <Touch AlwaysCreate="true" Files="%(SignItems.Identity).signed" />
   </Target>
 
   <!-- Target to publish OpenRCT2 as a portable zip -->
@@ -281,14 +262,6 @@
          /DPLATFORM=$(Platform) ^
          $(NsisScript)"
           StandardOutputImportance="normal" />
-
-    <!-- Sign the installer -->
-    <!-- <Warning Condition="'$(SIGN_PASSWORD)'==''" Text="SIGN_PASSWORD was not set, skipping signing of $(PublishInstallerExeName)." /> -->
-    <Message Condition="'$(SIGN_PASSWORD)'!=''" Text="Signing $(PublishInstallerExeName)"
-             Importance="high" />
-    <Exec EchoOff="true" Condition="'$(SIGN_PASSWORD)'!=''"
-          Command="signtool.exe sign /f $(SignCertificate) /p $(SIGN_PASSWORD) /t $(SignTimestampUrl) $(PublishInstallerExe)"
-          StandardOutputImportance="low" />
   </Target>
 
   <Target Name="PublishAll"

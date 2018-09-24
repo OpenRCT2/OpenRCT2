@@ -1,32 +1,25 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+ * Copyright (c) 2014-2018 OpenRCT2 developers
  *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
  *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
-#pragma endregion
 
-#include <cmath>
-#include <vector>
-#include <openrct2/common.h>
+#include "DrawingEngineFactory.hpp"
+
 #include <SDL2/SDL.h>
+#include <cmath>
+#include <openrct2/Game.h>
+#include <openrct2/common.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/drawing/X8DrawingEngine.h>
-#include <openrct2/ui/UiContext.h>
-#include "DrawingEngines.h"
-
 #include <openrct2/drawing/LightFX.h>
-#include <openrct2/Game.h>
+#include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/paint/Paint.h>
+#include <openrct2/ui/UiContext.h>
+#include <vector>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -35,36 +28,36 @@ using namespace OpenRCT2::Ui;
 class HardwareDisplayDrawingEngine final : public X8DrawingEngine
 {
 private:
-    constexpr static uint32 DIRTY_VISUAL_TIME = 32;
+    constexpr static uint32_t DIRTY_VISUAL_TIME = 32;
 
-    IUiContext * const  _uiContext;
-    SDL_Window *        _window                     = nullptr;
-    SDL_Renderer *      _sdlRenderer                = nullptr;
-    SDL_Texture *       _screenTexture              = nullptr;
-    SDL_Texture *       _scaledScreenTexture        = nullptr;
-    SDL_PixelFormat *   _screenTextureFormat        = nullptr;
-    uint32              _paletteHWMapped[256]       = { 0 };
+    std::shared_ptr<IUiContext> const _uiContext;
+    SDL_Window* _window = nullptr;
+    SDL_Renderer* _sdlRenderer = nullptr;
+    SDL_Texture* _screenTexture = nullptr;
+    SDL_Texture* _scaledScreenTexture = nullptr;
+    SDL_PixelFormat* _screenTextureFormat = nullptr;
+    uint32_t _paletteHWMapped[256] = { 0 };
 #ifdef __ENABLE_LIGHTFX__
-    uint32              _lightPaletteHWMapped[256]  = { 0 };
+    uint32_t _lightPaletteHWMapped[256] = { 0 };
 #endif
 
     // Steam overlay checking
-    uint32  _pixelBeforeOverlay     = 0;
-    uint32  _pixelAfterOverlay      = 0;
-    bool    _overlayActive          = false;
-    bool    _pausedBeforeOverlay    = false;
-    bool    _useVsync               = true;
+    uint32_t _pixelBeforeOverlay = 0;
+    uint32_t _pixelAfterOverlay = 0;
+    bool _overlayActive = false;
+    bool _pausedBeforeOverlay = false;
+    bool _useVsync = true;
 
-    std::vector<uint32> _dirtyVisualsTime;
-    
-    bool    smoothNN = false;
+    std::vector<uint32_t> _dirtyVisualsTime;
+
+    bool smoothNN = false;
 
 public:
-    explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
-        : X8DrawingEngine(uiContext),
-          _uiContext(uiContext)
+    explicit HardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
+        : X8DrawingEngine(uiContext)
+        , _uiContext(uiContext)
     {
-        _window = (SDL_Window *)_uiContext->GetWindow();
+        _window = (SDL_Window*)_uiContext->GetWindow();
     }
 
     ~HardwareDisplayDrawingEngine() override
@@ -97,7 +90,7 @@ public:
         }
     }
 
-    void Resize(uint32 width, uint32 height) override
+    void Resize(uint32_t width, uint32_t height) override
     {
         if (_screenTexture != nullptr)
         {
@@ -106,25 +99,24 @@ public:
         SDL_FreeFormat(_screenTextureFormat);
 
         SDL_RendererInfo rendererInfo = {};
-        sint32 result = SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
+        int32_t result = SDL_GetRendererInfo(_sdlRenderer, &rendererInfo);
         if (result < 0)
         {
             log_warning("HWDisplayDrawingEngine::Resize error: %s", SDL_GetError());
             return;
         }
-        uint32 pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
-        for (uint32 i = 0; i < rendererInfo.num_texture_formats; i++)
+        uint32_t pixelFormat = SDL_PIXELFORMAT_UNKNOWN;
+        for (uint32_t i = 0; i < rendererInfo.num_texture_formats; i++)
         {
-            uint32 format = rendererInfo.texture_formats[i];
-            if (!SDL_ISPIXELFORMAT_FOURCC(format) &&
-                !SDL_ISPIXELFORMAT_INDEXED(format) &&
-                (pixelFormat == SDL_PIXELFORMAT_UNKNOWN || SDL_BYTESPERPIXEL(format) < SDL_BYTESPERPIXEL(pixelFormat)))
+            uint32_t format = rendererInfo.texture_formats[i];
+            if (!SDL_ISPIXELFORMAT_FOURCC(format) && !SDL_ISPIXELFORMAT_INDEXED(format)
+                && (pixelFormat == SDL_PIXELFORMAT_UNKNOWN || SDL_BYTESPERPIXEL(format) < SDL_BYTESPERPIXEL(pixelFormat)))
             {
                 pixelFormat = format;
             }
         }
 
-        sint32 scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
+        int32_t scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
         if (scaleQuality == SCALE_QUALITY_SMOOTH_NN)
         {
             scaleQuality = SCALE_QUALITY_LINEAR;
@@ -148,27 +140,27 @@ public:
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
-            uint32 scale = std::ceil(gConfigGeneral.window_scale);
-            _scaledScreenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET,
-                                                     width * scale, height * scale);
+            uint32_t scale = std::ceil(gConfigGeneral.window_scale);
+            _scaledScreenTexture = SDL_CreateTexture(
+                _sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET, width * scale, height * scale);
         }
         else
         {
-            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING,width, height);
-        }        
+            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+        }
 
-        uint32 format;
+        uint32_t format;
         SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
 
         ConfigureBits(width, height, width);
     }
 
-    void SetPalette(const rct_palette_entry * palette) override
+    void SetPalette(const rct_palette_entry* palette) override
     {
         if (_screenTextureFormat != nullptr)
         {
-            for (sint32 i = 0; i < 256; i++)
+            for (int32_t i = 0; i < 256; i++)
             {
                 _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].red, palette[i].green, palette[i].blue);
             }
@@ -177,7 +169,7 @@ public:
             if (gConfigGeneral.enable_light_fx)
             {
                 auto lightPalette = lightfx_get_palette();
-                for (sint32 i = 0; i < 256; i++)
+                for (int32_t i = 0; i < 256; i++)
                 {
                     auto src = &lightPalette->entries[i];
                     _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src->red, src->green, src->blue, src->alpha);
@@ -197,15 +189,15 @@ public:
     }
 
 protected:
-    void OnDrawDirtyBlock(uint32 left, uint32 top, uint32 columns, uint32 rows) override
+    void OnDrawDirtyBlock(uint32_t left, uint32_t top, uint32_t columns, uint32_t rows) override
     {
         if (gShowDirtyVisuals)
         {
-            uint32 right = left + columns;
-            uint32 bottom = top + rows;
-            for (uint32 x = left; x < right; x++)
+            uint32_t right = left + columns;
+            uint32_t bottom = top + rows;
+            for (uint32_t x = left; x < right; x++)
             {
-                for (uint32 y = top; y < bottom; y++)
+                for (uint32_t y = top; y < bottom; y++)
                 {
                     SetDirtyVisualTime(x, y, DIRTY_VISUAL_TIME);
                 }
@@ -219,8 +211,8 @@ private:
 #ifdef __ENABLE_LIGHTFX__
         if (gConfigGeneral.enable_light_fx)
         {
-            void * pixels;
-            sint32 pitch;
+            void* pixels;
+            int32_t pitch;
             if (SDL_LockTexture(_screenTexture, nullptr, &pixels, &pitch) == 0)
             {
                 lightfx_render_to_texture(pixels, pitch, _bits, _width, _height, _paletteHWMapped, _lightPaletteHWMapped);
@@ -230,13 +222,13 @@ private:
         else
 #endif
         {
-            CopyBitsToTexture(_screenTexture, _bits, (sint32)_width, (sint32)_height, _paletteHWMapped);
+            CopyBitsToTexture(_screenTexture, _bits, (int32_t)_width, (int32_t)_height, _paletteHWMapped);
         }
         if (smoothNN)
         {
             SDL_SetRenderTarget(_sdlRenderer, _scaledScreenTexture);
             SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
-            
+
             SDL_SetRenderTarget(_sdlRenderer, nullptr);
             SDL_RenderCopy(_sdlRenderer, _scaledScreenTexture, nullptr, nullptr);
         }
@@ -264,17 +256,17 @@ private:
         }
     }
 
-    void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, const uint32 * palette)
+    void CopyBitsToTexture(SDL_Texture* texture, uint8_t* src, int32_t width, int32_t height, const uint32_t* palette)
     {
-        void *  pixels;
-        sint32     pitch;
+        void* pixels;
+        int32_t pitch;
         if (SDL_LockTexture(texture, nullptr, &pixels, &pitch) == 0)
         {
-            sint32 padding = pitch - (width * 4);
+            int32_t padding = pitch - (width * 4);
             if (pitch == width * 4)
             {
-                uint32 * dst = (uint32 *)pixels;
-                for (sint32 i = width * height; i > 0; i--)
+                uint32_t* dst = (uint32_t*)pixels;
+                for (int32_t i = width * height; i > 0; i--)
                 {
                     *dst++ = palette[*src++];
                 }
@@ -283,26 +275,26 @@ private:
             {
                 if (pitch == (width * 2) + padding)
                 {
-                    uint16 * dst = (uint16 *)pixels;
-                    for (sint32 y = height; y > 0; y--)
+                    uint16_t* dst = (uint16_t*)pixels;
+                    for (int32_t y = height; y > 0; y--)
                     {
-                        for (sint32 x = width; x > 0; x--)
+                        for (int32_t x = width; x > 0; x--)
                         {
-                            const uint8 lower = *(uint8 *)(&palette[*src++]);
-                            const uint8 upper = *(uint8 *)(&palette[*src++]);
+                            const uint8_t lower = *(uint8_t*)(&palette[*src++]);
+                            const uint8_t upper = *(uint8_t*)(&palette[*src++]);
                             *dst++ = (lower << 8) | upper;
                         }
-                        dst = (uint16*)(((uint8 *)dst) + padding);
+                        dst = (uint16_t*)(((uint8_t*)dst) + padding);
                     }
                 }
                 else if (pitch == width + padding)
                 {
-                    uint8 * dst = (uint8 *)pixels;
-                    for (sint32 y = height; y > 0; y--)
+                    uint8_t* dst = (uint8_t*)pixels;
+                    for (int32_t y = height; y > 0; y--)
                     {
-                        for (sint32 x = width; x > 0; x--)
+                        for (int32_t x = width; x > 0; x--)
                         {
-                            *dst++ = *(uint8 *)(&palette[*src++]);
+                            *dst++ = *(uint8_t*)(&palette[*src++]);
                         }
                         dst += padding;
                     }
@@ -312,10 +304,10 @@ private:
         }
     }
 
-    uint32 GetDirtyVisualTime(uint32 x, uint32 y)
+    uint32_t GetDirtyVisualTime(uint32_t x, uint32_t y)
     {
-        uint32 result = 0;
-        uint32 i = y * _dirtyGrid.BlockColumns + x;
+        uint32_t result = 0;
+        uint32_t i = y * _dirtyGrid.BlockColumns + x;
         if (_dirtyVisualsTime.size() > i)
         {
             result = _dirtyVisualsTime[i];
@@ -323,9 +315,9 @@ private:
         return result;
     }
 
-    void SetDirtyVisualTime(uint32 x, uint32 y, uint32 value)
+    void SetDirtyVisualTime(uint32_t x, uint32_t y, uint32_t value)
     {
-        uint32 i = y * _dirtyGrid.BlockColumns + x;
+        uint32_t i = y * _dirtyGrid.BlockColumns + x;
         if (_dirtyVisualsTime.size() > i)
         {
             _dirtyVisualsTime[i] = value;
@@ -335,9 +327,9 @@ private:
     void UpdateDirtyVisuals()
     {
         _dirtyVisualsTime.resize(_dirtyGrid.BlockRows * _dirtyGrid.BlockColumns);
-        for (uint32 y = 0; y < _dirtyGrid.BlockRows; y++)
+        for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
         {
-            for (uint32 x = 0; x < _dirtyGrid.BlockColumns; x++)
+            for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
             {
                 auto timeLeft = GetDirtyVisualTime(x, y);
                 if (timeLeft > 0)
@@ -354,20 +346,20 @@ private:
         float scaleY = gConfigGeneral.window_scale;
 
         SDL_SetRenderDrawBlendMode(_sdlRenderer, SDL_BLENDMODE_BLEND);
-        for (uint32 y = 0; y < _dirtyGrid.BlockRows; y++)
+        for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
         {
-            for (uint32 x = 0; x < _dirtyGrid.BlockColumns; x++)
+            for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
             {
                 auto timeLeft = GetDirtyVisualTime(x, y);
                 if (timeLeft > 0)
                 {
-                    uint8 alpha = (uint8)(timeLeft * 5 / 2);
+                    uint8_t alpha = (uint8_t)(timeLeft * 5 / 2);
 
                     SDL_Rect ddRect;
-                    ddRect.x = (sint32)(x * _dirtyGrid.BlockWidth * scaleX);
-                    ddRect.y = (sint32)(y * _dirtyGrid.BlockHeight * scaleY);
-                    ddRect.w = (sint32)(_dirtyGrid.BlockWidth * scaleX);
-                    ddRect.h = (sint32)(_dirtyGrid.BlockHeight * scaleY);
+                    ddRect.x = (int32_t)(x * _dirtyGrid.BlockWidth * scaleX);
+                    ddRect.y = (int32_t)(y * _dirtyGrid.BlockHeight * scaleY);
+                    ddRect.w = (int32_t)(_dirtyGrid.BlockWidth * scaleX);
+                    ddRect.h = (int32_t)(_dirtyGrid.BlockHeight * scaleY);
 
                     SDL_SetRenderDrawColor(_sdlRenderer, 255, 255, 255, alpha);
                     SDL_RenderFillRect(_sdlRenderer, &ddRect);
@@ -376,10 +368,10 @@ private:
         }
     }
 
-    void ReadCentrePixel(uint32 * pixel)
+    void ReadCentrePixel(uint32_t* pixel)
     {
-        SDL_Rect centrePixelRegion = { (sint32)(_width / 2), (sint32)(_height / 2), 1, 1 };
-        SDL_RenderReadPixels(_sdlRenderer, &centrePixelRegion, SDL_PIXELFORMAT_RGBA8888, pixel, sizeof(uint32));
+        SDL_Rect centrePixelRegion = { (int32_t)(_width / 2), (int32_t)(_height / 2), 1, 1 };
+        SDL_RenderReadPixels(_sdlRenderer, &centrePixelRegion, SDL_PIXELFORMAT_RGBA8888, pixel, sizeof(uint32_t));
     }
 
     // Should be called before SDL_RenderPresent to capture frame buffer before Steam overlay is drawn.
@@ -415,7 +407,7 @@ private:
     }
 };
 
-IDrawingEngine * OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(IUiContext * uiContext)
+std::unique_ptr<IDrawingEngine> OpenRCT2::Ui::CreateHardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
 {
-    return new HardwareDisplayDrawingEngine(uiContext);
+    return std::make_unique<HardwareDisplayDrawingEngine>(uiContext);
 }

@@ -47,7 +47,7 @@ STR_0042    :Topp spinn
 STR_0043    :Romringer
 STR_0044    :Bakvendt fritt fall-bane
 STR_0045    :Heis
-STR_0046    :Vertikalt fall berg-og-dal-bane
+STR_0046    :Vertikalt-fall berg-og-dal-bane
 STR_0047    :Bankautomat
 STR_0048    :Twister
 STR_0049    :Spøkelseshus
@@ -94,425 +94,6 @@ STR_0089    :Miniberg-og-dal-bane
 STR_0090    :Gruvebane
 STR_0091    :Ukjent attraksjon (59)
 STR_0092    :LIM-berg-og-dal-bane
-STR_0093    :
-STR_0094    :
-STR_0095    :
-STR_0096    :
-STR_0097    :
-STR_0098    :
-STR_0099    :
-STR_0100    :
-STR_0101    :
-STR_0102    :
-STR_0103    :
-STR_0104    :
-STR_0105    :
-STR_0106    :
-STR_0107    :
-STR_0108    :
-STR_0109    :
-STR_0110    :
-STR_0111    :
-STR_0112    :
-STR_0113    :
-STR_0114    :
-STR_0115    :
-STR_0116    :
-STR_0117    :
-STR_0118    :
-STR_0119    :
-STR_0120    :
-STR_0121    :
-STR_0122    :
-STR_0123    :
-STR_0124    :
-STR_0125    :
-STR_0126    :
-STR_0127    :
-STR_0128    :
-STR_0129    :
-STR_0130    :
-STR_0131    :
-STR_0132    :
-STR_0133    :
-STR_0134    :
-STR_0135    :
-STR_0136    :
-STR_0137    :
-STR_0138    :
-STR_0139    :
-STR_0140    :
-STR_0141    :
-STR_0142    :
-STR_0143    :
-STR_0144    :
-STR_0145    :
-STR_0146    :
-STR_0147    :
-STR_0148    :
-STR_0149    :
-STR_0150    :
-STR_0151    :
-STR_0152    :
-STR_0153    :
-STR_0154    :
-STR_0155    :
-STR_0156    :
-STR_0157    :
-STR_0158    :
-STR_0159    :
-STR_0160    :
-STR_0161    :
-STR_0162    :
-STR_0163    :
-STR_0164    :
-STR_0165    :
-STR_0166    :
-STR_0167    :
-STR_0168    :
-STR_0169    :
-STR_0170    :
-STR_0171    :
-STR_0172    :
-STR_0173    :
-STR_0174    :
-STR_0175    :
-STR_0176    :
-STR_0177    :
-STR_0178    :
-STR_0179    :
-STR_0180    :
-STR_0181    :
-STR_0182    :
-STR_0183    :
-STR_0184    :
-STR_0185    :
-STR_0186    :
-STR_0187    :
-STR_0188    :
-STR_0189    :
-STR_0190    :
-STR_0191    :
-STR_0192    :
-STR_0193    :
-STR_0194    :
-STR_0195    :
-STR_0196    :
-STR_0197    :
-STR_0198    :
-STR_0199    :
-STR_0200    :
-STR_0201    :
-STR_0202    :
-STR_0203    :
-STR_0204    :
-STR_0205    :
-STR_0206    :
-STR_0207    :
-STR_0208    :
-STR_0209    :
-STR_0210    :
-STR_0211    :
-STR_0212    :
-STR_0213    :
-STR_0214    :
-STR_0215    :
-STR_0216    :
-STR_0217    :
-STR_0218    :
-STR_0219    :
-STR_0220    :
-STR_0221    :
-STR_0222    :
-STR_0223    :
-STR_0224    :
-STR_0225    :
-STR_0226    :
-STR_0227    :
-STR_0228    :
-STR_0229    :
-STR_0230    :
-STR_0231    :
-STR_0232    :
-STR_0233    :
-STR_0234    :
-STR_0235    :
-STR_0236    :
-STR_0237    :
-STR_0238    :
-STR_0239    :
-STR_0240    :
-STR_0241    :
-STR_0242    :
-STR_0243    :
-STR_0244    :
-STR_0245    :
-STR_0246    :
-STR_0247    :
-STR_0248    :
-STR_0249    :
-STR_0250    :
-STR_0251    :
-STR_0252    :
-STR_0253    :
-STR_0254    :
-STR_0255    :
-STR_0256    :
-STR_0257    :
-STR_0258    :
-STR_0259    :
-STR_0260    :
-STR_0261    :
-STR_0262    :
-STR_0263    :
-STR_0264    :
-STR_0265    :
-STR_0266    :
-STR_0267    :
-STR_0268    :
-STR_0269    :
-STR_0270    :
-STR_0271    :
-STR_0272    :
-STR_0273    :
-STR_0274    :
-STR_0275    :
-STR_0276    :
-STR_0277    :
-STR_0278    :
-STR_0279    :
-STR_0280    :
-STR_0281    :
-STR_0282    :
-STR_0283    :
-STR_0284    :
-STR_0285    :
-STR_0286    :
-STR_0287    :
-STR_0288    :
-STR_0289    :
-STR_0290    :
-STR_0291    :
-STR_0292    :
-STR_0293    :
-STR_0294    :
-STR_0295    :
-STR_0296    :
-STR_0297    :
-STR_0298    :
-STR_0299    :
-STR_0300    :
-STR_0301    :
-STR_0302    :
-STR_0303    :
-STR_0304    :
-STR_0305    :
-STR_0306    :
-STR_0307    :
-STR_0308    :
-STR_0309    :
-STR_0310    :
-STR_0311    :
-STR_0312    :
-STR_0313    :
-STR_0314    :
-STR_0315    :
-STR_0316    :
-STR_0317    :
-STR_0318    :
-STR_0319    :
-STR_0320    :
-STR_0321    :
-STR_0322    :
-STR_0323    :
-STR_0324    :
-STR_0325    :
-STR_0326    :
-STR_0327    :
-STR_0328    :
-STR_0329    :
-STR_0330    :
-STR_0331    :
-STR_0332    :
-STR_0333    :
-STR_0334    :
-STR_0335    :
-STR_0336    :
-STR_0337    :
-STR_0338    :
-STR_0339    :
-STR_0340    :
-STR_0341    :
-STR_0342    :
-STR_0343    :
-STR_0344    :
-STR_0345    :
-STR_0346    :
-STR_0347    :
-STR_0348    :
-STR_0349    :
-STR_0350    :
-STR_0351    :
-STR_0352    :
-STR_0353    :
-STR_0354    :
-STR_0355    :
-STR_0356    :
-STR_0357    :
-STR_0358    :
-STR_0359    :
-STR_0360    :
-STR_0361    :
-STR_0362    :
-STR_0363    :
-STR_0364    :
-STR_0365    :
-STR_0366    :
-STR_0367    :
-STR_0368    :
-STR_0369    :
-STR_0370    :
-STR_0371    :
-STR_0372    :
-STR_0373    :
-STR_0374    :
-STR_0375    :
-STR_0376    :
-STR_0377    :
-STR_0378    :
-STR_0379    :
-STR_0380    :
-STR_0381    :
-STR_0382    :
-STR_0383    :
-STR_0384    :
-STR_0385    :
-STR_0386    :
-STR_0387    :
-STR_0388    :
-STR_0389    :
-STR_0390    :
-STR_0391    :
-STR_0392    :
-STR_0393    :
-STR_0394    :
-STR_0395    :
-STR_0396    :
-STR_0397    :
-STR_0398    :
-STR_0399    :
-STR_0400    :
-STR_0401    :
-STR_0402    :
-STR_0403    :
-STR_0404    :
-STR_0405    :
-STR_0406    :
-STR_0407    :
-STR_0408    :
-STR_0409    :
-STR_0410    :
-STR_0411    :
-STR_0412    :
-STR_0413    :
-STR_0414    :
-STR_0415    :
-STR_0416    :
-STR_0417    :
-STR_0418    :
-STR_0419    :
-STR_0420    :
-STR_0421    :
-STR_0422    :
-STR_0423    :
-STR_0424    :
-STR_0425    :
-STR_0426    :
-STR_0427    :
-STR_0428    :
-STR_0429    :
-STR_0430    :
-STR_0431    :
-STR_0432    :
-STR_0433    :
-STR_0434    :
-STR_0435    :
-STR_0436    :
-STR_0437    :
-STR_0438    :
-STR_0439    :
-STR_0440    :
-STR_0441    :
-STR_0442    :
-STR_0443    :
-STR_0444    :
-STR_0445    :
-STR_0446    :
-STR_0447    :
-STR_0448    :
-STR_0449    :
-STR_0450    :
-STR_0451    :
-STR_0452    :
-STR_0453    :
-STR_0454    :
-STR_0455    :
-STR_0456    :
-STR_0457    :
-STR_0458    :
-STR_0459    :
-STR_0460    :
-STR_0461    :
-STR_0462    :
-STR_0463    :
-STR_0464    :
-STR_0465    :
-STR_0466    :
-STR_0467    :
-STR_0468    :
-STR_0469    :
-STR_0470    :
-STR_0471    :
-STR_0472    :
-STR_0473    :
-STR_0474    :
-STR_0475    :
-STR_0476    :
-STR_0477    :
-STR_0478    :
-STR_0479    :
-STR_0480    :
-STR_0481    :
-STR_0482    :
-STR_0483    :
-STR_0484    :
-STR_0485    :
-STR_0486    :
-STR_0487    :
-STR_0488    :
-STR_0489    :
-STR_0490    :
-STR_0491    :
-STR_0492    :
-STR_0493    :
-STR_0494    :
-STR_0495    :
-STR_0496    :
-STR_0497    :
-STR_0498    :
-STR_0499    :
-STR_0500    :
-STR_0501    :
-STR_0502    :
-STR_0503    :
-STR_0504    :
-STR_0505    :
-STR_0506    :
-STR_0507    :
-STR_0508    :
-STR_0509    :
-STR_0510    :
-STR_0511    :
 STR_0512    :En kompakt berg-og-dal-bane med spiraltrekk og myke fall med vridninger
 STR_0513    :En loopende berg-og-dal-bane hvor passasjerene kjører stående
 STR_0514    :Tog som henger under berg-og-dal-banesporet svinger utover i svingene
@@ -542,12 +123,9 @@ STR_0537    :
 STR_0538    :
 STR_0539    :
 STR_0540    :
-STR_0541    :
 STR_0542    :
-STR_0543    :
 STR_0544    :
 STR_0545    :
-STR_0546    :
 STR_0547    :
 STR_0548    :
 STR_0549    :
@@ -569,15 +147,12 @@ STR_0564    :Denne berg-og-dal-banen er laget i tre og er rask, røff og bråket
 STR_0565    :En enkel berg-og-dal-bane i tre hvor vognene kun holdes på sporet ved hjelp av tyngdekraften
 STR_0566    :Berg-og-dal-banevogner fyker rundt en trang bane preget av sikksakk-mønstre og korte, skarpe fall
 STR_0567    :I seter hengende utover siden av sporet fyker passasjerene hodestups ned bratte fall og diverse inversjoner
-STR_0568    :
 STR_0569    :I spesialseler hengende under sporet opplever passasjerene en følelse av å fly gjennom luften
-STR_0570    :
 STR_0571    :Sirkulære vogner spinner mens de blir ledet gjennom en sikksakkbane av tre
 STR_0572    :Båter med høy kapasitet flyter langs en vid kanal, trukket opp bakker av et belte, hvor de fyker ned bratte fall for å gjøre passasjerene gjennomvåte
 STR_0573    :Helikopterformede vogner kjører langs en stålbane, drevet av pedalkraft
 STR_0574    :Passasjerer ligger i spesielle seler mens de raser gjennom vridde baner med inversjoner, enten på magen eller ryggen
 STR_0575    :Motoriserte tog hengende fra en skinne transporterer gjester rundt i parken
-STR_0576    :
 STR_0577    :Vogner kjører på trebaner hvor de blir snudd rundt av spesielle baneseksjoner
 STR_0578    :Vogner kjører langs en bane lukket av ringer, hvor de blir ledet ned bratte bakker og gjennom vridninger
 STR_0579    :
@@ -593,191 +168,16 @@ STR_0588    :Individuelle vogner kjører under en sikksakkbane med hårnålssvin
 STR_0589    :
 STR_0590    :Passasjerer kjører i en undervannsbåt gjennom en undervannsbane
 STR_0591    :Raftformede båter flyter rolig langs en elvebane
-STR_0592    :
 STR_0593    :
-STR_0594    :
-STR_0595    :
-STR_0596    :
-STR_0597    :
 STR_0598    :Inverterte berg-og-dal-banetog blir akselerert ut fra stasjonen for å reise opp en 'pigg', for så å falle ned igjen, gjennom stasjonen, og opp en pigg på andre siden
 STR_0599    :En kompakt berg-og-dal-bane med indivuelle vogner og myke, vridde fall
 STR_0600    :Motoriserte minetog ruller langs et mykt og vridd spor
-STR_0601    :
 STR_0602    :Berg-og-dal-banetog blir akselerert ut av stasjonen med lineære induksjonsmotorer og gjennom en rekke vridde inversjoner
-STR_0603    :<removed string - do not use>
-STR_0604    :<removed string - do not use>
-STR_0605    :<removed string - do not use>
-STR_0606    :<removed string - do not use>
-STR_0607    :<removed string - do not use>
-STR_0608    :<removed string - do not use>
-STR_0609    :<removed string - do not use>
-STR_0610    :<removed string - do not use>
-STR_0611    :<removed string - do not use>
-STR_0612    :<removed string - do not use>
-STR_0613    :<removed string - do not use>
-STR_0614    :<removed string - do not use>
-STR_0615    :<removed string - do not use>
-STR_0616    :<removed string - do not use>
-STR_0617    :<removed string - do not use>
-STR_0618    :<removed string - do not use>
-STR_0619    :<removed string - do not use>
-STR_0620    :<removed string - do not use>
-STR_0621    :<removed string - do not use>
-STR_0622    :<removed string - do not use>
-STR_0623    :<removed string - do not use>
-STR_0624    :<removed string - do not use>
-STR_0625    :<removed string - do not use>
-STR_0626    :<removed string - do not use>
-STR_0627    :<removed string - do not use>
-STR_0628    :<removed string - do not use>
-STR_0629    :<removed string - do not use>
-STR_0630    :<removed string - do not use>
-STR_0631    :<removed string - do not use>
-STR_0632    :<removed string - do not use>
-STR_0633    :<removed string - do not use>
-STR_0634    :<removed string - do not use>
-STR_0635    :<removed string - do not use>
-STR_0636    :<removed string - do not use>
-STR_0637    :<removed string - do not use>
-STR_0638    :<removed string - do not use>
-STR_0639    :<removed string - do not use>
-STR_0640    :<removed string - do not use>
-STR_0641    :<removed string - do not use>
-STR_0642    :<removed string - do not use>
-STR_0643    :<removed string - do not use>
-STR_0644    :<removed string - do not use>
-STR_0645    :<removed string - do not use>
-STR_0646    :<removed string - do not use>
-STR_0647    :<removed string - do not use>
-STR_0648    :<removed string - do not use>
-STR_0649    :<removed string - do not use>
-STR_0650    :<removed string - do not use>
-STR_0651    :<removed string - do not use>
-STR_0652    :<removed string - do not use>
-STR_0653    :<removed string - do not use>
-STR_0654    :<removed string - do not use>
-STR_0655    :<removed string - do not use>
-STR_0656    :<removed string - do not use>
-STR_0657    :<removed string - do not use>
-STR_0658    :<removed string - do not use>
-STR_0659    :<removed string - do not use>
-STR_0660    :<removed string - do not use>
-STR_0661    :<removed string - do not use>
-STR_0662    :<removed string - do not use>
-STR_0663    :<removed string - do not use>
-STR_0664    :<removed string - do not use>
-STR_0665    :<removed string - do not use>
-STR_0666    :<removed string - do not use>
-STR_0667    :<removed string - do not use>
-STR_0668    :<removed string - do not use>
-STR_0669    :<removed string - do not use>
-STR_0670    :<removed string - do not use>
-STR_0671    :<removed string - do not use>
-STR_0672    :<removed string - do not use>
-STR_0673    :<removed string - do not use>
-STR_0674    :<removed string - do not use>
-STR_0675    :<removed string - do not use>
-STR_0676    :<removed string - do not use>
-STR_0677    :<removed string - do not use>
-STR_0678    :<removed string - do not use>
-STR_0679    :<removed string - do not use>
-STR_0680    :<removed string - do not use>
-STR_0681    :<removed string - do not use>
-STR_0682    :<removed string - do not use>
-STR_0683    :<removed string - do not use>
-STR_0684    :<removed string - do not use>
-STR_0685    :<removed string - do not use>
-STR_0686    :<removed string - do not use>
-STR_0687    :<removed string - do not use>
-STR_0688    :<removed string - do not use>
-STR_0689    :<removed string - do not use>
-STR_0690    :<removed string - do not use>
-STR_0691    :<removed string - do not use>
-STR_0692    :<removed string - do not use>
-STR_0693    :<removed string - do not use>
-STR_0694    :<removed string - do not use>
-STR_0695    :<removed string - do not use>
-STR_0696    :<removed string - do not use>
-STR_0697    :<removed string - do not use>
-STR_0698    :<removed string - do not use>
-STR_0699    :<removed string - do not use>
-STR_0700    :<removed string - do not use>
-STR_0701    :<removed string - do not use>
-STR_0702    :<removed string - do not use>
-STR_0703    :<removed string - do not use>
-STR_0704    :<removed string - do not use>
-STR_0705    :<removed string - do not use>
-STR_0706    :<removed string - do not use>
-STR_0707    :<removed string - do not use>
-STR_0708    :<removed string - do not use>
-STR_0709    :<removed string - do not use>
-STR_0710    :<removed string - do not use>
-STR_0711    :<removed string - do not use>
-STR_0712    :<removed string - do not use>
-STR_0713    :<removed string - do not use>
-STR_0714    :<removed string - do not use>
-STR_0715    :<removed string - do not use>
-STR_0716    :<removed string - do not use>
-STR_0717    :<removed string - do not use>
-STR_0718    :<removed string - do not use>
-STR_0719    :<removed string - do not use>
-STR_0720    :<removed string - do not use>
-STR_0721    :<removed string - do not use>
-STR_0722    :<removed string - do not use>
-STR_0723    :<removed string - do not use>
-STR_0724    :<removed string - do not use>
-STR_0725    :<removed string - do not use>
-STR_0726    :<removed string - do not use>
-STR_0727    :<removed string - do not use>
-STR_0728    :<removed string - do not use>
-STR_0729    :<removed string - do not use>
-STR_0730    :<removed string - do not use>
-STR_0731    :<removed string - do not use>
-STR_0732    :<removed string - do not use>
-STR_0733    :<removed string - do not use>
-STR_0734    :<removed string - do not use>
-STR_0735    :<removed string - do not use>
-STR_0736    :<removed string - do not use>
-STR_0737    :<removed string - do not use>
-STR_0738    :<removed string - do not use>
-STR_0739    :<removed string - do not use>
-STR_0740    :<removed string - do not use>
-STR_0741    :<removed string - do not use>
-STR_0742    :<removed string - do not use>
-STR_0743    :<removed string - do not use>
-STR_0744    :<removed string - do not use>
-STR_0745    :<removed string - do not use>
-STR_0746    :<removed string - do not use>
-STR_0747    :<removed string - do not use>
-STR_0748    :<removed string - do not use>
-STR_0749    :<removed string - do not use>
-STR_0750    :<removed string - do not use>
-STR_0751    :<removed string - do not use>
-STR_0752    :<removed string - do not use>
-STR_0753    :<removed string - do not use>
-STR_0754    :<removed string - do not use>
-STR_0755    :<removed string - do not use>
-STR_0756    :<removed string - do not use>
-STR_0757    :<removed string - do not use>
-STR_0758    :<removed string - do not use>
-STR_0759    :<removed string - do not use>
-STR_0760    :<removed string - do not use>
-STR_0761    :<removed string - do not use>
-STR_0762    :<removed string - do not use>
-STR_0763    :<removed string - do not use>
-STR_0764    :<removed string - do not use>
-STR_0765    :<removed string - do not use>
-STR_0766    :<removed string - do not use>
 STR_0767    :Gjest {INT32}
 STR_0768    :Vaktmester {INT32}
 STR_0769    :Reparatør {INT32}
 STR_0770    :Sikkerhetsvakt {INT32}
 STR_0771    :Underholder {INT32}
-STR_0772    :Navnløs park{POP16}{POP16}
-STR_0773    :Navnløs park{POP16}{POP16}
-STR_0774    :Navnløs park{POP16}{POP16}
-STR_0775    :Navnløs park{POP16}{POP16}
-STR_0776    :Navnløs park{POP16}{POP16}
 STR_0777    :Navnløs park{POP16}{POP16}
 STR_0778    :Skilt
 STR_0779    :1.
@@ -825,7 +225,7 @@ STR_0820    :Nov
 STR_0821    :Des
 STR_0822    :Klarer ikke åpne grafikk-datafilen
 STR_0823    :Manglende eller utilgjengelig datafil
-STR_0824    :{BLACK}{CROSS}
+STR_0824    :{BLACK}❌
 STR_0825    :Navnet er allerede i bruk
 STR_0826    :For mange navn definert
 STR_0827    :Ikke nok penger - {CURRENCY2DP} trengs
@@ -833,26 +233,14 @@ STR_0828    :{SMALLFONT}{BLACK}Lukk vindu
 STR_0829    :{SMALLFONT}{BLACK}Vindustittel - dra denne for å flytte vinduet
 STR_0830    :{SMALLFONT}{BLACK}Zoom inn
 STR_0831    :{SMALLFONT}{BLACK}Zoom ut
-STR_0832    :{SMALLFONT}{BLACK}Rotate kameravinkelen 90{DEGREE} med klokken
+STR_0832    :{SMALLFONT}{BLACK}Rotate kameravinkelen 90° med klokken
 STR_0833    :{SMALLFONT}{BLACK}Pause spillet
 STR_0834    :{SMALLFONT}{BLACK}Disk- og spillinnstillinger
-STR_0835    :Spillinitialisering mislyktes
-STR_0836    :Kunne ikke starte spillet i minimert tilstand
-STR_0837    :Kunne ikke initialisere grafikksystemet
-STR_0838    :<removed string - do not use>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0841    :<removed string - do not use>
-STR_0842    :<removed string - do not use>
-STR_0843    :<removed string - do not use>
-STR_0844    :<removed string - do not use>
-STR_0845    :<removed string - do not use>
-STR_0846    :<removed string - do not use>
 STR_0847    :Om 'OpenRCT2'
-STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :<removed string - do not use>
-STR_0850    :{WINDOW_COLOUR_2}Opphavsrett {COPYRIGHT} 2002 Chris Sawyer, alle rettigheter forbeholdt
+STR_0850    :{WINDOW_COLOUR_2}Opphavsrett © 2002 Chris Sawyer, alle rettigheter forbeholdt
 STR_0851    :{WINDOW_COLOUR_2}Designet og programmert av Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Graphikk av Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Lyd og musikk av Allister Brimble
@@ -860,13 +248,6 @@ STR_0854    :{WINDOW_COLOUR_2}Ytterligere lyder spilt inn av David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representasjon av Jacqui Lyons ved Marjacq AS
 STR_0856    :{WINDOW_COLOUR_2}Takk til:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth og John Wardley
-STR_0858    :<removed string - do not use>
-STR_0859    :<removed string - do not use>
-STR_0860    :<removed string - do not use>
-STR_0861    :<removed string - do not use>
-STR_0862    :<removed string - do not use>
-STR_0863    :<removed string - do not use>
-STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -878,7 +259,7 @@ STR_0872    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
-STR_0876    :{BLACK}{DOWN}
+STR_0876    :{BLACK}▼
 STR_0877    :For lavt !
 STR_0878    :For høyt !
 STR_0879    :Kan ikke senke land her...
@@ -888,11 +269,9 @@ STR_0882    :Last inn spill
 STR_0883    :Lagre spill
 STR_0884    :Last inn landskap
 STR_0885    :Lagre landskap
-STR_0886    :Avslutt spill
 STR_0887    :Avslutt scenarioeditoren
 STR_0888    :Avslutt spordesigner
 STR_0889    :Avslutt spordesign-administratoren
-STR_0890    :<removed string - do not use>
 STR_0891    :Skjermbilde
 STR_0892    :Skjermbilde lagret som '{STRINGID}'
 STR_0893    :Skjermbilde mislyktes !
@@ -958,22 +337,22 @@ STR_0952    :Avslutt spill
 STR_0953    :Last inn landskap
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Velg seterotasjon for denne baneseksjonen
-STR_0956    :-180{DEGREE}
-STR_0957    :-135{DEGREE}
-STR_0958    :-90{DEGREE}
-STR_0959    :-45{DEGREE}
-STR_0960    :0{DEGREE}
-STR_0961    :+45{DEGREE}
-STR_0962    :+90{DEGREE}
-STR_0963    :+135{DEGREE}
-STR_0964    :+180{DEGREE}
-STR_0965    :+225{DEGREE}
-STR_0966    :+270{DEGREE}
-STR_0967    :+315{DEGREE}
-STR_0968    :+360{DEGREE}
-STR_0969    :+405{DEGREE}
-STR_0970    :+450{DEGREE}
-STR_0971    :+495{DEGREE}
+STR_0956    :-180°
+STR_0957    :-135°
+STR_0958    :-90°
+STR_0959    :-45°
+STR_0960    :0°
+STR_0961    :+45°
+STR_0962    :+90°
+STR_0963    :+135°
+STR_0964    :+180°
+STR_0965    :+225°
+STR_0966    :+270°
+STR_0967    :+315°
+STR_0968    :+360°
+STR_0969    :+405°
+STR_0970    :+450°
+STR_0971    :+495°
 STR_0972    :Avbryt
 STR_0973    :OK
 STR_0974    :Attraksjoner
@@ -986,8 +365,8 @@ STR_0980    :Nye spennende attraksjoner
 STR_0981    :Nye vannattraksjoner
 STR_0982    :Nye boder
 STR_0983    :Forskning og utvikling
-STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
-STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
+STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
+STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :For mange attraksjoner
 STR_0988    :Kan ikke konstruere ny attraksjon...
@@ -1082,14 +461,14 @@ STR_1076    :Bod
 STR_1077    :Roteringsmodus
 STR_1078    :Foroverrotasjon
 STR_1079    :Bakoverrotasjon
-STR_1080    :Film: {ENDQUOTES}Flyvere på hevntokt{ENDQUOTES}
-STR_1081    :3D film: {ENDQUOTES}Musehaler{ENDQUOTES}
+STR_1080    :Film: ”Flyvere på hevntokt”
+STR_1081    :3D film: ”Musehaler”
 STR_1082    :Romringer
 STR_1083    :Nybegynnermodus
 STR_1084    :LIM-utskytning
-STR_1085    :Film: {ENDQUOTES}Fartsspenning{ENDQUOTES}
-STR_1086    :3D film: {ENDQUOTES}Stormjegere{ENDQUOTES}
-STR_1087    :3D film: {ENDQUOTES}Verdensromsraidere{ENDQUOTES}
+STR_1085    :Film: ”Fartsspenning”
+STR_1086    :3D film: ”Stormjegere”
+STR_1087    :3D film: ”Verdensromsraidere”
 STR_1088    :Intens modus
 STR_1089    :Berserkmodus
 STR_1090    :Spøkelseshus
@@ -1145,7 +524,7 @@ STR_1139    :{SMALLFONT}{BLACK}Velg farge for støttestrukturer
 STR_1140    :{SMALLFONT}{BLACK}Velg fargeoppsett for kjøretøy
 STR_1141    :{SMALLFONT}{BLACK}Velg hvilket kjøretøy/tog som skal modifiseres
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1144    :Kan ikke bygge/flytte inngang for denne attraksjonen...
 STR_1145    :Kan ikke bygge/flytte utgang for denne attraksjonen...
 STR_1146    :Inngang har ikke blitt bygget
@@ -1159,7 +538,7 @@ STR_1153    :Høydemerker på attraksjonsspor
 STR_1154    :Høydemerker på land
 STR_1155    :Høydemerker på gangstier
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Kan ikke fjerne denne...
 STR_1159    :{SMALLFONT}{BLACK}Plasser kulisser, hager og annet tilbehør
 STR_1160    :{SMALLFONT}{BLACK}Lag/juster innsjøer og vann
@@ -1220,8 +599,8 @@ STR_1214    :{SMALLFONT}{BLACK}Velg største tid å vente før avgang
 STR_1215    :{WINDOW_COLOUR_2}Synkroniser med stasjonen ved siden av
 STR_1216    :{SMALLFONT}{BLACK}Velg om avgang skal synkroniseres for alle tilliggende stasjoner (for 'løp')
 STR_1217    :{COMMA16} sekunder
-STR_1218    :{BLACK}{SMALLUP}
-STR_1219    :{BLACK}{SMALLDOWN}
+STR_1218    :{BLACK}+
+STR_1219    :{BLACK}-
 STR_1220    :Kun utgang
 STR_1221    :Ingen inngang
 STR_1222    :Ingen utgang
@@ -1329,7 +708,7 @@ STR_1323    :Baner
 STR_1324    :{COMMA16} bane
 STR_1325    :{COMMA16} baner
 STR_1326    :Bane {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Roter objekter 90{DEGREE}
+STR_1327    :{SMALLFONT}{BLACK}Roter objekter 90°
 STR_1328    :Krever flatt land
 STR_1329    :{WINDOW_COLOUR_2}Utskytningsfart:
 STR_1330    :{SMALLFONT}{BLACK}Maksfart ved avgang
@@ -1406,7 +785,7 @@ STR_1400    :Inngang
 STR_1401    :Utgang
 STR_1402    :{SMALLFONT}{BLACK}Bygg eller flytt attraksjonsinngang
 STR_1403    :{SMALLFONT}{BLACK}Bygg eller flytt attraksjonsutgang
-STR_1404    :{SMALLFONT}{BLACK}Roter 90{DEGREE}
+STR_1404    :{SMALLFONT}{BLACK}Roter 90°
 STR_1405    :{SMALLFONT}{BLACK}Speilbilde
 STR_1406    :{SMALLFONT}{BLACK}Vis/skjul pynt (hvis gyldig for dette designet)
 STR_1407    :{WINDOW_COLOUR_2}Bygg dette...
@@ -1482,131 +861,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
 STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}I've spent all my money{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}I feel sick{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}I feel very sick{ENDQUOTES}
-STR_1484    :{SMALLFONT}{OPENQUOTES}I want to go on something more thrilling than {STRINGID}{ENDQUOTES}
-STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} looks too intense for me{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}I haven't finished my {STRINGID} yet{ENDQUOTES}
-STR_1487    :{SMALLFONT}{OPENQUOTES}Just looking at {STRINGID} makes me feel sick{ENDQUOTES}
-STR_1488    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to go on {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}I want to go home{ENDQUOTES}
-STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is really good value{ENDQUOTES}
-STR_1491    :{SMALLFONT}{OPENQUOTES}I've already got {STRINGID}{ENDQUOTES}
-STR_1492    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1493    :{SMALLFONT}{OPENQUOTES}I'm not hungry{ENDQUOTES}
-STR_1494    :{SMALLFONT}{OPENQUOTES}I'm not thirsty{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Help! I'm drowning!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}I'm lost!{ENDQUOTES}
-STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was great{ENDQUOTES}
-STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the bathroom{ENDQUOTES}
-STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
-STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
-STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
-STR_1506    :{SMALLFONT}{OPENQUOTES}The litter here is really bad{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}I can't find the park exit{ENDQUOTES}
-STR_1508    :{SMALLFONT}{OPENQUOTES}I want to get off {STRINGID}{ENDQUOTES}
-STR_1509    :{SMALLFONT}{OPENQUOTES}I want to get out of {STRINGID}{ENDQUOTES}
-STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{ENDQUOTES}
-STR_1511    :{SMALLFONT}{OPENQUOTES}This path is disgusting{ENDQUOTES}
-STR_1512    :{SMALLFONT}{OPENQUOTES}It's too crowded here{ENDQUOTES}
-STR_1513    :{SMALLFONT}{OPENQUOTES}The vandalism here is really bad{ENDQUOTES}
-STR_1514    :{SMALLFONT}{OPENQUOTES}Great scenery!{ENDQUOTES}
-STR_1515    :{SMALLFONT}{OPENQUOTES}This park is really clean and tidy{ENDQUOTES}
-STR_1516    :{SMALLFONT}{OPENQUOTES}The jumping fountains are great{ENDQUOTES}
-STR_1517    :{SMALLFONT}{OPENQUOTES}The music is nice here{ENDQUOTES}
-STR_1518    :{SMALLFONT}{OPENQUOTES}This balloon from {STRINGID} is really good value{ENDQUOTES}
-STR_1519    :{SMALLFONT}{OPENQUOTES}This cuddly toy from {STRINGID} is really good value{ENDQUOTES}
-STR_1520    :{SMALLFONT}{OPENQUOTES}This park map from {STRINGID} is really good value{ENDQUOTES}
-STR_1521    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1522    :{SMALLFONT}{OPENQUOTES}This umbrella from {STRINGID} is really good value{ENDQUOTES}
-STR_1523    :{SMALLFONT}{OPENQUOTES}This drink from {STRINGID} is really good value{ENDQUOTES}
-STR_1524    :{SMALLFONT}{OPENQUOTES}This burger from {STRINGID} is really good value{ENDQUOTES}
-STR_1525    :{SMALLFONT}{OPENQUOTES}These chips from {STRINGID} are really good value{ENDQUOTES}
-STR_1526    :{SMALLFONT}{OPENQUOTES}This ice cream from {STRINGID} is really good value{ENDQUOTES}
-STR_1527    :{SMALLFONT}{OPENQUOTES}This candyfloss from {STRINGID} is really good value{ENDQUOTES}
+STR_1480    :{SMALLFONT}“I can't afford {STRINGID}”
+STR_1481    :{SMALLFONT}“I've spent all my money”
+STR_1482    :{SMALLFONT}“I feel sick”
+STR_1483    :{SMALLFONT}“I feel very sick”
+STR_1484    :{SMALLFONT}“I want to go on something more thrilling than {STRINGID}”
+STR_1485    :{SMALLFONT}“{STRINGID} looks too intense for me”
+STR_1486    :{SMALLFONT}“I haven't finished my {STRINGID} yet”
+STR_1487    :{SMALLFONT}“Just looking at {STRINGID} makes me feel sick”
+STR_1488    :{SMALLFONT}“I'm not paying that much to go on {STRINGID}”
+STR_1489    :{SMALLFONT}“I want to go home”
+STR_1490    :{SMALLFONT}“{STRINGID} is really good value”
+STR_1491    :{SMALLFONT}“I've already got {STRINGID}”
+STR_1492    :{SMALLFONT}“I can't afford {STRINGID}”
+STR_1493    :{SMALLFONT}“I'm not hungry”
+STR_1494    :{SMALLFONT}“I'm not thirsty”
+STR_1495    :{SMALLFONT}“Help! I'm drowning!”
+STR_1496    :{SMALLFONT}“I'm lost!”
+STR_1497    :{SMALLFONT}“{STRINGID} was great”
+STR_1498    :{SMALLFONT}“I've been queuing for {STRINGID} for ages”
+STR_1499    :{SMALLFONT}“I'm tired”
+STR_1500    :{SMALLFONT}“I'm hungry”
+STR_1501    :{SMALLFONT}“I'm thirsty”
+STR_1502    :{SMALLFONT}“I need to go to the bathroom”
+STR_1503    :{SMALLFONT}“I can't find {STRINGID}”
+STR_1504    :{SMALLFONT}“I'm not paying that much to use {STRINGID}”
+STR_1505    :{SMALLFONT}“I'm not going on {STRINGID} while it's raining”
+STR_1506    :{SMALLFONT}“The litter here is really bad”
+STR_1507    :{SMALLFONT}“I can't find the park exit”
+STR_1508    :{SMALLFONT}“I want to get off {STRINGID}”
+STR_1509    :{SMALLFONT}“I want to get out of {STRINGID}”
+STR_1510    :{SMALLFONT}“I'm not going on {STRINGID} - It isn't safe”
+STR_1511    :{SMALLFONT}“This path is disgusting”
+STR_1512    :{SMALLFONT}“It's too crowded here”
+STR_1513    :{SMALLFONT}“The vandalism here is really bad”
+STR_1514    :{SMALLFONT}“Great scenery!”
+STR_1515    :{SMALLFONT}“This park is really clean and tidy”
+STR_1516    :{SMALLFONT}“The jumping fountains are great”
+STR_1517    :{SMALLFONT}“The music is nice here”
+STR_1518    :{SMALLFONT}“This balloon from {STRINGID} is really good value”
+STR_1519    :{SMALLFONT}“This cuddly toy from {STRINGID} is really good value”
+STR_1520    :{SMALLFONT}“This park map from {STRINGID} is really good value”
+STR_1521    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
+STR_1522    :{SMALLFONT}“This umbrella from {STRINGID} is really good value”
+STR_1523    :{SMALLFONT}“This drink from {STRINGID} is really good value”
+STR_1524    :{SMALLFONT}“This burger from {STRINGID} is really good value”
+STR_1525    :{SMALLFONT}“These chips from {STRINGID} are really good value”
+STR_1526    :{SMALLFONT}“This ice cream from {STRINGID} is really good value”
+STR_1527    :{SMALLFONT}“This candyfloss from {STRINGID} is really good value”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}{OPENQUOTES}This pizza from {STRINGID} is really good value{ENDQUOTES}
+STR_1531    :{SMALLFONT}“This pizza from {STRINGID} is really good value”
 STR_1532    :
-STR_1533    :{SMALLFONT}{OPENQUOTES}This popcorn from {STRINGID} is really good value{ENDQUOTES}
-STR_1534    :{SMALLFONT}{OPENQUOTES}This hot dog from {STRINGID} is really good value{ENDQUOTES}
-STR_1535    :{SMALLFONT}{OPENQUOTES}This tentacle from {STRINGID} is really good value{ENDQUOTES}
-STR_1536    :{SMALLFONT}{OPENQUOTES}This hat from {STRINGID} is really good value{ENDQUOTES}
-STR_1537    :{SMALLFONT}{OPENQUOTES}This toffee apple from {STRINGID} is really good value{ENDQUOTES}
-STR_1538    :{SMALLFONT}{OPENQUOTES}This T-shirt from {STRINGID} is really good value{ENDQUOTES}
-STR_1539    :{SMALLFONT}{OPENQUOTES}This doughnut from {STRINGID} is really good value{ENDQUOTES}
-STR_1540    :{SMALLFONT}{OPENQUOTES}This coffee from {STRINGID} is really good value{ENDQUOTES}
+STR_1533    :{SMALLFONT}“This popcorn from {STRINGID} is really good value”
+STR_1534    :{SMALLFONT}“This hot dog from {STRINGID} is really good value”
+STR_1535    :{SMALLFONT}“This tentacle from {STRINGID} is really good value”
+STR_1536    :{SMALLFONT}“This hat from {STRINGID} is really good value”
+STR_1537    :{SMALLFONT}“This toffee apple from {STRINGID} is really good value”
+STR_1538    :{SMALLFONT}“This T-shirt from {STRINGID} is really good value”
+STR_1539    :{SMALLFONT}“This doughnut from {STRINGID} is really good value”
+STR_1540    :{SMALLFONT}“This coffee from {STRINGID} is really good value”
 STR_1541    :
-STR_1542    :{SMALLFONT}{OPENQUOTES}This fried chicken from {STRINGID} is really good value{ENDQUOTES}
-STR_1543    :{SMALLFONT}{OPENQUOTES}This lemonade from {STRINGID} is really good value{ENDQUOTES}
+STR_1542    :{SMALLFONT}“This fried chicken from {STRINGID} is really good value”
+STR_1543    :{SMALLFONT}“This lemonade from {STRINGID} is really good value”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
-STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
-STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
-STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
-STR_1554    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a park map from {STRINGID}{ENDQUOTES}
-STR_1555    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1556    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an umbrella from {STRINGID}{ENDQUOTES}
-STR_1557    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a drink from {STRINGID}{ENDQUOTES}
-STR_1558    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a burger from {STRINGID}{ENDQUOTES}
-STR_1559    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for chips from {STRINGID}{ENDQUOTES}
-STR_1560    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an ice cream from {STRINGID}{ENDQUOTES}
-STR_1561    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for candyfloss from {STRINGID}{ENDQUOTES}
+STR_1550    :{SMALLFONT}“Wow!”
+STR_1551    :{SMALLFONT}“I have the strangest feeling someone is watching me”
+STR_1552    :{SMALLFONT}“I'm not paying that much for a balloon from {STRINGID}”
+STR_1553    :{SMALLFONT}“I'm not paying that much for a cuddly toy from {STRINGID}”
+STR_1554    :{SMALLFONT}“I'm not paying that much for a park map from {STRINGID}”
+STR_1555    :{SMALLFONT}“I'm not paying that much for an on-ride photo from {STRINGID}”
+STR_1556    :{SMALLFONT}“I'm not paying that much for an umbrella from {STRINGID}”
+STR_1557    :{SMALLFONT}“I'm not paying that much for a drink from {STRINGID}”
+STR_1558    :{SMALLFONT}“I'm not paying that much for a burger from {STRINGID}”
+STR_1559    :{SMALLFONT}“I'm not paying that much for chips from {STRINGID}”
+STR_1560    :{SMALLFONT}“I'm not paying that much for an ice cream from {STRINGID}”
+STR_1561    :{SMALLFONT}“I'm not paying that much for candyfloss from {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for pizza from {STRINGID}{ENDQUOTES}
+STR_1565    :{SMALLFONT}“I'm not paying that much for pizza from {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for popcorn from {STRINGID}{ENDQUOTES}
-STR_1568    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hot dog from {STRINGID}{ENDQUOTES}
-STR_1569    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for tentacle from {STRINGID}{ENDQUOTES}
-STR_1570    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a hat from {STRINGID}{ENDQUOTES}
-STR_1571    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a toffee apple from {STRINGID}{ENDQUOTES}
-STR_1572    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a T-shirt from {STRINGID}{ENDQUOTES}
-STR_1573    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a doughnut from {STRINGID}{ENDQUOTES}
-STR_1574    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for coffee from {STRINGID}{ENDQUOTES}
+STR_1567    :{SMALLFONT}“I'm not paying that much for popcorn from {STRINGID}”
+STR_1568    :{SMALLFONT}“I'm not paying that much for a hot dog from {STRINGID}”
+STR_1569    :{SMALLFONT}“I'm not paying that much for tentacle from {STRINGID}”
+STR_1570    :{SMALLFONT}“I'm not paying that much for a hat from {STRINGID}”
+STR_1571    :{SMALLFONT}“I'm not paying that much for a toffee apple from {STRINGID}”
+STR_1572    :{SMALLFONT}“I'm not paying that much for a T-shirt from {STRINGID}”
+STR_1573    :{SMALLFONT}“I'm not paying that much for a doughnut from {STRINGID}”
+STR_1574    :{SMALLFONT}“I'm not paying that much for coffee from {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried chicken from {STRINGID}{ENDQUOTES}
-STR_1577    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for lemonade from {STRINGID}{ENDQUOTES}
+STR_1576    :{SMALLFONT}“I'm not paying that much for fried chicken from {STRINGID}”
+STR_1577    :{SMALLFONT}“I'm not paying that much for lemonade from {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1585    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1586    :{SMALLFONT}{OPENQUOTES}This on-ride photo from {STRINGID} is really good value{ENDQUOTES}
-STR_1587    :{SMALLFONT}{OPENQUOTES}This pretzel from {STRINGID} is really good value{ENDQUOTES}
-STR_1588    :{SMALLFONT}{OPENQUOTES}This hot chocolate from {STRINGID} is really good value{ENDQUOTES}
-STR_1589    :{SMALLFONT}{OPENQUOTES}This iced tea from {STRINGID} is really good value{ENDQUOTES}
-STR_1590    :{SMALLFONT}{OPENQUOTES}This funnel cake from {STRINGID} is really good value{ENDQUOTES}
-STR_1591    :{SMALLFONT}{OPENQUOTES}These sunglasses from {STRINGID} are really good value{ENDQUOTES}
-STR_1592    :{SMALLFONT}{OPENQUOTES}These beef noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1593    :{SMALLFONT}{OPENQUOTES}These fried rice noodles from {STRINGID} are really good value{ENDQUOTES}
-STR_1594    :{SMALLFONT}{OPENQUOTES}This wonton soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1595    :{SMALLFONT}{OPENQUOTES}This meatball soup from {STRINGID} is really good value{ENDQUOTES}
-STR_1596    :{SMALLFONT}{OPENQUOTES}This fruit juice from {STRINGID} is really good value{ENDQUOTES}
-STR_1597    :{SMALLFONT}{OPENQUOTES}This soybean milk from {STRINGID} is really good value{ENDQUOTES}
-STR_1598    :{SMALLFONT}{OPENQUOTES}This sujongkwa from {STRINGID} is really good value{ENDQUOTES}
-STR_1599    :{SMALLFONT}{OPENQUOTES}This sub sandwich from {STRINGID} is really good value{ENDQUOTES}
-STR_1600    :{SMALLFONT}{OPENQUOTES}This cookie from {STRINGID} is really good value{ENDQUOTES}
+STR_1584    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
+STR_1585    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
+STR_1586    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
+STR_1587    :{SMALLFONT}“This pretzel from {STRINGID} is really good value”
+STR_1588    :{SMALLFONT}“This hot chocolate from {STRINGID} is really good value”
+STR_1589    :{SMALLFONT}“This iced tea from {STRINGID} is really good value”
+STR_1590    :{SMALLFONT}“This funnel cake from {STRINGID} is really good value”
+STR_1591    :{SMALLFONT}“These sunglasses from {STRINGID} are really good value”
+STR_1592    :{SMALLFONT}“These beef noodles from {STRINGID} are really good value”
+STR_1593    :{SMALLFONT}“These fried rice noodles from {STRINGID} are really good value”
+STR_1594    :{SMALLFONT}“This wonton soup from {STRINGID} is really good value”
+STR_1595    :{SMALLFONT}“This meatball soup from {STRINGID} is really good value”
+STR_1596    :{SMALLFONT}“This fruit juice from {STRINGID} is really good value”
+STR_1597    :{SMALLFONT}“This soybean milk from {STRINGID} is really good value”
+STR_1598    :{SMALLFONT}“This sujongkwa from {STRINGID} is really good value”
+STR_1599    :{SMALLFONT}“This sub sandwich from {STRINGID} is really good value”
+STR_1600    :{SMALLFONT}“This cookie from {STRINGID} is really good value”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}{OPENQUOTES}This roast sausage from {STRINGID} are really good value{ENDQUOTES}
+STR_1604    :{SMALLFONT}“This roast sausage from {STRINGID} are really good value”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1618,27 +997,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1617    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1618    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for an on-ride photo from {STRINGID}{ENDQUOTES}
-STR_1619    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a pretzel from {STRINGID}{ENDQUOTES}
-STR_1620    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for hot chocolate from {STRINGID}{ENDQUOTES}
-STR_1621    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for iced tea from {STRINGID}{ENDQUOTES}
-STR_1622    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a funnel cake from {STRINGID}{ENDQUOTES}
-STR_1623    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sunglasses from {STRINGID}{ENDQUOTES}
-STR_1624    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for beef noodles from {STRINGID}{ENDQUOTES}
-STR_1625    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fried rice noodles from {STRINGID}{ENDQUOTES}
-STR_1626    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for wonton soup from {STRINGID}{ENDQUOTES}
-STR_1627    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for meatball soup from {STRINGID}{ENDQUOTES}
-STR_1628    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for fruit juice from {STRINGID}{ENDQUOTES}
-STR_1629    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for soybean milk from {STRINGID}{ENDQUOTES}
-STR_1630    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for sujongkwa from {STRINGID}{ENDQUOTES}
-STR_1631    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a sub sandwich from {STRINGID}{ENDQUOTES}
-STR_1632    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cookie from {STRINGID}{ENDQUOTES}
+STR_1616    :{SMALLFONT}“I'm not paying that much for an on-ride photo from {STRINGID}”
+STR_1617    :{SMALLFONT}“I'm not paying that much for an on-ride photo from {STRINGID}”
+STR_1618    :{SMALLFONT}“I'm not paying that much for an on-ride photo from {STRINGID}”
+STR_1619    :{SMALLFONT}“I'm not paying that much for a pretzel from {STRINGID}”
+STR_1620    :{SMALLFONT}“I'm not paying that much for hot chocolate from {STRINGID}”
+STR_1621    :{SMALLFONT}“I'm not paying that much for iced tea from {STRINGID}”
+STR_1622    :{SMALLFONT}“I'm not paying that much for a funnel cake from {STRINGID}”
+STR_1623    :{SMALLFONT}“I'm not paying that much for sunglasses from {STRINGID}”
+STR_1624    :{SMALLFONT}“I'm not paying that much for beef noodles from {STRINGID}”
+STR_1625    :{SMALLFONT}“I'm not paying that much for fried rice noodles from {STRINGID}”
+STR_1626    :{SMALLFONT}“I'm not paying that much for wonton soup from {STRINGID}”
+STR_1627    :{SMALLFONT}“I'm not paying that much for meatball soup from {STRINGID}”
+STR_1628    :{SMALLFONT}“I'm not paying that much for fruit juice from {STRINGID}”
+STR_1629    :{SMALLFONT}“I'm not paying that much for soybean milk from {STRINGID}”
+STR_1630    :{SMALLFONT}“I'm not paying that much for sujongkwa from {STRINGID}”
+STR_1631    :{SMALLFONT}“I'm not paying that much for a sub sandwich from {STRINGID}”
+STR_1632    :{SMALLFONT}“I'm not paying that much for a cookie from {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a roast sausage from {STRINGID}{ENDQUOTES}
+STR_1636    :{SMALLFONT}“I'm not paying that much for a roast sausage from {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1650,12 +1029,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}{OPENQUOTES}Help! Put me down!{ENDQUOTES}
-STR_1649    :{SMALLFONT}{OPENQUOTES}I'm running out of cash!{ENDQUOTES}
-STR_1650    :{SMALLFONT}{OPENQUOTES}Wow! A new ride being built!{ENDQUOTES}
-STR_1651    :<removed string - do not use>
-STR_1652    :<removed string - do not use>
-STR_1653    :{SMALLFONT}{OPENQUOTES}...and here we are on {STRINGID}!{ENDQUOTES}
+STR_1648    :{SMALLFONT}“Help! Put me down!”
+STR_1649    :{SMALLFONT}“I'm running out of cash!”
+STR_1650    :{SMALLFONT}“Wow! A new ride being built!”
+STR_1653    :{SMALLFONT}“...and here we are on {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
 STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
 STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
@@ -1739,7 +1116,6 @@ STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
 STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1737    :{COMMA16}
 STR_1738    :Can't change number of laps...
 STR_1739    :Race won by guest {INT32}
 STR_1740    :Race won by {STRINGID}
@@ -1747,12 +1123,10 @@ STR_1741    :Not yet constructed !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1745    :{COMMA16}
 STR_1746    :Can't change this...
 STR_1747    :{WINDOW_COLOUR_2}Time limit:
 STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1750    :{DURATION}
 STR_1751    :Can't change time limit for ride...
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
@@ -1774,12 +1148,9 @@ STR_1768    :Can't change number of swings...
 STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
-STR_1775    :Off
-STR_1776    :On
-STR_1777    :{WINDOW_COLOUR_2}Ride music
+STR_1777    :Attraksjonsmusikk
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} Panda costume
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} Tiger costume
@@ -1799,7 +1170,6 @@ STR_1793    :Heading to {STRINGID} for an inspection
 STR_1794    :Fixing {STRINGID}
 STR_1795    :Answering radio call
 STR_1796    :Has broken down and requires fixing
-STR_1797    :This option cannot be changed for this ride
 STR_1798    :Whirlpool
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Safety cut-out
@@ -1874,7 +1244,6 @@ STR_1868    :Can't change number of rotations...
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1872    :{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
@@ -1896,8 +1265,6 @@ STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this rid
 STR_1891    :No {STRINGID} in park yet!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
-STR_1892    :<removed string - do not use>
-STR_1893    :<removed string - do not use>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
@@ -1927,7 +1294,6 @@ STR_1919    :Not enough cash available!
 STR_1920    :Can't pay back loan!
 STR_1921    :{SMALLFONT}{BLACK}Start a new game
 STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
-STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Exit
 STR_1925    :Can't place person here...
 STR_1926    :{SMALLFONT}
@@ -2076,11 +1442,11 @@ STR_2068    :some Fried Chicken
 STR_2069    :some Lemonade
 STR_2070    :an Empty Box
 STR_2071    :an Empty Bottle
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
+STR_2072    :“{STRINGID}” Balloon
+STR_2073    :“{STRINGID}” Cuddly Toy
 STR_2074    :Map of {STRINGID}
 STR_2075    :On-Ride Photo of {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
+STR_2076    :“{STRINGID}” Umbrella
 STR_2077    :Drink
 STR_2078    :Burger
 STR_2079    :Chips
@@ -2094,9 +1460,9 @@ STR_2086    :Voucher for {STRINGID}
 STR_2087    :Popcorn
 STR_2088    :Hot Dog
 STR_2089    :Tentacle
-STR_2090    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Hat
+STR_2090    :“{STRINGID}” Hat
 STR_2091    :Toffee Apple
-STR_2092    :{OPENQUOTES}{STRINGID}{ENDQUOTES} T-Shirt
+STR_2092    :“{STRINGID}” T-Shirt
 STR_2093    :Doughnut
 STR_2094    :Coffee
 STR_2095    :Empty Cup
@@ -2104,9 +1470,6 @@ STR_2096    :Fried Chicken
 STR_2097    :Lemonade
 STR_2098    :Empty Box
 STR_2099    :Empty Bottle
-STR_2100    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2101    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_2102    :{WINDOW_COLOUR_2}On-Ride Photo price:
 STR_2103    :{WINDOW_COLOUR_2}Pretzel price:
 STR_2104    :{WINDOW_COLOUR_2}Hot Chocolate price:
 STR_2105    :{WINDOW_COLOUR_2}Iced Tea price:
@@ -2126,9 +1489,6 @@ STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
 STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
 STR_2121    :{WINDOW_COLOUR_2}
-STR_2122    :On-Ride Photo
-STR_2123    :On-Ride Photo
-STR_2124    :On-Ride Photo
 STR_2125    :Pretzel
 STR_2126    :Hot Chocolate
 STR_2127    :Iced Tea
@@ -2148,9 +1508,6 @@ STR_2140    :Empty Drink Carton
 STR_2141    :Empty Juice Cup
 STR_2142    :Roast Sausage
 STR_2143    :Empty Bowl
-STR_2144    :On-Ride Photos
-STR_2145    :On-Ride Photos
-STR_2146    :On-Ride Photos
 STR_2147    :Pretzels
 STR_2148    :Hot Chocolates
 STR_2149    :Iced Teas
@@ -2170,9 +1527,6 @@ STR_2162    :Empty Drink Cartons
 STR_2163    :Empty Juice cups
 STR_2164    :Roast Sausages
 STR_2165    :Empty Bowls
-STR_2166    :an On-Ride Photo
-STR_2167    :an On-Ride Photo
-STR_2168    :an On-Ride Photo
 STR_2169    :a Pretzel
 STR_2170    :a Hot Chocolate
 STR_2171    :an Iced Tea
@@ -2192,9 +1546,6 @@ STR_2184    :an Empty Drink Carton
 STR_2185    :an Empty Juice Cup
 STR_2186    :a Roast Sausage
 STR_2187    :an Empty Bowl
-STR_2188    :On-Ride Photo of {STRINGID}
-STR_2189    :On-Ride Photo of {STRINGID}
-STR_2190    :On-Ride Photo of {STRINGID}
 STR_2191    :Pretzel
 STR_2192    :Hot Chocolate
 STR_2193    :Iced Tea
@@ -2220,8 +1571,8 @@ STR_2212    :{SMALLFONT}{BLACK}Show list of security guards in park
 STR_2213    :{SMALLFONT}{BLACK}Show list of entertainers in park
 STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
-STR_2216    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}C
-STR_2217    :{WINDOW_COLOUR_2}{COMMA16}{DEGREE}F
+STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
+STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
@@ -2294,7 +1645,6 @@ STR_2286    :Designing
 STR_2287    :Completing design
 STR_2288    :Unknown
 STR_2289    :{STRINGID} {STRINGID}
-STR_2290    :<removed string - do not use>
 STR_2291    :Select scenario for new game
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
 STR_2293    :{BLACK} Nothing
@@ -2321,13 +1671,9 @@ STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
-STR_2317    :<removed string - do not use>
-STR_2318    :<removed string - do not use>
-STR_2319    :<removed string - do not use>
-STR_2320    :<removed string - do not use>
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
-STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m{SQUARED}
+STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
 STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
 STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
@@ -2338,19 +1684,18 @@ STR_2330    :{WINDOW_COLOUR_2}Temperature:
 STR_2331    :{WINDOW_COLOUR_2}Height Labels:
 STR_2332    :Units
 STR_2333    :Sound effects
-STR_2334    :Pounds ({POUND})
+STR_2334    :Pounds (£)
 STR_2335    :Dollars ($)
 STR_2336    :Franc (F)
 STR_2337    :Deutschmark (DM)
-STR_2338    :Yen ({YEN})
+STR_2338    :Yen (¥)
 STR_2339    :Peseta (Pts)
 STR_2340    :Lira (L)
-STR_2341    :Guilders (fl.)
+STR_2341    :Guilders (ƒ)
 STR_2342    :Krona (kr)
-STR_2343    :Euros ({EURO})
+STR_2343    :Euros (€)
 STR_2344    :Imperial
 STR_2345    :Metric
-STR_2346    :Display
 STR_2347    :{RED}{STRINGID} has drowned!
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
@@ -2361,7 +1706,6 @@ STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
-STR_2357    :House
 STR_2358    :Units
 STR_2359    :Real Values
 STR_2360    :Display Resolution:
@@ -2370,8 +1714,8 @@ STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
 STR_2363    :Gridlines on Landscape
 STR_2364    :{SMALLFONT}{BLACK}Toggle gridlines on landscape on/off
 STR_2365    :The bank refuses to increase your loan!
-STR_2366    :Celsius ({DEGREE}C)
-STR_2367    :Fahrenheit ({DEGREE}F)
+STR_2366    :Celsius (°C)
+STR_2367    :Fahrenheit (°F)
 STR_2368    :None
 STR_2369    :Low
 STR_2370    :Average
@@ -2426,8 +1770,6 @@ STR_2418    :Free entry to {STRINGID}
 STR_2419    :Free ride on {STRINGID}
 STR_2420    :Half-price entry to {STRINGID}
 STR_2421    :Free {STRINGID}
-STR_2422    :Advertising campaign for {STRINGID}
-STR_2423    :Advertising campaign for {STRINGID}
 STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
 STR_2425    :{WINDOW_COLOUR_2}Vouchers for free rides on a particular ride
 STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
@@ -2441,12 +1783,6 @@ STR_2433    :{BLACK}Vouchers for free {STRINGID}
 STR_2434    :{BLACK}Advertising campaign for {STRINGID}
 STR_2435    :{BLACK}Advertising campaign for {STRINGID}
 STR_2436    :1 week
-STR_2437    :<removed string - do not use>
-STR_2438    :<removed string - do not use>
-STR_2439    :<removed string - do not use>
-STR_2440    :<removed string - do not use>
-STR_2441    :<removed string - do not use>
-STR_2442    :<removed string - do not use>
 STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
 STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
 STR_2445    :Start this marketing campaign
@@ -2459,8 +1795,6 @@ STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
 STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
-STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :{SMALLFONT}{BLACK}Show financial accounts
 STR_2458    :{SMALLFONT}{BLACK}Show graph of cash (less loan) over time
 STR_2459    :{SMALLFONT}{BLACK}Show graph of park value over time
@@ -2489,8 +1823,6 @@ STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
 STR_2482    :{SMALLFONT}{BLACK}Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
-STR_2485    :Controls
-STR_2486    :General
 STR_2487    :Show 'real' names of guests
 STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
 STR_2489    :Shortcut keys...
@@ -2687,8 +2019,6 @@ STR_2678    :???
 STR_2679    :???
 STR_2680    :All research complete
 STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
-STR_2682    :<removed string - do not use>
-STR_2683    :<removed string - do not use>
 STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
 STR_2685    :Parametere for Simplex-støy
 STR_2686    :Lav:
@@ -2712,7 +2042,7 @@ STR_2703    :Every 15 minutes
 STR_2704    :Every 30 minutes
 STR_2705    :Every hour
 STR_2706    :Never
-STR_2707    :Use system dialog window
+STR_2707    :Bruk systemets fildialog
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
 STR_2710    :Type the name of the file.
@@ -2752,8 +2082,7 @@ STR_2743    :Kopier 'data/css17.dat' fra din RCT1-installasjon til 'data/css50.d
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
-STR_2747    :{ENDQUOTES}
-STR_2748    :Bar
+STR_2747    :”
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Move all items to top
@@ -2763,28 +2092,19 @@ STR_2753    :Mowed grass
 STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
-STR_2757    :<removed string - do not use>
-STR_2758    :<removed string - do not use>
-STR_2759    :Zero Clearance
-STR_2760    :+{CURRENCY}
-STR_2761    :<removed string - do not use>
-STR_2762    :<removed string - do not use>
 STR_2763    :???
-STR_2764    :<removed string - do not use>
 STR_2765    :Large Tram
 STR_2766    :Win scenario
 STR_2767    :Freeze Climate
 STR_2768    :Unfreeze Climate
 STR_2769    :Open Park
 STR_2770    :Close Park
-STR_2771    :Slower Gamespeed
-STR_2772    :Faster Gamespeed
 STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (borderless window)
 STR_2776    :Language:
 STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :{RIGHTGUILLEMET}{MOVE_X}{SMALLFONT}{STRING}
+STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
@@ -2792,7 +2112,7 @@ STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
-STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}{OPENQUOTES}{STRINGID}{ENDQUOTES}
+STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
 STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
@@ -2863,17 +2183,13 @@ STR_2852    :Track design already installed
 STR_2853    :Forbidden by the local authority!
 STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
 STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
-STR_2856    :<removed string - do not use>
-STR_2857    :<removed string - do not use>
 STR_2858    :Can't start marketing campaign...
-STR_2859    :Another instance of OpenRCT2 is already running
-STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements...
 STR_2863    :Music acknowledgements
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) ingen opphavsrett
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) non copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
@@ -2883,101 +2199,37 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) non copyrig
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) non copyright
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
-STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright {COPYRIGHT} Chris Sawyer
-STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2900    :{WINDOW_COLOUR_2}
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics {ENDQUOTES}Liquid Grooves{ENDQUOTES})
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording {COPYRIGHT} Chris Sawyer
-STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :<removed string - do not use>
-STR_2909    :<removed string - do not use>
-STR_2910    :<removed string - do not use>
-STR_2911    :<removed string - do not use>
-STR_2912    :<removed string - do not use>
-STR_2913    :<removed string - do not use>
-STR_2914    :<removed string - do not use>
-STR_2915    :<removed string - do not use>
-STR_2916    :<removed string - do not use>
-STR_2917    :<removed string - do not use>
-STR_2918    :<removed string - do not use>
-STR_2919    :<removed string - do not use>
-STR_2920    :<removed string - do not use>
-STR_2921    :<removed string - do not use>
-STR_2922    :<removed string - do not use>
-STR_2923    :<removed string - do not use>
-STR_2924    :<removed string - do not use>
-STR_2925    :<removed string - do not use>
-STR_2926    :<removed string - do not use>
-STR_2927    :<removed string - do not use>
-STR_2928    :<removed string - do not use>
-STR_2929    :<removed string - do not use>
-STR_2930    :<removed string - do not use>
-STR_2931    :{WINDOW_COLOUR_2}
-STR_2932    :{WINDOW_COLOUR_2}
-STR_2933    :{WINDOW_COLOUR_2}
-STR_2934    :{WINDOW_COLOUR_2}
-STR_2935    :{WINDOW_COLOUR_2}
-STR_2936    :{WINDOW_COLOUR_2}
-STR_2937    :{WINDOW_COLOUR_2}
-STR_2938    :{WINDOW_COLOUR_2}
-STR_2939    :{WINDOW_COLOUR_2}
-STR_2940    :{WINDOW_COLOUR_2}
-STR_2941    :{WINDOW_COLOUR_2}
-STR_2942    :{WINDOW_COLOUR_2}
-STR_2943    :{WINDOW_COLOUR_2}
-STR_2944    :{WINDOW_COLOUR_2}
-STR_2945    :{WINDOW_COLOUR_2}
-STR_2946    :{WINDOW_COLOUR_2}
-STR_2947    :{WINDOW_COLOUR_2}
-STR_2948    :{WINDOW_COLOUR_2}
-STR_2949    :{WINDOW_COLOUR_2}
-STR_2950    :{WINDOW_COLOUR_2}
-STR_2951    :{WINDOW_COLOUR_2}
-STR_2952    :{WINDOW_COLOUR_2}
-STR_2953    :{WINDOW_COLOUR_2}
-STR_2954    :{WINDOW_COLOUR_2}
-STR_2955    :{WINDOW_COLOUR_2}
-STR_2956    :{WINDOW_COLOUR_2}
-STR_2957    :{WINDOW_COLOUR_2}
-STR_2958    :{WINDOW_COLOUR_2}
-STR_2959    :{WINDOW_COLOUR_2}
-STR_2960    :{WINDOW_COLOUR_2}
-STR_2961    :{WINDOW_COLOUR_2}
-STR_2962    :{WINDOW_COLOUR_2}
-STR_2963    :{WINDOW_COLOUR_2}
-STR_2964    :{WINDOW_COLOUR_2}
-STR_2965    :{WINDOW_COLOUR_2}
-STR_2966    :
-STR_2967    :
-STR_2968    :
-STR_2969    :<removed string - do not use>
-STR_2970    :<removed string - do not use>
+STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 Title Music:   (Allister Brimble) copyright © Chris Sawyer
+STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
+STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
+STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
+STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
+STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
+STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
+STR_2894    :{WINDOW_COLOUR_2}Flight of Fantasy:   (Steve Blenkinsopp) copyright © Chris Sawyer
+STR_2895    :{WINDOW_COLOUR_2}Big Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chris Sawyer
+STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
+STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
+STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
+STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
+STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
+STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright © Chris Sawyer
+STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright © Chris Sawyer
+STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
@@ -3053,7 +2305,6 @@ STR_3042    :Pirates style
 STR_3043    :Rock style 3
 STR_3044    :Candy style
 STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
-STR_3046    :This ride cannot be modified
 STR_3047    :Local authority forbids demolition or modifications to this ride
 STR_3048    :Marketing campaigns forbidden by local authority
 STR_3049    :Golf hole A
@@ -3062,9 +2313,6 @@ STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
-STR_3055    :<removed string - do not use>
-STR_3056    :<removed string - do not use>
-STR_3057    :<removed string - do not use>
 STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
@@ -3074,7 +2322,7 @@ STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
 STR_3064    :Beginner Parks
 STR_3065    :Challenging Parks
 STR_3066    :Expert Parks
-STR_3067    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_3067    :“Real” Parks
 STR_3068    :Other Parks
 STR_3069    :Top Section
 STR_3070    :Slope to Level
@@ -3105,7 +2353,6 @@ STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
-STR_3098    :Can't change lift hill speed...
 STR_3099    :{SMALLFONT}{BLACK}Select colour
 STR_3100    :{SMALLFONT}{BLACK}Select second colour
 STR_3101    :{SMALLFONT}{BLACK}Select third colour
@@ -3152,30 +2399,13 @@ STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Show people on map
 STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3145    :{SMALLFONT}{BLACK}Scroll {STRINGID} venstre
-STR_3146    :{SMALLFONT}{BLACK}Scroll {STRINGID} høyre
-STR_3147    :{SMALLFONT}{BLACK}Scroll {STRINGID} venstre fast
-STR_3148    :{SMALLFONT}{BLACK}Scroll {STRINGID} høyre fast
-STR_3149    :{SMALLFONT}{BLACK}Scroll {STRINGID} venstre/høyre
-STR_3150    :{SMALLFONT}{BLACK}Scroll {STRINGID} up
-STR_3151    :{SMALLFONT}{BLACK}Scroll {STRINGID} down
-STR_3152    :{SMALLFONT}{BLACK}Scroll {STRINGID} up fast
-STR_3153    :{SMALLFONT}{BLACK}Scroll {STRINGID} down fast
-STR_3154    :{SMALLFONT}{BLACK}Scroll {STRINGID} up/down
-STR_3155    :
-STR_3156    :
-STR_3157    :map
 STR_3158    :graph
 STR_3159    :list
 STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
-STR_3161    :<removed string - do not use>
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
-STR_3165    :
-STR_3166    :{BLACK}(ID: 
 STR_3167    :{WINDOW_COLOUR_2}Includes: {BLACK}{COMMA16} objects
-STR_3168    :{WINDOW_COLOUR_2}Text: {BLACK}{STRINGID}
 STR_3169    :Data for the following object not found: 
 STR_3170    :Not enough space for graphics
 STR_3171    :Too many objects of this type selected
@@ -3330,9 +2560,6 @@ STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file...
 STR_3321    :New objects installed successfully
 STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
-STR_3323    :Missing object data, ID: 
-STR_3324    :Requires Add-On Pack: {STRINGID}
-STR_3325    :Requires an Add-On Pack
 STR_3326    :{WINDOW_COLOUR_2}(no image)
 STR_3327    :Starting positions for people not set
 STR_3328    :Can't advance to next editor stage...
@@ -3344,7 +2571,6 @@ STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Spordesigner - Velg attraksjonstyper og vogner
 STR_3336    :Track Designs Manager - Select Ride Type
-STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
@@ -3369,8 +2595,6 @@ STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
 STR_3361    :Too many track designs of this type - Some will not be listed.
-STR_3362    :<removed string - do not use>
-STR_3363    :<removed string - do not use>
 STR_3364    :Advanced
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
 STR_3366    :{BLACK}= Ride
@@ -3392,59 +2616,9 @@ STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
 STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name - Please select a new name for this design:
-STR_3385    :<removed string - do not use>
-STR_3386    :<removed string - do not use>
-STR_3387    :<removed string - do not use>
-STR_3388    :Unable to switch to selected mode
 STR_3389    :Unable to select additional item of scenery...
 STR_3390    :Too many items selected
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
-STR_3391    :<removed string - do not use>
-STR_3392    :<removed string - do not use>
-STR_3393    :<removed string - do not use>
-STR_3394    :<removed string - do not use>
-STR_3395    :<removed string - do not use>
-STR_3396    :<removed string - do not use>
-STR_3397    :<removed string - do not use>
-STR_3398    :<removed string - do not use>
-STR_3399    :<removed string - do not use>
-STR_3400    :<removed string - do not use>
-STR_3401    :<removed string - do not use>
-STR_3402    :<removed string - do not use>
-STR_3403    :<removed string - do not use>
-STR_3404    :<removed string - do not use>
-STR_3405    :<removed string - do not use>
-STR_3406    :<removed string - do not use>
-STR_3407    :<removed string - do not use>
-STR_3408    :<removed string - do not use>
-STR_3409    :<removed string - do not use>
-STR_3410    :<removed string - do not use>
-STR_3411    :<removed string - do not use>
-STR_3412    :<removed string - do not use>
-STR_3413    :<removed string - do not use>
-STR_3414    :<removed string - do not use>
-STR_3415    :<removed string - do not use>
-STR_3416    :<removed string - do not use>
-STR_3417    :<removed string - do not use>
-STR_3418    :<removed string - do not use>
-STR_3419    :<removed string - do not use>
-STR_3420    :<removed string - do not use>
-STR_3421    :<removed string - do not use>
-STR_3422    :<removed string - do not use>
-STR_3423    :<removed string - do not use>
-STR_3424    :<removed string - do not use>
-STR_3425    :<removed string - do not use>
-STR_3426    :<removed string - do not use>
-STR_3427    :<removed string - do not use>
-STR_3428    :<removed string - do not use>
-STR_3429    :<removed string - do not use>
-STR_3430    :<removed string - do not use>
-STR_3431    :<removed string - do not use>
-STR_3432    :<removed string - do not use>
-STR_3433    :<removed string - do not use>
-STR_3434    :<removed string - do not use>
-STR_3435    :<removed string - do not use>
-STR_3436    :<removed string - do not use>
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here...
@@ -3462,7 +2636,6 @@ STR_5120    :Finances
 STR_5121    :Research
 STR_5122    :Select rides by track type (like in RCT1)
 STR_5123    :Renew rides
-STR_5124    :<not used anymore>
 STR_5125    :All destructible
 STR_5126    :Random title music
 STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
@@ -3495,7 +2668,6 @@ STR_5153    :Edit Themes...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
-STR_5157    :<removed string - do not use>
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
@@ -3574,8 +2746,8 @@ STR_5232    :{SMALLFONT}{BLACK}Editors
 STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
-STR_5236    :Window:
-STR_5237    :Palette:
+STR_5236    :Window
+STR_5237    :Palette
 STR_5238    :Current Theme:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
@@ -3651,8 +2823,8 @@ STR_5309    :OpenRCT2
 STR_5310    :Random
 STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :Show console
-STR_5313    :Show tile inspector
-STR_5314    :Tile inspector
+STR_5313    :Vis ruteinspektør
+STR_5314    :Ruteinspektør
 STR_5315    :Grass
 STR_5316    :Sand
 STR_5317    :Dirt
@@ -3679,8 +2851,6 @@ STR_5337    :Park entrance
 STR_5338    :Element type
 STR_5339    :{SMALLFONT}{BLACK}Base height
 STR_5340    :{SMALLFONT}{BLACK}Clearance height
-STR_5341    :<removed string - do not use>
-STR_5342    :<removed string - do not use>
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
 STR_5345    :Financial cheats
@@ -3713,8 +2883,8 @@ STR_5371    :Object Selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Name {STRINGID}
 STR_5374    :Date {STRINGID}
-STR_5375    :{UP}
-STR_5376    :{DOWN}
+STR_5375    :▲
+STR_5376    :▼
 STR_5377    :{SMALLFONT}{BLACK}Saves
 STR_5378    :{SMALLFONT}{BLACK}Script
 STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
@@ -3832,10 +3002,9 @@ STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
 STR_5492    :Scenario options
 STR_5493    :Send Message
-STR_5494    :<not used anymore>
 STR_5495    :Player List
-STR_5496    :Player:
-STR_5497    :Ping:
+STR_5496    :Player
+STR_5497    :Ping
 STR_5498    :Server List
 STR_5499    :Player Name:
 STR_5500    :Add Server
@@ -3845,7 +3014,6 @@ STR_5503    :Enter hostname or IP address:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
-STR_5507    :<removed string - do not use>
 STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :Default sound device
@@ -3918,10 +3086,10 @@ STR_5576    :Port:
 STR_5577    :South Korean Won (W)
 STR_5578    :Russian Rouble (R)
 STR_5579    :Window scale factor:
-STR_5580    :Czech koruna (Kc)
+STR_5580    :Czech koruna (Kč)
 STR_5581    :Show FPS
 STR_5582    :Trap mouse cursor in window
-STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
+STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Automatically open shops and stalls
@@ -3963,12 +3131,12 @@ STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
 STR_5623    :Wacky Worlds
 STR_5624    :Time Twister
-STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
+STR_5625    :“Real” Parks
 STR_5626    :Other Parks
 STR_5627    :Group scenario list by:
 STR_5628    :Source game
 STR_5629    :Difficulty level
-STR_5630    :Enable unlocking of scenarios
+STR_5630    :Skru på progressiv opplåsing
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own...
 STR_5633    :CMD + 
@@ -3980,7 +3148,7 @@ STR_5638    :Permission denied
 STR_5639    :{SMALLFONT}{BLACK}Show list of players
 STR_5640    :{SMALLFONT}{BLACK}Manage groups
 STR_5641    :Default Group:
-STR_5642    :Group:
+STR_5642    :Group
 STR_5643    :Add Group
 STR_5644    :Remove Group
 STR_5645    :Chat
@@ -4008,7 +3176,7 @@ STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
-STR_5704    :Last Action:
+STR_5704    :Last Action
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
@@ -4032,13 +3200,10 @@ STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Force weather:
 STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
-STR_5727    :Scaling quality
+STR_5727    :Skaleringskvalitet:
 STR_5728    :Requires hardware display option
 STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
-STR_5730    :Nearest neighbour
 STR_5731    :Linear
-STR_5732    :Anisotropic
-STR_5733    :Use NN scaling at integer scales
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Network Status
@@ -4068,7 +3233,7 @@ STR_5758    :{OUTLINE}{GREEN}{STRING} has joined the game
 STR_5759    :Downloading map ... ({INT32} / {INT32}) KiB
 STR_5760    :Hong Kong Dollars (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
-STR_5762    :Chinese Yuan (CN{YEN})
+STR_5762    :Chinese Yuan (CN¥)
 STR_5763    :All files
 STR_5764    :Invalid ride type
 STR_5765    :Cannot edit rides of invalid type
@@ -4119,17 +3284,15 @@ STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities:
 STR_5810    :Skru av vognbegrensninger
 STR_5811    :{SMALLFONT}{BLACK}Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 31{NEWLINE}tog per attraksjon
 STR_5812    :Show multiplayer window
-STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
-STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5813    :“{STRING}”
+STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
 STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5817    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Sets UI scaling type
-STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbour scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
+STR_5817    :{SMALLFONT}{BLACK}Setter skaleringsmetode for brukergrensesnitt. Krever hardware rendering.{NEWLINE}Lineær skalering er jevn, men utydelig. 'Jevn nærmeste-nabo'-skalering er skarp, men er mer krevende.
 STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
-STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behaviour)
 STR_5824    :{SMALLFONT}{BLACK}Disables lightning effect{NEWLINE}during a thunderstorm
@@ -4151,7 +3314,7 @@ STR_5839    :{SMALLFONT}{BLACK}Show a separate button for the research and devel
 STR_5840    :{SMALLFONT}{BLACK}Show a separate button for the cheats window in the toolbar
 STR_5841    :{SMALLFONT}{BLACK}Show a separate button for the recent news window in the toolbar
 STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
-STR_5843    :{SMALLFONT}{BLACK}Enable scenario unlocking (RCT1 behaviour)
+STR_5843    :{SMALLFONT}{BLACK}Scenarier blir låst opp etterhvert som du fullfører dem (som i RCT1)
 STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
 STR_5845    :{SMALLFONT}{BLACK}Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
 STR_5846    :{SMALLFONT}{BLACK}Set often OpenRCT2 automatically saves
@@ -4205,7 +3368,6 @@ STR_5893    :Valutakurs
 STR_5894    :Skriv inn valutakurs
 STR_5895    :Lagre bane
 STR_5896    :Klarte ikke lagre bane!
-STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Kunne ikke laste inn spor, filen kan være{newline}korruptert, ødelagt eller manglende!
 STR_5899    :Vis/skjul 'grafikk debug' vindu
 STR_5900    :Bruk orginal grafikk-kode
@@ -4311,13 +3473,13 @@ STR_5999    :Sett penger
 STR_6000    :Skriv inn ny verdi
 STR_6001    :Skru på lyseffekter (eksperimentelt)
 STR_6002    :{SMALLFONT}{BLACK}Lamper og attraksjoner vil bli opplyst om natten.{NEWLINE}Krever at grafikkmotoren er satt tilhardware display.
-STR_6003    :Kutt-bortkamera
-STR_6004    :Kutt-bortkamera
-STR_6005    :Skru på kutt-bortkamera
-STR_6006    :{SMALLFONT}{BLACK}Kutt-bortkamera viser kun elementer på eller under kutthøyden
-STR_6007    :Kutthøyde
+STR_6003    :Utklippskamera
+STR_6004    :Utklippskamera
+STR_6005    :Skru på utklippskamera
+STR_6006    :{SMALLFONT}{BLACK}Utklippskamera skjuler elementer over utklippshøyden (for vertikal utklipping) og utenfor det valgte området (for horisontal utklipping).
+STR_6007    :Utklippshøyde
 STR_6008    :{SMALLFONT}{BLACK}Skru på rå verdi<->verdi i måleenheter
-STR_6009    :{SMALLFONT}{BLACK}Velg kutthøyde
+STR_6009    :{SMALLFONT}{BLACK}Velg utklippshøyde
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
@@ -4368,7 +3530,7 @@ STR_6056    :{SMALLFONT}{BLACK}Demp lyd
 STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
 STR_6057    :{SMALLFONT}{BLACK}Vis en separat knapp for lyddemping i verktøylinjen
 STR_6058    :Demp lyd
-STR_6059    :{RIGHTGUILLEMET}
+STR_6059    :»
 STR_6060    :Vis gjestenes innkjøp som en animasjon
 STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests make purchases.
 STR_6061    :{SMALLFONT}{BLACK}Vis animert penge-effekt{NEWLINE}når gjester kjøper noe.
@@ -4448,7 +3610,7 @@ STR_6134    :Slett pynt
 STR_6135    :Klient sendte ugyldig forespørsel
 STR_6136    :Server sendte ugyldig forespørsel
 STR_6137    :OpenRCT2, en gratis og åpen-kildekode-klone av RollerCoaster Tycoon 2.
-STR_6138    :OpenRCT2 er et verk med flere bidragsytere; en full liste finnes i {OPENQUOTES}contributors.md{ENDQUOTES}. For mer informasjon, se https://github.com/OpenRCT2/OpenRCT2
+STR_6138    :OpenRCT2 er et verk med flere bidragsytere; en full liste finnes i “contributors.md”. For mer informasjon, se https://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alle produkt- og foretaksnavn tilhører deres respektive eiere. Bruk av disse impliserer hverken tilknytning til, eller anbefaling fra deres eiere.
 STR_6140    :Endringslogg...
 STR_6141    :RCT1 nedre verktøylinje
@@ -4464,10 +3626,120 @@ STR_6150    :Ugyldig svar fra mesterserver (mangler JSON-nummer)
 STR_6151    :Mesterserver sendte ikke serverliste
 STR_6152    :Ugyldig svar fra mesterserver (mangler JSON-liste)
 STR_6153    :Betal for parkinngang / Betal for attraksjoner
-STR_6154    :Det er ikke anbefalt å kjøre OpenRCT2 med opphøyde brukerrettigheter.
+STR_6154    :Av sikkerhetshensyn er det er ikke anbefalt å kjøre OpenRCT2 med opphøyde brukerrettigheter.
 STR_6155    :Hverken KDialog eller Zenity er installert. Installer en av dem, eller konfigurer fra kommandolinjen.
 STR_6156    :Reservert navn
 STR_6157    :Kommandolinje
+STR_6158    :Kunne ikke laste inn fil...{NEWLINE}RCTC-versjon {COMMA16} er ikke kompatibel.
+STR_6159    :Jevn nærmeste-nabo
+STR_6160    :{WINDOW_COLOUR_2}Tilgjengelige kjøretøy: {BLACK}{STRING}
+STR_6161    :Vis/skjul rutemønster i landskap
+STR_6162    :Spinnende ville mus
+STR_6163    :Museformede vogner suser gjennom skarpe svinger og små fall mens de sakte spinner for å desorientere passasjerene
+STR_6164    :{WHITE}❌
+STR_6165    :Bruk Vertical Sync
+STR_6166    :{SMALLFONT}{BLACK}Synkroniserer visning av bilder med skjermens oppdateringsfrekvens; forhindrer "screen tearing".
+STR_6167    :{SMALLFONT}{BLACK}Avansert
+STR_6168    :Tittelsekvens
+STR_6169    :Scenariovalg
+STR_6170    :Tilpass brukergrensesnitt
+STR_6171    :Søk
+STR_6172    :{SMALLFONT}{BLACK}Søk
+STR_6173    :Skriv inn navnet du ønsker å søke etter:
+STR_6174    :Last inn lagret spill
+STR_6175    :Last inn scenario
+STR_6176    :Scenario å laste:
+STR_6177    :Load{MOVE_X}{87}Ingen scenario valgt
+STR_6178    :Load{MOVE_X}{87}{RED}Mangler scenario
+STR_6179    :Velg
+STR_6180    :Ingen scenario valgt
+STR_6181    :{RED}Mangler scenario
+STR_6182    :Følg{MOVE_X}{87}{STRING}
+STR_6183    :Følg{MOVE_X}{87}Ingen sprite valgt
+STR_6184    :Følg sprite
+STR_6185    :Velg sprite
+STR_6186    :Ingen sprite valgt
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Oppkast
+STR_6189    :And
+STR_6190    :{SMALLFONT}{BLACK}Du kan ikke velge sprite mens tittelsekvensen spilles av.
+STR_6191    :Overflate
+STR_6192    :Vegg
+STR_6193    :{COMMA16} gjest
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gjest
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gjest
+STR_6196    :{BLACK}År:
+STR_6197    :{BLACK}Måned:
+STR_6198    :{BLACK}Dag:
+STR_6199    :Sett dato
+STR_6200    :Tilbakestill dato
+STR_6201    :{MONTH}
+STR_6202    :Stil på virtuelt gulv
+STR_6203    :{SMALLFONT}{BLACK}Viser et virtuelt gulv når Ctrl eller Shift holdes, for å assistere i plassering av elementer vertikalt.
+STR_6204    :Murstein
+STR_6205    :Jern
+STR_6206    :Grå stukk
+STR_6207    :Gul stukk
+STR_6208    :Rød stukk
+STR_6209    :Lilla stukk
+STR_6210    :Grønn stukk
+STR_6211    :Brun sandstein
+STR_6212    :Grå sandstein
+STR_6213    :Skyskraper A
+STR_6214    :Skyskraper B
+STR_6215    :Konstruksjon
+STR_6216    :Operasjon
+STR_6217    :Attraksjons- og sportilgjengelighet
+STR_6218    :OpenRCT2 offisielt
+STR_6219    :Fremhev problemer på gangstier
+STR_6220    :Gjør aktiv
+STR_6221    :{SMALLFONT}{BLACK}Sett attraksjonens kjente inngangs- og utgangsposisjon til den gjeldende ruten. Kun én inngangs- og utgangsposisjon per stasjon kan bli gjort aktiv.
+STR_6222    :Kan ikke plassere gjesteinngangspunkt her...
+STR_6223    :Må være utenfor parkens grenser!
+STR_6224    :{STRING} plasserte et gjesteinngangspunkt.
+STR_6225    :Visningen ikke støttet i OpenGL-grafikkmotoren
+STR_6226    :Tillat å fullføre scenario før tidsfristen
+STR_6227    :{SMALLFONT}{BLACK}Trigger scenario-seier med en gang målene for scenariet er nådd, selv om tiden ikke er ute.
+STR_6228    :Scenarioinnstillinger
+STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
+STR_6230    :{STRINGID}:
+STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
+STR_6232    :Stillestående
+STR_6233    :Utklippskamera
+STR_6234    :Fremhev problemer på gangstier
+STR_6235    :Serverinformasjon
+STR_6236    :Spillere
+STR_6237    :Grupper
+STR_6238    :Flerspillerinnstillinger
+STR_6239    :Vertikal utklipping
+STR_6240    :Horisontal utklipping
+STR_6241    :Velg område
+STR_6242    :Fjern markering
+STR_6243    :{SMALLFONT}{BLACK}Pusser opp attraksjonen,{NEWLINE}gjør den som ny
+STR_6244    :Kan ikke pusse opp attraksjon...
+STR_6245    :{SMALLFONT}{BLACK}Attraksjonen trenger ikke oppussing
+STR_6246    :Puss opp
+STR_6247    :Puss opp attraksjon
+STR_6248    :{WINDOW_COLOUR_1}Pusse opp {STRINGID} for {CURRENCY}?
+STR_6249    :{WINDOW_COLOUR_1}Pusse opp {STRINGID}?
+STR_6250    :{WINDOW_COLOUR_1}Er du sikker på at du vil rive ned {STRINGID} og tjene {CURRENCY}?
+STR_6251    :Attraksjonen er ikke tømt
+STR_6252    :Twitch API URL
+STR_6253    :{SMALLFONT}{BLACK}Oppgi URL-en for integrasjons-API-et til Twitch. Påkrevd for å bruke Twitch-integrasjon.
+STR_6254    :Twitch-integrasjon API URL:
+STR_6255    :Ugyldig URL
+STR_6256    :Renderingseffekter
+STR_6257    :Glass
+STR_6258    :Gjennomsiktig
+STR_6259    :Av
+STR_6260    :Vis blokkerte ruter
+STR_6261    :Vis brede stier
+STR_6262    :Hovedvolum
+STR_6263    :{SMALLFONT}{BLACK}Skru all lyd av/på
+STR_6264    :Alltid bruk systemets fildialog
+STR_6265    :{SMALLFONT}{BLACK}Alltid ta i bruk systemets egne fildialog-vindu istedenfor det fra OpenRCT2.
+STR_6266    :Åpne mappen for egendefinerte spillressurser
+STR_6267    :Åpne ruteinspektør
 
 #############
 # Scenarios #
@@ -4477,7 +3749,7 @@ STR_6157    :Kommandolinje
 <Forest Frontiers>
 STR_SCNR    :Forest Frontiers
 STR_PARK    :Forest Frontiers
-STR_DTLS    :Bygg en blomstrende fornøyelsespark i en stor lysning langt inne i skogen
+STR_DTLS    :Bygg en blomstrende fornøyelsespark i en stor lysning dypt inni skogen
 
 <Dynamite Dunes>
 STR_SCNR    :Dynamite Dunes
@@ -4487,12 +3759,12 @@ STR_DTLS    :Denne ørken-fornøyelsesparken har kun én berg-og-dal-bane, men s
 <Leafy Lake>
 STR_SCNR    :Leafy Lake
 STR_PARK    :Leafy Lake
-STR_DTLS    :Bygg en fornøyelsespark rundt en stor innsjø fra bunnen av
+STR_DTLS    :Fra bunnen av, bygg en fornøyelsespark rundt en stor innsjø
 
 <Diamond Heights>
 STR_SCNR    :Diamond Heights
 STR_PARK    :Diamond Heights
-STR_DTLS    :Diamond Heights er allerede en vellykket fornøyelsespark med flotte attraksjoner – videreutvikle den til det dobbelte i verdi
+STR_DTLS    :Diamond Heights er allerede en vellykket fornøyelsespark med flotte attraksjoner – Målet ditt er å doble parkens verdi
 
 <Evergreen Gardens>
 STR_SCNR    :Evergreen Gardens
@@ -4502,12 +3774,12 @@ STR_DTLS    :Konverter den praktfulle parken Evergreen Gardens til en blomstrend
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Utvid Bumbly Beach sin lille fornøyelsespark til å bli storslått
+STR_DTLS    :Utvid den lille fornøyelsesparken i Bumbly Beach til å bli en storslått versjon av seg selv
 
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
 STR_PARK    :Trinity Islands
-STR_DTLS    :En liten øysamling er basisen for denne nye parken
+STR_DTLS    :En liten øysamling er grunnlaget for denne nye parken
 
 <Katie's Dreamland>
 STR_SCNR    :Katie's Dreamland
@@ -4522,27 +3794,27 @@ STR_DTLS    :En liten og trang fornøyelsespark som trenger massiv utvidelse
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :White Water Park
-STR_DTLS    :En park med forteffelige vannbaserte attraksjoner som trenger utvidelse
+STR_DTLS    :En park med forteffelige vannbaserte attraksjoner trenger utvidelse
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
 STR_PARK    :Millennium Mines
-STR_DTLS    :Konverter en forlatt gruve fra en døende turistattraksjon til en massiv fornøyelsespark
+STR_DTLS    :Konverter en forlatt gruve fra en turistattraksjon til en fornøyelsespark
 
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :Karts & Coasters
-STR_DTLS    :En bortgjemt park i skogen, med kun go karts og tre-berg-og-dal-baner
+STR_DTLS    :En stor bortgjemt park i skogen, med kun go karts og tre-berg-og-dal-baner
 
 <Mel's World>
 STR_SCNR    :Mel's World
 STR_PARK    :Mel's World
-STR_DTLS    :Denne fornøyelsesparken har et par veldesignede moderne attraksjoner, men masse rom for utvidelse
+STR_DTLS    :Denne fornøyelsesparken har allerede et par veldesignede moderne attraksjoner, men stort rom for utvidelse
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
 STR_PARK    :Mystic Mountain
-STR_DTLS    :I Mystic Mountains skogledde åser skal du bygge en fornøyelsespark fra bunnen av 
+STR_DTLS    :Bygg en fornøyelsespark fra bunnen av i Mystic Mountains skogkledde åser
 
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
@@ -4552,32 +3824,32 @@ STR_DTLS    :Konverter disse egyptiske ruinene til en blomstrende fornøyelsespa
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
 STR_PARK    :Crumbly Woods
-STR_DTLS    :En stor park med gode, men eldene attraksjoner – Erstatt the gamle attraksjonene eller legg til nye for å gjøre denne parken mer populær
+STR_DTLS    :En stor park med gode, men aldrende attraksjoner – Erstatt de gamle attraksjonene eller bygg nye for å gjøre parken mer populær
 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
 STR_PARK    :Paradise Pier
-STR_DTLS    :Gjør om denne sløve byens brygge til en tiltrekkende attraksjon
+STR_DTLS    :Gjør om denne døsige byens brygge til en tiltrekkende attraksjon
 
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
 STR_PARK    :Lightning Peaks
-STR_DTLS    :Lightning Peaks praktfulle fjell er allerede populære hos turgåere og turister – Bruk den tilgjengelige landmassen til å tiltrekke et nytt spenningssøkende klientell
+STR_DTLS    :Lightning Peaks sine praktfulle fjell er allerede populære hos turgåere og turister – Bruk det tilgjengelige arealet til å tiltrekke et nytt spenningssøkende klientell
 
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
 STR_PARK    :Ivory Towers
-STR_DTLS    :En veletablert park med et par problemer
+STR_DTLS    :En veletablert park med noen problemer
 
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valleys lokale myndigheter tillater hverken landskapsendring eller trefelling – Likevel skal du utvikle området til å bli en stor fornøyelesspark
+STR_DTLS    :De lokale myndighetene i Rainbow Valley tillater hverken endringer i landskapet eller felling av trær, men du må utvikle området til å bli en stor fornøyelsespark
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
 STR_PARK    :Thunder Rock
-STR_DTLS    :Thunder Rock er ørkenens midtpunkt og en stor turistattraksjon – Bruk det tilgjengelige området til å bygge attraksjoner for å tiltrekke flere turister
+STR_DTLS    :Thunder Rock er ørkenens midtpunkt og en stor turistattraksjon – Bruk det tilgjengelige området til å bygge attraksjoner for å tiltrekke flere folk
 
 <Mega Park>
 STR_SCNR    :Mega Park
@@ -4588,304 +3860,304 @@ STR_DTLS    :Bare for gøy!
 <Whispering Cliffs>
 STR_SCNR    :Whispering Cliffs
 STR_PARK    :Whispering Cliffs
-STR_DTLS    :Develop the seaside cliffs into a thriving amusement park
+STR_DTLS    :Videreutvikle sjøklippene til å bli en flott fornøyelsespark
 
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :Three Monkeys Park
-STR_DTLS    :Central to this large developing park is a giant triple-track racing/duelling steel coaster
+STR_DTLS    :En gigangisk duellerende stål-berg-og-dal-bane er sentral i denne store parken
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
 STR_PARK    :Canary Mines
-STR_DTLS    :This abandoned mine already has the makings of a tourist attraction with its miniature railway and a pair of vertical drop roller coasters
+STR_DTLS    :Denne forlatte gruven er et godt utgangspunkt for en god turistattraksjon, allerede med en miniatyrtogbane og et par vertikalt-fall berg-og-dal-baner
 
 <Barony Bridge>
 STR_SCNR    :Barony Bridge
 STR_PARK    :Barony Bridge
-STR_DTLS    :An old redundant bridge is yours to develop into an amusement park
+STR_DTLS    :Du får utvikle en gammel ubrukt bro til en fornøyelsespark
 
 <Funtopia>
 STR_SCNR    :Funtopia
 STR_PARK    :Funtopia
-STR_DTLS    :Covering land both sides of a highway, this park has several rides already operating
+STR_DTLS    :Denne parken som dekker begge sider av en motorvei har allerede flere aktive attraksjoner
 
 <Haunted Harbour>
 STR_SCNR    :Haunted Harbour
 STR_PARK    :Haunted Harbour
-STR_DTLS    :The local authority has agreed to sell nearby land cheaply to this small seaside park, on the condition that certain rides are preserved
+STR_DTLS    :De lokale myndighetene har gått med på å selge land billig, gitt at enkelte attraksjoner bevares
 
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :Fun Fortress
-STR_DTLS    :This castle is all yours to turn into a theme park
+STR_DTLS    :Du får gjøre dette slottet om til en fornøyelsespark
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :Future World
-STR_DTLS    :This futuristic park has plenty of space for new rides on its alien landscape
+STR_DTLS    :Denne framtidsparken med sitt utenomjordiske landskap har stor plass for nye attraksjoner
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :Gentle Glen
-STR_DTLS    :The local population prefer gentle and relaxing rides, so it is your job to expand this park to suit their tastes
+STR_DTLS    :Det er din jobb å utvide denne parken med rolige attraksjoner, etter preferansene til regionens innbyggere
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
 STR_PARK    :Jolly Jungle
-STR_DTLS    :Deep in the jungle lies a large area of land ready to be turned into a theme park
+STR_DTLS    :Dypt i jungelen er det et passende område for en fornøyelsespark
 
 <Hydro Hills>
 STR_SCNR    :Hydro Hills
 STR_PARK    :Hydro Hills
-STR_DTLS    :A series of stepped lakes form the basis for this new park
+STR_DTLS    :En rekke paternostersjøer danner grunnlaget for denne nye parken
 
 <Sprightly Park>
 STR_SCNR    :Sprightly Park
 STR_PARK    :Sprightly Park
-STR_DTLS    :This elderly park has many historical rides but is badly in debt
+STR_DTLS    :Denne eldre parken har har flere historiske attraksjoner, men er i dyp gjeld
 
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :Magic Quarters
-STR_DTLS    :A large area of land has been cleared and partially themed ready for you to develop into a landscaped theme park
+STR_DTLS    :Et stort landområde har blitt klargjort og delvis pyntet, klar for at du skal utvikle det til en fornøyelsespark
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
 STR_PARK    :Fruit Farm
-STR_DTLS    :A thriving fruit farm has built a railroad to boost its income, your job is to develop it into a full-blown amusement park
+STR_DTLS    :En blomstrende fruktgård har bygget en togbane for ekstra inntekt - Din jobb er å utvikle den til en fullverdig fornøyelsespark
 
 <Butterfly Dam>
 STR_SCNR    :Butterfly Dam
 STR_PARK    :Butterfly Dam
-STR_DTLS    :The area around a dam is available for you to develop into an amusement park
+STR_DTLS    :Området rundt en demning er tilgjengelig for fornøyelsesparken din
 
 <Coaster Canyon>
 STR_SCNR    :Coaster Canyon
 STR_PARK    :Coaster Canyon
-STR_DTLS    :A vast canyon is yours to turn into a theme park
+STR_DTLS    :Du får bygge ut en enorm kløft til en fornøyelsespark
 
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :Thunderstorm Park
-STR_DTLS    :The weather is so wet here that a giant pyramid has been built to allow some rides to be built under cover
+STR_DTLS    :En gigantisk pyramide har blitt satt opp for at du skal kunne bygge attraksjoner skjermet fra det våte klimaet
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :De lokale myndighetene tillater ikke at du bygger høyere enn trærne i denne parken
 
 <Roman Village>
 STR_SCNR    :Roman Village
 STR_PARK    :Roman Village
-STR_DTLS    :Develop this Roman-themed park by adding rides and roller coasters
+STR_DTLS    :Videreutvikle denne romerparken ved å bygge spennende attraksjoner
 
 <Swamp Cove>
 STR_SCNR    :Swamp Cove
 STR_PARK    :Swamp Cove
-STR_DTLS    :Built partly on a series of small islands, this park already has a pair of large roller coasters as its centerpiece
+STR_DTLS    :Denne parken bygd delvis på en liten øyrekke har allerede et par store berg-og-dal-baner
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenaline Heights
 STR_PARK    :Adrenaline Heights
-STR_DTLS    :Build a park to appeal to the high-intensity thrill-seeking local people
+STR_DTLS    :Bygg en park som appellerer til de høye intensitetskravene til den lokale befolkningen
 
 <Utopia Park>
 STR_SCNR    :Utopia Park
-STR_PARK    :Utopia Park
-STR_DTLS    :An oasis in the middle of the desert provides an unusual opportunity to build an amusement park
+STR_PARK    :Utopia
+STR_DTLS    :En oase midt i ørkenen byr på en uvanlig mulighet for en fornøyelsespark
 
 <Rotting Heights>
 STR_SCNR    :Rotting Heights
 STR_PARK    :Rotting Heights
-STR_DTLS    :Overgrown and dilapidated, can you resurrect this once-great amusement park?
+STR_DTLS    :Kan du gjenopplive den fordums storheten til denne falleferdige og gjengrodde fornøyelsesparken?
 
 <Fiasco Forest>
 STR_SCNR    :Fiasco Forest
 STR_PARK    :Fiasco Forest
-STR_DTLS    :Full of badly designed and dangerous rides, you have a very limited budget and time to fix the problems and turn the park around
+STR_DTLS    :Du har begrenset tid og budsjett til å fikse problemene til denne parken full av dårlig designet og farlige attraksjoner
 
 <Pickle Park>
 STR_SCNR    :Pickle Park
 STR_PARK    :Pickle Park
-STR_DTLS    :The local authority will not allow any kind of advertising or promotion, so this park must succeed by reputation only
+STR_DTLS    :De lokale myndighetene tillater ikke reklame så denne parken må overleve på ryktet alene
 
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
 STR_PARK    :Giggle Downs
-STR_DTLS    :A four lane steeplechase ride is the centerpiece of this expanding park
+STR_DTLS    :Midtpunktet i denne voksende parken er et firefelts hinderløp
 
 <Mineral Park>
 STR_SCNR    :Mineral Park
 STR_PARK    :Mineral Park
-STR_DTLS    :Turn this abandoned stone quarry into a place to attract thrill-seeking tourists
+STR_DTLS    :Gjør dette forlatte steinbruddet til et sted som trekker spenningssøkende turister
 
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :You have limited funds but unlimited time to turn this mountainside area into a vast roller coaster park
+STR_DTLS    :Du har begrensede midler, men ubegrenset tid, til å gjøre denne fjellsiden til en enorm berg-og-dal-bane-park
 
 <Urban Park>
 STR_SCNR    :Urban Park
 STR_PARK    :Urban Park
-STR_DTLS    :A tiny park has done a deal with the nearby town to allow expansion through the town itself
+STR_DTLS    :En liten park har laget en avtale med nærmeste by som tillater bygging inne i byen
 
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
-STR_DTLS    :A large garden park needs turning into a thriving theme park
+STR_DTLS    :En stor hagepark trenger å gjøres om til en blomstrende fornøyelsespark
 
 
 ## Loopy Landscapes
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :En samling isfjell danner en kald setting for denne ambisiøse fornøyelsesparken
 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :Omgivelsene for denne berg-og-dal-bane-utfordringen er en sovende vulkan 
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :Utfordringen din er å bygge en ørkenpark med høye krav, fri for finansielle begrensinger
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :Din oppgave er å bygge en massiv park fylt med berg-og-dal-baner midt i Razor Rocks
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :En stor innsjø i et eldgammelt krater er settingen for denne parken
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+STR_DTLS    :Denne store parken har allerede en utmerket hyper-berg-og-dal-bane, din oppgave er å gjøre massiv profitt
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
 STR_PARK    :Paradise Pier 2
-STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+STR_DTLS    :Paradise Pier har utvidet sitt netverk av gangbroer over sjøen, som du skal bruke for å utvide parken
 
 <Dragon's Cove>
 STR_SCNR    :Dragon's Cove
 STR_PARK    :Dragon's Cove
-STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+STR_DTLS    :Bygg derg-og-dal-baner i denne bukta
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
 STR_PARK    :Good Knight Park
-STR_DTLS    :A castle with a pair of roller coasters needs developing into a larger theme park
+STR_DTLS    :Et slott med et par berg-og-dal-baner trenger din hjelp for å utvide til en stor fornøyelsespark
 
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :A park which has much of its footpaths and coasters underground
+STR_DTLS    :En park hvor de fleste gangstier og berg-og-dal-baner er under bakken
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
 STR_PARK    :Grand Glacier
-STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+STR_DTLS    :Bygg en fornøyelsespark i denne isbre-dalen
 
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :Bygg et underholdningssenter for å holde folk glade i en fjern verden hvor penger ikke finnes
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
 STR_PARK    :Dusty Desert
-STR_DTLS    :Five coasters require completion in this desert park
+STR_DTLS    :Ferdigstill fem berg-og-dal-baner i denne ørkenparken
 
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :This historical park is only allowed to build older-styled rides
+STR_DTLS    :I denne historiske parken får du kun bygge attraksjoner i eldre stil
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximize its profit
+STR_DTLS    :Utvikle denne utenomjordiske parken for å maksimere inntektene
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :Sunny Swamps
-STR_DTLS    :This well-themed amusement park already has several rides, but has plenty of space for expansion
+STR_DTLS    :Denne velpyntede fornøyelsesparken har allerede flere attraksjoner, men stor plass for utvidelse
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :En skumel park med en gigantisk berg-og-dal-bane som midtpunkt
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+STR_DTLS    :To store steinformasjoner stikker ut av sanden, hvor starten på en fornøyelsespark er bygget
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In this large park you must design and build ten large coasters
+STR_DTLS    :I denne store parken må du designe og bygge ti store berg-og-dal-baner
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island
 STR_PARK    :Pleasure Island
-STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+STR_DTLS    :En lang tynn øy blir utfordrende omgivelser for å bygge et utvalg berg-og-dal-baner
 
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
 STR_PARK    :Icicle Worlds
-STR_DTLS    :An icy landscape needs turning into a thriving theme park
+STR_DTLS    :Dette islandskapet trenger å bli gjort om til en blomstrende fornøyelsespark
 
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :Southern Sands
-STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+STR_DTLS    :Du får utvide en ørkenpark med et par smarte berg-og-dal-baner
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
 STR_PARK    :Tiny Towers
-STR_DTLS    :In this tiny park you must finish building the five existing coasters
+STR_DTLS    :I denne lille parken må du fullføre de fem eksisterende berg-og-dal-banene
 
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :Nevermore Park
-STR_DTLS    :A large park with a novel transportation system around its edge
+STR_DTLS    :En stor park med et nyskapende transportsystem rundt periferien
 
 <Pacifica>
 STR_SCNR    :Pacifica
 STR_PARK    :Pacifica
-STR_DTLS    :This large island is all yours to develop as an amusement park
+STR_DTLS    :Du har en stor øy helt for deg selv til å utvikle en fornøyelsespark
 
 <Urban Jungle>
 STR_SCNR    :Urban Jungle
 STR_PARK    :Urban Jungle
-STR_DTLS    :A giant abandoned skyscraper is a unique opportunity for a theme park developer
+STR_DTLS    :En gigantisk forlatt skyskraper er en unik mulighet for en fornøyelsesparkentrepenør
 
 <Terror Town>
 STR_SCNR    :Terror Town
 STR_PARK    :Terror Town
-STR_DTLS    :This urban area is all yours to develop into an amusement park
+STR_DTLS    :Du får utvikle en fornøyelsespark i dette urbane området
 
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
 STR_PARK    :Megaworld Park
-STR_DTLS    :A giant park already packed full of rides needs improving
+STR_DTLS    :En gigantisk park allerede stappfull av attraksjoner trenger forbedring
 
 <Venus Ponds>
 STR_SCNR    :Venus Ponds
 STR_PARK    :Venus Ponds
-STR_DTLS    :On a far-away planet this area of land needs turning into a theme park
+STR_DTLS    :På en planet langt, langt borte må du gjøre om et landområde til en fornøyelsespark
 
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Try to create the world's smallest profitable park
+STR_DTLS    :Prøv å lage verdens minste lønnsomme park
 
 ## Real Parks from RCT1
 # None of them had details
@@ -4911,12 +4183,3 @@ STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
-#####################
-# Rides/attractions #
-#####################
-
-#WW
-[CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 passengers per car
