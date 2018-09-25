@@ -1635,6 +1635,8 @@ static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIn
 rct_window* window_ride_open_track(rct_tile_element* tileElement)
 {
     // This function *should* only be called with an EntranceElement or TrackElement.
+    assert(tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK);
+
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         int32_t rideIndex = tileElement->properties.entrance.ride_index;

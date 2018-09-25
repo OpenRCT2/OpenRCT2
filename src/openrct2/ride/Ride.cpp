@@ -1963,7 +1963,7 @@ int32_t ride_modify(CoordsXYE* input)
     rct_ride_entry* rideEntry;
 
     tileElement = *input;
-    rideIndex = tileElement.element->AsTrack()->GetRideIndex();
+    rideIndex = tile_element_get_ride_index(tileElement.element);
     ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
