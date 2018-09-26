@@ -1563,7 +1563,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                             continue;
                         }
 
-                        int32_t stationIndex = tile_element_get_station(tile_element);
+                        int32_t stationIndex = tile_element->AsTrack()->GetStationIndex();
                         uint8_t bl = 1;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                         {
@@ -2106,9 +2106,9 @@ static money32 place_maze_design(uint8_t flags, uint8_t rideIndex, uint16_t maze
         rct_tile_element* tileElement = tile_element_insert(fx >> 5, fy >> 5, fz, 15);
         tileElement->clearance_height = fz + 4;
         tileElement->type = TILE_ELEMENT_TYPE_TRACK;
-        track_element_set_type(tileElement, TRACK_ELEM_MAZE);
-        track_element_set_ride_index(tileElement, rideIndex);
-        tileElement->properties.track.maze_entry = mazeEntry;
+        tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
+        tileElement->AsTrack()->SetRideIndex(rideIndex);
+        tileElement->AsTrack()->SetMazeEntry(mazeEntry);
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
@@ -2326,11 +2326,8 @@ static void track_design_preview_clear_map()
     for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
     {
         rct_tile_element* tile_element = &gTileElements[i];
-        memset(tile_element, 0, sizeof(rct_tile_element));
-        tile_element->SetType(TILE_ELEMENT_TYPE_SURFACE);
+        tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
         tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
-        tile_element->base_height = 2;
-        tile_element->clearance_height = 0;
         tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         tile_element->AsSurface()->SetWaterHeight(0);
         tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);

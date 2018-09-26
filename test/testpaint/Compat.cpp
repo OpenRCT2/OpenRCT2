@@ -174,72 +174,6 @@ rct_tile_element* map_get_first_element_at(int x, int y)
     return gTileElementTilePointers[x + y * 256];
 }
 
-int tile_element_get_station(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
-}
-
-void tile_element_set_station(rct_tile_element* tileElement, uint32_t stationIndex)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    tileElement->properties.track.sequence |= (stationIndex << 4);
-}
-
-int32_t tile_element_get_track_sequence(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-}
-
-void tile_element_set_track_sequence(rct_tile_element* tileElement, int trackSequence)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
-}
-
-bool tile_element_get_green_light(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
-}
-
-void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    if (greenLight)
-    {
-        tileElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    }
-}
-
-int tile_element_get_brake_booster_speed(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence >> 4) << 1;
-}
-
-void tile_element_set_brake_booster_speed(rct_tile_element* tileElement, int speed)
-{
-    tileElement->properties.track.sequence = tile_element_get_track_sequence(tileElement) | ((speed >> 1) << 4);
-}
-
-bool tile_element_is_taking_photo(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
-}
-
-void tile_element_set_onride_photo_timeout(rct_tile_element* tileElement)
-{
-    tileElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (3 << 4);
-}
-
-void tile_element_decrement_onride_photo_timout(rct_tile_element* tileElement)
-{
-    // We should only touch the upper 4 bits, avoid underflow into the lower 4.
-    if (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
-    {
-        tileElement->properties.track.sequence -= (1 << 4);
-    }
-}
-
 bool ride_type_has_flag(int rideType, int flag)
 {
     return (RideProperties[rideType].flags & flag) != 0;
@@ -250,76 +184,194 @@ int16_t get_height_marker_offset()
     return 0;
 }
 
-bool track_element_is_lift_hill(const rct_tile_element* trackElement)
-{
-    return trackElement->type & 0x80;
-}
-
-bool track_element_is_cable_lift(const rct_tile_element* trackElement)
-{
-    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
-bool track_element_is_inverted(const rct_tile_element* trackElement)
-{
-    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-}
-
-void track_element_set_inverted(rct_tile_element* tileElement, bool inverted)
-{
-    if (inverted)
-    {
-        tileElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-    }
-    else
-    {
-        tileElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-    }
-}
-
 bool is_csg_loaded()
 {
     return false;
 }
 
-uint8_t track_element_get_colour_scheme(const rct_tile_element* tileElement)
+uint8_t TrackElement::GetSeatRotation() const
 {
-    return tileElement->properties.track.colour & 0x3;
+    return colour >> 4;
 }
 
-uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement)
+void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    return tileElement->properties.track.maze_entry;
+    colour &= 0x0F;
+    colour |= (newSeatRotation << 4);
 }
 
-uint8_t track_element_get_ride_index(const rct_tile_element* tileElement)
+bool TrackElement::IsTakingPhoto() const
 {
-    return tileElement->properties.track.ride_index;
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
 }
 
-void track_element_set_ride_index(rct_tile_element* tileElement, uint8_t rideIndex)
+void TrackElement::SetPhotoTimeout()
 {
-    tileElement->properties.track.ride_index = rideIndex;
+    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (3 << 4);
 }
 
-uint8_t track_element_get_type(const rct_tile_element* tileElement)
+void TrackElement::DecrementPhotoTimeout()
 {
-    return tileElement->properties.track.type;
+    // We should only touch the upper 4 bits, avoid underflow into the lower 4.
+    if (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
+    {
+        sequence -= (1 << 4);
+    }
 }
 
-void track_element_set_type(rct_tile_element* tileElement, uint8_t type)
+uint16_t TrackElement::GetMazeEntry() const
 {
-    tileElement->properties.track.type = type;
+    return mazeEntry;
 }
 
-void track_element_set_cable_lift(rct_tile_element* trackElement)
+void TrackElement::SetMazeEntry(uint16_t newMazeEntry)
 {
-    trackElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    mazeEntry = newMazeEntry;
 }
 
-void track_element_clear_cable_lift(rct_tile_element* trackElement)
+void TrackElement::MazeEntryAdd(uint16_t addVal)
 {
-    trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    mazeEntry |= addVal;
+}
+
+void TrackElement::MazeEntrySubtract(uint16_t subVal)
+{
+    mazeEntry &= ~subVal;
+}
+
+uint8_t TrackElement::GetTrackType() const
+{
+    return trackType;
+}
+
+void TrackElement::SetTrackType(uint8_t newType)
+{
+    trackType = newType;
+}
+
+uint8_t TrackElement::GetSequenceIndex() const
+{
+    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+}
+
+void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+}
+
+uint8_t TrackElement::GetStationIndex() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+}
+
+void TrackElement::SetStationIndex(uint8_t newStationIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    sequence |= (newStationIndex << 4);
+}
+
+uint8_t TrackElement::GetDoorAState() const
+{
+    return (colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+}
+
+uint8_t TrackElement::GetDoorBState() const
+{
+    return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+}
+
+uint8_t TrackElement::GetRideIndex() const
+{
+    return rideIndex;
+}
+
+void TrackElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
+}
+
+uint8_t TrackElement::GetColourScheme() const
+{
+    return colour & 0x3;
+}
+
+void TrackElement::SetColourScheme(uint8_t newColourScheme)
+{
+    colour &= ~0x3;
+    colour |= (newColourScheme & 0x3);
+}
+
+bool TrackElement::HasCableLift() const
+{
+    return colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void TrackElement::SetHasCableLift(bool on)
+{
+    colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    if (on)
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+bool TrackElement::IsInverted() const
+{
+    return colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+}
+
+void TrackElement::SetInverted(bool inverted)
+{
+    if (inverted)
+    {
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+    else
+    {
+        colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+}
+
+uint8_t TrackElement::GetBrakeBoosterSpeed() const
+{
+    return (sequence >> 4) << 1;
+}
+
+void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
+{
+    sequence &= ~0b11110000;
+    sequence |= ((speed >> 1) << 4);
+}
+
+uint8_t TrackElement::HasGreenLight() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+}
+
+void TrackElement::SetHasGreenLight(uint8_t greenLight)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    if (greenLight)
+    {
+        sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    }
+}
+
+bool TrackElement::HasChain() const
+{
+    return type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+}
+
+void TrackElement::SetHasChain(bool on)
+{
+    if (on)
+    {
+        type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    }
+    else
+    {
+        type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    }
 }
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
@@ -330,6 +382,12 @@ TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t statio
 TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex)
 {
     return ride->exits[stationIndex];
+}
+
+void TileElementBase::SetType(uint8_t newType)
+{
+    this->type &= ~TILE_ELEMENT_TYPE_MASK;
+    this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
 uint8_t TileElementBase::GetDirection() const

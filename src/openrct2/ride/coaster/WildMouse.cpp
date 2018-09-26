@@ -174,7 +174,7 @@ static void wild_mouse_track_flat(
         { SPR_WILD_MOUSE_FLAT_NW_SE, SPR_WILD_MOUSE_FLAT_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -198,7 +198,7 @@ static void wild_mouse_track_station(
         SPR_STATION_BASE_B_NW_SE,
     };
 
-    int32_t trackType = track_element_get_type(tileElement);
+    int32_t trackType = tileElement->AsTrack()->GetTrackType();
     sub_98197C_rotated(
         session, direction, baseImageIds[direction] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 2, height - 2, 0, 2,
         height);
@@ -233,7 +233,7 @@ static void wild_mouse_track_25_deg_up(
         { SPR_WILD_MOUSE_25_DEG_SE_NW, SPR_WILD_MOUSE_25_DEG_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -265,7 +265,7 @@ static void wild_mouse_track_60_deg_up(
         { SPR_WILD_MOUSE_60_DEG_SE_NW, SPR_WILD_MOUSE_60_DEG_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
     {
@@ -311,7 +311,7 @@ static void wild_mouse_track_flat_to_25_deg_up(
         { SPR_WILD_MOUSE_FLAT_TO_25_DEG_SE_NW, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -349,7 +349,7 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(
         { 0, 0 },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
@@ -396,7 +396,7 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(
         { 0, 0 },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
@@ -437,7 +437,7 @@ static void wild_mouse_track_25_deg_up_to_flat(
         { SPR_WILD_MOUSE_25_DEG_TO_FLAT_SE_NW, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SE_NW },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -776,7 +776,7 @@ static void wild_mouse_track_flat_to_60_deg_up(
         { 0, 0 },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
@@ -823,7 +823,7 @@ static void wild_mouse_track_60_deg_up_to_flat(
         { 0, 0 },
     };
 
-    uint8_t isChained = track_element_is_lift_hill(tileElement) ? 1 : 0;
+    uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)

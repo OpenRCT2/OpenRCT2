@@ -288,11 +288,11 @@ private:
 
             if (tile_type == TILE_ELEMENT_TYPE_ENTRANCE)
             {
-                uint8_t type = track_element_get_type(it.element);
+                uint8_t type = entrance_element_get_type(it.element);
                 if (type == ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 
-                if (track_element_get_ride_index(it.element) == _rideIndex)
+                if (it.element->properties.entrance.ride_index == _rideIndex)
                 {
                     tile_element_remove(it.element);
                     tile_element_iterator_restart_for_tile(&it);
@@ -304,20 +304,20 @@ private:
             if (tile_type != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if (track_element_get_ride_index(it.element) != _rideIndex)
+            if (it.element->AsTrack()->GetRideIndex() != _rideIndex)
                 continue;
 
             int32_t x = it.x * 32, y = it.y * 32;
             int32_t z = it.element->base_height * 8;
 
             uint8_t rotation = it.element->GetDirection();
-            uint8_t type = track_element_get_type(it.element);
+            uint8_t type = it.element->AsTrack()->GetTrackType();
 
             if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
             {
                 money32 removePrice = game_do_command(
                     x, GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8), y,
-                    type | (tile_element_get_track_sequence(it.element) << 8), GAME_COMMAND_REMOVE_TRACK, z, 0);
+                    type | (it.element->AsTrack()->GetSequenceIndex() << 8), GAME_COMMAND_REMOVE_TRACK, z, 0);
 
                 if (removePrice == MONEY32_UNDEFINED)
                     tile_element_remove(it.element);

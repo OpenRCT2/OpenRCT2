@@ -3002,7 +3002,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
  */
 static bool peep_interact_with_shop(rct_peep* peep, int16_t x, int16_t y, rct_tile_element* tile_element)
 {
-    uint8_t rideIndex = track_element_get_ride_index(tile_element);
+    uint8_t rideIndex = tile_element->AsTrack()->GetRideIndex();
     Ride* ride = get_ride(rideIndex);
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))

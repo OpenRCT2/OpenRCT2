@@ -569,12 +569,12 @@ int32_t track_is_connected_by_shape(rct_tile_element* a, rct_tile_element* b)
 {
     int32_t trackType, aBank, aAngle, bBank, bAngle;
 
-    trackType = track_element_get_type(a);
+    trackType = a->AsTrack()->GetTrackType();
     aBank = TrackDefinitions[trackType].bank_end;
     aAngle = TrackDefinitions[trackType].vangle_end;
     aBank = track_get_actual_bank(a, aBank);
 
-    trackType = track_element_get_type(b);
+    trackType = b->AsTrack()->GetTrackType();
     bBank = TrackDefinitions[trackType].bank_start;
     bAngle = TrackDefinitions[trackType].vangle_start;
     bBank = track_get_actual_bank(b, bBank);
@@ -609,7 +609,7 @@ static rct_tile_element* find_station_element(int32_t x, int32_t y, int32_t z, i
             continue;
         if (tileElement->GetDirection() != direction)
             continue;
-        if (track_element_get_ride_index(tileElement) != rideIndex)
+        if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
         if (!track_element_is_station(tileElement))
             continue;
@@ -680,7 +680,7 @@ static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t d
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
         {
-            if (track_element_get_type(stationElement) == TRACK_ELEM_END_STATION)
+            if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -705,7 +705,7 @@ static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t d
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
         {
-            if (track_element_get_type(stationElement) == TRACK_ELEM_END_STATION)
+            if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -767,7 +767,7 @@ static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t d
                 {
                     targetTrackType = TRACK_ELEM_MIDDLE_STATION;
                 }
-                track_element_set_type(stationElement, targetTrackType);
+                stationElement->AsTrack()->SetTrackType(targetTrackType);
 
                 map_invalidate_element(x, y, stationElement);
 
@@ -819,7 +819,7 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
     y = stationY0;
     while ((stationElement = find_station_element(x, y, z, direction, rideIndex)) != nullptr)
     {
-        if (track_element_get_type(stationElement) == TRACK_ELEM_END_STATION)
+        if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
@@ -846,7 +846,7 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
         {
-            if (track_element_get_type(stationElement) == TRACK_ELEM_END_STATION)
+            if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -929,7 +929,7 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
                         }
                     }
                 }
-                track_element_set_type(stationElement, targetTrackType);
+                stationElement->AsTrack()->SetTrackType(targetTrackType);
 
                 map_invalidate_element(x, y, stationElement);
             }
@@ -1457,9 +1457,9 @@ static money32 track_place(
         }
         tileElement->type = map_type;
 
-        tile_element_set_track_sequence(tileElement, trackBlock->index);
-        track_element_set_ride_index(tileElement, rideIndex);
-        track_element_set_type(tileElement, type);
+        tileElement->AsTrack()->SetSequenceIndex(trackBlock->index);
+        tileElement->AsTrack()->SetRideIndex(rideIndex);
+        tileElement->AsTrack()->SetTrackType(type);
 
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
@@ -1483,18 +1483,18 @@ static money32 track_place(
         }
         if (track_element_has_speed_setting(type))
         {
-            tile_element_set_brake_booster_speed(tileElement, brakeSpeed);
+            tileElement->AsTrack()->SetBrakeBoosterSpeed(brakeSpeed);
         }
         else
         {
-            track_element_set_seat_rotation(tileElement, seatRotation);
+            tileElement->AsTrack()->SetSeatRotation(seatRotation);
         }
 
         if (liftHillAndAlternativeState & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
         {
-            track_element_set_inverted(tileElement, true);
+            tileElement->AsTrack()->SetInverted(true);
         }
-        track_element_set_colour_scheme(tileElement, colour);
+        tileElement->AsTrack()->SetColourScheme(colour);
 
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
@@ -1609,13 +1609,13 @@ static money32 track_remove(
         if ((tileElement->GetDirection()) != rotation)
             continue;
 
-        if (tile_element_get_track_sequence(tileElement) != sequence)
+        if (tileElement->AsTrack()->GetSequenceIndex() != sequence)
             continue;
 
         if (tileElement->IsGhost() != isGhost)
             continue;
 
-        uint8_t track_type = track_element_get_type(tileElement);
+        uint8_t track_type = tileElement->AsTrack()->GetTrackType();
         switch (track_type)
         {
             case TRACK_ELEM_BEGIN_STATION:
@@ -1642,13 +1642,13 @@ static money32 track_remove(
         return MONEY32_UNDEFINED;
     }
 
-    uint8_t rideIndex = track_element_get_ride_index(tileElement);
-    type = track_element_get_type(tileElement);
-    bool isLiftHill = track_element_is_lift_hill(tileElement);
+    uint8_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    type = tileElement->AsTrack()->GetTrackType();
+    bool isLiftHill = tileElement->AsTrack()->HasChain();
 
     Ride* ride = get_ride(rideIndex);
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-    trackBlock += tile_element_get_track_sequence(tileElement);
+    trackBlock += tileElement->AsTrack()->GetSequenceIndex();
 
     uint8_t originDirection = tileElement->GetDirection();
     switch (originDirection)
@@ -1719,13 +1719,13 @@ static money32 track_remove(
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
-            if ((tileElement->GetDirection()) != rotation)
+            if (tileElement->GetDirection() != rotation)
                 continue;
 
-            if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
+            if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
                 continue;
 
-            if (track_element_get_type(tileElement) != type)
+            if (tileElement->AsTrack()->GetTrackType() != type)
                 continue;
 
             if (tileElement->IsGhost() != isGhost)
@@ -1751,7 +1751,7 @@ static money32 track_remove(
             entranceDirections = TrackSequenceProperties[type][0];
         }
 
-        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tile_element_get_track_sequence(tileElement) == 0))
+        if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element(x, y, z / 8, rotation, rideIndex, 0))
             {
@@ -1776,7 +1776,7 @@ static money32 track_remove(
         if (!(flags & GAME_COMMAND_FLAG_APPLY))
             continue;
 
-        if (entranceDirections & (1 << 4) && (tile_element_get_track_sequence(tileElement) == 0))
+        if (entranceDirections & (1 << 4) && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element(x, y, z / 8, rotation, rideIndex, GAME_COMMAND_FLAG_APPLY))
             {
@@ -1923,10 +1923,10 @@ void game_command_set_brakes_speed(
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (track_element_get_type(tileElement) != trackType)
+        if (tileElement->AsTrack()->GetTrackType() != trackType)
             continue;
 
-        tile_element_set_brake_booster_speed(tileElement, brakesSpeed);
+        tileElement->AsTrack()->SetBrakeBoosterSpeed(brakesSpeed);
 
         break;
     } while (!(tileElement++)->IsLastForTile());
@@ -2056,20 +2056,20 @@ void track_get_front(CoordsXYE* input, CoordsXYE* output)
     *output = lastTrack;
 }
 
-bool track_element_is_lift_hill(const rct_tile_element* trackElement)
+bool TrackElement::HasChain() const
 {
-    return trackElement->type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+    return type & TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
 }
 
-void track_element_set_lift_hill(rct_tile_element* trackElement, bool on)
+void TrackElement::SetHasChain(bool on)
 {
     if (on)
     {
-        trackElement->type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        type |= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
     }
     else
     {
-        trackElement->type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+        type &= ~TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
     }
 }
 
@@ -2080,7 +2080,7 @@ void track_element_set_lift_hill(rct_tile_element* trackElement, bool on)
  */
 bool track_element_is_block_start(rct_tile_element* trackElement)
 {
-    switch (track_element_get_type(trackElement))
+    switch (trackElement->AsTrack()->GetTrackType())
     {
         case TRACK_ELEM_END_STATION:
         case TRACK_ELEM_CABLE_LIFT_HILL:
@@ -2090,7 +2090,7 @@ bool track_element_is_block_start(rct_tile_element* trackElement)
         case TRACK_ELEM_60_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            if (track_element_is_lift_hill(trackElement))
+            if (trackElement->AsTrack()->HasChain())
             {
                 return true;
             }
@@ -2099,42 +2099,10 @@ bool track_element_is_block_start(rct_tile_element* trackElement)
     return false;
 }
 
-bool track_element_is_cable_lift(const rct_tile_element* trackElement)
-{
-    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
-void track_element_set_cable_lift(rct_tile_element* trackElement)
-{
-    trackElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
-void track_element_clear_cable_lift(rct_tile_element* trackElement)
-{
-    trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-}
-
-bool track_element_is_inverted(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-}
-
-void track_element_set_inverted(rct_tile_element* tileElement, bool inverted)
-{
-    if (inverted)
-    {
-        tileElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-    }
-    else
-    {
-        tileElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-    }
-}
-
 int32_t track_get_actual_bank(rct_tile_element* tileElement, int32_t bank)
 {
-    Ride* ride = get_ride(track_element_get_ride_index(tileElement));
-    bool isInverted = track_element_is_inverted(tileElement);
+    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
+    bool isInverted = tileElement->AsTrack()->IsInverted();
     return track_get_actual_bank_2(ride->type, isInverted, bank);
 }
 
@@ -2160,16 +2128,16 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
 int32_t track_get_actual_bank_3(rct_vehicle* vehicle, rct_tile_element* tileElement)
 {
     bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
-        ^ track_element_is_inverted(tileElement);
-    int32_t trackType = track_element_get_type(tileElement);
-    int32_t rideType = get_ride(track_element_get_ride_index(tileElement))->type;
+        ^ tileElement->AsTrack()->IsInverted();
+    int32_t trackType = tileElement->AsTrack()->GetTrackType();
+    int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
     int32_t bankStart = TrackDefinitions[trackType].bank_start;
     return track_get_actual_bank_2(rideType, isInverted, bankStart);
 }
 
 bool track_element_is_station(rct_tile_element* trackElement)
 {
-    switch (track_element_get_type(trackElement))
+    switch (trackElement->AsTrack()->GetTrackType())
     {
         case TRACK_ELEM_END_STATION:
         case TRACK_ELEM_BEGIN_STATION:
@@ -2222,120 +2190,170 @@ bool track_element_has_speed_setting(uint8_t trackType)
     return trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BOOSTER;
 }
 
-uint8_t track_element_get_seat_rotation(const rct_tile_element* tileElement)
+uint8_t TrackElement::GetSeatRotation() const
 {
-    return tileElement->properties.track.colour >> 4;
+    return colour >> 4;
 }
 
-void track_element_set_seat_rotation(rct_tile_element* tileElement, uint8_t seatRotation)
+void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    tileElement->properties.track.colour &= 0x0F;
-    tileElement->properties.track.colour |= (seatRotation << 4);
+    colour &= 0x0F;
+    colour |= (newSeatRotation << 4);
 }
 
-uint8_t track_element_get_colour_scheme(const rct_tile_element* tileElement)
+bool TrackElement::IsTakingPhoto() const
 {
-    return tileElement->properties.track.colour & 0x3;
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
 }
 
-void track_element_set_colour_scheme(rct_tile_element* tileElement, uint8_t colourScheme)
+void TrackElement::SetPhotoTimeout()
 {
-    tileElement->properties.track.colour &= ~0x3;
-    tileElement->properties.track.colour |= (colourScheme & 0x3);
+    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (3 << 4);
 }
 
-void tile_element_set_station(rct_tile_element* tileElement, uint32_t stationIndex)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    tileElement->properties.track.sequence |= (stationIndex << 4);
-}
-
-int32_t tile_element_get_track_sequence(const rct_tile_element* tileElement)
-{
-    return tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-}
-
-void tile_element_set_track_sequence(rct_tile_element* tileElement, int32_t trackSequence)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
-}
-
-bool tile_element_get_green_light(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
-}
-
-void tile_element_set_green_light(rct_tile_element* tileElement, bool greenLight)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    if (greenLight)
-    {
-        tileElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    }
-}
-
-int32_t tile_element_get_brake_booster_speed(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence >> 4) << 1;
-}
-
-void tile_element_set_brake_booster_speed(rct_tile_element* tileElement, int32_t speed)
-{
-    tileElement->properties.track.sequence = tile_element_get_track_sequence(tileElement) | ((speed >> 1) << 4);
-}
-
-bool tile_element_is_taking_photo(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
-}
-
-void tile_element_set_onride_photo_timeout(rct_tile_element* tileElement)
-{
-    tileElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (3 << 4);
-}
-
-void tile_element_decrement_onride_photo_timout(rct_tile_element* tileElement)
+void TrackElement::DecrementPhotoTimeout()
 {
     // We should only touch the upper 4 bits, avoid underflow into the lower 4.
-    if (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
+    if (sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
     {
-        tileElement->properties.track.sequence -= (1 << 4);
+        sequence -= (1 << 4);
     }
 }
 
-uint16_t track_element_get_maze_entry(const rct_tile_element* tileElement)
+uint16_t TrackElement::GetMazeEntry() const
 {
-    return tileElement->properties.track.maze_entry;
+    return mazeEntry;
 }
 
-uint8_t track_element_get_ride_index(const rct_tile_element* tileElement)
+void TrackElement::SetMazeEntry(uint16_t newMazeEntry)
 {
-    return tileElement->properties.track.ride_index;
+    mazeEntry = newMazeEntry;
 }
 
-void track_element_set_ride_index(rct_tile_element* tileElement, uint8_t rideIndex)
+void TrackElement::MazeEntryAdd(uint16_t addVal)
 {
-    tileElement->properties.track.ride_index = rideIndex;
+    mazeEntry |= addVal;
 }
 
-uint8_t track_element_get_type(const rct_tile_element* tileElement)
+void TrackElement::MazeEntrySubtract(uint16_t subVal)
 {
-    return tileElement->properties.track.type;
+    mazeEntry &= ~subVal;
 }
 
-void track_element_set_type(rct_tile_element* tileElement, uint8_t type)
+uint8_t TrackElement::GetTrackType() const
 {
-    tileElement->properties.track.type = type;
+    return trackType;
 }
 
-uint8_t track_element_get_door_a_state(const rct_tile_element* tileElement)
+void TrackElement::SetTrackType(uint8_t newType)
 {
-    return (tileElement->properties.track.colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+    trackType = newType;
 }
 
-uint8_t track_element_get_door_b_state(const rct_tile_element* tileElement)
+uint8_t TrackElement::GetSequenceIndex() const
 {
-    return (tileElement->properties.track.colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+    return sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+}
+
+void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (newSequenceIndex & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+}
+
+uint8_t TrackElement::GetStationIndex() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+}
+
+void TrackElement::SetStationIndex(uint8_t newStationIndex)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    sequence |= (newStationIndex << 4);
+}
+
+uint8_t TrackElement::GetDoorAState() const
+{
+    return (colour & TRACK_ELEMENT_DOOR_A_MASK) >> 2;
+}
+
+uint8_t TrackElement::GetDoorBState() const
+{
+    return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
+}
+
+uint8_t TrackElement::GetRideIndex() const
+{
+    return rideIndex;
+}
+
+void TrackElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
+}
+
+uint8_t TrackElement::GetColourScheme() const
+{
+    return colour & 0x3;
+}
+
+void TrackElement::SetColourScheme(uint8_t newColourScheme)
+{
+    colour &= ~0x3;
+    colour |= (newColourScheme & 0x3);
+}
+
+bool TrackElement::HasCableLift() const
+{
+    return colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void TrackElement::SetHasCableLift(bool on)
+{
+    colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+    if (on)
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+bool TrackElement::IsInverted() const
+{
+    return colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+}
+
+void TrackElement::SetInverted(bool inverted)
+{
+    if (inverted)
+    {
+        colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+    else
+    {
+        colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+}
+
+uint8_t TrackElement::GetBrakeBoosterSpeed() const
+{
+    return (sequence >> 4) << 1;
+}
+
+void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
+{
+    sequence &= ~0b11110000;
+    sequence |= ((speed >> 1) << 4);
+}
+
+uint8_t TrackElement::HasGreenLight() const
+{
+    return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+}
+
+void TrackElement::SetHasGreenLight(uint8_t greenLight)
+{
+    sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    if (greenLight)
+    {
+        sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    }
 }

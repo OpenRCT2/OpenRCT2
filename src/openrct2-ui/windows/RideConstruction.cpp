@@ -1730,7 +1730,7 @@ static void window_ride_construction_construct(rct_window* w)
             _currentTrackBeginY = trackBeginEnd.begin_y;
             _currentTrackBeginZ = trackBeginEnd.begin_z;
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
-            _currentTrackPieceType = track_element_get_type(trackBeginEnd.begin_element);
+            _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
             _rideConstructionArrowPulseTime = 0;
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
@@ -1760,7 +1760,7 @@ static void window_ride_construction_construct(rct_window* w)
             _currentTrackBeginY = next_track.y;
             _currentTrackBeginZ = z;
             _currentTrackPieceDirection = next_track.element->GetDirection();
-            _currentTrackPieceType = track_element_get_type(next_track.element);
+            _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
             _rideConstructionArrowPulseTime = 0;
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
@@ -1839,7 +1839,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         y = trackBeginEnd.begin_y;
         z = trackBeginEnd.begin_z;
         direction = trackBeginEnd.begin_direction;
-        type = track_element_get_type(trackBeginEnd.begin_element);
+        type = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
         gGotoStartPlacementMode = false;
     }
     else if (track_block_get_next(&inputElement, &outputElement, &z, &direction))
@@ -1847,7 +1847,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         x = outputElement.x;
         y = outputElement.y;
         direction = outputElement.element->GetDirection();
-        type = track_element_get_type(outputElement.element);
+        type = outputElement.element->AsTrack()->GetTrackType();
         gGotoStartPlacementMode = false;
     }
     else
@@ -1865,7 +1865,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         }
 
         const rct_preview_track* trackBlock = get_track_def_from_ride_index(
-            _currentRideIndex, track_element_get_type(tileElement));
+            _currentRideIndex, tileElement->AsTrack()->GetTrackType());
         z = (tileElement->base_height * 8) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
@@ -2420,17 +2420,17 @@ static void sub_6CBCE2(
         // Set the temporary track element
         _tempTrackTileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
         _tempTrackTileElement.SetDirection(trackDirection);
-        track_element_set_lift_hill(&_tempTrackTileElement, (edx & 0x10000) ? true : false);
+        _tempTrackTileElement.AsTrack()->SetHasChain((edx & 0x10000) ? true : false);
         _tempTrackTileElement.flags = (bl & 0x0F) | TILE_ELEMENT_FLAG_LAST_TILE;
         _tempTrackTileElement.base_height = baseZ;
         _tempTrackTileElement.clearance_height = clearanceZ;
-        track_element_set_type(&_tempTrackTileElement, trackType);
-        tile_element_set_track_sequence(&_tempTrackTileElement, trackBlock->index);
-        track_element_clear_cable_lift(&_tempTrackTileElement);
-        track_element_set_inverted(&_tempTrackTileElement, (edx & 0x20000) ? true : false);
-        track_element_set_colour_scheme(&_tempTrackTileElement, RIDE_COLOUR_SCHEME_MAIN);
+        _tempTrackTileElement.AsTrack()->SetTrackType(trackType);
+        _tempTrackTileElement.AsTrack()->SetSequenceIndex(trackBlock->index);
+        _tempTrackTileElement.AsTrack()->SetHasCableLift(false);
+        _tempTrackTileElement.AsTrack()->SetInverted((edx & 0x20000) ? true : false);
+        _tempTrackTileElement.AsTrack()->SetColourScheme(RIDE_COLOUR_SCHEME_MAIN);
         // Skipping seat rotation, should not be necessary for a temporary piece.
-        track_element_set_ride_index(&_tempTrackTileElement, rideIndex);
+        _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
         // Draw this map tile
         sub_68B2B7(session, x, y);
@@ -2481,10 +2481,10 @@ void window_ride_construction_update_active_elements_impl()
         int32_t z = _currentTrackBeginZ;
         if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &tileElement, 0))
         {
-            _selectedTrackType = track_element_get_type(tileElement);
-            if (track_element_has_speed_setting(track_element_get_type(tileElement)))
-                _currentBrakeSpeed2 = tile_element_get_brake_booster_speed(tileElement);
-            _currentSeatRotationAngle = track_element_get_seat_rotation(tileElement);
+            _selectedTrackType = tileElement->AsTrack()->GetTrackType();
+            if (track_element_has_speed_setting(tileElement->AsTrack()->GetTrackType()))
+                _currentBrakeSpeed2 = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+            _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
         }
     }
 
@@ -3435,7 +3435,7 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
     {
         game_do_command(
             _currentTrackBeginX, GAME_COMMAND_FLAG_APPLY | ((brakesSpeed) << 8), _currentTrackBeginY,
-            track_element_get_type(tileElement), GAME_COMMAND_SET_BRAKES_SPEED, _currentTrackBeginZ, 0);
+            tileElement->AsTrack()->GetTrackType(), GAME_COMMAND_SET_BRAKES_SPEED, _currentTrackBeginZ, 0);
     }
     window_ride_construction_update_active_elements();
 }

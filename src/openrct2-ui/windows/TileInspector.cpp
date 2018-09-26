@@ -907,7 +907,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
                 case WIDX_TRACK_CHECK_CHAIN_LIFT:
                 {
                     bool entireTrackBlock = widget_is_pressed(w, WIDX_TRACK_CHECK_APPLY_TO_ALL);
-                    bool newLift = !track_element_is_lift_hill(tileElement);
+                    bool newLift = !tileElement->AsTrack()->HasChain();
                     window_tile_inspector_track_block_set_lift(windowTileInspectorSelectedIndex, entireTrackBlock, newLift);
                     break;
                 }
@@ -1548,7 +1548,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(propertiesAnchor, 2);
             w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(propertiesAnchor, 2);
             widget_set_checkbox_value(w, WIDX_TRACK_CHECK_APPLY_TO_ALL, windowTileInspectorApplyToAll);
-            widget_set_checkbox_value(w, WIDX_TRACK_CHECK_CHAIN_LIFT, track_element_is_lift_hill(tileElement));
+            widget_set_checkbox_value(w, WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
             break;
         case TILE_INSPECTOR_PAGE_SCENERY:
         {
@@ -1843,7 +1843,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Ride
-                int16_t rideId = track_element_get_ride_index(tileElement);
+                int16_t rideId = tileElement->AsTrack()->GetRideIndex();
                 Ride* ride = get_ride(rideId);
                 rct_string_id rideType = RideNaming[ride->type].name;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);
@@ -1852,8 +1852,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 set_format_arg(0 + sizeof(rct_string_id), uint32_t, ride->name_arguments);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 22);
                 // Track
-                int16_t trackType = track_element_get_type(tileElement);
-                int16_t sequenceNumber = tile_element_get_track_sequence(tileElement);
+                int16_t trackType = tileElement->AsTrack()->GetTrackType();
+                int16_t sequenceNumber = tileElement->AsTrack()->GetSequenceIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_DARK_GREEN, x, y + 33);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_DARK_GREEN, x, y + 44);
 

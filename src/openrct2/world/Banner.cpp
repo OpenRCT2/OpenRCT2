@@ -45,7 +45,7 @@ static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        uint8_t rideIndex = track_element_get_ride_index(tileElement);
+        uint8_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         Ride* ride = get_ride(rideIndex);
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;

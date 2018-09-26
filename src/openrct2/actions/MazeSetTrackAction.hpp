@@ -231,9 +231,9 @@ public:
             tileElement->clearance_height = clearanceHeight;
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
-            track_element_set_type(tileElement, TRACK_ELEM_MAZE);
-            track_element_set_ride_index(tileElement, _rideIndex);
-            tileElement->properties.track.maze_entry = 0xFFFF;
+            tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
+            tileElement->AsTrack()->SetRideIndex(_rideIndex);
+            tileElement->AsTrack()->SetMazeEntry(0xFFFF);
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
@@ -259,12 +259,12 @@ public:
             {
                 uint8_t segmentOffset = MazeGetSegmentBit(_x, _y);
 
-                tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
+                tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
                 if (!_initialPlacement)
                 {
                     segmentOffset = byte_993CE9[(_direction + segmentOffset)];
-                    tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
+                    tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
                     uint8_t temp_edx = byte_993CFC[segmentOffset];
                     if (temp_edx != 0xFF)
@@ -277,11 +277,11 @@ public:
 
                         if (previousTileElement != nullptr)
                         {
-                            previousTileElement->properties.track.maze_entry &= ~(1 << temp_edx);
+                            previousTileElement->AsTrack()->MazeEntrySubtract(1 << temp_edx);
                         }
                         else
                         {
-                            tileElement->properties.track.maze_entry |= (1 << segmentOffset);
+                            tileElement->AsTrack()->MazeEntryAdd(1 << segmentOffset);
                         }
                     }
                 }
@@ -312,16 +312,16 @@ public:
 
                     uint32_t segmentBit = MazeGetSegmentBit(previousSegmentX, previousSegmentY);
 
-                    tileElement->properties.track.maze_entry |= (1 << segmentBit);
+                    tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
                     segmentBit--;
-                    tileElement->properties.track.maze_entry |= (1 << segmentBit);
+                    tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
                     segmentBit = (segmentBit - 4) & 0x0F;
-                    tileElement->properties.track.maze_entry |= (1 << segmentBit);
+                    tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
                     segmentBit = (segmentBit + 3) & 0x0F;
 
                     do
                     {
-                        tileElement->properties.track.maze_entry |= (1 << segmentBit);
+                        tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
 
                         uint32_t direction1 = byte_993D0C[segmentBit];
                         uint16_t nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
@@ -333,7 +333,7 @@ public:
                         if (tmp_tileElement != nullptr)
                         {
                             uint8_t edx11 = byte_993CFC[segmentBit];
-                            tmp_tileElement->properties.track.maze_entry |= 1 << (edx11);
+                            tmp_tileElement->AsTrack()->MazeEntryAdd(1 << (edx11));
                         }
 
                         segmentBit--;
@@ -344,7 +344,7 @@ public:
 
         map_invalidate_tile(floor2(_x, 32), floor2(_y, 32), tileElement->base_height * 8, tileElement->clearance_height * 8);
 
-        if ((tileElement->properties.track.maze_entry & 0x8888) == 0x8888)
+        if ((tileElement->AsTrack()->GetMazeEntry() & 0x8888) == 0x8888)
         {
             Ride* ride = get_ride(_rideIndex);
             tile_element_remove(tileElement);

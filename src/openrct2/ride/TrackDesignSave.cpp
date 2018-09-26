@@ -601,7 +601,7 @@ static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rc
                 return true;
             break;
         case TILE_ELEMENT_TYPE_TRACK:
-            if (track_element_get_ride_index(tileElement) == rideIndex)
+            if (tileElement->AsTrack()->GetRideIndex() == rideIndex)
                 return true;
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -848,7 +848,7 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
-                if (track_element_get_ride_index(tileElement) == rideIndex)
+                if (tileElement->AsTrack()->GetRideIndex() == rideIndex)
                 {
                     mapFound = true;
                     break;
@@ -889,10 +889,10 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
-                if (track_element_get_ride_index(tileElement) != rideIndex)
+                if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
                     continue;
 
-                maze->maze_entry = track_element_get_maze_entry(tileElement);
+                maze->maze_entry = tileElement->AsTrack()->GetMazeEntry();
                 maze->x = (x - startX) / 32;
                 maze->y = (y - startY) / 32;
                 maze++;
@@ -1013,7 +1013,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
     ride_get_start_of_track(&trackElement);
 
     int32_t z = trackElement.element->base_height * 8;
-    uint8_t track_type = track_element_get_type(trackElement.element);
+    uint8_t track_type = trackElement.element->AsTrack()->GetTrackType();
     uint8_t direction = trackElement.element->GetDirection();
     _trackSaveDirection = direction;
 
@@ -1023,7 +1023,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         return 0;
     }
 
-    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[track_element_get_type(trackElement.element)];
+    const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackElement.element->AsTrack()->GetTrackType()];
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
@@ -1039,7 +1039,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
     rct_td6_track_element* track = td6->track_elements;
     do
     {
-        track->type = track_element_get_type(trackElement.element);
+        track->type = trackElement.element->AsTrack()->GetTrackType();
         if (track->type == TRACK_ELEM_255)
         {
             track->type = TRACK_ELEM_255_ALIAS;
@@ -1048,17 +1048,17 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
         uint8_t bh;
         if (track_element_has_speed_setting(track->type))
         {
-            bh = tile_element_get_brake_booster_speed(trackElement.element) >> 1;
+            bh = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
         }
         else
         {
-            bh = track_element_get_seat_rotation(trackElement.element);
+            bh = trackElement.element->AsTrack()->GetSeatRotation();
         }
 
         uint8_t flags = (trackElement.element->type & (1 << 7)) | bh;
-        flags |= track_element_get_colour_scheme(trackElement.element) << 4;
+        flags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
         if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE
-            && track_element_is_inverted(trackElement.element))
+            && trackElement.element->AsTrack()->IsInverted())
         {
             flags |= TRACK_ELEMENT_FLAG_INVERTED;
         }
@@ -1074,7 +1074,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
 
         z = trackElement.element->base_height * 8;
         direction = trackElement.element->GetDirection();
-        track_type = track_element_get_type(trackElement.element);
+        track_type = trackElement.element->AsTrack()->GetTrackType();
 
         if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
         {

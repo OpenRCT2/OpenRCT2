@@ -1364,14 +1364,14 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_TRACK:
                     if (z == tileElement->base_height)
                     {
-                        Ride* ride = get_ride(track_element_get_ride_index(tileElement));
+                        Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                         {
                             continue;
                         }
 
-                        const uint8_t trackType = track_element_get_type(tileElement);
-                        const uint8_t trackSequence = tile_element_get_track_sequence(tileElement);
+                        const uint8_t trackType = tileElement->AsTrack()->GetTrackType();
+                        const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
                         {
                             return;
@@ -1383,7 +1383,7 @@ static void loc_6A6D7E(
                         }
                         if (query)
                         {
-                            neighbour_list_push(neighbourList, 1, direction, track_element_get_ride_index(tileElement), 255);
+                            neighbour_list_push(neighbourList, 1, direction, tileElement->AsTrack()->GetRideIndex(), 255);
                         }
                         goto loc_6A6FD2;
                     }
@@ -1492,13 +1492,13 @@ static void loc_6A6C85(
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        Ride* ride = get_ride(track_element_get_ride_index(tileElement));
+        Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
             return;
         }
-        const uint8_t trackType = track_element_get_type(tileElement);
-        const uint8_t trackSequence = tile_element_get_track_sequence(tileElement);
+        const uint8_t trackType = tileElement->AsTrack()->GetTrackType();
+        const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
         {
             return;
@@ -2470,12 +2470,12 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct
             case TILE_ELEMENT_TYPE_TRACK:
                 if (tileElement->base_height == coords.z)
                 {
-                    Ride* ride = get_ride(track_element_get_ride_index(tileElement));
+                    Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
                         break;
 
-                    const uint8_t trackType = track_element_get_type(tileElement);
-                    const uint8_t trackSequence = tile_element_get_track_sequence(tileElement);
+                    const uint8_t trackType = tileElement->AsTrack()->GetTrackType();
+                    const uint8_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
                     if (FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)
                     {
                         uint16_t dx = ((coords.direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
@@ -2555,7 +2555,7 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
 {
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
-        int32_t rideIndex = track_element_get_ride_index(tileElement);
+        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         Ride* ride = get_ride(rideIndex);
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
             return;

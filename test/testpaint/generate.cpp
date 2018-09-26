@@ -148,7 +148,7 @@ private:
             if (_rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || _rideType == RIDE_TYPE_FLYING_ROLLER_COASTER
                 || _rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER)
             {
-                WriteLine(1, "if (!track_element_is_inverted(tileElement)) {");
+                WriteLine(1, "if (!tileElement->AsTrack()->IsInverted()) {");
                 _invertedTrack = false;
                 GenerateTrackFunctionBody(2, trackType);
                 WriteLine(1, "} else {");
@@ -445,12 +445,13 @@ private:
         for (int direction = 0; direction < 4; direction++)
         {
             rct_tile_element tileElement = {};
+            tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
             tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-            track_element_set_type(&tileElement, trackType);
+            tileElement.AsTrack()->SetTrackType(trackType);
             tileElement.base_height = 3;
             if (_invertedTrack)
             {
-                track_element_set_inverted(&tileElement, true);
+                tileElement.AsTrack()->SetInverted(true);
             }
             g_currently_drawn_item = &tileElement;
 
@@ -491,7 +492,7 @@ private:
             if (_rideType == RIDE_TYPE_GIGA_COASTER)
             {
                 tileElement.type = 0;
-                track_element_set_cable_lift(&tileElement);
+                tileElement.AsTrack()->SetHasCableLift(true);
                 PaintIntercept::ClearCalls();
                 CallOriginal(trackType, direction, trackSequence, height, &tileElement);
                 numCalls = PaintIntercept::GetCalls(callBuffer);
@@ -504,7 +505,7 @@ private:
                 RCT2_GLOBAL(0x009DE56A, int16_t) = 64 + 32;
                 RCT2_GLOBAL(0x009DE56E, int16_t) = 64;
                 tileElement.type = 0;
-                track_element_clear_cable_lift(&tileElement);
+                tileElement.AsTrack()->SetHasCableLift(false);
                 PaintIntercept::ClearCalls();
                 CallOriginal(trackType, direction, trackSequence, height, &tileElement);
                 numCalls = PaintIntercept::GetCalls(callBuffer);
@@ -528,12 +529,12 @@ private:
 
         if (_rideType == RIDE_TYPE_GIGA_COASTER && !CompareFunctionCalls(calls, cableLiftCalls))
         {
-            WriteLine(tabs, "if (track_element_is_cable_lift(tileElement)) {");
+            WriteLine(tabs, "if (tileElement->AsTrack()->HasCableLift()) {");
             GenerateCalls(tabs + 1, cableLiftCalls, height);
 
             if (!CompareFunctionCalls(calls, chainLiftCalls))
             {
-                WriteLine(tabs, "} else if (track_element_is_lift_hill(tileElement)) {");
+                WriteLine(tabs, "} else if (tileElement->AsTrack()->HasChain()) {");
                 GenerateCalls(tabs + 1, chainLiftCalls, height);
             }
 
@@ -543,7 +544,7 @@ private:
         }
         else if (!CompareFunctionCalls(calls, chainLiftCalls))
         {
-            WriteLine(tabs, "if (track_element_is_lift_hill(tileElement)) {");
+            WriteLine(tabs, "if (tileElement->AsTrack()->HasChain()) {");
             GenerateCalls(tabs + 1, chainLiftCalls, height);
             WriteLine(tabs, "} else {");
             GenerateCalls(tabs + 1, calls, height);

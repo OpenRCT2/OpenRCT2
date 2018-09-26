@@ -61,7 +61,7 @@ static void ride_update_station_blocksection(Ride* ride, int32_t stationIndex)
         ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 
         if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
-            || (tileElement != nullptr && tile_element_get_green_light(tileElement)))
+            || (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight()))
             ride_invalidate_station_start(ride, stationIndex, false);
     }
     else
@@ -71,7 +71,7 @@ static void ride_update_station_blocksection(Ride* ride, int32_t stationIndex)
             ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
         }
-        else if (tileElement != nullptr && tile_element_get_green_light(tileElement))
+        else if (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight())
         {
             ride_invalidate_station_start(ride, stationIndex, true);
         }
@@ -298,7 +298,7 @@ static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool
     if (tileElement == nullptr)
         return;
 
-    tile_element_set_green_light(tileElement, greenLight);
+    tileElement->AsTrack()->SetHasGreenLight(greenLight);
 
     // Invalidate map tile
     map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);

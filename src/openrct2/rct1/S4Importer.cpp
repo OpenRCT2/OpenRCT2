@@ -2838,10 +2838,10 @@ private:
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
                     {
                         // Lift hill tops are the only pieces present in RCT1 that can count as a block brake.
-                        if (!track_element_is_lift_hill(tileElement))
+                        if (!tileElement->AsTrack()->HasChain())
                             continue;
 
-                        uint8_t trackType = track_element_get_type(tileElement);
+                        uint8_t trackType = tileElement->AsTrack()->GetTrackType();
                         switch (trackType)
                         {
                             case TRACK_ELEM_25_DEG_UP_TO_FLAT:
@@ -2853,7 +2853,7 @@ private:
                                 continue;
                         }
 
-                        uint8_t rideIndex = track_element_get_ride_index(tileElement);
+                        uint8_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                         Ride* ride = get_ride(rideIndex);
                         ride->num_block_brakes++;
                     }

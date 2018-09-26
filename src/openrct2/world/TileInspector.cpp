@@ -735,15 +735,15 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        uint8_t type = track_element_get_type(trackElement);
+        uint8_t type = trackElement->AsTrack()->GetTrackType();
         int16_t originX = x << 5;
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
-        uint8_t rideIndex = track_element_get_ride_index(trackElement);
+        uint8_t rideIndex = trackElement->AsTrack()->GetRideIndex();
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-        trackBlock += tile_element_get_track_sequence(trackElement);
+        trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
         switch (originDirection)
@@ -807,13 +807,13 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((tileElement->GetDirection()) != rotation)
+                if (tileElement->GetDirection() != rotation)
                     continue;
 
-                if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
+                if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
                     continue;
 
-                if (track_element_get_type(tileElement) != type)
+                if (tileElement->AsTrack()->GetTrackType() != type)
                     continue;
 
                 found = true;
@@ -860,23 +860,23 @@ int32_t tile_inspector_track_set_chain(
         if (!entireTrackBlock)
         {
             // Set chain for only the selected piece
-            if (track_element_is_lift_hill(trackElement) != setChain)
+            if (trackElement->AsTrack()->HasChain() != setChain)
             {
-                trackElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+                trackElement->AsTrack()->SetHasChain(setChain);
             }
 
             return 0;
         }
 
-        uint8_t type = track_element_get_type(trackElement);
+        uint8_t type = trackElement->AsTrack()->GetTrackType();
         int16_t originX = x << 5;
         int16_t originY = y << 5;
         int16_t originZ = trackElement->base_height * 8;
         uint8_t rotation = trackElement->GetDirection();
-        uint8_t rideIndex = track_element_get_ride_index(trackElement);
+        uint8_t rideIndex = trackElement->AsTrack()->GetRideIndex();
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-        trackBlock += tile_element_get_track_sequence(trackElement);
+        trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
         switch (originDirection)
@@ -940,13 +940,13 @@ int32_t tile_inspector_track_set_chain(
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((tileElement->GetDirection()) != rotation)
+                if (tileElement->GetDirection() != rotation)
                     continue;
 
-                if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
+                if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
                     continue;
 
-                if (track_element_get_type(tileElement) != type)
+                if (tileElement->AsTrack()->GetTrackType() != type)
                     continue;
 
                 found = true;
@@ -967,7 +967,7 @@ int32_t tile_inspector_track_set_chain(
             // Keep?
             // invalidate_test_results(rideIndex);
 
-            if (track_element_is_lift_hill(tileElement) != setChain)
+            if (tileElement->AsTrack()->HasChain() != setChain)
             {
                 tileElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
             }

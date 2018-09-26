@@ -24,9 +24,9 @@ static void flying_rc_track_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -81,7 +81,7 @@ static void flying_rc_track_flat(
     }
     else
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -136,7 +136,7 @@ static void flying_rc_track_station(
     paint_session* session, uint8_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_inverted(tileElement))
+    if (tileElement->AsTrack()->IsInverted())
     {
         static constexpr const uint32_t imageIds[4][3] = {
             { SPR_STATION_BASE_C_SW_NE, 27131, SPR_STATION_INVERTED_BAR_C_SW_NE },
@@ -165,7 +165,7 @@ static void flying_rc_track_station(
             { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
         };
 
-        if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION)
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
         {
             sub_98197C_rotated(
                 session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
@@ -193,7 +193,7 @@ static void flying_rc_track_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -233,7 +233,7 @@ static void flying_rc_track_25_deg_up(
     }
     else
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -328,7 +328,7 @@ static void flying_rc_track_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -410,7 +410,7 @@ static void flying_rc_track_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -450,7 +450,7 @@ static void flying_rc_track_flat_to_25_deg_up(
     }
     else
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -545,7 +545,7 @@ static void flying_rc_track_25_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -637,7 +637,7 @@ static void flying_rc_track_60_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -753,7 +753,7 @@ static void flying_rc_track_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -793,7 +793,7 @@ static void flying_rc_track_25_deg_up_to_flat(
     }
     else
     {
-        if (track_element_is_lift_hill(tileElement))
+        if (tileElement->AsTrack()->HasChain())
         {
             switch (direction)
             {
@@ -936,7 +936,7 @@ static void flying_rc_track_left_quarter_turn_5(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -1314,7 +1314,7 @@ static void flying_rc_track_flat_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -1395,7 +1395,7 @@ static void flying_rc_track_flat_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -1476,7 +1476,7 @@ static void flying_rc_track_left_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -1557,7 +1557,7 @@ static void flying_rc_track_right_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -1638,7 +1638,7 @@ static void flying_rc_track_banked_left_quarter_turn_5(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -2017,7 +2017,7 @@ static void flying_rc_track_left_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2129,7 +2129,7 @@ static void flying_rc_track_right_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2241,7 +2241,7 @@ static void flying_rc_track_25_deg_up_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2353,7 +2353,7 @@ static void flying_rc_track_25_deg_up_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2497,7 +2497,7 @@ static void flying_rc_track_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -2582,7 +2582,7 @@ static void flying_rc_track_left_quarter_turn_5_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -2926,7 +2926,7 @@ static void flying_rc_track_right_quarter_turn_5_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -3288,7 +3288,7 @@ static void flying_rc_track_s_bend_left(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -3615,7 +3615,7 @@ static void flying_rc_track_s_bend_right(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -3942,7 +3942,7 @@ static void flying_rc_track_left_quarter_turn_3(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -4190,7 +4190,7 @@ static void flying_rc_track_left_quarter_turn_3_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -4444,7 +4444,7 @@ static void flying_rc_track_left_quarter_turn_3_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -4615,7 +4615,7 @@ static void flying_rc_track_right_quarter_turn_3_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -6006,7 +6006,7 @@ static void flying_rc_track_left_quarter_turn_1_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -6089,7 +6089,7 @@ static void flying_rc_track_right_quarter_turn_1_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -6187,7 +6187,7 @@ static void flying_rc_track_brakes(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -6988,7 +6988,7 @@ static void flying_rc_track_25_deg_up_left_banked(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -7094,7 +7094,7 @@ static void flying_rc_track_25_deg_up_right_banked(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -7200,7 +7200,7 @@ static void flying_rc_track_on_ride_photo(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -7319,7 +7319,7 @@ static void flying_rc_track_left_eighth_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -7633,7 +7633,7 @@ static void flying_rc_track_right_eighth_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -7965,7 +7965,7 @@ static void flying_rc_track_left_eighth_bank_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -8280,7 +8280,7 @@ static void flying_rc_track_right_eighth_bank_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -8613,12 +8613,12 @@ static void flying_rc_track_diag_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8646,7 +8646,7 @@ static void flying_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8674,7 +8674,7 @@ static void flying_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8702,7 +8702,7 @@ static void flying_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8764,7 +8764,7 @@ static void flying_rc_track_diag_flat(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8792,7 +8792,7 @@ static void flying_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8820,7 +8820,7 @@ static void flying_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8848,7 +8848,7 @@ static void flying_rc_track_diag_flat(
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8905,12 +8905,12 @@ static void flying_rc_track_diag_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8938,7 +8938,7 @@ static void flying_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8966,7 +8966,7 @@ static void flying_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -8994,7 +8994,7 @@ static void flying_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9056,7 +9056,7 @@ static void flying_rc_track_diag_25_deg_up(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9084,7 +9084,7 @@ static void flying_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9112,7 +9112,7 @@ static void flying_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9140,7 +9140,7 @@ static void flying_rc_track_diag_25_deg_up(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9197,12 +9197,12 @@ static void flying_rc_track_diag_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9230,7 +9230,7 @@ static void flying_rc_track_diag_60_deg_up(
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9258,7 +9258,7 @@ static void flying_rc_track_diag_60_deg_up(
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9286,7 +9286,7 @@ static void flying_rc_track_diag_60_deg_up(
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9433,12 +9433,12 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9466,7 +9466,7 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9494,7 +9494,7 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9522,7 +9522,7 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9584,7 +9584,7 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9612,7 +9612,7 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9640,7 +9640,7 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9668,7 +9668,7 @@ static void flying_rc_track_diag_flat_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9725,12 +9725,12 @@ static void flying_rc_track_diag_25_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9758,7 +9758,7 @@ static void flying_rc_track_diag_25_deg_up_to_60_deg_up(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9786,7 +9786,7 @@ static void flying_rc_track_diag_25_deg_up_to_60_deg_up(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9814,7 +9814,7 @@ static void flying_rc_track_diag_25_deg_up_to_60_deg_up(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9961,12 +9961,12 @@ static void flying_rc_track_diag_60_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -9994,7 +9994,7 @@ static void flying_rc_track_diag_60_deg_up_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10022,7 +10022,7 @@ static void flying_rc_track_diag_60_deg_up_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10050,7 +10050,7 @@ static void flying_rc_track_diag_60_deg_up_to_25_deg_up(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10197,12 +10197,12 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10230,7 +10230,7 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10258,7 +10258,7 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10286,7 +10286,7 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10348,7 +10348,7 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10376,7 +10376,7 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10404,7 +10404,7 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10432,7 +10432,7 @@ static void flying_rc_track_diag_25_deg_up_to_flat(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10489,12 +10489,12 @@ static void flying_rc_track_diag_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10522,7 +10522,7 @@ static void flying_rc_track_diag_25_deg_down(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10550,7 +10550,7 @@ static void flying_rc_track_diag_25_deg_down(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10578,7 +10578,7 @@ static void flying_rc_track_diag_25_deg_down(
                 paint_util_set_general_support_height(session, height + 56, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10725,12 +10725,12 @@ static void flying_rc_track_diag_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10758,7 +10758,7 @@ static void flying_rc_track_diag_60_deg_down(
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10786,7 +10786,7 @@ static void flying_rc_track_diag_60_deg_down(
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10814,7 +10814,7 @@ static void flying_rc_track_diag_60_deg_down(
                 paint_util_set_general_support_height(session, height + 104, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10961,12 +10961,12 @@ static void flying_rc_track_diag_flat_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -10993,7 +10993,7 @@ static void flying_rc_track_diag_flat_to_25_deg_down(
                     0);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11020,7 +11020,7 @@ static void flying_rc_track_diag_flat_to_25_deg_down(
                     0);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11047,7 +11047,7 @@ static void flying_rc_track_diag_flat_to_25_deg_down(
                     0);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11190,12 +11190,12 @@ static void flying_rc_track_diag_25_deg_down_to_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11223,7 +11223,7 @@ static void flying_rc_track_diag_25_deg_down_to_60_deg_down(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11251,7 +11251,7 @@ static void flying_rc_track_diag_25_deg_down_to_60_deg_down(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11279,7 +11279,7 @@ static void flying_rc_track_diag_25_deg_down_to_60_deg_down(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11426,12 +11426,12 @@ static void flying_rc_track_diag_60_deg_down_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11459,7 +11459,7 @@ static void flying_rc_track_diag_60_deg_down_to_25_deg_down(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11487,7 +11487,7 @@ static void flying_rc_track_diag_60_deg_down_to_25_deg_down(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11515,7 +11515,7 @@ static void flying_rc_track_diag_60_deg_down_to_25_deg_down(
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11662,12 +11662,12 @@ static void flying_rc_track_diag_25_deg_down_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
             case 0:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11695,7 +11695,7 @@ static void flying_rc_track_diag_25_deg_down_to_flat(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 1:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11723,7 +11723,7 @@ static void flying_rc_track_diag_25_deg_down_to_flat(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 2:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11751,7 +11751,7 @@ static void flying_rc_track_diag_25_deg_down_to_flat(
                 paint_util_set_general_support_height(session, height + 48, 0x20);
                 break;
             case 3:
-                if (track_element_is_lift_hill(tileElement))
+                if (tileElement->AsTrack()->HasChain())
                 {
                     switch (direction)
                     {
@@ -11898,7 +11898,7 @@ static void flying_rc_track_diag_flat_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12068,7 +12068,7 @@ static void flying_rc_track_diag_flat_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12238,7 +12238,7 @@ static void flying_rc_track_diag_left_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12408,7 +12408,7 @@ static void flying_rc_track_diag_right_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12578,7 +12578,7 @@ static void flying_rc_track_diag_left_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12747,7 +12747,7 @@ static void flying_rc_track_diag_right_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -12916,7 +12916,7 @@ static void flying_rc_track_diag_25_deg_up_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -13085,7 +13085,7 @@ static void flying_rc_track_diag_25_deg_up_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -13254,7 +13254,7 @@ static void flying_rc_track_diag_left_bank_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -13416,7 +13416,7 @@ static void flying_rc_track_diag_right_bank_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -13578,7 +13578,7 @@ static void flying_rc_track_diag_25_deg_down_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -13747,7 +13747,7 @@ static void flying_rc_track_diag_25_deg_down_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -13916,7 +13916,7 @@ static void flying_rc_track_diag_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -14083,7 +14083,7 @@ static void flying_rc_track_diag_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -14954,7 +14954,7 @@ static void flying_rc_track_block_brakes(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -15012,7 +15012,7 @@ static void flying_rc_track_left_banked_quarter_turn_3_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -15186,7 +15186,7 @@ static void flying_rc_track_right_banked_quarter_turn_3_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -15386,7 +15386,7 @@ static void flying_rc_track_left_banked_quarter_turn_5_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -15733,7 +15733,7 @@ static void flying_rc_track_right_banked_quarter_turn_5_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (trackSequence)
         {
@@ -16100,7 +16100,7 @@ static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -16208,7 +16208,7 @@ static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -16316,7 +16316,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -16424,7 +16424,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -16568,7 +16568,7 @@ static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -16674,7 +16674,7 @@ static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -16780,7 +16780,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -16886,7 +16886,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -17028,7 +17028,7 @@ static void flying_rc_track_flat_to_left_banked_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -17136,7 +17136,7 @@ static void flying_rc_track_flat_to_right_banked_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -17244,7 +17244,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {
@@ -17352,7 +17352,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (!track_element_is_inverted(tileElement))
+    if (!tileElement->AsTrack()->IsInverted())
     {
         switch (direction)
         {

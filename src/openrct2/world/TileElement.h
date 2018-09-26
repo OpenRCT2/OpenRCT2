@@ -28,33 +28,6 @@ struct rct_tile_element_path_properties
 };
 assert_struct_size(rct_tile_element_path_properties, 4);
 
-struct rct_tile_element_track_properties
-{
-    uint8_t type; // 4
-    union
-    {
-        struct
-        {
-            // The lower 4 bits are the track sequence.
-            // The upper 4 bits are either station bits or on-ride photo bits.
-            //
-            // Station bits:
-            // - Bit 8 marks green light
-            // - Bit 5-7 are station index.
-            //
-            // On-ride photo bits:
-            // - Bits 7 and 8 are never set
-            // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
-            // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
-            uint8_t sequence; // 5.
-            uint8_t colour;   // 6
-        };
-        uint16_t maze_entry; // 5
-    };
-    uint8_t ride_index; // 7
-};
-assert_struct_size(rct_tile_element_track_properties, 4);
-
 struct rct_tile_element_entrance_properties
 {
     uint8_t type;       // 4
@@ -76,7 +49,6 @@ assert_struct_size(rct_tile_element_banner_properties, 4);
 union rct_tile_element_properties
 {
     rct_tile_element_path_properties path;
-    rct_tile_element_track_properties track;
     rct_tile_element_entrance_properties entrance;
     rct_tile_element_banner_properties banner;
 };
@@ -142,8 +114,12 @@ struct TileElementBase
  */
 struct rct_tile_element : public TileElementBase
 {
-    // TODO: Remove this field.
-    rct_tile_element_properties properties;
+    union
+    {
+        uint8_t pad_04[4];
+        // TODO: Remove this field.
+        rct_tile_element_properties properties;
+    };
 
     template<typename TType, TileElementType TClass> TType* as() const
     {
@@ -187,6 +163,8 @@ public:
     {
         return as<CorruptElement, TileElementType::Corrupt>();
     }
+
+    void ClearAs(uint8_t newType);
 };
 assert_struct_size(rct_tile_element, 8);
 
@@ -230,7 +208,76 @@ assert_struct_size(PathElement, 8);
 
 struct TrackElement : TileElementBase
 {
-    rct_tile_element_track_properties temp;
+    uint8_t trackType; // 4
+    union
+    {
+        struct
+        {
+            // The lower 4 bits are the track sequence.
+            // The upper 4 bits are either station bits or on-ride photo bits.
+            //
+            // Station bits:
+            // - Bit 8 marks green light
+            // - Bit 5-7 are station index.
+            //
+            // On-ride photo bits:
+            // - Bits 7 and 8 are never set
+            // - Bits 5 and 6 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
+            // - If any of the bits 5-8 are set, the game counts it as a photo being taken.
+            uint8_t sequence; // 5.
+            uint8_t colour;   // 6
+        };
+        uint16_t mazeEntry; // 5
+    };
+    uint8_t rideIndex; // 7
+
+public:
+    uint8_t GetTrackType() const;
+    void SetTrackType(uint8_t newEntryIndex);
+
+    uint8_t GetSequenceIndex() const;
+    void SetSequenceIndex(uint8_t newSequenceIndex);
+
+    uint8_t GetRideIndex() const;
+    void SetRideIndex(uint8_t newRideIndex);
+
+    uint8_t GetColourScheme() const;
+    void SetColourScheme(uint8_t newColourScheme);
+
+    uint8_t GetStationIndex() const;
+    void SetStationIndex(uint8_t newStationIndex);
+
+    bool HasChain() const;
+    void SetHasChain(bool on);
+
+    bool HasCableLift() const;
+    void SetHasCableLift(bool on);
+
+    bool IsInverted() const;
+    void SetInverted(bool inverted);
+
+    uint8_t GetBrakeBoosterSpeed() const;
+    void SetBrakeBoosterSpeed(uint8_t speed);
+
+    uint8_t HasGreenLight() const;
+    void SetHasGreenLight(uint8_t greenLight);
+
+    uint8_t GetSeatRotation() const;
+    void SetSeatRotation(uint8_t newSeatRotation);
+
+    uint16_t GetMazeEntry() const;
+    void SetMazeEntry(uint16_t newMazeEntry);
+    void MazeEntryAdd(uint16_t addVal);
+    void MazeEntrySubtract(uint16_t subVal);
+
+    bool IsTakingPhoto() const;
+    void SetPhotoTimeout();
+    void DecrementPhotoTimeout();
+
+    // Used in RCT1, will be reintroduced at some point.
+    // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
+    uint8_t GetDoorAState() const;
+    uint8_t GetDoorBState() const;
 };
 assert_struct_size(TrackElement, 8);
 
@@ -328,6 +375,10 @@ assert_struct_size(WallElement, 8);
 struct EntranceElement : TileElementBase
 {
     rct_tile_element_entrance_properties temp;
+
+public:
+    uint8_t GetStationIndex() const;
+    void SetStationIndex(uint8_t stationIndex);
 };
 assert_struct_size(EntranceElement, 8);
 

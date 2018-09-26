@@ -301,7 +301,7 @@ static uint8_t footpath_element_dest_in_dir(
             {
                 if (loc.z != tileElement->base_height)
                     continue;
-                int32_t rideIndex = track_element_get_ride_index(tileElement);
+                int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                 Ride* ride = get_ride(rideIndex);
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
                 {
@@ -655,7 +655,7 @@ static void peep_pathfind_heuristic_search(
                     continue;
                 /* For peeps heading for a shop, the goal is the shop
                  * tile. */
-                rideIndex = track_element_get_ride_index(tileElement);
+                rideIndex = tileElement->AsTrack()->GetRideIndex();
                 Ride* ride = get_ride(rideIndex);
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
                 {

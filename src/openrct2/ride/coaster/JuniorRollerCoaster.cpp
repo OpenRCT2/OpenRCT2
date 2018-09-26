@@ -1655,7 +1655,7 @@ void junior_rc_paint_station(
         sub_98197C(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height);
 
         // height += 2 (height)
-        if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
         {
             imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
         }
@@ -1677,7 +1677,7 @@ void junior_rc_paint_station(
         sub_98197C(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height);
 
         // height += 2 (height)
-        if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
         {
             imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
         }
@@ -2673,7 +2673,7 @@ static void junior_rc_left_quarter_turn_5_tiles_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -2684,7 +2684,7 @@ static void junior_rc_right_quarter_turn_5_tiles_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -3238,7 +3238,7 @@ static void junior_rc_right_quarter_turn_3_tiles_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -3249,7 +3249,7 @@ static void junior_rc_right_quarter_turn_3_tiles_25_deg_down_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4432,7 +4432,7 @@ static void junior_rc_diag_flat_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_flat(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4443,7 +4443,7 @@ static void junior_rc_diag_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4454,7 +4454,7 @@ static void junior_rc_diag_flat_to_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_flat_to_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4464,7 +4464,7 @@ static void junior_rc_diag_flat_to_60_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_flat_to_60_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4475,7 +4475,7 @@ static void junior_rc_diag_25_deg_up_to_flat_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_25_deg_up_to_flat(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4485,7 +4485,7 @@ static void junior_rc_diag_60_deg_up_to_flat_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_60_deg_up_to_flat(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4496,7 +4496,7 @@ static void junior_rc_diag_25_deg_down_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_25_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4507,7 +4507,7 @@ static void junior_rc_diag_flat_to_25_deg_down_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_flat_to_25_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4517,7 +4517,7 @@ static void junior_rc_diag_flat_to_60_deg_down_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_flat_to_60_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4528,7 +4528,7 @@ static void junior_rc_diag_25_deg_down_to_flat_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_25_deg_down_to_flat(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -4538,7 +4538,7 @@ static void junior_rc_diag_60_deg_down_to_flat_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_60_deg_down_to_flat(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5000,7 +5000,7 @@ static void junior_rc_60_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_60_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5096,7 +5096,7 @@ static void junior_rc_25_deg_up_to_60_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_25_deg_up_to_60_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5175,7 +5175,7 @@ static void junior_rc_60_deg_up_to_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_60_deg_up_to_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5336,7 +5336,7 @@ static void junior_rc_diag_60_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_60_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5346,7 +5346,7 @@ static void junior_rc_diag_60_deg_down_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_60_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5356,7 +5356,7 @@ static void junior_rc_diag_25_deg_up_to_60_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5366,7 +5366,7 @@ static void junior_rc_diag_60_deg_up_to_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5376,7 +5376,7 @@ static void junior_rc_diag_25_deg_down_to_60_deg_down_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5386,7 +5386,7 @@ static void junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5428,7 +5428,7 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
 
-    bool isChained = tileElement->type & (1 << 7);
+    bool isChained = tileElement->AsTrack()->HasChain();
 
     image_id |= junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][0];
 
@@ -5499,7 +5499,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
 
-    bool isChained = tileElement->type & (1 << 7);
+    bool isChained = tileElement->AsTrack()->HasChain();
 
     image_id |= junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][0];
 
@@ -5568,7 +5568,7 @@ static void junior_rc_flat_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_flat(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5587,7 +5587,7 @@ static void junior_rc_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5598,7 +5598,7 @@ static void junior_rc_flat_to_25_deg_up_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_flat_to_25_deg_up(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
@@ -5609,7 +5609,7 @@ static void junior_rc_25_deg_up_to_flat_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    bool isChained = track_element_is_lift_hill(tileElement);
+    bool isChained = tileElement->AsTrack()->HasChain();
     junior_rc_paint_track_25_deg_up_to_flat(
         session, rideIndex, trackSequence, direction, height, tileElement,
         isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);

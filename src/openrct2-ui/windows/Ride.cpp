@@ -1470,7 +1470,7 @@ static void window_ride_update_overall_view(uint8_t ride_index)
         if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (track_element_get_ride_index(it.element) != ride_index)
+        if (it.element->AsTrack()->GetRideIndex() != ride_index)
             continue;
 
         int32_t x = it.x * 32;
@@ -1634,15 +1634,24 @@ static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIn
 
 rct_window* window_ride_open_track(rct_tile_element* tileElement)
 {
-    int32_t rideIndex = track_element_get_ride_index(tileElement);
-    if ((tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
-        || (TrackSequenceProperties[track_element_get_type(tileElement)][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    // This function *should* only be called with an EntranceElement or TrackElement.
+    assert(tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK);
+
+    if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
+        int32_t rideIndex = tileElement->properties.entrance.ride_index;
         // Open ride window in station view
-        return window_ride_open_station(rideIndex, tile_element_get_station(tileElement));
+        return window_ride_open_station(rideIndex, tileElement->AsEntrance()->GetStationIndex());
+    }
+    else if (TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+    {
+        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+        // Open ride window in station view
+        return window_ride_open_station(rideIndex, tileElement->AsTrack()->GetStationIndex());
     }
     else
     {
+        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         // Open ride window in overview mode.
         return window_ride_main_open(rideIndex);
     }
@@ -4261,14 +4270,14 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
 
     if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
         return;
-    if (track_element_get_ride_index(tileElement) != w->number)
+    if (tileElement->AsTrack()->GetRideIndex() != w->number)
         return;
-    if (track_element_get_colour_scheme(tileElement) == newColourScheme)
+    if (tileElement->AsTrack()->GetColourScheme() == newColourScheme)
         return;
 
     z = tileElement->base_height * 8;
     direction = tileElement->GetDirection();
-    sub_6C683D(&x, &y, &z, direction, track_element_get_type(tileElement), newColourScheme, nullptr, 4);
+    sub_6C683D(&x, &y, &z, direction, tileElement->AsTrack()->GetTrackType(), newColourScheme, nullptr, 4);
 }
 
 /**

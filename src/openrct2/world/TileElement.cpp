@@ -130,7 +130,7 @@ uint8_t tile_element_get_ride_index(const rct_tile_element* tileElement)
     switch (tileElement->GetType())
     {
         case TILE_ELEMENT_TYPE_TRACK:
-            return track_element_get_ride_index(tileElement);
+            return tileElement->AsTrack()->GetRideIndex();
         case TILE_ELEMENT_TYPE_ENTRANCE:
             return tileElement->properties.entrance.ride_index;
         case TILE_ELEMENT_TYPE_PATH:
@@ -138,4 +138,13 @@ uint8_t tile_element_get_ride_index(const rct_tile_element* tileElement)
         default:
             return 0xFF;
     }
+}
+
+void rct_tile_element::ClearAs(uint8_t newType)
+{
+    type = newType;
+    flags = 0;
+    base_height = 2;
+    clearance_height = 2;
+    memset(pad_04, 0, sizeof(pad_04));
 }

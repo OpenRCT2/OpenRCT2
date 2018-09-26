@@ -24,7 +24,7 @@ static void bobsleigh_rc_track_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -106,7 +106,7 @@ static void bobsleigh_rc_track_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -192,7 +192,7 @@ static void bobsleigh_rc_track_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {
@@ -278,7 +278,7 @@ static void bobsleigh_rc_track_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const rct_tile_element* tileElement)
 {
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         switch (direction)
         {

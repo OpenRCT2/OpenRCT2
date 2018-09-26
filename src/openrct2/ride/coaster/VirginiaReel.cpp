@@ -229,7 +229,7 @@ static void paint_virginia_reel_track_flat(
     const rct_tile_element* tileElement)
 {
     const uint32_t* sprites = virginia_reel_track_pieces_flat;
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         sprites = virginia_reel_track_pieces_flat_lift_hill;
     }
@@ -258,7 +258,7 @@ static void paint_virginia_reel_track_25_deg_up(
     const rct_tile_element* tileElement)
 {
     const uint32_t* sprites = virginia_reel_track_pieces_25_deg_up;
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         sprites = virginia_reel_track_pieces_25_deg_up_lift_hill;
     }
@@ -310,7 +310,7 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(
     const rct_tile_element* tileElement)
 {
     const uint32_t* sprites = virginia_reel_track_pieces_flat_to_25_deg_up;
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         sprites = virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill;
     }
@@ -357,7 +357,7 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(
     const rct_tile_element* tileElement)
 {
     const uint32_t* sprites = virginia_reel_track_pieces_25_deg_up_to_flat;
-    if (track_element_is_lift_hill(tileElement))
+    if (tileElement->AsTrack()->HasChain())
     {
         sprites = virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill;
     }

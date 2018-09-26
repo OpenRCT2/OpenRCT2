@@ -297,7 +297,11 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             set_map_tooltip_format_arg(
                 10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
 
-            stationIndex = tile_element_get_station(tileElement);
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+                stationIndex = tileElement->AsEntrance()->GetStationIndex();
+            else
+                stationIndex = tileElement->AsTrack()->GetStationIndex();
+
             for (i = stationIndex; i >= 0; i--)
                 if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
                     stationIndex--;

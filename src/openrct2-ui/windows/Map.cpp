@@ -1591,7 +1591,7 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
                     break;
                 // fall-through
             case TILE_ELEMENT_TYPE_TRACK:
-                ride = get_ride(track_element_get_ride_index(tileElement));
+                ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                 colourA = RideKeyColours[RideColourKey[ride->type]];
                 break;
         }
