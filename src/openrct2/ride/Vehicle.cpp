@@ -3126,6 +3126,11 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle)
 
     if (tileElement->clearance_height == (tileElement + 1)->base_height)
     {
+        if ((tileElement + 1)->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        {
+            return true;
+        }
+
         if ((tileElement + 1)->AsTrack()->GetTrackType() == TRACK_ELEM_TOWER_SECTION)
         {
             return false;
@@ -3138,6 +3143,11 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle)
     }
 
     if (tileElement->clearance_height != (tileElement + 2)->base_height)
+    {
+        return true;
+    }
+
+    if ((tileElement + 2)->GetType() != TILE_ELEMENT_TYPE_TRACK)
     {
         return true;
     }
