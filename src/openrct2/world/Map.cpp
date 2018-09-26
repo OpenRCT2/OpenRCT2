@@ -3848,7 +3848,7 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
         case TILE_ELEMENT_TYPE_ENTRANCE:
         {
             int32_t rotation = element->GetDirectionWithOffset(1);
-            switch (element->properties.entrance.index & 0x0F)
+            switch (element->AsEntrance()->GetSequenceIndex())
             {
                 case 1:
                     x += CoordsDirectionDelta[rotation].x;

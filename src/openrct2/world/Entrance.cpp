@@ -268,7 +268,7 @@ static money32 RideEntranceExitPlace(
             tileElement->SetDirection(direction);
             tileElement->clearance_height = clear_z;
             tileElement->AsEntrance()->SetEntranceType(isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
-            tileElement->properties.entrance.index = stationNum << 4;
+            tileElement->AsEntrance()->SetStationIndex(stationNum);
             tileElement->AsEntrance()->SetRideIndex(rideIndex);
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -660,4 +660,15 @@ uint8_t EntranceElement::GetRideIndex() const
 void EntranceElement::SetRideIndex(uint8_t newRideIndex)
 {
     rideIndex = newRideIndex;
+}
+
+uint8_t EntranceElement::GetSequenceIndex() const
+{
+    return index & 0xF;
+}
+
+void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
+{
+    index &= ~0xF;
+    index |= (newSequenceIndex & 0xF);
 }

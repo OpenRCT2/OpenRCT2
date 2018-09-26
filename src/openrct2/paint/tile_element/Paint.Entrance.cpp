@@ -231,7 +231,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
 
     // Index to which part of the entrance
     // Middle, left, right
-    uint8_t part_index = tile_element->properties.entrance.index & 0xF;
+    uint8_t part_index = tile_element->AsEntrance()->GetSequenceIndex();
     rct_footpath_entry* path_entry = nullptr;
 
     // The left and right of the park entrance often have this set to 127.

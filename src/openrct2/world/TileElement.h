@@ -389,6 +389,9 @@ public:
 
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t stationIndex);
+
+    uint8_t GetSequenceIndex() const;
+    void SetSequenceIndex(uint8_t newSequenceIndex);
 };
 assert_struct_size(EntranceElement, 8);
 

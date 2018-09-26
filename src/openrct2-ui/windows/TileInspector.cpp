@@ -1933,8 +1933,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 }
                 else
                 {
-                    int16_t rideEntranceIndex = (tileElement->properties.entrance.index & 0x30)
-                        >> 4; // TODO: use mask or function
+                    int16_t rideEntranceIndex = tileElement->AsEntrance()->GetStationIndex();
                     if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     {
                         // Ride entrance ID
@@ -1952,7 +1951,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
                     // Entrance part
-                    rct_string_id entrancePart = ParkEntrancePartStringIds[tileElement->properties.entrance.index & 0x0F];
+                    rct_string_id entrancePart = ParkEntrancePartStringIds[tileElement->AsEntrance()->GetSequenceIndex()];
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_PART, &entrancePart, COLOUR_DARK_GREEN, x, y + 22);
                 }
                 else

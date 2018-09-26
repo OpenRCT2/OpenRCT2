@@ -1880,7 +1880,7 @@ static int32_t ride_modify_entrance_or_exit(rct_tile_element* tileElement, int32
     if (entranceType != ENTRANCE_TYPE_RIDE_ENTRANCE && entranceType != ENTRANCE_TYPE_RIDE_EXIT)
         return 0;
 
-    int32_t bl = (tileElement->properties.entrance.index & 0x70) >> 4;
+    int32_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
 
     // Get or create construction window for ride
     constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -1905,7 +1905,7 @@ static int32_t ride_modify_entrance_or_exit(rct_tile_element* tileElement, int32
             TOOL_CROSSHAIR);
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
-        gRideEntranceExitPlaceStationIndex = bl;
+        gRideEntranceExitPlaceStationIndex = stationIndex;
         input_set_flag(INPUT_FLAG_6, true);
         if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
         {
@@ -1921,7 +1921,7 @@ static int32_t ride_modify_entrance_or_exit(rct_tile_element* tileElement, int32
         // Remove entrance / exit
         game_do_command(
             x, (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY), y, rideIndex,
-            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, bl, 0);
+            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, stationIndex, 0);
         gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                       : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
         gRideEntranceExitPlaceType = entranceType;
@@ -8205,8 +8205,7 @@ void sub_6CB945(int32_t rideIndex)
                     ride_set_entrance_location(ride, stationId, entranceLocation);
                 }
 
-                tileElement->properties.entrance.index &= 0x8F;
-                tileElement->properties.entrance.index |= stationId << 4;
+                tileElement->AsEntrance()->SetStationIndex(stationId);
                 shouldRemove = false;
             } while (!(trackElement++)->IsLastForTile());
 

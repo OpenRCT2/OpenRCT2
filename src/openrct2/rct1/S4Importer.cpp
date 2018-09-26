@@ -2710,7 +2710,7 @@ private:
                 continue;
             if (element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
-            if ((element->properties.entrance.index & 0x0F) != 0)
+            if ((element->AsEntrance()->GetSequenceIndex()) != 0)
                 continue;
 
             gParkEntrances[entranceIndex].x = it.x * 32;

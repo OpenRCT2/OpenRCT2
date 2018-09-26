@@ -242,7 +242,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
 
                 // Update ride's known entrance/exit rotation
                 Ride* ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                uint8_t stationIndex = tileElement->properties.entrance.index;
+                uint8_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
                 auto entrance = ride_get_entrance_location(ride, stationIndex);
                 auto exit = ride_get_exit_location(ride, stationIndex);
                 uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
@@ -442,7 +442,7 @@ int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elem
             {
                 // Update the ride's known entrance or exit height
                 Ride* ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-                uint8_t entranceIndex = tileElement->properties.entrance.index;
+                uint8_t entranceIndex = tileElement->AsEntrance()->GetStationIndex();
                 auto entrance = ride_get_entrance_location(ride, entranceIndex);
                 auto exit = ride_get_exit_location(ride, entranceIndex);
                 uint8_t z = tileElement->base_height;
@@ -671,7 +671,7 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        uint8_t stationIndex = entranceElement->properties.entrance.index >> 6;
+        uint8_t stationIndex = entranceElement->AsEntrance()->GetStationIndex();
 
         switch (entranceElement->AsEntrance()->GetEntranceType())
         {

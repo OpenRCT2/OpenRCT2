@@ -248,7 +248,7 @@ static bool map_animation_invalidate_park_entrance(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.index & 0x0F)
+        if (tileElement->AsEntrance()->GetSequenceIndex())
             continue;
 
         baseZ = tileElement->base_height * 8;

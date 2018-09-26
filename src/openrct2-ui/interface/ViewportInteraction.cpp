@@ -523,7 +523,7 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElem
 void viewport_interaction_remove_park_entrance(rct_tile_element* tileElement, int32_t x, int32_t y)
 {
     int32_t rotation = tileElement->GetDirectionWithOffset(1);
-    switch (tileElement->properties.entrance.index & 0x0F)
+    switch (tileElement->AsEntrance()->GetSequenceIndex())
     {
         case 1:
             x += CoordsDirectionDelta[rotation].x;

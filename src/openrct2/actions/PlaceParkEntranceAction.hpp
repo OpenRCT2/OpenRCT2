@@ -192,7 +192,7 @@ public:
 
             newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             newElement->SetDirection(_direction);
-            newElement->properties.entrance.index = index;
+            newElement->AsEntrance()->SetSequenceIndex(index);
             newElement->AsEntrance()->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
             newElement->properties.entrance.path_type = gFootpathSelectedId;
 

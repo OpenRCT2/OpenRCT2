@@ -99,7 +99,7 @@ static constexpr const uint8_t connected_path_count[] = {
 int32_t entrance_get_directions(const rct_tile_element* tileElement)
 {
     uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
-    uint8_t sequence = tileElement->properties.entrance.index & 0x0F;
+    uint8_t sequence = tileElement->AsEntrance()->GetSequenceIndex();
     return EntranceDirections[(entranceType * 8) + sequence];
 }
 
@@ -218,7 +218,7 @@ static money32 footpath_element_insert(
 
     entranceElement = map_get_park_entrance_element_at(x, y, z, false);
     // Make sure the entrance part is the middle
-    if (entranceElement != nullptr && (entranceElement->properties.entrance.index & 0x0F) == 0)
+    if (entranceElement != nullptr && (entranceElement->AsEntrance()->GetSequenceIndex()) == 0)
     {
         entrancePath = true;
         // Make the price the same as replacing a path
@@ -589,7 +589,7 @@ static money32 footpath_place_from_track(
 
     entranceElement = map_get_park_entrance_element_at(x, y, z, false);
     // Make sure the entrance part is the middle
-    if (entranceElement != nullptr && (entranceElement->properties.entrance.index & 0x0F) == 0)
+    if (entranceElement != nullptr && (entranceElement->AsEntrance()->GetSequenceIndex()) == 0)
     {
         entrancePath = true;
         // Make the price the same as replacing a path
@@ -1397,7 +1397,7 @@ static void loc_6A6D7E(
                             {
                                 neighbour_list_push(
                                     neighbourList, 8, direction, tileElement->AsEntrance()->GetRideIndex(),
-                                    tileElement->properties.entrance.index);
+                                    tileElement->AsEntrance()->GetStationIndex());
                             }
                             else
                             {
@@ -1427,7 +1427,7 @@ static void loc_6A6D7E(
                 {
                     neighbour_list_push(
                         neighbourList, 4, direction, tileElement->properties.path.ride_index,
-                        tileElement->properties.entrance.index);
+                        tileElement->properties.path.additions);
                 }
                 else
                 {
@@ -1438,7 +1438,7 @@ static void loc_6A6D7E(
                         {
                             neighbour_list_push(
                                 neighbourList, 3, direction, tileElement->properties.path.ride_index,
-                                tileElement->properties.entrance.index);
+                                tileElement->properties.path.additions);
                         }
                     }
                 }
