@@ -633,11 +633,11 @@ void fix_park_entrance_locations(void)
 
 uint8_t EntranceElement::GetStationIndex() const
 {
-    return (temp.index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return (index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
 void EntranceElement::SetStationIndex(uint8_t stationIndex)
 {
-    temp.index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    temp.index |= (stationIndex << 4);
+    index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    index |= (stationIndex << 4);
 }

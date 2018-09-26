@@ -374,7 +374,11 @@ assert_struct_size(WallElement, 8);
 
 struct EntranceElement : TileElementBase
 {
-    rct_tile_element_entrance_properties temp;
+private:
+    uint8_t entranceType; // 4
+    uint8_t index;        // 5
+    uint8_t pathType;     // 6
+    uint8_t rideIndex;    // 7
 
 public:
     uint8_t GetStationIndex() const;
