@@ -86,7 +86,7 @@ static int32_t banner_clear_path_edges(rct_tile_element* tileElement, int32_t ed
     {
         do
         {
-            edges &= bannerElement->properties.banner.flags;
+            edges &= bannerElement->AsBanner()->GetAllowedEdges();
         } while ((bannerElement = get_banner_on_path(bannerElement)) != nullptr);
     }
     return edges;

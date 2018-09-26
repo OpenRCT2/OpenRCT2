@@ -50,7 +50,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
         return;
     }
 
-    direction += tile_element->properties.banner.position;
+    direction += tile_element->AsBanner()->GetPosition();
     direction &= 3;
 
     boundBoxOffsetX = BannerBoundBoxes[direction][0].x;

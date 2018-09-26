@@ -28,19 +28,9 @@ struct rct_tile_element_path_properties
 };
 assert_struct_size(rct_tile_element_path_properties, 4);
 
-struct rct_tile_element_banner_properties
-{
-    BannerIndex index; // 4
-    uint8_t position;  // 5
-    uint8_t flags;     // 6
-    uint8_t unused;    // 7
-};
-assert_struct_size(rct_tile_element_banner_properties, 4);
-
 union rct_tile_element_properties
 {
     rct_tile_element_path_properties path;
-    rct_tile_element_banner_properties banner;
 };
 assert_struct_size(rct_tile_element_properties, 4);
 
@@ -393,15 +383,22 @@ struct BannerElement : TileElementBase
 {
 private:
     BannerIndex index; // 4
+    uint8_t position;  // 5
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t position;  // 5
     uint8_t flags;     // 6
     uint8_t unused;    // 7
 #pragma clang diagnostic pop
 public:
     BannerIndex GetIndex() const;
     void SetIndex(BannerIndex newIndex);
+
+    uint8_t GetPosition() const;
+    void SetPosition(uint8_t newPosition);
+
+    uint8_t GetAllowedEdges() const;
+    void SetAllowedEdges(uint8_t newEdges);
+    void ResetAllowedEdges();
 };
 assert_struct_size(BannerElement, 8);
 

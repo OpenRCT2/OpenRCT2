@@ -511,7 +511,7 @@ void remove_banners_at_element(int32_t x, int32_t y, rct_tile_element* tileEleme
             continue;
 
         game_do_command(
-            x, 1, y, tileElement->base_height | tileElement->properties.banner.position << 8, GAME_COMMAND_REMOVE_BANNER, 0, 0);
+            x, 1, y, tileElement->base_height | tileElement->AsBanner()->GetPosition() << 8, GAME_COMMAND_REMOVE_BANNER, 0, 0);
         tileElement--;
     }
 }
@@ -1881,7 +1881,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
                         break;
                     if (tileElement[i].type != TILE_ELEMENT_TYPE_BANNER)
                         break;
-                    edges &= tileElement[i].properties.banner.flags;
+                    edges &= tileElement[i].AsBanner()->GetAllowedEdges();
                 }
             }
             if (tileElement[2].type == TILE_ELEMENT_TYPE_BANNER && tileElement[1].type != TILE_ELEMENT_TYPE_PATH)
@@ -1892,7 +1892,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
                         break;
                     if (tileElement[i].type != TILE_ELEMENT_TYPE_BANNER)
                         break;
-                    edges &= tileElement[i].properties.banner.flags;
+                    edges &= tileElement[i].AsBanner()->GetAllowedEdges();
                 }
             }
         }

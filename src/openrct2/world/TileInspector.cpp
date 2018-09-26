@@ -267,12 +267,10 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
             {
-                uint8_t unblockedEdges = tileElement->properties.banner.flags & 0xF;
+                uint8_t unblockedEdges = tileElement->AsBanner()->GetAllowedEdges();
                 unblockedEdges = (unblockedEdges << 1 | unblockedEdges >> 3) & 0xF;
-                tileElement->properties.banner.flags &= ~0xF;
-                tileElement->properties.banner.flags |= unblockedEdges;
-                tileElement->properties.banner.position++;
-                tileElement->properties.banner.position &= 3;
+                tileElement->AsBanner()->SetAllowedEdges(unblockedEdges);
+                tileElement->AsBanner()->SetPosition((tileElement->AsBanner()->GetPosition() + 1) & 3);
                 break;
             }
         }
@@ -1031,14 +1029,16 @@ int32_t tile_inspector_scenery_set_quarter_collision(
 
 int32_t tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags)
 {
-    rct_tile_element* const bannerElement = map_get_nth_element_at(x, y, elementIndex);
+    BannerElement* const bannerElement = map_get_nth_element_at(x, y, elementIndex)->AsBanner();
 
-    if (bannerElement == nullptr || bannerElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+    if (bannerElement == nullptr)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        bannerElement->properties.banner.flags ^= 1 << edgeIndex;
+        uint8_t edges = bannerElement->GetAllowedEdges();
+        edges ^= (1 << edgeIndex);
+        bannerElement->SetAllowedEdges(edges);
 
         if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
         {

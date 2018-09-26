@@ -1658,16 +1658,16 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_BANNER_CHECK_BLOCK_NW].bottom = GBBB(propertiesAnchor, 1);
             widget_set_checkbox_value(
                 w, WIDX_BANNER_CHECK_BLOCK_NE,
-                !(tileElement->properties.banner.flags & (1 << ((0 - get_current_rotation()) & 3))));
+                !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((0 - get_current_rotation()) & 3))));
             widget_set_checkbox_value(
                 w, WIDX_BANNER_CHECK_BLOCK_SE,
-                !(tileElement->properties.banner.flags & (1 << ((1 - get_current_rotation()) & 3))));
+                !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((1 - get_current_rotation()) & 3))));
             widget_set_checkbox_value(
                 w, WIDX_BANNER_CHECK_BLOCK_SW,
-                !(tileElement->properties.banner.flags & (1 << ((2 - get_current_rotation()) & 3))));
+                !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((2 - get_current_rotation()) & 3))));
             widget_set_checkbox_value(
                 w, WIDX_BANNER_CHECK_BLOCK_NW,
-                !(tileElement->properties.banner.flags & (1 << ((3 - get_current_rotation()) & 3))));
+                !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((3 - get_current_rotation()) & 3))));
             break;
         case TILE_INSPECTOR_PAGE_CORRUPT:
             w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;

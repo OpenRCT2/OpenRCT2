@@ -321,7 +321,7 @@ rct_tile_element* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uin
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (tileElement->properties.banner.position != position)
+        if (tileElement->AsBanner()->GetPosition() != position)
             continue;
 
         return tileElement;
@@ -3880,7 +3880,7 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
         case TILE_ELEMENT_TYPE_BANNER:
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
             game_do_command(
-                x, GAME_COMMAND_FLAG_APPLY, y, (element->base_height) | ((element->properties.banner.position & 3) << 8),
+                x, GAME_COMMAND_FLAG_APPLY, y, (element->base_height) | ((element->AsBanner()->GetPosition() & 3) << 8),
                 GAME_COMMAND_REMOVE_BANNER, 0, 0);
             break;
         default:

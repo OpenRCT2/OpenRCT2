@@ -140,7 +140,7 @@ static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
                 continue;
 
-            if (tileElement->properties.banner.position != direction)
+            if (tileElement->AsBanner()->GetPosition() != direction)
                 continue;
 
             found = true;
@@ -247,11 +247,10 @@ static money32 BannerPlace(
         gBanners[*bannerIndex].colour = colour;
         gBanners[*bannerIndex].x = x / 32;
         gBanners[*bannerIndex].y = y / 32;
-        newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
+        newTileElement->ClearAs(TILE_ELEMENT_TYPE_BANNER);
         newTileElement->clearance_height = newTileElement->base_height + 2;
-        newTileElement->properties.banner.position = direction;
-        newTileElement->properties.banner.flags = 0xFF;
-        newTileElement->properties.banner.unused = 0;
+        newTileElement->AsBanner()->SetPosition(direction);
+        newTileElement->AsBanner()->ResetAllowedEdges();
         newTileElement->AsBanner()->SetIndex(*bannerIndex);
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
@@ -300,11 +299,12 @@ static money32 BannerSetStyle(BannerIndex bannerIndex, uint8_t colour, uint8_t t
     banner->text_colour = textColour;
     banner->flags = bannerFlags;
 
-    tileElement->properties.banner.flags = 0xFF;
+    uint8_t allowedEdges = 0xF;
     if (banner->flags & BANNER_FLAG_NO_ENTRY)
     {
-        tileElement->properties.banner.flags &= ~(1 << tileElement->properties.banner.position);
+        allowedEdges &= ~(1 << tileElement->AsBanner()->GetPosition());
     }
+    tileElement->AsBanner()->SetAllowedEdges(allowedEdges);
 
     int32_t colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
 
@@ -578,4 +578,30 @@ BannerIndex BannerElement::GetIndex() const
 void BannerElement::SetIndex(BannerIndex newIndex)
 {
     index = newIndex;
+}
+
+uint8_t BannerElement::GetPosition() const
+{
+    return position;
+}
+
+void BannerElement::SetPosition(uint8_t newPosition)
+{
+    position = newPosition;
+}
+
+uint8_t BannerElement::GetAllowedEdges() const
+{
+    return flags & 0b00001111;
+}
+
+void BannerElement::SetAllowedEdges(uint8_t newEdges)
+{
+    flags &= ~ 0b00001111;
+    flags |= (newEdges & 0b00001111);
+}
+
+void BannerElement::ResetAllowedEdges()
+{
+    flags |= 0b00001111;
 }

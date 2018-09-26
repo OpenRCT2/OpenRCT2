@@ -187,7 +187,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_BANNER_DEMOLISH:
             game_do_command(
-                x, 1, y, tile_element->base_height | (tile_element->properties.banner.position << 8),
+                x, 1, y, tile_element->base_height | (tile_element->AsBanner()->GetPosition() << 8),
                 GAME_COMMAND_REMOVE_BANNER, 0, 0);
             break;
         case WIDX_BANNER_TEXT:
