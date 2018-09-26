@@ -243,7 +243,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
             {
                 rct_string_id stringId;
-                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
                 {
                     if (ride->num_stations > 1)
                     {

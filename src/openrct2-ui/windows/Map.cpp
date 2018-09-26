@@ -1587,7 +1587,7 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
                 colourA = MAP_COLOUR(PALETTE_INDEX_14); // lighter grey
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 // fall-through
             case TILE_ELEMENT_TYPE_TRACK:

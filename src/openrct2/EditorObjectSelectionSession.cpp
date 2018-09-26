@@ -148,7 +148,7 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(OBJECT_TYPE_SMALL_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (iter.element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 // Skip if not the middle part
                 if (iter.element->properties.entrance.index != 0)

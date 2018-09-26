@@ -381,6 +381,9 @@ private:
     uint8_t rideIndex;    // 7
 
 public:
+    uint8_t GetEntranceType() const;
+    void SetEntranceType(uint8_t newType);
+
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t stationIndex);
 };

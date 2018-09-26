@@ -114,7 +114,7 @@ static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
 
         ride = get_ride(tileElement->properties.entrance.ride_index);
@@ -246,7 +246,7 @@ static bool map_animation_invalidate_park_entrance(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
             continue;
         if (tileElement->properties.entrance.index & 0x0F)
             continue;

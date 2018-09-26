@@ -1608,7 +1608,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].top = GBBT(propertiesAnchor, 1);
             w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].bottom = GBBB(propertiesAnchor, 1);
             widget_set_enabled(
-                w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE, tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE);
+                w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE, tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE);
             break;
         case TILE_INSPECTOR_PAGE_WALL:
         {
@@ -1918,10 +1918,10 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Entrance type
-                rct_string_id entranceType = EntranceTypeStringIds[tileElement->properties.entrance.type];
+                rct_string_id entranceType = EntranceTypeStringIds[tileElement->AsEntrance()->GetEntranceType()];
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_TYPE, &entranceType, COLOUR_DARK_GREEN, x, y);
 
-                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
                     // Park entrance ID
                     int32_t middleX = windowTileInspectorTileX << 5;
@@ -1935,7 +1935,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     int16_t rideEntranceIndex = (tileElement->properties.entrance.index & 0x30)
                         >> 4; // TODO: use mask or function
-                    if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                    if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     {
                         // Ride entrance ID
                         gfx_draw_string_left(
@@ -1949,7 +1949,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     }
                 }
 
-                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
                     // Entrance part
                     rct_string_id entrancePart = ParkEntrancePartStringIds[tileElement->properties.entrance.index & 0x0F];

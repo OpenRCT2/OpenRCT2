@@ -2536,7 +2536,7 @@ private:
                     break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
-                    if (tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+                    if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     {
                         uint8_t pathType = tileElement->properties.entrance.path_type;
                         if (pathType == 0)
@@ -2708,7 +2708,7 @@ private:
 
             if (element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
-            if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
             if ((element->properties.entrance.index & 0x0F) != 0)
                 continue;

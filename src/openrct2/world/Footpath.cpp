@@ -98,7 +98,7 @@ static constexpr const uint8_t connected_path_count[] = {
 
 int32_t entrance_get_directions(const rct_tile_element* tileElement)
 {
-    uint8_t entranceType = tileElement->properties.entrance.type;
+    uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
     uint8_t sequence = tileElement->properties.entrance.index & 0x0F;
     return EntranceDirections[(entranceType * 8) + sequence];
 }
@@ -1401,7 +1401,7 @@ static void loc_6A6D7E(
                             }
                             else
                             {
-                                if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+                                if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                                 {
                                     footpath_queue_chain_push(tileElement->properties.entrance.ride_index);
                                 }
@@ -1753,7 +1753,7 @@ void footpath_update_queue_chains()
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                     continue;
-                if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+                if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                     continue;
                 if (tileElement->properties.entrance.ride_index != rideIndex)
                     continue;
@@ -2336,7 +2336,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
             }
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
+            if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
                 footpath_queue_chain_push(tileElement->properties.entrance.ride_index);
                 footpath_chain_ride_queue(255, 0, x, y, tileElement, tileElement->GetDirectionWithOffset(2));

@@ -267,7 +267,7 @@ static money32 RideEntranceExitPlace(
             tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             tileElement->SetDirection(direction);
             tileElement->clearance_height = clear_z;
-            tileElement->properties.entrance.type = isExit;
+            tileElement->AsEntrance()->SetEntranceType(isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
             tileElement->properties.entrance.index = stationNum << 4;
             tileElement->properties.entrance.ride_index = rideIndex;
 
@@ -390,7 +390,7 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, u
         maze_entrance_hedge_replacement(x, y, tileElement);
         footpath_remove_edges_at(x, y, tileElement);
 
-        bool isExit = tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
+        bool isExit = tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
         tile_element_remove(tileElement);
 
@@ -640,4 +640,14 @@ void EntranceElement::SetStationIndex(uint8_t stationIndex)
 {
     index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
     index |= (stationIndex << 4);
+}
+
+uint8_t EntranceElement::GetEntranceType() const
+{
+    return entranceType;
+}
+
+void EntranceElement::SetEntranceType(uint8_t newType)
+{
+    entranceType = newType;
 }

@@ -288,7 +288,7 @@ private:
 
             if (tile_type == TILE_ELEMENT_TYPE_ENTRANCE)
             {
-                uint8_t type = entrance_element_get_type(it.element);
+                uint8_t type = it.element->AsEntrance()->GetEntranceType();
                 if (type == ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 

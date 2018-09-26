@@ -185,7 +185,7 @@ void update_park_fences(const CoordsXY coords)
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
             if (!(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))

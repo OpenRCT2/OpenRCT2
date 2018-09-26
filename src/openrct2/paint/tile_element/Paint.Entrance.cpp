@@ -30,7 +30,7 @@ static uint32_t _unk9E32BC;
 static void ride_entrance_exit_paint(
     paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element)
 {
-    uint8_t is_exit = tile_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
+    uint8_t is_exit = tile_element->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
     if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
@@ -345,7 +345,7 @@ void entrance_paint(paint_session* session, uint8_t direction, int32_t height, c
         }
     }
 
-    switch (tile_element->properties.entrance.type)
+    switch (tile_element->AsEntrance()->GetEntranceType())
     {
         case ENTRANCE_TYPE_RIDE_ENTRANCE:
         case ENTRANCE_TYPE_RIDE_EXIT:

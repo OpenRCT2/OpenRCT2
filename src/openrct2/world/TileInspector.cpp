@@ -245,7 +245,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
                 uint8_t stationIndex = tileElement->properties.entrance.index;
                 auto entrance = ride_get_entrance_location(ride, stationIndex);
                 auto exit = ride_get_exit_location(ride, stationIndex);
-                uint8_t entranceType = entrance_element_get_type(tileElement);
+                uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
                 uint8_t z = tileElement->base_height;
 
                 // Make sure this is the correct entrance or exit
@@ -437,7 +437,7 @@ int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elem
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
         {
-            uint8_t entranceType = tileElement->properties.entrance.type;
+            uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
             if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
             {
                 // Update the ride's known entrance or exit height
@@ -673,7 +673,7 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
     {
         uint8_t stationIndex = entranceElement->properties.entrance.index >> 6;
 
-        switch (entranceElement->properties.entrance.type)
+        switch (entranceElement->AsEntrance()->GetEntranceType())
         {
             case ENTRANCE_TYPE_RIDE_ENTRANCE:
                 ride_set_entrance_location(

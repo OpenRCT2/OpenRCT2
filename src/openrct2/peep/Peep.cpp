@@ -2429,7 +2429,7 @@ static void peep_return_to_centre_of_tile(rct_peep* peep)
 static void peep_interact_with_entrance(
     rct_peep* peep, int16_t x, int16_t y, rct_tile_element* tile_element, uint8_t& pathing_result)
 {
-    uint8_t entranceType = tile_element->properties.entrance.type;
+    uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
     uint8_t rideIndex = tile_element->properties.entrance.ride_index;
 
     // Store some details to determine when to override the default

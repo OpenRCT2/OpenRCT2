@@ -193,7 +193,7 @@ public:
             newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             newElement->SetDirection(_direction);
             newElement->properties.entrance.index = index;
-            newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
+            newElement->AsEntrance()->GetEntranceType() = ENTRANCE_TYPE_PARK_ENTRANCE;
             newElement->properties.entrance.path_type = gFootpathSelectedId;
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))

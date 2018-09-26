@@ -313,7 +313,7 @@ static uint8_t footpath_element_dest_in_dir(
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (loc.z != tileElement->base_height)
                     continue;
-                switch (tileElement->properties.entrance.type)
+                switch (tileElement->AsEntrance()->GetEntranceType())
                 {
                     case ENTRANCE_TYPE_RIDE_ENTRANCE:
                         direction = tileElement->GetDirection();
@@ -673,7 +673,7 @@ static void peep_pathfind_heuristic_search(
                     continue;
                 int32_t direction;
                 searchResult = PATH_SEARCH_OTHER;
-                switch (tileElement->properties.entrance.type)
+                switch (tileElement->AsEntrance()->GetEntranceType())
                 {
                     case ENTRANCE_TYPE_RIDE_ENTRANCE:
                         /* For peeps heading for a ride without a queue, the
