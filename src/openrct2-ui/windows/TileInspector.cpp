@@ -1958,7 +1958,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 else
                 {
                     // Ride ID
-                    int16_t rideId = tileElement->properties.entrance.ride_index;
+                    int16_t rideId = tileElement->AsEntrance()->GetRideIndex();
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 22);
                 }
 

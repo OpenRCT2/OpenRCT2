@@ -117,7 +117,7 @@ static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
 
-        ride = get_ride(tileElement->properties.entrance.ride_index);
+        ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
         entranceDefinition = &RideEntranceDefinitions[ride->entrance_style];
 
         int32_t height = (tileElement->base_height * 8) + entranceDefinition->height + 8;

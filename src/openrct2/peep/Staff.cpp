@@ -1935,7 +1935,7 @@ void rct_peep::UpdateHeadingToInspect()
             return;
         }
 
-        if (current_ride != rideEntranceExitElement->properties.entrance.ride_index)
+        if (current_ride != rideEntranceExitElement->AsEntrance()->GetRideIndex())
             return;
 
         uint8_t exit_index = ((rideEntranceExitElement->properties.entrance.index & 0x70) >> 4);
@@ -2053,7 +2053,7 @@ void rct_peep::UpdateAnswering()
             return;
         }
 
-        if (current_ride != rideEntranceExitElement->properties.entrance.ride_index)
+        if (current_ride != rideEntranceExitElement->AsEntrance()->GetRideIndex())
             return;
 
         uint8_t exit_index = ((rideEntranceExitElement->properties.entrance.index & 0x70) >> 4);

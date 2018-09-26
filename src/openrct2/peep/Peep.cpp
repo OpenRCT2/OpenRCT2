@@ -2430,7 +2430,7 @@ static void peep_interact_with_entrance(
     rct_peep* peep, int16_t x, int16_t y, rct_tile_element* tile_element, uint8_t& pathing_result)
 {
     uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
-    uint8_t rideIndex = tile_element->properties.entrance.ride_index;
+    uint8_t rideIndex = tile_element->AsEntrance()->GetRideIndex();
 
     // Store some details to determine when to override the default
     // behaviour (defined below) for when staff attempt to enter a ride

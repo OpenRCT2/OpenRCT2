@@ -132,7 +132,7 @@ uint8_t tile_element_get_ride_index(const rct_tile_element* tileElement)
         case TILE_ELEMENT_TYPE_TRACK:
             return tileElement->AsTrack()->GetRideIndex();
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            return tileElement->properties.entrance.ride_index;
+            return tileElement->AsEntrance()->GetRideIndex();
         case TILE_ELEMENT_TYPE_PATH:
             return tileElement->properties.path.ride_index;
         default:

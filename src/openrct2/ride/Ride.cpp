@@ -1874,7 +1874,7 @@ static int32_t ride_modify_entrance_or_exit(rct_tile_element* tileElement, int32
     int32_t rideIndex, entranceType;
     rct_window* constructionWindow;
 
-    rideIndex = tileElement->properties.entrance.ride_index;
+    rideIndex = tileElement->AsEntrance()->GetRideIndex();
 
     entranceType = tileElement->AsEntrance()->GetEntranceType();
     if (entranceType != ENTRANCE_TYPE_RIDE_ENTRANCE && entranceType != ENTRANCE_TYPE_RIDE_EXIT)
@@ -3603,7 +3603,7 @@ static void ride_entrance_set_map_tooltip(rct_tile_element* tileElement)
     int32_t i, rideIndex, stationIndex;
     Ride* ride;
 
-    rideIndex = tileElement->properties.entrance.ride_index;
+    rideIndex = tileElement->AsEntrance()->GetRideIndex();
     ride = get_ride(rideIndex);
 
     // Get the station
@@ -8145,7 +8145,7 @@ void sub_6CB945(int32_t rideIndex)
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
-            if (tileElement->properties.entrance.ride_index != rideIndex)
+            if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
                 continue;
             if (tileElement->AsEntrance()->GetEntranceType() > ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
@@ -8802,7 +8802,7 @@ void determine_ride_entrance_and_exit_locations()
             {
                 tileElement = map_get_ride_entrance_element_at(entranceLoc.x * 32, entranceLoc.y * 32, entranceLoc.z, false);
 
-                if (tileElement == nullptr || tileElement->properties.entrance.ride_index != rideIndex
+                if (tileElement == nullptr || tileElement->AsEntrance()->GetRideIndex() != rideIndex
                     || tileElement->AsEntrance()->GetStationIndex() != stationIndex)
                 {
                     fixEntrance = true;
@@ -8817,7 +8817,7 @@ void determine_ride_entrance_and_exit_locations()
             {
                 tileElement = map_get_ride_exit_element_at(exitLoc.x * 32, exitLoc.y * 32, entranceLoc.z, false);
 
-                if (tileElement == nullptr || tileElement->properties.entrance.ride_index != rideIndex
+                if (tileElement == nullptr || tileElement->AsEntrance()->GetRideIndex() != rideIndex
                     || tileElement->AsEntrance()->GetStationIndex() != stationIndex)
                 {
                     fixExit = true;
@@ -8851,7 +8851,7 @@ void determine_ride_entrance_and_exit_locations()
                             {
                                 continue;
                             }
-                            if (tileElement->properties.entrance.ride_index != rideIndex)
+                            if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
                             {
                                 continue;
                             }

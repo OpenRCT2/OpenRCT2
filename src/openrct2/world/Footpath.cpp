@@ -1396,14 +1396,14 @@ static void loc_6A6D7E(
                             if (query)
                             {
                                 neighbour_list_push(
-                                    neighbourList, 8, direction, tileElement->properties.entrance.ride_index,
+                                    neighbourList, 8, direction, tileElement->AsEntrance()->GetRideIndex(),
                                     tileElement->properties.entrance.index);
                             }
                             else
                             {
                                 if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                                 {
-                                    footpath_queue_chain_push(tileElement->properties.entrance.ride_index);
+                                    footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
                                 }
                             }
                             goto loc_6A6FD2;
@@ -1755,7 +1755,7 @@ void footpath_update_queue_chains()
                     continue;
                 if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                     continue;
-                if (tileElement->properties.entrance.ride_index != rideIndex)
+                if (tileElement->AsEntrance()->GetRideIndex() != rideIndex)
                     continue;
 
                 uint8_t direction = tileElement->GetDirectionWithOffset(2);
@@ -2338,7 +2338,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
         case TILE_ELEMENT_TYPE_ENTRANCE:
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
             {
-                footpath_queue_chain_push(tileElement->properties.entrance.ride_index);
+                footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
                 footpath_chain_ride_queue(255, 0, x, y, tileElement, tileElement->GetDirectionWithOffset(2));
             }
             break;

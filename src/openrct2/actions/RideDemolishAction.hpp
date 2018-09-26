@@ -292,7 +292,7 @@ private:
                 if (type == ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 
-                if (it.element->properties.entrance.ride_index == _rideIndex)
+                if (it.element->AsEntrance()->GetRideIndex() == _rideIndex)
                 {
                     tile_element_remove(it.element);
                     tile_element_iterator_restart_for_tile(&it);

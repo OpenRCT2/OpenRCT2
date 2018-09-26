@@ -34,7 +34,7 @@ static void ride_entrance_exit_paint(
 
     if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
-        if (tile_element->properties.entrance.ride_index != gTrackDesignSaveRideIndex)
+        if (tile_element->AsEntrance()->GetRideIndex() != gTrackDesignSaveRideIndex)
             return;
     }
 
@@ -68,7 +68,7 @@ static void ride_entrance_exit_paint(
     }
 #endif
 
-    Ride* ride = get_ride(tile_element->properties.entrance.ride_index);
+    Ride* ride = get_ride(tile_element->AsEntrance()->GetRideIndex());
     if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE)
         return;
 
@@ -155,7 +155,7 @@ static void ride_entrance_exit_paint(
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    if (!is_exit && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) && tile_element->properties.entrance.ride_index != 0xFF)
+    if (!is_exit && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) && tile_element->AsEntrance()->GetRideIndex() != 0xFF)
     {
         set_format_arg(0, uint32_t, 0);
         set_format_arg(4, uint32_t, 0);

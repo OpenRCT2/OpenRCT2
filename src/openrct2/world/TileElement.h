@@ -376,13 +376,16 @@ struct EntranceElement : TileElementBase
 {
 private:
     uint8_t entranceType; // 4
-    uint8_t index;        // 5
+    uint8_t index;        // 5. 0bUSSS????, S = station index.
     uint8_t pathType;     // 6
     uint8_t rideIndex;    // 7
 
 public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
+
+    uint8_t GetRideIndex() const;
+    void SetRideIndex(uint8_t newRideIndex);
 
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t stationIndex);

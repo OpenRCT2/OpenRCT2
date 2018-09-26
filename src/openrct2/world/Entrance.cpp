@@ -269,7 +269,7 @@ static money32 RideEntranceExitPlace(
             tileElement->clearance_height = clear_z;
             tileElement->AsEntrance()->SetEntranceType(isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
             tileElement->properties.entrance.index = stationNum << 4;
-            tileElement->properties.entrance.ride_index = rideIndex;
+            tileElement->AsEntrance()->SetRideIndex(rideIndex);
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
@@ -548,7 +548,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* til
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
-    int32_t rideIndex = tileElement->properties.entrance.ride_index;
+    int32_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -584,7 +584,7 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileEle
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
-    int32_t rideIndex = tileElement->properties.entrance.ride_index;
+    int32_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -650,4 +650,14 @@ uint8_t EntranceElement::GetEntranceType() const
 void EntranceElement::SetEntranceType(uint8_t newType)
 {
     entranceType = newType;
+}
+
+uint8_t EntranceElement::GetRideIndex() const
+{
+    return rideIndex;
+}
+
+void EntranceElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
 }

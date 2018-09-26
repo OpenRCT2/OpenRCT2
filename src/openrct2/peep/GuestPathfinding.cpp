@@ -319,7 +319,7 @@ static uint8_t footpath_element_dest_in_dir(
                         direction = tileElement->GetDirection();
                         if (direction == chosenDirection)
                         {
-                            *outRideIndex = tileElement->properties.entrance.ride_index;
+                            *outRideIndex = tileElement->AsEntrance()->GetRideIndex();
                             return PATH_SEARCH_RIDE_ENTRANCE;
                         }
                         break;
@@ -327,7 +327,7 @@ static uint8_t footpath_element_dest_in_dir(
                         direction = tileElement->GetDirection();
                         if (direction == chosenDirection)
                         {
-                            *outRideIndex = tileElement->properties.entrance.ride_index;
+                            *outRideIndex = tileElement->AsEntrance()->GetRideIndex();
                             return PATH_SEARCH_RIDE_EXIT;
                         }
                         break;
@@ -686,7 +686,7 @@ static void peep_pathfind_heuristic_search(
                         {
                             /* The rideIndex will be useful for
                              * adding transport rides later. */
-                            rideIndex = tileElement->properties.entrance.ride_index;
+                            rideIndex = tileElement->AsEntrance()->GetRideIndex();
                             searchResult = PATH_SEARCH_RIDE_ENTRANCE;
                             found = true;
                             break;
