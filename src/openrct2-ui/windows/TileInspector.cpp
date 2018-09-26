@@ -1608,7 +1608,8 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].top = GBBT(propertiesAnchor, 1);
             w->widgets[WIDX_ENTRANCE_BUTTON_MAKE_USABLE].bottom = GBBB(propertiesAnchor, 1);
             widget_set_enabled(
-                w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE, tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE);
+                w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
+                tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE);
             break;
         case TILE_INSPECTOR_PAGE_WALL:
         {

@@ -597,7 +597,7 @@ uint8_t BannerElement::GetAllowedEdges() const
 
 void BannerElement::SetAllowedEdges(uint8_t newEdges)
 {
-    flags &= ~ 0b00001111;
+    flags &= ~0b00001111;
     flags |= (newEdges & 0b00001111);
 }
 

@@ -4821,7 +4821,8 @@ uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t 
     {
         int32_t type = tileElement->GetType();
         if (type == TILE_ELEMENT_TYPE_PATH
-            || (type == TILE_ELEMENT_TYPE_ENTRANCE && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE))
+            || (type == TILE_ELEMENT_TYPE_ENTRANCE
+                && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE))
         {
             destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
             // Do not own construction rights if too high/below surface
