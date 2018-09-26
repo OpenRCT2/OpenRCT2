@@ -2051,7 +2051,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Banner info
-                const uint8_t bannerIndex = tileElement->properties.banner.index;
+                const uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
                 if (gBanners[bannerIndex].flags & BANNER_FLAG_NO_ENTRY)
                 {
                     rct_string_id noEntryStringIdx = STR_NO_ENTRY;
@@ -2166,7 +2166,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
             case TILE_ELEMENT_TYPE_BANNER:
                 snprintf(
                     buffer, sizeof(buffer), "%s (%d)", language_get_string(STR_BANNER_WINDOW_TITLE),
-                    tileElement->properties.banner.index);
+                    tileElement->AsBanner()->GetIndex());
                 typeName = buffer;
                 break;
             case TILE_ELEMENT_TYPE_CORRUPT:

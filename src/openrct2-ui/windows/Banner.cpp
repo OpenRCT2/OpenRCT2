@@ -135,7 +135,7 @@ rct_window* window_banner_open(rct_windownumber number)
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
     while (1)
     {
-        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->properties.banner.index == w->number))
+        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->AsBanner()->GetIndex() == w->number))
         {
             break;
         }
@@ -175,7 +175,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 
     while (1)
     {
-        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->properties.banner.index == w->number))
+        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->AsBanner()->GetIndex() == w->number))
             break;
         tile_element++;
     }

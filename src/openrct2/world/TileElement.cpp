@@ -84,7 +84,7 @@ BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement)
 
             return tileElement->AsWall()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_BANNER:
-            return tileElement->properties.banner.index;
+            return tileElement->AsBanner()->GetIndex();
         default:
             return BANNER_INDEX_NULL;
     }
@@ -101,7 +101,7 @@ void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex ba
             tileElement->AsLargeScenery()->SetBannerIndex(bannerIndex);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
-            tileElement->properties.banner.index = bannerIndex;
+            tileElement->AsBanner()->SetIndex(bannerIndex);
             break;
         default:
             log_error("Tried to set banner index on unsuitable tile element!");

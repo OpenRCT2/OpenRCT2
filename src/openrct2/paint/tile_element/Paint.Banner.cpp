@@ -43,7 +43,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     height -= 16;
 
-    rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[tile_element->properties.banner.index].type);
+    rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[tile_element->AsBanner()->GetIndex()].type);
 
     if (banner_scenery == nullptr)
     {
@@ -67,7 +67,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     }
     else
     {
-        image_id |= (gBanners[tile_element->properties.banner.index].colour << 19) | IMAGE_TYPE_REMAP;
+        image_id |= (gBanners[tile_element->AsBanner()->GetIndex()].colour << 19) | IMAGE_TYPE_REMAP;
     }
 
     sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
@@ -96,9 +96,9 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     set_format_arg(4, uint32_t, 0);
 
     rct_string_id string_id = STR_NO_ENTRY;
-    if (!(gBanners[tile_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
+    if (!(gBanners[tile_element->AsBanner()->GetIndex()].flags & BANNER_FLAG_NO_ENTRY))
     {
-        set_format_arg(0, rct_string_id, gBanners[tile_element->properties.banner.index].string_idx);
+        set_format_arg(0, rct_string_id, gBanners[tile_element->AsBanner()->GetIndex()].string_idx);
         string_id = STR_BANNER_TEXT_FORMAT;
     }
     if (gConfigGeneral.upper_case_banners)

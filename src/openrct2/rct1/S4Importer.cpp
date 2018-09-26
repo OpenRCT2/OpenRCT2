@@ -2646,7 +2646,7 @@ private:
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                     {
-                        uint8_t index = tileElement->properties.banner.index;
+                        uint8_t index = tileElement->AsBanner()->GetIndex();
                         rct_banner* src = &_s4.banners[index];
                         rct_banner* dst = &gBanners[index];
                         ImportBanner(dst, src);

@@ -171,7 +171,7 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(OBJECT_TYPE_LARGE_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
-                banner = &gBanners[iter.element->properties.banner.index];
+                banner = &gBanners[iter.element->AsBanner()->GetIndex()];
                 type = banner->type;
                 assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
                 Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);

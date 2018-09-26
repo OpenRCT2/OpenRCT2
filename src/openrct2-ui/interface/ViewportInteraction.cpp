@@ -330,7 +330,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             break;
 
         case VIEWPORT_INTERACTION_ITEM_BANNER:
-            banner = &gBanners[tileElement->properties.banner.index];
+            banner = &gBanners[tileElement->AsBanner()->GetIndex()];
             sceneryEntry = get_banner_entry(banner->type);
 
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -452,7 +452,7 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
             viewport_interaction_remove_large_scenery(info.tileElement, info.x, info.y);
             break;
         case VIEWPORT_INTERACTION_ITEM_BANNER:
-            context_open_detail_window(WD_BANNER, info.tileElement->properties.banner.index);
+            context_open_detail_window(WD_BANNER, info.tileElement->AsBanner()->GetIndex());
             break;
     }
 

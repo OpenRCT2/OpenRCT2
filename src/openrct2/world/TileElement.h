@@ -391,7 +391,17 @@ assert_struct_size(EntranceElement, 8);
 
 struct BannerElement : TileElementBase
 {
-    rct_tile_element_banner_properties temp;
+private:
+    BannerIndex index; // 4
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t position;  // 5
+    uint8_t flags;     // 6
+    uint8_t unused;    // 7
+#pragma clang diagnostic pop
+public:
+    BannerIndex GetIndex() const;
+    void SetIndex(BannerIndex newIndex);
 };
 assert_struct_size(BannerElement, 8);
 
