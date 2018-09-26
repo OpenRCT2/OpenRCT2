@@ -156,7 +156,7 @@ void setup_in_use_selection_flags()
 
                 Editor::SetSelectedObject(OBJECT_TYPE_PARK_ENTRANCE, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
-                type = iter.element->properties.entrance.path_type;
+                type = iter.element->AsEntrance()->GetPathType();
                 assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
                 Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;

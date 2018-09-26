@@ -2538,13 +2538,13 @@ private:
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                     if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     {
-                        uint8_t pathType = tileElement->properties.entrance.path_type;
+                        uint8_t pathType = tileElement->AsEntrance()->GetPathType();
                         if (pathType == 0)
                         {
                             pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
                         }
                         uint8_t entryIndex = _pathTypeToEntryMap[pathType];
-                        tileElement->properties.entrance.path_type = entryIndex & 0x7F;
+                        tileElement->AsEntrance()->SetPathType(entryIndex & 0x7F);
                     }
                     break;
             }

@@ -222,7 +222,7 @@ static money32 footpath_element_insert(
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->properties.entrance.path_type == (type & 0xF))
+        if (entranceElement->AsEntrance()->GetPathType() == (type & 0xF))
             entranceIsSamePath = true;
         else
             gFootpathPrice -= MONEY(6, 00);
@@ -256,7 +256,7 @@ static money32 footpath_element_insert(
             if (!(flags & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
             {
                 // Set the path type but make sure it's not a queue as that will not show up
-                entranceElement->properties.entrance.path_type = type & 0x7F;
+                entranceElement->AsEntrance()->SetPathType(type & 0x7F);
                 map_invalidate_tile_full(x, y);
             }
         }
@@ -593,7 +593,7 @@ static money32 footpath_place_from_track(
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->properties.entrance.path_type == (type & 0xF))
+        if (entranceElement->AsEntrance()->GetPathType() == (type & 0xF))
             entranceIsSamePath = true;
         else
             gFootpathPrice -= MONEY(6, 00);
@@ -636,7 +636,7 @@ static money32 footpath_place_from_track(
             if (!(flags & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
             {
                 // Set the path type but make sure it's not a queue as that will not show up
-                entranceElement->properties.entrance.path_type = type & 0x7F;
+                entranceElement->AsEntrance()->SetPathType(type & 0x7F);
                 map_invalidate_tile_full(x, y);
             }
         }

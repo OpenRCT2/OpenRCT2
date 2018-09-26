@@ -194,7 +194,7 @@ public:
             newElement->SetDirection(_direction);
             newElement->AsEntrance()->SetSequenceIndex(index);
             newElement->AsEntrance()->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
-            newElement->properties.entrance.path_type = gFootpathSelectedId;
+            newElement->AsEntrance()->SetPathType(gFootpathSelectedId);
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {

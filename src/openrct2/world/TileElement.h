@@ -28,15 +28,6 @@ struct rct_tile_element_path_properties
 };
 assert_struct_size(rct_tile_element_path_properties, 4);
 
-struct rct_tile_element_entrance_properties
-{
-    uint8_t type;       // 4
-    uint8_t index;      // 5
-    uint8_t path_type;  // 6
-    uint8_t ride_index; // 7
-};
-assert_struct_size(rct_tile_element_entrance_properties, 4);
-
 struct rct_tile_element_banner_properties
 {
     BannerIndex index; // 4
@@ -49,7 +40,6 @@ assert_struct_size(rct_tile_element_banner_properties, 4);
 union rct_tile_element_properties
 {
     rct_tile_element_path_properties path;
-    rct_tile_element_entrance_properties entrance;
     rct_tile_element_banner_properties banner;
 };
 assert_struct_size(rct_tile_element_properties, 4);
@@ -392,6 +382,9 @@ public:
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
+
+    uint8_t GetPathType() const;
+    void SetPathType(uint8_t newPathType);
 };
 assert_struct_size(EntranceElement, 8);
 

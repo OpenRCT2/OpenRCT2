@@ -672,3 +672,13 @@ void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
     index &= ~0xF;
     index |= (newSequenceIndex & 0xF);
 }
+
+uint8_t EntranceElement::GetPathType() const
+{
+    return pathType;
+}
+
+void EntranceElement::SetPathType(uint8_t newPathType)
+{
+    pathType = newPathType;
+}
