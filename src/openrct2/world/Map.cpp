@@ -3959,7 +3959,7 @@ rct_tile_element* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z,
     return nullptr;
 }
 
-rct_tile_element* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
@@ -3978,13 +3978,13 @@ rct_tile_element* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t
             if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
                 continue;
 
-            return tileElement;
+            return tileElement->AsEntrance();
         } while (!(tileElement++)->IsLastForTile());
     }
     return nullptr;
 }
 
-rct_tile_element* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
@@ -4003,13 +4003,13 @@ rct_tile_element* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t
             if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
                 continue;
 
-            return tileElement;
+            return tileElement->AsEntrance();
         } while (!(tileElement++)->IsLastForTile());
     }
     return nullptr;
 }
 
-rct_tile_element* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
@@ -4028,7 +4028,7 @@ rct_tile_element* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, 
             if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
                 continue;
 
-            return tileElement;
+            return tileElement->AsEntrance();
         } while (!(tileElement++)->IsLastForTile());
     }
     return nullptr;

@@ -148,3 +148,8 @@ void rct_tile_element::ClearAs(uint8_t newType)
     clearance_height = 2;
     memset(pad_04, 0, sizeof(pad_04));
 }
+
+void TileElementBase::Remove()
+{
+    tile_element_remove((rct_tile_element*)this);
+}

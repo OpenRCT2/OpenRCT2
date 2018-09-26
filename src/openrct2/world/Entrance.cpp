@@ -33,7 +33,7 @@ uint8_t gRideEntranceExitGhostStationIndex;
 
 static void ParkEntranceRemoveSegment(int32_t x, int32_t y, int32_t z)
 {
-    rct_tile_element* tileElement;
+    EntranceElement* tileElement;
 
     tileElement = map_get_park_entrance_element_at(x, y, z, true);
     if (tileElement == nullptr)
@@ -42,7 +42,7 @@ static void ParkEntranceRemoveSegment(int32_t x, int32_t y, int32_t z)
     }
 
     map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
-    tile_element_remove(tileElement);
+    tileElement->Remove();
     update_park_fences({ x, y });
 }
 

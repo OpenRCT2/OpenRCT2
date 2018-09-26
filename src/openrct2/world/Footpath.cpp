@@ -195,7 +195,8 @@ static constexpr const uint8_t byte_98D7EC[] = { 207, 159, 63, 111 };
 static money32 footpath_element_insert(
     int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t flags, uint8_t pathItemType)
 {
-    rct_tile_element *tileElement, *entranceElement;
+    rct_tile_element* tileElement;
+    EntranceElement* entranceElement;
     int32_t bl, zHigh;
     bool entrancePath = false, entranceIsSamePath = false;
 
@@ -218,11 +219,11 @@ static money32 footpath_element_insert(
 
     entranceElement = map_get_park_entrance_element_at(x, y, z, false);
     // Make sure the entrance part is the middle
-    if (entranceElement != nullptr && (entranceElement->AsEntrance()->GetSequenceIndex()) == 0)
+    if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->AsEntrance()->GetPathType() == (type & 0xF))
+        if (entranceElement->GetPathType() == (type & 0xF))
             entranceIsSamePath = true;
         else
             gFootpathPrice -= MONEY(6, 00);
@@ -256,7 +257,7 @@ static money32 footpath_element_insert(
             if (!(flags & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
             {
                 // Set the path type but make sure it's not a queue as that will not show up
-                entranceElement->AsEntrance()->SetPathType(type & 0x7F);
+                entranceElement->SetPathType(type & 0x7F);
                 map_invalidate_tile_full(x, y);
             }
         }
@@ -530,7 +531,8 @@ void game_command_place_footpath(
 static money32 footpath_place_from_track(
     int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope, int32_t edges, int32_t flags)
 {
-    rct_tile_element *tileElement, *entranceElement;
+    rct_tile_element* tileElement;
+    EntranceElement* entranceElement;
     bool entrancePath = false, entranceIsSamePath = false;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
@@ -589,11 +591,11 @@ static money32 footpath_place_from_track(
 
     entranceElement = map_get_park_entrance_element_at(x, y, z, false);
     // Make sure the entrance part is the middle
-    if (entranceElement != nullptr && (entranceElement->AsEntrance()->GetSequenceIndex()) == 0)
+    if (entranceElement != nullptr && (entranceElement->GetSequenceIndex()) == 0)
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->AsEntrance()->GetPathType() == (type & 0xF))
+        if (entranceElement->GetPathType() == (type & 0xF))
             entranceIsSamePath = true;
         else
             gFootpathPrice -= MONEY(6, 00);
@@ -636,7 +638,7 @@ static money32 footpath_place_from_track(
             if (!(flags & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
             {
                 // Set the path type but make sure it's not a queue as that will not show up
-                entranceElement->AsEntrance()->SetPathType(type & 0x7F);
+                entranceElement->SetPathType(type & 0x7F);
                 map_invalidate_tile_full(x, y);
             }
         }

@@ -121,7 +121,7 @@ public:
             }
 
             // Check that entrance element does not already exist at this location
-            rct_tile_element* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
+            EntranceElement* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
             if (entranceElement != nullptr)
             {
                 return std::make_unique<GameActionResult>(
