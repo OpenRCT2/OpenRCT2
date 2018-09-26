@@ -3552,6 +3552,25 @@ static void ride_track_set_map_tooltip(rct_tile_element* tileElement)
     set_map_tooltip_format_arg(10, uint32_t, arg1);
 }
 
+static void ride_queue_banner_set_map_tooltip(rct_tile_element* tileElement)
+{
+    int32_t rideIndex;
+    Ride* ride;
+
+    rideIndex = tileElement->properties.path.ride_index;
+    ride = get_ride(rideIndex);
+
+    set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);
+    set_map_tooltip_format_arg(2, rct_string_id, ride->name);
+    set_map_tooltip_format_arg(4, uint32_t, ride->name_arguments);
+
+    rct_string_id formatSecondary;
+    int32_t arg1 = 0;
+    ride_get_status(rideIndex, &formatSecondary, &arg1);
+    set_map_tooltip_format_arg(8, rct_string_id, formatSecondary);
+    set_map_tooltip_format_arg(10, uint32_t, arg1);
+}
+
 static void ride_station_set_map_tooltip(rct_tile_element* tileElement)
 {
     int32_t i, rideIndex, stationIndex;
@@ -3640,7 +3659,7 @@ void ride_set_map_tooltip(rct_tile_element* tileElement)
     {
         ride_entrance_set_map_tooltip(tileElement);
     }
-    else
+    else if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
         if (track_element_is_station(tileElement))
         {
@@ -3650,6 +3669,10 @@ void ride_set_map_tooltip(rct_tile_element* tileElement)
         {
             ride_track_set_map_tooltip(tileElement);
         }
+    }
+    else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+    {
+        ride_queue_banner_set_map_tooltip(tileElement);
     }
 }
 
