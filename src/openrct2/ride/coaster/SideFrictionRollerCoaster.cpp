@@ -19,6 +19,53 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+#define SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_A 21646
+#define SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_B 21658
+#define SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_A 21647
+#define SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_B 21659
+#define SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_A 21648
+#define SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_B 21660
+#define SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_A 21649
+#define SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_B 21661
+
+#define SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_A 21638
+#define SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_B 21650
+#define SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_A 21639
+#define SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_B 21651
+#define SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_A 21640
+#define SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_B 21652
+#define SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_A 21641
+#define SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_B 21653
+
+#define SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_A 21642
+#define SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_B 21654
+#define SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_A 21643
+#define SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_B 21655
+#define SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_A 21644
+#define SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_B 21656
+#define SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_A 21645
+#define SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_B 21657
+
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_A 21882
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_B 21886
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_1_A 21883 // Needs no B piece
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_A 21884
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_B 21887
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_3_A 21885 // Needs no B piece
+
+// Whole block appears to lack B counterparts
+#define SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_0_A 21870
+#define SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_1_A 21871
+#define SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_2_A 21872
+#define SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_3_A 21873
+
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_A 21876
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_B 21880
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_1_A 21877 // Needs no B piece
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_A 21878
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_B 21881
+#define SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_3_A 21879 // Needs no B piece
+
 /** rct2: 0x0077839C */
 static void side_friction_rc_track_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -2820,6 +2867,482 @@ static void side_friction_rc_track_diag_25_deg_down_to_flat(
     }
 }
 
+static void side_friction_rc_track_60_deg_up(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    switch (direction)
+    {
+        case 0:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_A, 0, 0, 32, 27, 2,
+                height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_DIR_0_B, 0, 0, 32, 1, 9,
+                height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 0, 21, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 1:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_A, 0, 0, 32, 27, 2,
+                height, 0, 2, height);
+
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_DIR_1_B, 0, 0, 32, 1, 9,
+                height, 0, 26, height + 5);
+
+            wooden_a_supports_paint_setup(session, 1, 22, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 2:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_A, 0, 0, 32, 27, 2,
+                height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_DIR_2_B, 0, 0, 32, 1, 9,
+                height, 0, 26, height + 5);
+
+            wooden_a_supports_paint_setup(session, 0, 23, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 3:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_A, 0, 0, 32, 27, 2,
+                height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_DIR_3_B, 0, 0, 32, 1, 9,
+                height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 1, 24, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+    }
+
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+    }
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 104, 0x20);
+}
+
+static void side_friction_rc_track_60_deg_down(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    side_friction_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
+}
+
+static void side_friction_rc_track_25_deg_up_to_60_deg_up(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    switch (direction)
+    {
+        case 0:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_A, 0,
+                0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_0_B, 0,
+                0, 32, 1, 9, height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 0, 13, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 1:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_A, 0,
+                0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_1_B, 0,
+                0, 32, 1, 9, height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 1, 14, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 2:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_A, 0,
+                0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_2_B, 0,
+                0, 32, 1, 9, height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 0, 15, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 3:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_A, 0,
+                0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_25_DEG_UP_TO_60_DEG_UP_DIR_3_B, 0,
+                0, 32, 1, 9, height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 1, 16, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+    }
+
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+    }
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
+}
+
+static void side_friction_rc_track_60_deg_down_to_25_deg_down(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    side_friction_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
+}
+
+static void side_friction_rc_track_60_deg_up_to_25_deg_up(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    switch (direction)
+    {
+        case 0:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_A, 0,
+                0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_0_B, 0,
+                0, 32, 1, 9, height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 0, 17, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 1:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_A, 0,
+                0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_1_B, 0,
+                0, 32, 1, 9, height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 1, 18, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 2:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_A, 0,
+                0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_2_B, 0,
+                0, 32, 1, 9, height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 0, 19, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+        case 3:
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_A, 0,
+                0, 32, 27, 2, height, 0, 2, height);
+            sub_98197C_rotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_60_DEG_UP_TO_25_DEG_UP_DIR_3_B, 0,
+                0, 32, 1, 9, height, 0, 26, height + 5);
+            wooden_a_supports_paint_setup(session, 1, 20, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+            break;
+    }
+
+    if (direction == 0 || direction == 3)
+    {
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+    }
+    else
+    {
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+    }
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
+}
+
+static void side_friction_rc_track_25_deg_down_to_60_deg_down(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    side_friction_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
+}
+
+static void side_friction_rc_track_diag_60_deg_up(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_3_A, -16,
+                        -16, 32, 32, 2, height, -16, -16, height);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 104, 0x20);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_A, -16,
+                        -16, 32, 32, 2, height, -16, -16, height);
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_0_B, -16,
+                        -16, 32, 32, 0, height, -16, -16, height + 43);
+                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 1:
+                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 2:
+                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 3:
+                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+            }
+
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 104, 0x20);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 1:
+                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_A, -16,
+                        -16, 32, 32, 2, height, -16, -16, height);
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_2_B, -16,
+                        -16, 32, 32, 0, height, -16, -16, height + 43);
+                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 3:
+                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 104, 0x20);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_DIR_1_A, -16,
+                        -16, 32, 32, 2, height, -16, -16, height);
+                    break;
+            }
+
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 104, 0x20);
+            break;
+    }
+}
+
+static void side_friction_rc_track_diag_60_deg_down(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    side_friction_rc_track_diag_60_deg_up(session, rideIndex, 3 - trackSequence, (direction + 2) % 4, height, tileElement);
+}
+
+static void side_friction_rc_track_diag_60_deg_up_to_25_deg_up(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_3_A, -16, -16,
+                        32, 32, 2, height, -16, -16, height);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_A, -16, -16,
+                        32, 32, 2, height, -16, -16, height);
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_0_B, -16, -16,
+                        32, 32, 0, height, -16, -16, height + 59);
+                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 1:
+                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 2:
+                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 3:
+                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 1:
+                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_A, -16, -16,
+                        32, 32, 2, height, -16, -16, height);
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_2_B, -16, -16,
+                        32, 32, 0, height, -16, -16, height + 59);
+                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 3:
+                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_60_DEG_UP_TO_25_DEG_UP_DIR_1_A, -16, -16,
+                        16, 16, 2, height, 0, 0, height);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+    }
+}
+
+static void side_friction_rc_track_diag_25_deg_down_to_60_deg_down(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    side_friction_rc_track_diag_60_deg_up_to_25_deg_up(
+        session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
+};
+
+static void side_friction_rc_track_diag_25_deg_up_to_60_deg_up(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_3_A, -16 + 4,
+                        -16 + 2, 32, 32, 2, height, -16, -16, height);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+        case 1:
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_0_A, -16, -16,
+                        32, 32, 2, height, -16, -16, height);
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 24033, -16, -16, 32, 32, 0, height, -16, -16,
+                        height + 59);
+                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 1:
+                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 2:
+                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 3:
+                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+        case 2:
+            switch (direction)
+            {
+                case 0:
+                    wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 1:
+                    wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_2_A, -16, -16,
+                        32, 32, 2, height, -16, -16, height);
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 24034, -16, -16, 32, 32, 0, height, -16, -16,
+                        height + 59);
+                    wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+                case 3:
+                    wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+        case 3:
+            switch (direction)
+            {
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction,
+                        session->TrackColours[SCHEME_TRACK] | SPR_SIDE_FRICTION_DIAG_25_DEG_UP_TO_60_DEG_UP_DIR_1_A, -16, -16,
+                        32, 32, 2, height, -16, -16, height);
+                    break;
+            }
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+    }
+}
+
+static void side_friction_rc_track_diag_60_deg_down_to_25_deg_down(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    side_friction_rc_track_diag_25_deg_up_to_60_deg_up(
+        session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
+};
+
 TRACK_PAINT_FUNCTION get_track_paint_function_side_friction_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
@@ -2878,6 +3401,33 @@ TRACK_PAINT_FUNCTION get_track_paint_function_side_friction_rc(int32_t trackType
             return side_friction_rc_track_diag_flat_to_25_deg_down;
         case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
             return side_friction_rc_track_diag_25_deg_down_to_flat;
+
+        // Added by OpenRCT2
+        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+            return side_friction_rc_track_25_deg_down_to_60_deg_down;
+        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+            return side_friction_rc_track_60_deg_down_to_25_deg_down;
+        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+            return side_friction_rc_track_25_deg_up_to_60_deg_up;
+        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+            return side_friction_rc_track_60_deg_up_to_25_deg_up;
+        case TRACK_ELEM_60_DEG_UP:
+            return side_friction_rc_track_60_deg_up;
+        case TRACK_ELEM_60_DEG_DOWN:
+            return side_friction_rc_track_60_deg_down;
+
+        case TRACK_ELEM_DIAG_60_DEG_UP:
+            return side_friction_rc_track_diag_60_deg_up;
+        case TRACK_ELEM_DIAG_60_DEG_DOWN:
+            return side_friction_rc_track_diag_60_deg_down;
+        case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
+            return side_friction_rc_track_diag_60_deg_up_to_25_deg_up;
+        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
+            return side_friction_rc_track_diag_25_deg_down_to_60_deg_down;
+        case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
+            return side_friction_rc_track_diag_25_deg_up_to_60_deg_up;
+        case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
+            return side_friction_rc_track_diag_60_deg_down_to_25_deg_down;
     }
     return nullptr;
 }
