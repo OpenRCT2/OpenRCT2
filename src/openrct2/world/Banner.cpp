@@ -80,13 +80,13 @@ static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t di
 
     // Slight modification to the code so that it now checks height as well
     // This was causing a bug with banners on two paths stacked.
-    rct_tile_element* tileElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
+    BannerElement* tileElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
     if (tileElement == nullptr)
     {
         return MONEY32_UNDEFINED;
     }
 
-    rct_banner* banner = &gBanners[tileElement->AsBanner()->GetIndex()];
+    rct_banner* banner = &gBanners[tileElement->GetIndex()];
     rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);
     money32 refund = 0;
     if (bannerEntry != nullptr)
@@ -105,9 +105,9 @@ static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t di
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        tile_element_remove_banner_entry(tileElement);
+        tile_element_remove_banner_entry((rct_tile_element*)tileElement);
         map_invalidate_tile_zoom1(x, y, z, z + 32);
-        tile_element_remove(tileElement);
+        tileElement->Remove();
     }
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -217,8 +217,8 @@ static money32 BannerPlace(
     }
 
     uint8_t baseHeight = (pathBaseHeight + 1) * 2;
-    tileElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
-    if (tileElement != nullptr)
+    BannerElement* bannerElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
+    if (bannerElement != nullptr)
     {
         gGameCommandErrorText = STR_BANNER_SIGN_IN_THE_WAY;
         return MONEY32_UNDEFINED;
@@ -247,7 +247,7 @@ static money32 BannerPlace(
         gBanners[*bannerIndex].colour = colour;
         gBanners[*bannerIndex].x = x / 32;
         gBanners[*bannerIndex].y = y / 32;
-        newTileElement->ClearAs(TILE_ELEMENT_TYPE_BANNER);
+        newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
         newTileElement->clearance_height = newTileElement->base_height + 2;
         newTileElement->AsBanner()->SetPosition(direction);
         newTileElement->AsBanner()->ResetAllowedEdges();

@@ -1029,16 +1029,16 @@ int32_t tile_inspector_scenery_set_quarter_collision(
 
 int32_t tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags)
 {
-    BannerElement* const bannerElement = map_get_nth_element_at(x, y, elementIndex)->AsBanner();
+    rct_tile_element* const bannerElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (bannerElement == nullptr)
+    if (bannerElement == nullptr || bannerElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        uint8_t edges = bannerElement->GetAllowedEdges();
+        uint8_t edges = bannerElement->AsBanner()->GetAllowedEdges();
         edges ^= (1 << edgeIndex);
-        bannerElement->SetAllowedEdges(edges);
+        bannerElement->AsBanner()->SetAllowedEdges(edges);
 
         if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
         {

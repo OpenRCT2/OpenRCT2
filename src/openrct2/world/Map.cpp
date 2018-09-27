@@ -307,7 +307,7 @@ rct_tile_element* map_get_path_element_at(int32_t x, int32_t y, int32_t z)
     return nullptr;
 }
 
-rct_tile_element* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t position)
+BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t position)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x, y);
 
@@ -324,7 +324,7 @@ rct_tile_element* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uin
         if (tileElement->AsBanner()->GetPosition() != position)
             continue;
 
-        return tileElement;
+        return tileElement->AsBanner();
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
