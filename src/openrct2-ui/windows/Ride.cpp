@@ -1634,8 +1634,9 @@ static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIn
 
 rct_window* window_ride_open_track(rct_tile_element* tileElement)
 {
-    // This function *should* only be called with an EntranceElement or TrackElement.
-    assert(tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK);
+    assert(
+        tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+        || tileElement->GetType() == TILE_ELEMENT_TYPE_PATH);
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
@@ -1643,7 +1644,9 @@ rct_window* window_ride_open_track(rct_tile_element* tileElement)
         // Open ride window in station view
         return window_ride_open_station(rideIndex, tileElement->AsEntrance()->GetStationIndex());
     }
-    else if (TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+    else if (
+        tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+        && TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
     {
         int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         // Open ride window in station view
@@ -1651,7 +1654,7 @@ rct_window* window_ride_open_track(rct_tile_element* tileElement)
     }
     else
     {
-        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+        int32_t rideIndex = tile_element_get_ride_index(tileElement);
         // Open ride window in overview mode.
         return window_ride_main_open(rideIndex);
     }
