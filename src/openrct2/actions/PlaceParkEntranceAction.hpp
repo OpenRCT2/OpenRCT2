@@ -183,8 +183,13 @@ public:
 
             rct_tile_element* newElement = tile_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);
             Guard::Assert(newElement != nullptr);
-            newElement->ClearAs(TILE_ELEMENT_TYPE_ENTRANCE);
+            newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             auto entranceElement = newElement->AsEntrance();
+            if (entranceElement == nullptr)
+            {
+                Guard::Assert(false);
+                return nullptr;
+            }
             entranceElement->clearance_height = zHigh;
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
