@@ -28,7 +28,7 @@ pushd "$BUILD_DIR"
 
 # standard linuxdeploy pattern
 #see https://docs.appimage.org/packaging-guide/from-source/index.html for more information
-cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX=/usr -G Ninja
+cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX=/usr -G Ninja -DCMAKE_BUILD_TYPE=Release
 
 ninja -v
 DESTDIR=AppDir ninja install
