@@ -80,13 +80,13 @@ static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t di
 
     // Slight modification to the code so that it now checks height as well
     // This was causing a bug with banners on two paths stacked.
-    rct_tile_element* tileElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
+    BannerElement* tileElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
     if (tileElement == nullptr)
     {
         return MONEY32_UNDEFINED;
     }
 
-    rct_banner* banner = &gBanners[tileElement->properties.banner.index];
+    rct_banner* banner = &gBanners[tileElement->GetIndex()];
     rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);
     money32 refund = 0;
     if (bannerEntry != nullptr)
@@ -105,9 +105,9 @@ static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t di
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        tile_element_remove_banner_entry(tileElement);
+        tile_element_remove_banner_entry((rct_tile_element*)tileElement);
         map_invalidate_tile_zoom1(x, y, z, z + 32);
-        tile_element_remove(tileElement);
+        tileElement->Remove();
     }
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -140,7 +140,7 @@ static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
                 continue;
 
-            if (tileElement->properties.banner.position != direction)
+            if (tileElement->AsBanner()->GetPosition() != direction)
                 continue;
 
             found = true;
@@ -153,10 +153,10 @@ static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);
-        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, tileElement->properties.banner.index);
+        intent.putExtra(INTENT_EXTRA_BANNER_INDEX, tileElement->AsBanner()->GetIndex());
         context_broadcast_intent(&intent);
 
-        gBanners[tileElement->properties.banner.index].colour = colour;
+        gBanners[tileElement->AsBanner()->GetIndex()].colour = colour;
         map_invalidate_tile_zoom1(x, y, z, z + 32);
     }
 
@@ -217,8 +217,8 @@ static money32 BannerPlace(
     }
 
     uint8_t baseHeight = (pathBaseHeight + 1) * 2;
-    tileElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
-    if (tileElement != nullptr)
+    BannerElement* bannerElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
+    if (bannerElement != nullptr)
     {
         gGameCommandErrorText = STR_BANNER_SIGN_IN_THE_WAY;
         return MONEY32_UNDEFINED;
@@ -249,10 +249,9 @@ static money32 BannerPlace(
         gBanners[*bannerIndex].y = y / 32;
         newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
         newTileElement->clearance_height = newTileElement->base_height + 2;
-        newTileElement->properties.banner.position = direction;
-        newTileElement->properties.banner.flags = 0xFF;
-        newTileElement->properties.banner.unused = 0;
-        newTileElement->properties.banner.index = *bannerIndex;
+        newTileElement->AsBanner()->SetPosition(direction);
+        newTileElement->AsBanner()->ResetAllowedEdges();
+        newTileElement->AsBanner()->SetIndex(*bannerIndex);
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             newTileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
@@ -300,11 +299,12 @@ static money32 BannerSetStyle(BannerIndex bannerIndex, uint8_t colour, uint8_t t
     banner->text_colour = textColour;
     banner->flags = bannerFlags;
 
-    tileElement->properties.banner.flags = 0xFF;
+    uint8_t allowedEdges = 0xF;
     if (banner->flags & BANNER_FLAG_NO_ENTRY)
     {
-        tileElement->properties.banner.flags &= ~(1 << tileElement->properties.banner.position);
+        allowedEdges &= ~(1 << tileElement->AsBanner()->GetPosition());
     }
+    tileElement->AsBanner()->SetAllowedEdges(allowedEdges);
 
     int32_t colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
 
@@ -481,7 +481,7 @@ void fix_duplicated_banners()
                 // multiple tiles that should both refer to the same banner index.
                 if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                 {
-                    uint8_t bannerIndex = tileElement->properties.banner.index;
+                    uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
                     if (activeBanners[bannerIndex])
                     {
                         log_info(
@@ -518,7 +518,7 @@ void fix_duplicated_banners()
                             newBanner.string_idx = newStringIdx;
                         }
 
-                        tileElement->properties.banner.index = newBannerIndex;
+                        tileElement->AsBanner()->SetIndex(newBannerIndex);
                     }
 
                     // Mark banner index as in-use
@@ -568,4 +568,40 @@ void game_command_set_banner_style(
     int32_t* ebp)
 {
     *ebx = BannerSetStyle(*ecx & 0xFF, *edx & 0xFF, *edi & 0xFF, *ebp & 0xFF, *ebx & 0xFF);
+}
+
+BannerIndex BannerElement::GetIndex() const
+{
+    return index;
+}
+
+void BannerElement::SetIndex(BannerIndex newIndex)
+{
+    index = newIndex;
+}
+
+uint8_t BannerElement::GetPosition() const
+{
+    return position;
+}
+
+void BannerElement::SetPosition(uint8_t newPosition)
+{
+    position = newPosition;
+}
+
+uint8_t BannerElement::GetAllowedEdges() const
+{
+    return flags & 0b00001111;
+}
+
+void BannerElement::SetAllowedEdges(uint8_t newEdges)
+{
+    flags &= ~0b00001111;
+    flags |= (newEdges & 0b00001111);
+}
+
+void BannerElement::ResetAllowedEdges()
+{
+    flags |= 0b00001111;
 }

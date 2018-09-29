@@ -288,11 +288,11 @@ private:
 
             if (tile_type == TILE_ELEMENT_TYPE_ENTRANCE)
             {
-                uint8_t type = entrance_element_get_type(it.element);
+                uint8_t type = it.element->AsEntrance()->GetEntranceType();
                 if (type == ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 
-                if (it.element->properties.entrance.ride_index == _rideIndex)
+                if (it.element->AsEntrance()->GetRideIndex() == _rideIndex)
                 {
                     tile_element_remove(it.element);
                     tile_element_iterator_restart_for_tile(&it);

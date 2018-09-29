@@ -241,11 +241,11 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
                 tileElement->SetDirection(newRotation);
 
                 // Update ride's known entrance/exit rotation
-                Ride* ride = get_ride(tileElement->properties.entrance.ride_index);
-                uint8_t stationIndex = tileElement->properties.entrance.index;
+                Ride* ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                uint8_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
                 auto entrance = ride_get_entrance_location(ride, stationIndex);
                 auto exit = ride_get_exit_location(ride, stationIndex);
-                uint8_t entranceType = entrance_element_get_type(tileElement);
+                uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
                 uint8_t z = tileElement->base_height;
 
                 // Make sure this is the correct entrance or exit
@@ -267,12 +267,10 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
             {
-                uint8_t unblockedEdges = tileElement->properties.banner.flags & 0xF;
+                uint8_t unblockedEdges = tileElement->AsBanner()->GetAllowedEdges();
                 unblockedEdges = (unblockedEdges << 1 | unblockedEdges >> 3) & 0xF;
-                tileElement->properties.banner.flags &= ~0xF;
-                tileElement->properties.banner.flags |= unblockedEdges;
-                tileElement->properties.banner.position++;
-                tileElement->properties.banner.position &= 3;
+                tileElement->AsBanner()->SetAllowedEdges(unblockedEdges);
+                tileElement->AsBanner()->SetPosition((tileElement->AsBanner()->GetPosition() + 1) & 3);
                 break;
             }
         }
@@ -437,12 +435,12 @@ int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elem
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
         {
-            uint8_t entranceType = tileElement->properties.entrance.type;
+            uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
             if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
             {
                 // Update the ride's known entrance or exit height
-                Ride* ride = get_ride(tileElement->properties.entrance.ride_index);
-                uint8_t entranceIndex = tileElement->properties.entrance.index;
+                Ride* ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                uint8_t entranceIndex = tileElement->AsEntrance()->GetStationIndex();
                 auto entrance = ride_get_entrance_location(ride, entranceIndex);
                 auto exit = ride_get_exit_location(ride, entranceIndex);
                 uint8_t z = tileElement->base_height;
@@ -664,16 +662,16 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
     if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
         return MONEY32_UNDEFINED;
 
-    Ride* ride = get_ride(entranceElement->properties.entrance.ride_index);
+    Ride* ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
 
     if (ride == nullptr)
         return MONEY32_UNDEFINED;
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        uint8_t stationIndex = entranceElement->properties.entrance.index >> 6;
+        uint8_t stationIndex = entranceElement->AsEntrance()->GetStationIndex();
 
-        switch (entranceElement->properties.entrance.type)
+        switch (entranceElement->AsEntrance()->GetEntranceType())
         {
             case ENTRANCE_TYPE_RIDE_ENTRANCE:
                 ride_set_entrance_location(
@@ -1038,7 +1036,9 @@ int32_t tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        bannerElement->properties.banner.flags ^= 1 << edgeIndex;
+        uint8_t edges = bannerElement->AsBanner()->GetAllowedEdges();
+        edges ^= (1 << edgeIndex);
+        bannerElement->AsBanner()->SetAllowedEdges(edges);
 
         if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)
         {

@@ -33,7 +33,7 @@ uint8_t gRideEntranceExitGhostStationIndex;
 
 static void ParkEntranceRemoveSegment(int32_t x, int32_t y, int32_t z)
 {
-    rct_tile_element* tileElement;
+    EntranceElement* tileElement;
 
     tileElement = map_get_park_entrance_element_at(x, y, z, true);
     if (tileElement == nullptr)
@@ -42,7 +42,7 @@ static void ParkEntranceRemoveSegment(int32_t x, int32_t y, int32_t z)
     }
 
     map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
-    tile_element_remove(tileElement);
+    tileElement->Remove();
     update_park_fences({ x, y });
 }
 
@@ -267,9 +267,9 @@ static money32 RideEntranceExitPlace(
             tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             tileElement->SetDirection(direction);
             tileElement->clearance_height = clear_z;
-            tileElement->properties.entrance.type = isExit;
-            tileElement->properties.entrance.index = stationNum << 4;
-            tileElement->properties.entrance.ride_index = rideIndex;
+            tileElement->AsEntrance()->SetEntranceType(isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
+            tileElement->AsEntrance()->SetStationIndex(stationNum);
+            tileElement->AsEntrance()->SetRideIndex(rideIndex);
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
@@ -390,7 +390,7 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, u
         maze_entrance_hedge_replacement(x, y, tileElement);
         footpath_remove_edges_at(x, y, tileElement);
 
-        bool isExit = tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
+        bool isExit = tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
         tile_element_remove(tileElement);
 
@@ -548,7 +548,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* til
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
-    int32_t rideIndex = tileElement->properties.entrance.ride_index;
+    int32_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -584,7 +584,7 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileEle
     x += CoordsDirectionDelta[direction].x;
     y += CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
-    int32_t rideIndex = tileElement->properties.entrance.ride_index;
+    int32_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -633,11 +633,52 @@ void fix_park_entrance_locations(void)
 
 uint8_t EntranceElement::GetStationIndex() const
 {
-    return (temp.index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return (index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
 void EntranceElement::SetStationIndex(uint8_t stationIndex)
 {
-    temp.index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    temp.index |= (stationIndex << 4);
+    index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    index |= (stationIndex << 4);
+}
+
+uint8_t EntranceElement::GetEntranceType() const
+{
+    return entranceType;
+}
+
+void EntranceElement::SetEntranceType(uint8_t newType)
+{
+    entranceType = newType;
+}
+
+uint8_t EntranceElement::GetRideIndex() const
+{
+    return rideIndex;
+}
+
+void EntranceElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
+}
+
+uint8_t EntranceElement::GetSequenceIndex() const
+{
+    return index & 0xF;
+}
+
+void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
+{
+    index &= ~0xF;
+    index |= (newSequenceIndex & 0xF);
+}
+
+uint8_t EntranceElement::GetPathType() const
+{
+    return pathType;
+}
+
+void EntranceElement::SetPathType(uint8_t newPathType)
+{
+    pathType = newPathType;
 }

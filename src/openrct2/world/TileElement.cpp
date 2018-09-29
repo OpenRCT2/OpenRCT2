@@ -84,7 +84,7 @@ BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement)
 
             return tileElement->AsWall()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_BANNER:
-            return tileElement->properties.banner.index;
+            return tileElement->AsBanner()->GetIndex();
         default:
             return BANNER_INDEX_NULL;
     }
@@ -101,7 +101,7 @@ void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex ba
             tileElement->AsLargeScenery()->SetBannerIndex(bannerIndex);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
-            tileElement->properties.banner.index = bannerIndex;
+            tileElement->AsBanner()->SetIndex(bannerIndex);
             break;
         default:
             log_error("Tried to set banner index on unsuitable tile element!");
@@ -132,7 +132,7 @@ uint8_t tile_element_get_ride_index(const rct_tile_element* tileElement)
         case TILE_ELEMENT_TYPE_TRACK:
             return tileElement->AsTrack()->GetRideIndex();
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            return tileElement->properties.entrance.ride_index;
+            return tileElement->AsEntrance()->GetRideIndex();
         case TILE_ELEMENT_TYPE_PATH:
             return tileElement->properties.path.ride_index;
         default:
@@ -147,4 +147,9 @@ void rct_tile_element::ClearAs(uint8_t newType)
     base_height = 2;
     clearance_height = 2;
     memset(pad_04, 0, sizeof(pad_04));
+}
+
+void TileElementBase::Remove()
+{
+    tile_element_remove((rct_tile_element*)this);
 }

@@ -88,7 +88,7 @@ TEST_F(TileElementWantsFootpathConnection, Stall)
 TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 {
     // Ride entrances and exits want a connection in one direction
-    const rct_tile_element* const entranceElement = map_get_ride_entrance_element_at(18 << 5, 8 << 5, 14, false);
+    const EntranceElement* const entranceElement = map_get_ride_entrance_element_at(18 << 5, 8 << 5, 14, false);
     ASSERT_NE(entranceElement, nullptr);
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 8, 14, 0 }, nullptr));
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 8, 14, 1 }, nullptr));
@@ -100,7 +100,7 @@ TEST_F(TileElementWantsFootpathConnection, RideEntrance)
 TEST_F(TileElementWantsFootpathConnection, RideExit)
 {
     // The exit has been rotated; it wants a path connection in direction 1, but not 0 like the entrance
-    const rct_tile_element* const exitElement = map_get_ride_exit_element_at(18 << 5, 10 << 5, 14, false);
+    const EntranceElement* const exitElement = map_get_ride_exit_element_at(18 << 5, 10 << 5, 14, false);
     ASSERT_NE(exitElement, nullptr);
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 14, 0 }, nullptr));
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 10, 14, 1 }, nullptr));

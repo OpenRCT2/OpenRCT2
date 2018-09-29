@@ -30,11 +30,11 @@ static uint32_t _unk9E32BC;
 static void ride_entrance_exit_paint(
     paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element)
 {
-    uint8_t is_exit = tile_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
+    uint8_t is_exit = tile_element->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
     if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
-        if (tile_element->properties.entrance.ride_index != gTrackDesignSaveRideIndex)
+        if (tile_element->AsEntrance()->GetRideIndex() != gTrackDesignSaveRideIndex)
             return;
     }
 
@@ -68,7 +68,7 @@ static void ride_entrance_exit_paint(
     }
 #endif
 
-    Ride* ride = get_ride(tile_element->properties.entrance.ride_index);
+    Ride* ride = get_ride(tile_element->AsEntrance()->GetRideIndex());
     if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE)
         return;
 
@@ -155,7 +155,7 @@ static void ride_entrance_exit_paint(
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    if (!is_exit && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) && tile_element->properties.entrance.ride_index != 0xFF)
+    if (!is_exit && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) && tile_element->AsEntrance()->GetRideIndex() != 0xFF)
     {
         set_format_arg(0, uint32_t, 0);
         set_format_arg(4, uint32_t, 0);
@@ -231,13 +231,13 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
 
     // Index to which part of the entrance
     // Middle, left, right
-    uint8_t part_index = tile_element->properties.entrance.index & 0xF;
+    uint8_t part_index = tile_element->AsEntrance()->GetSequenceIndex();
     rct_footpath_entry* path_entry = nullptr;
 
     // The left and right of the park entrance often have this set to 127.
     // So only attempt to get the footpath type if we're dealing with the middle bit of the entrance.
     if (part_index == 0)
-        path_entry = get_footpath_entry(tile_element->properties.entrance.path_type);
+        path_entry = get_footpath_entry(tile_element->AsEntrance()->GetPathType());
 
     rct_entrance_type* entrance;
     uint8_t di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
@@ -345,7 +345,7 @@ void entrance_paint(paint_session* session, uint8_t direction, int32_t height, c
         }
     }
 
-    switch (tile_element->properties.entrance.type)
+    switch (tile_element->AsEntrance()->GetEntranceType())
     {
         case ENTRANCE_TYPE_RIDE_ENTRANCE:
         case ENTRANCE_TYPE_RIDE_EXIT:

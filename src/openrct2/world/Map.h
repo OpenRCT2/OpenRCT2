@@ -135,15 +135,15 @@ rct_tile_element* map_get_first_element_at(int32_t x, int32_t y);
 rct_tile_element* map_get_nth_element_at(int32_t x, int32_t y, int32_t n);
 void map_set_tile_elements(int32_t x, int32_t y, rct_tile_element* elements);
 int32_t map_height_from_slope(int32_t x, int32_t y, int32_t slope);
-rct_tile_element* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
+BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
 rct_tile_element* map_get_surface_element_at(int32_t x, int32_t y);
 rct_tile_element* map_get_surface_element_at(CoordsXY coords);
 rct_tile_element* map_get_path_element_at(int32_t x, int32_t y, int32_t z);
 rct_tile_element* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
 rct_tile_element* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
-rct_tile_element* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
-rct_tile_element* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
-rct_tile_element* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
+EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
+EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
+EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 int32_t tile_element_height(int32_t x, int32_t y);
 bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirection);
 void map_remove_provisional_elements();
@@ -296,7 +296,5 @@ void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tiles, uint8_t ownership);
 
 bool place_peep_spawn(CoordsXYZD location);
-
-uint8_t entrance_element_get_type(const rct_tile_element* tileElement);
 
 #endif

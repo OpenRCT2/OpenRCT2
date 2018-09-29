@@ -4820,7 +4820,7 @@ void rct_peep::UpdateRideMazePathfinding()
         }
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
-            && tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
+            && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
         {
             mazeType = maze_type::entrance_or_exit;
             break;

@@ -86,7 +86,7 @@ static int32_t banner_clear_path_edges(rct_tile_element* tileElement, int32_t ed
     {
         do
         {
-            edges &= bannerElement->properties.banner.flags;
+            edges &= bannerElement->AsBanner()->GetAllowedEdges();
         } while ((bannerElement = get_banner_on_path(bannerElement)) != nullptr);
     }
     return edges;
@@ -313,13 +313,13 @@ static uint8_t footpath_element_dest_in_dir(
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (loc.z != tileElement->base_height)
                     continue;
-                switch (tileElement->properties.entrance.type)
+                switch (tileElement->AsEntrance()->GetEntranceType())
                 {
                     case ENTRANCE_TYPE_RIDE_ENTRANCE:
                         direction = tileElement->GetDirection();
                         if (direction == chosenDirection)
                         {
-                            *outRideIndex = tileElement->properties.entrance.ride_index;
+                            *outRideIndex = tileElement->AsEntrance()->GetRideIndex();
                             return PATH_SEARCH_RIDE_ENTRANCE;
                         }
                         break;
@@ -327,7 +327,7 @@ static uint8_t footpath_element_dest_in_dir(
                         direction = tileElement->GetDirection();
                         if (direction == chosenDirection)
                         {
-                            *outRideIndex = tileElement->properties.entrance.ride_index;
+                            *outRideIndex = tileElement->AsEntrance()->GetRideIndex();
                             return PATH_SEARCH_RIDE_EXIT;
                         }
                         break;
@@ -673,7 +673,7 @@ static void peep_pathfind_heuristic_search(
                     continue;
                 int32_t direction;
                 searchResult = PATH_SEARCH_OTHER;
-                switch (tileElement->properties.entrance.type)
+                switch (tileElement->AsEntrance()->GetEntranceType())
                 {
                     case ENTRANCE_TYPE_RIDE_ENTRANCE:
                         /* For peeps heading for a ride without a queue, the
@@ -686,7 +686,7 @@ static void peep_pathfind_heuristic_search(
                         {
                             /* The rideIndex will be useful for
                              * adding transport rides later. */
-                            rideIndex = tileElement->properties.entrance.ride_index;
+                            rideIndex = tileElement->AsEntrance()->GetRideIndex();
                             searchResult = PATH_SEARCH_RIDE_ENTRANCE;
                             found = true;
                             break;

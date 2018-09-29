@@ -1640,7 +1640,7 @@ rct_window* window_ride_open_track(rct_tile_element* tileElement)
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        int32_t rideIndex = tileElement->properties.entrance.ride_index;
+        int32_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
         // Open ride window in station view
         return window_ride_open_station(rideIndex, tileElement->AsEntrance()->GetStationIndex());
     }

@@ -2536,15 +2536,15 @@ private:
                     break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
-                    if (tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+                    if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     {
-                        uint8_t pathType = tileElement->properties.entrance.path_type;
+                        uint8_t pathType = tileElement->AsEntrance()->GetPathType();
                         if (pathType == 0)
                         {
                             pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
                         }
                         uint8_t entryIndex = _pathTypeToEntryMap[pathType];
-                        tileElement->properties.entrance.path_type = entryIndex & 0x7F;
+                        tileElement->AsEntrance()->SetPathType(entryIndex & 0x7F);
                     }
                     break;
             }
@@ -2646,7 +2646,7 @@ private:
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                     {
-                        uint8_t index = tileElement->properties.banner.index;
+                        uint8_t index = tileElement->AsBanner()->GetIndex();
                         rct_banner* src = &_s4.banners[index];
                         rct_banner* dst = &gBanners[index];
                         ImportBanner(dst, src);
@@ -2708,9 +2708,9 @@ private:
 
             if (element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
-            if (element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
-            if ((element->properties.entrance.index & 0x0F) != 0)
+            if ((element->AsEntrance()->GetSequenceIndex()) != 0)
                 continue;
 
             gParkEntrances[entranceIndex].x = it.x * 32;

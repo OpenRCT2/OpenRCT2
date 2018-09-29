@@ -114,10 +114,10 @@ static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
 
-        ride = get_ride(tileElement->properties.entrance.ride_index);
+        ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
         entranceDefinition = &RideEntranceDefinitions[ride->entrance_style];
 
         int32_t height = (tileElement->base_height * 8) + entranceDefinition->height + 8;
@@ -246,9 +246,9 @@ static bool map_animation_invalidate_park_entrance(int32_t x, int32_t y, int32_t
             continue;
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.index & 0x0F)
+        if (tileElement->AsEntrance()->GetSequenceIndex())
             continue;
 
         baseZ = tileElement->base_height * 8;

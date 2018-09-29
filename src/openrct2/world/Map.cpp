@@ -307,7 +307,7 @@ rct_tile_element* map_get_path_element_at(int32_t x, int32_t y, int32_t z)
     return nullptr;
 }
 
-rct_tile_element* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t position)
+BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t position)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x, y);
 
@@ -321,10 +321,10 @@ rct_tile_element* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uin
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (tileElement->properties.banner.position != position)
+        if (tileElement->AsBanner()->GetPosition() != position)
             continue;
 
-        return tileElement;
+        return tileElement->AsBanner();
     } while (!(tileElement++)->IsLastForTile());
 
     return nullptr;
@@ -3144,7 +3144,7 @@ void map_remove_all_rides()
                 }
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                if (it.element->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (it.element->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
 
                 // fall-through
@@ -3424,7 +3424,7 @@ void map_obstruction_set_error_text(rct_tile_element* tileElement)
             set_format_arg(0, rct_string_id, sceneryEntry->name);
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            switch (tileElement->properties.entrance.type)
+            switch (tileElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
                     errorStringId = STR_RIDE_ENTRANCE_IN_THE_WAY;
@@ -3848,7 +3848,7 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
         case TILE_ELEMENT_TYPE_ENTRANCE:
         {
             int32_t rotation = element->GetDirectionWithOffset(1);
-            switch (element->properties.entrance.index & 0x0F)
+            switch (element->AsEntrance()->GetSequenceIndex())
             {
                 case 1:
                     x += CoordsDirectionDelta[rotation].x;
@@ -3880,7 +3880,7 @@ static void clear_element_at(int32_t x, int32_t y, rct_tile_element** elementPtr
         case TILE_ELEMENT_TYPE_BANNER:
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
             game_do_command(
-                x, GAME_COMMAND_FLAG_APPLY, y, (element->base_height) | ((element->properties.banner.position & 3) << 8),
+                x, GAME_COMMAND_FLAG_APPLY, y, (element->base_height) | ((element->AsBanner()->GetPosition() & 3) << 8),
                 GAME_COMMAND_REMOVE_BANNER, 0, 0);
             break;
         default:
@@ -3959,7 +3959,7 @@ rct_tile_element* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z,
     return nullptr;
 }
 
-rct_tile_element* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
@@ -3972,19 +3972,19 @@ rct_tile_element* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t
             if (tileElement->base_height != z)
                 continue;
 
-            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
             if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
                 continue;
 
-            return tileElement;
+            return tileElement->AsEntrance();
         } while (!(tileElement++)->IsLastForTile());
     }
     return nullptr;
 }
 
-rct_tile_element* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
@@ -3997,19 +3997,19 @@ rct_tile_element* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t
             if (tileElement->base_height != z)
                 continue;
 
-            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+            if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 continue;
 
             if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
                 continue;
 
-            return tileElement;
+            return tileElement->AsEntrance();
         } while (!(tileElement++)->IsLastForTile());
     }
     return nullptr;
 }
 
-rct_tile_element* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
+EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
@@ -4022,13 +4022,13 @@ rct_tile_element* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, 
             if (tileElement->base_height != z)
                 continue;
 
-            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT)
+            if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 continue;
 
             if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
                 continue;
 
-            return tileElement;
+            return tileElement->AsEntrance();
         } while (!(tileElement++)->IsLastForTile());
     }
     return nullptr;
@@ -4821,7 +4821,8 @@ uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t 
     {
         int32_t type = tileElement->GetType();
         if (type == TILE_ELEMENT_TYPE_PATH
-            || (type == TILE_ELEMENT_TYPE_ENTRANCE && tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE))
+            || (type == TILE_ELEMENT_TYPE_ENTRANCE
+                && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE))
         {
             destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;
             // Do not own construction rights if too high/below surface
@@ -4850,9 +4851,4 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
         currentElement->AsSurface()->SetOwnership(ownership);
         update_park_fences_around_tile({ (*tile).x * 32, (*tile).y * 32 });
     }
-}
-
-uint8_t entrance_element_get_type(const rct_tile_element* tileElement)
-{
-    return (tileElement->properties.entrance.type);
 }

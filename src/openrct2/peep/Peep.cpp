@@ -2429,8 +2429,8 @@ static void peep_return_to_centre_of_tile(rct_peep* peep)
 static void peep_interact_with_entrance(
     rct_peep* peep, int16_t x, int16_t y, rct_tile_element* tile_element, uint8_t& pathing_result)
 {
-    uint8_t entranceType = tile_element->properties.entrance.type;
-    uint8_t rideIndex = tile_element->properties.entrance.ride_index;
+    uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
+    uint8_t rideIndex = tile_element->AsEntrance()->GetRideIndex();
 
     // Store some details to determine when to override the default
     // behaviour (defined below) for when staff attempt to enter a ride
@@ -2486,7 +2486,7 @@ static void peep_interact_with_entrance(
         }
 
         peep->time_lost = 0;
-        uint8_t stationNum = (tile_element->properties.entrance.index >> 4) & 0x7;
+        uint8_t stationNum = tile_element->AsEntrance()->GetStationIndex();
         // Guest walks up to the ride for the first time since entering
         // the path tile or since considering another ride attached to
         // the path tile.
@@ -2538,7 +2538,7 @@ static void peep_interact_with_entrance(
         }
 
         // If not the centre of the entrance arch
-        if (tile_element->properties.entrance.index & 0xF)
+        if (tile_element->AsEntrance()->GetSequenceIndex() != 0)
         {
             peep_return_to_centre_of_tile(peep);
             return;

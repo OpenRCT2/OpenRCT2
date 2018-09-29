@@ -135,7 +135,7 @@ rct_window* window_banner_open(rct_windownumber number)
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
     while (1)
     {
-        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->properties.banner.index == w->number))
+        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->AsBanner()->GetIndex() == w->number))
         {
             break;
         }
@@ -175,7 +175,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 
     while (1)
     {
-        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->properties.banner.index == w->number))
+        if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->AsBanner()->GetIndex() == w->number))
             break;
         tile_element++;
     }
@@ -187,8 +187,8 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_BANNER_DEMOLISH:
             game_do_command(
-                x, 1, y, tile_element->base_height | (tile_element->properties.banner.position << 8),
-                GAME_COMMAND_REMOVE_BANNER, 0, 0);
+                x, 1, y, tile_element->base_height | (tile_element->AsBanner()->GetPosition() << 8), GAME_COMMAND_REMOVE_BANNER,
+                0, 0);
             break;
         case WIDX_BANNER_TEXT:
             window_text_input_open(

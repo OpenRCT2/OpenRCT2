@@ -28,29 +28,9 @@ struct rct_tile_element_path_properties
 };
 assert_struct_size(rct_tile_element_path_properties, 4);
 
-struct rct_tile_element_entrance_properties
-{
-    uint8_t type;       // 4
-    uint8_t index;      // 5
-    uint8_t path_type;  // 6
-    uint8_t ride_index; // 7
-};
-assert_struct_size(rct_tile_element_entrance_properties, 4);
-
-struct rct_tile_element_banner_properties
-{
-    BannerIndex index; // 4
-    uint8_t position;  // 5
-    uint8_t flags;     // 6
-    uint8_t unused;    // 7
-};
-assert_struct_size(rct_tile_element_banner_properties, 4);
-
 union rct_tile_element_properties
 {
     rct_tile_element_path_properties path;
-    rct_tile_element_entrance_properties entrance;
-    rct_tile_element_banner_properties banner;
 };
 assert_struct_size(rct_tile_element_properties, 4);
 
@@ -106,6 +86,7 @@ struct TileElementBase
     uint8_t GetDirectionWithOffset(uint8_t offset) const;
     bool IsLastForTile() const;
     bool IsGhost() const;
+    void Remove();
 };
 
 /**
@@ -374,17 +355,50 @@ assert_struct_size(WallElement, 8);
 
 struct EntranceElement : TileElementBase
 {
-    rct_tile_element_entrance_properties temp;
+private:
+    uint8_t entranceType; // 4
+    uint8_t index;        // 5. 0bUSSS????, S = station index.
+    uint8_t pathType;     // 6
+    uint8_t rideIndex;    // 7
 
 public:
+    uint8_t GetEntranceType() const;
+    void SetEntranceType(uint8_t newType);
+
+    uint8_t GetRideIndex() const;
+    void SetRideIndex(uint8_t newRideIndex);
+
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t stationIndex);
+
+    uint8_t GetSequenceIndex() const;
+    void SetSequenceIndex(uint8_t newSequenceIndex);
+
+    uint8_t GetPathType() const;
+    void SetPathType(uint8_t newPathType);
 };
 assert_struct_size(EntranceElement, 8);
 
 struct BannerElement : TileElementBase
 {
-    rct_tile_element_banner_properties temp;
+private:
+    BannerIndex index; // 4
+    uint8_t position;  // 5
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-private-field"
+    uint8_t flags;  // 6
+    uint8_t unused; // 7
+#pragma clang diagnostic pop
+public:
+    BannerIndex GetIndex() const;
+    void SetIndex(BannerIndex newIndex);
+
+    uint8_t GetPosition() const;
+    void SetPosition(uint8_t newPosition);
+
+    uint8_t GetAllowedEdges() const;
+    void SetAllowedEdges(uint8_t newEdges);
+    void ResetAllowedEdges();
 };
 assert_struct_size(BannerElement, 8);
 

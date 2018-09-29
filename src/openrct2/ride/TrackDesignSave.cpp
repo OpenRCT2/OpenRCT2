@@ -605,11 +605,12 @@ static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rc
                 return true;
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+            // FIXME: This will always break and return false!
+            if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 break;
-            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT)
+            if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
                 break;
-            if (tileElement->properties.entrance.ride_index == rideIndex)
+            if (tileElement->AsEntrance()->GetRideIndex() == rideIndex)
                 return true;
             break;
     }
@@ -926,9 +927,9 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.ride_index == rideIndex)
+        if (tileElement->AsEntrance()->GetRideIndex() == rideIndex)
             break;
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end
@@ -956,9 +957,9 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT)
+        if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
             continue;
-        if (tileElement->properties.entrance.ride_index == rideIndex)
+        if (tileElement->AsEntrance()->GetRideIndex() == rideIndex)
             break;
     } while (!(tileElement++)->IsLastForTile());
     // Add something that stops this from walking off the end

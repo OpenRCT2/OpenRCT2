@@ -1031,13 +1031,13 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            rct_banner* banner = &gBanners[tile_element->properties.banner.index];
+            rct_banner* banner = &gBanners[tile_element->AsBanner()->GetIndex()];
             rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
             if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
             {
                 gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
                 game_do_command(
-                    grid_x, 1, grid_y, tile_element->base_height | ((tile_element->properties.banner.position & 0x3) << 8),
+                    grid_x, 1, grid_y, tile_element->base_height | ((tile_element->AsBanner()->GetPosition() & 0x3) << 8),
                     GAME_COMMAND_SET_BANNER_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
             }
             break;
@@ -1114,7 +1114,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            int32_t bannerIndex = tileElement->properties.banner.index;
+            int32_t bannerIndex = tileElement->AsBanner()->GetIndex();
             rct_banner* banner = &gBanners[bannerIndex];
             rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
             if (sceneryEntry != nullptr)

@@ -121,7 +121,7 @@ public:
             }
 
             // Check that entrance element does not already exist at this location
-            rct_tile_element* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
+            EntranceElement* entranceElement = map_get_park_entrance_element_at(entranceLoc.x, entranceLoc.y, zLow, false);
             if (entranceElement != nullptr)
             {
                 return std::make_unique<GameActionResult>(
@@ -183,18 +183,24 @@ public:
 
             rct_tile_element* newElement = tile_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);
             Guard::Assert(newElement != nullptr);
-            newElement->clearance_height = zHigh;
+            newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
+            auto entranceElement = newElement->AsEntrance();
+            if (entranceElement == nullptr)
+            {
+                Guard::Assert(false);
+                return nullptr;
+            }
+            entranceElement->clearance_height = zHigh;
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
                 newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
             }
 
-            newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
-            newElement->SetDirection(_direction);
-            newElement->properties.entrance.index = index;
-            newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
-            newElement->properties.entrance.path_type = gFootpathSelectedId;
+            entranceElement->SetDirection(_direction);
+            entranceElement->SetSequenceIndex(index);
+            entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
+            entranceElement->SetPathType(gFootpathSelectedId);
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {

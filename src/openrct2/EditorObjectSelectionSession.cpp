@@ -148,15 +148,15 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(OBJECT_TYPE_SMALL_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (iter.element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 // Skip if not the middle part
-                if (iter.element->properties.entrance.index != 0)
+                if (iter.element->AsEntrance()->GetSequenceIndex() != 0)
                     break;
 
                 Editor::SetSelectedObject(OBJECT_TYPE_PARK_ENTRANCE, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
-                type = iter.element->properties.entrance.path_type;
+                type = iter.element->AsEntrance()->GetPathType();
                 assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
                 Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
@@ -171,7 +171,7 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(OBJECT_TYPE_LARGE_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
-                banner = &gBanners[iter.element->properties.banner.index];
+                banner = &gBanners[iter.element->AsBanner()->GetIndex()];
                 type = banner->type;
                 assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
                 Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
