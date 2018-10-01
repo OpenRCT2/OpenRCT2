@@ -487,7 +487,6 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         }
     }
 
-    gOpenRCT2Headless = true;
     auto context = CreateContext();
     if (context->Initialise())
     {
