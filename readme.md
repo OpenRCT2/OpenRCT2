@@ -16,7 +16,7 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ---
 
 ### Chat
-You only need a GitHub or Twitter account to access these channels.
+You only need a [GitHub](https://github.com/), [GitLab](https://gitlab.com), or [Twitter](https://twitter.com) account to access these channels.
 
 If you want to help *make* the game, join the developer channel.
 
