@@ -212,7 +212,7 @@ namespace ObjectFactory
                 log_verbose("  size: %zu", chunk->GetLength());
 
                 auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
-                auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless, nullptr);
+                auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
                 ReadObjectLegacy(result, &readContext, &chunkStream);
                 if (readContext.WasError())
                 {
@@ -241,7 +241,7 @@ namespace ObjectFactory
             utf8 objectName[DAT_NAME_LENGTH + 1];
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
-            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2Headless, nullptr);
+            auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
             auto chunkStream = MemoryStream(data, dataSize);
             ReadObjectLegacy(result, &readContext, &chunkStream);
 
@@ -409,7 +409,7 @@ namespace ObjectFactory
                 memcpy(entry.name, originalName.c_str(), minLength);
 
                 result = CreateObject(entry);
-                auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2Headless, fileRetriever);
+                auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);
                 result->ReadJson(&readContext, jRoot);
                 if (readContext.WasError())
                 {
