@@ -41,9 +41,9 @@ If you want to help translate the game to your language, please stop by the Loca
   - 4.1 - [Bug fixes](#41-bug-fixes)
   - 4.2 - [New features](#42-new-features)
   - 4.3 - [Translation](#43-translation)
-  - 4.4 - [Graphics](#44-graphics]
-  - 4.5 - [Audio](#45-audio]
-  - 4.6 - [Scenarios](#46-scenarios]
+  - 4.4 - [Graphics](#44-graphics)
+  - 4.5 - [Audio](#45-audio)
+  - 4.6 - [Scenarios](#46-scenarios)
 - 5 - [Licence](#5-licence)
 - 6 - [More information](#6-more-information)
 - 7 - [Sponsors](#7-sponsors)
