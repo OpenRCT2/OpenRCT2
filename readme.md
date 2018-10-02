@@ -41,6 +41,9 @@ If you want to help translate the game to your language, please stop by the Loca
   - 4.1 - [Bug fixes](#41-bug-fixes)
   - 4.2 - [New features](#42-new-features)
   - 4.3 - [Translation](#43-translation)
+  - 4.4 - [Graphics](#44-graphics]
+  - 4.5 - [Audio](#45-audio]
+  - 4.6 - [Scenarios](#46-scenarios]
 - 5 - [Licence](#5-licence)
 - 6 - [More information](#6-more-information)
 - 7 - [Sponsors](#7-sponsors)
@@ -179,6 +182,15 @@ Please talk to the OpenRCT2 team first before starting to develop a new feature.
 
 ## 4.3 Translation
 You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions and submit pull requests to [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
+
+## 4.4 Graphics
+You can help create new graphics for the game by visiting the [OpenGFX project](https://gitter.im/zrowny/OpenRCT2-OpenGraphics). 3D Modellers needed!
+
+## 4.5 Audio
+We need sound! Specifically, we need new Music and Sound for the game, that we can freely distribute. For more information, and to help, please visit [The OpenMusic Chat](https://gitter.im/OpenRCT2-OpenMusic/Lobby)
+
+# 4.6 Scenarios
+We also need need Scenarios to distribute with the game, when the time comes. For that, we need talented scenario makers! Come chat with us [Over here!](https://gitter.im/PFCKrutonium/OpenRCT2-OpenScenarios)
 
 ---
 
