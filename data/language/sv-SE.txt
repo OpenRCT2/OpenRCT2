@@ -3733,6 +3733,8 @@ STR_6262    :Huvudvolym
 STR_6263    :{SMALLFONT}{BLACK}Växla alla ljud på/av
 STR_6264    :Använd alltid operativsystemets filhanterare
 STR_6265    :{SMALLFONT}{BLACK}Om aktiverad kommer spelet använda filhanteraren på datorn istället för OpenRCT2s egna.
+STR_6266    :Öppna mappen för anpassat innehåll
+STR_6267    :Öppna rutinspekteraren
 
 
 
