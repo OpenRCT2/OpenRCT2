@@ -1455,7 +1455,7 @@ static void sub_6E1F34(
                 << 8;
             *parameter_2 = tile_element->base_height;
             *parameter_2 |= ((footpath_element_get_type(tile_element)) << 8);
-            if (footpath_element_is_queue(tile_element))
+            if (tile_element->AsPath()->IsQueue())
             {
                 *parameter_2 |= LOCATION_NULL;
             }
@@ -2403,8 +2403,10 @@ static money32 try_place_ghost_scenery(
             // Small Scenery
             // 6e252b
             cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_SCENERY, parameter_3,
-                gSceneryPlaceZ);
+                map_tile.x,
+                parameter_1 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                    | GAME_COMMAND_FLAG_GHOST,
+                map_tile.y, parameter_2, GAME_COMMAND_PLACE_SCENERY, parameter_3, gSceneryPlaceZ);
 
             if (cost == MONEY32_UNDEFINED)
                 return cost;
@@ -2416,7 +2418,7 @@ static money32 try_place_ghost_scenery(
 
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
-            gSceneryTileElementType = tileElement->type;
+            gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
             if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on

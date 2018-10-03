@@ -270,7 +270,7 @@ static money32 footpath_element_insert(
             footpath_element_set_type(tileElement, type);
             tileElement->properties.path.type |= (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
             if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
-                footpath_element_set_queue(tileElement);
+                tileElement->AsPath()->SetIsQueue(true);
             tileElement->properties.path.additions = pathItemType;
             tileElement->properties.path.addition_status = 255;
             tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
@@ -302,7 +302,7 @@ static money32 footpath_element_update(
     const int32_t newFootpathType = (type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
     const bool newPathIsQueue = ((type >> 7) == 1);
 
-    if (footpath_element_get_type(tileElement) != newFootpathType || footpath_element_is_queue(tileElement) != newPathIsQueue)
+    if (footpath_element_get_type(tileElement) != newFootpathType || tileElement->AsPath()->IsQueue() != newPathIsQueue)
     {
         gFootpathPrice += MONEY(6, 00);
     }
@@ -328,7 +328,7 @@ static money32 footpath_element_update(
                 return MONEY32_UNDEFINED;
             }
 
-            if ((unk6 & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE) && footpath_element_is_queue(tileElement))
+            if ((unk6 & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE) && tileElement->AsPath()->IsQueue())
             {
                 gGameCommandErrorText = STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA;
                 return MONEY32_UNDEFINED;
@@ -341,7 +341,7 @@ static money32 footpath_element_update(
                 return MONEY32_UNDEFINED;
             }
 
-            if ((unk6 & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !footpath_element_is_queue(tileElement))
+            if ((unk6 & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !tileElement->AsPath()->IsQueue())
             {
                 gGameCommandErrorText = STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA;
                 return MONEY32_UNDEFINED;
@@ -1056,7 +1056,7 @@ static rct_tile_element* footpath_connect_corners_get_neighbour(int32_t x, int32
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (footpath_element_is_queue(tileElement))
+        if (tileElement->AsPath()->IsQueue())
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -1081,7 +1081,7 @@ static void footpath_connect_corners(int32_t initialX, int32_t initialY, rct_til
 {
     rct_tile_element* tileElement[4];
 
-    if (footpath_element_is_queue(initialTileElement))
+    if (initialTileElement->AsPath()->IsQueue())
         return;
     if (footpath_element_is_sloped(initialTileElement))
         return;
@@ -1264,7 +1264,7 @@ static bool sub_footpath_disconnect_queue_from_path(
     int32_t y1 = y + CoordsDirectionDelta[direction].y;
     int32_t z = tileElement->base_height;
     rct_tile_element* otherTileElement = footpath_get_element(x1, y1, z - 2, z, direction);
-    if (otherTileElement != nullptr && !footpath_element_is_queue(otherTileElement))
+    if (otherTileElement != nullptr && !otherTileElement->AsPath()->IsQueue())
     {
         tileElement->properties.path.type &= ~FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
         if (action > 0)
@@ -1288,7 +1288,7 @@ static bool sub_footpath_disconnect_queue_from_path(
 
 static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, rct_tile_element* tileElement, int32_t action)
 {
-    if (!footpath_element_is_queue(tileElement))
+    if (!tileElement->AsPath()->IsQueue())
         return false;
 
     if (footpath_element_is_sloped(tileElement))
@@ -1423,7 +1423,7 @@ static void loc_6A6D7E(
             {
                 return;
             }
-            if (footpath_element_is_queue(tileElement))
+            if (tileElement->AsPath()->IsQueue())
             {
                 if (connected_path_count[tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK] < 2)
                 {
@@ -1433,8 +1433,7 @@ static void loc_6A6D7E(
                 }
                 else
                 {
-                    if ((initialTileElement)->GetType() == TILE_ELEMENT_TYPE_PATH
-                        && footpath_element_is_queue(initialTileElement))
+                    if ((initialTileElement)->GetType() == TILE_ELEMENT_TYPE_PATH && initialTileElement->AsPath()->IsQueue())
                     {
                         if (footpath_disconnect_queue_from_path(x, y, tileElement, 0))
                         {
@@ -1454,7 +1453,7 @@ static void loc_6A6D7E(
         {
             footpath_disconnect_queue_from_path(x, y, tileElement, 1 + ((flags >> 6) & 1));
             tileElement->properties.path.edges |= (1 << (direction ^ 2));
-            if (footpath_element_is_queue(tileElement))
+            if (tileElement->AsPath()->IsQueue())
             {
                 footpath_queue_chain_push(tileElement->properties.path.ride_index);
             }
@@ -1552,7 +1551,7 @@ void footpath_connect_edges(int32_t x, int32_t y, rct_tile_element* tileElement,
 
     neighbour_list_sort(&neighbourList);
 
-    if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && footpath_element_is_queue(tileElement))
+    if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->AsPath()->IsQueue())
     {
         int32_t rideIndex = -1;
         uint8_t entranceIndex = 255;
@@ -1655,7 +1654,7 @@ void footpath_chain_ride_queue(
         break;
 
     foundNextPath:
-        if (footpath_element_is_queue(tileElement))
+        if (tileElement->AsPath()->IsQueue())
         {
             // Fix #2051: Stop queue paths that are already connected to two other tiles
             //            from connecting to the tile we are coming from.
@@ -1699,7 +1698,7 @@ void footpath_chain_ride_queue(
 
     if (rideIndex != 255 && lastPathElement != nullptr)
     {
-        if (footpath_element_is_queue(lastPathElement))
+        if (lastPathElement->AsPath()->IsQueue())
         {
             lastPathElement->properties.path.type |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
             lastPathElement->type &= 0x3F;                                      // Clear the ride sign direction
@@ -1859,7 +1858,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
 
         if (!(flags & (1 << 0)))
         {
-            if (footpath_element_is_queue(tileElement))
+            if (tileElement->AsPath()->IsQueue())
             {
                 continue;
             }
@@ -1976,19 +1975,16 @@ uint8_t footpath_element_get_slope_direction(const rct_tile_element* tileElement
     return tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 }
 
-bool footpath_element_is_queue(const rct_tile_element* tileElement)
+bool PathElement::IsQueue() const
 {
-    return (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
+    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) != 0;
 }
 
-void footpath_element_set_queue(rct_tile_element* tileElement)
+void PathElement::SetIsQueue(bool isQueue)
 {
-    tileElement->type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
-}
-
-void footpath_element_clear_queue(rct_tile_element* tileElement)
-{
-    tileElement->type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
+    type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
+    if (isQueue)
+        type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
 }
 
 bool footpath_element_has_queue_banner(const rct_tile_element* tileElement)
@@ -2097,7 +2093,7 @@ static rct_tile_element* footpath_can_be_wide(int32_t x, int32_t y, uint8_t heig
             continue;
         if (height != tileElement->base_height)
             continue;
-        if (footpath_element_is_queue(tileElement))
+        if (tileElement->AsPath()->IsQueue())
             continue;
         if (footpath_element_is_sloped(tileElement))
             continue;
@@ -2147,7 +2143,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (footpath_element_is_queue(tileElement))
+        if (tileElement->AsPath()->IsQueue())
             continue;
 
         if (footpath_element_is_sloped(tileElement))
@@ -2324,7 +2320,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
     switch (elementType)
     {
         case TILE_ELEMENT_TYPE_PATH:
-            if (footpath_element_is_queue(tileElement))
+            if (tileElement->AsPath()->IsQueue())
             {
                 footpath_queue_chain_push(tileElement->properties.path.ride_index);
                 for (int32_t direction = 0; direction < 4; direction++)
@@ -2356,7 +2352,7 @@ static void footpath_remove_edges_towards_here(
 {
     int32_t d;
 
-    if (footpath_element_is_queue(tileElement))
+    if (tileElement->AsPath()->IsQueue())
     {
         footpath_queue_chain_push(tileElement->properties.path.ride_index);
     }
@@ -2588,10 +2584,10 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
         // to.
         if (!tile_element_wants_path_connection_towards({ x / 32, y / 32, z1, direction }, tileElement))
         {
+            bool isQueue = tileElement->GetType() == TILE_ELEMENT_TYPE_PATH ? tileElement->AsPath()->IsQueue() : false;
             int32_t z0 = z1 - 2;
             footpath_remove_edges_towards(
-                x + CoordsDirectionDelta[direction].x, y + CoordsDirectionDelta[direction].y, z0, z1, direction,
-                footpath_element_is_queue(tileElement));
+                x + CoordsDirectionDelta[direction].x, y + CoordsDirectionDelta[direction].y, z0, z1, direction, isQueue);
         }
         else
         {

@@ -357,7 +357,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             set_map_tooltip_format_arg(2, rct_string_id, STR_FOOTPATH_MAP_TIP);
-            if (footpath_element_is_queue(tileElement))
+            if (tileElement->AsPath()->IsQueue())
                 set_map_tooltip_format_arg(2, rct_string_id, STR_QUEUE_LINE_MAP_TIP);
             return info->type;
 
@@ -467,8 +467,8 @@ static void viewport_interaction_remove_scenery(rct_tile_element* tileElement, i
 {
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
     game_do_command(
-        x, (tileElement->type << 8) | 1, y, (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | tileElement->base_height,
-        GAME_COMMAND_REMOVE_SCENERY, 0, 0);
+        x, (tileElement->AsSmallScenery()->GetSceneryQuadrant() << 8) | GAME_COMMAND_FLAG_APPLY, y,
+        (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | tileElement->base_height, GAME_COMMAND_REMOVE_SCENERY, 0, 0);
 }
 
 /**
@@ -507,7 +507,7 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElem
     int32_t type;
 
     type = footpath_element_get_type(tileElement);
-    if (footpath_element_is_queue(tileElement))
+    if (tileElement->AsPath()->IsQueue())
         type |= 0x80;
 
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;

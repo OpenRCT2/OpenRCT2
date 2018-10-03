@@ -2631,7 +2631,7 @@ static void peep_interact_with_entrance(
             if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
-            if (footpath_element_is_queue(nextTileElement))
+            if (nextTileElement->AsPath()->IsQueue())
                 continue;
 
             if (footpath_element_is_sloped(nextTileElement))
@@ -2902,7 +2902,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
         }
     }
 
-    if (peep->type == PEEP_TYPE_GUEST && footpath_element_is_queue(tile_element))
+    if (peep->type == PEEP_TYPE_GUEST && tile_element->AsPath()->IsQueue())
     {
         uint8_t rideIndex = tile_element->properties.path.ride_index;
 

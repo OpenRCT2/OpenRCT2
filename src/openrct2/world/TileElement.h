@@ -178,12 +178,28 @@ public:
 
     uint8_t GetParkFences() const;
     void SetParkFences(uint8_t newParkFences);
+
+    bool HasTrackThatNeedsWater() const;
+    void SetHasTrackThatNeedsWater(bool on);
 };
 assert_struct_size(SurfaceElement, 8);
 
 struct PathElement : TileElementBase
 {
-    rct_tile_element_path_properties temp;
+    uint8_t pathType;  // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
+    uint8_t additions; // 5
+    uint8_t edges;     // 6
+    union
+    {
+        uint8_t additionStatus; // 7
+        uint8_t rideIndex;
+    };
+
+public:
+    bool IsQueue() const;
+    void SetIsQueue(bool isQueue);
+
+    uint8_t GetRCT1PathType() const;
 };
 assert_struct_size(PathElement, 8);
 
@@ -254,6 +270,9 @@ public:
     bool IsTakingPhoto() const;
     void SetPhotoTimeout();
     void DecrementPhotoTimeout();
+
+    bool IsHighlighted() const;
+    void SetHighlight(bool on);
 
     // Used in RCT1, will be reintroduced at some point.
     // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
@@ -419,7 +438,8 @@ enum
 
 enum
 {
-    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6)
+    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6),
+    SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
 };
 
 enum

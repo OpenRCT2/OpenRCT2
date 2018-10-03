@@ -409,3 +409,8 @@ uint32_t SurfaceElement::GetWaterHeight() const
 {
     return terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
 }
+
+bool TrackElement::IsHighlighted() const
+{
+    return (type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT);
+}

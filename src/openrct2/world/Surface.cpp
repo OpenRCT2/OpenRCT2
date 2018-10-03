@@ -215,3 +215,15 @@ void SurfaceElement::SetSlope(uint8_t newSlope)
     slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
     slope |= (newSlope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
 }
+
+bool SurfaceElement::HasTrackThatNeedsWater() const
+{
+    return (type & SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER) != 0;
+}
+
+void SurfaceElement::SetHasTrackThatNeedsWater(bool on)
+{
+    type &= ~SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
+    if (on)
+        type |= SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER;
+}

@@ -60,8 +60,6 @@
 
 using namespace OpenRCT2;
 
-static uint8_t GetPathType(rct_tile_element* tileElement);
-
 class EntryList
 {
 private:
@@ -480,7 +478,7 @@ private:
             {
                 case TILE_ELEMENT_TYPE_PATH:
                 {
-                    uint8_t pathType = GetPathType(tileElement);
+                    uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                     uint8_t pathAdditionsType = tileElement->properties.path.additions & 0x0F;
 
                     AddEntryForPath(pathType);
@@ -2404,11 +2402,8 @@ private:
             // Fill the rest of the row with blank tiles
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                memset(nextFreeTileElement, 0, sizeof(rct_tile_element));
-                nextFreeTileElement->SetType(TILE_ELEMENT_TYPE_SURFACE);
+                nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
                 nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
-                nextFreeTileElement->base_height = 2;
-                nextFreeTileElement->clearance_height = 2;
                 nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
                 nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
                 nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
@@ -2421,11 +2416,8 @@ private:
         // 128 extra rows left to fill with blank tiles
         for (int32_t y = 0; y < 128 * 256; y++)
         {
-            memset(nextFreeTileElement, 0, sizeof(rct_tile_element));
-            nextFreeTileElement->SetType(TILE_ELEMENT_TYPE_SURFACE);
+            nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
             nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
-            nextFreeTileElement->base_height = 2;
-            nextFreeTileElement->clearance_height = 2;
             nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
             nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
             nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
@@ -2507,16 +2499,16 @@ private:
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     // Type
-                    uint8_t pathType = GetPathType(tileElement);
+                    uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                     uint8_t entryIndex = _pathTypeToEntryMap[pathType];
 
-                    tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
+                    tileElement->SetDirection(0);
                     tileElement->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
 
                     footpath_element_set_type(tileElement, entryIndex);
                     if (RCT1::PathIsQueue(pathType))
                     {
-                        footpath_element_set_queue(tileElement);
+                        tileElement->AsPath()->SetIsQueue(true);
                     }
 
                     footpath_scenery_set_is_ghost(tileElement, false);
@@ -2886,13 +2878,13 @@ void load_from_sc4(const utf8* path)
     s4Importer->Import();
 }
 
-static uint8_t GetPathType(rct_tile_element* tileElement)
+uint8_t PathElement::GetRCT1PathType() const
 {
-    uint8_t pathColour = tileElement->type & 3;
-    uint8_t pathType = (tileElement->properties.path.type & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
+    uint8_t pathColour = type & 3;
+    uint8_t pathType2 = (pathType & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
 
-    pathType = pathType | pathColour;
-    return pathType;
+    pathType2 = pathType2 | pathColour;
+    return pathType2;
 }
 
 int32_t WallElement::GetRCT1WallType(int32_t edge) const

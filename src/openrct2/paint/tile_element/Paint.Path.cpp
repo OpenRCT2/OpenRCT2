@@ -320,7 +320,7 @@ static void sub_6A4101(
     paint_session* session, const rct_tile_element* tile_element, uint16_t height, uint32_t ebp, bool word_F3F038,
     rct_footpath_entry* footpathEntry, uint32_t base_image_id, uint32_t imageFlags)
 {
-    if (footpath_element_is_queue(tile_element))
+    if (tile_element->AsPath()->IsQueue())
     {
         uint8_t local_ebp = ebp & 0x0F;
         if (footpath_element_is_sloped(tile_element))
@@ -798,7 +798,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
 
     if (gTrackDesignSaveMode)
     {
-        if (footpath_element_is_queue(tile_element))
+        if (tile_element->AsPath()->IsQueue())
         {
             if (tile_element->properties.path.ride_index != gTrackDesignSaveRideIndex)
             {
@@ -974,6 +974,8 @@ void path_paint_box_support(
     paint_session* session, const rct_tile_element* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
     bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
+    PathElement* pathElement = tileElement->AsPath();
+
     // Rol edges around rotation
     uint8_t edges = ((tileElement->properties.path.edges << session->CurrentRotation) & 0xF)
         | (((tileElement->properties.path.edges & 0xF) << session->CurrentRotation) >> 4);
@@ -999,7 +1001,7 @@ void path_paint_box_support(
     }
 
     imageId += footpathEntry->image;
-    if (footpath_element_is_queue(tileElement))
+    if (pathElement->IsQueue())
     {
         imageId += 51;
     }
@@ -1049,7 +1051,7 @@ void path_paint_box_support(
             session, image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
             height + boundingBoxZOffset);
 
-        if (!footpath_element_is_queue(tileElement) && !(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
+        if (!pathElement->IsQueue() && !(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
         {
             // don't draw
         }
@@ -1086,7 +1088,7 @@ void path_paint_box_support(
 
     paint_util_set_general_support_height(session, height, 0x20);
 
-    if (footpath_element_is_queue(tileElement) || (tileElement->properties.path.edges != 0xFF && hasFences))
+    if (pathElement->IsQueue() || (tileElement->properties.path.edges != 0xFF && hasFences))
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         return;
@@ -1125,6 +1127,8 @@ void path_paint_pole_support(
     paint_session* session, const rct_tile_element* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
     bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
+    PathElement* pathElement = tileElement->AsPath();
+
     // Rol edges around rotation
     uint8_t edges = ((tileElement->properties.path.edges << session->CurrentRotation) & 0xF)
         | (((tileElement->properties.path.edges & 0xF) << session->CurrentRotation) >> 4);
@@ -1149,7 +1153,7 @@ void path_paint_pole_support(
     }
 
     imageId += footpathEntry->image;
-    if (footpath_element_is_queue(tileElement))
+    if (pathElement->IsQueue())
     {
         imageId += 51;
     }
@@ -1201,7 +1205,7 @@ void path_paint_pole_support(
             session, bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
             boundBoxOffset.y, height + boundingBoxZOffset);
 
-        if (footpath_element_is_queue(tileElement) || (footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
+        if (pathElement->IsQueue() || (footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
         {
             sub_98199C(
                 session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
@@ -1240,7 +1244,7 @@ void path_paint_pole_support(
 
     paint_util_set_general_support_height(session, height, 0x20);
 
-    if (footpath_element_is_queue(tileElement) || (tileElement->properties.path.edges != 0xFF && hasFences))
+    if (pathElement->IsQueue() || (tileElement->properties.path.edges != 0xFF && hasFences))
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         return;

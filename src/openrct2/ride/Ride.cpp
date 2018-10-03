@@ -1389,11 +1389,11 @@ int32_t sub_6C683D(
         }
         if (flags & (1 << 0))
         {
-            tileElement->type &= ~TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT;
+            tileElement->AsTrack()->SetHighlight(false);
         }
         if (flags & (1 << 1))
         {
-            tileElement->type |= TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT;
+            tileElement->AsTrack()->SetHighlight(true);
         }
         if (flags & (1 << 2))
         {
