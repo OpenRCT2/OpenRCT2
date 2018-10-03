@@ -213,7 +213,7 @@ public:
 
     bool IsWide() const;
     void SetWide(bool isWide);
-    
+
     bool IsQueue() const;
     void SetIsQueue(bool isQueue);
     bool HasQueueBanner() const;
@@ -226,7 +226,7 @@ public:
 
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);
-    
+
     uint8_t GetRCT1PathType() const;
 };
 assert_struct_size(PathElement, 8);

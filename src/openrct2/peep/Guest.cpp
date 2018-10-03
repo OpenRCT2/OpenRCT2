@@ -640,8 +640,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                             continue;
 
                         // Check if the footpath has a queue line TV monitor on it
-                        if (tileElement->AsPath()->HasAddition()
-                            && !tileElement->AsPath()->AdditionIsGhost())
+                        if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
                         {
                             uint8_t pathSceneryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
                             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
@@ -4914,7 +4913,7 @@ void rct_peep::UpdateRideLeaveExit()
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        int16_t height = map_height_from_slope({x, y}, tileElement->properties.path.type, tileElement->AsPath()->IsSloped());
+        int16_t height = map_height_from_slope({ x, y }, tileElement->properties.path.type, tileElement->AsPath()->IsSloped());
         height += tileElement->base_height * 8;
 
         int16_t z_diff = z - height;

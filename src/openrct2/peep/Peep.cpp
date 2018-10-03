@@ -1021,7 +1021,8 @@ void rct_peep::UpdateFalling()
             // If a path check if we are on it
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
-                int32_t height = map_height_from_slope({x, y}, tile_element->properties.path.type, tile_element->AsPath()->IsSloped())
+                int32_t height = map_height_from_slope(
+                                     { x, y }, tile_element->properties.path.type, tile_element->AsPath()->IsSloped())
                     + tile_element->base_height * 8;
 
                 if (height < z - 1 || height > z + 4)
@@ -3457,7 +3458,7 @@ int32_t rct_peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
     int32_t height = next_z * 8;
     uint8_t slope = GetNextDirection();
-    return height + map_height_from_slope({tile_x, tile_y}, slope, GetNextIsSloped());
+    return height + map_height_from_slope({ tile_x, tile_y }, slope, GetNextIsSloped());
 }
 
 /**

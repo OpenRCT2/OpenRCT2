@@ -1343,8 +1343,7 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_PATH:
                     if (z == tileElement->base_height)
                     {
-                        if (tileElement->AsPath()->IsSloped()
-                            && footpath_element_get_slope_direction(tileElement) != direction)
+                        if (tileElement->AsPath()->IsSloped() && footpath_element_get_slope_direction(tileElement) != direction)
                         {
                             return;
                         }

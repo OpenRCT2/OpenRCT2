@@ -865,8 +865,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             switch (widgetIndex)
             {
                 case WIDX_PATH_CHECK_SLOPED:
-                    window_tile_inspector_path_set_sloped(
-                        windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsSloped());
+                    window_tile_inspector_path_set_sloped(windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsSloped());
                     break;
                 case WIDX_PATH_CHECK_EDGE_E:
                 case WIDX_PATH_CHECK_EDGE_S:
