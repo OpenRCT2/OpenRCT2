@@ -967,7 +967,7 @@ int32_t tile_inspector_track_set_chain(
 
             if (tileElement->AsTrack()->HasChain() != setChain)
             {
-                tileElement->type ^= TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
+                tileElement->AsTrack()->SetHasChain(setChain);
             }
         }
     }
