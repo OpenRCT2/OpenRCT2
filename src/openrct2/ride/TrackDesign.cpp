@@ -816,7 +816,8 @@ static int32_t track_design_place_scenery(
                         uint8_t quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
                         quadrant &= 3;
 
-                        uint8_t bh = rotation | (quadrant << 6) | TILE_ELEMENT_TYPE_SMALL_SCENERY;
+                        // So called because it mirrors the SmallSceneryElement->type byte.
+                        uint8_t typeByte = rotation | (quadrant << 6) | TILE_ELEMENT_TYPE_SMALL_SCENERY;
 
                         rct_scenery_entry* small_scenery = get_small_scenery_entry(entry_index);
                         if (!(!scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_FULL_TILE)
@@ -826,12 +827,13 @@ static int32_t track_design_place_scenery(
                                    SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE
                                        | SMALL_SCENERY_FLAG_THREE_QUARTERS))
                         {
-                            bh &= 0x3F;
+                            typeByte &= ~TILE_ELEMENT_QUADRANT_MASK;
                         }
 
                         z = (scenery->z * 8 + originZ) / 8;
                         game_do_command(
-                            mapCoord.x, flags | bh << 8, mapCoord.y, (entry_index << 8) | z, GAME_COMMAND_REMOVE_SCENERY, 0, 0);
+                            mapCoord.x, flags | typeByte << 8, mapCoord.y, (entry_index << 8) | z, GAME_COMMAND_REMOVE_SCENERY,
+                            0, 0);
                         break;
                     }
                     case OBJECT_TYPE_LARGE_SCENERY:

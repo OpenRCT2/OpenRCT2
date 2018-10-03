@@ -184,8 +184,10 @@ void scenery_remove_ghost_tool_placement()
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_0)
     {
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_0;
+        uint8_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+            | GAME_COMMAND_FLAG_GHOST;
         game_do_command(
-            x, 105 | (gSceneryTileElementType << 8), y, z | (gSceneryPlaceObject << 8), GAME_COMMAND_REMOVE_SCENERY, 0, 0);
+            x, flags | (gSceneryTileElementType << 8), y, z | (gSceneryPlaceObject << 8), GAME_COMMAND_REMOVE_SCENERY, 0, 0);
     }
 
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_1)

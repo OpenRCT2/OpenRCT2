@@ -467,8 +467,8 @@ static void viewport_interaction_remove_scenery(rct_tile_element* tileElement, i
 {
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
     game_do_command(
-        x, (tileElement->type << 8) | 1, y, (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | tileElement->base_height,
-        GAME_COMMAND_REMOVE_SCENERY, 0, 0);
+        x, (tileElement->type << 8) | GAME_COMMAND_FLAG_APPLY, y,
+        (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | tileElement->base_height, GAME_COMMAND_REMOVE_SCENERY, 0, 0);
 }
 
 /**
