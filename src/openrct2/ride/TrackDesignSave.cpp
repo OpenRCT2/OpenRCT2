@@ -296,8 +296,8 @@ static void track_design_save_add_scenery(int32_t x, int32_t y, rct_tile_element
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8_t flags = 0;
-    flags |= tileElement->type & 3;
-    flags |= (tileElement->type & 0xC0) >> 4;
+    flags |= tileElement->GetDirection();
+    flags |= tileElement->AsSmallScenery()->GetSceneryQuadrant() << 2;
 
     uint8_t primaryColour = sceneryElement->GetPrimaryColour();
     uint8_t secondaryColour = sceneryElement->GetSecondaryColour();
@@ -317,7 +317,7 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
-    direction = tileElement->type & 3;
+    direction = tileElement->GetDirection();
     sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
@@ -341,7 +341,7 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
         {
             if (sequence == 0)
             {
-                uint8_t flags = tileElement->type & 3;
+                uint8_t flags = tileElement->GetDirection();
                 uint8_t primaryColour = tileElement->AsLargeScenery()->GetPrimaryColour();
                 uint8_t secondaryColour = tileElement->AsLargeScenery()->GetSecondaryColour();
 
@@ -358,7 +358,7 @@ static void track_design_save_add_wall(int32_t x, int32_t y, rct_tile_element* t
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
 
     uint8_t flags = 0;
-    flags |= tileElement->type & 3;
+    flags |= tileElement->GetDirection();
     flags |= tileElement->AsWall()->GetTertiaryColour() << 2;
 
     uint8_t secondaryColour = tileElement->AsWall()->GetSecondaryColour();
@@ -491,8 +491,8 @@ static void track_design_save_remove_scenery(int32_t x, int32_t y, rct_tile_elem
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
 
     uint8_t flags = 0;
-    flags |= tileElement->type & 3;
-    flags |= (tileElement->type & 0xC0) >> 4;
+    flags |= tileElement->GetDirection();
+    flags |= tileElement->AsSmallScenery()->GetSceneryQuadrant() << 2;
 
     track_design_save_pop_tile_element(x, y, tileElement);
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags);
@@ -509,7 +509,7 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_til
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
-    direction = tileElement->type & 3;
+    direction = tileElement->GetDirection();
     sequence = tileElement->AsLargeScenery()->GetSequenceIndex();
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, nullptr))
@@ -533,7 +533,7 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_til
         {
             if (sequence == 0)
             {
-                uint8_t flags = tileElement->type & 3;
+                uint8_t flags = tileElement->GetDirection();
                 track_design_save_pop_tile_element_desc(entry, x, y, z, flags);
             }
             track_design_save_pop_tile_element(x, y, tileElement);
@@ -547,7 +547,7 @@ static void track_design_save_remove_wall(int32_t x, int32_t y, rct_tile_element
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
 
     uint8_t flags = 0;
-    flags |= tileElement->type & 3;
+    flags |= tileElement->GetDirection();
     flags |= tileElement->AsWall()->GetTertiaryColour() << 2;
 
     track_design_save_pop_tile_element(x, y, tileElement);
@@ -1047,17 +1047,18 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
             track->type = TRACK_ELEM_255_ALIAS;
         }
 
-        uint8_t bh;
+        uint8_t flags;
         if (track_element_has_speed_setting(track->type))
         {
-            bh = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
+            flags = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
         }
         else
         {
-            bh = trackElement.element->AsTrack()->GetSeatRotation();
+            flags = trackElement.element->AsTrack()->GetSeatRotation();
         }
 
-        uint8_t flags = (trackElement.element->type & (1 << 7)) | bh;
+        if (trackElement.element->AsTrack()->HasChain())
+            flags |= (1 << 7);
         flags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
         if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE
             && trackElement.element->AsTrack()->IsInverted())

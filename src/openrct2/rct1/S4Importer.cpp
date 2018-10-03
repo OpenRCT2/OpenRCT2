@@ -2508,7 +2508,7 @@ private:
                     uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                     uint8_t entryIndex = _pathTypeToEntryMap[pathType];
 
-                    tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
+                    tileElement->SetDirection(0);
                     tileElement->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
 
                     footpath_element_set_type(tileElement, entryIndex);

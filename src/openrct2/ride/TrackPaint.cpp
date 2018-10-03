@@ -2185,7 +2185,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
         session->TrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
         session->TrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
         session->TrackColours[SCHEME_3] = 0x20C00000;
-        if (tileElement->type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT)
+        if (tileElement->AsTrack()->IsHighlighted())
         {
             session->TrackColours[SCHEME_TRACK] = 0x21600000;
             session->TrackColours[SCHEME_SUPPORTS] = 0x21600000;

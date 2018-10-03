@@ -1448,14 +1448,12 @@ static money32 track_place(
         tileElement = tile_element_insert(x / 32, y / 32, baseZ, bl & 0xF);
         assert(tileElement != nullptr);
         tileElement->clearance_height = clearanceZ;
-
-        uint8_t map_type = direction;
-        map_type |= TILE_ELEMENT_TYPE_TRACK;
+        tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
+        tileElement->SetDirection(direction);
         if (liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED)
         {
-            map_type |= (1 << 7);
+            tileElement->AsTrack()->SetHasChain(true);
         }
-        tileElement->type = map_type;
 
         tileElement->AsTrack()->SetSequenceIndex(trackBlock->index);
         tileElement->AsTrack()->SetRideIndex(rideIndex);
@@ -1518,7 +1516,7 @@ static money32 track_place(
         if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
         {
             rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
-            surfaceElement->type |= (1 << 6);
+            surfaceElement->AsSurface()->SetHasTrackThatNeedsWater(true);
             tileElement = surfaceElement;
         }
 
@@ -1786,7 +1784,7 @@ static money32 track_remove(
 
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
         {
-            surfaceElement->type &= ~(1 << 6);
+            surfaceElement->AsSurface()->SetHasTrackThatNeedsWater(false);
         }
 
         invalidate_test_results(rideIndex);
@@ -2356,4 +2354,16 @@ void TrackElement::SetHasGreenLight(uint8_t greenLight)
     {
         sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
     }
+}
+
+bool TrackElement::IsHighlighted() const
+{
+    return (type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT);
+}
+
+void TrackElement::SetHighlight(bool on)
+{
+    type &= ~TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT;
+    if (on)
+        type |= TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT;
 }

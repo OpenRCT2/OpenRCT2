@@ -178,6 +178,9 @@ public:
 
     uint8_t GetParkFences() const;
     void SetParkFences(uint8_t newParkFences);
+
+    bool HasTrackThatNeedsWater() const;
+    void SetHasTrackThatNeedsWater(bool on);
 };
 assert_struct_size(SurfaceElement, 8);
 
@@ -267,6 +270,9 @@ public:
     bool IsTakingPhoto() const;
     void SetPhotoTimeout();
     void DecrementPhotoTimeout();
+
+    bool IsHighlighted() const;
+    void SetHighlight(bool on);
 
     // Used in RCT1, will be reintroduced at some point.
     // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
@@ -432,7 +438,8 @@ enum
 
 enum
 {
-    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6)
+    TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT = (1 << 6),
+    SURFACE_ELEMENT_HAS_TRACK_THAT_NEEDS_WATER = (1 << 6),
 };
 
 enum

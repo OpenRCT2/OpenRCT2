@@ -342,8 +342,7 @@ void map_init(int32_t size)
     for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
     {
         rct_tile_element* tile_element = &gTileElements[i];
-        memset(tile_element, 0, sizeof(rct_tile_element));
-        tile_element->type = (TILE_ELEMENT_TYPE_SURFACE << 2);
+        tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
         tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
         tile_element->base_height = 14;
         tile_element->clearance_height = 14;
@@ -1628,7 +1627,7 @@ static money32 map_set_land_height(int32_t flags, int32_t x, int32_t y, int32_t 
 
     uint8_t zCorner = height; // z position of highest corner of tile
     rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
-    if (surfaceElement->type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT)
+    if (surfaceElement->AsSurface()->HasTrackThatNeedsWater())
     {
         uint32_t waterHeight = surfaceElement->AsSurface()->GetWaterHeight();
         if (waterHeight != 0)
@@ -3059,7 +3058,8 @@ void game_command_place_large_scenery(
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
 
             new_tile_element->clearance_height = zHigh;
-            new_tile_element->type = TILE_ELEMENT_TYPE_LARGE_SCENERY | rotation;
+            new_tile_element->SetType(TILE_ELEMENT_TYPE_LARGE_SCENERY);
+            new_tile_element->SetDirection(rotation);
 
             auto newSceneryElement = new_tile_element->AsLargeScenery();
             newSceneryElement->SetEntryIndex(entry_index);
@@ -4043,7 +4043,7 @@ rct_tile_element* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
-            if (tileElement->type >> 6 != quadrant)
+            if (tileElement->AsSmallScenery()->GetSceneryQuadrant() != quadrant)
                 continue;
             if (tileElement->base_height != z)
                 continue;
