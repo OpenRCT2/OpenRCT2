@@ -104,7 +104,7 @@ void ttf_dispose()
         ttf_surface_cache_dispose_all();
         ttf_getwidth_cache_dispose_all();
 
-        for (int32_t i = 0; i < 4; i++)
+        for (int32_t i = 0; i < FONT_SIZE_COUNT; i++)
         {
             TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
             if (fontDesc->font != nullptr)
