@@ -2584,10 +2584,10 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
         // to.
         if (!tile_element_wants_path_connection_towards({ x / 32, y / 32, z1, direction }, tileElement))
         {
+            bool isQueue = tileElement->GetType() == TILE_ELEMENT_TYPE_PATH ? tileElement->AsPath()->IsQueue() : false;
             int32_t z0 = z1 - 2;
             footpath_remove_edges_towards(
-                x + CoordsDirectionDelta[direction].x, y + CoordsDirectionDelta[direction].y, z0, z1, direction,
-                tileElement->AsPath()->IsQueue());
+                x + CoordsDirectionDelta[direction].x, y + CoordsDirectionDelta[direction].y, z0, z1, direction, isQueue);
         }
         else
         {
