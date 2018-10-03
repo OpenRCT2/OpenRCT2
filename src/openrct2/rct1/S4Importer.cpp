@@ -60,8 +60,6 @@
 
 using namespace OpenRCT2;
 
-static uint8_t GetPathType(rct_tile_element* tileElement);
-
 class EntryList
 {
 private:
@@ -480,7 +478,7 @@ private:
             {
                 case TILE_ELEMENT_TYPE_PATH:
                 {
-                    uint8_t pathType = GetPathType(tileElement);
+                    uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                     uint8_t pathAdditionsType = tileElement->properties.path.additions & 0x0F;
 
                     AddEntryForPath(pathType);
@@ -2507,7 +2505,7 @@ private:
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     // Type
-                    uint8_t pathType = GetPathType(tileElement);
+                    uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                     uint8_t entryIndex = _pathTypeToEntryMap[pathType];
 
                     tileElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
@@ -2886,13 +2884,13 @@ void load_from_sc4(const utf8* path)
     s4Importer->Import();
 }
 
-static uint8_t GetPathType(rct_tile_element* tileElement)
+uint8_t PathElement::GetRCT1PathType() const
 {
-    uint8_t pathColour = tileElement->type & 3;
-    uint8_t pathType = (tileElement->properties.path.type & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
+    uint8_t pathColour = type & 3;
+    uint8_t pathType2 = (pathType & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
 
-    pathType = pathType | pathColour;
-    return pathType;
+    pathType2 = pathType2 | pathColour;
+    return pathType2;
 }
 
 int32_t WallElement::GetRCT1WallType(int32_t edge) const
