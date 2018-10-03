@@ -2402,11 +2402,8 @@ private:
             // Fill the rest of the row with blank tiles
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                memset(nextFreeTileElement, 0, sizeof(rct_tile_element));
-                nextFreeTileElement->SetType(TILE_ELEMENT_TYPE_SURFACE);
+                nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
                 nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
-                nextFreeTileElement->base_height = 2;
-                nextFreeTileElement->clearance_height = 2;
                 nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
                 nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
                 nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
@@ -2419,11 +2416,8 @@ private:
         // 128 extra rows left to fill with blank tiles
         for (int32_t y = 0; y < 128 * 256; y++)
         {
-            memset(nextFreeTileElement, 0, sizeof(rct_tile_element));
-            nextFreeTileElement->SetType(TILE_ELEMENT_TYPE_SURFACE);
+            nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
             nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
-            nextFreeTileElement->base_height = 2;
-            nextFreeTileElement->clearance_height = 2;
             nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
             nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
             nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
