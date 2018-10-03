@@ -38,7 +38,7 @@ colour_t gWindowSceneryTertiaryColour;
 bool gWindowSceneryEyedropperEnabled;
 
 rct_tile_element* gSceneryTileElement;
-uint8_t gSceneryTileElementType;
+uint8_t gSceneryQuadrant;
 
 money32 gSceneryPlaceCost;
 int16_t gSceneryPlaceObject;
@@ -187,7 +187,7 @@ void scenery_remove_ghost_tool_placement()
         uint8_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
             | GAME_COMMAND_FLAG_GHOST;
         game_do_command(
-            x, flags | (gSceneryTileElementType << 8), y, z | (gSceneryPlaceObject << 8), GAME_COMMAND_REMOVE_SCENERY, 0, 0);
+            x, flags | (gSceneryQuadrant << 8), y, z | (gSceneryPlaceObject << 8), GAME_COMMAND_REMOVE_SCENERY, 0, 0);
     }
 
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_1)

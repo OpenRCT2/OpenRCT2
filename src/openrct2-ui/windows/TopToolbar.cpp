@@ -2416,7 +2416,7 @@ static money32 try_place_ghost_scenery(
 
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
-            gSceneryTileElementType = tileElement->type;
+            gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
             if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 // Set underground on

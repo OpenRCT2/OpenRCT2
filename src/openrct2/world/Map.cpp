@@ -1094,7 +1094,7 @@ restart_from_beginning:
                 if (clear & (1 << 0))
                 {
                     int32_t eax = x * 32;
-                    int32_t ebx = (tileElement->type << 8) | flags;
+                    int32_t ebx = (tileElement->AsSmallScenery()->GetSceneryQuadrant() << 8) | flags;
                     int32_t ecx = y * 32;
                     int32_t edx = (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | (tileElement->base_height);
                     int32_t edi = 0, ebp = 0;

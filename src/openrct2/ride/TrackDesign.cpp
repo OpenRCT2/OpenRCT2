@@ -816,9 +816,6 @@ static int32_t track_design_place_scenery(
                         uint8_t quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
                         quadrant &= 3;
 
-                        // So called because it mirrors the SmallSceneryElement->type byte.
-                        uint8_t typeByte = rotation | (quadrant << 6) | TILE_ELEMENT_TYPE_SMALL_SCENERY;
-
                         rct_scenery_entry* small_scenery = get_small_scenery_entry(entry_index);
                         if (!(!scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_FULL_TILE)
                               && scenery_small_entry_has_flag(small_scenery, SMALL_SCENERY_FLAG_DIAGONAL))
@@ -827,12 +824,12 @@ static int32_t track_design_place_scenery(
                                    SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE
                                        | SMALL_SCENERY_FLAG_THREE_QUARTERS))
                         {
-                            typeByte &= ~TILE_ELEMENT_QUADRANT_MASK;
+                            quadrant = 0;
                         }
 
                         z = (scenery->z * 8 + originZ) / 8;
                         game_do_command(
-                            mapCoord.x, flags | typeByte << 8, mapCoord.y, (entry_index << 8) | z, GAME_COMMAND_REMOVE_SCENERY,
+                            mapCoord.x, flags | quadrant << 8, mapCoord.y, (entry_index << 8) | z, GAME_COMMAND_REMOVE_SCENERY,
                             0, 0);
                         break;
                     }
