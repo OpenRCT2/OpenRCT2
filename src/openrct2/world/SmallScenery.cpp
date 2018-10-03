@@ -419,8 +419,7 @@ void game_command_remove_scenery(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
-    *ebx = SmallSceneryRemove(
-        *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 8) & 0xFF), (*edx >> 8) & 0xFF, *ebx & 0xFF);
+    *ebx = SmallSceneryRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 8) & 0xFF), (*edx >> 8) & 0xFF, *ebx & 0xFF);
 }
 
 /**

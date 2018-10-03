@@ -2403,8 +2403,10 @@ static money32 try_place_ghost_scenery(
             // Small Scenery
             // 6e252b
             cost = game_do_command(
-                map_tile.x, parameter_1 | 0x69, map_tile.y, parameter_2, GAME_COMMAND_PLACE_SCENERY, parameter_3,
-                gSceneryPlaceZ);
+                map_tile.x,
+                parameter_1 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                    | GAME_COMMAND_FLAG_GHOST,
+                map_tile.y, parameter_2, GAME_COMMAND_PLACE_SCENERY, parameter_3, gSceneryPlaceZ);
 
             if (cost == MONEY32_UNDEFINED)
                 return cost;

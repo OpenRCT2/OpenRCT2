@@ -912,7 +912,7 @@ static int32_t track_design_place_scenery(
 
                 money32 cost;
                 int16_t z;
-                uint8_t bl;
+                uint8_t flags;
                 uint8_t quadrant;
 
                 switch (entry_type)
@@ -932,24 +932,26 @@ static int32_t track_design_place_scenery(
                         z = scenery->z * 8 + originZ;
                         quadrant = ((scenery->flags >> 2) + _currentTrackPieceDirection) & 3;
 
-                        bl = 0x81;
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                         {
-                            bl = 0xA9;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
+                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                         }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                        else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                         {
-                            bl = 0xE9;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
+                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5;
                         }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                        else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                         {
-                            bl = 0x80;
+                            flags = GAME_COMMAND_FLAG_PATH_SCENERY;
                         }
 
                         gGameCommandErrorTitle = STR_CANT_POSITION_THIS_HERE;
 
                         cost = game_do_command(
-                            mapCoord.x, bl | (entry_index << 8), mapCoord.y, quadrant | (scenery->primary_colour << 8),
+                            mapCoord.x, flags | (entry_index << 8), mapCoord.y, quadrant | (scenery->primary_colour << 8),
                             GAME_COMMAND_PLACE_SCENERY, rotation | (scenery->secondary_colour << 16), z);
 
                         if (cost == MONEY32_UNDEFINED)
@@ -972,22 +974,24 @@ static int32_t track_design_place_scenery(
 
                         z = scenery->z * 8 + originZ;
 
-                        bl = 0x81;
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                         {
-                            bl = 0xA9;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
+                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                         }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                        else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                         {
-                            bl = 0xE9;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
+                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_5;
                         }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                        else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                         {
-                            bl = 0x80;
+                            flags = GAME_COMMAND_FLAG_PATH_SCENERY;
                         }
 
                         cost = game_do_command(
-                            mapCoord.x, bl | (rotation << 8), mapCoord.y,
+                            mapCoord.x, flags | (rotation << 8), mapCoord.y,
                             scenery->primary_colour | (scenery->secondary_colour << 8), GAME_COMMAND_PLACE_LARGE_SCENERY,
                             entry_index, z);
 
@@ -1010,24 +1014,26 @@ static int32_t track_design_place_scenery(
                         rotation += scenery->flags;
                         rotation &= 3;
 
-                        bl = 1;
+                        flags = GAME_COMMAND_FLAG_APPLY;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                         {
-                            bl = 0xA9;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY
+                                | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                         }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_4)
+                        else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                         {
-                            bl = 105;
+                            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                                | GAME_COMMAND_FLAG_GHOST;
                         }
-                        if (_trackDesignPlaceOperation == PTD_OPERATION_1)
+                        else if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                         {
-                            bl = 0;
+                            flags = 0;
                         }
 
                         gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
 
                         cost = game_do_command(
-                            mapCoord.x, bl | (entry_index << 8), mapCoord.y, rotation | (scenery->primary_colour << 8),
+                            mapCoord.x, flags | (entry_index << 8), mapCoord.y, rotation | (scenery->primary_colour << 8),
                             GAME_COMMAND_PLACE_WALL, z, scenery->secondary_colour | ((scenery->flags & 0xFC) << 6));
 
                         if (cost == MONEY32_UNDEFINED)
@@ -1051,30 +1057,31 @@ static int32_t track_design_place_scenery(
                             }
 
                             uint8_t bh = ((scenery->flags & 0xF) << rotation);
-                            bl = bh >> 4;
-                            bh = (bh | bl) & 0xF;
-                            bl = (((scenery->flags >> 5) + rotation) & 3) << 5;
-                            bh |= bl;
+                            flags = bh >> 4;
+                            bh = (bh | flags) & 0xF;
+                            flags = (((scenery->flags >> 5) + rotation) & 3) << 5;
+                            bh |= flags;
 
                             bh |= scenery->flags & 0x90;
 
-                            bl = 1;
+                            flags = GAME_COMMAND_FLAG_APPLY;
                             if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                             {
-                                bl = 41;
+                                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                             }
                             if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                             {
-                                bl = 105;
+                                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                                    | GAME_COMMAND_FLAG_GHOST;
                             }
                             if (_trackDesignPlaceOperation == PTD_OPERATION_1)
                             {
-                                bl = 0;
+                                flags = 0;
                             }
 
                             gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                             cost = game_do_command(
-                                mapCoord.x, bl | (bh << 8), mapCoord.y, z | (entry_index << 8),
+                                mapCoord.x, flags | (bh << 8), mapCoord.y, z | (entry_index << 8),
                                 GAME_COMMAND_PLACE_PATH_FROM_TRACK, 0, 0);
                         }
                         else
@@ -1094,17 +1101,18 @@ static int32_t track_design_place_scenery(
                             footpath_queue_chain_reset();
                             footpath_remove_edges_at(mapCoord.x, mapCoord.y, tile_element);
 
-                            bl = 1;
+                            flags = GAME_COMMAND_FLAG_APPLY;
                             if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                             {
-                                bl = 41;
+                                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                             }
                             if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                             {
-                                bl = 105;
+                                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+                                    | GAME_COMMAND_FLAG_GHOST;
                             }
 
-                            footpath_connect_edges(mapCoord.x, mapCoord.y, tile_element, bl);
+                            footpath_connect_edges(mapCoord.x, mapCoord.y, tile_element, flags);
                             footpath_update_queue_chains();
                             continue;
                         }
