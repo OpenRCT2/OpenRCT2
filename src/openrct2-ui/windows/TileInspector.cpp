@@ -2140,8 +2140,8 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 typeName = language_get_string(STR_TILE_INSPECTOR_SURFACE);
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                typeName = footpath_element_is_queue(tileElement) ? language_get_string(STR_QUEUE_LINE_MAP_TIP)
-                                                                  : language_get_string(STR_FOOTPATH_MAP_TIP);
+                typeName = tileElement->AsPath()->IsQueue() ? language_get_string(STR_QUEUE_LINE_MAP_TIP)
+                                                            : language_get_string(STR_FOOTPATH_MAP_TIP);
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
                 typeName = language_get_string(STR_RIDE_COMPONENT_TRACK_CAPITALISED);

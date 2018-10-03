@@ -377,7 +377,8 @@ static void track_design_save_add_footpath(int32_t x, int32_t y, rct_tile_elemen
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
-    flags |= (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) << 7;
+    if (tileElement->AsPath()->IsQueue())
+        flags |= 1 << 7;
 
     track_design_save_push_tile_element(x, y, tileElement);
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, 0, 0);
@@ -562,7 +563,8 @@ static void track_design_save_remove_footpath(int32_t x, int32_t y, rct_tile_ele
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
-    flags |= (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) << 7;
+    if (tileElement->AsPath()->IsQueue())
+        flags |= (1 << 7);
 
     track_design_save_pop_tile_element(x, y, tileElement);
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags);
@@ -596,8 +598,7 @@ static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rc
     switch (tileElement->GetType())
     {
         case TILE_ELEMENT_TYPE_PATH:
-            if ((tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE)
-                && tileElement->properties.path.addition_status == rideIndex)
+            if (tileElement->AsPath()->IsQueue() && tileElement->properties.path.ride_index == rideIndex)
                 return true;
             break;
         case TILE_ELEMENT_TYPE_TRACK:
@@ -632,9 +633,9 @@ static void track_design_save_select_nearby_scenery_for_tile(int32_t rideIndex, 
                 switch (tileElement->GetType())
                 {
                     case TILE_ELEMENT_TYPE_PATH:
-                        if (!(tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE))
+                        if (!tileElement->AsPath()->IsQueue())
                             interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
-                        else if (tileElement->properties.path.addition_status == rideIndex)
+                        else if (tileElement->properties.path.ride_index == rideIndex)
                             interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
                         break;
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:

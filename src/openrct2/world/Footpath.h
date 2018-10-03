@@ -157,9 +157,6 @@ int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32
 bool footpath_element_is_sloped(const rct_tile_element* tileElement);
 void footpath_element_set_sloped(rct_tile_element* tileElement, bool isSloped);
 uint8_t footpath_element_get_slope_direction(const rct_tile_element* tileElement);
-bool footpath_element_is_queue(const rct_tile_element* tileElement);
-void footpath_element_set_queue(rct_tile_element* tileElement);
-void footpath_element_clear_queue(rct_tile_element* tileElement);
 bool footpath_element_has_queue_banner(const rct_tile_element* tileElement);
 bool footpath_element_is_wide(const rct_tile_element* tileElement);
 uint8_t footpath_element_get_type(const rct_tile_element* tileElement);

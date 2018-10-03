@@ -3137,7 +3137,7 @@ void map_remove_all_rides()
         switch (it.element->GetType())
         {
             case TILE_ELEMENT_TYPE_PATH:
-                if (footpath_element_is_queue(it.element))
+                if (it.element->AsPath()->IsQueue())
                 {
                     it.element->properties.path.type &= ~8;
                     it.element->properties.path.addition_status = 255;
@@ -3586,7 +3586,7 @@ bool map_can_construct_with_clear_at(
 
                 // Crossing mode 1: building track over path
                 if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_PATH
-                    && tileElement->base_height == zLow && !footpath_element_is_queue(tileElement)
+                    && tileElement->base_height == zLow && !tileElement->AsPath()->IsQueue()
                     && !footpath_element_is_sloped(tileElement))
                 {
                     continue;

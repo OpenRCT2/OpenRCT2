@@ -1455,7 +1455,7 @@ static void sub_6E1F34(
                 << 8;
             *parameter_2 = tile_element->base_height;
             *parameter_2 |= ((footpath_element_get_type(tile_element)) << 8);
-            if (footpath_element_is_queue(tile_element))
+            if (tile_element->AsPath()->IsQueue())
             {
                 *parameter_2 |= LOCATION_NULL;
             }

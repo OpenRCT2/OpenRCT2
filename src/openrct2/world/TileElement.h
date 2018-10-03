@@ -193,6 +193,9 @@ struct PathElement : TileElementBase
     };
 
 public:
+    bool IsQueue() const;
+    void SetIsQueue(bool isQueue);
+
     uint8_t GetRCT1PathType() const;
 };
 assert_struct_size(PathElement, 8);

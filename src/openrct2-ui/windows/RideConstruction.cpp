@@ -3620,7 +3620,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
                 }
             }
 
-            if (pathsByDir[i] && footpath_element_is_queue(pathsByDir[i]))
+            if (pathsByDir[i] && (pathsByDir[i])->AsPath()->IsQueue())
             {
                 pathsByDir[i] = nullptr;
             }

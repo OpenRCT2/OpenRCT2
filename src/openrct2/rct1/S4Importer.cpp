@@ -2514,7 +2514,7 @@ private:
                     footpath_element_set_type(tileElement, entryIndex);
                     if (RCT1::PathIsQueue(pathType))
                     {
-                        footpath_element_set_queue(tileElement);
+                        tileElement->AsPath()->SetIsQueue(true);
                     }
 
                     footpath_scenery_set_is_ghost(tileElement, false);
