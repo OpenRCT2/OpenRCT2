@@ -34,11 +34,11 @@ std::vector<server_entry> server_list_read()
             for (size_t i = 0; i < numEntries; i++)
             {
                 server_entry serverInfo;
-                serverInfo.address = fs.ReadString();
-                serverInfo.name = fs.ReadString();
+                serverInfo.address = fs.ReadStdString();
+                serverInfo.name = fs.ReadStdString();
                 serverInfo.requiresPassword = false;
-                serverInfo.description = fs.ReadString();
-                serverInfo.version = String::Duplicate("");
+                serverInfo.description = fs.ReadStdString();
+                serverInfo.version = "";
                 serverInfo.favourite = true;
                 serverInfo.players = 0;
                 serverInfo.maxplayers = 0;

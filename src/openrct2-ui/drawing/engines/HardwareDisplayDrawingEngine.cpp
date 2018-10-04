@@ -92,6 +92,11 @@ public:
 
     void Resize(uint32_t width, uint32_t height) override
     {
+        if (width == 0 || height == 0)
+        {
+            return;
+        }
+
         if (_screenTexture != nullptr)
         {
             SDL_DestroyTexture(_screenTexture);
