@@ -2634,7 +2634,7 @@ static void peep_interact_with_entrance(
 
             if (nextTileElement->AsPath()->IsSloped())
             {
-                uint8_t slopeDirection = footpath_element_get_slope_direction(nextTileElement);
+                uint8_t slopeDirection = nextTileElement->AsPath()->GetSlopeDirection();
                 if (slopeDirection == entranceDirection)
                 {
                     if (z != nextTileElement->base_height)
@@ -3093,7 +3093,7 @@ bool is_valid_path_z_and_direction(rct_tile_element* tileElement, int32_t curren
 {
     if (tileElement->AsPath()->IsSloped())
     {
-        int32_t slopeDirection = footpath_element_get_slope_direction(tileElement);
+        int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
         if (slopeDirection == currentDirection)
         {
             if (currentZ != tileElement->base_height)

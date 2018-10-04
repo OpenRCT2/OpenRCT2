@@ -709,7 +709,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
 
         if (path->AsPath()->IsSloped())
         {
-            if (footpath_element_get_slope_direction(path) == adjac_dir)
+            if (path->AsPath()->GetSlopeDirection() == adjac_dir)
             {
                 adjac_z = z + 2;
             }

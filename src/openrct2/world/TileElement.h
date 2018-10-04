@@ -208,6 +208,9 @@ public:
     bool IsSloped() const;
     void SetSloped(bool isSloped);
 
+    uint8_t GetSlopeDirection() const;
+    void SetSlopeDirection(uint8_t newSlope);
+
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
 
