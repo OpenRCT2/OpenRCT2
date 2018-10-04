@@ -117,19 +117,24 @@ namespace Platform
             path = Path::Combine(exeDirectory, "data");
             if (!Path::DirectoryExists(path))
             {
-                // 3. Try standard system app directories
-                path = FindInstallPath();
-                if (path.empty())
+                // 3. Try ${exeDir}/../share/openrct2
+                path = Path::Combine(exeDirectory, "../share/openrct2");
+                if (!Path::DirectoryExists(path))
                 {
-                    // 4. Fallback to ${cwd}/data
-                    path = GetCurrentWorkingDirectory();
-                    if (!path.empty())
+                    // 4. Try standard system app directories
+                    path = FindInstallPath();
+                    if (path.empty())
                     {
-                        path = Path::Combine(path, "data");
-                    }
-                    else
-                    {
-                        return "/";
+                        // 5. Fallback to ${cwd}/data
+                        path = GetCurrentWorkingDirectory();
+                        if (!path.empty())
+                        {
+                            path = Path::Combine(path, "data");
+                        }
+                        else
+                        {
+                            return "/";
+                        }
                     }
                 }
             }
