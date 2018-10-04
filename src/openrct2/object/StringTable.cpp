@@ -110,7 +110,7 @@ void StringTable::SetString(uint8_t id, uint8_t language, const std::string& tex
     StringTableEntry entry;
     entry.Id = id;
     entry.LanguageId = language;
-    entry.Text = String::Duplicate(text);
+    entry.Text = text;
     _strings.push_back(entry);
 }
 
