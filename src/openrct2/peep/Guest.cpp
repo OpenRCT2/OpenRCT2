@@ -4913,7 +4913,8 @@ void rct_peep::UpdateRideLeaveExit()
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        int16_t height = map_height_from_slope({ x, y }, tileElement->properties.path.type, tileElement->AsPath()->IsSloped());
+        int16_t height = map_height_from_slope(
+            { x, y }, tileElement->AsPath()->GetSlopeDirection(), tileElement->AsPath()->IsSloped());
         height += tileElement->base_height * 8;
 
         int16_t z_diff = z - height;

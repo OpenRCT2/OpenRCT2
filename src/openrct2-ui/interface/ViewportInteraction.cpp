@@ -504,16 +504,16 @@ static void viewport_interaction_remove_footpath(rct_tile_element* tileElement, 
  */
 static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElement, int32_t x, int32_t y)
 {
-    int32_t type;
-
-    type = tileElement->AsPath()->GetEntryIndex();
+    int32_t type = tileElement->AsPath()->GetEntryIndex();
     if (tileElement->AsPath()->IsQueue())
         type |= 0x80;
 
+    int32_t slopeData = tileElement->AsPath()->GetSlopeDirection();
+    if (tileElement->AsPath()->IsSloped())
+        slopeData |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(
-        x, ((tileElement->properties.path.type & 7) << 8) | 1, y, (type << 8) | tileElement->base_height,
-        GAME_COMMAND_PLACE_PATH, 0, 0);
+    game_do_command(x, (slopeData << 8) | 1, y, (type << 8) | tileElement->base_height, GAME_COMMAND_PLACE_PATH, 0, 0);
 }
 
 /**

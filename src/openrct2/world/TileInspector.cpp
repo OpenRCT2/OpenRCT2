@@ -611,11 +611,7 @@ int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementInde
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        pathElement->properties.path.type &= ~(1 << 2);
-        if (sloped)
-        {
-            pathElement->properties.path.type |= (1 << 2);
-        }
+        pathElement->AsPath()->SetSloped(sloped);
 
         map_invalidate_tile_full(x << 5, y << 5);
 

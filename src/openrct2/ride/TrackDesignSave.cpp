@@ -370,12 +370,12 @@ static void track_design_save_add_wall(int32_t x, int32_t y, rct_tile_element* t
 
 static void track_design_save_add_footpath(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t entryType = tileElement->properties.path.type >> 4;
+    int32_t entryType = tileElement->AsPath()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
 
     uint8_t flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
-    flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
+    flags |= (tileElement->AsPath()->GetSlopeDirection()) << 5;
     if (tileElement->AsPath()->IsSloped())
         flags |= 0b00010000;
     if (tileElement->AsPath()->IsQueue())
@@ -557,13 +557,14 @@ static void track_design_save_remove_wall(int32_t x, int32_t y, rct_tile_element
 
 static void track_design_save_remove_footpath(int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    int32_t entryType = tileElement->properties.path.type >> 4;
+    int32_t entryType = tileElement->AsPath()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
 
     uint8_t flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
-    flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
-    flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
+    if (tileElement->AsPath()->IsSloped())
+        flags |= (1 << 4);
+    flags |= (tileElement->AsPath()->GetSlopeDirection()) << 5;
     if (tileElement->AsPath()->IsQueue())
         flags |= (1 << 7);
 

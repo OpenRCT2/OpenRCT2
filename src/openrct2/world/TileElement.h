@@ -220,6 +220,7 @@ public:
     bool IsQueue() const;
     void SetIsQueue(bool isQueue);
     bool HasQueueBanner() const;
+    void SetHasQueueBanner(bool hasQueueBanner);
 
     bool HasAddition() const;
     uint8_t GetAddition() const;

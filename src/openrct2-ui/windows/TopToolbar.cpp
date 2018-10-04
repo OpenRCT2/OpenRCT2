@@ -1450,9 +1450,9 @@ static void sub_6E1F34(
                 return;
             }
 
-            *parameter_1 = (tile_element->properties.path.type
-                            & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK))
-                << 8;
+            *parameter_1 = tile_element->AsPath()->GetSlopeDirection() << 8;
+            if (tile_element->AsPath()->IsSloped())
+                *parameter_1 |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED << 8;
             *parameter_2 = tile_element->base_height;
             *parameter_2 |= (tile_element->AsPath()->GetEntryIndex() << 8);
             if (tile_element->AsPath()->IsQueue())
@@ -1606,9 +1606,9 @@ static void sub_6E1F34(
 
             int16_t z = tile_element->base_height;
 
-            if (tile_element->properties.path.type & (1 << 2))
+            if (tile_element->AsPath()->IsSloped())
             {
-                if (rotation != ((tile_element->properties.path.type & 3) ^ 2))
+                if (rotation != ((tile_element->AsPath()->GetSlopeDirection()) ^ 2))
                 {
                     z += 2;
                 }
