@@ -12,7 +12,7 @@ STR_0007    :Ferrovia in miniatura
 STR_0008    :Monorotaia
 STR_0009    :Mini-attrazione sospesa
 STR_0010    :Noleggio barche
-STR_0011    :Topo tutto matto
+STR_0011    :Topo tutto matto di legno
 STR_0012    :Corsa ad ostacoli
 STR_0013    :Corsa in auto
 STR_0014    :Caduta libera con lancio
@@ -57,7 +57,7 @@ STR_0052    :Treno dei fantasmi
 STR_0053    :Ottov. super-serpentina
 STR_0054    :Ottovolante di legno
 STR_0055    :Ottov. a frizione laterale
-STR_0056    :Topo tutto matto
+STR_0056    :Topo tutto matto d'acciaio
 STR_0057    :Ottov. multi-dimensionale
 STR_0058    :Attrazione sconosciuta (38)
 STR_0059    :Ottovolante aereo invertito
