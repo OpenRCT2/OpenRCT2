@@ -7,4 +7,4 @@ Icon=openrct2
 Name=OpenRCT2
 Terminal=false
 NoDisplay=true
-MimeType=x-scheme-handler/openrct2
+MimeType=x-scheme-handler/openrct2;
