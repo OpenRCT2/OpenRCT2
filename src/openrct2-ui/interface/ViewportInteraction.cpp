@@ -211,15 +211,15 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
+    rct_sprite* sprite = info->sprite;
 
     switch (info->type)
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || tileElement->type != 0)
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-            tileElement += 6;
-            ride = get_ride(tileElement->type);
+            ride = get_ride(sprite->vehicle.ride);
             if (ride->status == RIDE_STATUS_CLOSED)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
