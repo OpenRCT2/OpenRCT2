@@ -234,6 +234,9 @@ public:
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);
 
+    uint8_t GetAdditionStatus() const;
+    void SetAdditionStatus(uint8_t newStatus);
+
     uint8_t GetRCT1PathType() const;
 };
 assert_struct_size(PathElement, 8);

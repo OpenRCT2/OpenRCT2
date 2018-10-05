@@ -275,7 +275,8 @@ static money32 footpath_element_insert(
             if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
                 pathElement->SetIsQueue(true);
             pathElement->SetAddition(pathItemType);
-            tileElement->properties.path.addition_status = 255;
+            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
+            tileElement->AsPath()->SetAdditionStatus(255);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & GAME_COMMAND_FLAG_GHOST)
                 pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
@@ -387,7 +388,7 @@ static money32 footpath_element_update(
             rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
             if (scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
             {
-                tileElement->properties.path.addition_status = 255;
+                tileElement->AsPath()->SetAdditionStatus(255);
             }
         }
         map_invalidate_tile_full(x, y);
@@ -665,7 +666,8 @@ static money32 footpath_place_from_track(
 
             tileElement->type |= type >> 7;
             pathElement->SetAddition(0);
-            tileElement->properties.path.addition_status = 255;
+            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
+            tileElement->AsPath()->SetAdditionStatus(255);
             tileElement->properties.path.edges = edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & (1 << 6))
@@ -2671,4 +2673,14 @@ uint8_t PathElement::GetRideIndex() const
 void PathElement::SetRideIndex(uint8_t newRideIndex)
 {
     rideIndex = newRideIndex;
+}
+
+uint8_t PathElement::GetAdditionStatus() const
+{
+    return additionStatus;
+}
+
+void PathElement::SetAdditionStatus(uint8_t newStatus)
+{
+    additionStatus = newStatus;
 }

@@ -3139,7 +3139,7 @@ void map_remove_all_rides()
                 if (it.element->AsPath()->IsQueue())
                 {
                     it.element->AsPath()->SetHasQueueBanner(false);
-                    it.element->properties.path.addition_status = 255;
+                    it.element->AsPath()->SetRideIndex(RIDE_ID_NULL);
                 }
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:

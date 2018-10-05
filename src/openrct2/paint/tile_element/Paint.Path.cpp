@@ -166,7 +166,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x3, (2 * session->CurrentRotation)));
+            binIsFull = !(tileElement->AsPath()->GetAdditionStatus() & ror8(0x3, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -187,7 +187,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC, (2 * session->CurrentRotation)));
+            binIsFull = !(tileElement->AsPath()->GetAdditionStatus() & ror8(0xC, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -209,7 +209,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x30, (2 * session->CurrentRotation)));
+            binIsFull = !(tileElement->AsPath()->GetAdditionStatus() & ror8(0x30, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -231,7 +231,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC0, (2 * session->CurrentRotation)));
+            binIsFull = !(tileElement->AsPath()->GetAdditionStatus() & ror8(0xC0, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }

@@ -5782,7 +5782,7 @@ void rct_peep::UpdateUsingBin()
             uint8_t selected_bin = var_37 * 2;
 
             // This counts down 2 = No rubbish, 0 = full
-            uint8_t space_left_in_bin = 0x3 & (tileElement->properties.path.addition_status >> selected_bin);
+            uint8_t space_left_in_bin = 0x3 & (tileElement->AsPath()->GetAdditionStatus() >> selected_bin);
             uint32_t empty_containers = HasEmptyContainerStandardFlag();
 
             for (uint8_t cur_container = 0; cur_container < 32; cur_container++)
@@ -5848,10 +5848,12 @@ void rct_peep::UpdateUsingBin()
                 UpdateSpriteType();
             }
 
+            uint8_t additionStatus = tileElement->AsPath()->GetAdditionStatus();
             // Place new amount in bin by first clearing the value
-            tileElement->properties.path.addition_status &= ~(3 << selected_bin);
+            additionStatus &= ~(3 << selected_bin);
             // Then placing the new value.
-            tileElement->properties.path.addition_status |= space_left_in_bin << selected_bin;
+            additionStatus |= space_left_in_bin << selected_bin;
+            tileElement->AsPath()->SetAdditionStatus(additionStatus);
 
             map_invalidate_tile_zoom0(next_x, next_y, tileElement->base_height << 3, tileElement->clearance_height << 3);
             StateReset();
@@ -6039,7 +6041,7 @@ bool rct_peep::UpdateWalkingFindBin()
     uint8_t chosen_edge = scenario_rand() & 0x3;
 
     // Note: Bin quantity is inverted 0 = full, 3 = empty
-    uint8_t bin_quantities = tileElement->properties.path.addition_status;
+    uint8_t bin_quantities = tileElement->AsPath()->GetAdditionStatus();
 
     // Rotate the bin to the correct edge. Makes it easier for next calc.
     bin_quantities = ror8(ror8(bin_quantities, chosen_edge), chosen_edge);
