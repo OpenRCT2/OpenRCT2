@@ -11,6 +11,7 @@
 
 #    include <limits.h>
 #    include <pwd.h>
+#    include <vector>
 #    if defined(__FreeBSD__)
 #        include <stddef.h>
 #        include <sys/param.h>
@@ -68,29 +69,6 @@ namespace Platform
         return std::string();
     }
 
-    static std::string FindInstallPath()
-    {
-        static const char* SearchLocations[] = {
-            "../share/openrct2",
-#    ifdef ORCT2_RESOURCE_DIR
-            // defined in CMakeLists.txt
-            ORCT2_RESOURCE_DIR,
-#    endif // ORCT2_RESOURCE_DIR
-            "/usr/local/share/openrct2",
-            "/var/lib/openrct2",
-            "/usr/share/openrct2",
-        };
-        for (auto searchLocation : SearchLocations)
-        {
-            log_verbose("Looking for OpenRCT2 data in %s", searchLocation);
-            if (Path::DirectoryExists(searchLocation))
-            {
-                return searchLocation;
-            }
-        }
-        return std::string();
-    }
-
     static std::string GetCurrentWorkingDirectory()
     {
         char cwdPath[PATH_MAX];
@@ -107,39 +85,40 @@ namespace Platform
         auto path = std::string(gCustomOpenrctDataPath);
         if (!path.empty())
         {
-            path = Path::GetAbsolute(path);
+            return Path::GetAbsolute(path);
         }
-        else
+        // 2. Try {${exeDir},${cwd},/}/{data,standard system app directories}
+        // exeDir should come first to allow installing into build dir
+        std::vector<std::string> prefixes;
+        auto exePath = Platform::GetCurrentExecutablePath();
+        auto exeDirectory = Path::GetDirectory(exePath);
+        prefixes.push_back(exeDirectory);
+        prefixes.push_back(GetCurrentWorkingDirectory());
+        prefixes.push_back("/");
+        static const char* SearchLocations[] = {
+            "/data",
+            "../share/openrct2",
+#    ifdef ORCT2_RESOURCE_DIR
+            // defined in CMakeLists.txt
+            ORCT2_RESOURCE_DIR,
+#    endif // ORCT2_RESOURCE_DIR
+            "/usr/local/share/openrct2",
+            "/var/lib/openrct2",
+            "/usr/share/openrct2",
+        };
+        for (auto prefix : prefixes)
         {
-            // 2. Try ${exeDir}/data
-            auto exePath = Platform::GetCurrentExecutablePath();
-            auto exeDirectory = Path::GetDirectory(exePath);
-            path = Path::Combine(exeDirectory, "data");
-            if (!Path::DirectoryExists(path))
+            for (auto searchLocation : SearchLocations)
             {
-                // 3. Try ${exeDir}/../share/openrct2
-                path = Path::Combine(exeDirectory, "../share/openrct2");
-                if (!Path::DirectoryExists(path))
+                auto prefixedPath = Path::Combine(prefix, searchLocation);
+                log_verbose("Looking for OpenRCT2 data in %s", prefixedPath.c_str());
+                if (Path::DirectoryExists(prefixedPath))
                 {
-                    // 4. Try standard system app directories
-                    path = FindInstallPath();
-                    if (path.empty())
-                    {
-                        // 5. Fallback to ${cwd}/data
-                        path = GetCurrentWorkingDirectory();
-                        if (!path.empty())
-                        {
-                            path = Path::Combine(path, "data");
-                        }
-                        else
-                        {
-                            return "/";
-                        }
-                    }
+                    return prefixedPath;
                 }
             }
         }
-        return path;
+        return "/";
     }
 
     std::string GetCurrentExecutablePath()
