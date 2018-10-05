@@ -1523,17 +1523,13 @@ static void window_tile_inspector_invalidate(rct_window* w)
             widget_set_checkbox_value(
                 w, WIDX_PATH_CHECK_EDGE_NW, tileElement->AsPath()->GetEdges() & (1 << ((3 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
-                w, WIDX_PATH_CHECK_EDGE_E,
-                tileElement->properties.path.edges & (1 << (4 + ((0 - get_current_rotation()) & 3))));
+                w, WIDX_PATH_CHECK_EDGE_E, tileElement->AsPath()->GetCorners() & (1 << ((0 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
-                w, WIDX_PATH_CHECK_EDGE_S,
-                tileElement->properties.path.edges & (1 << (4 + ((1 - get_current_rotation()) & 3))));
+                w, WIDX_PATH_CHECK_EDGE_S, tileElement->AsPath()->GetCorners() & (1 << ((1 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
-                w, WIDX_PATH_CHECK_EDGE_W,
-                tileElement->properties.path.edges & (1 << (4 + ((2 - get_current_rotation()) & 3))));
+                w, WIDX_PATH_CHECK_EDGE_W, tileElement->AsPath()->GetCorners() & (1 << ((2 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
-                w, WIDX_PATH_CHECK_EDGE_N,
-                tileElement->properties.path.edges & (1 << (4 + ((3 - get_current_rotation()) & 3))));
+                w, WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - get_current_rotation()) & 3)));
             break;
         case TILE_INSPECTOR_PAGE_TRACK:
             w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(propertiesAnchor, 0);

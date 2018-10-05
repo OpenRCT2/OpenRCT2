@@ -16,24 +16,6 @@ struct rct_scenery_entry;
 struct rct_footpath_entry;
 
 #pragma pack(push, 1)
-struct rct_tile_element_path_properties
-{
-    uint8_t type;      // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
-    uint8_t additions; // 5
-    uint8_t edges;     // 6
-    union
-    {
-        uint8_t addition_status; // 7
-        uint8_t ride_index;
-    };
-};
-assert_struct_size(rct_tile_element_path_properties, 4);
-
-union rct_tile_element_properties
-{
-    rct_tile_element_path_properties path;
-};
-assert_struct_size(rct_tile_element_properties, 4);
 
 enum
 {
@@ -96,12 +78,7 @@ struct TileElementBase
  */
 struct rct_tile_element : public TileElementBase
 {
-    union
-    {
-        uint8_t pad_04[4];
-        // TODO: Remove this field.
-        rct_tile_element_properties properties;
-    };
+    uint8_t pad_04[4];
 
     template<typename TType, TileElementType TClass> TType* as() const
     {

@@ -670,7 +670,7 @@ static money32 footpath_place_from_track(
             pathElement->SetAddition(0);
             tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
             tileElement->AsPath()->SetAdditionStatus(255);
-            tileElement->properties.path.edges = edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+            tileElement->AsPath()->SetCorners(0);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & (1 << 6))
                 pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
@@ -1078,7 +1078,7 @@ static rct_tile_element* footpath_connect_corners_get_neighbour(int32_t x, int32
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (!(tileElement->properties.path.edges & requireEdges))
+        if (!(tileElement->AsPath()->GetEdgesAndCorners() & requireEdges))
             continue;
 
         return tileElement;
@@ -1138,19 +1138,21 @@ static void footpath_connect_corners(int32_t initialX, int32_t initialY, rct_til
             continue;
 
         direction = (direction + 1) & 3;
-        tileElement[3]->properties.path.edges |= (1 << (direction + 4));
+        tileElement[3]->AsPath()->SetCorners(tileElement[3]->AsPath()->GetCorners() | (1 << (direction)));
         map_invalidate_element(x, y, tileElement[3]);
 
         direction = (direction - 1) & 3;
-        tileElement[2]->properties.path.edges |= (1 << (direction + 4));
+        tileElement[2]->AsPath()->SetCorners(tileElement[2]->AsPath()->GetCorners() | (1 << (direction)));
+
         map_invalidate_element(x, y, tileElement[2]);
 
         direction = (direction - 1) & 3;
-        tileElement[1]->properties.path.edges |= (1 << (direction + 4));
+        tileElement[1]->AsPath()->SetCorners(tileElement[1]->AsPath()->GetCorners() | (1 << (direction)));
+
         map_invalidate_element(x, y, tileElement[1]);
 
         direction = initialDirection;
-        tileElement[0]->properties.path.edges |= (1 << (direction + 4));
+        tileElement[0]->AsPath()->SetCorners(tileElement[0]->AsPath()->GetCorners() | (1 << (direction)));
         map_invalidate_element(x, y, tileElement[0]);
     }
 }
@@ -1287,15 +1289,15 @@ static bool sub_footpath_disconnect_queue_from_path(
         tileElement->AsPath()->SetSlopeDirection(0);
         if (action > 0)
         {
-            tileElement->properties.path.edges &= ~(1 << direction);
-            otherTileElement->properties.path.edges &= ~(1 << ((direction + 2) & 3));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << direction));
+            otherTileElement->AsPath()->SetEdges(otherTileElement->AsPath()->GetEdges() & ~(1 << ((direction + 2) & 3)));
             if (action >= 2)
                 tileElement->AsPath()->SetSlopeDirection(direction);
         }
         else if (action < 0)
         {
-            tileElement->properties.path.edges |= (1 << direction);
-            otherTileElement->properties.path.edges |= (1 << ((direction + 2) & 3));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction));
+            otherTileElement->AsPath()->SetEdges(otherTileElement->AsPath()->GetEdges() | (1 << ((direction + 2) & 3)));
         }
         if (action != 0)
             map_invalidate_tile_full(x1, y1);
@@ -1468,7 +1470,7 @@ static void loc_6A6D7E(
         else
         {
             footpath_disconnect_queue_from_path(x, y, tileElement, 1 + ((flags >> 6) & 1));
-            tileElement->properties.path.edges |= (1 << (direction ^ 2));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << (direction ^ 2)));
             if (tileElement->AsPath()->IsQueue())
             {
                 footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
@@ -1486,7 +1488,7 @@ loc_6A6FD2:
     {
         if (!query)
         {
-            initialTileElement->properties.path.edges |= (1 << direction);
+            initialTileElement->AsPath()->SetEdges(initialTileElement->AsPath()->GetEdges() | (1 << direction));
             map_invalidate_element(initialX, initialY, initialTileElement);
         }
     }
@@ -1686,7 +1688,7 @@ void footpath_chain_ride_queue(
             }
 
             tileElement->AsPath()->SetHasQueueBanner(false);
-            tileElement->properties.path.edges |= (1 << (direction ^ 2));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << (direction ^ 2)));
             tileElement->AsPath()->SetRideIndex(rideIndex);
             tileElement->AsPath()->SetStationIndex(entranceIndex);
 
@@ -2342,7 +2344,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
 
         if (!(F3EFA5 & (0x2 | 0x8 | 0x20 | 0x80)))
         {
-            uint8_t e = tileElement->properties.path.edges;
+            uint8_t e = tileElement->AsPath()->GetEdgesAndCorners();
             if ((e != 0b10101111) && (e != 0b01011111) && (e != 0b11101111))
                 tileElement->AsPath()->SetWide(true);
         }
@@ -2395,19 +2397,17 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
 static void footpath_remove_edges_towards_here(
     int32_t x, int32_t y, int32_t z, int32_t direction, rct_tile_element* tileElement, bool isQueue)
 {
-    int32_t d;
-
     if (tileElement->AsPath()->IsQueue())
     {
         footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
     }
 
-    d = direction ^ 2;
-    tileElement->properties.path.edges &= ~(1 << d);
-    d = ((d - 1) & 3) + 4;
-    tileElement->properties.path.edges &= ~(1 << d);
-    d = (((d - 4) + 1) & 3) + 4;
-    tileElement->properties.path.edges &= ~(1 << d);
+    int32_t d = direction ^ 2;
+    tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << d));
+    int32_t cd = ((d - 1) & 3);
+    tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
+    cd = ((cd + 1) & 3);
+    tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
     map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
 
     if (isQueue)
@@ -2428,8 +2428,8 @@ static void footpath_remove_edges_towards_here(
         if (tileElement->AsPath()->IsSloped())
             break;
 
-        d = ((direction + 1) & 3) + 4;
-        tileElement->properties.path.edges &= ~(1 << d);
+        cd = ((direction + 1) & 3);
+        tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         break;
     } while (!(tileElement++)->IsLastForTile());
@@ -2581,7 +2581,7 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, rct_tile_element* 
 
                 const int32_t ix = xOffset + 1;
                 const int32_t iy = yOffset + 1;
-                tileElement->properties.path.edges &= ~(cornersTouchingTile[iy][ix] << 4);
+                tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(cornersTouchingTile[iy][ix]));
             } while (!(tileElement++)->IsLastForTile());
         }
     }
@@ -2647,7 +2647,7 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-        tileElement->properties.path.edges = 0;
+        tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
 rct_footpath_entry* get_footpath_entry(int32_t entryIndex)

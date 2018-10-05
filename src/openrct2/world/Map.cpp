@@ -3372,7 +3372,7 @@ rct_tile_element* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t f
     newTileElement->base_height = z;
     newTileElement->flags = flags;
     newTileElement->clearance_height = z;
-    memset(&newTileElement->properties, 0, sizeof(newTileElement->properties));
+    memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
     newTileElement++;
 
     // Insert rest of map elements above insert height

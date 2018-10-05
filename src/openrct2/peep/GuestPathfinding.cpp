@@ -97,7 +97,7 @@ static int32_t banner_clear_path_edges(rct_tile_element* tileElement, int32_t ed
  */
 static int32_t path_get_permitted_edges(rct_tile_element* tileElement)
 {
-    return banner_clear_path_edges(tileElement, tileElement->properties.path.edges) & 0x0F;
+    return banner_clear_path_edges(tileElement, tileElement->AsPath()->GetEdgesAndCorners()) & 0x0F;
 }
 
 /**
