@@ -188,8 +188,8 @@ assert_struct_size(SurfaceElement, 8);
 struct PathElement : TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
-    uint8_t additions;  // 5
+    uint8_t entryIndex; // 4, 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is sloped, 0x03 Rotation
+    uint8_t additions;  // 5, 0bGSSSAAAA: G = Ghost, S = station index, A = addition (0 means no addition)
     uint8_t edges;      // 6
     union
     {

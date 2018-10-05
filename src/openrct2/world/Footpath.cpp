@@ -1441,7 +1441,7 @@ static void loc_6A6D7E(
                 {
                     neighbour_list_push(
                         neighbourList, 4, direction, tileElement->properties.path.ride_index,
-                        tileElement->properties.path.additions);
+                        tileElement->AsPath()->GetStationIndex());
                 }
                 else
                 {
@@ -1451,7 +1451,7 @@ static void loc_6A6D7E(
                         {
                             neighbour_list_push(
                                 neighbourList, 3, direction, tileElement->properties.path.ride_index,
-                                tileElement->properties.path.additions);
+                                tileElement->AsPath()->GetStationIndex());
                         }
                     }
                 }
