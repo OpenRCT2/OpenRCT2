@@ -992,9 +992,10 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
                     scenery_entry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
                 return;
 
+            uint8_t quadrant = tile_element->AsSmallScenery()->GetSceneryQuadrant();
             gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
             game_do_command(
-                grid_x, 1 | (tile_element->type << 8), grid_y,
+                grid_x, GAME_COMMAND_FLAG_APPLY | quadrant, grid_y,
                 tile_element->base_height | (tile_element->AsSmallScenery()->GetEntryIndex() << 8),
                 GAME_COMMAND_SET_SCENERY_COLOUR, 0, gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
             break;
