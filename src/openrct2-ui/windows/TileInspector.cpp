@@ -1515,13 +1515,13 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
             widget_set_checkbox_value(w, WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
             widget_set_checkbox_value(
-                w, WIDX_PATH_CHECK_EDGE_NE, tileElement->properties.path.edges & (1 << ((0 - get_current_rotation()) & 3)));
+                w, WIDX_PATH_CHECK_EDGE_NE, tileElement->AsPath()->GetEdges() & (1 << ((0 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
-                w, WIDX_PATH_CHECK_EDGE_SE, tileElement->properties.path.edges & (1 << ((1 - get_current_rotation()) & 3)));
+                w, WIDX_PATH_CHECK_EDGE_SE, tileElement->AsPath()->GetEdges() & (1 << ((1 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
-                w, WIDX_PATH_CHECK_EDGE_SW, tileElement->properties.path.edges & (1 << ((2 - get_current_rotation()) & 3)));
+                w, WIDX_PATH_CHECK_EDGE_SW, tileElement->AsPath()->GetEdges() & (1 << ((2 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
-                w, WIDX_PATH_CHECK_EDGE_NW, tileElement->properties.path.edges & (1 << ((3 - get_current_rotation()) & 3)));
+                w, WIDX_PATH_CHECK_EDGE_NW, tileElement->AsPath()->GetEdges() & (1 << ((3 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
                 w, WIDX_PATH_CHECK_EDGE_E,
                 tileElement->properties.path.edges & (1 << (4 + ((0 - get_current_rotation()) & 3))));

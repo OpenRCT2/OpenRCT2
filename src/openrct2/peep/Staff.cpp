@@ -702,7 +702,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
         total++;
 
         /* Check if path has an edge in adjac_dir */
-        if (!(path->properties.path.edges & (1u << adjac_dir)))
+        if (!(path->AsPath()->GetEdges() & (1u << adjac_dir)))
         {
             continue;
         }
@@ -1069,7 +1069,7 @@ static bool staff_path_finding_handyman(rct_peep* peep)
             if (tileElement == nullptr)
                 return true;
 
-            uint8_t pathDirections = (tileElement->properties.path.edges & validDirections) & 0xF;
+            uint8_t pathDirections = (tileElement->AsPath()->GetEdges() & validDirections) & 0xF;
             if (pathDirections == 0)
             {
                 direction = staff_handyman_direction_rand_surface(peep, validDirections);
@@ -1233,7 +1233,7 @@ static uint8_t staff_mechanic_direction_path_rand(rct_peep* peep, uint8_t pathDi
 static uint8_t staff_mechanic_direction_path(rct_peep* peep, uint8_t validDirections, rct_tile_element* pathElement)
 {
     uint8_t direction = 0xFF;
-    uint8_t pathDirections = pathElement->properties.path.edges & 0xF;
+    uint8_t pathDirections = pathElement->AsPath()->GetEdges();
     pathDirections &= validDirections;
 
     if (pathDirections == 0)
@@ -1367,7 +1367,7 @@ static bool staff_path_finding_mechanic(rct_peep* peep)
 static uint8_t staff_direction_path(rct_peep* peep, uint8_t validDirections, rct_tile_element* pathElement)
 {
     uint8_t direction = 0xFF;
-    uint8_t pathDirections = pathElement->properties.path.edges & 0xF;
+    uint8_t pathDirections = pathElement->AsPath()->GetEdges();
     if (peep->state != PEEP_STATE_ANSWERING && peep->state != PEEP_STATE_HEADING_TO_INSPECTION)
     {
         pathDirections &= validDirections;
@@ -2224,7 +2224,7 @@ static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
     if (tileElement->AsPath()->AdditionIsGhost())
         return 0;
 
-    uint8_t bin_positions = tileElement->properties.path.edges & 0xF;
+    uint8_t bin_positions = tileElement->AsPath()->GetEdges();
     uint8_t bin_quantity = tileElement->AsPath()->GetAdditionStatus();
     uint8_t chosen_position = 0;
 

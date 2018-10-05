@@ -2877,7 +2877,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
     // 0x00F1AEE2
     bool vandalism_present = false;
     if (tile_element->AsPath()->HasAddition() && (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
-        && (tile_element->properties.path.edges & 0xF) != 0xF)
+        && (tile_element->AsPath()->GetEdges()) != 0xF)
     {
         vandalism_present = true;
     }

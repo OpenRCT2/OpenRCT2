@@ -475,7 +475,7 @@ static uint8_t peep_pathfind_get_max_number_junctions(rct_peep* peep)
  */
 static bool path_is_thin_junction(rct_tile_element* path, TileCoordsXYZ loc)
 {
-    uint8_t edges = footpath_get_edges(path);
+    uint8_t edges = path->AsPath()->GetEdges();
 
     int32_t test_edge = bitscanforward(edges);
     if (test_edge == -1)
@@ -738,7 +738,7 @@ static void peep_pathfind_heuristic_search(
 
                 searchResult = PATH_SEARCH_THIN;
 
-                uint8_t numEdges = bitcount(footpath_get_edges(tileElement));
+                uint8_t numEdges = bitcount(tileElement->AsPath()->GetEdges());
 
                 if (numEdges < 2)
                 {
@@ -1816,25 +1816,25 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         if (!tileElement->AsPath()->IsQueue())
             break;
 
-        if (!(tileElement->properties.path.edges & (1 << (direction ^ (1 << 1)))))
+        if (!(tileElement->AsPath()->GetEdges() & (1 << (direction ^ (1 << 1)))))
             break;
 
         if (firstPathElement == nullptr)
             firstPathElement = tileElement;
 
         // More queue to go.
-        if (tileElement->properties.path.edges & (1 << (direction)))
+        if (tileElement->AsPath()->GetEdges() & (1 << (direction)))
             continue;
 
         direction++;
         direction &= 3;
         // More queue to go.
-        if (tileElement->properties.path.edges & (1 << (direction)))
+        if (tileElement->AsPath()->GetEdges() & (1 << (direction)))
             continue;
 
         direction ^= (1 << 1);
         // More queue to go.
-        if (tileElement->properties.path.edges & (1 << (direction)))
+        if (tileElement->AsPath()->GetEdges() & (1 << (direction)))
             continue;
 
         break;

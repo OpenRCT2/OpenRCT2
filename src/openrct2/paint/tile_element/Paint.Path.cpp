@@ -942,22 +942,22 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
             rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)
             {
-                if (!(tile_element->properties.path.edges & EDGE_NE))
+                if (!(tile_element->AsPath()->GetEdges() & EDGE_NE))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
                         session->MapPosition, -16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & EDGE_SE))
+                if (!(tile_element->AsPath()->GetEdges() & EDGE_SE))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
                         session->MapPosition, 0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & EDGE_SW))
+                if (!(tile_element->AsPath()->GetEdges() & EDGE_SW))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
                         session->MapPosition, 16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & EDGE_NW))
+                if (!(tile_element->AsPath()->GetEdges() & EDGE_NW))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
                         session->MapPosition, 0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
@@ -975,8 +975,8 @@ void path_paint_box_support(
     PathElement* pathElement = tileElement->AsPath();
 
     // Rol edges around rotation
-    uint8_t edges = ((tileElement->properties.path.edges << session->CurrentRotation) & 0xF)
-        | (((tileElement->properties.path.edges & 0xF) << session->CurrentRotation) >> 4);
+    uint8_t edges = ((tileElement->AsPath()->GetEdges() << session->CurrentRotation) & 0xF)
+        | (((tileElement->AsPath()->GetEdges()) << session->CurrentRotation) >> 4);
 
     uint8_t corners = (((tileElement->properties.path.edges >> 4) << session->CurrentRotation) & 0xF)
         | (((tileElement->properties.path.edges >> 4) << session->CurrentRotation) >> 4);
@@ -1128,8 +1128,8 @@ void path_paint_pole_support(
     PathElement* pathElement = tileElement->AsPath();
 
     // Rol edges around rotation
-    uint8_t edges = ((tileElement->properties.path.edges << session->CurrentRotation) & 0xF)
-        | (((tileElement->properties.path.edges & 0xF) << session->CurrentRotation) >> 4);
+    uint8_t edges = ((tileElement->AsPath()->GetEdges() << session->CurrentRotation) & 0xF)
+        | (((tileElement->AsPath()->GetEdges()) << session->CurrentRotation) >> 4);
 
     LocationXY16 boundBoxOffset = { stru_98D804[edges][0], stru_98D804[edges][1] };
 

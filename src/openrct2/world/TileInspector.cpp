@@ -227,7 +227,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
                     newRotation = (tileElement->AsPath()->GetSlopeDirection() + 1) & TILE_ELEMENT_DIRECTION_MASK;
                     tileElement->AsPath()->SetSlopeDirection(newRotation);
                 }
-                pathEdges = tileElement->properties.path.edges & 0x0F;
+                pathEdges = tileElement->AsPath()->GetEdges();
                 pathCorners = tileElement->properties.path.edges & 0xF0;
                 tileElement->properties.path.edges = 0;
                 tileElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;

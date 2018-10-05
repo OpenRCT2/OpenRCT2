@@ -225,6 +225,13 @@ public:
     bool HasQueueBanner() const;
     void SetHasQueueBanner(bool hasQueueBanner);
 
+    uint8_t GetEdges() const;
+    void SetEdges(uint8_t newEdges);
+    uint8_t GetCorners() const;
+    void SetCorners(uint8_t newCorners);
+    uint8_t GetEdgesAndCorners() const;
+    void SetEdgesAndCorners(uint8_t newEdgesAndCorners);
+
     bool HasAddition() const;
     uint8_t GetAddition() const;
     uint8_t GetAdditionEntryIndex() const;

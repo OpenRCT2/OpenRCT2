@@ -200,7 +200,7 @@ static bool WallCheckObstruction(
                 map_obstruction_set_error_text(tileElement);
                 return false;
             case TILE_ELEMENT_TYPE_PATH:
-                if (tileElement->properties.path.edges & (1 << edge))
+                if (tileElement->AsPath()->GetEdges() & (1 << edge))
                 {
                     map_obstruction_set_error_text(tileElement);
                     return false;
