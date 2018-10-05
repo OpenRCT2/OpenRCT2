@@ -3637,7 +3637,7 @@ STR_6166    :{SMALLFONT}{BLACK}表示された各フレームをモニターの�
 STR_6167    :{SMALLFONT}{BLACK}先行制御
 STR_6168    :タイトルシーケンス
 STR_6169    :シナリオ選択
-STR_6170    :微調整
+STR_6170    :インターフェースの微調整
 STR_6171    :検索
 STR_6172    :{SMALLFONT}{BLACK}検索
 STR_6173    :検索の名を入力して下さい。
