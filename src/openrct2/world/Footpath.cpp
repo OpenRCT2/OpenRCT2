@@ -1885,24 +1885,24 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
         direction ^= 2;
         if (!(flags & (1 << 7)))
         {
-            if (tileElement[1].type == TILE_ELEMENT_TYPE_BANNER)
+            if (tileElement[1].GetType() == TILE_ELEMENT_TYPE_BANNER)
             {
                 for (int32_t i = 1; i < 4; i++)
                 {
                     if ((&tileElement[i - 1])->IsLastForTile())
                         break;
-                    if (tileElement[i].type != TILE_ELEMENT_TYPE_BANNER)
+                    if (tileElement[i].GetType() != TILE_ELEMENT_TYPE_BANNER)
                         break;
                     edges &= tileElement[i].AsBanner()->GetAllowedEdges();
                 }
             }
-            if (tileElement[2].type == TILE_ELEMENT_TYPE_BANNER && tileElement[1].type != TILE_ELEMENT_TYPE_PATH)
+            if (tileElement[2].GetType() == TILE_ELEMENT_TYPE_BANNER && tileElement[1].GetType() != TILE_ELEMENT_TYPE_PATH)
             {
                 for (int32_t i = 1; i < 6; i++)
                 {
                     if ((&tileElement[i - 1])->IsLastForTile())
                         break;
-                    if (tileElement[i].type != TILE_ELEMENT_TYPE_BANNER)
+                    if (tileElement[i].GetType() != TILE_ELEMENT_TYPE_BANNER)
                         break;
                     edges &= tileElement[i].AsBanner()->GetAllowedEdges();
                 }
