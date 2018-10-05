@@ -2811,7 +2811,7 @@ void game_command_set_water_height(
 
     if (gCheatsDisableClearanceChecks || map_can_construct_at(x, y, zLow, zHigh, 0xFF))
     {
-        if (tile_element->type & 0x40)
+        if (tile_element->AsSurface()->HasTrackThatNeedsWater())
         {
             gGameCommandErrorText = 0;
             *ebx = MONEY32_UNDEFINED;
