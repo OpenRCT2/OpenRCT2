@@ -211,6 +211,9 @@ public:
     uint8_t GetSlopeDirection() const;
     void SetSlopeDirection(uint8_t newSlope);
 
+    uint8_t GetRideIndex() const;
+    void SetRideIndex(uint8_t newRideIndex);
+
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
 

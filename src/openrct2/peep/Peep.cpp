@@ -2902,7 +2902,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
 
     if (peep->type == PEEP_TYPE_GUEST && tile_element->AsPath()->IsQueue())
     {
-        uint8_t rideIndex = tile_element->properties.path.ride_index;
+        uint8_t rideIndex = tile_element->AsPath()->GetRideIndex();
 
         if (peep->state == PEEP_STATE_QUEUING)
         {

@@ -247,7 +247,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, rct_tile_el
         if (nextTileElement->AsPath()->IsWide())
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
-        if (nextTileElement->AsPath()->IsQueue() && nextTileElement->properties.path.ride_index != 0xFF)
+        if (nextTileElement->AsPath()->IsQueue() && nextTileElement->AsPath()->GetRideIndex() != 0xFF)
             return PATH_SEARCH_RIDE_QUEUE;
 
         return PATH_SEARCH_OTHER;
@@ -751,14 +751,14 @@ static void peep_pathfind_heuristic_search(
                 else
                 { // numEdges == 2
                     if (tileElement->AsPath()->IsQueue()
-                        && tileElement->properties.path.ride_index != gPeepPathFindQueueRideIndex)
+                        && tileElement->AsPath()->GetRideIndex() != gPeepPathFindQueueRideIndex)
                     {
-                        if (gPeepPathFindIgnoreForeignQueues && (tileElement->properties.path.ride_index != 0xFF))
+                        if (gPeepPathFindIgnoreForeignQueues && (tileElement->AsPath()->GetRideIndex() != 0xFF))
                         {
                             // Path is a queue we aren't interested in
                             /* The rideIndex will be useful for
                              * adding transport rides later. */
-                            rideIndex = tileElement->properties.path.ride_index;
+                            rideIndex = tileElement->AsPath()->GetRideIndex();
                             searchResult = PATH_SEARCH_RIDE_QUEUE;
                         }
                     }

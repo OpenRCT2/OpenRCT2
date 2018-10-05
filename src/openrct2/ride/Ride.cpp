@@ -3557,7 +3557,7 @@ static void ride_queue_banner_set_map_tooltip(rct_tile_element* tileElement)
     int32_t rideIndex;
     Ride* ride;
 
-    rideIndex = tileElement->properties.path.ride_index;
+    rideIndex = tileElement->AsPath()->GetRideIndex();
     ride = get_ride(rideIndex);
 
     set_map_tooltip_format_arg(0, rct_string_id, STR_RIDE_MAP_TIP);

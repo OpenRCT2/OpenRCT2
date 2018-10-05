@@ -1440,7 +1440,7 @@ static void loc_6A6D7E(
                 if (connected_path_count[tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK] < 2)
                 {
                     neighbour_list_push(
-                        neighbourList, 4, direction, tileElement->properties.path.ride_index,
+                        neighbourList, 4, direction, tileElement->AsPath()->GetRideIndex(),
                         tileElement->AsPath()->GetStationIndex());
                 }
                 else
@@ -1450,7 +1450,7 @@ static void loc_6A6D7E(
                         if (footpath_disconnect_queue_from_path(x, y, tileElement, 0))
                         {
                             neighbour_list_push(
-                                neighbourList, 3, direction, tileElement->properties.path.ride_index,
+                                neighbourList, 3, direction, tileElement->AsPath()->GetRideIndex(),
                                 tileElement->AsPath()->GetStationIndex());
                         }
                     }
@@ -1467,7 +1467,7 @@ static void loc_6A6D7E(
             tileElement->properties.path.edges |= (1 << (direction ^ 2));
             if (tileElement->AsPath()->IsQueue())
             {
-                footpath_queue_chain_push(tileElement->properties.path.ride_index);
+                footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
             }
         }
         if (!(flags & (GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)))
@@ -1683,7 +1683,7 @@ void footpath_chain_ride_queue(
 
             tileElement->AsPath()->SetHasQueueBanner(false);
             tileElement->properties.path.edges |= (1 << (direction ^ 2));
-            tileElement->properties.path.ride_index = rideIndex;
+            tileElement->AsPath()->SetRideIndex(rideIndex);
             tileElement->AsPath()->SetStationIndex(entranceIndex);
 
             map_invalidate_element(x, y, tileElement);
@@ -2363,7 +2363,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
         case TILE_ELEMENT_TYPE_PATH:
             if (tileElement->AsPath()->IsQueue())
             {
-                footpath_queue_chain_push(tileElement->properties.path.ride_index);
+                footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
                 for (int32_t direction = 0; direction < 4; direction++)
                 {
                     if (tileElement->properties.path.edges & (1 << direction))
@@ -2371,7 +2371,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
                         footpath_chain_ride_queue(255, 0, x, y, tileElement, direction);
                     }
                 }
-                tileElement->properties.path.ride_index = 255;
+                tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
             }
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -2395,7 +2395,7 @@ static void footpath_remove_edges_towards_here(
 
     if (tileElement->AsPath()->IsQueue())
     {
-        footpath_queue_chain_push(tileElement->properties.path.ride_index);
+        footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
     }
 
     d = direction ^ 2;
@@ -2661,4 +2661,14 @@ rct_footpath_entry* get_footpath_entry(int32_t entryIndex)
 uint8_t footpath_get_edges(const rct_tile_element* element)
 {
     return element->properties.path.edges & 0xF;
+}
+
+uint8_t PathElement::GetRideIndex() const
+{
+    return rideIndex;
+}
+
+void PathElement::SetRideIndex(uint8_t newRideIndex)
+{
+    rideIndex = newRideIndex;
 }

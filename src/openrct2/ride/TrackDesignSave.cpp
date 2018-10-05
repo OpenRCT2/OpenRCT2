@@ -600,7 +600,7 @@ static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rc
     switch (tileElement->GetType())
     {
         case TILE_ELEMENT_TYPE_PATH:
-            if (tileElement->AsPath()->IsQueue() && tileElement->properties.path.ride_index == rideIndex)
+            if (tileElement->AsPath()->IsQueue() && tileElement->AsPath()->GetRideIndex() == rideIndex)
                 return true;
             break;
         case TILE_ELEMENT_TYPE_TRACK:
@@ -637,7 +637,7 @@ static void track_design_save_select_nearby_scenery_for_tile(int32_t rideIndex, 
                     case TILE_ELEMENT_TYPE_PATH:
                         if (!tileElement->AsPath()->IsQueue())
                             interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
-                        else if (tileElement->properties.path.ride_index == rideIndex)
+                        else if (tileElement->AsPath()->GetRideIndex() == rideIndex)
                             interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
                         break;
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:

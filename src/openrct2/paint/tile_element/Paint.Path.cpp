@@ -436,7 +436,7 @@ static void sub_6A4101(
 
         direction--;
         // If text shown
-        if (direction < 2 && tile_element->properties.path.ride_index != RIDE_ID_NULL && imageFlags == 0)
+        if (direction < 2 && tile_element->AsPath()->GetRideIndex() != RIDE_ID_NULL && imageFlags == 0)
         {
             uint16_t scrollingMode = footpathEntry->scrolling_mode;
             scrollingMode += direction;
@@ -444,7 +444,7 @@ static void sub_6A4101(
             set_format_arg(0, uint32_t, 0);
             set_format_arg(4, uint32_t, 0);
 
-            Ride* ride = get_ride(tile_element->properties.path.ride_index);
+            Ride* ride = get_ride(tile_element->AsPath()->GetRideIndex());
             rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
@@ -799,7 +799,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
     {
         if (tile_element->AsPath()->IsQueue())
         {
-            if (tile_element->properties.path.ride_index != gTrackDesignSaveRideIndex)
+            if (tile_element->AsPath()->GetRideIndex() != gTrackDesignSaveRideIndex)
             {
                 return;
             }
