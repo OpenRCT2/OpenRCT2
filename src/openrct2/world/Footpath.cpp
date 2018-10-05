@@ -406,8 +406,10 @@ static money32 footpath_element_update(
             footpath_remove_edges_at(x, y, tileElement);
 
         tileElement->AsPath()->SetEntryIndex(type);
-
-        tileElement->type = (tileElement->type & 0xFE) | (type >> 7);
+        if (type & (1 << 7))
+            tileElement->AsPath()->SetIsQueue(true);
+        else
+            tileElement->AsPath()->SetIsQueue(false);
         tileElement->AsPath()->SetAddition(pathItemType);
         tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
 
@@ -663,8 +665,8 @@ static money32 footpath_place_from_track(
             pathElement->SetSlopeDirection(slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
                 pathElement->SetSloped(true);
-
-            tileElement->type |= type >> 7;
+            if (type & (1 << 7))
+                tileElement->AsPath()->SetIsQueue(true);
             pathElement->SetAddition(0);
             tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
             tileElement->AsPath()->SetAdditionStatus(255);
