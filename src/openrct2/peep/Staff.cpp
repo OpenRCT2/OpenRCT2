@@ -707,7 +707,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
             continue;
         }
 
-        if (footpath_element_is_sloped(path))
+        if (path->AsPath()->IsSloped())
         {
             if (footpath_element_get_slope_direction(path) == adjac_dir)
             {
@@ -737,7 +737,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
                 pathcount++;
             }
 
-            if (footpath_element_is_wide(test_element))
+            if (test_element->AsPath()->IsWide())
             {
                 if (!widefound)
                 {
@@ -1810,15 +1810,15 @@ void rct_peep::UpdateEmptyingBin()
             }
         }
 
-        if (!footpath_element_has_path_scenery(tile_element))
+        if (!tile_element->AsPath()->HasAddition())
         {
             StateReset();
             return;
         }
 
-        rct_scenery_entry* scenery_entry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+        rct_scenery_entry* scenery_entry = tile_element->AsPath()->GetAdditionEntry();
         if (!(scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN) || tile_element->flags & (1 << 5)
-            || footpath_element_path_scenery_is_ghost(tile_element))
+            || tile_element->AsPath()->AdditionIsGhost())
         {
             StateReset();
             return;
@@ -2210,9 +2210,9 @@ static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
             return 0;
     }
 
-    if (!footpath_element_has_path_scenery(tileElement))
+    if (!tileElement->AsPath()->HasAddition())
         return 0;
-    rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         return 0;
@@ -2220,7 +2220,7 @@ static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
     if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return 0;
 
-    if (footpath_element_path_scenery_is_ghost(tileElement))
+    if (tileElement->AsPath()->AdditionIsGhost())
         return 0;
 
     uint8_t bin_positions = tileElement->properties.path.edges & 0xF;

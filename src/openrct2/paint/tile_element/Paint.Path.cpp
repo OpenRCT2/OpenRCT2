@@ -89,7 +89,7 @@ static void path_bit_lights_paint(
     paint_session* session, rct_scenery_entry* pathBitEntry, const rct_tile_element* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
         height += 8;
 
     uint32_t imageId;
@@ -147,7 +147,7 @@ static void path_bit_bins_paint(
     paint_session* session, rct_scenery_entry* pathBitEntry, const rct_tile_element* tileElement, int32_t height, uint8_t edges,
     uint32_t pathBitImageFlags)
 {
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
         height += 8;
 
     uint32_t imageId;
@@ -323,7 +323,7 @@ static void sub_6A4101(
     if (tile_element->AsPath()->IsQueue())
     {
         uint8_t local_ebp = ebp & 0x0F;
-        if (footpath_element_is_sloped(tile_element))
+        if (tile_element->AsPath()->IsSloped())
         {
             switch ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation)
                     & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
@@ -404,15 +404,15 @@ static void sub_6A4101(
             }
         }
 
-        if (!footpath_element_has_queue_banner(tile_element))
+        if (!tile_element->AsPath()->HasQueueBanner())
         {
             return;
         }
 
-        uint8_t direction = footpath_element_get_direction(tile_element);
+        uint8_t direction = tile_element->AsPath()->GetQueueBannerDirection();
         // Draw ride sign
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        if (footpath_element_is_sloped(tile_element))
+        if (tile_element->AsPath()->IsSloped())
         {
             if (footpath_element_get_slope_direction(tile_element) == direction)
                 height += 16;
@@ -487,7 +487,7 @@ static void sub_6A4101(
         dword_F3EF80 &= 0x0F;
     }
 
-    if (footpath_element_is_sloped(tile_element))
+    if (tile_element->AsPath()->IsSloped())
     {
         switch ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation)
                 & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
@@ -682,7 +682,7 @@ static void sub_6A3F61(
     {
         if (!gTrackDesignSaveMode)
         {
-            if (footpath_element_has_path_scenery(tile_element))
+            if (tile_element->AsPath()->HasAddition())
             {
                 session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
                 if (sceneryImageFlags != 0)
@@ -691,8 +691,7 @@ static void sub_6A3F61(
                 }
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
-                rct_scenery_entry* sceneryEntry = get_footpath_item_entry(
-                    footpath_element_get_path_scenery_index(tile_element));
+                rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
 
                 if ((gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
                     && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -739,7 +738,7 @@ static void sub_6A3F61(
     // This is about tunnel drawing
     uint8_t direction = (footpath_element_get_slope_direction(tile_element) + session->CurrentRotation)
         & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
-    bool sloped = footpath_element_is_sloped(tile_element);
+    bool sloped = tile_element->AsPath()->IsSloped();
 
     if (connectedEdges & EDGE_SE)
     {
@@ -817,7 +816,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
         imageFlags = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
     }
 
-    if (footpath_element_path_scenery_is_ghost(tile_element))
+    if (tile_element->AsPath()->AdditionIsGhost())
     {
         sceneryImageFlags = CONSTRUCTION_MARKER;
     }
@@ -835,7 +834,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
     }
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
-    if (gPaintWidePathsAsGhost && footpath_element_is_wide(tile_element))
+    if (gPaintWidePathsAsGhost && tile_element->AsPath()->IsWide())
     {
         imageFlags &= 0x7FFFF;
         imageFlags |= CONSTRUCTION_MARKER;
@@ -856,7 +855,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
     }
     else
     {
-        if (footpath_element_is_sloped(tile_element))
+        if (tile_element->AsPath()->IsSloped())
         {
             // Diagonal path
 
@@ -898,7 +897,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
         {
             uint32_t imageId = 2618;
             int32_t height2 = tile_element->base_height * 8;
-            if (footpath_element_is_sloped(tile_element))
+            if (tile_element->AsPath()->IsSloped())
             {
                 imageId = 2619 + ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation) & 3);
                 height2 += 16;
@@ -911,7 +910,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
     if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS)
     {
         uint16_t height2 = 3 + tile_element->base_height * 8;
-        if (footpath_element_is_sloped(tile_element))
+        if (tile_element->AsPath()->IsSloped())
         {
             height2 += 8;
         }
@@ -921,8 +920,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
         sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2);
     }
 
-    uint8_t pathType = footpath_element_get_type(tile_element);
-    rct_footpath_entry* footpathEntry = get_footpath_entry(pathType);
+    rct_footpath_entry* footpathEntry = tile_element->AsPath()->GetEntry();
 
     if (footpathEntry != nullptr)
     {
@@ -939,9 +937,9 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        if (footpath_element_has_path_scenery(tile_element) && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN))
+        if (tile_element->AsPath()->HasAddition() && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN))
         {
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
+            rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)
             {
                 if (!(tile_element->properties.path.edges & EDGE_NE))
@@ -989,7 +987,7 @@ void path_paint_box_support(
     uint16_t edi = edges | (corners << 4);
 
     uint32_t imageId;
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
     {
         imageId = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation)
                    & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
@@ -1036,7 +1034,7 @@ void path_paint_box_support(
     else
     {
         uint32_t image_id;
-        if (footpath_element_is_sloped(tileElement))
+        if (tileElement->AsPath()->IsSloped())
         {
             image_id = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation)
                         & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
@@ -1066,7 +1064,7 @@ void path_paint_box_support(
     sub_6A3F61(session, tileElement, edi, height, footpathEntry, imageFlags, sceneryImageFlags, hasFences);
 
     uint16_t ax = 0;
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
     {
         ax = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) & 0x3) + 1;
     }
@@ -1081,7 +1079,7 @@ void path_paint_box_support(
     }
 
     height += 32;
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
     {
         height += 16;
     }
@@ -1143,7 +1141,7 @@ void path_paint_pole_support(
     uint16_t edi = edges | (corners << 4);
 
     uint32_t imageId;
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
     {
         imageId = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) & 3) + 16;
     }
@@ -1189,7 +1187,7 @@ void path_paint_pole_support(
     else
     {
         uint32_t bridgeImage;
-        if (footpath_element_is_sloped(tileElement))
+        if (tileElement->AsPath()->IsSloped())
         {
             bridgeImage = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation)
                            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
@@ -1216,7 +1214,7 @@ void path_paint_pole_support(
     sub_6A3F61(session, tileElement, edi, height, footpathEntry, imageFlags, sceneryImageFlags, hasFences); // TODO: arguments
 
     uint16_t ax = 0;
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
     {
         ax = 8;
     }
@@ -1237,7 +1235,7 @@ void path_paint_pole_support(
     }
 
     height += 32;
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
     {
         height += 16;
     }

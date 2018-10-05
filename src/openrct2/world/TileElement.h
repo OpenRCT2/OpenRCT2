@@ -13,6 +13,7 @@
 #include "Location.hpp"
 
 struct rct_scenery_entry;
+struct rct_footpath_entry;
 
 #pragma pack(push, 1)
 struct rct_tile_element_path_properties
@@ -186,9 +187,10 @@ assert_struct_size(SurfaceElement, 8);
 
 struct PathElement : TileElementBase
 {
-    uint8_t pathType;  // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
-    uint8_t additions; // 5
-    uint8_t edges;     // 6
+private:
+    uint8_t entryIndex; // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
+    uint8_t additions;  // 5
+    uint8_t edges;      // 6
     union
     {
         uint8_t additionStatus; // 7
@@ -196,8 +198,34 @@ struct PathElement : TileElementBase
     };
 
 public:
+    uint8_t GetEntryIndex() const;
+    rct_footpath_entry* GetEntry() const;
+    void SetEntryIndex(uint8_t newIndex);
+
+    uint8_t GetQueueBannerDirection() const;
+    void SetQueueBannerDirection(uint8_t direction);
+
+    bool IsSloped() const;
+    void SetSloped(bool isSloped);
+
+    uint8_t GetStationIndex() const;
+    void SetStationIndex(uint8_t newStationIndex);
+
+    bool IsWide() const;
+    void SetWide(bool isWide);
+
     bool IsQueue() const;
     void SetIsQueue(bool isQueue);
+    bool HasQueueBanner() const;
+
+    bool HasAddition() const;
+    uint8_t GetAddition() const;
+    uint8_t GetAdditionEntryIndex() const;
+    rct_scenery_entry* GetAdditionEntry() const;
+    void SetAddition(uint8_t newAddition);
+
+    bool AdditionIsGhost() const;
+    void SetAdditionIsGhost(bool isGhost);
 
     uint8_t GetRCT1PathType() const;
 };

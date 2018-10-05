@@ -479,7 +479,7 @@ private:
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
-                    uint8_t pathAdditionsType = tileElement->properties.path.additions & 0x0F;
+                    uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
 
                     AddEntryForPath(pathType);
                     AddEntryForPathAddition(pathAdditionsType);
@@ -2505,16 +2505,16 @@ private:
                     tileElement->SetDirection(0);
                     tileElement->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
 
-                    footpath_element_set_type(tileElement, entryIndex);
+                    tileElement->AsPath()->SetEntryIndex(entryIndex);
                     if (RCT1::PathIsQueue(pathType))
                     {
                         tileElement->AsPath()->SetIsQueue(true);
                     }
 
-                    footpath_scenery_set_is_ghost(tileElement, false);
+                    tileElement->AsPath()->SetAdditionIsGhost(false);
 
                     // Additions
-                    uint8_t additionType = footpath_element_get_path_scenery(tileElement);
+                    uint8_t additionType = tileElement->AsPath()->GetAddition();
                     if (additionType != RCT1_PATH_ADDITION_NONE)
                     {
                         uint8_t normalisedType = RCT1::NormalisePathAddition(additionType);
@@ -2523,7 +2523,7 @@ private:
                         {
                             tileElement->flags |= TILE_ELEMENT_FLAG_BROKEN;
                         }
-                        footpath_element_set_path_scenery(tileElement, entryIndex + 1);
+                        tileElement->AsPath()->SetAddition(entryIndex + 1);
                     }
                     break;
                 }
@@ -2881,7 +2881,7 @@ void load_from_sc4(const utf8* path)
 uint8_t PathElement::GetRCT1PathType() const
 {
     uint8_t pathColour = type & 3;
-    uint8_t pathType2 = (pathType & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
+    uint8_t pathType2 = (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
 
     pathType2 = pathType2 | pathColour;
     return pathType2;

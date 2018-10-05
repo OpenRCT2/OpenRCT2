@@ -108,7 +108,7 @@ static void cheat_fix_vandalism()
         if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (!footpath_element_has_path_scenery(it.element))
+        if (!(it.element)->AsPath()->HasAddition())
             continue;
 
         it.element->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
@@ -138,10 +138,10 @@ static void cheat_remove_litter()
         if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (!footpath_element_has_path_scenery(it.element))
+        if (!(it.element)->AsPath()->HasAddition())
             continue;
 
-        sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(it.element));
+        sceneryEntry = it.element->AsPath()->GetAdditionEntry();
         if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
             it.element->properties.path.addition_status = 0xFF;
 

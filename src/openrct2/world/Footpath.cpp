@@ -172,7 +172,7 @@ static rct_tile_element* map_get_footpath_element_slope(int32_t x, int32_t y, in
 
 static void loc_6A6620(int32_t flags, int32_t x, int32_t y, rct_tile_element* tileElement)
 {
-    if (footpath_element_is_sloped(tileElement) && !(flags & GAME_COMMAND_FLAG_GHOST))
+    if (tileElement->AsPath()->IsSloped() && !(flags & GAME_COMMAND_FLAG_GHOST))
     {
         int32_t direction = footpath_element_get_slope_direction(tileElement);
         int32_t z = tileElement->base_height;
@@ -267,11 +267,11 @@ static money32 footpath_element_insert(
             assert(tileElement != nullptr);
             tileElement->type = TILE_ELEMENT_TYPE_PATH;
             tileElement->clearance_height = z + 4 + ((slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP) ? 2 : 0);
-            footpath_element_set_type(tileElement, type);
+            tileElement->AsPath()->SetEntryIndex(type);
             tileElement->properties.path.type |= (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
             if (type & FOOTPATH_ELEMENT_INSERT_QUEUE)
                 tileElement->AsPath()->SetIsQueue(true);
-            tileElement->properties.path.additions = pathItemType;
+            tileElement->AsPath()->SetAddition(pathItemType);
             tileElement->properties.path.addition_status = 255;
             tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -302,13 +302,13 @@ static money32 footpath_element_update(
     const int32_t newFootpathType = (type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
     const bool newPathIsQueue = ((type >> 7) == 1);
 
-    if (footpath_element_get_type(tileElement) != newFootpathType || tileElement->AsPath()->IsQueue() != newPathIsQueue)
+    if (tileElement->AsPath()->GetEntryIndex() != newFootpathType || tileElement->AsPath()->IsQueue() != newPathIsQueue)
     {
         gFootpathPrice += MONEY(6, 00);
     }
     else if (pathItemType != 0)
     {
-        if (!(flags & GAME_COMMAND_FLAG_GHOST) && footpath_element_get_path_scenery(tileElement) == pathItemType
+        if (!(flags & GAME_COMMAND_FLAG_GHOST) && tileElement->AsPath()->GetAddition() == pathItemType
             && !(tileElement->flags & TILE_ELEMENT_FLAG_BROKEN))
         {
             if (flags & GAME_COMMAND_FLAG_4)
@@ -322,7 +322,7 @@ static money32 footpath_element_update(
             rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
             uint16_t unk6 = scenery_entry->path_bit.flags;
 
-            if ((unk6 & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && footpath_element_is_sloped(tileElement))
+            if ((unk6 & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && tileElement->AsPath()->IsSloped())
             {
                 gGameCommandErrorText = STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH;
                 return MONEY32_UNDEFINED;
@@ -357,7 +357,7 @@ static money32 footpath_element_update(
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             // Check if there is something on the path already
-            if (footpath_element_has_path_scenery(tileElement))
+            if (tileElement->AsPath()->HasAddition())
             {
                 gGameCommandErrorText = STR_NONE;
                 return MONEY32_UNDEFINED;
@@ -365,19 +365,19 @@ static money32 footpath_element_update(
 
             // There is nothing yet - check if we should place a ghost
             if (flags & GAME_COMMAND_FLAG_APPLY)
-                footpath_scenery_set_is_ghost(tileElement, true);
+                tileElement->AsPath()->SetAdditionIsGhost(true);
         }
 
         if (!(flags & GAME_COMMAND_FLAG_APPLY))
             return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 
         if ((pathItemType != 0 && !(flags & GAME_COMMAND_FLAG_GHOST))
-            || (pathItemType == 0 && footpath_element_path_scenery_is_ghost(tileElement)))
+            || (pathItemType == 0 && tileElement->AsPath()->AdditionIsGhost()))
         {
-            footpath_scenery_set_is_ghost(tileElement, false);
+            tileElement->AsPath()->SetAdditionIsGhost(false);
         }
 
-        footpath_element_set_path_scenery(tileElement, pathItemType);
+        tileElement->AsPath()->SetAddition(pathItemType);
         tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
         if (pathItemType != 0)
         {
@@ -401,10 +401,10 @@ static money32 footpath_element_update(
         if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
             footpath_remove_edges_at(x, y, tileElement);
 
-        footpath_element_set_type(tileElement, type);
+        tileElement->AsPath()->SetEntryIndex(type);
 
         tileElement->type = (tileElement->type & 0xFE) | (type >> 7);
-        footpath_element_set_path_scenery(tileElement, pathItemType);
+        tileElement->AsPath()->SetAddition(pathItemType);
         tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
 
         loc_6A6620(flags, x, y, tileElement);
@@ -650,7 +650,7 @@ static money32 footpath_place_from_track(
             tileElement->clearance_height = z + 4 + ((slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) ? 2 : 0);
             tileElement->properties.path.type = (type << 4) | (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
             tileElement->type |= type >> 7;
-            tileElement->properties.path.additions = 0;
+            tileElement->AsPath()->SetAddition(0);
             tileElement->properties.path.addition_status = 255;
             tileElement->properties.path.edges = edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
             tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
@@ -846,7 +846,7 @@ void footpath_get_coordinates_from_pos(
     if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
     {
         z = myTileElement->base_height * 8;
-        if (footpath_element_is_sloped(myTileElement))
+        if (myTileElement->AsPath()->IsSloped())
         {
             z += 8;
         }
@@ -1083,7 +1083,7 @@ static void footpath_connect_corners(int32_t initialX, int32_t initialY, rct_til
 
     if (initialTileElement->AsPath()->IsQueue())
         return;
-    if (footpath_element_is_sloped(initialTileElement))
+    if (initialTileElement->AsPath()->IsSloped())
         return;
 
     tileElement[0] = initialTileElement;
@@ -1229,7 +1229,7 @@ static rct_tile_element* footpath_get_element(int32_t x, int32_t y, int32_t z0, 
 
         if (z1 == tileElement->base_height)
         {
-            if (footpath_element_is_sloped(tileElement))
+            if (tileElement->AsPath()->IsSloped())
             {
                 slope = footpath_element_get_slope_direction(tileElement);
                 if (slope != direction)
@@ -1239,7 +1239,7 @@ static rct_tile_element* footpath_get_element(int32_t x, int32_t y, int32_t z0, 
         }
         if (z0 == tileElement->base_height)
         {
-            if (!footpath_element_is_sloped(tileElement))
+            if (!tileElement->AsPath()->IsSloped())
                 break;
 
             slope = footpath_element_get_slope_direction(tileElement) ^ 2;
@@ -1291,7 +1291,7 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, rct_tile_e
     if (!tileElement->AsPath()->IsQueue())
         return false;
 
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
         return false;
 
     uint8_t c = connected_path_count[tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK];
@@ -1343,8 +1343,7 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_PATH:
                     if (z == tileElement->base_height)
                     {
-                        if (footpath_element_is_sloped(tileElement)
-                            && footpath_element_get_slope_direction(tileElement) != direction)
+                        if (tileElement->AsPath()->IsSloped() && footpath_element_get_slope_direction(tileElement) != direction)
                         {
                             return;
                         }
@@ -1355,7 +1354,7 @@ static void loc_6A6D7E(
                     }
                     if (z - 2 == tileElement->base_height)
                     {
-                        if (!footpath_element_is_sloped(tileElement)
+                        if (!tileElement->AsPath()->IsSloped()
                             || footpath_element_get_slope_direction(tileElement) != (direction ^ 2))
                         {
                             return;
@@ -1514,7 +1513,7 @@ static void loc_6A6C85(
     int32_t z = tileElement->base_height;
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
     {
-        if (footpath_element_is_sloped(tileElement))
+        if (tileElement->AsPath()->IsSloped())
         {
             if ((footpath_element_get_slope_direction(tileElement) - direction) & 1)
             {
@@ -1612,7 +1611,7 @@ void footpath_chain_ride_queue(
             lastPathX = x;
             lastPathY = y;
             lastPathDirection = direction;
-            if (footpath_element_is_sloped(tileElement))
+            if (tileElement->AsPath()->IsSloped())
             {
                 if (footpath_element_get_slope_direction(tileElement) == direction)
                 {
@@ -1632,7 +1631,7 @@ void footpath_chain_ride_queue(
                 continue;
             if (tileElement->base_height == z)
             {
-                if (footpath_element_is_sloped(tileElement))
+                if (tileElement->AsPath()->IsSloped())
                 {
                     if (footpath_element_get_slope_direction(tileElement) != direction)
                         break;
@@ -1641,7 +1640,7 @@ void footpath_chain_ride_queue(
             }
             if (tileElement->base_height == z - 2)
             {
-                if (!footpath_element_is_sloped(tileElement))
+                if (!tileElement->AsPath()->IsSloped())
                     break;
 
                 if ((footpath_element_get_slope_direction(tileElement) ^ 2) != direction)
@@ -1672,8 +1671,7 @@ void footpath_chain_ride_queue(
             tileElement->properties.path.type &= ~FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
             tileElement->properties.path.edges |= (1 << (direction ^ 2));
             tileElement->properties.path.ride_index = rideIndex;
-            tileElement->properties.path.additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
-            tileElement->properties.path.additions |= (entranceIndex << 4) & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
+            tileElement->AsPath()->SetStationIndex(entranceIndex);
 
             map_invalidate_element(x, y, tileElement);
 
@@ -1701,8 +1699,7 @@ void footpath_chain_ride_queue(
         if (lastPathElement->AsPath()->IsQueue())
         {
             lastPathElement->properties.path.type |= FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER;
-            lastPathElement->type &= 0x3F;                                      // Clear the ride sign direction
-            footpath_element_set_direction(lastPathElement, lastPathDirection); // set the ride sign direction
+            lastPathElement->AsPath()->SetQueueBannerDirection(lastPathDirection); // set the ride sign direction
 
             map_animation_create(MAP_ANIMATION_TYPE_QUEUE_BANNER, lastPathX, lastPathY, lastPathElement->base_height);
         }
@@ -1843,7 +1840,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (footpath_element_is_sloped(tileElement)
+        if (tileElement->AsPath()->IsSloped()
             && (slopeDirection = footpath_element_get_slope_direction(tileElement)) != direction)
         {
             if ((slopeDirection ^ 2) != direction)
@@ -1914,7 +1911,7 @@ searchFromFootpath:
     if (edges == 0)
     {
         // Only possible direction to go
-        if (footpath_element_is_sloped(tileElement) && footpath_element_get_slope_direction(tileElement) == direction)
+        if (tileElement->AsPath()->IsSloped() && footpath_element_get_slope_direction(tileElement) == direction)
         {
             z += 2;
         }
@@ -1937,7 +1934,7 @@ searchFromFootpath:
         do
         {
             edges &= ~(1 << direction);
-            if (footpath_element_is_sloped(tileElement) && footpath_element_get_slope_direction(tileElement) == direction)
+            if (tileElement->AsPath()->IsSloped() && footpath_element_get_slope_direction(tileElement) == direction)
             {
                 z += 2;
             }
@@ -1958,16 +1955,16 @@ int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32
     return footpath_is_connected_to_map_edge_recurse(x, y, z, direction, flags, 0, 0, 16);
 }
 
-bool footpath_element_is_sloped(const rct_tile_element* tileElement)
+bool PathElement::IsSloped() const
 {
-    return (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
+    return (entryIndex & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) != 0;
 }
 
-void footpath_element_set_sloped(rct_tile_element* tileElement, bool isSloped)
+void PathElement::SetSloped(bool isSloped)
 {
-    tileElement->properties.path.type &= ~FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+    entryIndex &= ~FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
     if (isSloped)
-        tileElement->properties.path.type |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+        entryIndex |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
 }
 
 uint8_t footpath_element_get_slope_direction(const rct_tile_element* tileElement)
@@ -1987,78 +1984,97 @@ void PathElement::SetIsQueue(bool isQueue)
         type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE;
 }
 
-bool footpath_element_has_queue_banner(const rct_tile_element* tileElement)
+bool PathElement::HasQueueBanner() const
 {
-    return (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
+    return (entryIndex & FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER) != 0;
 }
 
-bool footpath_element_is_wide(const rct_tile_element* tileElement)
+uint8_t PathElement::GetStationIndex() const
 {
-    return (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
+    return (additions & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK) >> 4;
 }
 
-void footpath_element_set_wide(rct_tile_element* tileElement, bool isWide)
+void PathElement::SetStationIndex(uint8_t newStationIndex)
 {
-    tileElement->type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+    additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK;
+    additions |= ((newStationIndex << 4) & FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK);
+}
+
+bool PathElement::IsWide() const
+{
+    return (type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE) != 0;
+}
+
+void PathElement::SetWide(bool isWide)
+{
+    type &= ~FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
     if (isWide)
-        tileElement->type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
+        type |= FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE;
 }
 
-bool footpath_element_has_path_scenery(const rct_tile_element* tileElement)
+bool PathElement::HasAddition() const
 {
-    return footpath_element_get_path_scenery(tileElement) != 0;
+    return (additions & FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK) != 0;
 }
 
-uint8_t footpath_element_get_path_scenery(const rct_tile_element* tileElement)
+uint8_t PathElement::GetAddition() const
 {
-    return tileElement->properties.path.additions & FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
+    return additions & FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
 }
 
-void footpath_element_set_path_scenery(rct_tile_element* tileElement, uint8_t pathSceneryType)
+uint8_t PathElement::GetAdditionEntryIndex() const
 {
-    tileElement->properties.path.additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
-    tileElement->properties.path.additions |= pathSceneryType;
+    return GetAddition() - 1;
 }
 
-uint8_t footpath_element_get_path_scenery_index(const rct_tile_element* tileElement)
+rct_scenery_entry* PathElement::GetAdditionEntry() const
 {
-    return footpath_element_get_path_scenery(tileElement) - 1;
+    return get_footpath_item_entry(GetAdditionEntryIndex());
 }
 
-bool footpath_element_path_scenery_is_ghost(const rct_tile_element* tileElement)
+void PathElement::SetAddition(uint8_t newAddition)
 {
-    return (tileElement->properties.path.additions & FOOTPATH_ADDITION_FLAG_IS_GHOST) != 0;
+    additions &= ~FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK;
+    additions |= newAddition;
 }
 
-void footpath_scenery_set_is_ghost(rct_tile_element* tileElement, bool isGhost)
+bool PathElement::AdditionIsGhost() const
 {
-    // Remove ghost flag
-    tileElement->properties.path.additions &= ~FOOTPATH_ADDITION_FLAG_IS_GHOST;
-    // Set flag if it should be a ghost
+    return (additions & FOOTPATH_ADDITION_FLAG_IS_GHOST) != 0;
+}
+
+void PathElement::SetAdditionIsGhost(bool isGhost)
+{
+    additions &= ~FOOTPATH_ADDITION_FLAG_IS_GHOST;
     if (isGhost)
-        tileElement->properties.path.additions |= FOOTPATH_ADDITION_FLAG_IS_GHOST;
+        additions |= FOOTPATH_ADDITION_FLAG_IS_GHOST;
 }
 
-uint8_t footpath_element_get_type(const rct_tile_element* tileElement)
+uint8_t PathElement::GetEntryIndex() const
 {
-    return (tileElement->properties.path.type & FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
+    return (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
 }
 
-void footpath_element_set_type(rct_tile_element* tileElement, uint8_t type)
+rct_footpath_entry* PathElement::GetEntry() const
 {
-    tileElement->properties.path.type &= ~FOOTPATH_PROPERTIES_TYPE_MASK;
-    tileElement->properties.path.type |= (type << 4);
+    return get_footpath_entry(GetEntryIndex());
 }
 
-uint8_t footpath_element_get_direction(const rct_tile_element* tileElement)
+void PathElement::SetEntryIndex(uint8_t newEntryIndex)
 {
-    return ((tileElement->type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
+    entryIndex &= ~FOOTPATH_PROPERTIES_TYPE_MASK;
+    entryIndex |= (newEntryIndex << 4);
 }
 
-void footpath_element_set_direction(rct_tile_element* tileElement, uint8_t direction)
+uint8_t PathElement::GetQueueBannerDirection() const
 {
-    tileElement->type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
-    tileElement->type |= (direction << 6);
+    return ((type & FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK) >> 6);
+}
+
+void PathElement::SetQueueBannerDirection(uint8_t direction)
+{
+    type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
+    type |= (direction << 6);
 }
 
 /**
@@ -2074,7 +2090,7 @@ static void footpath_clear_wide(int32_t x, int32_t y)
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        footpath_element_set_wide(tileElement, false);
+        tileElement->AsPath()->SetWide(false);
     } while (!(tileElement++)->IsLastForTile());
 }
 
@@ -2095,7 +2111,7 @@ static rct_tile_element* footpath_can_be_wide(int32_t x, int32_t y, uint8_t heig
             continue;
         if (tileElement->AsPath()->IsQueue())
             continue;
-        if (footpath_element_is_sloped(tileElement))
+        if (tileElement->AsPath()->IsSloped())
             continue;
         return tileElement;
     } while (!(tileElement++)->IsLastForTile());
@@ -2146,7 +2162,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         if (tileElement->AsPath()->IsQueue())
             continue;
 
-        if (footpath_element_is_sloped(tileElement))
+        if (tileElement->AsPath()->IsSloped())
             continue;
 
         if ((tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK) == 0)
@@ -2183,7 +2199,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             F3EFA5 |= 0x80;
             if (pathList[7] != nullptr)
             {
-                if (footpath_element_is_wide(pathList[7]))
+                if ((pathList[7])->AsPath()->IsWide())
                 {
                     F3EFA5 &= ~0x80;
                 }
@@ -2195,7 +2211,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             F3EFA5 |= 0x2;
             if (pathList[1] != nullptr)
             {
-                if (footpath_element_is_wide(pathList[1]))
+                if ((pathList[1])->AsPath()->IsWide())
                 {
                     F3EFA5 &= ~0x2;
                 }
@@ -2232,11 +2248,11 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             //}
         }
 
-        if ((F3EFA5 & 0x80) && (pathList[7] != nullptr) && !(footpath_element_is_wide(pathList[7])))
+        if ((F3EFA5 & 0x80) && (pathList[7] != nullptr) && !(pathList[7])->AsPath()->IsWide())
         {
-            if ((F3EFA5 & 2) && (pathList[0] != nullptr) && (!footpath_element_is_wide(pathList[0]))
+            if ((F3EFA5 & 2) && (pathList[0] != nullptr) && !(pathList[0])->AsPath()->IsWide()
                 && ((pathList[0]->properties.path.edges & 6) == 6) && // N E
-                (pathList[1] != nullptr) && (!footpath_element_is_wide(pathList[1])))
+                (pathList[1] != nullptr) && !(pathList[1])->AsPath()->IsWide())
             {
                 F3EFA5 |= 0x1;
             }
@@ -2246,9 +2262,9 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
              * is always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
-            if ((F3EFA5 & 0x20) && (pathList[6] != nullptr) && (!footpath_element_is_wide(pathList[6]))
+            if ((F3EFA5 & 0x20) && (pathList[6] != nullptr) && !(pathList[6])->AsPath()->IsWide()
                 && ((pathList[6]->properties.path.edges & 3) == 3) && // N W
-                (pathList[5] != nullptr) && (true || !footpath_element_is_wide(pathList[5])))
+                (pathList[5] != nullptr) && (true || !(pathList[5])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x40;
             }
@@ -2260,11 +2276,11 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
          * are always false due to the tile update order
          * in combination with reset tiles.
          * Short circuit the logic appropriately. */
-        if ((F3EFA5 & 0x8) && (pathList[3] != nullptr) && (true || !footpath_element_is_wide(pathList[3])))
+        if ((F3EFA5 & 0x8) && (pathList[3] != nullptr) && (true || !(pathList[3])->AsPath()->IsWide()))
         {
-            if ((F3EFA5 & 2) && (pathList[2] != nullptr) && (true || !footpath_element_is_wide(pathList[2]))
+            if ((F3EFA5 & 2) && (pathList[2] != nullptr) && (true || !(pathList[2])->AsPath()->IsWide())
                 && ((pathList[2]->properties.path.edges & 0xC) == 0xC) && (pathList[1] != nullptr)
-                && (!footpath_element_is_wide(pathList[1])))
+                && (!(pathList[1])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x4;
             }
@@ -2275,9 +2291,9 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
              * are always false due to the tile update order
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
-            if ((F3EFA5 & 0x20) && (pathList[4] != nullptr) && (true || !footpath_element_is_wide(pathList[4]))
+            if ((F3EFA5 & 0x20) && (pathList[4] != nullptr) && (true || !(pathList[4])->AsPath()->IsWide())
                 && ((pathList[4]->properties.path.edges & 9) == 9) && (pathList[5] != nullptr)
-                && (true || !footpath_element_is_wide(pathList[5])))
+                && (true || !(pathList[5])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x10;
             }
@@ -2299,7 +2315,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         {
             uint8_t e = tileElement->properties.path.edges;
             if ((e != 0b10101111) && (e != 0b01011111) && (e != 0b11101111))
-                footpath_element_set_wide(tileElement, true);
+                tileElement->AsPath()->SetWide(true);
         }
     } while (!(tileElement++)->IsLastForTile());
 }
@@ -2380,7 +2396,7 @@ static void footpath_remove_edges_towards_here(
         if (tileElement->base_height != z)
             continue;
 
-        if (footpath_element_is_sloped(tileElement))
+        if (tileElement->AsPath()->IsSloped())
             break;
 
         d = ((direction + 1) & 3) + 4;
@@ -2409,7 +2425,7 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
 
         if (z1 == tileElement->base_height)
         {
-            if (footpath_element_is_sloped(tileElement))
+            if (tileElement->AsPath()->IsSloped())
             {
                 uint8_t slope = footpath_element_get_slope_direction(tileElement);
                 if (slope != direction)
@@ -2421,7 +2437,7 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
 
         if (z0 == tileElement->base_height)
         {
-            if (!footpath_element_is_sloped(tileElement))
+            if (!tileElement->AsPath()->IsSloped())
                 break;
 
             uint8_t slope = footpath_element_get_slope_direction(tileElement) ^ 2;
@@ -2450,7 +2466,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct
             case TILE_ELEMENT_TYPE_PATH:
                 if (tileElement->base_height == coords.z)
                 {
-                    if (!footpath_element_is_sloped(tileElement))
+                    if (!tileElement->AsPath()->IsSloped())
                         // The footpath is flat, it can be connected to from any direction
                         return true;
                     else if (footpath_element_get_slope_direction(tileElement) == (coords.direction ^ 2))
@@ -2459,7 +2475,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct
                 }
                 else if (tileElement->base_height + 2 == coords.z)
                 {
-                    if (footpath_element_is_sloped(tileElement)
+                    if (tileElement->AsPath()->IsSloped()
                         && footpath_element_get_slope_direction(tileElement) == coords.direction)
                         // The footpath is sloped and its higher point matches the edge connection
                         return true;
@@ -2514,7 +2530,7 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, rct_tile_element* 
     };
 
     // Sloped paths don't create filled corners, so no need to remove any
-    if (footpath_element_is_sloped(pathElement))
+    if (pathElement->AsPath()->IsSloped())
         return;
 
     for (int32_t xOffset = -1; xOffset <= 1; xOffset++)
@@ -2530,7 +2546,7 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, rct_tile_element* 
             {
                 if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
                     continue;
-                if (footpath_element_is_sloped(tileElement))
+                if (tileElement->AsPath()->IsSloped())
                     continue;
                 if (tileElement->base_height != pathElement->base_height)
                     continue;
@@ -2567,7 +2583,7 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
         int32_t z1 = tileElement->base_height;
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            if (footpath_element_is_sloped(tileElement))
+            if (tileElement->AsPath()->IsSloped())
             {
                 int32_t slope = footpath_element_get_slope_direction(tileElement);
                 // Sloped footpaths don't connect sideways

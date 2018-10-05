@@ -59,7 +59,7 @@ TEST_F(TileElementWantsFootpathConnection, SlopedPath)
     // Sloped paths only want to connect in two directions, of which is one at a higher offset
     const rct_tile_element* const slopedPathElement = map_get_footpath_element(18, 18, 14);
     ASSERT_NE(slopedPathElement, nullptr);
-    ASSERT_TRUE(footpath_element_is_sloped(slopedPathElement));
+    ASSERT_TRUE(slopedPathElement->AsPath()->IsSloped());
     // Bottom and top of sloped path want a path connection
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 18, 14, 2 }, nullptr));
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 18, 18, 16, 0 }, nullptr));

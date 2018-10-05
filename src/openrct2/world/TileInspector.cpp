@@ -222,7 +222,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
         switch (tileElement->GetType())
         {
             case TILE_ELEMENT_TYPE_PATH:
-                if (footpath_element_is_sloped(tileElement))
+                if (tileElement->AsPath()->IsSloped())
                 {
                     newRotation = (footpath_element_get_slope_direction(tileElement) + 1) & TILE_ELEMENT_DIRECTION_MASK;
                     tileElement->properties.path.type &= ~TILE_ELEMENT_DIRECTION_MASK;

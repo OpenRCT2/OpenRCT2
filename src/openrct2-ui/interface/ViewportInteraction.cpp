@@ -362,7 +362,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
             return info->type;
 
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-            sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+            sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
             {
@@ -506,7 +506,7 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElem
 {
     int32_t type;
 
-    type = footpath_element_get_type(tileElement);
+    type = tileElement->AsPath()->GetEntryIndex();
     if (tileElement->AsPath()->IsQueue())
         type |= 0x80;
 

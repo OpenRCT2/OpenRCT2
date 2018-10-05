@@ -640,10 +640,9 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                             continue;
 
                         // Check if the footpath has a queue line TV monitor on it
-                        if (footpath_element_has_path_scenery(tileElement)
-                            && !footpath_element_path_scenery_is_ghost(tileElement))
+                        if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
                         {
-                            uint8_t pathSceneryIndex = footpath_element_get_path_scenery_index(tileElement);
+                            uint8_t pathSceneryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
                             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
                             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN)
                             {
@@ -2718,15 +2717,15 @@ static uint8_t peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int1
                 switch (tileElement->GetType())
                 {
                     case TILE_ELEMENT_TYPE_PATH:
-                        if (!footpath_element_has_path_scenery(tileElement))
+                        if (!tileElement->AsPath()->HasAddition())
                             break;
 
-                        scenery = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+                        scenery = tileElement->AsPath()->GetAdditionEntry();
                         if (scenery == nullptr)
                         {
                             return PEEP_THOUGHT_TYPE_NONE;
                         }
-                        if (footpath_element_path_scenery_is_ghost(tileElement))
+                        if (tileElement->AsPath()->AdditionIsGhost())
                             break;
 
                         if (scenery->path_bit.flags
@@ -4914,7 +4913,7 @@ void rct_peep::UpdateRideLeaveExit()
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        int16_t height = map_height_from_slope(x, y, tileElement->properties.path.type);
+        int16_t height = map_height_from_slope({ x, y }, tileElement->properties.path.type, tileElement->AsPath()->IsSloped());
         height += tileElement->base_height * 8;
 
         int16_t z_diff = z - height;
@@ -5318,11 +5317,11 @@ void rct_peep::UpdateWalking()
 
     int32_t positions_free = 15;
 
-    if (footpath_element_has_path_scenery(tileElement))
+    if (tileElement->AsPath()->HasAddition())
     {
-        if (!footpath_element_path_scenery_is_ghost(tileElement))
+        if (!tileElement->AsPath()->AdditionIsGhost())
         {
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+            rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
             if (sceneryEntry == nullptr)
             {
                 return;
@@ -5753,13 +5752,13 @@ void rct_peep::UpdateUsingBin()
                 }
             }
 
-            if (!footpath_element_has_path_scenery(tileElement))
+            if (!tileElement->AsPath()->HasAddition())
             {
                 StateReset();
                 return;
             }
 
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+            rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
             if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
             {
                 StateReset();
@@ -5772,7 +5771,7 @@ void rct_peep::UpdateUsingBin()
                 return;
             }
 
-            if (footpath_element_path_scenery_is_ghost(tileElement))
+            if (tileElement->AsPath()->AdditionIsGhost())
             {
                 StateReset();
                 return;
@@ -5920,9 +5919,9 @@ bool rct_peep::UpdateWalkingFindBench()
         }
     }
 
-    if (!footpath_element_has_path_scenery(tileElement))
+    if (!tileElement->AsPath()->HasAddition())
         return false;
-    rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
 
     if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
         return false;
@@ -5930,7 +5929,7 @@ bool rct_peep::UpdateWalkingFindBench()
     if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return false;
 
-    if (footpath_element_path_scenery_is_ghost(tileElement))
+    if (tileElement->AsPath()->AdditionIsGhost())
         return false;
 
     int32_t edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
@@ -6015,9 +6014,9 @@ bool rct_peep::UpdateWalkingFindBin()
         }
     }
 
-    if (!footpath_element_has_path_scenery(tileElement))
+    if (!tileElement->AsPath()->HasAddition())
         return false;
-    rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
     if (sceneryEntry == nullptr)
     {
         return false;
@@ -6029,7 +6028,7 @@ bool rct_peep::UpdateWalkingFindBin()
     if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return false;
 
-    if (footpath_element_path_scenery_is_ghost(tileElement))
+    if (tileElement->AsPath()->AdditionIsGhost())
         return false;
 
     int32_t edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
@@ -6116,9 +6115,9 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
         }
     }
 
-    if (!footpath_element_has_path_scenery(tileElement))
+    if (!tileElement->AsPath()->HasAddition())
         return;
-    rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
+    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))
         return;
@@ -6126,7 +6125,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
     if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
         return;
 
-    if (footpath_element_path_scenery_is_ghost(tileElement))
+    if (tileElement->AsPath()->AdditionIsGhost())
         return;
 
     int32_t edges = tileElement->properties.path.edges & 0xF;

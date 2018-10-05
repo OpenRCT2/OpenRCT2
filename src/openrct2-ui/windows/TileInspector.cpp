@@ -865,8 +865,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             switch (widgetIndex)
             {
                 case WIDX_PATH_CHECK_SLOPED:
-                    window_tile_inspector_path_set_sloped(
-                        windowTileInspectorSelectedIndex, !footpath_element_is_sloped(tileElement));
+                    window_tile_inspector_path_set_sloped(windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsSloped());
                     break;
                 case WIDX_PATH_CHECK_EDGE_E:
                 case WIDX_PATH_CHECK_EDGE_S:
@@ -1514,7 +1513,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_PATH_CHECK_EDGE_W].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_W].top + 13;
             w->widgets[WIDX_PATH_CHECK_EDGE_NW].top = GBBT(propertiesAnchor, 2) + 7 * 1;
             w->widgets[WIDX_PATH_CHECK_EDGE_NW].bottom = w->widgets[WIDX_PATH_CHECK_EDGE_NW].top + 13;
-            widget_set_checkbox_value(w, WIDX_PATH_CHECK_SLOPED, footpath_element_is_sloped(tileElement));
+            widget_set_checkbox_value(w, WIDX_PATH_CHECK_SLOPED, tileElement->AsPath()->IsSloped());
             widget_set_checkbox_value(
                 w, WIDX_PATH_CHECK_EDGE_NE, tileElement->properties.path.edges & (1 << ((0 - get_current_rotation()) & 3)));
             widget_set_checkbox_value(
@@ -1809,13 +1808,13 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Path name
-                rct_string_id pathNameId = get_footpath_entry(footpath_element_get_type(tileElement))->string_idx;
+                rct_string_id pathNameId = tileElement->AsPath()->GetEntry()->string_idx;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, COLOUR_DARK_GREEN, x, y);
 
                 // Path addition
-                if (footpath_element_has_path_scenery(tileElement))
+                if (tileElement->AsPath()->HasAddition())
                 {
-                    const uint8_t pathAdditionType = footpath_element_get_path_scenery_index(tileElement);
+                    const uint8_t pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
                     rct_string_id additionNameId = get_footpath_item_entry(pathAdditionType)->name;
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, COLOUR_DARK_GREEN, x, y + 11);
                 }

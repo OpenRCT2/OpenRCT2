@@ -1021,7 +1021,8 @@ void rct_peep::UpdateFalling()
             // If a path check if we are on it
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
-                int32_t height = map_height_from_slope(x, y, tile_element->properties.path.type)
+                int32_t height = map_height_from_slope(
+                                     { x, y }, tile_element->properties.path.type, tile_element->AsPath()->IsSloped())
                     + tile_element->base_height * 8;
 
                 if (height < z - 1 || height > z + 4)
@@ -2634,7 +2635,7 @@ static void peep_interact_with_entrance(
             if (nextTileElement->AsPath()->IsQueue())
                 continue;
 
-            if (footpath_element_is_sloped(nextTileElement))
+            if (nextTileElement->AsPath()->IsSloped())
             {
                 uint8_t slopeDirection = footpath_element_get_slope_direction(nextTileElement);
                 if (slopeDirection == entranceDirection)
@@ -2878,7 +2879,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
 {
     // 0x00F1AEE2
     bool vandalism_present = false;
-    if (footpath_element_has_path_scenery(tile_element) && (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
+    if (tile_element->AsPath()->HasAddition() && (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
         && (tile_element->properties.path.edges & 0xF) != 0xF)
     {
         vandalism_present = true;
@@ -2926,10 +2927,10 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
 
         // Peep is not queuing.
         peep->time_lost = 0;
-        uint8_t stationNum = (tile_element->properties.path.additions & 0x70) >> 4;
+        uint8_t stationNum = tile_element->AsPath()->GetStationIndex();
 
         if ((tile_element->properties.path.type & (1 << 3)) // Queue has the ride sign on it
-            && (footpath_element_get_direction(tile_element)
+            && (tile_element->AsPath()->GetQueueBannerDirection()
                 == ((peep->direction) ^ 2)) // Ride sign is facing the direction the peep is walking
         )
         {
@@ -3093,7 +3094,7 @@ static bool peep_interact_with_shop(rct_peep* peep, int16_t x, int16_t y, rct_ti
 
 bool is_valid_path_z_and_direction(rct_tile_element* tileElement, int32_t currentZ, int32_t currentDirection)
 {
-    if (footpath_element_is_sloped(tileElement))
+    if (tileElement->AsPath()->IsSloped())
     {
         int32_t slopeDirection = footpath_element_get_slope_direction(tileElement);
         if (slopeDirection == currentDirection)
@@ -3457,8 +3458,7 @@ int32_t rct_peep::GetZOnSlope(int32_t tile_x, int32_t tile_y)
 
     int32_t height = next_z * 8;
     uint8_t slope = GetNextDirection();
-    slope |= GetNextIsSloped() ? (1 << 2) : 0;
-    return height + map_height_from_slope(tile_x, tile_y, slope);
+    return height + map_height_from_slope({ tile_x, tile_y }, slope, GetNextIsSloped());
 }
 
 /**
