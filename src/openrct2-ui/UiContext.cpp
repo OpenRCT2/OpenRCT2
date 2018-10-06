@@ -379,6 +379,10 @@ public:
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                 {
+                    if (e.button.which == SDL_TOUCH_MOUSEID)
+                    {
+                        break;
+                    }
                     int32_t x = (int32_t)(e.button.x / gConfigGeneral.window_scale);
                     int32_t y = (int32_t)(e.button.y / gConfigGeneral.window_scale);
                     switch (e.button.button)
@@ -401,6 +405,10 @@ public:
                 }
                 case SDL_MOUSEBUTTONUP:
                 {
+                    if (e.button.which == SDL_TOUCH_MOUSEID)
+                    {
+                        break;
+                    }
                     int32_t x = (int32_t)(e.button.x / gConfigGeneral.window_scale);
                     int32_t y = (int32_t)(e.button.y / gConfigGeneral.window_scale);
                     switch (e.button.button)
