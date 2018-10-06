@@ -537,7 +537,7 @@ static void input_viewport_drag_continue()
     rct_viewport* viewport;
 
     context_get_cursor_position(&newDragX, &newDragY);
-    const CursorState *cursorState = context_get_cursor_state();
+    const CursorState* cursorState = context_get_cursor_state();
 
     dx = newDragX - gInputDragLastX;
     dy = newDragY - gInputDragLastY;
@@ -583,11 +583,13 @@ static void input_viewport_drag_continue()
         }
     }
 
-    if (cursorState->touch) {
+    if (cursorState->touch)
+    {
         gInputDragLastX = newDragX;
         gInputDragLastY = newDragY;
     }
-    else {
+    else
+    {
         context_set_cursor_position(gInputDragLastX, gInputDragLastY);
     }
 }
