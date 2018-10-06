@@ -1589,7 +1589,9 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
-                // fall-through
+                ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+                colourA = RideKeyColours[RideColourKey[ride->type]];
+                break;
             case TILE_ELEMENT_TYPE_TRACK:
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                 colourA = RideKeyColours[RideColourKey[ride->type]];
