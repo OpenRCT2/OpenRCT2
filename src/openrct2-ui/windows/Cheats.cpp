@@ -1043,31 +1043,31 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_10MINUTEINSPECTIONS, 0, GAME_COMMAND_CHEAT, 0, 0);
             break;
         case WIDX_SHOW_ALL_OPERATING_MODES:
+            if (!gCheatsShowAllOperatingModes)
+            {
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+            }
             game_do_command(
                 0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWALLOPERATINGMODES, !gCheatsShowAllOperatingModes, GAME_COMMAND_CHEAT, 0,
                 0);
-            if (gCheatsShowAllOperatingModes)
+            break;
+        case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
+            if (!gCheatsShowVehiclesFromOtherTrackTypes)
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
             }
-            break;
-        case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
             game_do_command(
                 0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES, !gCheatsShowVehiclesFromOtherTrackTypes,
                 GAME_COMMAND_CHEAT, 0, 0);
-            if (gCheatsShowVehiclesFromOtherTrackTypes)
+            break;
+        case WIDX_DISABLE_TRAIN_LENGTH_LIMITS:
+            if (!gCheatsDisableTrainLengthLimit)
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
             }
-            break;
-        case WIDX_DISABLE_TRAIN_LENGTH_LIMITS:
             game_do_command(
                 0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLETRAINLENGTHLIMIT, !gCheatsDisableTrainLengthLimit, GAME_COMMAND_CHEAT,
                 0, 0);
-            if (gCheatsDisableTrainLengthLimit)
-            {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
-            }
             break;
         case WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK:
             game_do_command(
@@ -1075,13 +1075,13 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
                 GAME_COMMAND_CHEAT, 0, 0);
             break;
         case WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES:
-            game_do_command(
-                0, GAME_COMMAND_FLAG_APPLY, CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES, !gCheatsAllowArbitraryRideTypeChanges,
-                GAME_COMMAND_CHEAT, 0, 0);
-            if (gCheatsAllowArbitraryRideTypeChanges)
+            if (!gCheatsAllowArbitraryRideTypeChanges)
             {
                 context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
             }
+            game_do_command(
+                0, GAME_COMMAND_FLAG_APPLY, CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES, !gCheatsAllowArbitraryRideTypeChanges,
+                GAME_COMMAND_CHEAT, 0, 0);
             break;
         case WIDX_DISABLE_RIDE_VALUE_AGING:
             game_do_command(
