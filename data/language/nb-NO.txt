@@ -3472,7 +3472,7 @@ STR_5998    :Legg til penger
 STR_5999    :Sett penger
 STR_6000    :Skriv inn ny verdi
 STR_6001    :Skru på lyseffekter (eksperimentelt)
-STR_6002    :{SMALLFONT}{BLACK}Lamper og attraksjoner vil bli opplyst om natten.{NEWLINE}Krever at grafikkmotoren er satt tilhardware display.
+STR_6002    :{SMALLFONT}{BLACK}Lamper og attraksjoner vil bli opplyst om natten.{NEWLINE}Krever at grafikkmotoren er satt til hardware display.
 STR_6003    :Utklippskamera
 STR_6004    :Utklippskamera
 STR_6005    :Skru på utklippskamera
