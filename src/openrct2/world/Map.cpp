@@ -3664,10 +3664,10 @@ void map_update_tiles()
             interleaved_xy >>= 1;
         }
 
-        SurfaceElement* tileElement = map_get_surface_element_at(x, y)->AsSurface();
+        rct_tile_element* tileElement = map_get_surface_element_at(x, y);
         if (tileElement != nullptr)
         {
-            tileElement->UpdateGrassLength({ x * 32, y * 32 });
+            tileElement->AsSurface()->UpdateGrassLength({ x * 32, y * 32 });
             scenery_update_tile(x * 32, y * 32);
         }
 

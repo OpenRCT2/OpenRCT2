@@ -2530,7 +2530,7 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, rct_tile_element* 
     };
 
     // Sloped paths don't create filled corners, so no need to remove any
-    if (pathElement->AsPath()->IsSloped())
+    if (pathElement->GetType() == TILE_ELEMENT_TYPE_PATH && pathElement->AsPath()->IsSloped())
         return;
 
     for (int32_t xOffset = -1; xOffset <= 1; xOffset++)
