@@ -159,8 +159,9 @@ The standard CMake build procedure is to install the [required libraries](https:
 ```
 mkdir build
 cd build
-cmake ../
-make
+cmake ../ # set your standard cmake options, e.g. build type here
+make # you can parallelise your build job with e.g. -j8 or consider using ninja
+DESTDIR=. make install # the install target creates all the necessary files in places we expect them
 ```
 Detailed instructions can be found on our [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
