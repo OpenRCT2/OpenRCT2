@@ -15,7 +15,7 @@
 #    include <errno.h>
 #    include <fcntl.h>
 #    include <fnmatch.h>
-#    ifndef __EMSCRIPTEN__
+#    if !defined(__EMSCRIPTEN__) && __has_include(<fts.h>)
 #        include <fts.h>
 #    endif
 #    include "../OpenRCT2.h"
