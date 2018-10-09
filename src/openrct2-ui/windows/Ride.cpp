@@ -4273,6 +4273,8 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
 
     if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
         return;
+    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        return;
     if (tileElement->AsTrack()->GetRideIndex() != w->number)
         return;
     if (tileElement->AsTrack()->GetColourScheme() == newColourScheme)
