@@ -302,7 +302,6 @@ public:
         _cursorState.middle &= ~CURSOR_CHANGED;
         _cursorState.right &= ~CURSOR_CHANGED;
         _cursorState.old = 0;
-        _cursorState.touch = false;
 
         SDL_Event e;
         while (SDL_PollEvent(&e))
@@ -401,6 +400,7 @@ public:
                             _cursorState.old = 2;
                             break;
                     }
+                    _cursorState.touch = false;
                     break;
                 }
                 case SDL_MOUSEBUTTONUP:
@@ -427,6 +427,7 @@ public:
                             _cursorState.old = 4;
                             break;
                     }
+                    _cursorState.touch = false;
                     break;
                 }
                 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
