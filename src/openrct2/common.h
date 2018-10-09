@@ -81,7 +81,7 @@ using colour_t = uint8_t;
 
 #if !(                                                                                                                         \
     (defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700)               \
-    || (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID_API__) || defined(__FreeBSD__))
+    || (defined(__APPLE__) && defined(__MACH__)) || defined(__ANDROID_API__) || defined(__FreeBSD__) || !defined(__GLIBC__))
 char* strndup(const char* src, size_t size);
 #endif // !(POSIX_C_SOURCE >= 200809L || _XOPEN_SOURCE >= 700)
 

@@ -45,7 +45,7 @@ static mach_timebase_info_data_t _mach_base_info = {};
 
 #if !(                                                                                                                         \
     (defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700)               \
-    || (defined(__APPLE__) && defined(__MACH__)))
+    || (defined(__APPLE__) && defined(__MACH__)) || !defined(__GLIBC__))
 char* strndup(const char* src, size_t size)
 {
     size_t len = strnlen(src, size);
