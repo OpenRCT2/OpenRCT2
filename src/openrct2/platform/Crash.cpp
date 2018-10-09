@@ -10,12 +10,14 @@
 #include "Crash.h"
 
 #ifdef USE_BREAKPAD
+#    include <map>
 #    include <memory>
 #    include <stdio.h>
 
 #    if defined(_WIN32)
 #        include <ShlObj.h>
 #        include <client/windows/handler/exception_handler.h>
+#        include <common/windows/http_upload.h>
 #        include <string>
 #    else
 #        error Breakpad support not implemented yet for this platform
@@ -23,6 +25,7 @@
 
 #    include "../Version.h"
 #    include "../core/Console.hpp"
+#    include "../core/String.hpp"
 #    include "../localisation/Language.h"
 #    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
@@ -38,6 +41,31 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
+
+static bool UploadMinidump(const wchar_t* dumpPath)
+{
+    std::wstring url(
+        L"https://submit.backtrace.io/openrct2/e9e6d681fafdeac9f6131b4b59a155d54bebad567a8c0380d70643f4414819f5/minidump");
+    std::map<std::wstring, std::wstring> parameters;
+    std::map<std::wstring, std::wstring> files;
+    parameters[L"product_name"] = L"openrct2";
+    // In case of releases this can be empty
+    if (wcslen(_wszCommitSha1Short) > 0)
+    {
+        parameters[L"version"] = _wszCommitSha1Short;
+    }
+    else
+    {
+        parameters[L"version"] = String::ToUtf16(gVersionInfoFull);
+    }
+    files[L"upload_file_minidump"] = dumpPath;
+    std::wstring response;
+    int error;
+    int timeout = 10000;
+    bool success = google_breakpad::HTTPUpload::SendRequest(url, parameters, files, &timeout, &response, &error);
+    wprintf(L"Success = %d, error = %d, response = %s\n", success, error, response.c_str());
+    return success;
+}
 
 static bool OnCrash(
     const wchar_t* dumpPath, const wchar_t* miniDumpId, void* context, EXCEPTION_POINTERS* exinfo,
@@ -95,17 +123,24 @@ static bool OnCrash(
 
     if (gOpenRCT2SilentBreakpad)
     {
+        UploadMinidump(dumpFilePath);
         return succeeded;
     }
 
     constexpr const wchar_t* MessageFormat = L"A crash has occurred and a dump was created at\n%s.\n\nPlease file an issue "
                                              L"with OpenRCT2 on GitHub, and provide "
-                                             L"the dump and saved game there.\n\nVersion: %s\nCommit: %s";
+                                             L"the dump and saved game there.\n\nVersion: %s\nCommit: %s\n\n"
+                                             L"We would like to upload the crash dump for automated analysis, do you agree?\n"
+                                             L"The automated analysis is done by courtesy of https://backtrace.io/";
     wchar_t message[MAX_PATH * 2];
     swprintf_s(message, MessageFormat, dumpFilePath, WSZ(OPENRCT2_VERSION), _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
-    MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
+    int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
+    if (answer == IDYES)
+    {
+        UploadMinidump(dumpFilePath);
+    }
     HRESULT coInitializeResult = CoInitialize(nullptr);
     if (SUCCEEDED(coInitializeResult))
     {
