@@ -870,7 +870,7 @@ STR_1486    :{SMALLFONT}“I haven't finished my {STRINGID} yet”
 STR_1487    :{SMALLFONT}“Just looking at {STRINGID} makes me feel sick”
 STR_1488    :{SMALLFONT}“I'm not paying that much to go on {STRINGID}”
 STR_1489    :{SMALLFONT}“I want to go home”
-STR_1490    :{SMALLFONT}“{STRINGID} is really good value”
+STR_1490    :{SMALLFONT}“{STRINGID} is a really good value”
 STR_1491    :{SMALLFONT}“I've already got {STRINGID}”
 STR_1492    :{SMALLFONT}“I can't afford {STRINGID}”
 STR_1493    :{SMALLFONT}“I'm not hungry”
