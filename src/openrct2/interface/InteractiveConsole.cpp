@@ -626,6 +626,10 @@ static int32_t cc_get(InteractiveConsole& console, const utf8** argv, int32_t ar
         {
             console.WriteFormatLine("cheat_disable_support_limits %d", gCheatsDisableSupportLimits);
         }
+        else if (strcmp(argv[0], "current_rotation") == 0)
+        {
+            console.WriteFormatLine("current_rotation %d", get_current_rotation);
+        }
 #ifndef NO_TTF
         else if (strcmp(argv[0], "enable_hinting") == 0)
         {
@@ -937,6 +941,34 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
                 }
             }
             console.Execute("get cheat_disable_support_limits");
+        }
+        else if (strcmp(argv[0], "current_rotation") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
+        {
+            uint8_t currentRotation = get_current_rotation();
+            rct_window* mainWindow = window_get_main();
+            // as there are only 4 possible rotations, make any input go to 0-3 to avoid unneccessary work
+            int32_t newRotation = int_val[0] % 4;
+            if (newRotation != currentRotation && mainWindow != nullptr)
+            {
+                // if desired rotation is less than current, move counter-clockwise
+                if (newRotation < currentRotation)
+                {
+                    while (newRotation != currentRotation)
+                    {
+                        window_rotate_camera(mainWindow, -1);
+                        newRotation++;
+                    }
+                }
+                // otherwise move clockwise
+                else if (newRotation > currentRotation)
+                {
+                    while (newRotation != currentRotation)
+                    {
+                        window_rotate_camera(mainWindow, 1);
+                        newRotation--;
+                    }
+                }
+            }
         }
 #ifndef NO_TTF
         else if (strcmp(argv[0], "enable_hinting") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1306,6 +1338,7 @@ static constexpr const utf8* console_variable_table[] = {
     "cheat_sandbox_mode",
     "cheat_disable_clearance_checks",
     "cheat_disable_support_limits",
+    "current_rotation",
 };
 static constexpr const utf8* console_window_table[] = {
     "object_selection",
@@ -1341,7 +1374,7 @@ static constexpr const console_command console_command_table[] = {
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences"},
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
-    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."}
+    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."},
 };
 // clang-format on
 
