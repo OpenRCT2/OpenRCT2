@@ -175,6 +175,8 @@ bool game_is_not_paused();
 void save_game();
 void* create_save_game_as_intent();
 void save_game_as();
+void save_game_cmd(const utf8* name = nullptr);
+void save_game_with_name(const utf8* name);
 void game_autosave();
 void game_convert_strings_to_utf8();
 void game_convert_news_items_to_utf8();

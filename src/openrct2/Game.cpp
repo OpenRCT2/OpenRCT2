@@ -1172,20 +1172,38 @@ void save_game()
 {
     if (!gFirstTimeSaving)
     {
-        log_verbose("Saving to %s", gScenarioSavePath);
-        if (scenario_save(gScenarioSavePath, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0)))
-        {
-            log_verbose("Saved to %s", gScenarioSavePath);
-            safe_strcpy(gCurrentLoadedPath, gScenarioSavePath, MAX_PATH);
-
-            // Setting screen age to zero, so no prompt will pop up when closing the
-            // game shortly after saving.
-            gScreenAge = 0;
-        }
+        save_game_with_name(gScenarioSavePath);
     }
     else
     {
         save_game_as();
+    }
+}
+
+void save_game_cmd(const utf8* name /* = nullptr */)
+{
+    if (name == nullptr)
+    {
+        save_game_with_name(gScenarioSavePath);
+    }
+    else
+    {
+        char savePath[MAX_PATH];
+        platform_get_user_directory(savePath, "save", sizeof(savePath));
+        safe_strcat_path(savePath, name, sizeof(savePath));
+        path_append_extension(savePath, ".sv6", sizeof(savePath));
+        save_game_with_name(savePath);
+    }
+}
+
+void save_game_with_name(const utf8* name)
+{
+    log_verbose("Saving to %s", name);
+    if (scenario_save(name, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0)))
+    {
+        log_verbose("Saved to %s", name);
+        safe_strcpy(gCurrentLoadedPath, name, MAX_PATH);
+        gScreenAge = 0;
     }
 }
 
