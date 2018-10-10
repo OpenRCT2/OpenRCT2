@@ -1269,7 +1269,6 @@ static int32_t cc_save_park(
     {
         save_game_cmd(argv[0]);
     }
-    
     return 1;
 }
 
@@ -1357,7 +1356,7 @@ static constexpr const console_command console_command_table[] = {
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences"},
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
     { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."},
-    { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]"}
+    { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]"},
 };
 // clang-format on
 
