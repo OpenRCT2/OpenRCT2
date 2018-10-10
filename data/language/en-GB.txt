@@ -984,7 +984,7 @@ STR_1600    :{SMALLFONT}“This cookie from {STRINGID} is really good value”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“This roast sausage from {STRINGID} are really good value”
+STR_1604    :{SMALLFONT}“This roast sausage from {STRINGID} is really good value”
 STR_1605    :
 STR_1606    :
 STR_1607    :
