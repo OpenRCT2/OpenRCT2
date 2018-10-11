@@ -63,7 +63,8 @@ namespace File
         auto fsize = (size_t)fs.tellg();
         if (fsize > SIZE_MAX)
         {
-            std::string message = String::StdFormat("'%s' exceeds maximum length of %lld bytes.", SIZE_MAX);
+            std::string message = String::StdFormat(
+                "'%s' exceeds maximum length of %lld bytes.", std::string(path).c_str(), SIZE_MAX);
             throw IOException(message);
         }
         else
