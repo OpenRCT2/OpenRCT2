@@ -628,7 +628,7 @@ static int32_t cc_get(InteractiveConsole& console, const utf8** argv, int32_t ar
         }
         else if (strcmp(argv[0], "current_rotation") == 0)
         {
-            console.WriteFormatLine("current_rotation %d", get_current_rotation);
+            console.WriteFormatLine("current_rotation %d", get_current_rotation());
         }
 #ifndef NO_TTF
         else if (strcmp(argv[0], "enable_hinting") == 0)
@@ -946,29 +946,13 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
         {
             uint8_t currentRotation = get_current_rotation();
             rct_window* mainWindow = window_get_main();
-            // as there are only 4 possible rotations, make any input go to 0-3 to avoid unneccessary work
-            int32_t newRotation = int_val[0] % 4;
+            // there are only 4 possible rotations (0-3)
+            int32_t newRotation = int_val[0] & 3;
             if (newRotation != currentRotation && mainWindow != nullptr)
             {
-                // if desired rotation is less than current, move counter-clockwise
-                if (newRotation < currentRotation)
-                {
-                    while (newRotation != currentRotation)
-                    {
-                        window_rotate_camera(mainWindow, -1);
-                        newRotation++;
-                    }
-                }
-                // otherwise move clockwise
-                else if (newRotation > currentRotation)
-                {
-                    while (newRotation != currentRotation)
-                    {
-                        window_rotate_camera(mainWindow, 1);
-                        newRotation--;
-                    }
-                }
+                window_rotate_camera(mainWindow, newRotation - currentRotation);
             }
+            console.Execute("get current_rotation");
         }
 #ifndef NO_TTF
         else if (strcmp(argv[0], "enable_hinting") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
