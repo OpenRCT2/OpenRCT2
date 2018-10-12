@@ -13,6 +13,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
+#include "../util/Endian.h"
 #include "ObjectJsonHelpers.h"
 
 void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
@@ -22,13 +23,14 @@ void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.wall.flags = stream->ReadValue<uint8_t>();
     _legacyType.wall.height = stream->ReadValue<uint8_t>();
     _legacyType.wall.flags2 = stream->ReadValue<uint8_t>();
-    _legacyType.wall.price = stream->ReadValue<uint16_t>();
+    _legacyType.wall.price = ORCT_SwapLEu16(stream->ReadValue<uint16_t>());
     _legacyType.wall.scenery_tab_id = stream->ReadValue<uint8_t>();
     _legacyType.wall.scrolling_mode = stream->ReadValue<uint8_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    sgEntry.flags = ORCT_SwapLEu16(sgEntry.flags);
     SetPrimarySceneryGroup(&sgEntry);
 
     GetImageTable().Read(context, stream);

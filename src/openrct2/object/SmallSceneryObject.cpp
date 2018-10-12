@@ -17,6 +17,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
+#include "../util/Endian.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "ObjectJsonHelpers.h"
@@ -26,20 +27,21 @@
 void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
-    _legacyType.small_scenery.flags = stream->ReadValue<uint32_t>();
+    _legacyType.small_scenery.flags = ORCT_SwapLEu32(stream->ReadValue<uint32_t>());
     _legacyType.small_scenery.height = stream->ReadValue<uint8_t>();
     _legacyType.small_scenery.tool_id = stream->ReadValue<uint8_t>();
-    _legacyType.small_scenery.price = stream->ReadValue<int16_t>();
-    _legacyType.small_scenery.removal_price = stream->ReadValue<int16_t>();
+    _legacyType.small_scenery.price = ORCT_SwapLEu16(stream->ReadValue<int16_t>());
+    _legacyType.small_scenery.removal_price = ORCT_SwapLEu16(stream->ReadValue<int16_t>());
     stream->Seek(4, STREAM_SEEK_CURRENT);
-    _legacyType.small_scenery.animation_delay = stream->ReadValue<uint16_t>();
-    _legacyType.small_scenery.animation_mask = stream->ReadValue<uint16_t>();
-    _legacyType.small_scenery.num_frames = stream->ReadValue<uint16_t>();
+    _legacyType.small_scenery.animation_delay = ORCT_SwapLEu16(stream->ReadValue<uint16_t>());
+    _legacyType.small_scenery.animation_mask = ORCT_SwapLEu16(stream->ReadValue<uint16_t>());
+    _legacyType.small_scenery.num_frames = ORCT_SwapLEu16(stream->ReadValue<uint16_t>());
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    sgEntry.flags = ORCT_SwapLEu32(sgEntry.flags);
     SetPrimarySceneryGroup(&sgEntry);
 
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))

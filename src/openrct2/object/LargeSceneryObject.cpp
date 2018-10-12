@@ -17,6 +17,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
+#include "../util/Endian.h"
 #include "../world/Location.hpp"
 #include "ObjectJsonHelpers.h"
 
@@ -27,8 +28,8 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     stream->Seek(6, STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.tool_id = stream->ReadValue<uint8_t>();
     _legacyType.large_scenery.flags = stream->ReadValue<uint8_t>();
-    _legacyType.large_scenery.price = stream->ReadValue<int16_t>();
-    _legacyType.large_scenery.removal_price = stream->ReadValue<int16_t>();
+    _legacyType.large_scenery.price = ORCT_SwapLEi16(stream->ReadValue<int16_t>());
+    _legacyType.large_scenery.removal_price = ORCT_SwapLEi16(stream->ReadValue<int16_t>());
     stream->Seek(5, STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.scenery_tab_id = 0xFF;
     _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8_t>();
@@ -37,6 +38,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
+    sgEntry.flags = ORCT_SwapLEu32(sgEntry.flags);
     SetPrimarySceneryGroup(&sgEntry);
 
     if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
@@ -111,10 +113,17 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream* stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();
+    // Note: no need to swap the value here...
     while (stream->ReadValue<uint16_t>() != 0xFFFF)
     {
         stream->Seek(-2, STREAM_SEEK_CURRENT);
+
         auto tile = stream->ReadValue<rct_large_scenery_tile>();
+        tile.x_offset = ORCT_SwapLEi16(tile.x_offset);
+        tile.y_offset = ORCT_SwapLEi16(tile.y_offset);
+        tile.z_offset = ORCT_SwapLEi16(tile.z_offset);
+        tile.z_clearance = ORCT_SwapLEi16(tile.z_clearance);
+        tile.flags = ORCT_SwapLEi16(tile.flags);
         tiles.push_back(tile);
     }
     tiles.push_back({ -1, -1, -1, 255, 0xFFFF });

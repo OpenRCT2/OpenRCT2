@@ -10,6 +10,7 @@
 #include "SawyerChunkReader.h"
 
 #include "../core/IStream.hpp"
+#include "../util/Endian.h"
 
 // malloc is very slow for large allocations in MSVC debug builds as it allocates
 // memory on a special debug heap and then initialises all the memory to 0xCC.
@@ -51,6 +52,7 @@ void SawyerChunkReader::SkipChunk()
     try
     {
         auto header = _stream->ReadValue<sawyercoding_chunk_header>();
+        header.length = ORCT_SwapLEu32(header.length);
         _stream->Seek(header.length, STREAM_SEEK_CURRENT);
     }
     catch (const std::exception&)
@@ -67,6 +69,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
     try
     {
         auto header = _stream->ReadValue<sawyercoding_chunk_header>();
+        header.length = ORCT_SwapLEu32(header.length);
         switch (header.encoding)
         {
             case CHUNK_ENCODING_NONE:

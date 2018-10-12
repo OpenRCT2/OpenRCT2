@@ -22,6 +22,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
+#include "../util/Endian.h"
 #include "RideGroupManager.h"
 #include "TrackDesign.h"
 
@@ -114,7 +115,7 @@ protected:
         item.Path = stream->ReadStdString();
         item.RideType = stream->ReadValue<uint8_t>();
         item.ObjectEntry = stream->ReadStdString();
-        item.Flags = stream->ReadValue<uint32_t>();
+        item.Flags = ORCT_SwapLEu32(stream->ReadValue<uint32_t>());
         return item;
     }
 

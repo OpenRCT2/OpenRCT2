@@ -10,6 +10,7 @@
 #include "SawyerEncoding.h"
 
 #include "../core/IStream.hpp"
+#include "../util/Endian.h"
 
 #include <algorithm>
 
@@ -44,7 +45,7 @@ namespace SawyerEncoding
             } while (dataSize != 0);
 
             // Read file checksum
-            uint32_t fileChecksum = stream->ReadValue<uint32_t>();
+            uint32_t fileChecksum = ORCT_SwapLEu32(stream->ReadValue<uint32_t>());
 
             // Rewind back to original position
             stream->SetPosition(initialPosition);

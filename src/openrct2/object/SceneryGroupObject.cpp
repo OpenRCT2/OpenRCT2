@@ -18,6 +18,7 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../peep/Staff.h"
+#include "../util/Endian.h"
 #include "ObjectJsonHelpers.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
@@ -34,7 +35,7 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream
     _legacyType.pad_107 = stream->ReadValue<uint8_t>();
     _legacyType.priority = stream->ReadValue<uint8_t>();
     _legacyType.pad_109 = stream->ReadValue<uint8_t>();
-    _legacyType.entertainer_costumes = stream->ReadValue<uint32_t>();
+    _legacyType.entertainer_costumes = ORCT_SwapLEu32(stream->ReadValue<uint32_t>());
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     _items = ReadItems(stream);
@@ -126,6 +127,7 @@ std::vector<rct_object_entry> SceneryGroupObject::ReadItems(IStream* stream)
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
         auto entry = stream->ReadValue<rct_object_entry>();
+        entry.flags = ORCT_SwapLEu32(entry.flags);
         items.push_back(entry);
     }
     return items;

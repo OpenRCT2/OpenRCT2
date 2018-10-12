@@ -16,6 +16,7 @@
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
+#include "../util/Endian.h"
 #include "../util/Util.h"
 #include "Drawing.h"
 
@@ -237,6 +238,8 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
         auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
         _g1.header = fs.ReadValue<rct_g1_header>();
+        _g1.header.num_entries = ORCT_SwapLEu32(_g1.header.num_entries);
+        _g1.header.total_size = ORCT_SwapLEu32(_g1.header.total_size);
 
         log_verbose("g1.dat, number of entries: %u", _g1.header.num_entries);
 
@@ -309,6 +312,8 @@ bool gfx_load_g2()
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
         _g2.header = fs.ReadValue<rct_g1_header>();
+        _g2.header.num_entries = ORCT_SwapLEu32(_g2.header.num_entries);
+        _g2.header.total_size = ORCT_SwapLEu32(_g2.header.total_size);
 
         // Read element headers
         _g2.elements.resize(_g2.header.num_entries);

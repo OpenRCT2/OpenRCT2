@@ -20,6 +20,7 @@
 #include "../core/String.hpp"
 #include "../core/Zip.h"
 #include "../rct12/SawyerChunkReader.h"
+#include "../util/Endian.h"
 #include "BannerObject.h"
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
@@ -199,6 +200,7 @@ namespace ObjectFactory
             auto chunkReader = SawyerChunkReader(&fs);
 
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
+            entry.flags = ORCT_SwapLEu32(entry.flags);
 
             if (object_entry_get_type(&entry) != OBJECT_TYPE_SCENARIO_TEXT)
             {
