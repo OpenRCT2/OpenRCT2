@@ -946,9 +946,11 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
         {
             uint8_t currentRotation = get_current_rotation();
             rct_window* mainWindow = window_get_main();
-            // there are only 4 possible rotations (0-3)
-            int32_t newRotation = int_val[0] & 3;
-            if (newRotation != currentRotation && mainWindow != nullptr)
+            int32_t newRotation = int_val[0];
+            if(newRotation < 0 || newRotation > 3) {
+                console.WriteLineError("Invalid argument. Valid rotations are 0-3.");
+            }
+            else if (newRotation != currentRotation && mainWindow != nullptr)
             {
                 window_rotate_camera(mainWindow, newRotation - currentRotation);
             }
