@@ -1258,6 +1258,20 @@ static int32_t cc_for_date(
     return 1;
 }
 
+static int32_t cc_save_park(
+    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
+{
+    if (argc < 1)
+    {
+        save_game_cmd();
+    }
+    else
+    {
+        save_game_cmd(argv[0]);
+    }
+    return 1;
+}
+
 using console_command_func = int32_t (*)(InteractiveConsole& console, const utf8** argv, int32_t argc);
 struct console_command
 {
@@ -1341,7 +1355,8 @@ static constexpr const console_command console_command_table[] = {
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences"},
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
-    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."}
+    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."},
+    { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]"},
 };
 // clang-format on
 
