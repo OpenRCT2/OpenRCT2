@@ -626,6 +626,10 @@ static int32_t cc_get(InteractiveConsole& console, const utf8** argv, int32_t ar
         {
             console.WriteFormatLine("cheat_disable_support_limits %d", gCheatsDisableSupportLimits);
         }
+        else if (strcmp(argv[0], "current_rotation") == 0)
+        {
+            console.WriteFormatLine("current_rotation %d", get_current_rotation());
+        }
 #ifndef NO_TTF
         else if (strcmp(argv[0], "enable_hinting") == 0)
         {
@@ -937,6 +941,21 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
                 }
             }
             console.Execute("get cheat_disable_support_limits");
+        }
+        else if (strcmp(argv[0], "current_rotation") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
+        {
+            uint8_t currentRotation = get_current_rotation();
+            rct_window* mainWindow = window_get_main();
+            int32_t newRotation = int_val[0];
+            if (newRotation < 0 || newRotation > 3)
+            {
+                console.WriteLineError("Invalid argument. Valid rotations are 0-3.");
+            }
+            else if (newRotation != currentRotation && mainWindow != nullptr)
+            {
+                window_rotate_camera(mainWindow, newRotation - currentRotation);
+            }
+            console.Execute("get current_rotation");
         }
 #ifndef NO_TTF
         else if (strcmp(argv[0], "enable_hinting") == 0 && invalidArguments(&invalidArgs, int_valid[0]))
@@ -1320,6 +1339,7 @@ static constexpr const utf8* console_variable_table[] = {
     "cheat_sandbox_mode",
     "cheat_disable_clearance_checks",
     "cheat_disable_support_limits",
+    "current_rotation",
 };
 static constexpr const utf8* console_window_table[] = {
     "object_selection",
