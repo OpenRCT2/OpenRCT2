@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#pragma once
+
 #include <openrct2/common.h>
 
 namespace OpenRCT2::Ui
