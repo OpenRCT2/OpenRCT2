@@ -1943,6 +1943,9 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         Server_Send_OBJECTS(connection, objects);
 
         // Log player joining event
+        std::string playerNameHash = player->Name + " (" + keyhash + ")";
+        player_name = (const char*)playerNameHash.c_str();
+        format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         AppendServerLog(text);
     }
 }
