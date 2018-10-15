@@ -944,7 +944,7 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
     maze++;
     numMazeElements++;
 
-    location = ride_get_entrance_location(rideIndex, 0);
+    location = ride_get_exit_location(rideIndex, 0);
     if (location.isNull())
     {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
