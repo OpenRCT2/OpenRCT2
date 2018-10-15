@@ -48,6 +48,10 @@ enum {
     WIDX_PRICE
 };
 
+enum {
+    CURVATURE_CHECK_ROTATION = 0x3
+};
+
 validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
 static rct_widget window_track_place_widgets[] = {
@@ -166,7 +170,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     show_gridlines();
     _window_track_place_last_cost = MONEY32_UNDEFINED;
     _window_track_place_last_x = -1;
-    _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
+    _currentTrackPieceDirection = (2 - get_current_rotation()) & CURVATURE_CHECK_ROTATION;
 
     window_track_place_clear_mini_preview();
     window_track_place_draw_mini_preview(td6);
@@ -207,14 +211,14 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             break;
         case WIDX_ROTATE:
             window_track_place_clear_provisional();
-            _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
+            _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & CURVATURE_CHECK_ROTATION;
             window_invalidate(w);
             _window_track_place_last_x = -1;
             window_track_place_draw_mini_preview(_trackDesign);
             break;
         case WIDX_MIRROR:
             track_design_mirror(_trackDesign);
-            _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
+            _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & CURVATURE_CHECK_ROTATION;
             window_invalidate(w);
             _window_track_place_last_x = -1;
             window_track_place_draw_mini_preview(_trackDesign);
@@ -519,7 +523,7 @@ static void window_track_place_draw_mini_preview(rct_track_td6* td6)
 static void window_track_place_draw_mini_preview_track(
     rct_track_td6* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max)
 {
-    uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+    uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & CURVATURE_CHECK_ROTATION;
     rct_td6_track_element* trackElement = td6->track_elements;
 
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
@@ -555,7 +559,7 @@ static void window_track_place_draw_mini_preview_track(
                 {
                     uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
-                    uint8_t bits = trackBlock->var_08 << (rotation & 3);
+                    uint8_t bits = trackBlock->var_08 << (rotation & CURVATURE_CHECK_ROTATION);
                     bits = (bits & 0x0F) | ((bits & 0xF0) >> 4);
 
                     // Station track is a lighter colour
@@ -580,13 +584,13 @@ static void window_track_place_draw_mini_preview_track(
         }
 
         // Change rotation and next position based on track curvature
-        rotation &= 3;
+        rotation &= CURVATURE_CHECK_ROTATION;
         const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
 
         trackType *= 10;
         map_offset_with_rotation(&origin.x, &origin.y, track_coordinate->x, track_coordinate->y, rotation);
         rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
-        rotation &= 3;
+        rotation &= CURVATURE_CHECK_ROTATION;
         if (track_coordinate->rotation_end & 4)
         {
             rotation |= 4;
@@ -603,7 +607,7 @@ static void window_track_place_draw_mini_preview_track(
 static void window_track_place_draw_mini_preview_maze(
     rct_track_td6* td6, int32_t pass, LocationXY16 origin, LocationXY16* min, LocationXY16* max)
 {
-    uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+    uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & CURVATURE_CHECK_ROTATION;
     rct_td6_maze_element* mazeElement = td6->maze_elements;
     while (mazeElement->all != 0)
     {
