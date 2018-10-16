@@ -352,7 +352,7 @@ public:
                         }
                     }
 
-                    if (gConfigSound.audio_focus && gConfigSound.sound_enabled)
+                    if (gConfigSound.audio_focus)
                     {
                         if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                         {
