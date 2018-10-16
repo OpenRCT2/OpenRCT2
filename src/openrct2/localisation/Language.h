@@ -79,7 +79,7 @@ struct language_descriptor
 #else
     void* font_family;
 #endif
-    RCT2LanguageId rct2_original_id;
+    bool isRtl;
 };
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
