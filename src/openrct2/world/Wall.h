@@ -21,3 +21,6 @@ enum
 };
 
 money32 wall_remove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t flags);
+
+int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry);
+void wall_entry_set_door_sound(rct_scenery_entry* wallEntry, uint8_t doorSound);

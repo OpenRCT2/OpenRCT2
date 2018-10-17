@@ -144,7 +144,6 @@ enum WALL_SCENERY_2_FLAGS
 {
     WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = 0b00000001, // 0x1
     WALL_SCENERY_2_DOOR_SOUND_MASK = 0b00000110,
-    WALL_SCENERY_2_DOOR_SOUND_SHIFT = 0b00000001,
     WALL_SCENERY_2_IS_OPAQUE = 0b00001000, // 0x8
     WALL_SCENERY_2_ANIMATED = 0b00010000,  // 0x10
 };
@@ -306,6 +305,5 @@ rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex);
 rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex);
 
 int32_t get_scenery_id_from_entry_index(uint8_t objectType, int32_t entryIndex);
-int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry);
 
 #endif

@@ -13,6 +13,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
+#include "../world/Wall.h"
 #include "ObjectJsonHelpers.h"
 
 void WallObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
@@ -140,7 +141,7 @@ void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
     if (jDoorSound != nullptr)
     {
         auto doorSound = json_integer_value(jDoorSound);
-        _legacyType.wall.flags2 |= (doorSound << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
+        wall_entry_set_door_sound(&_legacyType, doorSound);
     }
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());

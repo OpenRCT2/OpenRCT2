@@ -811,3 +811,14 @@ void WallElement::SetAnimationIsBackwards(bool isBackwards)
     if (isBackwards)
         animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
 }
+
+int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry)
+{
+    return (wallEntry->wall.flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> 1;
+}
+
+void wall_entry_set_door_sound(rct_scenery_entry* wallEntry, uint8_t doorSound)
+{
+    wallEntry->wall.flags2 &= ~WALL_SCENERY_2_DOOR_SOUND_MASK;
+    wallEntry->wall.flags2 |= ((doorSound << 1) & WALL_SCENERY_2_DOOR_SOUND_MASK);
+}
