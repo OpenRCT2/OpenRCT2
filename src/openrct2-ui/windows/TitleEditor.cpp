@@ -508,7 +508,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
 static void window_title_editor_resize(rct_window* w)
 {
     if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_PRESETS)
-        window_set_resize(w, WW, WH, 500, WH2);
+        window_set_resize(w, WW, WH2, 500, WH2);
     else
         window_set_resize(w, WW, WH, 500, 580);
 }
