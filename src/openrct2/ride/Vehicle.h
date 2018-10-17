@@ -454,8 +454,8 @@ enum
     SOUND_RANGE_NONE = 255
 };
 
-#define VEHICLE_SEAT_PAIR_FLAG 0x80
-#define VEHICLE_SEAT_NUM_MASK 0x7F
+#define VEHICLE_SEAT_PAIR_FLAG 0b10000000
+#define VEHICLE_SEAT_NUM_MASK 0b01111111
 
 rct_vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();

@@ -39,34 +39,34 @@ assert_struct_size(rct_footpath_entry, 13);
 // Masks for values stored in rct_tile_element.type
 enum
 {
-    FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE = (1 << 0),
-    FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE = (1 << 1),
-    FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK = (1 << 6) | (1 << 7),
+    FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE = 0b00000001,
+    FOOTPATH_ELEMENT_TYPE_FLAG_IS_WIDE = 0b00000010,
+    FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK = 0b11000000,
 };
 
 // Masks and flags for values stored in rct_tile_element.properties.path.type
 enum
 {
-    FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
-    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = (1 << 2),
-    FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = (1 << 3),
-    FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
+    FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = 0b00000011,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = 0b00000100,
+    FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = 0b00001000,
+    FOOTPATH_PROPERTIES_TYPE_MASK = 0b11110000,
 };
 
 // Masks and flags for values stored in in rct_tile_element.properties.path.edges
 enum
 {
-    FOOTPATH_PROPERTIES_EDGES_EDGES_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
-    FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
+    FOOTPATH_PROPERTIES_EDGES_EDGES_MASK = 0b00001111,
+    FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = 0b11110000,
 };
 
 // Masks and flags for values stored in in rct_tile_element.properties.path.additions
 enum
 {
-    FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
+    FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = 0b00001111,
     // The most significant bit in this mask will always be zero, since rides can only have 4 stations
-    FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
-    FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = (1 << 7),
+    FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = 0b01110000,
+    FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = 0b10000000,
 };
 
 enum
@@ -78,9 +78,9 @@ enum
 
 enum
 {
-    FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
-    FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE = (1 << 1), // When elevated
-    FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
+    FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = 0b00000001,
+    FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE = 0b00000010, // When elevated
+    FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = 0b00000100,
 };
 
 enum

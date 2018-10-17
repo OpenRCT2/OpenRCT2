@@ -294,8 +294,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (!commandEditorOpen)
             {
                 window_text_input_open(
-                    w, widgetIndex, STR_TITLE_EDITOR_ACTION_CREATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_NONE, 0,
-                    64);
+                    w, widgetIndex, STR_TITLE_EDITOR_ACTION_CREATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, STR_NONE, 0, 64);
             }
             break;
         case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
