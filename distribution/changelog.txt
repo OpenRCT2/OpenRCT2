@@ -11,6 +11,7 @@
 - Fix: [#7473] Disabling sound effects also disables "Disable audio on focus loss".
 - Fix: [#7828] Copied entrances and exits stay when demolishing ride.
 - Fix: [#7945] Client IP address is logged as `(null)` in server logs.
+- Fix: [#7952] Performance drop caused by code refactor.
 - Fix: [#7954] Key validation fails on Windows due to non-ASCII user / player name.
 - Fix: [#7975] Inspection flag not cleared for rides which are set to never be inspected (Original bug).
 - Fix: [#8034] Vanilla sprites are broken when making screenshots from command line.
