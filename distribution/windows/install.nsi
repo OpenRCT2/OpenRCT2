@@ -3,15 +3,15 @@
 !define APPVERSIONINTERNAL  "${APPV_MAIN}.0"
 !define APPNAMEANDVERSION   "${APPNAME} ${APPVERSION}"
 !define APPURLLINK          "https://github.com/OpenRCT2/OpenRCT2"
+!define OPENRCT2_EXE        "openrct2.exe"
+!define OPENRCT2_COM        "openrct2.com"
 
 !if "${PLATFORM}" == "Win32"
-    !define OPENRCT2_EXE    "openrct2.exe"
     !define APPBITS         32
     !define APPARCH         "win32"
 
     InstallDir "$PROGRAMFILES32\OpenRCT2\"
 !else
-    !define OPENRCT2_EXE    "openrct2.exe"
     !define APPBITS         64
     !define APPARCH         "win64"
 
@@ -173,7 +173,7 @@ Section "!OpenRCT2" Section1
 
     ; Copy executable
     File /oname=${OPENRCT2_EXE} ${BINARY_DIR}\${OPENRCT2_EXE}
-    File /oname=openrct2.com ${BINARY_DIR}\openrct2.com
+    File /oname=${OPENRCT2_COM} ${BINARY_DIR}\${OPENRCT2_COM}
     File /oname=openrct2.dll ${BINARY_DIR}\openrct2.dll
 
     ; Create the Registry Entries
@@ -194,6 +194,7 @@ Section "!OpenRCT2" Section1
     CreateShortCut "$DESKTOP\OpenRCT2.lnk" "$INSTDIR\${OPENRCT2_EXE}"
     CreateDirectory "$SMPROGRAMS\$SHORTCUTS"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\OpenRCT2.lnk" "$INSTDIR\${OPENRCT2_EXE}"
+    CreateShortCut "$SMPROGRAMS\$SHORTCUTS\OpenRCT2-verbose.lnk" "%WINDIR%\System32\cmd.exe" '/C "$INSTDIR\${OPENRCT2_COM}" --verbose'
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Uninstall.lnk" "$INSTDIR\uninstall.exe"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Readme.lnk" "$INSTDIR\Readme.txt"
     CreateShortCut "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk" "$INSTDIR\Changelog.txt"
@@ -229,6 +230,7 @@ Section "Uninstall"
     ; Delete Shortcuts
     Delete "$DESKTOP\OpenRCT2.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\OpenRCT2.lnk"
+    Delete "$SMPROGRAMS\$SHORTCUTS\OpenRCT2-verbose.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Uninstall.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Readme.lnk"
     Delete "$SMPROGRAMS\$SHORTCUTS\Changelog.lnk"
@@ -240,7 +242,7 @@ Section "Uninstall"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
-    Delete "$INSTDIR\openrct2.com"
+    Delete "$INSTDIR\${OPENRCT2_COM}"
     Delete "$INSTDIR\openrct2.dll"
     Delete "$INSTDIR\INSTALL.LOG"
 
