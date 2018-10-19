@@ -45,7 +45,7 @@ const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 static bool UploadMinidump(const wchar_t* dumpPath)
 {
     std::wstring url(
-        L"https://submit.backtrace.io/openrct2/e9e6d681fafdeac9f6131b4b59a155d54bebad567a8c0380d70643f4414819f5/minidump");
+        L"https://submit.backtrace.io/openrct2/f9c5e640d498f15dbe902eab3e822e472af9270d5b0cbdc269cee65a926bf306/minidump");
     std::map<std::wstring, std::wstring> parameters;
     std::map<std::wstring, std::wstring> files;
     parameters[L"product_name"] = L"openrct2";
