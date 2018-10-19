@@ -14,7 +14,7 @@ if ($nottesting -and $notvs2015)
         if (${env:APPVEYOR_REPO_TAG} -eq "true" -or ${env:APPVEYOR_REPO_BRANCH} -match "^develop$|^push/")
         {
             msbuild openrct2.proj /t:UploadArtifacts /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-            # PowerShell is being stupid here and hijacks calls to curl, need to call it via curl.exe explicitly
+            # curl is sometimes aliased so be explicit
             curl.exe --data-binary @bin/openrct2-dll.pdb 'https://openrct2.sp.backtrace.io:6098/post?format=symbols&token=e9e6d681fafdeac9f6131b4b59a155d54bebad567a8c0380d70643f4414819f5&upload_file=openrct2-dll.pdb'
             curl.exe --data-binary @bin/openrct2-win.pdb 'https://openrct2.sp.backtrace.io:6098/post?format=symbols&token=e9e6d681fafdeac9f6131b4b59a155d54bebad567a8c0380d70643f4414819f5&upload_file=openrct2-win.pdb'
             curl.exe --data-binary @bin/openrct2.dll 'https://openrct2.sp.backtrace.io:6098/post?format=symbols&token=e9e6d681fafdeac9f6131b4b59a155d54bebad567a8c0380d70643f4414819f5&upload_file=openrct2.dll'
