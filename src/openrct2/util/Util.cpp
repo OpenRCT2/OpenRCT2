@@ -209,7 +209,7 @@ static bool cpuid_x86(uint32_t* cpuid_outdata, int32_t eax)
 
 bool sse41_available()
 {
-#ifdef OPENRCT2_X86
+#if defined(OPENRCT2_X86) && !defined(PLATFORM_X86)
     // SSE4.1 support is declared as the 19th bit of ECX with CPUID(EAX = 1).
     uint32_t regs[4] = { 0 };
     if (cpuid_x86(regs, 1))
@@ -222,7 +222,7 @@ bool sse41_available()
 
 bool avx2_available()
 {
-#ifdef OPENRCT2_X86
+#if defined(OPENRCT2_X86) && !defined(PLATFORM_X86)
 // For GCC and similar use the builtin function, as cpuid changed its semantics in
 // https://github.com/gcc-mirror/gcc/commit/132fa33ce998df69a9f793d63785785f4b93e6f1
 // which causes it to ignore subleafs, but the new function is unavailable on Ubuntu's

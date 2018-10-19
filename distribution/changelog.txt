@@ -19,6 +19,7 @@
 - Fix: [#8062] In multiplayer warnings for unstable cheats are shown when disabling them.
 - Fix: [#8090] Maze designs saved incorrectly.
 - Fix: [#8101] Title sequences window flashes after opening.
+- Fix: [#8117] OpenRCT2 freezes at start due to AVX2 instructions running on unsupported CPU.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.
