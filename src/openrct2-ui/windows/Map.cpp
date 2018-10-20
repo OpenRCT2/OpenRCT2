@@ -1332,7 +1332,7 @@ static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y)
 
     // Verify footpath exists at location, and retrieve coordinates
     footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &tileElement);
-    if (mapX == 0x8000)
+    if (mapX == LOCATION_NULL)
         return;
 
     mapZ = tileElement->base_height * 8;
