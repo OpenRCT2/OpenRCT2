@@ -2041,7 +2041,7 @@ STR_2703    :Alle 15 Minuten
 STR_2704    :Alle 30 Minuten
 STR_2705    :Jede Stunde
 STR_2706    :Nie
-STR_2707    :Systemdialogfeld verwenden
+STR_2707    :Systemdateibrowser verwenden
 STR_2708    :{WINDOW_COLOUR_1}Sind Sie sicher, dass Sie {STRINGID} überschreiben möchten?
 STR_2709    :Überschreiben
 STR_2710    :Geben Sie den Dateinamen ein:
@@ -3723,6 +3723,8 @@ STR_6258    :Klar (transparent)
 STR_6259    :Deaktiviert
 STR_6260    :Blockierte Kacheln anzeigen
 STR_6261    :Breite Wege anzeigen
+STR_6264    :Verwenden Sie immer den Systemdateibrowser
+STR_6265    :{SMALLFONT}{BLACK}Wenn Optionsfeld aktiviert wird, dann wird der Dateibrowser Ihres Systems verwendet im Gegensatz zu dem von OpenRCT2.
 
 #############
 # Scenarios #
