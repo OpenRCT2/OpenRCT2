@@ -368,6 +368,7 @@ void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colo
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();
+void scrolling_text_invalidate();
 int32_t scrolling_text_setup(struct paint_session* session, rct_string_id stringId, uint16_t scroll, uint16_t scrollingMode);
 
 rct_size16 FASTCALL gfx_get_sprite_size(uint32_t image_id);

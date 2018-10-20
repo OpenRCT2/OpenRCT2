@@ -1451,6 +1451,17 @@ static constexpr const int16_t* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
 };
 // clang-format on
 
+void scrolling_text_invalidate()
+{
+    for (int32_t i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
+    {
+        rct_draw_scroll_text& scrollText = _drawScrollTextList[i];
+        scrollText.string_id = 0;
+        scrollText.string_args_0 = 0;
+        scrollText.string_args_1 = 0;
+    }
+}
+
 /**
  *
  *  rct2: 0x006C42D9

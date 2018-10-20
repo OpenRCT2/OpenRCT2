@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../GameState.h"
 #include "../core/MemoryStream.h"
+#include "../drawing/Drawing.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
@@ -250,6 +251,9 @@ private:
         auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
+
+        scrolling_text_invalidate();
+        gfx_invalidate_screen();
 
         return res;
     }

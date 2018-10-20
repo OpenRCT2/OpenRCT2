@@ -92,6 +92,7 @@ public:
         user_string_free(ride->name);
         ride->name = newUserStringId;
 
+        scrolling_text_invalidate();
         gfx_invalidate_screen();
 
         // Refresh windows that display ride name
