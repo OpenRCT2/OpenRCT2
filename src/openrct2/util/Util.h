@@ -12,7 +12,8 @@
 
 #include "../common.h"
 
-#include <time.h>
+#include <cstdio>
+#include <ctime>
 
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres);
 int32_t metres_to_feet(int32_t metres);
@@ -56,6 +57,7 @@ uint32_t util_rand();
 
 uint8_t* util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size);
 uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size);
+bool util_gzip_compress(FILE* source, FILE* dest);
 
 int8_t add_clamp_int8_t(int8_t value, int8_t value_to_add);
 int16_t add_clamp_int16_t(int16_t value, int16_t value_to_add);

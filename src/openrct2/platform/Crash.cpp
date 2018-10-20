@@ -29,6 +29,7 @@
 #    include "../localisation/Language.h"
 #    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
+#    include "../util/Util.h"
 #    include "platform.h"
 
 #    define WSZ(x) L"" x
@@ -42,21 +43,26 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
+// Note: uploading gzipped crash dumps manually requires specifying
+// 'Content-Encoding: gzip' header in HTTP request, but we cannot do that,
+// so just hope the file name with '.gz' suffix is enough.
+// For docs on uplading to backtrace.io check
+// https://documentation.backtrace.io/product_integration_minidump_breakpad/
 static bool UploadMinidump(const wchar_t* dumpPath)
 {
-    std::wstring url(
-        L"https://submit.backtrace.io/openrct2/f9c5e640d498f15dbe902eab3e822e472af9270d5b0cbdc269cee65a926bf306/minidump");
+    std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
+                     L"post?format=minidump&token=f9c5e640d498f15dbe902eab3e822e472af9270d5b0cbdc269cee65a926bf306");
     std::map<std::wstring, std::wstring> parameters;
     std::map<std::wstring, std::wstring> files;
     parameters[L"product_name"] = L"openrct2";
     // In case of releases this can be empty
     if (wcslen(_wszCommitSha1Short) > 0)
     {
-        parameters[L"version"] = _wszCommitSha1Short;
+        parameters[L"commit"] = _wszCommitSha1Short;
     }
     else
     {
-        parameters[L"version"] = String::ToUtf16(gVersionInfoFull);
+        parameters[L"commit"] = String::ToUtf16(gVersionInfoFull);
     }
     files[L"upload_file_minidump"] = dumpPath;
     std::wstring response;
@@ -89,16 +95,33 @@ static bool OnCrash(
     wchar_t saveFilePath[MAX_PATH];
     swprintf_s(dumpFilePath, sizeof(dumpFilePath), L"%s/%s.dmp", dumpPath, miniDumpId);
     swprintf_s(saveFilePath, sizeof(saveFilePath), L"%s/%s.sv6", dumpPath, miniDumpId);
+    const wchar_t* minidumpToUpload = dumpFilePath;
 
-    // Try to rename the files
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
         dumpFilePathNew, sizeof(dumpFilePathNew), L"%s/%s(%s_%s).dmp", dumpPath, miniDumpId, _wszCommitSha1Short,
         _wszArchitecture);
+
+    wchar_t dumpFilePathGZIP[MAX_PATH];
+    swprintf_s(dumpFilePathGZIP, sizeof(dumpFilePathGZIP), L"%s.gz", dumpFilePathNew);
+
+    FILE* input = _wfopen(dumpFilePath, L"rb");
+    FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
+
+    if (util_gzip_compress(input, dest))
+    {
+        minidumpToUpload = dumpFilePathGZIP;
+    }
+    fclose(input);
+    fclose(dest);
+
+    // Try to rename the files
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
         std::wcscpy(dumpFilePath, dumpFilePathNew);
     }
+
+    // Compress to gzip-compatible stream
 
     // Log information to output
     wprintf(L"Dump Path: %s\n", dumpPath);
@@ -123,7 +146,7 @@ static bool OnCrash(
 
     if (gOpenRCT2SilentBreakpad)
     {
-        UploadMinidump(dumpFilePath);
+        UploadMinidump(minidumpToUpload);
         return succeeded;
     }
 
@@ -139,16 +162,19 @@ static bool OnCrash(
     int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
     if (answer == IDYES)
     {
-        UploadMinidump(dumpFilePath);
+        UploadMinidump(minidumpToUpload);
     }
     HRESULT coInitializeResult = CoInitialize(nullptr);
     if (SUCCEEDED(coInitializeResult))
     {
         LPITEMIDLIST pidl = ILCreateFromPathW(dumpPath);
-        LPITEMIDLIST files[2];
+        LPITEMIDLIST files[3];
         uint32_t numFiles = 0;
 
         files[numFiles++] = ILCreateFromPathW(dumpFilePath);
+        // There should be no need to check if this file exists, if it doesn't
+        // it simply shouldn't get selected.
+        files[numFiles++] = ILCreateFromPathW(dumpFilePathGZIP);
         if (savedGameDumped)
         {
             files[numFiles++] = ILCreateFromPathW(saveFilePath);
