@@ -115,6 +115,7 @@ The following people are not part of the development team, but have been contrib
 * Matthew Beaudin (mattbeaudin)
 * Øystein Dale (oystedal)
 * Christian Schubert (Osmodium)
+* James Lord (RCTMASTA)
 
 ## Toolchain
 * (Balletie) - macOS
