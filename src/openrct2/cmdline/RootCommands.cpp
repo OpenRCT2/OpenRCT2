@@ -401,6 +401,7 @@ static exitcode_t HandleCommandScanObjects([[maybe_unused]] CommandLineArgEnumer
     }
 
     gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
 
     auto context = std::unique_ptr<OpenRCT2::IContext>(OpenRCT2::CreateContext());
     auto env = context->GetPlatformEnvironment();
