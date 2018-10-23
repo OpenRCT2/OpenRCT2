@@ -92,6 +92,9 @@ public:
         intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
         context_broadcast_intent(&intent);
 
+        scrolling_text_invalidate();
+        gfx_invalidate_screen();
+
         return MakeResult();
     }
 };

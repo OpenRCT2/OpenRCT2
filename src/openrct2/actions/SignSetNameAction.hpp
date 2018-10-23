@@ -85,6 +85,8 @@ public:
                 user_string_free(prev_string_id);
 
                 banner->flags &= ~(BANNER_FLAG_LINKED_TO_RIDE);
+
+                scrolling_text_invalidate();
                 gfx_invalidate_screen();
             }
             else
@@ -108,6 +110,7 @@ public:
             banner->string_idx = STR_DEFAULT_SIGN;
             user_string_free(prev_string_id);
 
+            scrolling_text_invalidate();
             gfx_invalidate_screen();
         }
 

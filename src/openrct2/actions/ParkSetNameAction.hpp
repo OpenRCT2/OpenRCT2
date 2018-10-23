@@ -92,7 +92,9 @@ public:
             LogAction(oldName);
         }
 
+        scrolling_text_invalidate();
         gfx_invalidate_screen();
+
         return MakeResult();
     }
 
