@@ -1173,7 +1173,7 @@ static money32 track_place(
 
             if (trackFlags[type] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
             {
-                if ((originZ & 0x0F) != 8)
+                if ((z & 0x0F) != 8)
                 {
                     gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
                     return MONEY32_UNDEFINED;
@@ -1181,7 +1181,7 @@ static money32 track_place(
             }
             else
             {
-                if ((originZ & 0x0F) != 0)
+                if ((z & 0x0F) != 0)
                 {
                     gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
                     return MONEY32_UNDEFINED;
