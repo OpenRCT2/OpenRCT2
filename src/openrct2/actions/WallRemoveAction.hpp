@@ -35,7 +35,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _location.x << _location.y << _location.z << _location.direction;
+        stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
     }
 
     GameActionResult::Ptr Query() const override

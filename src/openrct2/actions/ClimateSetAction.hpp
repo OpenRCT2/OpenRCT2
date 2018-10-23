@@ -35,7 +35,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _climate;
+        stream << DS_TAG(_climate);
     }
 
     GameActionResult::Ptr Query() const override

@@ -30,7 +30,7 @@ static rct_string_id _StatusErrorTitles[] = {
 struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GameActionResult>
 {
 private:
-    int32_t _rideIndex = -1;
+    NetworkRideId_t _rideIndex{ -1 };
     uint8_t _status = RIDE_STATUS_CLOSED;
 
 public:
@@ -52,7 +52,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _rideIndex << _status;
+        stream << DS_TAG(_rideIndex) << DS_TAG(_status);
     }
 
     GameActionResult::Ptr Query() const override

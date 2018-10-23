@@ -2635,7 +2635,7 @@ void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& conn
     }
     action->Serialise(ds);
 
-    if (player_id == action->GetPlayer())
+    if (player_id == action->GetPlayer().id)
     {
         // Only execute callbacks that belong to us,
         // clients can have identical network ids assigned.
@@ -2721,7 +2721,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
 
     ga->Serialise(stream);
     // Set player to sender, should be 0 if sent from client.
-    ga->SetPlayer(connection.Player->Id);
+    ga->SetPlayer(NetworkPlayerId_t{ connection.Player->Id });
 
     game_command_queue.emplace(tick, std::move(ga), _commandId++);
 }
@@ -3143,7 +3143,7 @@ uint32_t network_get_player_commands_ran(uint32_t index)
     return gNetwork.player_list[index]->CommandsRan;
 }
 
-int32_t network_get_player_index(uint8_t id)
+int32_t network_get_player_index(uint32_t id)
 {
     auto it = gNetwork.GetPlayerIteratorByID(id);
     if (it == gNetwork.player_list.end())
@@ -3915,7 +3915,7 @@ uint32_t network_get_player_commands_ran(uint32_t index)
 {
     return 0;
 }
-int32_t network_get_player_index(uint8_t id)
+int32_t network_get_player_index(uint32_t id)
 {
     return -1;
 }

@@ -17,18 +17,21 @@ class DataSerialiser
 {
 private:
     MemoryStream _stream;
-    MemoryStream* _activeStream;
-    bool _isSaving;
+    IStream* _activeStream = nullptr;
+    bool _isSaving = false;
+    bool _isLogging = false;
 
 public:
     DataSerialiser(bool isSaving)
         : _isSaving(isSaving)
+        , _isLogging(false)
     {
         _activeStream = &_stream;
     }
 
-    DataSerialiser(bool isSaving, MemoryStream& stream)
+    DataSerialiser(bool isSaving, IStream& stream, bool isLogging = false)
         : _isSaving(isSaving)
+        , _isLogging(isLogging)
     {
         _activeStream = &stream;
     }
@@ -50,10 +53,35 @@ public:
 
     template<typename T> DataSerialiser& operator<<(T& data)
     {
-        if (_isSaving)
-            DataSerializerTraits<T>::encode(_activeStream, data);
+        if (!_isLogging)
+        {
+            if (_isSaving)
+                DataSerializerTraits<T>::encode(_activeStream, data);
+            else
+                DataSerializerTraits<T>::decode(_activeStream, data);
+        }
         else
-            DataSerializerTraits<T>::decode(_activeStream, data);
+        {
+            DataSerializerTraits<T>::log(_activeStream, data);
+        }
+
+        return *this;
+    }
+
+    template<typename T> DataSerialiser& operator<<(DataSerialiserTag<T> data)
+    {
+        if (!_isLogging)
+        {
+            if (_isSaving)
+                DataSerializerTraits<DataSerialiserTag<T>>::encode(_activeStream, data);
+            else
+                DataSerializerTraits<DataSerialiserTag<T>>::decode(_activeStream, data);
+        }
+        else
+        {
+            DataSerializerTraits<DataSerialiserTag<T>>::log(_activeStream, data);
+        }
+
         return *this;
     }
 };

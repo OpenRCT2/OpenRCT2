@@ -44,7 +44,7 @@ public:
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
-        stream << _bannerIndex << _name;
+        stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
     }
 
     GameActionResult::Ptr Query() const override

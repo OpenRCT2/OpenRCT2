@@ -56,7 +56,7 @@ private:
     uint16_t _z;
     bool _initialPlacement;
     uint8_t _direction;
-    uint8_t _rideIndex;
+    NetworkRideId_t _rideIndex;
     uint8_t _mode;
 
 public:
@@ -64,7 +64,7 @@ public:
     {
     }
     MazeSetTrackAction(
-        uint16_t x, uint16_t y, uint16_t z, bool initialPlacement, uint8_t direction, uint8_t rideIndex, uint8_t mode)
+        uint16_t x, uint16_t y, uint16_t z, bool initialPlacement, uint8_t direction, NetworkRideId_t rideIndex, uint8_t mode)
         : _x(x)
         , _y(y)
         , _z(z)
@@ -79,7 +79,8 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _x << _y << _z << _initialPlacement << _direction << _rideIndex << _mode;
+        stream << DS_TAG(_x) << DS_TAG(_y) << DS_TAG(_z) << DS_TAG(_initialPlacement) << DS_TAG(_direction)
+               << DS_TAG(_rideIndex) << DS_TAG(_mode);
     }
 
     GameActionResult::Ptr Query() const override

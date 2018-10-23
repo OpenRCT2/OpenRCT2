@@ -90,8 +90,8 @@ public:
 private:
     uint32_t const _type;
 
-    uint32_t _playerId = 0; // Callee
-    uint32_t _flags = 0;    // GAME_COMMAND_FLAGS
+    NetworkPlayerId_t _playerId = { 0 }; // Callee
+    uint32_t _flags = 0;                 // GAME_COMMAND_FLAGS
     uint32_t _networkId = 0;
     Callback_t _callback;
 
@@ -103,12 +103,12 @@ public:
 
     virtual ~GameAction() = default;
 
-    uint32_t GetPlayer() const
+    NetworkPlayerId_t GetPlayer() const
     {
         return _playerId;
     }
 
-    void SetPlayer(uint32_t playerId)
+    void SetPlayer(NetworkPlayerId_t playerId)
     {
         _playerId = playerId;
     }
@@ -174,9 +174,7 @@ public:
 
     virtual void Serialise(DataSerialiser& stream)
     {
-        stream << _networkId;
-        stream << _flags;
-        stream << _playerId;
+        stream << DS_TAG(_networkId) << DS_TAG(_flags) << DS_TAG(_playerId);
     }
 
     // Helper function, allows const Objects to still serialize into DataSerialiser while being const.

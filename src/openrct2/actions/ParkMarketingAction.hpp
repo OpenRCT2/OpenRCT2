@@ -47,7 +47,7 @@ public:
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
-        stream << _type << _item << _numWeeks;
+        stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
     }
 
     GameActionResult::Ptr Query() const override

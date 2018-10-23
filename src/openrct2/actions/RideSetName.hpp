@@ -25,7 +25,7 @@
 struct RideSetNameAction : public GameActionBase<GAME_COMMAND_SET_RIDE_NAME, GameActionResult>
 {
 private:
-    int32_t _rideIndex = -1;
+    NetworkRideId_t _rideIndex{ -1 };
     std::string _name;
 
 public:
@@ -47,7 +47,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _rideIndex << _name;
+        stream << DS_TAG(_rideIndex) << DS_TAG(_name);
     }
 
     GameActionResult::Ptr Query() const override
