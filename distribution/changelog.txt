@@ -19,7 +19,6 @@
 - Fix: [#8045] Crash when switching between languages.
 - Fix: [#8062] In multiplayer warnings for unstable cheats are shown when disabling them.
 - Fix: [#8090] Maze designs saved incorrectly.
-- Fix: [#8064] Error about prohibited high construction is sometimes shown as (undefined string).
 - Fix: [#8101] Title sequences window flashes after opening.
 - Fix: [#8120] Crash trying to place peep spawn outside of map.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).

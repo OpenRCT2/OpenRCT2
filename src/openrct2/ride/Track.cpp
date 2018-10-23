@@ -1077,8 +1077,23 @@ static money32 track_place(
     {
         return MONEY32_UNDEFINED;
     }
-
     const uint16_t* trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatTrackFlags : TrackFlags;
+    if (trackFlags[type] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
+    {
+        if ((originZ & 0x0F) != 8)
+        {
+            gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
+            return MONEY32_UNDEFINED;
+        }
+    }
+    else
+    {
+        if ((originZ & 0x0F) != 0)
+        {
+            gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
+            return MONEY32_UNDEFINED;
+        }
+    }
 
     // If that is not the case, then perform the remaining checks
     trackBlock = get_track_def_from_ride(ride, type);
@@ -1129,6 +1144,7 @@ static money32 track_place(
         int32_t x = originX + offsetX;
         int32_t y = originY + offsetY;
         int32_t z = originZ + trackBlock->z;
+
         trackpieceZ = z;
 
         if (z < 16)
@@ -1167,26 +1183,7 @@ static money32 track_place(
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
                     x, y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, flags, &cost, crossingMode))
-            {
                 return MONEY32_UNDEFINED;
-            }
-
-            if (trackFlags[type] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
-            {
-                if ((z & 0x0F) != 8)
-                {
-                    gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
-                    return MONEY32_UNDEFINED;
-                }
-            }
-            else
-            {
-                if ((z & 0x0F) != 0)
-                {
-                    gGameCommandErrorText = STR_CONSTRUCTION_ERR_UNKNOWN;
-                    return MONEY32_UNDEFINED;
-                }
-            }
         }
 
         // 6c53dc
