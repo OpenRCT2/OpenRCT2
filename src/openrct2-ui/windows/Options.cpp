@@ -659,7 +659,7 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
     {
         case WIDX_CLOSE:
             window_close(w);
-            break;
+            return;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
         case WIDX_TAB_3:

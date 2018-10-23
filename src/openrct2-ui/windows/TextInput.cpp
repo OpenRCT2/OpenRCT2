@@ -285,11 +285,13 @@ void window_text_input_key(rct_window* w, char keychar)
     {
         context_stop_text_input();
         window_close(w);
-        rct_window* calling_w = window_find_by_number(calling_class, calling_number);
+        // Window was closed and its unique_ptr is gone,
+        // don't try invalidating it.
+        w = window_find_by_number(calling_class, calling_number);
         // Pass back the text that has been entered.
         // ecx when nonzero means text input success
-        if (calling_w)
-            window_event_textinput_call(calling_w, calling_widget, text_input);
+        if (w)
+            window_event_textinput_call(w, calling_widget, text_input);
     }
 
     window_invalidate(w);
@@ -303,6 +305,7 @@ void window_text_input_update7(rct_window* w)
     if (!calling_w)
     {
         window_close(w);
+        return;
     }
 
     // Used to blink the cursor.

@@ -796,7 +796,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
         case WIDX_CLOSE:
             tool_cancel();
             window_close(w);
-            break;
+            return;
         case WIDX_BUTTON_CORRUPT:
             window_tile_inspector_insert_corrupt_element(windowTileInspectorSelectedIndex);
             break;
