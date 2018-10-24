@@ -48,7 +48,7 @@ const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 // so just hope the file name with '.gz' suffix is enough.
 // For docs on uplading to backtrace.io check
 // https://documentation.backtrace.io/product_integration_minidump_breakpad/
-static bool UploadMinidump(const wchar_t* dumpPath)
+static bool UploadMinidump(const wchar_t* dumpPath, int& error, std::wstring& response)
 {
     std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
                      L"post?format=minidump&token=f9c5e640d498f15dbe902eab3e822e472af9270d5b0cbdc269cee65a926bf306");
@@ -65,8 +65,6 @@ static bool UploadMinidump(const wchar_t* dumpPath)
         parameters[L"commit"] = String::ToUtf16(gVersionInfoFull);
     }
     files[L"upload_file_minidump"] = dumpPath;
-    std::wstring response;
-    int error;
     int timeout = 10000;
     bool success = google_breakpad::HTTPUpload::SendRequest(url, parameters, files, &timeout, &response, &error);
     wprintf(L"Success = %d, error = %d, response = %s\n", success, error, response.c_str());
@@ -146,7 +144,9 @@ static bool OnCrash(
 
     if (gOpenRCT2SilentBreakpad)
     {
-        UploadMinidump(minidumpToUpload);
+        int error;
+        std::wstring response;
+        UploadMinidump(minidumpToUpload, error, response);
         return succeeded;
     }
 
@@ -159,10 +159,26 @@ static bool OnCrash(
     swprintf_s(message, MessageFormat, dumpFilePath, WSZ(OPENRCT2_VERSION), _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
-    int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
+    int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
     if (answer == IDYES)
     {
-        UploadMinidump(minidumpToUpload);
+        int error;
+        std::wstring response;
+        bool ok = UploadMinidump(minidumpToUpload, error, response);
+        if (!ok)
+        {
+            const wchar_t* MessageFormat2 = L"There was a problem while uploading the dump. Please upload it manually to "
+                                            L"GitHub. It should be highlighted for you once you close this message.\n"
+                                            L"Please provide following information as well:\n"
+                                            L"Error code = %d\n"
+                                            L"Response = %s";
+            swprintf_s(message, MessageFormat2, error, response.c_str());
+            MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
+        }
+        else
+        {
+            MessageBoxW(nullptr, L"Dump uploaded succesfully.", WSZ(OPENRCT2_NAME), MB_OK | MB_ICONINFORMATION);
+        }
     }
     HRESULT coInitializeResult = CoInitialize(nullptr);
     if (SUCCEEDED(coInitializeResult))
