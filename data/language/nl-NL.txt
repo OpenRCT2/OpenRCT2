@@ -3800,7 +3800,7 @@ STR_DTLS    :Een groot park, verscholen in het bos, met alleen kartbanen en hout
 <Mel's World>
 STR_SCNR    :Mel's World
 STR_PARK    :Mel's World
-STR_DTLS    :Dit pretpark heeft goed ontworpen, moderne attractions, maar heeft ook veel ruimte voor uitbreiding.
+STR_DTLS    :Dit pretpark heeft goed ontworpen, moderne attracties, maar heeft ook veel ruimte voor uitbreiding.
 
 <Mystic Mountain>
 STR_SCNR    :Mystic Mountain
@@ -3810,7 +3810,7 @@ STR_DTLS    :Bouw vanaf het begin een pretpark in de heuvelachtige bossen van My
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
 STR_PARK    :Pacific Pyramids
-STR_DTLS    :Verander de Egyptische ruïnes, een toeristische attractions, in een bloeiend pretpark.
+STR_DTLS    :Verander de Egyptische ruïnes, een toeristische attractie, in een bloeiend pretpark.
 
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods
