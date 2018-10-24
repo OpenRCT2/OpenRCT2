@@ -20,6 +20,8 @@ enum class SPECIAL_FOLDER
     USER_CONFIG,
     USER_DATA,
     USER_HOME,
+
+    RCT2_DISCORD,
 };
 
 namespace Platform

@@ -26,6 +26,7 @@
 - Improved: [#7930] Automatically create folders for custom content.
 - Improved: [#7980] Show the full path of the scenario in the scenario select window.
 - Improved: [#7993] Allow assigning a keyboard shortcut for opening the tile inspector.
+- Improved: [#8107] Support Discord release of RCT2.
 - Improved: Almost completely new Hungarian translation.
 - Removed: [#7929] Support for scenario text objects.
 
