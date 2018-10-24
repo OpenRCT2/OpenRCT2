@@ -158,10 +158,9 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y);
 int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_interaction_info* info);
 int32_t viewport_interaction_right_over(int32_t x, int32_t y);
 int32_t viewport_interaction_right_click(int32_t x, int32_t y);
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, rct_tile_element** tileElement);
 
+void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, rct_tile_element** tileElement);
 void sub_68B2B7(paint_session* session, int32_t x, int32_t y);
-void sub_68862C(rct_drawpixelinfo* dpi, paint_struct* ps);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
