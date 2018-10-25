@@ -103,6 +103,8 @@ static bool OnCrash(
     wchar_t dumpFilePathGZIP[MAX_PATH];
     swprintf_s(dumpFilePathGZIP, sizeof(dumpFilePathGZIP), L"%s.gz", dumpFilePathNew);
 
+    // TODO: enable gzip compression once supported on backtrace.io
+    /*
     FILE* input = _wfopen(dumpFilePath, L"rb");
     FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
 
@@ -112,6 +114,7 @@ static bool OnCrash(
     }
     fclose(input);
     fclose(dest);
+    */
 
     // Try to rename the files
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
