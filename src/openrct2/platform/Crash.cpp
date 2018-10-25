@@ -162,7 +162,7 @@ static bool OnCrash(
     swprintf_s(message, MessageFormat, dumpFilePath, WSZ(OPENRCT2_VERSION), _wszCommitSha1Short);
 
     // Cannot use platform_show_messagebox here, it tries to set parent window already dead.
-    int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
+    int answer = MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
     if (answer == IDYES)
     {
         int error;
@@ -176,7 +176,7 @@ static bool OnCrash(
                                             L"Error code = %d\n"
                                             L"Response = %s";
             swprintf_s(message, MessageFormat2, error, response.c_str());
-            MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_YESNO | MB_ICONERROR);
+            MessageBoxW(nullptr, message, WSZ(OPENRCT2_NAME), MB_OK | MB_ICONERROR);
         }
         else
         {
