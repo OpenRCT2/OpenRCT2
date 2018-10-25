@@ -24,6 +24,7 @@
 #include "../localisation/Language.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
+#include "../platform/Platform2.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -682,6 +683,12 @@ namespace Config
             {
                 return location;
             }
+        }
+
+        auto discordPath = Platform::GetFolderPath(SPECIAL_FOLDER::RCT2_DISCORD);
+        if (!discordPath.empty() && platform_original_game_data_exists(discordPath.c_str()))
+        {
+            return discordPath;
         }
 
         if (platform_original_game_data_exists(gExePath))

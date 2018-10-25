@@ -115,6 +115,19 @@ namespace Platform
                 }
                 return path;
             }
+            case SPECIAL_FOLDER::RCT2_DISCORD:
+            {
+#    ifdef __USE_SHGETKNOWNFOLDERPATH__
+                auto path = WIN32_GetKnownFolderPath(FOLDERID_LocalAppData);
+#    else
+                auto path = WIN32_GetFolderPath(CSIDL_LOCAL_APPDATA);
+#    endif
+                if (!path.empty())
+                {
+                    path = Path::Combine(path, "DiscordGames\\RollerCoaster Tycoon 2 Triple Thrill Pack\\content\\Game");
+                }
+                return path;
+            }
             default:
                 return std::string();
         }
