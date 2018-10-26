@@ -111,33 +111,33 @@ STR_0528    :Passagiers glijden in opblaasboten door een kronkelende halfopen of
 STR_0529    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitziet als een oude spoorbaan.
 STR_0530    :Stoeltjes hangen aan een continu draaiende stalen kabel die van het ene uiteinde van de baan naar het andere loopt, en daarna weer terug.
 STR_0531    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
-STR_0532    :
-STR_0533    :
+STR_0532    :Doolhof is opgebouwd uit 6 meter hoge hagen of muren. Gasten dwalen rond in het doolhof en zullen alleen vertrekken als ze de uitgang vinden.
+STR_0533    :Houten gebouw met een interne trap en een externe spiraalvormige glijbaan waarbij glijmatten gebruikt worden.
 STR_0534    :Go-karts met benzinemotor die de passagiers zelf besturen.
 STR_0535    :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
 STR_0536    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
-STR_0537    :
-STR_0538    :
-STR_0539    :
-STR_0540    :
-STR_0542    :
-STR_0544    :
-STR_0545    :
-STR_0547    :
-STR_0548    :
-STR_0549    :
-STR_0550    :
-STR_0551    :
-STR_0552    :
-STR_0553    :
+STR_0537    :Zelfrijdende elektrische botsauto's
+STR_0538    :Groot schommelend piratenschip
+STR_0539    :Het schip is bevestigd aan een arm met een contragewicht aan het andere uiteinde en draait 360 graden door.
+STR_0540    :Een kraam waar gasten eten kunnen kopen.
+STR_0542    :Een kraam waar gasten drinken kunnen kopen.
+STR_0544    :Een kraam dat souvenirs verkoopt.
+STR_0545    :Een traditioneel ronddraaiend carrousel met gesneden houten paarden.
+STR_0547    :Een kraam waar gasten plattegronden en paraplu's kunnen kopen.
+STR_0548    :Een toilet gebouw
+STR_0549    :Een groot, roterend wiel met open stoelen.
+STR_0550    :Rijders bekijken een film in de bewegingssimulator cabine terwijl deze wordt gedraaid en verplaatst door een hydraulische arm.
+STR_0551    :Een bioscoop dat 3d films toont in een bolvormig gebouw.
+STR_0552    :Passagiers bevinden zich in een gondel die wordt bewogen door grote draaiende armen die hals over de kop van voren naar achteren draaien.
+STR_0553    :Draaibare ringen zorgeren ervoor dat de rijders, in alle richtingen, vrij kunnen draaien.
 STR_0554    :Het karretje wordt het station uitgelanceerd over een lange rechte baan door middel van lineaire inductiemotoren, om daarna recht omhoog te gaan en weer terug te vallen richting het station.
 STR_0555    :Bezoekers gaan in een lift in een toren omhoog of omlaag om naar een ander hoogteniveau te komen.
 STR_0556    :Extra brede karretjes rijden over een compleet verticale baan voor de ultieme vrijevalbeleving.
-STR_0557    :
-STR_0558    :
-STR_0559    :
-STR_0560    :
-STR_0561    :
+STR_0557    :Een geldautomaat die gasten kunnen gebruiken wanneer ze te weinig geld hebben.
+STR_0558    :Rijders rijden in stoelen die rond de uiteinden van drie lange bewegende armen draaien.
+STR_0559    :Een groot gethematiseerd gebouw dat enge gangen en kamers bevat.
+STR_0560    :Een plaats voor zieke gasten waar ze sneller kunnen herstellen.
+STR_0561    :Een circusvoorstelling met dieren in een grote tent.
 STR_0562    :Aangedreven karretjes rijden langs eng decor en special effects over een baan met hoogteverschillen.
 STR_0563    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel ‘airtime’ in de heuvels.
 STR_0564    :Deze over een houten baan lopende achtbaan is snel, ruw, luidruchtig en geeft het gevoel van controleverlies met veel ‘airtime’.
