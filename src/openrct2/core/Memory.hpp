@@ -24,21 +24,21 @@ namespace Memory
     template<typename T> static T* Allocate()
     {
         T* result = (T*)malloc(sizeof(T));
-        Guard::ArgumentNotNull(result, "Failed to allocate %u bytes for %s", sizeof(T), typeid(T).name());
+        Guard::ArgumentNotNull(result, "Failed to allocate %zu bytes for %s", sizeof(T), typeid(T).name());
         return result;
     }
 
     template<typename T> static T* Allocate(size_t size)
     {
         T* result = (T*)malloc(size);
-        Guard::ArgumentNotNull(result, "Failed to allocate %u bytes for %s", size, typeid(T).name());
+        Guard::ArgumentNotNull(result, "Failed to allocate %zu bytes for %s", size, typeid(T).name());
         return result;
     }
 
     template<typename T> static T* AllocateArray(size_t count)
     {
         T* result = (T*)malloc(count * sizeof(T));
-        Guard::ArgumentNotNull(result, "Failed to allocate array of %u * %s (%u bytes)", count, typeid(T).name(), sizeof(T));
+        Guard::ArgumentNotNull(result, "Failed to allocate array of %zu * %s (%zu bytes)", count, typeid(T).name(), sizeof(T));
         return result;
     }
 
@@ -53,7 +53,7 @@ namespace Memory
         {
             result = (T*)realloc((void*)ptr, size);
         }
-        Guard::ArgumentNotNull(result, "Failed to reallocate %x (%s) to have %u bytes", ptr, typeid(T).name(), size);
+        Guard::ArgumentNotNull(result, "Failed to reallocate %x (%s) to have %zu bytes", ptr, typeid(T).name(), size);
         return result;
     }
 
@@ -69,7 +69,7 @@ namespace Memory
             result = (T*)realloc((void*)ptr, count * sizeof(T));
         }
         Guard::ArgumentNotNull(
-            result, "Failed to reallocate array at %x (%s) to have %u entries", ptr, typeid(T).name(), count);
+            result, "Failed to reallocate array at %x (%s) to have %zu entries", ptr, typeid(T).name(), count);
         return result;
     }
 
