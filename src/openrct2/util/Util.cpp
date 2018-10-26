@@ -630,6 +630,64 @@ uint8_t* util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* dat
     return buffer;
 }
 
+// Compress the source to gzip-compatible stream, write to dest.
+// Mainly used for compressing the crashdumps
+bool util_gzip_compress(FILE* source, FILE* dest)
+{
+    if (source == nullptr || dest == nullptr)
+    {
+        return false;
+    }
+    int ret, flush;
+    size_t have;
+    z_stream strm{};
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    unsigned char in[CHUNK];
+    unsigned char out[CHUNK];
+    int windowBits = 15;
+    int GZIP_ENCODING = 16;
+    ret = deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, windowBits | GZIP_ENCODING, 8, Z_DEFAULT_STRATEGY);
+    if (ret != Z_OK)
+    {
+        log_error("Failed to initialise stream");
+        return false;
+    }
+    do
+    {
+        strm.avail_in = uInt(fread(in, 1, CHUNK, source));
+        if (ferror(source))
+        {
+            deflateEnd(&strm);
+            log_error("Failed to read data from source");
+            return false;
+        }
+        flush = feof(source) ? Z_FINISH : Z_NO_FLUSH;
+        strm.next_in = in;
+        do
+        {
+            strm.avail_out = CHUNK;
+            strm.next_out = out;
+            ret = deflate(&strm, flush);
+            if (ret == Z_STREAM_ERROR)
+            {
+                log_error("Failed to compress data");
+                return false;
+            }
+            have = CHUNK - strm.avail_out;
+            if (fwrite(out, 1, have, dest) != have || ferror(dest))
+            {
+                deflateEnd(&strm);
+                log_error("Failed to write data to destination");
+                return false;
+            }
+        } while (strm.avail_out == 0);
+    } while (flush != Z_FINISH);
+    deflateEnd(&strm);
+    return true;
+}
+
 // Type-independent code left as macro to reduce duplicate code.
 #define add_clamp_body(value, value_to_add, min_cap, max_cap)                                                                  \
     if ((value_to_add > 0) && (value > (max_cap - (value_to_add))))                                                            \
