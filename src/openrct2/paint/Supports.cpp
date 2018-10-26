@@ -496,8 +496,7 @@ bool wooden_a_supports_paint_setup(
                     bBox.offset.z + z);
                 if (ps != nullptr)
                 {
-                    paint_struct* edi = session->WoodenSupportsPrependTo;
-                    edi->var_20 = ps;
+                    session->WoodenSupportsPrependTo->children = ps;
                 }
             }
         }
@@ -678,7 +677,7 @@ bool wooden_b_supports_paint_setup(
                 _9E32B1 = true;
                 if (paintStruct != nullptr)
                 {
-                    session->WoodenSupportsPrependTo->var_20 = paintStruct;
+                    session->WoodenSupportsPrependTo->children = paintStruct;
                 }
             }
         }
@@ -1206,7 +1205,7 @@ bool path_a_supports_paint_setup(
             hasSupports = true;
             if (paintStruct != nullptr)
             {
-                session->WoodenSupportsPrependTo->var_20 = paintStruct;
+                session->WoodenSupportsPrependTo->children = paintStruct;
             }
         }
     }

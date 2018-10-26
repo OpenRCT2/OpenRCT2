@@ -175,7 +175,7 @@ static paint_struct* sub_9819_c(
     ps->bounds.x = boundBoxOffset.x + session->SpritePosition.x;
     ps->bounds.y = boundBoxOffset.y + session->SpritePosition.y;
     ps->attached_ps = nullptr;
-    ps->var_20 = nullptr;
+    ps->children = nullptr;
     ps->sprite_type = session->InteractionType;
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
@@ -449,11 +449,13 @@ paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadr
  *
  *  rct2: 0x00688217
  */
-paint_struct paint_session_arrange(paint_session* session)
+void paint_session_arrange(paint_session* session)
 {
-    paint_struct psHead = {};
-    paint_struct* ps = &psHead;
+    paint_struct* psHead = &session->PaintHead;
+
+    paint_struct* ps = psHead;
     ps->next_quadrant_ps = nullptr;
+
     uint32_t quadrantIndex = session->QuadrantBackIndex;
     const uint8_t rotation = get_current_rotation();
     if (quadrantIndex != UINT32_MAX)
@@ -474,7 +476,7 @@ paint_struct paint_session_arrange(paint_session* session)
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
         paint_struct* ps_cache = paint_arrange_structs_helper(
-            &psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, rotation);
+            psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, rotation);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)
@@ -482,56 +484,62 @@ paint_struct paint_session_arrange(paint_session* session)
             ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0, rotation);
         }
     }
+}
 
-    return psHead;
+static void paint_draw_struct(paint_session* session, paint_struct* ps, uint32_t viewFlags)
+{
+    rct_drawpixelinfo* dpi = session->DPI;
+
+    int16_t x = ps->x;
+    int16_t y = ps->y;
+
+    if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SPRITE)
+    {
+        if (dpi->zoom_level >= 1)
+        {
+            x = floor2(x, 2);
+            y = floor2(y, 2);
+            if (dpi->zoom_level >= 2)
+            {
+                x = floor2(x, 4);
+                y = floor2(y, 4);
+            }
+        }
+    }
+
+    uint32_t imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, viewFlags);
+    if (gPaintBoundingBoxes && dpi->zoom_level == 0)
+    {
+        paint_ps_image_with_bounding_boxes(dpi, ps, imageId, x, y);
+    }
+    else
+    {
+        paint_ps_image(dpi, ps, imageId, x, y);
+    }
+
+    if (ps->children != nullptr)
+    {
+        paint_draw_struct(session, ps->children, viewFlags);
+    }
+    else
+    {
+        paint_attached_ps(dpi, ps, viewFlags);
+    }
 }
 
 /**
  *
  *  rct2: 0x00688485
  */
-void paint_draw_structs(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags)
+void paint_draw_structs(paint_session* session, uint32_t viewFlags)
 {
-    paint_struct* previous_ps = ps->next_quadrant_ps;
+    paint_struct* ps = &session->PaintHead;
+
     for (ps = ps->next_quadrant_ps; ps;)
     {
-        int16_t x = ps->x;
-        int16_t y = ps->y;
-        if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SPRITE)
-        {
-            if (dpi->zoom_level >= 1)
-            {
-                x = floor2(x, 2);
-                y = floor2(y, 2);
-                if (dpi->zoom_level >= 2)
-                {
-                    x = floor2(x, 4);
-                    y = floor2(y, 4);
-                }
-            }
-        }
+        paint_draw_struct(session, ps, viewFlags);
 
-        uint32_t imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, viewFlags);
-        if (gPaintBoundingBoxes && dpi->zoom_level == 0)
-        {
-            paint_ps_image_with_bounding_boxes(dpi, ps, imageId, x, y);
-        }
-        else
-        {
-            paint_ps_image(dpi, ps, imageId, x, y);
-        }
-
-        if (ps->var_20 != nullptr)
-        {
-            // NOTE: RCT uses var_20 instead of next_quadrant_ps, do we still need it?
-            ps = ps->var_20;
-        }
-        else
-        {
-            paint_attached_ps(dpi, ps, viewFlags);
-            ps = previous_ps->next_quadrant_ps;
-            previous_ps = ps;
-        }
+        ps = ps->next_quadrant_ps;
     }
 }
 
@@ -851,7 +859,7 @@ paint_struct* sub_98196C(
     ps->bounds.x = coord_3d.x;
     ps->bounds.y = coord_3d.y;
     ps->attached_ps = nullptr;
-    ps->var_20 = nullptr;
+    ps->children = nullptr;
     ps->sprite_type = session->InteractionType;
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
@@ -1026,7 +1034,7 @@ paint_struct* sub_98199C(
     }
 
     paint_struct* old_ps = session->UnkF1AD28;
-    old_ps->var_20 = ps;
+    old_ps->children = ps;
 
     session->UnkF1AD28 = ps;
     session->NextFreePaintStruct++;
