@@ -17,7 +17,7 @@
 2. 
 
 **Dump file**
-<!-- If you have a dump file: zip it before you drag & drop it here. -->
+<!-- If you have a dump file: .dmp.gz will be accepted directly, otherwise zip it before you drag & drop it here. -->
 
 **Screenshots / Video:**
 <!-- Drag & drop screenshots here. You can use https://youtube.com to upload video. -->

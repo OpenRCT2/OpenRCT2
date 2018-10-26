@@ -103,18 +103,22 @@ static bool OnCrash(
     wchar_t dumpFilePathGZIP[MAX_PATH];
     swprintf_s(dumpFilePathGZIP, sizeof(dumpFilePathGZIP), L"%s.gz", dumpFilePathNew);
 
-    // TODO: enable gzip compression once supported on backtrace.io
-    /*
     FILE* input = _wfopen(dumpFilePath, L"rb");
     FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
 
     if (util_gzip_compress(input, dest))
     {
+        // TODO: enable upload of gzip-compressed dumps once supported on
+        // backtrace.io (uncomment the line below). For now leave compression
+        // on, as GitHub will accept .gz files, even though it does not
+        // advertise it officially.
+
+        /*
         minidumpToUpload = dumpFilePathGZIP;
+        */
     }
     fclose(input);
     fclose(dest);
-    */
 
     // Try to rename the files
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
