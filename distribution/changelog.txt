@@ -5,7 +5,7 @@
 - Feature: [#7956, #7964] Add sprite font glyphs for Hungarian and some Czech letters.
 - Feature: [#7971] Toolbox option to open custom content folder.
 - Feature: [#7980] Allow data path for RCT1 to be specified by a command line argument.
-- Feature: [#8073] Auto-upload minidumps to backtrace.io (MSVC/Windows only)
+- Feature: [#8073] Auto-upload minidumps to backtrace.io (optional, MSVC/Windows only)
 - Feature: [#8078] Add save_park command to in-game console.
 - Feature: [#8080] New console variable "current_rotation" to get or set view rotation.
 - Feature: [#8099] Add Powered Launch mode to Inverted RC (for RCT1 parity).
