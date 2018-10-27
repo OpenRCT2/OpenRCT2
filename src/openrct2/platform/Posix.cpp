@@ -48,8 +48,9 @@ void platform_get_date_utc(rct2_date* out_date)
     assert(out_date != nullptr);
     time_t rawtime;
     struct tm* timeinfo;
+    struct tm buf;
     time(&rawtime);
-    timeinfo = gmtime(&rawtime);
+    timeinfo = gmtime_r(&rawtime, &buf);
     out_date->day = timeinfo->tm_mday;
     out_date->month = timeinfo->tm_mon + 1;
     out_date->year = timeinfo->tm_year + 1900;
@@ -61,8 +62,9 @@ void platform_get_time_utc(rct2_time* out_time)
     assert(out_time != nullptr);
     time_t rawtime;
     struct tm* timeinfo;
+    struct tm buf;
     time(&rawtime);
-    timeinfo = gmtime(&rawtime);
+    timeinfo = gmtime_r(&rawtime, &buf);
     out_time->second = timeinfo->tm_sec;
     out_time->minute = timeinfo->tm_min;
     out_time->hour = timeinfo->tm_hour;
