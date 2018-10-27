@@ -114,33 +114,33 @@ STR_0528    :Návštěvníci jedou v nafukovacích člunech po tobogánu
 STR_0529    :Ocelová horská dráha ve stylu důlního vlaku s věrně vypadajícími důlními kolejemi.
 STR_0530    :Kabiny visí na ocelovém laně, které nepřetržitě jede z jednoho konce na druhý a zpět
 STR_0531    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
-STR_0532    :
-STR_0533    :
+STR_0532    :Bludiště z šest stop vysokých zdí nebo živého plotu. Návštěvníci bloudí dokud nenajdou východ
+STR_0533    :Dřevěná budova s krytým schodištěm a venkovní skluzavkou s koberečky
 STR_0534    :Návštěvníci sami řídí benzínové motokáry
 STR_0535    :Lodě ve tvaru klády se plaví po vodní kanále a sjíždí strmé úseky. Žádný návštěvník nezůstane suchý
 STR_0536    :Loď pluje po širokých meandrech, přes stříkající vodopády a po vzrušujících pěnících peřejích
-STR_0537    :
-STR_0538    :
-STR_0539    :
-STR_0540    :
-STR_0542    :
-STR_0544    :
-STR_0545    :
-STR_0547    :
-STR_0548    :
-STR_0549    :
-STR_0550    :
-STR_0551    :
-STR_0552    :
-STR_0553    :
+STR_0537    :Autodrom
+STR_0538    :Velká houpající se pirátská kocábka
+STR_0539    :Loď je připevněna k rameni s protiváhou. Loď se houpe a může se zhoupnout až o 360 stupňů
+STR_0540    :Stánek, kde si návštěvníci mohou koupit něco k jídlu
+STR_0542    :Stánek, kde si návštěvníci mohou koupit něco k pití
+STR_0544    :Stánek, kde si návštěvníci mohou koupit suvenýry
+STR_0545    :Tradiční kolotoč s dřevěnými koníky
+STR_0547    :Informační stánek, kde si návštěvníci mohou koupit deštník nebo mapu parku
+STR_0548    :Toalety
+STR_0549    :Ruské kolo s otevřenými kabinami
+STR_0550    :Kino v simulátoru pohybu, se kterým během filmu třese hydraulické rameno
+STR_0551    :3D kino ve velké kopuli
+STR_0552    :Návštěvníci sedí v zavěšených gondolách, které se otáčí dopředu, dozadu a vzhůru nohoama
+STR_0553    :Návštěvníci rotují v gyroskopických kruzích zcela volně ve všech směrech
 STR_0554    :Po mocném startu pomocí elektromotorů se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
 STR_0555    :Návštěvníci jezdí ve výtahu nahoru a dolů
 STR_0556    :Extra široké vozy se vrhají střemhlav dolů za zážitky úplného volného pádu na horské dráze
-STR_0557    :
-STR_0558    :
-STR_0559    :
-STR_0560    :
-STR_0561    :
+STR_0557    :Bankomat, který se návštěvníkům hodí zejména, když utratí všechny peníze
+STR_0558    :Návštěvníci sedí po dvojicích v rotujících kabinách
+STR_0559    :"Dům hrůzy" - budova, se strašidelnými chodbami a děsivými nástrahami
+STR_0560    :První pomoc pro hosty, kterým se udělá nevolno
+STR_0561    :Cirkus ve velkém cirkusovém stanu
 STR_0562    :Vozy jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
 STR_0563    :Horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně, která přelétává vrcholky kopců
 STR_0564    :Dřevěná, rychlá, hlučná a drsná horská dráha jede jako utržená ze řetězů a přelétává vrcholky kopců
@@ -155,20 +155,20 @@ STR_0574    :Návštěvníci ve speciálních postrojích zavěšení v leže po
 STR_0575    :Poháněné vlaky visící pod visutou kolejí převážejí návštěvníky po parku
 STR_0577    :Vozy s dvěma podvozky jedou po dřevěné trati, otáčející se dokola na speciálních místech
 STR_0578    :Horská dráha, která se točí dokola tak, že návštěvníci jsou pořád na stejném místě.
-STR_0579    :
+STR_0579    :Pohodový minigolf
 STR_0580    :Gigantická ocelová horská dráha schopna volných pádů a kopců přes 90 metrů dlouhých
 STR_0581    :Kruh sedadel je za pomalé rotace vytažen na vrchol vysoké věže, spuštěn volným pádem k zemi a opatrně zastaven pomocí magnetických brzd
-STR_0582    :
-STR_0583    :
+STR_0582    :Půjčovna vznášedel
+STR_0583    :Budova s pokřivenými chodbami a zvláštními místnostmi, která dezorientuje návštěvníky
 STR_0584    :Speciální kola jezdí po ocelové koleji, poháněná šlapáním jezdců
 STR_0585    :Návštěvníci sedí po dvou zavěšení pod tratí a jedou skrze loopingy a ostré zatáčky
 STR_0586    :Vozy ve tvaru lodí jedou po trati horské dráhy, což umožňuje ostré zatáčky, strmé klesání a cákající zpomalení pro mírnější říční úseky
 STR_0587    :Po mocném startu na stlačený vzduch se vozy rozjedou po svislé dráze, přes vrchol a svisle dolů zpět do stanice
 STR_0588    :Vozy po jednom jedou pod cik-cak tratí s ostrými zatáčkami a pády
-STR_0589    :
+STR_0589    :Vozy připomínající létající koberce se pohybují nahoru a dolů
 STR_0590    :Návštěvníci vyrazí na podvodní jízdu v ponorce
 STR_0591    :Rafty se plaví po meandrech na vodním kanále
-STR_0593    :
+STR_0593    :Řetízkáč s náklonem
 STR_0598    :Vozy vyrazí vstříc jednomu konci trati, poté prosviští pozpátku stanicí a vyletí až na druhý konec trati
 STR_0599    :Malá horská dráha, na které vozy po jednom projíždí trať s kroucenými pády
 STR_0600    :Horská dráha s vozy ve stylu důlních vagónů, které jedou po hladkých kolejnicích skrze propletenou dráhu
