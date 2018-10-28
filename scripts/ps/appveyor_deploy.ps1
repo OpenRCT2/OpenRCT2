@@ -15,7 +15,8 @@ if ($nottesting -and $notvs2015)
         {
             msbuild openrct2.proj /t:UploadArtifacts /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
             # curl is sometimes aliased so be explicit
-            $zipPath = (ls bin/openrct2-symbols-*.zip).FullName
+            $zipPath = (Get-ChildItem bin/openrct2-symbols-*.zip).FullName
+            Write-Host $zipPath
             curl.exe --data-binary "@$zipPath" 'https://openrct2.sp.backtrace.io:6098/post?format=symbols&token=e9e6d681fafdeac9f6131b4b59a155d54bebad567a8c0380d70643f4414819f5'
         }
         else
