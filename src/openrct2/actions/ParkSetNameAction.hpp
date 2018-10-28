@@ -109,7 +109,7 @@ private:
     void LogAction(const std::string& oldName) const
     {
         // Get player name
-        auto playerIndex = network_get_player_index(game_command_playerid);
+        auto playerIndex = network_get_player_index(GetPlayer());
         auto playerName = network_get_player_name(playerIndex);
 
         char logMessage[256];
