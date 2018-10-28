@@ -230,7 +230,7 @@ struct ride_variables
 
 struct scenery_variables
 {
-    int16_t selected_scenery_id;
+    uint16_t selected_scenery_id;
     int16_t hover_counter;
 };
 
