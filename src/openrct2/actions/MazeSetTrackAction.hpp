@@ -93,6 +93,18 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
+        if (_mode == GC_SET_MAZE_TRACK_BUILD)
+        {
+            return QueryBuild(std::move(res));
+        }
+        else
+        {
+            return QueryOther(std::move(res));
+        }
+    }
+
+    GameActionResult::Ptr QueryBuild(GameActionResult::Ptr res) const
+    {
         if (!map_check_free_elements_and_reorganise(1))
         {
             res->Error = GA_ERROR::NO_FREE_ELEMENTS;
@@ -141,13 +153,6 @@ public:
         tileElement = map_get_track_element_at_of_type_from_ride(_x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
-            if (_mode != GC_SET_MAZE_TRACK_BUILD)
-            {
-                res->Error = GA_ERROR::UNKNOWN;
-                res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
-                return res;
-            }
-
             if (!map_can_construct_at(floor2(_x, 32), floor2(_y, 32), baseHeight, clearanceHeight, { 0b1111, 0 }))
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
@@ -180,6 +185,28 @@ public:
             money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
+            return res;
+        }
+
+        return std::make_unique<GameActionResult>();
+    }
+
+    GameActionResult::Ptr QueryOther(GameActionResult::Ptr res) const
+    {
+        TileElement* tileElement = map_get_surface_element_at(_x / 32, _y / 32);
+        if (tileElement == nullptr)
+        {
+            res->Error = GA_ERROR::UNKNOWN;
+            res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+            return res;
+        }
+
+        uint8_t baseHeight = _z >> 3;
+        tileElement = map_get_track_element_at_of_type_from_ride(_x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        if (tileElement == nullptr)
+        {
+            res->Error = GA_ERROR::UNKNOWN;
+            res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
         }
 
