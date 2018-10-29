@@ -1648,10 +1648,10 @@ static void window_top_toolbar_scenery_tool_down(int16_t x, int16_t y, rct_windo
         return;
     }
 
-    int32_t selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    uint16_t selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
     uint8_t sceneryType = (selectedTab & 0xFF00) >> 8;
 
-    if (selectedTab == -1)
+    if (selectedTab == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
         return;
 
     int16_t gridX, gridY;

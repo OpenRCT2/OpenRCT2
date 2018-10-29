@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
@@ -180,7 +181,7 @@ static rct_widget window_scenery_widgets[] = {
 void window_scenery_update_scroll(rct_window* w);
 
 // rct2: 0x00F64F2C
-static int16_t window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_BY_TAB + 1];
+static uint16_t window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_BY_TAB + 1];
 
 /**
  * Was part of 0x006DFA00
@@ -188,16 +189,17 @@ static int16_t window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_B
  */
 static void init_scenery_entry(rct_scenery_entry* sceneryEntry, int32_t index, uint8_t sceneryTabId)
 {
+    Guard::ArgumentInRange<int32_t>(index, 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED);
     if (scenery_is_invented(index) || gCheatsIgnoreResearchStatus)
     {
         if (sceneryTabId != 0xFF)
         {
             for (int32_t i = 0; i < SCENERY_ENTRIES_BY_TAB; i++)
             {
-                if (window_scenery_tab_entries[sceneryTabId][i] == -1)
+                if (window_scenery_tab_entries[sceneryTabId][i] == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
                 {
                     window_scenery_tab_entries[sceneryTabId][i] = index;
-                    window_scenery_tab_entries[sceneryTabId][i + 1] = -1;
+                    window_scenery_tab_entries[sceneryTabId][i + 1] = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
                     return;
                 }
             }
@@ -207,7 +209,7 @@ static void init_scenery_entry(rct_scenery_entry* sceneryEntry, int32_t index, u
         {
             int32_t counter = 0;
 
-            while (window_scenery_tab_entries[i][counter] != -1)
+            while (window_scenery_tab_entries[i][counter] != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
             {
                 if (window_scenery_tab_entries[i][counter] == index)
                 {
@@ -220,10 +222,10 @@ static void init_scenery_entry(rct_scenery_entry* sceneryEntry, int32_t index, u
 
         for (int32_t i = 0; i < SCENERY_ENTRIES_BY_TAB; i++)
         {
-            if (window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i] == -1)
+            if (window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i] == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
             {
                 window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i] = index;
-                window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i + 1] = -1;
+                window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i + 1] = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
                 break;
             }
         }
@@ -240,7 +242,7 @@ void window_scenery_init()
 
     for (int32_t scenerySetIndex = 0; scenerySetIndex < SCENERY_WINDOW_TABS; scenerySetIndex++)
     {
-        window_scenery_tab_entries[scenerySetIndex][0] = -1;
+        window_scenery_tab_entries[scenerySetIndex][0] = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
         if (scenerySetIndex == MAX_SCENERY_GROUP_OBJECTS)
             continue;
 
@@ -255,7 +257,7 @@ void window_scenery_init()
             if (scenery_is_invented(sceneryEntryId) || gCheatsIgnoreResearchStatus)
             {
                 window_scenery_tab_entries[scenerySetIndex][sceneryTabEntryCount] = sceneryEntryId;
-                window_scenery_tab_entries[scenerySetIndex][++sceneryTabEntryCount] = -1;
+                window_scenery_tab_entries[scenerySetIndex][++sceneryTabEntryCount] = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
             }
             else
             {
@@ -373,7 +375,7 @@ void window_scenery_init()
 
         if (left != 3 || tabIndex != SCENERY_WINDOW_TABS - 1)
         {
-            if (window_scenery_tab_entries[tabIndex][0] == -1)
+            if (window_scenery_tab_entries[tabIndex][0] == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
                 continue;
 
             if (enabledScenerySets[tabIndex])
@@ -411,7 +413,7 @@ void window_scenery_set_default_placement_configuration()
 
     for (int32_t i = 0; i < SCENERY_WINDOW_TABS; i++)
     {
-        if (window_scenery_tab_entries[i][0] != -1)
+        if (window_scenery_tab_entries[i][0] != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
         {
             gWindowSceneryActiveTabIndex = i;
             return;
@@ -465,7 +467,7 @@ rct_window* window_scenery_open()
     gWindowSceneryRotation = 3;
     gSceneryCtrlPressed = false;
     gSceneryShiftPressed = false;
-    window->scenery.selected_scenery_id = -1;
+    window->scenery.selected_scenery_id = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
     window->scenery.hover_counter = 0;
     window_push_others_below(window);
     gSceneryGhostType = 0;
@@ -508,17 +510,17 @@ struct scenery_item
 {
     int32_t allRows;
     int32_t selected_item;
-    int16_t sceneryId;
+    uint16_t sceneryId;
 };
 
 static scenery_item window_scenery_count_rows_with_selected_item(int32_t tabIndex)
 {
-    scenery_item sceneryItem = { 0, 0, -1 };
+    scenery_item sceneryItem = { 0, 0, WINDOW_SCENERY_TAB_SELECTION_UNDEFINED };
     int32_t totalItems = 0;
-    int16_t id = 0;
-    int16_t sceneryId = gWindowSceneryTabSelections[tabIndex];
+    uint16_t id = 0;
+    uint16_t sceneryId = gWindowSceneryTabSelections[tabIndex];
 
-    while ((id = window_scenery_tab_entries[tabIndex][totalItems]) != -1)
+    while ((id = window_scenery_tab_entries[tabIndex][totalItems]) != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
     {
         if (id == sceneryId)
         {
@@ -536,7 +538,7 @@ static int32_t window_scenery_count_rows()
     int32_t tabIndex = gWindowSceneryActiveTabIndex;
     int32_t totalItems = 0;
 
-    while (window_scenery_tab_entries[tabIndex][totalItems] != -1)
+    while (window_scenery_tab_entries[tabIndex][totalItems] != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
     {
         totalItems++;
     }
@@ -615,11 +617,11 @@ void window_scenery_update_scroll(rct_window* w)
 
     int32_t maxTop = std::max(0, w->scrolls[0].v_bottom - listHeight);
     int32_t rowSelected = count_rows(sceneryItem.selected_item);
-    if (sceneryItem.sceneryId == -1)
+    if (sceneryItem.sceneryId == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
     {
         rowSelected = 0;
-        int16_t sceneryId = window_scenery_tab_entries[tabIndex][0];
-        if (sceneryId != -1)
+        uint16_t sceneryId = window_scenery_tab_entries[tabIndex][0];
+        if (sceneryId != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
             gWindowSceneryTabSelections[tabIndex] = sceneryId;
     }
 
@@ -731,9 +733,9 @@ static void window_scenery_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
  */
 static void window_scenery_event_07(rct_window* w)
 {
-    if (w->scenery.selected_scenery_id != -1)
+    if (w->scenery.selected_scenery_id != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
     {
-        w->scenery.selected_scenery_id = -1;
+        w->scenery.selected_scenery_id = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
     }
 }
 
@@ -851,18 +853,18 @@ void window_scenery_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* w
     *height = window_scenery_rows_height(rows);
 }
 
-static int16_t get_scenery_id_by_cursor_pos(int16_t x, int16_t y)
+static uint16_t get_scenery_id_by_cursor_pos(int16_t x, int16_t y)
 {
     int32_t tabSceneryIndex = x / SCENERY_BUTTON_WIDTH + (y / SCENERY_BUTTON_HEIGHT) * 9;
     uint8_t tabIndex = gWindowSceneryActiveTabIndex;
 
     int32_t itemCounter = 0;
-    int16_t sceneryId = 0;
+    uint16_t sceneryId = 0;
     while (itemCounter <= tabSceneryIndex)
     {
         sceneryId = window_scenery_tab_entries[tabIndex][itemCounter];
-        if (sceneryId == -1)
-            return -1;
+        if (sceneryId == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
+            return WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
 
         itemCounter++;
     }
@@ -876,8 +878,8 @@ static int16_t get_scenery_id_by_cursor_pos(int16_t x, int16_t y)
  */
 void window_scenery_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    int16_t sceneryId = get_scenery_id_by_cursor_pos(x, y);
-    if (sceneryId == -1)
+    uint16_t sceneryId = get_scenery_id_by_cursor_pos(x, y);
+    if (sceneryId == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
         return;
 
     uint8_t tabIndex = gWindowSceneryActiveTabIndex;
@@ -897,8 +899,8 @@ void window_scenery_scrollmousedown(rct_window* w, int32_t scrollIndex, int32_t 
  */
 void window_scenery_scrollmouseover(rct_window* w, int32_t scrollIndex, int32_t x, int32_t y)
 {
-    int16_t sceneryId = get_scenery_id_by_cursor_pos(x, y);
-    if (sceneryId != -1)
+    uint16_t sceneryId = get_scenery_id_by_cursor_pos(x, y);
+    if (sceneryId != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
     {
         w->scenery.selected_scenery_id = sceneryId;
         window_invalidate(w);
@@ -1115,8 +1117,8 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, imageId, w->x + window_scenery_widgets[selectedWidgetId].left, w->y + window_scenery_widgets[selectedWidgetId].top,
         selectedWidgetId);
 
-    int16_t selectedSceneryEntryId = w->scenery.selected_scenery_id;
-    if (selectedSceneryEntryId == -1)
+    uint16_t selectedSceneryEntryId = w->scenery.selected_scenery_id;
+    if (selectedSceneryEntryId == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
     {
         if (gWindowSceneryPaintEnabled & 1) // repaint coloured scenery tool is on
             return;
@@ -1125,7 +1127,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         selectedSceneryEntryId = gWindowSceneryTabSelections[tabIndex];
 
-        if (selectedSceneryEntryId == -1)
+        if (selectedSceneryEntryId == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
             return;
     }
 
@@ -1158,7 +1160,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
         price = sceneryEntry->small_scenery.price * 10;
     }
 
-    if (w->scenery.selected_scenery_id == -1 && gSceneryPlaceCost != MONEY32_UNDEFINED)
+    if (w->scenery.selected_scenery_id == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED && gSceneryPlaceCost != MONEY32_UNDEFINED)
     {
         price = gSceneryPlaceCost;
     }
@@ -1188,10 +1190,11 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
     uint8_t tabIndex = gWindowSceneryActiveTabIndex;
 
     int32_t sceneryTabItemIndex = 0;
-    int16_t currentSceneryGlobalId = -1;
+    uint16_t currentSceneryGlobalId = WINDOW_SCENERY_TAB_SELECTION_UNDEFINED;
     int16_t left = 0, top = 0;
 
-    while ((currentSceneryGlobalId = window_scenery_tab_entries[tabIndex][sceneryTabItemIndex]) != -1)
+    while ((currentSceneryGlobalId = window_scenery_tab_entries[tabIndex][sceneryTabItemIndex])
+           != WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
     {
         uint16_t tabSelectedSceneryId = gWindowSceneryTabSelections[tabIndex];
 
@@ -1348,8 +1351,8 @@ static int32_t window_scenery_find_tab_with_scenery_id(int32_t sceneryId)
     {
         for (int32_t j = 0; j < SCENERY_ENTRIES_BY_TAB; j++)
         {
-            int16_t entry = window_scenery_tab_entries[i][j];
-            if (entry == -1)
+            uint16_t entry = window_scenery_tab_entries[i][j];
+            if (entry == WINDOW_SCENERY_TAB_SELECTION_UNDEFINED)
                 break;
             if (entry == sceneryId)
                 return i;
