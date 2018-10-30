@@ -2071,9 +2071,6 @@ void peep_thought_set_format_args(rct_peep_thought* thought)
     {
         set_format_arg(2, rct_string_id, ShopItemStringIds[thought->item].indefinite);
     }
-    else
-    {
-    }
 }
 
 /** rct2: 0x00982004 */
