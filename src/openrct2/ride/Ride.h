@@ -341,6 +341,7 @@ struct Ride
     uint8_t cable_lift_z;
     uint16_t cable_lift;
     uint16_t queue_length[MAX_STATIONS];
+    bool CanBreakDown() const;
 };
 
 #pragma pack(push, 1)
@@ -1032,7 +1033,7 @@ track_colour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
-rct_ride_entry* get_ride_entry_by_ride(Ride* ride);
+rct_ride_entry* get_ride_entry_by_ride(const Ride* ride);
 uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType);
 void reset_type_to_ride_entry_index_map(IObjectManager& objectManager);
 void ride_measurement_clear(Ride* ride);

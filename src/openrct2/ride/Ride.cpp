@@ -210,7 +210,6 @@ static void ride_call_mechanic(int32_t rideIndex, rct_peep* mechanic, int32_t fo
 static void ride_chairlift_update(Ride* ride);
 static void ride_entrance_exit_connected(Ride* ride, int32_t ride_idx);
 static void ride_set_name_to_vehicle_default(Ride* ride, rct_ride_entry* rideEntry);
-static bool ride_can_breakdown(Ride* ride);
 static int32_t ride_get_new_breakdown_problem(Ride* ride);
 static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(int32_t rideIndex, int32_t mechanicStatus);
@@ -263,7 +262,7 @@ rct_ride_measurement* get_ride_measurement(int32_t index)
     return &gRideMeasurements[index];
 }
 
-rct_ride_entry* get_ride_entry_by_ride(Ride* ride)
+rct_ride_entry* get_ride_entry_by_ride(const Ride* ride)
 {
     rct_ride_entry* type = get_ride_entry(ride->subtype);
     if (type == nullptr)
@@ -2480,7 +2479,7 @@ static void ride_breakdown_update(int32_t rideIndex)
     if (ride->status == RIDE_STATUS_CLOSED)
         return;
 
-    if (!ride_can_breakdown(ride))
+    if (!ride->CanBreakDown())
     {
         ride->reliability = RIDE_INITIAL_RELIABILITY;
         return;
@@ -2517,7 +2516,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     // Brake failure is more likely when it's raining
     _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = climate_is_raining() ? 20 : 3;
 
-    if (!ride_can_breakdown(ride))
+    if (!ride->CanBreakDown())
         return -1;
 
     availableBreakdownProblems = RideAvailableBreakdowns[ride->type];
@@ -2567,14 +2566,14 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     return BREAKDOWN_BRAKES_FAILURE;
 }
 
-static bool ride_can_breakdown(Ride* ride)
+bool Ride::CanBreakDown() const
 {
-    if (RideAvailableBreakdowns[ride->type] == 0)
+    if (RideAvailableBreakdowns[this->type] == 0)
     {
         return false;
     }
 
-    rct_ride_entry* entry = get_ride_entry_by_ride(ride);
+    rct_ride_entry* entry = get_ride_entry_by_ride(this);
     if (entry == nullptr || entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
     {
         return false;
