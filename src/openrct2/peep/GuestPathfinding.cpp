@@ -228,7 +228,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, rct_tile_el
 
     if (tileElement->AsPath()->IsSloped())
     {
-        if (footpath_element_get_slope_direction(tileElement) == chosenDirection)
+        if (tileElement->AsPath()->GetSlopeDirection() == chosenDirection)
         {
             loc.z += 2;
         }
@@ -247,7 +247,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, rct_tile_el
         if (nextTileElement->AsPath()->IsWide())
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
-        if (nextTileElement->AsPath()->IsQueue() && nextTileElement->properties.path.ride_index != 0xFF)
+        if (nextTileElement->AsPath()->IsQueue() && nextTileElement->AsPath()->GetRideIndex() != 0xFF)
             return PATH_SEARCH_RIDE_QUEUE;
 
         return PATH_SEARCH_OTHER;
@@ -356,7 +356,7 @@ static uint8_t footpath_element_dest_in_dir(
 
                     if (tileElement->AsPath()->IsSloped())
                     {
-                        if (footpath_element_get_slope_direction(tileElement) == direction)
+                        if (tileElement->AsPath()->GetSlopeDirection() == direction)
                         {
                             loc.z += 2;
                         }
@@ -398,7 +398,7 @@ static uint8_t footpath_element_destination_in_direction(
 {
     if (inputTileElement->AsPath()->IsSloped())
     {
-        if (footpath_element_get_slope_direction(inputTileElement) == chosenDirection)
+        if (inputTileElement->AsPath()->GetSlopeDirection() == chosenDirection)
         {
             loc.z += 2;
         }
@@ -751,14 +751,14 @@ static void peep_pathfind_heuristic_search(
                 else
                 { // numEdges == 2
                     if (tileElement->AsPath()->IsQueue()
-                        && tileElement->properties.path.ride_index != gPeepPathFindQueueRideIndex)
+                        && tileElement->AsPath()->GetRideIndex() != gPeepPathFindQueueRideIndex)
                     {
-                        if (gPeepPathFindIgnoreForeignQueues && (tileElement->properties.path.ride_index != 0xFF))
+                        if (gPeepPathFindIgnoreForeignQueues && (tileElement->AsPath()->GetRideIndex() != 0xFF))
                         {
                             // Path is a queue we aren't interested in
                             /* The rideIndex will be useful for
                              * adding transport rides later. */
-                            rideIndex = tileElement->properties.path.ride_index;
+                            rideIndex = tileElement->AsPath()->GetRideIndex();
                             searchResult = PATH_SEARCH_RIDE_QUEUE;
                         }
                     }
@@ -1087,7 +1087,7 @@ static void peep_pathfind_heuristic_search(
             uint8_t savedNumJunctions = _peepPathFindNumJunctions;
 
             uint8_t height = loc.z;
-            if (tileElement->AsPath()->IsSloped() && footpath_element_get_slope_direction(tileElement) == next_test_edge)
+            if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == next_test_edge)
             {
                 height += 2;
             }
@@ -1353,8 +1353,7 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
             edges &= ~(1 << test_edge);
             uint8_t height = loc.z;
 
-            if (first_tile_element->AsPath()->IsSloped()
-                && footpath_element_get_slope_direction(first_tile_element) == test_edge)
+            if (first_tile_element->AsPath()->IsSloped() && first_tile_element->AsPath()->GetSlopeDirection() == test_edge)
             {
                 height += 0x2;
             }
@@ -1766,7 +1765,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
             // queueEnd.direction = direction;
             if (tileElement->AsPath()->IsSloped())
             {
-                if (footpath_element_get_slope_direction(tileElement) == direction)
+                if (tileElement->AsPath()->GetSlopeDirection() == direction)
                 {
                     baseZ += 2;
                 }
@@ -1788,7 +1787,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
             {
                 if (tileElement->AsPath()->IsSloped())
                 {
-                    if (footpath_element_get_slope_direction(tileElement) != direction)
+                    if (tileElement->AsPath()->GetSlopeDirection() != direction)
                     {
                         break;
                     }
@@ -1802,7 +1801,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
                 if (!tileElement->AsPath()->IsSloped())
                     break;
 
-                if (footpath_element_get_slope_direction(tileElement) != (direction ^ 2))
+                if (tileElement->AsPath()->GetSlopeDirection() != (direction ^ 2))
                     break;
 
                 baseZ -= 2;

@@ -224,9 +224,8 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
             case TILE_ELEMENT_TYPE_PATH:
                 if (tileElement->AsPath()->IsSloped())
                 {
-                    newRotation = (footpath_element_get_slope_direction(tileElement) + 1) & TILE_ELEMENT_DIRECTION_MASK;
-                    tileElement->properties.path.type &= ~TILE_ELEMENT_DIRECTION_MASK;
-                    tileElement->properties.path.type |= newRotation;
+                    newRotation = (tileElement->AsPath()->GetSlopeDirection() + 1) & TILE_ELEMENT_DIRECTION_MASK;
+                    tileElement->AsPath()->SetSlopeDirection(newRotation);
                 }
                 pathEdges = tileElement->properties.path.edges & 0x0F;
                 pathCorners = tileElement->properties.path.edges & 0xF0;
@@ -612,11 +611,7 @@ int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementInde
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        pathElement->properties.path.type &= ~(1 << 2);
-        if (sloped)
-        {
-            pathElement->properties.path.type |= (1 << 2);
-        }
+        pathElement->AsPath()->SetSloped(sloped);
 
         map_invalidate_tile_full(x << 5, y << 5);
 

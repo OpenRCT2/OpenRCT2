@@ -211,15 +211,15 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
+    rct_sprite* sprite = info->sprite;
 
     switch (info->type)
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || tileElement->type != 0)
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-            tileElement += 6;
-            ride = get_ride(tileElement->type);
+            ride = get_ride(sprite->vehicle.ride);
             if (ride->status == RIDE_STATUS_CLOSED)
             {
                 set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -504,16 +504,16 @@ static void viewport_interaction_remove_footpath(rct_tile_element* tileElement, 
  */
 static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElement, int32_t x, int32_t y)
 {
-    int32_t type;
-
-    type = tileElement->AsPath()->GetEntryIndex();
+    int32_t type = tileElement->AsPath()->GetEntryIndex();
     if (tileElement->AsPath()->IsQueue())
         type |= 0x80;
 
+    int32_t slopeData = tileElement->AsPath()->GetSlopeDirection();
+    if (tileElement->AsPath()->IsSloped())
+        slopeData |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(
-        x, ((tileElement->properties.path.type & 7) << 8) | 1, y, (type << 8) | tileElement->base_height,
-        GAME_COMMAND_PLACE_PATH, 0, 0);
+    game_do_command(x, (slopeData << 8) | 1, y, (type << 8) | tileElement->base_height, GAME_COMMAND_PLACE_PATH, 0, 0);
 }
 
 /**

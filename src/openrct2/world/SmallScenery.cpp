@@ -431,8 +431,8 @@ void game_command_set_scenery_colour(
     int32_t* ebp)
 {
     *ebx = SmallScenerySetColour(
-        *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 8) & 0xFF) >> 6, (*edx >> 8) & 0xFF, *ebp & 0xFF,
-        (*ebp >> 8) & 0xFF, *ebx & 0xFF);
+        *eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 8) & 0xFF), (*edx >> 8) & 0xFF, *ebp & 0xFF, (*ebp >> 8) & 0xFF,
+        *ebx & 0xFF);
 }
 
 /**

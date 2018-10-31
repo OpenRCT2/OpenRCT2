@@ -188,8 +188,8 @@ assert_struct_size(SurfaceElement, 8);
 struct PathElement : TileElementBase
 {
 private:
-    uint8_t entryIndex; // 4 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is diagonal, 0x03 Rotation
-    uint8_t additions;  // 5
+    uint8_t entryIndex; // 4, 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is sloped, 0x03 Rotation
+    uint8_t additions;  // 5, 0bGSSSAAAA: G = Ghost, S = station index, A = addition (0 means no addition)
     uint8_t edges;      // 6
     union
     {
@@ -208,6 +208,12 @@ public:
     bool IsSloped() const;
     void SetSloped(bool isSloped);
 
+    uint8_t GetSlopeDirection() const;
+    void SetSlopeDirection(uint8_t newSlope);
+
+    uint8_t GetRideIndex() const;
+    void SetRideIndex(uint8_t newRideIndex);
+
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
 
@@ -217,6 +223,7 @@ public:
     bool IsQueue() const;
     void SetIsQueue(bool isQueue);
     bool HasQueueBanner() const;
+    void SetHasQueueBanner(bool hasQueueBanner);
 
     bool HasAddition() const;
     uint8_t GetAddition() const;
@@ -226,6 +233,9 @@ public:
 
     bool AdditionIsGhost() const;
     void SetAdditionIsGhost(bool isGhost);
+
+    uint8_t GetAdditionStatus() const;
+    void SetAdditionStatus(uint8_t newStatus);
 
     uint8_t GetRCT1PathType() const;
 };

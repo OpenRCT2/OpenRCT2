@@ -3601,8 +3601,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
         {
             pathsByDir[i] = map_get_footpath_element((x >> 5) + DirOffsets[i].x, (y >> 5) + DirOffsets[i].y, z >> 3);
 
-            if (pathsByDir[i] && (pathsByDir[i])->AsPath()->IsSloped()
-                && footpath_element_get_slope_direction(pathsByDir[i]) != i)
+            if (pathsByDir[i] && (pathsByDir[i])->AsPath()->IsSloped() && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
             {
                 pathsByDir[i] = nullptr;
             }
@@ -3613,8 +3612,7 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
                 pathsByDir[i] = map_get_footpath_element((x >> 5) + DirOffsets[i].x, (y >> 5) + DirOffsets[i].y, (z >> 3) - 2);
 
                 if (pathsByDir[i]
-                    && (!(pathsByDir[i])->AsPath()->IsSloped()
-                        || footpath_element_get_slope_direction(pathsByDir[i]) != (i ^ 2)))
+                    && (!(pathsByDir[i])->AsPath()->IsSloped() || (pathsByDir[i])->AsPath()->GetSlopeDirection() != (i ^ 2)))
                 {
                     pathsByDir[i] = nullptr;
                 }

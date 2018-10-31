@@ -131,8 +131,7 @@ void setup_in_use_selection_flags()
             case TILE_ELEMENT_TYPE_TRACK:
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                type = iter.element->properties.path.type;
-                type >>= 4;
+                type = iter.element->AsPath()->GetEntryIndex();
                 assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
                 Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
 

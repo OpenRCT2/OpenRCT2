@@ -143,7 +143,7 @@ static void cheat_remove_litter()
 
         sceneryEntry = it.element->AsPath()->GetAdditionEntry();
         if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
-            it.element->properties.path.addition_status = 0xFF;
+            it.element->AsPath()->SetAdditionStatus(0xFF);
 
     } while (tile_element_iterator_next(&it));
 

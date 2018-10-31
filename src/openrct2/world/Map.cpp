@@ -629,17 +629,16 @@ bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirecti
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        rct_tile_element_path_properties props = tileElement->properties.path;
-        uint8_t pathDirection = props.type & 3;
+        uint8_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
 
         if (tileElement->AsPath()->IsSloped())
         {
-            if (pathDirection == faceDirection)
+            if (slopeDirection == faceDirection)
             {
                 if (z == tileElement->base_height + 2)
                     return true;
             }
-            else if ((pathDirection ^ 2) == faceDirection && z == tileElement->base_height)
+            else if ((slopeDirection ^ 2) == faceDirection && z == tileElement->base_height)
             {
                 return true;
             }
@@ -2812,7 +2811,7 @@ void game_command_set_water_height(
 
     if (gCheatsDisableClearanceChecks || map_can_construct_at(x, y, zLow, zHigh, 0xFF))
     {
-        if (tile_element->type & 0x40)
+        if (tile_element->AsSurface()->HasTrackThatNeedsWater())
         {
             gGameCommandErrorText = 0;
             *ebx = MONEY32_UNDEFINED;
@@ -3139,8 +3138,8 @@ void map_remove_all_rides()
             case TILE_ELEMENT_TYPE_PATH:
                 if (it.element->AsPath()->IsQueue())
                 {
-                    it.element->properties.path.type &= ~8;
-                    it.element->properties.path.addition_status = 255;
+                    it.element->AsPath()->SetHasQueueBanner(false);
+                    it.element->AsPath()->SetRideIndex(RIDE_ID_NULL);
                 }
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:

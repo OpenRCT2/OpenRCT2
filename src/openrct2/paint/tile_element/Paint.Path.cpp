@@ -166,7 +166,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x3, (2 * session->CurrentRotation)));
+            binIsFull = !(tileElement->AsPath()->GetAdditionStatus() & ror8(0x3, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -187,7 +187,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC, (2 * session->CurrentRotation)));
+            binIsFull = !(tileElement->AsPath()->GetAdditionStatus() & ror8(0xC, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -209,7 +209,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0x30, (2 * session->CurrentRotation)));
+            binIsFull = !(tileElement->AsPath()->GetAdditionStatus() & ror8(0x30, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -231,7 +231,7 @@ static void path_bit_bins_paint(
 
             // Edges have been rotated around the rotation to check addition status
             // this will also need to be rotated.
-            binIsFull = !(tileElement->properties.path.addition_status & ror8(0xC0, (2 * session->CurrentRotation)));
+            binIsFull = !(tileElement->AsPath()->GetAdditionStatus() & ror8(0xC0, (2 * session->CurrentRotation)));
             if (binIsFull)
                 imageId += 8;
         }
@@ -325,7 +325,7 @@ static void sub_6A4101(
         uint8_t local_ebp = ebp & 0x0F;
         if (tile_element->AsPath()->IsSloped())
         {
-            switch ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation)
+            switch ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                     & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
             {
                 case 0:
@@ -414,7 +414,7 @@ static void sub_6A4101(
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         if (tile_element->AsPath()->IsSloped())
         {
-            if (footpath_element_get_slope_direction(tile_element) == direction)
+            if (tile_element->AsPath()->GetSlopeDirection() == direction)
                 height += 16;
         }
         direction += session->CurrentRotation;
@@ -436,7 +436,7 @@ static void sub_6A4101(
 
         direction--;
         // If text shown
-        if (direction < 2 && tile_element->properties.path.ride_index != RIDE_ID_NULL && imageFlags == 0)
+        if (direction < 2 && tile_element->AsPath()->GetRideIndex() != RIDE_ID_NULL && imageFlags == 0)
         {
             uint16_t scrollingMode = footpathEntry->scrolling_mode;
             scrollingMode += direction;
@@ -444,7 +444,7 @@ static void sub_6A4101(
             set_format_arg(0, uint32_t, 0);
             set_format_arg(4, uint32_t, 0);
 
-            Ride* ride = get_ride(tile_element->properties.path.ride_index);
+            Ride* ride = get_ride(tile_element->AsPath()->GetRideIndex());
             rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
@@ -489,7 +489,7 @@ static void sub_6A4101(
 
     if (tile_element->AsPath()->IsSloped())
     {
-        switch ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation)
+        switch ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                 & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
         {
             case 0:
@@ -736,7 +736,7 @@ static void sub_6A3F61(
     }
 
     // This is about tunnel drawing
-    uint8_t direction = (footpath_element_get_slope_direction(tile_element) + session->CurrentRotation)
+    uint8_t direction = (tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation)
         & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
     bool sloped = tile_element->AsPath()->IsSloped();
 
@@ -799,7 +799,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
     {
         if (tile_element->AsPath()->IsQueue())
         {
-            if (tile_element->properties.path.ride_index != gTrackDesignSaveRideIndex)
+            if (tile_element->AsPath()->GetRideIndex() != gTrackDesignSaveRideIndex)
             {
                 return;
             }
@@ -859,7 +859,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
         {
             // Diagonal path
 
-            if (surface->AsSurface()->GetSlope() != byte_98D800[footpath_element_get_slope_direction(tile_element)])
+            if (surface->AsSurface()->GetSlope() != byte_98D800[tile_element->AsPath()->GetSlopeDirection()])
             {
                 word_F3F038 = true;
             }
@@ -899,7 +899,7 @@ void path_paint(paint_session* session, uint16_t height, const rct_tile_element*
             int32_t height2 = tile_element->base_height * 8;
             if (tile_element->AsPath()->IsSloped())
             {
-                imageId = 2619 + ((footpath_element_get_slope_direction(tile_element) + session->CurrentRotation) & 3);
+                imageId = 2619 + ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3);
                 height2 += 16;
             }
 
@@ -989,7 +989,7 @@ void path_paint_box_support(
     uint32_t imageId;
     if (tileElement->AsPath()->IsSloped())
     {
-        imageId = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation)
+        imageId = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                    & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
             + 16;
     }
@@ -1036,7 +1036,7 @@ void path_paint_box_support(
         uint32_t image_id;
         if (tileElement->AsPath()->IsSloped())
         {
-            image_id = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation)
+            image_id = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                         & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
                 + footpathEntry->bridge_image + 51;
         }
@@ -1066,7 +1066,7 @@ void path_paint_box_support(
     uint16_t ax = 0;
     if (tileElement->AsPath()->IsSloped())
     {
-        ax = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) & 0x3) + 1;
+        ax = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 0x3) + 1;
     }
 
     if (byte_98D8A4[edges] == 0)
@@ -1143,7 +1143,7 @@ void path_paint_pole_support(
     uint32_t imageId;
     if (tileElement->AsPath()->IsSloped())
     {
-        imageId = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation) & 3) + 16;
+        imageId = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3) + 16;
     }
     else
     {
@@ -1189,7 +1189,7 @@ void path_paint_pole_support(
         uint32_t bridgeImage;
         if (tileElement->AsPath()->IsSloped())
         {
-            bridgeImage = ((footpath_element_get_slope_direction(tileElement) + session->CurrentRotation)
+            bridgeImage = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
                 + footpathEntry->bridge_image + 16;
         }

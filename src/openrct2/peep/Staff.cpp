@@ -709,7 +709,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
 
         if (path->AsPath()->IsSloped())
         {
-            if (footpath_element_get_slope_direction(path) == adjac_dir)
+            if (path->AsPath()->GetSlopeDirection() == adjac_dir)
             {
                 adjac_z = z + 2;
             }
@@ -1824,7 +1824,8 @@ void rct_peep::UpdateEmptyingBin()
             return;
         }
 
-        tile_element->properties.path.addition_status |= ((3 << var_37) << var_37);
+        uint8_t additionStatus = tile_element->AsPath()->GetAdditionStatus() | ((3 << var_37) << var_37);
+        tile_element->AsPath()->SetAdditionStatus(additionStatus);
 
         map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height * 8, tile_element->clearance_height * 8);
 
@@ -2224,7 +2225,7 @@ static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
         return 0;
 
     uint8_t bin_positions = tileElement->properties.path.edges & 0xF;
-    uint8_t bin_quantity = tileElement->properties.path.addition_status;
+    uint8_t bin_quantity = tileElement->AsPath()->GetAdditionStatus();
     uint8_t chosen_position = 0;
 
     for (; chosen_position < 4; ++chosen_position)

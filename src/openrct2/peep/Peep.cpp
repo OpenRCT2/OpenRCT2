@@ -1022,7 +1022,7 @@ void rct_peep::UpdateFalling()
             if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
             {
                 int32_t height = map_height_from_slope(
-                                     { x, y }, tile_element->properties.path.type, tile_element->AsPath()->IsSloped())
+                                     { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
                     + tile_element->base_height * 8;
 
                 if (height < z - 1 || height > z + 4)
@@ -1099,7 +1099,7 @@ void rct_peep::UpdateFalling()
     }
     else
     {
-        SetNextFlags(saved_map->properties.path.type & 0x3, saved_map->properties.path.type & 0x4, false);
+        SetNextFlags(saved_map->AsPath()->GetSlopeDirection(), saved_map->AsPath()->IsSloped(), false);
     }
     SetState(PEEP_STATE_1);
 }
@@ -2634,7 +2634,7 @@ static void peep_interact_with_entrance(
 
             if (nextTileElement->AsPath()->IsSloped())
             {
-                uint8_t slopeDirection = footpath_element_get_slope_direction(nextTileElement);
+                uint8_t slopeDirection = nextTileElement->AsPath()->GetSlopeDirection();
                 if (slopeDirection == entranceDirection)
                 {
                     if (z != nextTileElement->base_height)
@@ -2731,7 +2731,7 @@ static void peep_footpath_move_forward(rct_peep* peep, int16_t x, int16_t y, rct
     peep->next_x = (x & 0xFFE0);
     peep->next_y = (y & 0xFFE0);
     peep->next_z = tile_element->base_height;
-    peep->SetNextFlags(tile_element->properties.path.type & 3, tile_element->properties.path.type & 4, false);
+    peep->SetNextFlags(tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped(), false);
 
     int16_t z = peep->GetZOnSlope(x, y);
 
@@ -2902,7 +2902,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
 
     if (peep->type == PEEP_TYPE_GUEST && tile_element->AsPath()->IsQueue())
     {
-        uint8_t rideIndex = tile_element->properties.path.ride_index;
+        uint8_t rideIndex = tile_element->AsPath()->GetRideIndex();
 
         if (peep->state == PEEP_STATE_QUEUING)
         {
@@ -2926,7 +2926,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, rct_ti
         peep->time_lost = 0;
         uint8_t stationNum = tile_element->AsPath()->GetStationIndex();
 
-        if ((tile_element->properties.path.type & (1 << 3)) // Queue has the ride sign on it
+        if ((tile_element->AsPath()->HasQueueBanner())
             && (tile_element->AsPath()->GetQueueBannerDirection()
                 == ((peep->direction) ^ 2)) // Ride sign is facing the direction the peep is walking
         )
@@ -3093,7 +3093,7 @@ bool is_valid_path_z_and_direction(rct_tile_element* tileElement, int32_t curren
 {
     if (tileElement->AsPath()->IsSloped())
     {
-        int32_t slopeDirection = footpath_element_get_slope_direction(tileElement);
+        int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
         if (slopeDirection == currentDirection)
         {
             if (currentZ != tileElement->base_height)
