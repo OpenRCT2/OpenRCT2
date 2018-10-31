@@ -154,14 +154,14 @@ static constexpr const uint8_t DefaultPathSlope[] = {
     SLOPE_IS_IRREGULAR_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
     FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 3,
-    SLOPE_IS_IRREGULAR_FLAG,
+    RAISE_FOOTPATH_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
     FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 1,
     SLOPE_IS_IRREGULAR_FLAG,
-    SLOPE_IS_IRREGULAR_FLAG,
+    RAISE_FOOTPATH_FLAG,
     FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 0,
-    SLOPE_IS_IRREGULAR_FLAG,
-    SLOPE_IS_IRREGULAR_FLAG,
+    RAISE_FOOTPATH_FLAG,
+    RAISE_FOOTPATH_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
 };
 
@@ -763,9 +763,15 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
                     slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
                 break;
         }
+        uint8_t z = tileElement->base_height;
+        if (slope & RAISE_FOOTPATH_FLAG)
+        {
+            slope &= ~RAISE_FOOTPATH_FLAG;
+            z += 2;
+        }
         int32_t pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
-        _window_footpath_cost = footpath_provisional_set(pathType, x, y, tileElement->base_height, slope);
+        _window_footpath_cost = footpath_provisional_set(pathType, x, y, z, slope);
         window_invalidate_by_class(WC_FOOTPATH);
     }
 }
@@ -863,6 +869,11 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
             break;
     }
     z = tileElement->base_height;
+    if (currentType & RAISE_FOOTPATH_FLAG)
+    {
+        currentType &= ~RAISE_FOOTPATH_FLAG;
+        z += 2;
+    }
     selectedType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
     // Try and place path
