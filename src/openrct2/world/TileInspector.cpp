@@ -227,11 +227,10 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
                     newRotation = (tileElement->AsPath()->GetSlopeDirection() + 1) & TILE_ELEMENT_DIRECTION_MASK;
                     tileElement->AsPath()->SetSlopeDirection(newRotation);
                 }
-                pathEdges = tileElement->properties.path.edges & 0x0F;
-                pathCorners = tileElement->properties.path.edges & 0xF0;
-                tileElement->properties.path.edges = 0;
-                tileElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;
-                tileElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
+                pathEdges = tileElement->AsPath()->GetEdges();
+                pathCorners = tileElement->AsPath()->GetCorners();
+                tileElement->AsPath()->SetEdges((pathEdges << 1) | (pathEdges >> 3));
+                tileElement->AsPath()->SetCorners((pathCorners << 1) | (pathCorners >> 3));
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
             {
@@ -635,7 +634,8 @@ int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementInd
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        pathElement->properties.path.edges ^= 1 << edgeIndex;
+        uint8_t newEdges = pathElement->AsPath()->GetEdgesAndCorners() ^ (1 << edgeIndex);
+        pathElement->AsPath()->SetEdgesAndCorners(newEdges);
 
         map_invalidate_tile_full(x << 5, y << 5);
 

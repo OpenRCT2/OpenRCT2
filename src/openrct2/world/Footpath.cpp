@@ -339,7 +339,7 @@ static money32 footpath_element_update(
             }
 
             if (!(unk6 & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
-                && (tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK) == 0x0F)
+                && (tileElement->AsPath()->GetEdges()) == 0x0F)
             {
                 gGameCommandErrorText = STR_NONE;
                 return MONEY32_UNDEFINED;
@@ -670,7 +670,7 @@ static money32 footpath_place_from_track(
             pathElement->SetAddition(0);
             tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
             tileElement->AsPath()->SetAdditionStatus(255);
-            tileElement->properties.path.edges = edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+            tileElement->AsPath()->SetCorners(0);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & (1 << 6))
                 pathElement->flags |= TILE_ELEMENT_FLAG_GHOST;
@@ -1078,7 +1078,7 @@ static rct_tile_element* footpath_connect_corners_get_neighbour(int32_t x, int32
             continue;
         if (tileElement->base_height != z)
             continue;
-        if (!(tileElement->properties.path.edges & requireEdges))
+        if (!(tileElement->AsPath()->GetEdgesAndCorners() & requireEdges))
             continue;
 
         return tileElement;
@@ -1138,19 +1138,21 @@ static void footpath_connect_corners(int32_t initialX, int32_t initialY, rct_til
             continue;
 
         direction = (direction + 1) & 3;
-        tileElement[3]->properties.path.edges |= (1 << (direction + 4));
+        tileElement[3]->AsPath()->SetCorners(tileElement[3]->AsPath()->GetCorners() | (1 << (direction)));
         map_invalidate_element(x, y, tileElement[3]);
 
         direction = (direction - 1) & 3;
-        tileElement[2]->properties.path.edges |= (1 << (direction + 4));
+        tileElement[2]->AsPath()->SetCorners(tileElement[2]->AsPath()->GetCorners() | (1 << (direction)));
+
         map_invalidate_element(x, y, tileElement[2]);
 
         direction = (direction - 1) & 3;
-        tileElement[1]->properties.path.edges |= (1 << (direction + 4));
+        tileElement[1]->AsPath()->SetCorners(tileElement[1]->AsPath()->GetCorners() | (1 << (direction)));
+
         map_invalidate_element(x, y, tileElement[1]);
 
         direction = initialDirection;
-        tileElement[0]->properties.path.edges |= (1 << (direction + 4));
+        tileElement[0]->AsPath()->SetCorners(tileElement[0]->AsPath()->GetCorners() | (1 << (direction)));
         map_invalidate_element(x, y, tileElement[0]);
     }
 }
@@ -1273,7 +1275,7 @@ static rct_tile_element* footpath_get_element(int32_t x, int32_t y, int32_t z0, 
 static bool sub_footpath_disconnect_queue_from_path(
     int32_t x, int32_t y, rct_tile_element* tileElement, int32_t action, int32_t direction)
 {
-    if (((tileElement->properties.path.edges & (1 << direction)) == 0) ^ (action < 0))
+    if (((tileElement->AsPath()->GetEdges() & (1 << direction)) == 0) ^ (action < 0))
         return false;
     if ((action < 0) && fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction))
         return false;
@@ -1287,15 +1289,15 @@ static bool sub_footpath_disconnect_queue_from_path(
         tileElement->AsPath()->SetSlopeDirection(0);
         if (action > 0)
         {
-            tileElement->properties.path.edges &= ~(1 << direction);
-            otherTileElement->properties.path.edges &= ~(1 << ((direction + 2) & 3));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << direction));
+            otherTileElement->AsPath()->SetEdges(otherTileElement->AsPath()->GetEdges() & ~(1 << ((direction + 2) & 3)));
             if (action >= 2)
                 tileElement->AsPath()->SetSlopeDirection(direction);
         }
         else if (action < 0)
         {
-            tileElement->properties.path.edges |= (1 << direction);
-            otherTileElement->properties.path.edges |= (1 << ((direction + 2) & 3));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction));
+            otherTileElement->AsPath()->SetEdges(otherTileElement->AsPath()->GetEdges() | (1 << ((direction + 2) & 3)));
         }
         if (action != 0)
             map_invalidate_tile_full(x1, y1);
@@ -1312,7 +1314,7 @@ static bool footpath_disconnect_queue_from_path(int32_t x, int32_t y, rct_tile_e
     if (tileElement->AsPath()->IsSloped())
         return false;
 
-    uint8_t c = connected_path_count[tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK];
+    uint8_t c = connected_path_count[tileElement->AsPath()->GetEdges()];
     if ((action < 0) ? (c >= 2) : (c < 2))
         return false;
 
@@ -1441,7 +1443,7 @@ static void loc_6A6D7E(
             }
             if (tileElement->AsPath()->IsQueue())
             {
-                if (connected_path_count[tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK] < 2)
+                if (connected_path_count[tileElement->AsPath()->GetEdges()] < 2)
                 {
                     neighbour_list_push(
                         neighbourList, 4, direction, tileElement->AsPath()->GetRideIndex(),
@@ -1468,7 +1470,7 @@ static void loc_6A6D7E(
         else
         {
             footpath_disconnect_queue_from_path(x, y, tileElement, 1 + ((flags >> 6) & 1));
-            tileElement->properties.path.edges |= (1 << (direction ^ 2));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << (direction ^ 2)));
             if (tileElement->AsPath()->IsQueue())
             {
                 footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
@@ -1486,7 +1488,7 @@ loc_6A6FD2:
     {
         if (!query)
         {
-            initialTileElement->properties.path.edges |= (1 << direction);
+            initialTileElement->AsPath()->SetEdges(initialTileElement->AsPath()->GetEdges() | (1 << direction));
             map_invalidate_element(initialX, initialY, initialTileElement);
         }
     }
@@ -1674,7 +1676,7 @@ void footpath_chain_ride_queue(
         {
             // Fix #2051: Stop queue paths that are already connected to two other tiles
             //            from connecting to the tile we are coming from.
-            int32_t edges = tileElement->properties.path.edges;
+            int32_t edges = tileElement->AsPath()->GetEdges();
             int32_t numEdges = bitcount(edges);
             if (numEdges >= 2)
             {
@@ -1686,7 +1688,7 @@ void footpath_chain_ride_queue(
             }
 
             tileElement->AsPath()->SetHasQueueBanner(false);
-            tileElement->properties.path.edges |= (1 << (direction ^ 2));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << (direction ^ 2)));
             tileElement->AsPath()->SetRideIndex(rideIndex);
             tileElement->AsPath()->SetStationIndex(entranceIndex);
 
@@ -1697,15 +1699,15 @@ void footpath_chain_ride_queue(
                 lastQueuePathElement = tileElement;
             }
 
-            if (tileElement->properties.path.edges & (1 << direction))
+            if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 continue;
 
             direction = (direction + 1) & 3;
-            if (tileElement->properties.path.edges & (1 << direction))
+            if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 continue;
 
             direction ^= 2;
-            if (tileElement->properties.path.edges & (1 << direction))
+            if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 continue;
         }
         break;
@@ -1881,7 +1883,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
         {
             footpath_fix_ownership(x, y);
         }
-        edges = tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+        edges = tileElement->AsPath()->GetEdges();
         direction ^= 2;
         if (!(flags & (1 << 7)))
         {
@@ -2194,7 +2196,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         if (tileElement->AsPath()->IsSloped())
             continue;
 
-        if ((tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK) == 0)
+        if (tileElement->AsPath()->GetEdges() == 0)
             continue;
 
         uint8_t height = tileElement->base_height;
@@ -2223,7 +2225,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         y += 0x20;
 
         uint8_t F3EFA5 = 0;
-        if (tileElement->properties.path.edges & EDGE_NW)
+        if (tileElement->AsPath()->GetEdges() & EDGE_NW)
         {
             F3EFA5 |= 0x80;
             if (pathList[7] != nullptr)
@@ -2235,7 +2237,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             }
         }
 
-        if (tileElement->properties.path.edges & EDGE_NE)
+        if (tileElement->AsPath()->GetEdges() & EDGE_NE)
         {
             F3EFA5 |= 0x2;
             if (pathList[1] != nullptr)
@@ -2247,7 +2249,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             }
         }
 
-        if (tileElement->properties.path.edges & EDGE_SE)
+        if (tileElement->AsPath()->GetEdges() & EDGE_SE)
         {
             F3EFA5 |= 0x8;
             /* In the following:
@@ -2262,7 +2264,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
             //}
         }
 
-        if (tileElement->properties.path.edges & EDGE_SW)
+        if (tileElement->AsPath()->GetEdges() & EDGE_SW)
         {
             F3EFA5 |= 0x20;
             /* In the following:
@@ -2280,7 +2282,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         if ((F3EFA5 & 0x80) && (pathList[7] != nullptr) && !(pathList[7])->AsPath()->IsWide())
         {
             if ((F3EFA5 & 2) && (pathList[0] != nullptr) && !(pathList[0])->AsPath()->IsWide()
-                && ((pathList[0]->properties.path.edges & 6) == 6) && // N E
+                && ((pathList[0]->AsPath()->GetEdges() & 6) == 6) && // N E
                 (pathList[1] != nullptr) && !(pathList[1])->AsPath()->IsWide())
             {
                 F3EFA5 |= 0x1;
@@ -2292,7 +2294,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
             if ((F3EFA5 & 0x20) && (pathList[6] != nullptr) && !(pathList[6])->AsPath()->IsWide()
-                && ((pathList[6]->properties.path.edges & 3) == 3) && // N W
+                && ((pathList[6]->AsPath()->GetEdges() & 3) == 3) && // N W
                 (pathList[5] != nullptr) && (true || !(pathList[5])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x40;
@@ -2308,7 +2310,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
         if ((F3EFA5 & 0x8) && (pathList[3] != nullptr) && (true || !(pathList[3])->AsPath()->IsWide()))
         {
             if ((F3EFA5 & 2) && (pathList[2] != nullptr) && (true || !(pathList[2])->AsPath()->IsWide())
-                && ((pathList[2]->properties.path.edges & 0xC) == 0xC) && (pathList[1] != nullptr)
+                && ((pathList[2]->AsPath()->GetEdges() & 0xC) == 0xC) && (pathList[1] != nullptr)
                 && (!(pathList[1])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x4;
@@ -2321,7 +2323,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
             if ((F3EFA5 & 0x20) && (pathList[4] != nullptr) && (true || !(pathList[4])->AsPath()->IsWide())
-                && ((pathList[4]->properties.path.edges & 9) == 9) && (pathList[5] != nullptr)
+                && ((pathList[4]->AsPath()->GetEdges() & 9) == 9) && (pathList[5] != nullptr)
                 && (true || !(pathList[5])->AsPath()->IsWide()))
             {
                 F3EFA5 |= 0x10;
@@ -2342,7 +2344,7 @@ void footpath_update_path_wide_flags(int32_t x, int32_t y)
 
         if (!(F3EFA5 & (0x2 | 0x8 | 0x20 | 0x80)))
         {
-            uint8_t e = tileElement->properties.path.edges;
+            uint8_t e = tileElement->AsPath()->GetEdgesAndCorners();
             if ((e != 0b10101111) && (e != 0b01011111) && (e != 0b11101111))
                 tileElement->AsPath()->SetWide(true);
         }
@@ -2370,7 +2372,7 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
                 footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
                 for (int32_t direction = 0; direction < 4; direction++)
                 {
-                    if (tileElement->properties.path.edges & (1 << direction))
+                    if (tileElement->AsPath()->GetEdges() & (1 << direction))
                     {
                         footpath_chain_ride_queue(255, 0, x, y, tileElement, direction);
                     }
@@ -2395,19 +2397,17 @@ void footpath_update_queue_entrance_banner(int32_t x, int32_t y, rct_tile_elemen
 static void footpath_remove_edges_towards_here(
     int32_t x, int32_t y, int32_t z, int32_t direction, rct_tile_element* tileElement, bool isQueue)
 {
-    int32_t d;
-
     if (tileElement->AsPath()->IsQueue())
     {
         footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
     }
 
-    d = direction ^ 2;
-    tileElement->properties.path.edges &= ~(1 << d);
-    d = ((d - 1) & 3) + 4;
-    tileElement->properties.path.edges &= ~(1 << d);
-    d = (((d - 4) + 1) & 3) + 4;
-    tileElement->properties.path.edges &= ~(1 << d);
+    int32_t d = direction ^ 2;
+    tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << d));
+    int32_t cd = ((d - 1) & 3);
+    tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
+    cd = ((cd + 1) & 3);
+    tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
     map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
 
     if (isQueue)
@@ -2428,8 +2428,8 @@ static void footpath_remove_edges_towards_here(
         if (tileElement->AsPath()->IsSloped())
             break;
 
-        d = ((direction + 1) & 3) + 4;
-        tileElement->properties.path.edges &= ~(1 << d);
+        cd = ((direction + 1) & 3);
+        tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
         map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
         break;
     } while (!(tileElement++)->IsLastForTile());
@@ -2581,7 +2581,7 @@ static void footpath_fix_corners_around(int32_t x, int32_t y, rct_tile_element* 
 
                 const int32_t ix = xOffset + 1;
                 const int32_t iy = yOffset + 1;
-                tileElement->properties.path.edges &= ~(cornersTouchingTile[iy][ix] << 4);
+                tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(cornersTouchingTile[iy][ix]));
             } while (!(tileElement++)->IsLastForTile());
         }
     }
@@ -2647,7 +2647,7 @@ void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElemen
     }
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-        tileElement->properties.path.edges = 0;
+        tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
 rct_footpath_entry* get_footpath_entry(int32_t entryIndex)
@@ -2660,11 +2660,6 @@ rct_footpath_entry* get_footpath_entry(int32_t entryIndex)
         result = (rct_footpath_entry*)obj->GetLegacyData();
     }
     return result;
-}
-
-uint8_t footpath_get_edges(const rct_tile_element* element)
-{
-    return element->properties.path.edges & 0xF;
 }
 
 uint8_t PathElement::GetRideIndex() const
@@ -2685,4 +2680,36 @@ uint8_t PathElement::GetAdditionStatus() const
 void PathElement::SetAdditionStatus(uint8_t newStatus)
 {
     additionStatus = newStatus;
+}
+
+uint8_t PathElement::GetEdges() const
+{
+    return edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+}
+
+void PathElement::SetEdges(uint8_t newEdges)
+{
+    edges &= ~FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+    edges |= (newEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK);
+}
+
+uint8_t PathElement::GetCorners() const
+{
+    return edges >> 4;
+}
+
+void PathElement::SetCorners(uint8_t newCorners)
+{
+    edges &= ~FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK;
+    edges |= (newCorners << 4);
+}
+
+uint8_t PathElement::GetEdgesAndCorners() const
+{
+    return edges;
+}
+
+void PathElement::SetEdgesAndCorners(uint8_t newEdgesAndCorners)
+{
+    edges = newEdgesAndCorners;
 }

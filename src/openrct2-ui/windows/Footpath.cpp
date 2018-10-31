@@ -1015,16 +1015,16 @@ static void footpath_remove_tile_element(rct_tile_element* tileElement)
 
     // Find a connected edge
     int32_t edge = gFootpathConstructDirection ^ 2;
-    if (!(tileElement->properties.path.edges & (1 << edge)))
+    if (!(tileElement->AsPath()->GetEdges() & (1 << edge)))
     {
         edge = (edge + 1) & 3;
-        if (!(tileElement->properties.path.edges & (1 << edge)))
+        if (!(tileElement->AsPath()->GetEdges() & (1 << edge)))
         {
             edge = (edge + 2) & 3;
-            if (!(tileElement->properties.path.edges & (1 << edge)))
+            if (!(tileElement->AsPath()->GetEdges() & (1 << edge)))
             {
                 edge = (edge - 1) & 3;
-                if (!(tileElement->properties.path.edges & (1 << edge)))
+                if (!(tileElement->AsPath()->GetEdges() & (1 << edge)))
                 {
                     edge ^= 2;
                 }

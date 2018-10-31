@@ -565,7 +565,7 @@ static uint32_t miniature_railway_track_to_grooved_indent(
 
     uint32_t imageIdAlt = SPR_G2_MINIATURE_RAILWAY_GROOVED_SW_NE;
 
-    uint8_t correctedEdges = path->properties.path.edges;
+    uint8_t correctedEdges = path->AsPath()->GetEdges();
     correctedEdges |= correctedEdges << 4;
     correctedEdges >>= 4 - rotation;
     correctedEdges &= 0x0F;

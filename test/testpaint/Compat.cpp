@@ -414,3 +414,8 @@ bool TrackElement::IsHighlighted() const
 {
     return (type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT);
 }
+
+uint8_t PathElement::GetEdges() const
+{
+    return edges & 0xF;
+}

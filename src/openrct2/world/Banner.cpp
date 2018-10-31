@@ -198,7 +198,7 @@ static money32 BannerPlace(
         if (tileElement->base_height != pathBaseHeight * 2 && tileElement->base_height != (pathBaseHeight - 1) * 2)
             continue;
 
-        if (!(tileElement->properties.path.edges & (1 << direction)))
+        if (!(tileElement->AsPath()->GetEdges() & (1 << direction)))
             continue;
 
         pathFound = true;

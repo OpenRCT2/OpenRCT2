@@ -5333,7 +5333,7 @@ void rct_peep::UpdateWalking()
         }
     }
 
-    int32_t edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
+    int32_t edges = (tileElement->AsPath()->GetEdges()) ^ 0xF;
     if (edges == 0)
         return;
 
@@ -5935,7 +5935,7 @@ bool rct_peep::UpdateWalkingFindBench()
     if (tileElement->AsPath()->AdditionIsGhost())
         return false;
 
-    int32_t edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
+    int32_t edges = (tileElement->AsPath()->GetEdges()) ^ 0xF;
     if (edges == 0)
         return false;
 
@@ -6034,7 +6034,7 @@ bool rct_peep::UpdateWalkingFindBin()
     if (tileElement->AsPath()->AdditionIsGhost())
         return false;
 
-    int32_t edges = (tileElement->properties.path.edges & 0xF) ^ 0xF;
+    int32_t edges = (tileElement->AsPath()->GetEdges()) ^ 0xF;
     if (edges == 0)
         return false;
 
@@ -6131,7 +6131,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep)
     if (tileElement->AsPath()->AdditionIsGhost())
         return;
 
-    int32_t edges = tileElement->properties.path.edges & 0xF;
+    int32_t edges = tileElement->AsPath()->GetEdges();
     if (edges == 0xF)
         return;
 
