@@ -5677,6 +5677,58 @@ static void junior_rc_booster_paint_setup(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
+static void junior_rc_track_on_ride_photo(
+    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const rct_tile_element* tileElement)
+{
+    uint32_t imageId = junior_rc_track_pieces_flat[0][direction] | session->TrackColours[SCHEME_TRACK];
+    constexpr const int8_t photoCameraOffset = -1;
+
+    switch (direction)
+    {
+        case 0:
+            sub_98196C_rotated(
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height + photoCameraOffset);
+            metal_a_supports_paint_setup(
+                session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(
+                session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
+            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            break;
+        case 1:
+            sub_98196C_rotated(
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height + photoCameraOffset);
+            metal_a_supports_paint_setup(
+                session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(
+                session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
+            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            break;
+        case 2:
+            sub_98196C_rotated(
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height + photoCameraOffset);
+            metal_a_supports_paint_setup(
+                session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(
+                session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
+            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            break;
+        case 3:
+            sub_98196C_rotated(
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height + photoCameraOffset);
+            metal_a_supports_paint_setup(
+                session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(
+                session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
+            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            break;
+    }
+    track_paint_util_onride_photo_paint(session, direction, height + 3 + photoCameraOffset, tileElement);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48 + photoCameraOffset, 0x20);
+}
+
 /* 0x008AAA0C */
 TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int32_t trackType, int32_t direction)
 {
@@ -5895,6 +5947,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int32_t trackType, int32
             return junior_rc_diag_flat_to_60_deg_up_paint_setup;
         case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
             return junior_rc_diag_flat_to_60_deg_down_paint_setup;
+
+        case TRACK_ELEM_ON_RIDE_PHOTO:
+            return junior_rc_track_on_ride_photo;
     }
     return nullptr;
 }
