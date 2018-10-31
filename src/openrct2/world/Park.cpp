@@ -358,7 +358,8 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
             rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
             do
             {
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+                if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
+                    && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
                     // Do not allow ownership of park entrance.
                     if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
