@@ -25,9 +25,9 @@ bool utf8_should_use_sprite_for_codepoint(int32_t codepoint);
 int32_t utf8_get_format_code_arg_length(int32_t codepoint);
 void utf8_remove_formatting(utf8* string, bool allowColours);
 
-void format_string(char* dest, size_t size, rct_string_id format, void* args);
-void format_string_raw(char* dest, size_t size, char* src, void* args);
-void format_string_to_upper(char* dest, size_t size, rct_string_id format, void* args);
+void format_string(char* dest, size_t size, rct_string_id format, const void* args);
+void format_string_raw(char* dest, size_t size, const char* src, const void* args);
+void format_string_to_upper(char* dest, size_t size, rct_string_id format, const void* args);
 void generate_string_file();
 utf8* get_string_end(const utf8* text);
 size_t get_string_size(const utf8* text);
