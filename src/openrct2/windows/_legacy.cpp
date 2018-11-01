@@ -393,7 +393,8 @@ bool window_ride_construction_update_state(
         && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
     {
         if (ride->type != RIDE_TYPE_WATER_COASTER || trackType == TRACK_ELEM_FLAT
-            || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES)
+            || trackType == TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES || trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+            || trackType == TRACK_ELEM_S_BEND_LEFT || trackType == TRACK_ELEM_S_BEND_RIGHT)
         {
             int16_t alternativeType = AlternativeTrackTypes[trackType];
             if (alternativeType > -1)

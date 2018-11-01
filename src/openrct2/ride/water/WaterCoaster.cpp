@@ -471,6 +471,13 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType, int32_
             return get_track_paint_function_splash_boats(TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES, direction);
         case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
             return get_track_paint_function_splash_boats(TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES, direction);
+        case TRACK_ELEM_S_BEND_LEFT_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_S_BEND_LEFT, direction);
+        case TRACK_ELEM_S_BEND_RIGHT_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_S_BEND_RIGHT, direction);
+
+        case TRACK_ELEM_ON_RIDE_PHOTO:
+            return get_track_paint_function_junior_rc(trackType, direction);
     }
     return nullptr;
 }
