@@ -132,7 +132,7 @@ void SurfaceElement::UpdateGrassLength(CoordsXY coords)
         z1 += 2;
 
     // Check objects above grass
-    rct_tile_element* tileElementAbove = (rct_tile_element*)this;
+    TileElement* tileElementAbove = (TileElement*)this;
     for (;;)
     {
         if (tileElementAbove->flags & TILE_ELEMENT_FLAG_LAST_TILE)

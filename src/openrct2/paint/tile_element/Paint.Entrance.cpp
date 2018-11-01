@@ -27,8 +27,7 @@ static uint32_t _unk9E32BC;
  *
  *  rct2: 0x0066508C, 0x00665540
  */
-static void ride_entrance_exit_paint(
-    paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element)
+static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
     uint8_t is_exit = tile_element->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
@@ -207,7 +206,7 @@ static void ride_entrance_exit_paint(
  *
  *  rct2: 0x006658ED
  */
-static void park_entrance_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element)
+static void park_entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
     if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
@@ -327,7 +326,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
  *
  *  rct2: 0x00664FD4
  */
-void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element)
+void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 

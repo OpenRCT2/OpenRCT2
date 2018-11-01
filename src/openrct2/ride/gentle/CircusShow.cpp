@@ -20,7 +20,7 @@
 static void paint_circus_show_tent(
     paint_session* session, uint8_t rideIndex, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
 {
-    const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     Ride* ride = get_ride(rideIndex);
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -50,7 +50,7 @@ static void paint_circus_show_tent(
  */
 static void paint_circus_show(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

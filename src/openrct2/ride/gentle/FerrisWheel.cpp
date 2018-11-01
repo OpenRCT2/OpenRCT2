@@ -52,7 +52,7 @@ static void paint_ferris_wheel_structure(
 {
     uint32_t imageId, baseImageId;
 
-    const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     Ride* ride = get_ride(rideIndex);
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -137,7 +137,7 @@ static void paint_ferris_wheel_structure(
  */
 static void paint_ferris_wheel(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
 

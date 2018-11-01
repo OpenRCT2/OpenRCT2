@@ -47,7 +47,7 @@ enum
 
 static void spiral_slide_paint_tile_right(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     uint32_t image_id = 0;
 
@@ -65,7 +65,7 @@ static void spiral_slide_paint_tile_right(
 
 static void spiral_slide_paint_tile_left(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     uint32_t image_id = 0;
 
@@ -83,7 +83,7 @@ static void spiral_slide_paint_tile_left(
 
 static void spiral_slide_paint_tile_front(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     uint32_t image_id = 0;
 
@@ -191,7 +191,7 @@ static constexpr const uint32_t spiral_slide_fence_sprites[] = {
  */
 static void paint_spiral_slide(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 

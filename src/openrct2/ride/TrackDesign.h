@@ -245,10 +245,10 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels);
 ///////////////////////////////////////////////////////////////////////////////
 void track_design_save_init();
 void track_design_save_reset_scenery();
-bool track_design_save_contains_tile_element(const rct_tile_element* tileElement);
+bool track_design_save_contains_tile_element(const TileElement* tileElement);
 void track_design_save_select_nearby_scenery(int32_t rideIndex);
 void track_design_save_select_tile_element(
-    int32_t interactionType, int32_t x, int32_t y, rct_tile_element* tileElement, bool collect);
+    int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement, bool collect);
 bool track_design_save(uint8_t rideIndex);
 bool track_design_save_to_file(const utf8* path);
 

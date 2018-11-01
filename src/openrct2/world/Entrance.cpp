@@ -262,7 +262,7 @@ static money32 RideEntranceExitPlace(
             coord.z = tile_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
-            rct_tile_element* tileElement = tile_element_insert(x / 32, y / 32, z / 8, 0xF);
+            TileElement* tileElement = tile_element_insert(x / 32, y / 32, z / 8, 0xF);
             assert(tileElement != nullptr);
             tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             tileElement->SetDirection(direction);
@@ -350,7 +350,7 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, u
         invalidate_test_results(rideIndex);
 
         bool found = false;
-        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+        TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
         if (tileElement == nullptr)
         {
             log_warning("Invalid coordinates for entrance/exit removal x = %d, y = %d", x, y);
@@ -542,7 +542,7 @@ void game_command_remove_ride_entrance_or_exit(
  * Replaces the outer hedge walls for an entrance placement removal.
  *  rct2: 0x00666D6F
  */
-void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* tileElement)
+void maze_entrance_hedge_replacement(int32_t x, int32_t y, TileElement* tileElement)
 {
     int32_t direction = tileElement->GetDirection();
     x += CoordsDirectionDelta[direction].x;
@@ -578,7 +578,7 @@ void maze_entrance_hedge_replacement(int32_t x, int32_t y, rct_tile_element* til
  * Removes the hedge walls for an entrance placement.
  *  rct2: 0x00666CBE
  */
-void maze_entrance_hedge_removal(int32_t x, int32_t y, rct_tile_element* tileElement)
+void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
 {
     int32_t direction = tileElement->GetDirection();
     x += CoordsDirectionDelta[direction].x;

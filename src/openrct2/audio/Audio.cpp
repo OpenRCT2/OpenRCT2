@@ -211,7 +211,7 @@ AudioParams audio_get_params_from_location(int32_t soundId, const LocationXYZ16*
     params.volume = 0;
     params.pan = 0;
 
-    rct_tile_element* element = map_get_surface_element_at({ location->x, location->y });
+    TileElement* element = map_get_surface_element_at({ location->x, location->y });
     if (element && (element->base_height * 8) - 5 > location->z)
     {
         volumeDown = 10;

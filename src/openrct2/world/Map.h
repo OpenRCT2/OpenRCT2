@@ -40,7 +40,7 @@ typedef CoordsXYZD PeepSpawn;
 struct CoordsXYE
 {
     int32_t x, y;
-    rct_tile_element* element;
+    TileElement* element;
 };
 
 enum
@@ -102,13 +102,13 @@ extern uint8_t gMapSelectArrowDirection;
 
 extern uint8_t gMapGroundFlags;
 
-extern rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
-extern rct_tile_element* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+extern TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
+extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 extern LocationXY16 gMapSelectionTiles[300];
 extern PeepSpawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
-extern rct_tile_element* gNextFreeTileElement;
+extern TileElement* gNextFreeTileElement;
 extern uint32_t gNextFreeTileElementPointerIndex;
 
 // Used in the land tool window to enable mountain tool / land smoothing
@@ -131,16 +131,16 @@ void map_init(int32_t size);
 void map_count_remaining_land_rights();
 void map_strip_ghost_flag_from_elements();
 void map_update_tile_pointers();
-rct_tile_element* map_get_first_element_at(int32_t x, int32_t y);
-rct_tile_element* map_get_nth_element_at(int32_t x, int32_t y, int32_t n);
-void map_set_tile_elements(int32_t x, int32_t y, rct_tile_element* elements);
+TileElement* map_get_first_element_at(int32_t x, int32_t y);
+TileElement* map_get_nth_element_at(int32_t x, int32_t y, int32_t n);
+void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements);
 int32_t map_height_from_slope(CoordsXY coords, int32_t slope, bool isSloped);
 BannerElement* map_get_banner_element_at(int32_t x, int32_t y, int32_t z, uint8_t direction);
-rct_tile_element* map_get_surface_element_at(int32_t x, int32_t y);
-rct_tile_element* map_get_surface_element_at(CoordsXY coords);
-rct_tile_element* map_get_path_element_at(int32_t x, int32_t y, int32_t z);
-rct_tile_element* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
-rct_tile_element* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
+TileElement* map_get_surface_element_at(int32_t x, int32_t y);
+TileElement* map_get_surface_element_at(CoordsXY coords);
+TileElement* map_get_path_element_at(int32_t x, int32_t y, int32_t z);
+TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t direction);
+TileElement* map_get_small_scenery_element_at(int32_t x, int32_t y, int32_t z, int32_t type, uint8_t quadrant);
 EntranceElement* map_get_park_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
 EntranceElement* map_get_ride_exit_element_at(int32_t x, int32_t y, int32_t z, bool ghost);
@@ -156,7 +156,7 @@ bool map_is_location_owned(int32_t x, int32_t y, int32_t z);
 bool map_is_location_in_park(CoordsXY coords);
 bool map_is_location_owned_or_has_rights(int32_t x, int32_t y);
 bool map_surface_is_blocked(int16_t x, int16_t y);
-void tile_element_remove(rct_tile_element* tileElement);
+void tile_element_remove(TileElement* tileElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
 void map_get_bounding_box(
@@ -164,12 +164,12 @@ void map_get_bounding_box(
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
-rct_tile_element* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags);
+TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags);
 
-using CLEAR_FUNC = int32_t (*)(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
+using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
 
-int32_t map_place_non_scenery_clear_func(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
-int32_t map_place_scenery_clear_func(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
+int32_t map_place_non_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
+int32_t map_place_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price);
 bool map_can_construct_with_clear_at(
     int32_t x, int32_t y, int32_t zLow, int32_t zHigh, CLEAR_FUNC clearFunc, uint8_t bl, uint8_t flags, money32* price,
     uint8_t crossingMode);
@@ -233,7 +233,7 @@ struct tile_element_iterator
 {
     int32_t x;
     int32_t y;
-    rct_tile_element* element;
+    TileElement* element;
 };
 #ifdef PLATFORM_32BIT
 assert_struct_size(tile_element_iterator, 12);
@@ -247,7 +247,7 @@ void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1
 void map_update_tiles();
 int32_t map_get_highest_z(int32_t tileX, int32_t tileY);
 
-bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const rct_tile_element* const elementToBeRemoved);
+bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const TileElement* const elementToBeRemoved);
 
 void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();
@@ -261,7 +261,7 @@ void map_invalidate_tile(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void map_invalidate_tile_zoom1(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void map_invalidate_tile_zoom0(int32_t x, int32_t y, int32_t z0, int32_t z1);
 void map_invalidate_tile_full(int32_t x, int32_t y);
-void map_invalidate_element(int32_t x, int32_t y, rct_tile_element* tileElement);
+void map_invalidate_element(int32_t x, int32_t y, TileElement* tileElement);
 void map_invalidate_region(const LocationXY16& mins, const LocationXY16& maxs);
 
 int32_t map_get_tile_side(int32_t mapX, int32_t mapY);
@@ -269,25 +269,24 @@ int32_t map_get_tile_quadrant(int32_t mapX, int32_t mapY);
 
 void map_clear_all_elements();
 
-rct_tile_element* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence);
+TileElement* map_get_large_scenery_segment(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence);
 bool map_large_scenery_get_origin(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t sequence, int32_t* outX, int32_t* outY, int32_t* outZ,
-    rct_tile_element** outElement);
+    TileElement** outElement);
 
 void map_offset_with_rotation(int16_t* x, int16_t* y, int16_t offsetX, int16_t offsetY, uint8_t rotation);
 CoordsXY translate_3d_to_2d_with_z(int32_t rotation, CoordsXYZ pos);
 
-rct_tile_element* map_get_track_element_at(int32_t x, int32_t y, int32_t z);
-rct_tile_element* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, int32_t trackType);
-rct_tile_element* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t sequence);
-rct_tile_element* map_get_track_element_at_of_type_from_ride(
-    int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t rideIndex);
-rct_tile_element* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, int32_t rideIndex);
-rct_tile_element* map_get_track_element_at_with_direction_from_ride(
+TileElement* map_get_track_element_at(int32_t x, int32_t y, int32_t z);
+TileElement* map_get_track_element_at_of_type(int32_t x, int32_t y, int32_t z, int32_t trackType);
+TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t sequence);
+TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t rideIndex);
+TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, int32_t rideIndex);
+TileElement* map_get_track_element_at_with_direction_from_ride(
     int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex);
 
 bool map_is_location_at_edge(int32_t x, int32_t y);
-void map_obstruction_set_error_text(rct_tile_element* tileElement);
+void map_obstruction_set_error_text(TileElement* tileElement);
 
 uint32_t map_get_available_peep_spawn_index_list(uint32_t* peepSpawnIndexList);
 uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t base_z);

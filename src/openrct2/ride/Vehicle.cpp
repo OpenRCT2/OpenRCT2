@@ -972,7 +972,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 
     if (vehicle->x != LOCATION_NULL)
     {
-        rct_tile_element* tile_element = map_get_surface_element_at({ vehicle->x, vehicle->y });
+        TileElement* tile_element = map_get_surface_element_at({ vehicle->x, vehicle->y });
 
         // vehicle underground
         if (tile_element != nullptr && tile_element->base_height * 8 > vehicle->z)
@@ -1812,7 +1812,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         return;
     }
 
-    rct_tile_element* tile_element = map_get_surface_element_at({ x, y });
+    TileElement* tile_element = map_get_surface_element_at({ x, y });
     // If vehicle above ground.
     if (tile_element->base_height * 8 <= z)
     {
@@ -2732,7 +2732,7 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
         return false;
     }
 
-    rct_tile_element* tileElement = get_station_platform(x, y, z, 2);
+    TileElement* tileElement = get_station_platform(x, y, z, 2);
     if (tileElement == nullptr)
     {
         /* No station platform element found,
@@ -2832,7 +2832,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
     int32_t y = location.y * 32;
     int32_t z = ride->station_heights[station];
 
-    rct_tile_element* tileElement = map_get_track_element_at(x, y, z);
+    TileElement* tileElement = map_get_track_element_at(x, y, z);
     if (tileElement == nullptr)
     {
         return false;
@@ -3116,7 +3116,7 @@ void vehicle_test_reset(rct_vehicle* vehicle)
 
 static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle)
 {
-    rct_tile_element* tileElement = map_get_track_element_at_of_type(
+    TileElement* tileElement = map_get_track_element_at_of_type(
         vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
 
     if (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE)
@@ -4004,7 +4004,7 @@ loc_6D8E36:
         return;
     }
 
-    rct_tile_element* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
+    TileElement* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
 
     if (tileElement == nullptr)
     {
@@ -4285,7 +4285,7 @@ static void loc_6DA9F9(rct_vehicle* vehicle, int32_t x, int32_t y, int32_t bx, i
         vehicle->track_x = bx;
         vehicle->track_y = dx;
 
-        rct_tile_element* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
+        TileElement* tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
 
         Ride* ride = get_ride(vehicle->ride);
         vehicle->track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (ride->boat_hire_return_direction & 3);
@@ -4668,7 +4668,7 @@ static void vehicle_update_boat_location(rct_vehicle* vehicle)
  */
 static bool vehicle_boat_is_location_accessible(const TileCoordsXYZ& location)
 {
-    rct_tile_element* tileElement = map_get_first_element_at(location.x, location.y);
+    TileElement* tileElement = map_get_first_element_at(location.x, location.y);
     do
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
@@ -5166,9 +5166,9 @@ static void vehicle_update_doing_circus_show(rct_vehicle* vehicle)
  *  rct2: 0x0068B8BD
  * @returns the map element that the vehicle will collide with or NULL if no collisions.
  */
-static rct_tile_element* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
+static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
 {
-    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement == nullptr)
     {
         return nullptr;
@@ -5416,7 +5416,7 @@ static void vehicle_update_crash(rct_vehicle* vehicle)
             continue;
         }
 
-        rct_tile_element* collideElement = vehicle_check_collision(curVehicle->x, curVehicle->y, curVehicle->z);
+        TileElement* collideElement = vehicle_check_collision(curVehicle->x, curVehicle->y, curVehicle->z);
         if (collideElement == nullptr)
         {
             curVehicle->sub_state = 1;
@@ -6667,7 +6667,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle* vehicle)
 
     int32_t trackType = vehicle->track_type >> 2;
 
-    rct_tile_element* trackElement = map_get_track_element_at_of_type(
+    TileElement* trackElement = map_get_track_element_at_of_type(
         vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType);
 
     if (trackElement == nullptr)
@@ -6738,13 +6738,13 @@ static void update_velocity(rct_vehicle* vehicle)
     _vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
 }
 
-static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehicle, rct_tile_element* tileElement)
+static void vehicle_update_block_brakes_open_previous_section(rct_vehicle* vehicle, TileElement* tileElement)
 {
     int32_t x = vehicle->track_x;
     int32_t y = vehicle->track_y;
     int32_t z = vehicle->track_z;
     track_begin_end trackBeginEnd, slowTrackBeginEnd;
-    rct_tile_element slowTileElement = *tileElement;
+    TileElement slowTileElement = *tileElement;
     bool counter = true;
     int32_t slowX = x;
     int32_t slowY = y;
@@ -7234,7 +7234,7 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
  */
 static void steam_particle_create(int16_t x, int16_t y, int16_t z)
 {
-    rct_tile_element* tileElement = map_get_surface_element_at({ x, y });
+    TileElement* tileElement = map_get_surface_element_at({ x, y });
     if (tileElement != nullptr && z > tileElement->base_height * 8)
     {
         rct_steam_particle* steam = (rct_steam_particle*)create_sprite(2);
@@ -7405,7 +7405,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
  *
  *  rct2: 0x006DEDB1
  */
-static void vehicle_play_scenery_door_open_sound(rct_vehicle* vehicle, rct_tile_element* tileElement)
+static void vehicle_play_scenery_door_open_sound(rct_vehicle* vehicle, TileElement* tileElement)
 {
     rct_scenery_entry* wallEntry = tileElement->AsWall()->GetEntry();
     int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
@@ -7423,7 +7423,7 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle* vehicle, rct_tile_
  *
  *  rct2: 0x006DED7A
  */
-static void vehicle_play_scenery_door_close_sound(rct_vehicle* vehicle, rct_tile_element* tileElement)
+static void vehicle_play_scenery_door_close_sound(rct_vehicle* vehicle, TileElement* tileElement)
 {
     rct_scenery_entry* wallEntry = tileElement->AsWall()->GetEntry();
     int32_t doorSoundType = wall_entry_get_door_sound(wallEntry);
@@ -7455,7 +7455,7 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
     int32_t z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_end) >> 3;
     int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
 
-    rct_tile_element* tileElement = map_get_wall_element_at(x, y, z, direction);
+    TileElement* tileElement = map_get_wall_element_at(x, y, z, direction);
     if (tileElement == nullptr)
     {
         return;
@@ -7480,7 +7480,7 @@ static void vehicle_update_scenery_door(rct_vehicle* vehicle)
  *
  *  rct2: 0x006DB38B
  */
-static bool loc_6DB38B(rct_vehicle* vehicle, rct_tile_element* tileElement)
+static bool loc_6DB38B(rct_vehicle* vehicle, TileElement* tileElement)
 {
     // Get bank
     int32_t bankStart = track_get_actual_bank_3(vehicle, tileElement);
@@ -7513,7 +7513,7 @@ static void loc_6DB481(rct_vehicle* vehicle)
  *
  *  rct2: 0x006DB545
  */
-static void vehicle_trigger_on_ride_photo(rct_vehicle* vehicle, rct_tile_element* tileElement)
+static void vehicle_trigger_on_ride_photo(rct_vehicle* vehicle, TileElement* tileElement)
 {
     tileElement->AsTrack()->SetPhotoTimeout();
 
@@ -7535,7 +7535,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
     int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
     direction ^= 2;
 
-    rct_tile_element* tileElement = map_get_wall_element_at(x, y, z, direction);
+    TileElement* tileElement = map_get_wall_element_at(x, y, z, direction);
     if (tileElement == nullptr)
     {
         return;
@@ -7877,7 +7877,7 @@ static void sub_6DBF3E(rct_vehicle* vehicle)
 
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
-    rct_tile_element* tileElement = nullptr;
+    TileElement* tileElement = nullptr;
     if (map_is_location_valid({ vehicle->track_x, vehicle->track_y }))
     {
         tileElement = map_get_track_element_at_of_type_seq(
@@ -7959,7 +7959,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(
 
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
     _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
-    rct_tile_element* tileElement = map_get_track_element_at_of_type_seq(
+    TileElement* tileElement = map_get_track_element_at_of_type_seq(
         vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
 
     if (tileElement == nullptr)
@@ -8396,7 +8396,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(
 {
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
     _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
-    rct_tile_element* tileElement = map_get_track_element_at_of_type_seq(
+    TileElement* tileElement = map_get_track_element_at_of_type_seq(
         vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
 
     if (tileElement == nullptr)
@@ -8725,7 +8725,7 @@ static int32_t vehicle_update_track_motion_mini_golf(rct_vehicle* vehicle, int32
     rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle* vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-    rct_tile_element* tileElement = nullptr;
+    TileElement* tileElement = nullptr;
 
     gCurrentVehicle = vehicle;
     _vehicleMotionTrackFlags = 0;
@@ -9929,7 +9929,7 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
 
         while (true)
         {
-            rct_tile_element* tileElement = map_get_path_element_at(
+            TileElement* tileElement = map_get_path_element_at(
                 xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
 
             if (tileElement)
@@ -10002,7 +10002,7 @@ void vehicle_update_crossings(const rct_vehicle* vehicle)
                 }
             }
 
-            rct_tile_element* tileElement = map_get_path_element_at(
+            TileElement* tileElement = map_get_path_element_at(
                 xyElement.x / 32, xyElement.y / 32, xyElement.element->base_height);
             if (tileElement)
             {

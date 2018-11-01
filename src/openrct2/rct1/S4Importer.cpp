@@ -470,7 +470,7 @@ private:
     {
         size_t maxTiles = 128 * 128;
         size_t tileIndex = 0;
-        rct_tile_element* tileElement = _s4.tile_elements;
+        TileElement* tileElement = _s4.tile_elements;
 
         while (tileIndex < maxTiles)
         {
@@ -2378,15 +2378,15 @@ private:
         std::fill(std::begin(gTileElementTilePointers), std::end(gTileElementTilePointers), nullptr);
 
         // Get the first free map element
-        rct_tile_element* nextFreeTileElement = gTileElements;
+        TileElement* nextFreeTileElement = gTileElements;
         for (size_t i = 0; i < RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE; i++)
         {
             while (!(nextFreeTileElement++)->IsLastForTile())
                 ;
         }
 
-        rct_tile_element* tileElement = gTileElements;
-        rct_tile_element** tilePointer = gTileElementTilePointers;
+        TileElement* tileElement = gTileElements;
+        TileElement** tilePointer = gTileElementTilePointers;
 
         // 128 rows of map data from RCT1 map
         for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
@@ -2432,7 +2432,7 @@ private:
     void FixSceneryColours()
     {
         colour_t colour;
-        rct_tile_element* tileElement = gTileElements;
+        TileElement* tileElement = gTileElements;
         while (tileElement < gNextFreeTileElement)
         {
             if (tileElement->base_height != 255)
@@ -2476,7 +2476,7 @@ private:
 
     void FixTileElementZ()
     {
-        rct_tile_element* tileElement = gTileElements;
+        TileElement* tileElement = gTileElements;
         while (tileElement < gNextFreeTileElement)
         {
             if (tileElement->base_height != 255)
@@ -2491,7 +2491,7 @@ private:
 
     void FixPaths()
     {
-        rct_tile_element* tileElement = gTileElements;
+        TileElement* tileElement = gTileElements;
         while (tileElement < gNextFreeTileElement)
         {
             switch (tileElement->GetType())
@@ -2555,12 +2555,12 @@ private:
         {
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                rct_tile_element* tileElement = map_get_first_element_at(x, y);
+                TileElement* tileElement = map_get_first_element_at(x, y);
                 do
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
                     {
-                        rct_tile_element originalTileElement = *tileElement;
+                        TileElement originalTileElement = *tileElement;
                         tile_element_remove(tileElement);
 
                         for (int32_t edge = 0; edge < 4; edge++)
@@ -2633,7 +2633,7 @@ private:
         {
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                rct_tile_element* tileElement = map_get_first_element_at(x, y);
+                TileElement* tileElement = map_get_first_element_at(x, y);
                 do
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
@@ -2674,7 +2674,7 @@ private:
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
-            rct_tile_element* element = it.element;
+            TileElement* element = it.element;
             if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             {
                 element->AsSurface()->SetSurfaceStyle(RCT1::GetTerrain(element->AsSurface()->GetSurfaceStyle()));
@@ -2696,7 +2696,7 @@ private:
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it) && entranceIndex < RCT12_MAX_PARK_ENTRANCES)
         {
-            rct_tile_element* element = it.element;
+            TileElement* element = it.element;
 
             if (element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
@@ -2719,7 +2719,7 @@ private:
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
-            rct_tile_element* tileElement = it.element;
+            TileElement* tileElement = it.element;
             switch (tileElement->GetType())
             {
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -2824,7 +2824,7 @@ private:
         {
             for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                rct_tile_element* tileElement = map_get_first_element_at(x, y);
+                TileElement* tileElement = map_get_first_element_at(x, y);
                 do
                 {
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)

@@ -718,7 +718,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     int32_t interactionType;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     LocationXY16 mapCoord = {};
     get_map_coordinates_from_pos(
         x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y,
@@ -783,7 +783,7 @@ static void window_footpath_set_provisional_path_at_point(int32_t x, int32_t y)
 static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX, int32_t screenY)
 {
     int32_t x, y, direction;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -832,7 +832,7 @@ static void window_footpath_set_selection_start_bridge_at_point(int32_t screenX,
 static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 {
     int32_t interactionType, currentType, selectedType, z, cost;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     if (_footpathErrorOccured)
     {
@@ -900,7 +900,7 @@ static void window_footpath_place_path_at_point(int32_t x, int32_t y)
 static void window_footpath_start_bridge_at_point(int32_t screenX, int32_t screenY)
 {
     int32_t x, y, z, direction;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &tileElement);
     if (x == LOCATION_NULL)
@@ -1009,7 +1009,7 @@ static void window_footpath_construct()
  *
  *  rct2: 0x006A78EF
  */
-static void footpath_remove_tile_element(rct_tile_element* tileElement)
+static void footpath_remove_tile_element(TileElement* tileElement)
 {
     int32_t x, y, z;
 
@@ -1062,9 +1062,9 @@ static void footpath_remove_tile_element(rct_tile_element* tileElement)
  *
  *  rct2: 0x006A7873
  */
-static rct_tile_element* footpath_get_tile_element_to_remove()
+static TileElement* footpath_get_tile_element_to_remove()
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     int32_t x, y, z, zLow;
 
     x = gFootpathConstructFromPosition.x / 32;
@@ -1118,7 +1118,7 @@ static rct_tile_element* footpath_get_tile_element_to_remove()
  */
 static void window_footpath_remove()
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     _window_footpath_cost = MONEY32_UNDEFINED;
     footpath_provisional_update();

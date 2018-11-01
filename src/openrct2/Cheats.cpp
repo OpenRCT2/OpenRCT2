@@ -59,7 +59,7 @@ int32_t day_spinner_value = 1;
 static void cheat_set_grass_length(int32_t length)
 {
     int32_t x, y;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
@@ -458,7 +458,7 @@ static void cheat_own_all_land()
     {
         for (coords.x = min; coords.x <= max; coords.x += 32)
         {
-            rct_tile_element* surfaceElement = map_get_surface_element_at(coords);
+            TileElement* surfaceElement = map_get_surface_element_at(coords);
 
             // Ignore already owned tiles.
             if (surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
@@ -485,7 +485,7 @@ static void cheat_own_all_land()
         int32_t y = spawn.y;
         if (x != PEEP_SPAWN_UNDEFINED)
         {
-            rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
+            TileElement* surfaceElement = map_get_surface_element_at({ x, y });
             surfaceElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
             update_park_fences_around_tile({ x, y });
             uint16_t baseHeight = surfaceElement->base_height * 8;

@@ -972,7 +972,7 @@ static void repaint_scenery_tool_down(int16_t x, int16_t y, rct_widgetindex widg
     int16_t grid_x, grid_y;
     int32_t type;
     // edx
-    rct_tile_element* tile_element;
+    TileElement* tile_element;
     auto flags = VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_WALL & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY
         & VIEWPORT_INTERACTION_MASK_BANNER;
     // This is -2 as banner is 12 but flags are offset different
@@ -1055,7 +1055,7 @@ static void scenery_eyedropper_tool_down(int16_t x, int16_t y, rct_widgetindex w
 
     int16_t gridX, gridY;
     int32_t type;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_viewport* viewport;
     get_map_coordinates_from_pos(x, y, flags, &gridX, &gridY, &type, &tileElement, &viewport);
 
@@ -1168,7 +1168,7 @@ static void sub_6E1F34(
     }
 
     uint8_t scenery_type = selected_scenery >> 8;
-    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(rct_tile_element::base_height)>::max() - 32) << MAX_ZOOM_LEVEL;
+    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) << MAX_ZOOM_LEVEL;
     bool can_raise_item = false;
 
     if (scenery_type == SCENERY_TYPE_SMALL)
@@ -1217,7 +1217,7 @@ static void sub_6E1F34(
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
             {
                 // CTRL pressed
-                rct_tile_element* tile_element;
+                TileElement* tile_element;
                 auto flags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_RIDE
                     & VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_WALL
                     & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
@@ -1299,7 +1299,7 @@ static void sub_6E1F34(
                     // If SHIFT pressed
                     if (gSceneryShiftPressed)
                     {
-                        rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                        TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
                         if (tile_element == nullptr)
                         {
@@ -1363,7 +1363,7 @@ static void sub_6E1F34(
             {
                 auto flags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER;
                 int32_t interaction_type = 0;
-                rct_tile_element* tile_element;
+                TileElement* tile_element;
 
                 get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
 
@@ -1441,7 +1441,7 @@ static void sub_6E1F34(
             // Path bits
             auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
             int32_t interaction_type = 0;
-            rct_tile_element* tile_element;
+            TileElement* tile_element;
 
             get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
 
@@ -1480,7 +1480,7 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
                     if (tile_element == nullptr)
                     {
@@ -1539,7 +1539,7 @@ static void sub_6E1F34(
                 // If SHIFT pressed
                 if (gSceneryShiftPressed)
                 {
-                    rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    TileElement* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
                     if (tile_element == nullptr)
                     {
@@ -1591,7 +1591,7 @@ static void sub_6E1F34(
             // Banner
             auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
             int32_t interaction_type = 0;
-            rct_tile_element* tile_element;
+            TileElement* tile_element;
 
             get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
 
@@ -2396,7 +2396,7 @@ static money32 try_place_ghost_scenery(
 
     uint8_t scenery_type = (selected_tab & 0xFF00) >> 8;
     money32 cost = 0;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     switch (scenery_type)
     {

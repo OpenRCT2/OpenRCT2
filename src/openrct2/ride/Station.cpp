@@ -54,7 +54,7 @@ void ride_update_station(Ride* ride, int32_t stationIndex)
  */
 static void ride_update_station_blocksection(Ride* ride, int32_t stationIndex)
 {
-    rct_tile_element* tileElement = ride_get_station_start_track_element(ride, stationIndex);
+    TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
     if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (tileElement != nullptr && tileElement->flags & 0x20))
     {
@@ -292,7 +292,7 @@ static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool
 {
     int32_t x = ride->station_starts[stationIndex].x * 32;
     int32_t y = ride->station_starts[stationIndex].y * 32;
-    rct_tile_element* tileElement = ride_get_station_start_track_element(ride, stationIndex);
+    TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
     // If no station track found return
     if (tileElement == nullptr)
@@ -304,14 +304,14 @@ static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool
     map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
 }
 
-rct_tile_element* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex)
+TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex)
 {
     int32_t x = ride->station_starts[stationIndex].x;
     int32_t y = ride->station_starts[stationIndex].y;
     int32_t z = ride->station_heights[stationIndex];
 
     // Find the station track element
-    rct_tile_element* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && z == tileElement->base_height)
@@ -322,10 +322,10 @@ rct_tile_element* ride_get_station_start_track_element(Ride* ride, int32_t stati
     return nullptr;
 }
 
-rct_tile_element* ride_get_station_exit_element(int32_t x, int32_t y, int32_t z)
+TileElement* ride_get_station_exit_element(int32_t x, int32_t y, int32_t z)
 {
     // Find the station track element
-    rct_tile_element* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE && z == tileElement->base_height)

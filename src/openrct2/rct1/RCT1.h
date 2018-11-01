@@ -610,7 +610,7 @@ struct rct1_s4
     uint32_t ticks;
     uint32_t random_a;
     uint32_t random_b;
-    rct_tile_element tile_elements[RCT1_MAX_TILE_ELEMENTS];
+    TileElement tile_elements[RCT1_MAX_TILE_ELEMENTS];
     uint32_t unk_counter;
     rct1_sprite sprites[RCT1_MAX_SPRITES];
     uint16_t next_sprite_index;

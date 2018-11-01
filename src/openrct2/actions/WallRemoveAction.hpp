@@ -57,7 +57,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        rct_tile_element* wallElement = GetFirstWallElementAt(_location, isGhost);
+        TileElement* wallElement = GetFirstWallElementAt(_location, isGhost);
         if (wallElement == nullptr)
         {
             return std::make_unique<GameActionResult>(
@@ -76,7 +76,7 @@ public:
 
         const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-        rct_tile_element* wallElement = GetFirstWallElementAt(_location, isGhost);
+        TileElement* wallElement = GetFirstWallElementAt(_location, isGhost);
         if (wallElement == nullptr)
         {
             return std::make_unique<GameActionResult>(
@@ -96,9 +96,9 @@ public:
     }
 
 private:
-    rct_tile_element* GetFirstWallElementAt(const TileCoordsXYZD& location, bool isGhost) const
+    TileElement* GetFirstWallElementAt(const TileCoordsXYZD& location, bool isGhost) const
     {
-        rct_tile_element* tileElement = map_get_first_element_at(location.x, location.y);
+        TileElement* tileElement = map_get_first_element_at(location.x, location.y);
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)

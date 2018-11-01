@@ -92,7 +92,7 @@ uint16_t hire_new_staff_member(uint8_t staffType);
 void staff_update_greyed_patrol_areas();
 bool staff_is_location_in_patrol(rct_peep* mechanic, int32_t x, int32_t y);
 bool staff_is_location_on_patrol_edge(rct_peep* mechanic, int32_t x, int32_t y);
-bool staff_can_ignore_wide_flag(rct_peep* mechanic, int32_t x, int32_t y, uint8_t z, rct_tile_element* path);
+bool staff_can_ignore_wide_flag(rct_peep* mechanic, int32_t x, int32_t y, uint8_t z, TileElement* path);
 int32_t staff_path_finding(rct_peep* peep);
 void staff_reset_stats();
 bool staff_is_patrol_area_set(int32_t staffIndex, int32_t x, int32_t y);

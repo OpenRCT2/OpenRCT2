@@ -42,8 +42,8 @@ public:
     virtual std::string VariantName(uint8_t rideType, uint8_t trackType, int variant) abstract;
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
-        Ride* ride, rct_ride_entry* rideEntry) abstract;
+        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
+        rct_ride_entry* rideEntry) abstract;
 };
 
 class CableLiftFilter : public ITestTrackFilter
@@ -65,8 +65,8 @@ public:
     }
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
-        Ride* ride, rct_ride_entry* rideEntry) override
+        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
+        rct_ride_entry* rideEntry) override
     {
         if (variant == 0)
         {
@@ -98,8 +98,8 @@ public:
     }
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
-        Ride* ride, rct_ride_entry* rideEntry) override
+        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
+        rct_ride_entry* rideEntry) override
     {
         if (variant == 0)
         {
@@ -137,8 +137,8 @@ public:
     }
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
-        Ride* ride, rct_ride_entry* rideEntry) override
+        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
+        rct_ride_entry* rideEntry) override
     {
         if (variant == 0)
         {
@@ -176,8 +176,8 @@ public:
     }
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, rct_tile_element* tileElement, rct_tile_element* surfaceElement,
-        Ride* ride, rct_ride_entry* rideEntry) override
+        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
+        rct_ride_entry* rideEntry) override
     {
         ride->entrance_style = variant;
         RCT2_Rides[0].entrance_style = variant;
@@ -185,8 +185,7 @@ public:
 };
 
 static void CallOriginal(
-    uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height,
-    rct_tile_element* tileElement)
+    uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
 {
     uint32_t* trackDirectionList = (uint32_t*)RideTypeTrackPaintFunctionsOld[rideType][trackType];
     const uint8_t rideIndex = 0;
@@ -198,8 +197,7 @@ static void CallOriginal(
 }
 
 static void CallNew(
-    uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height,
-    rct_tile_element* tileElement)
+    uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
 {
     TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
     TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType, direction);
@@ -269,14 +267,14 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
 {
     uint16_t height = 3 * 16;
 
-    rct_tile_element tileElement = {};
+    TileElement tileElement = {};
     tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {};
+    TileElement surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
@@ -432,14 +430,14 @@ static uint8_t TestTrackElementSegmentSupportHeight(
 {
     uint16_t height = 3 * 16;
 
-    rct_tile_element tileElement = {};
+    TileElement tileElement = {};
     tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {};
+    TileElement surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
@@ -519,14 +517,14 @@ static uint8_t TestTrackElementGeneralSupportHeight(
 {
     uint16_t height = 3 * 16;
 
-    rct_tile_element tileElement = {};
+    TileElement tileElement = {};
     tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {};
+    TileElement surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
@@ -620,14 +618,14 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
 {
     uint16_t height = 3 * 16;
 
-    rct_tile_element tileElement = {};
+    TileElement tileElement = {};
     tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {};
+    TileElement surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
@@ -748,14 +746,14 @@ static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackTy
 {
     uint16_t height = 3 * 16;
 
-    rct_tile_element tileElement = {};
+    TileElement tileElement = {};
     tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
     tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
     g_currently_drawn_item = &tileElement;
 
-    rct_tile_element surfaceElement = {};
+    TileElement surfaceElement = {};
     surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;

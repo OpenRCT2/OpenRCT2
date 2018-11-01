@@ -14,7 +14,7 @@
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 
-struct rct_tile_element;
+struct TileElement;
 
 #pragma pack(push, 1)
 /* size 0x12 */
@@ -77,9 +77,9 @@ struct paint_struct
     uint8_t sprite_type;            // 0x28
     uint8_t var_29;
     uint16_t pad_2A;
-    uint16_t map_x;                // 0x2C
-    uint16_t map_y;                // 0x2E
-    rct_tile_element* tileElement; // 0x30 (or sprite pointer)
+    uint16_t map_x;           // 0x2C
+    uint16_t map_y;           // 0x2E
+    TileElement* tileElement; // 0x30 (or sprite pointer)
 };
 #ifdef PLATFORM_32BIT
 // TODO: drop packing from this when all rendering is done.
@@ -165,9 +165,9 @@ struct paint_session
     tunnel_entry RightTunnels[TUNNEL_MAX_COUNT];
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;
-    const rct_tile_element* SurfaceElement;
-    rct_tile_element* PathElementOnSameHeight;
-    rct_tile_element* TrackElementOnSameHeight;
+    const TileElement* SurfaceElement;
+    TileElement* PathElementOnSameHeight;
+    TileElement* TrackElementOnSameHeight;
     bool DidPassSurface;
     uint8_t Unk141E9DB;
     uint16_t WaterHeight;

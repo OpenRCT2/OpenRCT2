@@ -194,7 +194,7 @@ static LocationXY16 get_location()
     if (w != nullptr)
     {
         int32_t interactionType;
-        rct_tile_element* tileElement;
+        TileElement* tileElement;
 
         get_map_coordinates_from_pos_window(
             w, w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x,

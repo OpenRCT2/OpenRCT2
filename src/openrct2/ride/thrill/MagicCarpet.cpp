@@ -180,7 +180,7 @@ static void paint_magic_carpet_vehicle(
 static void paint_magic_carpet_structure(
     paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
     rct_vehicle* vehicle = get_first_vehicle(ride);
 
     uint32_t swingImageId = 0;
@@ -216,7 +216,7 @@ static void paint_magic_carpet_structure(
 /** rct2: 0x00898514 */
 static void paint_magic_carpet(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
 

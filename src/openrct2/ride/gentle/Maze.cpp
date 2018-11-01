@@ -46,7 +46,7 @@ enum
  */
 static void maze_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     uint16_t maze_entry = tileElement->AsTrack()->GetMazeEntry();
     maze_entry = rol16(maze_entry, direction * 4);

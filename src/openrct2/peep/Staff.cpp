@@ -88,7 +88,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep* newPeep)
     uint32_t count = 0;
     uint16_t sprite_index;
     rct_peep* guest = nullptr;
-    rct_tile_element* guest_tile = nullptr;
+    TileElement* guest_tile = nullptr;
 
     // Count number of walking guests
     FOR_ALL_GUESTS (sprite_index, guest)
@@ -647,7 +647,7 @@ bool staff_is_location_on_patrol_edge(rct_peep* mechanic, int32_t x, int32_t y)
     return onZoneEdge;
 }
 
-bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z, rct_tile_element* path)
+bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z, TileElement* path)
 {
     /* Wide flags can potentially wall off parts of a staff patrol zone
      * for the heuristic search.
@@ -716,7 +716,7 @@ bool staff_can_ignore_wide_flag(rct_peep* staff, int32_t x, int32_t y, uint8_t z
         }
 
         /* Search through all adjacent map elements */
-        rct_tile_element* test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
+        TileElement* test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
         bool pathfound = false;
         bool widefound = false;
         do
@@ -922,7 +922,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(rct_peep* peep)
 
     int16_t nextZ = ((peep->z + 8) & 0xFFF0) / 8;
 
-    rct_tile_element* tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
+    TileElement* tileElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
 
     do
     {
@@ -960,7 +960,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t v
 {
     if (!(peep->GetNextIsSurface()))
     {
-        rct_tile_element* tileElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
+        TileElement* tileElement = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
         if (peep->next_z != tileElement->base_height)
             return 0xFF;
@@ -990,7 +990,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t v
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
             continue;
 
-        rct_tile_element* tileElement = map_get_surface_element_at(chosenTile);
+        TileElement* tileElement = map_get_surface_element_at(chosenTile);
 
         if (tileElement->AsSurface()->GetSurfaceStyle() != TERRAIN_GRASS)
             continue;
@@ -1064,7 +1064,7 @@ static bool staff_path_finding_handyman(rct_peep* peep)
         }
         else
         {
-            rct_tile_element* tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+            TileElement* tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
 
             if (tileElement == nullptr)
                 return true;
@@ -1230,7 +1230,7 @@ static uint8_t staff_mechanic_direction_path_rand(rct_peep* peep, uint8_t pathDi
  *
  *  rct2: 0x006C0121
  */
-static uint8_t staff_mechanic_direction_path(rct_peep* peep, uint8_t validDirections, rct_tile_element* pathElement)
+static uint8_t staff_mechanic_direction_path(rct_peep* peep, uint8_t validDirections, TileElement* pathElement)
 {
     uint8_t direction = 0xFF;
     uint8_t pathDirections = pathElement->AsPath()->GetEdges();
@@ -1332,7 +1332,7 @@ static bool staff_path_finding_mechanic(rct_peep* peep)
     }
     else
     {
-        rct_tile_element* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        TileElement* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
         if (pathElement == nullptr)
             return true;
 
@@ -1364,7 +1364,7 @@ static bool staff_path_finding_mechanic(rct_peep* peep)
  *
  *  rct2: 0x006C050B
  */
-static uint8_t staff_direction_path(rct_peep* peep, uint8_t validDirections, rct_tile_element* pathElement)
+static uint8_t staff_direction_path(rct_peep* peep, uint8_t validDirections, TileElement* pathElement)
 {
     uint8_t direction = 0xFF;
     uint8_t pathDirections = pathElement->AsPath()->GetEdges();
@@ -1420,7 +1420,7 @@ static bool staff_path_finding_misc(rct_peep* peep)
     }
     else
     {
-        rct_tile_element* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        TileElement* pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
         if (pathElement == nullptr)
             return true;
 
@@ -1674,7 +1674,7 @@ void rct_peep::UpdateMowing()
         if (var_37 != 7)
             continue;
 
-        rct_tile_element* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+        TileElement* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
 
         for (; (tile_element->GetType() != TILE_ELEMENT_TYPE_SURFACE); tile_element++)
             ;
@@ -1727,7 +1727,7 @@ void rct_peep::UpdateWatering()
         int32_t actionX = next_x + CoordsDirectionDelta[var_37].x;
         int32_t actionY = next_y + CoordsDirectionDelta[var_37].y;
 
-        rct_tile_element* tile_element = map_get_first_element_at(actionX / 32, actionY / 32);
+        TileElement* tile_element = map_get_first_element_at(actionX / 32, actionY / 32);
 
         do
         {
@@ -1794,7 +1794,7 @@ void rct_peep::UpdateEmptyingBin()
         if (action_frame != 11)
             return;
 
-        rct_tile_element* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
+        TileElement* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
 
         for (;; tile_element++)
         {
@@ -1928,7 +1928,7 @@ void rct_peep::UpdateHeadingToInspect()
             return;
 
         uint8_t pathingResult;
-        rct_tile_element* rideEntranceExitElement;
+        TileElement* rideEntranceExitElement;
         PerformNextAction(pathingResult, rideEntranceExitElement);
 
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
@@ -2046,7 +2046,7 @@ void rct_peep::UpdateAnswering()
             return;
 
         uint8_t pathingResult;
-        rct_tile_element* rideEntranceExitElement;
+        TileElement* rideEntranceExitElement;
         PerformNextAction(pathingResult, rideEntranceExitElement);
 
         if (!(pathingResult & PATHING_RIDE_EXIT) && !(pathingResult & PATHING_RIDE_ENTRANCE))
@@ -2130,7 +2130,7 @@ static int32_t peep_update_patrolling_find_watering(rct_peep* peep)
         int32_t x = peep->next_x + CoordsDirectionDelta[chosen_position].x;
         int32_t y = peep->next_y + CoordsDirectionDelta[chosen_position].y;
 
-        rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
+        TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
 
         // This seems to happen in some SV4 files.
         if (tile_element == nullptr)
@@ -2198,7 +2198,7 @@ static int32_t peep_update_patrolling_find_bin(rct_peep* peep)
     if (peep->GetNextIsSurface())
         return 0;
 
-    rct_tile_element* tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+    TileElement* tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
     if (tileElement == nullptr)
         return 0;
 
@@ -2264,7 +2264,7 @@ static int32_t peep_update_patrolling_find_grass(rct_peep* peep)
     if (!(peep->GetNextIsSurface()))
         return 0;
 
-    rct_tile_element* tile_element = map_get_surface_element_at({ peep->next_x, peep->next_y });
+    TileElement* tile_element = map_get_surface_element_at({ peep->next_x, peep->next_y });
 
     if ((tile_element->AsSurface()->GetSurfaceStyle()) != TERRAIN_GRASS)
         return 0;
@@ -2364,7 +2364,7 @@ void rct_peep::UpdatePatrolling()
 
     if (GetNextIsSurface())
     {
-        rct_tile_element* tile_element = map_get_surface_element_at({ next_x, next_y });
+        TileElement* tile_element = map_get_surface_element_at({ next_x, next_y });
 
         if (tile_element != nullptr)
         {
@@ -2798,7 +2798,7 @@ bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
         uint16_t stationX = stationPosition.x * 32;
         uint16_t stationY = stationPosition.y * 32;
 
-        rct_tile_element* tileElement = map_get_track_element_at(stationX, stationY, stationZ);
+        TileElement* tileElement = map_get_track_element_at(stationX, stationY, stationZ);
         if (tileElement == nullptr)
         {
             log_error("Couldn't find tile_element");

@@ -180,7 +180,7 @@ static paint_struct* sub_9819_c(
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
-    ps->tileElement = (rct_tile_element*)session->CurrentlyDrawnItem;
+    ps->tileElement = (TileElement*)session->CurrentlyDrawnItem;
 
     return ps;
 }
@@ -864,7 +864,7 @@ paint_struct* sub_98196C(
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
-    ps->tileElement = (rct_tile_element*)session->CurrentlyDrawnItem;
+    ps->tileElement = (TileElement*)session->CurrentlyDrawnItem;
 
     session->UnkF1AD28 = ps;
 

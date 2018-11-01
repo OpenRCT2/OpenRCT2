@@ -583,7 +583,7 @@ static int32_t cc_get(InteractiveConsole& console, const utf8** argv, int32_t ar
             if (w != nullptr)
             {
                 int32_t interactionType;
-                rct_tile_element* tileElement;
+                TileElement* tileElement;
                 LocationXY16 mapCoord = {};
                 rct_viewport* viewport = window_get_viewport(w);
                 get_map_coordinates_from_pos(

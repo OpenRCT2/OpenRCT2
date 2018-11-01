@@ -46,7 +46,7 @@ extern rct_banner gBanners[MAX_BANNERS];
 
 void banner_init();
 BannerIndex create_new_banner(uint8_t flags);
-rct_tile_element* banner_get_tile_element(BannerIndex bannerIndex);
+TileElement* banner_get_tile_element(BannerIndex bannerIndex);
 uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z);
 void banner_reset_broken_index();
 void fix_duplicated_banners();

@@ -103,14 +103,13 @@ enum
 };
 
 // Surface
-#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG 0x10       // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK 0x0F // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG 0x10       // in TileElement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK 0x0F // in TileElement.properties.surface.slope
 #define TILE_ELEMENT_SURFACE_SLOPE_MASK                                                                                        \
-    (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG                                                                                        \
-     | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK)    // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK 0xE0   // in rct_tile_element.properties.surface.slope
-#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK 0x1F // in rct_tile_element.properties.surface.terrain
-#define TILE_ELEMENT_SURFACE_TERRAIN_MASK 0xE0      // in rct_tile_element.properties.surface.terrain
+    (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) // in TileElement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK 0xE0                                   // in TileElement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK 0x1F                                 // in TileElement.properties.surface.terrain
+#define TILE_ELEMENT_SURFACE_TERRAIN_MASK 0xE0                                      // in TileElement.properties.surface.terrain
 
 #define TILE_ELEMENT_SURFACE_OWNERSHIP_MASK 0xF0
 #define TILE_ELEMENT_SURFACE_PARK_FENCE_MASK 0x0F

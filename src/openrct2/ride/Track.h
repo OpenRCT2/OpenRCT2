@@ -513,7 +513,7 @@ struct track_circuit_iterator
     CoordsXYE current;
     int32_t currentZ;
     int32_t currentDirection;
-    rct_tile_element* first;
+    TileElement* first;
     bool firstIteration;
     bool looped;
 };
@@ -523,7 +523,7 @@ extern const rct_trackdefinition TrackDefinitions[256];
 
 extern uint8_t gTrackGroundFlags;
 
-int32_t track_is_connected_by_shape(rct_tile_element* a, rct_tile_element* b);
+int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
 const rct_preview_track* get_track_def_from_ride(Ride* ride, int32_t trackType);
 const rct_preview_track* get_track_def_from_ride_index(int32_t rideIndex, int32_t trackType);
@@ -537,13 +537,13 @@ bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const 
 void track_get_back(CoordsXYE* input, CoordsXYE* output);
 void track_get_front(CoordsXYE* input, CoordsXYE* output);
 
-bool track_element_is_block_start(rct_tile_element* trackElement);
+bool track_element_is_block_start(TileElement* trackElement);
 bool track_element_is_covered(int32_t trackElementType);
-bool track_element_is_station(rct_tile_element* trackElement);
+bool track_element_is_station(TileElement* trackElement);
 
-int32_t track_get_actual_bank(rct_tile_element* tileElement, int32_t bank);
+int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank);
 int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank);
-int32_t track_get_actual_bank_3(rct_vehicle* vehicle, rct_tile_element* tileElement);
+int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement);
 
 void game_command_place_track(int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_remove_track(

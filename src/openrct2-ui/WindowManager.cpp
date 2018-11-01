@@ -256,7 +256,7 @@ public:
             case WD_VEHICLE:
                 return window_ride_open_vehicle((rct_vehicle*)intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
             case WD_TRACK:
-                return window_ride_open_track((rct_tile_element*)intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT));
+                return window_ride_open_track((TileElement*)intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT));
             case INTENT_ACTION_NEW_RIDE_OF_TYPE:
             {
                 // Open ride list window

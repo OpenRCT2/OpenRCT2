@@ -60,7 +60,7 @@ static void paint_pirate_ship_structure(
 {
     uint32_t imageId, baseImageId;
 
-    const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle* vehicle = nullptr;
@@ -169,7 +169,7 @@ static void paint_pirate_ship_structure(
 /** rct2: 0x008A85C4 */
 static void paint_pirate_ship(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
     Ride* ride = get_ride(rideIndex);

@@ -76,7 +76,7 @@ struct TileElementBase
  * Map element structure
  * size: 0x08
  */
-struct rct_tile_element : public TileElementBase
+struct TileElement : public TileElementBase
 {
     uint8_t pad_04[4];
 
@@ -125,7 +125,7 @@ public:
 
     void ClearAs(uint8_t newType);
 };
-assert_struct_size(rct_tile_element, 8);
+assert_struct_size(TileElement, 8);
 
 struct SurfaceElement : TileElementBase
 {
@@ -511,11 +511,11 @@ enum
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
 
-BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement);
-bool tile_element_is_underground(rct_tile_element* tileElement);
+BannerIndex tile_element_get_banner_index(TileElement* tileElement);
+bool tile_element_is_underground(TileElement* tileElement);
 
 // ~Oli414: The banner functions should probably be part of banner.
-void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex bannerIndex);
-void tile_element_remove_banner_entry(rct_tile_element* tileElement);
+void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerIndex);
+void tile_element_remove_banner_entry(TileElement* tileElement);
 
-uint8_t tile_element_get_ride_index(const rct_tile_element* tileElement);
+uint8_t tile_element_get_ride_index(const TileElement* tileElement);

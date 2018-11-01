@@ -181,7 +181,7 @@ public:
                 surfaceElement->SetOwnership(OWNERSHIP_UNOWNED);
             }
 
-            rct_tile_element* newElement = tile_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);
+            TileElement* newElement = tile_element_insert(entranceLoc.x / 32, entranceLoc.y / 32, zLow, 0xF);
             Guard::Assert(newElement != nullptr);
             newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
             auto entranceElement = newElement->AsEntrance();

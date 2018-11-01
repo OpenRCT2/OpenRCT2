@@ -242,7 +242,7 @@ static void virtual_floor_get_tile_properties(
     //  * Surfaces, which may put us underground
     //  * Walls / banners, which are displayed as occupied edges
     //  * Ghost objects, which are displayed as lit squares
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         int32_t elementType = tileElement->GetType();

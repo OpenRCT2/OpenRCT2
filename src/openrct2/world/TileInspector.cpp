@@ -36,8 +36,8 @@ int32_t windowTileInspectorSelectedIndex;
 
 static bool map_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t second)
 {
-    rct_tile_element* const firstElement = map_get_nth_element_at(x, y, first);
-    rct_tile_element* const secondElement = map_get_nth_element_at(x, y, second);
+    TileElement* const firstElement = map_get_nth_element_at(x, y, first);
+    TileElement* const secondElement = map_get_nth_element_at(x, y, second);
 
     if (firstElement == nullptr)
     {
@@ -56,7 +56,7 @@ static bool map_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t se
     }
 
     // Swap their memory
-    rct_tile_element temp = *firstElement;
+    TileElement temp = *firstElement;
     *firstElement = *secondElement;
     *secondElement = temp;
 
@@ -86,7 +86,7 @@ int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIn
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Create new corrupt element
-        rct_tile_element* corruptElement = tile_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
+        TileElement* corruptElement = tile_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == nullptr)
         {
             log_warning("Failed to insert corrupt element.");
@@ -95,7 +95,7 @@ int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIn
         corruptElement->SetType(TILE_ELEMENT_TYPE_CORRUPT);
 
         // Set the base height to be the same as the selected element
-        rct_tile_element* const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
+        TileElement* const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
         if (!selectedElement)
         {
             return MONEY32_UNDEFINED;
@@ -149,7 +149,7 @@ int32_t tile_inspector_remove_element_at(int32_t x, int32_t y, int16_t elementIn
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Forcefully remove the element
-        rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+        TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
         if (!tileElement)
         {
             return MONEY32_UNDEFINED;
@@ -214,7 +214,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
     {
         uint8_t newRotation, pathEdges, pathCorners;
 
-        rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+        TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
         if (!tileElement)
         {
             return MONEY32_UNDEFINED;
@@ -284,7 +284,7 @@ int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIn
     return 0;
 }
 
-int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, rct_tile_element element, int32_t flags)
+int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, TileElement element, int32_t flags)
 {
     // Make sure there is enough space for the new element
     if (!map_check_free_elements_and_reorganise(1))
@@ -327,7 +327,7 @@ int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, rct_tile_element e
             }
         }
 
-        rct_tile_element* const pastedElement = tile_element_insert(x, y, element.base_height, 0);
+        TileElement* const pastedElement = tile_element_insert(x, y, element.base_height, 0);
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;
@@ -363,11 +363,11 @@ int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags)
 {
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        const rct_tile_element* const firstElement = map_get_first_element_at(x, y);
+        const TileElement* const firstElement = map_get_first_element_at(x, y);
 
         // Count elements on tile
         int32_t numElement = 0;
-        const rct_tile_element* elementIterator = firstElement;
+        const TileElement* elementIterator = firstElement;
         do
         {
             numElement++;
@@ -377,8 +377,8 @@ int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags)
         for (int32_t loopStart = 1; loopStart < numElement; loopStart++)
         {
             int32_t currentId = loopStart;
-            const rct_tile_element* currentElement = firstElement + currentId;
-            const rct_tile_element* otherElement = currentElement - 1;
+            const TileElement* currentElement = firstElement + currentId;
+            const TileElement* otherElement = currentElement - 1;
 
             // While current element's base height is lower, or (when their baseheight is the same) the other map element's
             // clearance height is lower...
@@ -418,7 +418,7 @@ int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags)
 
 int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elementIndex, int8_t heightOffset, int32_t flags)
 {
-    rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
     if (tileElement == nullptr)
         return MONEY32_UNDEFINED;
 
@@ -470,7 +470,7 @@ int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elem
 
 int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool showFences, int32_t flags)
 {
-    rct_tile_element* const surfaceelement = map_get_surface_element_at(x, y);
+    TileElement* const surfaceelement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceelement == nullptr)
@@ -498,7 +498,7 @@ int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool showF
 
 int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t cornerIndex, int32_t flags)
 {
-    rct_tile_element* const surfaceElement = map_get_surface_element_at(x, y);
+    TileElement* const surfaceElement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -565,7 +565,7 @@ int32_t tile_inspector_surface_toggle_corner(int32_t x, int32_t y, int32_t corne
 
 int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t flags)
 {
-    rct_tile_element* const surfaceElement = map_get_surface_element_at(x, y);
+    TileElement* const surfaceElement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceElement == nullptr)
@@ -603,7 +603,7 @@ int32_t tile_inspector_surface_toggle_diagonal(int32_t x, int32_t y, int32_t fla
 
 int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementIndex, bool sloped, int32_t flags)
 {
-    rct_tile_element* const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
@@ -627,7 +627,7 @@ int32_t tile_inspector_path_set_sloped(int32_t x, int32_t y, int32_t elementInde
 
 int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags)
 {
-    rct_tile_element* const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (pathElement == nullptr || pathElement->GetType() != TILE_ELEMENT_TYPE_PATH)
         return MONEY32_UNDEFINED;
@@ -652,7 +652,7 @@ int32_t tile_inspector_path_toggle_edge(int32_t x, int32_t y, int32_t elementInd
 
 int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elementIndex, int32_t flags)
 {
-    rct_tile_element* const entranceElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const entranceElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (entranceElement == nullptr || entranceElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
         return MONEY32_UNDEFINED;
@@ -691,7 +691,7 @@ int32_t tile_inspector_entrance_make_usable(int32_t x, int32_t y, int32_t elemen
 
 int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex, int32_t slopeValue, int32_t flags)
 {
-    rct_tile_element* const wallElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const wallElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (wallElement == nullptr || wallElement->GetType() != TILE_ELEMENT_TYPE_WALL)
         return MONEY32_UNDEFINED;
@@ -718,7 +718,7 @@ int32_t tile_inspector_wall_set_slope(int32_t x, int32_t y, int32_t elementIndex
 // Broxzier: Copied from track_remove and stripped of unneeded code, but I think this should be smaller
 int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t elementIndex, int8_t offset, int32_t flags)
 {
-    rct_tile_element* const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (offset == 0)
         return 0;
@@ -791,7 +791,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
             map_invalidate_tile_full(elemX, elemY);
 
             bool found = false;
-            rct_tile_element* tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
+            TileElement* tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
             do
             {
                 if (tileElement->base_height != elemZ / 8)
@@ -843,7 +843,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
 int32_t tile_inspector_track_set_chain(
     int32_t x, int32_t y, int32_t elementIndex, bool entireTrackBlock, bool setChain, int32_t flags)
 {
-    rct_tile_element* const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return MONEY32_UNDEFINED;
@@ -924,7 +924,7 @@ int32_t tile_inspector_track_set_chain(
             map_invalidate_tile_full(elemX, elemY);
 
             bool found = false;
-            rct_tile_element* tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
+            TileElement* tileElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
             do
             {
                 if (tileElement->base_height != elemZ / 8)
@@ -976,7 +976,7 @@ int32_t tile_inspector_track_set_chain(
 int32_t tile_inspector_scenery_set_quarter_location(
     int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)
 {
-    rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return MONEY32_UNDEFINED;
@@ -1003,7 +1003,7 @@ int32_t tile_inspector_scenery_set_quarter_location(
 int32_t tile_inspector_scenery_set_quarter_collision(
     int32_t x, int32_t y, int32_t elementIndex, int32_t quarterIndex, int32_t flags)
 {
-    rct_tile_element* const tileElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (tileElement == nullptr || tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return MONEY32_UNDEFINED;
@@ -1024,7 +1024,7 @@ int32_t tile_inspector_scenery_set_quarter_collision(
 
 int32_t tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t elementIndex, int32_t edgeIndex, int32_t flags)
 {
-    rct_tile_element* const bannerElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const bannerElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (bannerElement == nullptr || bannerElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
         return MONEY32_UNDEFINED;
@@ -1046,7 +1046,7 @@ int32_t tile_inspector_banner_toggle_blocking_edge(int32_t x, int32_t y, int32_t
 
 int32_t tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t elementIndex, int32_t flags)
 {
-    rct_tile_element* const corruptElement = map_get_nth_element_at(x, y, elementIndex);
+    TileElement* const corruptElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (corruptElement == nullptr || corruptElement->GetType() != TILE_ELEMENT_TYPE_CORRUPT)
         return MONEY32_UNDEFINED;
@@ -1056,7 +1056,7 @@ int32_t tile_inspector_corrupt_clamp(int32_t x, int32_t y, int32_t elementIndex,
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_tile_element* const nextElement = corruptElement + 1;
+        TileElement* const nextElement = corruptElement + 1;
         corruptElement->base_height = corruptElement->clearance_height = nextElement->base_height;
 
         if ((uint32_t)x == windowTileInspectorTileX && (uint32_t)y == windowTileInspectorTileY)

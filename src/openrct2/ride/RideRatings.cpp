@@ -81,7 +81,7 @@ static void ride_ratings_update_state_5();
 static void ride_ratings_begin_proximity_loop();
 static void ride_ratings_calculate(Ride* ride);
 static void ride_ratings_calculate_value(Ride* ride);
-static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElement);
+static void ride_ratings_score_close_proximity(TileElement* inputTileElement);
 
 static void ride_ratings_add(rating_tuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
 
@@ -201,7 +201,7 @@ static void ride_ratings_update_state_2()
     int32_t z = gRideRatingsCalcData.proximity_z / 8;
     int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
-    rct_tile_element* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -305,7 +305,7 @@ static void ride_ratings_update_state_5()
     int32_t z = gRideRatingsCalcData.proximity_z / 8;
     int32_t trackType = gRideRatingsCalcData.proximity_track_type;
 
-    rct_tile_element* tileElement = map_get_first_element_at(x, y);
+    TileElement* tileElement = map_get_first_element_at(x, y);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -403,14 +403,14 @@ static void proximity_score_increment(int32_t type)
  *
  *  rct2: 0x006B6207
  */
-static void ride_ratings_score_close_proximity_in_direction(rct_tile_element* inputTileElement, int32_t direction)
+static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTileElement, int32_t direction)
 {
     int32_t x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
     int32_t y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
     if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
         return;
 
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         switch (tileElement->GetType())
@@ -457,9 +457,9 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element* in
     } while (!(tileElement++)->IsLastForTile());
 }
 
-static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element* inputTileElement, int32_t x, int32_t y)
+static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTileElement, int32_t x, int32_t y)
 {
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         switch (tileElement->GetType())
@@ -500,7 +500,7 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element* in
  *
  *  rct2: 0x006B62DA
  */
-static void ride_ratings_score_close_proximity_loops(rct_tile_element* inputTileElement)
+static void ride_ratings_score_close_proximity_loops(TileElement* inputTileElement)
 {
     int32_t trackType = inputTileElement->AsTrack()->GetTrackType();
     if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
@@ -520,7 +520,7 @@ static void ride_ratings_score_close_proximity_loops(rct_tile_element* inputTile
  *
  *  rct2: 0x006B5F9D
  */
-static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElement)
+static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
 {
     if (gRideRatingsCalcData.station_flags & RIDE_RATING_STATION_FLAG_NO_ENTRANCE)
     {
@@ -530,7 +530,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element* inputTileElemen
     gRideRatingsCalcData.proximity_total++;
     int32_t x = gRideRatingsCalcData.proximity_x;
     int32_t y = gRideRatingsCalcData.proximity_y;
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         int32_t waterHeight;
@@ -1423,7 +1423,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
         for (int32_t xx = std::max(x - 5, 0); xx <= std::min(x + 5, 255); xx++)
         {
             // Count scenery items on this tile
-            rct_tile_element* tileElement = map_get_first_element_at(xx, yy);
+            TileElement* tileElement = map_get_first_element_at(xx, yy);
             do
             {
                 if (tileElement->flags & (1 << 4))

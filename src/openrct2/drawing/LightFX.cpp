@@ -293,7 +293,7 @@ void lightfx_prepare_light_list()
             {
                 LocationXY16 mapCoord = {};
 
-                rct_tile_element* tileElement = nullptr;
+                TileElement* tileElement = nullptr;
 
                 int32_t interactionType = 0;
 
@@ -327,7 +327,7 @@ void lightfx_prepare_light_list()
                     mapCoord.x = _interactionMapX + tileOffsetX;
                     mapCoord.y = _interactionMapY + tileOffsetY;
                     interactionType = _interactionSpriteType;
-                    tileElement = RCT2_GLOBAL(0x9AC150, rct_tile_element*);
+                    tileElement = RCT2_GLOBAL(0x9AC150, TileElement*);
 #    endif // LIGHTFX_UNKNOWN_PART_1
 
                     // RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;

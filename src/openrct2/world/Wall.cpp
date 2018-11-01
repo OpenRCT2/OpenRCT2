@@ -60,7 +60,7 @@ static bool TrackIsAllowedWallEdges(uint8_t rideType, uint8_t trackType, uint8_t
  *  rct2: 0x006E5CBA
  */
 static bool WallCheckObstructionWithTrack(
-    rct_scenery_entry* wall, int32_t z0, int32_t edge, rct_tile_element* trackElement, bool* wallAcrossTrack)
+    rct_scenery_entry* wall, int32_t z0, int32_t edge, TileElement* trackElement, bool* wallAcrossTrack)
 {
     int32_t trackType = trackElement->AsTrack()->GetTrackType();
     int32_t sequence = trackElement->AsTrack()->GetSequenceIndex();
@@ -171,7 +171,7 @@ static bool WallCheckObstruction(
         return false;
     }
 
-    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
         int32_t elementType = tileElement->GetType();
@@ -333,7 +333,7 @@ static money32 WallPlace(
     uint8_t edgeSlope = 0;
     if (position.z == 0)
     {
-        rct_tile_element* surfaceElement = map_get_surface_element_at({ position.x, position.y });
+        TileElement* surfaceElement = map_get_surface_element_at({ position.x, position.y });
         if (surfaceElement == nullptr)
         {
             return MONEY32_UNDEFINED;
@@ -349,7 +349,7 @@ static money32 WallPlace(
         }
     }
 
-    rct_tile_element* surfaceElement = map_get_surface_element_at({ position.x, position.y });
+    TileElement* surfaceElement = map_get_surface_element_at({ position.x, position.y });
     if (surfaceElement == nullptr)
     {
         return MONEY32_UNDEFINED;
@@ -506,7 +506,7 @@ static money32 WallPlace(
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        rct_tile_element* tileElement = tile_element_insert(position.x / 32, position.y / 32, position.z / 8, 0);
+        TileElement* tileElement = tile_element_insert(position.x / 32, position.y / 32, position.z / 8, 0);
         assert(tileElement != nullptr);
 
         map_animation_create(MAP_ANIMATION_TYPE_WALL, position.x, position.y, position.z / 8);
@@ -571,7 +571,7 @@ static money32 WallSetColour(
         return MONEY32_UNDEFINED;
     }
 
-    rct_tile_element* wallElement = map_get_wall_element_at(x, y, baseHeight, direction);
+    TileElement* wallElement = map_get_wall_element_at(x, y, baseHeight, direction);
     if (wallElement == nullptr)
     {
         return 0;
@@ -604,7 +604,7 @@ static money32 WallSetColour(
  */
 void wall_remove_at(int32_t x, int32_t y, int32_t z0, int32_t z1)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     z0 /= 8;
     z1 /= 8;
@@ -641,7 +641,7 @@ void wall_remove_at_z(int32_t x, int32_t y, int32_t z)
  */
 void wall_remove_intersecting_walls(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do

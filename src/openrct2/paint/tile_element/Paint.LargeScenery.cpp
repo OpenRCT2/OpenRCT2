@@ -25,7 +25,7 @@
 
 // 6B8172:
 static void large_scenery_paint_supports(
-    paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement, uint32_t dword_F4387C,
+    paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement, uint32_t dword_F4387C,
     rct_large_scenery_tile* tile)
 {
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
@@ -218,7 +218,7 @@ static constexpr const boundbox s98E3C4[] = {
  *
  * rct2: 0x006B7F0C
  */
-void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement)
+void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
 {
     if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {

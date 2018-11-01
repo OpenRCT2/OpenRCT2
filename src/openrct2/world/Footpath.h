@@ -36,7 +36,7 @@ struct rct_footpath_entry
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
-// Masks for values stored in rct_tile_element.type
+// Masks for values stored in TileElement.type
 enum
 {
     FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE = (1 << 0),
@@ -44,7 +44,7 @@ enum
     FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK = (1 << 6) | (1 << 7),
 };
 
-// Masks and flags for values stored in rct_tile_element.properties.path.type
+// Masks and flags for values stored in TileElement.properties.path.type
 enum
 {
     FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
@@ -53,14 +53,14 @@ enum
     FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
 };
 
-// Masks and flags for values stored in in rct_tile_element.properties.path.edges
+// Masks and flags for values stored in in TileElement.properties.path.edges
 enum
 {
     FOOTPATH_PROPERTIES_EDGES_EDGES_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
     FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
 };
 
-// Masks and flags for values stored in in rct_tile_element.properties.path.additions
+// Masks and flags for values stored in in TileElement.properties.path.additions
 enum
 {
     FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
@@ -125,7 +125,7 @@ extern const LocationXY16 word_981D6C[4];
 extern const LocationXY16 BinUseOffsets[4];
 extern const LocationXY16 BenchUseOffsets[8];
 
-rct_tile_element* map_get_footpath_element(int32_t x, int32_t y, int32_t z);
+TileElement* map_get_footpath_element(int32_t x, int32_t y, int32_t z);
 void footpath_interrupt_peeps(int32_t x, int32_t y, int32_t z);
 void game_command_place_footpath(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
@@ -140,23 +140,23 @@ money32 footpath_remove(int32_t x, int32_t y, int32_t z, int32_t flags);
 money32 footpath_provisional_set(int32_t type, int32_t x, int32_t y, int32_t z, int32_t slope);
 void footpath_provisional_remove();
 void footpath_provisional_update();
-void remove_banners_at_element(int32_t x, int32_t y, rct_tile_element* tileElement);
+void remove_banners_at_element(int32_t x, int32_t y, TileElement* tileElement);
 void footpath_get_coordinates_from_pos(
-    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, rct_tile_element** tileElement);
+    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
 void footpath_bridge_get_info_from_pos(
-    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, rct_tile_element** tileElement);
+    int32_t screenX, int32_t screenY, int32_t* x, int32_t* y, int32_t* direction, TileElement** tileElement);
 void footpath_remove_litter(int32_t x, int32_t y, int32_t z);
-void footpath_connect_edges(int32_t x, int32_t y, rct_tile_element* tileElement, int32_t flags);
+void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int32_t flags);
 void footpath_update_queue_chains();
 bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction);
 void footpath_chain_ride_queue(
-    int32_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, rct_tile_element* tileElement, int32_t direction);
+    int32_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, int32_t direction);
 void footpath_update_path_wide_flags(int32_t x, int32_t y);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
 int32_t footpath_is_connected_to_map_edge(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t flags);
-void footpath_remove_edges_at(int32_t x, int32_t y, rct_tile_element* tileElement);
-int32_t entrance_get_directions(const rct_tile_element* tileElement);
+void footpath_remove_edges_at(int32_t x, int32_t y, TileElement* tileElement);
+int32_t entrance_get_directions(const TileElement* tileElement);
 
 rct_footpath_entry* get_footpath_entry(int32_t entryIndex);
 

@@ -565,7 +565,7 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
 /**
  * Helper method to determine if a connects to b by its bank and angle, not location.
  */
-int32_t track_is_connected_by_shape(rct_tile_element* a, rct_tile_element* b)
+int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
 {
     int32_t trackType, aBank, aAngle, bBank, bAngle;
 
@@ -598,9 +598,9 @@ const rct_preview_track* get_track_def_from_ride_index(int32_t rideIndex, int32_
     return get_track_def_from_ride(get_ride(rideIndex), trackType);
 }
 
-static rct_tile_element* find_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex)
+static TileElement* find_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex)
 {
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (z != tileElement->base_height)
@@ -667,7 +667,7 @@ static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t d
         return true;
     }
 
-    rct_tile_element* stationElement;
+    TileElement* stationElement;
 
     // Search backwards for more station
     x = stationX0;
@@ -801,7 +801,7 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
     Ride* ride = get_ride(rideIndex);
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
     {
-        rct_tile_element* tileElement = map_get_track_element_at_with_direction_from_ride(x, y, z, direction, rideIndex);
+        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(x, y, z, direction, rideIndex);
         if (tileElement != nullptr)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
@@ -812,7 +812,7 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
         return true;
     }
 
-    rct_tile_element* stationElement;
+    TileElement* stationElement;
 
     // Search backwards for more station
     x = stationX0;
@@ -967,7 +967,7 @@ static money32 track_place(
         log_warning("Invalid ride type for track placement, rideIndex = %d", rideIndex);
         return MONEY32_UNDEFINED;
     }
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
     gCommandPosition.x = originX + 16;
@@ -1515,7 +1515,7 @@ static money32 track_place(
 
         if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
         {
-            rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
+            TileElement* surfaceElement = map_get_surface_element_at({ x, y });
             surfaceElement->AsSurface()->SetHasTrackThatNeedsWater(true);
             tileElement = surfaceElement;
         }
@@ -1590,7 +1590,7 @@ static money32 track_remove(
 
     bool found = false;
     bool isGhost = flags & GAME_COMMAND_FLAG_GHOST;
-    rct_tile_element* tileElement = map_get_first_element_at(originX / 32, originY / 32);
+    TileElement* tileElement = map_get_first_element_at(originX / 32, originY / 32);
     if (tileElement == nullptr)
     {
         log_warning("Invalid coordinates for track removal. x = %d, y = %d", originX, originY);
@@ -1757,7 +1757,7 @@ static money32 track_remove(
             }
         }
 
-        rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
+        TileElement* surfaceElement = map_get_surface_element_at({ x, y });
         if (surfaceElement == nullptr)
         {
             return MONEY32_UNDEFINED;
@@ -1908,7 +1908,7 @@ void game_command_set_brakes_speed(
         return;
     }
 
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", x, y);
@@ -2076,7 +2076,7 @@ void TrackElement::SetHasChain(bool on)
  * A beginning of a block can be the end of a station, the end of a lift hill,
  * or a block brake.
  */
-bool track_element_is_block_start(rct_tile_element* trackElement)
+bool track_element_is_block_start(TileElement* trackElement)
 {
     switch (trackElement->AsTrack()->GetTrackType())
     {
@@ -2097,7 +2097,7 @@ bool track_element_is_block_start(rct_tile_element* trackElement)
     return false;
 }
 
-int32_t track_get_actual_bank(rct_tile_element* tileElement, int32_t bank)
+int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
 {
     Ride* ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     bool isInverted = tileElement->AsTrack()->IsInverted();
@@ -2123,7 +2123,7 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
     return bank;
 }
 
-int32_t track_get_actual_bank_3(rct_vehicle* vehicle, rct_tile_element* tileElement)
+int32_t track_get_actual_bank_3(rct_vehicle* vehicle, TileElement* tileElement)
 {
     bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
         ^ tileElement->AsTrack()->IsInverted();
@@ -2133,7 +2133,7 @@ int32_t track_get_actual_bank_3(rct_vehicle* vehicle, rct_tile_element* tileElem
     return track_get_actual_bank_2(rideType, isInverted, bankStart);
 }
 
-bool track_element_is_station(rct_tile_element* trackElement)
+bool track_element_is_station(TileElement* trackElement)
 {
     switch (trackElement->AsTrack()->GetTrackType())
     {
