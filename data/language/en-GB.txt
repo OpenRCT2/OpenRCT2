@@ -2571,7 +2571,7 @@ STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}Game tools
 STR_3342    :Scenario Editor
-STR_3343    :Convert Saved Game to Scenario
+STR_3343    :Convert saved game to scenario
 STR_3344    :Track Designer
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
