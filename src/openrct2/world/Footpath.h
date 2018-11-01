@@ -103,7 +103,8 @@ enum
 
 enum
 {
-    SLOPE_IS_IRREGULAR_FLAG = (1 << 3), // Flag set in `defaultPathSlope[]` and checked in `footpath_place_real`
+    SLOPE_IS_IRREGULAR_FLAG = (1 << 3), // Flag set in `DefaultPathSlope[]` and checked in `footpath_place_real`
+    RAISE_FOOTPATH_FLAG = (1 << 4)
 };
 
 extern uint8_t gFootpathProvisionalFlags;
