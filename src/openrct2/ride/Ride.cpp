@@ -218,7 +218,7 @@ static void ride_shop_connected(Ride* ride, int32_t ride_idx);
 static void ride_spiral_slide_update(Ride* ride);
 static void ride_update(int32_t rideIndex);
 static void ride_update_vehicle_colours(int32_t rideIndex);
-void loc_6DDF9C(Ride* ride, rct_tile_element* tileElement);
+void loc_6DDF9C(Ride* ride, TileElement* tileElement);
 
 Ride* get_ride(int32_t index)
 {
@@ -481,7 +481,7 @@ static money32 ride_calculate_income_per_hour(Ride* ride)
  */
 bool ride_try_get_origin_element(int32_t rideIndex, CoordsXYE* output)
 {
-    rct_tile_element* resultTileElement = nullptr;
+    TileElement* resultTileElement = nullptr;
 
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
@@ -542,7 +542,7 @@ bool track_block_get_next_from_zero(
         y += CoordsDirectionDelta[direction_start].y;
     }
 
-    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement == nullptr)
     {
         output->element = nullptr;
@@ -677,7 +677,7 @@ bool track_block_get_previous_from_zero(
         y += CoordsDirectionDelta[direction].y;
     }
 
-    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     if (tileElement == nullptr)
     {
         outTrackBeginEnd->end_x = x;
@@ -765,7 +765,7 @@ bool track_block_get_previous_from_zero(
  * higher two bytes of ecx and edx where as outTrackBeginEnd.end_x and
  * outTrackBeginEnd.end_y will be in the lower two bytes (cx and dx).
  */
-bool track_block_get_previous(int32_t x, int32_t y, rct_tile_element* tileElement, track_begin_end* outTrackBeginEnd)
+bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, track_begin_end* outTrackBeginEnd)
 {
     uint8_t rideIndex = tileElement->AsTrack()->GetRideIndex();
     Ride* ride = get_ride(rideIndex);
@@ -1272,11 +1272,11 @@ void ride_clear_blocked_tiles(int32_t rideIndex)
  * bp : flags
  */
 int32_t sub_6C683D(
-    int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params,
-    rct_tile_element** output_element, uint16_t flags)
+    int32_t* x, int32_t* y, int32_t* z, int32_t direction, int32_t type, uint16_t extra_params, TileElement** output_element,
+    uint16_t flags)
 {
-    rct_tile_element* tileElement = map_get_first_element_at(*x / 32, *y / 32);
-    rct_tile_element* successTileElement = nullptr;
+    TileElement* tileElement = map_get_first_element_at(*x / 32, *y / 32);
+    TileElement* successTileElement = nullptr;
 
     do
     {
@@ -1577,7 +1577,7 @@ void ride_construction_set_default_next_piece()
     Ride* ride;
     track_begin_end trackBeginEnd;
     CoordsXYE xyElement;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     _currentTrackPrice = MONEY32_UNDEFINED;
     switch (_rideConstructionState)
@@ -1741,7 +1741,7 @@ void ride_select_next_section()
         int32_t z = _currentTrackBeginZ;
         int32_t direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
-        rct_tile_element* tileElement;
+        TileElement* tileElement;
         if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0))
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
@@ -1814,7 +1814,7 @@ void ride_select_previous_section()
         int32_t z = _currentTrackBeginZ;
         int32_t direction = _currentTrackPieceDirection;
         int32_t type = _currentTrackPieceType;
-        rct_tile_element* tileElement;
+        TileElement* tileElement;
         if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0))
         {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
@@ -1869,7 +1869,7 @@ void ride_select_previous_section()
  *
  *  rct2: 0x006CC2CA
  */
-static int32_t ride_modify_entrance_or_exit(rct_tile_element* tileElement, int32_t x, int32_t y)
+static int32_t ride_modify_entrance_or_exit(TileElement* tileElement, int32_t x, int32_t y)
 {
     int32_t rideIndex, entranceType;
     rct_window* constructionWindow;
@@ -1935,7 +1935,7 @@ static int32_t ride_modify_entrance_or_exit(rct_tile_element* tileElement, int32
  *
  *  rct2: 0x006CC287
  */
-static int32_t ride_modify_maze(rct_tile_element* tileElement, int32_t x, int32_t y)
+static int32_t ride_modify_maze(TileElement* tileElement, int32_t x, int32_t y)
 {
     _currentRideIndex = tileElement->AsTrack()->GetRideIndex();
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
@@ -2344,7 +2344,7 @@ static void ride_spiral_slide_update(Ride* ride)
         int32_t x = ride->station_starts[i].x;
         int32_t y = ride->station_starts[i].y;
 
-        rct_tile_element* tileElement = ride_get_station_start_track_element(ride, i);
+        TileElement* tileElement = ride_get_station_start_track_element(ride, i);
         if (tileElement == nullptr)
             continue;
 
@@ -2820,7 +2820,7 @@ rct_peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
 {
     int32_t x, y, z, stationIndex;
     TileCoordsXYZD location;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     // Get either exit position or entrance position if there is no exit
     stationIndex = ride->inspection_station;
@@ -3455,7 +3455,7 @@ static void ride_entrance_exit_connected(Ride* ride, int32_t ride_idx)
 static void ride_shop_connected(Ride* ride, int32_t ride_idx)
 {
     int32_t x, y, count;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     LocationXY8 coordinates = ride->station_starts[0];
     if (coordinates.xy == RCT_XY8_UNDEFINED)
@@ -3533,7 +3533,7 @@ static void ride_shop_connected(Ride* ride, int32_t ride_idx)
 
 #pragma region Interface
 
-static void ride_track_set_map_tooltip(rct_tile_element* tileElement)
+static void ride_track_set_map_tooltip(TileElement* tileElement)
 {
     int32_t rideIndex;
     Ride* ride;
@@ -3552,7 +3552,7 @@ static void ride_track_set_map_tooltip(rct_tile_element* tileElement)
     set_map_tooltip_format_arg(10, uint32_t, arg1);
 }
 
-static void ride_queue_banner_set_map_tooltip(rct_tile_element* tileElement)
+static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
 {
     int32_t rideIndex;
     Ride* ride;
@@ -3571,7 +3571,7 @@ static void ride_queue_banner_set_map_tooltip(rct_tile_element* tileElement)
     set_map_tooltip_format_arg(10, uint32_t, arg1);
 }
 
-static void ride_station_set_map_tooltip(rct_tile_element* tileElement)
+static void ride_station_set_map_tooltip(TileElement* tileElement)
 {
     int32_t i, rideIndex, stationIndex;
     Ride* ride;
@@ -3598,7 +3598,7 @@ static void ride_station_set_map_tooltip(rct_tile_element* tileElement)
     set_map_tooltip_format_arg(16, uint32_t, arg1);
 }
 
-static void ride_entrance_set_map_tooltip(rct_tile_element* tileElement)
+static void ride_entrance_set_map_tooltip(TileElement* tileElement)
 {
     int32_t i, rideIndex, stationIndex;
     Ride* ride;
@@ -3653,7 +3653,7 @@ static void ride_entrance_set_map_tooltip(rct_tile_element* tileElement)
     }
 }
 
-void ride_set_map_tooltip(rct_tile_element* tileElement)
+void ride_set_map_tooltip(TileElement* tileElement)
 {
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
@@ -4394,7 +4394,7 @@ static void sub_6B5952(int32_t rideIndex)
 
         // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
         // the ride or not.
-        rct_tile_element* tileElement = map_get_first_element_at(location.x, location.y);
+        TileElement* tileElement = map_get_first_element_at(location.x, location.y);
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
@@ -4667,7 +4667,7 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
     int32_t returnY = startElement->y;
     int32_t startX = returnX;
     int32_t startY = returnY;
-    rct_tile_element* returnTrackElement = startElement->element;
+    TileElement* returnTrackElement = startElement->element;
     track_begin_end trackBeginEnd;
     while (track_block_get_previous(returnX, returnY, returnTrackElement, &trackBeginEnd))
     {
@@ -4726,7 +4726,7 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
         int32_t y = (*position).y << 5;
         int32_t z = (*position).z;
 
-        rct_tile_element* tileElement = map_get_first_element_at((*position).x, (*position).y);
+        TileElement* tileElement = map_get_first_element_at((*position).x, (*position).y);
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
@@ -4832,7 +4832,7 @@ static constexpr const LocationXY16 word_9A2A60[] = {
  */
 static rct_vehicle* vehicle_create_car(
     int32_t rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, int32_t x, int32_t y, int32_t z,
-    int32_t* remainingDistance, rct_tile_element* tileElement)
+    int32_t* remainingDistance, TileElement* tileElement)
 {
     Ride* ride = get_ride(rideIndex);
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
@@ -5027,7 +5027,7 @@ static rct_vehicle* vehicle_create_car(
  */
 static train_ref vehicle_create_train(
     int32_t rideIndex, int32_t x, int32_t y, int32_t z, int32_t vehicleIndex, int32_t* remainingDistance,
-    rct_tile_element* tileElement)
+    TileElement* tileElement)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -5053,7 +5053,7 @@ static train_ref vehicle_create_train(
     return train;
 }
 
-static void vehicle_create_trains(int32_t rideIndex, int32_t x, int32_t y, int32_t z, rct_tile_element* tileElement)
+static void vehicle_create_trains(int32_t rideIndex, int32_t x, int32_t y, int32_t z, TileElement* tileElement)
 {
     Ride* ride = get_ride(rideIndex);
     train_ref firstTrain = {};
@@ -5123,13 +5123,13 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
     int32_t firstX = vehicle->track_x;
     int32_t firstY = vehicle->track_y;
     int32_t firstZ = vehicle->track_z;
-    rct_tile_element* firstElement = map_get_track_element_at(firstX, firstY, firstZ / 8);
+    TileElement* firstElement = map_get_track_element_at(firstX, firstY, firstZ / 8);
 
     assert(firstElement != nullptr);
 
     int32_t x = firstX;
     int32_t y = firstY;
-    rct_tile_element* trackElement = firstElement;
+    TileElement* trackElement = firstElement;
     track_begin_end trackBeginEnd;
     while (track_block_get_previous(x, y, trackElement, &trackBeginEnd))
     {
@@ -5158,8 +5158,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
                 if (trackElement->AsTrack()->HasChain())
                 {
-                    rct_tile_element* tileElement = map_get_first_element_at(
-                        trackBeginEnd.begin_x >> 5, trackBeginEnd.begin_y >> 5);
+                    TileElement* tileElement = map_get_first_element_at(trackBeginEnd.begin_x >> 5, trackBeginEnd.begin_y >> 5);
                     do
                     {
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -5217,7 +5216,7 @@ static bool ride_create_vehicles(Ride* ride, int32_t rideIndex, CoordsXYE* eleme
         return true;
     }
 
-    rct_tile_element* tileElement = element->element;
+    TileElement* tileElement = element->element;
     int32_t x = element->x;
     int32_t y = element->y;
     int32_t z = element->element->base_height;
@@ -5288,7 +5287,7 @@ static bool ride_create_vehicles(Ride* ride, int32_t rideIndex, CoordsXYE* eleme
  *
  *  rct2: 0x006DDF9C
  */
-void loc_6DDF9C(Ride* ride, rct_tile_element* tileElement)
+void loc_6DDF9C(Ride* ride, TileElement* tileElement)
 {
     rct_vehicle *train, *car;
 
@@ -5371,7 +5370,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     int32_t z = ride->station_heights[stationIndex];
 
     bool success = false;
-    rct_tile_element* tileElement = map_get_first_element_at(location.x, location.y);
+    TileElement* tileElement = map_get_first_element_at(location.x, location.y);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -5491,7 +5490,7 @@ static bool ride_create_cable_lift(int32_t rideIndex, bool isApplying)
     int32_t x = ride->cable_lift_x;
     int32_t y = ride->cable_lift_y;
     int32_t z = ride->cable_lift_z;
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -5617,10 +5616,10 @@ static void ride_scroll_to_track_error(CoordsXYE* trackElement)
  *
  *  rct2: 0x006B4F6B
  */
-static rct_tile_element* loc_6B4F6B(int32_t rideIndex, int32_t x, int32_t y)
+static TileElement* loc_6B4F6B(int32_t rideIndex, int32_t x, int32_t y)
 {
     Ride* ride = get_ride(rideIndex);
-    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -5927,7 +5926,7 @@ void ride_get_start_of_track(CoordsXYE* output)
     CoordsXYE trackElement = *output;
     if (track_block_get_previous(trackElement.x, trackElement.y, trackElement.element, &trackBeginEnd))
     {
-        rct_tile_element* initial_map = trackElement.element;
+        TileElement* initial_map = trackElement.element;
         track_begin_end slowIt = trackBeginEnd;
         bool moveSlowIt = true;
         do
@@ -5982,7 +5981,7 @@ int32_t ride_get_refund_price(int32_t ride_id)
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
-    rct_tile_element* initial_map = trackElement.element;
+    TileElement* initial_map = trackElement.element;
     CoordsXYE slowIt = trackElement;
     bool moveSlowIt = true;
 
@@ -7091,7 +7090,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
     int16_t mapX, mapY;
     int16_t entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
     int32_t interactionType, direction, stationHeight, stationDirection;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_viewport* viewport;
     Ride* ride;
 
@@ -7553,7 +7552,7 @@ static int32_t ride_get_smallest_station_length(Ride* ride)
 static int32_t ride_get_track_length(Ride* ride)
 {
     rct_window* w;
-    rct_tile_element* tileElement = nullptr;
+    TileElement* tileElement = nullptr;
     track_circuit_iterator it, slowIt;
     int32_t x = 0, y = 0, z, trackType, rideIndex, result;
     bool foundTrack = false;
@@ -8016,7 +8015,7 @@ void sub_6CB945(int32_t rideIndex)
             uint8_t direction = 0xFF;
 
             bool specialTrack = false;
-            rct_tile_element* tileElement = nullptr;
+            TileElement* tileElement = nullptr;
 
             while (true)
             {
@@ -8140,7 +8139,7 @@ void sub_6CB945(int32_t rideIndex)
 
         CoordsXY location = { (*locationList).x * 32, (*locationList).y * 32 };
 
-        rct_tile_element* tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
+        TileElement* tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
@@ -8155,7 +8154,7 @@ void sub_6CB945(int32_t rideIndex)
             nextLocation.y += CoordsDirectionDelta[tileElement->GetDirection()].y;
 
             bool shouldRemove = true;
-            rct_tile_element* trackElement = map_get_first_element_at(nextLocation.x >> 5, nextLocation.y >> 5);
+            TileElement* trackElement = map_get_first_element_at(nextLocation.x >> 5, nextLocation.y >> 5);
             do
             {
                 if (trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
@@ -8410,10 +8409,10 @@ money16 ride_get_price(Ride* ride)
  * Return the tile_element of an adjacent station at x,y,z(+-2).
  * Returns nullptr if no suitable tile_element is found.
  */
-rct_tile_element* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tolerance)
+TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tolerance)
 {
     bool foundTileElement = false;
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     if (tileElement != nullptr)
     {
         do
@@ -8455,7 +8454,7 @@ static bool check_for_adjacent_station(int32_t x, int32_t y, int32_t z, uint8_t 
     {
         adjX += CoordsDirectionDelta[direction].x;
         adjY += CoordsDirectionDelta[direction].y;
-        rct_tile_element* stationElement = get_station_platform(adjX, adjY, z, 2);
+        TileElement* stationElement = get_station_platform(adjX, adjY, z, 2);
         if (stationElement != nullptr)
         {
             int32_t rideIndex = stationElement->AsTrack()->GetRideIndex();
@@ -8487,7 +8486,7 @@ bool ride_has_adjacent_station(Ride* ride)
             uint16_t stationY = ride->station_starts[stationNum].y * 32;
             uint8_t stationZ = ride->station_heights[stationNum];
 
-            rct_tile_element* stationElement = get_station_platform(stationX, stationY, stationZ, 0);
+            TileElement* stationElement = get_station_platform(stationX, stationY, stationZ, 0);
             if (stationElement == nullptr)
             {
                 continue;
@@ -8841,7 +8840,7 @@ void determine_ride_entrance_and_exit_locations()
             {
                 for (uint8_t y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
                 {
-                    rct_tile_element* tileElement = map_get_first_element_at(x, y);
+                    TileElement* tileElement = map_get_first_element_at(x, y);
 
                     if (tileElement != nullptr)
                     {

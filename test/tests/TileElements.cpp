@@ -45,7 +45,7 @@ std::shared_ptr<IContext> TileElementWantsFootpathConnection::_context;
 TEST_F(TileElementWantsFootpathConnection, FlatPath)
 {
     // Flat paths want to connect to other paths in any direction
-    const rct_tile_element* const pathElement = map_get_footpath_element(19, 18, 14);
+    const TileElement* const pathElement = map_get_footpath_element(19, 18, 14);
     ASSERT_NE(pathElement, nullptr);
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 0 }, nullptr));
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 18, 14, 1 }, nullptr));
@@ -57,7 +57,7 @@ TEST_F(TileElementWantsFootpathConnection, FlatPath)
 TEST_F(TileElementWantsFootpathConnection, SlopedPath)
 {
     // Sloped paths only want to connect in two directions, of which is one at a higher offset
-    const rct_tile_element* const slopedPathElement = map_get_footpath_element(18, 18, 14);
+    const TileElement* const slopedPathElement = map_get_footpath_element(18, 18, 14);
     ASSERT_NE(slopedPathElement, nullptr);
     ASSERT_TRUE(slopedPathElement->AsPath()->IsSloped());
     // Bottom and top of sloped path want a path connection
@@ -76,7 +76,7 @@ TEST_F(TileElementWantsFootpathConnection, SlopedPath)
 TEST_F(TileElementWantsFootpathConnection, Stall)
 {
     // Stalls usually have one path direction flag, but can have multiple (info kiosk for example)
-    const rct_tile_element* const stallElement = map_get_track_element_at(19 << 5, 15 << 5, 14);
+    const TileElement* const stallElement = map_get_track_element_at(19 << 5, 15 << 5, 14);
     ASSERT_NE(stallElement, nullptr);
     EXPECT_TRUE(tile_element_wants_path_connection_towards({ 19, 15, 14, 0 }, nullptr));
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 19, 15, 14, 1 }, nullptr));

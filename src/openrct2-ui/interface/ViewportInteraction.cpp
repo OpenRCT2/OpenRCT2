@@ -33,12 +33,12 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 
-static void viewport_interaction_remove_scenery(rct_tile_element* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_footpath(rct_tile_element* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_park_wall(rct_tile_element* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_large_scenery(rct_tile_element* tileElement, int32_t x, int32_t y);
-static void viewport_interaction_remove_park_entrance(rct_tile_element* tileElement, int32_t x, int32_t y);
+static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y);
+static void viewport_interaction_remove_footpath(TileElement* tileElement, int32_t x, int32_t y);
+static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y);
+static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y);
+static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y);
+static void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y);
 static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int32_t maxDistance);
 
 /**
@@ -47,7 +47,7 @@ static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
  */
 int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info* info)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_sprite* sprite;
     rct_vehicle* vehicle;
 
@@ -190,7 +190,7 @@ int32_t viewport_interaction_left_click(int32_t x, int32_t y)
  */
 int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_interaction_info* info)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_banner* banner;
     Ride* ride;
@@ -463,7 +463,7 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
  *
  *  rct2: 0x006E08D2
  */
-static void viewport_interaction_remove_scenery(rct_tile_element* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y)
 {
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
     game_do_command(
@@ -475,11 +475,11 @@ static void viewport_interaction_remove_scenery(rct_tile_element* tileElement, i
  *
  *  rct2: 0x006A614A
  */
-static void viewport_interaction_remove_footpath(rct_tile_element* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_footpath(TileElement* tileElement, int32_t x, int32_t y)
 {
     int32_t z;
     rct_window* w;
-    rct_tile_element* tileElement2;
+    TileElement* tileElement2;
 
     z = tileElement->base_height;
 
@@ -502,7 +502,7 @@ static void viewport_interaction_remove_footpath(rct_tile_element* tileElement, 
  *
  *  rct2: 0x006A61AB
  */
-static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_footpath_item(TileElement* tileElement, int32_t x, int32_t y)
 {
     int32_t type = tileElement->AsPath()->GetEntryIndex();
     if (tileElement->AsPath()->IsQueue())
@@ -520,7 +520,7 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element* tileElem
  *
  *  rct2: 0x00666C0E
  */
-void viewport_interaction_remove_park_entrance(rct_tile_element* tileElement, int32_t x, int32_t y)
+void viewport_interaction_remove_park_entrance(TileElement* tileElement, int32_t x, int32_t y)
 {
     int32_t rotation = tileElement->GetDirectionWithOffset(1);
     switch (tileElement->AsEntrance()->GetSequenceIndex())
@@ -542,7 +542,7 @@ void viewport_interaction_remove_park_entrance(rct_tile_element* tileElement, in
  *
  *  rct2: 0x006E57A9
  */
-static void viewport_interaction_remove_park_wall(rct_tile_element* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_park_wall(TileElement* tileElement, int32_t x, int32_t y)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
     if (sceneryEntry->wall.scrolling_mode != 0xFF)
@@ -561,7 +561,7 @@ static void viewport_interaction_remove_park_wall(rct_tile_element* tileElement,
  *
  *  rct2: 0x006B88DC
  */
-static void viewport_interaction_remove_large_scenery(rct_tile_element* tileElement, int32_t x, int32_t y)
+static void viewport_interaction_remove_large_scenery(TileElement* tileElement, int32_t x, int32_t y)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 
@@ -625,11 +625,11 @@ static rct_peep* viewport_interaction_get_closest_peep(int32_t x, int32_t y, int
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, rct_tile_element** tileElement)
+void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, TileElement** tileElement)
 {
     int16_t my_x, my_y;
     int32_t interactionType;
-    rct_tile_element* myTileElement;
+    TileElement* myTileElement;
     rct_viewport* viewport;
     get_map_coordinates_from_pos(
         screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType,

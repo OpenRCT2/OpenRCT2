@@ -1632,7 +1632,7 @@ static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIn
     return w;
 }
 
-rct_window* window_ride_open_track(rct_tile_element* tileElement)
+rct_window* window_ride_open_track(TileElement* tileElement)
 {
     assert(
         tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
@@ -4259,7 +4259,7 @@ static int32_t window_ride_has_track_colour(Ride* ride, int32_t trackColour)
 
 static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_t y)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     uint8_t newColourScheme;
     int32_t interactionType, z, direction;
 
@@ -5352,7 +5352,7 @@ static void window_ride_measurements_update(rct_window* w)
  */
 static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex widgetIndex, int32_t x, int32_t y)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     int16_t mapX, mapY;
     int32_t interactionType;
 
@@ -5380,7 +5380,7 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
     _lastSceneryX = x;
     _lastSceneryY = y;
 
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     int16_t mapX, mapY;
     int32_t interactionType;
 

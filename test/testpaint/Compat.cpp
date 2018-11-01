@@ -21,7 +21,7 @@
 #include <openrct2/world/Surface.h>
 
 #define gRideEntries RCT2_ADDRESS(0x009ACFA4, rct_ride_entry*)
-#define gTileElementTilePointers RCT2_ADDRESS(0x013CE9A4, rct_tile_element*)
+#define gTileElementTilePointers RCT2_ADDRESS(0x013CE9A4, TileElement*)
 rct_sprite* sprite_list = RCT2_ADDRESS(0x010E63BC, rct_sprite);
 
 Ride gRideList[MAX_RIDES];
@@ -95,25 +95,25 @@ LocationXY16 gMapSelectPositionB;
 LocationXYZ16 gMapSelectArrowPosition;
 uint8_t gMapSelectArrowDirection;
 
-void entrance_paint(paint_session* session, uint8_t direction, int height, const rct_tile_element* tile_element)
+void entrance_paint(paint_session* session, uint8_t direction, int height, const TileElement* tile_element)
 {
 }
-void banner_paint(paint_session* session, uint8_t direction, int height, const rct_tile_element* tile_element)
+void banner_paint(paint_session* session, uint8_t direction, int height, const TileElement* tile_element)
 {
 }
-void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement)
+void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
 {
 }
-void path_paint(paint_session* session, uint16_t height, const rct_tile_element* tileElement)
+void path_paint(paint_session* session, uint16_t height, const TileElement* tileElement)
 {
 }
-void scenery_paint(paint_session* session, uint8_t direction, int height, const rct_tile_element* tileElement)
+void scenery_paint(paint_session* session, uint8_t direction, int height, const TileElement* tileElement)
 {
 }
-void fence_paint(paint_session* session, uint8_t direction, int height, const rct_tile_element* tileElement)
+void fence_paint(paint_session* session, uint8_t direction, int height, const TileElement* tileElement)
 {
 }
-void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement)
+void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
 {
 }
 
@@ -164,7 +164,7 @@ uint8_t TileElementBase::GetType() const
     return this->type & TILE_ELEMENT_TYPE_MASK;
 }
 
-rct_tile_element* map_get_first_element_at(int x, int y)
+TileElement* map_get_first_element_at(int x, int y)
 {
     if (x < 0 || y < 0 || x > 255 || y > 255)
     {

@@ -104,7 +104,7 @@ struct rct_s6_data
     uint32_t scenario_srand_1;
 
     // SC6[5]
-    rct_tile_element tile_elements[RCT2_MAX_TILE_ELEMENTS];
+    TileElement tile_elements[RCT2_MAX_TILE_ELEMENTS];
 
     // SC6[6]
     uint32_t next_free_tile_element_pointer_index;

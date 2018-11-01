@@ -127,7 +127,7 @@ private:
                     0,
                     "static void " + _rideName
                         + "_track_station(uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, "
-                          "rct_tile_element * tileElement)");
+                          "TileElement * tileElement)");
                 WriteLine(0, "{");
                 WriteLine(0, "}");
                 WriteLine();
@@ -141,7 +141,7 @@ private:
         WriteLine(
             0,
             "static void " + GetTrackFunctionName(trackType)
-                + "(uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, rct_tile_element * tileElement)");
+                + "(uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, TileElement * tileElement)");
         WriteLine(0, "{");
         if (!GenerateMirrorCall(1, trackType))
         {
@@ -444,7 +444,7 @@ private:
         support_height generalSupports[4] = {};
         for (int direction = 0; direction < 4; direction++)
         {
-            rct_tile_element tileElement = {};
+            TileElement tileElement = {};
             tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
             tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
             tileElement.AsTrack()->SetTrackType(trackType);
@@ -783,8 +783,8 @@ private:
     }
 
     bool GetTunnelCalls(
-        int trackType, int direction, int trackSequence, int height, rct_tile_element* tileElement,
-        TunnelCall tileTunnelCalls[4][4], int16_t verticalTunnelHeights[4])
+        int trackType, int direction, int trackSequence, int height, TileElement* tileElement, TunnelCall tileTunnelCalls[4][4],
+        int16_t verticalTunnelHeights[4])
     {
         TestPaint::ResetTunnels();
 
@@ -1083,7 +1083,7 @@ private:
         return true;
     }
 
-    void CallOriginal(int trackType, int direction, int trackSequence, int height, rct_tile_element* tileElement)
+    void CallOriginal(int trackType, int direction, int trackSequence, int height, TileElement* tileElement)
     {
         TestPaint::ResetEnvironment();
         TestPaint::ResetSupportHeights();

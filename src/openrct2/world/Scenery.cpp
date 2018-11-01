@@ -37,7 +37,7 @@ colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
 bool gWindowSceneryEyedropperEnabled;
 
-rct_tile_element* gSceneryTileElement;
+TileElement* gSceneryTileElement;
 uint8_t gSceneryQuadrant;
 
 money32 gSceneryPlaceCost;
@@ -69,7 +69,7 @@ const LocationXY8 ScenerySubTileOffsets[] = { { 7, 7 }, { 7, 23 }, { 23, 23 }, {
 
 void scenery_update_tile(int32_t x, int32_t y)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -111,9 +111,9 @@ void scenery_update_tile(int32_t x, int32_t y)
  *
  *  rct2: 0x006E33D9
  */
-void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement)
+void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement)
 {
-    rct_tile_element* tileElementAbove;
+    TileElement* tileElementAbove;
     rct_scenery_entry* sceneryEntry;
 
     sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
@@ -193,7 +193,7 @@ void scenery_remove_ghost_tool_placement()
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_1)
     {
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_1;
-        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+        TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
 
         do
         {

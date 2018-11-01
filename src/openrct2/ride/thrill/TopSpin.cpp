@@ -42,12 +42,12 @@ static int8_t TopSpinSeatPositionOffset[] = {
  */
 static void top_spin_paint_vehicle(
     paint_session* session, int8_t al, int8_t cl, uint8_t rideIndex, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     uint16_t boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     // As we will be drawing a vehicle we need to backup the tileElement that
     // is assigned to the drawings.
-    const rct_tile_element* curTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
+    const TileElement* curTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     height += 3;
 
@@ -243,7 +243,7 @@ static void top_spin_paint_vehicle(
  */
 static void paint_top_spin(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

@@ -154,7 +154,7 @@ static void fence_paint_wall(
  * @param height (dx)
  * @param tile_element (esi)
  */
-void fence_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element)
+void fence_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 

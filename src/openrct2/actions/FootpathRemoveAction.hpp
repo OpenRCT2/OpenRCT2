@@ -61,7 +61,7 @@ public:
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
-        rct_tile_element* footpathElement = GetFootpathElement();
+        TileElement* footpathElement = GetFootpathElement();
         res->Cost = GetRefundPrice(footpathElement);
 
         return res;
@@ -80,7 +80,7 @@ public:
             footpath_remove_litter(_x, _y, _z * 8);
         }
 
-        rct_tile_element* footpathElement = GetFootpathElement();
+        TileElement* footpathElement = GetFootpathElement();
         if (footpathElement != nullptr)
         {
             footpath_queue_chain_reset();
@@ -97,12 +97,12 @@ public:
     }
 
 private:
-    rct_tile_element* GetFootpathElement() const
+    TileElement* GetFootpathElement() const
     {
         bool getGhostPath = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
-        rct_tile_element* tileElement = map_get_footpath_element(_x / 32, _y / 32, _z);
-        rct_tile_element* footpathElement = nullptr;
+        TileElement* tileElement = map_get_footpath_element(_x / 32, _y / 32, _z);
+        TileElement* footpathElement = nullptr;
         if (tileElement != nullptr)
         {
             if (getGhostPath && !tileElement->IsGhost())
@@ -126,7 +126,7 @@ private:
         return footpathElement;
     }
 
-    money32 GetRefundPrice(rct_tile_element* footpathElement) const
+    money32 GetRefundPrice(TileElement* footpathElement) const
     {
         money32 cost = -MONEY(10, 00);
 

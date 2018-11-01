@@ -71,7 +71,7 @@ static money32 SmallSceneryRemove(
     }
 
     bool sceneryFound = false;
-    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
@@ -130,7 +130,7 @@ static money32 SmallScenerySetColour(
         }
     }
 
-    rct_tile_element* tileElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
+    TileElement* tileElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
 
     if (tileElement == nullptr)
     {
@@ -258,7 +258,7 @@ static money32 SmallSceneryPlace(
         }
     }
 
-    rct_tile_element* surfaceElement = map_get_surface_element_at({ x, y });
+    TileElement* surfaceElement = map_get_surface_element_at({ x, y });
 
     if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && surfaceElement->AsSurface()->GetWaterHeight() > 0)
     {
@@ -379,7 +379,7 @@ static money32 SmallSceneryPlace(
         network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
     }
 
-    rct_tile_element* newElement = tile_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
+    TileElement* newElement = tile_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
     assert(newElement != nullptr);
     gSceneryTileElement = newElement;
     newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
@@ -439,7 +439,7 @@ void game_command_set_scenery_colour(
  *
  *  rct2: 0x006E0D6E, 0x006B8D88
  */
-int32_t map_place_scenery_clear_func(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
+int32_t map_place_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
 {
     if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;
@@ -476,7 +476,7 @@ int32_t map_place_scenery_clear_func(rct_tile_element** tile_element, int32_t x,
  *
  *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
  */
-int32_t map_place_non_scenery_clear_func(rct_tile_element** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
+int32_t map_place_non_scenery_clear_func(TileElement** tile_element, int32_t x, int32_t y, uint8_t flags, money32* price)
 {
     if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 1;

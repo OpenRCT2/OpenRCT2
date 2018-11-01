@@ -88,7 +88,7 @@ void vehicle_visual_roto_drop(
 /** rct2: 0x00886194 */
 static void paint_roto_drop_base(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -167,7 +167,7 @@ static void paint_roto_drop_base(
 /** rct2: 0x008861A4 */
 static void paint_roto_drop_tower_section(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (trackSequence == 1)
     {
@@ -177,7 +177,7 @@ static void paint_roto_drop_tower_section(
     uint32_t imageId = SPR_ROTO_DROP_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
-    const rct_tile_element* nextTileElement = tileElement + 1;
+    const TileElement* nextTileElement = tileElement + 1;
     if (tileElement->IsLastForTile() || tileElement->clearance_height != nextTileElement->base_height)
     {
         imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];

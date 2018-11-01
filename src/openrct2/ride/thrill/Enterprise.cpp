@@ -17,11 +17,11 @@
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(
-    paint_session* session, Ride* ride, int8_t xOffset, int8_t yOffset, uint16_t height, const rct_tile_element* tileElement)
+    paint_session* session, Ride* ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TileElement* tileElement)
 {
     height += 7;
 
-    const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle* vehicle = nullptr;
 
@@ -80,7 +80,7 @@ static void paint_enterprise_structure(
 /** rct2: 0x008A1584 */
 static void paint_enterprise(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = track_map_4x4[direction][trackSequence];
 

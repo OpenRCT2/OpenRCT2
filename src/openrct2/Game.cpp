@@ -1066,7 +1066,7 @@ void game_fix_save_vars()
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            rct_tile_element* tileElement = map_get_surface_element_at(x, y);
+            TileElement* tileElement = map_get_surface_element_at(x, y);
 
             if (tileElement == nullptr)
             {

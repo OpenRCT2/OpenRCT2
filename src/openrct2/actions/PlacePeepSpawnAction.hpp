@@ -73,7 +73,7 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
-        rct_tile_element *mapElement, *surfaceMapElement;
+        TileElement *mapElement, *surfaceMapElement;
         // Verify footpath exists at location, and retrieve coordinates
         mapElement = map_get_path_element_at(_location.x >> 5, _location.y >> 5, _location.z / 8);
         if (mapElement == nullptr)

@@ -154,7 +154,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     session->MapPosition.x = x;
     session->MapPosition.y = y;
 
-    rct_tile_element* tile_element = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tile_element = map_get_first_element_at(x >> 5, y >> 5);
     uint8_t rotation = session->CurrentRotation;
 
     bool partOfVirtualFloor = false;
@@ -206,7 +206,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     if (bx <= dpi->y)
         return;
 
-    const rct_tile_element* element = tile_element; // push tile_element
+    const TileElement* element = tile_element; // push tile_element
 
     uint16_t max_height = 0;
     do
@@ -258,7 +258,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             previousHeight = height;
             session->PathElementOnSameHeight = nullptr;
             session->TrackElementOnSameHeight = nullptr;
-            rct_tile_element* tile_element_sub_iterator = tile_element;
+            TileElement* tile_element_sub_iterator = tile_element;
             while (!(tile_element_sub_iterator++)->IsLastForTile())
             {
                 if (tile_element_sub_iterator->base_height != tile_element->base_height)

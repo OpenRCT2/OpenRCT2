@@ -103,7 +103,7 @@ void map_animation_invalidate_all()
  */
 static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     Ride* ride;
     const rct_ride_entrance_definition* entranceDefinition;
 
@@ -134,7 +134,7 @@ static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t
  */
 static bool map_animation_invalidate_queue_banner(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -166,7 +166,7 @@ static bool map_animation_invalidate_queue_banner(int32_t x, int32_t y, int32_t 
  */
 static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     rct_sprite* sprite;
     rct_peep* peep;
@@ -237,7 +237,7 @@ static bool map_animation_invalidate_small_scenery(int32_t x, int32_t y, int32_t
  */
 static bool map_animation_invalidate_park_entrance(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -265,7 +265,7 @@ static bool map_animation_invalidate_park_entrance(int32_t x, int32_t y, int32_t
  */
 static bool map_animation_invalidate_track_waterfall(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -292,7 +292,7 @@ static bool map_animation_invalidate_track_waterfall(int32_t x, int32_t y, int32
  */
 static bool map_animation_invalidate_track_rapids(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -319,7 +319,7 @@ static bool map_animation_invalidate_track_rapids(int32_t x, int32_t y, int32_t 
  */
 static bool map_animation_invalidate_track_onridephoto(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -359,7 +359,7 @@ static bool map_animation_invalidate_track_onridephoto(int32_t x, int32_t y, int
  */
 static bool map_animation_invalidate_track_whirlpool(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -386,7 +386,7 @@ static bool map_animation_invalidate_track_whirlpool(int32_t x, int32_t y, int32
  */
 static bool map_animation_invalidate_track_spinningtunnel(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -423,7 +423,7 @@ static bool map_animation_invalidate_remove(
  */
 static bool map_animation_invalidate_banner(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -447,7 +447,7 @@ static bool map_animation_invalidate_banner(int32_t x, int32_t y, int32_t baseZ)
  */
 static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
 
     bool wasInvalidated = false;
@@ -477,7 +477,7 @@ static bool map_animation_invalidate_large_scenery(int32_t x, int32_t y, int32_t
  */
 static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
 
     if (gCurrentTicks & 1)
@@ -540,7 +540,7 @@ static bool map_animation_invalidate_wall_door(int32_t x, int32_t y, int32_t bas
  */
 static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
 
     bool wasInvalidated = false;

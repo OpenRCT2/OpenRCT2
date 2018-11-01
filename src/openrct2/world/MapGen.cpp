@@ -111,7 +111,7 @@ static void set_height(int32_t x, int32_t y, int32_t height)
 void mapgen_generate_blank(mapgen_settings* settings)
 {
     int32_t x, y;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     map_clear_all_elements();
 
@@ -134,7 +134,7 @@ void mapgen_generate_blank(mapgen_settings* settings)
 void mapgen_generate(mapgen_settings* settings)
 {
     int32_t x, y, mapSize, floorTexture, wallTexture, waterLevel;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     util_srand((int32_t)platform_get_ticks());
 
@@ -234,7 +234,7 @@ void mapgen_generate(mapgen_settings* settings)
 static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
 {
     int32_t surfaceZ;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
     {
@@ -314,7 +314,7 @@ static void mapgen_place_trees()
     {
         for (int32_t x = 1; x < gMapSize - 1; x++)
         {
-            rct_tile_element* tileElement = map_get_surface_element_at(x, y);
+            TileElement* tileElement = map_get_surface_element_at(x, y);
 
             // Exclude water tiles
             if (tileElement->AsSurface()->GetWaterHeight() > 0)
@@ -348,7 +348,7 @@ static void mapgen_place_trees()
         pos = availablePositions[i];
 
         int32_t type = -1;
-        rct_tile_element* tileElement = map_get_surface_element_at(pos.x, pos.y);
+        TileElement* tileElement = map_get_surface_element_at(pos.x, pos.y);
         switch (tileElement->AsSurface()->GetSurfaceStyle())
         {
             case TERRAIN_GRASS:
@@ -389,7 +389,7 @@ static void mapgen_place_trees()
 static void mapgen_set_water_level(int32_t waterLevel)
 {
     int32_t x, y, mapSize;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     mapSize = gMapSize;
 
@@ -443,7 +443,7 @@ static void mapgen_smooth_height(int32_t iterations)
 static void mapgen_set_height()
 {
     int32_t x, y, heightX, heightY, mapSize;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     mapSize = _heightSize / 2;
     for (y = 1; y < mapSize - 1; y++)
@@ -819,7 +819,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         for (uint32_t x = 0; x < _heightMapData.width; x++)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
-            rct_tile_element* const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
+            TileElement* const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
 
             // Read value from bitmap, and convert its range
             uint8_t value = dest[x + y * _heightMapData.width];

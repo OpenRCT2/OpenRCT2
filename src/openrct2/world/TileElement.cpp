@@ -54,7 +54,7 @@ bool TileElementBase::IsGhost() const
     return (this->flags & TILE_ELEMENT_FLAG_GHOST) != 0;
 }
 
-bool tile_element_is_underground(rct_tile_element* tileElement)
+bool tile_element_is_underground(TileElement* tileElement)
 {
     do
     {
@@ -65,7 +65,7 @@ bool tile_element_is_underground(rct_tile_element* tileElement)
     return true;
 }
 
-BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement)
+BannerIndex tile_element_get_banner_index(TileElement* tileElement)
 {
     rct_scenery_entry* sceneryEntry;
 
@@ -90,7 +90,7 @@ BannerIndex tile_element_get_banner_index(rct_tile_element* tileElement)
     }
 }
 
-void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex bannerIndex)
+void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerIndex)
 {
     switch (tileElement->GetType())
     {
@@ -109,7 +109,7 @@ void tile_element_set_banner_index(rct_tile_element* tileElement, BannerIndex ba
     }
 }
 
-void tile_element_remove_banner_entry(rct_tile_element* tileElement)
+void tile_element_remove_banner_entry(TileElement* tileElement)
 {
     BannerIndex bannerIndex = tile_element_get_banner_index(tileElement);
     if (bannerIndex == BANNER_INDEX_NULL)
@@ -125,7 +125,7 @@ void tile_element_remove_banner_entry(rct_tile_element* tileElement)
     }
 }
 
-uint8_t tile_element_get_ride_index(const rct_tile_element* tileElement)
+uint8_t tile_element_get_ride_index(const TileElement* tileElement)
 {
     switch (tileElement->GetType())
     {
@@ -140,7 +140,7 @@ uint8_t tile_element_get_ride_index(const rct_tile_element* tileElement)
     }
 }
 
-void rct_tile_element::ClearAs(uint8_t newType)
+void TileElement::ClearAs(uint8_t newType)
 {
     type = newType;
     flags = 0;
@@ -151,5 +151,5 @@ void rct_tile_element::ClearAs(uint8_t newType)
 
 void TileElementBase::Remove()
 {
-    tile_element_remove((rct_tile_element*)this);
+    tile_element_remove((TileElement*)this);
 }

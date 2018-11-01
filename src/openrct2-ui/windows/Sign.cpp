@@ -154,7 +154,7 @@ rct_window* window_sign_open(rct_windownumber number)
     int32_t view_x = gBanners[w->number].x << 5;
     int32_t view_y = gBanners[w->number].y << 5;
 
-    rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
     while (1)
     {
@@ -206,7 +206,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 
     rct_string_id string_id;
 
-    rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     switch (widgetIndex)
     {
@@ -404,7 +404,7 @@ rct_window* window_sign_small_open(rct_windownumber number)
     int32_t view_x = gBanners[w->number].x << 5;
     int32_t view_y = gBanners[w->number].y << 5;
 
-    rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
     while (1)
     {
@@ -455,7 +455,7 @@ static void window_sign_small_mouseup(rct_window* w, rct_widgetindex widgetIndex
 
     rct_string_id string_id;
 
-    rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     switch (widgetIndex)
     {

@@ -31,7 +31,7 @@
 #define PEEP_MAX_ENERGY 128
 #define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
 
-struct rct_tile_element;
+struct TileElement;
 struct Ride;
 
 enum PEEP_TYPE
@@ -802,7 +802,7 @@ private: // Staff update
 public: // Peep
     bool CheckForPath();
     void PerformNextAction(uint8_t& pathing_result);
-    void PerformNextAction(uint8_t& pathing_result, rct_tile_element*& tile_result);
+    void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextActionSpriteType();
     uint8_t GetActionSpriteType();
@@ -982,7 +982,7 @@ void game_command_set_guest_name(
 int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep);
 void peep_reset_pathfind_goal(rct_peep* peep);
 
-bool is_valid_path_z_and_direction(rct_tile_element* tileElement, int32_t currentZ, int32_t currentDirection);
+bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
 int32_t guest_path_finding(rct_peep* peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

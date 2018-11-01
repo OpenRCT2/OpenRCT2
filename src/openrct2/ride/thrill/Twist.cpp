@@ -19,7 +19,7 @@
 static void paint_twist_structure(
     paint_session* session, Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
-    const rct_tile_element* savedTileElement = static_cast<const rct_tile_element*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle* vehicle = nullptr;
@@ -80,7 +80,7 @@ static void paint_twist_structure(
 /** rct2: 0x0076D858 */
 static void paint_twist(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

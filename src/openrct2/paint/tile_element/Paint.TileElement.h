@@ -100,13 +100,13 @@ uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation);
 
 void tile_element_paint_setup(paint_session* session, int32_t x, int32_t y);
 
-void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element);
-void banner_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tile_element);
-void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement);
-void path_paint(paint_session* session, uint16_t height, const rct_tile_element* tileElement);
-void scenery_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tileElement);
-void fence_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tileElement);
-void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement);
-void track_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tileElement);
+void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element);
+void banner_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element);
+void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement);
+void path_paint(paint_session* session, uint16_t height, const TileElement* tileElement);
+void scenery_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
+void fence_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
+void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement);
+void track_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
 
 #endif

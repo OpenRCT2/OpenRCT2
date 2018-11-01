@@ -420,7 +420,7 @@ static constexpr const uint32_t dword_97B898[][2] =
 struct tile_descriptor
 {
     TileCoordsXY tile_coords;
-    const rct_tile_element * tile_element;
+    const TileElement * tile_element;
     uint8_t terrain;
     uint8_t slope;
     corner_height corner_heights;
@@ -505,7 +505,7 @@ static uint32_t get_tunnel_image(uint8_t index, uint8_t type)
     return _terrainEdgeTunnelSpriteIds[index][type];
 }
 
-static uint8_t viewport_surface_paint_setup_get_relative_slope(const rct_tile_element* tileElement, int32_t rotation)
+static uint8_t viewport_surface_paint_setup_get_relative_slope(const TileElement* tileElement, int32_t rotation)
 {
     const uint8_t slope = tileElement->AsSurface()->GetSlope();
     const uint8_t slopeHeight = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
@@ -1010,7 +1010,7 @@ static void viewport_surface_draw_water_side_top(
 /**
  *  rct2: 0x0066062C
  */
-void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const rct_tile_element* tileElement)
+void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
 {
     rct_drawpixelinfo* dpi = session->DPI;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
@@ -1056,7 +1056,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             continue;
         }
 
-        rct_tile_element* surfaceElement = map_get_surface_element_at(position);
+        TileElement* surfaceElement = map_get_surface_element_at(position);
         if (surfaceElement == nullptr)
         {
             continue;

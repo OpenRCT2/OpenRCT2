@@ -122,7 +122,7 @@ void rct_duck::UpdateFlyToWater()
     int32_t newY = y + DuckMoveOffset[direction].y;
     int32_t manhattanDistanceN = abs(target_x - newX) + abs(target_y - newY);
 
-    rct_tile_element* tileElement = map_get_surface_element_at({ target_x, target_y });
+    TileElement* tileElement = map_get_surface_element_at({ target_x, target_y });
     int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
     if (waterHeight == 0)
     {

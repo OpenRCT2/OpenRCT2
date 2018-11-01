@@ -1190,7 +1190,7 @@ static void window_map_set_land_rights_tool_update(int32_t x, int32_t y)
 static void place_park_entrance_get_map_position(
     int32_t x, int32_t y, int16_t* mapX, int16_t* mapY, int16_t* mapZ, int32_t* direction)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     sub_68A15E(x, y, mapX, mapY, direction, &tileElement);
     if (*mapX == LOCATION_NULL)
@@ -1268,7 +1268,7 @@ static void window_map_place_park_entrance_tool_update(int32_t x, int32_t y)
 static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y)
 {
     int32_t mapX, mapY, mapZ, direction;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -1327,7 +1327,7 @@ static void window_map_place_park_entrance_tool_down(int32_t x, int32_t y)
  */
 static void window_map_set_peep_spawn_tool_down(int32_t x, int32_t y)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     int32_t mapX, mapY, mapZ, direction;
 
     // Verify footpath exists at location, and retrieve coordinates
@@ -1541,7 +1541,7 @@ static constexpr const uint8_t RideColourKey[] = {
 
 static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
 {
-    rct_tile_element* tileElement = map_get_surface_element_at(c);
+    TileElement* tileElement = map_get_surface_element_at(c);
     uint16_t colour = TerrainColour[tileElement->AsSurface()->GetSurfaceStyle()];
     if (tileElement->AsSurface()->GetWaterHeight() > 0)
         colour = WaterColour;
@@ -1571,7 +1571,7 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
 
     // as an improvement we could use first_element to show underground stuff?
-    rct_tile_element* tileElement = map_get_surface_element_at(c);
+    TileElement* tileElement = map_get_surface_element_at(c);
     do
     {
         switch (tileElement->GetType())

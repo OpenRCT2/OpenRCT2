@@ -113,7 +113,7 @@ public:
             return res;
         }
 
-        rct_tile_element* tileElement = map_get_surface_element_at(_x / 32, _y / 32);
+        TileElement* tileElement = map_get_surface_element_at(_x / 32, _y / 32);
         if (tileElement == nullptr)
         {
             res->Error = GA_ERROR::UNKNOWN;
@@ -212,8 +212,7 @@ public:
         uint8_t baseHeight = _z >> 3;
         uint8_t clearanceHeight = (_z + 32) >> 3;
 
-        rct_tile_element* tileElement = map_get_track_element_at_of_type_from_ride(
-            _x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
+        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_x, _y, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
             Ride* ride = get_ride(_rideIndex);
@@ -272,7 +271,7 @@ public:
                         uint16_t previousElementX = floor2(_x, 32) - CoordsDirectionDelta[_direction].x;
                         uint16_t previousElementY = floor2(_y, 32) - CoordsDirectionDelta[_direction].y;
 
-                        rct_tile_element* previousTileElement = map_get_track_element_at_of_type_from_ride(
+                        TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
                             previousElementX, previousElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
 
                         if (previousTileElement != nullptr)
@@ -327,7 +326,7 @@ public:
                         uint16_t nextElementX = floor2(previousSegmentX, 32) + CoordsDirectionDelta[direction1].x;
                         uint16_t nextElementY = floor2(previousSegmentY, 32) + CoordsDirectionDelta[direction1].y;
 
-                        rct_tile_element* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
+                        TileElement* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
                             nextElementX, nextElementY, baseHeight, TRACK_ELEM_MAZE, _rideIndex);
 
                         if (tmp_tileElement != nullptr)

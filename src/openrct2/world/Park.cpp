@@ -169,7 +169,7 @@ void update_park_fences(const CoordsXY coords)
     if (map_is_edge(coords))
         return;
 
-    rct_tile_element* surfaceElement = map_get_surface_element_at(coords);
+    TileElement* surfaceElement = map_get_surface_element_at(coords);
     if (surfaceElement == nullptr)
         return;
 
@@ -178,7 +178,7 @@ void update_park_fences(const CoordsXY coords)
     {
         bool fenceRequired = true;
 
-        rct_tile_element* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
+        TileElement* tileElement = map_get_first_element_at(coords.x / 32, coords.y / 32);
         // If an entrance element do not place flags around surface
         do
         {
@@ -355,7 +355,7 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
                 return 0;
             }
 
-            rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+            TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
             do
             {
                 if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE

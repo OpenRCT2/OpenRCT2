@@ -132,7 +132,7 @@ rct_window* window_banner_open(rct_windownumber number)
     int32_t view_x = gBanners[w->number].x << 5;
     int32_t view_y = gBanners[w->number].y << 5;
 
-    rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    TileElement* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
     while (1)
     {
         if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->AsBanner()->GetIndex() == w->number))
@@ -171,7 +171,7 @@ static void window_banner_mouseup(rct_window* w, rct_widgetindex widgetIndex)
     int32_t x = banner->x << 5;
     int32_t y = banner->y << 5;
 
-    rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     while (1)
     {

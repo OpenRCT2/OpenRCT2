@@ -21,7 +21,7 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
 {
     int32_t i, x, y, count, doubleCorner, raisedLand = 0;
     uint8_t highest, cornerHeights[4];
-    rct_tile_element *tileElement, *tileElement2;
+    TileElement *tileElement, *tileElement2;
     for (y = t; y < b; y++)
     {
         for (x = l; x < r; x++)
@@ -201,7 +201,7 @@ int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b)
  */
 int32_t tile_smooth(int32_t x, int32_t y)
 {
-    rct_tile_element* const surfaceElement = map_get_surface_element_at(x, y);
+    TileElement* const surfaceElement = map_get_surface_element_at(x, y);
 
     // +-----+-----+-----+
     // |  W  | NW  |  N  |
@@ -240,7 +240,7 @@ int32_t tile_smooth(int32_t x, int32_t y)
                 continue;
 
             // Get neighbour height. If the element is not valid (outside of map) assume the same height
-            rct_tile_element* neighbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
+            TileElement* neighbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
             neighbourHeightOffset.baseheight[index] = neighbour_element ? neighbour_element->base_height
                                                                         : surfaceElement->base_height;
 

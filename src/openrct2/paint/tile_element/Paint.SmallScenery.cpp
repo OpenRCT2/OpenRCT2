@@ -30,7 +30,7 @@ static constexpr const LocationXY16 lengths[] = {
  *
  *  rct2: 0x006DFF47
  */
-void scenery_paint(paint_session* session, uint8_t direction, int32_t height, const rct_tile_element* tileElement)
+void scenery_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement)
 {
     if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {

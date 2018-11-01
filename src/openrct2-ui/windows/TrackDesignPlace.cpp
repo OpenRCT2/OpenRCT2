@@ -412,7 +412,7 @@ static void window_track_place_clear_provisional()
  */
 static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     uint32_t z;
 
     tileElement = map_get_surface_element_at(x >> 5, y >> 5);

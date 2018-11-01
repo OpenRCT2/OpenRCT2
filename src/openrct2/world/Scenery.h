@@ -265,7 +265,7 @@ extern colour_t gWindowScenerySecondaryColour;
 extern colour_t gWindowSceneryTertiaryColour;
 extern bool gWindowSceneryEyedropperEnabled;
 
-extern rct_tile_element* gSceneryTileElement;
+extern TileElement* gSceneryTileElement;
 extern uint8_t gSceneryQuadrant;
 
 extern money32 gSceneryPlaceCost;
@@ -296,7 +296,7 @@ extern money32 gClearSceneryCost;
 
 void init_scenery();
 void scenery_update_tile(int32_t x, int32_t y);
-void scenery_update_age(int32_t x, int32_t y, rct_tile_element* tileElement);
+void scenery_update_age(int32_t x, int32_t y, TileElement* tileElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 

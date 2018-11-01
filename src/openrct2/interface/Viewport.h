@@ -17,7 +17,7 @@ struct paint_session;
 struct paint_struct;
 struct rct_drawpixelinfo;
 struct rct_peep;
-struct rct_tile_element;
+struct TileElement;
 struct rct_vehicle;
 struct rct_window;
 union paint_entry;
@@ -87,7 +87,7 @@ struct viewport_interaction_info
     int32_t y;
     union
     {
-        rct_tile_element* tileElement;
+        TileElement* tileElement;
         rct_sprite* sprite;
         rct_peep* peep;
         rct_vehicle* vehicle;
@@ -147,10 +147,10 @@ void viewport_set_visibility(uint8_t mode);
 
 void get_map_coordinates_from_pos(
     int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
-    rct_tile_element** tileElement, rct_viewport** viewport);
+    TileElement** tileElement, rct_viewport** viewport);
 void get_map_coordinates_from_pos_window(
     rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
-    rct_tile_element** tileElement, rct_viewport** viewport);
+    TileElement** tileElement, rct_viewport** viewport);
 
 int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_interaction_info* info);
 int32_t viewport_interaction_left_over(int32_t x, int32_t y);
@@ -159,7 +159,7 @@ int32_t viewport_interaction_get_item_right(int32_t x, int32_t y, viewport_inter
 int32_t viewport_interaction_right_over(int32_t x, int32_t y);
 int32_t viewport_interaction_right_click(int32_t x, int32_t y);
 
-void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, rct_tile_element** tileElement);
+void sub_68A15E(int32_t screenX, int32_t screenY, int16_t* x, int16_t* y, int32_t* direction, TileElement** tileElement);
 void sub_68B2B7(paint_session* session, int32_t x, int32_t y);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);

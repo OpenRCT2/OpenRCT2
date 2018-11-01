@@ -681,7 +681,7 @@ void sprite_remove(rct_sprite* sprite)
 
 static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     if (!map_is_location_owned(x & 0xFFE0, y & 0xFFE0, z))
         return false;

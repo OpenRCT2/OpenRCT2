@@ -44,9 +44,9 @@
 
 struct map_backup
 {
-    rct_tile_element tile_elements[MAX_TILE_ELEMENTS];
-    rct_tile_element* tile_pointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-    rct_tile_element* next_free_tile_element;
+    TileElement tile_elements[MAX_TILE_ELEMENTS];
+    TileElement* tile_pointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+    TileElement* next_free_tile_element;
     uint16_t map_size_units;
     uint16_t map_size_units_minus_2;
     uint16_t map_size;
@@ -1091,7 +1091,7 @@ static int32_t track_design_place_scenery(
                                 continue;
                             }
 
-                            rct_tile_element* tile_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
+                            TileElement* tile_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
 
                             if (tile_element == nullptr)
                             {
@@ -1309,7 +1309,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
                 continue;
             }
 
-            rct_tile_element* tile_element = map_get_surface_element_at(mapCoord);
+            TileElement* tile_element = map_get_surface_element_at(mapCoord);
             int16_t map_height = tile_element->base_height * 8;
             if (tile_element->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
@@ -1471,7 +1471,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                         continue;
                     }
 
-                    rct_tile_element* tileElement = map_get_surface_element_at(tile);
+                    TileElement* tileElement = map_get_surface_element_at(tile);
                     if (tileElement == nullptr)
                     {
                         return false;
@@ -1555,7 +1555,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
                         (int16_t)(x + CoordsDirectionDelta[rotation].x),
                         (int16_t)(y + CoordsDirectionDelta[rotation].y),
                     };
-                    rct_tile_element* tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
+                    TileElement* tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                     z = gTrackPreviewOrigin.z / 8;
                     z += (entrance->z == (int8_t)(uint8_t)0x80) ? -1 : entrance->z;
 
@@ -2041,7 +2041,7 @@ static money32 place_maze_design(uint8_t flags, uint8_t rideIndex, uint16_t maze
     // Check support height
     if (!gCheatsDisableSupportLimits)
     {
-        rct_tile_element* tileElement = map_get_surface_element_at({ x, y });
+        TileElement* tileElement = map_get_surface_element_at({ x, y });
         uint8_t supportZ = (z + 32) >> 3;
         if (supportZ > tileElement->base_height)
         {
@@ -2110,7 +2110,7 @@ static money32 place_maze_design(uint8_t flags, uint8_t rideIndex, uint16_t maze
         int32_t fx = floor2(x, 32);
         int32_t fy = floor2(y, 32);
         int32_t fz = z >> 3;
-        rct_tile_element* tileElement = tile_element_insert(fx >> 5, fy >> 5, fz, 15);
+        TileElement* tileElement = tile_element_insert(fx >> 5, fy >> 5, fz, 15);
         tileElement->clearance_height = fz + 4;
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
         tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
@@ -2332,7 +2332,7 @@ static void track_design_preview_clear_map()
 
     for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
     {
-        rct_tile_element* tile_element = &gTileElements[i];
+        TileElement* tile_element = &gTileElements[i];
         tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
         tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
         tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);

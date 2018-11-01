@@ -38,7 +38,7 @@ rct_banner gBanners[MAX_BANNERS];
  */
 static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
 {
-    rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     uint8_t resultRideIndex = RIDE_ID_NULL;
     do
     {
@@ -105,7 +105,7 @@ static money32 BannerRemove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t di
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        tile_element_remove_banner_entry((rct_tile_element*)tileElement);
+        tile_element_remove_banner_entry((TileElement*)tileElement);
         map_invalidate_tile_zoom1(x, y, z, z + 32);
         tileElement->Remove();
     }
@@ -132,7 +132,7 @@ static money32 BannerSetColour(int16_t x, int16_t y, uint8_t baseHeight, uint8_t
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+        TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
 
         bool found = false;
         do
@@ -187,7 +187,7 @@ static money32 BannerPlace(
         return MONEY32_UNDEFINED;
     }
 
-    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
 
     bool pathFound = false;
     do
@@ -241,7 +241,7 @@ static money32 BannerPlace(
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        rct_tile_element* newTileElement = tile_element_insert(x / 32, y / 32, baseHeight, 0);
+        TileElement* newTileElement = tile_element_insert(x / 32, y / 32, baseHeight, 0);
         assert(newTileElement != nullptr);
         gBanners[*bannerIndex].type = type;
         gBanners[*bannerIndex].colour = colour;
@@ -283,7 +283,7 @@ static money32 BannerSetStyle(BannerIndex bannerIndex, uint8_t colour, uint8_t t
 
     rct_banner* banner = &gBanners[bannerIndex];
 
-    rct_tile_element* tileElement = banner_get_tile_element(bannerIndex);
+    TileElement* tileElement = banner_get_tile_element(bannerIndex);
 
     if (tileElement == nullptr)
     {
@@ -395,10 +395,10 @@ BannerIndex create_new_banner(uint8_t flags)
     return bannerIndex;
 }
 
-rct_tile_element* banner_get_tile_element(BannerIndex bannerIndex)
+TileElement* banner_get_tile_element(BannerIndex bannerIndex)
 {
     rct_banner* banner = &gBanners[bannerIndex];
-    rct_tile_element* tileElement = map_get_first_element_at(banner->x, banner->y);
+    TileElement* tileElement = map_get_first_element_at(banner->x, banner->y);
     do
     {
         if (tile_element_get_banner_index(tileElement) == bannerIndex)
@@ -459,7 +459,7 @@ void banner_reset_broken_index()
 {
     for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
-        rct_tile_element* tileElement = banner_get_tile_element(bannerIndex);
+        TileElement* tileElement = banner_get_tile_element(bannerIndex);
         if (tileElement == nullptr)
             gBanners[bannerIndex].type = BANNER_NULL;
     }
@@ -469,7 +469,7 @@ void fix_duplicated_banners()
 {
     // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
     bool activeBanners[Util::CountOf(gBanners)]{};
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)

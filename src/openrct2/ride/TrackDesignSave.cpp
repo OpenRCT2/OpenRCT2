@@ -40,7 +40,7 @@ bool gTrackDesignSaveMode = false;
 uint8_t gTrackDesignSaveRideIndex = 255;
 
 static size_t _trackSavedTileElementsCount;
-static rct_tile_element* _trackSavedTileElements[TRACK_MAX_SAVED_TILE_ELEMENTS];
+static TileElement* _trackSavedTileElements[TRACK_MAX_SAVED_TILE_ELEMENTS];
 
 static size_t _trackSavedTileElementsDescCount;
 static rct_td6_scenery_element _trackSavedTileElementsDesc[TRACK_MAX_SAVED_TILE_ELEMENTS];
@@ -48,10 +48,10 @@ static rct_td6_scenery_element _trackSavedTileElementsDesc[TRACK_MAX_SAVED_TILE_
 static rct_track_td6* _trackDesign;
 static uint8_t _trackSaveDirection;
 
-static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rct_tile_element* tileElement);
+static bool track_design_save_should_select_scenery_around(int32_t rideIndex, TileElement* tileElement);
 static void track_design_save_select_nearby_scenery_for_tile(int32_t rideIndex, int32_t cx, int32_t cy);
-static bool track_design_save_add_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element* tileElement);
-static void track_design_save_remove_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element* tileElement);
+static bool track_design_save_add_tile_element(int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement);
+static void track_design_save_remove_tile_element(int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement);
 static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6);
 static rct_track_td6* track_design_save_to_td6(uint8_t rideIndex);
 static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* td6);
@@ -71,7 +71,7 @@ void track_design_save_init()
  *  rct2: 0x006D2B07
  */
 void track_design_save_select_tile_element(
-    int32_t interactionType, int32_t x, int32_t y, rct_tile_element* tileElement, bool collect)
+    int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement, bool collect)
 {
     if (track_design_save_contains_tile_element(tileElement))
     {
@@ -100,7 +100,7 @@ void track_design_save_select_tile_element(
  */
 void track_design_save_select_nearby_scenery(int32_t rideIndex)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
@@ -194,7 +194,7 @@ bool track_design_save(uint8_t rideIndex)
     return true;
 }
 
-bool track_design_save_contains_tile_element(const rct_tile_element* tileElement)
+bool track_design_save_contains_tile_element(const TileElement* tileElement)
 {
     for (size_t i = 0; i < _trackSavedTileElementsCount; i++)
     {
@@ -206,7 +206,7 @@ bool track_design_save_contains_tile_element(const rct_tile_element* tileElement
     return false;
 }
 
-static int32_t tile_element_get_total_element_count(rct_tile_element* tileElement)
+static int32_t tile_element_get_total_element_count(TileElement* tileElement)
 {
     int32_t elementCount;
     rct_scenery_entry* sceneryEntry;
@@ -239,7 +239,7 @@ static int32_t tile_element_get_total_element_count(rct_tile_element* tileElemen
  *
  *  rct2: 0x006D2ED2
  */
-static bool track_design_save_can_add_tile_element(rct_tile_element* tileElement)
+static bool track_design_save_can_add_tile_element(TileElement* tileElement)
 {
     size_t newElementCount = tile_element_get_total_element_count(tileElement);
     if (newElementCount == 0)
@@ -262,7 +262,7 @@ static bool track_design_save_can_add_tile_element(rct_tile_element* tileElement
  *
  *  rct2: 0x006D2F4C
  */
-static void track_design_save_push_tile_element(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_push_tile_element(int32_t x, int32_t y, TileElement* tileElement)
 {
     if (_trackSavedTileElementsCount < TRACK_MAX_SAVED_TILE_ELEMENTS)
     {
@@ -289,7 +289,7 @@ static void track_design_save_push_tile_element_desc(
     item->secondary_colour = secondaryColour;
 }
 
-static void track_design_save_add_scenery(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_add_scenery(int32_t x, int32_t y, TileElement* tileElement)
 {
     SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
     int32_t entryType = sceneryElement->GetEntryIndex();
@@ -306,7 +306,7 @@ static void track_design_save_add_scenery(int32_t x, int32_t y, rct_tile_element
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);
 }
 
-static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_add_large_scenery(int32_t x, int32_t y, TileElement* tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t x0, y0, z0, z;
@@ -352,7 +352,7 @@ static void track_design_save_add_large_scenery(int32_t x, int32_t y, rct_tile_e
     }
 }
 
-static void track_design_save_add_wall(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_add_wall(int32_t x, int32_t y, TileElement* tileElement)
 {
     int32_t entryType = tileElement->AsWall()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
@@ -368,7 +368,7 @@ static void track_design_save_add_wall(int32_t x, int32_t y, rct_tile_element* t
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);
 }
 
-static void track_design_save_add_footpath(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_add_footpath(int32_t x, int32_t y, TileElement* tileElement)
 {
     int32_t entryType = tileElement->AsPath()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
@@ -389,7 +389,7 @@ static void track_design_save_add_footpath(int32_t x, int32_t y, rct_tile_elemen
  *
  *  rct2: 0x006D2B3C
  */
-static bool track_design_save_add_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element* tileElement)
+static bool track_design_save_add_tile_element(int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement)
 {
     if (!track_design_save_can_add_tile_element(tileElement))
     {
@@ -419,7 +419,7 @@ static bool track_design_save_add_tile_element(int32_t interactionType, int32_t 
  *
  *  rct2: 0x006D2F78
  */
-static void track_design_save_pop_tile_element(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_pop_tile_element(int32_t x, int32_t y, TileElement* tileElement)
 {
     map_invalidate_tile_full(x, y);
 
@@ -441,7 +441,7 @@ static void track_design_save_pop_tile_element(int32_t x, int32_t y, rct_tile_el
         {
             memmove(
                 &_trackSavedTileElements[removeIndex], &_trackSavedTileElements[removeIndex + 1],
-                remainingNumItems * sizeof(rct_tile_element*));
+                remainingNumItems * sizeof(TileElement*));
         }
         _trackSavedTileElementsCount--;
         _trackSavedTileElements[_trackSavedTileElementsCount] = nullptr;
@@ -486,7 +486,7 @@ static void track_design_save_pop_tile_element_desc(
     }
 }
 
-static void track_design_save_remove_scenery(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_remove_scenery(int32_t x, int32_t y, TileElement* tileElement)
 {
     int32_t entryType = tileElement->AsSmallScenery()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
@@ -499,7 +499,7 @@ static void track_design_save_remove_scenery(int32_t x, int32_t y, rct_tile_elem
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags);
 }
 
-static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_remove_large_scenery(int32_t x, int32_t y, TileElement* tileElement)
 {
     rct_large_scenery_tile *sceneryTiles, *tile;
     int32_t x0, y0, z0, z;
@@ -542,7 +542,7 @@ static void track_design_save_remove_large_scenery(int32_t x, int32_t y, rct_til
     }
 }
 
-static void track_design_save_remove_wall(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_remove_wall(int32_t x, int32_t y, TileElement* tileElement)
 {
     int32_t entryType = tileElement->AsWall()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
@@ -555,7 +555,7 @@ static void track_design_save_remove_wall(int32_t x, int32_t y, rct_tile_element
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags);
 }
 
-static void track_design_save_remove_footpath(int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_remove_footpath(int32_t x, int32_t y, TileElement* tileElement)
 {
     int32_t entryType = tileElement->AsPath()->GetEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
@@ -576,7 +576,7 @@ static void track_design_save_remove_footpath(int32_t x, int32_t y, rct_tile_ele
  *
  *  rct2: 0x006D2B3C
  */
-static void track_design_save_remove_tile_element(int32_t interactionType, int32_t x, int32_t y, rct_tile_element* tileElement)
+static void track_design_save_remove_tile_element(int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement)
 {
     switch (interactionType)
     {
@@ -595,7 +595,7 @@ static void track_design_save_remove_tile_element(int32_t interactionType, int32
     }
 }
 
-static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rct_tile_element* tileElement)
+static bool track_design_save_should_select_scenery_around(int32_t rideIndex, TileElement* tileElement)
 {
     switch (tileElement->GetType())
     {
@@ -622,7 +622,7 @@ static bool track_design_save_should_select_scenery_around(int32_t rideIndex, rc
 
 static void track_design_save_select_nearby_scenery_for_tile(int32_t rideIndex, int32_t cx, int32_t cy)
 {
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
 
     for (int32_t y = cy - TRACK_NEARBY_SCENERY_DISTANCE; y <= cy + TRACK_NEARBY_SCENERY_DISTANCE; y++)
     {
@@ -839,7 +839,7 @@ static rct_track_td6* track_design_save_to_td6(uint8_t rideIndex)
  */
 static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* td6)
 {
-    rct_tile_element* tileElement = nullptr;
+    TileElement* tileElement = nullptr;
     bool mapFound = false;
     int16_t startX = 0;
     int16_t startY = 0;
@@ -1031,7 +1031,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
-    rct_tile_element* initialMap = trackElement.element;
+    TileElement* initialMap = trackElement.element;
 
     int16_t start_x = trackElement.x;
     int16_t start_y = trackElement.y;
@@ -1127,7 +1127,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
             int16_t x = location.x * 32;
             int16_t y = location.y * 32;
 
-            rct_tile_element* tile_element = map_get_first_element_at(x >> 5, y >> 5);
+            TileElement* tile_element = map_get_first_element_at(x >> 5, y >> 5);
             do
             {
                 if (tile_element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)

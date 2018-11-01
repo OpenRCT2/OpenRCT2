@@ -340,7 +340,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         int32_t selectedPeepType = _windowStaffListSelectedTab;
 
         int32_t direction;
-        rct_tile_element* tileElement;
+        TileElement* tileElement;
         footpath_get_coordinates_from_pos(x, y, &x, &y, &direction, &tileElement);
         if (x == LOCATION_NULL)
             return;

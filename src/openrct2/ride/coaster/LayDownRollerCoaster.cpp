@@ -22,7 +22,7 @@
 /** rct2: 0x0082491C */
 static void lay_down_rc_track_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -134,7 +134,7 @@ static void lay_down_rc_track_flat(
 /** rct2: 0x00824B8C, 0x00824B9C, 0x00824BAC */
 static void lay_down_rc_track_station(
     paint_session* session, uint8_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (tileElement->AsTrack()->IsInverted())
     {
@@ -192,7 +192,7 @@ static void lay_down_rc_track_station(
 /** rct2: 0x0082492C */
 static void lay_down_rc_track_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -357,7 +357,7 @@ static void lay_down_rc_track_25_deg_up(
 /** rct2: 0x0082493C */
 static void lay_down_rc_track_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -473,7 +473,7 @@ static void lay_down_rc_track_60_deg_up(
 /** rct2: 0x0082494C */
 static void lay_down_rc_track_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -638,7 +638,7 @@ static void lay_down_rc_track_flat_to_25_deg_up(
 /** rct2: 0x0082495C */
 static void lay_down_rc_track_25_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -768,7 +768,7 @@ static void lay_down_rc_track_25_deg_up_to_60_deg_up(
 /** rct2: 0x0082496C */
 static void lay_down_rc_track_60_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -922,7 +922,7 @@ static void lay_down_rc_track_60_deg_up_to_25_deg_up(
 /** rct2: 0x0082497C */
 static void lay_down_rc_track_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -1087,7 +1087,7 @@ static void lay_down_rc_track_25_deg_up_to_flat(
 /** rct2: 0x0082498C */
 static void lay_down_rc_track_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -1095,7 +1095,7 @@ static void lay_down_rc_track_25_deg_down(
 /** rct2: 0x0082499C */
 static void lay_down_rc_track_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -1103,7 +1103,7 @@ static void lay_down_rc_track_60_deg_down(
 /** rct2: 0x008249AC */
 static void lay_down_rc_track_flat_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -1111,7 +1111,7 @@ static void lay_down_rc_track_flat_to_25_deg_down(
 /** rct2: 0x008249BC */
 static void lay_down_rc_track_25_deg_down_to_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -1119,7 +1119,7 @@ static void lay_down_rc_track_25_deg_down_to_60_deg_down(
 /** rct2: 0x008249CC */
 static void lay_down_rc_track_60_deg_down_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -1127,7 +1127,7 @@ static void lay_down_rc_track_60_deg_down_to_25_deg_down(
 /** rct2: 0x008249DC */
 static void lay_down_rc_track_25_deg_down_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -1135,7 +1135,7 @@ static void lay_down_rc_track_25_deg_down_to_flat(
 /** rct2: 0x008249EC */
 static void lay_down_rc_track_left_quarter_turn_5(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -1504,7 +1504,7 @@ static void lay_down_rc_track_left_quarter_turn_5(
 /** rct2: 0x008249FC */
 static void lay_down_rc_track_right_quarter_turn_5(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     lay_down_rc_track_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
@@ -1513,7 +1513,7 @@ static void lay_down_rc_track_right_quarter_turn_5(
 /** rct2: 0x00824A0C */
 static void lay_down_rc_track_flat_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -1594,7 +1594,7 @@ static void lay_down_rc_track_flat_to_left_bank(
 /** rct2: 0x00824A1C */
 static void lay_down_rc_track_flat_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -1675,7 +1675,7 @@ static void lay_down_rc_track_flat_to_right_bank(
 /** rct2: 0x00824A2C */
 static void lay_down_rc_track_left_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -1756,7 +1756,7 @@ static void lay_down_rc_track_left_bank_to_flat(
 /** rct2: 0x00824A3C */
 static void lay_down_rc_track_right_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -1837,7 +1837,7 @@ static void lay_down_rc_track_right_bank_to_flat(
 /** rct2: 0x00824A4C */
 static void lay_down_rc_track_banked_left_quarter_turn_5(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -2207,7 +2207,7 @@ static void lay_down_rc_track_banked_left_quarter_turn_5(
 /** rct2: 0x00824A5C */
 static void lay_down_rc_track_banked_right_quarter_turn_5(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     lay_down_rc_track_banked_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
@@ -2216,7 +2216,7 @@ static void lay_down_rc_track_banked_right_quarter_turn_5(
 /** rct2: 0x00824A6C */
 static void lay_down_rc_track_left_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -2328,7 +2328,7 @@ static void lay_down_rc_track_left_bank_to_25_deg_up(
 /** rct2: 0x00824A7C */
 static void lay_down_rc_track_right_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -2440,7 +2440,7 @@ static void lay_down_rc_track_right_bank_to_25_deg_up(
 /** rct2: 0x00824A8C */
 static void lay_down_rc_track_25_deg_up_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -2552,7 +2552,7 @@ static void lay_down_rc_track_25_deg_up_to_left_bank(
 /** rct2: 0x00824A9C */
 static void lay_down_rc_track_25_deg_up_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -2664,7 +2664,7 @@ static void lay_down_rc_track_25_deg_up_to_right_bank(
 /** rct2: 0x00824AAC */
 static void lay_down_rc_track_left_bank_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_25_deg_up_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -2672,7 +2672,7 @@ static void lay_down_rc_track_left_bank_to_25_deg_down(
 /** rct2: 0x00824ABC */
 static void lay_down_rc_track_right_bank_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_25_deg_up_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -2680,7 +2680,7 @@ static void lay_down_rc_track_right_bank_to_25_deg_down(
 /** rct2: 0x00824ACC */
 static void lay_down_rc_track_25_deg_down_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_right_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -2688,7 +2688,7 @@ static void lay_down_rc_track_25_deg_down_to_left_bank(
 /** rct2: 0x00824ADC */
 static void lay_down_rc_track_25_deg_down_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_left_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -2696,7 +2696,7 @@ static void lay_down_rc_track_25_deg_down_to_right_bank(
 /** rct2: 0x00824AEC */
 static void lay_down_rc_track_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -2773,7 +2773,7 @@ static void lay_down_rc_track_left_bank(
 /** rct2: 0x00824AFC */
 static void lay_down_rc_track_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
@@ -2781,7 +2781,7 @@ static void lay_down_rc_track_right_bank(
 /** rct2: 0x00824B0C */
 static void lay_down_rc_track_left_quarter_turn_5_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -3125,7 +3125,7 @@ static void lay_down_rc_track_left_quarter_turn_5_25_deg_up(
 /** rct2: 0x00824B1C */
 static void lay_down_rc_track_right_quarter_turn_5_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -3469,7 +3469,7 @@ static void lay_down_rc_track_right_quarter_turn_5_25_deg_up(
 /** rct2: 0x00824B2C */
 static void lay_down_rc_track_left_quarter_turn_5_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     lay_down_rc_track_right_quarter_turn_5_25_deg_up(
@@ -3479,7 +3479,7 @@ static void lay_down_rc_track_left_quarter_turn_5_25_deg_down(
 /** rct2: 0x00824B3C */
 static void lay_down_rc_track_right_quarter_turn_5_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     lay_down_rc_track_left_quarter_turn_5_25_deg_up(
@@ -3489,7 +3489,7 @@ static void lay_down_rc_track_right_quarter_turn_5_25_deg_down(
 /** rct2: 0x00824B4C */
 static void lay_down_rc_track_s_bend_left(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -3816,7 +3816,7 @@ static void lay_down_rc_track_s_bend_left(
 /** rct2: 0x00824B5C */
 static void lay_down_rc_track_s_bend_right(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -4143,7 +4143,7 @@ static void lay_down_rc_track_s_bend_right(
 /** rct2: 0x00824B6C */
 static void lay_down_rc_track_left_vertical_loop(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -4422,7 +4422,7 @@ static void lay_down_rc_track_left_vertical_loop(
 /** rct2: 0x00824B7C */
 static void lay_down_rc_track_right_vertical_loop(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -4657,7 +4657,7 @@ static void lay_down_rc_track_right_vertical_loop(
 /** rct2: 0x00824BBC */
 static void lay_down_rc_track_left_quarter_turn_3(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -4896,7 +4896,7 @@ static void lay_down_rc_track_left_quarter_turn_3(
 /** rct2: 0x00824BCC */
 static void lay_down_rc_track_right_quarter_turn_3(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     lay_down_rc_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
@@ -4905,7 +4905,7 @@ static void lay_down_rc_track_right_quarter_turn_3(
 /** rct2: 0x00824BDC */
 static void lay_down_rc_track_left_quarter_turn_3_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -5150,7 +5150,7 @@ static void lay_down_rc_track_left_quarter_turn_3_bank(
 /** rct2: 0x00824BEC */
 static void lay_down_rc_track_right_quarter_turn_3_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     lay_down_rc_track_left_quarter_turn_3_bank(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
@@ -5159,7 +5159,7 @@ static void lay_down_rc_track_right_quarter_turn_3_bank(
 /** rct2: 0x00824BFC */
 static void lay_down_rc_track_left_quarter_turn_3_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -5330,7 +5330,7 @@ static void lay_down_rc_track_left_quarter_turn_3_25_deg_up(
 /** rct2: 0x00824C0C */
 static void lay_down_rc_track_right_quarter_turn_3_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -5507,7 +5507,7 @@ static void lay_down_rc_track_right_quarter_turn_3_25_deg_up(
 /** rct2: 0x00824C1C */
 static void lay_down_rc_track_left_quarter_turn_3_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     lay_down_rc_track_right_quarter_turn_3_25_deg_up(
@@ -5517,7 +5517,7 @@ static void lay_down_rc_track_left_quarter_turn_3_25_deg_down(
 /** rct2: 0x00824C2C */
 static void lay_down_rc_track_right_quarter_turn_3_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     lay_down_rc_track_left_quarter_turn_3_25_deg_up(
@@ -5527,7 +5527,7 @@ static void lay_down_rc_track_right_quarter_turn_3_25_deg_down(
 /** rct2: 0x00824C9C */
 static void lay_down_rc_track_left_half_banked_helix_up_small(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -5749,7 +5749,7 @@ static void lay_down_rc_track_left_half_banked_helix_up_small(
 /** rct2: 0x00824CAC */
 static void lay_down_rc_track_right_half_banked_helix_up_small(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -5971,7 +5971,7 @@ static void lay_down_rc_track_right_half_banked_helix_up_small(
 /** rct2: 0x00824CBC */
 static void lay_down_rc_track_left_half_banked_helix_down_small(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (trackSequence >= 4)
     {
@@ -5986,7 +5986,7 @@ static void lay_down_rc_track_left_half_banked_helix_down_small(
 /** rct2: 0x00824CCC */
 static void lay_down_rc_track_right_half_banked_helix_down_small(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (trackSequence >= 4)
     {
@@ -6001,7 +6001,7 @@ static void lay_down_rc_track_right_half_banked_helix_down_small(
 /** rct2: 0x00824CDC */
 static void lay_down_rc_track_left_half_banked_helix_up_large(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -6347,7 +6347,7 @@ static void lay_down_rc_track_left_half_banked_helix_up_large(
 /** rct2: 0x00824CEC */
 static void lay_down_rc_track_right_half_banked_helix_up_large(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -6693,7 +6693,7 @@ static void lay_down_rc_track_right_half_banked_helix_up_large(
 /** rct2: 0x00824CFC */
 static void lay_down_rc_track_left_half_banked_helix_down_large(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (trackSequence >= 7)
     {
@@ -6708,7 +6708,7 @@ static void lay_down_rc_track_left_half_banked_helix_down_large(
 /** rct2: 0x00824D0C */
 static void lay_down_rc_track_right_half_banked_helix_down_large(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (trackSequence >= 7)
     {
@@ -6723,7 +6723,7 @@ static void lay_down_rc_track_right_half_banked_helix_down_large(
 /** rct2: 0x00824D3C */
 static void lay_down_rc_track_left_quarter_turn_1_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -6801,7 +6801,7 @@ static void lay_down_rc_track_left_quarter_turn_1_60_deg_up(
 /** rct2: 0x00824D1C */
 static void lay_down_rc_track_right_quarter_turn_1_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -6880,7 +6880,7 @@ static void lay_down_rc_track_right_quarter_turn_1_60_deg_up(
 /** rct2: 0x00824D2C */
 static void lay_down_rc_track_left_quarter_turn_1_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_right_quarter_turn_1_60_deg_up(
         session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
@@ -6889,7 +6889,7 @@ static void lay_down_rc_track_left_quarter_turn_1_60_deg_down(
 /** rct2: 0x00824D4C */
 static void lay_down_rc_track_right_quarter_turn_1_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_left_quarter_turn_1_60_deg_up(
         session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
@@ -6898,7 +6898,7 @@ static void lay_down_rc_track_right_quarter_turn_1_60_deg_down(
 /** rct2: 0x00824D5C */
 static void lay_down_rc_track_brakes(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -6959,7 +6959,7 @@ static void lay_down_rc_track_brakes(
 /** rct2: 0x00824D6C */
 static void lay_down_rc_track_on_ride_photo(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -7062,7 +7062,7 @@ static void lay_down_rc_track_on_ride_photo(
 /** rct2: 0x00824D8C */
 static void lay_down_rc_track_left_eighth_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -7376,7 +7376,7 @@ static void lay_down_rc_track_left_eighth_to_diag(
 /** rct2: 0x00824D9C */
 static void lay_down_rc_track_right_eighth_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -7690,7 +7690,7 @@ static void lay_down_rc_track_right_eighth_to_diag(
 /** rct2: 0x00824DAC */
 static void lay_down_rc_track_left_eighth_to_orthogonal(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     lay_down_rc_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -7699,7 +7699,7 @@ static void lay_down_rc_track_left_eighth_to_orthogonal(
 /** rct2: 0x00824DBC */
 static void lay_down_rc_track_right_eighth_to_orthogonal(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     lay_down_rc_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);
@@ -7708,7 +7708,7 @@ static void lay_down_rc_track_right_eighth_to_orthogonal(
 /** rct2: 0x00824DCC */
 static void lay_down_rc_track_left_eighth_bank_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -8023,7 +8023,7 @@ static void lay_down_rc_track_left_eighth_bank_to_diag(
 /** rct2: 0x00824DDC */
 static void lay_down_rc_track_right_eighth_bank_to_diag(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -8338,7 +8338,7 @@ static void lay_down_rc_track_right_eighth_bank_to_diag(
 /** rct2: 0x00824DEC */
 static void lay_down_rc_track_left_eighth_bank_to_orthogonal(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     lay_down_rc_track_right_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -8347,7 +8347,7 @@ static void lay_down_rc_track_left_eighth_bank_to_orthogonal(
 /** rct2: 0x00824DFC */
 static void lay_down_rc_track_right_eighth_bank_to_orthogonal(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
     lay_down_rc_track_left_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);
@@ -8356,7 +8356,7 @@ static void lay_down_rc_track_right_eighth_bank_to_orthogonal(
 /** rct2: 0x00824D7C */
 static void lay_down_rc_track_diag_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -8648,7 +8648,7 @@ static void lay_down_rc_track_diag_flat(
 /** rct2: 0x00824E2C */
 static void lay_down_rc_track_diag_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -8940,7 +8940,7 @@ static void lay_down_rc_track_diag_25_deg_up(
 /** rct2: 0x00824E8C */
 static void lay_down_rc_track_diag_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -9176,7 +9176,7 @@ static void lay_down_rc_track_diag_60_deg_up(
 /** rct2: 0x00824E0C */
 static void lay_down_rc_track_diag_flat_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -9468,7 +9468,7 @@ static void lay_down_rc_track_diag_flat_to_25_deg_up(
 /** rct2: 0x00824E6C */
 static void lay_down_rc_track_diag_25_deg_up_to_60_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -9704,7 +9704,7 @@ static void lay_down_rc_track_diag_25_deg_up_to_60_deg_up(
 /** rct2: 0x00824E7C */
 static void lay_down_rc_track_diag_60_deg_up_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -9940,7 +9940,7 @@ static void lay_down_rc_track_diag_60_deg_up_to_25_deg_up(
 /** rct2: 0x00824E1C */
 static void lay_down_rc_track_diag_25_deg_up_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -10232,7 +10232,7 @@ static void lay_down_rc_track_diag_25_deg_up_to_flat(
 /** rct2: 0x00824E5C */
 static void lay_down_rc_track_diag_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -10468,7 +10468,7 @@ static void lay_down_rc_track_diag_25_deg_down(
 /** rct2: 0x00824EBC */
 static void lay_down_rc_track_diag_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -10704,7 +10704,7 @@ static void lay_down_rc_track_diag_60_deg_down(
 /** rct2: 0x00824E3C */
 static void lay_down_rc_track_diag_flat_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -10933,7 +10933,7 @@ static void lay_down_rc_track_diag_flat_to_25_deg_down(
 /** rct2: 0x00824E9C */
 static void lay_down_rc_track_diag_25_deg_down_to_60_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -11169,7 +11169,7 @@ static void lay_down_rc_track_diag_25_deg_down_to_60_deg_down(
 /** rct2: 0x00824EAC */
 static void lay_down_rc_track_diag_60_deg_down_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -11405,7 +11405,7 @@ static void lay_down_rc_track_diag_60_deg_down_to_25_deg_down(
 /** rct2: 0x00824E4C */
 static void lay_down_rc_track_diag_25_deg_down_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -11641,7 +11641,7 @@ static void lay_down_rc_track_diag_25_deg_down_to_flat(
 /** rct2: 0x00824EEC */
 static void lay_down_rc_track_diag_flat_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -11811,7 +11811,7 @@ static void lay_down_rc_track_diag_flat_to_left_bank(
 /** rct2: 0x00824EFC */
 static void lay_down_rc_track_diag_flat_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -11981,7 +11981,7 @@ static void lay_down_rc_track_diag_flat_to_right_bank(
 /** rct2: 0x00824F0C */
 static void lay_down_rc_track_diag_left_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -12151,7 +12151,7 @@ static void lay_down_rc_track_diag_left_bank_to_flat(
 /** rct2: 0x00824F1C */
 static void lay_down_rc_track_diag_right_bank_to_flat(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -12321,7 +12321,7 @@ static void lay_down_rc_track_diag_right_bank_to_flat(
 /** rct2: 0x00824F4C */
 static void lay_down_rc_track_diag_left_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -12490,7 +12490,7 @@ static void lay_down_rc_track_diag_left_bank_to_25_deg_up(
 /** rct2: 0x00824F5C */
 static void lay_down_rc_track_diag_right_bank_to_25_deg_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -12659,7 +12659,7 @@ static void lay_down_rc_track_diag_right_bank_to_25_deg_up(
 /** rct2: 0x00824F2C */
 static void lay_down_rc_track_diag_25_deg_up_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -12828,7 +12828,7 @@ static void lay_down_rc_track_diag_25_deg_up_to_left_bank(
 /** rct2: 0x00824F3C */
 static void lay_down_rc_track_diag_25_deg_up_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -12997,7 +12997,7 @@ static void lay_down_rc_track_diag_25_deg_up_to_right_bank(
 /** rct2: 0x00824F6C */
 static void lay_down_rc_track_diag_left_bank_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -13159,7 +13159,7 @@ static void lay_down_rc_track_diag_left_bank_to_25_deg_down(
 /** rct2: 0x00824F7C */
 static void lay_down_rc_track_diag_right_bank_to_25_deg_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -13321,7 +13321,7 @@ static void lay_down_rc_track_diag_right_bank_to_25_deg_down(
 /** rct2: 0x00824F8C */
 static void lay_down_rc_track_diag_25_deg_down_to_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -13490,7 +13490,7 @@ static void lay_down_rc_track_diag_25_deg_down_to_left_bank(
 /** rct2: 0x00824F9C */
 static void lay_down_rc_track_diag_25_deg_down_to_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -13659,7 +13659,7 @@ static void lay_down_rc_track_diag_25_deg_down_to_right_bank(
 /** rct2: 0x00824ECC */
 static void lay_down_rc_track_diag_left_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -13826,7 +13826,7 @@ static void lay_down_rc_track_diag_left_bank(
 /** rct2: 0x00824EDC */
 static void lay_down_rc_track_diag_right_bank(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -13993,7 +13993,7 @@ static void lay_down_rc_track_diag_right_bank(
 /** rct2: 0x00824FAC */
 static void lay_down_rc_track_left_flyer_twist_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -14105,7 +14105,7 @@ static void lay_down_rc_track_left_flyer_twist_up(
 /** rct2: 0x00824FBC */
 static void lay_down_rc_track_right_flyer_twist_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -14215,7 +14215,7 @@ static void lay_down_rc_track_right_flyer_twist_up(
 /** rct2: 0x00824FCC */
 static void lay_down_rc_track_left_flyer_twist_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -14327,7 +14327,7 @@ static void lay_down_rc_track_left_flyer_twist_down(
 /** rct2: 0x00824FDC */
 static void lay_down_rc_track_right_flyer_twist_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -14437,7 +14437,7 @@ static void lay_down_rc_track_right_flyer_twist_down(
 /** rct2: 0x00824C3C */
 static void lay_down_rc_track_flyer_half_loop_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -14567,7 +14567,7 @@ static void lay_down_rc_track_flyer_half_loop_up(
 /** rct2: 0x00824C4C */
 static void lay_down_rc_track_flyer_half_loop_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -14697,7 +14697,7 @@ static void lay_down_rc_track_flyer_half_loop_down(
 /** rct2: 0x00824C5C */
 static void lay_down_rc_track_left_flyer_corkscrew_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -14824,7 +14824,7 @@ static void lay_down_rc_track_left_flyer_corkscrew_up(
 /** rct2: 0x00824C6C */
 static void lay_down_rc_track_right_flyer_corkscrew_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -14938,7 +14938,7 @@ static void lay_down_rc_track_right_flyer_corkscrew_up(
 /** rct2: 0x00824C7C */
 static void lay_down_rc_track_left_flyer_corkscrew_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -15052,7 +15052,7 @@ static void lay_down_rc_track_left_flyer_corkscrew_down(
 /** rct2: 0x00824C8C */
 static void lay_down_rc_track_right_flyer_corkscrew_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     lay_down_rc_track_left_flyer_corkscrew_up(session, rideIndex, 2 - trackSequence, (direction + 3) % 4, height, tileElement);
 }
@@ -15060,7 +15060,7 @@ static void lay_down_rc_track_right_flyer_corkscrew_down(
 /** rct2: 0x00824FEC */
 static void lay_down_rc_track_block_brakes(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
@@ -15117,7 +15117,7 @@ static void lay_down_rc_track_block_brakes(
 
 static void lay_down_rc_track_left_quarter_banked_helix_large_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -15301,7 +15301,7 @@ static void lay_down_rc_track_left_quarter_banked_helix_large_up(
 
 static void lay_down_rc_track_right_quarter_banked_helix_large_up(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -15485,7 +15485,7 @@ static void lay_down_rc_track_right_quarter_banked_helix_large_up(
 
 static void lay_down_rc_track_left_quarter_banked_helix_large_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {
@@ -15669,7 +15669,7 @@ static void lay_down_rc_track_left_quarter_banked_helix_large_down(
 
 static void lay_down_rc_track_right_quarter_banked_helix_large_down(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const rct_tile_element* tileElement)
+    const TileElement* tileElement)
 {
     switch (trackSequence)
     {

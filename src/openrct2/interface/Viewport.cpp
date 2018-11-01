@@ -41,7 +41,7 @@ uint8_t gShowConstuctionRightsRefCount;
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport* g_music_tracking_viewport;
 
-static rct_tile_element* _interaction_element = nullptr;
+static TileElement* _interaction_element = nullptr;
 
 int16_t gSavedViewX;
 int16_t gSavedViewY;
@@ -1609,7 +1609,7 @@ static void sub_68862C(paint_session* session)
  */
 void get_map_coordinates_from_pos(
     int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
-    rct_tile_element** tileElement, rct_viewport** viewport)
+    TileElement** tileElement, rct_viewport** viewport)
 {
     rct_window* window = window_find_from_point(screenX, screenY);
     get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, tileElement, viewport);
@@ -1617,7 +1617,7 @@ void get_map_coordinates_from_pos(
 
 void get_map_coordinates_from_pos_window(
     rct_window* window, int32_t screenX, int32_t screenY, int32_t flags, int16_t* x, int16_t* y, int32_t* interactionType,
-    rct_tile_element** tileElement, rct_viewport** viewport)
+    TileElement** tileElement, rct_viewport** viewport)
 {
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;

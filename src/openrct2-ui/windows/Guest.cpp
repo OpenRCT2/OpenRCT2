@@ -1252,7 +1252,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         return;
 
     int32_t dest_x, dest_y;
-    rct_tile_element* tileElement;
+    TileElement* tileElement;
     footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &tileElement);
 
     if (dest_x == LOCATION_NULL)

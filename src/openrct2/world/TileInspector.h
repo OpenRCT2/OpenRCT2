@@ -54,7 +54,7 @@ int32_t tile_inspector_insert_corrupt_at(int32_t x, int32_t y, int16_t elementIn
 int32_t tile_inspector_remove_element_at(int32_t x, int32_t y, int16_t elementIndex, int32_t flags);
 int32_t tile_inspector_swap_elements_at(int32_t x, int32_t y, int16_t first, int16_t second, int32_t flags);
 int32_t tile_inspector_rotate_element_at(int32_t x, int32_t y, int32_t elementIndex, int32_t flags);
-int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, rct_tile_element element, int32_t flags);
+int32_t tile_inspector_paste_element_at(int32_t x, int32_t y, TileElement element, int32_t flags);
 int32_t tile_inspector_sort_elements_at(int32_t x, int32_t y, int32_t flags);
 int32_t tile_inspector_any_base_height_offset(int32_t x, int32_t y, int16_t elementIndex, int8_t heightOffset, int32_t flags);
 int32_t tile_inspector_surface_show_park_fences(int32_t x, int32_t y, bool enabled, int32_t flags);
