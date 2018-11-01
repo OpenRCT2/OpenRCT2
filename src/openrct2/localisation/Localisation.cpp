@@ -1284,7 +1284,7 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
  * format (ax)
  * args (ecx)
  */
-void format_string(utf8* dest, size_t size, rct_string_id format, void* args)
+void format_string(utf8* dest, size_t size, rct_string_id format, const void* args)
 {
 #ifdef DEBUG
     if (gDebugStringFormatting)
@@ -1319,7 +1319,7 @@ void format_string(utf8* dest, size_t size, rct_string_id format, void* args)
 #endif
 }
 
-void format_string_raw(utf8* dest, size_t size, utf8* src, void* args)
+void format_string_raw(utf8* dest, size_t size, const utf8* src, const void* args)
 {
 #ifdef DEBUG
     if (gDebugStringFormatting)
@@ -1361,7 +1361,7 @@ void format_string_raw(utf8* dest, size_t size, utf8* src, void* args)
  * format (ax)
  * args (ecx)
  */
-void format_string_to_upper(utf8* dest, size_t size, rct_string_id format, void* args)
+void format_string_to_upper(utf8* dest, size_t size, rct_string_id format, const void* args)
 {
 #ifdef DEBUG
     if (gDebugStringFormatting)
