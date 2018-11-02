@@ -1814,7 +1814,7 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
 
     TileElement* tile_element = map_get_surface_element_at({ x, y });
     // If vehicle above ground.
-    if (tile_element->base_height * 8 <= z)
+    if (tile_element != nullptr && tile_element->base_height * 8 <= z)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
