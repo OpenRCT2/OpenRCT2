@@ -109,13 +109,9 @@ struct RCT12TileElementBase
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
     uint8_t GetType() const;
-    void SetType(uint8_t newType);
     uint8_t GetDirection() const;
-    void SetDirection(uint8_t direction);
-    uint8_t GetDirectionWithOffset(uint8_t offset) const;
     bool IsLastForTile() const;
     bool IsGhost() const;
-    void Remove();
 };
 /**
  * Map element structure
@@ -129,7 +125,6 @@ struct RCT12TileElement : public RCT12TileElementBase
         return (RCT12TileElementType)GetType() == TClass ? (TType*)this : nullptr;
     }
 
-public:
     RCT12SurfaceElement* AsSurface() const
     {
         return as<RCT12SurfaceElement, RCT12TileElementType::Surface>();
@@ -175,12 +170,11 @@ public:
 assert_struct_size(RCT12TileElement, 8);
 struct RCT12SurfaceElement : RCT12TileElementBase
 {
-private:
     uint8_t slope;        // 4 0xE0 Edge Style, 0x1F Slope
     uint8_t terrain;      // 5 0xE0 Terrain Style, 0x1F Water height
     uint8_t grass_length; // 6
     uint8_t ownership;    // 7
-public:
+
     uint8_t GetSlope() const;
     uint32_t GetSurfaceStyle() const;
     uint32_t GetEdgeStyle() const;
@@ -193,7 +187,6 @@ public:
 assert_struct_size(RCT12SurfaceElement, 8);
 struct RCT12PathElement : RCT12TileElementBase
 {
-private:
     uint8_t entryIndex; // 4, 0xF0 Path type, 0x08 Ride sign, 0x04 Set when path is sloped, 0x03 Rotation
     uint8_t additions;  // 5, 0bGSSSAAAA: G = Ghost, S = station index, A = addition (0 means no addition)
     uint8_t edges;      // 6
@@ -203,7 +196,6 @@ private:
         uint8_t rideIndex;
     };
 
-public:
     uint8_t GetEntryIndex() const;
     uint8_t GetQueueBannerDirection() const;
     bool IsSloped() const;
@@ -248,7 +240,7 @@ struct RCT12TrackElement : RCT12TileElementBase
         uint16_t mazeEntry; // 5
     };
     uint8_t rideIndex; // 7
-public:
+
     uint8_t GetTrackType() const;
     uint8_t GetSequenceIndex() const;
     uint8_t GetRideIndex() const;
@@ -258,13 +250,11 @@ public:
     bool HasCableLift() const;
     bool IsInverted() const;
     uint8_t GetBrakeBoosterSpeed() const;
-    uint8_t HasGreenLight() const;
+    bool HasGreenLight() const;
     uint8_t GetSeatRotation() const;
     uint16_t GetMazeEntry() const;
-    void MazeEntryAdd(uint16_t addVal);
-    void MazeEntrySubtract(uint16_t subVal);
     bool IsTakingPhoto() const;
-    void GetPhotoTimeout();
+    uint8_t GetPhotoTimeout() const;
     bool IsHighlighted() const;
     // Used in RCT1, will be reintroduced at some point.
     // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
@@ -274,12 +264,11 @@ public:
 assert_struct_size(RCT12TrackElement, 8);
 struct RCT12SmallSceneryElement : RCT12TileElementBase
 {
-private:
     uint8_t entryIndex; // 4
     uint8_t age;        // 5
     uint8_t colour_1;   // 6
     uint8_t colour_2;   // 7
-public:
+
     uint8_t GetEntryIndex() const;
     uint8_t GetAge() const;
     uint8_t GetSceneryQuadrant() const;
@@ -290,10 +279,9 @@ public:
 assert_struct_size(RCT12SmallSceneryElement, 8);
 struct RCT12LargeSceneryElement : RCT12TileElementBase
 {
-private:
     uint16_t entryIndex; // 4
     uint8_t colour[2];   // 6
-public:
+
     uint32_t GetEntryIndex() const;
     uint16_t GetSequenceIndex() const;
     colour_t GetPrimaryColour() const;
@@ -303,7 +291,6 @@ public:
 assert_struct_size(RCT12LargeSceneryElement, 8);
 struct RCT12WallElement : RCT12TileElementBase
 {
-private:
     uint8_t entryIndex; // 4
     union
     {
@@ -312,7 +299,7 @@ private:
     };
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
-public:
+
     uint8_t GetEntryIndex() const;
     uint8_t GetSlope() const;
     colour_t GetPrimaryColour() const;
@@ -328,12 +315,11 @@ public:
 assert_struct_size(RCT12WallElement, 8);
 struct RCT12EntranceElement : RCT12TileElementBase
 {
-private:
     uint8_t entranceType; // 4
     uint8_t index;        // 5. 0bUSSS????, S = station index.
     uint8_t pathType;     // 6
     uint8_t rideIndex;    // 7
-public:
+
     uint8_t GetEntranceType() const;
     uint8_t GetRideIndex() const;
     uint8_t GetStationIndex() const;
@@ -343,15 +329,11 @@ public:
 assert_struct_size(RCT12EntranceElement, 8);
 struct RCT12BannerElement : RCT12TileElementBase
 {
-private:
     BannerIndex index; // 4
     uint8_t position;  // 5
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t flags;  // 6
-    uint8_t unused; // 7
-#pragma clang diagnostic pop
-public:
+    uint8_t flags;     // 6
+    uint8_t unused;    // 7
+
     BannerIndex GetIndex() const;
     uint8_t GetPosition() const;
     uint8_t GetAllowedEdges() const;

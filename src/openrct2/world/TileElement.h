@@ -291,6 +291,7 @@ public:
 
     bool IsTakingPhoto() const;
     void SetPhotoTimeout();
+    void SetPhotoTimeout(uint8_t newValue);
     void DecrementPhotoTimeout();
 
     bool IsHighlighted() const;
