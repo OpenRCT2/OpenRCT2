@@ -138,7 +138,7 @@ rct_ride_entry* get_ride_entry(int index)
     return gRideEntries[index];
 }
 
-rct_ride_entry* get_ride_entry_by_ride(Ride* ride)
+rct_ride_entry* get_ride_entry_by_ride(const Ride* ride)
 {
     rct_ride_entry* type = get_ride_entry(ride->subtype);
     if (type == nullptr)

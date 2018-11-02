@@ -262,7 +262,7 @@ rct_ride_measurement* get_ride_measurement(int32_t index)
     return &gRideMeasurements[index];
 }
 
-rct_ride_entry* get_ride_entry_by_ride(Ride* ride)
+rct_ride_entry* get_ride_entry_by_ride(const Ride* ride)
 {
     rct_ride_entry* type = get_ride_entry(ride->subtype);
     if (type == nullptr)
@@ -2479,6 +2479,12 @@ static void ride_breakdown_update(int32_t rideIndex)
     if (ride->status == RIDE_STATUS_CLOSED)
         return;
 
+    if (!ride->CanBreakDown())
+    {
+        ride->reliability = RIDE_INITIAL_RELIABILITY;
+        return;
+    }
+
     // Calculate breakdown probability?
     int32_t unreliabilityAccumulator = ride->unreliability_factor + get_age_penalty(ride);
     ride->reliability = (uint16_t)std::max(0, (ride->reliability - unreliabilityAccumulator));
@@ -2506,13 +2512,11 @@ static void ride_breakdown_update(int32_t rideIndex)
 static int32_t ride_get_new_breakdown_problem(Ride* ride)
 {
     int32_t availableBreakdownProblems, monthsOld, totalProbability, randomProbability, problemBits, breakdownProblem;
-    rct_ride_entry* entry;
 
     // Brake failure is more likely when it's raining
     _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = climate_is_raining() ? 20 : 3;
 
-    entry = get_ride_entry_by_ride(ride);
-    if (entry == nullptr || entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
+    if (!ride->CanBreakDown())
         return -1;
 
     availableBreakdownProblems = RideAvailableBreakdowns[ride->type];
@@ -2560,6 +2564,22 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
         return -1;
 
     return BREAKDOWN_BRAKES_FAILURE;
+}
+
+bool Ride::CanBreakDown() const
+{
+    if (RideAvailableBreakdowns[this->type] == 0)
+    {
+        return false;
+    }
+
+    rct_ride_entry* entry = get_ride_entry_by_ride(this);
+    if (entry == nullptr || entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
+    {
+        return false;
+    }
+
+    return true;
 }
 
 static void choose_random_train_to_breakdown_safe(Ride* ride)

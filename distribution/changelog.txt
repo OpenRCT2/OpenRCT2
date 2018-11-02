@@ -25,6 +25,7 @@
 - Fix: [#8101] Title sequences window flashes after opening.
 - Fix: [#8120] Crash trying to place peep spawn outside of map.
 - Fix: [#8121] Crash Renaming park with server logging enabled.
+- Fix: [#8142] Reliability of mazes and crooked houses can go below 100%.
 - Fix: [#8187] Cannot set land ownership over ride entrances or exits in sandbox mode.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
