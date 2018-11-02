@@ -48,12 +48,15 @@ const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 // so just hope the file name with '.gz' suffix is enough.
 // For docs on uplading to backtrace.io check
 // https://documentation.backtrace.io/product_integration_minidump_breakpad/
-static bool UploadMinidump(const wchar_t* dumpPath, int& error, std::wstring& response)
+static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, int& error, std::wstring& response)
 {
+    for (auto file : files)
+    {
+        wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
+    }
     std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
                      L"post?format=minidump&token=f9c5e640d498f15dbe902eab3e822e472af9270d5b0cbdc269cee65a926bf306");
     std::map<std::wstring, std::wstring> parameters;
-    std::map<std::wstring, std::wstring> files;
     parameters[L"product_name"] = L"openrct2";
     // In case of releases this can be empty
     if (wcslen(_wszCommitSha1Short) > 0)
@@ -64,7 +67,6 @@ static bool UploadMinidump(const wchar_t* dumpPath, int& error, std::wstring& re
     {
         parameters[L"commit"] = String::ToUtf16(gVersionInfoFull);
     }
-    files[L"upload_file_minidump"] = dumpPath;
     int timeout = 10000;
     bool success = google_breakpad::HTTPUpload::SendRequest(url, parameters, files, &timeout, &response, &error);
     wprintf(L"Success = %d, error = %d, response = %s\n", success, error, response.c_str());
@@ -88,12 +90,15 @@ static bool OnCrash(
         return succeeded;
     }
 
+    std::map<std::wstring, std::wstring> uploadFiles;
+
     // Get filenames
     wchar_t dumpFilePath[MAX_PATH];
     wchar_t saveFilePath[MAX_PATH];
+    wchar_t saveFilePathGZIP[MAX_PATH];
     swprintf_s(dumpFilePath, sizeof(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
     swprintf_s(saveFilePath, sizeof(saveFilePath), L"%s\\%s.sv6", dumpPath, miniDumpId);
-    const wchar_t* minidumpToUpload = dumpFilePath;
+    swprintf_s(saveFilePathGZIP, sizeof(saveFilePathGZIP), L"%s\\%s.sv6.gz", dumpPath, miniDumpId);
 
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
@@ -103,28 +108,32 @@ static bool OnCrash(
     wchar_t dumpFilePathGZIP[MAX_PATH];
     swprintf_s(dumpFilePathGZIP, sizeof(dumpFilePathGZIP), L"%s.gz", dumpFilePathNew);
 
-    FILE* input = _wfopen(dumpFilePath, L"rb");
-    FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
-
-    if (util_gzip_compress(input, dest))
+    // Compress the dump
     {
-        // TODO: enable upload of gzip-compressed dumps once supported on
-        // backtrace.io (uncomment the line below). For now leave compression
-        // on, as GitHub will accept .gz files, even though it does not
-        // advertise it officially.
+        FILE* input = _wfopen(dumpFilePath, L"rb");
+        FILE* dest = _wfopen(dumpFilePathGZIP, L"wb");
 
-        /*
-        minidumpToUpload = dumpFilePathGZIP;
-        */
+        if (util_gzip_compress(input, dest))
+        {
+            // TODO: enable upload of gzip-compressed dumps once supported on
+            // backtrace.io (uncomment the line below). For now leave compression
+            // on, as GitHub will accept .gz files, even though it does not
+            // advertise it officially.
+
+            /*
+            uploadFiles[L"upload_file_minidump"] = dumpFilePathGZIP;
+            */
+        }
+        fclose(input);
+        fclose(dest);
     }
-    fclose(input);
-    fclose(dest);
 
     // Try to rename the files
     if (_wrename(dumpFilePath, dumpFilePathNew) == 0)
     {
         std::wcscpy(dumpFilePath, dumpFilePathNew);
     }
+    uploadFiles[L"upload_file_minidump"] = dumpFilePath;
 
     // Compress to gzip-compatible stream
 
@@ -149,11 +158,29 @@ static bool OnCrash(
     }
     free(saveFilePathUTF8);
 
+    // Compress the save
+    if (savedGameDumped)
+    {
+        FILE* input = _wfopen(saveFilePath, L"rb");
+        FILE* dest = _wfopen(saveFilePathGZIP, L"wb");
+
+        if (util_gzip_compress(input, dest))
+        {
+            uploadFiles[L"attachment_park.sv6.gz"] = saveFilePathGZIP;
+        }
+        else
+        {
+            uploadFiles[L"attachment_park.sv6"] = saveFilePath;
+        }
+        fclose(input);
+        fclose(dest);
+    }
+
     if (gOpenRCT2SilentBreakpad)
     {
         int error;
         std::wstring response;
-        UploadMinidump(minidumpToUpload, error, response);
+        UploadMinidump(uploadFiles, error, response);
         return succeeded;
     }
 
@@ -171,7 +198,7 @@ static bool OnCrash(
     {
         int error;
         std::wstring response;
-        bool ok = UploadMinidump(minidumpToUpload, error, response);
+        bool ok = UploadMinidump(uploadFiles, error, response);
         if (!ok)
         {
             const wchar_t* MessageFormat2 = L"There was a problem while uploading the dump. Please upload it manually to "
