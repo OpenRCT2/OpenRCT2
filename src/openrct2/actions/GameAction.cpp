@@ -197,12 +197,13 @@ namespace GameActions
             {
                 if (network_get_mode() == NETWORK_MODE_SERVER && result->Error == GA_ERROR::OK)
                 {
-                    uint32_t playerId = action->GetPlayer();
+                    const uint32_t playerId = action->GetPlayer();
+                    const uint32_t playerIndex = network_get_player_index(playerId);
 
-                    network_set_player_last_action(network_get_player_index(playerId), action->GetType());
+                    network_set_player_last_action(playerIndex, action->GetType());
                     if (result->Cost != 0)
                     {
-                        network_add_player_money_spent(playerId, result->Cost);
+                        network_add_player_money_spent(playerIndex, result->Cost);
                     }
                 }
             }
