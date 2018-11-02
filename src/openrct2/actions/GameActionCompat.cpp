@@ -122,6 +122,12 @@ money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, uint8_
     auto r = GameActions::Execute(&gameAction);
     const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
 
+    // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
+    if (res->Error != GA_ERROR::OK)
+    {
+        return MONEY32_UNDEFINED;
+    }
+
     *outRideIndex = res->rideIndex;
     *outRideColour = colour1;
 
