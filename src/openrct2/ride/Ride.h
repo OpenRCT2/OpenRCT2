@@ -1018,7 +1018,7 @@ void ride_check_all_reachable();
 void ride_update_satisfaction(Ride* ride, uint8_t happiness);
 void ride_update_popularity(Ride* ride, uint8_t pop_amount);
 bool ride_try_get_origin_element(int32_t rideIndex, CoordsXYE* output);
-int32_t ride_find_track_gap(CoordsXYE* input, CoordsXYE* output);
+int32_t ride_find_track_gap(int32_t rideIndex, CoordsXYE* input, CoordsXYE* output);
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(int32_t rideIndex);
 int32_t ride_modify(CoordsXYE* input);

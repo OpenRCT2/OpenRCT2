@@ -19,6 +19,7 @@
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -816,18 +817,27 @@ bool track_block_get_previous(int32_t x, int32_t y, TileElement* tileElement, tr
  * bx result y
  * esi input / output map element
  */
-int32_t ride_find_track_gap(CoordsXYE* input, CoordsXYE* output)
+int32_t ride_find_track_gap(int32_t rideIndex, CoordsXYE* input, CoordsXYE* output)
 {
     assert(input->element->GetType() == TILE_ELEMENT_TYPE_TRACK);
-    int32_t rideIndex = input->element->AsTrack()->GetRideIndex();
+
     Ride* ride = get_ride(rideIndex);
+    if (ride == nullptr)
+    {
+        log_error("Trying to access invalid ride %d", rideIndex);
+        return 0;
+    }
 
     if (ride->type == RIDE_TYPE_MAZE)
+    {
         return 0;
+    }
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
+    {
         ride_construction_invalidate_current_track();
+    }
 
     bool moveSlowIt = true;
     track_circuit_iterator it = {};
@@ -1054,7 +1064,7 @@ void ride_construct(int32_t rideIndex)
 
     if (ride_try_get_origin_element(rideIndex, &trackElement))
     {
-        ride_find_track_gap(&trackElement, &trackElement);
+        ride_find_track_gap(rideIndex, &trackElement, &trackElement);
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(&trackElement))
@@ -1997,7 +2007,7 @@ int32_t ride_modify(CoordsXYE* input)
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
     {
-        if (ride_find_track_gap(&tileElement, &endOfTrackElement))
+        if (ride_find_track_gap(rideIndex, &tileElement, &endOfTrackElement))
             tileElement = endOfTrackElement;
     }
 
@@ -5602,7 +5612,7 @@ static void loc_6B51C0(int32_t rideIndex)
 
         CoordsXYE trackElement;
         ride_try_get_origin_element(rideIndex, &trackElement);
-        ride_find_track_gap(&trackElement, &trackElement);
+        ride_find_track_gap(rideIndex, &trackElement, &trackElement);
         int32_t ok = ride_modify(&trackElement);
         if (ok == 0)
         {
@@ -5711,7 +5721,7 @@ int32_t ride_is_valid_for_test(int32_t rideIndex, int32_t goingToBeOpen, int32_t
     if (ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT
         || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
     {
-        if (ride_find_track_gap(&trackElement, &problematicTrackElement)
+        if (ride_find_track_gap(rideIndex, &trackElement, &problematicTrackElement)
             && (!gConfigGeneral.test_unfinished_tracks || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
                 || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
         {
@@ -5755,7 +5765,7 @@ int32_t ride_is_valid_for_test(int32_t rideIndex, int32_t goingToBeOpen, int32_t
 
     if (ride->mode == RIDE_MODE_STATION_TO_STATION)
     {
-        if (!ride_find_track_gap(&trackElement, &problematicTrackElement))
+        if (!ride_find_track_gap(rideIndex, &trackElement, &problematicTrackElement))
         {
             gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
             return 0;
@@ -5851,7 +5861,7 @@ int32_t ride_is_valid_for_open(int32_t rideIndex, int32_t goingToBeOpen, int32_t
         || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
         || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
     {
-        if (ride_find_track_gap(&trackElement, &problematicTrackElement))
+        if (ride_find_track_gap(rideIndex, &trackElement, &problematicTrackElement))
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
@@ -5893,7 +5903,7 @@ int32_t ride_is_valid_for_open(int32_t rideIndex, int32_t goingToBeOpen, int32_t
 
     if (ride->mode == RIDE_MODE_STATION_TO_STATION)
     {
-        if (!ride_find_track_gap(&trackElement, &problematicTrackElement))
+        if (!ride_find_track_gap(rideIndex, &trackElement, &problematicTrackElement))
         {
             gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
             return 0;
