@@ -449,7 +449,6 @@ static void window_options_update_height_markers();
 
 #pragma region Events
 
-static void window_options_close(rct_window *w);
 static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
@@ -461,7 +460,7 @@ static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex
 static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
 
 static rct_window_event_list window_options_events = {
-    window_options_close,
+    nullptr,
     window_options_mouseup,
     nullptr,
     window_options_mousedown,
@@ -616,9 +615,6 @@ static uint64_t window_options_page_enabled_widgets[] = {
 
 #pragma endregion
 
-static struct Resolution* _resolutions = nullptr;
-static int32_t _numResolutions = 0;
-
 /**
  *
  *  rct2: 0x006BAC5B
@@ -640,13 +636,6 @@ rct_window* window_options_open()
     window_init_scroll_widgets(w);
 
     return w;
-}
-
-static void window_options_close(rct_window* w)
-{
-    free(_resolutions);
-    _resolutions = nullptr;
-    _numResolutions = 0;
 }
 
 /**
@@ -1028,26 +1017,28 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
             {
                 case WIDX_RESOLUTION_DROPDOWN:
                 {
-                    _numResolutions = context_get_resolutions(&_resolutions);
+                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
 
                     int32_t selectedResolution = -1;
-                    for (int32_t i = 0; i < _numResolutions; i++)
+                    for (size_t i = 0; i < resolutions.size(); i++)
                     {
-                        struct Resolution* resolution = &_resolutions[i];
+                        const Resolution& resolution = resolutions[i];
 
                         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
 
                         uint16_t* args = (uint16_t*)&gDropdownItemsArgs[i];
                         args[0] = STR_RESOLUTION_X_BY_Y;
-                        args[1] = resolution->Width;
-                        args[2] = resolution->Height;
+                        args[1] = resolution.Width;
+                        args[2] = resolution.Height;
 
-                        if (resolution->Width == gConfigGeneral.fullscreen_width
-                            && resolution->Height == gConfigGeneral.fullscreen_height)
-                            selectedResolution = i;
+                        if (resolution.Width == gConfigGeneral.fullscreen_width
+                            && resolution.Height == gConfigGeneral.fullscreen_height)
+                        {
+                            selectedResolution = (int32_t)i;
+                        }
                     }
 
-                    window_options_show_dropdown(w, widget, _numResolutions);
+                    window_options_show_dropdown(w, widget, (int32_t)resolutions.size());
 
                     if (selectedResolution != -1 && selectedResolution < 32)
                     {
@@ -1351,12 +1342,14 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             {
                 case WIDX_RESOLUTION_DROPDOWN:
                 {
-                    struct Resolution* resolution = &_resolutions[dropdownIndex];
-                    if (resolution->Width != gConfigGeneral.fullscreen_width
-                        || resolution->Height != gConfigGeneral.fullscreen_height)
+                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+
+                    const Resolution& resolution = resolutions[dropdownIndex];
+                    if (resolution.Width != gConfigGeneral.fullscreen_width
+                        || resolution.Height != gConfigGeneral.fullscreen_height)
                     {
-                        gConfigGeneral.fullscreen_width = resolution->Width;
-                        gConfigGeneral.fullscreen_height = resolution->Height;
+                        gConfigGeneral.fullscreen_width = resolution.Width;
+                        gConfigGeneral.fullscreen_height = resolution.Height;
 
                         if (gConfigGeneral.fullscreen_mode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
                             context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));

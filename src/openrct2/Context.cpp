@@ -1160,15 +1160,6 @@ void context_recreate_window()
     GetContext()->GetUiContext()->RecreateWindow();
 }
 
-int32_t context_get_resolutions(Resolution** outResolutions)
-{
-    auto resolutions = GetContext()->GetUiContext()->GetFullscreenResolutions();
-    int32_t count = (int32_t)resolutions.size();
-    *outResolutions = Memory::AllocateArray<Resolution>(count);
-    std::copy_n(resolutions.begin(), count, *outResolutions);
-    return count;
-}
-
 int32_t context_get_width()
 {
     return GetContext()->GetUiContext()->GetWidth();

@@ -219,7 +219,6 @@ bool context_is_input_active();
 void context_trigger_resize();
 void context_set_fullscreen_mode(int32_t mode);
 void context_recreate_window();
-int32_t context_get_resolutions(struct Resolution** outResolutions);
 int32_t context_get_width();
 int32_t context_get_height();
 bool context_has_focus();

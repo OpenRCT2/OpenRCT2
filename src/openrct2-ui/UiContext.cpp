@@ -180,7 +180,7 @@ public:
         }
     }
 
-    std::vector<Resolution> GetFullscreenResolutions() override
+    const std::vector<Resolution>& GetFullscreenResolutions() override
     {
         UpdateFullscreenResolutions();
         return _fsResolutions;
