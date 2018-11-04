@@ -6434,6 +6434,12 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 
     // TODO: extract loop A
     tileElement = surfaceElement;
+    
+    if (tileElement == nullptr)
+    {
+        return false;
+    }
+    
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
