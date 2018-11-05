@@ -2210,6 +2210,12 @@ void TrackElement::SetPhotoTimeout()
     sequence |= (3 << 4);
 }
 
+void TrackElement::SetPhotoTimeout(uint8_t value)
+{
+    sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    sequence |= (value << 4);
+}
+
 void TrackElement::DecrementPhotoTimeout()
 {
     // We should only touch the upper 4 bits, avoid underflow into the lower 4.

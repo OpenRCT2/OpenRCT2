@@ -32,6 +32,7 @@
 #include "../peep/Staff.h"
 #include "../platform/platform.h"
 #include "../rct1/RCT1.h"
+#include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
 #include "../util/SawyerCoding.h"
@@ -670,22 +671,24 @@ bool scenario_prepare_for_save()
 
 /**
  * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
+ *
+ * TODO: This employs some black casting magic that should go away once we export to our own format instead of SV6.
  */
 void scenario_fix_ghosts(rct_s6_data* s6)
 {
     // Remove all ghost elements
-    TileElement* destinationElement = s6->tile_elements;
+    RCT12TileElement* destinationElement = s6->tile_elements;
 
     for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            TileElement* originalElement = map_get_first_element_at(x, y);
+            RCT12TileElement* originalElement = reinterpret_cast<RCT12TileElement*>(map_get_first_element_at(x, y));
             do
             {
                 if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST)
                 {
-                    BannerIndex bannerIndex = tile_element_get_banner_index(originalElement);
+                    BannerIndex bannerIndex = tile_element_get_banner_index(reinterpret_cast<TileElement*>(originalElement));
                     if (bannerIndex != BANNER_INDEX_NULL)
                     {
                         rct_banner* banner = &s6->banners[bannerIndex];
