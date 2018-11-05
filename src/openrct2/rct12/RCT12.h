@@ -89,7 +89,8 @@ enum class RCT12TileElementType : uint8_t
     LargeScenery = (6 << 2),
     Banner = (7 << 2),
     Corrupt = (8 << 2),
-    EightCarsCorrupt = (15 << 2),
+    EightCarsCorrupt14 = (14 << 2),
+    EightCarsCorrupt15 = (15 << 2),
 };
 struct RCT12SurfaceElement;
 struct RCT12PathElement;
@@ -100,7 +101,8 @@ struct RCT12WallElement;
 struct RCT12EntranceElement;
 struct RCT12BannerElement;
 struct RCT12CorruptElement;
-struct RCT12EightCarsCorruptElement;
+struct RCT12EightCarsCorruptElement14;
+struct RCT12EightCarsCorruptElement15;
 
 struct RCT12TileElementBase
 {
@@ -156,14 +158,6 @@ struct RCT12TileElement : public RCT12TileElementBase
     RCT12BannerElement* AsBanner() const
     {
         return as<RCT12BannerElement, RCT12TileElementType::Banner>();
-    }
-    RCT12CorruptElement* AsCorrupt() const
-    {
-        return as<RCT12CorruptElement, RCT12TileElementType::Corrupt>();
-    }
-    RCT12EightCarsCorruptElement* AsEightCarsCorrupt() const
-    {
-        return as<RCT12EightCarsCorruptElement, RCT12TileElementType::EightCarsCorrupt>();
     }
     void ClearAs(uint8_t newType);
 };
@@ -358,10 +352,16 @@ struct RCT12CorruptElement : RCT12TileElementBase
 };
 assert_struct_size(RCT12CorruptElement, 8);
 
-struct RCT12EightCarsCorruptElement : RCT12TileElementBase
+struct RCT12EightCarsCorruptElement14 : RCT12TileElementBase
 {
     uint8_t pad[4];
 };
-assert_struct_size(RCT12EightCarsCorruptElement, 8);
+assert_struct_size(RCT12EightCarsCorruptElement14, 8);
+
+struct RCT12EightCarsCorruptElement15 : RCT12TileElementBase
+{
+    uint8_t pad[4];
+};
+assert_struct_size(RCT12EightCarsCorruptElement15, 8);
 
 #pragma pack(pop)
