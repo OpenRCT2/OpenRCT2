@@ -20,6 +20,7 @@
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/sprites.h>
+#include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
 #pragma region Widgets
@@ -32,6 +33,13 @@ enum {
     WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT
 };
 
+static constexpr const rct_string_id ClimateNames[] = {
+    STR_CLIMATE_COOL_AND_WET,
+    STR_CLIMATE_WARM,
+    STR_CLIMATE_HOT_AND_DRY,
+    STR_CLIMATE_COLD,
+};
+
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -40,8 +48,10 @@ enum {
     WIDX_TAB_1,
     WIDX_TAB_2,
     WIDX_TAB_3,
+    WIDX_PAGE_START,
 
-    WIDX_NO_MONEY = 7,
+    // Financial tab
+    WIDX_NO_MONEY = WIDX_PAGE_START,
     WIDX_INITIAL_CASH,
     WIDX_INITIAL_CASH_INCREASE,
     WIDX_INITIAL_CASH_DECREASE,
@@ -56,7 +66,8 @@ enum {
     WIDX_INTEREST_RATE_DECREASE,
     WIDX_FORBID_MARKETING,
 
-    WIDX_CASH_PER_GUEST = 7,
+    // Guests tab
+    WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
     WIDX_CASH_PER_GUEST_INCREASE,
     WIDX_CASH_PER_GUEST_DECREASE,
     WIDX_GUEST_INITIAL_HAPPINESS,
@@ -71,7 +82,8 @@ enum {
     WIDX_GUEST_PREFER_LESS_INTENSE_RIDES,
     WIDX_GUEST_PREFER_MORE_INTENSE_RIDES,
 
-    WIDX_LAND_COST = 7,
+    // Park tab
+    WIDX_LAND_COST = WIDX_PAGE_START,
     WIDX_LAND_COST_INCREASE,
     WIDX_LAND_COST_DECREASE,
     WIDX_CONSTRUCTION_RIGHTS_COST,
@@ -82,6 +94,8 @@ enum {
     WIDX_ENTRY_PRICE,
     WIDX_ENTRY_PRICE_INCREASE,
     WIDX_ENTRY_PRICE_DECREASE,
+    WIDX_CLIMATE,
+    WIDX_CLIMATE_DROPDOWN,
     WIDX_FORBID_TREE_REMOVAL,
     WIDX_FORBID_LANDSCAPE_CHANGES,
     WIDX_FORBID_HIGH_CONSTRUCTION,
@@ -94,9 +108,9 @@ static rct_widget window_editor_scenario_options_financial_widgets[] = {
     { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_FINANCIAL,         STR_WINDOW_TITLE_TIP                        },
     { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
 
     { WWT_CHECKBOX,         1,  8,      271,    48,     59,     STR_MAKE_PARK_NO_MONEY,                 STR_MAKE_PARK_NO_MONEY_TIP                  },
       SPINNER_WIDGETS      (1,  168,    267,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
@@ -112,9 +126,9 @@ static rct_widget window_editor_scenario_options_guests_widgets[] = {
     { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_GUESTS,            STR_WINDOW_TITLE_TIP                        },
     { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
 
       SPINNER_WIDGETS      (1,  268,    337,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
       SPINNER_WIDGETS      (1,  268,    337,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
@@ -130,20 +144,22 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_PARK,              STR_WINDOW_TITLE_TIP                        },
     { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SCENARIO_OPTIONS_PARK_TIP               },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
 
       SPINNER_WIDGETS      (1,  188,    257,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
       SPINNER_WIDGETS      (1,  188,    257,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
     { WWT_DROPDOWN,         1,  8,      217,    82,     93,     STR_NONE,                               STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP          },
     { WWT_BUTTON,           1,  206,    216,    83,     92,     STR_DROPDOWN_GLYPH,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP          },
-      SPINNER_WIDGETS      (1,  328,    397,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  8,      391,    99,     110,    STR_FORBID_TREE_REMOVAL,                STR_FORBID_TREE_REMOVAL_TIP                 },
-    { WWT_CHECKBOX,         1,  8,      391,    116,    127,    STR_FORBID_LANDSCAPE_CHANGES,           STR_FORBID_LANDSCAPE_CHANGES_TIP            },
-    { WWT_CHECKBOX,         1,  8,      391,    133,    144,    STR_FORBID_HIGH_CONSTRUCTION,           STR_FORBID_HIGH_CONSTRUCTION_TIP            },
-    { WWT_CHECKBOX,         1,  8,      391,    150,    161,    STR_HARD_PARK_RATING,                   STR_HARD_PARK_RATING_TIP                    },
-    { WWT_CHECKBOX,         1,  8,      391,    167,    178,    STR_HARD_GUEST_GENERATION,              STR_HARD_GUEST_GENERATION_TIP               },
+      SPINNER_WIDGETS      (1,  328,    394,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
+    { WWT_DROPDOWN,         1,  188,    394,    99,     110,    STR_NONE,                               STR_SELECT_CLIMATE_TIP                      },
+    { WWT_BUTTON,           1,  383,    393,    100,    109,    STR_DROPDOWN_GLYPH,                     STR_SELECT_CLIMATE_TIP                      },
+    { WWT_CHECKBOX,         1,  8,      391,    116,    127,    STR_FORBID_TREE_REMOVAL,                STR_FORBID_TREE_REMOVAL_TIP                 },
+    { WWT_CHECKBOX,         1,  8,      391,    133,    144,    STR_FORBID_LANDSCAPE_CHANGES,           STR_FORBID_LANDSCAPE_CHANGES_TIP            },
+    { WWT_CHECKBOX,         1,  8,      391,    150,    161,    STR_FORBID_HIGH_CONSTRUCTION,           STR_FORBID_HIGH_CONSTRUCTION_TIP            },
+    { WWT_CHECKBOX,         1,  8,      391,    167,    178,    STR_HARD_PARK_RATING,                   STR_HARD_PARK_RATING_TIP                    },
+    { WWT_CHECKBOX,         1,  8,      391,    184,    195,    STR_HARD_GUEST_GENERATION,              STR_HARD_GUEST_GENERATION_TIP               },
     { WIDGETS_END }
 };
 
@@ -323,6 +339,8 @@ static uint64_t window_editor_scenario_options_page_enabled_widgets[] = {
         (1ULL << WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN) |
         (1ULL << WIDX_ENTRY_PRICE_INCREASE) |
         (1ULL << WIDX_ENTRY_PRICE_DECREASE) |
+        (1ULL << WIDX_CLIMATE) |
+        (1ULL << WIDX_CLIMATE_DROPDOWN) |
         (1ULL << WIDX_FORBID_TREE_REMOVAL) |
         (1ULL << WIDX_FORBID_LANDSCAPE_CHANGES) |
         (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION) |
@@ -508,6 +526,24 @@ static void window_editor_scenario_options_financial_mouseup(rct_window* w, rct_
 static void window_editor_scenario_options_financial_resize(rct_window* w)
 {
     window_set_resize(w, 280, 149, 280, 149);
+}
+
+static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
+{
+    int32_t i;
+    rct_widget* dropdownWidget;
+
+    dropdownWidget = &w->widgets[WIDX_CLIMATE];
+
+    for (i = 0; i < 4; i++)
+    {
+        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[i] = ClimateNames[i];
+    }
+    window_dropdown_show_text_custom_width(
+        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, dropdownWidget->right - dropdownWidget->left - 3);
+    dropdown_set_checked(gClimate, true);
 }
 
 /**
@@ -1095,7 +1131,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window* w, rct_widge
  */
 static void window_editor_scenario_options_park_resize(rct_window* w)
 {
-    window_set_resize(w, 400, 183, 400, 183);
+    window_set_resize(w, 400, 200, 400, 200);
 }
 
 /**
@@ -1208,6 +1244,9 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
                 dropdown_set_checked(1, true);
 
             break;
+        case WIDX_CLIMATE_DROPDOWN:
+            window_editor_scenario_options_show_climate_dropdown(w);
+            break;
     }
 }
 
@@ -1217,12 +1256,27 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
  */
 static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if (widgetIndex == WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN && dropdownIndex != -1)
+    if (dropdownIndex == -1)
     {
-        game_do_command(
-            0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD, dropdownIndex,
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
-        window_invalidate(w);
+        return;
+    }
+
+    switch (widgetIndex)
+    {
+        case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
+            game_do_command(
+                0, GAME_COMMAND_FLAG_APPLY, EDIT_SCENARIOOPTIONS_SETPARKCHARGEMETHOD, dropdownIndex,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS, 0, 0);
+            window_invalidate(w);
+            break;
+
+        case WIDX_CLIMATE_DROPDOWN:
+            if (gClimate != (uint8_t)dropdownIndex)
+            {
+                gClimate = (uint8_t)dropdownIndex;
+                window_invalidate(w);
+            }
+            break;
     }
 }
 
@@ -1382,6 +1436,17 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         arg = gParkEntranceFee;
         gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
     }
+
+    // Climate label
+    x = w->x + 8;
+    y = w->y + w->widgets[WIDX_CLIMATE].top;
+    gfx_draw_string_left(dpi, STR_CLIMATE_LABEL, nullptr, COLOUR_BLACK, x, y);
+
+    // Climate value
+    x = w->x + w->widgets[WIDX_CLIMATE].left + 1;
+    y = w->y + w->widgets[WIDX_CLIMATE].top;
+    stringId = ClimateNames[gClimate];
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
 }
 
 #pragma endregion

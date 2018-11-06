@@ -20,7 +20,6 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
 #pragma region Widgets
@@ -30,13 +29,6 @@ enum {
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN,
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES,
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
-};
-
-static constexpr const rct_string_id ClimateNames[] = {
-    STR_CLIMATE_COOL_AND_WET,
-    STR_CLIMATE_WARM,
-    STR_CLIMATE_HOT_AND_DRY,
-    STR_CLIMATE_COLD,
 };
 
 static constexpr const rct_string_id ObjectiveDropdownOptionNames[] = {
@@ -70,8 +62,6 @@ enum {
     WIDX_OBJECTIVE_ARG_2,
     WIDX_OBJECTIVE_ARG_2_INCREASE,
     WIDX_OBJECTIVE_ARG_2_DECREASE,
-    WIDX_CLIMATE,
-    WIDX_CLIMATE_DROPDOWN,
     WIDX_PARK_NAME,
     WIDX_SCENARIO_NAME,
     WIDX_CATEGORY,
@@ -86,8 +76,8 @@ enum {
     { WWT_CAPTION,          0,  1,      448,    1,      14,     STR_OBJECTIVE_SELECTION,    STR_WINDOW_TITLE_TIP                                }, \
     { WWT_CLOSEBOX,         0,  437,    447,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                                }, \
     { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                   STR_NONE                                            }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP              }, \
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                }
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP              }, \
+    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                }
 
 static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
@@ -95,19 +85,17 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
     { WWT_BUTTON,           1,  430,    440,    49,     58,     STR_DROPDOWN_GLYPH,         STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
       SPINNER_WIDGETS      (1,  158,    277,    65,     76,     STR_NONE,                   STR_NONE), // NB: 3 widgets
       SPINNER_WIDGETS      (1,  158,    277,    82,     93,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-    { WWT_DROPDOWN,         1,  98,     277,    99,     110,    STR_NONE,                   STR_SELECT_CLIMATE_TIP                              },
-    { WWT_BUTTON,           1,  266,    276,    100,    109,    STR_DROPDOWN_GLYPH,         STR_SELECT_CLIMATE_TIP                              },
-    { WWT_BUTTON,           1,  370,    444,    116,    127,    STR_CHANGE,                 STR_CHANGE_NAME_OF_PARK_TIP                         },
-    { WWT_BUTTON,           1,  370,    444,    133,    144,    STR_CHANGE,                 STR_CHANGE_NAME_OF_SCENARIO_TIP                     },
-    { WWT_DROPDOWN,         1,  98,     277,    150,    161,    STR_NONE,                   STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
-    { WWT_BUTTON,           1,  266,    276,    151,    160,    STR_DROPDOWN_GLYPH,         STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
-    { WWT_BUTTON,           1,  370,    444,    167,    178,    STR_CHANGE,                 STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP     },
+    { WWT_BUTTON,           1,  370,    444,    99,     110,    STR_CHANGE,                 STR_CHANGE_NAME_OF_PARK_TIP                         },
+    { WWT_BUTTON,           1,  370,    444,    116,    127,    STR_CHANGE,                 STR_CHANGE_NAME_OF_SCENARIO_TIP                     },
+    { WWT_DROPDOWN,         1,  98,     277,    133,    144,    STR_NONE,                   STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
+    { WWT_BUTTON,           1,  266,    276,    134,    143,    STR_DROPDOWN_GLYPH,         STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
+    { WWT_BUTTON,           1,  370,    444,    150,    161,    STR_CHANGE,                 STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP     },
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_objective_options_rides_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    { WWT_SCROLL,           1,  3,      376,    60,     220,    SCROLL_VERTICAL,                        STR_NONE                                },
+    { WWT_SCROLL,           1,  3,      376,    60,     220,    SCROLL_VERTICAL,            STR_NONE                                            },
     { WIDGETS_END }
 };
 
@@ -222,8 +210,6 @@ static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
     (1 << WIDX_OBJECTIVE_ARG_1_DECREASE) |
     (1 << WIDX_OBJECTIVE_ARG_2_INCREASE) |
     (1 << WIDX_OBJECTIVE_ARG_2_DECREASE) |
-    (1 << WIDX_CLIMATE) |
-    (1 << WIDX_CLIMATE_DROPDOWN) |
     (1 << WIDX_PARK_NAME) |
     (1 << WIDX_SCENARIO_NAME) |
     (1 << WIDX_CATEGORY) |
@@ -501,24 +487,6 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     }
 }
 
-static void window_editor_objective_options_show_climate_dropdown(rct_window* w)
-{
-    int32_t i;
-    rct_widget* dropdownWidget;
-
-    dropdownWidget = &w->widgets[WIDX_CLIMATE];
-
-    for (i = 0; i < 4; i++)
-    {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = ClimateNames[i];
-    }
-    window_dropdown_show_text_custom_width(
-        w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, dropdownWidget->right - dropdownWidget->left - 3);
-    dropdown_set_checked(gClimate, true);
-}
-
 static void window_editor_objective_options_show_category_dropdown(rct_window* w)
 {
     int32_t i;
@@ -714,9 +682,6 @@ static void window_editor_objective_options_main_mousedown(rct_window* w, rct_wi
         case WIDX_OBJECTIVE_ARG_2_DECREASE:
             window_editor_objective_options_arg_2_decrease(w);
             break;
-        case WIDX_CLIMATE_DROPDOWN:
-            window_editor_objective_options_show_climate_dropdown(w);
-            break;
         case WIDX_CATEGORY_DROPDOWN:
             window_editor_objective_options_show_category_dropdown(w);
             break;
@@ -741,13 +706,6 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
             newObjectiveType = (uint8_t)(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
             if (gScenarioObjectiveType != newObjectiveType)
                 window_editor_objective_options_set_objective(w, newObjectiveType);
-            break;
-        case WIDX_CLIMATE_DROPDOWN:
-            if (gClimate != (uint8_t)dropdownIndex)
-            {
-                gClimate = (uint8_t)dropdownIndex;
-                window_invalidate(w);
-            }
             break;
         case WIDX_CATEGORY_DROPDOWN:
             if (gS6Info.category != (uint8_t)dropdownIndex)
@@ -783,8 +741,8 @@ static void window_editor_objective_options_main_update(rct_window* w)
          && objectiveType != OBJECTIVE_GUESTS_AND_RATING && objectiveType != OBJECTIVE_10_ROLLERCOASTERS_LENGTH
          && objectiveType != OBJECTIVE_FINISH_5_ROLLERCOASTERS)
         || (
-               // The park must be free for the monthly ride income objective
-               !(parkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
+            // The park must be free for the monthly ride income objective
+            !(parkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
     {
         // Reset objective
         window_editor_objective_options_set_objective(w, OBJECTIVE_GUESTS_AND_RATING);
@@ -974,17 +932,6 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, x, y);
     }
-
-    // Climate label
-    x = w->x + 8;
-    y = w->y + w->widgets[WIDX_CLIMATE].top;
-    gfx_draw_string_left(dpi, STR_CLIMATE_LABEL, nullptr, COLOUR_BLACK, x, y);
-
-    // Climate value
-    x = w->x + w->widgets[WIDX_CLIMATE].left + 1;
-    y = w->y + w->widgets[WIDX_CLIMATE].top;
-    stringId = ClimateNames[gClimate];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
 
     // Park name
     x = w->x + 8;
