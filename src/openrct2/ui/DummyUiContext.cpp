@@ -59,9 +59,10 @@ namespace OpenRCT2::Ui
         void SetFullscreenMode(FULLSCREEN_MODE /*mode*/) override
         {
         }
-        std::vector<Resolution> GetFullscreenResolutions() override
+        const std::vector<Resolution>& GetFullscreenResolutions() override
         {
-            return std::vector<Resolution>();
+            static std::vector<Resolution> res;
+            return res;
         }
         bool HasFocus() override
         {

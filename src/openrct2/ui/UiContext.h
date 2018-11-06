@@ -102,7 +102,7 @@ namespace OpenRCT2
             virtual int32_t GetHeight() abstract;
             virtual int32_t GetScaleQuality() abstract;
             virtual void SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
-            virtual std::vector<Resolution> GetFullscreenResolutions() abstract;
+            virtual const std::vector<Resolution>& GetFullscreenResolutions() abstract;
             virtual bool HasFocus() abstract;
             virtual bool IsMinimised() abstract;
             virtual bool IsSteamOverlayActive() abstract;
