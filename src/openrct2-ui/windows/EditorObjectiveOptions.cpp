@@ -7,16 +7,23 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
+#include "../interface/Dropdown.h"
+#include "../interface/Widget.h"
+#include "../interface/Window.h"
+#include "Window.h"
+
 #include <openrct2/Context.h>
-#include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetNameAction.hpp>
 #include <openrct2/core/Util.hpp>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/Font.h>
+#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
+#include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -735,14 +742,12 @@ static void window_editor_objective_options_main_update(rct_window* w)
 
     // Reset objective if invalid
     if (((parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) &&
-
          // The following objectives are the only valid objectives when there is no money
          objectiveType != OBJECTIVE_HAVE_FUN && objectiveType != OBJECTIVE_10_ROLLERCOASTERS
          && objectiveType != OBJECTIVE_GUESTS_AND_RATING && objectiveType != OBJECTIVE_10_ROLLERCOASTERS_LENGTH
          && objectiveType != OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-        || (
-            // The park must be free for the monthly ride income objective
-            !(parkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
+        // The park must be free for the monthly ride income objective
+        || (!(parkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
     {
         // Reset objective
         window_editor_objective_options_set_objective(w, OBJECTIVE_GUESTS_AND_RATING);

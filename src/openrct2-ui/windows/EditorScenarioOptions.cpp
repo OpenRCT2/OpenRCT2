@@ -7,18 +7,21 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../interface/Dropdown.h"
+#include "../interface/Widget.h"
+#include "../interface/Window.h"
+#include "Window.h"
+
 #include <algorithm>
-#include <openrct2-ui/interface/Dropdown.h>
-#include <openrct2-ui/interface/Widget.h>
-#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/localisation/Localisation.h>
+#include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Finance.h>
+#include <openrct2/peep/Peep.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
