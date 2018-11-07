@@ -17,6 +17,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/ClimateSetAction.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/StringIds.h>
@@ -538,14 +539,14 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
 
     dropdownWidget = &w->widgets[WIDX_CLIMATE];
 
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < CLIMATE_COUNT; i++)
     {
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
     window_dropdown_show_text_custom_width(
         w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, dropdownWidget->right - dropdownWidget->left - 3);
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, CLIMATE_COUNT, dropdownWidget->right - dropdownWidget->left - 3);
     dropdown_set_checked(gClimate, true);
 }
 
@@ -1276,8 +1277,8 @@ static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widg
         case WIDX_CLIMATE_DROPDOWN:
             if (gClimate != (uint8_t)dropdownIndex)
             {
-                gClimate = (uint8_t)dropdownIndex;
-                window_invalidate(w);
+                auto gameAction = ClimateSetAction(dropdownIndex);
+                GameActions::Execute(&gameAction);
             }
             break;
     }

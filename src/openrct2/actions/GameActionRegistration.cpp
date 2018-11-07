@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "BannerSetNameAction.hpp"
+#include "ClimateSetAction.hpp"
 #include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
@@ -32,24 +33,25 @@ namespace GameActions
 {
     void Register()
     {
-        Register<SetParkEntranceFeeAction>();
+        Register<BannerSetNameAction>();
+        Register<ClimateSetAction>();
+        Register<FootpathRemoveAction>();
+        Register<GuestSetNameAction>();
+        Register<MazeSetTrackAction>();
         Register<ParkMarketingAction>();
         Register<ParkSetLoanAction>();
+        Register<ParkSetNameAction>();
         Register<ParkSetResearchFundingAction>();
         Register<PlaceParkEntranceAction>();
+        Register<PlacePeepSpawnAction>();
         Register<RideCreateAction>();
-        Register<RideSetStatusAction>();
-        Register<RideSetNameAction>();
         Register<RideDemolishAction>();
-        Register<GuestSetNameAction>();
+        Register<RideSetNameAction>();
+        Register<RideSetStatusAction>();
+        Register<SetParkEntranceFeeAction>();
+        Register<SignSetNameAction>();
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
-        Register<PlacePeepSpawnAction>();
-        Register<MazeSetTrackAction>();
-        Register<SignSetNameAction>();
-        Register<ParkSetNameAction>();
-        Register<BannerSetNameAction>();
         Register<WallRemoveAction>();
-        Register<FootpathRemoveAction>();
     }
 } // namespace GameActions

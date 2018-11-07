@@ -3729,6 +3729,7 @@ STR_6265    :{SMALLFONT}{BLACK}When enabled, your operating system's file browse
 STR_6266    :Open custom content folder
 STR_6267    :Open tile inspector
 STR_6268    :Advance to next tick
+STR_6269    :Invalid climate ID
 
 #############
 # Scenarios #

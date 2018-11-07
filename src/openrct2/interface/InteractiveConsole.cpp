@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../Version.h"
+#include "../actions/ClimateSetAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
@@ -49,8 +50,14 @@
 
 #ifndef NO_TTF
 #    include "../drawing/TTF.h"
-
 #endif
+
+static constexpr const utf8* ClimateNames[] = {
+    "cool_and_wet",
+    "warm",
+    "hot_and_dry",
+    "cold",
+};
 
 static void console_write_all_commands(InteractiveConsole& console);
 static int32_t console_parse_int(const utf8* src, bool* valid);
@@ -558,8 +565,7 @@ static int32_t cc_get(InteractiveConsole& console, const utf8** argv, int32_t ar
         }
         else if (strcmp(argv[0], "climate") == 0)
         {
-            const utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
-            console.WriteFormatLine("climate %s  (%d)", climate_names[gClimate], gClimate);
+            console.WriteFormatLine("climate %s  (%d)", ClimateNames[gClimate], gClimate);
         }
         else if (strcmp(argv[0], "game_speed") == 0)
         {
@@ -804,21 +810,30 @@ static int32_t cc_set(InteractiveConsole& console, const utf8** argv, int32_t ar
         {
             if (int_valid[0])
             {
-                gClimate = std::clamp(int_val[0], 0, 3);
+                const auto newClimate = int_val[0];
+                if (newClimate < 0 || newClimate >= CLIMATE_COUNT)
+                {
+                    console.WriteLine(language_get_string(STR_INVALID_CLIMATE_ID));
+                }
+                else
+                {
+                    auto gameAction = ClimateSetAction(newClimate);
+                    GameActions::Execute(&gameAction);
+                }
             }
             else
             {
-                const utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
-                for (i = 0; i < 4; i++)
+                for (i = 0; i < CLIMATE_COUNT; i++)
                 {
-                    if (strcmp(argv[1], climate_names[i]) == 0)
+                    if (strcmp(argv[1], ClimateNames[i]) == 0)
                     {
                         gClimate = i;
                         break;
                     }
                 }
             }
-            if (i == 4)
+
+            if (i == CLIMATE_COUNT)
                 invalidArgs = true;
             else
                 console.Execute("get climate");

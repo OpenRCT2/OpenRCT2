@@ -3897,6 +3897,8 @@ enum
 
     STR_ADVANCE_TO_NEXT_TICK = 6268,
 
+    STR_INVALID_CLIMATE_ID = 6269,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
