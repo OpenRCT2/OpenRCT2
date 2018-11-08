@@ -47,47 +47,58 @@ int32_t NetworkActions::FindCommandByPermissionName(const std::string& permissio
     return -1;
 }
 
-// clang-format off
-const std::vector<NetworkAction> NetworkActions::Actions =
-{
+const std::vector<NetworkAction> NetworkActions::Actions = {
     {
-        STR_ACTION_CHAT, "PERMISSION_CHAT",
+        STR_ACTION_CHAT,
+        "PERMISSION_CHAT",
         {
-            MISC_COMMAND_CHAT
-        }
-    }, {
-        STR_ACTION_TERRAFORM, "PERMISSION_TERRAFORM",
+            MISC_COMMAND_CHAT,
+        },
+    },
+    {
+        STR_ACTION_TERRAFORM,
+        "PERMISSION_TERRAFORM",
         {
             GAME_COMMAND_SET_LAND_HEIGHT,
             GAME_COMMAND_RAISE_LAND,
             GAME_COMMAND_LOWER_LAND,
             GAME_COMMAND_EDIT_LAND_SMOOTH,
-            GAME_COMMAND_CHANGE_SURFACE_STYLE
-        }
-    }, {
-        STR_ACTION_SET_WATER_LEVEL, "PERMISSION_SET_WATER_LEVEL",
+            GAME_COMMAND_CHANGE_SURFACE_STYLE,
+        },
+    },
+    {
+        STR_ACTION_SET_WATER_LEVEL,
+        "PERMISSION_SET_WATER_LEVEL",
         {
             GAME_COMMAND_SET_WATER_HEIGHT,
             GAME_COMMAND_RAISE_WATER,
-            GAME_COMMAND_LOWER_WATER
-        }
-    }, {
-        STR_ACTION_TOGGLE_PAUSE, "PERMISSION_TOGGLE_PAUSE",
+            GAME_COMMAND_LOWER_WATER,
+        },
+    },
+    {
+        STR_ACTION_TOGGLE_PAUSE,
+        "PERMISSION_TOGGLE_PAUSE",
         {
-            GAME_COMMAND_TOGGLE_PAUSE
-        }
-    }, {
-        STR_ACTION_CREATE_RIDE, "PERMISSION_CREATE_RIDE",
+            GAME_COMMAND_TOGGLE_PAUSE,
+        },
+    },
+    {
+        STR_ACTION_CREATE_RIDE,
+        "PERMISSION_CREATE_RIDE",
         {
-            GAME_COMMAND_CREATE_RIDE
-        }
-    }, {
-        STR_ACTION_REMOVE_RIDE, "PERMISSION_REMOVE_RIDE",
+            GAME_COMMAND_CREATE_RIDE,
+        },
+    },
+    {
+        STR_ACTION_REMOVE_RIDE,
+        "PERMISSION_REMOVE_RIDE",
         {
-            GAME_COMMAND_DEMOLISH_RIDE
-        }
-    }, {
-        STR_ACTION_BUILD_RIDE, "PERMISSION_BUILD_RIDE",
+            GAME_COMMAND_DEMOLISH_RIDE,
+        },
+    },
+    {
+        STR_ACTION_BUILD_RIDE,
+        "PERMISSION_BUILD_RIDE",
         {
             GAME_COMMAND_PLACE_TRACK,
             GAME_COMMAND_REMOVE_TRACK,
@@ -95,10 +106,12 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_PLACE_TRACK_DESIGN,
             GAME_COMMAND_PLACE_MAZE_DESIGN,
             GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
-            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT
-        }
-    }, {
-        STR_ACTION_RIDE_PROPERTIES, "PERMISSION_RIDE_PROPERTIES",
+            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
+        },
+    },
+    {
+        STR_ACTION_RIDE_PROPERTIES,
+        "PERMISSION_RIDE_PROPERTIES",
         {
             GAME_COMMAND_SET_RIDE_NAME,
             GAME_COMMAND_SET_RIDE_APPEARANCE,
@@ -106,10 +119,12 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_SET_RIDE_VEHICLES,
             GAME_COMMAND_SET_RIDE_SETTING,
             GAME_COMMAND_SET_RIDE_PRICE,
-            GAME_COMMAND_SET_BRAKES_SPEED
-        }
-    }, {
-        STR_ACTION_SCENERY, "PERMISSION_SCENERY",
+            GAME_COMMAND_SET_BRAKES_SPEED,
+        },
+    },
+    {
+        STR_ACTION_SCENERY,
+        "PERMISSION_SCENERY",
         {
             GAME_COMMAND_REMOVE_SCENERY,
             GAME_COMMAND_PLACE_SCENERY,
@@ -127,29 +142,37 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_SET_BANNER_NAME,
             GAME_COMMAND_SET_SIGN_NAME,
             GAME_COMMAND_SET_BANNER_STYLE,
-            GAME_COMMAND_SET_SIGN_STYLE
-        }
-    }, {
-        STR_ACTION_PATH, "PERMISSION_PATH",
+            GAME_COMMAND_SET_SIGN_STYLE,
+        },
+    },
+    {
+        STR_ACTION_PATH,
+        "PERMISSION_PATH",
         {
             GAME_COMMAND_PLACE_PATH,
             GAME_COMMAND_PLACE_PATH_FROM_TRACK,
-            GAME_COMMAND_REMOVE_PATH
-        }
-    }, {
-        STR_ACTION_CLEAR_LANDSCAPE, "PERMISSION_CLEAR_LANDSCAPE",
+            GAME_COMMAND_REMOVE_PATH,
+        },
+    },
+    {
+        STR_ACTION_CLEAR_LANDSCAPE,
+        "PERMISSION_CLEAR_LANDSCAPE",
         {
-            GAME_COMMAND_CLEAR_SCENERY
-        }
-    }, {
-        STR_ACTION_GUEST, "PERMISSION_GUEST",
+            GAME_COMMAND_CLEAR_SCENERY,
+        },
+    },
+    {
+        STR_ACTION_GUEST,
+        "PERMISSION_GUEST",
         {
             GAME_COMMAND_SET_GUEST_NAME,
             GAME_COMMAND_PICKUP_GUEST,
-            GAME_COMMAND_BALLOON_PRESS
-        }
-    }, {
-        STR_ACTION_STAFF, "PERMISSION_STAFF",
+            GAME_COMMAND_BALLOON_PRESS,
+        },
+    },
+    {
+        STR_ACTION_STAFF,
+        "PERMISSION_STAFF",
         {
             GAME_COMMAND_HIRE_NEW_STAFF_MEMBER,
             GAME_COMMAND_SET_STAFF_PATROL,
@@ -157,10 +180,12 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_SET_STAFF_ORDER,
             GAME_COMMAND_SET_STAFF_COLOUR,
             GAME_COMMAND_SET_STAFF_NAME,
-            GAME_COMMAND_PICKUP_STAFF
-        }
-    }, {
-        STR_ACTION_PARK_PROPERTIES, "PERMISSION_PARK_PROPERTIES",
+            GAME_COMMAND_PICKUP_STAFF,
+        },
+    },
+    {
+        STR_ACTION_PARK_PROPERTIES,
+        "PERMISSION_PARK_PROPERTIES",
         {
             GAME_COMMAND_SET_PARK_NAME,
             GAME_COMMAND_SET_PARK_OPEN,
@@ -170,57 +195,74 @@ const std::vector<NetworkAction> NetworkActions::Actions =
             GAME_COMMAND_PLACE_PARK_ENTRANCE,
             GAME_COMMAND_REMOVE_PARK_ENTRANCE,
             GAME_COMMAND_PLACE_PEEP_SPAWN,
-        }
-    }, {
-        STR_ACTION_PARK_FUNDING, "PERMISSION_PARK_FUNDING",
+        },
+    },
+    {
+        STR_ACTION_PARK_FUNDING,
+        "PERMISSION_PARK_FUNDING",
         {
             GAME_COMMAND_SET_CURRENT_LOAN,
             GAME_COMMAND_SET_RESEARCH_FUNDING,
-            GAME_COMMAND_START_MARKETING_CAMPAIGN
-        }
-    }, {
-        STR_ACTION_KICK_PLAYER, "PERMISSION_KICK_PLAYER",
+            GAME_COMMAND_START_MARKETING_CAMPAIGN,
+        },
+    },
+    {
+        STR_ACTION_KICK_PLAYER,
+        "PERMISSION_KICK_PLAYER",
         {
-            GAME_COMMAND_KICK_PLAYER
-        }
-    }, {
-        STR_ACTION_MODIFY_GROUPS, "PERMISSION_MODIFY_GROUPS",
+            GAME_COMMAND_KICK_PLAYER,
+        },
+    },
+    {
+        STR_ACTION_MODIFY_GROUPS,
+        "PERMISSION_MODIFY_GROUPS",
         {
-            GAME_COMMAND_MODIFY_GROUPS
-        }
-    }, {
-        STR_ACTION_SET_PLAYER_GROUP, "PERMISSION_SET_PLAYER_GROUP",
+            GAME_COMMAND_MODIFY_GROUPS,
+        },
+    },
+    {
+        STR_ACTION_SET_PLAYER_GROUP,
+        "PERMISSION_SET_PLAYER_GROUP",
         {
-            GAME_COMMAND_SET_PLAYER_GROUP
-        }
-    }, {
-        STR_ACTION_CHEAT, "PERMISSION_CHEAT",
+            GAME_COMMAND_SET_PLAYER_GROUP,
+        },
+    },
+    {
+        STR_ACTION_CHEAT,
+        "PERMISSION_CHEAT",
         {
-            GAME_COMMAND_CHEAT
-        }
-    }, {
-        STR_ACTION_TOGGLE_SCENERY_CLUSTER, "PERMISSION_TOGGLE_SCENERY_CLUSTER",
+            GAME_COMMAND_CHEAT,
+        },
+    },
+    {
+        STR_ACTION_TOGGLE_SCENERY_CLUSTER,
+        "PERMISSION_TOGGLE_SCENERY_CLUSTER",
         {
-            MISC_COMMAND_TOGGLE_SCENERY_CLUSTER
-        }
-    }, {
-        STR_ACTION_PASSWORDLESS_LOGIN, "PERMISSION_PASSWORDLESS_LOGIN",
+            MISC_COMMAND_TOGGLE_SCENERY_CLUSTER,
+        },
+    },
+    {
+        STR_ACTION_PASSWORDLESS_LOGIN,
+        "PERMISSION_PASSWORDLESS_LOGIN",
         {
-            MISC_COMMAND_PASSWORDLESS_LOGIN
-        }
-    }, {
-        STR_ACTION_MODIFY_TILE, "PERMISSION_MODIFY_TILE",
+            MISC_COMMAND_PASSWORDLESS_LOGIN,
+        },
+    },
+    {
+        STR_ACTION_MODIFY_TILE,
+        "PERMISSION_MODIFY_TILE",
         {
-            GAME_COMMAND_MODIFY_TILE
-        }
-    }, {
-        STR_ACTION_EDIT_SCENARIO_OPTIONS, "PERMISSION_EDIT_SCENARIO_OPTIONS",
+            GAME_COMMAND_MODIFY_TILE,
+        },
+    },
+    {
+        STR_ACTION_EDIT_SCENARIO_OPTIONS,
+        "PERMISSION_EDIT_SCENARIO_OPTIONS",
         {
             GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-            GAME_COMMAND_SET_CLIMATE
-        }
-    }
+            GAME_COMMAND_SET_CLIMATE,
+        },
+    },
 };
-// clang-format on
 
 #endif
