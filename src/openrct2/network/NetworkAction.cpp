@@ -216,7 +216,8 @@ const std::vector<NetworkAction> NetworkActions::Actions =
     }, {
         STR_ACTION_EDIT_SCENARIO_OPTIONS, "PERMISSION_EDIT_SCENARIO_OPTIONS",
         {
-            GAME_COMMAND_EDIT_SCENARIO_OPTIONS
+            GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+            GAME_COMMAND_SET_CLIMATE
         }
     }
 };
