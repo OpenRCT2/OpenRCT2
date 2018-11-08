@@ -11,6 +11,7 @@
 - Feature: [#8099] Add Powered Launch mode to Inverted RC (for RCT1 parity).
 - Feature: [#8190] Allow building footpaths on 'corner down' terrain.
 - Feature: [#8191] Allow building on-ride photos and water S-bends on the Water Coaster.
+- Change: [#8222] The climate setting has been moved from objective options to scenario options.
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
 - Fix: [#7473] Disabling sound effects also disables "Disable audio on focus loss".
 - Fix: [#7828] Copied entrances and exits stay when demolishing ride.
