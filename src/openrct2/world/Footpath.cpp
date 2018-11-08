@@ -670,6 +670,7 @@ static money32 footpath_place_from_track(
             pathElement->SetAddition(0);
             tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
             tileElement->AsPath()->SetAdditionStatus(255);
+            tileElement->AsPath()->SetEdges(edges);
             tileElement->AsPath()->SetCorners(0);
             pathElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
             if (flags & (1 << 6))
