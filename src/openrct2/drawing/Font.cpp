@@ -146,6 +146,7 @@ static const std::map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::cyrillic_io, 235 - CS_SPRITE_FONT_OFFSET }, // Looks just like ë
 
     // Punctuation
+    { UnicodeChar::non_breaking_space, ' ' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::interpunct, SPR_G2_INTERPUNCT - SPR_CHAR_START },
     { UnicodeChar::single_quote_open, '`' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::single_quote_end, '\'' - CS_SPRITE_FONT_OFFSET },
@@ -153,6 +154,7 @@ static const std::map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::german_quote_open, SPR_G2_GERMAN_OPENQUOTES - SPR_CHAR_START },
     { UnicodeChar::bullet, CSChar::bullet - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::ellipsis, SPR_G2_ELLIPSIS - SPR_CHAR_START },
+    { UnicodeChar::narrow_non_breaking_space, ' ' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::quote_open, CSChar::quote_open - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::quote_close, CSChar::quote_close - CS_SPRITE_FONT_OFFSET },
 
