@@ -159,6 +159,7 @@ static const std::map<char32_t, int32_t> codepointOffsetMap = {
     // Currency
     { UnicodeChar::guilder, SPR_G2_GUILDER_SIGN - SPR_CHAR_START },
     { UnicodeChar::euro, CSChar::euro - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::rouble, SPR_G2_ROUBLE_SIGN - SPR_CHAR_START },
 
     // Dingbats
     { UnicodeChar::up, CSChar::up - CS_SPRITE_FONT_OFFSET },
