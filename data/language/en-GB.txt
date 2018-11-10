@@ -2092,8 +2092,8 @@ STR_2756    :Remove litter
 STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :Win scenario
-STR_2767    :Freeze Climate
-STR_2768    :Unfreeze Climate
+STR_2767    :Freeze weather
+STR_2768    :Unfreeze weather
 STR_2769    :Open Park
 STR_2770    :Close Park
 STR_2773    :Windowed
@@ -2966,7 +2966,7 @@ STR_5461    :Set guests' parameters
 STR_5462    :{CURRENCY}
 STR_5463    :Goal: Have fun!
 STR_5464    :General
-STR_5465    :Climate
+STR_5465    :Weather
 STR_5466    :Staff
 STR_5467    :ALT + 
 STR_5468    :Recent messages

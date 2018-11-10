@@ -40,7 +40,7 @@ bool gCheatsIgnoreRideIntensity = false;
 bool gCheatsDisableVandalism = false;
 bool gCheatsDisableLittering = false;
 bool gCheatsNeverendingMarketing = false;
-bool gCheatsFreezeClimate = false;
+bool gCheatsFreezeWeather = false;
 bool gCheatsDisableTrainLengthLimit = false;
 bool gCheatsDisablePlantAging = false;
 bool gCheatsEnableChainLiftOnAllTrack = false;
@@ -617,8 +617,8 @@ void game_command_cheat(
             case CHEAT_FORCEWEATHER:
                 climate_force_weather(*edx);
                 break;
-            case CHEAT_FREEZECLIMATE:
-                gCheatsFreezeClimate = *edx != 0;
+            case CHEAT_FREEZEWEATHER:
+                gCheatsFreezeWeather = *edx != 0;
                 break;
             case CHEAT_NEVERENDINGMARKETING:
                 gCheatsNeverendingMarketing = *edx != 0;
@@ -683,7 +683,7 @@ void cheats_reset()
     gCheatsDisableVandalism = false;
     gCheatsDisableLittering = false;
     gCheatsNeverendingMarketing = false;
-    gCheatsFreezeClimate = false;
+    gCheatsFreezeWeather = false;
     gCheatsDisablePlantAging = false;
     gCheatsAllowArbitraryRideTypeChanges = false;
     gCheatsDisableRideValueAging = false;
@@ -947,14 +947,14 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi)
             }
             return cheat_string;
         }
-        case CHEAT_FREEZECLIMATE:
-            if (gCheatsFreezeClimate)
+        case CHEAT_FREEZEWEATHER:
+            if (gCheatsFreezeWeather)
             {
-                return language_get_string(STR_CHEAT_UNFREEZE_CLIMATE);
+                return language_get_string(STR_CHEAT_UNFREEZE_WEATHER);
             }
             else
             {
-                return language_get_string(STR_CHEAT_FREEZE_CLIMATE);
+                return language_get_string(STR_CHEAT_FREEZE_WEATHER);
             }
         case CHEAT_NEVERENDINGMARKETING:
             return language_get_string(STR_CHEAT_NEVERENDING_MARKETING);

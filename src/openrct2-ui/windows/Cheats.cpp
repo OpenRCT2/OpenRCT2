@@ -130,8 +130,8 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_WIN_SCENARIO,
     WIDX_HAVE_FUN,
     WIDX_NEVERENDING_MARKETING,
-    WIDX_CLIMATE_GROUP,
-    WIDX_FREEZE_CLIMATE,
+    WIDX_WEATHER_GROUP,
+    WIDX_FREEZE_WEATHER,
     WIDX_WEATHER,
     WIDX_WEATHER_DROPDOWN_BUTTON,
     WIDX_STAFF_GROUP,
@@ -273,8 +273,8 @@ static rct_widget window_cheats_misc_widgets[] =
     { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(6),         HPL(6),         STR_CHEAT_WIN_SCENARIO,             STR_NONE },                             // Win scenario
     { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(6),         HPL(6),         STR_CHEAT_HAVE_FUN,                 STR_NONE },                             // Have fun!
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(7),         HPL(7),         STR_CHEAT_NEVERENDING_MARKETING,    STR_CHEAT_NEVERENDING_MARKETING_TIP },  // never ending marketing campaigns
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(8.25),      HPL(10.5),      STR_CHEAT_CLIMATE_GROUP,            STR_NONE },                             // Climate group
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(9),         HPL(9),         STR_CHEAT_FREEZE_CLIMATE,           STR_CHEAT_FREEZE_CLIMATE_TIP },         // Freeze climate
+    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(8.25),      HPL(10.5),      STR_CHEAT_WEATHER_GROUP,            STR_NONE },                             // Weather group
+    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(9),         HPL(9),         STR_CHEAT_FREEZE_WEATHER,           STR_CHEAT_FREEZE_WEATHER_TIP },         // Freeze weather
     { WWT_DROPDOWN,         1,      XPL(1),                 WPL(1),                 YPL(10) + 2,    YPL(10) + 13,   STR_NONE,                           STR_FORCE_WEATHER_TOOLTIP },            // Force weather
     { WWT_BUTTON,           1,      WPL(1) - 11,            WPL(1) - 1,             YPL(10) + 3,    YPL(10) + 12,   STR_DROPDOWN_GLYPH,                 STR_FORCE_WEATHER_TOOLTIP },            // Force weather
     { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(12),        HPL(17.5),      STR_CHEAT_STAFF_GROUP,              STR_NONE },                             // Staff group
@@ -530,7 +530,7 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_DISABLE_LITTERING),
 
     MAIN_CHEAT_ENABLED_WIDGETS |
-    (1ULL << WIDX_FREEZE_CLIMATE) |
+    (1ULL << WIDX_FREEZE_WEATHER) |
     (1ULL << WIDX_OPEN_CLOSE_PARK) |
     (1ULL << WIDX_WEATHER) |
     (1ULL << WIDX_WEATHER_DROPDOWN_BUTTON) |
@@ -936,8 +936,8 @@ static void window_cheats_misc_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_TAB_4:
             window_cheats_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
-        case WIDX_FREEZE_CLIMATE:
-            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FREEZECLIMATE, !gCheatsFreezeClimate, GAME_COMMAND_CHEAT, 0, 0);
+        case WIDX_FREEZE_WEATHER:
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FREEZEWEATHER, !gCheatsFreezeWeather, GAME_COMMAND_CHEAT, 0, 0);
             break;
         case WIDX_OPEN_CLOSE_PARK:
             game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_OPENCLOSEPARK, 0, GAME_COMMAND_CHEAT, 0, 0);
@@ -1174,7 +1174,7 @@ static void window_cheats_invalidate(rct_window* w)
                                                                                         : STR_CHEAT_OPEN_PARK;
             widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
             w->widgets[WIDX_SANDBOX_MODE].text = gCheatsSandboxMode ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;
-            w->widgets[WIDX_FREEZE_CLIMATE].text = gCheatsFreezeClimate ? STR_CHEAT_UNFREEZE_CLIMATE : STR_CHEAT_FREEZE_CLIMATE;
+            w->widgets[WIDX_FREEZE_WEATHER].text = gCheatsFreezeWeather ? STR_CHEAT_UNFREEZE_WEATHER : STR_CHEAT_FREEZE_WEATHER;
             widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
             widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
             break;
