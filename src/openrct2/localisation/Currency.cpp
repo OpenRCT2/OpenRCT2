@@ -26,7 +26,7 @@ currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
     {   "SEK",  10,     CURRENCY_SUFFIX,    " kr",          CURRENCY_SUFFIX,    " kr",  STR_KRONA           },  // Swedish Krona
     {   "EUR",  10,     CURRENCY_PREFIX,    "\xE2\x82\xAC", CURRENCY_SUFFIX,    "EUR",  STR_EUROS           },  // Euro
     {   "KRW",  10000,  CURRENCY_PREFIX,    "\xE2\x82\xA9", CURRENCY_PREFIX,    "W",    STR_WON             },  // South Korean Won
-    {   "RUB",  1000,   CURRENCY_PREFIX,    "R ",           CURRENCY_PREFIX,    "R ",   STR_ROUBLE          },  // Russian Rouble
+    {   "RUB",  1000,   CURRENCY_SUFFIX,    "\xE2\x82\xBD", CURRENCY_PREFIX,    "R ",   STR_ROUBLE          },  // Russian Rouble
     {   "CZK",  100,    CURRENCY_SUFFIX,    " K\xC4\x8D",   CURRENCY_SUFFIX,    " Kc",  STR_CZECH_KORUNA    },  // Czech koruna
     {   "HKD",  100,    CURRENCY_PREFIX,    "$",            CURRENCY_PREFIX,    "HKD",  STR_HONG_KONG_DOLLAR},  // Hong Kong Dollar
     {   "TWD",  1000,   CURRENCY_PREFIX,    "NT$",          CURRENCY_PREFIX,    "NT$",  STR_NEW_TAIWAN_DOLLAR}, // New Taiwan Dollar

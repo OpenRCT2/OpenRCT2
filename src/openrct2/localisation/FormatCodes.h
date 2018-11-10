@@ -274,6 +274,7 @@ namespace UnicodeChar
     constexpr char32_t cyrillic_io = 0x451;
 
     // Punctuation
+    constexpr char32_t non_breaking_space = 0xA0;
     constexpr char32_t leftguillemet = 0xAB;
     constexpr char32_t rightguillemet = 0xBB;
     constexpr char32_t interpunct = 0x49F;
@@ -283,12 +284,14 @@ namespace UnicodeChar
     constexpr char32_t german_quote_open = 0x201E;
     constexpr char32_t bullet = 0x2022;
     constexpr char32_t ellipsis = 0x2026;
+    constexpr char32_t narrow_non_breaking_space = 0x202F;
     constexpr char32_t quote_open = 0x201C;
     constexpr char32_t quote_close = 0x201D;
 
     // Currency
     constexpr char32_t guilder = 0x192;
     constexpr char32_t euro = 0x20AC;
+    constexpr char32_t rouble = 0x20BD;
 
     // Dingbats
     constexpr char32_t up = 0x25B2;
