@@ -2264,7 +2264,7 @@ bool Network::LoadMap(IStream* stream)
         gCheatsDisableVandalism = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisableLittering = stream->ReadValue<uint8_t>() != 0;
         gCheatsNeverendingMarketing = stream->ReadValue<uint8_t>() != 0;
-        gCheatsFreezeClimate = stream->ReadValue<uint8_t>() != 0;
+        gCheatsFreezeWeather = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisablePlantAging = stream->ReadValue<uint8_t>() != 0;
         gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8_t>() != 0;
         gCheatsDisableRideValueAging = stream->ReadValue<uint8_t>() != 0;
@@ -2311,7 +2311,7 @@ bool Network::SaveMap(IStream* stream, const std::vector<const ObjectRepositoryI
         stream->WriteValue<uint8_t>(gCheatsDisableVandalism);
         stream->WriteValue<uint8_t>(gCheatsDisableLittering);
         stream->WriteValue<uint8_t>(gCheatsNeverendingMarketing);
-        stream->WriteValue<uint8_t>(gCheatsFreezeClimate);
+        stream->WriteValue<uint8_t>(gCheatsFreezeWeather);
         stream->WriteValue<uint8_t>(gCheatsDisablePlantAging);
         stream->WriteValue<uint8_t>(gCheatsAllowArbitraryRideTypeChanges);
         stream->WriteValue<uint8_t>(gCheatsDisableRideValueAging);

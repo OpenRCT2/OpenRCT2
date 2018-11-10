@@ -25,7 +25,7 @@ extern bool gCheatsIgnoreRideIntensity;
 extern bool gCheatsDisableVandalism;
 extern bool gCheatsDisableLittering;
 extern bool gCheatsNeverendingMarketing;
-extern bool gCheatsFreezeClimate;
+extern bool gCheatsFreezeWeather;
 extern bool gCheatsDisableTrainLengthLimit;
 extern bool gCheatsDisablePlantAging;
 extern bool gCheatsDisableRideValueAging;
@@ -73,7 +73,7 @@ enum
     CHEAT_10MINUTEINSPECTIONS,
     CHEAT_WINSCENARIO,
     CHEAT_FORCEWEATHER,
-    CHEAT_FREEZECLIMATE,
+    CHEAT_FREEZEWEATHER,
     CHEAT_OPENCLOSEPARK,
     CHEAT_HAVEFUN,
     CHEAT_SETFORCEDPARKRATING,

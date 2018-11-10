@@ -114,7 +114,7 @@ void climate_update()
     if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
         return;
 
-    if (!gCheatsFreezeClimate)
+    if (!gCheatsFreezeWeather)
     {
         if (gClimateUpdateTimer)
         {
