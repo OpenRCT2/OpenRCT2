@@ -246,7 +246,7 @@ static money32 footpath_element_insert(
     }
 
     tileElement = map_get_surface_element_at({ x, y });
-    
+
     if (tileElement == nullptr)
     {
         return MONEY32_UNDEFINED;
