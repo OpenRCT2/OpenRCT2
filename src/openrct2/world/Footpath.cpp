@@ -246,6 +246,11 @@ static money32 footpath_element_insert(
     }
 
     tileElement = map_get_surface_element_at({ x, y });
+    
+    if (tileElement == nullptr)
+    {
+        return MONEY32_UNDEFINED;
+    }
 
     int32_t supportHeight = z - tileElement->base_height;
     gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
