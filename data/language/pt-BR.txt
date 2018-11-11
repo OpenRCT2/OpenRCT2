@@ -2220,7 +2220,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) direitos autorai
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) direitos autorais © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Amostras Grátis de Spectrasonics ”Liquid Grooves”)
+STR_2901    :{WINDOW_COLOUR_2}(Amostras Grátis de Spectrasonics "Liquid Grooves")
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) direitos autorais © Chris Sawyer
@@ -3077,7 +3077,7 @@ STR_5574    :Nome do Servidor:
 STR_5575    :Máximo de Jogadores:
 STR_5576    :Porta:
 STR_5577    :Won Sul-Coreano(W)
-STR_5578    :Rublo Russo (R)
+STR_5578    :Rublo Russo (₽)
 STR_5579    :Fator escalar da janela:
 STR_5580    :Coroa Tcheca (Kč)
 STR_5581    :Mostrar FPS
@@ -3728,6 +3728,7 @@ STR_6264    :Sempre usar explorador de arquivos do sistema
 STR_6265    :{SMALLFONT}{BLACK}Quando habilitado, o explorador de arquivos do seu sistema operacional será usado ao invés do explorador do OpenRCT2.
 STR_6266    :Abrir pasta de conteúdo personalizado
 STR_6267    :Abrir inspetor de azulejo
+STR_6268    :Avançar para o próximo tick
 
 #############
 # Scenarios #

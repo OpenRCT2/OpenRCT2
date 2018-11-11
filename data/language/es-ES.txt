@@ -900,15 +900,15 @@ STR_1515    :{SMALLFONT}“Este parque está realmente limpio y ordenado”
 STR_1516    :{SMALLFONT}“Las fuentes saltarinas son estupendas”
 STR_1517    :{SMALLFONT}“La música es agradable”
 STR_1518    :{SMALLFONT}“Este Globo de {STRINGID} es barato”
-STR_1519    :{SMALLFONT}“Este Juguetito de {STRINGID} es barato{”
-STR_1520    :{SMALLFONT}“Este Mapa de {STRINGID} es barato{”
-STR_1521    :{SMALLFONT}“Esta Foto de {STRINGID} es barato{”
-STR_1522    :{SMALLFONT}“Este Paraguas de {STRINGID} es barato{”
-STR_1523    :{SMALLFONT}“Esta Bebida de {STRINGID} es barata{”
-STR_1524    :{SMALLFONT}“Esta Hamburguesa de {STRINGID} es barata{”
-STR_1525    :{SMALLFONT}“Estas Papas Fritas de {STRINGID} son baratas{”
-STR_1526    :{SMALLFONT}“Este Helado de {STRINGID} es barato{”
-STR_1527    :{SMALLFONT}“Este Algodón de {STRINGID} es barato{”
+STR_1519    :{SMALLFONT}“Este Juguetito de {STRINGID} es barato”
+STR_1520    :{SMALLFONT}“Este Mapa de {STRINGID} es barato”
+STR_1521    :{SMALLFONT}“Esta Foto de {STRINGID} es barato”
+STR_1522    :{SMALLFONT}“Este Paraguas de {STRINGID} es barato”
+STR_1523    :{SMALLFONT}“Esta Bebida de {STRINGID} es barata”
+STR_1524    :{SMALLFONT}“Esta Hamburguesa de {STRINGID} es barata”
+STR_1525    :{SMALLFONT}“Estas Papas Fritas de {STRINGID} son baratas”
+STR_1526    :{SMALLFONT}“Este Helado de {STRINGID} es barato”
+STR_1527    :{SMALLFONT}“Este Algodón de {STRINGID} es barato”
 STR_1528    :
 STR_1529    :
 STR_1530    :
@@ -3081,7 +3081,7 @@ STR_5574    :Nombre del servidor:
 STR_5575    :Jugadores máximos:
 STR_5576    :Puerto:
 STR_5577    :Won surcoreano (W)
-STR_5578    :Rublo ruso (R)
+STR_5578    :Rublo ruso (₽)
 STR_5579    :Factor escala ventana:
 STR_5580    :Corona checa (Kč)
 STR_5581    :Mostrar FPS
@@ -3737,6 +3737,8 @@ STR_6264    :Usar siempre explorador de archivos del sistema
 STR_6265    :{SMALLFONT}{BLACK}Al activarse, el explorador de archivos del SO será usado en lugar del de OpenRCT2.
 STR_6266    :Abrir carpeta de contenido personalizado
 STR_6267    :Abrir inspector de cuadrícula
+STR_6268    :Avanzar tiempo un tick
+STR_6269    :ID de clima inválido
 
 ##############
 # Escenarios #

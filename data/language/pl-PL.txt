@@ -3085,7 +3085,7 @@ STR_5574    :Nazwa:
 STR_5575    :Limit graczy:
 STR_5576    :Port:
 STR_5577    :Won południowokoreański (W)
-STR_5578    :Rosyjski rubel (R)
+STR_5578    :Rosyjski rubel (₽)
 STR_5579    :Współczynnik skali okna:
 STR_5580    :Korona czeska (Kč)
 STR_5581    :Pokaż licznik FPS

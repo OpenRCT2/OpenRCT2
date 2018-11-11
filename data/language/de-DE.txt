@@ -3080,7 +3080,7 @@ STR_5574    :Servername:
 STR_5575    :Max. Spieler:
 STR_5576    :Port:
 STR_5577    :Südkoreanischer Won (W)
-STR_5578    :Russischer Rubel (R)
+STR_5578    :Russischer Rubel (₽)
 STR_5579    :Skalierungsfaktor:
 STR_5580    :Tschechische Krone (Kč)
 STR_5581    :FPS anzeigen

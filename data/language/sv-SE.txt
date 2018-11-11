@@ -3082,7 +3082,7 @@ STR_5574    :Servernamn:
 STR_5575    :Max Spelare:
 STR_5576    :Port:
 STR_5577    :Sydkoreansk Won (W)
-STR_5578    :Rysk Rouble (R)
+STR_5578    :Rysk Rouble (₽)
 STR_5579    :Fönsterskalning:
 STR_5580    :Tjeckisk koruna (Kč)
 STR_5581    :Visa FPS

@@ -3084,7 +3084,7 @@ STR_5574    :Server Navn:
 STR_5575    :Max spillere:
 STR_5576    :Port:
 STR_5577    :Syd Koreanske Won (W)
-STR_5578    :Russiske Rubler (R)
+STR_5578    :Russiske Rubler (₽)
 STR_5579    :Vindues skalarings faktor:
 STR_5580    :Tjekkiske koruna (Kč)
 STR_5581    :Vis FPS
