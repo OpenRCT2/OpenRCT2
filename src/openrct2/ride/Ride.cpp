@@ -5989,8 +5989,7 @@ int32_t ride_get_refund_price(int32_t ride_id)
 
     if (!ride_try_get_origin_element(ride_id, &trackElement))
     {
-        gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
-        return MONEY32_UNDEFINED;
+        return 0; // Ride has no track to refund
     }
 
     // Find the start in case it is not a complete circuit
