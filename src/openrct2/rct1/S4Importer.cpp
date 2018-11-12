@@ -1973,9 +1973,7 @@ private:
 
         ClearExtraTileEntries();
         FixWalls();
-        FixBanners();
         FixEntrancePositions();
-        FixTileElementEntryTypes();
     }
 
     void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
@@ -2080,7 +2078,8 @@ private:
                 auto dst2 = dst->AsSmallScenery();
                 auto src2 = src->AsSmallScenery();
 
-                dst2->SetEntryIndex(src2->GetEntryIndex());
+                uint8_t entryIndex = _smallSceneryTypeToEntryMap[src2->GetEntryIndex()];
+                dst2->SetEntryIndex(entryIndex);
                 dst2->SetAge(src2->GetAge());
                 dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
                 dst2->SetPrimaryColour(RCT1::GetColour(src2->GetPrimaryColour()));
@@ -2164,9 +2163,14 @@ private:
                 auto dst2 = dst->AsBanner();
                 auto src2 = src->AsBanner();
 
-                dst2->SetIndex(src2->GetIndex());
+                uint8_t index = src2->GetIndex();
+                dst2->SetIndex(index);
                 dst2->SetPosition(src2->GetPosition());
                 dst2->SetAllowedEdges(src2->GetAllowedEdges());
+
+                rct_banner* srcBanner = &_s4.banners[index];
+                rct_banner* dstBanner = &gBanners[index];
+                ImportBanner(dstBanner, srcBanner);
 
                 break;
             }
@@ -2720,27 +2724,6 @@ private:
         }
     }
 
-    void FixBanners()
-    {
-        for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
-        {
-            for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
-            {
-                TileElement* tileElement = map_get_first_element_at(x, y);
-                do
-                {
-                    if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
-                    {
-                        uint8_t index = tileElement->AsBanner()->GetIndex();
-                        rct_banner* src = &_s4.banners[index];
-                        rct_banner* dst = &gBanners[index];
-                        ImportBanner(dst, src);
-                    }
-                } while (!(tileElement++)->IsLastForTile());
-            }
-        }
-    }
-
     void ImportBanner(rct_banner* dst, rct_banner* src)
     {
         *dst = *src;
@@ -2788,25 +2771,6 @@ private:
             gParkEntrances[entranceIndex].z = element->base_height * 8;
             gParkEntrances[entranceIndex].direction = element->GetDirection();
             entranceIndex++;
-        }
-    }
-
-    void FixTileElementEntryTypes()
-    {
-        tile_element_iterator it;
-        tile_element_iterator_begin(&it);
-        while (tile_element_iterator_next(&it))
-        {
-            TileElement* tileElement = it.element;
-            switch (tileElement->GetType())
-            {
-                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                {
-                    uint8_t entryIndex = _smallSceneryTypeToEntryMap[tileElement->AsSmallScenery()->GetEntryIndex()];
-                    tileElement->AsSmallScenery()->SetEntryIndex(entryIndex);
-                    break;
-                }
-            }
         }
     }
 
