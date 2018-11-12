@@ -161,7 +161,7 @@ rct_window* window_sign_open(rct_windownumber number)
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
-            if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+            if (scenery_entry != nullptr && scenery_entry->large_scenery.scrolling_mode != 0xFF)
             {
                 BannerIndex bannerIndex = tile_element->AsLargeScenery()->GetBannerIndex();
 
