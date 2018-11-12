@@ -1955,6 +1955,8 @@ private:
 
     void ImportTileElements()
     {
+        gMapBaseZ = 7;
+
         for (uint32_t index = 0, dstOffset = 0; index < RCT1_MAX_TILE_ELEMENTS; index++)
         {
             auto src = &_s4.tile_elements[index];
@@ -1970,11 +1972,8 @@ private:
         }
 
         ClearExtraTileEntries();
-        FixSceneryColours();
-        FixTileElementZ();
         FixWalls();
         FixBanners();
-        FixTerrain();
         FixEntrancePositions();
         FixTileElementEntryTypes();
     }
@@ -1986,8 +1985,8 @@ private:
         dst->ClearAs(tileElementType);
         dst->SetDirection(src->GetDirection());
         dst->flags = src->flags;
-        dst->base_height = src->base_height;
-        dst->clearance_height = src->clearance_height;
+        dst->base_height = src->base_height / 2;
+        dst->clearance_height = src->clearance_height / 2;
 
         switch (tileElementType)
         {
@@ -1997,8 +1996,8 @@ private:
                 auto src2 = src->AsSurface();
 
                 dst2->SetSlope(src2->GetSlope());
-                dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
-                dst2->SetEdgeStyle(src2->GetEdgeStyle());
+                dst2->SetSurfaceStyle(RCT1::GetTerrain(src2->GetSurfaceStyle()));
+                dst2->SetEdgeStyle(RCT1::GetTerrainEdge(src2->GetEdgeStyle()));
                 dst2->SetGrassLength(src2->GetGrassLength());
                 dst2->SetOwnership(src2->GetOwnership());
                 dst2->SetParkFences(src2->GetParkFences());
@@ -2084,10 +2083,25 @@ private:
                 dst2->SetEntryIndex(src2->GetEntryIndex());
                 dst2->SetAge(src2->GetAge());
                 dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
-                dst2->SetPrimaryColour(src2->GetPrimaryColour());
-                dst2->SetSecondaryColour(src2->GetSecondaryColour());
+                dst2->SetPrimaryColour(RCT1::GetColour(src2->GetPrimaryColour()));
                 if (src2->NeedsSupports())
                     dst2->SetNeedsSupports();
+
+                // Copied from [rct2: 0x006A2956]
+                switch (src2->GetEntryIndex())
+                {
+                    case RCT1_SCENERY_GEOMETRIC_SCULPTURE_1:
+                    case RCT1_SCENERY_GEOMETRIC_SCULPTURE_2:
+                    case RCT1_SCENERY_GEOMETRIC_SCULPTURE_3:
+                    case RCT1_SCENERY_GEOMETRIC_SCULPTURE_4:
+                    case RCT1_SCENERY_GEOMETRIC_SCULPTURE_5:
+                        dst2->SetSecondaryColour(COLOUR_WHITE);
+                        break;
+                    case RCT1_SCENERY_TULIPS_1:
+                    case RCT1_SCENERY_TULIPS_2:
+                        dst2->SetPrimaryColour(COLOUR_BRIGHT_RED);
+                        dst2->SetSecondaryColour(COLOUR_YELLOW);
+                }
 
                 break;
             }
@@ -2136,10 +2150,11 @@ private:
                 auto dst2 = dst->AsLargeScenery();
                 auto src2 = src->AsLargeScenery();
 
-                dst2->SetEntryIndex(src2->GetEntryIndex());
+                uint8_t type = src2->GetEntryIndex();
+                dst2->SetEntryIndex(_largeSceneryTypeToEntryMap[type]);
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                dst2->SetPrimaryColour(src2->GetPrimaryColour());
-                dst2->SetSecondaryColour(src2->GetSecondaryColour());
+                dst2->SetPrimaryColour(RCT1::GetColour(src2->GetPrimaryColour()));
+                dst2->SetSecondaryColour(RCT1::GetColour(src2->GetSecondaryColour()));
                 dst2->SetBannerIndex(src2->GetBannerIndex());
 
                 break;
@@ -2622,66 +2637,6 @@ private:
         gNextFreeTileElement = nextFreeTileElement;
     }
 
-    void FixSceneryColours()
-    {
-        colour_t colour;
-        TileElement* tileElement = gTileElements;
-        while (tileElement < gNextFreeTileElement)
-        {
-            if (tileElement->base_height != 255)
-            {
-                // This skips walls, which are fixed later.
-                switch (tileElement->GetType())
-                {
-                    case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                        colour = RCT1::GetColour(tileElement->AsSmallScenery()->GetPrimaryColour());
-                        tileElement->AsSmallScenery()->SetPrimaryColour(colour);
-
-                        // Copied from [rct2: 0x006A2956]
-                        switch (tileElement->AsSmallScenery()->GetEntryIndex())
-                        {
-                            case RCT1_SCENERY_GEOMETRIC_SCULPTURE_1:
-                            case RCT1_SCENERY_GEOMETRIC_SCULPTURE_2:
-                            case RCT1_SCENERY_GEOMETRIC_SCULPTURE_3:
-                            case RCT1_SCENERY_GEOMETRIC_SCULPTURE_4:
-                            case RCT1_SCENERY_GEOMETRIC_SCULPTURE_5:
-                                tileElement->AsSmallScenery()->SetSecondaryColour(COLOUR_WHITE);
-                                break;
-                            case RCT1_SCENERY_TULIPS_1:
-                            case RCT1_SCENERY_TULIPS_2:
-                                tileElement->AsSmallScenery()->SetPrimaryColour(COLOUR_BRIGHT_RED);
-                                tileElement->AsSmallScenery()->SetSecondaryColour(COLOUR_YELLOW);
-                        }
-                        break;
-                    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                        colour = RCT1::GetColour(tileElement->AsLargeScenery()->GetPrimaryColour());
-                        tileElement->AsLargeScenery()->SetPrimaryColour(colour);
-
-                        colour = RCT1::GetColour(tileElement->AsLargeScenery()->GetSecondaryColour());
-                        tileElement->AsLargeScenery()->SetSecondaryColour(colour);
-
-                        break;
-                }
-            }
-            tileElement++;
-        }
-    }
-
-    void FixTileElementZ()
-    {
-        TileElement* tileElement = gTileElements;
-        while (tileElement < gNextFreeTileElement)
-        {
-            if (tileElement->base_height != 255)
-            {
-                tileElement->base_height /= 2;
-                tileElement->clearance_height /= 2;
-            }
-            tileElement++;
-        }
-        gMapBaseZ = 7;
-    }
-
     void FixWalls()
     {
         // The user might attempt to load a save while in pause mode.
@@ -2806,21 +2761,6 @@ private:
         }
     }
 
-    void FixTerrain()
-    {
-        tile_element_iterator it;
-        tile_element_iterator_begin(&it);
-        while (tile_element_iterator_next(&it))
-        {
-            TileElement* element = it.element;
-            if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
-            {
-                element->AsSurface()->SetSurfaceStyle(RCT1::GetTerrain(element->AsSurface()->GetSurfaceStyle()));
-                element->AsSurface()->SetEdgeStyle(RCT1::GetTerrainEdge(element->AsSurface()->GetEdgeStyle()));
-            }
-        }
-    }
-
     void FixEntrancePositions()
     {
         for (size_t i = 0; i < Util::CountOf(gParkEntrances); i++)
@@ -2864,12 +2804,6 @@ private:
                 {
                     uint8_t entryIndex = _smallSceneryTypeToEntryMap[tileElement->AsSmallScenery()->GetEntryIndex()];
                     tileElement->AsSmallScenery()->SetEntryIndex(entryIndex);
-                    break;
-                }
-                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                {
-                    uint8_t type = tileElement->AsLargeScenery()->GetEntryIndex();
-                    tileElement->AsLargeScenery()->SetEntryIndex(_largeSceneryTypeToEntryMap[type]);
                     break;
                 }
             }
@@ -3014,15 +2948,6 @@ void load_from_sc4(const utf8* path)
     auto result = s4Importer->LoadScenario(path);
     objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
     s4Importer->Import();
-}
-
-uint8_t PathElement::GetRCT1PathType() const
-{
-    uint8_t pathColour = type & 3;
-    uint8_t pathType2 = (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 2;
-
-    pathType2 = pathType2 | pathColour;
-    return pathType2;
 }
 
 int32_t WallElement::GetRCT1WallType(int32_t edge) const
