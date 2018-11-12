@@ -470,7 +470,7 @@ private:
     {
         size_t maxTiles = 128 * 128;
         size_t tileIndex = 0;
-        TileElement* tileElement = _s4.tile_elements;
+        RCT12TileElement* tileElement = _s4.tile_elements;
 
         while (tileIndex < maxTiles)
         {
@@ -1955,16 +1955,209 @@ private:
 
     void ImportTileElements()
     {
-        std::copy(std::begin(_s4.tile_elements), std::end(_s4.tile_elements), gTileElements);
+        for (uint32_t index = 0, dstOffset = 0; index < RCT1_MAX_TILE_ELEMENTS; index++)
+        {
+            auto src = &_s4.tile_elements[index];
+            auto dst = &gTileElements[index + dstOffset];
+            if (src->base_height == 0xFF)
+            {
+                memcpy(dst, src, sizeof(*src));
+            }
+            else
+            {
+                ImportTileElement(dst, src);
+            }
+        }
+
         ClearExtraTileEntries();
         FixSceneryColours();
         FixTileElementZ();
-        FixPaths();
         FixWalls();
         FixBanners();
         FixTerrain();
         FixEntrancePositions();
         FixTileElementEntryTypes();
+    }
+
+    void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
+    {
+        // Todo: allow for changing defition of OpenRCT2 tile element types - replace with a map
+        uint8_t tileElementType = src->GetType();
+        dst->ClearAs(tileElementType);
+        dst->SetDirection(src->GetDirection());
+        dst->flags = src->flags;
+        dst->base_height = src->base_height;
+        dst->clearance_height = src->clearance_height;
+
+        switch (tileElementType)
+        {
+            case TILE_ELEMENT_TYPE_SURFACE:
+            {
+                auto dst2 = dst->AsSurface();
+                auto src2 = src->AsSurface();
+
+                dst2->SetSlope(src2->GetSlope());
+                dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
+                dst2->SetEdgeStyle(src2->GetEdgeStyle());
+                dst2->SetGrassLength(src2->GetGrassLength());
+                dst2->SetOwnership(src2->GetOwnership());
+                dst2->SetParkFences(src2->GetParkFences());
+                dst2->SetWaterHeight(src2->GetWaterHeight());
+                dst2->SetHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
+
+                break;
+            }
+            case TILE_ELEMENT_TYPE_PATH:
+            {
+                auto dst2 = dst->AsPath();
+                auto src2 = src->AsPath();
+
+                dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
+                dst2->SetSloped(src2->IsSloped());
+                dst2->SetSlopeDirection(src2->GetSlopeDirection());
+                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetStationIndex(src2->GetStationIndex());
+                dst2->SetWide(src2->IsWide());
+                dst2->SetHasQueueBanner(src2->HasQueueBanner());
+                dst2->SetEdges(src2->GetEdges());
+                dst2->SetCorners(src2->GetCorners());
+                dst2->SetAddition(src2->GetAddition());
+                dst2->SetAdditionIsGhost(false);
+                dst2->SetAdditionStatus(src2->GetAdditionStatus());
+
+                // Type
+                uint8_t pathType = src2->GetRCT1PathType();
+                uint8_t entryIndex = _pathTypeToEntryMap[pathType];
+
+                dst2->SetDirection(0);
+                dst2->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
+
+                dst2->SetEntryIndex(entryIndex);
+                if (RCT1::PathIsQueue(pathType))
+                {
+                    dst2->SetIsQueue(true);
+                }
+
+                // Additions
+                uint8_t additionType = dst2->GetAddition();
+                if (additionType != RCT1_PATH_ADDITION_NONE)
+                {
+                    uint8_t normalisedType = RCT1::NormalisePathAddition(additionType);
+                    entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
+                    if (additionType != normalisedType)
+                    {
+                        dst2->flags |= TILE_ELEMENT_FLAG_BROKEN;
+                    }
+                    dst2->SetAddition(entryIndex + 1);
+                }
+                break;
+            }
+            case TILE_ELEMENT_TYPE_TRACK:
+            {
+                auto dst2 = dst->AsTrack();
+                auto src2 = src->AsTrack();
+
+                dst2->SetTrackType(src2->GetTrackType());
+                dst2->SetSequenceIndex(src2->GetSequenceIndex());
+                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetColourScheme(src2->GetColourScheme());
+                dst2->SetStationIndex(src2->GetStationIndex());
+                dst2->SetHasChain(src2->HasChain());
+                dst2->SetHasCableLift(src2->HasCableLift());
+                dst2->SetInverted(src2->IsInverted());
+                dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
+                dst2->SetHasGreenLight(src2->HasGreenLight());
+                dst2->SetSeatRotation(4);
+                dst2->SetMazeEntry(src2->GetMazeEntry());
+                dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
+                // Skipping IsHighlighted()
+
+                // TODO: Import Door A and Door B states.
+
+                break;
+            }
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            {
+                auto dst2 = dst->AsSmallScenery();
+                auto src2 = src->AsSmallScenery();
+
+                dst2->SetEntryIndex(src2->GetEntryIndex());
+                dst2->SetAge(src2->GetAge());
+                dst2->SetSceneryQuadrant(src2->GetSceneryQuadrant());
+                dst2->SetPrimaryColour(src2->GetPrimaryColour());
+                dst2->SetSecondaryColour(src2->GetSecondaryColour());
+                if (src2->NeedsSupports())
+                    dst2->SetNeedsSupports();
+
+                break;
+            }
+            case TILE_ELEMENT_TYPE_ENTRANCE:
+            {
+                auto dst2 = dst->AsEntrance();
+                auto src2 = src->AsEntrance();
+
+                dst2->SetEntranceType(src2->GetEntranceType());
+                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetStationIndex(src2->GetStationIndex());
+                dst2->SetSequenceIndex(src2->GetSequenceIndex());
+
+                if (src2->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                {
+                    uint8_t pathType = src2->GetPathType();
+                    if (pathType == 0)
+                    {
+                        pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
+                    }
+                    uint8_t entryIndex = _pathTypeToEntryMap[pathType];
+                    dst2->SetPathType(entryIndex & 0x7F);
+                }
+
+                break;
+            }
+            case TILE_ELEMENT_TYPE_WALL:
+            {
+                auto dst2 = dst->AsWall();
+                auto src2 = src->AsWall();
+
+                dst2->SetEntryIndex(src2->GetEntryIndex());
+                dst2->SetSlope(src2->GetSlope());
+                dst2->SetPrimaryColour(src2->GetPrimaryColour());
+                dst2->SetSecondaryColour(src2->GetSecondaryColour());
+                dst2->SetTertiaryColour(src2->GetTertiaryColour());
+                dst2->SetAnimationFrame(src2->GetAnimationFrame());
+                dst2->SetBannerIndex(src2->GetBannerIndex());
+                dst2->SetAcrossTrack(src2->IsAcrossTrack());
+                dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
+
+                break;
+            }
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            {
+                auto dst2 = dst->AsLargeScenery();
+                auto src2 = src->AsLargeScenery();
+
+                dst2->SetEntryIndex(src2->GetEntryIndex());
+                dst2->SetSequenceIndex(src2->GetSequenceIndex());
+                dst2->SetPrimaryColour(src2->GetPrimaryColour());
+                dst2->SetSecondaryColour(src2->GetSecondaryColour());
+                dst2->SetBannerIndex(src2->GetBannerIndex());
+
+                break;
+            }
+            case TILE_ELEMENT_TYPE_BANNER:
+            {
+                auto dst2 = dst->AsBanner();
+                auto src2 = src->AsBanner();
+
+                dst2->SetIndex(src2->GetIndex());
+                dst2->SetPosition(src2->GetPosition());
+                dst2->SetAllowedEdges(src2->GetAllowedEdges());
+
+                break;
+            }
+            default:
+                assert(false);
+        }
     }
 
     void ImportResearch()
@@ -2487,61 +2680,6 @@ private:
             tileElement++;
         }
         gMapBaseZ = 7;
-    }
-
-    void FixPaths()
-    {
-        TileElement* tileElement = gTileElements;
-        while (tileElement < gNextFreeTileElement)
-        {
-            switch (tileElement->GetType())
-            {
-                case TILE_ELEMENT_TYPE_PATH:
-                {
-                    // Type
-                    uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
-                    uint8_t entryIndex = _pathTypeToEntryMap[pathType];
-
-                    tileElement->SetDirection(0);
-                    tileElement->flags &= ~(TILE_ELEMENT_FLAG_BROKEN | TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE);
-
-                    tileElement->AsPath()->SetEntryIndex(entryIndex);
-                    if (RCT1::PathIsQueue(pathType))
-                    {
-                        tileElement->AsPath()->SetIsQueue(true);
-                    }
-
-                    tileElement->AsPath()->SetAdditionIsGhost(false);
-
-                    // Additions
-                    uint8_t additionType = tileElement->AsPath()->GetAddition();
-                    if (additionType != RCT1_PATH_ADDITION_NONE)
-                    {
-                        uint8_t normalisedType = RCT1::NormalisePathAddition(additionType);
-                        entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
-                        if (additionType != normalisedType)
-                        {
-                            tileElement->flags |= TILE_ELEMENT_FLAG_BROKEN;
-                        }
-                        tileElement->AsPath()->SetAddition(entryIndex + 1);
-                    }
-                    break;
-                }
-                case TILE_ELEMENT_TYPE_ENTRANCE:
-                    if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
-                    {
-                        uint8_t pathType = tileElement->AsEntrance()->GetPathType();
-                        if (pathType == 0)
-                        {
-                            pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
-                        }
-                        uint8_t entryIndex = _pathTypeToEntryMap[pathType];
-                        tileElement->AsEntrance()->SetPathType(entryIndex & 0x7F);
-                    }
-                    break;
-            }
-            tileElement++;
-        }
     }
 
     void FixWalls()
