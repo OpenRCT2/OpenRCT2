@@ -2060,7 +2060,7 @@ private:
                 dst2->SetColourScheme(src2->GetColourScheme());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasChain(src2->HasChain());
-                dst2->SetHasCableLift(src2->HasCableLift());
+                dst2->SetHasCableLift(false);
                 dst2->SetInverted(src2->IsInverted());
                 dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
@@ -2134,13 +2134,8 @@ private:
 
                 dst2->SetEntryIndex(src2->GetEntryIndex());
                 dst2->SetSlope(src2->GetSlope());
-                dst2->SetPrimaryColour(src2->GetPrimaryColour());
-                dst2->SetSecondaryColour(src2->GetSecondaryColour());
-                dst2->SetTertiaryColour(src2->GetTertiaryColour());
-                dst2->SetAnimationFrame(src2->GetAnimationFrame());
-                dst2->SetBannerIndex(src2->GetBannerIndex());
-                dst2->SetAcrossTrack(src2->IsAcrossTrack());
-                dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
+                dst2->SetPrimaryColour(RCT1::GetColour(src2->GetRCT1WallColour()));
+                dst2->SetRawRCT1Data(src2->GetRawRCT1WallTypeData());
 
                 break;
             }
@@ -2154,7 +2149,6 @@ private:
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetPrimaryColour(RCT1::GetColour(src2->GetPrimaryColour()));
                 dst2->SetSecondaryColour(RCT1::GetColour(src2->GetSecondaryColour()));
-                dst2->SetBannerIndex(src2->GetBannerIndex());
 
                 break;
             }
