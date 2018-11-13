@@ -332,6 +332,11 @@ bool RCT12WallElement::AnimationIsBackwards() const
     return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
 }
 
+uint32_t RCT12WallElement::GetRawRCT1WallTypeData() const
+{
+    return colour_3 | (colour_1 << 8) | (animation << 16);
+}
+
 int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 {
     uint8_t var_05 = colour_3;

@@ -811,3 +811,10 @@ void WallElement::SetAnimationIsBackwards(bool isBackwards)
     if (isBackwards)
         animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
 }
+
+void WallElement::SetRawRCT1Data(uint32_t rawData)
+{
+    colour_3 = rawData & 0xFF;
+    colour_1 = (rawData >> 8) & 0xFF;
+    animation = (rawData >> 16) & 0xFF;
+}

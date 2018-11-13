@@ -390,6 +390,7 @@ public:
     bool AnimationIsBackwards() const;
     void SetAnimationIsBackwards(bool isBackwards);
 
+    void SetRawRCT1Data(uint32_t rawData);
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
 };
