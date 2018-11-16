@@ -44,7 +44,9 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdarg>
+#include <cstdlib>
 #include <deque>
+#include <exception>
 #include <string>
 #include <thread>
 
@@ -1306,6 +1308,23 @@ static int32_t cc_save_park(
     return 1;
 }
 
+#pragma warning(push)
+#pragma warning(disable : 4702) // unreachable code
+static int32_t cc_abort(
+    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
+{
+    std::abort();
+    return 0;
+}
+
+static int32_t cc_terminate(
+    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
+{
+    std::terminate();
+    return 0;
+}
+#pragma warning(pop)
+
 using console_command_func = int32_t (*)(InteractiveConsole& console, const utf8** argv, int32_t argc);
 struct console_command
 {
@@ -1366,32 +1385,34 @@ static constexpr const utf8* console_window_table[] = {
 };
 
 static constexpr const console_command console_command_table[] = {
+    { "abort", cc_abort, "Calls std::abort(), for testing purposes only.", "abort" },
     { "clear", cc_clear, "Clears the console.", "clear"},
     { "close", cc_close, "Closes the console.", "close"},
-    { "exit", cc_close, "Closes the console.", "exit"},
-    { "quit", cc_close, "Closes the console.", "quit"},
-    { "hide", cc_hide, "Hides the console.", "hide"},
+    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."},
     { "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },
-    { "help", cc_help, "Lists commands or info about a command.", "help [command]" },
+    { "exit", cc_close, "Closes the console.", "exit"},
     { "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
-    { "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
-    { "open", cc_open, "Opens the window with the give name.", "open <window>." },
-    { "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
-    { "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
+    { "help", cc_help, "Lists commands or info about a command.", "help [command]" },
+    { "hide", cc_hide, "Hides the console.", "hide"},
     { "load_object", cc_load_object, "Loads the object file into the scenario.\n"
                                     "Loading a scenery group will not load its associated objects.\n"
                                     "This is a safer method opposed to \"open object_selection\".",
                                     "load_object <objectfilenodat>" },
     { "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
-    { "twitch", cc_twitch, "Twitch API", "twitch" },
+    { "open", cc_open, "Opens the window with the give name.", "open <window>." },
+    { "quit", cc_close, "Closes the console.", "quit"},
+    { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences"},
+    { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
     { "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
-    { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
-    { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
-    { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences"},
-    { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
-    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."},
     { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]"},
+    { "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
+    { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
+    { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
+    { "terminate", cc_terminate, "Calls std::terminate(), for testing purposes only.", "terminate" },
+    { "twitch", cc_twitch, "Twitch API", "twitch" },
+    { "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
+    { "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
 };
 // clang-format on
 
