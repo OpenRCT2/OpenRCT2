@@ -2741,11 +2741,9 @@ private:
                 *colourA = COLOUR_DARK_BROWN;
                 break;
             case RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE:
-                *type = RCT1_WALL_TYPE_WOODEN_PANEL_FENCE;
                 *colourA = COLOUR_WHITE;
                 break;
             case RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE:
-                *type = RCT1_WALL_TYPE_WOODEN_PANEL_FENCE;
                 *colourA = COLOUR_SALMON_PINK;
                 break;
             case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW:
