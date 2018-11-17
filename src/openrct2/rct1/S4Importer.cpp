@@ -613,9 +613,11 @@ private:
         if (_rideTypeToRideEntryMap[rideType] == 255)
         {
             const char* entryName = RCT1::GetRideTypeObject(rideType);
-            size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
-
-            _rideTypeToRideEntryMap[rideType] = (uint8_t)entryIndex;
+            if (!String::Equals(entryName, "        "))
+            {
+                size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
+                _rideTypeToRideEntryMap[rideType] = (uint8_t)entryIndex;
+            }
         }
     }
 
@@ -625,11 +627,14 @@ private:
         if (_vehicleTypeToRideEntryMap[vehicleType] == 255)
         {
             const char* entryName = RCT1::GetVehicleObject(vehicleType);
-            size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
+            if (!String::Equals(entryName, "        "))
+            {
+                size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
+                _vehicleTypeToRideEntryMap[vehicleType] = (uint8_t)entryIndex;
 
-            _vehicleTypeToRideEntryMap[vehicleType] = (uint8_t)entryIndex;
-            if (rideType != RIDE_TYPE_NULL)
-                _rideTypeToRideEntryMap[rideType] = (uint8_t)entryIndex;
+                if (rideType != RIDE_TYPE_NULL)
+                    _rideTypeToRideEntryMap[rideType] = (uint8_t)entryIndex;
+            }
         }
     }
 
