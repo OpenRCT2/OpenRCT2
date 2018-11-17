@@ -637,8 +637,8 @@ struct rct1_s4
     uint8_t unk_198856;
     uint8_t research_level;
     uint32_t unk_198858;
-    uint8_t available_rides[32];
-    uint8_t available_vehicles[32];
+    uint32_t available_rides[8];
+    uint32_t available_vehicles[8];
     uint32_t ride_feature_1[128];
     uint32_t ride_feature_2[128];
     uint16_t guests_in_park;

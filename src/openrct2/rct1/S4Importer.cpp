@@ -464,6 +464,32 @@ private:
                 }
             }
         }
+
+        // In addition to the research list, there is also a list of invented ride/vehicles in general.
+        // This is especially useful if the research list is damaged or if the save is hacked.
+        for (int32_t rideType = 0; rideType < RCT1_RIDE_TYPE_COUNT; rideType++)
+        {
+            int32_t quadIndex = rideType >> 5;
+            int32_t bitIndex = rideType & 0x1F;
+            bool invented = (_s4.available_rides[quadIndex] & ((uint32_t)1 << bitIndex));
+
+            if (invented)
+            {
+                AddEntryForRideType(rideType);
+            }
+        }
+
+        for (int32_t vehicleType = 0; vehicleType < RCT1_VEHICLE_TYPE_COUNT; vehicleType++)
+        {
+            int32_t quadIndex = vehicleType >> 5;
+            int32_t bitIndex = vehicleType & 0x1F;
+            bool invented = (_s4.available_vehicles[quadIndex] & ((uint32_t)1 << bitIndex));
+
+            if (invented)
+            {
+                AddEntryForVehicleType(RIDE_TYPE_NULL, vehicleType);
+            }
+        }
     }
 
     void AddAvailableEntriesFromMap()
@@ -602,7 +628,8 @@ private:
             size_t entryIndex = _rideEntries.GetOrAddEntry(entryName);
 
             _vehicleTypeToRideEntryMap[vehicleType] = (uint8_t)entryIndex;
-            _rideTypeToRideEntryMap[rideType] = (uint8_t)entryIndex;
+            if (rideType != RIDE_TYPE_NULL)
+                _rideTypeToRideEntryMap[rideType] = (uint8_t)entryIndex;
         }
     }
 
@@ -2284,6 +2311,31 @@ private:
             }
         }
 
+        // Also import the tables that register the invented status, in case the research list is damaged.
+        for (int32_t rideType = 0; rideType < RCT1_RIDE_TYPE_COUNT; rideType++)
+        {
+            int32_t quadIndex = rideType >> 5;
+            int32_t bitIndex = rideType & 0x1F;
+            bool invented = (_s4.available_rides[quadIndex] & ((uint32_t)1 << bitIndex));
+
+            if (invented)
+            {
+                ride_type_set_invented(RCT1::GetRideType(rideType));
+            }
+        }
+
+        for (int32_t vehicleType = 0; vehicleType < RCT1_VEHICLE_TYPE_COUNT; vehicleType++)
+        {
+            int32_t quadIndex = vehicleType >> 5;
+            int32_t bitIndex = vehicleType & 0x1F;
+            bool invented = (_s4.available_vehicles[quadIndex] & ((uint32_t)1 << bitIndex));
+
+            if (invented)
+            {
+                ride_entry_set_invented(_vehicleTypeToRideEntryMap[vehicleType]);
+            }
+        }
+
         // Research funding / priority
         uint8_t activeResearchTypes = 0;
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS)
@@ -2689,11 +2741,9 @@ private:
                 *colourA = COLOUR_DARK_BROWN;
                 break;
             case RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE:
-                *type = RCT1_WALL_TYPE_WOODEN_PANEL_FENCE;
                 *colourA = COLOUR_WHITE;
                 break;
             case RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE:
-                *type = RCT1_WALL_TYPE_WOODEN_PANEL_FENCE;
                 *colourA = COLOUR_SALMON_PINK;
                 break;
             case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW:
