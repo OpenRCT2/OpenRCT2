@@ -1430,7 +1430,7 @@ static constexpr const console_command console_command_table[] = {
     { "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
-    { "say", cc_say, "Say to other players.", "say [message]" },
+    { "say", cc_say, "Say to other players.", "say <message>" },
     { "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>" },
