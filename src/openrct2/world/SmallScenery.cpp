@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../Context.h"
+#include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
 #include "../network/network.h"

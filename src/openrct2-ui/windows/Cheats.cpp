@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Date.h>
