@@ -20,6 +20,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
+#include "../interface/Chat.h"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/User.h"
@@ -1308,6 +1309,29 @@ static int32_t cc_save_park(
     return 1;
 }
 
+static int32_t cc_say(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
+        || network_get_authstatus() != NETWORK_AUTH_OK)
+    {
+        console.WriteFormatLine("This command only works in multiplayer mode.");
+        return 0;
+    }
+    else
+    {
+        if (argc > 0)
+        {
+            network_send_chat(argv[0]);
+            return 1;
+        }
+        else
+        {
+            console.WriteFormatLine("Input your message");
+            return 0;
+        }
+    }
+}
+
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
 static int32_t cc_abort(
@@ -1386,29 +1410,30 @@ static constexpr const utf8* console_window_table[] = {
 
 static constexpr const console_command console_command_table[] = {
     { "abort", cc_abort, "Calls std::abort(), for testing purposes only.", "abort" },
-    { "clear", cc_clear, "Clears the console.", "clear"},
-    { "close", cc_close, "Closes the console.", "close"},
-    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."},
+    { "clear", cc_clear, "Clears the console.", "clear" },
+    { "close", cc_close, "Closes the console.", "close" },
+    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]." },
     { "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },
-    { "exit", cc_close, "Closes the console.", "exit"},
+    { "exit", cc_close, "Closes the console.", "exit" },
     { "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
     { "help", cc_help, "Lists commands or info about a command.", "help [command]" },
-    { "hide", cc_hide, "Hides the console.", "hide"},
+    { "hide", cc_hide, "Hides the console.", "hide" },
     { "load_object", cc_load_object, "Loads the object file into the scenario.\n"
                                     "Loading a scenery group will not load its associated objects.\n"
                                     "This is a safer method opposed to \"open object_selection\".",
                                     "load_object <objectfilenodat>" },
     { "object_count", cc_object_count, "Shows the number of objects of each type in the scenario.", "object_count" },
     { "open", cc_open, "Opens the window with the give name.", "open <window>." },
-    { "quit", cc_close, "Closes the console.", "quit"},
-    { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences"},
+    { "quit", cc_close, "Closes the console.", "quit" },
+    { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences" },
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
     { "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
-    { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]"},
+    { "save_park", cc_save_park, "Save current state of park. If no name specified default path will be used.", "save_park [name]" },
+    { "say", cc_say, "Say to other players.", "say <message>" },
     { "set", cc_set, "Sets the variable to the specified value.", "set <variable> <value>" },
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
-    { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
+    { "staff", cc_staff, "Staff management.", "staff <subcommand>" },
     { "terminate", cc_terminate, "Calls std::terminate(), for testing purposes only.", "terminate" },
     { "twitch", cc_twitch, "Twitch API", "twitch" },
     { "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
