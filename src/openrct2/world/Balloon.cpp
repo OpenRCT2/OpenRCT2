@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Game.h"
 #include "../audio/audio.h"
 #include "../network/network.h"
 #include "../scenario/Scenario.h"

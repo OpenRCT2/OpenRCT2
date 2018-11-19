@@ -11,6 +11,7 @@
 
 #include "Context.h"
 #include "Editor.h"
+#include "Game.h"
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "interface/Screenshot.h"

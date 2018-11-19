@@ -12,6 +12,26 @@
 #include "../common.h"
 #include "../core/Endianness.h"
 
+enum
+{
+    NETWORK_MODE_NONE,
+    NETWORK_MODE_CLIENT,
+    NETWORK_MODE_SERVER
+};
+
+enum
+{
+    NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
+};
+
+enum
+{
+    NETWORK_STATUS_NONE,
+    NETWORK_STATUS_READY,
+    NETWORK_STATUS_CONNECTING,
+    NETWORK_STATUS_CONNECTED
+};
+
 enum NETWORK_AUTH
 {
     NETWORK_AUTH_NONE,
