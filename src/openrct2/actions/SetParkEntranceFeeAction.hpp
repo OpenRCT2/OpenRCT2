@@ -39,7 +39,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _fee;
+        stream << DS_TAG(_fee);
     }
 
     GameActionResult::Ptr Query() const override

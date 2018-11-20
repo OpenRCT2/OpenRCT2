@@ -57,7 +57,7 @@ void network_set_player_last_action(uint32_t index, int32_t command);
 LocationXYZ16 network_get_player_last_action_coord(uint32_t index);
 void network_set_player_last_action_coord(uint32_t index, LocationXYZ16 coord);
 uint32_t network_get_player_commands_ran(uint32_t index);
-int32_t network_get_player_index(uint8_t id);
+int32_t network_get_player_index(uint32_t id);
 uint8_t network_get_player_group(uint32_t index);
 void network_set_player_group(uint32_t index, uint32_t groupindex);
 int32_t network_get_group_index(uint8_t id);

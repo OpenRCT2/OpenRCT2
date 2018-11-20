@@ -140,6 +140,57 @@ namespace GameActions
         return result;
     }
 
+    static const char* GetRealm()
+    {
+        if (network_get_mode() == NETWORK_MODE_CLIENT)
+            return "cl";
+        else if (network_get_mode() == NETWORK_MODE_SERVER)
+            return "sv";
+        return "";
+    }
+
+    struct ActionLogContext_t
+    {
+        MemoryStream output;
+    };
+
+    static void LogActionBegin(ActionLogContext_t& ctx, const GameAction* action)
+    {
+        MemoryStream& output = ctx.output;
+
+        char temp[128] = {};
+        snprintf(temp, sizeof(temp), "[%s] Game Action %08X (", GetRealm(), action->GetType());
+
+        output.Write(temp, strlen(temp));
+
+        DataSerialiser ds(true, ctx.output, true); // Logging mode.
+
+        // Write all parameters into output as text.
+        action->Serialise(ds);
+    }
+
+    static void LogActionFinish(ActionLogContext_t& ctx, const GameAction* action, const GameActionResult::Ptr& result)
+    {
+        MemoryStream& output = ctx.output;
+
+        char temp[128] = {};
+
+        if (result->Error != GA_ERROR::OK)
+        {
+            snprintf(temp, sizeof(temp), ") Failed, %u", (uint32_t)result->Error);
+        }
+        else
+        {
+            snprintf(temp, sizeof(temp), ") OK");
+        }
+
+        output.Write(temp, strlen(temp) + 1);
+
+        const char* text = (const char*)output.GetData();
+        log_info(text);
+        network_append_server_log(text);
+    }
+
     GameActionResult::Ptr Execute(const GameAction* action)
     {
         Guard::ArgumentNotNull(action);
@@ -176,10 +227,13 @@ namespace GameActions
                 }
             }
 
-            log_verbose("[%s] GameAction::Execute\n", "sv");
+            ActionLogContext_t logContext;
+            LogActionBegin(logContext, action);
 
             // Execute the action, changing the game state
             result = action->Execute();
+
+            LogActionFinish(logContext, action, result);
 
             gCommandPosition.x = result->Position.x;
             gCommandPosition.y = result->Position.y;
@@ -197,13 +251,12 @@ namespace GameActions
             {
                 if (network_get_mode() == NETWORK_MODE_SERVER && result->Error == GA_ERROR::OK)
                 {
-                    const uint32_t playerId = action->GetPlayer();
-                    const uint32_t playerIndex = network_get_player_index(playerId);
+                    NetworkPlayerId_t playerId = action->GetPlayer();
 
-                    network_set_player_last_action(playerIndex, action->GetType());
+                    network_set_player_last_action(network_get_player_index(playerId.id), action->GetType());
                     if (result->Cost != 0)
                     {
-                        network_add_player_money_spent(playerIndex, result->Cost);
+                        network_add_player_money_spent(playerId.id, result->Cost);
                     }
                 }
             }
@@ -230,4 +283,5 @@ namespace GameActions
         }
         return result;
     }
+
 } // namespace GameActions

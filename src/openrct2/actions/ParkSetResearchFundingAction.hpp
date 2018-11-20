@@ -43,7 +43,7 @@ public:
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
-        stream << _priorities << _fundingAmount;
+        stream << DS_TAG(_priorities) << DS_TAG(_fundingAmount);
     }
 
     GameActionResult::Ptr Query() const override

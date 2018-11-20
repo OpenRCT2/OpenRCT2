@@ -44,7 +44,7 @@ public:
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
-        stream << _staffType << _colour;
+        stream << DS_TAG(_staffType) << DS_TAG(_colour);
     }
 
     GameActionResult::Ptr Query() const override

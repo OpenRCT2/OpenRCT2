@@ -31,7 +31,7 @@ using namespace OpenRCT2;
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
 {
 private:
-    int32_t _rideIndex = -1;
+    NetworkRideId_t _rideIndex{ -1 };
     uint8_t _modifyType = RIDE_MODIFY_DEMOLISH;
 
 public:
@@ -48,7 +48,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _rideIndex << _modifyType;
+        stream << DS_TAG(_rideIndex) << DS_TAG(_modifyType);
     }
 
     GameActionResult::Ptr Query() const override

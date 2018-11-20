@@ -40,7 +40,7 @@ public:
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
-        stream << _value;
+        stream << DS_TAG(_value);
     }
 
     GameActionResult::Ptr Query() const override

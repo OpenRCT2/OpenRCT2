@@ -47,7 +47,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _spriteIndex << _name;
+        stream << DS_TAG(_spriteIndex) << DS_TAG(_name);
     }
 
     GameActionResult::Ptr Query() const override

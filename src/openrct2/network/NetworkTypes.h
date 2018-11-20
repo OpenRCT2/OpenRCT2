@@ -68,3 +68,30 @@ enum NETWORK_COMMAND
     NETWORK_COMMAND_MAX,
     NETWORK_COMMAND_INVALID = -1
 };
+
+// Structure is used for networking specific fields with meaning,
+// this structure can be used in combination with DataSerialiser
+// to provide extra details with template specialization.
+#pragma pack(push, 1)
+template<typename T, size_t _TypeID> struct NetworkObjectId_t
+{
+    NetworkObjectId_t(T v)
+        : id(v)
+    {
+    }
+    NetworkObjectId_t()
+        : id(T(-1))
+    {
+    }
+    operator T() const
+    {
+        return id;
+    }
+    T id;
+};
+#pragma pack(pop)
+
+// NOTE: When adding new types make sure to have no duplicate _TypeID's otherwise
+// there is no way to specialize templates if they have the exact symbol.
+using NetworkPlayerId_t = NetworkObjectId_t<int32_t, 0>;
+using NetworkRideId_t = NetworkObjectId_t<int32_t, 1>;

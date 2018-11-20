@@ -9,13 +9,21 @@
 
 #pragma once
 
+#include "../localisation/Localisation.h"
+#include "../network/NetworkTypes.h"
+#include "../network/network.h"
+#include "../ride/Ride.h"
+#include "DataSerialiserTag.h"
 #include "Endianness.h"
 #include "MemoryStream.h"
+
+#include <cstdio>
 
 template<typename T> struct DataSerializerTraits
 {
     static void encode(IStream* stream, const T& v) = delete;
     static void decode(IStream* stream, T& val) = delete;
+    static void log(IStream* stream, T& val) = delete;
 };
 
 template<typename T> struct DataSerializerTraitsIntegral
@@ -31,10 +39,41 @@ template<typename T> struct DataSerializerTraitsIntegral
         stream->Read(&temp);
         val = ByteSwapBE(temp);
     }
+    static void log(IStream* stream, T& val)
+    {
+        char temp[32] = {};
+        if constexpr (sizeof(T) == 1)
+            snprintf(temp, sizeof(temp), "%02X", val);
+        else if constexpr (sizeof(T) == 2)
+            snprintf(temp, sizeof(temp), "%04X", val);
+        else if constexpr (sizeof(T) == 4)
+            snprintf(temp, sizeof(temp), "%08X", val);
+        else if constexpr (sizeof(T) == 8)
+            snprintf(temp, sizeof(temp), "%16X", val);
+        else
+            static_assert("Invalid size");
+
+        stream->Write(temp, strlen(temp));
+    }
 };
 
-template<> struct DataSerializerTraits<bool> : public DataSerializerTraitsIntegral<bool>
+template<> struct DataSerializerTraits<bool>
 {
+    static void encode(IStream* stream, const bool& val)
+    {
+        stream->Write(&val);
+    }
+    static void decode(IStream* stream, bool& val)
+    {
+        stream->Read(&val);
+    }
+    static void log(IStream* stream, bool& val)
+    {
+        if (val)
+            stream->Write("true", 4);
+        else
+            stream->Write("false", 5);
+    }
 };
 
 template<> struct DataSerializerTraits<uint8_t> : public DataSerializerTraitsIntegral<uint8_t>
@@ -80,5 +119,103 @@ template<> struct DataSerializerTraits<std::string>
         res.assign(str, len);
 
         Memory::FreeArray(str, len);
+    }
+    static void log(IStream* stream, const std::string& str)
+    {
+        stream->Write("\"");
+        stream->Write(str.data(), str.size());
+        stream->Write("\"");
+    }
+};
+
+template<> struct DataSerializerTraits<NetworkPlayerId_t>
+{
+    static void encode(IStream* stream, const NetworkPlayerId_t& val)
+    {
+        uint32_t temp = ByteSwapBE(val.id);
+        stream->Write(&temp);
+    }
+    static void decode(IStream* stream, NetworkPlayerId_t& val)
+    {
+        uint32_t temp;
+        stream->Read(&temp);
+        val.id = ByteSwapBE(temp);
+    }
+    static void log(IStream* stream, NetworkPlayerId_t& val)
+    {
+        char playerId[28] = {};
+        snprintf(playerId, sizeof(playerId), "%u", val.id);
+
+        stream->Write(playerId, strlen(playerId));
+
+        int32_t playerIndex = network_get_player_index(val.id);
+        if (playerIndex != -1)
+        {
+            const char* playerName = network_get_player_name(playerIndex);
+            if (playerName != nullptr)
+            {
+                stream->Write(" \"", 2);
+                stream->Write(playerName, strlen(playerName));
+                stream->Write("\"", 1);
+            }
+        }
+    }
+};
+
+template<> struct DataSerializerTraits<NetworkRideId_t>
+{
+    static void encode(IStream* stream, const NetworkRideId_t& val)
+    {
+        uint32_t temp = ByteSwapBE(val.id);
+        stream->Write(&temp);
+    }
+    static void decode(IStream* stream, NetworkRideId_t& val)
+    {
+        uint32_t temp;
+        stream->Read(&temp);
+        val.id = ByteSwapBE(temp);
+    }
+    static void log(IStream* stream, NetworkRideId_t& val)
+    {
+        char rideId[28] = {};
+        snprintf(rideId, sizeof(rideId), "%u", val.id);
+
+        stream->Write(rideId, strlen(rideId));
+
+        Ride* ride = get_ride(val.id);
+        if (ride)
+        {
+            char rideName[256] = {};
+            format_string(rideName, 256, ride->name, &ride->name_arguments);
+
+            stream->Write(" \"", 2);
+            stream->Write(rideName, strlen(rideName));
+            stream->Write("\"", 1);
+        }
+    }
+};
+
+template<typename T> struct DataSerializerTraits<DataSerialiserTag<T>>
+{
+    static void encode(IStream* stream, const DataSerialiserTag<T>& tag)
+    {
+        DataSerializerTraits<T> s;
+        s.encode(stream, tag.Data());
+    }
+    static void decode(IStream* stream, DataSerialiserTag<T>& tag)
+    {
+        DataSerializerTraits<T> s;
+        s.decode(stream, tag.Data());
+    }
+    static void log(IStream* stream, DataSerialiserTag<T>& tag)
+    {
+        const char* name = tag.Name();
+        stream->Write(name, strlen(name));
+        stream->Write(" = ", 3);
+
+        DataSerializerTraits<T> s;
+        s.log(stream, tag.Data());
+
+        stream->Write("; ", 2);
     }
 };

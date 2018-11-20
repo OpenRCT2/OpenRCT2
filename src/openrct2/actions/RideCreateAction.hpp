@@ -64,14 +64,13 @@ public:
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
-        ;
     }
 
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
 
-        stream << _rideType << _subType << _colour1 << _colour2;
+        stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_colour1) << DS_TAG(_colour2);
     }
 
     GameActionResult::Ptr Query() const override

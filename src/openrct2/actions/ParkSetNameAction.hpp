@@ -44,7 +44,7 @@ public:
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
-        stream << _name;
+        stream << DS_TAG(_name);
     }
 
     GameActionResult::Ptr Query() const override
@@ -85,13 +85,6 @@ public:
         user_string_free(gParkName);
         gParkName = newNameId;
 
-        // Log park rename command if we are in multiplayer and logging is enabled
-        if ((network_get_mode() == NETWORK_MODE_CLIENT || network_get_mode() == NETWORK_MODE_SERVER)
-            && gConfigNetwork.log_server_actions)
-        {
-            LogAction(oldName);
-        }
-
         scrolling_text_invalidate();
         gfx_invalidate_screen();
 
@@ -104,17 +97,5 @@ private:
         char buffer[128];
         format_string(buffer, sizeof(buffer), gParkName, &gParkNameArgs);
         return buffer;
-    }
-
-    void LogAction(const std::string& oldName) const
-    {
-        // Get player name
-        auto playerIndex = network_get_player_index(GetPlayer());
-        auto playerName = network_get_player_name(playerIndex);
-
-        char logMessage[256];
-        const char* args[3] = { playerName, oldName.c_str(), _name.c_str() };
-        format_string(logMessage, sizeof(logMessage), STR_LOG_PARK_NAME, (void*)args);
-        network_append_server_log(logMessage);
     }
 };
