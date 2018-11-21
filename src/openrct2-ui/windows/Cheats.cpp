@@ -8,13 +8,13 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
@@ -732,7 +732,7 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
 
             dropdownWidget = widget - 1;
 
-            for (size_t i = 0; i < Util::CountOf(_staffSpeedNames); i++)
+            for (size_t i = 0; i < std::size(_staffSpeedNames); i++)
             {
                 gDropdownItemsArgs[i] = _staffSpeedNames[i];
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;

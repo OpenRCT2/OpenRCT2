@@ -12,10 +12,10 @@
 #include "../interface/Window.h"
 #include "Window.h"
 
+#include <iterator>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetNameAction.hpp>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Colour.h>
@@ -775,11 +775,11 @@ static void window_editor_objective_options_main_textinput(rct_window* w, rct_wi
             break;
         }
         case WIDX_SCENARIO_NAME:
-            safe_strcpy(gS6Info.name, text, Util::CountOf(gS6Info.name));
+            safe_strcpy(gS6Info.name, text, std::size(gS6Info.name));
             window_invalidate(w);
             break;
         case WIDX_DETAILS:
-            safe_strcpy(gS6Info.details, text, Util::CountOf(gS6Info.details));
+            safe_strcpy(gS6Info.details, text, std::size(gS6Info.details));
             window_invalidate(w);
             break;
     }

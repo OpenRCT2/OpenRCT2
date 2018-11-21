@@ -10,8 +10,9 @@
 #include "FormatCodes.h"
 
 #include "../common.h"
-#include "../core/Util.hpp"
 #include "Localisation.h"
+
+#include <iterator>
 
 #pragma region Format codes
 
@@ -77,7 +78,7 @@ static constexpr const format_code_token format_code_tokens[] = {
 
 uint32_t format_get_code(const char* token)
 {
-    for (uint32_t i = 0; i < Util::CountOf(format_code_tokens); i++)
+    for (uint32_t i = 0; i < std::size(format_code_tokens); i++)
     {
         if (_strcmpi(token, format_code_tokens[i].token) == 0)
             return format_code_tokens[i].code;
@@ -87,7 +88,7 @@ uint32_t format_get_code(const char* token)
 
 const char* format_get_token(uint32_t code)
 {
-    for (uint32_t i = 0; i < Util::CountOf(format_code_tokens); i++)
+    for (uint32_t i = 0; i < std::size(format_code_tokens); i++)
     {
         if (code == format_code_tokens[i].code)
             return format_code_tokens[i].token;

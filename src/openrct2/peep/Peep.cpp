@@ -18,7 +18,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -47,6 +46,7 @@
 #include "Staff.h"
 
 #include <algorithm>
+#include <iterator>
 #include <limits>
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -517,15 +517,14 @@ uint8_t rct_peep::GetActionSpriteType()
     { // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
         return PeepSpecialSpriteToSpriteTypeMap[special_sprite];
     }
-    else if (action < Util::CountOf(PeepActionToSpriteTypeMap))
+    else if (action < std::size(PeepActionToSpriteTypeMap))
     {
         return PeepActionToSpriteTypeMap[action];
     }
     else
     {
         openrct2_assert(
-            action >= Util::CountOf(PeepActionToSpriteTypeMap) && action < PEEP_ACTION_NONE_1, "Invalid peep action %u",
-            action);
+            action >= std::size(PeepActionToSpriteTypeMap) && action < PEEP_ACTION_NONE_1, "Invalid peep action %u", action);
         return 0;
     }
 }
@@ -535,7 +534,7 @@ uint8_t rct_peep::GetActionSpriteType()
  */
 void rct_peep::UpdateCurrentActionSpriteType()
 {
-    if (sprite_type >= Util::CountOf(g_peep_animation_entries))
+    if (sprite_type >= std::size(g_peep_animation_entries))
     {
         return;
     }
@@ -1883,10 +1882,10 @@ rct_peep* peep_generate(int32_t x, int32_t y, int32_t z)
     peep->angriness = 0;
     peep->time_lost = 0;
 
-    uint8_t tshirt_colour = static_cast<uint8_t>(scenario_rand() % Util::CountOf(tshirt_colours));
+    uint8_t tshirt_colour = static_cast<uint8_t>(scenario_rand() % std::size(tshirt_colours));
     peep->tshirt_colour = tshirt_colours[tshirt_colour];
 
-    uint8_t trousers_colour = static_cast<uint8_t>(scenario_rand() % Util::CountOf(trouser_colours));
+    uint8_t trousers_colour = static_cast<uint8_t>(scenario_rand() % std::size(trouser_colours));
     peep->trousers_colour = trouser_colours[trousers_colour];
 
     /* Minimum energy is capped at 32 and maximum at 128, so this initialises
@@ -2233,7 +2232,7 @@ int32_t peep_get_easteregg_name_id(rct_peep* peep)
 
     format_string(buffer, 256, peep->name_string_idx, &peep->id);
 
-    for (uint32_t i = 0; i < Util::CountOf(gPeepEasterEggNames); i++)
+    for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
         if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
             return static_cast<int32_t>(i);
 
@@ -3468,7 +3467,7 @@ static void peep_give_real_name(rct_peep* peep)
     uint16_t ax = (uint16_t)(peep->id + 0xF0B);
     uint16_t dx = 0;
     static constexpr uint16_t twiddlingBitOrder[] = { 4, 9, 3, 7, 5, 8, 2, 1, 6, 0, 12, 11, 13, 10 };
-    for (size_t i = 0; i < Util::CountOf(twiddlingBitOrder); i++)
+    for (size_t i = 0; i < std::size(twiddlingBitOrder); i++)
     {
         dx |= (ax & (1 << twiddlingBitOrder[i]) ? 1 : 0) << i;
     }
@@ -3512,13 +3511,13 @@ static int32_t peep_compare(const void* sprite_index_a, const void* sprite_index
         rct_string_id peep_a_format = peep_a->name_string_idx + REAL_NAME_START;
         rct_string_id peep_b_format = peep_b->name_string_idx + REAL_NAME_START;
 
-        uint16_t peep_a_name = (peep_a_format % Util::CountOf(real_names));
-        uint16_t peep_b_name = (peep_b_format % Util::CountOf(real_names));
+        uint16_t peep_a_name = (peep_a_format % std::size(real_names));
+        uint16_t peep_b_name = (peep_b_format % std::size(real_names));
 
         if (peep_a_name == peep_b_name)
         {
-            uint16_t peep_a_initial = ((peep_a_format >> 10) % Util::CountOf(real_name_initials));
-            uint16_t peep_b_initial = ((peep_b_format >> 10) % Util::CountOf(real_name_initials));
+            uint16_t peep_a_initial = ((peep_a_format >> 10) % std::size(real_name_initials));
+            uint16_t peep_b_initial = ((peep_b_format >> 10) % std::size(real_name_initials));
             return peep_a_initial - peep_b_initial;
         }
         else

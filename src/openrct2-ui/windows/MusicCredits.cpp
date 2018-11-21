@@ -7,9 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <iterator>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
@@ -161,7 +161,7 @@ static void window_music_credits_mouseup(rct_window* w, rct_widgetindex widgetIn
 static void window_music_credits_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-    *height = static_cast<int32_t>(Util::CountOf(music_credits) + Util::CountOf(music_credits_rct2)) * lineHeight + 12;
+    *height = static_cast<int32_t>(std::size(music_credits) + std::size(music_credits_rct2)) * lineHeight + 12;
 }
 
 /**
@@ -184,7 +184,7 @@ static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* d
     int32_t x = 245;
     int32_t y = 2;
 
-    for (size_t i = 0; i < Util::CountOf(music_credits); i++)
+    for (size_t i = 0; i < std::size(music_credits); i++)
     {
         gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, nullptr);
         y += lineHeight;
@@ -200,7 +200,7 @@ static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* d
     gfx_fill_rect_inset(dpi, 4, y, 484, y + 1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
     y += lineHeight + 1;
 
-    for (size_t i = 0; i < Util::CountOf(music_credits_rct2); i++)
+    for (size_t i = 0; i < std::size(music_credits_rct2); i++)
     {
         gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, nullptr);
         y += lineHeight;

@@ -13,7 +13,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -37,6 +36,7 @@
 #include "Peep.h"
 
 #include <algorithm>
+#include <iterator>
 
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
@@ -4169,7 +4169,7 @@ static void peep_update_ride_prepare_for_exit(rct_peep* peep)
 {
     Ride* ride = get_ride(peep->current_ride);
 
-    Guard::Assert(peep->current_ride_station < Util::CountOf(ride->exits), GUARD_LINE);
+    Guard::Assert(peep->current_ride_station < std::size(ride->exits), GUARD_LINE);
     auto exit = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
     int16_t x = exit.x;
     int16_t y = exit.y;
@@ -6635,7 +6635,7 @@ void rct_peep::SetSpriteType(uint8_t new_sprite_type)
         action = PEEP_ACTION_NONE_2;
 
     peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
-    Guard::Assert(new_sprite_type < Util::CountOf(gSpriteTypeToSlowWalkMap));
+    Guard::Assert(new_sprite_type < std::size(gSpriteTypeToSlowWalkMap));
     if (gSpriteTypeToSlowWalkMap[new_sprite_type])
     {
         peep_flags |= PEEP_FLAGS_SLOW_WALK;

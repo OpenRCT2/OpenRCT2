@@ -7,11 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <cstring>
-#include <ctype.h>
-#include <limits.h>
-
 #ifdef _WIN32
 #    include <windows.h>
 #elif defined(__ANDROID__)
@@ -28,12 +23,17 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../management/Marketing.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "Date.h"
 #include "Localisation.h"
+
+#include <algorithm>
+#include <cstring>
+#include <ctype.h>
+#include <iterator>
+#include <limits.h>
 
 char gCommonStringFormatBuffer[512];
 uint8_t gCommonFormatArgs[80];
@@ -1259,11 +1259,11 @@ static void format_string_part(utf8** dest, size_t* size, rct_string_id format, 
         // Real name
         auto realNameIndex = format - REAL_NAME_START;
 
-        format_append_string(dest, size, real_names[realNameIndex % Util::CountOf(real_names)]);
+        format_append_string(dest, size, real_names[realNameIndex % std::size(real_names)]);
         if ((*size) == 0)
             return;
         format_push_char(' ');
-        format_push_char(real_name_initials[(realNameIndex >> 10) % Util::CountOf(real_name_initials)]);
+        format_push_char(real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)]);
         format_push_char('.');
         *(*dest) = '\0';
 

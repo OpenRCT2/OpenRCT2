@@ -15,12 +15,12 @@
  */
 
 #include <algorithm>
+#include <iterator>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
@@ -99,7 +99,7 @@ void window_text_input_open(
     rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     // Get the raw string
-    utf8 buffer[Util::CountOf(text_input)]{};
+    utf8 buffer[std::size(text_input)]{};
     if (existing_text != STR_NONE)
         format_string(buffer, maxLength, existing_text, &existing_args);
 

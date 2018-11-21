@@ -15,7 +15,6 @@
 #include "../core/Guard.hpp"
 #include "../core/Imaging.h"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../localisation/StringIds.h"
 #include "../object/Object.h"
 #include "../platform/platform.h"
@@ -29,6 +28,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <iterator>
 #include <vector>
 
 #pragma region Height map struct
@@ -144,7 +144,7 @@ void mapgen_generate(mapgen_settings* settings)
     waterLevel = settings->water_level;
 
     if (floorTexture == -1)
-        floorTexture = BaseTerrain[util_rand() % Util::CountOf(BaseTerrain)];
+        floorTexture = BaseTerrain[util_rand() % std::size(BaseTerrain)];
 
     if (wallTexture == -1)
     {
@@ -258,9 +258,9 @@ static void mapgen_place_tree(int32_t type, int32_t x, int32_t y)
  */
 static void mapgen_place_trees()
 {
-    std::vector<int32_t> grassTreeIds(Util::CountOf(GrassTrees), 0);
-    std::vector<int32_t> desertTreeIds(Util::CountOf(DesertTrees), 0);
-    std::vector<int32_t> snowTreeIds(Util::CountOf(SnowTrees), 0);
+    std::vector<int32_t> grassTreeIds(std::size(GrassTrees), 0);
+    std::vector<int32_t> desertTreeIds(std::size(DesertTrees), 0);
+    std::vector<int32_t> snowTreeIds(std::size(SnowTrees), 0);
 
     for (int32_t i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++)
     {
@@ -271,34 +271,34 @@ static void mapgen_place_trees()
             continue;
 
         uint32_t j;
-        for (j = 0; j < Util::CountOf(GrassTrees); j++)
+        for (j = 0; j < std::size(GrassTrees); j++)
         {
             if (strncmp(GrassTrees[j], entry->name, 8) == 0)
                 break;
         }
-        if (j != Util::CountOf(GrassTrees))
+        if (j != std::size(GrassTrees))
         {
             grassTreeIds.push_back(i);
             continue;
         }
 
-        for (j = 0; j < Util::CountOf(DesertTrees); j++)
+        for (j = 0; j < std::size(DesertTrees); j++)
         {
             if (strncmp(DesertTrees[j], entry->name, 8) == 0)
                 break;
         }
-        if (j != Util::CountOf(DesertTrees))
+        if (j != std::size(DesertTrees))
         {
             desertTreeIds.push_back(i);
             continue;
         }
 
-        for (j = 0; j < Util::CountOf(SnowTrees); j++)
+        for (j = 0; j < std::size(SnowTrees); j++)
         {
             if (strncmp(SnowTrees[j], entry->name, 8) == 0)
                 break;
         }
-        if (j != Util::CountOf(SnowTrees))
+        if (j != std::size(SnowTrees))
         {
             snowTreeIds.push_back(i);
             continue;

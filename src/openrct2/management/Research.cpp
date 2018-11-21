@@ -15,7 +15,6 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -34,6 +33,7 @@
 #include "NewsItem.h"
 
 #include <algorithm>
+#include <iterator>
 
 static constexpr const int32_t _researchRate[] = {
     0,
@@ -224,8 +224,7 @@ void research_finish_item(rct_research_item* researchItem)
 
             ride_type_set_invented(base_ride_type);
             openrct2_assert(
-                base_ride_type < Util::CountOf(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d",
-                base_ride_type);
+                base_ride_type < std::size(RideTypePossibleTrackConfigurations), "Invalid base_ride_type = %d", base_ride_type);
 
             ride_entry_set_invented(rideEntryIndex);
 
@@ -644,7 +643,7 @@ void research_insert_scenery_group_entry(uint8_t entryIndex, bool researched)
 
 bool ride_type_is_invented(uint32_t rideType)
 {
-    Guard::Assert(rideType < Util::CountOf(_researchedRideTypes), GUARD_LINE);
+    Guard::Assert(rideType < std::size(_researchedRideTypes), GUARD_LINE);
     return _researchedRideTypes[rideType];
 }
 
@@ -660,7 +659,7 @@ bool track_piece_is_available_for_ride_type(uint8_t rideType, int32_t trackType)
 
 void ride_type_set_invented(uint32_t rideType)
 {
-    Guard::Assert(rideType < Util::CountOf(_researchedRideTypes), GUARD_LINE);
+    Guard::Assert(rideType < std::size(_researchedRideTypes), GUARD_LINE);
     _researchedRideTypes[rideType] = true;
 }
 

@@ -13,7 +13,6 @@
 #include "../OpenRCT2.h"
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../core/Guard.hpp"
-#include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -31,6 +30,7 @@
 #include "Surface.h"
 
 #include <algorithm>
+#include <iterator>
 
 void footpath_update_queue_entrance_banner(int32_t x, int32_t y, TileElement* tileElement);
 
@@ -1206,7 +1206,7 @@ static void neighbour_list_init(rct_neighbour_list* neighbourList)
 static void neighbour_list_push(
     rct_neighbour_list* neighbourList, int32_t order, int32_t direction, uint8_t rideIndex, uint8_t entrance_index)
 {
-    Guard::Assert(neighbourList->count < Util::CountOf(neighbourList->items));
+    Guard::Assert(neighbourList->count < std::size(neighbourList->items));
     neighbourList->items[neighbourList->count].order = order;
     neighbourList->items[neighbourList->count].direction = direction;
     neighbourList->items[neighbourList->count].ride_index = rideIndex;
@@ -1744,7 +1744,7 @@ void footpath_queue_chain_push(uint8_t rideIndex)
 {
     if (rideIndex != 255)
     {
-        uint8_t* lastSlot = _footpathQueueChain + Util::CountOf(_footpathQueueChain) - 1;
+        uint8_t* lastSlot = _footpathQueueChain + std::size(_footpathQueueChain) - 1;
         if (_footpathQueueChainNext <= lastSlot)
         {
             *_footpathQueueChainNext++ = rideIndex;

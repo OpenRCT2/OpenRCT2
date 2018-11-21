@@ -13,7 +13,6 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
-#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
@@ -21,6 +20,7 @@
 #include "ObjectJsonHelpers.h"
 
 #include <algorithm>
+#include <iterator>
 
 void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
@@ -215,7 +215,7 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const
     if (jOffsets != nullptr)
     {
         auto offsets = ReadJsonOffsets(jOffsets);
-        auto numOffsets = std::min(Util::CountOf(font->offset), offsets.size());
+        auto numOffsets = std::min(std::size(font->offset), offsets.size());
         std::copy_n(offsets.data(), numOffsets, font->offset);
     }
 
@@ -232,7 +232,7 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const
     if (jGlyphs != nullptr)
     {
         auto glyphs = ReadJsonGlyphs(jGlyphs);
-        auto numGlyphs = std::min(Util::CountOf(font->glyphs), glyphs.size());
+        auto numGlyphs = std::min(std::size(font->glyphs), glyphs.size());
         std::copy_n(glyphs.data(), numGlyphs, font->glyphs);
     }
 

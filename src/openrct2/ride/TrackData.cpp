@@ -9,9 +9,10 @@
 
 #include "TrackData.h"
 
-#include "../core/Util.hpp"
 #include "Track.h"
 #include "TrackPaint.h"
+
+#include <iterator>
 
 // clang-format off
 const rct_track_coordinates FlatTrackCoordinates[] = {
@@ -6482,7 +6483,7 @@ const track_descriptor gTrackDescriptors[142] = {
 
 #define CREATE_VEHICLE_INFO(VAR, ...) \
     static constexpr const rct_vehicle_info VAR##_data [] = __VA_ARGS__ ; \
-    static constexpr const rct_vehicle_info_list VAR = { static_cast<uint16_t>(Util::CountOf(VAR##_data)), VAR##_data };
+    static constexpr const rct_vehicle_info_list VAR = { static_cast<uint16_t>(std::size(VAR##_data)), VAR##_data };
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_8BE57A, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },

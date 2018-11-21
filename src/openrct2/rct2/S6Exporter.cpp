@@ -17,7 +17,6 @@
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -49,6 +48,7 @@
 #include <algorithm>
 #include <cstring>
 #include <functional>
+#include <iterator>
 
 S6Exporter::S6Exporter()
 {
@@ -227,7 +227,7 @@ void S6Exporter::Export()
     ExportResearchedRideTypes();
     ExportResearchedRideEntries();
     // Not used by OpenRCT2 any more, but left in to keep RCT2 export working.
-    for (uint8_t i = 0; i < Util::CountOf(RideTypePossibleTrackConfigurations); i++)
+    for (uint8_t i = 0; i < std::size(RideTypePossibleTrackConfigurations); i++)
     {
         researchedTrackPiecesA[i] = (RideTypePossibleTrackConfigurations[i]) & 0xFFFFFFFFULL;
         researchedTrackPiecesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;

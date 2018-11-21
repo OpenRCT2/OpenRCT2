@@ -28,9 +28,10 @@
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../core/Util.hpp"
 #    include "Platform2.h"
 #    include "platform.h"
+
+#    include <iterator>
 
 namespace Platform
 {
@@ -51,8 +52,8 @@ namespace Platform
         std::wstring result;
         auto wname = String::ToUtf16(name);
         wchar_t wvalue[256];
-        auto valueSize = GetEnvironmentVariableW(wname.c_str(), wvalue, (DWORD)Util::CountOf(wvalue));
-        if (valueSize < Util::CountOf(wvalue))
+        auto valueSize = GetEnvironmentVariableW(wname.c_str(), wvalue, (DWORD)std::size(wvalue));
+        if (valueSize < std::size(wvalue))
         {
             result = wvalue;
         }

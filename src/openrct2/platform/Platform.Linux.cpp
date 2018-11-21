@@ -23,7 +23,6 @@
 #    endif // __linux__
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
-#    include "../core/Util.hpp"
 #    include "Platform2.h"
 #    include "platform.h"
 

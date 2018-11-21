@@ -11,11 +11,12 @@
 
 #include "../common.h"
 #include "../core/Guard.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Colour.h"
 #include "../ride/Ride.h"
 #include "../world/Surface.h"
 #include "RCT1.h"
+
+#include <iterator>
 
 // clang-format off
 namespace RCT1
@@ -57,7 +58,7 @@ namespace RCT1
             COLOUR_BRIGHT_YELLOW,
             COLOUR_ICY_BLUE
         };
-        if (colour >= Util::CountOf(map))
+        if (colour >= std::size(map))
         {
             log_warning("Unsupported RCT1 colour.");
             return COLOUR_BLACK;
@@ -105,7 +106,7 @@ namespace RCT1
             PEEP_SPRITE_TYPE_CHICKEN, // 0x21
             PEEP_SPRITE_TYPE_LEMONADE, // 0x22
         };
-        if (rct1SpriteType >= Util::CountOf(map))
+        if (rct1SpriteType >= std::size(map))
         {
             log_warning("Unsupported RCT1 peep sprite type: %d.", rct1SpriteType);
             return PEEP_SPRITE_TYPE_NORMAL;
@@ -134,7 +135,7 @@ namespace RCT1
             TERRAIN_GRID_BLUE,
             TERRAIN_GRID_GREEN
         };
-        Guard::ArgumentInRange<size_t>(terrain, 0, Util::CountOf(map), "Unsupported RCT1 terrain type.");
+        Guard::ArgumentInRange<size_t>(terrain, 0, std::size(map), "Unsupported RCT1 terrain type.");
         return map[terrain];
     }
 
@@ -159,7 +160,7 @@ namespace RCT1
             TERRAIN_EDGE_SKYSCRAPER_B,
             TERRAIN_EDGE_ROCK             // Unused
         };
-        Guard::ArgumentInRange<size_t>(terrainEdge, 0, Util::CountOf(map), "Unsupported RCT1 terrain edge.");
+        Guard::ArgumentInRange<size_t>(terrainEdge, 0, std::size(map), "Unsupported RCT1 terrain edge.");
         return map[terrainEdge];
     }
 
@@ -254,7 +255,7 @@ namespace RCT1
             RIDE_TYPE_DRINK_STALL
         };
 
-        Guard::ArgumentInRange<size_t>(rideType, 0, Util::CountOf(map), "Unsupported RCT1 ride type.");
+        Guard::ArgumentInRange<size_t>(rideType, 0, std::size(map), "Unsupported RCT1 ride type.");
         return map[rideType];
     }
 
@@ -353,7 +354,7 @@ namespace RCT1
             { COPY_COLOUR_1, COPY_COLOUR_2, COLOUR_BLACK }, // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
         };
 
-        Guard::ArgumentInRange<size_t>(vehicleType, 0, Util::CountOf(map), "Unsupported RCT1 vehicle type.");
+        Guard::ArgumentInRange<size_t>(vehicleType, 0, std::size(map), "Unsupported RCT1 vehicle type.");
         return map[vehicleType];
     }
 
@@ -770,7 +771,7 @@ namespace RCT1
             "LEMST   ",  // RCT1_RIDE_TYPE_LEMONADE_STALL
         };
 
-        Guard::ArgumentInRange<size_t>(rideType, 0, Util::CountOf(map), "Unsupported RCT1 ride type.");
+        Guard::ArgumentInRange<size_t>(rideType, 0, std::size(map), "Unsupported RCT1 ride type.");
         return map[rideType];
     }
 
@@ -869,7 +870,7 @@ namespace RCT1
             "ENTERP  ",  // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
         };
 
-        Guard::ArgumentInRange<size_t>(vehicleType, 0, Util::CountOf(map), "Unsupported RCT1 vehicle type.");
+        Guard::ArgumentInRange<size_t>(vehicleType, 0, std::size(map), "Unsupported RCT1 vehicle type.");
         return map[vehicleType];
     }
 

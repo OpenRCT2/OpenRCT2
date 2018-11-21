@@ -19,7 +19,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Cursors.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -46,6 +45,7 @@
 #include "Wall.h"
 
 #include <algorithm>
+#include <iterator>
 
 /**
  * Replaces 0x00993CCC, 0x00993CCE
@@ -1309,7 +1309,7 @@ static money32 map_change_surface_style(
                     // Prevent network-originated value of surfaceStyle from causing
                     // invalid access.
                     uint8_t style = surfaceStyle & 0x1F;
-                    if (style >= Util::CountOf(TerrainPricing))
+                    if (style >= std::size(TerrainPricing))
                     {
                         return MONEY32_UNDEFINED;
                     }
@@ -4361,7 +4361,7 @@ void game_command_set_sign_style(
     int32_t* ebp)
 {
     BannerIndex bannerId = *ecx & 0xFF;
-    if (bannerId > Util::CountOf(gBanners))
+    if (bannerId > std::size(gBanners))
     {
         log_warning("Invalid game command for setting sign style, banner id = %d", bannerId);
         *ebx = MONEY32_UNDEFINED;

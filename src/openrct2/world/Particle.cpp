@@ -8,10 +8,11 @@
  *****************************************************************************/
 
 #include "../audio/audio.h"
-#include "../core/Util.hpp"
 #include "../paint/sprite/Paint.Sprite.h"
 #include "../scenario/Scenario.h"
 #include "Sprite.h"
+
+#include <iterator>
 
 /**
  *
@@ -33,7 +34,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int3
 
         sprite->frame = (scenario_rand() & 0xFF) * 12;
         sprite->time_to_live = (scenario_rand() & 0x7F) + 140;
-        sprite->crashed_sprite_base = scenario_rand_max((uint32_t)Util::CountOf(vehicle_particle_base_sprites));
+        sprite->crashed_sprite_base = scenario_rand_max((uint32_t)std::size(vehicle_particle_base_sprites));
         sprite->acceleration_x = ((int16_t)(scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_y = ((int16_t)(scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_z = (scenario_rand() & 0xFFFF) * 4 + 0x10000;

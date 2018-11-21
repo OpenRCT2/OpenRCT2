@@ -15,7 +15,6 @@
 #include "../audio/audio.h"
 #include "../core/Crypt.h"
 #include "../core/Guard.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -24,6 +23,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iterator>
 
 uint16_t gSpriteListHead[6];
 uint16_t gSpriteListCount[6];
@@ -174,7 +174,7 @@ void reset_sprite_list()
  */
 void reset_sprite_spatial_index()
 {
-    std::fill_n(gSpriteSpatialIndex, Util::CountOf(gSpriteSpatialIndex), SPRITE_INDEX_NULL);
+    std::fill_n(gSpriteSpatialIndex, std::size(gSpriteSpatialIndex), SPRITE_INDEX_NULL);
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
         rct_sprite* spr = get_sprite(i);

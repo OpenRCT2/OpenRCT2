@@ -15,7 +15,6 @@
 #    include "../core/Console.hpp"
 #    include "../core/Json.hpp"
 #    include "../core/String.hpp"
-#    include "../core/Util.hpp"
 #    include "../localisation/Date.h"
 #    include "../management/Finance.h"
 #    include "../peep/Peep.h"
@@ -26,6 +25,7 @@
 #    include "Http.h"
 #    include "network.h"
 
+#    include <iterator>
 #    include <string>
 
 #    ifndef DISABLE_HTTP
@@ -243,10 +243,10 @@ private:
         char key[17];
         for (int32_t i = 0; i < 16; i++)
         {
-            int32_t hexCharIndex = util_rand() % Util::CountOf(hexChars);
+            int32_t hexCharIndex = util_rand() % std::size(hexChars);
             key[i] = hexChars[hexCharIndex];
         }
-        key[Util::CountOf(key) - 1] = 0;
+        key[std::size(key) - 1] = 0;
         return key;
     }
 

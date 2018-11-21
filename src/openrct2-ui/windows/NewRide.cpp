@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -17,7 +18,6 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/management/Research.h>
@@ -312,7 +312,7 @@ static void window_new_ride_populate_list()
     ride_list_item* nextListItem = _windowNewRideListItems;
 
     // For each ride type in the view order list
-    for (int32_t i = 0; i < (int32_t)Util::CountOf(RideTypeViewOrder); i++)
+    for (int32_t i = 0; i < (int32_t)std::size(RideTypeViewOrder); i++)
     {
         uint8_t rideType = RideTypeViewOrder[i];
         if (rideType == RIDE_TYPE_NULL)
@@ -443,7 +443,7 @@ static void window_new_ride_scroll_to_focused_ride(rct_window* w)
 
     // Find row index of the focused ride type
     rct_widget* listWidget = &window_new_ride_widgets[WIDX_RIDE_LIST];
-    assert(_windowNewRideCurrentTab < Util::CountOf(_windowNewRideHighlightedItem));
+    assert(_windowNewRideCurrentTab < std::size(_windowNewRideHighlightedItem));
     int32_t focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
     int32_t count = 0, row = 0;
     ride_list_item* listItem = _windowNewRideListItems;

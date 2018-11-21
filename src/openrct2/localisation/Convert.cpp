@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "ConversionTables.h"
 #include "Language.h"
 

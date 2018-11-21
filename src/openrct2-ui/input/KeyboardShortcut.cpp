@@ -9,6 +9,7 @@
 
 #include "KeyboardShortcuts.h"
 
+#include <iterator>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -19,7 +20,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Localisation.h>
@@ -57,7 +57,7 @@ void keyboard_shortcut_handle(int32_t key)
 
 void keyboard_shortcut_handle_command(int32_t shortcutIndex)
 {
-    if (shortcutIndex >= 0 && static_cast<uint32_t>(shortcutIndex) < Util::CountOf(shortcut_table))
+    if (shortcutIndex >= 0 && static_cast<uint32_t>(shortcutIndex) < std::size(shortcut_table))
     {
         shortcut_action action = shortcut_table[shortcutIndex];
         if (action != nullptr)

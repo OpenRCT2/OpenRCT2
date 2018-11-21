@@ -12,7 +12,6 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../config/Config.h"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../ride/Ride.h"

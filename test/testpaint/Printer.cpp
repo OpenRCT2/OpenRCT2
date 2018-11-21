@@ -12,7 +12,7 @@
 #include "FunctionCall.hpp"
 #include "String.hpp"
 
-#include <openrct2/core/Util.hpp>
+#include <iterator>
 #include <openrct2/sprites.h>
 
 namespace Printer
@@ -53,7 +53,7 @@ namespace Printer
     std::string PrintFunctionCall(function_call call, uint16_t baseHeight)
     {
         std::string imageId = GetImageIdString(call.supports.colour_flags);
-        assert(call.function < Util::CountOf(functionNames));
+        assert(call.function < std::size(functionNames));
         const char* functionName = functionNames[call.function];
         std::string out = "";
 

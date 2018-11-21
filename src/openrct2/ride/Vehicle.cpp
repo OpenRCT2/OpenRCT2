@@ -17,7 +17,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
@@ -42,6 +41,7 @@
 #include "VehicleData.h"
 
 #include <algorithm>
+#include <iterator>
 
 static void vehicle_update(rct_vehicle* vehicle);
 static void vehicle_update_crossings(const rct_vehicle* vehicle);
@@ -762,7 +762,7 @@ static const struct
 
 static bool vehicle_move_info_valid(int32_t cd, int32_t typeAndDirection, int32_t offset)
 {
-    if (cd >= static_cast<int32_t>(Util::CountOf(gTrackVehicleInfo)))
+    if (cd >= static_cast<int32_t>(std::size(gTrackVehicleInfo)))
     {
         return false;
     }
@@ -912,10 +912,10 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
          soundParam < gVehicleSoundParamsListEnd && sound_priority <= soundParam->priority; soundParam++)
         ;
 
-    if (soundParam >= &gVehicleSoundParamsList[Util::CountOf(gVehicleSoundParamsList)])
+    if (soundParam >= &gVehicleSoundParamsList[std::size(gVehicleSoundParamsList)])
         return;
 
-    if (gVehicleSoundParamsListEnd < &gVehicleSoundParamsList[Util::CountOf(gVehicleSoundParamsList)])
+    if (gVehicleSoundParamsListEnd < &gVehicleSoundParamsList[std::size(gVehicleSoundParamsList)])
     {
         gVehicleSoundParamsListEnd++;
     }
@@ -996,7 +996,7 @@ static int32_t vehicle_get_sound_priority_factor(rct_vehicle* vehicle)
     {
         vehicle_sound++;
 
-        if (vehicle_sound >= &gVehicleSoundList[Util::CountOf(gVehicleSoundList)])
+        if (vehicle_sound >= &gVehicleSoundList[std::size(gVehicleSoundList)])
         {
             return result;
         }
@@ -1082,16 +1082,16 @@ static rct_vehicle_sound* vehicle_sounds_update_get_vehicle_sound(rct_vehicle_so
 {
     // Search for already playing vehicle sound
     rct_vehicle_sound* vehicleSound = &gVehicleSoundList[0];
-    for (; vehicleSound < &gVehicleSoundList[Util::CountOf(gVehicleSoundList)]; vehicleSound++)
+    for (; vehicleSound < &gVehicleSoundList[std::size(gVehicleSoundList)]; vehicleSound++)
     {
         if (vehicleSound->id == sound_params->id)
             return vehicleSound;
     }
 
     // No sound already playing
-    if (vehicleSound >= &gVehicleSoundList[Util::CountOf(gVehicleSoundList)])
+    if (vehicleSound >= &gVehicleSoundList[std::size(gVehicleSoundList)])
     {
-        for (vehicleSound = &gVehicleSoundList[0]; vehicleSound < &gVehicleSoundList[Util::CountOf(gVehicleSoundList)];
+        for (vehicleSound = &gVehicleSoundList[0]; vehicleSound < &gVehicleSoundList[std::size(gVehicleSoundList)];
              vehicleSound++)
         {
             // Use free slot
@@ -2205,7 +2205,7 @@ static int ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteIndex)
             // track type to, e.g., Crooked House
             break;
         }
-        else if (trainIndex >= Util::CountOf(ride->vehicles))
+        else if (trainIndex >= std::size(ride->vehicles))
         {
             return VEHICLE_INVALID_ID;
         }
@@ -5559,7 +5559,7 @@ static void vehicle_update_sound(rct_vehicle* vehicle)
 
         loc_6D7A97:
             vehicle->scream_sound_id = 255;
-            if (ride->type < Util::CountOf(RideLiftData))
+            if (ride->type < std::size(RideLiftData))
             {
                 // Get lift hill sound
                 screamId = RideLiftData[ride->type].sound_id;

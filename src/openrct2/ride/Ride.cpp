@@ -20,7 +20,6 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -59,6 +58,7 @@
 #include <algorithm>
 #include <climits>
 #include <cstdlib>
+#include <iterator>
 #include <limits>
 
 using namespace OpenRCT2;
@@ -3712,7 +3712,7 @@ static int32_t ride_music_params_update_label_51(
     if (a1 < gRideMusicInfoList[*tuneId].length)
     {
         rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;
-        if (ride_music_params < &gRideMusicParamsList[Util::CountOf(gRideMusicParamsList)])
+        if (ride_music_params < &gRideMusicParamsList[std::size(gRideMusicParamsList)])
         {
             ride_music_params->ride_id = rideIndex;
             ride_music_params->tune_id = *tuneId;
@@ -6451,7 +6451,7 @@ void game_command_set_ride_appearance(
     switch (type)
     {
         case 0:
-            if (index >= Util::CountOf(ride->track_colour_main))
+            if (index >= std::size(ride->track_colour_main))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;
@@ -6464,7 +6464,7 @@ void game_command_set_ride_appearance(
             }
             break;
         case 1:
-            if (index >= Util::CountOf(ride->track_colour_additional))
+            if (index >= std::size(ride->track_colour_additional))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;
@@ -6477,7 +6477,7 @@ void game_command_set_ride_appearance(
             }
             break;
         case 2:
-            if (index >= Util::CountOf(ride->vehicle_colours))
+            if (index >= std::size(ride->vehicle_colours))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;
@@ -6490,7 +6490,7 @@ void game_command_set_ride_appearance(
             }
             break;
         case 3:
-            if (index >= Util::CountOf(ride->vehicle_colours))
+            if (index >= std::size(ride->vehicle_colours))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;
@@ -6503,7 +6503,7 @@ void game_command_set_ride_appearance(
             }
             break;
         case 4:
-            if (index >= Util::CountOf(ride->track_colour_supports))
+            if (index >= std::size(ride->track_colour_supports))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;
@@ -6520,7 +6520,7 @@ void game_command_set_ride_appearance(
             {
                 ride->colour_scheme_type &= ~(RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR);
                 ride->colour_scheme_type |= value;
-                for (uint32_t i = 1; i < Util::CountOf(ride->vehicle_colours); i++)
+                for (uint32_t i = 1; i < std::size(ride->vehicle_colours); i++)
                 {
                     ride->vehicle_colours[i] = ride->vehicle_colours[0];
                     ride->vehicle_colours_extended[i] = ride->vehicle_colours_extended[0];
@@ -6537,7 +6537,7 @@ void game_command_set_ride_appearance(
             }
             break;
         case 7:
-            if (index >= Util::CountOf(ride->vehicle_colours_extended))
+            if (index >= std::size(ride->vehicle_colours_extended))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;

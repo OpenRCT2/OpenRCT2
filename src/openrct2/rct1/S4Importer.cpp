@@ -22,7 +22,6 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -55,6 +54,7 @@
 #include "Tables.h"
 
 #include <algorithm>
+#include <iterator>
 #include <memory>
 #include <vector>
 
@@ -541,7 +541,7 @@ private:
 
     void AddAvailableEntriesFromRides()
     {
-        for (size_t i = 0; i < Util::CountOf(_s4.rides); i++)
+        for (size_t i = 0; i < std::size(_s4.rides); i++)
         {
             rct1_ride* ride = &_s4.rides[i];
             if (ride->type != RCT1_RIDE_TYPE_NULL)
@@ -609,7 +609,7 @@ private:
 
     void AddEntryForRideType(uint8_t rideType)
     {
-        assert(rideType < Util::CountOf(_rideTypeToRideEntryMap));
+        assert(rideType < std::size(_rideTypeToRideEntryMap));
         if (_rideTypeToRideEntryMap[rideType] == 255)
         {
             const char* entryName = RCT1::GetRideTypeObject(rideType);
@@ -623,7 +623,7 @@ private:
 
     void AddEntryForVehicleType(uint8_t rideType, uint8_t vehicleType)
     {
-        assert(vehicleType < Util::CountOf(_vehicleTypeToRideEntryMap));
+        assert(vehicleType < std::size(_vehicleTypeToRideEntryMap));
         if (_vehicleTypeToRideEntryMap[vehicleType] == 255)
         {
             const char* entryName = RCT1::GetVehicleObject(vehicleType);
@@ -640,7 +640,7 @@ private:
 
     void AddEntryForSmallScenery(uint8_t smallSceneryType)
     {
-        assert(smallSceneryType < Util::CountOf(_smallSceneryTypeToEntryMap));
+        assert(smallSceneryType < std::size(_smallSceneryTypeToEntryMap));
         if (_smallSceneryTypeToEntryMap[smallSceneryType] == 255)
         {
             const char* entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
@@ -652,7 +652,7 @@ private:
 
     void AddEntryForLargeScenery(uint8_t largeSceneryType)
     {
-        assert(largeSceneryType < Util::CountOf(_largeSceneryTypeToEntryMap));
+        assert(largeSceneryType < std::size(_largeSceneryTypeToEntryMap));
         if (_largeSceneryTypeToEntryMap[largeSceneryType] == 255)
         {
             const char* entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
@@ -664,7 +664,7 @@ private:
 
     void AddEntryForWall(uint8_t wallType)
     {
-        assert(wallType < Util::CountOf(_wallTypeToEntryMap));
+        assert(wallType < std::size(_wallTypeToEntryMap));
         if (_wallTypeToEntryMap[wallType] == 255)
         {
             const char* entryName = RCT1::GetWallObject(wallType);
@@ -676,7 +676,7 @@ private:
 
     void AddEntryForPath(uint8_t pathType)
     {
-        assert(pathType < Util::CountOf(_pathTypeToEntryMap));
+        assert(pathType < std::size(_pathTypeToEntryMap));
         if (_pathTypeToEntryMap[pathType] == 255)
         {
             const char* entryName = RCT1::GetPathObject(pathType);
@@ -1087,7 +1087,7 @@ private:
         Ride* ride;
         FOR_ALL_RIDES (i, ride)
         {
-            for (uint8_t j = 0; j < Util::CountOf(ride->vehicles); j++)
+            for (uint8_t j = 0; j < std::size(ride->vehicles); j++)
             {
                 uint16_t originalIndex = ride->vehicles[j];
                 if (originalIndex != SPRITE_INDEX_NULL)
@@ -2795,7 +2795,7 @@ private:
 
     void FixEntrancePositions()
     {
-        for (size_t i = 0; i < Util::CountOf(gParkEntrances); i++)
+        for (size_t i = 0; i < std::size(gParkEntrances); i++)
         {
             gParkEntrances[i].x = LOCATION_NULL;
         }
@@ -2852,12 +2852,12 @@ private:
         // Loopy Landscapes stores research items in a different place
         if (_gameVersion == FILE_VERSION_RCT1_LL)
         {
-            *count = Util::CountOf(_s4.research_items_LL);
+            *count = std::size(_s4.research_items_LL);
             return _s4.research_items_LL;
         }
         else
         {
-            *count = Util::CountOf(_s4.research_items);
+            *count = std::size(_s4.research_items);
             return _s4.research_items;
         }
     }

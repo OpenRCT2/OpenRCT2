@@ -13,7 +13,6 @@
 #include "../Game.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -28,6 +27,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <iterator>
 #include <limits>
 
 rct_banner gBanners[MAX_BANNERS];
@@ -421,7 +421,7 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
                                                                   { 0, -32 },   { -32, +32 }, { +32, -32 },
                                                                   { +32, +32 }, { -32, +32 }, { 0, 0 } };
 
-    for (size_t i = 0; i < (int32_t)Util::CountOf(NeighbourCheckOrder); i++)
+    for (size_t i = 0; i < (int32_t)std::size(NeighbourCheckOrder); i++)
     {
         uint8_t rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
         if (rideIndex != RIDE_ID_NULL)
@@ -468,7 +468,7 @@ void banner_reset_broken_index()
 void fix_duplicated_banners()
 {
     // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
-    bool activeBanners[Util::CountOf(gBanners)]{};
+    bool activeBanners[std::size(gBanners)]{};
     TileElement* tileElement;
     for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {

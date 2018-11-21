@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <iterator>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -18,7 +19,6 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/Entrance.h>
@@ -842,7 +842,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
             };
 
-            for (uint32_t i = 0; i < Util::CountOf(RideKeyColours); i++)
+            for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
             {
                 gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RideKeyColours[i]);
                 gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + LIST_ROW_HEIGHT, y);
@@ -1549,7 +1549,7 @@ static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
     if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
         colour = MAP_COLOUR_UNOWNED(colour);
 
-    const int32_t maxSupportedTileElementType = (int32_t)Util::CountOf(ElementTypeAddColour);
+    const int32_t maxSupportedTileElementType = (int32_t)std::size(ElementTypeAddColour);
     while (!(tileElement++)->IsLastForTile())
     {
         int32_t tileElementType = tileElement->GetType() >> 2;

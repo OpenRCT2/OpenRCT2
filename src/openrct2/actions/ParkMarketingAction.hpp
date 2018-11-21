@@ -11,7 +11,6 @@
 
 #include "../Context.h"
 #include "../core/MemoryStream.h"
-#include "../core/Util.hpp"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
@@ -20,6 +19,8 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "GameAction.h"
+
+#include <iterator>
 
 struct ParkMarketingAction : public GameActionBase<GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActionResult>
 {
@@ -52,7 +53,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if ((size_t)_type >= Util::CountOf(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
+        if ((size_t)_type >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_START_MARKETING_CAMPAIGN);
         }

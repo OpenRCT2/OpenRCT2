@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "../../common.h"
-#include "../../core/Util.hpp"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"

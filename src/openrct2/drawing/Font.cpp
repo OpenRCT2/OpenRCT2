@@ -9,7 +9,6 @@
 
 #include "Font.h"
 
-#include "../core/Util.hpp"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
@@ -17,6 +16,7 @@
 #include "Drawing.h"
 #include "TTF.h"
 
+#include <iterator>
 #include <map>
 
 static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = { 6, 10, 10 };
@@ -255,7 +255,7 @@ int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoi
     {
         glyphIndex = (SPR_CHAR_START + glyphIndex) - SPR_G2_CHAR_BEGIN;
 
-        if (glyphIndex >= (int32_t)Util::CountOf(_additionalSpriteFontCharacterWidth[baseFontIndex]))
+        if (glyphIndex >= (int32_t)std::size(_additionalSpriteFontCharacterWidth[baseFontIndex]))
         {
             log_warning("Invalid glyph index %u", glyphIndex);
             glyphIndex = 0;

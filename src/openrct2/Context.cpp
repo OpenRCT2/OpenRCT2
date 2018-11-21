@@ -7,14 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#include <cmath>
-#include <exception>
-#include <memory>
-#include <string>
 #ifdef __EMSCRIPTEN__
 #    include <emscripten.h>
 #endif // __EMSCRIPTEN__
+
 #include "Context.h"
 #include "Editor.h"
 #include "FileClassifier.h"
@@ -37,7 +33,6 @@
 #include "core/MemoryStream.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "core/Util.hpp"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/LightFX.h"
 #include "interface/Chat.h"
@@ -64,6 +59,13 @@
 #include "ui/WindowManager.h"
 #include "util/Util.h"
 #include "world/Park.h"
+
+#include <algorithm>
+#include <cmath>
+#include <exception>
+#include <iterator>
+#include <memory>
+#include <string>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;
@@ -513,8 +515,8 @@ namespace OpenRCT2
                             stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
                         _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                         parkImporter->Import();
-                        String::Set(gScenarioSavePath, Util::CountOf(gScenarioSavePath), path.c_str());
-                        String::Set(gCurrentLoadedPath, Util::CountOf(gCurrentLoadedPath), path.c_str());
+                        String::Set(gScenarioSavePath, std::size(gScenarioSavePath), path.c_str());
+                        String::Set(gCurrentLoadedPath, std::size(gCurrentLoadedPath), path.c_str());
                         gFirstTimeSaving = true;
                         game_fix_save_vars();
                         sprite_position_tween_reset();

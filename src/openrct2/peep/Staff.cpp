@@ -14,7 +14,6 @@
 #include "../Input.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
-#include "../core/Util.hpp"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -37,6 +36,7 @@
 #include "Peep.h"
 
 #include <algorithm>
+#include <iterator>
 
 // clang-format off
 const rct_string_id StaffCostumeNames[] = {
@@ -419,7 +419,7 @@ void game_command_set_staff_order(
         { // change costume
             uint8_t sprite_type = order_id & ~0x80;
             sprite_type += 4;
-            if (sprite_type >= Util::CountOf(peep_slow_walking_types))
+            if (sprite_type >= std::size(peep_slow_walking_types))
             {
                 log_error("Invalid change costume order for sprite_type %u", sprite_type);
                 *ebx = MONEY32_UNDEFINED;
@@ -1662,7 +1662,7 @@ void rct_peep::UpdateMowing()
             SwitchToSpecialSprite(2);
         }
 
-        if (var_37 == Util::CountOf(_MowingWaypoints))
+        if (var_37 == std::size(_MowingWaypoints))
         {
             StateReset();
             return;

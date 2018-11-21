@@ -22,13 +22,13 @@
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
-#    include "../core/Util.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../rct2/RCT2.h"
 #    include "../util/Util.h"
 #    include "platform.h"
 
+#    include <iterator>
 #    include <lmcons.h>
 #    include <psapi.h>
 #    include <shlobj.h>
@@ -410,8 +410,8 @@ uint8_t platform_get_locale_date_format()
     wchar_t first[sizeof(dateFormat)];
     wchar_t second[sizeof(dateFormat)];
     if (swscanf_s(
-            dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, (uint32_t)Util::CountOf(first), second,
-            (uint32_t)Util::CountOf(second))
+            dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, (uint32_t)std::size(first), second,
+            (uint32_t)std::size(second))
         != 2)
     {
         return DATE_FORMAT_DAY_MONTH_YEAR;
@@ -482,7 +482,7 @@ utf8* platform_get_absolute_path(const utf8* relativePath, const utf8* basePath)
 
     wchar_t* pathW = utf8_to_widechar(path);
     wchar_t fullPathW[MAX_PATH];
-    DWORD fullPathLen = GetFullPathNameW(pathW, (DWORD)Util::CountOf(fullPathW), fullPathW, nullptr);
+    DWORD fullPathLen = GetFullPathNameW(pathW, (DWORD)std::size(fullPathW), fullPathW, nullptr);
 
     free(pathW);
 

@@ -13,7 +13,6 @@
 #include "../../OpenRCT2.h"
 #include "../../config/Config.h"
 #include "../../core/Guard.hpp"
-#include "../../core/Util.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
@@ -27,6 +26,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <iterator>
 
 // clang-format off
 static constexpr const uint8_t byte_97B444[] =
@@ -1119,7 +1119,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             }
         }
 
-        assert(surfaceShape < Util::CountOf(byte_97B444));
+        assert(surfaceShape < std::size(byte_97B444));
         const uint8_t image_offset = byte_97B444[surfaceShape];
         int32_t image_id;
         uint32_t ebp = terrain_type;
@@ -1138,10 +1138,10 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 // loc_660C9F
                 if (rotation & 1)
                 {
-                    assert(ebp < Util::CountOf(byte_97B84A));
+                    assert(ebp < std::size(byte_97B84A));
                     ebp = byte_97B84A[ebp];
                 }
-                assert(ebp < Util::CountOf(dword_97B750));
+                assert(ebp < std::size(dword_97B750));
                 image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
 
                 if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
@@ -1206,7 +1206,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
         if (staff_is_patrol_area_set(200 + staffType, x, y))
         {
-            assert(surfaceShape < Util::CountOf(byte_97B444));
+            assert(surfaceShape < std::size(byte_97B444));
 
             image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
             image_id |= patrolColour << 19;
@@ -1237,7 +1237,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         // loc_660E9A:
         if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
         {
-            assert(surfaceShape < Util::CountOf(byte_97B444));
+            assert(surfaceShape < std::size(byte_97B444));
             paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
         }
         else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_AVAILABLE)
@@ -1255,7 +1255,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     {
         if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
         {
-            assert(surfaceShape < Util::CountOf(byte_97B444));
+            assert(surfaceShape < std::size(byte_97B444));
             paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
         }
         else if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
