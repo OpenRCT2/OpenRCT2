@@ -184,6 +184,7 @@ ClientBin/
 *.[Pp]ublish.xml
 *.pfx
 *.publishsettings
+openrct2.favdoc
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -308,4 +309,3 @@ discord-rpc
 
 # Cmake
 cmake-build-debug/
-*.favdoc

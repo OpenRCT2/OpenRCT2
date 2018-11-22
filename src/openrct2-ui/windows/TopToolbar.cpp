@@ -27,6 +27,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2/interface/InteractiveConsole.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/network/network.h>
 #include <openrct2/network/twitch.h>
@@ -3104,25 +3105,24 @@ static void window_top_toolbar_tool_abort(rct_window* w, rct_widgetindex widgetI
 
 static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget)
 {
-    int32_t num_menu;
-    extern const rct_string_id SpeedNames[];
+    int32_t menu_index;
 
-    for (num_menu = 0; num_menu < GAMESPEED_HYPER - 1; num_menu++)
+    for (menu_index = 0; menu_index < GAMESPEED_TURBO; menu_index++)
     {
-        gDropdownItemsFormat[num_menu] = STR_TOGGLE_OPTION;
-        gDropdownItemsArgs[num_menu] = SpeedNames[num_menu];
+        gDropdownItemsFormat[menu_index] = STR_TOGGLE_OPTION;
+        gDropdownItemsArgs[menu_index] = gSpeedNames[menu_index];
     }
     if (gConfigGeneral.debugging_tools)
     {
-        gDropdownItemsFormat[num_menu] = STR_EMPTY;
-        num_menu++;
-        gDropdownItemsFormat[num_menu] = STR_TOGGLE_OPTION;
-        gDropdownItemsArgs[num_menu] = STR_SPEED_HYPER;
-        num_menu++;
+        gDropdownItemsFormat[menu_index] = STR_EMPTY;
+        menu_index++;
+        gDropdownItemsFormat[menu_index] = STR_TOGGLE_OPTION;
+        gDropdownItemsArgs[menu_index] = STR_SPEED_HYPER;
+        menu_index++;
     }
 
     window_dropdown_show_text(
-        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, num_menu);
+        w->x + widget->left, w->y + widget->top, widget->bottom - widget->top + 1, w->colours[0] | 0x80, 0, menu_index);
 
     // Set checkmarks
     gDropdownDefaultIndex = gGameSpeed - 1;

@@ -969,7 +969,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 break;
             case TITLE_SCRIPT_SPEED:
                 commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
-                set_format_arg(0, rct_string_id, SpeedNames[command->Speed - 1]);
+                set_format_arg(0, rct_string_id, gSpeedNames[command->Speed - 1]);
                 break;
             case TITLE_SCRIPT_FOLLOW:
                 commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;

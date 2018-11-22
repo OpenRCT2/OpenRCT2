@@ -407,7 +407,7 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                 for (int32_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = SpeedNames[i];
+                    gDropdownItemsArgs[i] = gSpeedNames[i];
                 }
 
                 window_dropdown_show_text_custom_width(
@@ -747,7 +747,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     if (command.Type == TITLE_SCRIPT_SPEED)
     {
         gfx_draw_string_left_clipped(
-            dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
+            dpi, gSpeedNames[command.Speed - 1], nullptr, w->colours[1], w->x + w->widgets[WIDX_INPUT].left + 1,
             w->y + w->widgets[WIDX_INPUT].top, w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)

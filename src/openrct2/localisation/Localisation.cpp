@@ -46,7 +46,7 @@ bool gDebugStringFormatting = false;
 #endif
 
 // clang-format off
-const rct_string_id SpeedNames[] = {
+const rct_string_id gSpeedNames[] = {
     STR_SPEED_SLOW,
     STR_SPEED_NORMAL,
     STR_SPEED_QUICK,

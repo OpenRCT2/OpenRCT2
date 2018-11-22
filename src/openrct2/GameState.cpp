@@ -35,6 +35,7 @@ using namespace OpenRCT2;
 
 // game speed steps in percent. 25% is 1/4 of normal speed (100%).
 static uint32_t GameSpeedSteps[GAMESPEED_COUNT] = { 0, 25, 100, 200, 400, 1000, 10000 };
+static uint32_t pctUpdates = 0;
 
 GameState::GameState()
 {
@@ -76,7 +77,6 @@ void GameState::InitAll(int32_t mapSize)
 
 void GameState::Update()
 {
-    static uint32_t pctUpdates = 0;
     gInUpdateCode = true;
 
     uint32_t numUpdates;
@@ -95,22 +95,14 @@ void GameState::Update()
     }
 
     // Determine how many times we need to update the game
-    if (gGameSpeed == GAMESPEED_NORMAL)
+    pctUpdates += GameSpeedSteps[gGameSpeed] * gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
+    if (pctUpdates >= 100)
     {
-        numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        numUpdates = std::clamp<uint32_t>(numUpdates, 1, GAME_MAX_UPDATES);
+        numUpdates = pctUpdates / 100;
+        pctUpdates -= numUpdates * 100;
     }
     else
-    {
-        pctUpdates += GameSpeedSteps[gGameSpeed] * gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        if (pctUpdates >= 100)
-        {
-            numUpdates = pctUpdates / 100;
-            pctUpdates -= numUpdates * 100;
-        }
-        else
-            numUpdates = 0;
-    }
+        numUpdates = 0;
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
         && network_get_authstatus() == NETWORK_AUTH_OK)
