@@ -2079,7 +2079,7 @@ STR_2739    :없음
 STR_2740    :롤러코스터 타이쿤 1
 STR_2741    :롤러코스터 타이쿤 2
 STR_2742    :css50.dat 파일을 찾을 수 없습니다
-STR_2743    :'data/css17.dat' 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 'data/css50.dat' 이름으로 바꾸어 넣거나, 기타 탭에서 RCT1의 경로를 올바르게 지정하세요.
+STR_2743    :'data/css17.dat' 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 'data/css50.dat' 이름으로 바꾸어 넣거나, 고급 탭에서 RCT1의 경로를 올바르게 지정하세요.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2780,7 +2780,7 @@ STR_5267    :{SMALLFONT}{BLACK}문화와 단위
 STR_5268    :{SMALLFONT}{BLACK}오디오
 STR_5269    :{SMALLFONT}{BLACK}제어 및 인터페이스
 STR_5270    :{SMALLFONT}{BLACK}기타
-STR_5271    :{SMALLFONT}{BLACK}Twitch
+STR_5271    :{SMALLFONT}{BLACK}트위치
 STR_5272    :{SMALLFONT}{BLACK}소형 조형물
 STR_5273    :{SMALLFONT}{BLACK}대형 조형물
 STR_5274    :{SMALLFONT}{BLACK}보도
