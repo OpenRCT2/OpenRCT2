@@ -12,6 +12,7 @@
 
 #include <SDL2/SDL.h>
 #include <algorithm>
+#include <iterator>
 #include <list>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
@@ -22,7 +23,6 @@
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Guard.hpp>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
 #include <speex/speex_resampler.h>
@@ -103,14 +103,14 @@ namespace OpenRCT2::Audio
             SDL_CloseAudioDevice(_deviceId);
 
             // Free sources
-            for (size_t i = 0; i < Util::CountOf(_css1Sources); i++)
+            for (size_t i = 0; i < std::size(_css1Sources); i++)
             {
                 if (_css1Sources[i] != _nullSource)
                 {
                     SafeDelete(_css1Sources[i]);
                 }
             }
-            for (size_t i = 0; i < Util::CountOf(_musicSources); i++)
+            for (size_t i = 0; i < std::size(_musicSources); i++)
             {
                 if (_musicSources[i] != _nullSource)
                 {
@@ -162,7 +162,7 @@ namespace OpenRCT2::Audio
         bool LoadMusic(size_t pathId) override
         {
             bool result = false;
-            if (pathId < Util::CountOf(_musicSources))
+            if (pathId < std::size(_musicSources))
             {
                 IAudioSource* source = _musicSources[pathId];
                 if (source == nullptr)
@@ -199,7 +199,7 @@ namespace OpenRCT2::Audio
         void LoadAllSounds()
         {
             const utf8* css1Path = context_get_path_legacy(PATH_ID_CSS1);
-            for (size_t i = 0; i < Util::CountOf(_css1Sources); i++)
+            for (size_t i = 0; i < std::size(_css1Sources); i++)
             {
                 auto source = AudioSource::CreateMemoryFromCSS1(css1Path, i, &_format);
                 if (source == nullptr)

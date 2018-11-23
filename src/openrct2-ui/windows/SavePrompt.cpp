@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <iterator>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
@@ -14,7 +15,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
@@ -163,7 +163,7 @@ rct_window* window_save_prompt_open()
         height = 54;
     }
 
-    if (prompt_mode >= Util::CountOf(window_save_prompt_labels))
+    if (prompt_mode >= std::size(window_save_prompt_labels))
     {
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;

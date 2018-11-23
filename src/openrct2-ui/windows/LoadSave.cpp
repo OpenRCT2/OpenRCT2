@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <ctime>
+#include <iterator>
 #include <memory>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -21,7 +22,6 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/platform/platform.h>
@@ -813,12 +813,12 @@ static void window_loadsave_sort_list()
 static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension)
 {
     utf8 absoluteDirectory[MAX_PATH];
-    Path::GetAbsolute(absoluteDirectory, Util::CountOf(absoluteDirectory), directory);
-    safe_strcpy(_directory, absoluteDirectory, Util::CountOf(_directory));
+    Path::GetAbsolute(absoluteDirectory, std::size(absoluteDirectory), directory);
+    safe_strcpy(_directory, absoluteDirectory, std::size(_directory));
     // Note: This compares the pointers, not values
     if (_extension != extension)
     {
-        safe_strcpy(_extension, extension, Util::CountOf(_extension));
+        safe_strcpy(_extension, extension, std::size(_extension));
     }
     _shortenedDirectory[0] = '\0';
 
@@ -850,7 +850,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
     else
     {
         // Remove the separator at the end of the path, if present
-        safe_strcpy(_parentDirectory, absoluteDirectory, Util::CountOf(_parentDirectory));
+        safe_strcpy(_parentDirectory, absoluteDirectory, std::size(_parentDirectory));
         if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
             || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
             _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
@@ -902,14 +902,14 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
         // List all files with the wanted extensions
         char filter[MAX_PATH];
         char extCopy[64];
-        safe_strcpy(extCopy, extension, Util::CountOf(extCopy));
+        safe_strcpy(extCopy, extension, std::size(extCopy));
         bool showExtension = false;
         char* extToken = strtok(extCopy, ";");
         while (extToken != nullptr)
         {
-            safe_strcpy(filter, directory, Util::CountOf(filter));
-            safe_strcat_path(filter, "*", Util::CountOf(filter));
-            path_append_extension(filter, extToken, Util::CountOf(filter));
+            safe_strcpy(filter, directory, std::size(filter));
+            safe_strcat_path(filter, "*", std::size(filter));
+            path_append_extension(filter, extToken, std::size(filter));
 
             auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
             while (scanner->Next())

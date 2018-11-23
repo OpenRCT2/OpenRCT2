@@ -9,10 +9,10 @@
 
 #include "ConversionTables.h"
 
-#include "../core/Util.hpp"
 #include "FormatCodes.h"
 
 #include <cstdlib>
+#include <iterator>
 
 // clang-format off
 const encoding_convert_entry RCT2ToUnicodeTable[] =
@@ -117,7 +117,7 @@ static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_conver
 
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
 {
-    return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, Util::CountOf(RCT2ToUnicodeTable));
+    return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, std::size(RCT2ToUnicodeTable));
 }
 
 uint32_t encoding_convert_unicode_to_rct2(uint32_t unicode)

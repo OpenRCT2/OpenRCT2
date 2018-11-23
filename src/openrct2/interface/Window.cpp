@@ -17,7 +17,6 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
@@ -35,6 +34,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iterator>
 
 std::vector<std::unique_ptr<rct_window>> g_window_list;
 rct_window* gWindowAudioExclusive;
@@ -912,7 +912,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
                         }
                     }
                 }
-                if (i >= (int32_t)Util::CountOf(window_scroll_locations))
+                if (i >= (int32_t)std::size(window_scroll_locations))
                 {
                     i = 0;
                     found = true;

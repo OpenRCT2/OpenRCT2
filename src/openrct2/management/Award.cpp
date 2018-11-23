@@ -10,7 +10,6 @@
 #include "Award.h"
 
 #include "../config/Config.h"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../peep/Peep.h"

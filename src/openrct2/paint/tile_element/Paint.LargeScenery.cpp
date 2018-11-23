@@ -9,7 +9,6 @@
 
 #include "../../Game.h"
 #include "../../config/Config.h"
-#include "../../core/Util.hpp"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../ride/Ride.h"
@@ -22,6 +21,8 @@
 #include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
+
+#include <iterator>
 
 // 6B8172:
 static void large_scenery_paint_supports(
@@ -67,7 +68,7 @@ static void large_scenery_paint_supports(
 
 static rct_large_scenery_text_glyph* large_scenery_sign_get_glyph(rct_large_scenery_text* text, uint32_t codepoint)
 {
-    if (codepoint >= Util::CountOf(text->glyphs))
+    if (codepoint >= std::size(text->glyphs))
     {
         return &text->glyphs[(size_t)'?'];
     }

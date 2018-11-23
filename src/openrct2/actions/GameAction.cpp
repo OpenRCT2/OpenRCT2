@@ -13,7 +13,6 @@
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
@@ -21,6 +20,7 @@
 #include "../world/Park.h"
 
 #include <algorithm>
+#include <iterator>
 
 GameActionResult::GameActionResult(GA_ERROR error, rct_string_id message)
 {
@@ -49,7 +49,7 @@ namespace GameActions
 
     GameActionFactory Register(uint32_t id, GameActionFactory factory)
     {
-        Guard::Assert(id < Util::CountOf(_actions));
+        Guard::Assert(id < std::size(_actions));
         Guard::ArgumentNotNull(factory);
 
         _actions[id] = factory;
@@ -72,7 +72,7 @@ namespace GameActions
         Initialize();
 
         GameAction* result = nullptr;
-        if (id < Util::CountOf(_actions))
+        if (id < std::size(_actions))
         {
             GameActionFactory factory = _actions[id];
             if (factory != nullptr)

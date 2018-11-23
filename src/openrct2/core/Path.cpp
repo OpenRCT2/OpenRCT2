@@ -19,7 +19,8 @@
 #include "Memory.hpp"
 #include "Path.hpp"
 #include "String.hpp"
-#include "Util.hpp"
+
+#include <iterator>
 
 namespace Path
 {
@@ -172,7 +173,7 @@ namespace Path
 #ifdef _WIN32
         wchar_t* relativePathW = utf8_to_widechar(relativePath);
         wchar_t absolutePathW[MAX_PATH];
-        DWORD length = GetFullPathNameW(relativePathW, (DWORD)Util::CountOf(absolutePathW), absolutePathW, nullptr);
+        DWORD length = GetFullPathNameW(relativePathW, (DWORD)std::size(absolutePathW), absolutePathW, nullptr);
         Memory::Free(relativePathW);
         if (length == 0)
         {

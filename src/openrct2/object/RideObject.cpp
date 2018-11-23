@@ -15,7 +15,6 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../rct2/RCT2.h"
@@ -27,6 +26,7 @@
 #include "ObjectRepository.h"
 
 #include <algorithm>
+#include <iterator>
 #include <unordered_map>
 
 using namespace OpenRCT2;
@@ -698,7 +698,7 @@ void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* contex
     }
 
     auto cars = ReadJsonCars(json_object_get(properties, "cars"));
-    auto numCars = std::min(Util::CountOf(_legacyType.vehicles), cars.size());
+    auto numCars = std::min(std::size(_legacyType.vehicles), cars.size());
     for (size_t i = 0; i < numCars; i++)
     {
         _legacyType.vehicles[i] = cars[i];

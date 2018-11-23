@@ -11,6 +11,7 @@
 #include "../interface/InGameConsole.h"
 
 #include <algorithm>
+#include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
@@ -26,7 +27,6 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/network/network.h>
@@ -783,7 +783,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
     // Align left hand side toolbar buttons
     firstAlignment = 1;
     x = 0;
-    for (size_t i = 0; i < Util::CountOf(left_aligned_widgets_order); ++i)
+    for (size_t i = 0; i < std::size(left_aligned_widgets_order); ++i)
     {
         widgetIndex = left_aligned_widgets_order[i];
         widget = &window_top_toolbar_widgets[widgetIndex];
@@ -805,7 +805,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
     int32_t screenWidth = context_get_width();
     firstAlignment = 1;
     x = std::max(640, screenWidth);
-    for (size_t i = 0; i < Util::CountOf(right_aligned_widgets_order); ++i)
+    for (size_t i = 0; i < std::size(right_aligned_widgets_order); ++i)
     {
         widgetIndex = right_aligned_widgets_order[i];
         widget = &window_top_toolbar_widgets[widgetIndex];

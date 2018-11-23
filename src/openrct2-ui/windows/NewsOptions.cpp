@@ -8,10 +8,10 @@
  *****************************************************************************/
 
 #include <cstddef>
+#include <iterator>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
@@ -161,7 +161,7 @@ static void window_news_options_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (checkBoxIndex >= 0)
             {
                 int32_t matchIndex = 0;
-                for (size_t i = 0; i < Util::CountOf(NewsItemOptionDefinitions); i++)
+                for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
                 {
                     const notification_def* ndef = &NewsItemOptionDefinitions[i];
                     if (ndef->category != w->page)
@@ -206,7 +206,7 @@ static void window_news_options_invalidate(rct_window* w)
 
     int32_t checkboxWidgetIndex = WIDX_CHECKBOX_0;
     rct_widget* checkboxWidget = &w->widgets[checkboxWidgetIndex];
-    for (size_t i = 0; i < Util::CountOf(NewsItemOptionDefinitions); i++)
+    for (size_t i = 0; i < std::size(NewsItemOptionDefinitions); i++)
     {
         const notification_def* ndef = &NewsItemOptionDefinitions[i];
         if (ndef->category != w->page)

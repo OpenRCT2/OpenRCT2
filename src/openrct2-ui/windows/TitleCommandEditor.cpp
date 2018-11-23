@@ -9,6 +9,7 @@
 
 #include "../interface/Theme.h"
 
+#include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -17,7 +18,6 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/core/Memory.hpp>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/scenario/ScenarioRepository.h>
@@ -48,7 +48,7 @@ static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
     { TITLE_SCRIPT_END,         STR_TITLE_EDITOR_END,                   STR_NONE },
 };
 
-#define NUM_COMMANDS Util::CountOf(_window_title_command_editor_orders)
+#define NUM_COMMANDS std::size(_window_title_command_editor_orders)
 
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -636,7 +636,7 @@ static void window_title_command_editor_tool_down(rct_window* w, rct_widgetindex
         else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
         {
             rct_litter* litter = &(get_sprite(spriteIndex)->litter);
-            if (litter->type < Util::CountOf(litterNames))
+            if (litter->type < std::size(litterNames))
             {
                 validSprite = true;
                 format_string(command.SpriteName, USER_STRING_MAX_LENGTH, litterNames[litter->type], nullptr);

@@ -16,7 +16,6 @@
 #include "../audio/audio.h"
 #include "../core/File.h"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
@@ -41,6 +40,7 @@
 #include "TrackDesignRepository.h"
 
 #include <algorithm>
+#include <iterator>
 
 struct map_backup
 {
@@ -664,7 +664,7 @@ static void track_design_add_selection_tile(int16_t x, int16_t y)
 {
     LocationXY16* selectionTile = gMapSelectionTiles;
     // Subtract 2 because the tile gets incremented later on
-    for (; (selectionTile < gMapSelectionTiles + Util::CountOf(gMapSelectionTiles) - 2) && (selectionTile->x != -1);
+    for (; (selectionTile < gMapSelectionTiles + std::size(gMapSelectionTiles) - 2) && (selectionTile->x != -1);
          selectionTile++)
     {
         if (selectionTile->x == x && selectionTile->y == y)
@@ -750,7 +750,7 @@ static int32_t track_design_place_scenery(
                         break;
                     }
                     // Need to subtract one because selectionTile in following block is incremented
-                    if (selectionTile + 1 >= &gMapSelectionTiles[Util::CountOf(gMapSelectionTiles) - 1])
+                    if (selectionTile + 1 >= &gMapSelectionTiles[std::size(gMapSelectionTiles) - 1])
                     {
                         new_tile = 0;
                         break;

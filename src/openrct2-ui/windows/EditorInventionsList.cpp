@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <iterator>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
@@ -203,7 +203,7 @@ static void research_rides_setup()
  */
 static void research_scenery_groups_setup()
 {
-    for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++)
+    for (size_t i = 0; i < std::size(RequiredSelectedObjects); i++)
     {
         const rct_object_entry* object = &RequiredSelectedObjects[i];
 
@@ -804,12 +804,12 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             const auto rideEntry = get_ride_entry(researchItem->entryIndex);
             const rct_string_id rideGroupName = get_ride_naming(researchItem->baseRideType, rideEntry).name;
             format_string(
-                groupNamePtr, Util::CountOf(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*)&rideGroupName);
-            format_string(vehicleNamePtr, Util::CountOf(vehicleNameBuffer), itemNameId, nullptr);
+                groupNamePtr, std::size(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, (void*)&rideGroupName);
+            format_string(vehicleNamePtr, std::size(vehicleNameBuffer), itemNameId, nullptr);
         }
         else
         {
-            format_string(groupNamePtr, Util::CountOf(groupNameBuffer), itemNameId, nullptr);
+            format_string(groupNamePtr, std::size(groupNameBuffer), itemNameId, nullptr);
             vehicleNamePtr = nullptr;
         }
 

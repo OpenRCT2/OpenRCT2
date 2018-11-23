@@ -16,7 +16,6 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
-#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -26,6 +25,7 @@
 #include "../windows/Intent.h"
 
 #include <algorithm>
+#include <iterator>
 
 constexpr int32_t MAX_THUNDER_INSTANCES = 2;
 
@@ -221,7 +221,7 @@ FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state
 {
     auto paletteId = PALETTE_NULL;
     auto gloom = state.WeatherGloom;
-    if (gloom < Util::CountOf(ClimateWeatherGloomColours))
+    if (gloom < std::size(ClimateWeatherGloomColours))
     {
         paletteId = ClimateWeatherGloomColours[gloom];
     }
@@ -231,7 +231,7 @@ FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state
 uint32_t climate_get_weather_sprite_id(const ClimateState& state)
 {
     uint32_t spriteId = SPR_WEATHER_SUN;
-    if (state.Weather < Util::CountOf(ClimateWeatherData))
+    if (state.Weather < std::size(ClimateWeatherData))
     {
         spriteId = ClimateWeatherData[state.Weather].SpriteId;
     }

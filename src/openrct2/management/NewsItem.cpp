@@ -13,7 +13,6 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"

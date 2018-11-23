@@ -13,7 +13,6 @@
 #include "Editor.h"
 #include "Game.h"
 #include "OpenRCT2.h"
-#include "core/Util.hpp"
 #include "localisation/Localisation.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
@@ -25,6 +24,7 @@
 #include "world/Footpath.h"
 #include "world/LargeScenery.h"
 
+#include <iterator>
 #include <vector>
 
 bool _maxObjectsWasHit;
@@ -351,9 +351,7 @@ static void window_editor_object_selection_select_default_objects()
  */
 static void window_editor_object_selection_select_required_objects()
 {
-    int32_t i;
-
-    for (i = 0; i < (int32_t)Util::CountOf(RequiredSelectedObjects); i++)
+    for (size_t i = 0; i < std::size(RequiredSelectedObjects); i++)
         window_editor_object_selection_select_object(0, 0xF, &RequiredSelectedObjects[i]);
 }
 

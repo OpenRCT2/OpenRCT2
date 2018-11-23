@@ -15,12 +15,12 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "TitleSequence.h"
 
 #include <algorithm>
+#include <iterator>
 #include <vector>
 
 namespace TitleSequenceManager
@@ -172,7 +172,7 @@ namespace TitleSequenceManager
     static size_t GetPredefinedIndex(const std::string& path)
     {
         const utf8* filename = Path::GetFileName(path.c_str());
-        for (size_t i = 0; i < Util::CountOf(PredefinedSequences); i++)
+        for (size_t i = 0; i < std::size(PredefinedSequences); i++)
         {
             if (String::Equals(filename, PredefinedSequences[i].Filename, true))
             {

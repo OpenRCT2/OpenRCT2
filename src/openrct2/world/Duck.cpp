@@ -9,7 +9,6 @@
 
 #include "../Game.h"
 #include "../audio/audio.h"
-#include "../core/Util.hpp"
 #include "../localisation/Date.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
@@ -17,6 +16,7 @@
 #include "Sprite.h"
 
 #include <algorithm>
+#include <iterator>
 #include <limits>
 
 // clang-format off
@@ -110,7 +110,7 @@ void rct_duck::UpdateFlyToWater()
         return;
 
     frame++;
-    if (frame >= Util::CountOf(DuckAnimationFlyToWater))
+    if (frame >= std::size(DuckAnimationFlyToWater))
     {
         frame = 0;
     }
@@ -272,7 +272,7 @@ void rct_duck::UpdateFlyAway()
     if ((gCurrentTicks & 3) == 0)
     {
         frame++;
-        if (frame >= Util::CountOf(DuckAnimationFlyAway))
+        if (frame >= std::size(DuckAnimationFlyAway))
         {
             frame = 0;
         }

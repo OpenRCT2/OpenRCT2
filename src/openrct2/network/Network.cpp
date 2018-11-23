@@ -21,6 +21,7 @@
 #include "../world/Location.hpp"
 
 #include <algorithm>
+#include <iterator>
 #include <stdexcept>
 
 #define ACTION_COOLDOWN_TIME_PLACE_SCENERY 20
@@ -49,7 +50,6 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 #    include "../core/Nullable.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../core/Util.hpp"
 #    include "../interface/Chat.h"
 #    include "../interface/Window.h"
 #    include "../localisation/Date.h"
@@ -1017,10 +1017,10 @@ std::string Network::GenerateAdvertiseKey()
     char key[17];
     for (int32_t i = 0; i < 16; i++)
     {
-        int32_t hexCharIndex = util_rand() % Util::CountOf(hexChars);
+        int32_t hexCharIndex = util_rand() % std::size(hexChars);
         key[i] = hexChars[hexCharIndex];
     }
-    key[Util::CountOf(key) - 1] = 0;
+    key[std::size(key) - 1] = 0;
 
     return key;
 }
@@ -3435,7 +3435,7 @@ void game_command_modify_groups(
             if (nameChunkIndex == 0)
                 nameChunkOffset = 2;
             nameChunkOffset *= 12;
-            nameChunkOffset = (std::min)(nameChunkOffset, Util::CountOf(newName) - 12);
+            nameChunkOffset = (std::min)(nameChunkOffset, std::size(newName) - 12);
             memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 0), edx, sizeof(uint32_t));
             memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 4), ebp, sizeof(uint32_t));
             memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 8), edi, sizeof(uint32_t));

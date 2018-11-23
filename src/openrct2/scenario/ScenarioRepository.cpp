@@ -20,7 +20,6 @@
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"

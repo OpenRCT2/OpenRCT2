@@ -11,8 +11,9 @@
 
 #include "../core/Guard.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "Scenario.h"
+
+#include <iterator>
 
 namespace ScenarioSources
 {
@@ -302,7 +303,7 @@ namespace ScenarioSources
         { SC_UNIDENTIFIED,              "Build your own Six Flags over Texas",              SCENARIO_CATEGORY_BUILD_YOUR_OWN    },
     };
 
-    #define DEFINE_SCENARIO_TITLE_DESC_GROUP(x) { Util::CountOf(x), x }
+    #define DEFINE_SCENARIO_TITLE_DESC_GROUP(x) { std::size(x), x }
     const struct {
         size_t count;
         const ScenarioTitleDescriptor * const titles;
@@ -325,7 +326,7 @@ namespace ScenarioSources
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
         int32_t currentIndex = 0;
-        for (size_t i = 0; i < Util::CountOf(ScenarioTitlesBySource); i++)
+        for (size_t i = 0; i < std::size(ScenarioTitlesBySource); i++)
         {
             for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
             {
@@ -356,7 +357,7 @@ namespace ScenarioSources
         Guard::ArgumentNotNull(outDesc, GUARD_LINE);
 
         int32_t currentIndex = 0;
-        for (size_t i = 0; i < Util::CountOf(ScenarioTitlesBySource); i++)
+        for (size_t i = 0; i < std::size(ScenarioTitlesBySource); i++)
         {
             for (size_t j = 0; j < ScenarioTitlesBySource[i].count; j++)
             {

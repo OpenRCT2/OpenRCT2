@@ -17,7 +17,6 @@
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
-#include "../core/Util.hpp"
 #include "../interface/Colour.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"

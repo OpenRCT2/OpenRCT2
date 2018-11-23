@@ -7,7 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../../core/Util.hpp"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../paint/Paint.h"
@@ -18,6 +17,8 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+
+#include <iterator>
 
 /** rct2: 0x014280BC */
 static int16_t TopSpinSeatHeightOffset[] = {
@@ -140,7 +141,7 @@ static void top_spin_paint_vehicle(
 
     LocationXYZ16 seatCoords = { al, cl, static_cast<int16_t>(height) };
 
-    if (armRotation >= static_cast<int8_t>(Util::CountOf(TopSpinSeatHeightOffset)))
+    if (armRotation >= static_cast<int8_t>(std::size(TopSpinSeatHeightOffset)))
     {
         return;
     }

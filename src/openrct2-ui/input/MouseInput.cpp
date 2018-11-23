@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -20,7 +21,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/interface/InteractiveConsole.h>
@@ -176,7 +176,7 @@ static rct_mouse_data* get_mouse_input()
     else
     {
         rct_mouse_data* result = &_mouseInputQueue[_mouseInputQueueReadIndex];
-        _mouseInputQueueReadIndex = (_mouseInputQueueReadIndex + 1) % Util::CountOf(_mouseInputQueue);
+        _mouseInputQueueReadIndex = (_mouseInputQueueReadIndex + 1) % std::size(_mouseInputQueue);
         return result;
     }
 }
@@ -1546,7 +1546,7 @@ void invalidate_scroll()
 void store_mouse_input(int32_t state, int32_t x, int32_t y)
 {
     uint32_t writeIndex = _mouseInputQueueWriteIndex;
-    uint32_t nextWriteIndex = (writeIndex + 1) % Util::CountOf(_mouseInputQueue);
+    uint32_t nextWriteIndex = (writeIndex + 1) % std::size(_mouseInputQueue);
 
     // Check if the queue is full
     if (nextWriteIndex != _mouseInputQueueReadIndex)

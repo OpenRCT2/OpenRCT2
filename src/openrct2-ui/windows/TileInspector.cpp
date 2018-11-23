@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -15,7 +16,6 @@
 #include <openrct2/Input.h>
 #include <openrct2/common.h>
 #include <openrct2/core/Guard.hpp>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/RideData.h>
@@ -1759,7 +1759,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Edge texture name
                 uint32_t idx = tileElement->AsSurface()->GetEdgeStyle();
                 openrct2_assert(
-                    (uint32_t)idx < Util::CountOf(TerrainEdgeTypeStringIds),
+                    (uint32_t)idx < std::size(TerrainEdgeTypeStringIds),
                     "Tried accessing invalid entry %d in terrainEdgeTypeStringIds", idx);
                 rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[tileElement->AsSurface()->GetEdgeStyle()];
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_DARK_GREEN, x, y + 11);

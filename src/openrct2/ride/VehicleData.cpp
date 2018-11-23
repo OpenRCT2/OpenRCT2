@@ -9,7 +9,7 @@
 
 #include "VehicleData.h"
 
-#include "../core/Util.hpp"
+#include <iterator>
 
 // clang-format off
 /** rct2: 0x0099F100 */
@@ -793,7 +793,7 @@ const uint8_t MotionSimulatorTimeToSpriteMap[] = {
     0xFF,
 };
 
-const int32_t MotionSimulatorTimeToSpriteMapCount = static_cast<int32_t>(Util::CountOf(MotionSimulatorTimeToSpriteMap));
+const int32_t MotionSimulatorTimeToSpriteMapCount = static_cast<int32_t>(std::size(MotionSimulatorTimeToSpriteMap));
 
 /** rct2: 0x009A2930 */
 const int32_t dword_9A2930[] = {

@@ -17,7 +17,6 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../localisation/Language.h"
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
@@ -26,6 +25,7 @@
 #include "CommandLine.hpp"
 
 #include <ctime>
+#include <iterator>
 #include <memory>
 
 #ifdef USE_BREAKPAD
@@ -197,34 +197,34 @@ exitcode_t CommandLine::HandleCommandDefault()
     if (_userDataPath != nullptr)
     {
         utf8 absolutePath[MAX_PATH]{};
-        Path::GetAbsolute(absolutePath, Util::CountOf(absolutePath), _userDataPath);
-        String::Set(gCustomUserDataPath, Util::CountOf(gCustomUserDataPath), absolutePath);
+        Path::GetAbsolute(absolutePath, std::size(absolutePath), _userDataPath);
+        String::Set(gCustomUserDataPath, std::size(gCustomUserDataPath), absolutePath);
         Memory::Free(_userDataPath);
     }
 
     if (_openrctDataPath != nullptr)
     {
         utf8 absolutePath[MAX_PATH]{};
-        Path::GetAbsolute(absolutePath, Util::CountOf(absolutePath), _openrctDataPath);
-        String::Set(gCustomOpenrctDataPath, Util::CountOf(gCustomOpenrctDataPath), absolutePath);
+        Path::GetAbsolute(absolutePath, std::size(absolutePath), _openrctDataPath);
+        String::Set(gCustomOpenrctDataPath, std::size(gCustomOpenrctDataPath), absolutePath);
         Memory::Free(_openrctDataPath);
     }
 
     if (_rct1DataPath != nullptr)
     {
-        String::Set(gCustomRCT1DataPath, Util::CountOf(gCustomRCT1DataPath), _rct1DataPath);
+        String::Set(gCustomRCT1DataPath, std::size(gCustomRCT1DataPath), _rct1DataPath);
         Memory::Free(_rct1DataPath);
     }
 
     if (_rct2DataPath != nullptr)
     {
-        String::Set(gCustomRCT2DataPath, Util::CountOf(gCustomRCT2DataPath), _rct2DataPath);
+        String::Set(gCustomRCT2DataPath, std::size(gCustomRCT2DataPath), _rct2DataPath);
         Memory::Free(_rct2DataPath);
     }
 
     if (_password != nullptr)
     {
-        String::Set(gCustomPassword, Util::CountOf(gCustomPassword), _password);
+        String::Set(gCustomPassword, std::size(gCustomPassword), _password);
         Memory::Free(_password);
     }
 

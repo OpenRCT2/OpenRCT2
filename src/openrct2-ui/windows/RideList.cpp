@@ -9,13 +9,13 @@
 
 #include "../interface/Theme.h"
 
+#include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
@@ -388,7 +388,7 @@ static void window_ride_list_dropdown(rct_window* w, rct_widgetindex widgetIndex
 
         int32_t informationType = INFORMATION_TYPE_STATUS;
         uint32_t arg = (uint32_t)gDropdownItemsArgs[dropdownIndex];
-        for (size_t i = 0; i < Util::CountOf(ride_info_type_string_mapping); i++)
+        for (size_t i = 0; i < std::size(ride_info_type_string_mapping); i++)
         {
             if (arg == ride_info_type_string_mapping[i])
             {

@@ -19,7 +19,6 @@
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
-#include "core/Util.hpp"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
@@ -61,6 +60,7 @@
 #include "world/Water.h"
 
 #include <algorithm>
+#include <iterator>
 #include <memory>
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
@@ -109,7 +109,7 @@ using namespace OpenRCT2;
 
 int32_t game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
-    for (uint32_t i = 0; i < Util::CountOf(game_command_callback_table); i++)
+    for (uint32_t i = 0; i < std::size(game_command_callback_table); i++)
     {
         if (game_command_callback_table[i] == callback)
         {
@@ -121,7 +121,7 @@ int32_t game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(uint32_t index)
 {
-    if (index < Util::CountOf(game_command_callback_table))
+    if (index < std::size(game_command_callback_table))
     {
         return game_command_callback_table[index];
     }
@@ -379,7 +379,7 @@ int32_t game_do_command_p(
     original_edi = *edi;
     original_ebp = *ebp;
 
-    if (command >= Util::CountOf(new_game_command_table))
+    if (command >= std::size(new_game_command_table))
     {
         return MONEY32_UNDEFINED;
     }
@@ -768,7 +768,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
             if (nameChunkOffset < 0)
                 nameChunkOffset = 2;
             nameChunkOffset *= 12;
-            nameChunkOffset = std::min(nameChunkOffset, (int32_t)(Util::CountOf(banner_name) - 12));
+            nameChunkOffset = std::min(nameChunkOffset, (int32_t)(std::size(banner_name) - 12));
             memcpy(banner_name + nameChunkOffset + 0, edx, 4);
             memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
             memcpy(banner_name + nameChunkOffset + 8, edi, 4);

@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <iterator>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
@@ -54,7 +54,7 @@ int32_t gDropdownDefaultIndex;
 
 bool dropdown_is_checked(int32_t index)
 {
-    if (index < 0 || index >= (int32_t)Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (int32_t)std::size(_dropdownItemsDisabled))
     {
         return false;
     }
@@ -63,7 +63,7 @@ bool dropdown_is_checked(int32_t index)
 
 bool dropdown_is_disabled(int32_t index)
 {
-    if (index < 0 || index >= (int32_t)Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (int32_t)std::size(_dropdownItemsDisabled))
     {
         return true;
     }
@@ -72,7 +72,7 @@ bool dropdown_is_disabled(int32_t index)
 
 void dropdown_set_checked(int32_t index, bool value)
 {
-    if (index < 0 || index >= (int32_t)Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (int32_t)std::size(_dropdownItemsDisabled))
     {
         return;
     }
@@ -81,7 +81,7 @@ void dropdown_set_checked(int32_t index, bool value)
 
 void dropdown_set_disabled(int32_t index, bool value)
 {
-    if (index < 0 || index >= (int32_t)Util::CountOf(_dropdownItemsDisabled))
+    if (index < 0 || index >= (int32_t)std::size(_dropdownItemsDisabled))
     {
         return;
     }

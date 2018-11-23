@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
@@ -23,7 +24,6 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Util.hpp>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
@@ -3880,7 +3880,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             gDropdownItemsArgs[0] = STR_DEBUG_FIX_RIDE;
             for (int32_t i = 0; i < 8; i++)
             {
-                assert(j < (int32_t)Util::CountOf(rideEntry->ride_type));
+                assert(j < (int32_t)std::size(rideEntry->ride_type));
                 if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & (uint8_t)(1 << i))
                 {
                     if (i == BREAKDOWN_BRAKES_FAILURE
@@ -4019,7 +4019,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                 int32_t num_items = 1;
                 for (i = 0; i < BREAKDOWN_COUNT; i++)
                 {
-                    assert(j < (int32_t)Util::CountOf(rideEntry->ride_type));
+                    assert(j < (int32_t)std::size(rideEntry->ride_type));
                     if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & (uint8_t)(1 << i))
                     {
                         if (i == BREAKDOWN_BRAKES_FAILURE
@@ -4399,7 +4399,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_ENTRANCE_STYLE_DROPDOWN:
             checkedIndex = -1;
-            for (i = 0; i < (int32_t)Util::CountOf(window_ride_entrance_style_list); i++)
+            for (i = 0; i < (int32_t)std::size(window_ride_entrance_style_list); i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = RideEntranceDefinitions[window_ride_entrance_style_list[i]].string_id;
@@ -4412,7 +4412,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
 
             window_dropdown_show_text_custom_width(
                 w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, Util::CountOf(window_ride_entrance_style_list),
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, std::size(window_ride_entrance_style_list),
                 widget->right - dropdownWidget->left);
 
             if (checkedIndex != -1)
@@ -5021,7 +5021,7 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
     }
     else
     {
-        for (size_t n = 0; n < Util::CountOf(MusicStyleOrder); n++)
+        for (size_t n = 0; n < std::size(MusicStyleOrder); n++)
             window_ride_current_music_style_order[numItems++] = MusicStyleOrder[n];
 
         if (gRideMusicInfoList[36].length != 0)
@@ -5136,7 +5136,7 @@ static void window_ride_music_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static rct_string_id get_rating_name(ride_rating rating)
 {
-    int32_t index = std::clamp<int32_t>(rating >> 8, 0, (int32_t)Util::CountOf(RatingNames) - 1);
+    int32_t index = std::clamp<int32_t>(rating >> 8, 0, (int32_t)std::size(RatingNames) - 1);
     return RatingNames[index];
 }
 

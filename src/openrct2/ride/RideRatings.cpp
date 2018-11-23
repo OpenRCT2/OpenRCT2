@@ -11,7 +11,6 @@
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
-#include "../core/Util.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../world/Footpath.h"
@@ -23,6 +22,7 @@
 #include "Track.h"
 
 #include <algorithm>
+#include <iterator>
 
 enum
 {
@@ -774,11 +774,11 @@ static void ride_ratings_calculate_value(Ride* ride)
     }
 
     const row* age_table = age_table_new;
-    size_t table_size = Util::CountOf(age_table_new);
+    size_t table_size = std::size(age_table_new);
 
 #ifdef ORIGINAL_RATINGS
     age_table = age_table_old;
-    table_size = Util::CountOf(age_table_old);
+    table_size = std::size(age_table_old);
 #endif
 
     row last_row = age_table[table_size - 1];

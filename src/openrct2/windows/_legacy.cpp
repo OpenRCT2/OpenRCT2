@@ -12,7 +12,6 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../audio/audio.h"
-#include "../core/Util.hpp"
 #include "../interface/Viewport.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
@@ -24,6 +23,7 @@
 #include "../world/Sprite.h"
 #include "Intent.h"
 
+#include <iterator>
 #include <tuple>
 
 bool gDisableErrorWindowSound = false;
@@ -251,7 +251,7 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
 
     if (curve <= 8)
     {
-        for (uint32_t i = 0; i < Util::CountOf(gTrackDescriptors); i++)
+        for (uint32_t i = 0; i < std::size(gTrackDescriptors); i++)
         {
             const track_descriptor* trackDescriptor = &gTrackDescriptors[i];
 

@@ -10,7 +10,6 @@
 #include "VehiclePaint.h"
 
 #include "../Game.h"
-#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
@@ -18,6 +17,8 @@
 #include "../ride/RideData.h"
 #include "../world/Sprite.h"
 #include "Track.h"
+
+#include <iterator>
 
 // clang-format off
 // 0x0098E52C:
@@ -892,7 +893,7 @@ static void vehicle_sprite_paint(
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     int32_t baseImage_id = ebx;
-    if (vehicleEntry->draw_order >= Util::CountOf(VehicleBoundboxes))
+    if (vehicleEntry->draw_order >= std::size(VehicleBoundboxes))
     {
         return;
     }
@@ -3105,7 +3106,7 @@ void vehicle_visual_default(
     paint_session* session, int32_t imageDirection, int32_t z, const rct_vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->vehicle_sprite_type < Util::CountOf(vehicle_sprite_funcs))
+    if (vehicle->vehicle_sprite_type < std::size(vehicle_sprite_funcs))
     {
         vehicle_sprite_funcs[vehicle->vehicle_sprite_type](session, vehicle, imageDirection, z, vehicleEntry);
     }
