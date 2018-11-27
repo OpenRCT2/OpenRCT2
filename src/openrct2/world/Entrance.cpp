@@ -210,7 +210,7 @@ static money32 RideEntranceExitPlace(
         if (requiresRemove)
         {
             money32 success = game_do_command(
-                removeCoord.x, flags, removeCoord.y, rideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, stationNum, 0);
+                removeCoord.x, flags, removeCoord.y, rideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, stationNum, isExit);
 
             if (success == MONEY32_UNDEFINED)
             {
@@ -307,7 +307,7 @@ static money32 RideEntranceExitPlace(
     return cost;
 }
 
-static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, uint8_t stationNum, uint8_t flags)
+static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, uint8_t stationNum, uint8_t flags, bool isExit)
 {
     if (rideIndex >= MAX_RIDES)
     {
@@ -371,6 +371,15 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, u
             if (flags & GAME_COMMAND_FLAG_5 && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
                 continue;
 
+            if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
+                continue;
+
+            if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE && isExit)
+                continue;
+
+            if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT && !isExit)
+                continue;
+
             found = true;
             break;
         } while (!(tileElement++)->IsLastForTile());
@@ -389,8 +398,6 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, uint8_t rideIndex, u
         footpath_queue_chain_reset();
         maze_entrance_hedge_replacement(x, y, tileElement);
         footpath_remove_edges_at(x, y, tileElement);
-
-        bool isExit = tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
         tile_element_remove(tileElement);
 
@@ -535,7 +542,7 @@ void game_command_remove_ride_entrance_or_exit(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, int32_t* edi,
     [[maybe_unused]] int32_t* ebp)
 {
-    *ebx = RideEntranceExitRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, *edi & 0xFF, *ebx & 0xFF);
+    *ebx = RideEntranceExitRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, *edi & 0xFF, *ebx & 0xFF, *ebp & 1);
 }
 
 /**
