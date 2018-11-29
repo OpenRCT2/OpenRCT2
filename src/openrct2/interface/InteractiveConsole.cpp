@@ -1341,6 +1341,18 @@ static int32_t cc_abort(
     return 0;
 }
 
+static int32_t cc_dereference(
+    [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
+    // Dereference a nullptr to induce a crash to be caught by crash handler, on supported platforms
+    uint8_t* myptr = nullptr;
+    *myptr = 42;
+    return 0;
+#pragma GCC diagnostic pop
+}
+
 static int32_t cc_terminate(
     [[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const utf8** argv, [[maybe_unused]] int32_t argc)
 {
@@ -1413,6 +1425,7 @@ static constexpr const console_command console_command_table[] = {
     { "clear", cc_clear, "Clears the console.", "clear" },
     { "close", cc_close, "Closes the console.", "close" },
     { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]." },
+    { "dereference", cc_dereference, "Dereferences a nullptr, for testing purposes only", "dereference" },
     { "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },
     { "exit", cc_close, "Closes the console.", "exit" },
     { "get", cc_get, "Gets the value of the specified variable.", "get <variable>" },
