@@ -24,6 +24,7 @@
 #    endif
 
 #    include "../Version.h"
+#    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Language.h"
@@ -95,9 +96,11 @@ static bool OnCrash(
     // Get filenames
     wchar_t dumpFilePath[MAX_PATH];
     wchar_t saveFilePath[MAX_PATH];
+    wchar_t configFilePath[MAX_PATH];
     wchar_t saveFilePathGZIP[MAX_PATH];
     swprintf_s(dumpFilePath, sizeof(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
     swprintf_s(saveFilePath, sizeof(saveFilePath), L"%s\\%s.sv6", dumpPath, miniDumpId);
+    swprintf_s(configFilePath, sizeof(configFilePath), L"%s\\%s.ini", dumpPath, miniDumpId);
     swprintf_s(saveFilePathGZIP, sizeof(saveFilePathGZIP), L"%s\\%s.sv6.gz", dumpPath, miniDumpId);
 
     wchar_t dumpFilePathNew[MAX_PATH];
@@ -175,6 +178,13 @@ static bool OnCrash(
         fclose(input);
         fclose(dest);
     }
+
+    utf8* configFilePathUTF8 = widechar_to_utf8(configFilePath);
+    if (config_save(configFilePathUTF8))
+    {
+        uploadFiles[L"attachment_config.ini"] = configFilePath;
+    }
+    free(configFilePathUTF8);
 
     if (gOpenRCT2SilentBreakpad)
     {
