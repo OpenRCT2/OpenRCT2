@@ -217,7 +217,7 @@ TileElement* map_get_first_element_at(int32_t x, int32_t y)
 {
     if (x < 0 || y < 0 || x > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || y > (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
     {
-        log_error("Trying to access element outside of range");
+        log_verbose("Trying to access element outside of range");
         return nullptr;
     }
     return gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
