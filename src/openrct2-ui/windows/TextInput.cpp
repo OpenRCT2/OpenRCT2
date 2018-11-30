@@ -292,9 +292,13 @@ void window_text_input_key(rct_window* w, char keychar)
         // ecx when nonzero means text input success
         if (w)
             window_event_textinput_call(w, calling_widget, text_input);
+
+        // Update the window pointer, as it may have been closed by textinput handler
+        w = window_find_by_number(calling_class, calling_number);
     }
 
-    window_invalidate(w);
+    if (w)
+        window_invalidate(w);
 }
 
 void window_text_input_update7(rct_window* w)
