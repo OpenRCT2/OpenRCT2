@@ -690,6 +690,7 @@ void cheats_reset()
     gCheatsAllowArbitraryRideTypeChanges = false;
     gCheatsDisableRideValueAging = false;
     gCheatsIgnoreResearchStatus = false;
+    gCheatCurrentStaffSpeed = CHEATS_STAFF_NORMAL_SPEED;
 }
 
 // Generates the string to print for the server log when a cheat is used.

@@ -1199,6 +1199,15 @@ static void window_cheats_invalidate(rct_window* w)
     // Current weather
     window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
     // Staff speed
+    _selectedStaffSpeed = gCheatCurrentStaffSpeed;
+    switch (gCheatCurrentStaffSpeed)
+    {
+        case CHEATS_STAFF_NORMAL_SPEED:
+            _selectedStaffSpeed = 1;
+            break;
+        case CHEATS_STAFF_FAST_SPEED:
+            _selectedStaffSpeed = 2;
+    }
     window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
 }
 
