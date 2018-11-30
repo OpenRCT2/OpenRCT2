@@ -341,9 +341,9 @@ static money32 staff_hire_new_staff_member(
             newPeep->tshirt_colour = colour;
             newPeep->trousers_colour = colour;
 
-            // Staff energy determines their walking speed
-            newPeep->energy = 0x60;
-            newPeep->energy_target = 0x60;
+            // Staff energy determines on cheat used
+            newPeep->energy = gCheatCurrentStaffSpeed;
+            newPeep->energy_target = gCheatCurrentStaffSpeed;
             newPeep->staff_mowing_timeout = 0;
 
             peep_update_name_sort(newPeep);

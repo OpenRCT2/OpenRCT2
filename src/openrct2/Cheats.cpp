@@ -48,6 +48,7 @@ bool gCheatsAllowArbitraryRideTypeChanges = false;
 bool gCheatsDisableRideValueAging = false;
 bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
+uint8_t gCheatCurrentStaffSpeed = CHEATS_STAFF_NORMAL_SPEED;
 
 int32_t park_rating_spinner_value;
 int32_t year_spinner_value = 1;
@@ -441,6 +442,7 @@ static void cheat_set_staff_speed(uint8_t value)
 {
     uint16_t spriteIndex;
     rct_peep* peep;
+    gCheatCurrentStaffSpeed = value; 
 
     FOR_ALL_STAFF (spriteIndex, peep)
     {

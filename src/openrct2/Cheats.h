@@ -33,6 +33,7 @@ extern bool gCheatsEnableChainLiftOnAllTrack;
 extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
 extern bool gCheatsEnableAllDrawableTrackPieces;
+extern uint8_t gCheatCurrentStaffSpeed; 
 
 enum
 {
