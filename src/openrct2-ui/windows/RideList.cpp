@@ -302,7 +302,7 @@ static void window_ride_list_resize(rct_window* w)
     // Refreshing the list can be a very intensive operation
     // owing to its use of ride_has_any_track_elements().
     // This makes sure it's only refreshed every 64 ticks.
-    if (!(gCurrentTicks & 0x3f))
+    if (!(gCurrentRealTimeTicks & 0x3f))
     {
         window_ride_list_refresh_list(w);
     }

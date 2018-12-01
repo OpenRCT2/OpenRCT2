@@ -168,7 +168,7 @@ void GameState::Update()
         // the flickering frequency is reduced by 4, compared to the original
         // it was done due to inability to reproduce original frequency
         // and decision that the original one looks too fast
-        if (gCurrentTicks % 4 == 0)
+        if (gCurrentRealTimeTicks % 4 == 0)
             gWindowMapFlashingFlags ^= (1 << 15);
 
         // Handle guest map flashing
