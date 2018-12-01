@@ -223,6 +223,9 @@ public:
             gSpriteListHead[i] = _s6.sprite_lists_head[i];
             gSpriteListCount[i] = _s6.sprite_lists_count[i];
         }
+        // This list contains the number of free slots. Increase it according to our own sprite limit.
+        gSpriteListCount[SPRITE_LIST_NULL] += (MAX_SPRITES - RCT2_MAX_SPRITES);
+
         gParkName = _s6.park_name;
         // pad_013573D6
         gParkNameArgs = _s6.park_name_args;
