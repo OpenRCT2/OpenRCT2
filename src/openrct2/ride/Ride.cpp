@@ -2595,6 +2595,10 @@ bool Ride::CanBreakDown() const
 
 static void choose_random_train_to_breakdown_safe(Ride* ride)
 {
+    // Prevent integer division by zero in case of hacked ride.
+    if (ride->num_vehicles == 0)
+        return;
+
     ride->broken_vehicle = scenario_rand() % ride->num_vehicles;
 
     // Prevent crash caused by accessing SPRITE_INDEX_NULL on hacked rides.
@@ -2612,6 +2616,7 @@ static void choose_random_train_to_breakdown_safe(Ride* ride)
 void ride_prepare_breakdown(int32_t rideIndex, int32_t breakdownReason)
 {
     int32_t i;
+    uint16_t vehicleSpriteIdx;
     Ride* ride;
     rct_vehicle* vehicle;
 
@@ -2646,21 +2651,25 @@ void ride_prepare_breakdown(int32_t rideIndex, int32_t breakdownReason)
             ride->broken_car = scenario_rand() % ride->num_cars_per_train;
 
             // Set flag on broken car
-            vehicle = GET_VEHICLE(ride->vehicles[ride->broken_vehicle]);
-            for (i = ride->broken_car; i > 0; i--)
+            vehicleSpriteIdx = ride->vehicles[ride->broken_vehicle];
+            if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
             {
-                if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+                vehicle = GET_VEHICLE(vehicleSpriteIdx);
+                for (i = ride->broken_car; i > 0; i--)
                 {
-                    vehicle = nullptr;
-                    break;
+                    if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+                    {
+                        vehicle = nullptr;
+                        break;
+                    }
+                    else
+                    {
+                        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+                    }
                 }
-                else
-                {
-                    vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
-                }
+                if (vehicle != nullptr)
+                    vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
             }
-            if (vehicle != nullptr)
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_CAR;
             break;
         case BREAKDOWN_VEHICLE_MALFUNCTION:
             // Choose a random train
@@ -2668,8 +2677,12 @@ void ride_prepare_breakdown(int32_t rideIndex, int32_t breakdownReason)
             ride->broken_car = 0;
 
             // Set flag on broken train, first car
-            vehicle = GET_VEHICLE(ride->vehicles[ride->broken_vehicle]);
-            vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+            vehicleSpriteIdx = ride->vehicles[ride->broken_vehicle];
+            if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
+            {
+                vehicle = GET_VEHICLE(vehicleSpriteIdx);
+                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
+            }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
             // Original code generates a random number but does not use it
@@ -2978,11 +2991,15 @@ static void ride_music_update(int32_t rideIndex)
 
     if (ride->type == RIDE_TYPE_CIRCUS)
     {
-        rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[0]);
-        if (vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW)
+        uint16_t vehicleSpriteIdx = ride->vehicles[0];
+        if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
         {
-            ride->music_tune_id = 255;
-            return;
+            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
+            if (vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW)
+            {
+                ride->music_tune_id = 255;
+                return;
+            }
         }
     }
 
@@ -3169,11 +3186,11 @@ void ride_measurements_update()
             // For each vehicle
             for (int32_t j = 0; j < ride->num_vehicles; j++)
             {
-                uint16_t spriteIndex = ride->vehicles[j];
-                if (spriteIndex == SPRITE_INDEX_NULL)
+                uint16_t vehicleSpriteIdx = ride->vehicles[j];
+                if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
                     continue;
 
-                rct_vehicle* vehicle = GET_VEHICLE(spriteIndex);
+                rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
                 if (vehicle->status == VEHICLE_STATUS_DEPARTING || vehicle->status == VEHICLE_STATUS_TRAVELLING_CABLE_LIFT)
                 {
                     measurement->vehicle_index = j;
@@ -5324,7 +5341,11 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
 
     for (int32_t i = 0; i < ride->num_vehicles; i++)
     {
-        train = GET_VEHICLE(ride->vehicles[i]);
+        uint16_t vehicleSpriteIdx = ride->vehicles[i];
+        if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            continue;
+
+        train = GET_VEHICLE(vehicleSpriteIdx);
         if (i == 0)
         {
             vehicle_update_track_motion(train, nullptr);

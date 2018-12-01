@@ -99,7 +99,11 @@ static void ride_update_station_bumpercar(Ride* ride, int32_t stationIndex)
         int32_t dh = (dx >> 8) & 0xFF;
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            rct_vehicle* vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
+            uint16_t vehicleSpriteIdx = ride->vehicles[i];
+            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+                continue;
+
+            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
                 continue;
 
@@ -117,7 +121,11 @@ static void ride_update_station_bumpercar(Ride* ride, int32_t stationIndex)
         // Check if all vehicles are ready to go
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            rct_vehicle* vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
+            uint16_t vehicleSpriteIdx = ride->vehicles[i];
+            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+                continue;
+
+            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
             {
                 ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
@@ -185,15 +193,20 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
     {
         int32_t numLaps = ride->num_laps;
+
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            rct_vehicle* vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
+            uint16_t vehicleSpriteIdx = ride->vehicles[i];
+            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+                continue;
+
+            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps)
             {
                 // Found a winner
                 if (vehicle->num_peeps != 0)
                 {
-                    rct_peep* peep = &(get_sprite(vehicle->peep[0])->peep);
+                    rct_peep* peep = GET_PEEP(vehicle->peep[0]);
                     ride->race_winner = peep->sprite_index;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 }
@@ -217,7 +230,11 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
         // Check if all vehicles are ready to go
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            rct_vehicle* vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
+            uint16_t vehicleSpriteIdx = ride->vehicles[i];
+            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+                continue;
+
+            rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING)
             {
                 if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
@@ -251,7 +268,11 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 {
     for (size_t i = 0; i < ride->num_vehicles; i++)
     {
-        rct_vehicle* vehicle = &get_sprite(ride->vehicles[i])->vehicle;
+        uint16_t vehicleSpriteIdx = ride->vehicles[i];
+        if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            continue;
+
+        rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
         rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
