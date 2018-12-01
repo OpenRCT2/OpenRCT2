@@ -3723,6 +3723,7 @@ STR_6272    :Stations
 STR_6273    :Music
 STR_6274    :Can't set colour scheme...
 STR_6275    :{WINDOW_COLOUR_2}Station style:
+STR_6276    :{RED}{STRINGID} has guests getting stuck, possibly due to invalid ride type or operating mode.
 
 #############
 # Scenarios #
