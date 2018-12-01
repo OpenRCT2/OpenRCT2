@@ -65,7 +65,7 @@
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
-uint16_t gTicksSinceLastUpdate;
+uint16_t gCurrentDeltaTime;
 uint8_t gGamePaused = 0;
 int32_t gGameSpeed = 1;
 bool gDoSingleUpdate = false;
@@ -82,6 +82,7 @@ uint8_t gUnk13CA740;
 uint8_t gUnk141F568;
 
 uint32_t gCurrentTicks;
+uint32_t gCurrentRealTimeTicks;
 
 // clang-format off
 GAME_COMMAND_CALLBACK_POINTER * game_command_callback = nullptr;

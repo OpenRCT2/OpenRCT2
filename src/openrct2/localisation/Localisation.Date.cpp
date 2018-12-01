@@ -62,6 +62,7 @@ void date_reset()
     gDateMonthsElapsed = 0;
     gDateMonthTicks = 0;
     gCurrentTicks = 0;
+    gCurrentRealTimeTicks = 0;
 }
 
 void date_set(int32_t year, int32_t month, int32_t day)

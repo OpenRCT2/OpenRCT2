@@ -133,7 +133,7 @@ void window_update_all()
     // gfx_draw_all_dirty_blocks();
 
     // 1000 tick update
-    gWindowUpdateTicks += gTicksSinceLastUpdate;
+    gWindowUpdateTicks += gCurrentDeltaTime;
     if (gWindowUpdateTicks >= 1000)
     {
         gWindowUpdateTicks = 0;

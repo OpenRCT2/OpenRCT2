@@ -91,6 +91,12 @@ void GameState::Update()
         }
     }
 
+    uint32_t realtimeTicksElapsed = gCurrentDeltaTime / GAME_UPDATE_TIME_MS;
+    realtimeTicksElapsed = std::clamp<uint32_t>(realtimeTicksElapsed, 1, GAME_MAX_UPDATES);
+
+    // We use this variable to always advance ticks in normal speed.
+    gCurrentRealTimeTicks += realtimeTicksElapsed;
+
     // Determine how many times we need to update the game
     if (gGameSpeed > 1)
     {
@@ -98,8 +104,7 @@ void GameState::Update()
     }
     else
     {
-        numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        numUpdates = std::clamp<uint32_t>(numUpdates, 1, GAME_MAX_UPDATES);
+        numUpdates = realtimeTicksElapsed;
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED

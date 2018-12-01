@@ -259,7 +259,7 @@ static void input_scroll_right(int32_t x, int32_t y, int32_t state)
     switch (state)
     {
         case MOUSE_STATE_RELEASED:
-            _ticksSinceDragStart += gTicksSinceLastUpdate;
+            _ticksSinceDragStart += gCurrentDeltaTime;
             if (x != 0 || y != 0)
             {
                 _ticksSinceDragStart = 1000;
@@ -552,7 +552,7 @@ static void input_viewport_drag_continue()
     }
 
     viewport = w->viewport;
-    _ticksSinceDragStart += gTicksSinceLastUpdate;
+    _ticksSinceDragStart += gCurrentDeltaTime;
     if (viewport == nullptr)
     {
         context_show_cursor();
@@ -1479,7 +1479,7 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, int
             window_tooltip_close();
         }
 
-        gTooltipTimeout += gTicksSinceLastUpdate;
+        gTooltipTimeout += gCurrentDeltaTime;
         if (gTooltipTimeout >= 8000)
         {
             window_close_by_class(WC_TOOLTIP);
