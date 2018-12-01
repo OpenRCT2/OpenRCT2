@@ -423,18 +423,29 @@ public:
         gClimateNext.RainLevel = _s6.next_rain_level;
 
         // News items
+        news_item_init_queue();
         for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
         {
             const rct12_news_item* src = &_s6.news_items[i];
             NewsItem* dst = &gNewsItems[i];
-
-            dst->Type = src->Type;
-            dst->Flags = src->Flags;
-            dst->Assoc = src->Assoc;
-            dst->Ticks = src->Ticks;
-            dst->MonthYear = src->MonthYear;
-            dst->Day = src->Day;
-            memcpy(dst->Text, src->Text, sizeof(src->Text));
+            if (src->Type < std::size(news_type_properties))
+            {
+                dst->Type = src->Type;
+                dst->Flags = src->Flags;
+                dst->Assoc = src->Assoc;
+                dst->Ticks = src->Ticks;
+                dst->MonthYear = src->MonthYear;
+                dst->Day = src->Day;
+                memcpy(dst->Text, src->Text, sizeof(src->Text));
+            }
+            else
+            {
+                // In case where news item type is broken, consider all remaining news items invalid.
+                log_error("Invalid news type 0x%x for news item %d, ignoring remaining news items", src->Type, i);
+                // Still need to set the correct type to properly terminate the queue
+                dst->Type = NEWS_ITEM_NULL;
+                break;
+            }
         }
 
         // pad_13CE730
