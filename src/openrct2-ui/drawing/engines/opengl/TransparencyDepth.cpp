@@ -179,7 +179,7 @@ int32_t MaxTransparencyDepth(const RectCommandBatch& transparent)
             /*
              * Increment the depth for endpoings that intersect this interval
              */
-            for (IntervalTree::iterator it = std::next(top_it); it != bottom_it; ++it)
+            for (IntervalTree::iterator it = std::next(top_it); it != bottom_it && it != std::end(y_intersect); ++it)
             {
                 max_depth = std::max(max_depth, ++it->second.depth);
             }
@@ -192,7 +192,7 @@ int32_t MaxTransparencyDepth(const RectCommandBatch& transparent)
             /*
              * Decrement the depth for endpoings that intersected this interval
              */
-            for (IntervalTree::iterator it = std::next(top_it); it != bottom_it; ++it)
+            for (IntervalTree::iterator it = std::next(top_it); it != bottom_it && it != std::end(y_intersect); ++it)
             {
                 --it->second.depth;
             }
