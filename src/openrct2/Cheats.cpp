@@ -459,6 +459,8 @@ static void cheat_own_all_land()
         for (coords.x = min; coords.x <= max; coords.x += 32)
         {
             TileElement* surfaceElement = map_get_surface_element_at(coords);
+            if (!surfaceElement)
+                continue;
 
             // Ignore already owned tiles.
             if (surfaceElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
