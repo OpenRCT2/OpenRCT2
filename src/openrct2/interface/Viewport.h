@@ -115,7 +115,6 @@ extern uint8_t gSavedViewRotation;
 
 extern paint_entry* gNextFreePaintStruct;
 extern uint8_t gCurrentRotation;
-extern uint32_t gCurrentViewportFlags;
 
 void viewport_init_all();
 void centre_2d_coordinates(int32_t x, int32_t y, int32_t z, int32_t* out_x, int32_t* out_y, rct_viewport* viewport);

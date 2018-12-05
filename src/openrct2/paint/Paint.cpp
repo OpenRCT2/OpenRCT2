@@ -47,20 +47,21 @@ bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
-static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi);
+static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi, uint32_t viewFlags);
 static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void paint_ps_image_with_bounding_boxes(
     rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
 static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
 static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags);
 
-static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi)
+static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
     session->DPI = dpi;
     session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
     session->NextFreePaintStruct = session->PaintStructs;
-    session->UnkF1AD28 = nullptr;
+    session->LastRootPS = nullptr;
     session->UnkF1AD2C = nullptr;
+    session->ViewFlags = viewFlags;
     for (auto& quadrant : session->Quadrants)
     {
         quadrant = nullptr;
@@ -486,7 +487,7 @@ void paint_session_arrange(paint_session* session)
     }
 }
 
-static void paint_draw_struct(paint_session* session, paint_struct* ps, uint32_t viewFlags)
+static void paint_draw_struct(paint_session* session, paint_struct* ps)
 {
     rct_drawpixelinfo* dpi = session->DPI;
 
@@ -507,7 +508,7 @@ static void paint_draw_struct(paint_session* session, paint_struct* ps, uint32_t
         }
     }
 
-    uint32_t imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, viewFlags);
+    uint32_t imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, session->ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == 0)
     {
         paint_ps_image_with_bounding_boxes(dpi, ps, imageId, x, y);
@@ -519,11 +520,11 @@ static void paint_draw_struct(paint_session* session, paint_struct* ps, uint32_t
 
     if (ps->children != nullptr)
     {
-        paint_draw_struct(session, ps->children, viewFlags);
+        paint_draw_struct(session, ps->children);
     }
     else
     {
-        paint_attached_ps(dpi, ps, viewFlags);
+        paint_attached_ps(dpi, ps, session->ViewFlags);
     }
 }
 
@@ -531,13 +532,13 @@ static void paint_draw_struct(paint_session* session, paint_struct* ps, uint32_t
  *
  *  rct2: 0x00688485
  */
-void paint_draw_structs(paint_session* session, uint32_t viewFlags)
+void paint_draw_structs(paint_session* session)
 {
     paint_struct* ps = &session->PaintHead;
 
     for (ps = ps->next_quadrant_ps; ps;)
     {
-        paint_draw_struct(session, ps, viewFlags);
+        paint_draw_struct(session, ps);
 
         ps = ps->next_quadrant_ps;
     }
@@ -729,14 +730,14 @@ static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo* dpi)
     dpi->height >>= zoom;
 }
 
-paint_session* paint_session_alloc(rct_drawpixelinfo* dpi)
+paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
     // Currently limited to just one session at a time
     assert(!_paintSessionInUse);
     _paintSessionInUse = true;
     paint_session* session = &gPaintSession;
 
-    paint_session_init(session, dpi);
+    paint_session_init(session, dpi, viewFlags);
     return session;
 }
 
@@ -764,7 +765,7 @@ paint_struct* sub_98196C(
     assert((uint16_t)bound_box_length_x == (int16_t)bound_box_length_x);
     assert((uint16_t)bound_box_length_y == (int16_t)bound_box_length_y);
 
-    session->UnkF1AD28 = nullptr;
+    session->LastRootPS = nullptr;
     session->UnkF1AD2C = nullptr;
 
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
@@ -866,7 +867,7 @@ paint_struct* sub_98196C(
     ps->map_y = session->MapPosition.y;
     ps->tileElement = (TileElement*)session->CurrentlyDrawnItem;
 
-    session->UnkF1AD28 = ps;
+    session->LastRootPS = ps;
 
     int32_t positionHash = 0;
     switch (session->CurrentRotation)
@@ -912,7 +913,7 @@ paint_struct* sub_98197C(
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
-    session->UnkF1AD28 = nullptr;
+    session->LastRootPS = nullptr;
     session->UnkF1AD2C = nullptr;
 
     LocationXYZ16 offset = { x_offset, y_offset, z_offset };
@@ -925,7 +926,7 @@ paint_struct* sub_98197C(
         return nullptr;
     }
 
-    session->UnkF1AD28 = ps;
+    session->LastRootPS = ps;
 
     LocationXY16 attach = { (int16_t)ps->bounds.x, (int16_t)ps->bounds.y };
 
@@ -974,7 +975,7 @@ paint_struct* sub_98198C(
     assert((uint16_t)bound_box_length_x == bound_box_length_x);
     assert((uint16_t)bound_box_length_y == bound_box_length_y);
 
-    session->UnkF1AD28 = nullptr;
+    session->LastRootPS = nullptr;
     session->UnkF1AD2C = nullptr;
 
     LocationXYZ16 offset = { x_offset, y_offset, z_offset };
@@ -987,7 +988,7 @@ paint_struct* sub_98198C(
         return nullptr;
     }
 
-    session->UnkF1AD28 = ps;
+    session->LastRootPS = ps;
     session->NextFreePaintStruct++;
     return ps;
 }
@@ -1016,7 +1017,7 @@ paint_struct* sub_98199C(
     assert((uint16_t)bound_box_length_x == (int16_t)bound_box_length_x);
     assert((uint16_t)bound_box_length_y == (int16_t)bound_box_length_y);
 
-    if (session->UnkF1AD28 == nullptr)
+    if (session->LastRootPS == nullptr)
     {
         return sub_98197C(
             session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
@@ -1033,10 +1034,10 @@ paint_struct* sub_98199C(
         return nullptr;
     }
 
-    paint_struct* old_ps = session->UnkF1AD28;
+    paint_struct* old_ps = session->LastRootPS;
     old_ps->children = ps;
 
-    session->UnkF1AD28 = ps;
+    session->LastRootPS = ps;
     session->NextFreePaintStruct++;
     return ps;
 }
@@ -1099,7 +1100,7 @@ bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, uint
     ps->y = y;
     ps->flags = 0;
 
-    paint_struct* masterPs = session->UnkF1AD28;
+    paint_struct* masterPs = session->LastRootPS;
     if (masterPs == nullptr)
     {
         return false;

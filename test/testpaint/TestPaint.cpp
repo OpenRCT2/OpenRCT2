@@ -64,7 +64,6 @@ namespace TestPaint
         g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
         gPaintSession.Unk141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
 
-        gCurrentViewportFlags = 0;
         RCT2_CurrentViewportFlags = 0;
 
         gScenarioTicks = 0;

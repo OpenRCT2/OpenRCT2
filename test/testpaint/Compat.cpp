@@ -32,7 +32,6 @@ uint8_t gTrackDesignSaveRideIndex = 255;
 uint8_t gClipHeight = 255;
 LocationXY8 gClipSelectionA = { 0, 0 };
 LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
-uint32_t gCurrentViewportFlags;
 uint32_t gScenarioTicks;
 uint8_t gCurrentRotation;
 

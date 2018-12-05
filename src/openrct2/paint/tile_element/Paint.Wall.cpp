@@ -190,7 +190,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     paint_util_set_general_support_height(session, height, 0x20);
 
     uint32_t dword_141F710 = 0;
-    if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         if (!track_design_save_contains_tile_element(tile_element))
         {
