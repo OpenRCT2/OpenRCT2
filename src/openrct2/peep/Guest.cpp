@@ -644,7 +644,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                         {
                             uint8_t pathSceneryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
                             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
-                            if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN)
+                            if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN)
                             {
                                 found = true;
                             }

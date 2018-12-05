@@ -391,7 +391,7 @@ static money32 footpath_element_update(
         if (pathItemType != 0)
         {
             rct_scenery_entry* scenery_entry = get_footpath_item_entry(pathItemType - 1);
-            if (scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
+            if (scenery_entry != nullptr && scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
             {
                 tileElement->AsPath()->SetAdditionStatus(255);
             }
