@@ -9,8 +9,10 @@
 
 #include "MapAnimation.h"
 
+#include "../Context.h"
 #include "../Game.h"
 #include "../interface/Viewport.h"
+#include "../object/StationObject.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -103,11 +105,7 @@ void map_animation_invalidate_all()
  */
 static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t baseZ)
 {
-    TileElement* tileElement;
-    Ride* ride;
-    const rct_ride_entrance_definition* entranceDefinition;
-
-    tileElement = map_get_first_element_at(x >> 5, y >> 5);
+    auto tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
         if (tileElement->base_height != baseZ)
@@ -117,11 +115,16 @@ static bool map_animation_invalidate_ride_entrance(int32_t x, int32_t y, int32_t
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
 
-        ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
-        entranceDefinition = &RideEntranceDefinitions[ride->entrance_style];
-
-        int32_t height = (tileElement->base_height * 8) + entranceDefinition->height + 8;
-        map_invalidate_tile_zoom1(x, y, height, height + 16);
+        auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
+        if (ride != nullptr)
+        {
+            auto stationObj = ride_get_station_object(ride);
+            if (stationObj != nullptr)
+            {
+                int32_t height = (tileElement->base_height * 8) + stationObj->Height + 8;
+                map_invalidate_tile_zoom1(x, y, height, height + 16);
+            }
+        }
         return false;
     } while (!(tileElement++)->IsLastForTile());
 

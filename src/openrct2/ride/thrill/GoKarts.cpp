@@ -349,7 +349,7 @@ static void paint_go_karts_station(
 {
     LocationXY16 position = session->MapPosition;
     Ride* ride = get_ride(rideIndex);
-    const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+    auto stationObj = ride_get_station_object(ride);
 
     bool hasFence;
     uint32_t imageId;
@@ -373,12 +373,12 @@ static void paint_go_karts_station(
     if (direction == 0 || direction == 2)
     {
         hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, height);
+        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
     }
     else
     {
         hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, height);
+        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
     }
 
     imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
@@ -398,12 +398,12 @@ static void paint_go_karts_station(
     if (direction == 0 || direction == 2)
     {
         hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, height);
+        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
     }
     else
     {
         hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, height);
+        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
     }
 
     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)

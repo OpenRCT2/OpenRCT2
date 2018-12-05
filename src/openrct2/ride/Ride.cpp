@@ -29,6 +29,7 @@
 #include "../network/network.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/StationObject.h"
 #include "../paint/VirtualFloor.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
@@ -8535,6 +8536,12 @@ bool ride_has_adjacent_station(Ride* ride)
     return found;
 }
 
+bool ride_has_station_shelter(Ride* ride)
+{
+    auto stationObj = ride_get_station_object(ride);
+    return stationObj != nullptr && stationObj->BaseImageId != 0;
+}
+
 bool ride_has_ratings(const Ride* ride)
 {
     return ride->excitement != RIDE_RATING_UNDEFINED;
@@ -8773,6 +8780,12 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
     }
 
     return subType;
+}
+
+StationObject* ride_get_station_object(const Ride* ride)
+{
+    auto& objManager = GetContext()->GetObjectManager();
+    return static_cast<StationObject*>(objManager.GetLoadedObject(OBJECT_TYPE_STATION, ride->entrance_style));
 }
 
 LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z)

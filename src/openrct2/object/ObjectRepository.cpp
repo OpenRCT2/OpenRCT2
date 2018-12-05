@@ -643,17 +643,6 @@ const rct_object_entry* object_list_find(rct_object_entry* entry)
     return result;
 }
 
-void object_list_load()
-{
-    auto context = GetContext();
-    const auto& localisationService = context->GetLocalisationService();
-    auto& objectRepository = context->GetObjectRepository();
-    objectRepository.LoadOrConstruct(localisationService.GetCurrentLanguage());
-
-    auto& objectManager = context->GetObjectManager();
-    objectManager.UnloadAll();
-}
-
 void* object_repository_load_object(const rct_object_entry* objectEntry)
 {
     Object* object = nullptr;

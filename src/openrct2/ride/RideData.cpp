@@ -1105,23 +1105,6 @@ const uint8_t RideAvailableBreakdowns[] = {
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)    // 5a LIM Launched Roller Coaster
 };
 
-// rct2: 0x00993E7C and 0x00993E1C
-const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT] = {
-    { 22664,    32,     2,      0x00000000,     STR_PLAIN_ENTRANCE,                 0,  },      // RIDE_ENTRANCE_STYLE_PLAIN
-    { 22760,    31,     21,     0x000057A1,     STR_WOODEN_ENTRANCE,                0,  },      // RIDE_ENTRANCE_STYLE_WOODEN
-    { 22680,    43,     2,      0x800057AD,     STR_CANVAS_TENT_ENTRANCE,           3,  },      // RIDE_ENTRANCE_STYLE_CANVAS_TENT
-    { 22728,    43,     19,     0x000057B9,     STR_CASTLE_ENTRANCE_GREY,           0,  },      // RIDE_ENTRANCE_STYLE_CASTLE_GREY
-    { 22712,    43,     19,     0x000057C5,     STR_CASTLE_ENTRANCE_BROWN,          0,  },      // RIDE_ENTRANCE_STYLE_CASTLE_BROWN
-    { 22776,    33,     19,     0x000057D1,     STR_JUNGLE_ENTRANCE,                0,  },      // RIDE_ENTRANCE_STYLE_JUNGLE
-    { 22744,    32,     20,     0x000057DD,     STR_LOG_CABIN_ENTRANCE,             0,  },      // RIDE_ENTRANCE_STYLE_LOG_CABIN
-    { 22696,    34,     19,     0x000057E9,     STR_CLASSICAL_ROMAN_ENTRANCE,       0,  },      // RIDE_ENTRANCE_STYLE_CLASSICAL_ROMAN
-    { 22792,    40,     22,     0x400057F5,     STR_ABSTRACT_ENTRANCE,              1,  },      // RIDE_ENTRANCE_STYLE_ABSTRACT
-    { 22824,    35,     23,     0x0000580D,     STR_SNOW_ICE_ENTRANCE,              0,  },      // RIDE_ENTRANCE_STYLE_SNOW_ICE
-    { 22840,    33,     19,     0x00005819,     STR_PAGODA_ENTRANCE,                0,  },      // RIDE_ENTRANCE_STYLE_PAGODA
-    { 22856,    33,     2,      0x00005825,     STR_SPACE_ENTRANCE,                 0,  },      // RIDE_ENTRANCE_STYLE_SPACE
-    { 0,        0,      2,      0x00000000,     STR_ENTRANCE_NONE,                  0,  }       // RIDE_ENTRANCE_STYLE_NONE
-};
-
 // rct2: 0x0097D4F0,  0x0097D4F1,  0x0097D4F2, 0x0097D4F4, 0x0097D4F5
 const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT] = {
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK_STYLE_3,       0                                               },  // RIDE_TYPE_SPIRAL_ROLLER_COASTER

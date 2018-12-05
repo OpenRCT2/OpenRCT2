@@ -65,19 +65,19 @@ static void paint_boat_hire_station(
 {
     LocationXY16 position = session->MapPosition;
     Ride* ride = get_ride(rideIndex);
-    const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+    auto stationObj = ride_get_station_object(ride);
 
     if (direction & 1)
     {
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
         track_paint_util_draw_pier(
-            session, ride, entranceStyle, position, direction, height, tileElement, session->CurrentRotation);
+            session, ride, stationObj, position, direction, height, tileElement, session->CurrentRotation);
     }
     else
     {
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
         track_paint_util_draw_pier(
-            session, ride, entranceStyle, position, direction, height, tileElement, session->CurrentRotation);
+            session, ride, stationObj, position, direction, height, tileElement, session->CurrentRotation);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

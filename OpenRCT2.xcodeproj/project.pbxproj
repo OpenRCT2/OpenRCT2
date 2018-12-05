@@ -72,6 +72,9 @@
 		93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C820A7504500867D56 /* ImageImporter.h */; };
 		93DE9751209C3C1000FB1CC8 /* GameState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93DE974E209C3C0F00FB1CC8 /* GameState.cpp */; };
 		93DE9753209C3C1000FB1CC8 /* GameState.h in Headers */ = {isa = PBXBuildFile; fileRef = 93DE974F209C3C0F00FB1CC8 /* GameState.h */; };
+		93F6004C213DD7DD00EEB83E /* TerrainSurfaceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F60049213DD7DC00EEB83E /* TerrainSurfaceObject.cpp */; };
+		93F6004D213DD7DD00EEB83E /* TerrainEdgeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F6004A213DD7DC00EEB83E /* TerrainEdgeObject.cpp */; };
+		93F60050213DD7E400EEB83E /* StationObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F6004F213DD7E300EEB83E /* StationObject.cpp */; };
 		93F76EED20BFF6F900D4512C /* Drawing.Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EEB20BFF6F900D4512C /* Drawing.Sprite.cpp */; };
 		93F76EEE20BFF6F900D4512C /* Drawing.String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EEC20BFF6F900D4512C /* Drawing.String.cpp */; };
 		93F76EF020BFF71700D4512C /* InteractiveConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93F76EEF20BFF71700D4512C /* InteractiveConsole.cpp */; };
@@ -1122,6 +1125,12 @@
 		93CBA4C820A7504500867D56 /* ImageImporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageImporter.h; sourceTree = "<group>"; };
 		93DE974E209C3C0F00FB1CC8 /* GameState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameState.cpp; sourceTree = "<group>"; };
 		93DE974F209C3C0F00FB1CC8 /* GameState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameState.h; sourceTree = "<group>"; };
+		93F60048213DD7DC00EEB83E /* TerrainSurfaceObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainSurfaceObject.h; sourceTree = "<group>"; };
+		93F60049213DD7DC00EEB83E /* TerrainSurfaceObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainSurfaceObject.cpp; sourceTree = "<group>"; };
+		93F6004A213DD7DC00EEB83E /* TerrainEdgeObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TerrainEdgeObject.cpp; sourceTree = "<group>"; };
+		93F6004B213DD7DD00EEB83E /* TerrainEdgeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainEdgeObject.h; sourceTree = "<group>"; };
+		93F6004E213DD7E300EEB83E /* StationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationObject.h; sourceTree = "<group>"; };
+		93F6004F213DD7E300EEB83E /* StationObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StationObject.cpp; sourceTree = "<group>"; };
 		93F76EEB20BFF6F900D4512C /* Drawing.Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.cpp; sourceTree = "<group>"; };
 		93F76EEC20BFF6F900D4512C /* Drawing.String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.String.cpp; sourceTree = "<group>"; };
 		93F76EEF20BFF71700D4512C /* InteractiveConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InteractiveConsole.cpp; sourceTree = "<group>"; };
@@ -2645,8 +2654,14 @@
 				F76C842A1EC4E7CC00FA49E2 /* SceneryObject.h */,
 				F76C842B1EC4E7CC00FA49E2 /* SmallSceneryObject.cpp */,
 				F76C842C1EC4E7CC00FA49E2 /* SmallSceneryObject.h */,
+				93F6004F213DD7E300EEB83E /* StationObject.cpp */,
+				93F6004E213DD7E300EEB83E /* StationObject.h */,
 				F76C842F1EC4E7CC00FA49E2 /* StringTable.cpp */,
 				F76C84301EC4E7CC00FA49E2 /* StringTable.h */,
+				93F6004A213DD7DC00EEB83E /* TerrainEdgeObject.cpp */,
+				93F6004B213DD7DD00EEB83E /* TerrainEdgeObject.h */,
+				93F60049213DD7DC00EEB83E /* TerrainSurfaceObject.cpp */,
+				93F60048213DD7DC00EEB83E /* TerrainSurfaceObject.h */,
 				F76C84311EC4E7CC00FA49E2 /* WallObject.cpp */,
 				F76C84321EC4E7CC00FA49E2 /* WallObject.h */,
 				F76C84331EC4E7CC00FA49E2 /* WaterObject.cpp */,
@@ -3622,6 +3637,7 @@
 				93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
 				C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */,
+				93F6004D213DD7DD00EEB83E /* TerrainEdgeObject.cpp in Sources */,
 				C666EE781F37ACB10061AA04 /* ServerList.cpp in Sources */,
 				C654DF341F69C0430040F43D /* NewCampaign.cpp in Sources */,
 				F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */,
@@ -3640,6 +3656,7 @@
 				C68313D51FDB4F4C006DB3D8 /* Graph.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
+				93F60050213DD7E400EEB83E /* StationObject.cpp in Sources */,
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
 				4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */,
@@ -3683,6 +3700,7 @@
 				C685E51A1F8907850090598F /* Staff.cpp in Sources */,
 				F76C888C1EC5324E00FA49E2 /* UiContext.cpp in Sources */,
 				C666EE7D1F37ACB10061AA04 /* TitleMenu.cpp in Sources */,
+				93F6004C213DD7DD00EEB83E /* TerrainSurfaceObject.cpp in Sources */,
 				933CBDB520CB1ACD00134678 /* Widget.cpp in Sources */,
 				9308D9FE209908090079EE96 /* TileElement.cpp in Sources */,
 				F76C888D1EC5324E00FA49E2 /* UiContext.Linux.cpp in Sources */,

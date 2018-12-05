@@ -47,7 +47,7 @@ namespace TestPaint
 
         {
             Ride ride = {};
-            ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+            ride.entrance_style = 0;
             static rct_ride_entry rideEntry = {};
             rct_ride_entry_vehicle vehicleEntry{};
             vehicleEntry.base_image_id = 0x70000;
@@ -57,7 +57,7 @@ namespace TestPaint
         }
         {
             rct2_ride ride = {};
-            ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+            ride.entrance_style = 0;
             RCT2_Rides[0] = ride;
         }
 

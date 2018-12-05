@@ -159,7 +159,7 @@ void scenario_begin()
     park_calculate_size();
     map_count_remaining_land_rights();
     staff_reset_stats();
-    gLastEntranceStyle = RIDE_ENTRANCE_STYLE_PLAIN;
+    gLastEntranceStyle = 0;
     memset(gMarketingCampaignDaysLeft, 0, 20);
     gParkRatingCasualtyPenalty = 0;
 

@@ -16,6 +16,7 @@
 #include "ObjectLimits.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 Object::Object(const rct_object_entry& entry)
 {
@@ -34,6 +35,16 @@ Object::Object(const rct_object_entry& entry)
 Object::~Object()
 {
     Memory::Free(_identifier);
+}
+
+void* Object::GetLegacyData()
+{
+    throw std::runtime_error("Not supported.");
+}
+
+void Object::ReadLegacy(IReadObjectContext* context, IStream* stream)
+{
+    throw std::runtime_error("Not supported.");
 }
 
 std::string Object::GetOverrideString(uint8_t index) const

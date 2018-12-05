@@ -33,7 +33,11 @@ int32_t object_entry_group_counts[] = {
     MAX_SCENERY_GROUP_OBJECTS, // scenery sets
     MAX_PARK_ENTRANCE_OBJECTS, // park entrance
     MAX_WATER_OBJECTS,         // water
-    MAX_SCENARIO_TEXT_OBJECTS  // scenario text
+    MAX_SCENARIO_TEXT_OBJECTS, // scenario text
+    MAX_TERRAIN_SURFACE_OBJECTS,
+    MAX_TERRAIN_EDGE_OBJECTS,
+    MAX_STATION_OBJECTS,
+    MAX_MUSIC_OBJECTS,
 };
 
 // 98DA2C
@@ -98,10 +102,12 @@ bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_ty
         return false;
     }
 
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto maxObjects = object_entry_group_counts[objectType];
     for (int32_t i = 0; i < maxObjects; i++)
     {
-        if (object_entry_get_chunk(objectType, i) != nullptr)
+        auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
+        if (loadedObj != nullptr)
         {
             auto thisEntry = object_entry_get_entry(objectType, i);
             if (object_entry_compare(thisEntry, entry))

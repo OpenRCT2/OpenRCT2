@@ -16,10 +16,15 @@
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/TerrainEdgeObject.h>
+#include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/MapGen.h>
 #include <openrct2/world/Surface.h>
+
+using namespace OpenRCT2;
 
 // clang-format off
 enum {
@@ -652,8 +657,7 @@ static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetInd
             if (dropdownIndex == -1)
                 dropdownIndex = gDropdownHighlightedIndex;
 
-            type = (dropdownIndex == -1) ? _floorTexture
-                                         : (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+            type = (dropdownIndex == -1) ? _floorTexture : dropdownIndex;
 
             if (gLandToolTerrainSurface == type)
             {
@@ -670,7 +674,7 @@ static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetInd
             if (dropdownIndex == -1)
                 dropdownIndex = gDropdownHighlightedIndex;
 
-            type = (dropdownIndex == -1) ? _wallTexture : WallTextureOrder[dropdownIndex];
+            type = (dropdownIndex == -1) ? _wallTexture : dropdownIndex;
 
             if (gLandToolTerrainEdge == type)
             {
@@ -730,14 +734,34 @@ static void window_mapgen_textinput(rct_window* w, rct_widgetindex widgetIndex, 
 
 static void window_mapgen_base_invalidate(rct_window* w)
 {
+    auto surfaceImage = (uint32_t)SPR_NONE;
+    auto edgeImage = (uint32_t)SPR_NONE;
+
+    auto& objManager = GetContext()->GetObjectManager();
+    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _floorTexture));
+    if (surfaceObj != nullptr)
+    {
+        surfaceImage = surfaceObj->IconImageId;
+        if (surfaceObj->Colour != 255)
+        {
+            surfaceImage |= surfaceObj->Colour << 19 | IMAGE_TYPE_REMAP;
+        }
+    }
+    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _wallTexture));
+    if (edgeObj != nullptr)
+    {
+        edgeImage = edgeObj->IconImageId;
+    }
+
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
         window_init_scroll_widgets(w);
     }
 
-    w->widgets[WIDX_FLOOR_TEXTURE].image = SPR_FLOOR_TEXTURE_GRASS + _floorTexture;
-    w->widgets[WIDX_WALL_TEXTURE].image = WallTexturePreviews[_wallTexture];
+    w->widgets[WIDX_FLOOR_TEXTURE].image = surfaceImage;
+    w->widgets[WIDX_WALL_TEXTURE].image = edgeImage;
 
     window_mapgen_set_pressed_tab(w);
 }
@@ -965,8 +989,7 @@ static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widget
             if (dropdownIndex == -1)
                 dropdownIndex = gDropdownHighlightedIndex;
 
-            type = (dropdownIndex == -1) ? _floorTexture
-                                         : (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+            type = (dropdownIndex == -1) ? _floorTexture : dropdownIndex;
 
             if (gLandToolTerrainSurface == type)
             {
@@ -983,7 +1006,7 @@ static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widget
             if (dropdownIndex == -1)
                 dropdownIndex = gDropdownHighlightedIndex;
 
-            type = (dropdownIndex == -1) ? _wallTexture : WallTextureOrder[dropdownIndex];
+            type = (dropdownIndex == -1) ? _wallTexture : dropdownIndex;
 
             if (gLandToolTerrainEdge == type)
             {
@@ -1009,14 +1032,34 @@ static void window_mapgen_simplex_update(rct_window* w)
 
 static void window_mapgen_simplex_invalidate(rct_window* w)
 {
+    auto surfaceImage = (uint32_t)SPR_NONE;
+    auto edgeImage = (uint32_t)SPR_NONE;
+
+    auto& objManager = GetContext()->GetObjectManager();
+    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _floorTexture));
+    if (surfaceObj != nullptr)
+    {
+        surfaceImage = surfaceObj->IconImageId;
+        if (surfaceObj->Colour != 255)
+        {
+            surfaceImage |= surfaceObj->Colour << 19 | IMAGE_TYPE_REMAP;
+        }
+    }
+    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _wallTexture));
+    if (edgeObj != nullptr)
+    {
+        edgeImage = edgeObj->IconImageId;
+    }
+
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
         window_init_scroll_widgets(w);
     }
 
-    w->widgets[WIDX_SIMPLEX_FLOOR_TEXTURE].image = SPR_FLOOR_TEXTURE_GRASS + _floorTexture;
-    w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = WallTexturePreviews[_wallTexture];
+    w->widgets[WIDX_SIMPLEX_FLOOR_TEXTURE].image = surfaceImage;
+    w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = edgeImage;
 
     widget_set_checkbox_value(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);

@@ -30,6 +30,10 @@ enum OBJECT_TYPE
     OBJECT_TYPE_PARK_ENTRANCE,
     OBJECT_TYPE_WATER,
     OBJECT_TYPE_SCENARIO_TEXT,
+    OBJECT_TYPE_TERRAIN_SURFACE,
+    OBJECT_TYPE_TERRAIN_EDGE,
+    OBJECT_TYPE_STATION,
+    OBJECT_TYPE_MUSIC,
 
     OBJECT_TYPE_COUNT
 };
@@ -192,12 +196,12 @@ public:
     {
         return &_objectEntry;
     }
-    virtual void* GetLegacyData() abstract;
+    virtual void* GetLegacyData();
 
     virtual void ReadJson(IReadObjectContext* /*context*/, const json_t* /*root*/)
     {
     }
-    virtual void ReadLegacy(IReadObjectContext* context, IStream* stream) abstract;
+    virtual void ReadLegacy(IReadObjectContext* context, IStream* stream);
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
@@ -244,8 +248,6 @@ enum OBJECT_ERROR : uint32_t
 
 extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];
-
-void object_list_load();
 
 bool object_entry_is_empty(const rct_object_entry* entry);
 bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b);

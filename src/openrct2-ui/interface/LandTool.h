@@ -26,9 +26,6 @@ extern uint8_t gLandToolTerrainEdge;
 extern money32 gWaterToolRaiseCost;
 extern money32 gWaterToolLowerCost;
 
-extern uint32_t WallTextureOrder[];
-extern uint32_t WallTexturePreviews[];
-
 uint32_t land_tool_size_to_sprite_index(uint16_t size);
 void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentSurfaceType);
 void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentEdgeType);

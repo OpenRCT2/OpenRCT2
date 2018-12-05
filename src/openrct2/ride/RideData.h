@@ -50,16 +50,6 @@ struct rct_ride_name_convention
     RIDE_COMPONENT_TYPE station;
 };
 
-struct rct_ride_entrance_definition
-{
-    uint32_t sprite_index;
-    uint16_t height;
-    uint16_t scrolling_mode;
-    uint32_t base_image_id;
-    rct_string_id string_id;
-    uint16_t colour_use_flags;
-};
-
 struct rct_ride_data_4
 {
     uint8_t price;
@@ -138,7 +128,6 @@ extern const uint8_t RideAvailableModes[];
 extern const uint8_t AllRideModesAvailable[];
 extern const uint8_t RideAvailableBreakdowns[];
 
-extern const rct_ride_entrance_definition RideEntranceDefinitions[RIDE_ENTRANCE_STYLE_COUNT];
 extern const rct_ride_lift_data RideLiftData[RIDE_TYPE_COUNT];
 
 extern const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT];

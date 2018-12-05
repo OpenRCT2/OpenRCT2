@@ -10,12 +10,16 @@
 #include "Paint.Surface.h"
 
 #include "../../Cheats.h"
+#include "../../Context.h"
 #include "../../OpenRCT2.h"
 #include "../../config/Config.h"
 #include "../../core/Guard.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
+#include "../../object/ObjectManager.h"
+#include "../../object/TerrainEdgeObject.h"
+#include "../../object/TerrainSurfaceObject.h"
 #include "../../paint/Paint.h"
 #include "../../peep/Staff.h"
 #include "../../ride/TrackDesign.h"
@@ -203,218 +207,10 @@ static constexpr const uint8_t byte_97B5B0[TUNNEL_TYPE_COUNT] = {
     16, 17, 18, 19, 20, 21, 22
 };
 
-#define EDGE_SPRITE_TYPE_COUNT 4
-
-#define DEFINE_EDGE_SPRITES(base) { \
-    (base) +  0, \
-    (base) + 20, \
-    (base) + 10, \
-    (base) + 30, \
-}
-#define DEFINE_EDGE_TUNNEL_SPRITES(base) { \
-    (base) + 36, \
-    (base) + 40, \
-    (base) + 44, \
-    (base) + 48, \
-    (base) + 52, \
-    (base) + 56, \
-    (base) + 60, \
-    (base) + 64, \
-    (base) + 68, \
-    (base) + 72, \
-    (base) + 76, \
-    (base) + 80, \
-    (base) + 36, \
-    (base) + 48, \
-    (base) + 60, \
-    (base) + 72, \
-    (base) + 36, \
-    (base) + 36, \
-    (base) + 36, \
-    (base) + 36, \
-    (base) + 36, \
-    (base) + 36, \
-    (base) + 36, \
-}
-
-#define DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(base) { \
-    (base) + 36, \
-    (base) + 40, \
-    (base) + 44, \
-    (base) + 48, \
-    (base) + 52, \
-    (base) + 56, \
-    (base) + 60, \
-    (base) + 64, \
-    (base) + 68, \
-    (base) + 72, \
-    (base) + 76, \
-    (base) + 80, \
-    (base) + 36, \
-    (base) + 48, \
-    (base) + 60, \
-    (base) + 72, \
-    (base) + 76, \
-    (base) + 80, \
-    (base) + 84, \
-    (base) + 88, \
-    (base) + 92, \
-    (base) + 96, \
-    (base) + 100, \
-}
-
-static constexpr const uint32_t _terrainEdgeSpriteIds[][EDGE_SPRITE_TYPE_COUNT] =
-{
-    DEFINE_EDGE_SPRITES(SPR_EDGE_ROCK_BASE),
-    DEFINE_EDGE_SPRITES(SPR_EDGE_WOOD_RED_BASE),
-    DEFINE_EDGE_SPRITES(SPR_EDGE_WOOD_BLACK_BASE),
-    DEFINE_EDGE_SPRITES(SPR_EDGE_ICE_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_BRICK_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_IRON_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_GREY_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_YELLOW_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_RED_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_PURPLE_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_GREEN_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_STONE_BROWN_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_STONE_GREY_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_SKYSCRAPER_A_BASE),
-    DEFINE_EDGE_SPRITES(SPR_CSG_EDGE_SKYSCRAPER_B_BASE),
-};
-
-static constexpr const uint32_t _terrainEdgeTunnelSpriteIds[][TUNNEL_TYPE_COUNT] =
-{
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ROCK_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_WOOD_RED_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_WOOD_BLACK_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ICE_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_BRICK_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES(SPR_CSG_EDGE_IRON_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_GREY_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_YELLOW_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_RED_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_PURPLE_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_GREEN_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_STONE_BROWN_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_STONE_GREY_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_SKYSCRAPER_A_BASE),
-    DEFINE_EDGE_TUNNEL_SPRITES_WITH_DOORS(SPR_CSG_EDGE_SKYSCRAPER_B_BASE),
-};
-
 static constexpr const uint8_t byte_97B740[] =
 {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
     0, 3, 0, 1, 4, 0
-};
-
-static constexpr const uint32_t dword_97B750[][2] =
-{
-    { SPR_TERRAIN_GRASS,                                          SPR_TERRAIN_GRASS_GRID },
-    { SPR_TERRAIN_SAND_YELLOW,                                    SPR_TERRAIN_SAND_YELLOW_GRID },
-    { SPR_TERRAIN_DIRT,                                           SPR_TERRAIN_DIRT_GRID },
-    { SPR_TERRAIN_ROCK,                                           SPR_TERRAIN_ROCK_GRID },
-    { SPR_TERRAIN_MARTIAN,                                        SPR_TERRAIN_MARTIAN_GRID },
-    { SPR_TERRAIN_CHECKERBOARD,                                   SPR_TERRAIN_CHECKERBOARD_GRID },
-    { SPR_TERRAIN_GRASS_CLUMPS,                                   SPR_TERRAIN_GRASS_CLUMPS_GRID },
-    { SPR_TERRAIN_ICE,                                            SPR_TERRAIN_ICE_GRID },
-    { SPR_TERRAIN_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP,    SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP },
-    { SPR_TERRAIN_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP,        SPR_TERRAIN_GRID_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP },
-    { SPR_TERRAIN_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP, SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP },
-    { SPR_TERRAIN_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP,  SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP },
-    { SPR_TERRAIN_SAND_RED,                                       SPR_TERRAIN_SAND_RED_GRID },
-    { SPR_TERRAIN_SAND,                                           SPR_TERRAIN_SAND_GRID },
-    { SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID },
-};
-
-static constexpr const uint32_t dword_97B7C8[] =
-{
-    SPR_TERRAIN_GRASS_UNDERGROUND,
-    SPR_TERRAIN_SAND_YELLOW_UNDERGROUND,
-    SPR_TERRAIN_DIRT_UNDERGROUND,
-    SPR_TERRAIN_ROCK_UNDERGROUND,
-    SPR_TERRAIN_MARTIAN_UNDERGROUND,
-    SPR_TERRAIN_CHECKERBOARD_UNDERGROUND,
-    SPR_TERRAIN_GRASS_CLUMPS_UNDERGROUND,
-    SPR_TERRAIN_ICE_UNDERGROUND,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP,
-    SPR_TERRAIN_GRID_UNDERGROUND | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP,
-    SPR_TERRAIN_SAND_RED_UNDERGROUND,
-    SPR_TERRAIN_SAND_UNDERGROUND,
-    SPR_TERRAIN_CHECKERBOARD_INVERTED_UNDERGROUND,
-};
-
-static constexpr const uint32_t dword_97B804[] =
-{
-    SPR_TERRAIN_PATTERN_GRASS,
-    SPR_TERRAIN_PATTERN_SAND_YELLOW,
-    SPR_TERRAIN_PATTERN_DIRT,
-    SPR_TERRAIN_PATTERN_ROCK,
-    SPR_TERRAIN_PATTERN_MARTIAN,
-    SPR_TERRAIN_PATTERN_GRASS,
-    SPR_TERRAIN_PATTERN_GRASS_CLUMPS,
-    SPR_TERRAIN_PATTERN_ICE,
-    SPR_TERRAIN_PATTERN_GRASS,
-    SPR_TERRAIN_PATTERN_GRASS,
-    SPR_TERRAIN_PATTERN_GRASS,
-    SPR_TERRAIN_PATTERN_GRASS,
-    SPR_TERRAIN_PATTERN_SAND_RED,
-    SPR_TERRAIN_PATTERN_SAND
-};
-
-enum
-{
-    FLAG_DONT_SMOOTHEN = (1 << 0),
-    FLAG_DONT_SMOOTHEN_SELF = (1 << 1),
-};
-
-static constexpr const uint8_t byte_97B83C[] =
-{
-    0,
-    0,
-    0,
-    FLAG_DONT_SMOOTHEN_SELF,
-    FLAG_DONT_SMOOTHEN_SELF,
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
-    0,
-    0,
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
-    0,
-    0
-};
-
-static constexpr const uint8_t byte_97B84A[] =
-{
-    0, 1, 2, 3, 4, 14, 6, 7, 8, 9,
-    10, 11, 12, 13
-};
-
-static constexpr const uint32_t dword_97B858[][2] =
-{
-    { SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1_GRID },
-    { SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2_GRID },
-    { SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3_GRID },
-    { SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4_GRID },
-};
-
-static constexpr const uint32_t dword_97B878[][2] =
-{
-    { SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1_GRID },
-    { SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2_GRID },
-    { SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3_GRID },
-    { SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4_GRID },
-};
-
-static constexpr const uint32_t dword_97B898[][2] =
-{
-    { SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID },
-    { SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID },
-    { SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID },
-    { SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID }
 };
 
 struct tile_descriptor
@@ -495,14 +291,113 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
 };
 // clang-format on
 
+static const TerrainSurfaceObject* get_surface_object(size_t index)
+{
+    TerrainSurfaceObject* result{};
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, index);
+    if (obj != nullptr)
+    {
+        return static_cast<TerrainSurfaceObject*>(obj);
+    }
+    return result;
+}
+
+static uint32_t get_surface_image(
+    const paint_session* session, uint8_t index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
+    bool underground)
+{
+    auto image = (uint32_t)SPR_NONE;
+    auto obj = get_surface_object(index);
+    if (obj != nullptr)
+    {
+        image = obj->GetImageId(
+            { session->MapPosition.x >> 5, session->MapPosition.y >> 5 }, grassLength, rotation, offset, grid, underground);
+        if (obj->Colour != 255)
+        {
+            image |= obj->Colour << 19 | IMAGE_TYPE_REMAP;
+        }
+    }
+    return image;
+}
+
+static uint32_t get_surface_pattern(uint8_t index, int32_t offset)
+{
+    auto image = (uint32_t)SPR_NONE;
+    auto obj = get_surface_object(index);
+    if (obj != nullptr)
+    {
+        image = obj->PatternBaseImageId + offset;
+        if (obj->Colour != 255)
+        {
+            image |= obj->Colour << 19 | IMAGE_TYPE_REMAP;
+        }
+    }
+    return image;
+}
+
+static bool surface_should_smooth_self(uint8_t index)
+{
+    auto obj = get_surface_object(index);
+    if (obj != nullptr)
+    {
+        return obj->Flags & TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_SELF;
+    }
+    return false;
+}
+
+static bool surface_should_smooth(uint8_t index)
+{
+    auto obj = get_surface_object(index);
+    if (obj != nullptr)
+    {
+        return obj->Flags & TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_OTHER;
+    }
+    return false;
+}
+
+static uint32_t get_edge_image_with_offset(uint8_t index, uint32_t offset)
+{
+    uint32_t result = 0;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, index);
+    if (obj != nullptr)
+    {
+        auto tobj = static_cast<TerrainEdgeObject*>(obj);
+        return tobj->BaseImageId + offset;
+    }
+    return result;
+}
+
 static uint32_t get_edge_image(uint8_t index, uint8_t type)
 {
-    return _terrainEdgeSpriteIds[index][type];
+    static constexpr uint32_t offsets[] = {
+        0,
+        20,
+        10,
+        30,
+    };
+
+    uint32_t result = 0;
+    if (type < std::size(offsets))
+    {
+        result = get_edge_image_with_offset(index, offsets[type]);
+    }
+    return result;
 }
 
 static uint32_t get_tunnel_image(uint8_t index, uint8_t type)
 {
-    return _terrainEdgeTunnelSpriteIds[index][type];
+    static constexpr uint32_t offsets[] = {
+        36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 36, 48, 60, 72,
+    };
+
+    uint32_t result = 0;
+    if (type < std::size(offsets))
+    {
+        result = get_edge_image_with_offset(index, offsets[type]);
+    }
+    return result;
 }
 
 static uint8_t viewport_surface_paint_setup_get_relative_slope(const TileElement* tileElement, int32_t rotation)
@@ -595,15 +490,15 @@ static void viewport_surface_smoothen_edge(
         if (cl == dh)
             return;
 
-        if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN_SELF)
+        if (!surface_should_smooth_self(self.terrain))
             return;
     }
     else
     {
-        if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN)
+        if (!surface_should_smooth(self.terrain))
             return;
 
-        if (byte_97B83C[neighbour.terrain] & FLAG_DONT_SMOOTHEN)
+        if (!surface_should_smooth(neighbour.terrain))
             return;
     }
 
@@ -613,7 +508,7 @@ static void viewport_surface_smoothen_edge(
     {
         attached_paint_struct* out = session->UnkF1AD2C;
         // set content and enable masking
-        out->colour_image_id = dword_97B804[neighbour.terrain] + cl;
+        out->colour_image_id = get_surface_pattern(neighbour.terrain, cl);
         out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
     }
 }
@@ -1104,81 +999,30 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     {
         const bool showGridlines = (session->ViewFlags & VIEWPORT_FLAG_GRIDLINES);
 
-        int32_t branch = -1;
-        if (tileElement->AsSurface()->GetSurfaceStyle() == TERRAIN_GRASS)
+        auto grassLength = -1;
+        if (zoomLevel == 0)
         {
-            if (tileElement->GetDirection() == 0)
+            if ((session->ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
             {
-                if (zoomLevel == 0)
-                {
-                    if ((session->ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
-                    {
-                        branch = tileElement->AsSurface()->GetGrassLength() & 0x7;
-                    }
-                }
+                grassLength = tileElement->AsSurface()->GetGrassLength() & 0x7;
             }
         }
 
         assert(surfaceShape < std::size(byte_97B444));
         const uint8_t image_offset = byte_97B444[surfaceShape];
-        int32_t image_id;
-        uint32_t ebp = terrain_type;
 
-        switch (branch)
+        auto imageId = get_surface_image(session, terrain_type, image_offset, rotation, grassLength, showGridlines, false);
+        if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
         {
-            case 0:
-                // loc_660C90
-                image_id = dword_97B898[rotation][showGridlines ? 1 : 0] + image_offset;
-                break;
-
-            case 1:
-            case 2:
-            case 3:
-            default:
-                // loc_660C9F
-                if (rotation & 1)
-                {
-                    assert(ebp < std::size(byte_97B84A));
-                    ebp = byte_97B84A[ebp];
-                }
-                assert(ebp < std::size(dword_97B750));
-                image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
-
-                if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-                {
-                    image_id = SPR_TERRAIN_TRACK_DESIGNER;
-                }
-
-                if (session->ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
-                {
-                    image_id &= 0xDC07FFFF; // remove colour
-                    image_id |= 0x41880000;
-                }
-                break;
-
-            case 4:
-            case 5:
-                // loc_660C44
-            case 6:
-                // loc_660C6A
-                {
-                    const int16_t x = session->MapPosition.x & 0x20;
-                    const int16_t y = session->MapPosition.y & 0x20;
-                    const int32_t index = (y | (x << 1)) >> 5;
-
-                    if (branch == 6)
-                    {
-                        image_id = dword_97B878[index][showGridlines ? 1 : 0] + image_offset;
-                    }
-                    else
-                    {
-                        image_id = dword_97B858[index][showGridlines ? 1 : 0] + image_offset;
-                    }
-                }
-                break;
+            imageId = SPR_TERRAIN_TRACK_DESIGNER;
+        }
+        if (session->ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
+        {
+            imageId &= 0xDC07FFFF; // remove colour
+            imageId |= 0x41880000;
         }
 
-        sub_98196C(session, image_id, 0, 0, 32, 32, -1, height);
+        sub_98196C(session, imageId, 0, 0, 32, 32, -1, height);
         has_surface = true;
     }
 
@@ -1381,12 +1225,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
         const uint8_t image_offset = byte_97B444[surfaceShape];
-        uint32_t base_image = terrain_type;
-        if (rotation & 1)
-        {
-            base_image = byte_97B84A[terrain_type];
-        }
-        const uint32_t image_id = dword_97B7C8[base_image] + image_offset;
+        const uint32_t image_id = get_surface_image(session, terrain_type, image_offset, rotation, 1, false, true);
         paint_attach_to_previous_ps(session, image_id, 0, 0);
     }
 

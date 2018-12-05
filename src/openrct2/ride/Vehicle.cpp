@@ -7282,7 +7282,7 @@ static void vehicle_update_additional_animation(rct_vehicle* vehicle)
                 if (al != ah)
                 {
                     Ride* ride = get_ride(vehicle->ride);
-                    if (ride->entrance_style == RIDE_ENTRANCE_STYLE_PLAIN
+                    if (!ride_has_station_shelter(ride)
                         || (vehicle->status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION
                             && vehicle->status != VEHICLE_STATUS_ARRIVING))
                     {
