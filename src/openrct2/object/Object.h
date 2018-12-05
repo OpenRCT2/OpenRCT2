@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Json.hpp"
 #include "ImageTable.h"
 #include "StringTable.h"
 
@@ -132,6 +131,7 @@ interface IObjectRepository;
 interface IStream;
 struct ObjectRepositoryItem;
 struct rct_drawpixelinfo;
+struct json_t;
 
 interface IReadObjectContext
 {
