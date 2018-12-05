@@ -517,6 +517,8 @@ namespace ObjectJsonHelpers
                 {
                     images = ParseImages(context, el);
                 }
+
+                auto imagesStartIndex = imageTable.GetCount();
                 for (const auto& img : images)
                 {
                     const auto& g1 = img->g1;
@@ -526,14 +528,15 @@ namespace ObjectJsonHelpers
                 // Add zoom images here
                 for (size_t j = 0; j < images.size(); j++)
                 {
+                    const auto tableIndex = imagesStartIndex + j;
                     const auto* img = images[j].get();
                     if (img->next_zoom != nullptr)
                     {
                         img = img->next_zoom.get();
 
                         // Set old image zoom offset to zoom image which we are about to add
-                        auto g1a = (rct_g1_element*)(&imageTable.GetImages()[j]);
-                        g1a->zoomed_offset = (int32_t)j - (int32_t)imageTable.GetCount();
+                        auto g1a = (rct_g1_element*)(&imageTable.GetImages()[tableIndex]);
+                        g1a->zoomed_offset = (int32_t)tableIndex - (int32_t)imageTable.GetCount();
 
                         while (img != nullptr)
                         {
