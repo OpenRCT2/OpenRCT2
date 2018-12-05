@@ -693,6 +693,10 @@ static void sub_6A3F61(
                 // Draw additional path bits (bins, benches, lamps, queue screens)
                 rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
 
+                // Can be null if the object is not loaded.
+                if (sceneryEntry == nullptr)
+                    return;
+
                 if ((gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
                     && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
                     && !(sceneryEntry->path_bit.draw_type == PATH_BIT_DRAW_TYPE_BINS))
@@ -940,7 +944,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         if (tile_element->AsPath()->HasAddition() && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN))
         {
             rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
-            if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)
+            if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)
             {
                 if (!(tile_element->AsPath()->GetEdges() & EDGE_NE))
                 {
