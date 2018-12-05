@@ -221,8 +221,9 @@ namespace ObjectFactory
                 result->SetSourceGames({ object_entry_get_source_game_legacy(&entry) });
             }
         }
-        catch (const std::exception&)
+        catch (const std::exception& e)
         {
+            log_error("Error: %s when processing object %s", e.what(), path);
             delete result;
             result = nullptr;
         }
