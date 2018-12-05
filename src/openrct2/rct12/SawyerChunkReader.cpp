@@ -23,9 +23,10 @@
 constexpr size_t MAX_UNCOMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;
 
 constexpr const char* EXCEPTION_MSG_CORRUPT_CHUNK_SIZE = "Corrupt chunk size.";
+constexpr const char* EXCEPTION_MSG_CORRUPT_RLE = "Corrupt RLE compression data.";
 constexpr const char* EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger than allocated destination capacity.";
 constexpr const char* EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
-constexpr const char* EXCEPTION_MSG_CORRUPT_RLE = "Corrupt RLE compression data.";
+constexpr const char* EXCEPTION_MSG_ZERO_SIZED_CHUNK = "Encountered zero-sized chunk.";
 
 class SawyerChunkException : public IOException
 {
@@ -82,7 +83,10 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
 
                 auto buffer = (uint8_t*)AllocateLargeTempBuffer();
                 size_t uncompressedLength = DecodeChunk(buffer, MAX_UNCOMPRESSED_CHUNK_SIZE, compressedData.get(), header);
-                Guard::Assert(uncompressedLength != 0, "Encountered zero-sized chunk!");
+                if (uncompressedLength == 0)
+                {
+                    throw SawyerChunkException(EXCEPTION_MSG_ZERO_SIZED_CHUNK);
+                }
                 buffer = (uint8_t*)FinaliseLargeTempBuffer(buffer, uncompressedLength);
                 return std::make_shared<SawyerChunk>((SAWYER_ENCODING)header.encoding, buffer, uncompressedLength);
             }
