@@ -149,7 +149,6 @@ struct paint_session
     paint_entry* EndOfPaintStructArray;
     paint_entry* NextFreePaintStruct;
     LocationXY16 SpritePosition;
-    paint_struct UnkF1A4CC;
     paint_struct* UnkF1AD28;
     attached_paint_struct* UnkF1AD2C;
     uint8_t InteractionType;
