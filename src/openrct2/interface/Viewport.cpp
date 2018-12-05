@@ -50,7 +50,6 @@ uint8_t gSavedViewRotation;
 
 paint_entry* gNextFreePaintStruct;
 uint8_t gCurrentRotation;
-uint32_t gCurrentViewportFlags = 0;
 
 static uint32_t _currentImageType;
 
@@ -906,8 +905,6 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left
 
 static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
-    gCurrentViewportFlags = viewFlags;
-
     if (viewFlags
         & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_CLIP_VIEW))
     {
@@ -919,10 +916,10 @@ static void viewport_paint_column(rct_drawpixelinfo* dpi, uint32_t viewFlags)
         gfx_clear(dpi, colour);
     }
 
-    paint_session* session = paint_session_alloc(dpi);
+    paint_session* session = paint_session_alloc(dpi, viewFlags);
     paint_session_generate(session);
     paint_session_arrange(session);
-    paint_draw_structs(session, viewFlags);
+    paint_draw_structs(session);
     paint_session_free(session);
 
     if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
@@ -1644,7 +1641,7 @@ void get_map_coordinates_from_pos_window(
             dpi->x = _viewportDpi1.x;
             dpi->width = 1;
 
-            paint_session* session = paint_session_alloc(dpi);
+            paint_session* session = paint_session_alloc(dpi, myviewport->flags);
             paint_session_generate(session);
             paint_session_arrange(session);
             sub_68862C(session);

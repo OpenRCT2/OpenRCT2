@@ -1199,7 +1199,7 @@ void vehicle_visual_mini_golf_player(
         return;
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
     {
         return;
     }
@@ -1232,7 +1232,7 @@ void vehicle_visual_mini_golf_ball(
         return;
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
     {
         return;
     }

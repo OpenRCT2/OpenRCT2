@@ -29,7 +29,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         return;
     }
 
-    if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
+    if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
     {
         return;
     }
@@ -46,7 +46,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         return;
     }
 
-    const bool highlightPathIssues = (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+    const bool highlightPathIssues = (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
     for (const rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL;
          sprite_idx = spr->generic.next_in_quadrant)
@@ -73,7 +73,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
-        if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW))
+        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
         {
             if (spr->generic.z > (gClipHeight * 8))
             {

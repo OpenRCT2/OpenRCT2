@@ -344,7 +344,7 @@ bool wooden_a_supports_paint_setup(
         *underground = false;
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
@@ -522,7 +522,7 @@ bool wooden_b_supports_paint_setup(
 {
     bool _9E32B1 = false;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         if (underground != nullptr)
             *underground = false; // AND
@@ -702,7 +702,7 @@ bool metal_a_supports_paint_setup(
 {
     support_height* supportSegments = session->SupportSegments;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
@@ -907,7 +907,7 @@ bool metal_b_supports_paint_setup(
     support_height* supportSegments = session->SupportSegments;
     uint8_t originalSegment = segment;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false; // AND
     }
@@ -1090,7 +1090,7 @@ bool path_a_supports_paint_setup(
         *underground = false; // AND
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false;
     }
@@ -1234,7 +1234,7 @@ bool path_b_supports_paint_setup(
 {
     support_height* supportSegments = session->SupportSegments;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
     {
         return false; // AND
     }

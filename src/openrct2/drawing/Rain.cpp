@@ -42,10 +42,15 @@ void DrawRain(rct_drawpixelinfo* dpi, IRainDrawer* rainDrawer)
 {
     if (gConfigGeneral.render_weather_effects)
     {
+        uint32_t viewFlags = 0;
+
+        rct_viewport* viewport = window_get_viewport(window_get_main());
+        if (viewport != nullptr)
+            viewFlags = viewport->flags;
+
         // Get rain draw function and draw rain
         uint32_t rainType = gClimateCurrent.RainLevel;
-        if (rainType != RAIN_LEVEL_NONE && !gTrackDesignSaveMode
-            && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+        if (rainType != RAIN_LEVEL_NONE && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             auto drawFunc = DrawRainFunctions[rainType];
             auto uiContext = GetContext()->GetUiContext();

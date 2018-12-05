@@ -680,7 +680,7 @@ static void viewport_surface_draw_tile_side_bottom(
             return;
     }
 
-    bool neighbourIsClippedAway = (gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW) && !tile_is_inside_clip_view(neighbour);
+    bool neighbourIsClippedAway = (session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && !tile_is_inside_clip_view(neighbour);
 
     if (neighbour.tile_element == nullptr || neighbourIsClippedAway)
     {
@@ -712,7 +712,7 @@ static void viewport_surface_draw_tile_side_bottom(
         edgeStyle = TERRAIN_EDGE_ROCK;
 
     uint32_t base_image_id = get_edge_image(edgeStyle, 0);
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+    if (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
         base_image_id = get_edge_image(edgeStyle, 1);
     }
@@ -921,7 +921,7 @@ static void viewport_surface_draw_tile_side_top(
     if (isWater)
     {
         base_image_id = get_edge_image(terrain, 2); // var_08
-        if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+        if (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         {
             base_image_id = get_edge_image(terrain, 1); // var_04
         }
@@ -929,7 +929,7 @@ static void viewport_surface_draw_tile_side_top(
     }
     else
     {
-        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+        if (!(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
             const uint8_t incline = (cl - al) + 1;
             const uint32_t image_id = get_edge_image(terrain, 3) + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
@@ -1076,7 +1076,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         descriptor.corner_heights.left = baseHeight + ch.left;
     }
 
-    if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0))
+    if ((session->ViewFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0))
     {
         const int16_t x = session->MapPosition.x;
         const int16_t y = session->MapPosition.y;
@@ -1102,7 +1102,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     }
     else
     {
-        const bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
+        const bool showGridlines = (session->ViewFlags & VIEWPORT_FLAG_GRIDLINES);
 
         int32_t branch = -1;
         if (tileElement->AsSurface()->GetSurfaceStyle() == TERRAIN_GRASS)
@@ -1111,7 +1111,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             {
                 if (zoomLevel == 0)
                 {
-                    if ((gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
+                    if ((session->ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
                     {
                         branch = tileElement->AsSurface()->GetGrassLength() & 0x7;
                     }
@@ -1149,7 +1149,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                     image_id = SPR_TERRAIN_TRACK_DESIGNER;
                 }
 
-                if (gCurrentViewportFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
+                if (session->ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
                 {
                     image_id &= 0xDC07FFFF; // remove colour
                     image_id |= 0x41880000;
@@ -1216,7 +1216,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
     // Draw Peep Spawns
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-        && gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+        && session->ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         const LocationXY16& pos = session->MapPosition;
         for (auto& spawn : gPeepSpawns)
@@ -1232,7 +1232,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         }
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+    if (session->ViewFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         // loc_660E9A:
         if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED)
@@ -1244,14 +1244,13 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         {
             const LocationXY16& pos = session->MapPosition;
             const int32_t height2 = (tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
-            paint_struct* backup = session->UnkF1AD28;
+            paint_struct* backup = session->LastRootPS;
             sub_98196C(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2);
-            session->UnkF1AD28 = backup;
+            session->LastRootPS = backup;
         }
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
-        && !(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
+    if (session->ViewFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS && !(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
     {
         if (tileElement->AsSurface()->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
         {
@@ -1262,9 +1261,9 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         {
             const LocationXY16& pos = session->MapPosition;
             const int32_t height2 = tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
-            paint_struct* backup = session->UnkF1AD28;
+            paint_struct* backup = session->LastRootPS;
             sub_98196C(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3);
-            session->UnkF1AD28 = backup;
+            session->LastRootPS = backup;
         }
     }
 
@@ -1339,9 +1338,9 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
                 const int32_t image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
-                paint_struct* backup = session->UnkF1AD28;
+                paint_struct* backup = session->LastRootPS;
                 sub_98196C(session, image_id, 0, 0, 32, 32, 1, local_height);
-                session->UnkF1AD28 = backup;
+                session->LastRootPS = backup;
             }
         }
     }
@@ -1369,8 +1368,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         }
     }
 
-    if (zoomLevel == 0 && has_surface && !(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.landscape_smoothing)
+    if (zoomLevel == 0 && has_surface && !(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+        && !(session->ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.landscape_smoothing)
     {
         viewport_surface_smoothen_edge(session, EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
         viewport_surface_smoothen_edge(session, EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
@@ -1378,7 +1377,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         viewport_surface_smoothen_edge(session, EDGE_BOTTOMRIGHT, tileDescriptors[0], tileDescriptors[2]);
     }
 
-    if ((gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
+    if ((session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) && !(session->ViewFlags & VIEWPORT_FLAG_HIDE_BASE)
         && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
         const uint8_t image_offset = byte_97B444[surfaceShape];
@@ -1391,7 +1390,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         paint_attach_to_previous_ps(session, image_id, 0, 0);
     }
 
-    if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
+    if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
         const uint32_t edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
         if (edgeStyle >= TERRAIN_EDGE_COUNT)

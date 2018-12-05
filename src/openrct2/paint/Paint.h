@@ -143,6 +143,7 @@ struct paint_session
     paint_entry PaintStructs[4000];
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     paint_struct PaintHead;
+    uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
     const void* CurrentlyDrawnItem;
@@ -223,12 +224,12 @@ void paint_floating_money_effect(
     paint_session* session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
     uint32_t rotation);
 
-paint_session* paint_session_alloc(rct_drawpixelinfo* dpi);
-void paint_session_free(paint_session*);
+paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
+void paint_session_free(paint_session* session);
 void paint_session_generate(paint_session* session);
 void paint_session_arrange(paint_session* session);
 paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation);
-void paint_draw_structs(paint_session* session, uint32_t viewFlags);
+void paint_draw_structs(paint_session* session);
 void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 
 // TESTING

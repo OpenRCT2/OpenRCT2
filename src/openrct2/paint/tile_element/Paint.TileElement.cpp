@@ -138,7 +138,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 {
     rct_drawpixelinfo* dpi = session->DPI;
 
-    if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW))
+    if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
         if (x / 32 < gClipSelectionA.x || x / 32 > gClipSelectionB.x)
             return;
@@ -245,7 +245,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     do
     {
         // Only paint tile_elements below the clip height.
-        if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->base_height > gClipHeight))
+        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->base_height > gClipHeight))
             continue;
 
         int32_t direction = tile_element->GetDirectionWithOffset(rotation);
@@ -366,7 +366,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             }
 
             // Only draw supports below the clipping height.
-            if ((gCurrentViewportFlags & VIEWPORT_FLAG_CLIP_VIEW) && (segmentHeight > gClipHeight))
+            if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (segmentHeight > gClipHeight))
                 continue;
 
             int32_t xOffset = sy * 10;

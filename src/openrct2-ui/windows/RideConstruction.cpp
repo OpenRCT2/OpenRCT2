@@ -2333,12 +2333,9 @@ static void sub_6CBCE2(
 {
     Ride* ride;
     const rct_preview_track* trackBlock;
-    int32_t preserve_current_viewport_flags;
     int32_t offsetX, offsetY;
 
-    paint_session* session = paint_session_alloc(dpi);
-    preserve_current_viewport_flags = gCurrentViewportFlags;
-    gCurrentViewportFlags = 0;
+    paint_session* session = paint_session_alloc(dpi, 0);
     trackDirection &= 3;
 
     ride = get_ride(rideIndex);
@@ -2450,10 +2447,8 @@ static void sub_6CBCE2(
     gMapSizeMaxXY = preserveMapSizeMaxXY;
 
     paint_session_arrange(session);
-    paint_draw_structs(session, gCurrentViewportFlags);
+    paint_draw_structs(session);
     paint_session_free(session);
-
-    gCurrentViewportFlags = preserve_current_viewport_flags;
 }
 
 /**

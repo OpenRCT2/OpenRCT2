@@ -221,7 +221,7 @@ static constexpr const boundbox s98E3C4[] = {
  */
 void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
 {
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         return;
     }

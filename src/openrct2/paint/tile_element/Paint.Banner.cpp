@@ -38,7 +38,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
 
-    if (dpi->zoom_level > 1 || gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (dpi->zoom_level > 1 || gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
     height -= 16;

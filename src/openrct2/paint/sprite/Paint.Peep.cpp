@@ -62,7 +62,7 @@ void peep_paint(paint_session* session, const rct_peep* peep, int32_t imageDirec
         return;
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
     {
         return;
     }

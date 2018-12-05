@@ -31,7 +31,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
 {
     uint8_t is_exit = tile_element->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
 
-    if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         if (tile_element->AsEntrance()->GetRideIndex() != gTrackDesignSaveRideIndex)
             return;
@@ -208,7 +208,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
  */
 static void park_entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
-    if (gTrackDesignSaveMode || (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
 #ifdef __ENABLE_LIGHTFX__
@@ -332,7 +332,7 @@ void entrance_paint(paint_session* session, uint8_t direction, int32_t height, c
 
     rct_drawpixelinfo* dpi = session->DPI;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS && dpi->zoom_level == 0)
+    if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS && dpi->zoom_level == 0)
     {
         if (entrance_get_directions(tile_element) & 0xF)
         {

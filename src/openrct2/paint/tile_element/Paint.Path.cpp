@@ -171,7 +171,7 @@ static void path_bit_bins_paint(
                 imageId += 8;
         }
 
-        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
+        if (!(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
             sub_98197C(session, imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2);
     }
     if (!(edges & EDGE_SE))
@@ -192,7 +192,7 @@ static void path_bit_bins_paint(
                 imageId += 8;
         }
 
-        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
+        if (!(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
             sub_98197C(session, imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2);
     }
 
@@ -214,7 +214,7 @@ static void path_bit_bins_paint(
                 imageId += 8;
         }
 
-        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
+        if (!(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
             sub_98197C(session, imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2);
     }
 
@@ -236,7 +236,7 @@ static void path_bit_bins_paint(
                 imageId += 8;
         }
 
-        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
+        if (!(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) || binIsFull || binsAreVandalised)
             sub_98197C(session, imageId, 16, 7, 1, 1, 7, height, 16, 7, height + 2);
     }
 }
@@ -697,7 +697,7 @@ static void sub_6A3F61(
                 if (sceneryEntry == nullptr)
                     return;
 
-                if ((gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+                if ((session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
                     && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)
                     && !(sceneryEntry->path_bit.draw_type == PATH_BIT_DRAW_TYPE_BINS))
                 {
@@ -815,7 +815,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         }
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         imageFlags = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
     }
@@ -911,7 +911,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         }
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS)
+    if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS)
     {
         uint16_t height2 = 3 + tile_element->base_height * 8;
         if (tile_element->AsPath()->IsSloped())
