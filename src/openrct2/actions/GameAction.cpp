@@ -253,10 +253,13 @@ namespace GameActions
                 {
                     NetworkPlayerId_t playerId = action->GetPlayer();
 
-                    network_set_player_last_action(network_get_player_index(playerId.id), action->GetType());
+                    int32_t playerIndex = network_get_player_index(playerId.id);
+                    Guard::Assert(playerIndex != -1);
+
+                    network_set_player_last_action(playerIndex, action->GetType());
                     if (result->Cost != 0)
                     {
-                        network_add_player_money_spent(playerId.id, result->Cost);
+                        network_add_player_money_spent(playerIndex, result->Cost);
                     }
                 }
             }
