@@ -554,7 +554,8 @@ static bool map_animation_invalidate_wall(int32_t x, int32_t y, int32_t baseZ)
 
         sceneryEntry = tileElement->AsWall()->GetEntry();
 
-        if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED) && sceneryEntry->wall.scrolling_mode == 255)
+        if (!sceneryEntry
+            || (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED) && sceneryEntry->wall.scrolling_mode == 255))
             continue;
 
         int32_t z = tileElement->base_height * 8;
