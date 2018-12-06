@@ -1559,6 +1559,12 @@ void InteractiveConsole::Execute(const std::string& s)
             end++;
         }
         size_t length = end - start - (size_t)countEscapeChars;
+
+        // Display error for trailing slash at the end of a token
+        if (inEscape) {
+            WriteLineError("[console] trailing slash on token is not allowed");
+            return;
+        }
         inEscape = false;
 
         if (length > 0)
