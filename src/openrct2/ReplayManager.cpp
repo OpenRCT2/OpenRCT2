@@ -428,7 +428,7 @@ namespace OpenRCT2
                 if (command.action != nullptr)
                 {
                     GameAction* action = command.action.get();
-                    action->SetFlags(action->GetFlags());
+                    action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
                     Guard::Assert(action != nullptr);
 
@@ -436,7 +436,8 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    game_do_command(command.eax, command.ebx, command.ecx, command.edx, command.esi, command.edi, command.ebp);
+                    uint32_t flags = command.ebx | GAME_COMMAND_FLAG_REPLAY;
+                    game_do_command(command.eax, flags, command.ecx, command.edx, command.esi, command.edi, command.ebp);
                 }
 
                 replayQueue.erase(replayQueue.begin());
