@@ -334,6 +334,49 @@ namespace OpenRCT2
             return true;
         }
 
+        bool SerialiseCommand(DataSerialiser& serialiser, ReplayCommand& command)
+        {
+            serialiser << command.tick;
+            serialiser << command.commandIndex;
+
+            bool isGameAction = false;
+            if (serialiser.IsSaving())
+            {
+                isGameAction = command.action != nullptr;
+            }
+            serialiser << isGameAction;
+
+            if (isGameAction)
+            {
+                uint32_t actionType = 0;
+                if (serialiser.IsSaving())
+                {
+                    actionType = command.action->GetType();
+                }
+                serialiser << actionType;
+
+                if (serialiser.IsLoading())
+                {
+                    command.action = GameActions::Create(actionType);
+                    Guard::Assert(command.action != nullptr);
+                }
+
+                command.action->Serialise(serialiser);
+            }
+            else
+            {
+                serialiser << command.eax;
+                serialiser << command.ebx;
+                serialiser << command.ecx;
+                serialiser << command.edx;
+                serialiser << command.esi;
+                serialiser << command.edi;
+                serialiser << command.ebp;
+                serialiser << command.callback;
+            }
+            return true;
+        }
+
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)
         {
             serialiser << data.name;
@@ -348,31 +391,7 @@ namespace OpenRCT2
             {
                 for (auto& command : data.commands)
                 {
-                    serialiser << command.tick;
-                    serialiser << command.commandIndex;
-                    if (command.action != nullptr)
-                    {
-                        bool isGameAction = true;
-                        serialiser << isGameAction;
-
-                        uint32_t actionType = command.action->GetType();
-                        serialiser << actionType;
-                        command.action->Serialise(serialiser);
-                    }
-                    else
-                    {
-                        bool isGameAction = false;
-                        serialiser << isGameAction;
-
-                        serialiser << command.eax;
-                        serialiser << command.ebx;
-                        serialiser << command.ecx;
-                        serialiser << command.edx;
-                        serialiser << command.esi;
-                        serialiser << command.edi;
-                        serialiser << command.ebp;
-                        serialiser << command.callback;
-                    }
+                    SerialiseCommand(serialiser, const_cast<ReplayCommand&>(command));
                 }
             }
             else
@@ -380,33 +399,7 @@ namespace OpenRCT2
                 for (uint32_t i = 0; i < countCommands; i++)
                 {
                     ReplayCommand command = {};
-                    serialiser << command.tick;
-                    serialiser << command.commandIndex;
-
-                    bool isGameAction = false;
-                    serialiser << isGameAction;
-
-                    if (isGameAction)
-                    {
-                        uint32_t actionType = 0;
-                        serialiser << actionType;
-
-                        command.action = GameActions::Create(actionType);
-                        Guard::Assert(command.action != nullptr);
-
-                        command.action->Serialise(serialiser);
-                    }
-                    else
-                    {
-                        serialiser << command.eax;
-                        serialiser << command.ebx;
-                        serialiser << command.ecx;
-                        serialiser << command.edx;
-                        serialiser << command.esi;
-                        serialiser << command.edi;
-                        serialiser << command.ebp;
-                        serialiser << command.callback;
-                    }
+                    SerialiseCommand(serialiser, command);
 
                     data.commands.emplace(std::move(command));
                 }
@@ -418,6 +411,13 @@ namespace OpenRCT2
         void ReplayCommands()
         {
             auto& replayQueue = _current->commands;
+
+            // If we run out of commands we can stop the replay.
+            if (replayQueue.empty())
+            {
+                StopPlayback();
+                return;
+            }
 
             while (replayQueue.begin() != replayQueue.end())
             {
