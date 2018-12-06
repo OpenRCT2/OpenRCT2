@@ -12,13 +12,13 @@
 #include "Context.h"
 #include "Game.h"
 #include "OpenRCT2.h"
+#include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "actions/GameAction.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "openrct2/ParkImporter.h"
 #include "rct2/S6Exporter.h"
 
 #include <vector>
@@ -81,7 +81,7 @@ namespace OpenRCT2
         std::multiset<ReplayCommand> commands;
     };
 
-    class ReplayManager : public IReplayManager
+    class ReplayManager final : public IReplayManager
     {
         enum class ReplayMode
         {
