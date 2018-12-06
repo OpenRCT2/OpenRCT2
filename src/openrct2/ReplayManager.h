@@ -22,6 +22,8 @@ namespace OpenRCT2
     interface IReplayManager
     {
     public:
+        virtual ~IReplayManager() = default;
+
         virtual void Update() = 0;
         virtual bool IsReplaying() const = 0;
 
