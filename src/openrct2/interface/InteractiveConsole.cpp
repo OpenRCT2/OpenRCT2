@@ -1569,7 +1569,7 @@ void InteractiveConsole::Execute(const std::string& s)
 
         if (length > 0)
         {
-            utf8* arg = (utf8*)malloc(length - countEscapeChars + 1);
+            utf8* arg = (utf8*)malloc(length - (size_t)countEscapeChars + 1);
 
             size_t escapeOffset = 0;
 
