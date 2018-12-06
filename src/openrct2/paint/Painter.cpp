@@ -12,6 +12,7 @@
 #include "../Game.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
+#include "../ReplayManager.h"
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
@@ -57,11 +58,47 @@ void Painter::Paint(IDrawingEngine& de)
         de.PaintRain();
     }
 
+    auto* replayManager = GetContext()->GetReplayManager();
+    if (replayManager != nullptr)
+    {
+        if (replayManager->IsReplaying())
+            PaintReplayNotice(dpi, false);
+        else if (replayManager->IsRecording())
+            PaintReplayNotice(dpi, true);
+    }
+
     if (gConfigGeneral.show_fps)
     {
         PaintFPS(dpi);
     }
     gCurrentDrawCount++;
+}
+
+void OpenRCT2::Paint::Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, bool isRecording)
+{
+    int32_t x = _uiContext->GetWidth() / 2;
+    int32_t y = _uiContext->GetHeight() - 24;
+
+    // Format string
+    utf8 buffer[64] = { 0 };
+    utf8* ch = buffer;
+    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
+    ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
+    ch = utf8_write_codepoint(ch, FORMAT_RED);
+
+    if (isRecording)
+        snprintf(ch, 64 - (ch - buffer), "Recording...");
+    else
+        snprintf(ch, 64 - (ch - buffer), "Replaying...");
+
+    int32_t stringWidth = gfx_get_string_width(buffer);
+    x = x - stringWidth;
+
+    if (((gCurrentTicks >> 1) & 0xF) > 4)
+        gfx_draw_string(dpi, buffer, COLOUR_SATURATED_RED, x, y);
+
+    // Make area dirty so the text doesn't get drawn over the last
+    gfx_set_dirty_blocks(x, y, x + stringWidth, y + 16);
 }
 
 void Painter::PaintFPS(rct_drawpixelinfo* dpi)
