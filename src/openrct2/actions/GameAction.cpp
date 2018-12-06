@@ -200,6 +200,23 @@ namespace GameActions
         uint16_t actionFlags = action->GetActionFlags();
         uint32_t flags = action->GetFlags();
 
+        auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+        if (replayManager != nullptr && replayManager->IsReplaying())
+        {
+            // We only accept replay commands as long the replay is active.
+            if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
+            {
+                // TODO: Introduce proper error.
+                GameActionResult::Ptr result = std::make_unique<GameActionResult>();
+
+                result->Error = GA_ERROR::GAME_PAUSED;
+                result->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+                result->ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+
+                return result;
+            }
+        }
+
         GameActionResult::Ptr result = Query(action);
         if (result->Error == GA_ERROR::OK)
         {
@@ -265,7 +282,6 @@ namespace GameActions
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)
                 {
-                    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
                     if (replayManager != nullptr && replayManager->IsRecording())
                     {
                         replayManager->AddGameAction(gCurrentTicks, action);

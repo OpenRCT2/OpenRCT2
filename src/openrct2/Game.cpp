@@ -388,6 +388,18 @@ int32_t game_do_command_p(
 
     flags = *ebx;
 
+    auto* replayManager = GetContext()->GetReplayManager();
+    if (replayManager != nullptr && replayManager->IsReplaying())
+    {
+        // We only accept replay commands as long the replay is active.
+        if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
+        {
+            // TODO: Introduce proper error.
+            gGameCommandErrorText = STR_CHEAT_BUILD_IN_PAUSE_MODE;
+            return MONEY32_UNDEFINED;
+        }
+    }
+
     if (gGameCommandNestLevel == 0)
     {
         gGameCommandErrorText = STR_NONE;
@@ -473,7 +485,6 @@ int32_t game_do_command_p(
             // Second call to actually perform the operation
             new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
-            auto* replayManager = GetContext()->GetReplayManager();
             if (replayManager != nullptr && replayManager->IsRecording() && (flags & GAME_COMMAND_FLAG_APPLY)
                 && (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_5) == 0)
             {
@@ -544,7 +555,9 @@ int32_t game_do_command_p(
     // Show error window
     if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740
         && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+    {
         context_show_error(gGameCommandErrorTitle, gGameCommandErrorText);
+    }
 
     return MONEY32_UNDEFINED;
 }
