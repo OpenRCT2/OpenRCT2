@@ -56,13 +56,13 @@ public:
         if (!_isLogging)
         {
             if (_isSaving)
-                DataSerializerTraits<T>::encode(_activeStream, const_cast<T&>(data));
+                DataSerializerTraits<T>::encode(_activeStream, data);
             else
                 DataSerializerTraits<T>::decode(_activeStream, const_cast<T&>(data));
         }
         else
         {
-            DataSerializerTraits<T>::log(_activeStream, const_cast<T&>(data));
+            DataSerializerTraits<T>::log(_activeStream, data);
         }
 
         return *this;

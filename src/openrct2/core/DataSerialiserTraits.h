@@ -40,7 +40,7 @@ template<typename T> struct DataSerializerTraitsIntegral
         stream->Read(&temp);
         val = ByteSwapBE(temp);
     }
-    static void log(IStream* stream, T& val)
+    static void log(IStream* stream, const T& val)
     {
         char temp[32] = {};
         if constexpr (sizeof(T) == 1)
@@ -68,7 +68,7 @@ template<> struct DataSerializerTraits<bool>
     {
         stream->Read(&val);
     }
-    static void log(IStream* stream, bool& val)
+    static void log(IStream* stream, const bool& val)
     {
         if (val)
             stream->Write("true", 4);
@@ -142,7 +142,7 @@ template<> struct DataSerializerTraits<NetworkPlayerId_t>
         stream->Read(&temp);
         val.id = ByteSwapBE(temp);
     }
-    static void log(IStream* stream, NetworkPlayerId_t& val)
+    static void log(IStream* stream, const NetworkPlayerId_t& val)
     {
         char playerId[28] = {};
         snprintf(playerId, sizeof(playerId), "%u", val.id);
@@ -176,7 +176,7 @@ template<> struct DataSerializerTraits<NetworkRideId_t>
         stream->Read(&temp);
         val.id = ByteSwapBE(temp);
     }
-    static void log(IStream* stream, NetworkRideId_t& val)
+    static void log(IStream* stream, const NetworkRideId_t& val)
     {
         char rideId[28] = {};
         snprintf(rideId, sizeof(rideId), "%u", val.id);
@@ -208,7 +208,7 @@ template<typename T> struct DataSerializerTraits<DataSerialiserTag<T>>
         DataSerializerTraits<T> s;
         s.decode(stream, tag.Data());
     }
-    static void log(IStream* stream, DataSerialiserTag<T>& tag)
+    static void log(IStream* stream, const DataSerialiserTag<T>& tag)
     {
         const char* name = tag.Name();
         stream->Write(name, strlen(name));
@@ -242,7 +242,7 @@ template<> struct DataSerializerTraits<MemoryStream>
 
         val.Write(buf.get(), length);
     }
-    static void log(IStream* stream, MemoryStream& tag)
+    static void log(IStream* stream, const MemoryStream& tag)
     {
     }
 };
