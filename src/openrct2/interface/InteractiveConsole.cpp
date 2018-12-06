@@ -1517,9 +1517,15 @@ void InteractiveConsole::Execute(const std::string& s)
     utf8** argv = (utf8**)malloc(argvCapacity * sizeof(utf8*));
     const utf8* start = s.c_str();
     const utf8* end;
+
+    // Token parse state
     bool inQuotes = false;
-    do
+    bool inEscape = false;
+    int32_t countEscapeChars = 0;
+
+    do // one token each iteration
     {
+        inEscape = false;
         while (*start == ' ')
             start++;
 
@@ -1536,18 +1542,46 @@ void InteractiveConsole::Execute(const std::string& s)
         end = start;
         while (*end != 0)
         {
+            if (inEscape) {
+                end++;
+                // incrementing countEscapeChars here allows a trailing slash
+                // at the end of a token.
+                countEscapeChars++;
+                inEscape = false;
+                continue;
+            }
+            if (*end == '\\')
+                inEscape = true;
             if (*end == ' ' && !inQuotes)
                 break;
-            if (*end == '"' && inQuotes)
+            if (*end == '"' && inQuotes && !inEscape)
                 break;
             end++;
         }
-        size_t length = end - start;
+        size_t length = end - start - (size_t)countEscapeChars;
+        inEscape = false;
 
         if (length > 0)
         {
-            utf8* arg = (utf8*)malloc(length + 1);
-            memcpy(arg, start, length);
+            utf8* arg = (utf8*)malloc(length - countEscapeChars + 1);
+
+            size_t escapeOffset = 0;
+
+            const utf8* nextSegment = start;
+            for (const utf8* cur = start; cur <= end; cur++) {
+                if (cur == end || (*cur == '\\' && !inEscape)) {
+                    inEscape = true;
+                    // if (cur != end) continue;
+                    // Copy section of memory at interval [last escape, here-1]
+                    size_t cpyStart = (nextSegment - start) - escapeOffset;
+                    size_t cpyLen  = cur - nextSegment;
+                    memcpy(arg + cpyStart, nextSegment, cpyLen);
+                    escapeOffset++;
+                    nextSegment = cur+1;
+                } else {
+                    inEscape = false;
+                }
+            }
             arg[length] = 0;
 
             if (argc >= argvCapacity)
