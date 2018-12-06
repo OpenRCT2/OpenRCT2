@@ -10,6 +10,7 @@
 #include "GameAction.h"
 
 #include "../Context.h"
+#include "../ReplayManager.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
@@ -247,9 +248,9 @@ namespace GameActions
                 money_effect_create(result->Cost);
             }
 
-            if (!(actionFlags & GA_FLAGS::CLIENT_ONLY))
+            if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)
             {
-                if (network_get_mode() == NETWORK_MODE_SERVER && result->Error == GA_ERROR::OK)
+                if (network_get_mode() == NETWORK_MODE_SERVER)
                 {
                     NetworkPlayerId_t playerId = action->GetPlayer();
 
@@ -260,6 +261,14 @@ namespace GameActions
                     if (result->Cost != 0)
                     {
                         network_add_player_money_spent(playerIndex, result->Cost);
+                    }
+                }
+                else if (network_get_mode() == NETWORK_MODE_NONE)
+                {
+                    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+                    if (replayManager != nullptr && replayManager->IsRecording())
+                    {
+                        replayManager->AddGameAction(gCurrentTicks, action);
                     }
                 }
             }

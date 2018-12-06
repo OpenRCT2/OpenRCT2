@@ -13,6 +13,7 @@
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/ClimateSetAction.hpp"
 #include "../config/Config.h"
@@ -1332,6 +1333,111 @@ static int32_t cc_say(InteractiveConsole& console, const utf8** argv, int32_t ar
     }
 }
 
+static int32_t cc_replay_startrecord(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    if (argc < 1)
+    {
+        console.WriteFormatLine("Parameters required <replay_name> [<max_ticks = 0xFFFFFFFF>]");
+        return 0;
+    }
+
+    std::string name = argv[0];
+    uint32_t maxTicks = 0xFFFFFFFF;
+    if (argc >= 2)
+    {
+        maxTicks = atol(argv[1]);
+    }
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager != nullptr)
+    {
+        if (replayManager->StartRecording(name, maxTicks))
+        {
+            console.WriteFormatLine("Replay recording start");
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+static int32_t cc_replay_stoprecord(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager != nullptr)
+    {
+        if (replayManager->StopRecording())
+        {
+            console.WriteFormatLine("Replay recording stopped");
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+static int32_t cc_replay_start(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    if (argc < 1)
+    {
+        console.WriteFormatLine("Parameters required <replay_name>");
+        return 0;
+    }
+
+    std::string name = argv[0];
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager != nullptr)
+    {
+        if (replayManager->StartPlayback(name))
+        {
+            console.WriteFormatLine("Started replay");
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+static int32_t cc_replay_stop(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager != nullptr)
+    {
+        if (replayManager->StopPlayback())
+        {
+            console.WriteFormatLine("Stopped replay");
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
 static int32_t cc_abort(
@@ -1451,6 +1557,10 @@ static constexpr const console_command console_command_table[] = {
     { "twitch", cc_twitch, "Twitch API", "twitch" },
     { "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
     { "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
+    { "replay_startrecord", cc_replay_startrecord, "Starts recording a new replay.", "replay_startrecord <name> [max_ticks]"},
+    { "replay_stoprecord", cc_replay_stoprecord, "Stops recording a new replay.", "replay_stoprecord"},
+    { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
+    { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
 };
 // clang-format on
 

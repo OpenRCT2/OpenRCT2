@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/MemoryStream.h"
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
@@ -217,5 +218,31 @@ template<typename T> struct DataSerializerTraits<DataSerialiserTag<T>>
         s.log(stream, tag.Data());
 
         stream->Write("; ", 2);
+    }
+};
+
+template<> struct DataSerializerTraits<MemoryStream>
+{
+    static void encode(IStream* stream, const MemoryStream& val)
+    {
+        DataSerializerTraits<uint32_t> s;
+        s.encode(stream, val.GetLength());
+
+        stream->Write(val.GetData(), val.GetLength());
+    }
+    static void decode(IStream* stream, MemoryStream& val)
+    {
+        DataSerializerTraits<uint32_t> s;
+
+        uint32_t length = 0;
+        s.decode(stream, length);
+
+        std::unique_ptr<uint8_t[]> buf(new uint8_t[length]);
+        stream->Read(buf.get(), length);
+
+        val.Write(buf.get(), length);
+    }
+    static void log(IStream* stream, MemoryStream& tag)
+    {
     }
 };

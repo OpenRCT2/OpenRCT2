@@ -64,7 +64,9 @@ enum
 namespace OpenRCT2
 {
     class GameState;
+
     interface IPlatformEnvironment;
+    interface IReplayManager;
 
     namespace Audio
     {
@@ -102,6 +104,7 @@ namespace OpenRCT2
         virtual IObjectRepository& GetObjectRepository() abstract;
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
+        virtual IReplayManager* GetReplayManager() abstract;
         virtual int32_t GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
 

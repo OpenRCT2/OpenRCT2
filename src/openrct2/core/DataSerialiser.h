@@ -51,18 +51,18 @@ public:
         return _stream;
     }
 
-    template<typename T> DataSerialiser& operator<<(T& data)
+    template<typename T> DataSerialiser& operator<<(const T& data)
     {
         if (!_isLogging)
         {
             if (_isSaving)
-                DataSerializerTraits<T>::encode(_activeStream, data);
+                DataSerializerTraits<T>::encode(_activeStream, const_cast<T&>(data));
             else
-                DataSerializerTraits<T>::decode(_activeStream, data);
+                DataSerializerTraits<T>::decode(_activeStream, const_cast<T&>(data));
         }
         else
         {
-            DataSerializerTraits<T>::log(_activeStream, data);
+            DataSerializerTraits<T>::log(_activeStream, const_cast<T&>(data));
         }
 
         return *this;

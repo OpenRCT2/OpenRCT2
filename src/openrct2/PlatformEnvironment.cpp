@@ -220,6 +220,7 @@ const char * PlatformEnvironment::DirectoryNamesOpenRCT2[] =
     "themes",               // THEME
     "track",                // TRACK
     "heightmap",            // HEIGHTMAP
+    "replay",               // REPLAY
 };
 
 const char * PlatformEnvironment::FileNames[] =
