@@ -1559,6 +1559,9 @@ void InteractiveConsole::Execute(const std::string& s)
             argc++;
         }
 
+        // Move ahead to prevent next token from being interpreted as quoted
+        if (inQuotes) end++;
+
         start = end;
     } while (*end != 0);
 
