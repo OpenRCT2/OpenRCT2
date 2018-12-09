@@ -30,7 +30,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "10"
+#define NETWORK_STREAM_VERSION "11"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static rct_peep* _pickup_peep = nullptr;
@@ -121,7 +121,9 @@ public:
     uint8_t GetPlayerID();
     void Update();
     void Flush();
-    void ProcessGameCommandQueue();
+    void ProcessPending();
+    void ProcessPlayerList();
+    void ProcessGameCommands();
     void EnqueueGameAction(const GameAction* action);
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
     NetworkPlayer* GetPlayerByID(uint8_t id);
@@ -260,6 +262,20 @@ private:
             return commandIndex < comp.commandIndex;
         }
     };
+
+    struct PlayerListUpdate
+    {
+        uint32_t tick = 0;
+        std::vector<NetworkPlayer> players;
+
+        void reset()
+        {
+            tick = 0;
+            players.clear();
+        }
+    };
+
+    PlayerListUpdate _pendingPlayerList;
 
     int32_t mode = NETWORK_MODE_NONE;
     int32_t status = NETWORK_STATUS_NONE;
@@ -1623,7 +1639,7 @@ void Network::Server_Send_TICK()
 void Network::Server_Send_PLAYERLIST()
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << (uint32_t)NETWORK_COMMAND_PLAYERLIST << (uint8_t)player_list.size();
+    *packet << (uint32_t)NETWORK_COMMAND_PLAYERLIST << gCurrentTicks << (uint8_t)player_list.size();
     for (auto& player : player_list)
     {
         player->Write(*packet);
@@ -1806,7 +1822,57 @@ void Network::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet
     packet.Clear();
 }
 
-void Network::ProcessGameCommandQueue()
+void Network::ProcessPending()
+{
+    ProcessGameCommands();
+    ProcessPlayerList();
+}
+
+void Network::ProcessPlayerList()
+{
+    if (_pendingPlayerList.tick == 0 || _pendingPlayerList.tick < gCurrentTicks)
+    {
+        return;
+    }
+
+    // List of active players found in the list.
+    std::vector<uint8_t> activePlayerIds;
+
+    for (auto&& pendingPlayer : _pendingPlayerList.players)
+    {
+        activePlayerIds.push_back(pendingPlayer.Id);
+        if (!GetPlayerByID(pendingPlayer.Id))
+        {
+            NetworkPlayer* player = AddPlayer("", "");
+            if (player)
+            {
+                *player = pendingPlayer;
+                if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
+                {
+                    server_connection->Player = player;
+                }
+            }
+        }
+    }
+
+    // Remove any players that are not in newly received list
+    auto it = player_list.begin();
+    while (it != player_list.end())
+    {
+        if (std::find(activePlayerIds.begin(), activePlayerIds.end(), (*it)->Id) == activePlayerIds.end())
+        {
+            it = player_list.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+
+    _pendingPlayerList.reset();
+}
+
+void Network::ProcessGameCommands()
 {
     while (game_command_queue.begin() != game_command_queue.end())
     {
@@ -2197,6 +2263,8 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         player_name = (const char*)playerNameHash.c_str();
         format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &player_name);
         AppendServerLog(text);
+
+        Server_Send_PLAYERLIST();
     }
 }
 
@@ -2289,7 +2357,7 @@ void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
 
     const char* player_name = (const char*)connection.Player->Name.c_str();
     Server_Send_MAP(&connection);
-    gNetwork.Server_Send_EVENT_PLAYER_JOINED(player_name);
+    Server_Send_EVENT_PLAYER_JOINED(player_name);
     Server_Send_GROUPLIST(connection);
     Server_Send_PLAYERLIST();
 }
@@ -2820,39 +2888,19 @@ void Network::Client_Handle_TICK([[maybe_unused]] NetworkConnection& connection,
 
 void Network::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
+    uint32_t tick;
     uint8_t size;
-    packet >> size;
-    std::vector<uint8_t> ids;
+    packet >> tick >> size;
+
+    _pendingPlayerList.reset();
+    _pendingPlayerList.tick = tick;
+
     for (uint32_t i = 0; i < size; i++)
     {
         NetworkPlayer tempplayer;
         tempplayer.Read(packet);
-        ids.push_back(tempplayer.Id);
-        if (!GetPlayerByID(tempplayer.Id))
-        {
-            NetworkPlayer* player = AddPlayer("", "");
-            if (player)
-            {
-                *player = tempplayer;
-                if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
-                {
-                    server_connection->Player = player;
-                }
-            }
-        }
-    }
-    // Remove any players that are not in newly received list
-    auto it = player_list.begin();
-    while (it != player_list.end())
-    {
-        if (std::find(ids.begin(), ids.end(), (*it)->Id) == ids.end())
-        {
-            it = player_list.erase(it);
-        }
-        else
-        {
-            it++;
-        }
+
+        _pendingPlayerList.players.push_back(tempplayer);
     }
 }
 
@@ -3030,9 +3078,9 @@ void network_update()
     gNetwork.Update();
 }
 
-void network_process_game_commands()
+void network_process_pending()
 {
-    gNetwork.ProcessGameCommandQueue();
+    gNetwork.ProcessPending();
 }
 
 void network_flush()
@@ -3859,7 +3907,7 @@ void network_send_map()
 void network_update()
 {
 }
-void network_process_game_commands()
+void network_process_pending()
 {
 }
 int32_t network_begin_client(const char* host, int32_t port)
