@@ -540,8 +540,13 @@ int32_t game_do_command_p(
 void game_log_multiplayer_command(int command, const int* eax, const int* ebx, const int* ecx, int* edx, int* edi, int* ebp)
 {
     // Get player name
+    const char* player_name = "localhost";
+
     int player_index = network_get_player_index(game_command_playerid);
-    const char* player_name = network_get_player_name(player_index);
+    if (player_index != -1)
+    {
+        player_name = network_get_player_name(player_index);
+    }
 
     char log_msg[256];
     if (command == GAME_COMMAND_CHEAT)
