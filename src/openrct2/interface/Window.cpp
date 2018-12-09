@@ -1470,7 +1470,7 @@ void window_event_update_call(rct_window* w)
 
 void window_event_unknown_07_call(rct_window* w)
 {
-    if (w->event_handlers->unknown_07 != nullptr)
+    if (w != nullptr && w->event_handlers->unknown_07 != nullptr)
         w->event_handlers->unknown_07(w);
 }
 
