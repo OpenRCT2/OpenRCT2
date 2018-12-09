@@ -862,6 +862,7 @@ namespace OpenRCT2
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
                 _drawingEngine->EndDraw();
+                _drawingEngine->UpdateWindows();
             }
         }
 
@@ -909,6 +910,12 @@ namespace OpenRCT2
                 _drawingEngine->EndDraw();
 
                 sprite_position_tween_restore();
+
+                // Note: It's important to call UpdateWindows after restoring the sprite positions, not in between,
+                // otherwise the window updates to positions of sprites could be reverted.
+                // This can be observed when changing ride settings using the mouse wheel that removes all
+                // vehicles and peeps from the ride: it can freeze the game.
+                _drawingEngine->UpdateWindows();
             }
         }
 

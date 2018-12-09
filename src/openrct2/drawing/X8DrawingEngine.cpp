@@ -224,8 +224,10 @@ void X8DrawingEngine::PaintWindows()
     DrawAllDirtyBlocks();
     window_update_all_viewports();
     DrawAllDirtyBlocks();
+}
 
-    // TODO move this out from drawing
+void X8DrawingEngine::UpdateWindows()
+{
     window_update_all();
 }
 

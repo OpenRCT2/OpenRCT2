@@ -61,6 +61,7 @@ namespace OpenRCT2::Drawing
         virtual void BeginDraw() abstract;
         virtual void EndDraw() abstract;
         virtual void PaintWindows() abstract;
+        virtual void UpdateWindows() abstract;
         virtual void PaintRain() abstract;
         virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
         virtual int32_t Screenshot() abstract;
