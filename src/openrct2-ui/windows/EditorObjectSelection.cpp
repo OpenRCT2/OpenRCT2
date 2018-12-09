@@ -86,7 +86,7 @@ struct ObjectPageDesc
     bool IsAdvanced;
 };
 
-static constexpr const ObjectPageDesc ObjectSelectionPages[OBJECT_TYPE_COUNT] = {
+static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS,   SPR_TAB_RIDE_16,            false },
     { STR_OBJECT_SELECTION_SMALL_SCENERY,               SPR_TAB_SCENERY_TREES,      true  },
     { STR_OBJECT_SELECTION_LARGE_SCENERY,               SPR_TAB_SCENERY_URBAN,      true  },
@@ -97,11 +97,15 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[OBJECT_TYPE_COUNT] = 
     { STR_OBJECT_SELECTION_SCENERY_GROUPS,              SPR_TAB_SCENERY_STATUES,    false },
     { STR_OBJECT_SELECTION_PARK_ENTRANCE,               SPR_TAB_PARK,               false },
     { STR_OBJECT_SELECTION_WATER,                       SPR_TAB_WATER,              false },
-    { STR_OBJECT_SELECTION_SCENARIO_DESCRIPTION,        SPR_TAB_STATS,              false },
-    { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            false },
-    { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TAB_LAND,            false },
-    { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               false },
-    { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
+
+    // No longer supported:
+    // { STR_OBJECT_SELECTION_SCENARIO_DESCRIPTION,        SPR_TAB_STATS,              false },
+
+    // Currently hidden until new save format arrives:
+    // { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            false },
+    // { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TAB_LAND,            false },
+    // { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               false },
+    // { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
 };
 
 #pragma region Widgets
@@ -782,7 +786,7 @@ static void window_editor_object_selection_scroll_mouseover(rct_window* w, int32
  */
 static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
 {
-    if (widgetIndex >= WIDX_TAB_1 && widgetIndex < WIDX_TAB_1 + OBJECT_TYPE_COUNT)
+    if (widgetIndex >= WIDX_TAB_1 && widgetIndex < WIDX_TAB_1 + std::size(ObjectSelectionPages))
     {
         set_format_arg(0, rct_string_id, ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
     }
@@ -842,7 +846,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     // Align tabs, hide advanced ones
     bool advancedMode = (w->list_information_type & 1) != 0;
     int32_t x = 3;
-    for (int32_t i = 0; i < OBJECT_TYPE_COUNT; i++)
+    for (int32_t i = 0; i < std::size(ObjectSelectionPages); i++)
     {
         auto widget = &w->widgets[WIDX_TAB_1 + i];
         if (!advancedMode && ObjectSelectionPages[i].IsAdvanced)
@@ -956,7 +960,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     window_draw_widgets(w, dpi);
 
     // Draw tabs
-    for (i = 0; i < OBJECT_TYPE_COUNT; i++)
+    for (i = 0; i < std::size(ObjectSelectionPages); i++)
     {
         widget = &w->widgets[WIDX_TAB_1 + i];
         if (widget->type != WWT_EMPTY)
