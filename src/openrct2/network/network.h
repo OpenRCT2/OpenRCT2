@@ -39,7 +39,7 @@ int32_t network_get_status();
 void network_check_desynchronization();
 void network_send_tick();
 void network_update();
-void network_process_game_commands();
+void network_process_pending();
 void network_flush();
 
 int32_t network_get_authstatus();
