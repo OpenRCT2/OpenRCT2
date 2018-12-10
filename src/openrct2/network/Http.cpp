@@ -82,7 +82,7 @@ namespace OpenRCT2::Network::Http
             size_t copy_this_much = wt->sizeleft;
             if (copy_this_much > buffer_size)
                 copy_this_much = buffer_size;
-            memcpy(dst, wt->readptr, copy_this_much);
+            std::memcpy(dst, wt->readptr, copy_this_much);
 
             wt->readptr += copy_this_much;
             wt->sizeleft -= copy_this_much;
@@ -212,7 +212,7 @@ namespace OpenRCT2::Network::Http
             return 0;
         }
 
-        memcpy(data, res.body.c_str(), dataSize);
+        std::memcpy(data, res.body.c_str(), dataSize);
         *outData = data;
 
         return dataSize;

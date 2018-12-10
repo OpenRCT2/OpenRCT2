@@ -27,7 +27,9 @@ misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
 
+#    include <algorithm>
 #    include <cmath>
+#    include <cstring>
 #    include <stdio.h>
 #    include <stdlib.h>
 #    include <string.h>
@@ -236,7 +238,7 @@ static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, 
     for (line = height; line > 0 && dst < dst_check; --line)
     {
         /* 1 because 0 is the bg color */
-        memset(dst, 1, textbuf->w);
+        std::fill_n(dst, textbuf->w, 0x01);
         dst += textbuf->pitch;
     }
 }
@@ -257,7 +259,7 @@ static void TTF_drawLine_Shaded(const TTF_Font* font, const TTFSurface* textbuf,
     /* Draw line */
     for (line = height; line > 0 && dst < dst_check; --line)
     {
-        memset(dst, NUM_GRAYS - 1, textbuf->w);
+        std::fill_n(dst, textbuf->w, NUM_GRAYS - 1);
         dst += textbuf->pitch;
     }
 }
@@ -388,7 +390,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         }
         return NULL;
     }
-    memset(font, 0, sizeof(*font));
+    std::fill_n((uint8_t*)font, sizeof(*font), 0x00);
 
     font->src = src;
     font->freesrc = freesrc;
@@ -400,7 +402,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         TTF_CloseFont(font);
         return NULL;
     }
-    memset(stream, 0, sizeof(*stream));
+    std::fill_n((uint8_t*)stream, sizeof(*stream), 0x00);
 
     stream->read = RWread;
     stream->descriptor.pointer = src;
@@ -702,7 +704,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
         {
             dst = &cached->pixmap;
         }
-        memcpy(dst, src, sizeof(*dst));
+        std::memcpy(dst, src, sizeof(*dst));
 
         /* FT_Render_Glyph() and .fon fonts always generate a
          * two-color (black and white) glyphslot surface, even
@@ -748,7 +750,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
             {
                 return FT_Err_Out_Of_Memory;
             }
-            memset(dst->buffer, 0, dst->pitch * dst->rows);
+            std::fill_n(dst->buffer, dst->pitch * dst->rows, 0x00);
 
             for (i = 0; i < src->rows; i++)
             {
@@ -894,7 +896,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
                 }
                 else
                 {
-                    memcpy(dst->buffer + doffset, src->buffer + soffset, src->pitch);
+                    std::memcpy(dst->buffer + doffset, src->buffer + soffset, src->pitch);
                 }
             }
         }

@@ -66,7 +66,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
             if (_consoleHistoryIndex > 0)
             {
                 _consoleHistoryIndex--;
-                memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
+                std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
             }
             _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
             _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
@@ -76,7 +76,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
             if (_consoleHistoryIndex < _consoleHistoryCount - 1)
             {
                 _consoleHistoryIndex++;
-                memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
+                std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
                 _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
                 _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
                 _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
@@ -118,10 +118,10 @@ void InGameConsole::HistoryAdd(const utf8* src)
     if (_consoleHistoryCount >= CONSOLE_HISTORY_SIZE)
     {
         for (int32_t i = 0; i < _consoleHistoryCount - 1; i++)
-            memcpy(_consoleHistory[i], _consoleHistory[i + 1], CONSOLE_INPUT_SIZE);
+            std::memcpy(_consoleHistory[i], _consoleHistory[i + 1], CONSOLE_INPUT_SIZE);
         _consoleHistoryCount--;
     }
-    memcpy(_consoleHistory[_consoleHistoryCount++], src, CONSOLE_INPUT_SIZE);
+    std::memcpy(_consoleHistory[_consoleHistoryCount++], src, CONSOLE_INPUT_SIZE);
     _consoleHistoryIndex = _consoleHistoryCount;
 }
 

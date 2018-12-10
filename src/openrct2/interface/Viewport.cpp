@@ -261,7 +261,7 @@ static void viewport_redraw_after_shift(
 
         // save viewport
         rct_viewport view_copy;
-        memcpy(&view_copy, viewport, sizeof(rct_viewport));
+        std::memcpy(&view_copy, viewport, sizeof(rct_viewport));
 
         if (viewport->x < window->x)
         {
@@ -313,7 +313,7 @@ static void viewport_redraw_after_shift(
         }
 
         // restore viewport
-        memcpy(viewport, &view_copy, sizeof(rct_viewport));
+        std::memcpy(viewport, &view_copy, sizeof(rct_viewport));
     }
     else
     {
@@ -449,7 +449,7 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
     }
 
     rct_viewport view_copy;
-    memcpy(&view_copy, viewport, sizeof(rct_viewport));
+    std::memcpy(&view_copy, viewport, sizeof(rct_viewport));
 
     if (viewport->x < 0)
     {
@@ -468,7 +468,7 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
 
     if (viewport->width <= 0)
     {
-        memcpy(viewport, &view_copy, sizeof(rct_viewport));
+        std::memcpy(viewport, &view_copy, sizeof(rct_viewport));
         return;
     }
 
@@ -489,7 +489,7 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
 
     if (viewport->height <= 0)
     {
-        memcpy(viewport, &view_copy, sizeof(rct_viewport));
+        std::memcpy(viewport, &view_copy, sizeof(rct_viewport));
         return;
     }
 
@@ -499,7 +499,7 @@ static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* vie
         viewport_shift_pixels(dpi, w, viewport, x_diff, y_diff);
     }
 
-    memcpy(viewport, &view_copy, sizeof(rct_viewport));
+    std::memcpy(viewport, &view_copy, sizeof(rct_viewport));
 }
 
 // rct2: 0x006E7A15
@@ -1498,7 +1498,7 @@ static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16
         {
             source_pointer++;
             total_no_pixels -= no_pixels;
-            memcpy((char*)new_source_pointer, (char*)source_pointer, no_pixels);
+            std::memcpy((char*)new_source_pointer, (char*)source_pointer, no_pixels);
             new_source_pointer += no_pixels;
             source_pointer += no_pixels;
             continue;
@@ -1516,7 +1516,7 @@ static bool sub_679074(rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16
         source_pointer = (uint8_t*)ebx1;
         ebx1 = eax;
         eax = 0;
-        memcpy((char*)new_source_pointer, (char*)source_pointer, ecx);
+        std::memcpy((char*)new_source_pointer, (char*)source_pointer, ecx);
         new_source_pointer += ecx;
         source_pointer = (uint8_t*)ebx1;
     }

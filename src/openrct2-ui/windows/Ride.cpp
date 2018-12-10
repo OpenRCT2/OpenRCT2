@@ -3690,7 +3690,7 @@ static void window_ride_operating_invalidate(rct_window* w)
         if (ride->type == RIDE_TYPE_TWIST)
         {
             uint16_t arg;
-            memcpy(&arg, gCommonFormatArgs + 18, sizeof(uint16_t));
+            std::memcpy(&arg, gCommonFormatArgs + 18, sizeof(uint16_t));
             set_format_arg(18, uint16_t, arg * 3);
         }
 

@@ -372,13 +372,13 @@ static void format_append_string(char** dest, size_t* size, const utf8* string)
     size_t length = strlen(string);
     if (length < (*size))
     {
-        memcpy((*dest), string, length);
+        std::memcpy((*dest), string, length);
         (*dest) += length;
         (*size) -= length;
     }
     else
     {
-        memcpy((*dest), string, (*size) - 1);
+        std::memcpy((*dest), string, (*size) - 1);
         (*dest) += (*size) - 1;
         *(*dest)++ = '\0';
         (*size) = 0;
@@ -392,13 +392,13 @@ static void format_append_string_n(char** dest, size_t* size, const utf8* string
     size_t length = std::min(maxlen, strlen(string));
     if (length < (*size))
     {
-        memcpy((*dest), string, length);
+        std::memcpy((*dest), string, length);
         (*dest) += length;
         (*size) -= length;
     }
     else
     {
-        memcpy((*dest), string, (*size) - 1);
+        std::memcpy((*dest), string, (*size) - 1);
         (*dest) += (*size) - 1;
         *(*dest)++ = '\0';
         (*size) = 0;

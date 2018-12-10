@@ -1831,10 +1831,10 @@ rct_peep* peep_generate(int32_t x, int32_t y, int32_t z)
 
     peep->toilet = 0;
     peep->time_to_consume = 0;
-    memset(&peep->rides_been_on, 0, 32);
+    std::fill_n(peep->rides_been_on, 32, 0x00);
 
     peep->no_of_rides = 0;
-    memset(&peep->ride_types_been_on, 0, 16);
+    std::fill_n(peep->ride_types_been_on, 16, 0x00);
     peep->id = gNextGuestNumber++;
     peep->name_string_idx = STR_GUEST_X;
 

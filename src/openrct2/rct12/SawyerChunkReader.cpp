@@ -118,7 +118,7 @@ void SawyerChunkReader::ReadChunk(void* dst, size_t length)
         if (remainingLength > 0)
         {
             auto offset = (uint8_t*)dst + chunkLength;
-            std::memset(offset, 0, remainingLength);
+            std::fill_n(offset, remainingLength, 0x00);
         }
     }
 }
@@ -182,7 +182,7 @@ size_t SawyerChunkReader::DecodeChunkRLE(void* dst, size_t dstCapacity, const vo
                 throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
             }
 
-            std::memset(dst8, src8[i], count);
+            std::fill_n(dst8, count, src8[i]);
             dst8 += count;
         }
         else

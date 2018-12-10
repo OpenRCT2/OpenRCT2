@@ -130,10 +130,10 @@ void lightfx_init()
     _LightListBack = _LightListA;
     _LightListFront = _LightListB;
 
-    memset(_bakedLightTexture_lantern_0, 0xFF, 32 * 32);
-    memset(_bakedLightTexture_lantern_1, 0xFF, 64 * 64);
-    memset(_bakedLightTexture_lantern_2, 0xFF, 128 * 128);
-    memset(_bakedLightTexture_lantern_3, 0xFF, 256 * 256);
+    std::fill_n(_bakedLightTexture_lantern_0, 32 * 32, 0xFF);
+    std::fill_n(_bakedLightTexture_lantern_1, 64 * 64, 0xFF);
+    std::fill_n(_bakedLightTexture_lantern_2, 128 * 128, 0xFF);
+    std::fill_n(_bakedLightTexture_lantern_3, 256 * 256, 0xFF);
 
     uint8_t* parcer = _bakedLightTexture_lantern_3;
 
@@ -171,7 +171,7 @@ void lightfx_update_buffers(rct_drawpixelinfo* info)
     _light_rendered_buffer_front = realloc(_light_rendered_buffer_front, info->width * info->height);
     _light_rendered_buffer_back = realloc(_light_rendered_buffer_back, info->width * info->height);
 
-    memcpy(&_pixelInfo, info, sizeof(rct_drawpixelinfo));
+    std::memcpy(&_pixelInfo, info, sizeof(rct_drawpixelinfo));
 }
 
 extern void viewport_paint_setup();
@@ -500,7 +500,7 @@ void lightfx_render_lights_to_frontbuffer()
         return;
     }
 
-    memset(_light_rendered_buffer_front, 0, _pixelInfo.width * _pixelInfo.height);
+    std::memset(_light_rendered_buffer_front, 0, _pixelInfo.width * _pixelInfo.height);
 
     _lightPolution_back = 0;
 

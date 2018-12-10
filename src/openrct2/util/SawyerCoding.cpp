@@ -54,18 +54,18 @@ size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* buffer,
     switch (chunkHeader.encoding)
     {
         case CHUNK_ENCODING_NONE:
-            memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
+            std::memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
             dst_file += sizeof(sawyercoding_chunk_header);
-            memcpy(dst_file, buffer, chunkHeader.length);
+            std::memcpy(dst_file, buffer, chunkHeader.length);
             // fwrite(&chunkHeader, sizeof(sawyercoding_chunk_header), 1, file);
             // fwrite(buffer, 1, chunkHeader.length, file);
             break;
         case CHUNK_ENCODING_RLE:
             encode_buffer = (uint8_t*)malloc(0x600000);
             chunkHeader.length = (uint32_t)encode_chunk_rle(buffer, encode_buffer, chunkHeader.length);
-            memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
+            std::memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
             dst_file += sizeof(sawyercoding_chunk_header);
-            memcpy(dst_file, encode_buffer, chunkHeader.length);
+            std::memcpy(dst_file, encode_buffer, chunkHeader.length);
 
             free(encode_buffer);
             break;
@@ -74,20 +74,20 @@ size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* buffer,
             encode_buffer2 = (uint8_t*)malloc(0x600000);
             chunkHeader.length = (uint32_t)encode_chunk_repeat(buffer, encode_buffer, chunkHeader.length);
             chunkHeader.length = (uint32_t)encode_chunk_rle(encode_buffer, encode_buffer2, chunkHeader.length);
-            memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
+            std::memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
             dst_file += sizeof(sawyercoding_chunk_header);
-            memcpy(dst_file, encode_buffer2, chunkHeader.length);
+            std::memcpy(dst_file, encode_buffer2, chunkHeader.length);
 
             free(encode_buffer2);
             free(encode_buffer);
             break;
         case CHUNK_ENCODING_ROTATE:
             encode_buffer = (uint8_t*)malloc(chunkHeader.length);
-            memcpy(encode_buffer, buffer, chunkHeader.length);
+            std::memcpy(encode_buffer, buffer, chunkHeader.length);
             encode_chunk_rotate(encode_buffer, chunkHeader.length);
-            memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
+            std::memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
             dst_file += sizeof(sawyercoding_chunk_header);
-            memcpy(dst_file, encode_buffer, chunkHeader.length);
+            std::memcpy(dst_file, encode_buffer, chunkHeader.length);
 
             free(encode_buffer);
             break;
@@ -204,12 +204,12 @@ static size_t decode_chunk_rle(const uint8_t* src_buffer, uint8_t* dst_buffer, s
         {
             i++;
             count = 257 - rleCodeByte;
-            memset(dst, src_buffer[i], count);
+            std::fill_n(dst, count, src_buffer[i]);
             dst = (uint8_t*)((uintptr_t)dst + count);
         }
         else
         {
-            memcpy(dst, src_buffer + i + 1, rleCodeByte + 1);
+            std::memcpy(dst, src_buffer + i + 1, rleCodeByte + 1);
             dst = (uint8_t*)((uintptr_t)dst + rleCodeByte + 1);
             i += rleCodeByte + 1;
         }
@@ -241,14 +241,14 @@ static size_t decode_chunk_rle_with_size(const uint8_t* src_buffer, uint8_t* dst
             count = 257 - rleCodeByte;
             assert(dst + count <= dst_buffer + dstSize);
             assert(i < length);
-            memset(dst, src_buffer[i], count);
+            std::fill_n(dst, count, src_buffer[i]);
             dst = (uint8_t*)((uintptr_t)dst + count);
         }
         else
         {
             assert(dst + rleCodeByte + 1 <= dst_buffer + dstSize);
             assert(i + 1 < length);
-            memcpy(dst, src_buffer + i + 1, rleCodeByte + 1);
+            std::memcpy(dst, src_buffer + i + 1, rleCodeByte + 1);
             dst = (uint8_t*)((uintptr_t)dst + rleCodeByte + 1);
             i += rleCodeByte + 1;
         }
@@ -279,7 +279,7 @@ static size_t encode_chunk_rle(const uint8_t* src_buffer, uint8_t* dst_buffer, s
         if ((count && *src == src[1]) || count > 125)
         {
             *dst++ = count - 1;
-            memcpy(dst, src_norm_start, count);
+            std::memcpy(dst, src_norm_start, count);
             dst += count;
             src_norm_start += count;
             count = 0;
@@ -308,7 +308,7 @@ static size_t encode_chunk_rle(const uint8_t* src_buffer, uint8_t* dst_buffer, s
     if (count)
     {
         *dst++ = count - 1;
-        memcpy(dst, src_norm_start, count);
+        std::memcpy(dst, src_norm_start, count);
         dst += count;
     }
     return dst - dst_buffer;

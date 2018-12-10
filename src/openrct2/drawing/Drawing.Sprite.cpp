@@ -548,18 +548,18 @@ uint8_t* FASTCALL gfx_draw_sprite_get_palette(int32_t image_id, uint32_t tertiar
             auto tertiary_palette = gfx_get_g1_element(tertiary_offset);
             if (tertiary_palette != nullptr)
             {
-                memcpy(palette_pointer + 0x2E, &tertiary_palette->offset[0xF3], 12);
+                std::memcpy(palette_pointer + 0x2E, &tertiary_palette->offset[0xF3], 12);
             }
         }
         auto primary_palette = gfx_get_g1_element(primary_offset);
         if (primary_palette != nullptr)
         {
-            memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
+            std::memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
         }
         auto secondary_palette = gfx_get_g1_element(secondary_offset);
         if (secondary_palette != nullptr)
         {
-            memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
+            std::memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
         }
 
         return palette_pointer;

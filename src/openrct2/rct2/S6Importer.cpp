@@ -215,7 +215,7 @@ public:
         gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
         for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
         {
-            memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));
+            std::memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));
         }
 
         for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
@@ -269,8 +269,8 @@ public:
 
         gParkRating = _s6.park_rating;
 
-        memcpy(gParkRatingHistory, _s6.park_rating_history, sizeof(_s6.park_rating_history));
-        memcpy(gGuestsInParkHistory, _s6.guests_in_park_history, sizeof(_s6.guests_in_park_history));
+        std::memcpy(gParkRatingHistory, _s6.park_rating_history, sizeof(_s6.park_rating_history));
+        std::memcpy(gGuestsInParkHistory, _s6.guests_in_park_history, sizeof(_s6.guests_in_park_history));
 
         gResearchPriorities = _s6.active_research_types;
         gResearchProgressStage = _s6.research_progress_stage;
@@ -294,8 +294,8 @@ public:
         // pad_013580FA
         gScenarioObjectiveCurrency = _s6.objective_currency;
         gScenarioObjectiveNumGuests = _s6.objective_guests;
-        memcpy(gMarketingCampaignDaysLeft, _s6.campaign_weeks_left, sizeof(_s6.campaign_weeks_left));
-        memcpy(gMarketingCampaignRideIndex, _s6.campaign_ride_index, sizeof(_s6.campaign_ride_index));
+        std::memcpy(gMarketingCampaignDaysLeft, _s6.campaign_weeks_left, sizeof(_s6.campaign_weeks_left));
+        std::memcpy(gMarketingCampaignRideIndex, _s6.campaign_ride_index, sizeof(_s6.campaign_ride_index));
 
         gCurrentExpenditure = _s6.current_expenditure;
         gCurrentProfit = _s6.current_profit;
@@ -316,7 +316,7 @@ public:
         gTotalAdmissions = _s6.total_admissions;
         gTotalIncomeFromAdmissions = _s6.income_from_admissions;
         gCompanyValue = _s6.company_value;
-        memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
+        std::memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
 
         // Awards
         for (int32_t i = 0; i < RCT12_MAX_AWARDS; i++)
@@ -339,7 +339,7 @@ public:
         // pad_013587CA
         gHistoricalProfit = _s6.historical_profit;
         // pad_013587D4
-        memcpy(gScenarioCompletedBy, _s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
+        std::memcpy(gScenarioCompletedBy, _s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
         gCash = DECRYPT_MONEY(_s6.cash);
         // pad_013587FC
         gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
@@ -355,8 +355,8 @@ public:
         // pad_01358842
         ImportResearchList();
         gMapBaseZ = _s6.map_base_z;
-        memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
-        memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
+        std::memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
+        std::memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
         gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
@@ -378,11 +378,11 @@ public:
             // For savegames the filename can be arbitrary, so we have no choice but to rely on the name provided
             String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         }
-        memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
-        memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
+        std::memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
+        std::memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
         // Clear all of the strings, since we will probably have a higher limit on user strings in the future than RCT2.
         user_string_clear_all();
-        memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
+        std::memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
         gCurrentTicks = _s6.game_ticks_1;
 
         ImportRides();
@@ -401,11 +401,11 @@ public:
         // pad_0138B582
 
         gRideRatingsCalcData = _s6.ride_ratings_calc_data;
-        memcpy(gRideMeasurements, _s6.ride_measurements, sizeof(_s6.ride_measurements));
+        std::memcpy(gRideMeasurements, _s6.ride_measurements, sizeof(_s6.ride_measurements));
         gNextGuestNumber = _s6.next_guest_index;
         gGrassSceneryTileLoopPosition = _s6.grass_and_scenery_tilepos;
-        memcpy(gStaffPatrolAreas, _s6.patrol_areas, sizeof(_s6.patrol_areas));
-        memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
+        std::memcpy(gStaffPatrolAreas, _s6.patrol_areas, sizeof(_s6.patrol_areas));
+        std::memcpy(gStaffModes, _s6.staff_modes, sizeof(_s6.staff_modes));
         // unk_13CA73E
         // pad_13CA73F
         gUnk13CA740 = _s6.byte_13CA740;
@@ -439,7 +439,7 @@ public:
                 dst->Ticks = src->Ticks;
                 dst->MonthYear = src->MonthYear;
                 dst->Day = src->Day;
-                memcpy(dst->Text, src->Text, sizeof(src->Text));
+                std::memcpy(dst->Text, src->Text, sizeof(src->Text));
             }
             else
             {
@@ -510,7 +510,7 @@ public:
 
     void ImportRide(Ride* dst, const rct2_ride* src, const uint8_t rideIndex)
     {
-        memset(dst, 0, sizeof(Ride));
+        std::memset(dst, 0, sizeof(Ride));
 
         dst->type = src->type;
         dst->subtype = src->subtype;
@@ -789,7 +789,7 @@ public:
 
     void ImportResearchList()
     {
-        memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+        std::memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
     }
 
     void Initialise()
@@ -864,7 +864,7 @@ public:
             auto dst = &gTileElements[index];
             if (src->base_height == 0xFF)
             {
-                memcpy(dst, src, sizeof(*src));
+                std::memcpy(dst, src, sizeof(*src));
             }
             else
             {
@@ -873,7 +873,7 @@ public:
                 if (tileElementType == RCT12TileElementType::Corrupt
                     || tileElementType == RCT12TileElementType::EightCarsCorrupt14
                     || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
-                    memcpy(dst, src, sizeof(*src));
+                    std::memcpy(dst, src, sizeof(*src));
                 else
                     ImportTileElement(dst, src);
             }

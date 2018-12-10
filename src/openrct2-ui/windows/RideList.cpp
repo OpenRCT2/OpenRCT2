@@ -698,7 +698,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 formatSecondary = STR_QUEUE_EMPTY;
                 {
                     uint16_t arg;
-                    memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
+                    std::memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
 
                     if (arg == 1)
                         formatSecondary = STR_QUEUE_ONE_PERSON;
@@ -711,7 +711,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 formatSecondary = STR_QUEUE_TIME_LABEL;
                 {
                     uint16_t arg;
-                    memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
+                    std::memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
 
                     if (arg > 1)
                         formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;

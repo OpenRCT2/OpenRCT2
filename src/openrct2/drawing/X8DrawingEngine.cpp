@@ -750,7 +750,7 @@ void X8DrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskIm
 void X8DrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour)
 {
     uint8_t palette[256];
-    memset(palette, colour, 256);
+    std::fill_n(palette, sizeof(palette), colour);
     palette[0] = 0;
 
     image &= 0x7FFFF;

@@ -128,7 +128,7 @@ void invalidate_sprite_2(rct_sprite* sprite)
 void reset_sprite_list()
 {
     gSavedAge = 0;
-    memset(_spriteList, 0, sizeof(rct_sprite) * MAX_SPRITES);
+    std::memset(_spriteList, 0, sizeof(_spriteList));
 
     for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
     {
@@ -282,7 +282,7 @@ static void sprite_reset(rct_sprite_generic* sprite)
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
-    memset(sprite, 0, sizeof(rct_sprite));
+    std::memset(sprite, 0, sizeof(rct_sprite));
 
     sprite->linked_list_type_offset = llto;
     sprite->next = next;

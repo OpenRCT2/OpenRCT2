@@ -224,7 +224,7 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
     spriteHeader = &spriteFileEntries[spriteIndex];
     pixelBufferSize = spriteHeader->width * spriteHeader->height;
     pixels = (uint8_t*)malloc(pixelBufferSize);
-    memset(pixels, 0, pixelBufferSize);
+    std::fill_n(pixels, pixelBufferSize, 0x00);
 
     dpi.bits = pixels;
     dpi.x = 0;
@@ -234,7 +234,7 @@ static bool sprite_file_export(int32_t spriteIndex, const char* outPath)
     dpi.pitch = 0;
     dpi.zoom_level = 0;
 
-    memcpy(spriteFilePalette, CmdlineSprite::_standardPalette, 256 * 4);
+    std::memcpy(spriteFilePalette, CmdlineSprite::_standardPalette, 256 * 4);
 
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION)
     {
@@ -541,7 +541,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         sprite_entries_make_absolute();
 
         spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
-        memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
+        std::memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
         spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData
             + (spriteFileHeader.total_size - bufferLength);
 
@@ -675,7 +675,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             sprite_entries_make_absolute();
 
             spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
-            memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
+            std::memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
             spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData
                 + (spriteFileHeader.total_size - bufferLength);
 

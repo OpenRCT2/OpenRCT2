@@ -396,7 +396,7 @@ rct_window* window_editor_object_selection_open()
         | (((uint32_t)1) << WIDX_LIST_SORT_RIDE);
 
     _filter_flags = gConfigInterface.object_selection_filter_flags;
-    memset(_filter_string, 0, sizeof(_filter_string));
+    std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
     for (int32_t i = WIDX_TAB_1; i < WIDX_TAB_1 + OBJECT_TYPE_COUNT; i++)
     {
@@ -531,7 +531,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             window_start_textbox(w, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
             break;
         case WIDX_FILTER_CLEAR_BUTTON:
-            memset(_filter_string, 0, sizeof(_filter_string));
+            std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
             filter_update_counts();
             w->scrolls->v_top = 0;
             visible_list_refresh(w);

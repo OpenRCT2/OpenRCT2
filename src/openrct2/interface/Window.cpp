@@ -2001,7 +2001,7 @@ void window_start_textbox(
     window_close_by_class(WC_TEXTINPUT);
 
     // Clear the text input buffer
-    memset(gTextBoxInput, 0, maxLength);
+    std::fill_n(gTextBoxInput, maxLength, 0x00);
 
     // Enter in the text input buffer any existing
     // text.

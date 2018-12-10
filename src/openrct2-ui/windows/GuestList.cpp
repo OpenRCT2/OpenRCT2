@@ -574,8 +574,8 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
             i = y / SUMMARISED_GUEST_ROW_HEIGHT;
             if (i < _window_guest_list_num_groups)
             {
-                memcpy(_window_guest_list_filter_arguments + 0, &_window_guest_list_groups_argument_1[i], 4);
-                memcpy(_window_guest_list_filter_arguments + 2, &_window_guest_list_groups_argument_2[i], 4);
+                std::memcpy(_window_guest_list_filter_arguments + 0, &_window_guest_list_groups_argument_1[i], 4);
+                std::memcpy(_window_guest_list_filter_arguments + 2, &_window_guest_list_groups_argument_2[i], 4);
                 _window_guest_list_selected_filter = _window_guest_list_selected_view;
                 _window_guest_list_selected_tab = PAGE_INDIVIDUAL;
                 window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
@@ -909,10 +909,10 @@ static void get_arguments_from_peep(rct_peep* peep, uint32_t* argument_1, uint32
             {
                 // HACK The out arguments here are used to draw the group text so we just return
                 //      gCommonFormatArgs as two uint32_ts.
-                memset(gCommonFormatArgs, 0, sizeof(*argument_1) + sizeof(*argument_2));
+                std::memset(gCommonFormatArgs, 0, sizeof(*argument_1) + sizeof(*argument_2));
                 peep_thought_set_format_args(thought);
-                memcpy(argument_1, gCommonFormatArgs, sizeof(*argument_1));
-                memcpy(argument_2, gCommonFormatArgs + sizeof(*argument_1), sizeof(*argument_2));
+                std::memcpy(argument_1, gCommonFormatArgs, sizeof(*argument_1));
+                std::memcpy(argument_2, gCommonFormatArgs + sizeof(*argument_1), sizeof(*argument_2));
             }
             else
             {
@@ -973,8 +973,8 @@ static void window_guest_list_find_groups()
 
         get_arguments_from_peep(
             peep, &_window_guest_list_groups_argument_1[groupIndex], &_window_guest_list_groups_argument_2[groupIndex]);
-        memcpy(_window_guest_list_filter_arguments + 0, &_window_guest_list_groups_argument_1[groupIndex], 4);
-        memcpy(_window_guest_list_filter_arguments + 2, &_window_guest_list_groups_argument_2[groupIndex], 4);
+        std::memcpy(_window_guest_list_filter_arguments + 0, &_window_guest_list_groups_argument_1[groupIndex], 4);
+        std::memcpy(_window_guest_list_filter_arguments + 2, &_window_guest_list_groups_argument_2[groupIndex], 4);
 
         _window_guest_list_group_index[groupIndex] = groupIndex;
         faceIndex = groupIndex * 56;
@@ -1050,11 +1050,11 @@ static void window_guest_list_find_groups()
             _window_guest_list_groups_argument_2[swap_position] = temp;
 
             uint8_t temp_faces[56];
-            memcpy(temp_faces, &(_window_guest_list_groups_guest_faces[groupIndex * 56]), 56);
-            memcpy(
+            std::memcpy(temp_faces, &(_window_guest_list_groups_guest_faces[groupIndex * 56]), 56);
+            std::memcpy(
                 &(_window_guest_list_groups_guest_faces[groupIndex * 56]),
                 &(_window_guest_list_groups_guest_faces[swap_position * 56]), 56);
-            memcpy(&(_window_guest_list_groups_guest_faces[swap_position * 56]), temp_faces, 56);
+            std::memcpy(&(_window_guest_list_groups_guest_faces[swap_position * 56]), temp_faces, 56);
 
             temp = _window_guest_list_group_index[swap_position];
             _window_guest_list_group_index[swap_position] = bl;

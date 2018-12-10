@@ -160,7 +160,7 @@ void scenario_begin()
     map_count_remaining_land_rights();
     staff_reset_stats();
     gLastEntranceStyle = 0;
-    memset(gMarketingCampaignDaysLeft, 0, 20);
+    std::fill_n(gMarketingCampaignDaysLeft, sizeof(gMarketingCampaignDaysLeft), 0x00);
     gParkRatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
@@ -782,10 +782,8 @@ static void scenario_objective_check_park_value_by()
 static void scenario_objective_check_10_rollercoasters()
 {
     int32_t i, rcs = 0;
-    uint8_t type_already_counted[256];
+    uint8_t type_already_counted[256] = {};
     Ride* ride;
-
-    memset(type_already_counted, 0, 256);
 
     FOR_ALL_RIDES (i, ride)
     {
@@ -881,11 +879,9 @@ static void scenario_objective_check_monthly_ride_income()
 static void scenario_objective_check_10_rollercoasters_length()
 {
     int32_t i, rcs = 0;
-    uint8_t type_already_counted[256];
+    uint8_t type_already_counted[256] = {};
     int16_t objective_length = gScenarioObjectiveNumGuests;
     Ride* ride;
-
-    memset(type_already_counted, 0, 256);
 
     FOR_ALL_RIDES (i, ride)
     {

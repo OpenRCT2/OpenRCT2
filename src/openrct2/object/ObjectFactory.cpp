@@ -425,7 +425,7 @@ namespace ObjectFactory
                     entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
                 }
                 auto minLength = std::min<size_t>(8, originalName.length());
-                memcpy(entry.name, originalName.c_str(), minLength);
+                std::memcpy(entry.name, originalName.c_str(), minLength);
 
                 result = CreateObject(entry);
                 auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);

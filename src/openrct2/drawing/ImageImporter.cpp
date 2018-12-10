@@ -135,7 +135,7 @@ std::tuple<void*, size_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32
         throw std::bad_alloc();
     }
 
-    std::memset(buffer, 0, (height * 2) + (width * height * 16));
+    std::fill_n(buffer, (height * 2) + (width * height * 16), 0x00);
     auto yOffsets = (uint16_t*)buffer;
     auto dst = buffer + (height * 2);
     for (uint32_t y = 0; y < height; y++)

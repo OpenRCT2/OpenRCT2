@@ -62,8 +62,8 @@ void track_design_save_init()
     _trackSavedTileElementsCount = 0;
     _trackSavedTileElementsDescCount = 0;
 
-    memset(_trackSavedTileElements, 0, sizeof(_trackSavedTileElements));
-    memset(_trackSavedTileElementsDesc, 0, sizeof(_trackSavedTileElementsDesc));
+    std::memset(_trackSavedTileElements, 0, sizeof(_trackSavedTileElements));
+    std::memset(_trackSavedTileElementsDesc, 0, sizeof(_trackSavedTileElementsDesc));
 }
 
 /**
@@ -669,7 +669,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6)
     // Copy TD6 scenery elements to new memory and add end marker
     size_t totalSceneryElementsSize = _trackSavedTileElementsDescCount * sizeof(rct_td6_scenery_element);
     td6->scenery_elements = (rct_td6_scenery_element*)malloc(totalSceneryElementsSize + 1);
-    memcpy(td6->scenery_elements, _trackSavedTileElementsDesc, totalSceneryElementsSize);
+    std::memcpy(td6->scenery_elements, _trackSavedTileElementsDesc, totalSceneryElementsSize);
     *((uint8_t*)&td6->scenery_elements[_trackSavedTileElementsDescCount]) = 0xFF;
 
     // Run an element loop
@@ -762,7 +762,7 @@ static rct_track_td6* track_design_save_to_td6(uint8_t rideIndex)
 
     // Note we are only copying rct_object_entry in size and
     // not the extended as we don't need the chunk size.
-    memcpy(&td6->vehicle_object, object, sizeof(rct_object_entry));
+    std::memcpy(&td6->vehicle_object, object, sizeof(rct_object_entry));
 
     td6->ride_mode = ride->mode;
 
@@ -1265,7 +1265,7 @@ static void auto_buffer_write(auto_buffer* buffer, const void* src, size_t len)
 
         buffer->ptr = realloc(buffer->ptr, buffer->capacity);
     }
-    memcpy((void*)((uintptr_t)buffer->ptr + buffer->length), src, len);
+    std::memcpy((void*)((uintptr_t)buffer->ptr + buffer->length), src, len);
     buffer->length += len;
 }
 

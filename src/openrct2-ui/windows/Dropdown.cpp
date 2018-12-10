@@ -217,8 +217,8 @@ void window_dropdown_show_text_custom_width(
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    memset(_dropdownItemsDisabled, 0, sizeof(_dropdownItemsDisabled));
-    memset(_dropdownItemsChecked, 0, sizeof(_dropdownItemsChecked));
+    std::fill_n(_dropdownItemsDisabled, sizeof(_dropdownItemsDisabled), false);
+    std::fill_n(_dropdownItemsChecked, sizeof(_dropdownItemsChecked), false);
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);
@@ -297,8 +297,8 @@ void window_dropdown_show_image(
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    memset(_dropdownItemsDisabled, 0, sizeof(_dropdownItemsDisabled));
-    memset(_dropdownItemsChecked, 0, sizeof(_dropdownItemsChecked));
+    std::fill_n(_dropdownItemsDisabled, sizeof(_dropdownItemsDisabled), false);
+    std::fill_n(_dropdownItemsChecked, sizeof(_dropdownItemsChecked), false);
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(INPUT_STATE_DROPDOWN_ACTIVE);

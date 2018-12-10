@@ -146,7 +146,7 @@ void TileElement::ClearAs(uint8_t newType)
     flags = 0;
     base_height = 2;
     clearance_height = 2;
-    memset(pad_04, 0, sizeof(pad_04));
+    std::fill_n(pad_04, sizeof(pad_04), 0x00);
 }
 
 void TileElementBase::Remove()

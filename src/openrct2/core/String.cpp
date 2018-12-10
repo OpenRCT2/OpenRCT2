@@ -404,7 +404,7 @@ namespace String
         {
             size_t srcSize = SizeOf(src) + 1;
             result = Memory::Allocate<utf8>(srcSize);
-            memcpy(result, src, srcSize);
+            std::memcpy(result, src, srcSize);
         }
         return result;
     }

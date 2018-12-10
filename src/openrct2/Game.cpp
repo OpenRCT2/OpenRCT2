@@ -766,7 +766,7 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
         {
             static char banner_name[128];
 
-            memset(banner_name, ' ', sizeof(banner_name));
+            std::fill_n(banner_name, sizeof(banner_name), ' ');
             int nameChunkIndex = *eax & 0xFFFF;
 
             int nameChunkOffset = nameChunkIndex - 1;
@@ -774,9 +774,9 @@ void game_log_multiplayer_command(int command, const int* eax, const int* ebx, c
                 nameChunkOffset = 2;
             nameChunkOffset *= 12;
             nameChunkOffset = std::min(nameChunkOffset, (int32_t)(std::size(banner_name) - 12));
-            memcpy(banner_name + nameChunkOffset + 0, edx, 4);
-            memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
-            memcpy(banner_name + nameChunkOffset + 8, edi, 4);
+            std::memcpy(banner_name + nameChunkOffset + 0, edx, 4);
+            std::memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
+            std::memcpy(banner_name + nameChunkOffset + 8, edi, 4);
             banner_name[sizeof(banner_name) - 1] = '\0';
 
             char* args_sign[2] = {
@@ -1282,7 +1282,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
         for (size_t i = 0; i < autosavesCount; i++)
         {
             autosaveFiles[i] = (utf8*)malloc(sizeof(utf8) * MAX_PATH);
-            memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
+            std::memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
 
             if (scanner->Next())
             {

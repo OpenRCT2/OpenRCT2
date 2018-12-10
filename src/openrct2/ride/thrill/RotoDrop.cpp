@@ -52,7 +52,7 @@ void vehicle_visual_roto_drop(
     sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
 
     uint8_t riding_peep_sprites[64];
-    memset(riding_peep_sprites, 0xFF, sizeof(riding_peep_sprites));
+    std::fill_n(riding_peep_sprites, sizeof(riding_peep_sprites), 0xFF);
     for (int32_t i = 0; i < vehicle->num_peeps; i++)
     {
         uint8_t cl = (i & 3) * 16;
