@@ -786,7 +786,7 @@ static void window_editor_object_selection_scroll_mouseover(rct_window* w, int32
  */
 static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
 {
-    if (widgetIndex >= WIDX_TAB_1 && widgetIndex < WIDX_TAB_1 + std::size(ObjectSelectionPages))
+    if (widgetIndex >= WIDX_TAB_1 && (size_t)widgetIndex < WIDX_TAB_1 + std::size(ObjectSelectionPages))
     {
         set_format_arg(0, rct_string_id, ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
     }
@@ -846,7 +846,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     // Align tabs, hide advanced ones
     bool advancedMode = (w->list_information_type & 1) != 0;
     int32_t x = 3;
-    for (int32_t i = 0; i < std::size(ObjectSelectionPages); i++)
+    for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
     {
         auto widget = &w->widgets[WIDX_TAB_1 + i];
         if (!advancedMode && ObjectSelectionPages[i].IsAdvanced)
@@ -953,14 +953,14 @@ static void window_editor_object_selection_invalidate(rct_window* w)
  */
 static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t i, x, y, width;
+    int32_t x, y, width;
     rct_widget* widget;
     rct_string_id stringId;
 
     window_draw_widgets(w, dpi);
 
     // Draw tabs
-    for (i = 0; i < std::size(ObjectSelectionPages); i++)
+    for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
     {
         widget = &w->widgets[WIDX_TAB_1 + i];
         if (widget->type != WWT_EMPTY)
@@ -981,7 +981,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     // Draw ride tabs
     if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
     {
-        for (i = 0; i < 7; i++)
+        for (int32_t i = 0; i < 7; i++)
         {
             widget = &w->widgets[WIDX_FILTER_RIDE_TAB_ALL + i];
             if (widget->type == WWT_EMPTY)
