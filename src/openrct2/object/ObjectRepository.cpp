@@ -627,6 +627,14 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
 {
     Guard::ArgumentNotNull(object);
 
+    // Do not count our new object types as custom yet, otherwise the game
+    // will try to pack them into saved games.
+    auto type = object_entry_get_type(&object->ObjectEntry);
+    if (type > OBJECT_TYPE_SCENARIO_TEXT)
+    {
+        return false;
+    }
+
     // Validate the object is not one from base game or expansion pack
     return !(object->ObjectEntry.flags & 0xF0);
 }

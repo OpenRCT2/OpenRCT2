@@ -202,7 +202,7 @@ public:
         for (size_t i = 0; i < numObjects; i++)
         {
             const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
-            if (item->LoadedObject != nullptr && item->LoadedObject->GetLegacyData() != nullptr && IsObjectCustom(item))
+            if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr)
             {
                 objects.push_back(item);
             }
