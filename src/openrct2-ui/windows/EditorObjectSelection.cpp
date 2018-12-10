@@ -364,7 +364,7 @@ static void window_editor_object_selection_init_widgets()
     {
         _window_editor_object_selection_widgets_initialised = true;
         auto tabWidget = widgets[widgets.size() - 2];
-        for (int32_t i = 1; i < OBJECT_TYPE_COUNT; i++)
+        for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
         {
             widgets.insert(widgets.end() - 1, tabWidget);
         }
