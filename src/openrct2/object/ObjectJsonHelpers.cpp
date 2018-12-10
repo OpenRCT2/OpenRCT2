@@ -502,52 +502,59 @@ namespace ObjectJsonHelpers
     {
         if (context->ShouldLoadImages())
         {
+            // First gather all the required images from inspecting the JSON
+            std::vector<std::unique_ptr<RequiredImage>> allImages;
             auto jsonImages = json_object_get(root, "images");
             size_t i;
             json_t* el;
             json_array_foreach(jsonImages, i, el)
             {
-                std::vector<std::unique_ptr<RequiredImage>> images;
                 if (json_is_string(el))
                 {
                     auto s = json_string_value(el);
-                    images = ParseImages(context, s);
+                    auto images = ParseImages(context, s);
+                    allImages.insert(
+                        allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
                 }
                 else if (json_is_object(el))
                 {
-                    images = ParseImages(context, el);
+                    auto images = ParseImages(context, el);
+                    allImages.insert(
+                        allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
                 }
+            }
 
-                auto imagesStartIndex = imageTable.GetCount();
-                for (const auto& img : images)
-                {
-                    const auto& g1 = img->g1;
-                    imageTable.AddImage(&g1);
-                }
+            // Now add all the images to the image table
+            auto imagesStartIndex = imageTable.GetCount();
+            for (const auto& img : allImages)
+            {
+                const auto& g1 = img->g1;
+                imageTable.AddImage(&g1);
+            }
 
-                // Add zoom images here
-                for (size_t j = 0; j < images.size(); j++)
+            // Add all the zoom images at the very end of the image table.
+            // This way it should not affect the offsets used within the object logic.
+            for (size_t j = 0; j < allImages.size(); j++)
+            {
+                const auto tableIndex = imagesStartIndex + j;
+                const auto* img = allImages[j].get();
+                if (img->next_zoom != nullptr)
                 {
-                    const auto tableIndex = imagesStartIndex + j;
-                    const auto* img = images[j].get();
-                    if (img->next_zoom != nullptr)
+                    img = img->next_zoom.get();
+
+                    // Set old image zoom offset to zoom image which we are about to add
+                    auto g1a = (rct_g1_element*)(&imageTable.GetImages()[tableIndex]);
+                    g1a->zoomed_offset = (int32_t)tableIndex - (int32_t)imageTable.GetCount();
+
+                    while (img != nullptr)
                     {
-                        img = img->next_zoom.get();
-
-                        // Set old image zoom offset to zoom image which we are about to add
-                        auto g1a = (rct_g1_element*)(&imageTable.GetImages()[tableIndex]);
-                        g1a->zoomed_offset = (int32_t)tableIndex - (int32_t)imageTable.GetCount();
-
-                        while (img != nullptr)
+                        auto g1b = img->g1;
+                        if (img->next_zoom != nullptr)
                         {
-                            auto g1b = img->g1;
-                            if (img->next_zoom != nullptr)
-                            {
-                                g1b.zoomed_offset = -1;
-                            }
-                            imageTable.AddImage(&g1b);
-                            img = img->next_zoom.get();
+                            g1b.zoomed_offset = -1;
                         }
+                        imageTable.AddImage(&g1b);
+                        img = img->next_zoom.get();
                     }
                 }
             }
