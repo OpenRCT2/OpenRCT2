@@ -69,7 +69,7 @@ namespace ObjectJsonHelpers
                 g1 = *orig;
                 g1.offset = (uint8_t*)std::malloc(length);
                 std::memcpy(g1.offset, orig->offset, length);
-                if (g1.flags & G1_FLAG_HAS_ZOOM_SPRITE)
+                if ((g1.flags & G1_FLAG_HAS_ZOOM_SPRITE) && g1.zoomed_offset != 0)
                 {
                     // Fetch image for next zoom level
                     next_zoom = std::make_unique<RequiredImage>((uint32_t)(idx - g1.zoomed_offset), getter);
