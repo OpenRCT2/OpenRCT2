@@ -128,7 +128,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             if (src.flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {
-                elements[i].zoomed_offset = (uint16_t)(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
+                elements[i].zoomed_offset = (int32_t)(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
             }
             else
             {
@@ -379,9 +379,9 @@ bool gfx_load_csg()
         {
             _csg.elements[i].offset += (uintptr_t)_csg.data;
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
-            if (_csg.elements[i].zoomed_offset != 0)
+            if (_csg.elements[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {
-                _csg.elements[i].zoomed_offset = i - (SPR_CSG_BEGIN + _csg.elements[i].zoomed_offset);
+                _csg.elements[i].zoomed_offset = i - _csg.elements[i].zoomed_offset;
             }
         }
         _csgLoaded = true;

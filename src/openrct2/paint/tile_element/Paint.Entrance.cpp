@@ -12,6 +12,7 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/StationObject.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Entrance.h"
@@ -68,14 +69,15 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
 #endif
 
     Ride* ride = get_ride(tile_element->AsEntrance()->GetRideIndex());
-    if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE)
+    auto stationObj = ride_get_station_object(ride);
+    if (stationObj == nullptr || stationObj->BaseImageId == 0)
+    {
         return;
-
-    const rct_ride_entrance_definition* style = &RideEntranceDefinitions[ride->entrance_style];
+    }
 
     uint8_t colour_1, colour_2;
     uint32_t transparant_image_id = 0, image_id = 0;
-    if (style->base_image_id & IMAGE_TYPE_TRANSPARENT)
+    if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
         colour_1 = GlassPaletteIds[ride->track_colour_main[0]];
         transparant_image_id = (colour_1 << 19) | IMAGE_TYPE_TRANSPARENT;
@@ -99,11 +101,11 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
 
     if (is_exit)
     {
-        image_id |= style->sprite_index + direction + 8;
+        image_id |= stationObj->BaseImageId + direction + 8;
     }
     else
     {
-        image_id |= style->sprite_index + direction;
+        image_id |= stationObj->BaseImageId + direction;
     }
 
     // Format modified to stop repeated code
@@ -122,11 +124,11 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     {
         if (is_exit)
         {
-            transparant_image_id |= style->sprite_index + direction + 24;
+            transparant_image_id |= stationObj->BaseImageId + direction + 24;
         }
         else
         {
-            transparant_image_id |= style->sprite_index + direction + 16;
+            transparant_image_id |= stationObj->BaseImageId + direction + 16;
         }
 
         sub_98199C(session, transparant_image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height);
@@ -154,7 +156,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    if (!is_exit && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) && tile_element->AsEntrance()->GetRideIndex() != 0xFF)
+    if (!is_exit && !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) && tile_element->AsEntrance()->GetRideIndex() != 0xFF
+        && stationObj->ScrollingMode != 0xFF)
     {
         set_format_arg(0, uint32_t, 0);
         set_format_arg(4, uint32_t, 0);
@@ -185,8 +188,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         uint16_t scroll = (gCurrentTicks / 2) % string_width;
 
         sub_98199C(
-            session, scrolling_text_setup(session, string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33,
-            height + style->height, 2, 2, height + style->height);
+            session, scrolling_text_setup(session, string_id, scroll, stationObj->ScrollingMode), 0, 0, 0x1C, 0x1C, 0x33,
+            height + stationObj->Height, 2, 2, height + stationObj->Height);
     }
 
     image_id = _unk9E32BC;

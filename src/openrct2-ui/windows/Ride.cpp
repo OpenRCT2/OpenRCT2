@@ -31,6 +31,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/StationObject.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/RideData.h>
@@ -43,6 +44,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+
+using namespace OpenRCT2;
 
 enum
 {
@@ -4225,14 +4228,6 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Colour
 
-static constexpr const uint8_t window_ride_entrance_style_list[] = {
-    RIDE_ENTRANCE_STYLE_PLAIN,        RIDE_ENTRANCE_STYLE_CANVAS_TENT,     RIDE_ENTRANCE_STYLE_WOODEN,
-    RIDE_ENTRANCE_STYLE_CASTLE_BROWN, RIDE_ENTRANCE_STYLE_CASTLE_GREY,     RIDE_ENTRANCE_STYLE_LOG_CABIN,
-    RIDE_ENTRANCE_STYLE_JUNGLE,       RIDE_ENTRANCE_STYLE_CLASSICAL_ROMAN, RIDE_ENTRANCE_STYLE_ABSTRACT,
-    RIDE_ENTRANCE_STYLE_SNOW_ICE,     RIDE_ENTRANCE_STYLE_PAGODA,          RIDE_ENTRANCE_STYLE_SPACE,
-    RIDE_ENTRANCE_STYLE_NONE
-};
-
 static uint32_t window_ride_get_colour_button_image(int32_t colour)
 {
     return IMAGE_TYPE_TRANSPARENT | SPRITE_ID_PALETTE_COLOUR_1(colour) | SPR_PALETTE_BTN;
@@ -4240,15 +4235,24 @@ static uint32_t window_ride_get_colour_button_image(int32_t colour)
 
 static int32_t window_ride_has_track_colour(Ride* ride, int32_t trackColour)
 {
-    uint16_t colourUse = RideEntranceDefinitions[ride->entrance_style].colour_use_flags;
+    // Get station flags (shops don't have them)
+    auto stationObjFlags = 0;
+    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+    {
+        auto stationObj = ride_get_station_object(ride);
+        if (stationObj != nullptr)
+        {
+            stationObjFlags = stationObj->Flags;
+        }
+    }
 
     switch (trackColour)
     {
         case 0:
-            return ((colourUse & 1) && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+            return (stationObjFlags & STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR)
                 || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN);
         case 1:
-            return ((colourUse & 2) && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+            return (stationObjFlags & STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR)
                 || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL);
         case 2:
             return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS);
@@ -4352,7 +4356,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
     vehicle_colour vehicleColour;
     rct_widget* dropdownWidget;
     rct_ride_entry* rideEntry;
-    int32_t i, numItems, checkedIndex;
+    int32_t i, numItems;
     rct_string_id stringId;
 
     ride = get_ride(w->number);
@@ -4398,28 +4402,29 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             dropdown_set_checked(ride->track_colour_supports[colourSchemeIndex], true);
             break;
         case WIDX_ENTRANCE_STYLE_DROPDOWN:
-            checkedIndex = -1;
-            for (i = 0; i < (int32_t)std::size(window_ride_entrance_style_list); i++)
+        {
+            auto ddIndex = 0;
+            auto& objManager = GetContext()->GetObjectManager();
+            for (i = 0; i < MAX_STATION_OBJECTS; i++)
             {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = RideEntranceDefinitions[window_ride_entrance_style_list[i]].string_id;
-
-                if (ride->entrance_style == window_ride_entrance_style_list[i])
+                auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(OBJECT_TYPE_STATION, i));
+                if (stationObj != nullptr)
                 {
-                    checkedIndex = i;
+                    gDropdownItemsFormat[ddIndex] = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItemsArgs[ddIndex] = stationObj->NameStringId;
+                    if (ride->entrance_style == i)
+                    {
+                        gDropdownItemsFormat[ddIndex] = STR_DROPDOWN_MENU_LABEL_SELECTED;
+                    }
+                    ddIndex++;
                 }
             }
 
             window_dropdown_show_text_custom_width(
                 w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, std::size(window_ride_entrance_style_list),
-                widget->right - dropdownWidget->left);
-
-            if (checkedIndex != -1)
-            {
-                dropdown_set_checked(checkedIndex, true);
-            }
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, ddIndex, widget->right - dropdownWidget->left);
             break;
+        }
         case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
             for (i = 0; i < 3; i++)
             {
@@ -4502,10 +4507,24 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
                 0, (4 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, w->ride_colour, 0);
             break;
         case WIDX_ENTRANCE_STYLE_DROPDOWN:
-            game_do_command(
-                0, (6 << 8) | 1, 0, (window_ride_entrance_style_list[dropdownIndex] << 8) | w->number,
-                GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
+        {
+            auto ddIndex = 0;
+            auto& objManager = GetContext()->GetObjectManager();
+            for (auto i = 0; i < MAX_STATION_OBJECTS; i++)
+            {
+                auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(OBJECT_TYPE_STATION, i));
+                if (stationObj != nullptr)
+                {
+                    if (ddIndex == dropdownIndex)
+                    {
+                        game_do_command(0, (6 << 8) | 1, 0, (ddIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
+                        break;
+                    }
+                    ddIndex++;
+                }
+            }
             break;
+        }
         case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
             game_do_command(0, (5 << 8) | 1, 0, (dropdownIndex << 8) | w->number, GAME_COMMAND_SET_RIDE_APPEARANCE, 0, 0);
             w->vehicleIndex = 0;
@@ -4669,7 +4688,13 @@ static void window_ride_colour_invalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].type = WWT_DROPDOWN;
         window_ride_colour_widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WWT_BUTTON;
 
-        window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].text = RideEntranceDefinitions[ride->entrance_style].string_id;
+        auto stringId = STR_NONE;
+        auto stationObj = ride_get_station_object(ride);
+        if (stationObj != nullptr)
+        {
+            stringId = stationObj->NameStringId;
+        }
+        window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].text = stringId;
     }
     else
     {
@@ -4861,18 +4886,17 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             gfx_clear(&clippedDpi, PALETTE_INDEX_12);
 
-            if (ride->entrance_style != RIDE_ENTRANCE_STYLE_NONE)
+            auto stationObj = ride_get_station_object(ride);
+            if (stationObj != nullptr && stationObj->BaseImageId != 0)
             {
-                const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-
                 int32_t terniaryColour = 0;
-                if (entranceStyle->base_image_id & IMAGE_TYPE_TRANSPARENT)
+                if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
                 {
                     terniaryColour = IMAGE_TYPE_TRANSPARENT | (GlassPaletteIds[trackColour.main] << 19);
                 }
 
                 int32_t spriteIndex = SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
-                spriteIndex += RideEntranceDefinitions[ride->entrance_style].sprite_index;
+                spriteIndex += stationObj->BaseImageId;
 
                 // Back
                 gfx_draw_sprite(&clippedDpi, spriteIndex, 34, 20, terniaryColour);

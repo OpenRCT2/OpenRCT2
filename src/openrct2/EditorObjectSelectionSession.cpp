@@ -105,12 +105,16 @@ static void setup_track_designer_objects()
  */
 void setup_in_use_selection_flags()
 {
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+
     for (uint8_t objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++)
     {
         for (int32_t i = 0; i < object_entry_group_counts[objectType]; i++)
         {
             Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
-            if (object_entry_get_chunk(objectType, i) != nullptr)
+
+            auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
+            if (loadedObj != nullptr)
             {
                 Editor::SetSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_2);
             }

@@ -25,6 +25,8 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/ObjectManager.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
@@ -47,6 +49,8 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2;
+
 /**
  * Replaces 0x00993CCC, 0x00993CCE
  */
@@ -55,24 +59,6 @@ const CoordsXY CoordsDirectionDelta[] = { { -32, 0 },   { 0, +32 },   { +32, 0 }
 
 const TileCoordsXY TileDirectionDelta[] = { { -1, 0 },  { 0, +1 },  { +1, 0 },  { 0, -1 },
                                             { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 } };
-
-/** rct2: 0x0097B8B8 */
-const money32 TerrainPricing[] = {
-    300, // TERRAIN_GRASS
-    100, // TERRAIN_SAND
-    80,  // TERRAIN_DIRT
-    120, // TERRAIN_ROCK
-    100, // TERRAIN_MARTIAN
-    100, // TERRAIN_CHECKERBOARD
-    110, // TERRAIN_GRASS_CLUMPS
-    130, // TERRAIN_ICE
-    110, // TERRAIN_GRID_RED
-    110, // TERRAIN_GRID_YELLOW
-    110, // TERRAIN_GRID_BLUE
-    110, // TERRAIN_GRID_GREEN
-    110, // TERRAIN_SAND_DARK
-    110, // TERRAIN_SAND_LIGHT
-};
 
 uint16_t gMapSelectFlags;
 uint16_t gMapSelectType;
@@ -1309,11 +1295,13 @@ static money32 map_change_surface_style(
                     // Prevent network-originated value of surfaceStyle from causing
                     // invalid access.
                     uint8_t style = surfaceStyle & 0x1F;
-                    if (style >= std::size(TerrainPricing))
+                    auto& objManager = GetContext()->GetObjectManager();
+                    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+                        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, style));
+                    if (surfaceObj != nullptr)
                     {
-                        return MONEY32_UNDEFINED;
+                        surfaceCost += surfaceObj->Price;
                     }
-                    surfaceCost += TerrainPricing[style];
 
                     if (flags & GAME_COMMAND_FLAG_APPLY)
                     {

@@ -15,8 +15,13 @@
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/TerrainEdgeObject.h>
+#include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
+
+using namespace OpenRCT2;
 
 // clang-format off
 enum WINDOW_LAND_WIDGET_IDX {
@@ -214,8 +219,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
             if (dropdownIndex == -1)
                 dropdownIndex = gDropdownHighlightedIndex;
 
-            type = (dropdownIndex == -1) ? _selectedFloorTexture
-                                         : (uint32_t)gDropdownItemsArgs[dropdownIndex] - SPR_FLOOR_TEXTURE_GRASS;
+            type = (dropdownIndex == -1) ? _selectedFloorTexture : dropdownIndex;
 
             if (gLandToolTerrainSurface == type)
             {
@@ -232,7 +236,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
             if (dropdownIndex == -1)
                 dropdownIndex = gDropdownHighlightedIndex;
 
-            type = (dropdownIndex == -1) ? _selectedWallTexture : WallTextureOrder[dropdownIndex];
+            type = (dropdownIndex == -1) ? _selectedWallTexture : dropdownIndex;
 
             if (gLandToolTerrainEdge == type)
             {
@@ -290,6 +294,27 @@ static void window_land_update(rct_window* w)
  */
 static void window_land_invalidate(rct_window* w)
 {
+    auto surfaceImage = (uint32_t)SPR_NONE;
+    auto edgeImage = (uint32_t)SPR_NONE;
+
+    auto& objManager = GetContext()->GetObjectManager();
+    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _selectedFloorTexture));
+    if (surfaceObj != nullptr)
+    {
+        surfaceImage = surfaceObj->IconImageId;
+        if (surfaceObj->Colour != 255)
+        {
+            surfaceImage |= surfaceObj->Colour << 19 | IMAGE_TYPE_REMAP;
+        }
+    }
+    const auto edgeObj = static_cast<TerrainEdgeObject*>(
+        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _selectedWallTexture));
+    if (edgeObj != nullptr)
+    {
+        edgeImage = edgeObj->IconImageId;
+    }
+
     w->pressed_widgets = (1 << WIDX_PREVIEW);
     if (gLandToolTerrainSurface != 255)
         w->pressed_widgets |= (1 << WIDX_FLOOR);
@@ -300,8 +325,8 @@ static void window_land_invalidate(rct_window* w)
     if (gLandPaintMode)
         w->pressed_widgets |= (1 << WIDX_PAINTMODE);
 
-    window_land_widgets[WIDX_FLOOR].image = SPR_FLOOR_TEXTURE_GRASS + _selectedFloorTexture;
-    window_land_widgets[WIDX_WALL].image = WallTexturePreviews[_selectedWallTexture];
+    window_land_widgets[WIDX_FLOOR].image = surfaceImage;
+    window_land_widgets[WIDX_WALL].image = edgeImage;
     // Update the preview image (for tool sizes up to 7)
     window_land_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
 }
@@ -349,7 +374,15 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     numTiles = gLandToolSize * gLandToolSize;
     price = 0;
     if (gLandToolTerrainSurface != 255)
-        price += numTiles * TerrainPricing[gLandToolTerrainSurface];
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+            objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, gLandToolTerrainSurface));
+        if (surfaceObj != nullptr)
+        {
+            price += numTiles * surfaceObj->Price;
+        }
+    }
     if (gLandToolTerrainEdge != 255)
         price += numTiles * 100;
 

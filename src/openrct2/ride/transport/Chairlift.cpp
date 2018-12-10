@@ -184,7 +184,7 @@ static void chairlift_paint_station_ne_sw(
     ;
     bool isEnd = chairlift_paint_util_is_last_track(rideIndex, tileElement, pos, trackType);
 
-    const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+    auto stationObj = ride_get_station_object(ride);
 
     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -203,7 +203,7 @@ static void chairlift_paint_station_ne_sw(
         imageId = SPR_FENCE_METAL_NW | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
     }
-    track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, height);
+    track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd))
     {
@@ -217,7 +217,7 @@ static void chairlift_paint_station_ne_sw(
         imageId = SPR_FENCE_METAL_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 27, height, 0, 30, height + 2);
     }
-    track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, height);
+    track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
 
     bool drawFrontColumn = true;
     bool drawBackColumn = true;
@@ -275,7 +275,7 @@ static void chairlift_paint_station_se_nw(
     ;
     bool isEnd = chairlift_paint_util_is_last_track(rideIndex, tileElement, pos, trackType);
 
-    const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+    auto stationObj = ride_get_station_object(ride);
 
     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
@@ -294,7 +294,7 @@ static void chairlift_paint_station_se_nw(
         imageId = SPR_FENCE_METAL_NE | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
     }
-    track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, height);
+    track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd))
     {
@@ -308,7 +308,7 @@ static void chairlift_paint_station_se_nw(
         imageId = SPR_FENCE_METAL_SW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 27, height, 30, 0, height + 2);
     }
-    track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, height);
+    track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
 
     bool drawRightColumn = true;
     bool drawLeftColumn = true;

@@ -167,7 +167,7 @@ public:
 
     int Variations(uint8_t rideType, uint8_t trackType) override
     {
-        return RIDE_ENTRANCE_STYLE_COUNT - 1;
+        return 12;
     }
 
     std::string VariantName(uint8_t rideType, uint8_t trackType, int variant) override

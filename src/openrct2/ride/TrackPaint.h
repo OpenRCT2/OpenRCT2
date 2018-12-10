@@ -16,6 +16,8 @@
 #include "../world/Map.h"
 #include "RideData.h"
 
+class StationObject;
+
 extern const uint8_t track_map_2x2[][4];
 extern const uint8_t edges_2x2[];
 
@@ -284,10 +286,9 @@ void track_paint_util_paint_fences(
     paint_session* session, uint8_t edges, LocationXY16 position, const TileElement* tileElement, Ride* ride,
     uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
 bool track_paint_util_draw_station_covers(
-    paint_session* session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition* entranceStyle,
-    uint16_t height);
+    paint_session* session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height);
 bool track_paint_util_draw_station_covers_2(
-    paint_session* session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition* entranceStyle, uint16_t height,
+    paint_session* session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
     uint8_t stationVariant);
 void track_paint_util_draw_station_platform(
     paint_session* session, Ride* ride, uint8_t direction, int32_t height, int32_t zOffset, const TileElement* tileElement);
@@ -304,8 +305,8 @@ void track_paint_util_draw_station_inverted(
     uint8_t stationVariant);
 bool track_paint_util_should_paint_supports(LocationXY16 position);
 void track_paint_util_draw_pier(
-    paint_session* session, Ride* ride, const rct_ride_entrance_definition* entranceStyle, LocationXY16 position,
-    uint8_t direction, int32_t height, const TileElement* tileElement, uint8_t rotation);
+    paint_session* session, Ride* ride, const StationObject* stationObject, LocationXY16 position, uint8_t direction,
+    int32_t height, const TileElement* tileElement, uint8_t rotation);
 void track_paint_util_draw_station_metal_supports(paint_session* session, uint8_t direction, uint16_t height, uint32_t colour);
 void track_paint_util_draw_station_metal_supports_2(
     paint_session* session, uint8_t direction, uint16_t height, uint32_t colour, uint8_t type);

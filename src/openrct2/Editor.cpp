@@ -19,8 +19,10 @@
 #include "audio/audio.h"
 #include "interface/Viewport.h"
 #include "localisation/Localisation.h"
+#include "localisation/LocalisationService.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
+#include "object/ObjectRepository.h"
 #include "peep/Staff.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
@@ -51,6 +53,20 @@ namespace Editor
     static void FinaliseMainView();
     static bool ReadS6(const char* path);
     static void ClearMapForEditing(bool fromSave);
+
+    static void object_list_load()
+    {
+        // Scan objects if necessary
+        auto context = GetContext();
+        const auto& localisationService = context->GetLocalisationService();
+        auto& objectRepository = context->GetObjectRepository();
+        objectRepository.LoadOrConstruct(localisationService.GetCurrentLanguage());
+
+        // Reset loaded objects to just defaults
+        auto& objectManager = context->GetObjectManager();
+        objectManager.UnloadAll();
+        objectManager.LoadDefaultObjects();
+    }
 
     /**
      *

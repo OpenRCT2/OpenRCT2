@@ -19,6 +19,7 @@
 #include "Vehicle.h"
 
 interface IObjectManager;
+class StationObject;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
 // The max number of different types of vehicle.
@@ -734,25 +735,6 @@ enum
 
 enum
 {
-    RIDE_ENTRANCE_STYLE_PLAIN,
-    RIDE_ENTRANCE_STYLE_WOODEN,
-    RIDE_ENTRANCE_STYLE_CANVAS_TENT,
-    RIDE_ENTRANCE_STYLE_CASTLE_GREY,
-    RIDE_ENTRANCE_STYLE_CASTLE_BROWN,
-    RIDE_ENTRANCE_STYLE_JUNGLE,
-    RIDE_ENTRANCE_STYLE_LOG_CABIN,
-    RIDE_ENTRANCE_STYLE_CLASSICAL_ROMAN,
-    RIDE_ENTRANCE_STYLE_ABSTRACT,
-    RIDE_ENTRANCE_STYLE_SNOW_ICE,
-    RIDE_ENTRANCE_STYLE_PAGODA,
-    RIDE_ENTRANCE_STYLE_SPACE,
-    RIDE_ENTRANCE_STYLE_NONE,
-
-    RIDE_ENTRANCE_STYLE_COUNT
-};
-
-enum
-{
     RIDE_INSPECTION_EVERY_10_MINUTES,
     RIDE_INSPECTION_EVERY_20_MINUTES,
     RIDE_INSPECTION_EVERY_30_MINUTES,
@@ -1193,6 +1175,7 @@ money16 ride_get_price(Ride* ride);
 
 TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tolerance);
 bool ride_has_adjacent_station(Ride* ride);
+bool ride_has_station_shelter(Ride* ride);
 bool ride_has_ratings(const Ride* ride);
 
 const char* ride_type_get_enum_name(int32_t rideType);
@@ -1204,6 +1187,7 @@ void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
+StationObject* ride_get_station_object(const Ride* ride);
 
 void ride_action_modify(int32_t rideIndex, int32_t modifyType, int32_t flags);
 void ride_stop_peeps_queuing(int32_t rideIndex);

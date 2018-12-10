@@ -675,7 +675,7 @@ static void paint_mini_golf_station(
 {
     LocationXY16 position = session->MapPosition;
     Ride* ride = get_ride(rideIndex);
-    const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+    auto stationObj = ride_get_station_object(ride);
     uint32_t imageId;
     bool hasFence;
 
@@ -698,8 +698,8 @@ static void paint_mini_golf_station(
             sub_98197C(session, imageId, 10, 0, 1, 32, 7, height, 31, 0, height + 2);
         }
 
-        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, height);
-        track_paint_util_draw_station_covers(session, EDGE_SW, hasSWFence, entranceStyle, height);
+        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+        track_paint_util_draw_station_covers(session, EDGE_SW, hasSWFence, stationObj, height);
 
         // Was leftwards tunnel in game, seems odd
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -720,8 +720,8 @@ static void paint_mini_golf_station(
             sub_98197C(session, imageId, 0, 10, 32, 1, 7, height, 0, 31, height + 2);
         }
 
-        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, height);
-        track_paint_util_draw_station_covers(session, EDGE_SE, hasSEFence, entranceStyle, height);
+        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
+        track_paint_util_draw_station_covers(session, EDGE_SE, hasSEFence, stationObj, height);
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }

@@ -214,6 +214,54 @@ public:
     {
         // We currently will load new object types here that apply to all
         // loaded RCT1 and RCT2 save files.
+
+        // Surfaces
+        LoadObject("#RCT2SGR");
+        LoadObject("#RCT2SSY");
+        LoadObject("#RCT2SDI");
+        LoadObject("#RCT2SRO");
+        LoadObject("#RCT2SMA");
+        LoadObject("#RCT2SCH");
+        LoadObject("#RCT2SGC");
+        LoadObject("#RCT2SIC");
+        LoadObject("#RCT2SIR");
+        LoadObject("#RCT2SIY");
+        LoadObject("#RCT2SIP");
+        LoadObject("#RCT2SIG");
+        LoadObject("#RCT2SSR");
+        LoadObject("#RCT2SSA");
+
+        // Edges
+        LoadObject("#RCT2ERO");
+        LoadObject("#RCT2EWR");
+        LoadObject("#RCT2EWB");
+        LoadObject("#RCT2EIC");
+        LoadObject("#RCT1EBR");
+        LoadObject("#RCT1EIR");
+        LoadObject("#RCT1EGY");
+        LoadObject("#RCT1EYE");
+        LoadObject("#RCT1ERE");
+        LoadObject("#RCT1EPU");
+        LoadObject("#RCT1EGR");
+        LoadObject("#RCT1ESN");
+        LoadObject("#RCT1ESG");
+        LoadObject("#RCT1ESA");
+        LoadObject("#RCT1ESB");
+
+        // Stations
+        LoadObject("#RCT2STN");
+        LoadObject("#RCT2STW");
+        LoadObject("#RCT2STV");
+        LoadObject("#RCT2ST3");
+        LoadObject("#RCT2ST4");
+        LoadObject("#RCT2STJ");
+        LoadObject("#RCT2STL");
+        LoadObject("#RCT2STC");
+        LoadObject("#RCT2STA");
+        LoadObject("#RCT2STS");
+        LoadObject("#RCT2STP");
+        LoadObject("#RCT2STE");
+        LoadObject("#ORCT2SN");
     }
 
     static rct_string_id GetObjectSourceGameString(const uint8_t sourceGame)

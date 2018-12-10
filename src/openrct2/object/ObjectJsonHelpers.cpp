@@ -35,6 +35,59 @@ using namespace OpenRCT2::Drawing;
 
 namespace ObjectJsonHelpers
 {
+    /**
+     * Container for a G1 image, additional information and RAII.
+     */
+    struct RequiredImage
+    {
+        rct_g1_element g1{};
+        std::unique_ptr<RequiredImage> next_zoom;
+
+        bool HasData() const
+        {
+            return g1.offset != nullptr;
+        }
+
+        RequiredImage() = default;
+        RequiredImage(const RequiredImage&) = delete;
+
+        RequiredImage(const rct_g1_element& orig)
+        {
+            auto length = g1_calculate_data_size(&orig);
+            g1 = orig;
+            g1.offset = (uint8_t*)std::malloc(length);
+            std::memcpy(g1.offset, orig.offset, length);
+            g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+        }
+
+        RequiredImage(uint32_t idx, std::function<const rct_g1_element*(uint32_t)> getter)
+        {
+            auto orig = getter(idx);
+            if (orig != nullptr)
+            {
+                auto length = g1_calculate_data_size(orig);
+                g1 = *orig;
+                g1.offset = (uint8_t*)std::malloc(length);
+                std::memcpy(g1.offset, orig->offset, length);
+                if (g1.flags & G1_FLAG_HAS_ZOOM_SPRITE)
+                {
+                    // Fetch image for next zoom level
+                    next_zoom = std::make_unique<RequiredImage>((uint32_t)(idx - g1.zoomed_offset), getter);
+                    if (!next_zoom->HasData())
+                    {
+                        next_zoom = nullptr;
+                        g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+                    }
+                }
+            }
+        }
+
+        ~RequiredImage()
+        {
+            std::free(g1.offset);
+        }
+    };
+
     bool GetBoolean(const json_t* obj, const std::string& name, bool defaultValue)
     {
         auto value = json_object_get(obj, name.c_str());
@@ -110,6 +163,46 @@ namespace ObjectJsonHelpers
             result.push_back(json_integer_value(arr));
         }
         return result;
+    }
+
+    colour_t ParseColour(const std::string_view& s, colour_t defaultValue)
+    {
+        static const std::unordered_map<std::string_view, colour_t> LookupTable{
+            { "black", COLOUR_BLACK },
+            { "grey", COLOUR_GREY },
+            { "white", COLOUR_WHITE },
+            { "dark_purple", COLOUR_DARK_PURPLE },
+            { "light_purple", COLOUR_LIGHT_PURPLE },
+            { "bright_purple", COLOUR_BRIGHT_PURPLE },
+            { "dark_blue", COLOUR_DARK_BLUE },
+            { "light_blue", COLOUR_LIGHT_BLUE },
+            { "icy_blue", COLOUR_ICY_BLUE },
+            { "teal", COLOUR_TEAL },
+            { "aquamarine", COLOUR_AQUAMARINE },
+            { "saturated_green", COLOUR_SATURATED_GREEN },
+            { "dark_green", COLOUR_DARK_GREEN },
+            { "moss_green", COLOUR_MOSS_GREEN },
+            { "bright_green", COLOUR_BRIGHT_GREEN },
+            { "olive_green", COLOUR_OLIVE_GREEN },
+            { "dark_olive_green", COLOUR_DARK_OLIVE_GREEN },
+            { "bright_yellow", COLOUR_BRIGHT_YELLOW },
+            { "yellow", COLOUR_YELLOW },
+            { "dark_yellow", COLOUR_DARK_YELLOW },
+            { "light_orange", COLOUR_LIGHT_ORANGE },
+            { "dark_orange", COLOUR_DARK_ORANGE },
+            { "light_brown", COLOUR_LIGHT_BROWN },
+            { "saturated_brown", COLOUR_SATURATED_BROWN },
+            { "dark_brown", COLOUR_DARK_BROWN },
+            { "salmon_pink", COLOUR_SALMON_PINK },
+            { "bordeaux_red", COLOUR_BORDEAUX_RED },
+            { "saturated_red", COLOUR_SATURATED_RED },
+            { "bright_red", COLOUR_BRIGHT_RED },
+            { "dark_pink", COLOUR_DARK_PINK },
+            { "bright_pink", COLOUR_BRIGHT_PINK },
+            { "light_pink", COLOUR_LIGHT_PINK },
+        };
+        auto result = LookupTable.find(s);
+        return (result != LookupTable.end()) ? result->second : defaultValue;
     }
 
     uint8_t ParseCursor(const std::string& s, uint8_t defaultValue)
@@ -215,10 +308,10 @@ namespace ObjectJsonHelpers
         return objectPath;
     }
 
-    static std::vector<rct_g1_element> LoadObjectImages(
+    static std::vector<std::unique_ptr<RequiredImage>> LoadObjectImages(
         IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range)
     {
-        std::vector<rct_g1_element> result;
+        std::vector<std::unique_ptr<RequiredImage>> result;
         auto objectPath = FindLegacyObject(name);
         auto obj = ObjectFactory::CreateObjectFromLegacyFile(context->GetObjectRepository(), objectPath.c_str());
         if (obj != nullptr)
@@ -231,17 +324,12 @@ namespace ObjectJsonHelpers
             {
                 if (i >= 0 && i < numImages)
                 {
-                    auto& objg1 = images[i];
-                    auto length = g1_calculate_data_size(&objg1);
-                    auto g1 = objg1;
-                    g1.offset = (uint8_t*)std::malloc(length);
-                    std::memcpy(g1.offset, objg1.offset, length);
-                    result.push_back(g1);
+                    result.push_back(std::make_unique<RequiredImage>(
+                        (uint32_t)(i), [images](uint32_t idx) -> const rct_g1_element* { return &images[idx]; }));
                 }
                 else
                 {
-                    auto g1 = rct_g1_element{};
-                    result.push_back(g1);
+                    result.push_back(std::make_unique<RequiredImage>());
                     placeHoldersAdded++;
                 }
             }
@@ -258,18 +346,20 @@ namespace ObjectJsonHelpers
         {
             std::string msg = "Unable to open '" + objectPath + "'";
             context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
-            result.resize(range.size());
+            for (size_t i = 0; i < range.size(); i++)
+            {
+                result.push_back(std::make_unique<RequiredImage>());
+            }
         }
         return result;
     }
 
-    static std::vector<rct_g1_element> ParseImages(IReadObjectContext* context, std::string s)
+    static std::vector<std::unique_ptr<RequiredImage>> ParseImages(IReadObjectContext* context, std::string s)
     {
-        std::vector<rct_g1_element> result;
+        std::vector<std::unique_ptr<RequiredImage>> result;
         if (s.empty())
         {
-            rct_g1_element emptyg1 = {};
-            result.push_back(emptyg1);
+            result.push_back(std::make_unique<RequiredImage>());
         }
         else if (String::StartsWith(s, "$CSG"))
         {
@@ -280,12 +370,9 @@ namespace ObjectJsonHelpers
                 {
                     for (auto i : range)
                     {
-                        auto& csg1 = *gfx_get_g1_element(SPR_CSG_BEGIN + i);
-                        auto length = g1_calculate_data_size(&csg1);
-                        auto g1 = csg1;
-                        g1.offset = (uint8_t*)std::malloc(length);
-                        std::memcpy(g1.offset, csg1.offset, length);
-                        result.push_back(g1);
+                        result.push_back(std::make_unique<RequiredImage>(
+                            (uint32_t)(SPR_CSG_BEGIN + i),
+                            [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
                     }
                 }
             }
@@ -297,20 +384,8 @@ namespace ObjectJsonHelpers
             {
                 for (auto i : range)
                 {
-                    auto og1 = gfx_get_g1_element(i);
-                    if (og1 == nullptr)
-                    {
-                        rct_g1_element g1{};
-                        result.push_back(g1);
-                    }
-                    else
-                    {
-                        auto length = g1_calculate_data_size(og1);
-                        auto g1 = *og1;
-                        g1.offset = (uint8_t*)std::malloc(length);
-                        std::memcpy(g1.offset, og1->offset, length);
-                        result.push_back(g1);
-                    }
+                    result.push_back(std::make_unique<RequiredImage>(
+                        (uint32_t)(i), [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
                 }
             }
         }
@@ -336,28 +411,27 @@ namespace ObjectJsonHelpers
                 ImageImporter importer;
                 auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
 
-                result.push_back(importResult.Element);
+                result.push_back(std::make_unique<RequiredImage>(importResult.Element));
+                std::free(importResult.Buffer);
             }
             catch (const std::exception& e)
             {
                 auto msg = String::StdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
                 context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
-
-                rct_g1_element emptyg1 = {};
-                result.push_back(emptyg1);
+                result.push_back(std::make_unique<RequiredImage>());
             }
         }
         return result;
     }
 
-    static std::vector<rct_g1_element> ParseImages(IReadObjectContext* context, json_t* el)
+    static std::vector<std::unique_ptr<RequiredImage>> ParseImages(IReadObjectContext* context, json_t* el)
     {
         auto path = GetString(el, "path");
         auto x = GetInteger(el, "x");
         auto y = GetInteger(el, "y");
         auto raw = (GetString(el, "format") == "raw");
 
-        std::vector<rct_g1_element> result;
+        std::vector<std::unique_ptr<RequiredImage>> result;
         try
         {
             auto flags = ImageImporter::IMPORT_FLAGS::NONE;
@@ -373,15 +447,14 @@ namespace ObjectJsonHelpers
             auto g1Element = importResult.Element;
             g1Element.x_offset = x;
             g1Element.y_offset = y;
-            result.push_back(g1Element);
+            result.push_back(std::make_unique<RequiredImage>(g1Element));
+            std::free(importResult.Buffer);
         }
         catch (const std::exception& e)
         {
             auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
-
-            rct_g1_element emptyg1 = {};
-            result.push_back(emptyg1);
+            result.push_back(std::make_unique<RequiredImage>());
         }
         return result;
     }
@@ -434,7 +507,7 @@ namespace ObjectJsonHelpers
             json_t* el;
             json_array_foreach(jsonImages, i, el)
             {
-                std::vector<rct_g1_element> images;
+                std::vector<std::unique_ptr<RequiredImage>> images;
                 if (json_is_string(el))
                 {
                     auto s = json_string_value(el);
@@ -444,10 +517,38 @@ namespace ObjectJsonHelpers
                 {
                     images = ParseImages(context, el);
                 }
-                for (const auto& g1 : images)
+
+                auto imagesStartIndex = imageTable.GetCount();
+                for (const auto& img : images)
                 {
+                    const auto& g1 = img->g1;
                     imageTable.AddImage(&g1);
-                    std::free(g1.offset);
+                }
+
+                // Add zoom images here
+                for (size_t j = 0; j < images.size(); j++)
+                {
+                    const auto tableIndex = imagesStartIndex + j;
+                    const auto* img = images[j].get();
+                    if (img->next_zoom != nullptr)
+                    {
+                        img = img->next_zoom.get();
+
+                        // Set old image zoom offset to zoom image which we are about to add
+                        auto g1a = (rct_g1_element*)(&imageTable.GetImages()[tableIndex]);
+                        g1a->zoomed_offset = (int32_t)tableIndex - (int32_t)imageTable.GetCount();
+
+                        while (img != nullptr)
+                        {
+                            auto g1b = img->g1;
+                            if (img->next_zoom != nullptr)
+                            {
+                                g1b.zoomed_offset = -1;
+                            }
+                            imageTable.AddImage(&g1b);
+                            img = img->next_zoom.get();
+                        }
+                    }
                 }
             }
         }

@@ -20,6 +20,8 @@
 #include <openrct2/world/Sprite.h>
 #include <openrct2/world/Surface.h>
 
+class StationObject;
+
 #define gRideEntries RCT2_ADDRESS(0x009ACFA4, rct_ride_entry*)
 #define gTileElementTilePointers RCT2_ADDRESS(0x013CE9A4, TileElement*)
 rct_sprite* sprite_list = RCT2_ADDRESS(0x010E63BC, rct_sprite);
@@ -417,4 +419,9 @@ bool TrackElement::IsHighlighted() const
 uint8_t PathElement::GetEdges() const
 {
     return edges & 0xF;
+}
+
+StationObject* ride_get_station_object(const Ride* ride)
+{
+    return nullptr;
 }

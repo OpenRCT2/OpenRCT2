@@ -20,13 +20,13 @@ namespace OpenRCT2
 
 struct rct_g1_element
 {
-    uint8_t* offset;        // 0x00
-    int16_t width;          // 0x04
-    int16_t height;         // 0x06
-    int16_t x_offset;       // 0x08
-    int16_t y_offset;       // 0x0A
-    uint16_t flags;         // 0x0C
-    uint16_t zoomed_offset; // 0x0E
+    uint8_t* offset;       // 0x00
+    int16_t width;         // 0x04
+    int16_t height;        // 0x06
+    int16_t x_offset;      // 0x08
+    int16_t y_offset;      // 0x0A
+    uint16_t flags;        // 0x0C
+    int32_t zoomed_offset; // 0x0E
 };
 
 struct rct_drawpixelinfo

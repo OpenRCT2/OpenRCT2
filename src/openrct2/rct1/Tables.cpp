@@ -143,22 +143,22 @@ namespace RCT1
     {
         static constexpr const uint8_t map[] =
         {
-            TERRAIN_EDGE_ROCK,
-            TERRAIN_EDGE_BRICK,
-            TERRAIN_EDGE_IRON,
-            TERRAIN_EDGE_WOOD_RED,
-            TERRAIN_EDGE_GREY,
-            TERRAIN_EDGE_YELLOW,
-            TERRAIN_EDGE_WOOD_BLACK,
-            TERRAIN_EDGE_RED,
-            TERRAIN_EDGE_ICE,
-            TERRAIN_EDGE_PURPLE,
-            TERRAIN_EDGE_GREEN,
-            TERRAIN_EDGE_STONE_BROWN,
-            TERRAIN_EDGE_STONE_GREY,
-            TERRAIN_EDGE_SKYSCRAPER_A,
-            TERRAIN_EDGE_SKYSCRAPER_B,
-            TERRAIN_EDGE_ROCK             // Unused
+            TERRAIN_EDGE_ROCK,          // #RCT2ERO
+            TERRAIN_EDGE_BRICK,         // #RCT1EBR
+            TERRAIN_EDGE_IRON,          // #RCT1EIR
+            TERRAIN_EDGE_WOOD_RED,      // #RCT2EWR
+            TERRAIN_EDGE_GREY,          // #RCT1EGY
+            TERRAIN_EDGE_YELLOW,        // #RCT1EYE
+            TERRAIN_EDGE_WOOD_BLACK,    // #RCT2EWB
+            TERRAIN_EDGE_RED,           // #RCT1ERE
+            TERRAIN_EDGE_ICE,           // #RCT2EIC
+            TERRAIN_EDGE_PURPLE,        // #RCT2EIC
+            TERRAIN_EDGE_GREEN,         // #RCT1EGR
+            TERRAIN_EDGE_STONE_BROWN,   // #RCT1ESN
+            TERRAIN_EDGE_STONE_GREY,    // #RCT1ESG
+            TERRAIN_EDGE_SKYSCRAPER_A,  // #RCT1ESA
+            TERRAIN_EDGE_SKYSCRAPER_B,  // #RCT1ESB
+            TERRAIN_EDGE_ROCK           // #RCT2ERO (Unused)
         };
         Guard::ArgumentInRange<size_t>(terrainEdge, 0, std::size(map), "Unsupported RCT1 terrain edge.");
         return map[terrainEdge];

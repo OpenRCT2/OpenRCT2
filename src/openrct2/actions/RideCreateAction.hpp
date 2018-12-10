@@ -295,7 +295,7 @@ public:
         ride->income_per_hour = MONEY32_UNDEFINED;
         ride->profit = MONEY32_UNDEFINED;
         ride->connected_message_throttle = 0;
-        ride->entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+        ride->entrance_style = 0;
         ride->num_block_brakes = 0;
         ride->guests_favourite = 0;
 

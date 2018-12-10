@@ -80,7 +80,7 @@ static void submarine_ride_paint_track_station(
 {
     LocationXY16 position = session->MapPosition;
     Ride* ride = get_ride(rideIndex);
-    const rct_ride_entrance_definition* entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
+    auto stationObj = ride_get_station_object(ride);
     int32_t heightLower = height - 16;
     uint32_t imageId;
 
@@ -91,7 +91,7 @@ static void submarine_ride_paint_track_station(
 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
         track_paint_util_draw_pier(
-            session, ride, entranceStyle, position, direction, height, tileElement, session->CurrentRotation);
+            session, ride, stationObj, position, direction, height, tileElement, session->CurrentRotation);
     }
     else
     {
@@ -100,7 +100,7 @@ static void submarine_ride_paint_track_station(
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
         track_paint_util_draw_pier(
-            session, ride, entranceStyle, position, direction, height, tileElement, session->CurrentRotation);
+            session, ride, stationObj, position, direction, height, tileElement, session->CurrentRotation);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

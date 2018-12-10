@@ -918,16 +918,16 @@ std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(const json_t
         auto colours = ObjectJsonHelpers::GetJsonStringArray(jColours);
         if (colours.size() >= 1)
         {
-            carColour.main = ParseColour(colours[0]);
+            carColour.main = ObjectJsonHelpers::ParseColour(colours[0]);
             carColour.additional_1 = carColour.main;
             carColour.additional_2 = carColour.main;
             if (colours.size() >= 2)
             {
-                carColour.additional_1 = ParseColour(colours[1]);
+                carColour.additional_1 = ObjectJsonHelpers::ParseColour(colours[1]);
             }
             if (colours.size() >= 3)
             {
-                carColour.additional_2 = ParseColour(colours[2]);
+                carColour.additional_2 = ObjectJsonHelpers::ParseColour(colours[2]);
             }
         }
         config.push_back(carColour);
@@ -1096,44 +1096,4 @@ uint8_t RideObject::ParseShopItem(const std::string& s)
     };
     auto result = LookupTable.find(s);
     return (result != LookupTable.end()) ? result->second : SHOP_ITEM_NONE;
-}
-
-colour_t RideObject::ParseColour(const std::string& s)
-{
-    static const std::unordered_map<std::string, colour_t> LookupTable{
-        { "black", COLOUR_BLACK },
-        { "grey", COLOUR_GREY },
-        { "white", COLOUR_WHITE },
-        { "dark_purple", COLOUR_DARK_PURPLE },
-        { "light_purple", COLOUR_LIGHT_PURPLE },
-        { "bright_purple", COLOUR_BRIGHT_PURPLE },
-        { "dark_blue", COLOUR_DARK_BLUE },
-        { "light_blue", COLOUR_LIGHT_BLUE },
-        { "icy_blue", COLOUR_ICY_BLUE },
-        { "teal", COLOUR_TEAL },
-        { "aquamarine", COLOUR_AQUAMARINE },
-        { "saturated_green", COLOUR_SATURATED_GREEN },
-        { "dark_green", COLOUR_DARK_GREEN },
-        { "moss_green", COLOUR_MOSS_GREEN },
-        { "bright_green", COLOUR_BRIGHT_GREEN },
-        { "olive_green", COLOUR_OLIVE_GREEN },
-        { "dark_olive_green", COLOUR_DARK_OLIVE_GREEN },
-        { "bright_yellow", COLOUR_BRIGHT_YELLOW },
-        { "yellow", COLOUR_YELLOW },
-        { "dark_yellow", COLOUR_DARK_YELLOW },
-        { "light_orange", COLOUR_LIGHT_ORANGE },
-        { "dark_orange", COLOUR_DARK_ORANGE },
-        { "light_brown", COLOUR_LIGHT_BROWN },
-        { "saturated_brown", COLOUR_SATURATED_BROWN },
-        { "dark_brown", COLOUR_DARK_BROWN },
-        { "salmon_pink", COLOUR_SALMON_PINK },
-        { "bordeaux_red", COLOUR_BORDEAUX_RED },
-        { "saturated_red", COLOUR_SATURATED_RED },
-        { "bright_red", COLOUR_BRIGHT_RED },
-        { "dark_pink", COLOUR_DARK_PINK },
-        { "bright_pink", COLOUR_BRIGHT_PINK },
-        { "light_pink", COLOUR_LIGHT_PINK },
-    };
-    auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : COLOUR_BLACK;
 }

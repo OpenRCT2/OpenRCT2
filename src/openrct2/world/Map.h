@@ -81,7 +81,6 @@ enum
 
 extern const CoordsXY CoordsDirectionDelta[];
 extern const TileCoordsXY TileDirectionDelta[];
-extern const money32 TerrainPricing[];
 
 extern uint16_t gWidePathTileLoopX;
 extern uint16_t gWidePathTileLoopY;

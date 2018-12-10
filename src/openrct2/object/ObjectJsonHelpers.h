@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
+#include "../interface/Colour.h"
 #include "../object/Object.h"
 #include "ImageTable.h"
 #include "StringTable.h"
@@ -30,6 +31,7 @@ namespace ObjectJsonHelpers
     float GetFloat(const json_t* obj, const std::string& name, const float& defaultValue = 0);
     std::vector<std::string> GetJsonStringArray(const json_t* arr);
     std::vector<int32_t> GetJsonIntegerArray(const json_t* arr);
+    colour_t ParseColour(const std::string_view& s, colour_t defaultValue = COLOUR_BLACK);
     uint8_t ParseCursor(const std::string& s, uint8_t defaultValue);
     rct_object_entry ParseObjectEntry(const std::string& s);
     void LoadStrings(const json_t* root, StringTable& stringTable);
@@ -37,12 +39,12 @@ namespace ObjectJsonHelpers
 
     template<typename T> static T GetFlags(const json_t* obj, std::initializer_list<std::pair<std::string, T>> list)
     {
-        T flags = 0;
+        T flags{};
         for (const auto& item : list)
         {
             if (GetBoolean(obj, item.first))
             {
-                flags |= item.second;
+                flags = (T)(flags | item.second);
             }
         }
         return flags;
