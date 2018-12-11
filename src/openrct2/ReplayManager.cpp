@@ -14,7 +14,9 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
+#include "World/Park.h"
 #include "actions/GameAction.h"
+#include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
 #include "object/ObjectManager.h"
@@ -76,6 +78,8 @@ namespace OpenRCT2
     struct ReplayRecordData
     {
         MemoryStream parkData;
+        MemoryStream spriteSpatialData;
+        MemoryStream parkParams;
         std::string name;      // Name of play
         uint64_t timeRecorded; // Posix Time.
         uint32_t tickStart;    // First tick of replay.
@@ -238,6 +242,33 @@ namespace OpenRCT2
             s6exporter->Export();
             s6exporter->SaveGame(&replayData->parkData);
 
+            replayData->spriteSpatialData.Write(gSpriteSpatialIndex, sizeof(gSpriteSpatialIndex));
+
+            DataSerialiser parkParams(true, replayData->parkParams);
+            parkParams << _guestGenerationProbability;
+            parkParams << _suggestedGuestMaximum;
+            parkParams << gCheatsSandboxMode;
+            parkParams << gCheatsDisableClearanceChecks;
+            parkParams << gCheatsDisableSupportLimits;
+            parkParams << gCheatsDisableTrainLengthLimit;
+            parkParams << gCheatsEnableChainLiftOnAllTrack;
+            parkParams << gCheatsShowAllOperatingModes;
+            parkParams << gCheatsShowVehiclesFromOtherTrackTypes;
+            parkParams << gCheatsFastLiftHill;
+            parkParams << gCheatsDisableBrakesFailure;
+            parkParams << gCheatsDisableAllBreakdowns;
+            parkParams << gCheatsBuildInPauseMode;
+            parkParams << gCheatsIgnoreRideIntensity;
+            parkParams << gCheatsDisableVandalism;
+            parkParams << gCheatsDisableLittering;
+            parkParams << gCheatsNeverendingMarketing;
+            parkParams << gCheatsFreezeWeather;
+            parkParams << gCheatsDisablePlantAging;
+            parkParams << gCheatsAllowArbitraryRideTypeChanges;
+            parkParams << gCheatsDisableRideValueAging;
+            parkParams << gConfigGeneral.show_real_names_of_guests;
+            parkParams << gCheatsIgnoreResearchStatus;
+
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::RECORDING;
 
@@ -361,6 +392,34 @@ namespace OpenRCT2
                 importer->Import();
 
                 sprite_position_tween_reset();
+
+                std::memcpy(gSpriteSpatialIndex, data.spriteSpatialData.GetData(), data.spriteSpatialData.GetLength());
+
+                DataSerialiser parkParams(false, data.parkParams);
+                parkParams << _guestGenerationProbability;
+                parkParams << _suggestedGuestMaximum;
+                parkParams << gCheatsSandboxMode;
+                parkParams << gCheatsDisableClearanceChecks;
+                parkParams << gCheatsDisableSupportLimits;
+                parkParams << gCheatsDisableTrainLengthLimit;
+                parkParams << gCheatsEnableChainLiftOnAllTrack;
+                parkParams << gCheatsShowAllOperatingModes;
+                parkParams << gCheatsShowVehiclesFromOtherTrackTypes;
+                parkParams << gCheatsFastLiftHill;
+                parkParams << gCheatsDisableBrakesFailure;
+                parkParams << gCheatsDisableAllBreakdowns;
+                parkParams << gCheatsBuildInPauseMode;
+                parkParams << gCheatsIgnoreRideIntensity;
+                parkParams << gCheatsDisableVandalism;
+                parkParams << gCheatsDisableLittering;
+                parkParams << gCheatsNeverendingMarketing;
+                parkParams << gCheatsFreezeWeather;
+                parkParams << gCheatsDisablePlantAging;
+                parkParams << gCheatsAllowArbitraryRideTypeChanges;
+                parkParams << gCheatsDisableRideValueAging;
+                parkParams << gConfigGeneral.show_real_names_of_guests;
+                parkParams << gCheatsIgnoreResearchStatus;
+
                 game_load_init();
                 fix_invalid_vehicle_sprite_sizes();
             }
@@ -423,6 +482,11 @@ namespace OpenRCT2
                 return false;
             }
 
+            // Reset position of all streams.
+            data.parkData.SetPosition(0);
+            data.parkParams.SetPosition(0);
+            data.spriteSpatialData.SetPosition(0);
+
             return true;
         }
 
@@ -473,6 +537,8 @@ namespace OpenRCT2
         {
             serialiser << data.name;
             serialiser << data.parkData;
+            serialiser << data.parkParams;
+            serialiser << data.spriteSpatialData;
             serialiser << data.tickStart;
             serialiser << data.tickEnd;
 
