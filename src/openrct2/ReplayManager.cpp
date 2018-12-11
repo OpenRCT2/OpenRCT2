@@ -87,6 +87,7 @@ namespace OpenRCT2
         std::multiset<ReplayCommand> commands;
         std::vector<std::pair<uint32_t, rct_sprite_checksum>> checksums;
         int32_t checksumIndex;
+        int32_t checksumMismatchIndex;
     };
 
     class ReplayManager final : public IReplayManager
@@ -196,7 +197,7 @@ namespace OpenRCT2
                 CheckState();
                 ReplayCommands();
 
-                // If we run out of commands we can stop the replay and checked all checksums we can stop.
+                // If we run out of commands and checked all checksums we can stop.
                 if (_currentReplay->commands.empty() && _currentReplay->checksumIndex >= _currentReplay->checksums.size())
                 {
                     StopPlayback();
@@ -332,11 +333,21 @@ namespace OpenRCT2
 
             _currentReplay = std::move(replayData);
             _currentReplay->checksumIndex = 0;
+            _faultyChecksumIndex = -1;
 
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::PLAYING;
 
             return true;
+        }
+
+        virtual bool IsPlaybackStateMismatching() const override
+        {
+            if (_mode != ReplayMode::PLAYING)
+            {
+                return false;
+            }
+            return _faultyChecksumIndex != -1;
         }
 
         virtual bool StopPlayback() override
@@ -594,14 +605,16 @@ namespace OpenRCT2
                 if (savedChecksum.second.ToString() != checksum.ToString())
                 {
                     // Detected different game state.
-                    log_info(
+                    log_verbose(
                         "Different sprite checksum at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
                         savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
+
+                    _faultyChecksumIndex = checksumIndex;
                 }
                 else
                 {
                     // Good state.
-                    log_info(
+                    log_verbose(
                         "Good state at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
                         savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
                 }
@@ -653,6 +666,7 @@ namespace OpenRCT2
         ReplayMode _mode = ReplayMode::NONE;
         std::unique_ptr<ReplayRecordData> _currentRecording;
         std::unique_ptr<ReplayRecordData> _currentReplay;
+        int32_t _faultyChecksumIndex = -1;
         uint32_t _commandId = 0;
         uint32_t _nextChecksumTick = 0;
         uint32_t _nextReplayTick = 0;
