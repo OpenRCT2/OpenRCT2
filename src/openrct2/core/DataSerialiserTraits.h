@@ -24,7 +24,7 @@ template<typename T> struct DataSerializerTraits
 {
     static void encode(IStream* stream, const T& v) = delete;
     static void decode(IStream* stream, T& val) = delete;
-    static void log(IStream* stream, T& val) = delete;
+    static void log(IStream* stream, const T& val) = delete;
 };
 
 template<typename T> struct DataSerializerTraitsIntegral
@@ -244,5 +244,47 @@ template<> struct DataSerializerTraits<MemoryStream>
     }
     static void log(IStream* stream, const MemoryStream& tag)
     {
+    }
+};
+
+template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty, _Size>>
+{
+    static void encode(IStream* stream, const std::array<_Ty, _Size>& val)
+    {
+        uint16_t len = (uint16_t)_Size;
+        uint16_t swapped = ByteSwapBE(len);
+        stream->Write(&swapped);
+
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.encode(stream, sub);
+        }
+    }
+    static void decode(IStream* stream, std::array<_Ty, _Size>& val)
+    {
+        uint16_t len;
+        stream->Read(&len);
+        len = ByteSwapBE(len);
+
+        if (len != _Size)
+            throw std::exception("Invalid size, can't decode");
+
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.decode(stream, sub);
+        }
+    }
+    static void log(IStream* stream, const std::array<_Ty, _Size>& val)
+    {
+        stream->Write("{");
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.log(stream, sub);
+            stream->Write("; ", 2);
+        }
+        stream->Write("}");
     }
 };
