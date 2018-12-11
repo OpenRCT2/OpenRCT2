@@ -44,6 +44,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/actions/GameAction.h>
+#include <openrct2/actions/RideSetColourScheme.hpp>
 
 using namespace OpenRCT2;
 
@@ -4286,7 +4288,9 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
 
     z = tileElement->base_height * 8;
     direction = tileElement->GetDirection();
-    sub_6C683D(&x, &y, &z, direction, tileElement->AsTrack()->GetTrackType(), newColourScheme, nullptr, 4);
+    auto gameAction = RideSetColourSchemeAction(x, y, z, direction, tileElement->AsTrack()->GetTrackType(), newColourScheme);
+    auto result = GameActions::Execute(&gameAction);
+
 }
 
 /**

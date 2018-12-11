@@ -3721,6 +3721,7 @@ STR_6270    :Terrain Surfaces
 STR_6271    :Terrain Edges
 STR_6272    :Stations
 STR_6273    :Music
+STR_6274    :Can't set colour scheme...
 
 #############
 # Scenarios #

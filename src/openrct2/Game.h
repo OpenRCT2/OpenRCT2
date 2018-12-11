@@ -90,6 +90,7 @@ enum GAME_COMMAND
     GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
     GAME_COMMAND_PLACE_PEEP_SPAWN, // GA, TODO: refactor to separate array for just game actions
     GAME_COMMAND_SET_CLIMATE,      // GA
+    GAME_COMMAND_SET_COLOUR_SCHEME, // GA
     GAME_COMMAND_COUNT,
 };
 

@@ -120,6 +120,7 @@ const std::vector<NetworkAction> NetworkActions::Actions = {
             GAME_COMMAND_SET_RIDE_SETTING,
             GAME_COMMAND_SET_RIDE_PRICE,
             GAME_COMMAND_SET_BRAKES_SPEED,
+            GAME_COMMAND_SET_COLOUR_SCHEME,
         },
     },
     {
