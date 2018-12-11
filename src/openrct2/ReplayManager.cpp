@@ -14,7 +14,6 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
-#include "World/Park.h"
 #include "actions/GameAction.h"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
@@ -22,6 +21,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "rct2/S6Exporter.h"
+#include "world/Park.h"
 
 #include <vector>
 
