@@ -193,7 +193,9 @@ namespace OpenRCT2
             }
             else if (_mode == ReplayMode::PLAYING)
             {
+#ifndef DISABLE_NETWORK
                 CheckState();
+#endif
                 ReplayCommands();
 
                 // If we run out of commands and checked all checksums we can stop.
@@ -590,6 +592,7 @@ namespace OpenRCT2
             return true;
         }
 
+#ifndef DISABLE_NETWORK
         void CheckState()
         {
             uint32_t checksumIndex = _currentReplay->checksumIndex;
@@ -620,6 +623,7 @@ namespace OpenRCT2
                 _currentReplay->checksumIndex++;
             }
         }
+#endif // DISABLE_NETWORK
 
         void ReplayCommands()
         {

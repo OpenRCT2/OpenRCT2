@@ -189,9 +189,11 @@ add_executable(test_tile_elements ${TILE_ELEMENT_TEST_SOURCES})
 target_link_libraries(test_tile_elements ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 add_test(NAME tile_elements COMMAND test_tile_elements)
 
-# Replay tests
-set(REPLAY_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/ReplayTests.cpp"
-                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
-add_executable(test_replays ${REPLAY_TEST_SOURCES})
-target_link_libraries(test_replays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-add_test(NAME replay_tests COMMAND test_replays)
+if (NOT DISABLE_NETWORK)
+    # Replay tests
+    set(REPLAY_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/ReplayTests.cpp"
+                                  "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+    add_executable(test_replays ${REPLAY_TEST_SOURCES})
+    target_link_libraries(test_replays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+    add_test(NAME replay_tests COMMAND test_replays)
+endif ()
