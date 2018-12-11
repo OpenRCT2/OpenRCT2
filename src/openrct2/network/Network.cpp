@@ -941,14 +941,14 @@ bool Network::CheckSRAND(uint32_t tick, uint32_t srand0)
     {
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
-        const char* client_sprite_hash = sprite_checksum();
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0'
-            && strcmp(client_sprite_hash, server_sprite_hash.c_str()) != 0;
+        rct_sprite_checksum checksum = sprite_checksum();
+        std::string client_sprite_hash = checksum.ToString();
+        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && client_sprite_hash != server_sprite_hash;
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch)
         {
 #    ifdef DEBUG_DESYNC
-            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash, server_sprite_hash.c_str());
+            dbg_report_desync(tick, srand0, server_srand0, client_sprite_hash.c_str(), server_sprite_hash.c_str());
 #    endif
             return false;
         }
@@ -1613,7 +1613,8 @@ void Network::Server_Send_TICK()
     *packet << flags;
     if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
-        packet->WriteString(sprite_checksum());
+        rct_sprite_checksum checksum = sprite_checksum();
+        packet->WriteString(checksum.ToString().c_str());
     }
     SendPacketToClients(*packet);
 }

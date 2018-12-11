@@ -201,6 +201,13 @@ union rct_sprite
 };
 assert_struct_size(rct_sprite, 0x100);
 
+struct rct_sprite_checksum
+{
+    std::array<uint8_t, 20> raw;
+
+    std::string ToString() const;
+};
+
 #pragma pack(pop)
 
 enum
@@ -305,7 +312,7 @@ void crashed_vehicle_particle_update(rct_crashed_vehicle_particle* particle);
 void crash_splash_create(int32_t x, int32_t y, int32_t z);
 void crash_splash_update(rct_crash_splash* splash);
 
-const char* sprite_checksum();
+rct_sprite_checksum sprite_checksum();
 
 void sprite_set_flashing(rct_sprite* sprite, bool flashing);
 bool sprite_get_flashing(rct_sprite* sprite);
