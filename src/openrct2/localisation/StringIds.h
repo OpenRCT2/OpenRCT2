@@ -3890,7 +3890,7 @@ enum
     STR_OBJECT_SELECTION_TERRAIN_EDGES = 6271,
     STR_OBJECT_SELECTION_STATIONS = 6272,
     STR_OBJECT_SELECTION_MUSIC = 6273,
-    
+
     STR_CANT_SET_COLOUR_SCHEME = 6274,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
