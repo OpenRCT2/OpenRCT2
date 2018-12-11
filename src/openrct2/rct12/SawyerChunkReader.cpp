@@ -195,6 +195,10 @@ size_t SawyerChunkReader::DecodeChunkRLE(void* dst, size_t dstCapacity, const vo
             {
                 throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
             }
+            if (i + 1 + rleCodeByte + 1 > srcLength)
+            {
+                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+            }
 
             std::memcpy(dst8, src8 + i + 1, rleCodeByte + 1);
             dst8 += rleCodeByte + 1;
