@@ -1977,6 +1977,7 @@ STR_2739    :Nincs
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat nem található
+STR_2743    :Másold a „data/css17.dat”-ot az RCT1 telepítési útvonaladból az RCT2 telepítési útvonaladon belül a „data/css50.dat”-ba, vagy győződj meg róla, hogy helyes az RCT1-re mutató útvonal a Haladó fülön.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -3110,6 +3111,7 @@ STR_6265    :{SMALLFONT}{BLACK}Ha ki van jelölve, az operációs rendszered fá
 STR_6266    :Egyedi tartalmak mappájának megnyitása
 STR_6267    :Mezővizsgáló megnyitása
 STR_6268    :Megállított játék léptetése
+STR_6269    :Érvénytelen éghajlati ID
 
 #############
 # Scenarios #

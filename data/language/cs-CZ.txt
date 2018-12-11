@@ -3738,6 +3738,10 @@ STR_6266    :Otevřít složku s uživatelským obsahem
 STR_6267    :Otevřít průzkumníka dlaždic
 STR_6268    :Přejít na další tik
 STR_6269    :Nesprávné ID počasí
+STR_6270    :Povrchy terénu
+STR_6271    :Hrany terénu
+STR_6272    :Stanice
+STR_6273    :Hudba
 
 ###############################################################################
 ## RCT2 Scenarios
