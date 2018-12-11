@@ -24,13 +24,11 @@
 struct RideSetColourSchemeAction : public GameActionBase<GAME_COMMAND_SET_COLOUR_SCHEME, GameActionResult>
 {
 private:
-    int32_t _x, _y, _z, _direction, _trackType;
-    uint16_t _newColourScheme;
+    int32_t _x = 0, _y = 0, _z = 0, _direction = 0, _trackType = 0;
+    uint16_t _newColourScheme = 0;
 
 public:
-    RideSetColourSchemeAction()
-    {
-    }
+    RideSetColourSchemeAction() = default;
     RideSetColourSchemeAction(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t trackType, uint16_t newColourScheme)
         : _x(x)
         , _y(y)
