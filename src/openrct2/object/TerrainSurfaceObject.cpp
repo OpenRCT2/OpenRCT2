@@ -81,7 +81,8 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, const json_t* r
     Flags = ObjectJsonHelpers::GetFlags<TERRAIN_SURFACE_FLAGS>(
         properties,
         { { "smoothWithSelf", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_SELF },
-          { "smoothWithOther", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_OTHER } });
+          { "smoothWithOther", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_OTHER },
+          { "canGrow", TERRAIN_SURFACE_FLAGS::CAN_GROW } });
 
     auto jDefault = json_object_get(root, "default");
     if (json_is_object(jDefault))

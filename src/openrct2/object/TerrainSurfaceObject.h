@@ -17,6 +17,7 @@ enum TERRAIN_SURFACE_FLAGS
     NONE = 0,
     SMOOTH_WITH_SELF = 1 << 0,
     SMOOTH_WITH_OTHER = 1 << 1,
+    CAN_GROW = 1 << 2,
 };
 
 class TerrainSurfaceObject final : public Object
