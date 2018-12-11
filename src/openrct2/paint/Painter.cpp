@@ -61,10 +61,17 @@ void Painter::Paint(IDrawingEngine& de)
     auto* replayManager = GetContext()->GetReplayManager();
     if (replayManager != nullptr)
     {
+        const char* text = nullptr;
+
         if (replayManager->IsReplaying())
-            PaintReplayNotice(dpi, false);
+            text = "Replaying...";
         else if (replayManager->IsRecording())
-            PaintReplayNotice(dpi, true);
+            text = "Recording...";
+        else if (replayManager->IsNormalising())
+            text = "Normalising...";
+
+        if (text != nullptr)
+            PaintReplayNotice(dpi, text);
     }
 
     if (gConfigGeneral.show_fps)
@@ -74,10 +81,10 @@ void Painter::Paint(IDrawingEngine& de)
     gCurrentDrawCount++;
 }
 
-void OpenRCT2::Paint::Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, bool isRecording)
+void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
 {
     int32_t x = _uiContext->GetWidth() / 2;
-    int32_t y = _uiContext->GetHeight() - 24;
+    int32_t y = _uiContext->GetHeight() - 44;
 
     // Format string
     utf8 buffer[64] = { 0 };
@@ -86,10 +93,7 @@ void OpenRCT2::Paint::Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, bool is
     ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
     ch = utf8_write_codepoint(ch, FORMAT_RED);
 
-    if (isRecording)
-        snprintf(ch, 64 - (ch - buffer), "Recording...");
-    else
-        snprintf(ch, 64 - (ch - buffer), "Replaying...");
+    snprintf(ch, 64 - (ch - buffer), "%s", text);
 
     int32_t stringWidth = gfx_get_string_width(buffer);
     x = x - stringWidth;

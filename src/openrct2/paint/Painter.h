@@ -44,7 +44,7 @@ namespace OpenRCT2
             void Paint(Drawing::IDrawingEngine& de);
 
         private:
-            void PaintReplayNotice(rct_drawpixelinfo* dpi, bool isRecording);
+            void PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text);
             void PaintFPS(rct_drawpixelinfo* dpi);
             void MeasureFPS();
         };
