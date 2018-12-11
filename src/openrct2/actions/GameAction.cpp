@@ -201,7 +201,7 @@ namespace GameActions
         uint32_t flags = action->GetFlags();
 
         auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-        if (replayManager != nullptr && replayManager->IsReplaying())
+        if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
         {
             // We only accept replay commands as long the replay is active.
             if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
@@ -282,7 +282,15 @@ namespace GameActions
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)
                 {
-                    if (replayManager != nullptr && replayManager->IsRecording())
+                    bool recordAction = false;
+                    if (replayManager)
+                    {
+                        if (replayManager->IsRecording())
+                            recordAction = true;
+                        else if (replayManager->IsNormalising() && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
+                            recordAction = true; // In normalisation we only feed back actions issued by the replay manager.
+                    }
+                    if (recordAction)
                     {
                         replayManager->AddGameAction(gCurrentTicks, action);
                     }

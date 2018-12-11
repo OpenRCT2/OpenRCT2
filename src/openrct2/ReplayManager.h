@@ -25,9 +25,10 @@ namespace OpenRCT2
         virtual ~IReplayManager() = default;
 
         virtual void Update() = 0;
-        virtual bool IsReplaying() const = 0;
 
+        virtual bool IsReplaying() const = 0;
         virtual bool IsRecording() const = 0;
+        virtual bool IsNormalising() const = 0;
 
         // NOTE: Will become obsolete eventually once all game actions are done.
         virtual void AddGameCommand(
@@ -41,6 +42,8 @@ namespace OpenRCT2
 
         virtual bool StartPlayback(const std::string& file) = 0;
         virtual bool StopPlayback() = 0;
+
+        virtual bool NormaliseReplay(const std::string& inputFile, const std::string& outputFile) = 0;
     };
 
     std::unique_ptr<IReplayManager> CreateReplayManager();

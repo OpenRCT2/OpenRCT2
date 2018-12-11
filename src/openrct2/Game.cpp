@@ -485,13 +485,25 @@ int32_t game_do_command_p(
             // Second call to actually perform the operation
             new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
 
-            if (replayManager != nullptr && replayManager->IsRecording() && (flags & GAME_COMMAND_FLAG_APPLY)
-                && (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_5) == 0)
+            if (replayManager != nullptr)
             {
-                int32_t callback = game_command_callback_get_index(game_command_callback);
+                bool recordCommand = false;
+                bool commandExecutes = (flags & GAME_COMMAND_FLAG_APPLY) && (flags & GAME_COMMAND_FLAG_GHOST) == 0
+                    && (flags & GAME_COMMAND_FLAG_5) == 0;
 
-                replayManager->AddGameCommand(
-                    gCurrentTicks, *eax, original_ebx, *ecx, original_edx, original_esi, original_edi, original_ebp, callback);
+                if (replayManager->IsRecording() && commandExecutes)
+                    recordCommand = true;
+                else if (replayManager->IsNormalising() && commandExecutes && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
+                    recordCommand = true;
+
+                if (recordCommand)
+                {
+                    int32_t callback = game_command_callback_get_index(game_command_callback);
+
+                    replayManager->AddGameCommand(
+                        gCurrentTicks, *eax, original_ebx, *ecx, original_edx, original_esi, original_edi, original_ebp,
+                        callback);
+                }
             }
 
             // Do the callback (required for multiplayer to work correctly), but only for top level commands

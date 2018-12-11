@@ -1438,6 +1438,36 @@ static int32_t cc_replay_stop(InteractiveConsole& console, const utf8** argv, in
     return 0;
 }
 
+static int32_t cc_replay_normalise(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    if (argc < 2)
+    {
+        console.WriteFormatLine("Parameters required <replay_input> <replay_output>");
+        return 0;
+    }
+
+    std::string inputFile = argv[0];
+    std::string outputFile = argv[1];
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager != nullptr)
+    {
+        if (replayManager->NormaliseReplay(inputFile, outputFile))
+        {
+            console.WriteFormatLine("Stopped replay");
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
 static int32_t cc_abort(
@@ -1561,6 +1591,8 @@ static constexpr const console_command console_command_table[] = {
     { "replay_stoprecord", cc_replay_stoprecord, "Stops recording a new replay.", "replay_stoprecord"},
     { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
+    { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
+    
 };
 // clang-format on
 

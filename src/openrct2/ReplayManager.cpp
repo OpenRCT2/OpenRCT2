@@ -25,6 +25,8 @@
 
 namespace OpenRCT2
 {
+    // NOTE: This is currently very close to what the network version uses.
+    //       Should be refactored once the old game commands are gone.
     struct ReplayCommand
     {
         ReplayCommand() = default;
@@ -75,10 +77,12 @@ namespace OpenRCT2
     {
         MemoryStream parkData;
         std::string name;      // Name of play
-        uint32_t timeRecorded; // Posix Time.
+        uint64_t timeRecorded; // Posix Time.
         uint32_t tickStart;    // First tick of replay.
         uint32_t tickEnd;      // Last tick of replay.
         std::multiset<ReplayCommand> commands;
+        std::vector<std::pair<uint32_t, rct_sprite_checksum>> checksums;
+        int32_t checksumIndex;
     };
 
     class ReplayManager final : public IReplayManager
@@ -88,6 +92,7 @@ namespace OpenRCT2
             NONE = 0,
             RECORDING,
             PLAYING,
+            NORMALISATION,
         };
 
     public:
@@ -105,11 +110,16 @@ namespace OpenRCT2
             return _mode == ReplayMode::RECORDING;
         }
 
+        virtual bool IsNormalising() const override
+        {
+            return _mode == ReplayMode::NORMALISATION;
+        }
+
         virtual void AddGameCommand(
             uint32_t tick, uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx, uint32_t esi, uint32_t edi, uint32_t ebp,
             uint8_t callback) override
         {
-            if (_current == nullptr)
+            if (_currentRecording == nullptr)
                 return;
 
             uint32_t args[7];
@@ -121,12 +131,15 @@ namespace OpenRCT2
             args[5] = edi;
             args[6] = ebp;
 
-            _current->commands.emplace(gCurrentTicks, args, callback, _commandId++);
+            _currentRecording->commands.emplace(gCurrentTicks, args, callback, _commandId++);
+
+            // Force a checksum record the next tick.
+            _nextChecksumTick = tick + 1;
         }
 
         virtual void AddGameAction(uint32_t tick, const GameAction* action) override
         {
-            if (_current == nullptr)
+            if (_currentRecording == nullptr)
                 return;
 
             MemoryStream stream;
@@ -140,17 +153,35 @@ namespace OpenRCT2
             DataSerialiser dsIn(false, stream);
             ga->Serialise(dsIn);
 
-            _current->commands.emplace(gCurrentTicks, std::move(ga), _commandId++);
+            _currentRecording->commands.emplace(gCurrentTicks, std::move(ga), _commandId++);
+
+            // Force a checksum record the next tick.
+            _nextChecksumTick = tick + 1;
         }
 
+        void AddChecksum(uint32_t tick, rct_sprite_checksum&& checksum)
+        {
+            _currentRecording->checksums.emplace_back(std::make_pair(tick, checksum));
+        }
+
+        // Function runs each Tick.
         virtual void Update() override
         {
             if (_mode == ReplayMode::NONE)
                 return;
 
+            if ((_mode == ReplayMode::RECORDING || _mode == ReplayMode::NORMALISATION) && gCurrentTicks == _nextChecksumTick)
+            {
+                rct_sprite_checksum checksum = sprite_checksum();
+                AddChecksum(gCurrentTicks, std::move(checksum));
+
+                // Reset.
+                _nextChecksumTick = 0;
+            }
+
             if (_mode == ReplayMode::RECORDING)
             {
-                if (gCurrentTicks >= _current->tickEnd)
+                if (gCurrentTicks >= _currentRecording->tickEnd)
                 {
                     StopRecording();
                     return;
@@ -158,13 +189,36 @@ namespace OpenRCT2
             }
             else if (_mode == ReplayMode::PLAYING)
             {
+                CheckState();
                 ReplayCommands();
+
+                // If we run out of commands we can stop the replay and checked all checksums we can stop.
+                if (_currentReplay->commands.empty() && _currentReplay->checksumIndex >= _currentReplay->checksums.size())
+                {
+                    StopPlayback();
+                    return;
+                }
+            }
+            else if (_mode == ReplayMode::NORMALISATION)
+            {
+                ReplayCommands();
+
+                // If we run out of commands we can just stop
+                if (_currentReplay->commands.empty() && _nextChecksumTick == 0)
+                {
+                    StopPlayback();
+                    StopRecording();
+
+                    // Reset mode, in normalisation nothing will set it.
+                    _mode = ReplayMode::NONE;
+                    return;
+                }
             }
         }
 
         virtual bool StartRecording(const std::string& name, uint32_t maxTicks /*= 0xFFFFFFFF*/) override
         {
-            if (_mode != ReplayMode::NONE)
+            if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
                 return false;
 
             auto replayData = std::make_unique<ReplayRecordData>();
@@ -184,22 +238,26 @@ namespace OpenRCT2
             s6exporter->Export();
             s6exporter->SaveGame(&replayData->parkData);
 
-            _mode = ReplayMode::RECORDING;
-            _current = std::move(replayData);
+            if (_mode != ReplayMode::NORMALISATION)
+                _mode = ReplayMode::RECORDING;
+
+            _currentRecording = std::move(replayData);
 
             return true;
         }
 
         virtual bool StopRecording() override
         {
-            if (_mode != ReplayMode::RECORDING)
+            if (_mode != ReplayMode::RECORDING && _mode != ReplayMode::NORMALISATION)
                 return false;
 
+            _currentRecording->tickEnd = gCurrentTicks;
+
             DataSerialiser serialiser(true);
-            Serialise(serialiser, *_current);
+            Serialise(serialiser, *_currentRecording);
 
             char replayName[512] = {};
-            snprintf(replayName, sizeof(replayName), "replay_%s_%d.sv6r", _current->name.c_str(), 0);
+            snprintf(replayName, sizeof(replayName), "%s.sv6r", _currentRecording->name.c_str());
 
             std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
             std::string outFile = Path::Combine(outPath, replayName);
@@ -213,14 +271,20 @@ namespace OpenRCT2
                 fclose(fp);
             }
 
-            //_current.reset();
-            _mode = ReplayMode::NONE;
+            // When normalizing the output we don't touch the mode.
+            if (_mode != ReplayMode::NORMALISATION)
+                _mode = ReplayMode::NONE;
+
+            _currentRecording.reset();
 
             return true;
         }
 
         virtual bool StartPlayback(const std::string& file) override
         {
+            if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
+                return false;
+
             auto replayData = std::make_unique<ReplayRecordData>();
 
             if (!ReadReplayData(file, *replayData))
@@ -235,19 +299,47 @@ namespace OpenRCT2
 
             gCurrentTicks = replayData->tickStart;
 
-            _current = std::move(replayData);
-            _mode = ReplayMode::PLAYING;
+            _currentReplay = std::move(replayData);
+            _currentReplay->checksumIndex = 0;
+
+            if (_mode != ReplayMode::NORMALISATION)
+                _mode = ReplayMode::PLAYING;
 
             return true;
         }
 
         virtual bool StopPlayback() override
         {
-            if (_mode != ReplayMode::PLAYING)
+            if (_mode != ReplayMode::PLAYING && _mode != ReplayMode::NORMALISATION)
                 return false;
 
-            _current.reset();
-            _mode = ReplayMode::NONE;
+            // When normalizing the output we don't touch the mode.
+            if (_mode != ReplayMode::NORMALISATION)
+            {
+                _mode = ReplayMode::NONE;
+            }
+
+            _currentReplay.reset();
+
+            return true;
+        }
+
+        virtual bool NormaliseReplay(const std::string& file, const std::string& outFile) override
+        {
+            _mode = ReplayMode::NORMALISATION;
+
+            if (StartPlayback(file) == false)
+            {
+                return false;
+            }
+
+            if (StartRecording(outFile, 0xFFFFFFFF) == false)
+            {
+                StopPlayback();
+                return false;
+            }
+
+            _nextReplayTick = gCurrentTicks + 1;
 
             return true;
         }
@@ -310,7 +402,7 @@ namespace OpenRCT2
             }
 
             std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
-            std::string outFile = Path::Combine(outPath, file);
+            std::string outFile = Path::Combine(outPath, fileName);
 
             bool loaded = false;
             if (ReadReplayFromFile(outFile, stream))
@@ -405,25 +497,72 @@ namespace OpenRCT2
                 }
             }
 
+            uint32_t countChecksums = (uint32_t)data.checksums.size();
+            serialiser << countChecksums;
+
+            if (serialiser.IsLoading())
+            {
+                data.checksums.resize(countChecksums);
+            }
+
+            for (uint32_t i = 0; i < countChecksums; i++)
+            {
+                serialiser << data.checksums[i].first;
+                serialiser << data.checksums[i].second.raw;
+            }
+
             return true;
+        }
+
+        void CheckState()
+        {
+            int32_t checksumIndex = _currentReplay->checksumIndex;
+
+            if (checksumIndex >= _currentReplay->checksums.size())
+                return;
+
+            const auto& savedChecksum = _currentReplay->checksums[checksumIndex];
+            if (_currentReplay->checksums[checksumIndex].first == gCurrentTicks)
+            {
+                rct_sprite_checksum checksum = sprite_checksum();
+                if (savedChecksum.second.ToString() != checksum.ToString())
+                {
+                    // Detected different game state.
+                    log_info(
+                        "Different sprite checksum at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
+                        savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
+                }
+                else
+                {
+                    // Good state.
+                    log_info(
+                        "Good state at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
+                        savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
+                }
+                _currentReplay->checksumIndex++;
+            }
         }
 
         void ReplayCommands()
         {
-            auto& replayQueue = _current->commands;
-
-            // If we run out of commands we can stop the replay.
-            if (replayQueue.empty())
-            {
-                StopPlayback();
-                return;
-            }
+            auto& replayQueue = _currentReplay->commands;
 
             while (replayQueue.begin() != replayQueue.end())
             {
                 const ReplayCommand& command = (*replayQueue.begin());
-                if (command.tick != gCurrentTicks)
-                    break;
+
+                if (_mode == ReplayMode::PLAYING)
+                {
+                    // If this is a normal playback wait for the correct tick.
+                    if (command.tick != gCurrentTicks)
+                        break;
+                }
+                else if (_mode == ReplayMode::NORMALISATION)
+                {
+                    if (gCurrentTicks != _nextReplayTick)
+                        break;
+                    _nextReplayTick = gCurrentTicks + 1;
+                }
 
                 if (command.action != nullptr)
                 {
@@ -446,8 +585,11 @@ namespace OpenRCT2
 
     private:
         ReplayMode _mode = ReplayMode::NONE;
-        std::unique_ptr<ReplayRecordData> _current;
+        std::unique_ptr<ReplayRecordData> _currentRecording;
+        std::unique_ptr<ReplayRecordData> _currentReplay;
         uint32_t _commandId = 0;
+        uint32_t _nextChecksumTick = 0;
+        uint32_t _nextReplayTick = 0;
     };
 
     std::unique_ptr<IReplayManager> CreateReplayManager()
