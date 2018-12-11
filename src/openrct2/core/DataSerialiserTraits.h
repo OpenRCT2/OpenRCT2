@@ -19,6 +19,7 @@
 #include "MemoryStream.h"
 
 #include <cstdio>
+#include <stdexcept>
 
 template<typename T> struct DataSerializerTraits
 {
@@ -268,7 +269,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty,
         len = ByteSwapBE(len);
 
         if (len != _Size)
-            throw std::exception("Invalid size, can't decode");
+            throw std::runtime_error("Invalid size, can't decode");
 
         DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)

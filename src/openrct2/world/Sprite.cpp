@@ -57,7 +57,6 @@ std::string rct_sprite_checksum::ToString() const
 {
     std::string result;
 
-    result.clear();
     result.reserve(raw.size() * 2);
     for (auto b : raw)
     {
@@ -262,7 +261,7 @@ rct_sprite_checksum sprite_checksum()
             }
         }
 
-        checksum.raw = std::move(_spriteHashAlg->Finish());
+        checksum.raw = _spriteHashAlg->Finish();
     }
     catch (std::exception& e)
     {
@@ -274,9 +273,9 @@ rct_sprite_checksum sprite_checksum()
 }
 #else
 
-const char* sprite_checksum()
+rct_sprite_checksum sprite_checksum()
 {
-    return nullptr;
+    return rct_sprite_checksum{};
 }
 
 #endif // DISABLE_NETWORK

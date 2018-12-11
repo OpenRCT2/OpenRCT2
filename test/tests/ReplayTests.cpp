@@ -76,7 +76,7 @@ TEST_F(ReplayTests, all)
         while (replayManager->IsReplaying())
         {
             gs->UpdateLogic();
-            ASSERT_TRUE(replayManager->IsPlaybackStateMismatching());
+            ASSERT_TRUE(replayManager->IsPlaybackStateMismatching() == false);
         }
     }
     SUCCEED();

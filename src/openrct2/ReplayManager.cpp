@@ -86,8 +86,7 @@ namespace OpenRCT2
         uint32_t tickEnd;      // Last tick of replay.
         std::multiset<ReplayCommand> commands;
         std::vector<std::pair<uint32_t, rct_sprite_checksum>> checksums;
-        int32_t checksumIndex;
-        int32_t checksumMismatchIndex;
+        uint32_t checksumIndex;
     };
 
     class ReplayManager final : public IReplayManager
@@ -593,7 +592,7 @@ namespace OpenRCT2
 
         void CheckState()
         {
-            int32_t checksumIndex = _currentReplay->checksumIndex;
+            uint32_t checksumIndex = _currentReplay->checksumIndex;
 
             if (checksumIndex >= _currentReplay->checksums.size())
                 return;
