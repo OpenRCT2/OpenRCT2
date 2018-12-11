@@ -143,6 +143,7 @@ public:
     uint32_t GetEdgeStyle() const;
     void SetEdgeStyle(uint32_t newStyle);
 
+    bool CanGrassGrow() const;
     uint8_t GetGrassLength() const;
     void SetGrassLength(uint8_t newLength);
     void SetGrassLengthAndInvalidate(uint8_t newLength, CoordsXY coords);

@@ -9,6 +9,9 @@
 
 #include "Surface.h"
 
+#include "../Context.h"
+#include "../object/ObjectManager.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../scenario/Scenario.h"
 #include "Location.hpp"
 #include "Map.h"
@@ -67,6 +70,22 @@ void SurfaceElement::SetWaterHeight(uint32_t newWaterHeight)
     terrain |= newWaterHeight;
 }
 
+bool SurfaceElement::CanGrassGrow() const
+{
+    auto surfaceStyle = GetSurfaceStyle();
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, surfaceStyle);
+    if (obj != nullptr)
+    {
+        auto surfaceObject = static_cast<TerrainSurfaceObject*>(obj);
+        if (surfaceObject->Flags & TERRAIN_SURFACE_FLAGS::CAN_GROW)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 uint8_t SurfaceElement::GetGrassLength() const
 {
     return grass_length;
@@ -108,7 +127,7 @@ void SurfaceElement::SetGrassLengthAndInvalidate(uint8_t length, CoordsXY coords
 void SurfaceElement::UpdateGrassLength(CoordsXY coords)
 {
     // Check if tile is grass
-    if (GetSurfaceStyle() != TERRAIN_GRASS)
+    if (!CanGrassGrow())
         return;
 
     uint8_t grassLengthTmp = grass_length & 7;
