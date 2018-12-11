@@ -21,6 +21,7 @@
 #include "PlacePeepSpawnAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
+#include "RideSetColourScheme.hpp"
 #include "RideSetName.hpp"
 #include "RideSetStatus.hpp"
 #include "SetParkEntranceFeeAction.hpp"
@@ -46,6 +47,7 @@ namespace GameActions
         Register<PlacePeepSpawnAction>();
         Register<RideCreateAction>();
         Register<RideDemolishAction>();
+        Register<RideSetColourSchemeAction>();
         Register<RideSetNameAction>();
         Register<RideSetStatusAction>();
         Register<SetParkEntranceFeeAction>();

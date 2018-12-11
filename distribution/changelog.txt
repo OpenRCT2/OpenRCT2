@@ -15,6 +15,7 @@
 - Feature: [#8259] Add say command to in-game console.
 - Change: [#7961] Add new object types: station, terrain surface, and terrain edge.
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
+- Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.  
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
 - Fix: [#7439] Placement messages have mixed strings
 - Fix: [#7473] Disabling sound effects also disables "Disable audio on focus loss".

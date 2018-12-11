@@ -22,6 +22,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/GameAction.h>
+#include <openrct2/actions/RideSetColourScheme.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
@@ -4286,7 +4288,8 @@ static void window_ride_set_track_colour_scheme(rct_window* w, int32_t x, int32_
 
     z = tileElement->base_height * 8;
     direction = tileElement->GetDirection();
-    sub_6C683D(&x, &y, &z, direction, tileElement->AsTrack()->GetTrackType(), newColourScheme, nullptr, 4);
+    auto gameAction = RideSetColourSchemeAction(x, y, z, direction, tileElement->AsTrack()->GetTrackType(), newColourScheme);
+    GameActions::Execute(&gameAction);
 }
 
 /**
