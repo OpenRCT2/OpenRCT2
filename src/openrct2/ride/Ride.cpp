@@ -1932,7 +1932,7 @@ static int32_t ride_modify_entrance_or_exit(TileElement* tileElement, int32_t x,
         // Remove entrance / exit
         game_do_command(
             x, (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY), y, rideIndex,
-            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, stationIndex, 0);
+            GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, stationIndex, entranceType == ENTRANCE_TYPE_RIDE_EXIT);
         gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                       : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
         gRideEntranceExitPlaceType = entranceType;
