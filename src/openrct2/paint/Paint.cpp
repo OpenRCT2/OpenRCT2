@@ -453,6 +453,25 @@ paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadr
 void paint_session_arrange(paint_session* session)
 {
     paint_struct* psHead = &session->PaintHead;
+    static int session_count = 0;
+    printf("\n    { /* session %3d */\n        .PaintStructs = {\n", session_count++);
+    int i = 0;
+    for (auto& ps : session->PaintStructs)
+    {
+        printf(
+            "    /* %4d */ { .basic = { .bounds = { %5u, %5u, %5u, %5u, %5u, %5u }, .quadrant_index = %3u, .quadrant_flags = "
+            "0x%x, .next_quadrant_ps = (paint_struct*)%4d} },\n",
+            i++, ps.basic.bounds.x, ps.basic.bounds.y, ps.basic.bounds.z, ps.basic.bounds.x_end, ps.basic.bounds.y_end,
+            ps.basic.bounds.z_end, ps.basic.quadrant_index, ps.basic.quadrant_flags,
+            (ps.basic.next_quadrant_ps ? int(ps.basic.next_quadrant_ps - &session->PaintStructs[0].basic) : 4000));
+    }
+    printf("        },\n        .Quadrants = {\n");
+    i = 0;
+    for (auto& quad : session->Quadrants)
+    {
+        printf("    /* %4d */ (paint_struct*)%4d,\n", i++, (quad ? int(quad - &session->PaintStructs[0].basic) : 512));
+    }
+    printf("        }\n    },\n");
 
     paint_struct* ps = psHead;
     ps->next_quadrant_ps = nullptr;
