@@ -1550,6 +1550,9 @@ static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
     const int32_t maxSupportedTileElementType = (int32_t)std::size(ElementTypeAddColour);
     while (!(tileElement++)->IsLastForTile())
     {
+        if (tileElement->IsGhost())
+            continue;
+
         int32_t tileElementType = tileElement->GetType() >> 2;
         if (tileElementType >= maxSupportedTileElementType)
         {
@@ -1565,6 +1568,7 @@ static uint16_t map_window_get_pixel_colour_peep(CoordsXY c)
 static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
 {
     Ride* ride;
+    // ~Mikroscopic: do we need two separate colour variables here?
     uint16_t colourA = 0;                            // highlight colour
     uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
 
@@ -1572,6 +1576,9 @@ static uint16_t map_window_get_pixel_colour_ride(CoordsXY c)
     TileElement* tileElement = map_get_surface_element_at(c);
     do
     {
+        if (tileElement->IsGhost())
+            continue;
+
         switch (tileElement->GetType())
         {
             case TILE_ELEMENT_TYPE_SURFACE:
