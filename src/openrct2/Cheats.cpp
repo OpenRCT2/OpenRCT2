@@ -59,23 +59,17 @@ int32_t day_spinner_value = 1;
 static void cheat_set_grass_length(int32_t length)
 {
     int32_t x, y;
-    TileElement* tileElement;
 
     for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
         for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
-            tileElement = map_get_surface_element_at(x, y);
-            if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
-                continue;
-
-            if (tileElement->AsSurface()->GetSurfaceStyle() != TERRAIN_GRASS)
-                continue;
-
-            if (tileElement->AsSurface()->GetWaterHeight() > 0)
-                continue;
-
-            tileElement->AsSurface()->SetGrassLength(length);
+            auto surfaceElement = map_get_surface_element_at(x, y)->AsSurface();
+            if (surfaceElement != nullptr && (surfaceElement->GetOwnership() & OWNERSHIP_OWNED)
+                && surfaceElement->GetWaterHeight() == 0 && surfaceElement->CanGrassGrow())
+            {
+                surfaceElement->SetGrassLength(length);
+            }
         }
     }
 

@@ -1284,11 +1284,15 @@ static money32 map_change_surface_style(
                     continue;
             }
 
-            TileElement* tileElement = map_get_surface_element_at({ x, y });
+            auto surfaceElement = map_get_surface_element_at({ x, y })->AsSurface();
+            if (surfaceElement == nullptr)
+            {
+                continue;
+            }
 
             if (surfaceStyle != 0xFF)
             {
-                uint8_t cur_terrain = tileElement->AsSurface()->GetSurfaceStyle();
+                uint8_t cur_terrain = surfaceElement->GetSurfaceStyle();
 
                 if (surfaceStyle != cur_terrain)
                 {
@@ -1305,7 +1309,7 @@ static money32 map_change_surface_style(
 
                     if (flags & GAME_COMMAND_FLAG_APPLY)
                     {
-                        tileElement->AsSurface()->SetSurfaceStyle(surfaceStyle);
+                        surfaceElement->SetSurfaceStyle(surfaceStyle);
 
                         map_invalidate_tile_full(x, y);
                         footpath_remove_litter(x, y, tile_element_height(x, y));
@@ -1315,7 +1319,7 @@ static money32 map_change_surface_style(
 
             if (edgeStyle != 0xFF)
             {
-                uint8_t currentEdge = tileElement->AsSurface()->GetEdgeStyle();
+                uint8_t currentEdge = surfaceElement->GetEdgeStyle();
 
                 if (edgeStyle != currentEdge)
                 {
@@ -1323,7 +1327,7 @@ static money32 map_change_surface_style(
 
                     if (flags & GAME_COMMAND_FLAG_APPLY)
                     {
-                        tileElement->AsSurface()->SetEdgeStyle(edgeStyle);
+                        surfaceElement->SetEdgeStyle(edgeStyle);
                         map_invalidate_tile_full(x, y);
                     }
                 }
@@ -1331,13 +1335,10 @@ static money32 map_change_surface_style(
 
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                if (tileElement->AsSurface()->GetSurfaceStyle() == TERRAIN_GRASS)
+                if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
                 {
-                    if ((tileElement->AsSurface()->GetGrassLength() & 7) != GRASS_LENGTH_CLEAR_0)
-                    {
-                        tileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                        map_invalidate_tile_full(x, y);
-                    }
+                    surfaceElement->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+                    map_invalidate_tile_full(x, y);
                 }
             }
         }

@@ -21,6 +21,8 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
@@ -990,18 +992,17 @@ static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t v
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
             continue;
 
-        TileElement* tileElement = map_get_surface_element_at(chosenTile);
-
-        if (tileElement->AsSurface()->GetSurfaceStyle() != TERRAIN_GRASS)
-            continue;
-
-        if (abs(tileElement->base_height - peep->next_z) > 2)
-            continue;
-
-        if ((tileElement->AsSurface()->GetGrassLength() & 0x7) < GRASS_LENGTH_CLEAR_1)
-            continue;
-
-        return chosenDirection;
+        auto surfaceElement = map_get_surface_element_at(chosenTile)->AsSurface();
+        if (surfaceElement != nullptr)
+        {
+            if (std::abs(surfaceElement->base_height - peep->next_z) <= 2)
+            {
+                if (surfaceElement->CanGrassGrow() && (surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
+                {
+                    return chosenDirection;
+                }
+            }
+        }
     }
     return 0xFF;
 }
@@ -1674,15 +1675,11 @@ void rct_peep::UpdateMowing()
         if (var_37 != 7)
             continue;
 
-        TileElement* tile_element = map_get_first_element_at(next_x / 32, next_y / 32);
-
-        for (; (tile_element->GetType() != TILE_ELEMENT_TYPE_SURFACE); tile_element++)
-            ;
-
-        if (tile_element->AsSurface()->GetSurfaceStyle() == TERRAIN_GRASS)
+        auto surfaceElement = map_get_surface_element_at(next_x / 32, next_y / 32)->AsSurface();
+        if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
         {
-            tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_MOWED);
-            map_invalidate_tile_zoom0(next_x, next_y, tile_element->base_height * 8, tile_element->base_height * 8 + 16);
+            surfaceElement->SetGrassLength(GRASS_LENGTH_MOWED);
+            map_invalidate_tile_zoom0(next_x, next_y, surfaceElement->base_height * 8, surfaceElement->base_height * 8 + 16);
         }
         staff_lawns_mown++;
         window_invalidate_flags |= PEEP_INVALIDATE_STAFF_STATS;
@@ -2264,21 +2261,21 @@ static int32_t peep_update_patrolling_find_grass(rct_peep* peep)
     if (!(peep->GetNextIsSurface()))
         return 0;
 
-    TileElement* tile_element = map_get_surface_element_at({ peep->next_x, peep->next_y });
-
-    if ((tile_element->AsSurface()->GetSurfaceStyle()) != TERRAIN_GRASS)
-        return 0;
-
-    if ((tile_element->AsSurface()->GetGrassLength() & 0x7) < GRASS_LENGTH_CLEAR_1)
-        return 0;
-
-    peep->SetState(PEEP_STATE_MOWING);
-    peep->var_37 = 0;
-    // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
-    peep->destination_x = peep->next_x + _MowingWaypoints[0].x;
-    peep->destination_y = peep->next_y + _MowingWaypoints[0].y;
-    peep->destination_tolerance = 3;
-    return 1;
+    auto surfaceElement = map_get_surface_element_at({ peep->next_x, peep->next_y })->AsSurface();
+    if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
+    {
+        if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
+        {
+            peep->SetState(PEEP_STATE_MOWING);
+            peep->var_37 = 0;
+            // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
+            peep->destination_x = peep->next_x + _MowingWaypoints[0].x;
+            peep->destination_y = peep->next_y + _MowingWaypoints[0].y;
+            peep->destination_tolerance = 3;
+            return 1;
+        }
+    }
+    return 0;
 }
 
 /**
