@@ -26,58 +26,85 @@
 
 using namespace OpenRCT2;
 
-class ReplayTests : public testing::Test
+struct ReplayTestData
+{
+    std::string name;
+    std::string filePath;
+};
+
+// NOTE: gtests expects the name to have no special characters.
+static std::string sanitizeTestName(const std::string& name)
+{
+    std::string nameOnly = Path::GetFileNameWithoutExtension(name);
+    std::string res;
+    for (char c : nameOnly)
+    {
+        if (isalnum(c))
+            res += c;
+    }
+    return res;
+}
+
+static std::vector<ReplayTestData> GetReplayFiles()
+{
+    std::vector<ReplayTestData> res;
+    std::string basePath = TestData::GetBasePath();
+    std::string replayPath = Path::Combine(basePath, "replays");
+    std::string replayPathPattern = Path::Combine(replayPath, "*.sv6r");
+    std::vector<std::string> files;
+
+    std::unique_ptr<IFileScanner> scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(replayPathPattern, true));
+    while (scanner->Next())
+    {
+        ReplayTestData test;
+        test.name = sanitizeTestName(scanner->GetFileInfo()->Name);
+        test.filePath = scanner->GetPath();
+        res.push_back(test);
+    }
+    return res;
+}
+
+class ReplayTests : public testing::TestWithParam<ReplayTestData>
 {
 protected:
-    std::vector<std::string> GetReplayFiles()
+};
+
+TEST_P(ReplayTests, RunReplay)
+{
+    gOpenRCT2Headless = true;
+    gOpenRCT2NoGraphics = true;
+    core_init();
+
+    auto testData = GetParam();
+    auto replayFile = testData.filePath;
+
+    auto context = CreateContext();
+    bool initialised = context->Initialise();
+    ASSERT_TRUE(initialised);
+
+    auto gs = context->GetGameState();
+    ASSERT_NE(gs, nullptr);
+
+    IReplayManager* replayManager = context->GetReplayManager();
+    ASSERT_NE(replayManager, nullptr);
+
+    bool startedReplay = replayManager->StartPlayback(replayFile);
+    ASSERT_TRUE(startedReplay);
+
+    while (replayManager->IsReplaying())
     {
-        std::string basePath = TestData::GetBasePath();
-        std::string replayPath = Path::Combine(basePath, "replays");
-        std::string replayPathPattern = Path::Combine(replayPath, "*.sv6r");
-        std::vector<std::string> files;
+        gs->UpdateLogic();
+        ASSERT_TRUE(replayManager->IsPlaybackStateMismatching() == false);
+    }
+}
 
-        std::unique_ptr<IFileScanner> scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(replayPathPattern, true));
-        while (scanner->Next())
-        {
-            files.push_back(scanner->GetPath());
-        }
-
-        return files;
+struct PrintReplayParameter
+{
+    template<class ParamType> std::string operator()(const testing::TestParamInfo<ParamType>& info) const
+    {
+        auto data = static_cast<ReplayTestData>(info.param);
+        return data.name;
     }
 };
 
-TEST_F(ReplayTests, all)
-{
-    std::vector<std::string> replayFiles = GetReplayFiles();
-    if (replayFiles.empty())
-    {
-        SUCCEED();
-    }
-
-    gOpenRCT2Headless = true;
-    gOpenRCT2NoGraphics = true;
-
-    core_init();
-    for (auto&& replayFile : replayFiles)
-    {
-        auto context = CreateContext();
-        bool initialised = context->Initialise();
-        ASSERT_TRUE(initialised);
-
-        auto gs = context->GetGameState();
-        ASSERT_NE(gs, nullptr);
-
-        IReplayManager* replayManager = context->GetReplayManager();
-        ASSERT_NE(replayManager, nullptr);
-
-        bool startedReplay = replayManager->StartPlayback(replayFile);
-        ASSERT_TRUE(startedReplay);
-
-        while (replayManager->IsReplaying())
-        {
-            gs->UpdateLogic();
-            ASSERT_TRUE(replayManager->IsPlaybackStateMismatching() == false);
-        }
-    }
-    SUCCEED();
-}
+INSTANTIATE_TEST_CASE_P(Replay, ReplayTests, testing::ValuesIn(GetReplayFiles()), PrintReplayParameter());
