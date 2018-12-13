@@ -3742,6 +3742,7 @@ STR_6270    :Povrchy terénu
 STR_6271    :Hrany terénu
 STR_6272    :Stanice
 STR_6273    :Hudba
+STR_6274    :Nelze nastavit schéma barev...
 
 ###############################################################################
 ## RCT2 Scenarios

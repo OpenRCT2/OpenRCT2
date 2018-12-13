@@ -2075,7 +2075,7 @@ STR_2739    :Geen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat niet gevonden
-STR_2743    :Kopieer ‘data/css17.dat’ van je RCT1-installatie naar ‘data/css50.dat’ in je RCT2-installatie, of stel een pad in naar je RCT1-bestanden onder het tabblad ‘Overige instellingen’
+STR_2743    :Kopieer ‘data/css17.dat’ van je RCT1-installatie naar ‘data/css50.dat’ in je RCT2-installatie, of stel een pad in naar je RCT1-bestanden onder het tabblad ‘Geavanceerd’.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -3731,6 +3731,13 @@ STR_6264    :Altijd systeembestandsbrowser gebruiken
 STR_6265    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zal de bestandsbrowser van je systeem gebruikt worden in plaats van de ingebouwde bestandsbrowser van OpenRCT2 zelf.
 STR_6266    :Map voor custom content openen
 STR_6267    :Vakinspecteur openen
+STR_6268    :Doorgaan naar volgende tick
+STR_6269    :Ongeldig klimaat-ID
+STR_6270    :Oppervlakken terrein
+STR_6271    :Zijkanten terrein
+STR_6272    :Stations
+STR_6273    :Muziek
+STR_6274    :Kan kleurenschema niet instellen...
 
 #############
 # Scenarios #
