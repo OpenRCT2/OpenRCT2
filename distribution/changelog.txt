@@ -36,6 +36,7 @@
 - Fix: [#8187] Cannot set land ownership over ride entrances or exits in sandbox mode.
 - Fix: [#8200] Incorrect behaviour when removing entrances and exits that are on the same tile.
 - Fix: [#8204] Crash when tile element has no surface elements.
+- Fix: [#8335] Rides with arbitrary ride types can crash the game when they break down.
 - Fix: [#8358] Infinite loop when changing vehicle count on stopped ride.
 - Fix: [#8433] Crash if master server response is not valid JSON.
 - Fix: [#8434] Crash if curl_easy_init fails.
