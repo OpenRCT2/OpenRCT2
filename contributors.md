@@ -7,11 +7,11 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michael Steenbeek (Gymnasiast) - translation management
 * Michał Janiszewski (janisozaur) - CI, Linux management
 * Lewis Fox (LRFLEW) - macOS management
-* Marijn van der Werf (marijnvdwerf)
 * (zsilencer)
 * Richard Jenkins (rwjuk)
 * Hielke Morsink (Broxzier)
 * Aaron van Geffen (AaronVanGeffen)
+* Matthias Moninger (ZehMatt)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
