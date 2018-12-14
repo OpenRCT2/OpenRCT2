@@ -2090,8 +2090,8 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 w->y + window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
             int32_t autosavesToKeep = (int32_t)(gConfigGeneral.autosave_amount * 100);
             gfx_draw_string_left(
-                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &autosavesToKeep, w->colours[1], w->x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1,
-                w->y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
+                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &autosavesToKeep, w->colours[1],
+                w->x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
 
 #ifdef __APPLE__
             set_format_arg(0, uintptr_t, (uintptr_t)macos_str_decomp_to_precomp(gConfigGeneral.rct1_path));
