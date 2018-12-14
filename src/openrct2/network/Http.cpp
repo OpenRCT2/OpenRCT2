@@ -98,7 +98,7 @@ namespace OpenRCT2::Network::Http
         std::shared_ptr<void> _(nullptr, [curl](...) { curl_easy_cleanup(curl); });
 
         if (!curl)
-            std::runtime_error("Failed to initialize curl");
+            throw std::runtime_error("Failed to initialize curl");
 
         Response res;
         WriteThis wt;
