@@ -37,6 +37,17 @@ using namespace OpenRCT2::Network;
 #define WHEIGHT_MAX 800
 #define ITEM_HEIGHT (3 + 9 + 3)
 
+class MasterServerException : public std::exception
+{
+public:
+    rct_string_id StatusText;
+
+    MasterServerException(rct_string_id statusText)
+        : StatusText(statusText)
+    {
+    }
+};
+
 static char _playerName[32 + 1];
 static std::vector<server_entry> _serverEntries;
 static std::mutex _mutex;
@@ -136,6 +147,7 @@ static void join_server(std::string address);
 #ifndef DISABLE_HTTP
 static void fetch_servers();
 static void fetch_servers_callback(Http::Response& response);
+static void RefreshServersFromJson(const json_t* jsonServers);
 #endif
 static bool is_version_valid(const std::string& version);
 
@@ -663,61 +675,75 @@ static uint32_t get_total_player_count()
 
 static void fetch_servers_callback(Http::Response& response)
 {
-    if (response.status != Http::Status::OK)
+    json_t* root = nullptr;
+    try
+    {
+        if (response.status != Http::Status::OK)
+        {
+            throw MasterServerException(STR_SERVER_LIST_NO_CONNECTION);
+        }
+
+        root = Json::FromString(response.body);
+        auto jsonStatus = json_object_get(root, "status");
+        if (!json_is_number(jsonStatus))
+        {
+            throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER);
+        }
+
+        auto status = (int32_t)json_integer_value(jsonStatus);
+        if (status != 200)
+        {
+            throw MasterServerException(STR_SERVER_LIST_MASTER_SERVER_FAILED);
+        }
+
+        auto jsonServers = json_object_get(root, "servers");
+        if (!json_is_array(jsonServers))
+        {
+            throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY);
+        }
+
+        RefreshServersFromJson(jsonServers);
+    }
+    catch (const MasterServerException& e)
+    {
+        status_text = e.StatusText;
+        window_invalidate_by_class(WC_SERVER_LIST);
+    }
+    catch (const std::exception& e)
     {
         status_text = STR_SERVER_LIST_NO_CONNECTION;
         window_invalidate_by_class(WC_SERVER_LIST);
-        log_warning("Unable to connect to master server");
-        return;
+        log_warning("Unable to connect to master server: %s", e.what());
     }
 
-    json_t* root = Json::FromString(response.body);
-    json_t* jsonStatus = json_object_get(root, "status");
-    if (!json_is_number(jsonStatus))
+    if (root != nullptr)
     {
-        status_text = STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER;
-        window_invalidate_by_class(WC_SERVER_LIST);
-        log_warning("Invalid response from master server");
-        return;
+        json_decref(root);
+        root = nullptr;
     }
+}
 
-    int32_t status = (int32_t)json_integer_value(jsonStatus);
-    if (status != 200)
-    {
-        status_text = STR_SERVER_LIST_MASTER_SERVER_FAILED;
-        window_invalidate_by_class(WC_SERVER_LIST);
-        log_warning("Master server failed to return servers");
-        return;
-    }
-
-    json_t* jsonServers = json_object_get(root, "servers");
-    if (!json_is_array(jsonServers))
-    {
-        status_text = STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY;
-        window_invalidate_by_class(WC_SERVER_LIST);
-        log_warning("Invalid response from master server");
-        return;
-    }
-
-    int32_t count = (int32_t)json_array_size(jsonServers);
+static void RefreshServersFromJson(const json_t* jsonServers)
+{
+    auto count = (int32_t)json_array_size(jsonServers);
     for (int32_t i = 0; i < count; i++)
     {
-        json_t* server = json_array_get(jsonServers, i);
+        auto server = json_array_get(jsonServers, i);
         if (!json_is_object(server))
         {
             continue;
         }
 
-        json_t* port = json_object_get(server, "port");
-        json_t* name = json_object_get(server, "name");
-        json_t* description = json_object_get(server, "description");
-        json_t* requiresPassword = json_object_get(server, "requiresPassword");
-        json_t* version = json_object_get(server, "version");
-        json_t* players = json_object_get(server, "players");
-        json_t* maxPlayers = json_object_get(server, "maxPlayers");
-        json_t* ip = json_object_get(server, "ip");
-        json_t* ip4 = json_object_get(ip, "v4");
-        json_t* addressIp = json_array_get(ip4, 0);
+        auto port = json_object_get(server, "port");
+        auto name = json_object_get(server, "name");
+        auto description = json_object_get(server, "description");
+        auto requiresPassword = json_object_get(server, "requiresPassword");
+        auto version = json_object_get(server, "version");
+        auto players = json_object_get(server, "players");
+        auto maxPlayers = json_object_get(server, "maxPlayers");
+        auto ip = json_object_get(server, "ip");
+        auto ip4 = json_object_get(ip, "v4");
+        auto addressIp = json_array_get(ip4, 0);
 
         if (name == nullptr || version == nullptr)
         {
@@ -744,6 +770,7 @@ static void fetch_servers_callback(Http::Response& response)
     status_text = STR_X_PLAYERS_ONLINE;
     window_invalidate_by_class(WC_SERVER_LIST);
 }
+
 #endif
 
 static bool is_version_valid(const std::string& version)
