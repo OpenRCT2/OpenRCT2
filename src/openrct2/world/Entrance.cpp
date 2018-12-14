@@ -496,7 +496,7 @@ void ride_entrance_exit_remove_ghost()
             gRideEntranceExitGhostPosition.x,
             (GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_APPLY),
             gRideEntranceExitGhostPosition.y, _currentRideIndex, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT,
-            gRideEntranceExitGhostStationIndex, 0);
+            gRideEntranceExitGhostStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
     }
 }
 
