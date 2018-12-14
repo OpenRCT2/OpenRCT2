@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
+		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
@@ -613,6 +614,8 @@
 		4C04D69F2056AA9600F82EBA /* linenoise.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = linenoise.hpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
 		4C29DEB2218C6AE500E8707F /* RCT12.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RCT12.cpp; sourceTree = "<group>"; };
+		4C358E5021C445F700ADE6BC /* ReplayManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplayManager.cpp; sourceTree = "<group>"; };
+		4C358E5121C445F700ADE6BC /* ReplayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayManager.h; sourceTree = "<group>"; };
 		4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InGameConsole.cpp; sourceTree = "<group>"; };
 		4C3B4235205914F7000C5BB7 /* InGameConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InGameConsole.h; sourceTree = "<group>"; };
 		4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StdInOutConsole.cpp; sourceTree = "<group>"; };
@@ -2321,6 +2324,8 @@
 		F76C83551EC4E7CC00FA49E2 /* libopenrct2 */ = {
 			isa = PBXGroup;
 			children = (
+				4C358E5021C445F700ADE6BC /* ReplayManager.cpp */,
+				4C358E5121C445F700ADE6BC /* ReplayManager.h */,
 				C6352B871F477032006CCEE3 /* actions */,
 				F76C83561EC4E7CC00FA49E2 /* audio */,
 				F76C83621EC4E7CC00FA49E2 /* cmdline */,
@@ -3709,6 +3714,7 @@
 				9308D9FE209908090079EE96 /* TileElement.cpp in Sources */,
 				F76C888D1EC5324E00FA49E2 /* UiContext.Linux.cpp in Sources */,
 				9346F9D8208A191900C77D91 /* Guest.cpp in Sources */,
+				4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */,
 				F76C888E1EC5324E00FA49E2 /* UiContext.Win32.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
