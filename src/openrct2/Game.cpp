@@ -1382,8 +1382,8 @@ void game_autosave()
         timeName, sizeof(timeName), "autosave_%04u-%02u-%02u_%02u-%02u-%02u%s", currentDate.year, currentDate.month,
         currentDate.day, currentTime.hour, currentTime.minute, currentTime.second, fileExtension);
 
-    int32_t autosave_amount = gConfigGeneral.autosave_amount;
-    limit_autosave_count(autosave_amount-1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
+    int32_t autosavesToKeep = gConfigGeneral.autosave_amount;
+    limit_autosave_count(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 
     utf8 path[MAX_PATH];
     utf8 backupPath[MAX_PATH];

@@ -362,7 +362,7 @@ static rct_widget window_options_advanced_widgets[] = {
     { WWT_CHECKBOX,         1,  10,     299,    129,    140,    STR_ALWAYS_NATIVE_LOADSAVE,                 STR_ALWAYS_NATIVE_LOADSAVE_TIP },                   // Use native load/save window
     { WWT_DROPDOWN,         1,  165,    299,    145,    157,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
     { WWT_BUTTON,           1,  288,    298,    146,    156,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-    SPINNER_WIDGETS         (1,  165,    299,    165,    180,    STR_NONE,                                   STR_AUTOSAVE_AMOUNT_TIP ),                         // Autosave amount spinner
+    SPINNER_WIDGETS        (1,  165,    299,    165,    180,    STR_NONE,                                   STR_AUTOSAVE_AMOUNT_TIP ),                          // Autosave amount spinner
     { WWT_LABEL,            1,  23,     298,    180,    190,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
     { WWT_BUTTON,           1,  24,     289,    195,    205,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
     { WWT_BUTTON,           1,  289,    299,    195,    205,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
@@ -2088,9 +2088,9 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_string_left(
                 dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1], w->x + 24,
                 w->y + window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
-            int32_t autosave_amount = gConfigGeneral.autosave_amount*100;
+            int32_t autosavesToKeep = (int32_t)(gConfigGeneral.autosave_amount * 100);
             gfx_draw_string_left(
-                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &autosave_amount, w->colours[1], w->x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1,
+                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &autosavesToKeep, w->colours[1], w->x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1,
                 w->y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
 
 #ifdef __APPLE__
