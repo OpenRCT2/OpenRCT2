@@ -1168,7 +1168,9 @@ static void sub_6E1F34(
         return;
     }
 
+    // The upper byte of selected_scenery contains the type, the lower byte the index.
     uint8_t scenery_type = selected_scenery >> 8;
+    selected_scenery &= 0xFF;
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) << MAX_ZOOM_LEVEL;
     bool can_raise_item = false;
 
@@ -1347,7 +1349,7 @@ static void sub_6E1F34(
                 rotation &= 0x3;
 
                 // Also places it in lower but think thats for clobbering
-                *parameter_1 = (selected_scenery & 0xFF) << 8;
+                *parameter_1 = selected_scenery << 8;
                 *parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
                 *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
 
@@ -1432,7 +1434,7 @@ static void sub_6E1F34(
             rotation &= 0x3;
 
             // Also places it in lower but think thats for clobbering
-            *parameter_1 = (selected_scenery & 0xFF) << 8;
+            *parameter_1 = selected_scenery << 8;
             *parameter_2 = 0 | (gWindowSceneryPrimaryColour << 8);
             *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
             break;
@@ -1461,7 +1463,7 @@ static void sub_6E1F34(
             {
                 *parameter_2 |= LOCATION_NULL;
             }
-            *parameter_3 = (selected_scenery & 0xFF) + 1;
+            *parameter_3 = selected_scenery + 1;
             break;
         }
         case SCENERY_TYPE_WALL:
@@ -1519,7 +1521,7 @@ static void sub_6E1F34(
             _secondaryColour = gWindowScenerySecondaryColour;
             _tertiaryColour = gWindowSceneryTertiaryColour;
             // Also places it in lower but think thats for clobbering
-            *parameter_1 = (selected_scenery & 0xFF) << 8;
+            *parameter_1 = selected_scenery << 8;
             *parameter_2 = cl | (gWindowSceneryPrimaryColour << 8);
             *parameter_3 = 0;
             break;
@@ -1584,7 +1586,7 @@ static void sub_6E1F34(
 
             *parameter_1 = (rotation << 8);
             *parameter_2 = gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8);
-            *parameter_3 = selected_scenery & 0xFF;
+            *parameter_3 = selected_scenery;
             break;
         }
         case SCENERY_TYPE_BANNER:
@@ -1619,7 +1621,7 @@ static void sub_6E1F34(
             z /= 2;
 
             // Also places it in lower but think thats for clobbering
-            *parameter_1 = (selected_scenery & 0xFF) << 8;
+            *parameter_1 = selected_scenery << 8;
             *parameter_2 = z | (rotation << 8);
             *parameter_3 = gWindowSceneryPrimaryColour;
             break;
@@ -2432,7 +2434,7 @@ static money32 try_place_ghost_scenery(
                 viewport_set_visibility(5);
             }
 
-            gSceneryGhostType |= (1 << 0);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
             break;
         case 1:
             // Path Bits
@@ -2454,7 +2456,7 @@ static money32 try_place_ghost_scenery(
             gSceneryPlacePathType = ((parameter_2 >> 8) & 0xFF);
             gSceneryGhostPathObjectType = parameter_3;
 
-            gSceneryGhostType |= (1 << 1);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
             break;
         case 2:
             // Walls
@@ -2473,7 +2475,7 @@ static money32 try_place_ghost_scenery(
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
 
-            gSceneryGhostType |= (1 << 2);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
             break;
         case 3:
             // Large Scenery
@@ -2503,7 +2505,7 @@ static money32 try_place_ghost_scenery(
                 viewport_set_visibility(5);
             }
 
-            gSceneryGhostType |= (1 << 3);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
             break;
         case 4:
             // Banners
@@ -2518,7 +2520,7 @@ static money32 try_place_ghost_scenery(
             gSceneryGhostPosition.y = map_tile.y;
             gSceneryGhostPosition.z = (parameter_2 & 0xFF) * 2 + 2;
             gSceneryPlaceRotation = ((parameter_2 >> 8) & 0xFF);
-            gSceneryGhostType |= (1 << 4);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
             break;
     }
 

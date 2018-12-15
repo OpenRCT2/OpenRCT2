@@ -181,18 +181,18 @@ void scenery_remove_ghost_tool_placement()
     y = gSceneryGhostPosition.y;
     z = gSceneryGhostPosition.z;
 
-    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_0)
+    if (gSceneryGhostType & SCENERY_GHOST_FLAG_0)
     {
-        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_0;
+        gSceneryGhostType &= ~SCENERY_GHOST_FLAG_0;
         uint8_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
             | GAME_COMMAND_FLAG_GHOST;
         game_do_command(
             x, flags | (gSceneryQuadrant << 8), y, z | (gSceneryPlaceObject << 8), GAME_COMMAND_REMOVE_SCENERY, 0, 0);
     }
 
-    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_1)
+    if (gSceneryGhostType & SCENERY_GHOST_FLAG_1)
     {
-        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_1;
+        gSceneryGhostType &= ~SCENERY_GHOST_FLAG_1;
         TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
 
         do
@@ -210,9 +210,9 @@ void scenery_remove_ghost_tool_placement()
         } while (!(tileElement++)->IsLastForTile());
     }
 
-    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2)
+    if (gSceneryGhostType & SCENERY_GHOST_FLAG_2)
     {
-        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_2;
+        gSceneryGhostType &= ~SCENERY_GHOST_FLAG_2;
 
         TileCoordsXYZD wallLocation = { x >> 5, y >> 5, z, gSceneryGhostWallRotation };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
@@ -220,15 +220,15 @@ void scenery_remove_ghost_tool_placement()
         wallRemoveAction.Execute();
     }
 
-    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_3)
+    if (gSceneryGhostType & SCENERY_GHOST_FLAG_3)
     {
-        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_3;
+        gSceneryGhostType &= ~SCENERY_GHOST_FLAG_3;
         game_do_command(x, 105 | (gSceneryPlaceRotation << 8), y, z, GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
     }
 
-    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_4)
+    if (gSceneryGhostType & SCENERY_GHOST_FLAG_4)
     {
-        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_4;
+        gSceneryGhostType &= ~SCENERY_GHOST_FLAG_4;
         game_do_command(x, 105, y, z | (gSceneryPlaceRotation << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
     }
 }
