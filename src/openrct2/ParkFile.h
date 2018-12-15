@@ -59,6 +59,7 @@ namespace OpenRCT2
         }
 
         void WriteAuthoringChunk();
+        void WriteObjectsChunk();
         void WriteGeneralChunk();
     };
 } // namespace OpenRCT2

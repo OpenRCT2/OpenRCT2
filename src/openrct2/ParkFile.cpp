@@ -1,5 +1,8 @@
 #include "ParkFile.h"
 
+#include "Context.h"
+#include "object/ObjectManager.h"
+#include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
 #include "Version.h"
 #include "core/Crypt.h"
@@ -58,6 +61,7 @@ void ParkFile::Save(const std::string_view& path)
     _header.Compression = COMPRESSION_NONE;
 
     WriteAuthoringChunk();
+    WriteObjectsChunk();
     WriteGeneralChunk();
 
     // TODO avoid copying the buffer
@@ -149,6 +153,35 @@ void ParkFile::WriteAuthoringChunk()
     BeginChunk(ParkFileChunkType::AUTHORING);
     WriteString(gVersionInfoFull);
     WriteString("Some notes...");
+    EndChunk();
+}
+
+void ParkFile::WriteObjectsChunk()
+{
+    BeginChunk(ParkFileChunkType::OBJECTS);
+    BeginArray();
+    // TODO do not hard code object count
+    auto& objManager = GetContext()->GetObjectManager();
+    for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
+    {
+        auto obj = objManager.GetLoadedObject(i);
+        if (obj != nullptr)
+        {
+            auto entry = obj->GetObjectEntry();
+            auto type = (uint16_t)(entry->flags & 0x0F);
+            type |= 0x8000; // Make as legacy object
+            WriteValue<uint16_t>(type);
+            WriteString(std::string_view(entry->name, 8));
+            WriteString("");
+        }
+        else
+        {
+            WriteValue<uint16_t>(0);
+            WriteString("");
+            WriteString("");
+        }
+    }
+    EndArray();
     EndChunk();
 }
 
