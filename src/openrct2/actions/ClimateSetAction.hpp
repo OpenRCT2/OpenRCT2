@@ -12,7 +12,7 @@
 #include "../world/Climate.h"
 #include "GameAction.h"
 
-struct ClimateSetAction : public GameActionBase<GAME_COMMAND_SET_CLIMATE, GameActionResult>
+DEFINE_GAME_ACTION(ClimateSetAction, GAME_COMMAND_SET_CLIMATE, GameActionResult)
 {
     using climate_t = decltype(gClimate);
 
@@ -31,7 +31,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 

@@ -18,7 +18,7 @@
 #include "../windows/Intent.h"
 #include "GameAction.h"
 
-struct ParkSetLoanAction : public GameActionBase<GAME_COMMAND_SET_CURRENT_LOAN, GameActionResult>
+DEFINE_GAME_ACTION(ParkSetLoanAction, GAME_COMMAND_SET_CURRENT_LOAN, GameActionResult)
 {
 private:
     money32 _value;
@@ -37,7 +37,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
         stream << DS_TAG(_value);

@@ -22,7 +22,7 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-struct RideSetNameAction : public GameActionBase<GAME_COMMAND_SET_RIDE_NAME, GameActionResult>
+DEFINE_GAME_ACTION(RideSetNameAction, GAME_COMMAND_SET_RIDE_NAME, GameActionResult)
 {
 private:
     NetworkRideId_t _rideIndex{ -1 };
@@ -43,7 +43,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 

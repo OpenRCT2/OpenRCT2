@@ -146,7 +146,7 @@ namespace GameActions
             return "cl";
         else if (network_get_mode() == NETWORK_MODE_SERVER)
             return "sv";
-        return "";
+        return "sp";
     }
 
     struct ActionLogContext_t
@@ -159,7 +159,7 @@ namespace GameActions
         MemoryStream& output = ctx.output;
 
         char temp[128] = {};
-        snprintf(temp, sizeof(temp), "[%s] Game Action %08X (", GetRealm(), action->GetType());
+        snprintf(temp, sizeof(temp), "[%s] GA: %s (%08X) (", GetRealm(), action->GetName(), action->GetType());
 
         output.Write(temp, strlen(temp));
 
@@ -208,8 +208,7 @@ namespace GameActions
                 // As a client we have to wait or send it first.
                 if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                 {
-                    log_verbose("[%s] GameAction::Execute\n", "cl");
-
+                    log_verbose("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
                     network_send_game_action(action);
 
                     return result;
@@ -221,7 +220,7 @@ namespace GameActions
                 // at the beginning of the frame, so we have to put them into the queue.
                 if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                 {
-                    log_verbose("[%s] GameAction::Execute\n", "sv-cl");
+                    log_verbose("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
                     network_enqueue_game_action(action);
 
                     return result;

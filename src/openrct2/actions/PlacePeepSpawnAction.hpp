@@ -21,7 +21,7 @@
 
 static int32_t _nextPeepSpawnIndex = 0;
 
-struct PlacePeepSpawnAction : public GameActionBase<GAME_COMMAND_PLACE_PEEP_SPAWN, GameActionResult>
+DEFINE_GAME_ACTION(PlacePeepSpawnAction, GAME_COMMAND_PLACE_PEEP_SPAWN, GameActionResult)
 {
 private:
     CoordsXYZD _location;
@@ -40,7 +40,7 @@ public:
         return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 

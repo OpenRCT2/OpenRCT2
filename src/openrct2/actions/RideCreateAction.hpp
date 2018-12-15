@@ -41,7 +41,7 @@ public:
     int32_t rideIndex = -1;
 };
 
-struct RideCreateAction : public GameActionBase<GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult>
+DEFINE_GAME_ACTION(RideCreateAction, GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult)
 {
 private:
     int32_t _rideType;
@@ -66,7 +66,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 

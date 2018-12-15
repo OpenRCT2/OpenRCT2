@@ -18,7 +18,7 @@
 #include "../windows/Intent.h"
 #include "GameAction.h"
 
-struct ParkSetResearchFundingAction : public GameActionBase<GAME_COMMAND_SET_RESEARCH_FUNDING, GameActionResult>
+DEFINE_GAME_ACTION(ParkSetResearchFundingAction, GAME_COMMAND_SET_RESEARCH_FUNDING, GameActionResult)
 {
 private:
     // TODO change to std::optional when C++17
@@ -40,7 +40,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
         stream << DS_TAG(_priorities) << DS_TAG(_fundingAmount);

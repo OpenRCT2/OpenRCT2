@@ -28,7 +28,7 @@
 
 using namespace OpenRCT2;
 
-struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
+DEFINE_GAME_ACTION(RideDemolishAction, GAME_COMMAND_DEMOLISH_RIDE, GameActionResult)
 {
 private:
     NetworkRideId_t _rideIndex{ -1 };
@@ -44,7 +44,7 @@ public:
     {
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 
@@ -117,7 +117,7 @@ public:
     }
 
 private:
-    GameActionResult::Ptr DemolishRide(Ride* ride) const
+    GameActionResult::Ptr DemolishRide(Ride * ride) const
     {
         money32 refundPrice = DemolishTracks();
 
@@ -356,7 +356,7 @@ private:
         return refundPrice;
     }
 
-    GameActionResult::Ptr RefurbishRide(Ride* ride) const
+    GameActionResult::Ptr RefurbishRide(Ride * ride) const
     {
         auto res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
