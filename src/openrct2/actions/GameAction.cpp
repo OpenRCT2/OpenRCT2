@@ -187,7 +187,8 @@ namespace GameActions
         output.Write(temp, strlen(temp) + 1);
 
         const char* text = (const char*)output.GetData();
-        log_info(text);
+        log_verbose("%s", text);
+
         network_append_server_log(text);
     }
 
