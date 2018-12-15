@@ -15,6 +15,7 @@
 #include "TileElement.h"
 
 #include <initializer_list>
+#include <vector>
 
 #define MINIMUM_LAND_HEIGHT 2
 #define MAXIMUM_LAND_HEIGHT 142
@@ -28,7 +29,7 @@
 
 #define MAX_TILE_ELEMENTS 196096 // 0x30000
 #define MAX_TILE_TILE_ELEMENT_POINTERS (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL)
-#define MAX_PEEP_SPAWNS 2
+#define MAX_PEEP_SPAWNS 8
 #define PEEP_SPAWN_UNDEFINED 0xFFFF
 
 #define TILE_ELEMENT_LARGE_TYPE_MASK 0x3FF
@@ -105,7 +106,7 @@ extern TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 extern LocationXY16 gMapSelectionTiles[300];
-extern PeepSpawn gPeepSpawns[MAX_PEEP_SPAWNS];
+extern std::vector<PeepSpawn> gPeepSpawns;
 
 extern TileElement* gNextFreeTileElement;
 extern uint32_t gNextFreeTileElementPointerIndex;
@@ -287,7 +288,6 @@ TileElement* map_get_track_element_at_with_direction_from_ride(
 bool map_is_location_at_edge(int32_t x, int32_t y);
 void map_obstruction_set_error_text(TileElement* tileElement);
 
-uint32_t map_get_available_peep_spawn_index_list(uint32_t* peepSpawnIndexList);
 uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t base_z);
 
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);

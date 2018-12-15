@@ -1595,18 +1595,16 @@ static uint8_t get_nearest_peep_spawn_index(uint16_t x, uint16_t y)
 {
     uint8_t chosenSpawn = 0xFF;
     uint16_t nearestDist = 0xFFFF;
-    for (uint8_t i = 0; i < MAX_PEEP_SPAWNS; ++i)
+    uint8_t i = 0;
+    for (const auto& spawn : gPeepSpawns)
     {
-        if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED)
-            continue;
-
-        uint16_t dist = abs(gPeepSpawns[i].x - x) + abs(gPeepSpawns[i].y - y);
-
-        if (dist >= nearestDist)
-            continue;
-
-        nearestDist = dist;
-        chosenSpawn = i;
+        uint16_t dist = abs(spawn.x - x) + abs(spawn.y - y);
+        if (dist < nearestDist)
+        {
+            nearestDist = dist;
+            chosenSpawn = i;
+        }
+        i++;
     }
     return chosenSpawn;
 }

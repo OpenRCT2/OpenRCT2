@@ -518,18 +518,10 @@ namespace Editor
             }
         }
 
-        for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
+        if (gPeepSpawns.size() == 0)
         {
-            if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED)
-            {
-                break;
-            }
-
-            if (i == MAX_PEEP_SPAWNS - 1)
-            {
-                gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
-                return false;
-            }
+            gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
+            return false;
         }
 
         return true;

@@ -431,8 +431,15 @@ void S6Exporter::ExportPeepSpawns()
 {
     for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
     {
-        _s6.peep_spawns[i] = { (uint16_t)gPeepSpawns[i].x, (uint16_t)gPeepSpawns[i].y, (uint8_t)(gPeepSpawns[i].z / 16),
-                               gPeepSpawns[i].direction };
+        if (gPeepSpawns.size() > i)
+        {
+            _s6.peep_spawns[i] = { (uint16_t)gPeepSpawns[i].x, (uint16_t)gPeepSpawns[i].y, (uint8_t)(gPeepSpawns[i].z / 16),
+                                   gPeepSpawns[i].direction };
+        }
+        else
+        {
+            _s6.peep_spawns[i] = { (uint16_t)LOCATION_NULL, (uint16_t)LOCATION_NULL, 0, 0 };
+        }
     }
 }
 

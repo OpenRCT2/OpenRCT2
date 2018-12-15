@@ -833,15 +833,15 @@ public:
             _s6.peep_spawns[0].y = 1296;
         }
 
+        gPeepSpawns.clear();
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            gPeepSpawns[i] = { _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z * 16,
-                               _s6.peep_spawns[i].direction };
-        }
-
-        for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
-        {
-            gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+            if (_s6.peep_spawns[i].x != LOCATION_NULL)
+            {
+                PeepSpawn spawn = { _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z * 16,
+                                    _s6.peep_spawns[i].direction };
+                gPeepSpawns.push_back(spawn);
+            }
         }
     }
 

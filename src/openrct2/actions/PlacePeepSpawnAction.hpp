@@ -105,22 +105,11 @@ public:
         gCommandPosition.y = _location.y;
         gCommandPosition.z = _location.z / 8;
 
-        // Find empty or next appropriate peep spawn to use
-        int32_t peepSpawnIndex = -1;
-        for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
+        // If we have reached our max peep spawns, use peep spawn next to last one set.
+        if (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
         {
-            if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED)
-            {
-                peepSpawnIndex = i;
-                break;
-            }
-        }
-
-        // If no empty peep spawns exist, use peep spawn next to last one set.
-        if (peepSpawnIndex == -1)
-        {
-            peepSpawnIndex = _nextPeepSpawnIndex;
-            _nextPeepSpawnIndex = (peepSpawnIndex + 1) % MAX_PEEP_SPAWNS;
+            auto peepSpawnIndex = _nextPeepSpawnIndex;
+            _nextPeepSpawnIndex = (peepSpawnIndex + 1) % (int32_t)gPeepSpawns.size();
 
             // Before the new location is set, clear the old location
             int32_t prevX = gPeepSpawns[peepSpawnIndex].x;
@@ -135,10 +124,12 @@ public:
         middleY = _location.y + 16 + (word_981D6C[_location.direction].y * 15);
 
         // Set peep spawn
-        gPeepSpawns[peepSpawnIndex].x = middleX;
-        gPeepSpawns[peepSpawnIndex].y = middleY;
-        gPeepSpawns[peepSpawnIndex].z = _location.z;
-        gPeepSpawns[peepSpawnIndex].direction = _location.direction;
+        PeepSpawn spawn;
+        spawn.x = middleX;
+        spawn.y = middleY;
+        spawn.z = _location.z;
+        spawn.direction = _location.direction;
+        gPeepSpawns.push_back(spawn);
 
         // Invalidate tile
         map_invalidate_tile_full(_location.x, _location.y);
