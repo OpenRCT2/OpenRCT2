@@ -23,6 +23,8 @@
 #include "Park.h"
 #include "Sprite.h"
 
+#include <algorithm>
+
 bool gParkEntranceGhostExists = false;
 LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };
 uint8_t gParkEntranceGhostDirection = 0;
