@@ -182,7 +182,7 @@ void mapgen_generate(mapgen_settings* settings)
     // Create the temporary height map and initialise
     _heightSize = mapSize * 2;
     _height = new uint8_t[_heightSize * _heightSize];
-    memset(_height, 0, _heightSize * _heightSize * sizeof(uint8_t));
+    std::fill_n(_height, _heightSize * _heightSize, 0x00);
 
     mapgen_simplex(settings);
     mapgen_smooth_height(2 + (util_rand() % 6));
@@ -415,7 +415,7 @@ static void mapgen_smooth_height(int32_t iterations)
 
     for (i = 0; i < iterations; i++)
     {
-        memcpy(copyHeight, _height, arraySize);
+        std::memcpy(copyHeight, _height, arraySize);
         for (y = 1; y < _heightSize - 1; y++)
         {
             for (x = 1; x < _heightSize - 1; x++)
@@ -773,7 +773,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
 
     // Make a copy of the original height map that we can edit
     uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
-    memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
+    std::memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
 
     map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
 

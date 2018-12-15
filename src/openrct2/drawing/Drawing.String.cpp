@@ -690,8 +690,8 @@ static const utf8* ttf_process_format_code(rct_drawpixelinfo* dpi, const utf8* t
                 info->palette[2] = (ebx >> 8) & 0xFF;
 
                 // Adjust the text palette
-                memcpy(info->palette + 3, &(g1->offset[247]), 2);
-                memcpy(info->palette + 5, &(g1->offset[250]), 2);
+                std::memcpy(info->palette + 3, &(g1->offset[247]), 2);
+                std::memcpy(info->palette + 5, &(g1->offset[250]), 2);
             }
             break;
         }
@@ -804,7 +804,7 @@ static const utf8* ttf_process_glyph_run(rct_drawpixelinfo* dpi, const utf8* tex
     else
     {
         size_t length = (size_t)(ch - text);
-        memcpy(buffer, text, length);
+        std::memcpy(buffer, text, length);
         buffer[length] = 0;
         ttf_draw_string_raw(dpi, buffer, info);
         return ch;
@@ -926,10 +926,10 @@ void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colo
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
-    memcpy(info.palette, text_palette, sizeof(info.palette));
+    std::memcpy(info.palette, text_palette, sizeof(info.palette));
     ttf_process_initial_colour(colour, &info);
     ttf_process_string(dpi, text, &info);
-    memcpy(text_palette, info.palette, sizeof(info.palette));
+    std::memcpy(text_palette, info.palette, sizeof(info.palette));
 
     gCurrentFontSpriteBase = info.font_sprite_base;
     gCurrentFontFlags = info.flags;
@@ -985,10 +985,10 @@ void gfx_draw_string_with_y_offsets(
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
-    memcpy(info.palette, text_palette, sizeof(info.palette));
+    std::memcpy(info.palette, text_palette, sizeof(info.palette));
     ttf_process_initial_colour(colour, &info);
     ttf_process_string(dpi, text, &info);
-    memcpy(text_palette, info.palette, sizeof(info.palette));
+    std::memcpy(text_palette, info.palette, sizeof(info.palette));
 
     gCurrentFontSpriteBase = info.font_sprite_base;
     gCurrentFontFlags = info.flags;

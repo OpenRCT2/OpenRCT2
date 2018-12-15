@@ -1020,7 +1020,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const utf8** argv, in
     if (argc > 0)
     {
         char name[9] = { 0 };
-        memset(name, ' ', 8);
+        std::fill_n(name, 8, ' ');
         int32_t i = 0;
         for (const char* ch = argv[0]; *ch != '\0' && i < 8; ch++)
         {
@@ -1547,7 +1547,7 @@ void InteractiveConsole::Execute(const std::string& s)
         if (length > 0)
         {
             utf8* arg = (utf8*)malloc(length + 1);
-            memcpy(arg, start, length);
+            std::memcpy(arg, start, length);
             arg[length] = 0;
 
             if (argc >= argvCapacity)

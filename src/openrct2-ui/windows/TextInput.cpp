@@ -231,7 +231,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Make a copy of the string for measuring the width.
             char temp_string[TEXT_INPUT_SIZE] = { 0 };
-            memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
+            std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
             cursorX = w->x + 13 + gfx_get_string_width(temp_string);
             cursorY = y;
 

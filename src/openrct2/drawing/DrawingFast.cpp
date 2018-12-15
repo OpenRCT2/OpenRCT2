@@ -123,9 +123,9 @@ static void FASTCALL DrawRLESprite2(
             {
                 if (zoom_level == 0)
                 {
-                    // Since we're sampling each pixel at this zoom level, just do a straight memcpy
+                    // Since we're sampling each pixel at this zoom level, just do a straight std::memcpy
                     if (numPixels > 0)
-                        memcpy(copyDest, copySrc, numPixels);
+                        std::memcpy(copyDest, copySrc, numPixels);
                 }
                 else
                 {

@@ -103,7 +103,7 @@ void window_tooltip_show(rct_string_id id, int32_t x, int32_t y)
     window_tooltip_widgets[WIDX_BACKGROUND].right = width;
     window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
-    memcpy(_tooltipText, buffer, sizeof(_tooltipText));
+    std::memcpy(_tooltipText, buffer, sizeof(_tooltipText));
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();

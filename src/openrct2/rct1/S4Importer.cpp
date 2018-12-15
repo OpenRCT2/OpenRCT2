@@ -742,7 +742,7 @@ private:
 
     void ImportRide(Ride* dst, rct1_ride* src)
     {
-        memset(dst, 0, sizeof(Ride));
+        std::memset(dst, 0x00, sizeof(Ride));
 
         // This is a peculiarity of this exact version number, which only Heide-Park seems to use.
         if (_s4.game_version == 110018 && src->type == RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER)
@@ -1995,7 +1995,7 @@ private:
             auto dst = &gTileElements[index + dstOffset];
             if (src->base_height == 0xFF)
             {
-                memcpy(dst, src, sizeof(*src));
+                std::memcpy(dst, src, sizeof(*src));
             }
             else
             {

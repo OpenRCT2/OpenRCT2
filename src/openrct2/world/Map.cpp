@@ -3269,14 +3269,14 @@ void map_reorganise_elements()
                 ;
 
             num_elements = (uint32_t)(endElement - startElement);
-            memcpy(new_elements_pointer, startElement, num_elements * sizeof(TileElement));
+            std::memcpy(new_elements_pointer, startElement, num_elements * sizeof(TileElement));
             new_elements_pointer += num_elements;
         }
     }
 
     num_elements = (uint32_t)(new_elements_pointer - new_tile_elements);
-    memcpy(gTileElements, new_tile_elements, num_elements * sizeof(TileElement));
-    memset(
+    std::memcpy(gTileElements, new_tile_elements, num_elements * sizeof(TileElement));
+    std::memset(
         gTileElements + num_elements, 0,
         (3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) - num_elements) * sizeof(TileElement));
 
@@ -3361,7 +3361,7 @@ TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags)
     newTileElement->base_height = z;
     newTileElement->flags = flags;
     newTileElement->clearance_height = z;
-    memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
+    std::memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
     newTileElement++;
 
     // Insert rest of map elements above insert height
@@ -4469,7 +4469,7 @@ void game_command_modify_tile(
             TileElement elementToPaste;
             const int32_t data[] = { *edx, *edi };
             assert_struct_size(data, sizeof(elementToPaste));
-            memcpy(&elementToPaste, data, 8);
+            std::memcpy(&elementToPaste, data, 8);
             *ebx = tile_inspector_paste_element_at(x, y, elementToPaste, flags);
             break;
         }

@@ -1310,7 +1310,7 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
         peep->pathfind_goal.direction = 0;
 
         // Clear pathfinding history
-        memset(peep->pathfind_history, 0xFF, sizeof(peep->pathfind_history));
+        std::fill_n((uint8_t*)peep->pathfind_history, sizeof(peep->pathfind_history), 0xFF);
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
         {
@@ -1366,7 +1366,7 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
             _peepPathFindNumJunctions = _peepPathFindMaxJunctions;
 
             // Initialise _peepPathFindHistory.
-            memset(_peepPathFindHistory, 0xFF, sizeof(_peepPathFindHistory));
+            std::memset(_peepPathFindHistory, 0xFF, sizeof(_peepPathFindHistory));
 
             /* The pathfinding will only use elements
              * 1.._peepPathFindMaxJunctions, so the starting point

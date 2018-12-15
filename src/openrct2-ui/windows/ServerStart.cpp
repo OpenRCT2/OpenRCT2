@@ -244,7 +244,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
             if (strcmp(_port, text) == 0)
                 return;
 
-            memset(_port, 0, sizeof(_port));
+            std::fill_n(_port, sizeof(_port), 0x00);
             if (strlen(text) > 0)
             {
                 safe_strcpy(_port, text, sizeof(_port));
@@ -259,7 +259,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
             if (strcmp(_name, text) == 0)
                 return;
 
-            memset(_name, 0, sizeof(_name));
+            std::fill_n(_name, sizeof(_name), 0x00);
             if (strlen(text) > 0)
             {
                 safe_strcpy(_name, text, sizeof(_name));
@@ -278,7 +278,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
             if (strcmp(_description, text) == 0)
                 return;
 
-            memset(_description, 0, sizeof(_description));
+            std::fill_n(_description, sizeof(_description), 0x00);
             if (strlen(text) > 0)
             {
                 safe_strcpy(_description, text, sizeof(_description));
@@ -297,7 +297,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
             if (strcmp(_greeting, text) == 0)
                 return;
 
-            memset(_greeting, 0, sizeof(_greeting));
+            std::fill_n(_greeting, sizeof(_greeting), 0x00);
             if (strlen(text) > 0)
             {
                 safe_strcpy(_greeting, text, sizeof(_greeting));
@@ -316,7 +316,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
             if (strcmp(_password, text) == 0)
                 return;
 
-            memset(_password, 0, sizeof(_password));
+            std::fill_n(_password, sizeof(_password), 0x00);
             if (strlen(text) > 0)
             {
                 safe_strcpy(_password, text, sizeof(_password));

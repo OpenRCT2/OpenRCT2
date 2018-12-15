@@ -54,7 +54,7 @@ char* strndup(const char* src, size_t size)
         return nullptr;
     }
 
-    dst = (char*)memcpy(dst, src, len);
+    dst = (char*)std::memcpy(dst, src, len);
     dst[len] = '\0';
     return dst;
 }

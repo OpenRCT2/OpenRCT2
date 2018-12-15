@@ -255,7 +255,7 @@ void get_ride_entry_name(char* name, int32_t index)
     }
 
     const auto entryName = object_entry_get_entry(OBJECT_TYPE_RIDE, index)->name;
-    memcpy(name, entryName, 8);
+    std::memcpy(name, entryName, 8);
     name[8] = '\0';
 }
 
@@ -284,7 +284,7 @@ void reset_type_to_ride_entry_index_map(IObjectManager& objectManager)
 {
     size_t stride = MAX_RIDE_OBJECTS + 1;
     uint8_t* entryTypeTable = (uint8_t*)malloc(RIDE_TYPE_COUNT * stride);
-    memset(entryTypeTable, 0xFF, RIDE_TYPE_COUNT * stride);
+    std::fill_n(entryTypeTable, RIDE_TYPE_COUNT * stride, 0xFF);
 
     for (uint8_t i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
@@ -6980,7 +6980,7 @@ void ride_all_has_any_track_elements(bool* rideIndexArray)
 {
     tile_element_iterator it;
 
-    memset(rideIndexArray, 0, MAX_RIDES * sizeof(bool));
+    std::fill_n(rideIndexArray, MAX_RIDES, false);
 
     tile_element_iterator_begin(&it);
     while (tile_element_iterator_next(&it))

@@ -137,7 +137,7 @@ static rct_track_td6* track_design_open_from_td4(uint8_t* src, size_t srcLength)
     uint8_t version = (src[7] >> 2) & 3;
     if (version == 0)
     {
-        memcpy(td4, src, 0x38);
+        std::memcpy(td4, src, 0x38);
         td4->elementsSize = srcLength - 0x38;
         td4->elements = malloc(td4->elementsSize);
         if (td4->elements == nullptr)
@@ -146,11 +146,11 @@ static rct_track_td6* track_design_open_from_td4(uint8_t* src, size_t srcLength)
             SafeFree(td4);
             return nullptr;
         }
-        memcpy(td4->elements, src + 0x38, td4->elementsSize);
+        std::memcpy(td4->elements, src + 0x38, td4->elementsSize);
     }
     else if (version == 1)
     {
-        memcpy(td4, src, 0xC4);
+        std::memcpy(td4, src, 0xC4);
         td4->elementsSize = srcLength - 0xC4;
         td4->elements = malloc(td4->elementsSize);
         if (td4->elements == nullptr)
@@ -159,7 +159,7 @@ static rct_track_td6* track_design_open_from_td4(uint8_t* src, size_t srcLength)
             SafeFree(td4);
             return nullptr;
         }
-        memcpy(td4->elements, src + 0xC4, td4->elementsSize);
+        std::memcpy(td4->elements, src + 0xC4, td4->elementsSize);
     }
     else
     {
@@ -191,15 +191,15 @@ static rct_track_td6* track_design_open_from_td4(uint8_t* src, size_t srcLength)
     {
         const char* name = RCT1::GetRideTypeObject(td4->type);
         assert(name != nullptr);
-        memcpy(vehicleObject.name, name, std::min(String::SizeOf(name), (size_t)8));
+        std::memcpy(vehicleObject.name, name, std::min(String::SizeOf(name), (size_t)8));
     }
     else
     {
         const char* name = RCT1::GetVehicleObject(td4->vehicle_type);
         assert(name != nullptr);
-        memcpy(vehicleObject.name, name, std::min(String::SizeOf(name), (size_t)8));
+        std::memcpy(vehicleObject.name, name, std::min(String::SizeOf(name), (size_t)8));
     }
-    memcpy(&td6->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
+    std::memcpy(&td6->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
     td6->vehicle_type = td4->vehicle_type;
 
     td6->flags = td4->flags;
@@ -347,7 +347,7 @@ static rct_track_td6* track_design_open_from_buffer(uint8_t* src, size_t srcLeng
         log_error("Unable to allocate memory for TD6 data.");
         return nullptr;
     }
-    memcpy(td6, src, 0xA3);
+    std::memcpy(td6, src, 0xA3);
     td6->elementsSize = srcLength - 0xA3;
     td6->elements = malloc(td6->elementsSize);
     if (td6->elements == nullptr)
@@ -356,7 +356,7 @@ static rct_track_td6* track_design_open_from_buffer(uint8_t* src, size_t srcLeng
         log_error("Unable to allocate memory for TD6 element data.");
         return nullptr;
     }
-    memcpy(td6->elements, src + 0xA3, td6->elementsSize);
+    std::memcpy(td6->elements, src + 0xA3, td6->elementsSize);
 
     // Cap operation setting
     td6->operation_setting = std::min(td6->operation_setting, RideProperties[td6->type].max_value);
@@ -378,7 +378,7 @@ static void td6_reset_trailing_elements(rct_track_td6* td6)
         lastElement = (void*)((uintptr_t)mazeElement + 1);
 
         size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t)lastElement - (uintptr_t)td6->elements);
-        memset(lastElement, 0, trailingSize);
+        std::memset(lastElement, 0, trailingSize);
     }
     else
     {
@@ -390,7 +390,7 @@ static void td6_reset_trailing_elements(rct_track_td6* td6)
         lastElement = (void*)((uintptr_t)trackElement + 1);
 
         size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t)lastElement - (uintptr_t)td6->elements);
-        memset(lastElement, 0xFF, trailingSize);
+        std::memset(lastElement, 0xFF, trailingSize);
     }
 }
 
@@ -2192,7 +2192,7 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels)
     uint8_t flags;
     if (!track_design_place_preview(td6, &cost, &rideIndex, &flags))
     {
-        memset(pixels, 0, TRACK_PREVIEW_IMAGE_SIZE * 4);
+        std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
         track_design_preview_restore_map(mapBackup);
         return;
     }
@@ -2290,8 +2290,8 @@ static map_backup* track_design_preview_backup_map()
     map_backup* backup = (map_backup*)malloc(sizeof(map_backup));
     if (backup != nullptr)
     {
-        memcpy(backup->tile_elements, gTileElements, sizeof(backup->tile_elements));
-        memcpy(backup->tile_pointers, gTileElementTilePointers, sizeof(backup->tile_pointers));
+        std::memcpy(backup->tile_elements, gTileElements, sizeof(backup->tile_elements));
+        std::memcpy(backup->tile_pointers, gTileElementTilePointers, sizeof(backup->tile_pointers));
         backup->next_free_tile_element = gNextFreeTileElement;
         backup->map_size_units = gMapSizeUnits;
         backup->map_size_units_minus_2 = gMapSizeMinus2;
@@ -2307,8 +2307,8 @@ static map_backup* track_design_preview_backup_map()
  */
 static void track_design_preview_restore_map(map_backup* backup)
 {
-    memcpy(gTileElements, backup->tile_elements, sizeof(backup->tile_elements));
-    memcpy(gTileElementTilePointers, backup->tile_pointers, sizeof(backup->tile_pointers));
+    std::memcpy(gTileElements, backup->tile_elements, sizeof(backup->tile_elements));
+    std::memcpy(gTileElementTilePointers, backup->tile_pointers, sizeof(backup->tile_pointers));
     gNextFreeTileElement = backup->next_free_tile_element;
     gMapSizeUnits = backup->map_size_units;
     gMapSizeMinus2 = backup->map_size_units_minus_2;

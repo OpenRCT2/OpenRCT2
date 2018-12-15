@@ -74,7 +74,7 @@ public:
         const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
 
         utf8* string = (char*)malloc(strlen(jniChars) + 1);
-        memcpy((void*)string, jniChars, strlen(jniChars));
+        std::memcpy((void*)string, jniChars, strlen(jniChars));
         string[strlen(jniChars)] = 0x00;
 
         env->ReleaseStringUTFChars(jniString, jniChars);
@@ -158,7 +158,7 @@ JNIEXPORT jlong JNICALL Java_website_openrct2_ZipArchive_allocBytes(JNIEnv* env,
     jbyte* bufferPtr = env->GetByteArrayElements(input, nullptr);
 
     void* data = Memory::Allocate<void>((size_t)numBytes);
-    memcpy(data, bufferPtr, numBytes);
+    std::memcpy(data, bufferPtr, numBytes);
 
     env->ReleaseByteArrayElements(input, bufferPtr, 0);
 

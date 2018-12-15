@@ -53,7 +53,7 @@
 S6Exporter::S6Exporter()
 {
     RemoveTracklessRides = false;
-    memset(&_s6, 0, sizeof(_s6));
+    std::memset(&_s6, 0x00, sizeof(_s6));
 }
 
 void S6Exporter::SaveGame(const utf8* path)
@@ -191,7 +191,7 @@ void S6Exporter::Export()
     _s6.scenario_srand_0 = gScenarioSrand0;
     _s6.scenario_srand_1 = gScenarioSrand1;
 
-    memcpy(_s6.tile_elements, gTileElements, sizeof(_s6.tile_elements));
+    std::memcpy(_s6.tile_elements, gTileElements, sizeof(_s6.tile_elements));
 
     _s6.next_free_tile_element_pointer_index = gNextFreeTileElementPointerIndex;
     // Sprites needs to be reset before they get used.
@@ -201,7 +201,7 @@ void S6Exporter::Export()
     sprite_clear_all_unused();
     for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
     {
-        memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
+        std::memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
     }
 
     for (int32_t i = 0; i < NUM_SPRITE_LISTS; i++)
@@ -232,13 +232,13 @@ void S6Exporter::Export()
         researchedTrackPiecesA[i] = (RideTypePossibleTrackConfigurations[i]) & 0xFFFFFFFFULL;
         researchedTrackPiecesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
     }
-    memcpy(_s6.researched_track_types_a, researchedTrackPiecesA, sizeof(_s6.researched_track_types_a));
-    memcpy(_s6.researched_track_types_b, researchedTrackPiecesB, sizeof(_s6.researched_track_types_b));
+    std::memcpy(_s6.researched_track_types_a, researchedTrackPiecesA, sizeof(_s6.researched_track_types_a));
+    std::memcpy(_s6.researched_track_types_b, researchedTrackPiecesB, sizeof(_s6.researched_track_types_b));
 
     _s6.guests_in_park = gNumGuestsInPark;
     _s6.guests_heading_for_park = gNumGuestsHeadingForPark;
 
-    memcpy(_s6.expenditure_table, gExpenditureTable, sizeof(_s6.expenditure_table));
+    std::memcpy(_s6.expenditure_table, gExpenditureTable, sizeof(_s6.expenditure_table));
 
     _s6.last_guests_in_park = gNumGuestsInParkLastWeek;
     // pad_01357BCA
@@ -250,8 +250,8 @@ void S6Exporter::Export()
 
     _s6.park_rating = gParkRating;
 
-    memcpy(_s6.park_rating_history, gParkRatingHistory, sizeof(_s6.park_rating_history));
-    memcpy(_s6.guests_in_park_history, gGuestsInParkHistory, sizeof(_s6.guests_in_park_history));
+    std::memcpy(_s6.park_rating_history, gParkRatingHistory, sizeof(_s6.park_rating_history));
+    std::memcpy(_s6.guests_in_park_history, gGuestsInParkHistory, sizeof(_s6.guests_in_park_history));
 
     _s6.active_research_types = gResearchPriorities;
     _s6.research_progress_stage = gResearchProgressStage;
@@ -275,10 +275,10 @@ void S6Exporter::Export()
     // pad_013580FA
     _s6.objective_currency = gScenarioObjectiveCurrency;
     _s6.objective_guests = gScenarioObjectiveNumGuests;
-    memcpy(_s6.campaign_weeks_left, gMarketingCampaignDaysLeft, sizeof(_s6.campaign_weeks_left));
-    memcpy(_s6.campaign_ride_index, gMarketingCampaignRideIndex, sizeof(_s6.campaign_ride_index));
+    std::memcpy(_s6.campaign_weeks_left, gMarketingCampaignDaysLeft, sizeof(_s6.campaign_weeks_left));
+    std::memcpy(_s6.campaign_ride_index, gMarketingCampaignRideIndex, sizeof(_s6.campaign_ride_index));
 
-    memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));
+    std::memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));
 
     _s6.current_expenditure = gCurrentExpenditure;
     _s6.current_profit = gCurrentProfit;
@@ -286,17 +286,17 @@ void S6Exporter::Export()
     _s6.weekly_profit_average_divisor = gWeeklyProfitAverageDivisor;
     // pad_0135833A
 
-    memcpy(_s6.weekly_profit_history, gWeeklyProfitHistory, sizeof(_s6.weekly_profit_history));
+    std::memcpy(_s6.weekly_profit_history, gWeeklyProfitHistory, sizeof(_s6.weekly_profit_history));
 
     _s6.park_value = gParkValue;
 
-    memcpy(_s6.park_value_history, gParkValueHistory, sizeof(_s6.park_value_history));
+    std::memcpy(_s6.park_value_history, gParkValueHistory, sizeof(_s6.park_value_history));
 
     _s6.completed_company_value = gScenarioCompletedCompanyValue;
     _s6.total_admissions = gTotalAdmissions;
     _s6.income_from_admissions = gTotalIncomeFromAdmissions;
     _s6.company_value = gCompanyValue;
-    memcpy(_s6.peep_warning_throttle, gPeepWarningThrottle, sizeof(_s6.peep_warning_throttle));
+    std::memcpy(_s6.peep_warning_throttle, gPeepWarningThrottle, sizeof(_s6.peep_warning_throttle));
 
     // Awards
     for (int32_t i = 0; i < RCT12_MAX_AWARDS; i++)
@@ -319,7 +319,7 @@ void S6Exporter::Export()
     // pad_013587CA
     _s6.historical_profit = gHistoricalProfit;
     // pad_013587D4
-    memcpy(_s6.scenario_completed_name, gScenarioCompletedBy, sizeof(_s6.scenario_completed_name));
+    std::memcpy(_s6.scenario_completed_name, gScenarioCompletedBy, sizeof(_s6.scenario_completed_name));
     _s6.cash = ENCRYPT_MONEY(gCash);
     // pad_013587FC
     _s6.park_rating_casualty_penalty = gParkRatingCasualtyPenalty;
@@ -335,8 +335,8 @@ void S6Exporter::Export()
     // pad_01358842
     ExportResearchList();
     _s6.map_base_z = gMapBaseZ;
-    memcpy(_s6.scenario_name, gScenarioName, sizeof(_s6.scenario_name));
-    memcpy(_s6.scenario_description, gScenarioDetails, sizeof(_s6.scenario_description));
+    std::memcpy(_s6.scenario_name, gScenarioName, sizeof(_s6.scenario_name));
+    std::memcpy(_s6.scenario_description, gScenarioDetails, sizeof(_s6.scenario_description));
     _s6.current_interest_rate = gBankLoanInterestRate;
     // pad_0135934B
     _s6.same_price_throughout_extended = gSamePriceThroughoutParkB;
@@ -349,9 +349,9 @@ void S6Exporter::Export()
         _s6.park_entrance_direction[i] = gParkEntrances[i].direction;
     }
     safe_strcpy(_s6.scenario_filename, gScenarioFileName, sizeof(_s6.scenario_filename));
-    memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
-    memcpy(_s6.banners, gBanners, sizeof(_s6.banners));
-    memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
+    std::memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
+    std::memcpy(_s6.banners, gBanners, sizeof(_s6.banners));
+    std::memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
     _s6.game_ticks_1 = gCurrentTicks;
 
     this->ExportRides();
@@ -361,16 +361,16 @@ void S6Exporter::Export()
     _s6.saved_view_y = gSavedViewY;
     _s6.saved_view_zoom = gSavedViewZoom;
     _s6.saved_view_rotation = gSavedViewRotation;
-    memcpy(_s6.map_animations, gAnimatedObjects, sizeof(_s6.map_animations));
+    std::memcpy(_s6.map_animations, gAnimatedObjects, sizeof(_s6.map_animations));
     _s6.num_map_animations = gNumMapAnimations;
     // pad_0138B582
 
     _s6.ride_ratings_calc_data = gRideRatingsCalcData;
-    memcpy(_s6.ride_measurements, gRideMeasurements, sizeof(_s6.ride_measurements));
+    std::memcpy(_s6.ride_measurements, gRideMeasurements, sizeof(_s6.ride_measurements));
     _s6.next_guest_index = gNextGuestNumber;
     _s6.grass_and_scenery_tilepos = gGrassSceneryTileLoopPosition;
-    memcpy(_s6.patrol_areas, gStaffPatrolAreas, sizeof(_s6.patrol_areas));
-    memcpy(_s6.staff_modes, gStaffModes, sizeof(_s6.staff_modes));
+    std::memcpy(_s6.patrol_areas, gStaffPatrolAreas, sizeof(_s6.patrol_areas));
+    std::memcpy(_s6.staff_modes, gStaffModes, sizeof(_s6.staff_modes));
     // unk_13CA73E
     // pad_13CA73F
     _s6.byte_13CA740 = gUnk13CA740;
@@ -402,7 +402,7 @@ void S6Exporter::Export()
         dst->Ticks = src->Ticks;
         dst->MonthYear = src->MonthYear;
         dst->Day = src->Day;
-        memcpy(dst->Text, src->Text, sizeof(dst->Text));
+        std::memcpy(dst->Text, src->Text, sizeof(dst->Text));
     }
 
     // pad_13CE730
@@ -463,7 +463,7 @@ void S6Exporter::ExportRides()
 
 void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 {
-    memset(dst, 0, sizeof(rct2_ride));
+    std::memset(dst, 0, sizeof(rct2_ride));
 
     dst->type = src->type;
     dst->subtype = src->subtype;
@@ -728,7 +728,7 @@ void S6Exporter::ExportResearchedSceneryItems()
 
 void S6Exporter::ExportResearchList()
 {
-    memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
+    std::memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
 }
 
 enum : uint32_t

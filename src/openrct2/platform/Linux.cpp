@@ -57,8 +57,8 @@ uint16_t platform_get_locale_language()
                     break;
                 }
             }
-        }                                    // end strip
-        memcpy(pattern, langString, length); // copy all until first '.' or '@'
+        }                                         // end strip
+        std::memcpy(pattern, langString, length); // copy all until first '.' or '@'
         pattern[length] = '\0';
         // find _ if present
         const char* strip = strchr(pattern, '_');
@@ -177,7 +177,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
             return true;
         }
 
-        memset(steamPath, 0, sizeof(steamPath));
+        std::fill_n(steamPath, sizeof(steamPath), 0x00);
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
         safe_strcat_path(steamPath, ".steam/steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
         if (platform_directory_exists(steamPath))

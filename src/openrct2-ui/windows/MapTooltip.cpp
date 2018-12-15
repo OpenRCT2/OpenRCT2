@@ -94,7 +94,7 @@ void window_map_tooltip_update_visibility()
 
     // Show or hide tooltip
     rct_string_id stringId;
-    memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    std::memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
 
     if (_cursorHoldDuration < 25 || stringId == STR_NONE
         || input_test_place_object_modifier(
@@ -158,7 +158,7 @@ static void window_map_tooltip_update(rct_window* w)
 static void window_map_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id stringId;
-    memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    std::memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
     if (stringId == STR_NONE)
     {
         return;

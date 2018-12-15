@@ -356,7 +356,7 @@ static ride_list_item* window_new_ride_iterate_over_ride_group(
     {
         uint8_t rideEntryIndex = *rideEntryIndexPtr++;
         char rideEntryName[DAT_NAME_LENGTH + 1];
-        memcpy(rideEntryName, object_entry_get_entry(OBJECT_TYPE_RIDE, rideEntryIndex)->name, 8);
+        std::memcpy(rideEntryName, object_entry_get_entry(OBJECT_TYPE_RIDE, rideEntryIndex)->name, 8);
         rideEntryName[DAT_NAME_LENGTH] = 0;
 
         // Skip if vehicle type is not invented yet
@@ -1084,7 +1084,7 @@ static void window_new_ride_list_vehicles_for(const uint8_t rideType, const rct_
         return;
     }
 
-    memset(out, 0, AVAILABILITY_STRING_SIZE);
+    std::fill_n(out, AVAILABILITY_STRING_SIZE, 0x00);
 
     uint8_t* rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
 

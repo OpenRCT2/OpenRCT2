@@ -64,8 +64,8 @@ void chat_toggle()
 
 void chat_init()
 {
-    memset(_chatHistory, 0, sizeof(_chatHistory));
-    memset(_chatHistoryTime, 0, sizeof(_chatHistoryTime));
+    std::memset(_chatHistory, 0x00, sizeof(_chatHistory));
+    std::memset(_chatHistoryTime, 0x00, sizeof(_chatHistoryTime));
 }
 
 void chat_update()
@@ -178,7 +178,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         // TODO: Show caret if the input text has multiple lines
         if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer) < (_chatWidth - 10))
         {
-            memcpy(lineBuffer, _chatCurrentLine, _chatTextInputSession->SelectionStart);
+            std::memcpy(lineBuffer, _chatCurrentLine, _chatTextInputSession->SelectionStart);
             lineBuffer[_chatTextInputSession->SelectionStart] = 0;
             int32_t caretX = x + gfx_get_string_width(lineBuffer);
             int32_t caretY = y + 14;
@@ -208,7 +208,7 @@ void chat_history_add(const char* src)
     const char* srcText = ch;
 
     // Copy format codes to buffer
-    memcpy(buffer, src, std::min(bufferSize, (size_t)(srcText - src)));
+    std::memcpy(buffer, src, std::min(bufferSize, (size_t)(srcText - src)));
 
     // Prepend a timestamp
     time_t timer;
@@ -220,8 +220,8 @@ void chat_history_add(const char* src)
 
     // Add to history list
     int32_t index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
-    memset(_chatHistory[index], 0, CHAT_INPUT_SIZE);
-    memcpy(_chatHistory[index], buffer, std::min<size_t>(strlen(buffer), CHAT_INPUT_SIZE - 1));
+    std::fill_n(_chatHistory[index], CHAT_INPUT_SIZE, 0x00);
+    std::memcpy(_chatHistory[index], buffer, std::min<size_t>(strlen(buffer), CHAT_INPUT_SIZE - 1));
     _chatHistoryTime[index] = platform_get_ticks();
     _chatHistoryIndex++;
 

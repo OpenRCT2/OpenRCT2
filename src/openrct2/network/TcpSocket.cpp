@@ -472,7 +472,7 @@ private:
         }
         else
         {
-            memcpy(ss, result->ai_addr, result->ai_addrlen);
+            std::memcpy(ss, result->ai_addr, result->ai_addrlen);
             *ss_len = (int32_t)result->ai_addrlen;
             freeaddrinfo(result);
             return true;

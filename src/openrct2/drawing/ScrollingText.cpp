@@ -59,7 +59,7 @@ void scrolling_text_initialise_bitmaps()
 
     for (int32_t i = 0; i < FONT_SPRITE_GLYPH_COUNT; i++)
     {
-        memset(drawingSurface, 0, sizeof(drawingSurface));
+        std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
         gfx_draw_sprite_software(&dpi, SPR_CHAR_START + FONT_SPRITE_BASE_TINY + i, -1, 0, 0);
 
         for (int32_t x = 0; x < 8; x++)
@@ -80,7 +80,7 @@ void scrolling_text_initialise_bitmaps()
 
     for (int32_t i = 0; i < SPR_G2_GLYPH_COUNT; i++)
     {
-        memset(drawingSurface, 0, sizeof(drawingSurface));
+        std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
         gfx_draw_sprite_software(&dpi, SPR_G2_CHAR_BEGIN + (FONT_SIZE_TINY * SPR_G2_GLYPH_COUNT) + i, -1, 0, 0);
 
         for (int32_t x = 0; x < 8; x++)
@@ -148,8 +148,8 @@ static int32_t scrolling_text_get_matching_or_oldest(rct_string_id stringId, uin
 
         // If exact match return the matching index
         uint32_t stringArgs0, stringArgs1;
-        memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32_t));
-        memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32_t));
+        std::memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32_t));
+        std::memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32_t));
         if (scrollText->string_id == stringId && scrollText->string_args_0 == stringArgs0
             && scrollText->string_args_1 == stringArgs1 && scrollText->position == scroll && scrollText->mode == scrollingMode)
         {
@@ -1487,8 +1487,8 @@ int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uin
 
     // Setup scrolling text
     uint32_t stringArgs0, stringArgs1;
-    memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32_t));
-    memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32_t));
+    std::memcpy(&stringArgs0, gCommonFormatArgs + 0, sizeof(uint32_t));
+    std::memcpy(&stringArgs1, gCommonFormatArgs + 4, sizeof(uint32_t));
 
     rct_draw_scroll_text* scrollText = &_drawScrollTextList[scrollIndex];
     scrollText->string_id = stringId;
@@ -1504,7 +1504,7 @@ int32_t scrolling_text_setup(paint_session* session, rct_string_id stringId, uin
 
     const int16_t* scrollingModePositions = _scrollPositions[scrollingMode];
 
-    memset(scrollText->bitmap, 0, 320 * 8);
+    std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
     if (LocalisationService_UseTrueTypeFont())
     {
         scrolling_text_set_bitmap_for_ttf(scrollString, scroll, scrollText->bitmap, scrollingModePositions);

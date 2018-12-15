@@ -24,7 +24,7 @@ static bool user_string_exists(const utf8* text);
  */
 void user_string_clear_all()
 {
-    memset(gUserStrings, 0, MAX_USER_STRINGS * USER_STRING_MAX_LENGTH);
+    std::memset(gUserStrings, 0x00, MAX_USER_STRINGS * USER_STRING_MAX_LENGTH);
 }
 
 /**

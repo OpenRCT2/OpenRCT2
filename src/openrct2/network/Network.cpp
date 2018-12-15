@@ -1511,7 +1511,7 @@ uint8_t* Network::save_for_network(size_t& out_size, const std::vector<const Obj
         }
         else
         {
-            memcpy(&header[header_len], compressed, out_size);
+            std::memcpy(&header[header_len], compressed, out_size);
             out_size += header_len;
             log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
         }
@@ -1528,7 +1528,7 @@ uint8_t* Network::save_for_network(size_t& out_size, const std::vector<const Obj
         else
         {
             out_size = size;
-            memcpy(header, data, size);
+            std::memcpy(header, data, size);
         }
     }
     return header;
@@ -2176,7 +2176,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
     char* signature;
     const std::string pubkey = _key.PublicKeyString();
     _challenge.resize(challenge_size);
-    memcpy(_challenge.data(), challenge, challenge_size);
+    std::memcpy(_challenge.data(), challenge, challenge_size);
     bool ok = _key.Sign(_challenge.data(), _challenge.size(), &signature, &sigsize);
     if (!ok)
     {
@@ -2490,7 +2490,7 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
     intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
     context_open_intent(&intent);
 
-    memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
+    std::memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
     if (offset + chunksize == size)
     {
         context_force_close_window_by_class(WC_NETWORK_STATUS);
@@ -3484,9 +3484,9 @@ void game_command_modify_groups(
                 nameChunkOffset = 2;
             nameChunkOffset *= 12;
             nameChunkOffset = (std::min)(nameChunkOffset, std::size(newName) - 12);
-            memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 0), edx, sizeof(uint32_t));
-            memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 4), ebp, sizeof(uint32_t));
-            memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 8), edi, sizeof(uint32_t));
+            std::memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 0), edx, sizeof(uint32_t));
+            std::memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 4), ebp, sizeof(uint32_t));
+            std::memcpy((void*)((uintptr_t)newName + (uintptr_t)nameChunkOffset + 8), edi, sizeof(uint32_t));
 
             if (nameChunkIndex != 0)
             {

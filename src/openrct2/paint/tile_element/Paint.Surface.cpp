@@ -1240,8 +1240,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         tunnel_entry backupLeftTunnels[TUNNEL_MAX_COUNT];
         tunnel_entry backupRightTunnels[TUNNEL_MAX_COUNT];
 
-        memcpy(backupLeftTunnels, session->LeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-        memcpy(backupRightTunnels, session->RightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        std::memcpy(backupLeftTunnels, session->LeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        std::memcpy(backupRightTunnels, session->RightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
 
         viewport_surface_draw_land_side_top(
             session, EDGE_TOPLEFT, height / 16, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
@@ -1252,8 +1252,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         viewport_surface_draw_land_side_bottom(
             session, EDGE_BOTTOMRIGHT, height / 16, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
 
-        memcpy(session->LeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-        memcpy(session->RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        std::memcpy(session->LeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
+        std::memcpy(session->RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
     }
 
     if (tileElement->AsSurface()->GetWaterHeight() > 0)

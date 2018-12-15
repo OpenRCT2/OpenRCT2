@@ -3107,8 +3107,8 @@ void vehicle_test_reset(rct_vehicle* vehicle)
     ride->num_sheltered_sections = 0;
     ride->highest_drop_height = 0;
     ride->special_track_elements = 0;
-    memset(&ride->length, 0, 4 * 4);
-    memset(&ride->time, 0, 4 * 2);
+    std::fill_n(ride->length, MAX_STATIONS, 0);
+    std::fill_n(ride->time, MAX_STATIONS, 0);
     ride->total_air_time = 0;
     ride->current_test_station = vehicle->current_station;
     window_invalidate_by_number(WC_RIDE, vehicle->ride);

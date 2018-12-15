@@ -370,13 +370,9 @@ static void window_server_list_textinput(rct_window* w, rct_widgetindex widgetIn
             if (strcmp(_playerName, text) == 0)
                 return;
 
-            if (strlen(text) == 0)
+            std::fill_n(_playerName, sizeof(_playerName), 0x00);
+            if (strlen(text) > 0)
             {
-                memset(_playerName, 0, sizeof(_playerName));
-            }
-            else
-            {
-                memset(_playerName, 0, sizeof(_playerName));
                 safe_strcpy(_playerName, text, sizeof(_playerName));
             }
 

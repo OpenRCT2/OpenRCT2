@@ -288,7 +288,7 @@ public:
         ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;
         ride->last_inspection = 0;
         ride->downtime = 0;
-        memset(ride->downtime_history, 0, sizeof(ride->downtime_history));
+        std::fill_n(ride->downtime_history, sizeof(ride->downtime_history), 0x00);
         ride->no_primary_items_sold = 0;
         ride->no_secondary_items_sold = 0;
         ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
