@@ -291,10 +291,12 @@ namespace GameActions
                 }
                 else if (network_get_mode() == NETWORK_MODE_NONE)
                 {
+                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_5) == 0;
+
                     bool recordAction = false;
                     if (replayManager)
                     {
-                        if (replayManager->IsRecording())
+                        if (replayManager->IsRecording() && commandExecutes)
                             recordAction = true;
                         else if (replayManager->IsNormalising() && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
                             recordAction = true; // In normalisation we only feed back actions issued by the replay manager.
