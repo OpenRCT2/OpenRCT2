@@ -22,7 +22,7 @@ namespace OpenRCT2
             uint32_t NumChunks{};
             uint64_t UncompressedSize{};
             uint32_t Compression{};
-            std::array<uint8_t, 20> Sha1;
+            std::array<uint8_t, 20> Sha1{};
         };
 
         struct ChunkEntry
@@ -61,5 +61,6 @@ namespace OpenRCT2
         void WriteAuthoringChunk();
         void WriteObjectsChunk();
         void WriteGeneralChunk();
+        void WriteTilesChunk();
     };
 } // namespace OpenRCT2

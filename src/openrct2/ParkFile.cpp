@@ -63,6 +63,7 @@ void ParkFile::Save(const std::string_view& path)
     WriteAuthoringChunk();
     WriteObjectsChunk();
     WriteGeneralChunk();
+    WriteTilesChunk();
 
     // TODO avoid copying the buffer
     auto uncompressedData = _buffer.str();
@@ -214,6 +215,22 @@ void ParkFile::WriteGeneralChunk()
 
     WriteValue(gLandPrice);
     WriteValue(gConstructionRightsPrice);
+    EndChunk();
+}
+
+void ParkFile::WriteTilesChunk()
+{
+    BeginChunk(ParkFileChunkType::TILES);
+    WriteValue<uint32_t>(gMapSize);
+    WriteValue<uint32_t>(gMapSize);
+    BeginArray();
+    auto numTiles = (size_t)gMapSize * gMapSize;
+    for (size_t i = 0; i < numTiles; i++)
+    {
+        WriteBuffer(&gTileElements[i], sizeof(gTileElements[i]));
+        NextArrayElement();
+    }
+    EndArray();
     EndChunk();
 }
 
