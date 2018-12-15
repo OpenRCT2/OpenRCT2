@@ -4916,7 +4916,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        gfx_draw_string_left_clipped(dpi, STR_ENTRANCE_STYLE, gCommonFormatArgs, COLOUR_BLACK, w->x + 3, w->y + 103, 97);
+        gfx_draw_string_left_clipped(dpi, STR_STATION_STYLE, gCommonFormatArgs, COLOUR_BLACK, w->x + 3, w->y + 103, 97);
     }
 }
 
