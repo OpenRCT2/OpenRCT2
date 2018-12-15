@@ -40,8 +40,7 @@ void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
 
 BannerIndex LargeSceneryElement::GetBannerIndex() const
 {
-    return (entryIndex & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2)
-        | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return (type & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
 
 void LargeSceneryElement::SetBannerIndex(BannerIndex newIndex)
