@@ -46,7 +46,7 @@ BannerIndex LargeSceneryElement::GetBannerIndex() const
 
 void LargeSceneryElement::SetBannerIndex(BannerIndex newIndex)
 {
-    entryIndex |= newIndex & 0xC0;
+    type |= newIndex & 0xC0;
     colour[0] |= (newIndex & 0x38) << 2;
     colour[1] |= (newIndex & 7) << 5;
 }
