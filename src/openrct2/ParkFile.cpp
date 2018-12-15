@@ -19,6 +19,7 @@
 
 #include <array>
 #include <cstdint>
+#include <ctime>
 #include <fstream>
 #include <sstream>
 #include <string_view>
@@ -235,7 +236,11 @@ namespace OpenRCT2
         {
             BeginChunk(ParkFileChunkType::AUTHORING);
             WriteString(gVersionInfoFull);
-            WriteString("Some notes...");
+            BeginArray();
+            EndArray();
+            WriteString("");                    // custom notes that can be attached to the save
+            WriteValue<uint64_t>(std::time(0)); // date started
+            WriteValue<uint64_t>(std::time(0)); // date modified
             EndChunk();
         }
 
@@ -290,8 +295,7 @@ namespace OpenRCT2
             WriteValue<money32>(gScenarioObjectiveCurrency);   // shop profit
 
             WriteValue<money32>(gScenarioCompletedCompanyValue);
-            if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED ||
-                gScenarioCompletedCompanyValue == (money32)0x80000001)
+            if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED || gScenarioCompletedCompanyValue == (money32)0x80000001)
             {
                 WriteString("");
             }
@@ -505,14 +509,14 @@ namespace OpenRCT2
                 String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName);
 
                 gScenarioObjectiveType = ReadValue<uint32_t>();
-                gScenarioObjectiveYear = ReadValue<uint16_t>();             // year
-                gScenarioObjectiveNumGuests = ReadValue<uint32_t>();        // guests
-                ReadValue<uint16_t>();                                      // rating
-                ReadValue<uint16_t>();                                      // excitement
-                ReadValue<uint16_t>();                                      // length
-                gScenarioObjectiveCurrency = ReadValue<money32>();          // park value
-                ReadValue<money32>();                                       // ride profit
-                ReadValue<money32>();                                       // shop profit
+                gScenarioObjectiveYear = ReadValue<uint16_t>();      // year
+                gScenarioObjectiveNumGuests = ReadValue<uint32_t>(); // guests
+                ReadValue<uint16_t>();                               // rating
+                ReadValue<uint16_t>();                               // excitement
+                ReadValue<uint16_t>();                               // length
+                gScenarioObjectiveCurrency = ReadValue<money32>();   // park value
+                ReadValue<money32>();                                // ride profit
+                ReadValue<money32>();                                // shop profit
 
                 gScenarioCompletedCompanyValue = ReadValue<money32>();
                 String::Set(gScenarioCompletedBy, sizeof(gScenarioCompletedBy), ReadString().c_str());
