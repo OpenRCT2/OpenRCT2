@@ -496,7 +496,7 @@ int32_t game_do_command_p(
                 else if (replayManager->IsNormalising() && commandExecutes && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
                     recordCommand = true;
 
-                if (recordCommand)
+                if (recordCommand && gGameCommandNestLevel == 1)
                 {
                     int32_t callback = game_command_callback_get_index(game_command_callback);
 

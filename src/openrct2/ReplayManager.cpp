@@ -744,7 +744,7 @@ namespace OpenRCT2
                 }
 
                 // Focus camera on event.
-                if (isPositionValid && gCommandPosition.x != 0x8000)
+                if (isPositionValid && static_cast<uint16_t>(gCommandPosition.x) != 0x8000)
                 {
                     auto* mainWindow = window_get_main();
                     if (mainWindow != nullptr)
