@@ -2432,7 +2432,7 @@ static money32 try_place_ghost_scenery(
                 viewport_set_visibility(5);
             }
 
-            gSceneryGhostType |= (1 << 0);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
             break;
         case 1:
             // Path Bits
@@ -2454,7 +2454,7 @@ static money32 try_place_ghost_scenery(
             gSceneryPlacePathType = ((parameter_2 >> 8) & 0xFF);
             gSceneryGhostPathObjectType = parameter_3;
 
-            gSceneryGhostType |= (1 << 1);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
             break;
         case 2:
             // Walls
@@ -2473,7 +2473,7 @@ static money32 try_place_ghost_scenery(
             tileElement = gSceneryTileElement;
             gSceneryGhostPosition.z = tileElement->base_height;
 
-            gSceneryGhostType |= (1 << 2);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
             break;
         case 3:
             // Large Scenery
@@ -2503,7 +2503,7 @@ static money32 try_place_ghost_scenery(
                 viewport_set_visibility(5);
             }
 
-            gSceneryGhostType |= (1 << 3);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
             break;
         case 4:
             // Banners
@@ -2518,7 +2518,7 @@ static money32 try_place_ghost_scenery(
             gSceneryGhostPosition.y = map_tile.y;
             gSceneryGhostPosition.z = (parameter_2 & 0xFF) * 2 + 2;
             gSceneryPlaceRotation = ((parameter_2 >> 8) & 0xFF);
-            gSceneryGhostType |= (1 << 4);
+            gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
             break;
     }
 
