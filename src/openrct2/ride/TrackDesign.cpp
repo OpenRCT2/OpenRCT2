@@ -1881,7 +1881,8 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
 
     uint8_t rideIndex;
     uint8_t rideColour;
-    money32 createRideResult = ride_create_command(td6->type, entryIndex, GAME_COMMAND_FLAG_APPLY, &rideIndex, &rideColour);
+    money32 createRideResult = ride_create_command(
+        td6->type, entryIndex, GAME_COMMAND_FLAG_APPLY | flags, &rideIndex, &rideColour);
     if (createRideResult == MONEY32_UNDEFINED)
     {
         gGameCommandErrorTitle = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
@@ -1925,7 +1926,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     if (cost == MONEY32_UNDEFINED || !(flags & GAME_COMMAND_FLAG_APPLY))
     {
         rct_string_id error_reason = gGameCommandErrorText;
-        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | flags);
         gGameCommandErrorText = error_reason;
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         *outRideIndex = rideIndex;
