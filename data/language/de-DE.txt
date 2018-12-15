@@ -3725,6 +3725,16 @@ STR_6260    :Blockierte Kacheln anzeigen
 STR_6261    :Breite Wege anzeigen
 STR_6264    :Verwenden Sie immer den Systemdateibrowser
 STR_6265    :{SMALLFONT}{BLACK}Wenn Optionsfeld aktiviert wird, dann wird der Dateibrowser Ihres Systems verwendet im Gegensatz zu dem von OpenRCT2.
+STR_6266    :Benutzerdefinierten Inhaltsordner öffnen
+STR_6267    :Kachelinspektor öffnen
+STR_6268    :Weiterschalten zum nächsten Tick
+STR_6269    :Ungültige Klima-ID
+STR_6270    :Geländeflächen
+STR_6271    :Geländekanten
+STR_6272    :Stationen
+STR_6273    :Musik
+STR_6274    :Farbgebung kann nicht erkannt werden...
+
 
 #############
 # Scenarios #
