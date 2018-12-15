@@ -1,16 +1,23 @@
+#pragma once
+
 #include <array>
 #include <cstdint>
 #include <fstream>
 #include <sstream>
 #include <string_view>
 #include <vector>
+#include "object/Object.h"
 
 namespace OpenRCT2
 {
     class ParkFile
     {
     public:
+        std::vector<rct_object_entry> RequiredObjects;
+
+        void Load(const std::string_view& path);
         void Save(const std::string_view& path);
+        void Import();
 
     private:
 #pragma pack(push, 1)
@@ -62,5 +69,20 @@ namespace OpenRCT2
         void WriteObjectsChunk();
         void WriteGeneralChunk();
         void WriteTilesChunk();
+
+        Header ReadHeader(std::istream& fs);
+        bool SeekChunk(uint32_t id);
+        size_t ReadArray();
+        bool ReadNextArrayElement();
+        void ReadBuffer(void* dst, size_t len);
+        std::string ReadString();
+
+        template<typename T>
+        T ReadValue()
+        {
+            T v{};
+            ReadBuffer(&v, sizeof(v));
+            return v;
+        }
     };
 } // namespace OpenRCT2

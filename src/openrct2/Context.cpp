@@ -603,13 +603,17 @@ namespace OpenRCT2
                     throw std::runtime_error("Unable to detect file type");
                 }
 
-                if (info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
+                if (info.Type != FILE_TYPE::PARK && info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
                 {
                     throw std::runtime_error("Invalid file type.");
                 }
 
                 std::unique_ptr<IParkImporter> parkImporter;
-                if (info.Version <= FILE_TYPE_S4_CUTOFF)
+                if (info.Type == FILE_TYPE::PARK)
+                {
+                    parkImporter = ParkImporter::CreateParkFile(*_objectRepository);
+                }
+                else if (info.Version <= FILE_TYPE_S4_CUTOFF)
                 {
                     // Save is an S4 (RCT1 format)
                     parkImporter = ParkImporter::CreateS4();

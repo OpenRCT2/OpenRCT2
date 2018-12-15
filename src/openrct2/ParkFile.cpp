@@ -1,15 +1,16 @@
 #include "ParkFile.h"
 
 #include "Context.h"
-#include "object/ObjectManager.h"
-#include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
+#include "ParkImporter.h"
 #include "Version.h"
 #include "core/Crypt.h"
 #include "drawing/Drawing.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
 #include "localisation/Date.h"
+#include "object/ObjectManager.h"
+#include "object/ObjectRepository.h"
 #include "scenario/Scenario.h"
 #include "world/Map.h"
 #include "world/Park.h"
@@ -59,6 +60,8 @@ void ParkFile::Save(const std::string_view& path)
     _header.TargetVersion = PARK_FILE_CURRENT_VERSION;
     _header.MinVersion = PARK_FILE_MIN_VERSION;
     _header.Compression = COMPRESSION_NONE;
+
+    _buffer = std::stringstream(std::ios::out | std::ios::binary);
 
     WriteAuthoringChunk();
     WriteObjectsChunk();
@@ -131,6 +134,10 @@ void ParkFile::NextArrayElement()
 void ParkFile::EndArray()
 {
     auto backupPos = _buffer.tellp();
+    if ((size_t)backupPos != (size_t)_currentArrayStartPos + 8 && _currentArrayCount == 0)
+    {
+        throw std::runtime_error("Array data was written but no elements were added.");
+    }
     _buffer.seekp(_currentArrayStartPos);
     WriteValue((uint32_t)_currentArrayCount);
     WriteValue((uint32_t)_currentArrayElementSize);
@@ -145,7 +152,12 @@ void ParkFile::WriteBuffer(const void* buffer, size_t len)
 void ParkFile::WriteString(const std::string_view& s)
 {
     char nullt = '\0';
-    _buffer.write(s.data(), s.size());
+    auto len = s.find('\0');
+    if (len == std::string_view::npos)
+    {
+        len = s.size();
+    }
+    _buffer.write(s.data(), len);
     _buffer.write(&nullt, sizeof(nullt));
 }
 
@@ -181,6 +193,7 @@ void ParkFile::WriteObjectsChunk()
             WriteString("");
             WriteString("");
         }
+        NextArrayElement();
     }
     EndArray();
     EndChunk();
@@ -232,6 +245,115 @@ void ParkFile::WriteTilesChunk()
     }
     EndArray();
     EndChunk();
+}
+
+void ParkFile::Load(const std::string_view& path)
+{
+    std::ifstream fs(std::string(path).c_str(), std::ios::binary);
+
+    _header = ReadHeader(fs);
+
+    _chunks.clear();
+    for (uint32_t i = 0; i < _header.NumChunks; i++)
+    {
+        ChunkEntry entry;
+        fs.read((char*)&entry, sizeof(entry));
+        _chunks.push_back(entry);
+    }
+
+    _buffer = std::stringstream(std::ios::in | std::ios::out | std::ios::binary);
+    _buffer.clear();
+
+    char temp[2048];
+    size_t read = 0;
+    do
+    {
+        fs.read(temp, sizeof(temp));
+        read = fs.gcount();
+        _buffer.write(temp, read);
+    } while (read != 0);
+
+    RequiredObjects.clear();
+    if (SeekChunk(ParkFileChunkType::OBJECTS))
+    {
+        auto len = ReadArray();
+        for (size_t i = 0; i < len; i++)
+        {
+            auto type = ReadValue<uint16_t>();
+            auto id = ReadString();
+            auto version = ReadString();
+
+            rct_object_entry entry{};
+            entry.flags = type & 0x7FFF;
+            strncpy(entry.name, id.c_str(), 8);
+            RequiredObjects.push_back(entry);
+
+            ReadNextArrayElement();
+        }
+    }
+}
+
+void ParkFile::Import()
+{
+}
+
+ParkFile::Header ParkFile::ReadHeader(std::istream& fs)
+{
+    Header header;
+    fs.read((char*)&header, sizeof(header));
+    return header;
+}
+
+bool ParkFile::SeekChunk(uint32_t id)
+{
+    auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.Id == id; });
+    if (result != _chunks.end())
+    {
+        auto offset = result->Offset;
+        _buffer.seekg(offset);
+        return true;
+    }
+    return false;
+}
+
+size_t ParkFile::ReadArray()
+{
+    _currentArrayCount = ReadValue<uint32_t>();
+    _currentArrayElementSize = ReadValue<uint32_t>();
+    _currentArrayLastPos = _buffer.tellg();
+    return _currentArrayCount;
+}
+
+bool ParkFile::ReadNextArrayElement()
+{
+    if (_currentArrayCount == 0)
+    {
+        return false;
+    }
+    if (_currentArrayElementSize != 0)
+    {
+        _buffer.seekg((size_t)_currentArrayLastPos + _currentArrayElementSize);
+    }
+    _currentArrayCount--;
+    return _currentArrayCount == 0;
+}
+
+void ParkFile::ReadBuffer(void* dst, size_t len)
+{
+    _buffer.read((char*)dst, len);
+}
+
+std::string ParkFile::ReadString()
+{
+    std::string buffer;
+    buffer.reserve(64);
+    char c;
+    while ((c = ReadValue<char>()) != 0)
+    {
+        buffer.push_back(c);
+    }
+    buffer.shrink_to_fit();
+    return buffer;
 }
 
 enum : uint32_t
@@ -293,4 +415,53 @@ int32_t scenario_save(const utf8* path, int32_t flags)
         gScreenAge = 0;
     }
     return result;
+}
+
+class ParkFileImporter : public IParkImporter
+{
+private:
+    const IObjectRepository& _objectRepository;
+
+public:
+    ParkFileImporter(IObjectRepository& objectRepository)
+        : _objectRepository(objectRepository)
+    {
+    }
+
+    ParkLoadResult Load(const utf8* path) override
+    {
+        auto parkFile = std::make_unique<ParkFile>();
+        parkFile->Load(path);
+        return ParkLoadResult(std::move(parkFile->RequiredObjects));
+    }
+
+    ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
+    {
+        return Load(path);
+    }
+
+    ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
+    {
+        return Load(path);
+    }
+
+    ParkLoadResult LoadFromStream(
+        IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) override
+    {
+        return Load(path);
+    }
+
+    void Import() override
+    {
+    }
+
+    bool GetDetails(scenario_index_entry* dst) override
+    {
+        return false;
+    }
+};
+
+std::unique_ptr<IParkImporter> ParkImporter::CreateParkFile(IObjectRepository& objectRepository)
+{
+    return std::make_unique<ParkFileImporter>(objectRepository);
 }

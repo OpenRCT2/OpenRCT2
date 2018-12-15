@@ -17,6 +17,7 @@
 #include "scenario/Scenario.h"
 #include "util/SawyerCoding.h"
 
+static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
@@ -41,6 +42,12 @@ bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
     //      between them is to decode it. Decoding however is currently not protected
     //      against invalid compression data for that decoding algorithm and will crash.
 
+    // Park detection
+    if (TryClassifyAsPark(stream, result))
+    {
+        return true;
+    }
+
     // S6 detection
     if (TryClassifyAsS6(stream, result))
     {
@@ -60,6 +67,29 @@ bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
     }
 
     return false;
+}
+
+static bool TryClassifyAsPark(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
+{
+    bool success = false;
+    uint64_t originalPosition = stream->GetPosition();
+    try
+    {
+        auto magic = stream->ReadValue<uint32_t>();
+        if (magic == 0x4B524150)
+        {
+            result->Type = FILE_TYPE::PARK;
+            result->Version = 0;
+            success = true;
+        }
+    }
+    catch (const std::exception& e)
+    {
+        success = false;
+        log_verbose(e.what());
+    }
+    stream->SetPosition(originalPosition);
+    return success;
 }
 
 static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
