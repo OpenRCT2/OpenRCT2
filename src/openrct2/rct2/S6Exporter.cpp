@@ -343,10 +343,15 @@ void S6Exporter::Export()
     // Preserve compatibility with vanilla RCT2's save format.
     for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
     {
-        _s6.park_entrance_x[i] = gParkEntrances[i].x;
-        _s6.park_entrance_y[i] = gParkEntrances[i].y;
-        _s6.park_entrance_z[i] = gParkEntrances[i].z;
-        _s6.park_entrance_direction[i] = gParkEntrances[i].direction;
+        CoordsXYZD entrance = { LOCATION_NULL, LOCATION_NULL, 0, 0 };
+        if (gParkEntrances.size() > i)
+        {
+            entrance = gParkEntrances[i];
+        }
+        _s6.park_entrance_x[i] = entrance.x;
+        _s6.park_entrance_y[i] = entrance.y;
+        _s6.park_entrance_z[i] = entrance.z;
+        _s6.park_entrance_direction[i] = entrance.direction;
     }
     safe_strcpy(_s6.scenario_filename, gScenarioFileName, sizeof(_s6.scenario_filename));
     std::memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));

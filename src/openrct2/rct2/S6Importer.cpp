@@ -361,12 +361,18 @@ public:
         // pad_0135934B
         gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
         // Preserve compatibility with vanilla RCT2's save format.
+        gParkEntrances.clear();
         for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
         {
-            gParkEntrances[i].x = _s6.park_entrance_x[i];
-            gParkEntrances[i].y = _s6.park_entrance_y[i];
-            gParkEntrances[i].z = _s6.park_entrance_z[i];
-            gParkEntrances[i].direction = _s6.park_entrance_direction[i];
+            if (_s6.park_entrance_x[i] != LOCATION_NULL)
+            {
+                CoordsXYZD entrance;
+                entrance.x = _s6.park_entrance_x[i];
+                entrance.y = _s6.park_entrance_y[i];
+                entrance.z = _s6.park_entrance_z[i];
+                entrance.direction = _s6.park_entrance_direction[i];
+                gParkEntrances.push_back(entrance);
+            }
         }
         if (_s6.header.type == S6_TYPE_SCENARIO)
         {

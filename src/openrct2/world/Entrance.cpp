@@ -26,7 +26,7 @@
 bool gParkEntranceGhostExists = false;
 LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };
 uint8_t gParkEntranceGhostDirection = 0;
-CoordsXYZD gParkEntrances[MAX_PARK_ENTRANCES];
+std::vector<CoordsXYZD> gParkEntrances;
 
 CoordsXYZD gRideEntranceExitGhostPosition;
 uint8_t gRideEntranceExitGhostStationIndex;
@@ -48,8 +48,6 @@ static void ParkEntranceRemoveSegment(int32_t x, int32_t y, int32_t z)
 
 static money32 ParkEntranceRemove(int16_t x, int16_t y, uint8_t z, uint8_t flags)
 {
-    int32_t entranceIndex, direction;
-
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
         return MONEY32_UNDEFINED;
@@ -65,14 +63,13 @@ static money32 ParkEntranceRemove(int16_t x, int16_t y, uint8_t z, uint8_t flags
         return 0;
     }
 
-    entranceIndex = park_entrance_get_index(x, y, z * 16);
+    auto entranceIndex = park_entrance_get_index(x, y, z * 16);
     if (entranceIndex == -1)
     {
         return 0;
     }
 
-    gParkEntrances[entranceIndex].x = LOCATION_NULL;
-    direction = (gParkEntrances[entranceIndex].direction - 1) & 3;
+    auto direction = (gParkEntrances[entranceIndex].direction - 1) & 3;
 
     // Centre (sign)
     ParkEntranceRemoveSegment(x, y, z * 2);
@@ -83,6 +80,7 @@ static money32 ParkEntranceRemove(int16_t x, int16_t y, uint8_t z, uint8_t flags
     // Right post
     ParkEntranceRemoveSegment(x - CoordsDirectionDelta[direction].x, y - CoordsDirectionDelta[direction].y, z * 2);
 
+    gParkEntrances.erase(gParkEntrances.begin() + entranceIndex);
     return 0;
 }
 
@@ -457,25 +455,21 @@ void park_entrance_remove_ghost()
 
 int32_t park_entrance_get_index(int32_t x, int32_t y, int32_t z)
 {
-    int32_t i;
-
-    for (i = 0; i < MAX_PARK_ENTRANCES; i++)
+    int32_t i = 0;
+    for (const auto& entrance : gParkEntrances)
     {
-        if (x == gParkEntrances[i].x && y == gParkEntrances[i].y && z == gParkEntrances[i].z)
+        if (x == entrance.x && y == entrance.y && z == entrance.z)
         {
             return i;
         }
+        i++;
     }
-
     return -1;
 }
 
 void reset_park_entrance()
 {
-    for (auto& parkEntrance : gParkEntrances)
-    {
-        parkEntrance.x = LOCATION_NULL;
-    }
+    gParkEntrances.clear();
 }
 
 void ride_entrance_exit_place_provisional_ghost()
@@ -626,16 +620,13 @@ void maze_entrance_hedge_removal(int32_t x, int32_t y, TileElement* tileElement)
 void fix_park_entrance_locations(void)
 {
     // Fix gParkEntrance locations for which the tile_element no longer exists
-    for (auto& entrance : gParkEntrances)
-    {
-        if (entrance.x == LOCATION_NULL)
-            continue;
-
-        if (map_get_park_entrance_element_at(entrance.x, entrance.y, entrance.z >> 3, false) == nullptr)
-        {
-            entrance.x = LOCATION_NULL;
-        }
-    }
+    gParkEntrances.erase(
+        std::remove_if(
+            gParkEntrances.begin(), gParkEntrances.end(),
+            [](const auto& entrance) {
+                return map_get_park_entrance_element_at(entrance.x, entrance.y, entrance.z >> 3, false) == nullptr;
+            }),
+        gParkEntrances.end());
 }
 
 uint8_t EntranceElement::GetStationIndex() const

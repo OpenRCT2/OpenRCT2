@@ -2607,34 +2607,50 @@ static void peep_interact_with_entrance(
             return;
         }
 
-        uint8_t entranceIndex = 0;
-        for (entranceIndex = 0; entranceIndex < MAX_PARK_ENTRANCES; entranceIndex++)
-        {
-            if (gParkEntrances[entranceIndex].x == (x & 0xFFE0) && gParkEntrances[entranceIndex].y == (y & 0xFFE0))
-                break;
-        }
-
-        int16_t z = gParkEntrances[entranceIndex].z / 8;
-        entranceDirection = gParkEntrances[entranceIndex].direction;
-
-        int16_t next_x = (x & 0xFFE0) + CoordsDirectionDelta[entranceDirection].x;
-        int16_t next_y = (y & 0xFFE0) + CoordsDirectionDelta[entranceDirection].y;
-
-        // Make sure there is a path right behind the entrance, otherwise turn around
         bool found = false;
-        TileElement* nextTileElement = map_get_first_element_at(next_x / 32, next_y / 32);
-        do
+        auto entrance = std::find_if(gParkEntrances.begin(), gParkEntrances.end(), [x, y](const auto& e) {
+            return e.x == floor2(x, 32) && e.y == floor2(y, 32);
+        });
+        if (entrance != gParkEntrances.end())
         {
-            if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-                continue;
+            int16_t z = entrance->z / 8;
+            entranceDirection = entrance->direction;
 
-            if (nextTileElement->AsPath()->IsQueue())
-                continue;
+            int16_t next_x = (x & 0xFFE0) + CoordsDirectionDelta[entranceDirection].x;
+            int16_t next_y = (y & 0xFFE0) + CoordsDirectionDelta[entranceDirection].y;
 
-            if (nextTileElement->AsPath()->IsSloped())
+            // Make sure there is a path right behind the entrance, otherwise turn around
+            TileElement* nextTileElement = map_get_first_element_at(next_x / 32, next_y / 32);
+            do
             {
-                uint8_t slopeDirection = nextTileElement->AsPath()->GetSlopeDirection();
-                if (slopeDirection == entranceDirection)
+                if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+                    continue;
+
+                if (nextTileElement->AsPath()->IsQueue())
+                    continue;
+
+                if (nextTileElement->AsPath()->IsSloped())
+                {
+                    uint8_t slopeDirection = nextTileElement->AsPath()->GetSlopeDirection();
+                    if (slopeDirection == entranceDirection)
+                    {
+                        if (z != nextTileElement->base_height)
+                        {
+                            continue;
+                        }
+                        found = true;
+                        break;
+                    }
+
+                    if ((slopeDirection ^ (1 << 1)) != entranceDirection)
+                        continue;
+
+                    if (z - 2 != nextTileElement->base_height)
+                        continue;
+                    found = true;
+                    break;
+                }
+                else
                 {
                     if (z != nextTileElement->base_height)
                     {
@@ -2643,25 +2659,8 @@ static void peep_interact_with_entrance(
                     found = true;
                     break;
                 }
-
-                if ((slopeDirection ^ (1 << 1)) != entranceDirection)
-                    continue;
-
-                if (z - 2 != nextTileElement->base_height)
-                    continue;
-                found = true;
-                break;
-            }
-            else
-            {
-                if (z != nextTileElement->base_height)
-                {
-                    continue;
-                }
-                found = true;
-                break;
-            }
-        } while (!(nextTileElement++)->IsLastForTile());
+            } while (!(nextTileElement++)->IsLastForTile());
+        }
 
         if (!found)
         {

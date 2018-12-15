@@ -871,26 +871,23 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_park_init_viewport(rct_window* w)
 {
-    int32_t i, x, y, z, r, xy, zr, viewportFlags;
+    int32_t x, y, z, r, xy, zr, viewportFlags;
     x = y = z = r = xy = zr = 0;
     rct_viewport* viewport;
 
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
 
-    for (i = 0; i < MAX_PARK_ENTRANCES; i++)
+    if (gParkEntrances.size() > 0)
     {
-        if (gParkEntrances[i].x != LOCATION_NULL)
-        {
-            x = gParkEntrances[i].x + 16;
-            y = gParkEntrances[i].y + 16;
-            z = gParkEntrances[i].z + 32;
-            r = get_current_rotation();
+        const auto& entrance = gParkEntrances[0];
+        x = entrance.x + 16;
+        y = entrance.y + 16;
+        z = entrance.z + 32;
+        r = get_current_rotation();
 
-            xy = IMAGE_TYPE_TRANSPARENT | (y << 16) | x;
-            zr = (z << 16) | (r << 8);
-            break;
-        }
+        xy = IMAGE_TYPE_TRANSPARENT | (y << 16) | x;
+        zr = (z << 16) | (r << 8);
     }
 
     if (w->viewport == nullptr)

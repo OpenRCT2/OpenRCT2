@@ -489,27 +489,14 @@ namespace Editor
             return false;
         }
 
-        for (int32_t i = 0; i < MAX_PARK_ENTRANCES; i++)
+        if (gParkEntrances.size() == 0)
         {
-            if (gParkEntrances[i].x != LOCATION_NULL)
-            {
-                break;
-            }
-
-            if (i == MAX_PARK_ENTRANCES - 1)
-            {
-                gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
-                return false;
-            }
+            gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
+            return false;
         }
 
         for (const auto& parkEntrance : gParkEntrances)
         {
-            if (parkEntrance.x == LOCATION_NULL)
-            {
-                continue;
-            }
-
             int32_t x = parkEntrance.x;
             int32_t y = parkEntrance.y;
             int32_t z = parkEntrance.z / 8;

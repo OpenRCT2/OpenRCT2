@@ -79,17 +79,7 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
         }
 
-        int8_t entranceNum = -1;
-        for (uint8_t i = 0; i < MAX_PARK_ENTRANCES; ++i)
-        {
-            if (gParkEntrances[i].x == LOCATION_NULL)
-            {
-                entranceNum = i;
-                break;
-            }
-        }
-
-        if (entranceNum == -1)
+        if (gParkEntrances.size() >= MAX_PARK_ENTRANCES)
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
@@ -142,22 +132,12 @@ public:
         gCommandPosition.y = _y;
         gCommandPosition.z = _z * 16;
 
-        int8_t entranceNum = -1;
-        for (uint8_t i = 0; i < MAX_PARK_ENTRANCES; ++i)
-        {
-            if (gParkEntrances[i].x == LOCATION_NULL)
-            {
-                entranceNum = i;
-                break;
-            }
-        }
-
-        Guard::Assert(entranceNum != -1);
-
-        gParkEntrances[entranceNum].x = _x;
-        gParkEntrances[entranceNum].y = _y;
-        gParkEntrances[entranceNum].z = _z * 16;
-        gParkEntrances[entranceNum].direction = _direction;
+        CoordsXYZD parkEntrance;
+        parkEntrance.x = _x;
+        parkEntrance.y = _y;
+        parkEntrance.z = _z * 16;
+        parkEntrance.direction = _direction;
+        gParkEntrances.push_back(parkEntrance);
 
         int8_t zLow = _z * 2;
         int8_t zHigh = zLow + 12;

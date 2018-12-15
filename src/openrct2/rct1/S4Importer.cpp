@@ -2795,16 +2795,10 @@ private:
 
     void FixEntrancePositions()
     {
-        for (size_t i = 0; i < std::size(gParkEntrances); i++)
-        {
-            gParkEntrances[i].x = LOCATION_NULL;
-        }
-
-        uint8_t entranceIndex = 0;
-
+        gParkEntrances.clear();
         tile_element_iterator it;
         tile_element_iterator_begin(&it);
-        while (tile_element_iterator_next(&it) && entranceIndex < RCT12_MAX_PARK_ENTRANCES)
+        while (tile_element_iterator_next(&it) && gParkEntrances.size() < RCT12_MAX_PARK_ENTRANCES)
         {
             TileElement* element = it.element;
 
@@ -2815,11 +2809,12 @@ private:
             if ((element->AsEntrance()->GetSequenceIndex()) != 0)
                 continue;
 
-            gParkEntrances[entranceIndex].x = it.x * 32;
-            gParkEntrances[entranceIndex].y = it.y * 32;
-            gParkEntrances[entranceIndex].z = element->base_height * 8;
-            gParkEntrances[entranceIndex].direction = element->GetDirection();
-            entranceIndex++;
+            CoordsXYZD entrance;
+            entrance.x = it.x * 32;
+            entrance.y = it.y * 32;
+            entrance.z = element->base_height * 8;
+            entrance.direction = element->GetDirection();
+            gParkEntrances.push_back(entrance);
         }
     }
 

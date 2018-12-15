@@ -231,22 +231,22 @@ void scenario_success_submit_name(const char* name)
  */
 static void scenario_entrance_fee_too_high_check()
 {
-    uint16_t x = 0, y = 0;
     money16 totalRideValueForMoney = gTotalRideValueForMoney;
     money16 max_fee = totalRideValueForMoney + (totalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
     {
-        for (int32_t i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != LOCATION_NULL; i++)
+        if (gParkEntrances.size() > 0)
         {
-            x = gParkEntrances[i].x + 16;
-            y = gParkEntrances[i].y + 16;
-        }
+            const auto& entrance = gParkEntrances[0];
+            auto x = entrance.x + 16;
+            auto y = entrance.y + 16;
 
-        uint32_t packed_xy = (y << 16) | x;
-        if (gConfigNotifications.park_warnings)
-        {
-            news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+            uint32_t packed_xy = (y << 16) | x;
+            if (gConfigNotifications.park_warnings)
+            {
+                news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+            }
         }
     }
 }
