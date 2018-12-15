@@ -3793,7 +3793,7 @@ static void window_ride_maintenance_draw_bar(
     if (colour & BAR_BLINK)
     {
         colour &= ~BAR_BLINK;
-        if (game_is_not_paused() && (gCurrentTicks & 8))
+        if (game_is_not_paused() && (gCurrentRealTimeTicks & 8))
             return;
     }
 

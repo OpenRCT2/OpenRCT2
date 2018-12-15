@@ -138,8 +138,9 @@ extern rct_string_id gErrorStringId;
 extern GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT];
 
 extern uint32_t gCurrentTicks;
+extern uint32_t gCurrentRealTimeTicks;
 
-extern uint16_t gTicksSinceLastUpdate;
+extern uint16_t gCurrentDeltaTime;
 extern uint8_t gGamePaused;
 extern int32_t gGameSpeed;
 extern bool gDoSingleUpdate;

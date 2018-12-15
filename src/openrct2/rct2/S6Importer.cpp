@@ -384,6 +384,7 @@ public:
         user_string_clear_all();
         memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
         gCurrentTicks = _s6.game_ticks_1;
+        gCurrentRealTimeTicks = 0;
 
         ImportRides();
 

@@ -110,7 +110,7 @@ namespace OpenRCT2
         bool _isWindowMinimised = false;
         uint32_t _lastTick = 0;
         uint32_t _accumulator = 0;
-        uint32_t _lastUpdateTick = 0;
+        uint32_t _lastUpdateTime = 0;
         bool _variableFrame = false;
 
         // If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
@@ -921,13 +921,14 @@ namespace OpenRCT2
 
         void Update()
         {
-            uint32_t currentUpdateTick = platform_get_ticks();
-            gTicksSinceLastUpdate = std::min<uint32_t>(currentUpdateTick - _lastUpdateTick, 500);
-            _lastUpdateTick = currentUpdateTick;
+            uint32_t currentUpdateTime = platform_get_ticks();
+
+            gCurrentDeltaTime = std::min<uint32_t>(currentUpdateTime - _lastUpdateTime, 500);
+            _lastUpdateTime = currentUpdateTime;
 
             if (game_is_not_paused())
             {
-                gPaletteEffectFrame += gTicksSinceLastUpdate;
+                gPaletteEffectFrame += gCurrentDeltaTime;
             }
 
             date_update_real_time_of_day();

@@ -1378,7 +1378,7 @@ static void window_guest_stats_bars_paint(
     int32_t blink_flag = colour & BAR_BLINK;
     colour &= ~BAR_BLINK;
 
-    if (!blink_flag || game_is_paused() || (gCurrentTicks & 8) == 0)
+    if (!blink_flag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
     {
         value *= 118;
         value >>= 8;
