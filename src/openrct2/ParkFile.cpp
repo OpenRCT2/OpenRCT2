@@ -13,6 +13,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "scenario/Scenario.h"
+#include "world/Climate.h"
 #include "world/Entrance.h"
 #include "world/Map.h"
 #include "world/Park.h"
@@ -127,6 +128,7 @@ namespace OpenRCT2
             WriteScenarioChunk();
             WriteGeneralChunk();
             WriteInterfaceChunk();
+            WriteClimateChunk();
             WriteTilesChunk();
 
             // TODO avoid copying the buffer
@@ -349,6 +351,22 @@ namespace OpenRCT2
             EndChunk();
         }
 
+        void WriteClimateChunk()
+        {
+            BeginChunk(ParkFileChunkType::CLIMATE);
+            WriteValue(gClimate);
+            WriteValue(gClimateUpdateTimer);
+            for (const auto* cs : { &gClimateCurrent, &gClimateNext })
+            {
+                WriteValue(cs->Weather);
+                WriteValue(cs->Temperature);
+                WriteValue(cs->WeatherEffect);
+                WriteValue(cs->WeatherGloom);
+                WriteValue(cs->RainLevel);
+            }
+            EndChunk();
+        }
+
         void WriteTilesChunk()
         {
             BeginChunk(ParkFileChunkType::TILES);
@@ -418,6 +436,7 @@ namespace OpenRCT2
             ReadScenarioChunk();
             ReadGeneralChunk();
             ReadInterfaceChunk();
+            ReadClimateChunk();
         }
 
     private:
@@ -570,6 +589,23 @@ namespace OpenRCT2
                 gSavedViewZoom = ReadValue<uint8_t>();
                 gSavedViewRotation = ReadValue<uint8_t>();
                 gLastEntranceStyle = ReadValue<uint32_t>();
+            }
+        }
+
+        void ReadClimateChunk()
+        {
+            if (SeekChunk(ParkFileChunkType::CLIMATE))
+            {
+                gClimate = ReadValue<uint8_t>();
+                gClimateUpdateTimer = ReadValue<uint16_t>();
+                for (auto cs : { &gClimateCurrent, &gClimateNext })
+                {
+                    cs->Weather = ReadValue<uint8_t>();
+                    cs->Temperature = ReadValue<int8_t>();
+                    cs->WeatherEffect = ReadValue<uint8_t>();
+                    cs->WeatherGloom = ReadValue<uint8_t>();
+                    cs->RainLevel = ReadValue<uint8_t>();
+                }
             }
         }
 
