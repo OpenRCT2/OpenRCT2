@@ -1051,7 +1051,7 @@ TileElement* ride_get_station_exit_element(int32_t x, int32_t y, int32_t z);
 void ride_set_status(int32_t rideIndex, int32_t status);
 void game_command_set_ride_status(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
-void ride_set_name(int32_t rideIndex, const char* name);
+void ride_set_name(int32_t rideIndex, const char* name, uint32_t flags);
 void game_command_set_ride_name(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void game_command_set_ride_setting(

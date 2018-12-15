@@ -566,7 +566,8 @@ int32_t game_do_command_p(
 
     // Show error window
     if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740
-        && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+        && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED)
+        && !(flags & GAME_COMMAND_FLAG_GHOST))
     {
         context_show_error(gGameCommandErrorTitle, gGameCommandErrorText);
     }
