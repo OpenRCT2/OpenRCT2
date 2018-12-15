@@ -179,8 +179,16 @@ namespace OpenRCT2
                 rct_sprite_checksum checksum = sprite_checksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
 
-                // Reset.
-                _nextChecksumTick = 0;
+                if (_mode == ReplayMode::RECORDING)
+                {
+                    // Record checksums every ~200ms.
+                    _nextChecksumTick = gCurrentTicks + 5;
+                }
+                else
+                {
+                    // Wait for next command.
+                    _nextChecksumTick = 0;
+                }
             }
 
             if (_mode == ReplayMode::RECORDING)
@@ -198,8 +206,8 @@ namespace OpenRCT2
 #endif
                 ReplayCommands();
 
-                // If we run out of commands and checked all checksums we can stop.
-                if (_currentReplay->commands.empty() && _currentReplay->checksumIndex >= _currentReplay->checksums.size())
+                // Normal playback will always end at the specific tick.
+                if (gCurrentTicks >= _currentReplay->tickEnd)
                 {
                     StopPlayback();
                     return;
@@ -275,6 +283,7 @@ namespace OpenRCT2
                 _mode = ReplayMode::RECORDING;
 
             _currentRecording = std::move(replayData);
+            _nextChecksumTick = gCurrentTicks + 1;
 
             return true;
         }
@@ -322,11 +331,19 @@ namespace OpenRCT2
 
             if (!ReadReplayData(file, *replayData))
             {
+                log_error("Unable to read replay data.");
+                return false;
+            }
+
+            if (!TranslateDeprecatedGameCommands(*replayData))
+            {
+                log_error("Unable to translate deprecated game commands.");
                 return false;
             }
 
             if (!LoadReplayDataMap(*replayData))
             {
+                log_error("Unable to load map.");
                 return false;
             }
 
@@ -388,6 +405,58 @@ namespace OpenRCT2
         }
 
     private:
+        bool ConvertDeprecatedGameCommand(const ReplayCommand& command, ReplayCommand& result)
+        {
+            // NOTE: If game actions are being ported it is required to implement temporarily
+            //       a mapping from game command to game action. This will allow the normalisation
+            //       stage to save a new replay file with the game action being used instead of the
+            //       old game command. Once normalised the code will be no longer required.
+
+            /* Example case
+            case GAME_COMMAND_RAISE_WATER:
+            {
+                uint32_t param1 = command.ebp;
+                uint32_t param2 = command.edi;
+                result.action = std::make_unique<LandRaiseWaterAction>(param1, param2, ...);
+            }
+            */
+
+            switch (command.esi)
+            {
+                case GAME_COMMAND_COUNT: // prevent default without case warning.
+                    break;
+                default:
+                    throw std::runtime_error("Deprecated game command requires replay translation.");
+            }
+
+            return true;
+        }
+
+        bool TranslateDeprecatedGameCommands(ReplayRecordData& data)
+        {
+            for (auto&& replayCommand : data.commands)
+            {
+                if (replayCommand.action == nullptr)
+                {
+                    // Check if we can create a game action with the command id.
+                    uint32_t commandId = replayCommand.esi;
+                    if (GameActions::IsValidId(commandId))
+                    {
+                        // Convert
+                        ReplayCommand converted;
+                        if (!ConvertDeprecatedGameCommand(replayCommand, converted))
+                        {
+                            return false;
+                        }
+
+                        data.commands.erase(replayCommand);
+                        data.commands.emplace(std::move(converted));
+                    }
+                }
+            }
+            return true;
+        }
+
         bool LoadReplayDataMap(ReplayRecordData& data)
         {
             try
@@ -641,8 +710,10 @@ namespace OpenRCT2
                 }
                 else if (_mode == ReplayMode::NORMALISATION)
                 {
+                    // Allow one entry per tick.
                     if (gCurrentTicks != _nextReplayTick)
                         break;
+
                     _nextReplayTick = gCurrentTicks + 1;
                 }
 

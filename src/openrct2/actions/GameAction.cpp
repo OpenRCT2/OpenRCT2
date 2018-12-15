@@ -57,6 +57,15 @@ namespace GameActions
         return factory;
     }
 
+    bool IsValidId(uint32_t id)
+    {
+        if (id < std::size(_actions))
+        {
+            return _actions[id] != nullptr;
+        }
+        return false;
+    }
+
     void Initialize()
     {
         static bool initialized = false;
