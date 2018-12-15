@@ -37,6 +37,10 @@ namespace OpenRCT2
         std::vector<ChunkEntry> _chunks;
         std::stringstream _buffer;
         ChunkEntry _currentChunk;
+        std::streampos _currentArrayStartPos;
+        std::streampos _currentArrayLastPos;
+        size_t _currentArrayCount;
+        size_t _currentArrayElementSize;
 
         void WriteHeader(std::ostream& fs);
         void BeginChunk(uint32_t id);
@@ -44,7 +48,8 @@ namespace OpenRCT2
 
         void WriteBuffer(const void* buffer, size_t len);
         void WriteString(const std::string_view& s);
-        void BeginArray(size_t count, size_t elementSize);
+        void BeginArray();
+        void NextArrayElement();
         void EndArray();
 
         template<typename T>

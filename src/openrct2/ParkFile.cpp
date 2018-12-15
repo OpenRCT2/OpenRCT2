@@ -95,14 +95,41 @@ void ParkFile::EndChunk()
     _chunks.push_back(_currentChunk);
 }
 
-void ParkFile::BeginArray(size_t count, size_t elementSize)
+void ParkFile::BeginArray()
 {
-    WriteValue((uint32_t)count);
-    WriteValue((uint32_t)elementSize);
+    _currentArrayCount = 0;
+    _currentArrayElementSize = 0;
+    _currentArrayStartPos = _buffer.tellp();
+    WriteValue<uint32_t>(0);
+    WriteValue<uint32_t>(0);
+    _currentArrayLastPos = _buffer.tellp();
+}
+
+void ParkFile::NextArrayElement()
+{
+    auto lastElSize = (size_t)_buffer.tellp() - _currentArrayLastPos;
+    if (_currentArrayCount == 0)
+    {
+        // Set array element size based on first element size
+        _currentArrayElementSize = lastElSize;
+    }
+    else if (_currentArrayElementSize != lastElSize)
+    {
+        // Array element size was different from first element so reset it
+        // to dynamic
+        _currentArrayElementSize = 0;
+    }
+    _currentArrayCount++;
+    _currentArrayLastPos = _buffer.tellp();
 }
 
 void ParkFile::EndArray()
 {
+    auto backupPos = _buffer.tellp();
+    _buffer.seekp(_currentArrayStartPos);
+    WriteValue((uint32_t)_currentArrayCount);
+    WriteValue((uint32_t)_currentArrayElementSize);
+    _buffer.seekp(backupPos);
 }
 
 void ParkFile::WriteBuffer(const void* buffer, size_t len)
@@ -138,8 +165,7 @@ void ParkFile::WriteGeneralChunk()
     WriteValue(gGuestInitialHunger);
     WriteValue(gGuestInitialThirst);
 
-    auto numSpawns = (gPeepSpawns[0].isNull() ? 1 : 0) + (gPeepSpawns[1].isNull() ? 1 : 0);
-    BeginArray(numSpawns, 13);
+    BeginArray();
     for (const auto& spawn : gPeepSpawns)
     {
         if (!gPeepSpawns->isNull())
@@ -149,6 +175,7 @@ void ParkFile::WriteGeneralChunk()
             WriteValue(spawn.z);
             WriteValue(spawn.direction);
         }
+        NextArrayElement();
     }
     EndArray();
 
