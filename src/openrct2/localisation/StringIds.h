@@ -3893,6 +3893,8 @@ enum
 
     STR_CANT_SET_COLOUR_SCHEME = 6274,
 
+    STR_ENTRANCE_STYLE = 6275,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
