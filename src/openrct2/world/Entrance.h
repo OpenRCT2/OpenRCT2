@@ -56,5 +56,6 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance);
 void maze_entrance_hedge_removal(const CoordsXYE& entrance);
 
 void fix_park_entrance_locations();
+void UpdateParkEntranceLocations();
 
 #endif

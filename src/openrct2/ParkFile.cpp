@@ -13,6 +13,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "scenario/Scenario.h"
+#include "world/Entrance.h"
 #include "world/Map.h"
 #include "world/Park.h"
 
@@ -297,6 +298,7 @@ void ParkFile::Load(const std::string_view& path)
 void ParkFile::Import()
 {
     ReadTilesChunk();
+    ReadGeneralChunk();
 }
 
 ParkFile::Header ParkFile::ReadHeader(std::istream& fs)
@@ -358,6 +360,39 @@ std::string ParkFile::ReadString()
     return buffer;
 }
 
+void ParkFile::ReadGeneralChunk()
+{
+    if (SeekChunk(ParkFileChunkType::GENERAL))
+    {
+        gScenarioTicks = ReadValue<uint64_t>();
+        gDateMonthTicks = ReadValue<uint32_t>();
+        gDateMonthsElapsed = ReadValue<uint16_t>();
+        gScenarioSrand0 = ReadValue<uint32_t>();
+        gScenarioSrand1 = ReadValue<uint32_t>();
+        gInitialCash = ReadValue<money32>();
+        gGuestInitialCash = ReadValue<money16>();
+        gGuestInitialHunger = ReadValue<uint8_t>();
+        gGuestInitialThirst = ReadValue<uint8_t>();
+
+        size_t numPeepSpawns = ReadArray();
+        for (size_t i = 0; i < numPeepSpawns; i++)
+        {
+            gPeepSpawns[i].x = ReadValue<uint32_t>();
+            gPeepSpawns[i].y = ReadValue<uint32_t>();
+            gPeepSpawns[i].z = ReadValue<uint32_t>();
+            gPeepSpawns[i].direction = ReadValue<uint8_t>();
+            ReadNextArrayElement();
+        }
+
+        gLandPrice = ReadValue<money16>();
+        gConstructionRightsPrice = ReadValue<money16>();
+    }
+    else
+    {
+        throw std::runtime_error("No general chunk found.");
+    }
+}
+
 void ParkFile::ReadTilesChunk()
 {
     if (SeekChunk(ParkFileChunkType::TILES))
@@ -371,6 +406,7 @@ void ParkFile::ReadTilesChunk()
         ReadBuffer(gTileElements, numElements * sizeof(TileElement));
 
         map_update_tile_pointers();
+        UpdateParkEntranceLocations();
     }
     else
     {
