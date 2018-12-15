@@ -2088,9 +2088,9 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_string_left(
                 dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1], w->x + 24,
                 w->y + window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
-            int32_t autosavesToKeep = (int32_t)(gConfigGeneral.autosave_amount * 100);
+            int32_t autosavesToKeep = (int32_t)(gConfigGeneral.autosave_amount);
             gfx_draw_string_left(
-                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &autosavesToKeep, w->colours[1],
+                dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
                 w->x + w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->y + w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1);
 
 #ifdef __APPLE__
