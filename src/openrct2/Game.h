@@ -11,6 +11,8 @@
 
 #include "common.h"
 
+#include <string>
+
 struct ParkLoadResult;
 struct rct_s6_data;
 
@@ -149,7 +151,7 @@ extern bool gInUpdateCode;
 extern bool gInMapInitCode;
 extern int32_t gGameCommandNestLevel;
 extern bool gGameCommandIsNetworked;
-extern char gCurrentLoadedPath[260];
+extern std::string gCurrentLoadedPath;
 
 extern bool gLoadKeepWindowsOpen;
 

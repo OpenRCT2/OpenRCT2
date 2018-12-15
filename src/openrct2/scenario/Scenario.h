@@ -378,10 +378,10 @@ extern money32 gScenarioCompletedCompanyValue;
 extern money32 gScenarioCompanyValueRecord;
 
 extern rct_s6_info gS6Info;
-extern char gScenarioName[64];
-extern char gScenarioDetails[256];
-extern char gScenarioCompletedBy[32];
-extern char gScenarioSavePath[260];
+extern std::string gScenarioName;
+extern std::string gScenarioDetails;
+extern std::string gScenarioCompletedBy;
+extern std::string gScenarioSavePath;
 extern char gScenarioExpansionPacks[3256];
 extern bool gFirstTimeSaving;
 extern uint16_t gSavedAge;

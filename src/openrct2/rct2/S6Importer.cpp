@@ -339,7 +339,7 @@ public:
         // pad_013587CA
         gHistoricalProfit = _s6.historical_profit;
         // pad_013587D4
-        std::memcpy(gScenarioCompletedBy, _s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
+        gScenarioCompletedBy = std::string_view(_s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
         gCash = DECRYPT_MONEY(_s6.cash);
         // pad_013587FC
         gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
@@ -355,8 +355,8 @@ public:
         // pad_01358842
         ImportResearchList();
         gMapBaseZ = _s6.map_base_z;
-        std::memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
-        std::memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
+        gScenarioName = std::string_view(_s6.scenario_name, sizeof(_s6.scenario_name));
+        gScenarioDetails = std::string_view(_s6.scenario_description, sizeof(_s6.scenario_description));
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
         gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;

@@ -515,8 +515,8 @@ namespace OpenRCT2
                             stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
                         _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                         parkImporter->Import();
-                        String::Set(gScenarioSavePath, std::size(gScenarioSavePath), path.c_str());
-                        String::Set(gCurrentLoadedPath, std::size(gCurrentLoadedPath), path.c_str());
+                        gScenarioSavePath = path;
+                        gCurrentLoadedPath = path;
                         gFirstTimeSaving = true;
                         game_fix_save_vars();
                         sprite_position_tween_reset();

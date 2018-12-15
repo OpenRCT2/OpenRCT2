@@ -319,7 +319,7 @@ void S6Exporter::Export()
     // pad_013587CA
     _s6.historical_profit = gHistoricalProfit;
     // pad_013587D4
-    std::memcpy(_s6.scenario_completed_name, gScenarioCompletedBy, sizeof(_s6.scenario_completed_name));
+    String::Set(_s6.scenario_completed_name, sizeof(_s6.scenario_completed_name), gScenarioCompletedBy.c_str());
     _s6.cash = ENCRYPT_MONEY(gCash);
     // pad_013587FC
     _s6.park_rating_casualty_penalty = gParkRatingCasualtyPenalty;
@@ -335,8 +335,8 @@ void S6Exporter::Export()
     // pad_01358842
     ExportResearchList();
     _s6.map_base_z = gMapBaseZ;
-    std::memcpy(_s6.scenario_name, gScenarioName, sizeof(_s6.scenario_name));
-    std::memcpy(_s6.scenario_description, gScenarioDetails, sizeof(_s6.scenario_description));
+    String::Set(_s6.scenario_name, sizeof(_s6.scenario_name), gScenarioName.c_str());
+    String::Set(_s6.scenario_description, sizeof(_s6.scenario_description), gScenarioDetails.c_str());
     _s6.current_interest_rate = gBankLoanInterestRate;
     // pad_0135934B
     _s6.same_price_throughout_extended = gSamePriceThroughoutParkB;

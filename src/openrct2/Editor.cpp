@@ -87,8 +87,7 @@ namespace Editor
         window_set_location(mainWindow, 2400, 2400, 112);
         load_palette();
         gScreenAge = 0;
-
-        safe_strcpy(gScenarioName, language_get_string(STR_MY_NEW_SCENARIO), 64);
+        gScenarioName = language_get_string(STR_MY_NEW_SCENARIO);
     }
 
     /**
@@ -126,8 +125,8 @@ namespace Editor
         }
         gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-        safe_strcpy(gS6Info.name, gScenarioName, 64);
-        safe_strcpy(gS6Info.details, gScenarioDetails, 256);
+        safe_strcpy(gS6Info.name, gScenarioName.c_str(), sizeof(gS6Info.name));
+        safe_strcpy(gS6Info.details, gScenarioDetails.c_str(), sizeof(gS6Info.details));
         gS6Info.objective_type = gScenarioObjectiveType;
         gS6Info.objective_arg_1 = gScenarioObjectiveYear;
         gS6Info.objective_arg_2 = gScenarioObjectiveCurrency;

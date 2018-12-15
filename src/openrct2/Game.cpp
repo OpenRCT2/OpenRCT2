@@ -74,7 +74,7 @@ bool gInUpdateCode = false;
 bool gInMapInitCode = false;
 int32_t gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
-char gCurrentLoadedPath[MAX_PATH];
+std::string gCurrentLoadedPath;
 
 bool gLoadKeepWindowsOpen = false;
 
@@ -944,9 +944,9 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 void game_convert_strings_to_utf8()
 {
     // Scenario details
-    rct2_to_utf8_self(gScenarioCompletedBy, 32);
-    rct2_to_utf8_self(gScenarioName, 64);
-    rct2_to_utf8_self(gScenarioDetails, 256);
+    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
+    gScenarioName = rct2_to_utf8(gScenarioName, RCT2_LANGUAGE_ID_ENGLISH_UK);
+    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2_LANGUAGE_ID_ENGLISH_UK);
 
     // User strings
     for (auto* string : gUserStrings)
@@ -1179,7 +1179,7 @@ void save_game()
 {
     if (!gFirstTimeSaving)
     {
-        save_game_with_name(gScenarioSavePath);
+        save_game_with_name(gScenarioSavePath.c_str());
     }
     else
     {
@@ -1191,7 +1191,7 @@ void save_game_cmd(const utf8* name /* = nullptr */)
 {
     if (name == nullptr)
     {
-        save_game_with_name(gScenarioSavePath);
+        save_game_with_name(gScenarioSavePath.c_str());
     }
     else
     {
@@ -1209,7 +1209,7 @@ void save_game_with_name(const utf8* name)
     if (scenario_save(name, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0)))
     {
         log_verbose("Saved to %s", name);
-        safe_strcpy(gCurrentLoadedPath, name, MAX_PATH);
+        gCurrentLoadedPath = name;
         gScreenAge = 0;
     }
 }
@@ -1217,7 +1217,7 @@ void save_game_with_name(const utf8* name)
 void* create_save_game_as_intent()
 {
     char name[MAX_PATH];
-    safe_strcpy(name, path_get_filename(gScenarioSavePath), MAX_PATH);
+    safe_strcpy(name, path_get_filename(gScenarioSavePath.c_str()), MAX_PATH);
     path_remove_extension(name);
 
     Intent* intent = new Intent(WC_LOADSAVE);

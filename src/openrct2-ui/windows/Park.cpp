@@ -1560,7 +1560,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     x = w->x + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     y = w->y + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7;
     set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, gScenarioDetails);
+    set_format_arg(2, const char*, gScenarioDetails.c_str());
     y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_BLACK_STRING, COLOUR_BLACK);
     y += 5;
 

@@ -2609,8 +2609,8 @@ private:
 
         String::Set(gS6Info.name, sizeof(gS6Info.name), name.c_str());
         String::Set(gS6Info.details, sizeof(gS6Info.details), details.c_str());
-        String::Set(gScenarioName, sizeof(gScenarioName), name.c_str());
-        String::Set(gScenarioDetails, sizeof(gScenarioDetails), details.c_str());
+        gScenarioName = name;
+        gScenarioDetails = details;
     }
 
     void ImportScenarioObjective()
