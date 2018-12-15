@@ -717,6 +717,8 @@ namespace OpenRCT2
                     _nextReplayTick = gCurrentTicks + 1;
                 }
 
+                bool isPositionValid = false;
+
                 if (command.action != nullptr)
                 {
                     GameAction* action = command.action.get();
@@ -725,11 +727,28 @@ namespace OpenRCT2
                     Guard::Assert(action != nullptr);
 
                     GameActionResult::Ptr result = GameActions::Execute(action);
+                    if (result->Error == GA_ERROR::OK)
+                    {
+                        isPositionValid = true;
+                    }
                 }
                 else
                 {
                     uint32_t flags = command.ebx | GAME_COMMAND_FLAG_REPLAY;
-                    game_do_command(command.eax, flags, command.ecx, command.edx, command.esi, command.edi, command.ebp);
+                    int32_t res = game_do_command(
+                        command.eax, flags, command.ecx, command.edx, command.esi, command.edi, command.ebp);
+                    if (res != MONEY32_UNDEFINED)
+                    {
+                        isPositionValid = true;
+                    }
+                }
+
+                // Focus camera on event.
+                if (isPositionValid && gCommandPosition.x != 0x8000)
+                {
+                    auto* mainWindow = window_get_main();
+                    if (mainWindow != nullptr)
+                        window_scroll_to_location(mainWindow, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
                 }
 
                 replayQueue.erase(replayQueue.begin());
