@@ -642,7 +642,7 @@ namespace OpenRCT2
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 
                 bool sendMap = false;
-                if (info.Type == FILE_TYPE::SAVED_GAME)
+                if (info.Type == FILE_TYPE::PARK || info.Type == FILE_TYPE::SAVED_GAME)
                 {
                     if (network_get_mode() == NETWORK_MODE_CLIENT)
                     {

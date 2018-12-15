@@ -8,6 +8,7 @@
 #include "interface/Viewport.h"
 #include "interface/Window.h"
 #include "localisation/Date.h"
+#include "localisation/Localisation.h"
 #include "object/Object.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -122,6 +123,7 @@ namespace OpenRCT2
 
             WriteAuthoringChunk();
             WriteObjectsChunk();
+            WriteScenarioChunk();
             WriteGeneralChunk();
             WriteInterfaceChunk();
             WriteTilesChunk();
@@ -220,6 +222,15 @@ namespace OpenRCT2
             _buffer.write(&nullt, sizeof(nullt));
         }
 
+        void WriteStringTable(const std::string_view& lcode, const std::string_view& value)
+        {
+            BeginArray();
+            WriteString(lcode);
+            WriteString(value);
+            NextArrayElement();
+            EndArray();
+        }
+
         void WriteAuthoringChunk()
         {
             BeginChunk(ParkFileChunkType::AUTHORING);
@@ -255,6 +266,39 @@ namespace OpenRCT2
                 NextArrayElement();
             }
             EndArray();
+            EndChunk();
+        }
+
+        void WriteScenarioChunk()
+        {
+            BeginChunk(ParkFileChunkType::SCENARIO);
+            WriteValue<uint32_t>(gS6Info.category);
+            WriteStringTable("en-GB", gScenarioName);
+            char parkName[128];
+            format_string(parkName, sizeof(parkName), gParkName, &gParkNameArgs);
+            WriteStringTable("en-GB", parkName);
+            WriteStringTable("en-GB", gScenarioDetails);
+
+            WriteValue<uint32_t>(gScenarioObjectiveType);
+            WriteValue<uint16_t>(gScenarioObjectiveYear);      // year
+            WriteValue<uint32_t>(gScenarioObjectiveNumGuests); // guests
+            WriteValue<uint16_t>(600);                         // rating
+            WriteValue<uint16_t>(gScenarioObjectiveCurrency);  // excitement
+            WriteValue<uint16_t>(gScenarioObjectiveNumGuests); // length
+            WriteValue<money32>(gScenarioObjectiveCurrency);   // park value
+            WriteValue<money32>(gScenarioObjectiveCurrency);   // ride profit
+            WriteValue<money32>(gScenarioObjectiveCurrency);   // shop profit
+
+            WriteValue<money32>(gScenarioCompletedCompanyValue);
+            if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED ||
+                gScenarioCompletedCompanyValue == (money32)0x80000001)
+            {
+                WriteString("");
+            }
+            else
+            {
+                WriteString(gScenarioCompletedBy);
+            }
             EndChunk();
         }
 
@@ -367,6 +411,7 @@ namespace OpenRCT2
         void Import()
         {
             ReadTilesChunk();
+            ReadScenarioChunk();
             ReadGeneralChunk();
             ReadInterfaceChunk();
         }
@@ -429,6 +474,54 @@ namespace OpenRCT2
             }
             buffer.shrink_to_fit();
             return buffer;
+        }
+
+        std::string ReadStringTable()
+        {
+            std::string result;
+            auto len = ReadArray();
+            for (size_t i = 0; i < len; i++)
+            {
+                auto lcode = ReadString();
+                auto value = ReadString();
+                if (i == 0)
+                {
+                    result = value;
+                }
+            }
+            return result;
+        }
+
+        void ReadScenarioChunk()
+        {
+            if (SeekChunk(ParkFileChunkType::SCENARIO))
+            {
+                ReadValue<uint32_t>();
+
+                String::Set(gScenarioName, sizeof(gScenarioName), ReadStringTable().c_str());
+                String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName);
+                ReadStringTable(); // park name
+                String::Set(gScenarioDetails, sizeof(gScenarioDetails), ReadStringTable().c_str());
+                String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName);
+
+                gScenarioObjectiveType = ReadValue<uint32_t>();
+                gScenarioObjectiveYear = ReadValue<uint16_t>();             // year
+                gScenarioObjectiveNumGuests = ReadValue<uint32_t>();        // guests
+                ReadValue<uint16_t>();                                      // rating
+                ReadValue<uint16_t>();                                      // excitement
+                ReadValue<uint16_t>();                                      // length
+                gScenarioObjectiveCurrency = ReadValue<money32>();          // park value
+                ReadValue<money32>();                                       // ride profit
+                ReadValue<money32>();                                       // shop profit
+
+                gScenarioCompletedCompanyValue = ReadValue<money32>();
+                String::Set(gScenarioCompletedBy, sizeof(gScenarioCompletedBy), ReadString().c_str());
+                EndChunk();
+            }
+            else
+            {
+                throw std::runtime_error("No scenario chunk found.");
+            }
         }
 
         void ReadGeneralChunk()
