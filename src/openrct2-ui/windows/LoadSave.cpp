@@ -201,13 +201,13 @@ static const char* getFilterPatternByType(const int32_t type, const bool isSave)
     switch (type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
-            return isSave ? "*.sv6" : "*.sv6;*.sc6;*.sc4;*.sv4;*.sv7;*.sea;";
+            return isSave ? "*.park" : "*.sv6;*.sc6;*.sc4;*.sv4;*.sv7;*.sea;";
 
         case LOADSAVETYPE_LANDSCAPE:
-            return isSave ? "*.sc6" : "*.sc6;*.sv6;*.sc4;*.sv4;*.sv7;*.sea;";
+            return isSave ? "*.park" : "*.sc6;*.sv6;*.sc4;*.sv4;*.sv7;*.sea;";
 
         case LOADSAVETYPE_SCENARIO:
-            return "*.sc6";
+            return "*.park";
 
         case LOADSAVETYPE_TRACK:
             return isSave ? "*.td6" : "*.td6;*.td4";

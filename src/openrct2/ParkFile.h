@@ -1,5 +1,7 @@
+#include <array>
 #include <cstdint>
 #include <fstream>
+#include <sstream>
 #include <string_view>
 #include <vector>
 
@@ -20,7 +22,7 @@ namespace OpenRCT2
             uint32_t NumChunks{};
             uint64_t UncompressedSize{};
             uint32_t Compression{};
-            uint8_t Sha1{};
+            std::array<uint8_t, 20> Sha1;
         };
 
         struct ChunkEntry
@@ -33,10 +35,25 @@ namespace OpenRCT2
 
         Header _header;
         std::vector<ChunkEntry> _chunks;
+        std::stringstream _buffer;
         ChunkEntry _currentChunk;
 
-        void WriteHeader(std::ostream& stream, const Header& header, const std::vector<ChunkEntry>& chunks);
-        void BeginChunk(std::ostream& stream);
-        uint64_t EndChunk();
+        void WriteHeader(std::ostream& fs);
+        void BeginChunk(uint32_t id);
+        void EndChunk();
+
+        void WriteBuffer(const void* buffer, size_t len);
+        void WriteString(const std::string_view& s);
+        void BeginArray(size_t count, size_t elementSize);
+        void EndArray();
+
+        template<typename T>
+        void WriteValue(T v)
+        {
+            WriteBuffer(&v, sizeof(T));
+        }
+
+        void WriteAuthoringChunk();
+        void WriteGeneralChunk();
     };
 } // namespace OpenRCT2
