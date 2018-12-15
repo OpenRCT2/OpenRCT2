@@ -68,6 +68,7 @@ void ParkFile::Save(const std::string_view& path)
     WriteAuthoringChunk();
     WriteObjectsChunk();
     WriteGeneralChunk();
+    WriteInterfaceChunk();
     WriteTilesChunk();
 
     // TODO avoid copying the buffer
@@ -233,6 +234,17 @@ void ParkFile::WriteGeneralChunk()
     EndChunk();
 }
 
+void ParkFile::WriteInterfaceChunk()
+{
+    BeginChunk(ParkFileChunkType::INTERFACE);
+    WriteValue(gSavedViewX);
+    WriteValue(gSavedViewY);
+    WriteValue(gSavedViewZoom);
+    WriteValue(gSavedViewRotation);
+    WriteValue<uint32_t>(gLastEntranceStyle);
+    EndChunk();
+}
+
 void ParkFile::WriteTilesChunk()
 {
     BeginChunk(ParkFileChunkType::TILES);
@@ -299,6 +311,7 @@ void ParkFile::Import()
 {
     ReadTilesChunk();
     ReadGeneralChunk();
+    ReadInterfaceChunk();
 }
 
 ParkFile::Header ParkFile::ReadHeader(std::istream& fs)
@@ -390,6 +403,18 @@ void ParkFile::ReadGeneralChunk()
     else
     {
         throw std::runtime_error("No general chunk found.");
+    }
+}
+
+void ParkFile::ReadInterfaceChunk()
+{
+    if (SeekChunk(ParkFileChunkType::INTERFACE))
+    {
+        gSavedViewX = ReadValue<uint16_t>();
+        gSavedViewY = ReadValue<uint16_t>();
+        gSavedViewZoom = ReadValue<uint8_t>();
+        gSavedViewRotation = ReadValue<uint8_t>();
+        gLastEntranceStyle = ReadValue<uint32_t>();
     }
 }
 

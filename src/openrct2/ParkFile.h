@@ -68,9 +68,11 @@ namespace OpenRCT2
         void WriteAuthoringChunk();
         void WriteObjectsChunk();
         void WriteGeneralChunk();
+        void WriteInterfaceChunk();
         void WriteTilesChunk();
 
         void ReadGeneralChunk();
+        void ReadInterfaceChunk();
         void ReadTilesChunk();
 
         Header ReadHeader(std::istream& fs);
