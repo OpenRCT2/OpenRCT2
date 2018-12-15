@@ -2883,8 +2883,11 @@ static void window_ride_vehicle_dropdown(rct_window* w, rct_widgetindex widgetIn
     switch (widgetIndex)
     {
         case WIDX_VEHICLE_TYPE_DROPDOWN:
-            int32_t newRideType = VehicleDropdownData[dropdownIndex].subtype_id;
-            ride_set_ride_entry(w->number, newRideType);
+            if (dropdownIndex >= 0 && static_cast<std::size_t>(dropdownIndex) < VehicleDropdownData.size())
+            {
+                int32_t newRideType = VehicleDropdownData[dropdownIndex].subtype_id;
+                ride_set_ride_entry(w->number, newRideType);
+            }
             break;
     }
 }

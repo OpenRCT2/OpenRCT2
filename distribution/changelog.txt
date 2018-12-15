@@ -40,6 +40,7 @@
 - Fix: [#8358] Infinite loop when changing vehicle count on stopped ride.
 - Fix: [#8433] Crash if master server response is not valid JSON.
 - Fix: [#8434] Crash if curl_easy_init fails.
+- Fix: [#8443] Crash when selecting the current vehicle for ride that has none available.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.
