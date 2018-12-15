@@ -291,7 +291,7 @@ static rct_widget window_ride_colour_widgets[] = {
     { WWT_BUTTON,           1,  301,    311,    50,     59,     STR_DROPDOWN_GLYPH,             STR_NONE                                                    },
     { WWT_FLATBTN,          1,  289,    312,    68,     91,     SPR_PAINTBRUSH,                 STR_PAINT_INDIVIDUAL_AREA_TIP                               },
     { WWT_SPINNER,          1,  245,    312,    101,    147,    0xFFFFFFFF,                     STR_NONE                                                    },
-    { WWT_DROPDOWN,         1,  3,      241,    103,    114,    0,                              STR_NONE                                                    },
+    { WWT_DROPDOWN,         1,  103,    241,    103,    114,    0,                              STR_NONE                                                    },
     { WWT_BUTTON,           1,  230,    240,    104,    113,    STR_DROPDOWN_GLYPH,             STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP               },
     { WWT_SCROLL,           1,  3,      70,     157,    203,    0,                              STR_NONE                                                    },
     { WWT_DROPDOWN,         1,  74,     312,    157,    168,    STR_ARG_6_STRINGID,             STR_NONE                                                    },
@@ -4915,6 +4915,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     gfx_draw_sprite(&clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, 34, 20, terniaryColour);
             }
         }
+
+        gfx_draw_string_left_clipped(dpi, STR_ENTRANCE_STYLE, gCommonFormatArgs, COLOUR_BLACK, w->x + 3, w->y + 103, 97);
     }
 }
 
