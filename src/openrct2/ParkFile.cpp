@@ -1,6 +1,7 @@
 #include "ParkFile.h"
 
 #include "Context.h"
+#include "GameState.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "Version.h"
@@ -237,7 +238,7 @@ void ParkFile::WriteTilesChunk()
     WriteValue<uint32_t>(gMapSize);
     WriteValue<uint32_t>(gMapSize);
     BeginArray();
-    auto numTiles = (size_t)gMapSize * gMapSize;
+    auto numTiles = std::size(gTileElements);
     for (size_t i = 0; i < numTiles; i++)
     {
         WriteBuffer(&gTileElements[i], sizeof(gTileElements[i]));
@@ -295,6 +296,7 @@ void ParkFile::Load(const std::string_view& path)
 
 void ParkFile::Import()
 {
+    ReadTilesChunk();
 }
 
 ParkFile::Header ParkFile::ReadHeader(std::istream& fs)
@@ -354,6 +356,26 @@ std::string ParkFile::ReadString()
     }
     buffer.shrink_to_fit();
     return buffer;
+}
+
+void ParkFile::ReadTilesChunk()
+{
+    if (SeekChunk(ParkFileChunkType::TILES))
+    {
+        auto mapWidth = ReadValue<uint32_t>();
+        [[maybe_unused]] auto mapHeight = ReadValue<uint32_t>();
+
+        OpenRCT2::GetContext()->GetGameState()->InitAll(mapWidth);
+
+        auto numElements = ReadArray();
+        ReadBuffer(gTileElements, numElements * sizeof(TileElement));
+
+        map_update_tile_pointers();
+    }
+    else
+    {
+        throw std::runtime_error("No tiles chunk found.");
+    }
 }
 
 enum : uint32_t
@@ -421,6 +443,7 @@ class ParkFileImporter : public IParkImporter
 {
 private:
     const IObjectRepository& _objectRepository;
+    std::unique_ptr<ParkFile> _parkFile;
 
 public:
     ParkFileImporter(IObjectRepository& objectRepository)
@@ -430,9 +453,9 @@ public:
 
     ParkLoadResult Load(const utf8* path) override
     {
-        auto parkFile = std::make_unique<ParkFile>();
-        parkFile->Load(path);
-        return ParkLoadResult(std::move(parkFile->RequiredObjects));
+        _parkFile = std::make_unique<ParkFile>();
+        _parkFile->Load(path);
+        return ParkLoadResult(std::move(_parkFile->RequiredObjects));
     }
 
     ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
@@ -453,6 +476,7 @@ public:
 
     void Import() override
     {
+        _parkFile->Import();
     }
 
     bool GetDetails(scenario_index_entry* dst) override
