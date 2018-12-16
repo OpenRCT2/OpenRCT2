@@ -335,13 +335,10 @@ namespace OpenRCT2
             BeginArray();
             for (const auto& spawn : gPeepSpawns)
             {
-                if (!gPeepSpawns->isNull())
-                {
-                    WriteValue(spawn.x);
-                    WriteValue(spawn.y);
-                    WriteValue(spawn.z);
-                    WriteValue(spawn.direction);
-                }
+                WriteValue(spawn.x);
+                WriteValue(spawn.y);
+                WriteValue(spawn.z);
+                WriteValue(spawn.direction);
                 NextArrayElement();
             }
             EndArray();
@@ -561,6 +558,8 @@ namespace OpenRCT2
 
             // Initial cash will eventually be removed
             gInitialCash = gCash;
+            String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName.c_str());
+            String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName.c_str());
         }
 
     private:
@@ -645,11 +644,9 @@ namespace OpenRCT2
             {
                 ReadValue<uint32_t>();
 
-                String::Set(gScenarioName, sizeof(gScenarioName), ReadStringTable().c_str());
-                String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName);
+                gScenarioName = ReadStringTable();
                 ReadStringTable(); // park name
-                String::Set(gScenarioDetails, sizeof(gScenarioDetails), ReadStringTable().c_str());
-                String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName);
+                gScenarioDetails = ReadStringTable();
 
                 gScenarioObjectiveType = ReadValue<uint32_t>();
                 gScenarioObjectiveYear = ReadValue<uint16_t>();      // year
@@ -664,7 +661,7 @@ namespace OpenRCT2
                 gScenarioParkRatingWarningDays = ReadValue<uint16_t>();
 
                 gScenarioCompletedCompanyValue = ReadValue<money32>();
-                String::Set(gScenarioCompletedBy, sizeof(gScenarioCompletedBy), ReadString().c_str());
+                gScenarioCompletedBy = ReadString();
                 EndChunk();
             }
             else

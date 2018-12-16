@@ -216,9 +216,7 @@ void fix_park_entrance_locations(void)
 
 void UpdateParkEntranceLocations()
 {
-    reset_park_entrance();
-
-    size_t entranceIndex = 0;
+    gParkEntrances.clear();
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
     while (tile_element_iterator_next(&it))
@@ -227,16 +225,12 @@ void UpdateParkEntranceLocations()
         if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
             && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
         {
-            auto& entrance = gParkEntrances[entranceIndex];
+            CoordsXYZD entrance;
             entrance.x = it.x * 32;
             entrance.y = it.y * 32;
             entrance.z = it.element->base_height * 8;
             entrance.direction = it.element->GetDirection();
-            entranceIndex++;
-            if (entranceIndex >= MAX_PARK_ENTRANCES)
-            {
-                break;
-            }
+            gParkEntrances.push_back(entrance);
         }
     }
 }
