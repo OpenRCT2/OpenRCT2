@@ -680,9 +680,11 @@ private:
         if (_pathTypeToEntryMap[pathType] == 255)
         {
             const char* entryName = RCT1::GetPathObject(pathType);
-            size_t entryIndex = _pathEntries.GetOrAddEntry(entryName);
-
-            _pathTypeToEntryMap[pathType] = (uint8_t)entryIndex;
+            if (!String::Equals(entryName, "        "))
+            {
+                size_t entryIndex = _pathEntries.GetOrAddEntry(entryName);
+                _pathTypeToEntryMap[pathType] = (uint8_t)entryIndex;
+            }
         }
     }
 
