@@ -130,6 +130,10 @@ static void automatically_set_peep_spawn(CoordsXYZ location)
         }
     }
 
+    if (gPeepSpawns.size() == 0)
+    {
+        gPeepSpawns.emplace_back();
+    }
     PeepSpawn* peepSpawn = &gPeepSpawns[0];
     peepSpawn->x = location.x + (word_981D6C[direction].x * 15) + 16;
     peepSpawn->y = location.y + (word_981D6C[direction].y * 15) + 16;

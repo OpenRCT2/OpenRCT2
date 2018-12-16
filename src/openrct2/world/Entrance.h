@@ -13,6 +13,8 @@
 #include "../common.h"
 #include "Location.hpp"
 
+#include <vector>
+
 #pragma pack(push, 1)
 struct rct_entrance_type
 {
@@ -35,7 +37,7 @@ extern uint8_t gParkEntranceGhostDirection;
 
 #define MAX_PARK_ENTRANCES 4
 
-extern CoordsXYZD gParkEntrances[MAX_PARK_ENTRANCES];
+extern std::vector<CoordsXYZD> gParkEntrances;
 
 extern CoordsXYZD gRideEntranceExitGhostPosition;
 extern uint8_t gRideEntranceExitGhostStationIndex;

@@ -221,7 +221,7 @@ void finance_init()
     gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
-    safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
+    gScenarioCompletedBy = "?";
 }
 
 /**

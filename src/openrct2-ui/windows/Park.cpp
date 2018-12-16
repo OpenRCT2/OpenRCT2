@@ -871,26 +871,23 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_park_init_viewport(rct_window* w)
 {
-    int32_t i, x, y, z, r, xy, zr, viewportFlags;
+    int32_t x, y, z, r, xy, zr, viewportFlags;
     x = y = z = r = xy = zr = 0;
     rct_viewport* viewport;
 
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
 
-    for (i = 0; i < MAX_PARK_ENTRANCES; i++)
+    if (gParkEntrances.size() > 0)
     {
-        if (gParkEntrances[i].x != LOCATION_NULL)
-        {
-            x = gParkEntrances[i].x + 16;
-            y = gParkEntrances[i].y + 16;
-            z = gParkEntrances[i].z + 32;
-            r = get_current_rotation();
+        const auto& entrance = gParkEntrances[0];
+        x = entrance.x + 16;
+        y = entrance.y + 16;
+        z = entrance.z + 32;
+        r = get_current_rotation();
 
-            xy = IMAGE_TYPE_TRANSPARENT | (y << 16) | x;
-            zr = (z << 16) | (r << 8);
-            break;
-        }
+        xy = IMAGE_TYPE_TRANSPARENT | (y << 16) | x;
+        zr = (z << 16) | (r << 8);
     }
 
     if (w->viewport == nullptr)
@@ -1563,7 +1560,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     x = w->x + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4;
     y = w->y + window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7;
     set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, gScenarioDetails);
+    set_format_arg(2, const char*, gScenarioDetails.c_str());
     y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, 222, STR_BLACK_STRING, COLOUR_BLACK);
     y += 5;
 

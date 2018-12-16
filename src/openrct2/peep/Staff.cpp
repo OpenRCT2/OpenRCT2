@@ -129,37 +129,20 @@ static inline void staff_autoposition_new_staff_member(rct_peep* newPeep)
     else
     {
         // No walking guests; pick random park entrance
-        count = 0;
-        uint8_t i;
-        for (i = 0; i < MAX_PARK_ENTRANCES; ++i)
+        if (gParkEntrances.size() > 0)
         {
-            if (gParkEntrances[i].x != LOCATION_NULL)
-                ++count;
-        }
-
-        if (count > 0)
-        {
-            uint32_t rand = scenario_rand_max(count);
-            for (i = 0; i < MAX_PARK_ENTRANCES; ++i)
-            {
-                if (gParkEntrances[i].x != LOCATION_NULL)
-                {
-                    if (rand == 0)
-                        break;
-                    --rand;
-                }
-            }
-
-            uint8_t dir = gParkEntrances[i].direction;
-            x = gParkEntrances[i].x;
-            y = gParkEntrances[i].y;
-            z = gParkEntrances[i].z;
+            auto rand = scenario_rand_max((uint32_t)gParkEntrances.size());
+            const auto& entrance = gParkEntrances[rand];
+            auto dir = entrance.direction;
+            x = entrance.x;
+            y = entrance.y;
+            z = entrance.z;
             x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
             y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
         }
         else
         {
-            // No more options; user must pick a location
+            // User must pick a location
             newPeep->state = PEEP_STATE_PICKED;
             x = newPeep->x;
             y = newPeep->y;

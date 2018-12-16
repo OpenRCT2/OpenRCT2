@@ -1542,18 +1542,16 @@ static uint8_t get_nearest_park_entrance_index(uint16_t x, uint16_t y)
 {
     uint8_t chosenEntrance = 0xFF;
     uint16_t nearestDist = 0xFFFF;
-    for (uint8_t i = 0; i < MAX_PARK_ENTRANCES; i++)
+    uint8_t i = 0;
+    for (const auto& parkEntrance : gParkEntrances)
     {
-        if (gParkEntrances[i].x == LOCATION_NULL)
-            continue;
-
-        uint16_t dist = abs(gParkEntrances[i].x - x) + abs(gParkEntrances[i].y - y);
-
-        if (dist >= nearestDist)
-            continue;
-
-        nearestDist = dist;
-        chosenEntrance = i;
+        auto dist = abs(parkEntrance.x - x) + abs(parkEntrance.y - y);
+        if (dist < nearestDist)
+        {
+            nearestDist = dist;
+            chosenEntrance = i;
+        }
+        i++;
     }
     return chosenEntrance;
 }
@@ -1597,18 +1595,16 @@ static uint8_t get_nearest_peep_spawn_index(uint16_t x, uint16_t y)
 {
     uint8_t chosenSpawn = 0xFF;
     uint16_t nearestDist = 0xFFFF;
-    for (uint8_t i = 0; i < MAX_PEEP_SPAWNS; ++i)
+    uint8_t i = 0;
+    for (const auto& spawn : gPeepSpawns)
     {
-        if (gPeepSpawns[i].x == PEEP_SPAWN_UNDEFINED)
-            continue;
-
-        uint16_t dist = abs(gPeepSpawns[i].x - x) + abs(gPeepSpawns[i].y - y);
-
-        if (dist >= nearestDist)
-            continue;
-
-        nearestDist = dist;
-        chosenSpawn = i;
+        uint16_t dist = abs(spawn.x - x) + abs(spawn.y - y);
+        if (dist < nearestDist)
+        {
+            nearestDist = dist;
+            chosenSpawn = i;
+        }
+        i++;
     }
     return chosenSpawn;
 }
@@ -1654,12 +1650,10 @@ static int32_t guest_path_find_leaving_park(rct_peep* peep, [[maybe_unused]] Til
  */
 static int32_t guest_path_find_park_entrance(rct_peep* peep, [[maybe_unused]] TileElement* tile_element, uint8_t edges)
 {
-    uint8_t entranceNum;
-
-    // Resolves already-corrupt guests (e.g. loaded from save)
-    if (peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN
-        && (peep->current_ride >= 4 || gParkEntrances[peep->current_ride].x == LOCATION_NULL))
+    // If entrance no longer exists, choose a new one
+    if ((peep->peep_flags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->current_ride >= gParkEntrances.size())
     {
+        peep->current_ride = 0xFF;
         peep->peep_flags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
     }
 
@@ -1667,19 +1661,16 @@ static int32_t guest_path_find_park_entrance(rct_peep* peep, [[maybe_unused]] Ti
     {
         uint8_t chosenEntrance = 0xFF;
         uint16_t nearestDist = 0xFFFF;
-        for (entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum)
+        uint8_t entranceNum = 0;
+        for (const auto& entrance : gParkEntrances)
         {
-            if (gParkEntrances[entranceNum].x == LOCATION_NULL)
-                continue;
-
-            uint16_t dist = abs(gParkEntrances[entranceNum].x - peep->next_x)
-                + abs(gParkEntrances[entranceNum].y - peep->next_y);
-
-            if (dist >= nearestDist)
-                continue;
-
-            nearestDist = dist;
-            chosenEntrance = entranceNum;
+            uint16_t dist = abs(entrance.x - peep->next_x) + abs(entrance.y - peep->next_y);
+            if (dist < nearestDist)
+            {
+                nearestDist = dist;
+                chosenEntrance = entranceNum;
+            }
+            entranceNum++;
         }
 
         if (chosenEntrance == 0xFF)
@@ -1689,10 +1680,10 @@ static int32_t guest_path_find_park_entrance(rct_peep* peep, [[maybe_unused]] Ti
         peep->peep_flags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
     }
 
-    entranceNum = peep->current_ride;
-    int16_t x = gParkEntrances[entranceNum].x;
-    int16_t y = gParkEntrances[entranceNum].y;
-    int16_t z = gParkEntrances[entranceNum].z;
+    const auto& entrance = gParkEntrances[peep->current_ride];
+    int16_t x = entrance.x;
+    int16_t y = entrance.y;
+    int16_t z = entrance.z;
 
     gPeepPathFindGoalPosition = { x / 32, y / 32, z >> 3 };
     gPeepPathFindIgnoreForeignQueues = true;

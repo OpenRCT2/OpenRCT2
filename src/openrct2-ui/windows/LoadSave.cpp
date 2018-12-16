@@ -924,7 +924,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
                 newListItem.time_formatted = Platform::FormatTime(newListItem.date_modified);
 
                 // Mark if file is the currently loaded game
-                newListItem.loaded = newListItem.path.compare(gCurrentLoadedPath) == 0;
+                newListItem.loaded = newListItem.path.compare(gCurrentLoadedPath.c_str()) == 0;
 
                 // Remove the extension (but only the first extension token)
                 if (!showExtension)
@@ -1001,8 +1001,8 @@ static void window_loadsave_select(rct_window* w, const char* path)
             save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0))
             {
-                safe_strcpy(gScenarioSavePath, pathBuffer, MAX_PATH);
-                safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
+                gScenarioSavePath = pathBuffer;
+                gCurrentLoadedPath = pathBuffer;
                 gFirstTimeSaving = false;
 
                 window_close_by_class(WC_LOADSAVE);
@@ -1021,7 +1021,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
             if (Editor::LoadLandscape(pathBuffer))
             {
-                safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
+                gCurrentLoadedPath = pathBuffer;
                 gfx_invalidate_screen();
                 window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
             }
@@ -1038,7 +1038,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2))
             {
-                safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
+                gCurrentLoadedPath = pathBuffer;
                 window_close_by_class(WC_LOADSAVE);
                 gfx_invalidate_screen();
                 window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);

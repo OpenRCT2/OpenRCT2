@@ -339,7 +339,7 @@ public:
         // pad_013587CA
         gHistoricalProfit = _s6.historical_profit;
         // pad_013587D4
-        std::memcpy(gScenarioCompletedBy, _s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
+        gScenarioCompletedBy = std::string_view(_s6.scenario_completed_name, sizeof(_s6.scenario_completed_name));
         gCash = DECRYPT_MONEY(_s6.cash);
         // pad_013587FC
         gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
@@ -355,18 +355,24 @@ public:
         // pad_01358842
         ImportResearchList();
         gMapBaseZ = _s6.map_base_z;
-        std::memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
-        std::memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
+        gScenarioName = std::string_view(_s6.scenario_name, sizeof(_s6.scenario_name));
+        gScenarioDetails = std::string_view(_s6.scenario_description, sizeof(_s6.scenario_description));
         gBankLoanInterestRate = _s6.current_interest_rate;
         // pad_0135934B
         gSamePriceThroughoutParkB = _s6.same_price_throughout_extended;
         // Preserve compatibility with vanilla RCT2's save format.
+        gParkEntrances.clear();
         for (uint8_t i = 0; i < RCT12_MAX_PARK_ENTRANCES; i++)
         {
-            gParkEntrances[i].x = _s6.park_entrance_x[i];
-            gParkEntrances[i].y = _s6.park_entrance_y[i];
-            gParkEntrances[i].z = _s6.park_entrance_z[i];
-            gParkEntrances[i].direction = _s6.park_entrance_direction[i];
+            if (_s6.park_entrance_x[i] != LOCATION_NULL)
+            {
+                CoordsXYZD entrance;
+                entrance.x = _s6.park_entrance_x[i];
+                entrance.y = _s6.park_entrance_y[i];
+                entrance.z = _s6.park_entrance_z[i];
+                entrance.direction = _s6.park_entrance_direction[i];
+                gParkEntrances.push_back(entrance);
+            }
         }
         if (_s6.header.type == S6_TYPE_SCENARIO)
         {
@@ -827,15 +833,15 @@ public:
             _s6.peep_spawns[0].y = 1296;
         }
 
+        gPeepSpawns.clear();
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            gPeepSpawns[i] = { _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z * 16,
-                               _s6.peep_spawns[i].direction };
-        }
-
-        for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
-        {
-            gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+            if (_s6.peep_spawns[i].x != (uint16_t)LOCATION_NULL)
+            {
+                PeepSpawn spawn = { _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z * 16,
+                                    _s6.peep_spawns[i].direction };
+                gPeepSpawns.push_back(spawn);
+            }
         }
     }
 

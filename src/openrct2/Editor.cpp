@@ -87,8 +87,7 @@ namespace Editor
         window_set_location(mainWindow, 2400, 2400, 112);
         load_palette();
         gScreenAge = 0;
-
-        safe_strcpy(gScenarioName, language_get_string(STR_MY_NEW_SCENARIO), 64);
+        gScenarioName = language_get_string(STR_MY_NEW_SCENARIO);
     }
 
     /**
@@ -126,8 +125,8 @@ namespace Editor
         }
         gParkFlags |= PARK_FLAGS_NO_MONEY;
 
-        safe_strcpy(gS6Info.name, gScenarioName, 64);
-        safe_strcpy(gS6Info.details, gScenarioDetails, 256);
+        safe_strcpy(gS6Info.name, gScenarioName.c_str(), sizeof(gS6Info.name));
+        safe_strcpy(gS6Info.details, gScenarioDetails.c_str(), sizeof(gS6Info.details));
         gS6Info.objective_type = gScenarioObjectiveType;
         gS6Info.objective_arg_1 = gScenarioObjectiveYear;
         gS6Info.objective_arg_2 = gScenarioObjectiveCurrency;
@@ -489,27 +488,14 @@ namespace Editor
             return false;
         }
 
-        for (int32_t i = 0; i < MAX_PARK_ENTRANCES; i++)
+        if (gParkEntrances.size() == 0)
         {
-            if (gParkEntrances[i].x != LOCATION_NULL)
-            {
-                break;
-            }
-
-            if (i == MAX_PARK_ENTRANCES - 1)
-            {
-                gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
-                return false;
-            }
+            gGameCommandErrorText = STR_NO_PARK_ENTRANCES;
+            return false;
         }
 
         for (const auto& parkEntrance : gParkEntrances)
         {
-            if (parkEntrance.x == LOCATION_NULL)
-            {
-                continue;
-            }
-
             int32_t x = parkEntrance.x;
             int32_t y = parkEntrance.y;
             int32_t z = parkEntrance.z / 8;
@@ -531,18 +517,10 @@ namespace Editor
             }
         }
 
-        for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
+        if (gPeepSpawns.size() == 0)
         {
-            if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED)
-            {
-                break;
-            }
-
-            if (i == MAX_PEEP_SPAWNS - 1)
-            {
-                gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
-                return false;
-            }
+            gGameCommandErrorText = STR_PEEP_SPAWNS_NOT_SET;
+            return false;
         }
 
         return true;

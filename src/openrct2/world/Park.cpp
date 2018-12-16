@@ -85,26 +85,21 @@ void reset_park_entry()
 {
     gParkName = 0;
     reset_park_entrance();
-    for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
-    {
-        gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
-    }
+    gPeepSpawns.clear();
 }
 
 /**
  * Choose a random peep spawn and iterates through until defined spawn is found.
  */
-static uint32_t get_random_peep_spawn_index()
+static PeepSpawn* get_random_peep_spawn()
 {
-    uint32_t spawnIndexList[MAX_PEEP_SPAWNS];
-    uint32_t numSpawns = map_get_available_peep_spawn_index_list(spawnIndexList);
-    if (numSpawns > 0)
+    if (gPeepSpawns.size() > 0)
     {
-        return spawnIndexList[scenario_rand() % numSpawns];
+        return &gPeepSpawns[scenario_rand() % gPeepSpawns.size()];
     }
     else
     {
-        return 0;
+        return nullptr;
     }
 }
 
@@ -380,18 +375,11 @@ static money32 map_buy_land_rights_for_tile(int32_t x, int32_t y, int32_t settin
 
             if ((newOwnership & 0xF0) != 0)
             {
-                PeepSpawn* peepSpawns = gPeepSpawns;
-
-                for (uint8_t i = 0; i < MAX_PEEP_SPAWNS; ++i)
-                {
-                    if (x == (peepSpawns[i].x & 0xFFE0))
-                    {
-                        if (y == (peepSpawns[i].y & 0xFFE0))
-                        {
-                            peepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
-                        }
-                    }
-                }
+                gPeepSpawns.erase(
+                    std::remove_if(
+                        gPeepSpawns.begin(), gPeepSpawns.end(),
+                        [x, y](const auto& spawn) { return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y; }),
+                    gPeepSpawns.end());
             }
             surfaceElement->SetOwnership(newOwnership);
             update_park_fences_around_tile({ x, y });
@@ -1005,22 +993,21 @@ rct_peep* Park::GenerateGuestFromCampaign(int32_t campaign)
 rct_peep* Park::GenerateGuest()
 {
     rct_peep* peep = nullptr;
-    PeepSpawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
-
-    if (spawn.x != PEEP_SPAWN_UNDEFINED)
+    const auto spawn = get_random_peep_spawn();
+    if (spawn != nullptr)
     {
-        spawn.direction ^= 2;
-        peep = peep_generate(spawn.x, spawn.y, spawn.z);
+        auto direction = spawn->direction ^ 2;
+        peep = peep_generate(spawn->x, spawn->y, spawn->z);
         if (peep != nullptr)
         {
-            peep->sprite_direction = spawn.direction << 3;
+            peep->sprite_direction = direction << 3;
 
             // Get the centre point of the tile the peep is on
             peep->destination_x = (peep->x & 0xFFE0) + 16;
             peep->destination_y = (peep->y & 0xFFE0) + 16;
 
             peep->destination_tolerance = 5;
-            peep->direction = spawn.direction;
+            peep->direction = direction;
             peep->var_37 = 0;
             peep->state = PEEP_STATE_ENTERING_PARK;
         }

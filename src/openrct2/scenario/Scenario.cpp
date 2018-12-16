@@ -56,10 +56,10 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 };
 
 rct_s6_info gS6Info;
-char gScenarioName[64];
-char gScenarioDetails[256];
-char gScenarioCompletedBy[32];
-char gScenarioSavePath[MAX_PATH];
+std::string gScenarioName;
+std::string gScenarioDetails;
+std::string gScenarioCompletedBy;
+std::string gScenarioSavePath;
 char gScenarioExpansionPacks[3256];
 bool gFirstTimeSaving = true;
 uint16_t gSavedAge;
@@ -109,8 +109,8 @@ void scenario_begin()
     gHistoricalProfit = gInitialCash - gBankLoan;
     gCash = gInitialCash;
 
-    safe_strcpy(gScenarioDetails, gS6Info.details, 256);
-    safe_strcpy(gScenarioName, gS6Info.name, 64);
+    gScenarioDetails = std::string_view(gS6Info.details, 256);
+    gScenarioName = std::string_view(gS6Info.name, 64);
 
     {
         utf8 normalisedName[64];
@@ -121,7 +121,7 @@ void scenario_begin()
         {
             if (localisedStringIds[0] != STR_NONE)
             {
-                safe_strcpy(gScenarioName, language_get_string(localisedStringIds[0]), 32);
+                gScenarioName = language_get_string(localisedStringIds[0]);
             }
             if (localisedStringIds[1] != STR_NONE)
             {
@@ -129,7 +129,7 @@ void scenario_begin()
             }
             if (localisedStringIds[2] != STR_NONE)
             {
-                safe_strcpy(gScenarioDetails, language_get_string(localisedStringIds[2]), 256);
+                gScenarioDetails = language_get_string(localisedStringIds[2]);
             }
         }
     }
@@ -138,9 +138,11 @@ void scenario_begin()
     char parkName[128];
     format_string(parkName, 128, gParkName, &gParkNameArgs);
 
-    platform_get_user_directory(gScenarioSavePath, "save", sizeof(gScenarioSavePath));
-    safe_strcat_path(gScenarioSavePath, parkName, sizeof(gScenarioSavePath));
-    path_append_extension(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath));
+    char savePath[MAX_PATH];
+    platform_get_user_directory(savePath, "save", sizeof(savePath));
+    safe_strcat_path(savePath, parkName, sizeof(savePath));
+    path_append_extension(savePath, ".sv6", sizeof(savePath));
+    gScenarioSavePath = savePath;
 
     gCurrentExpenditure = 0;
     gCurrentProfit = 0;
@@ -149,7 +151,7 @@ void scenario_begin()
     gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
-    safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
+    gScenarioCompletedBy = "?";
     park.ResetHistories();
     finance_reset_history();
     award_reset();
@@ -220,7 +222,7 @@ void scenario_success_submit_name(const char* name)
 {
     if (scenario_repository_try_record_highscore(gScenarioFileName, gScenarioCompanyValueRecord, name))
     {
-        safe_strcpy(gScenarioCompletedBy, name, 32);
+        gScenarioCompletedBy = name;
     }
     gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 }
@@ -231,22 +233,22 @@ void scenario_success_submit_name(const char* name)
  */
 static void scenario_entrance_fee_too_high_check()
 {
-    uint16_t x = 0, y = 0;
     money16 totalRideValueForMoney = gTotalRideValueForMoney;
     money16 max_fee = totalRideValueForMoney + (totalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
     {
-        for (int32_t i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != LOCATION_NULL; i++)
+        if (gParkEntrances.size() > 0)
         {
-            x = gParkEntrances[i].x + 16;
-            y = gParkEntrances[i].y + 16;
-        }
+            const auto& entrance = gParkEntrances[0];
+            auto x = entrance.x + 16;
+            auto y = entrance.y + 16;
 
-        uint32_t packed_xy = (y << 16) | x;
-        if (gConfigNotifications.park_warnings)
-        {
-            news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+            uint32_t packed_xy = (y << 16) | x;
+            if (gConfigNotifications.park_warnings)
+            {
+                news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+            }
         }
     }
 }

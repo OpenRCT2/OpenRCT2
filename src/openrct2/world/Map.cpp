@@ -82,7 +82,7 @@ int16_t gMapBaseZ;
 TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 LocationXY16 gMapSelectionTiles[300];
-PeepSpawn gPeepSpawns[MAX_PEEP_SPAWNS];
+std::vector<PeepSpawn> gPeepSpawns;
 
 TileElement* gNextFreeTileElement;
 uint32_t gNextFreeTileElementPointerIndex;
@@ -3884,14 +3884,11 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
 static void clear_elements_at(int32_t x, int32_t y)
 {
     // Remove the spawn point (if there is one in the current tile)
-    for (int32_t i = 0; i < MAX_PEEP_SPAWNS; i++)
-    {
-        PeepSpawn* peepSpawn = &gPeepSpawns[i];
-        if (floor2(peepSpawn->x, 32) == x && floor2(peepSpawn->y, 32) == y)
-        {
-            peepSpawn->x = PEEP_SPAWN_UNDEFINED;
-        }
-    }
+    gPeepSpawns.erase(
+        std::remove_if(
+            gPeepSpawns.begin(), gPeepSpawns.end(),
+            [x, y](const auto& spawn) { return floor2(spawn.x, 32) == x && floor2(spawn.y, 32) == y; }),
+        gPeepSpawns.end());
 
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
 
@@ -4778,19 +4775,6 @@ TileElement* map_get_wall_element_at(int32_t x, int32_t y, int32_t z, int32_t di
         return tileElement;
     } while (!(tileElement++)->IsLastForTile());
     return nullptr;
-}
-
-uint32_t map_get_available_peep_spawn_index_list(uint32_t* peepSpawnIndexList)
-{
-    uint32_t numSpawns = 0;
-    for (uint8_t i = 0; i < MAX_PEEP_SPAWNS; i++)
-    {
-        if (gPeepSpawns[i].x != PEEP_SPAWN_UNDEFINED)
-        {
-            peepSpawnIndexList[numSpawns++] = i;
-        }
-    }
-    return numSpawns;
 }
 
 uint16_t check_max_allowable_land_rights_for_tile(uint8_t x, uint8_t y, uint8_t base_z)

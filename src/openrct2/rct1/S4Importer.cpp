@@ -1786,15 +1786,15 @@ private:
 
     void ImportPeepSpawns()
     {
+        gPeepSpawns.clear();
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            gPeepSpawns[i] = { _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z * 16,
-                               _s4.peep_spawn[i].direction };
-        }
-
-        for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
-        {
-            gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+            if (_s4.peep_spawn[i].x != (uint16_t)LOCATION_NULL)
+            {
+                PeepSpawn spawn = { _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z * 16,
+                                    _s4.peep_spawn[i].direction };
+                gPeepSpawns.push_back(spawn);
+            }
         }
     }
 
@@ -2611,8 +2611,8 @@ private:
 
         String::Set(gS6Info.name, sizeof(gS6Info.name), name.c_str());
         String::Set(gS6Info.details, sizeof(gS6Info.details), details.c_str());
-        String::Set(gScenarioName, sizeof(gScenarioName), name.c_str());
-        String::Set(gScenarioDetails, sizeof(gScenarioDetails), details.c_str());
+        gScenarioName = name;
+        gScenarioDetails = details;
     }
 
     void ImportScenarioObjective()
@@ -2797,16 +2797,10 @@ private:
 
     void FixEntrancePositions()
     {
-        for (size_t i = 0; i < std::size(gParkEntrances); i++)
-        {
-            gParkEntrances[i].x = LOCATION_NULL;
-        }
-
-        uint8_t entranceIndex = 0;
-
+        gParkEntrances.clear();
         tile_element_iterator it;
         tile_element_iterator_begin(&it);
-        while (tile_element_iterator_next(&it) && entranceIndex < RCT12_MAX_PARK_ENTRANCES)
+        while (tile_element_iterator_next(&it) && gParkEntrances.size() < RCT12_MAX_PARK_ENTRANCES)
         {
             TileElement* element = it.element;
 
@@ -2817,11 +2811,12 @@ private:
             if ((element->AsEntrance()->GetSequenceIndex()) != 0)
                 continue;
 
-            gParkEntrances[entranceIndex].x = it.x * 32;
-            gParkEntrances[entranceIndex].y = it.y * 32;
-            gParkEntrances[entranceIndex].z = element->base_height * 8;
-            gParkEntrances[entranceIndex].direction = element->GetDirection();
-            entranceIndex++;
+            CoordsXYZD entrance;
+            entrance.x = it.x * 32;
+            entrance.y = it.y * 32;
+            entrance.z = element->base_height * 8;
+            entrance.direction = element->GetDirection();
+            gParkEntrances.push_back(entrance);
         }
     }
 
