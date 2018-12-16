@@ -9,9 +9,13 @@
 #include "interface/Window.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
+#include "management/Award.h"
+#include "management/Finance.h"
+#include "management/NewsItem.h"
 #include "object/Object.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "ride/ShopItem.h"
 #include "scenario/Scenario.h"
 #include "world/Climate.h"
 #include "world/Entrance.h"
@@ -42,25 +46,30 @@ namespace OpenRCT2
     namespace ParkFileChunkType
     {
         // clang-format off
-    constexpr uint32_t RESERVED_0   = 0x00;
-    constexpr uint32_t AUTHORING    = 0x01;
-    constexpr uint32_t OBJECTS      = 0x02;
-    constexpr uint32_t SCENARIO     = 0x03;
-    constexpr uint32_t GENERAL      = 0x04;
-    constexpr uint32_t INTERFACE    = 0x05;
-    constexpr uint32_t CLIMATE      = 0x06;
-    constexpr uint32_t PARK         = 0x07;
-    constexpr uint32_t HISTORY      = 0x08;
-    constexpr uint32_t INVENTIONS   = 0x09;
-    constexpr uint32_t TILES        = 0x0A;
-    constexpr uint32_t THINGS       = 0x0B;
-    constexpr uint32_t RIDES        = 0x0C;
-    constexpr uint32_t BANNERS      = 0x0D;
-    constexpr uint32_t ANIMATIONS   = 0x0E;
-    constexpr uint32_t STAFF        = 0x0F;
-    constexpr uint32_t STRINGS      = 0x10;
-    constexpr uint32_t EDITOR       = 0x11;
-    constexpr uint32_t DERIVED      = 0x12;
+        constexpr uint32_t RESERVED_0       = 0x00;
+
+        constexpr uint32_t AUTHORING        = 0x01;
+        constexpr uint32_t OBJECTS          = 0x02;
+        constexpr uint32_t SCENARIO         = 0x03;
+        constexpr uint32_t GENERAL          = 0x04;
+        constexpr uint32_t CLIMATE          = 0x05;
+        constexpr uint32_t PARK             = 0x06;
+        constexpr uint32_t HISTORY          = 0x07;
+        constexpr uint32_t RESEARCH         = 0x08;
+        constexpr uint32_t NOTIFICATIONS    = 0x09;
+
+        constexpr uint32_t INTERFACE        = 0x20;
+        constexpr uint32_t EDITOR           = 0x21;
+
+        constexpr uint32_t TILES            = 0x30;
+        constexpr uint32_t THINGS           = 0x31;
+        constexpr uint32_t RIDES            = 0x32;
+        constexpr uint32_t BANNERS          = 0x33;
+        constexpr uint32_t ANIMATIONS       = 0x34;
+        constexpr uint32_t STAFF            = 0x35;
+        constexpr uint32_t STRINGS          = 0x36;
+
+        constexpr uint32_t DERIVED          = 0x50;
         // clang-format on
     }; // namespace ParkFileChunkType
 
@@ -296,6 +305,8 @@ namespace OpenRCT2
             WriteValue<money32>(gScenarioObjectiveCurrency);   // ride profit
             WriteValue<money32>(gScenarioObjectiveCurrency);   // shop profit
 
+            WriteValue(gScenarioParkRatingWarningDays);
+
             WriteValue<money32>(gScenarioCompletedCompanyValue);
             if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED || gScenarioCompletedCompanyValue == (money32)0x80000001)
             {
@@ -316,11 +327,11 @@ namespace OpenRCT2
             WriteValue(gDateMonthsElapsed);
             WriteValue(gScenarioSrand0);
             WriteValue(gScenarioSrand1);
-            WriteValue(gInitialCash);
             WriteValue(gGuestInitialCash);
             WriteValue(gGuestInitialHunger);
             WriteValue(gGuestInitialThirst);
 
+            WriteValue(gNextGuestNumber);
             BeginArray();
             for (const auto& spawn : gPeepSpawns)
             {
@@ -337,6 +348,8 @@ namespace OpenRCT2
 
             WriteValue(gLandPrice);
             WriteValue(gConstructionRightsPrice);
+            WriteValue(gGrassSceneryTileLoopPosition); // TODO (this needs to be xy32)
+
             EndChunk();
         }
 
@@ -364,6 +377,112 @@ namespace OpenRCT2
                 WriteValue(cs->WeatherGloom);
                 WriteValue(cs->RainLevel);
             }
+            EndChunk();
+        }
+
+        void WriteParkChunk()
+        {
+            BeginChunk(ParkFileChunkType::PARK);
+            WriteValue<uint32_t>(gParkNameArgs);
+            WriteValue<money32>(gCash);
+            WriteValue<money32>(gBankLoan);
+            WriteValue<money32>(gMaxBankLoan);
+            WriteValue<uint16_t>(gBankLoanInterestRate);
+            WriteValue<uint64_t>(gParkFlags);
+            WriteValue<money32>(gParkEntranceFee);
+            WriteValue(gStaffHandymanColour);
+            WriteValue(gStaffMechanicColour);
+            WriteValue(gStaffSecurityColour);
+
+            WriteValue(gSamePriceThroughoutParkA);
+            WriteValue(gSamePriceThroughoutParkB);
+
+            // Marketing
+            BeginArray();
+            for (size_t i = 0; i < std::size(gMarketingCampaignDaysLeft); i++)
+            {
+                WriteValue<uint32_t>(gMarketingCampaignDaysLeft[i]);
+                WriteValue<uint32_t>(gMarketingCampaignRideIndex[i]);
+                NextArrayElement();
+            }
+            EndArray();
+
+            // Awards
+            BeginArray();
+            for (const auto& award : gCurrentAwards)
+            {
+                WriteValue(award.Time);
+                WriteValue(award.Type);
+                NextArrayElement();
+            }
+            EndArray();
+
+            BeginArray();
+            for (const auto& t : gPeepWarningThrottle)
+            {
+                WriteValue(t);
+                NextArrayElement();
+            }
+            EndArray();
+            WriteValue(gParkRatingCasualtyPenalty);
+            WriteValue(gCurrentExpenditure);
+            WriteValue(gCurrentProfit);
+            WriteValue(gTotalAdmissions);
+            WriteValue(gTotalIncomeFromAdmissions);
+        }
+
+        void WriteResearch()
+        {
+            BeginChunk(ParkFileChunkType::RESEARCH);
+
+            // Research status
+            WriteValue(gResearchFundingLevel);
+            WriteValue(gResearchPriorities);
+            WriteValue(gResearchProgressStage);
+            WriteValue(gResearchProgress);
+            WriteValue(gResearchExpectedMonth);
+            WriteValue(gResearchExpectedDay);
+            WriteValue(gResearchLastItem);
+            WriteValue(gResearchNextItem);
+
+            // Research order
+            BeginArray();
+            // type (uint8_t)
+            // flags (uint8_t)
+            // entry (uint32_t)
+            EndArray();
+
+            EndChunk();
+        }
+
+        void WriteNotifications()
+        {
+            BeginChunk(ParkFileChunkType::NOTIFICATIONS);
+            BeginArray();
+            for (const auto& notification : gNewsItems)
+            {
+                WriteValue(notification.Type);
+                WriteValue(notification.Flags);
+                WriteValue(notification.Assoc);
+                WriteValue(notification.Ticks);
+                WriteValue(notification.MonthYear);
+                WriteValue(notification.Day);
+                WriteString(notification.Text);
+                NextArrayElement();
+            }
+            EndArray();
+            EndChunk();
+        }
+
+        void WriteDerivedChunk()
+        {
+            BeginChunk(ParkFileChunkType::DERIVED);
+            WriteValue<uint32_t>(gParkSize);
+            WriteValue<uint32_t>(gNumGuestsInPark);
+            WriteValue<uint32_t>(gNumGuestsHeadingForPark);
+            WriteValue<uint32_t>(gCompanyValue);
+            WriteValue<uint32_t>(gParkValue);
+            WriteValue<uint32_t>(gParkRating);
             EndChunk();
         }
 
@@ -435,8 +554,13 @@ namespace OpenRCT2
             ReadTilesChunk();
             ReadScenarioChunk();
             ReadGeneralChunk();
-            ReadInterfaceChunk();
+            ReadParkChunk();
             ReadClimateChunk();
+            ReadResearchChunk();
+            ReadInterfaceChunk();
+
+            // Initial cash will eventually be removed
+            gInitialCash = gCash;
         }
 
     private:
@@ -537,6 +661,8 @@ namespace OpenRCT2
                 ReadValue<money32>();                                // ride profit
                 ReadValue<money32>();                                // shop profit
 
+                gScenarioParkRatingWarningDays = ReadValue<uint16_t>();
+
                 gScenarioCompletedCompanyValue = ReadValue<money32>();
                 String::Set(gScenarioCompletedBy, sizeof(gScenarioCompletedBy), ReadString().c_str());
                 EndChunk();
@@ -556,11 +682,11 @@ namespace OpenRCT2
                 gDateMonthsElapsed = ReadValue<uint16_t>();
                 gScenarioSrand0 = ReadValue<uint32_t>();
                 gScenarioSrand1 = ReadValue<uint32_t>();
-                gInitialCash = ReadValue<money32>();
                 gGuestInitialCash = ReadValue<money16>();
                 gGuestInitialHunger = ReadValue<uint8_t>();
                 gGuestInitialThirst = ReadValue<uint8_t>();
 
+                gNextGuestNumber = ReadValue<uint32_t>();
                 size_t numPeepSpawns = ReadArray();
                 for (size_t i = 0; i < numPeepSpawns; i++)
                 {
@@ -573,6 +699,7 @@ namespace OpenRCT2
 
                 gLandPrice = ReadValue<money16>();
                 gConstructionRightsPrice = ReadValue<money16>();
+                gGrassSceneryTileLoopPosition = ReadValue<uint16_t>();
             }
             else
             {
@@ -607,6 +734,14 @@ namespace OpenRCT2
                     cs->RainLevel = ReadValue<uint8_t>();
                 }
             }
+        }
+
+        void ReadParkChunk()
+        {
+        }
+
+        void ReadResearchChunk()
+        {
         }
 
         void ReadTilesChunk()
