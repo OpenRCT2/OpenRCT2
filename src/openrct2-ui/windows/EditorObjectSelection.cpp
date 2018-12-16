@@ -1473,7 +1473,7 @@ static void filter_update_counts()
     if (!_FILTER_ALL || strlen(_filter_string) > 0)
     {
         const auto& selectionFlags = _objectSelectionFlags;
-        for (int32_t i = 0; i < 11; i++)
+        for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
         {
             _filter_object_counts[i] = 0;
         }
