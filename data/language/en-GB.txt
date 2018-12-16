@@ -3722,7 +3722,7 @@ STR_6271    :Terrain Edges
 STR_6272    :Stations
 STR_6273    :Music
 STR_6274    :Can't set colour scheme...
-STR_6275    :{WINDOW_COLOUR_2}Entrance style:
+STR_6275    :{WINDOW_COLOUR_2}Station style:
 
 #############
 # Scenarios #
