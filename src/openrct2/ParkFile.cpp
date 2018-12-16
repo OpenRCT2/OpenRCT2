@@ -391,6 +391,7 @@ namespace OpenRCT2
             WriteValue(gStaffMechanicColour);
             WriteValue(gStaffSecurityColour);
 
+            // TODO use a uint64 or a list of active items
             WriteValue(gSamePriceThroughoutParkA);
             WriteValue(gSamePriceThroughoutParkB);
 
@@ -540,8 +541,6 @@ namespace OpenRCT2
                     entry.flags = type & 0x7FFF;
                     strncpy(entry.name, id.c_str(), 8);
                     RequiredObjects.push_back(entry);
-
-                    ReadNextArrayElement();
                 }
             }
         }
@@ -554,6 +553,7 @@ namespace OpenRCT2
             ReadParkChunk();
             ReadClimateChunk();
             ReadResearchChunk();
+            ReadNotifications();
             ReadInterfaceChunk();
 
             // Initial cash will eventually be removed
@@ -691,7 +691,6 @@ namespace OpenRCT2
                     gPeepSpawns[i].y = ReadValue<uint32_t>();
                     gPeepSpawns[i].z = ReadValue<uint32_t>();
                     gPeepSpawns[i].direction = ReadValue<uint8_t>();
-                    ReadNextArrayElement();
                 }
 
                 gLandPrice = ReadValue<money16>();
@@ -735,10 +734,89 @@ namespace OpenRCT2
 
         void ReadParkChunk()
         {
+            if (SeekChunk(ParkFileChunkType::PARK))
+            {
+                gParkNameArgs = ReadValue<uint32_t>();
+                gCash = ReadValue<money32>();
+                gBankLoan = ReadValue<money32>();
+                gMaxBankLoan = ReadValue<money32>();
+                gBankLoanInterestRate = ReadValue<uint16_t>();
+                gParkFlags = ReadValue<uint64_t>();
+                gParkEntranceFee = ReadValue<money32>();
+                gStaffHandymanColour = ReadValue<uint8_t>();
+                gStaffMechanicColour = ReadValue<uint8_t>();
+                gStaffSecurityColour = ReadValue<uint8_t>();
+
+                gSamePriceThroughoutParkA = ReadValue<uint64_t>();
+                gSamePriceThroughoutParkB = ReadValue<uint64_t>();
+
+                // Marketing
+                auto numItems = ReadArray();
+                for (size_t i = 0; i < numItems; i++)
+                {
+                    gMarketingCampaignDaysLeft[i] = ReadValue<uint32_t>();
+                    gMarketingCampaignRideIndex[i] = ReadValue<uint32_t>();
+                }
+
+                // Awards
+                numItems = ReadArray();
+                for (size_t i = 0; i < numItems; i++)
+                {
+                    Award award;
+                    award.Time = ReadValue<uint16_t>();
+                    award.Type = ReadValue<uint16_t>();
+                }
+
+                numItems = ReadArray();
+                for (size_t i = 0; i < numItems; i++)
+                {
+                    gPeepWarningThrottle[i] = ReadValue<uint8_t>();
+                }
+
+                gParkRatingCasualtyPenalty = ReadValue<uint16_t>();
+                gCurrentExpenditure = ReadValue<money32>();
+                gCurrentProfit = ReadValue<money32>();
+                gTotalAdmissions = ReadValue<uint32_t>();
+                gTotalIncomeFromAdmissions = ReadValue<money32>();
+            }
+            else
+            {
+                throw std::runtime_error("No park chunk found.");
+            }
         }
 
         void ReadResearchChunk()
         {
+            if (SeekChunk(ParkFileChunkType::RESEARCH))
+            {
+                // Research status
+                gResearchFundingLevel = ReadValue<uint8_t>();
+                gResearchPriorities = ReadValue<uint8_t>();
+                gResearchProgressStage = ReadValue<uint8_t>();
+                gResearchProgress = ReadValue<uint16_t>();
+                gResearchExpectedMonth = ReadValue<uint8_t>();
+                gResearchExpectedDay = ReadValue<uint8_t>();
+                gResearchLastItem = ReadValue<rct_research_item>();
+                gResearchNextItem = ReadValue<rct_research_item>();
+
+                // auto numItems = ReadArray();
+            }
+        }
+
+        void ReadNotifications()
+        {
+            if (SeekChunk(ParkFileChunkType::NOTIFICATIONS))
+            {
+                NewsItem notification;
+                notification.Type = ReadValue<uint8_t>();
+                notification.Flags = ReadValue<uint8_t>();
+                notification.Assoc = ReadValue<uint32_t>();
+                notification.Ticks = ReadValue<uint16_t>();
+                notification.MonthYear = ReadValue<uint16_t>();
+                notification.Day = ReadValue<uint8_t>();
+                auto text = ReadString();
+                String::Set(notification.Text, sizeof(notification.Text), text.c_str());
+            }
         }
 
         void ReadTilesChunk()
