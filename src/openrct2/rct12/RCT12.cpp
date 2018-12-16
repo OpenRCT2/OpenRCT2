@@ -281,8 +281,7 @@ colour_t RCT12LargeSceneryElement::GetSecondaryColour() const
 
 BannerIndex RCT12LargeSceneryElement::GetBannerIndex() const
 {
-    return (entryIndex & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2)
-        | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
+    return (type & 0xC0) | (((colour[0]) & ~TILE_ELEMENT_COLOUR_MASK) >> 2) | (((colour[1]) & ~TILE_ELEMENT_COLOUR_MASK) >> 5);
 }
 
 uint8_t RCT12WallElement::GetEntryIndex() const
