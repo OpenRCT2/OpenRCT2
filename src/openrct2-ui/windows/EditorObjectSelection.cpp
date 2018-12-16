@@ -63,7 +63,6 @@ enum
 static constexpr uint8_t _numSourceGameItems = 8;
 
 static uint32_t _filter_flags;
-static uint16_t _filter_object_counts[OBJECT_TYPE_COUNT];
 
 static char _filter_string[MAX_PATH];
 
@@ -107,6 +106,8 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     // { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               false },
     // { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
 };
+
+static uint16_t _filter_object_counts[std::size(ObjectSelectionPages)];
 
 #pragma region Widgets
 
@@ -398,7 +399,7 @@ rct_window* window_editor_object_selection_open()
     _filter_flags = gConfigInterface.object_selection_filter_flags;
     std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
-    for (int32_t i = WIDX_TAB_1; i < WIDX_TAB_1 + OBJECT_TYPE_COUNT; i++)
+    for (size_t i = WIDX_TAB_1; i < WIDX_TAB_1 + std::size(ObjectSelectionPages); i++)
     {
         window->enabled_widgets |= (1LL << i);
     }
@@ -562,7 +563,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             visible_list_refresh(w);
             break;
         default:
-            if (widgetIndex >= WIDX_TAB_1 && widgetIndex < WIDX_TAB_1 + OBJECT_TYPE_COUNT)
+            if (widgetIndex >= WIDX_TAB_1 && (size_t)widgetIndex < WIDX_TAB_1 + std::size(ObjectSelectionPages))
             {
                 window_editor_object_set_page(w, widgetIndex - WIDX_TAB_1);
             }
@@ -865,7 +866,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
     {
         w->widgets[WIDX_ADVANCED].type = WWT_EMPTY;
-        for (int32_t i = 1; i < OBJECT_TYPE_COUNT; i++)
+        for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
         {
             w->widgets[WIDX_TAB_1 + i].type = WWT_EMPTY;
         }
@@ -1217,7 +1218,7 @@ static void window_editor_object_set_page(rct_window* w, int32_t page)
 
 static void window_editor_object_selection_set_pressed_tab(rct_window* w)
 {
-    for (int32_t i = 0; i < OBJECT_TYPE_COUNT; i++)
+    for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
     {
         w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
     }
