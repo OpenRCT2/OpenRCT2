@@ -98,6 +98,11 @@ TEST_P(ReplayTests, RunReplay)
     }
 }
 
+void PrintTo(const ReplayTestData& testData, std::ostream* os)
+{
+    *os << testData.filePath;
+}
+
 struct PrintReplayParameter
 {
     template<class ParamType> std::string operator()(const testing::TestParamInfo<ParamType>& info) const
