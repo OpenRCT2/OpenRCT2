@@ -4777,6 +4777,8 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
         TileElement* tileElement = map_get_first_element_at((*position).x, (*position).y);
         do
         {
+            if (tileElement == nullptr)
+                break;
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE
