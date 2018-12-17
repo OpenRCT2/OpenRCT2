@@ -26,6 +26,7 @@
 #    include "network.h"
 
 #    include <iterator>
+#    include <memory>
 #    include <string>
 
 #    ifndef DISABLE_HTTP
@@ -261,9 +262,9 @@ private:
     }
 };
 
-INetworkServerAdvertiser* CreateServerAdvertiser(uint16_t port)
+std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port)
 {
-    return new NetworkServerAdvertiser(port);
+    return std::make_unique<NetworkServerAdvertiser>(port);
 }
 
 #    else // DISABLE_HTTP

@@ -176,7 +176,7 @@ public:
         _status = SOCKET_STATUS_LISTENING;
     }
 
-    ITcpSocket* Accept() override
+    std::unique_ptr<ITcpSocket> Accept() override
     {
         if (_status != SOCKET_STATUS_LISTENING)
         {
@@ -187,7 +187,7 @@ public:
         };
         socklen_t client_len = sizeof(struct sockaddr_storage);
 
-        ITcpSocket* tcpSocket = nullptr;
+        std::unique_ptr<ITcpSocket> tcpSocket;
         SOCKET socket = accept(_socket, (struct sockaddr*)&client_addr, &client_len);
         if (socket == INVALID_SOCKET)
         {
@@ -212,11 +212,11 @@ public:
                 SetTCPNoDelay(socket, true);
                 if (rc == 0)
                 {
-                    tcpSocket = new TcpSocket(socket, hostName);
+                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, hostName));
                 }
                 else
                 {
-                    tcpSocket = new TcpSocket(socket, "");
+                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, ""));
                 }
             }
         }
@@ -496,9 +496,9 @@ private:
     }
 };
 
-ITcpSocket* CreateTcpSocket()
+std::unique_ptr<ITcpSocket> CreateTcpSocket()
 {
-    return new TcpSocket();
+    return std::make_unique<TcpSocket>();
 }
 
 bool InitialiseWSA()

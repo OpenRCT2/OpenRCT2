@@ -14,19 +14,19 @@
 #    include "NetworkKey.h"
 #    include "NetworkPacket.h"
 #    include "NetworkTypes.h"
+#    include "TcpSocket.h"
 
 #    include <list>
 #    include <memory>
 #    include <vector>
 
-interface ITcpSocket;
 class NetworkPlayer;
 struct ObjectRepositoryItem;
 
 class NetworkConnection final
 {
 public:
-    ITcpSocket* Socket = nullptr;
+    std::unique_ptr<ITcpSocket> Socket = nullptr;
     NetworkPacket InboundPacket;
     NETWORK_AUTH AuthStatus = NETWORK_AUTH_NONE;
     NetworkPlayer* Player = nullptr;

@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <memory>
+
 enum SOCKET_STATUS
 {
     SOCKET_STATUS_CLOSED,
@@ -44,7 +46,7 @@ public:
 
     virtual void Listen(uint16_t port) abstract;
     virtual void Listen(const char* address, uint16_t port) abstract;
-    virtual ITcpSocket* Accept() abstract;
+    virtual std::unique_ptr<ITcpSocket> Accept() abstract;
 
     virtual void Connect(const char* address, uint16_t port) abstract;
     virtual void ConnectAsync(const char* address, uint16_t port) abstract;
@@ -56,7 +58,7 @@ public:
     virtual void Close() abstract;
 };
 
-ITcpSocket* CreateTcpSocket();
+std::unique_ptr<ITcpSocket> CreateTcpSocket();
 
 bool InitialiseWSA();
 void DisposeWSA();
