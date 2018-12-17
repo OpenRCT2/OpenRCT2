@@ -26,7 +26,6 @@ NetworkConnection::NetworkConnection()
 
 NetworkConnection::~NetworkConnection()
 {
-    delete Socket;
     delete[] _lastDisconnectReason;
 }
 

@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <memory>
+
 enum class ADVERTISE_STATUS
 {
     DISABLED,
@@ -28,4 +30,4 @@ interface INetworkServerAdvertiser
     virtual void Update() abstract;
 };
 
-INetworkServerAdvertiser* CreateServerAdvertiser(uint16_t port);
+std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port);

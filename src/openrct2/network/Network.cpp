@@ -108,7 +108,7 @@ class Network
 {
 public:
     Network();
-    ~Network();
+
     void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
     void Close();
@@ -203,7 +203,7 @@ private:
 
     bool ProcessConnection(NetworkConnection& connection);
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
-    void AddClient(ITcpSocket* socket);
+    void AddClient(std::unique_ptr<ITcpSocket>&& socket);
     void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
     NetworkPlayer* AddPlayer(const utf8* name, const std::string& keyhash);
     std::string MakePlayerNameUnique(const std::string& name);
@@ -282,9 +282,10 @@ private:
     bool _closeLock = false;
     bool _requireClose = false;
     bool wsa_initialized = false;
-    ITcpSocket* listening_socket = nullptr;
+    std::unique_ptr<ITcpSocket> _listenSocket;
+    std::unique_ptr<NetworkConnection> _serverConnection;
+    std::unique_ptr<INetworkServerAdvertiser> _advertiser;
     uint16_t listening_port = 0;
-    NetworkConnection* server_connection = nullptr;
     SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
     uint32_t last_tick_sent_time = 0;
     uint32_t last_ping_sent_time = 0;
@@ -298,7 +299,6 @@ private:
     std::vector<uint8_t> chunk_buffer;
     std::string _password;
     bool _desynchronised = false;
-    INetworkServerAdvertiser* _advertiser = nullptr;
     uint32_t server_connect_time = 0;
     uint8_t default_group = 0;
     uint32_t game_commands_processed_this_tick = 0;
@@ -390,13 +390,6 @@ Network::Network()
     _server_log_fs << std::unitbuf;
 }
 
-Network::~Network()
-{
-    CloseChatLog();
-    CloseServerLog();
-    CloseConnection();
-}
-
 void Network::SetEnvironment(const std::shared_ptr<IPlatformEnvironment>& env)
 {
     _env = env;
@@ -411,7 +404,6 @@ bool Network::Init()
 
     status = NETWORK_STATUS_READY;
 
-    server_connection = new NetworkConnection();
     ServerName = std::string();
     ServerDescription = std::string();
     ServerGreeting = std::string();
@@ -453,27 +445,17 @@ void Network::CloseConnection()
 {
     if (mode == NETWORK_MODE_CLIENT)
     {
-        delete server_connection->Socket;
-        server_connection->Socket = nullptr;
+        _serverConnection.reset();
     }
     else if (mode == NETWORK_MODE_SERVER)
     {
-        delete listening_socket;
-        listening_socket = nullptr;
-        delete _advertiser;
-        _advertiser = nullptr;
+        _listenSocket.reset();
+        _advertiser.reset();
     }
 
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
-    if (server_connection != nullptr)
-    {
-        server_connection->AuthStatus = NETWORK_AUTH_NONE;
-        server_connection->InboundPacket.Clear();
-        server_connection->SetLastDisconnectReason(nullptr);
-        delete server_connection;
-    }
 
     DisposeWSA();
 }
@@ -493,9 +475,9 @@ bool Network::BeginClient(const char* host, uint16_t port)
 
     log_info("Connecting to %s:%u\n", host, port);
 
-    assert(server_connection->Socket == nullptr);
-    server_connection->Socket = CreateTcpSocket();
-    server_connection->Socket->ConnectAsync(host, port);
+    _serverConnection = std::make_unique<NetworkConnection>();
+    _serverConnection->Socket = CreateTcpSocket();
+    _serverConnection->Socket->ConnectAsync(host, port);
     status = NETWORK_STATUS_CONNECTING;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
 
@@ -585,11 +567,10 @@ bool Network::BeginServer(uint16_t port, const char* address)
 
     log_verbose("Begin listening for clients");
 
-    assert(listening_socket == nullptr);
-    listening_socket = CreateTcpSocket();
+    _listenSocket = CreateTcpSocket();
     try
     {
-        listening_socket->Listen(address, port);
+        _listenSocket->Listen(address, port);
     }
     catch (const std::exception& ex)
     {
@@ -657,7 +638,7 @@ int32_t Network::GetAuthStatus()
 {
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
-        return server_connection->AuthStatus;
+        return _serverConnection->AuthStatus;
     }
     else if (GetMode() == NETWORK_MODE_SERVER)
     {
@@ -702,7 +683,7 @@ void Network::Flush()
 {
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
-        server_connection->SendQueuedPackets();
+        _serverConnection->SendQueuedPackets();
     }
     else
     {
@@ -741,22 +722,22 @@ void Network::UpdateServer()
         _advertiser->Update();
     }
 
-    ITcpSocket* tcpSocket = listening_socket->Accept();
+    std::unique_ptr<ITcpSocket> tcpSocket = _listenSocket->Accept();
     if (tcpSocket != nullptr)
     {
-        AddClient(tcpSocket);
+        AddClient(std::move(tcpSocket));
     }
 }
 
 void Network::UpdateClient()
 {
-    assert(server_connection != nullptr);
+    assert(_serverConnection != nullptr);
 
     switch (status)
     {
         case NETWORK_STATUS_CONNECTING:
         {
-            switch (server_connection->Socket->GetStatus())
+            switch (_serverConnection->Socket->GetStatus())
             {
                 case SOCKET_STATUS_RESOLVING:
                 {
@@ -793,7 +774,7 @@ void Network::UpdateClient()
                 case SOCKET_STATUS_CONNECTED:
                 {
                     status = NETWORK_STATUS_CONNECTED;
-                    server_connection->ResetLastPacketTime();
+                    _serverConnection->ResetLastPacketTime();
                     Client_Send_TOKEN();
                     char str_authenticating[256];
                     format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
@@ -806,7 +787,7 @@ void Network::UpdateClient()
                 }
                 default:
                 {
-                    const char* error = server_connection->Socket->GetError();
+                    const char* error = _serverConnection->Socket->GetError();
                     if (error != nullptr)
                     {
                         Console::Error::WriteLine(error);
@@ -822,10 +803,10 @@ void Network::UpdateClient()
         }
         case NETWORK_STATUS_CONNECTED:
         {
-            if (!ProcessConnection(*server_connection))
+            if (!ProcessConnection(*_serverConnection))
             {
                 // Do not show disconnect message window when password window closed/canceled
-                if (server_connection->AuthStatus == NETWORK_AUTH_REQUIREPASSWORD)
+                if (_serverConnection->AuthStatus == NETWORK_AUTH_REQUIREPASSWORD)
                 {
                     context_force_close_window_by_class(WC_NETWORK_STATUS);
                 }
@@ -833,9 +814,9 @@ void Network::UpdateClient()
                 {
                     char str_disconnected[256];
 
-                    if (server_connection->GetLastDisconnectReason())
+                    if (_serverConnection->GetLastDisconnectReason())
                     {
-                        const char* disconnect_reason = server_connection->GetLastDisconnectReason();
+                        const char* disconnect_reason = _serverConnection->GetLastDisconnectReason();
                         format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
                     }
                     else
@@ -1022,7 +1003,7 @@ void Network::ShutdownClient()
 {
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
-        server_connection->Socket->Disconnect();
+        _serverConnection->Socket->Disconnect();
     }
 }
 
@@ -1360,8 +1341,8 @@ void Network::Client_Send_TOKEN()
     log_verbose("requesting token");
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_TOKEN;
-    server_connection->AuthStatus = NETWORK_AUTH_REQUESTED;
-    server_connection->QueuePacket(std::move(packet));
+    _serverConnection->AuthStatus = NETWORK_AUTH_REQUESTED;
+    _serverConnection->QueuePacket(std::move(packet));
 }
 
 void Network::Client_Send_AUTH(const char* name, const char* password, const char* pubkey, const char* sig, size_t sigsize)
@@ -1375,8 +1356,8 @@ void Network::Client_Send_AUTH(const char* name, const char* password, const cha
     assert(sigsize <= (size_t)UINT32_MAX);
     *packet << (uint32_t)sigsize;
     packet->Write((const uint8_t*)sig, sigsize);
-    server_connection->AuthStatus = NETWORK_AUTH_REQUESTED;
-    server_connection->QueuePacket(std::move(packet));
+    _serverConnection->AuthStatus = NETWORK_AUTH_REQUESTED;
+    _serverConnection->QueuePacket(std::move(packet));
 }
 
 void Network::Client_Send_OBJECTS(const std::vector<std::string>& objects)
@@ -1389,7 +1370,7 @@ void Network::Client_Send_OBJECTS(const std::vector<std::string>& objects)
         log_verbose("client requests object %s", object.c_str());
         packet->Write((const uint8_t*)object.c_str(), 8);
     }
-    server_connection->QueuePacket(std::move(packet));
+    _serverConnection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_TOKEN(NetworkConnection& connection)
@@ -1539,7 +1520,7 @@ void Network::Client_Send_CHAT(const char* text)
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_CHAT;
     packet->WriteString(text);
-    server_connection->QueuePacket(std::move(packet));
+    _serverConnection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_CHAT(const char* text)
@@ -1556,7 +1537,7 @@ void Network::Client_Send_GAMECMD(
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_GAMECMD << gCurrentTicks << eax << (ebx | GAME_COMMAND_FLAG_NETWORKED) << ecx << edx
             << esi << edi << ebp << callback;
-    server_connection->QueuePacket(std::move(packet));
+    _serverConnection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAMECMD(
@@ -1588,7 +1569,7 @@ void Network::Client_Send_GAME_ACTION(const GameAction* action)
 
     *packet << (uint32_t)NETWORK_COMMAND_GAME_ACTION << gCurrentTicks << action->GetType() << stream;
 
-    server_connection->QueuePacket(std::move(packet));
+    _serverConnection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_GAME_ACTION(const GameAction* action)
@@ -1651,7 +1632,7 @@ void Network::Client_Send_PING()
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_PING;
-    server_connection->QueuePacket(std::move(packet));
+    _serverConnection->QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_PING()
@@ -1849,7 +1830,7 @@ void Network::ProcessPlayerList()
                 *player = pendingPlayer;
                 if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
                 {
-                    server_connection->Player = player;
+                    _serverConnection->Player = player;
                 }
             }
         }
@@ -1976,17 +1957,22 @@ void Network::EnqueueGameAction(const GameAction* action)
     game_command_queue.emplace(gCurrentTicks, std::move(ga), _commandId++);
 }
 
-void Network::AddClient(ITcpSocket* socket)
+void Network::AddClient(std::unique_ptr<ITcpSocket>&& socket)
 {
     if (gConfigNetwork.pause_server_if_no_clients && game_is_paused())
     {
         game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
     }
-    auto connection = std::make_unique<NetworkConnection>();
-    connection->Socket = socket;
+
+    // Log connection info.
     char addr[128];
     snprintf(addr, sizeof(addr), "Client joined from %s", socket->GetHostName());
     AppendServerLog(addr);
+
+    // Store connection
+    auto connection = std::make_unique<NetworkConnection>();
+    connection->Socket = std::move(socket);
+
     client_connection_list.push_back(std::move(connection));
 }
 
@@ -3016,7 +3002,7 @@ void Network::Client_Send_GAMEINFO()
     log_verbose("requesting gameinfo");
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32_t)NETWORK_COMMAND_GAMEINFO;
-    server_connection->QueuePacket(std::move(packet));
+    _serverConnection->QueuePacket(std::move(packet));
 }
 
 static std::string json_stdstring_value(const json_t* string)
