@@ -43,6 +43,7 @@
 - Fix: [#8434] Crash if curl_easy_init fails.
 - Fix: [#8443] Crash when selecting the current vehicle for ride that has none available.
 - Fix: [#8431] Crash when game action logging is enabled.
+- Fix: [#8469] Crash modifying colour on hacked rides.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.
