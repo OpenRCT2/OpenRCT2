@@ -3738,6 +3738,7 @@ STR_6271    :Zijkanten terrein
 STR_6272    :Stations
 STR_6273    :Muziek
 STR_6274    :Kan kleurenschema niet instellen...
+STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
 
 #############
 # Scenarios #
