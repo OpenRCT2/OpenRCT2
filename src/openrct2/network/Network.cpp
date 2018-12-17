@@ -1885,11 +1885,11 @@ void Network::ProcessGameCommands()
             {
                 // Having old command from a tick where we have not been active yet or malicious server,
                 // the command is useless so lets not keep it.
-                game_command_queue.erase(game_command_queue.begin());
-
                 log_warning(
                     "Discarding game command from tick behind current tick, CMD: %08X, CMD Tick: %08X, Current Tick: %08X\n",
                     gc.esi, gc.tick, gCurrentTicks);
+
+                game_command_queue.erase(game_command_queue.begin());
 
                 // At this point we should not return, would add the possibility to skip commands this tick.
                 continue;
