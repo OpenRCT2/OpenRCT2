@@ -98,7 +98,7 @@ TEST_P(ReplayTests, RunReplay)
     }
 }
 
-void PrintTo(const ReplayTestData& testData, std::ostream* os)
+static void PrintTo(const ReplayTestData& testData, std::ostream* os)
 {
     *os << testData.filePath;
 }
