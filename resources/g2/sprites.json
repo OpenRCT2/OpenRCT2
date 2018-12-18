@@ -255,10 +255,14 @@
         "path": "track/bm/booster_2.png"
     },
     {
-        "path": "track/junior/booster_1.png"
+        "path": "track/junior/booster_1.png",
+        "x_offset": -21,
+        "y_offset": 0
     },
     {
-        "path": "track/junior/booster_2.png"
+        "path": "track/junior/booster_2.png",
+        "x_offset": -22,
+        "y_offset": 1
     },
     {
         "path": "icons/mute.png"

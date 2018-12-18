@@ -5643,24 +5643,15 @@ static void junior_rc_booster_paint_setup(
     paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    int32_t XoffsetNESW = 12;
-    int32_t YoffsetNESW = -10;
-    int32_t XoffsetNWSE = 10;
-    int32_t YoffsetNWSE = -10;
-
     if (direction & 1)
     {
-        sub_98196C(
-            session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], XoffsetNESW, YoffsetNESW, 20, 32, 1,
-            height);
+        sub_98196C(session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], 0, 0, 20, 32, 1, height);
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
-        sub_98196C(
-            session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], XoffsetNWSE, YoffsetNWSE, 32, 20, 1,
-            height);
+        sub_98196C(session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height);
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
