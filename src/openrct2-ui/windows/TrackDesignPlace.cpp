@@ -37,6 +37,9 @@
 
 struct rct_track_td6;
 
+static constexpr uint8_t _PaletteIndexColourEntrance = PALETTE_INDEX_20; // White
+static constexpr uint8_t _PaletteIndexColourExit = PALETTE_INDEX_10;     // Black
+
 // clang-format off
 enum {
     WIDX_BACKGROUND,
@@ -524,7 +527,6 @@ static void window_track_place_draw_mini_preview_track(
 
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
                                                                                                           : FlatRideTrackBlocks;
-
     while (trackElement->type != 255)
     {
         int32_t trackType = trackElement->type;
@@ -598,6 +600,46 @@ static void window_track_place_draw_mini_preview_track(
         }
         trackElement++;
     }
+
+    // Draw entrance and exit preview.
+    rct_td6_entrance_element* entrance = td6->entrance_elements;
+    for (; entrance->z != -1; entrance++)
+    {
+        int16_t x = origin.x;
+        int16_t y = origin.y;
+        map_offset_with_rotation(&x, &y, entrance->x, entrance->y, rotation);
+
+        if (pass == 0)
+        {
+            min->x = std::min(min->x, x);
+            max->x = std::max(max->x, x);
+            min->y = std::min(min->y, y);
+            max->y = std::max(max->y, y);
+        }
+        else
+        {
+            LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
+            if (draw_mini_preview_is_pixel_in_bounds(pixelPosition))
+            {
+                uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
+
+                bool isExit = false;
+                if (entrance->direction & (1 << 7))
+                {
+                    isExit = true;
+                }
+
+                uint8_t colour = isExit ? _PaletteIndexColourExit : _PaletteIndexColourEntrance;
+                for (int32_t i = 0; i < 4; i++)
+                {
+                    pixel[338 + i] = colour; // x + 2, y + 2
+                    pixel[168 + i] = colour; //        y + 1
+                    pixel[2 + i] = colour;   // x + 2
+                    pixel[172 + i] = colour; // x + 4, y + 1
+                }
+            }
+        }
+    }
 }
 
 static void window_track_place_draw_mini_preview_maze(
@@ -628,9 +670,13 @@ static void window_track_place_draw_mini_preview_maze(
             {
                 uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
-                // Entrance or exit is a lighter colour
-                uint8_t colour = mazeElement->type == 8 || mazeElement->type == 128 ? PALETTE_INDEX_PRIMARY_LIGHTEST
-                                                                                    : PALETTE_INDEX_PRIMARY_MID_DARK;
+                uint8_t colour = PALETTE_INDEX_PRIMARY_MID_DARK;
+
+                // Draw entrance and exit with different colours.
+                if (mazeElement->type == MAZE_ELEMENT_TYPE_ENTRANCE)
+                    colour = _PaletteIndexColourEntrance;
+                else if (mazeElement->type == MAZE_ELEMENT_TYPE_EXIT)
+                    colour = _PaletteIndexColourExit;
 
                 for (int32_t i = 0; i < 4; i++)
                 {
