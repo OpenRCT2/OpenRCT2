@@ -18,14 +18,15 @@
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>
+#include <array>
+#include <atomic>
 
 // Globals for paint clipping
 uint8_t gClipHeight = 128; // Default to middle value
 LocationXY8 gClipSelectionA = { 0, 0 };
 LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };
 
-paint_session gPaintSession;
-static bool _paintSessionInUse;
+static std::vector<paint_session*> _freePaintSessions;
 
 static constexpr const uint8_t BoundBoxDebugColours[] = {
     0,   // NONE
@@ -56,7 +57,7 @@ static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, u
 
 static void paint_session_init(paint_session* session, rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
-    session->DPI = dpi;
+    session->DPI = *dpi;
     session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
     session->NextFreePaintStruct = session->PaintStructs;
     session->LastRootPS = nullptr;
@@ -132,7 +133,7 @@ static paint_struct* sub_9819_c(
     int32_t right = left + g1->width;
     int32_t top = bottom + g1->height;
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if (right <= dpi->x)
         return nullptr;
@@ -192,7 +193,7 @@ static paint_struct* sub_9819_c(
  */
 void paint_session_generate(paint_session* session)
 {
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     LocationXY16 mapTile = { (int16_t)(dpi->x & 0xFFE0), (int16_t)((dpi->y - 16) & 0xFFE0) };
 
     int16_t half_x = mapTile.x >> 1;
@@ -458,7 +459,6 @@ void paint_session_arrange(paint_session* session)
     ps->next_quadrant_ps = nullptr;
 
     uint32_t quadrantIndex = session->QuadrantBackIndex;
-    const uint8_t rotation = get_current_rotation();
     if (quadrantIndex != UINT32_MAX)
     {
         do
@@ -477,19 +477,19 @@ void paint_session_arrange(paint_session* session)
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
         paint_struct* ps_cache = paint_arrange_structs_helper(
-            psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, rotation);
+            psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, session->CurrentRotation);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)
         {
-            ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0, rotation);
+            ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0, session->CurrentRotation);
         }
     }
 }
 
 static void paint_draw_struct(paint_session* session, paint_struct* ps)
 {
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     int16_t x = ps->x;
     int16_t y = ps->y;
@@ -732,10 +732,17 @@ static void draw_pixel_info_crop_by_zoom(rct_drawpixelinfo* dpi)
 
 paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
-    // Currently limited to just one session at a time
-    assert(!_paintSessionInUse);
-    _paintSessionInUse = true;
-    paint_session* session = &gPaintSession;
+    paint_session* session = nullptr;
+
+    if (_freePaintSessions.empty())
+    {
+        session = new paint_session();
+    }
+    else
+    {
+        session = _freePaintSessions[_freePaintSessions.size() - 1];
+        _freePaintSessions.resize(_freePaintSessions.size() - 1);
+    }
 
     paint_session_init(session, dpi, viewFlags);
     return session;
@@ -743,7 +750,7 @@ paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 
 void paint_session_free([[maybe_unused]] paint_session* session)
 {
-    _paintSessionInUse = false;
+    _freePaintSessions.push_back(session);
 }
 
 /**
@@ -845,7 +852,7 @@ paint_struct* sub_98196C(
     int16_t right = left + g1Element->width;
     int16_t top = bottom + g1Element->height;
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
 
     if (right <= dpi->x)
         return nullptr;

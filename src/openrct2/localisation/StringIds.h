@@ -3934,6 +3934,8 @@ enum
     STR_DOWNLOADING_OBJECTS = 6303,
 
     STR_SHORTCUT_OPEN_SCENERY_PICKER = 6304,
+    STR_MULTITHREADING = 6305,
+    STR_MULTITHREADING_TIP = 6306,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

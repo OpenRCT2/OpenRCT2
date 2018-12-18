@@ -56,7 +56,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
     }
 #endif
 
-    rct_drawpixelinfo* dpi = session->DPI;
+    rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level > 2)
     {
         return;

@@ -30,6 +30,8 @@ TextureCache::~TextureCache()
 
 void TextureCache::InvalidateImage(uint32_t image)
 {
+    std::unique_lock lock(_mutex);
+
     uint32_t index = _indexMap[image];
     if (index == UNUSED_INDEX)
         return;
@@ -61,17 +63,27 @@ void TextureCache::InvalidateImage(uint32_t image)
 
 BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
 {
+    uint32_t index;
+
     image &= 0x7FFFF;
 
-    uint32_t index = _indexMap[image];
-    if (index != UNUSED_INDEX)
+    // Try to read cached texture first.
     {
-        const auto& info = _textureCache[index];
-        return {
-            info.index,
-            info.normalizedBounds,
-        };
+        std::shared_lock lock(_mutex);
+
+        index = _indexMap[image];
+        if (index != UNUSED_INDEX)
+        {
+            const auto& info = _textureCache[index];
+            return {
+                info.index,
+                info.normalizedBounds,
+            };
+        }
     }
+
+    // Load new texture.
+    std::unique_lock lock(_mutex);
 
     index = (uint32_t)_textureCache.size();
 
@@ -87,17 +99,26 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* pa
 {
     GlyphId glyphId;
     glyphId.Image = image;
-    std::copy_n(palette, sizeof(glyphId.Palette), (uint8_t*)&glyphId.Palette);
 
-    auto kvp = _glyphTextureMap.find(glyphId);
-    if (kvp != _glyphTextureMap.end())
+    // Try to read cached texture first.
     {
-        const auto& info = kvp->second;
-        return {
-            info.index,
-            info.normalizedBounds,
-        };
+        std::shared_lock lock(_mutex);
+
+        std::copy_n(palette, sizeof(glyphId.Palette), (uint8_t*)&glyphId.Palette);
+
+        auto kvp = _glyphTextureMap.find(glyphId);
+        if (kvp != _glyphTextureMap.end())
+        {
+            const auto& info = kvp->second;
+            return {
+                info.index,
+                info.normalizedBounds,
+            };
+        }
     }
+
+    // Load new texture.
+    std::unique_lock lock(_mutex);
 
     auto cacheInfo = LoadGlyphTexture(image, palette);
     auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));

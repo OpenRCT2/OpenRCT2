@@ -87,6 +87,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_STEAM_OVERLAY_PAUSE,
     WIDX_UNCAP_FPS_CHECKBOX,
     WIDX_SHOW_FPS_CHECKBOX,
+    WIDX_MULTITHREADING_CHECKBOX,
     WIDX_USE_VSYNC_CHECKBOX,
     WIDX_MINIMIZE_FOCUS_LOSS,
 
@@ -236,7 +237,8 @@ static rct_widget window_options_display_widgets[] = {
     { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
     { WWT_CHECKBOX,         1,  11,     153,    161,    172,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
     { WWT_CHECKBOX,         1,  155,    290,    161,    172,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
-    { WWT_CHECKBOX,         1,  11,     290,    176,    187,    STR_USE_VSYNC,          STR_USE_VSYNC_TIP },        // Use vsync
+    { WWT_CHECKBOX,         1,  155,    290,    176,    187,    STR_MULTITHREADING,           STR_MULTITHREADING_TIP },         // Multithreading
+    { WWT_CHECKBOX,         1,  11,     153,    176,    187,    STR_USE_VSYNC,          STR_USE_VSYNC_TIP },        // Use vsync
     { WWT_CHECKBOX,         1,  11,     290,    191,    202,    STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS,  STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP },    // Minimise fullscreen focus loss
     { WIDGETS_END },
 };
@@ -522,6 +524,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_UNCAP_FPS_CHECKBOX) |
     (1 << WIDX_USE_VSYNC_CHECKBOX) |
     (1 << WIDX_SHOW_FPS_CHECKBOX) |
+    (1 << WIDX_MULTITHREADING_CHECKBOX) |
     (1 << WIDX_MINIMIZE_FOCUS_LOSS) |
     (1 << WIDX_STEAM_OVERLAY_PAUSE) |
     (1 << WIDX_SCALE) |
@@ -690,6 +693,11 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     break;
                 case WIDX_SHOW_FPS_CHECKBOX:
                     gConfigGeneral.show_fps ^= 1;
+                    config_save_default();
+                    window_invalidate(w);
+                    break;
+                case WIDX_MULTITHREADING_CHECKBOX:
+                    gConfigGeneral.multithreading ^= 1;
                     config_save_default();
                     window_invalidate(w);
                     break;
@@ -1711,6 +1719,7 @@ static void window_options_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
             widget_set_checkbox_value(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
             widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
+            widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
             widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
             widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
 

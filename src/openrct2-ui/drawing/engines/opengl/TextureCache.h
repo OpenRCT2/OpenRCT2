@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <array>
 #include <openrct2/common.h>
+#include <shared_mutex>
 #include <unordered_map>
 #include <vector>
 
@@ -198,6 +199,7 @@ private:
     std::array<uint32_t, 0x7FFFF> _indexMap;
 
     GLuint _paletteTexture = 0;
+    std::shared_mutex _mutex;
 
 public:
     TextureCache();

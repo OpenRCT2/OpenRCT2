@@ -137,9 +137,15 @@ struct tunnel_entry
 #define MAX_PAINT_QUADRANTS 512
 #define TUNNEL_MAX_COUNT 65
 
+struct paint_pending
+{
+    rct_drawpixelinfo dpi;
+    uint32_t viewFlags;
+};
+
 struct paint_session
 {
-    rct_drawpixelinfo* DPI;
+    rct_drawpixelinfo DPI;
     paint_entry PaintStructs[4000];
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     paint_struct PaintHead;

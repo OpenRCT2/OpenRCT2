@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <atomic>
 #include <cassert>
 #include <condition_variable>
@@ -45,9 +46,10 @@ private:
     typedef std::unique_lock<std::mutex> unique_lock;
 
 public:
-    JobPool()
+    JobPool(size_t maxThreads = 255)
     {
-        for (size_t n = 0; n < std::thread::hardware_concurrency(); n++)
+        maxThreads = std::min<size_t>(maxThreads, std::thread::hardware_concurrency());
+        for (size_t n = 0; n < maxThreads; n++)
         {
             _threads.emplace_back(&JobPool::ProcessQueue, this);
         }
