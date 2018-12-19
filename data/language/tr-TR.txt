@@ -264,7 +264,7 @@ STR_0878    :Çok yüksek!
 STR_0879    :Arazı bu bölümde alçaltılamaz
 STR_0880    :Arazı bu bölümde yükseltilemez
 STR_0881    :Cisim engelliyor
-STR_0882    :Oyunu Yükle
+STR_0882    :Oyun Yükle
 STR_0883    :Oyunu kaydet
 STR_0884    :Araziyi yükle
 STR_0885    :Araziyi kaydet
@@ -356,7 +356,7 @@ STR_0972    :Iptal
 STR_0973    :Tamam
 STR_0974    :Aletler
 STR_0975    :Dükkanlar ve Standlar
-STR_0976    :Tuvaletler ve Danışmalar
+STR_0976    :Diğer tesisler
 STR_0977    :Toplu taşım araçları
 STR_0978    :Ölçülü aletler
 STR_0979    :Hız trenleri
@@ -533,9 +533,9 @@ STR_1149    :Yarı'da başlat
 STR_1150    :Dörtte üç'de başlat
 STR_1151    :Dolu ise başlat
 STR_1152    :Herhangi dolulukda başlat
-STR_1153    :Alet yüksekliklerini göster
-STR_1154    :Arazı yüksekliklerini göster
-STR_1155    :Yol yüksekliklerini göster
+STR_1153    :Alet yüksekliğini görüntüle
+STR_1154    :Arazı yüksekliğini görüntüle
+STR_1155    :Yol yüksekliğini görüntüle
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1158    :Silinemedi...
@@ -1043,8 +1043,8 @@ STR_1661    :{WINDOW_COLOUR_2}Bulantı oranı: {BLACK}{STRINGID}
 STR_1662    :{WINDOW_COLOUR_2}Zevk:
 STR_1663    :{WINDOW_COLOUR_2}Bulantı:
 STR_1664    :{WINDOW_COLOUR_2}Enerji:
-STR_1665    :{WINDOW_COLOUR_2}Acıkma:
-STR_1666    :{WINDOW_COLOUR_2}Susama:
+STR_1665    :{WINDOW_COLOUR_2}Açlık:
+STR_1666    :{WINDOW_COLOUR_2}Susuzluk:
 STR_1667    :{WINDOW_COLOUR_2}Tuvalet:
 STR_1668    :{WINDOW_COLOUR_2}Müşteri memnuniyeti: {BLACK}Bilinmiyor
 STR_1669    :{WINDOW_COLOUR_2}Müşteri memnuniyeti: {BLACK}%{COMMA16}
@@ -1079,7 +1079,7 @@ STR_1697    :Bekleme sırasına koyulamaz
 STR_1698    :Sadece bekleme sırasına koyulabilir
 STR_1699    :Oyunda çok fazla kişi var
 STR_1700    :Yeni temizlikci al
-STR_1701    :Yeni mühendis al
+STR_1701    :Yeni tamirci al
 STR_1702    :Yeni güvenlik al
 STR_1703    :Yeni animatör al
 STR_1704    :Yeni işci işe alınamıyor...
@@ -1231,11 +1231,11 @@ STR_1856    :{WINDOW_COLOUR_2}Satış başı kâr: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Satış başı zarar: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Maaş: {BLACK}Aylık {CURRENCY2DP}
 STR_1859    :Temizlikci
-STR_1860    :Mühendis
+STR_1860    :Tamirci
 STR_1861    :Güvenlik
 STR_1862    :Animatör
 STR_1863    :Temizlikci
-STR_1864    :Mühendis
+STR_1864    :Tamirci
 STR_1865    :Güvenlik
 STR_1866    :Animatör
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
@@ -1260,7 +1260,7 @@ STR_1886    :{STRINGID} aletini kontrol ediyor
 STR_1887    :{WINDOW_COLOUR_2}Son kontrol: {BLACK}{COMMA16} dakika önce
 STR_1888    :{WINDOW_COLOUR_2}Son kontrol: {BLACK}4 saatden fazla
 STR_1889    :{WINDOW_COLOUR_2}Sıra dışı: {MOVE_X}{255}{BLACK}%{COMMA16}
-STR_1890    :{SMALLFONT}{BLACK}Mühendislerin bu aleti kaç defa kontrol{NEWLINE}edeceğini seçiniz
+STR_1890    :{SMALLFONT}{BLACK}Tamircilerin bu aleti kaç defa kontrol{NEWLINE}edeceğini seçiniz
 STR_1891    :Parkda henüz {STRINGID} yok!
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} (satılan miktar): {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Yeni alet/dükkan inşa et
@@ -1296,7 +1296,7 @@ STR_1925    :Buraya bırakılamaz...
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} bozuldu
 STR_1928    :{RED}{STRINGID} kaza yaptı!
-STR_1929    :{RED}{STRINGID} halen tamir edilmedi{NEWLINE}Mühendislerin nerede olduğunu kontrol ediniz ve daha iyi organize ediniz
+STR_1929    :{RED}{STRINGID} halen tamir edilmedi{NEWLINE}Tamircilerin nerede olduğunu kontrol ediniz ve daha iyi organize ediniz
 STR_1930    :{SMALLFONT}{BLACK}Bu müşteri için bilgiyi aç/kapat - (Açık olduğu takdirde bu müşteri üzeri tüm bilgiler gösterilmektedir)
 STR_1931    :{STRINGID} {STRINGID} için sıra bekliyor
 STR_1932    :{STRINGID} {STRINGID} aletine bindi
@@ -1563,14 +1563,14 @@ STR_2207    :Boş meyve suyu şişesi
 STR_2208    :Sosis
 STR_2209    :Boş tas
 STR_2210    :{SMALLFONT}{BLACK}Parkdaki tüm temizlikciler
-STR_2211    :{SMALLFONT}{BLACK}Parkdaki tüm mühendisler
+STR_2211    :{SMALLFONT}{BLACK}Parkdaki tüm tamirciler
 STR_2212    :{SMALLFONT}{BLACK}Parkdaki tüm güvenlikler
 STR_2213    :{SMALLFONT}{BLACK}Parkdaki tüm animatörler
 STR_2214    :Oyun durudurulduğu sürece inşa edilemiyor!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
-STR_2218    :{RED}{STRINGID} aletinde {STRINGID} halen {STRINGID}a dönmedi!{NEWLINE}Aleti kontrol ediniz
+STR_2218    :{RED}{STRINGID} aletinde {STRINGID} halen {STRINGID}ye dönmedi!{NEWLINE}Aleti kontrol ediniz
 STR_2219    :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
 STR_2220    :{WINDOW_COLOUR_2}Park değerlendirmesi: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park değerlendirmesi: {COMMA16}
@@ -1632,7 +1632,7 @@ STR_2276    :{SMALLFONT}{BLACK}Araştırma durumu
 STR_2277    :Bilinmiyor
 STR_2278    :Toplu taşım araçları
 STR_2279    :Ölçülü alet
-STR_2280    :Hız aleti
+STR_2280    :Hız treni
 STR_2281    :Heycanlı alet
 STR_2282    :Sulu alet
 STR_2283    :Dükkan/Stand
@@ -1703,7 +1703,7 @@ STR_2353    :{WINDOW_COLOUR_2}Süpürdüğü yer: {BLACK}{COMMA16}
 STR_2354    :{WINDOW_COLOUR_2}Boşaltığı çöp bidonu: {BLACK}{COMMA16}
 STR_2355    :{WINDOW_COLOUR_2}Tamir ettiği alet: {BLACK}{COMMA16}
 STR_2356    :{WINDOW_COLOUR_2}Kontrol ettiği alet: {BLACK}{COMMA16}
-STR_2358    :Blok olarak
+STR_2358    :“General Units”
 STR_2359    :Gerçek birim
 STR_2360    :Ekran çözünürlüğü:
 STR_2361    :Arazi yumuşatma
@@ -2368,11 +2368,11 @@ STR_3113    :Başka bir tasarım seçiniz
 STR_3114    :{SMALLFONT}{BLACK}Diğer tasarım seçmek isterseniz buraya tıklayınız
 STR_3115    :{SMALLFONT}{BLACK}Tasarımı kaydediniz
 STR_3116    :{SMALLFONT}{BLACK}Tasarımı kaydediniz (Test edilmeden kayıt edilemez)
-STR_3117    :{BLACK}Mühendis çağırılıyor...
+STR_3117    :{BLACK}Tamirci çağırılıyor...
 STR_3118    :{BLACK}{STRINGID} bu aletin tamirine geliyor
 STR_3119    :{BLACK}{STRINGID} bu aleti tamir ediyor
-STR_3120    :{SMALLFONT}{BLACK}Bu alete en yakın mühendisi göster
-STR_3121    :Mühendis bulunamadı veya tüm mühendisler iş başında
+STR_3120    :{SMALLFONT}{BLACK}Bu alete en yakın tamirciyi göster
+STR_3121    :Tamirci bulunamadı veya tüm tamirciler iş başında
 STR_3122    :{WINDOW_COLOUR_2}Favori miktarı: {BLACK}{COMMA16} müşteri
 STR_3123    :{WINDOW_COLOUR_2}Favori miktarı: {BLACK}{COMMA16} müşteri
 STR_3124    :Kırık {STRINGID}
@@ -2855,8 +2855,8 @@ STR_5350    :En yüksek
 STR_5351    :En düşük
 STR_5352    :{BLACK}Zevk:
 STR_5353    :{BLACK}Enerji:
-STR_5354    :{BLACK}Acıkma:
-STR_5355    :{BLACK}Susama:
+STR_5354    :{BLACK}Açlık:
+STR_5355    :{BLACK}Susuzluk:
 STR_5356    :{BLACK}Bulantı:
 STR_5357    :{BLACK}Bulantı oranı:
 STR_5358    :{BLACK}Tuvalet:
@@ -3501,7 +3501,7 @@ STR_6037    :Lütfen geçerli bir RCT1 klasörü seçiniz
 STR_6038    :{SMALLFONT}{BLACK}RCT1 bilgisayarınızda yüklü ise, senaryo, müzik vs. yüklemeniz için RCT1'in kurulu olduğu klasörü belirleyiniz
 STR_6039    :{SMALLFONT}{BLACK}Hızlı silme
 STR_6040    :Senaryo ayarlarını değiştirme
-STR_6041    :{BLACK}Henüz mühendis yok!
+STR_6041    :{BLACK}Henüz tamirci yok!
 STR_6042    :Harita yükle
 STR_6043    :Harita yükle
 STR_6044    :Düzleştir
@@ -3580,7 +3580,7 @@ STR_6116    :Bu çelik yapılı hız treni farklı kıvrılmalara, yuvarlamalara
 STR_6117    :Bu çelik yapılı hız treni keskin virajlara ve sarmallara sahiptir. Heyecanı artdırmak için güvenlik askısı kalça kısmındadır
 STR_6118    :Henüz daha büyük ve hızlı trenlere cesaret edemeyen kişiler için en iyi seçenekdir
 STR_6119    :Fazla yüksekliğe ulaşmayan ölçülü bir tren
-STR_6120    :{BABYBLUE}{STRINGID} aleti için yeni vagon araştırıldı:{NEWLINE}{STRINGID}
+STR_6120    :{BABYBLUE}{STRINGID} aleti için yeni vagon/araç araştırıldı:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Parkın etrafında bulunan tüm boş araziyi bu hile ile parkınızın sınırlarına katınız
 STR_6122    :Bu senerayo hedefi için yeterince hız treni bulunmuyor
 STR_6123    :Cisimler park için yüklenemedi
@@ -3679,7 +3679,7 @@ STR_6215    :Inşa
 STR_6216    :Işletme
 STR_6217    :Alet/Ray
 STR_6218    :OpenRCT2 Resmi
-STR_6219    :Sadece yolları göster
+STR_6219    :Sadece yolları görüntüle
 STR_6220    :Kullanılır hale getir
 STR_6221    :{SMALLFONT}{BLACK}Bir aletin istasyon başı girşini veya çıkışını başka bir yere yapıştırdığınız takdirde bu ayar ile o giriş/cıkış kullanılabilir hale getirilecekdir
 STR_6222    :Burası müşteri pozisyonu olarak belirlenemiyor...
@@ -3722,6 +3722,14 @@ STR_6258    :Saydam
 STR_6259    :Yok
 STR_6260    :Engelli maddeleri göster
 STR_6261    :Geniş yolları göster
+STR_6262    :Ana Ses		
+STR_6263    :{SMALLFONT}{BLACK}Tüm sesleri aç/kapat		
+STR_6264    :Herzaman sistem iletişim penceresinin kullan		
+STR_6265    :{SMALLFONT}{BLACK}Bu ayar açık ise, OpenRCT2'nin oyun kayıt/yükleme penceresi yerine kullandığınız sistemin iletişim penceresi açılacakdır		
+STR_6266    :Özel içerik klasörünü aç		
+STR_6267    :Zemin deneticisini aç		
+STR_6268    :Bir sonraki tick'e atla		
+STR_6269    :Geçersiz hava ID'si
 
 
 #############

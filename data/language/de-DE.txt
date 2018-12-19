@@ -2969,7 +2969,7 @@ STR_5461    :Besucherparameter festlegen
 STR_5462    :{CURRENCY}
 STR_5463    :Ziel: Viel Spaß!
 STR_5464    :Allgemein
-STR_5465    :Klima
+STR_5465    :Wetter
 STR_5466    :Personal
 STR_5467    :ALT + 
 STR_5468    :Letzte Nachrichten
@@ -3734,7 +3734,7 @@ STR_6271    :Geländekanten
 STR_6272    :Stationen
 STR_6273    :Musik
 STR_6274    :Farbgebung kann nicht erkannt werden...
-
+STR_6275    :{WINDOW_COLOUR_2}Stil der Station:
 
 #############
 # Scenarios #

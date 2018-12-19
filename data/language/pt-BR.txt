@@ -2075,7 +2075,7 @@ STR_2739    :Nenhum
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat não encontrado
-STR_2743    :Copie data\css17.dat da instalação do seu RCT1 para data\css50.dat na sua pasta de instalação do RCT2, ou tenha certeza que o caminho para o RCT1 na aba Variados está correto.
+STR_2743    :Copie data\css17.dat da instalação do seu RCT1 para data\css50.dat na sua pasta de instalação do RCT2, ou tenha certeza que o caminho para o RCT1 na aba Avançado está correto.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2330,18 +2330,6 @@ STR_3074    :{RED}AVISO: A classificação de seu parque ainda está abaixo de 7
 STR_3075    :{RED}AVISO: A classificação de seu parque ainda está abaixo de 700!{NEWLINE}Você tem só 2 semanas para aumentar a classificação de parque, ou seu parque será fechado
 STR_3076    :{RED}AVISO FINAL: A classificação de seu parque ainda está abaixo de 700!{NEWLINE} Em 7 dias seu parque será fechado, a não ser que você consiga melhorar a classificação
 STR_3077    :{RED}ANÚNCIO DE ENCERRAMENTO: Seu parque foi fechado!
-STR_3078    :Entrada Simples
-STR_3079    :Entrada de Madeira
-STR_3080    :Entrada de Lona
-STR_3081    :Entrada de Castelo (cinza)
-STR_3082    :Entrada de Castelo (marrom)
-STR_3083    :Entrada da Selva
-STR_3084    :Entrada de Cabana feita de toros
-STR_3085    :Entrada Clássica/Romana
-STR_3086    :Entrada Abstrata
-STR_3087    :Entrada de Neve/Gelo
-STR_3088    :Entrada de Templo
-STR_3089    :Entrada do Espaço
 STR_3090    :{SMALLFONT}{BLACK}Selecione o estilo de entrada, saída e estação
 STR_3091    :Você não tem permissão para remover esta seção!
 STR_3092    :Você não tem permissão para mover ou modificar a estação desta atração!
@@ -2989,7 +2977,6 @@ STR_5484    :{BLACK}({COMMA16} semana restante)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Exibir mensagens recentes
-STR_5488    :Sem entrada (Somente no OpenRCT2!)
 STR_5489    :{SMALLFONT}{BLACK}Mostrar apenas os visitantes monitorados
 STR_5490    :Desativar som quando perder o foco
 STR_5491    :Lista de Invenções
@@ -3119,11 +3106,11 @@ STR_5616    :{SMALLFONT}{BLACK}Último elemento para a bandeira do azulejo
 STR_5617    :{SMALLFONT}{BLACK}Move elemento selecionado para cima.
 STR_5618    :{SMALLFONT}{BLACK}Move elemento selecionado para baixo.
 STR_5619    :RollerCoaster Tycoon
-STR_5620    :Expanção: Novas Atrações
-STR_5621    :Expanção: Loopy Landscapes
+STR_5620    :Added Attractions
+STR_5621    :Loopy Landscapes
 STR_5622    :RollerCoaster Tycoon 2
-STR_5623    :Expanção: Wacky Worlds
-STR_5624    :Expanção: Time Twister
+STR_5623    :Wacky Worlds
+STR_5624    :Time Twister
 STR_5625    :Parques “Reais”
 STR_5626    :Outros parques
 STR_5627    :Agrupar lista de cenário por:
@@ -3729,6 +3716,13 @@ STR_6265    :{SMALLFONT}{BLACK}Quando habilitado, o explorador de arquivos do se
 STR_6266    :Abrir pasta de conteúdo personalizado
 STR_6267    :Abrir inspetor de azulejo
 STR_6268    :Avançar para o próximo tick
+STR_6269    :ID de clima inválido
+STR_6270    :Superfícies do Terreno
+STR_6271    :Bordas do Terreno
+STR_6272    :Estações
+STR_6273    :Música
+STR_6274    :Impossível definir esquema de cor...
+STR_6275    :{WINDOW_COLOUR_2}Estilo da estação:
 
 #############
 # Scenarios #
@@ -4550,4 +4544,3 @@ STR_DTLS    :Um grande festival anual de música acontece em seu terreno. Constr
 STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
 STR_PARK    :Renascimento do Rock 'n' Roll
 STR_DTLS    :Este parque temático envelhecido já viu dias melhores. Ajude o dono dar uma aparência rock 'n' roll retrô e transforme o lugar em um local bem-sucedido.
-

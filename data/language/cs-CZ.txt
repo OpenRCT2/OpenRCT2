@@ -3743,6 +3743,7 @@ STR_6271    :Hrany terénu
 STR_6272    :Stanice
 STR_6273    :Hudba
 STR_6274    :Nelze nastavit schéma barev...
+STR_6275    :{WINDOW_COLOUR_2}Styl stanice:
 
 ###############################################################################
 ## RCT2 Scenarios
