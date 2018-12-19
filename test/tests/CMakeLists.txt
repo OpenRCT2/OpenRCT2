@@ -95,6 +95,7 @@ if (NOT MINGW AND NOT MSVC)
     # For unicode code page conversion (required for ini and string tests)
     find_package(ICU 59.0 REQUIRED COMPONENTS uc)
     target_link_libraries(test-common ${ICU_LIBRARIES})
+    target_include_directories(test-common SYSTEM PUBLIC ${ICU_INCLUDE_DIRS})
 endif ()
 
 # Start of our tests
