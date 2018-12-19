@@ -434,6 +434,7 @@ void Network::Close()
         game_command_queue.clear();
         player_list.clear();
         group_list.clear();
+        _pendingPlayerList.reset();
 
         gfx_invalidate_screen();
 
