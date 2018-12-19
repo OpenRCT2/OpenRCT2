@@ -31,14 +31,12 @@
 #define TRACK_MINI_PREVIEW_HEIGHT 78
 #define TRACK_MINI_PREVIEW_SIZE (TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT)
 
-#define PALETTE_INDEX_TRANSPARENT (0)
-#define PALETTE_INDEX_PRIMARY_MID_DARK (248)
-#define PALETTE_INDEX_PRIMARY_LIGHTEST (252)
-
 struct rct_track_td6;
 
 static constexpr uint8_t _PaletteIndexColourEntrance = PALETTE_INDEX_20; // White
 static constexpr uint8_t _PaletteIndexColourExit = PALETTE_INDEX_10;     // Black
+static constexpr uint8_t _PaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)
+static constexpr uint8_t _PaletteIndexColourStation = PALETTE_INDEX_252; // Grey (light)
 
 // clang-format off
 enum {
@@ -140,7 +138,8 @@ static uint8_t* draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
  */
 static void window_track_place_clear_mini_preview()
 {
-    std::fill(_window_track_place_mini_preview.begin(), _window_track_place_mini_preview.end(), PALETTE_INDEX_TRANSPARENT);
+    // Fill with transparent colour.
+    std::fill(_window_track_place_mini_preview.begin(), _window_track_place_mini_preview.end(), PALETTE_INDEX_0);
 }
 
 /**
@@ -562,8 +561,8 @@ static void window_track_place_draw_mini_preview_track(
 
                     // Station track is a lighter colour
                     uint8_t colour = (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
-                        ? PALETTE_INDEX_PRIMARY_LIGHTEST
-                        : PALETTE_INDEX_PRIMARY_MID_DARK;
+                        ? _PaletteIndexColourStation
+                        : _PaletteIndexColourTrack;
 
                     for (int32_t i = 0; i < 4; i++)
                     {
@@ -670,7 +669,7 @@ static void window_track_place_draw_mini_preview_maze(
             {
                 uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
-                uint8_t colour = PALETTE_INDEX_PRIMARY_MID_DARK;
+                uint8_t colour = _PaletteIndexColourTrack;
 
                 // Draw entrance and exit with different colours.
                 if (mazeElement->type == MAZE_ELEMENT_TYPE_ENTRANCE)

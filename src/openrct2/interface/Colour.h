@@ -64,7 +64,7 @@ enum
 
 enum
 {
-    PALETTE_INDEX_0 = 0,     //
+    PALETTE_INDEX_0 = 0,     // Transparent
     PALETTE_INDEX_10 = 10,   // Black (0-dark), Dark gray (0)
     PALETTE_INDEX_11 = 11,   // Black (middark)
     PALETTE_INDEX_12 = 12,   // Black (midlight), Dark gray (1-darkest)
@@ -106,6 +106,8 @@ enum
     PALETTE_INDEX_222 = 222, //
     PALETTE_INDEX_230 = 230, //
     PALETTE_INDEX_245 = 245, //
+    PALETTE_INDEX_248 = 248, // Grey (dark)
+    PALETTE_INDEX_252 = 252, // Grey (light)
 
     PALETTE_COUNT = 256,
 };
