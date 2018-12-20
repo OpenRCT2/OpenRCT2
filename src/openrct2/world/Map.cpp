@@ -80,7 +80,7 @@ int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
 
 TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
-TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+TileElement* gTileElementTilePointers[MAXIMUM_MAP_SIZE_TECHNICAL][MAXIMUM_MAP_SIZE_TECHNICAL];
 LocationXY16 gMapSelectionTiles[300];
 std::vector<PeepSpawn> gPeepSpawns;
 
@@ -206,7 +206,7 @@ TileElement* map_get_first_element_at(int32_t x, int32_t y)
         log_error("Trying to access element outside of range");
         return nullptr;
     }
-    return gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL];
+    return gTileElementTilePointers[y][x];
 }
 
 TileElement* map_get_nth_element_at(int32_t x, int32_t y, int32_t n)
@@ -243,7 +243,7 @@ void map_set_tile_elements(int32_t x, int32_t y, TileElement* elements)
         log_error("Trying to access element outside of range");
         return;
     }
-    gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
+    gTileElementTilePointers[y][x] = elements;
 }
 
 TileElement* map_get_surface_element_at(int32_t x, int32_t y)
@@ -420,18 +420,19 @@ void map_strip_ghost_flag_from_elements()
  */
 void map_update_tile_pointers()
 {
-    int32_t i, x, y;
-
-    for (i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    for (size_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        gTileElementTilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
+        for (size_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            gTileElementTilePointers[y][x] = TILE_UNDEFINED_TILE_ELEMENT;
+        }
     }
 
     TileElement* tileElement = gTileElements;
-    TileElement** tile = gTileElementTilePointers;
-    for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    TileElement** tile = gTileElementTilePointers[0];
+    for (size_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (size_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
             *tile++ = tileElement;
             while (!(tileElement++)->IsLastForTile())
@@ -3332,10 +3333,10 @@ TileElement* tile_element_insert(int32_t x, int32_t y, int32_t z, int32_t flags)
     }
 
     newTileElement = gNextFreeTileElement;
-    originalTileElement = gTileElementTilePointers[y * MAXIMUM_MAP_SIZE_TECHNICAL + x];
+    originalTileElement = gTileElementTilePointers[y][x];
 
     // Set tile index pointer to point to new element block
-    gTileElementTilePointers[y * MAXIMUM_MAP_SIZE_TECHNICAL + x] = newTileElement;
+    gTileElementTilePointers[y][x] = newTileElement;
 
     // Copy all elements that are below the insert height
     while (z >= originalTileElement->base_height)

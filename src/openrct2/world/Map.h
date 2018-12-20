@@ -103,7 +103,7 @@ extern uint8_t gMapSelectArrowDirection;
 extern uint8_t gMapGroundFlags;
 
 extern TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
-extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+extern TileElement* gTileElementTilePointers[MAXIMUM_MAP_SIZE_TECHNICAL][MAXIMUM_MAP_SIZE_TECHNICAL];
 
 extern LocationXY16 gMapSelectionTiles[300];
 extern std::vector<PeepSpawn> gPeepSpawns;

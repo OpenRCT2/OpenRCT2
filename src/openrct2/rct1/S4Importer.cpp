@@ -2640,7 +2640,7 @@ private:
     void ClearExtraTileEntries()
     {
         // Reset the map tile pointers
-        std::fill(std::begin(gTileElementTilePointers), std::end(gTileElementTilePointers), nullptr);
+        std::memset(gTileElementTilePointers, 0, sizeof(gTileElementTilePointers));
 
         // Get the first free map element
         TileElement* nextFreeTileElement = gTileElements;
@@ -2651,7 +2651,7 @@ private:
         }
 
         TileElement* tileElement = gTileElements;
-        TileElement** tilePointer = gTileElementTilePointers;
+        TileElement** tilePointer = gTileElementTilePointers[0];
 
         // 128 rows of map data from RCT1 map
         for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
