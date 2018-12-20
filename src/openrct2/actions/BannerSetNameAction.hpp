@@ -20,7 +20,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-struct BannerSetNameAction : public GameActionBase<GAME_COMMAND_SET_BANNER_NAME, GameActionResult>
+DEFINE_GAME_ACTION(BannerSetNameAction, GAME_COMMAND_SET_BANNER_NAME, GameActionResult)
 {
 private:
     BannerIndex _bannerIndex;
@@ -41,7 +41,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
         stream << DS_TAG(_bannerIndex) << DS_TAG(_name);

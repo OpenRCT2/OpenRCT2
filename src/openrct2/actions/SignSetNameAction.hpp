@@ -21,7 +21,7 @@
 
 #include <string>
 
-struct SignSetNameAction : public GameActionBase<GAME_COMMAND_SET_SIGN_NAME, GameActionResult>
+DEFINE_GAME_ACTION(SignSetNameAction, GAME_COMMAND_SET_SIGN_NAME, GameActionResult)
 {
 private:
     int32_t _bannerIndex;
@@ -40,7 +40,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
         stream << DS_TAG(_bannerIndex) << DS_TAG(_name);

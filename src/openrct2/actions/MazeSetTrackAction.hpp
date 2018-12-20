@@ -48,7 +48,7 @@ static constexpr const uint8_t byte_993D0C[] = {
 };
 // clang-format on
 
-struct MazeSetTrackAction : public GameActionBase<GAME_COMMAND_SET_MAZE_TRACK, GameActionResult>
+DEFINE_GAME_ACTION(MazeSetTrackAction, GAME_COMMAND_SET_MAZE_TRACK, GameActionResult)
 {
 private:
     uint16_t _x;
@@ -75,7 +75,7 @@ public:
     {
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 

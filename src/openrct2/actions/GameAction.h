@@ -103,6 +103,8 @@ public:
 
     virtual ~GameAction() = default;
 
+    virtual const char* GetName() const = 0;
+
     NetworkPlayerId_t GetPlayer() const
     {
         return _playerId;
@@ -198,6 +200,10 @@ public:
 #    pragma GCC diagnostic pop
 #endif
 
+template<uint32_t TId> struct GameActionNameQuery
+{
+};
+
 template<uint32_t TType, typename TResultType> struct GameActionBase : GameAction
 {
 public:
@@ -208,6 +214,11 @@ public:
     GameActionBase()
         : GameAction(TYPE)
     {
+    }
+
+    virtual const char* GetName() const override
+    {
+        return GameActionNameQuery<TType>::Name();
     }
 
     void SetCallback(std::function<void(const struct GameAction*, const TResultType*)> typedCallback)
@@ -241,4 +252,17 @@ namespace GameActions
         Register(T::TYPE, factory);
         return factory;
     }
+
+    // clang-format off
+#define DEFINE_GAME_ACTION(cls, id, res)                                         \
+    template<> struct GameActionNameQuery<id>                                    \
+    {                                                                            \
+        static const char* Name()                                                \
+        {                                                                        \
+            return #cls;                                                         \
+        }                                                                        \
+    };                                                                           \
+    struct cls : public GameActionBase<id, res>
+    // clang-format on
+
 } // namespace GameActions

@@ -22,7 +22,7 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-struct ParkSetNameAction : public GameActionBase<GAME_COMMAND_SET_PARK_NAME, GameActionResult>
+DEFINE_GAME_ACTION(ParkSetNameAction, GAME_COMMAND_SET_PARK_NAME, GameActionResult)
 {
 private:
     std::string _name;
@@ -41,7 +41,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
         stream << DS_TAG(_name);

@@ -21,7 +21,7 @@
 #include "../world/Wall.h"
 #include "GameAction.h"
 
-struct FootpathRemoveAction : public GameActionBase<GAME_COMMAND_REMOVE_PATH, GameActionResult>
+DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActionResult)
 {
 private:
     int32_t _x;
@@ -42,7 +42,7 @@ public:
         return GameAction::GetActionFlags();
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 
@@ -126,7 +126,7 @@ private:
         return footpathElement;
     }
 
-    money32 GetRefundPrice(TileElement* footpathElement) const
+    money32 GetRefundPrice(TileElement * footpathElement) const
     {
         money32 cost = -MONEY(10, 00);
 

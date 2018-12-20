@@ -22,7 +22,7 @@
 
 #include <iterator>
 
-struct ParkMarketingAction : public GameActionBase<GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActionResult>
+DEFINE_GAME_ACTION(ParkMarketingAction, GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActionResult)
 {
 private:
     int32_t _type;
@@ -45,7 +45,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
         stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);

@@ -27,7 +27,7 @@ static rct_string_id _StatusErrorTitles[] = {
     STR_CANT_TEST,
 };
 
-struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GameActionResult>
+DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameActionResult)
 {
 private:
     NetworkRideId_t _rideIndex{ -1 };
@@ -48,7 +48,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 

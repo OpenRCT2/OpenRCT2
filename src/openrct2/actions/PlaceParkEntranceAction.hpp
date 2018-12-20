@@ -22,7 +22,7 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult>
+DEFINE_GAME_ACTION(PlaceParkEntranceAction, GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult)
 {
 private:
     int16_t _x;
@@ -47,7 +47,7 @@ public:
         return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 

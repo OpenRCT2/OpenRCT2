@@ -21,7 +21,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-struct RideSetColourSchemeAction : public GameActionBase<GAME_COMMAND_SET_COLOUR_SCHEME, GameActionResult>
+DEFINE_GAME_ACTION(RideSetColourSchemeAction, GAME_COMMAND_SET_COLOUR_SCHEME, GameActionResult)
 {
 private:
     int32_t _x = 0, _y = 0, _z = 0, _direction = 0, _trackType = 0;
@@ -44,7 +44,7 @@ public:
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 

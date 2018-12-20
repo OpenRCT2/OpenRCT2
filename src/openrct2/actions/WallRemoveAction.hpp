@@ -19,7 +19,7 @@
 #include "../world/Wall.h"
 #include "GameAction.h"
 
-struct WallRemoveAction : public GameActionBase<GAME_COMMAND_REMOVE_WALL, GameActionResult>
+DEFINE_GAME_ACTION(WallRemoveAction, GAME_COMMAND_REMOVE_WALL, GameActionResult)
 {
 private:
     TileCoordsXYZD _location;
@@ -31,7 +31,7 @@ public:
     {
     }
 
-    void Serialise(DataSerialiser& stream) override
+    void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
 
