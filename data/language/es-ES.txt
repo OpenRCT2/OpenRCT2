@@ -3744,6 +3744,7 @@ STR_6271    :Bordes de Terreno
 STR_6272    :Estaciones
 STR_6273    :Música
 STR_6274    :No se puede establecer colores...
+STR_6275    :{WINDOW_COLOUR_2}Estilo de estación:
 
 ##############
 # Escenarios #

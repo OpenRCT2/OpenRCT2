@@ -1156,7 +1156,7 @@ STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :每个游乐设施只能建造一个照相区域
 STR_1774    :每个游乐设施只能建造一个牵引轨道
-STR_1777    :{WINDOW_COLOUR_2}设施音乐
+STR_1777    :设施音乐
 STR_1778    :{STRINGID} - - 
 STR_1779    :{INLINE_SPRITE}{254}{19}{00}{00} 熊猫服装
 STR_1780    :{INLINE_SPRITE}{255}{19}{00}{00} 老虎服装
@@ -2048,7 +2048,7 @@ STR_2703    :每15分钟
 STR_2704    :每30分钟
 STR_2705    :每小时
 STR_2706    :从不
-STR_2707    :Use system dialog window
+STR_2707    :使用系统的文件浏览器
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
 STR_2710    :Type the name of the file.
@@ -2101,8 +2101,8 @@ STR_2756    :去除路面垃圾
 STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :完成剧情目标
-STR_2767    :Freeze Climate
-STR_2768    :Unfreeze Climate
+STR_2767    :冻结天气
+STR_2768    :解除冻结天气
 STR_2769    :开放游乐园
 STR_2770    :关闭游乐园
 STR_2773    :窗口
@@ -2229,7 +2229,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) copyright © Chr
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) copyright © Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) copyright © Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics ”Liquid Grooves”)
+STR_2901    :{WINDOW_COLOUR_2}(Samples courtesy of Spectrasonics “Liquid Grooves”)
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) copyright © Chris Sawyer
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright © Chris Sawyer
@@ -2339,18 +2339,6 @@ STR_3074    :{RED}警告: 你的乐园评价仍然低于700!{NEWLINE}你还有3�
 STR_3075    :{RED}警告: 你的乐园评价仍然低于700!{NEWLINE}你还有2周去改善评价, 否则你的乐园将会被强制关闭
 STR_3076    :{RED}最后通谍: 你的乐园评价仍然低于700!{NEWLINE}7日之内你的乐园将会被强制关闭, 除非你能改善乐园评价
 STR_3077    :{RED}关闭告示: 你的乐园已被强制关闭!
-STR_3078    :普通入口
-STR_3079    :木制入口
-STR_3080    :帆布帐幕式入口
-STR_3081    :城堡主题入口 (灰)
-STR_3082    :城堡主题入口 (啡)
-STR_3083    :丛林主题入口
-STR_3084    :木屋式入口
-STR_3085    :古罗马主题入口
-STR_3086    :抽象主题入口
-STR_3087    :冰雪主题入口
-STR_3088    :宝塔式入口
-STR_3089    :太空主题入口
 STR_3090    :{SMALLFONT}{BLACK}选择入口, 出口以及车站的风格
 STR_3091    :你无法删除此轨道!
 STR_3092    :你无法移动或修改这个游乐设施的车站!
@@ -2979,7 +2967,7 @@ STR_5461    :设置游客的属性
 STR_5462    :{CURRENCY}
 STR_5463    :目标：尽情玩吧！
 STR_5464    :一般
-STR_5465    :气候
+STR_5465    :天气
 STR_5466    :雇员
 STR_5467    :ALT +
 STR_5468    :最近消息
@@ -3159,7 +3147,7 @@ STR_5643    :添加组
 STR_5644    :删除组
 STR_5645    :聊天
 STR_5646    :Terraform
-STR_5647    :Toggle Pause
+STR_5647    :切换暂停
 STR_5648    :Set Water Level
 STR_5649    :创建游乐设施
 STR_5650    :移除游乐设施
@@ -3730,15 +3718,29 @@ STR_6249    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}你是否确定要完全拆除 {STRINGID} 以获得 {CURRENCY}?
 STR_6251    :游乐设施尚未清空
 STR_6252    :Twitch API 链接
-STR_6253    :{SMALLFONT}{BLACK}提供 Twitch integration API 链接. 用以启用 Twitch integration.
-STR_6254    :Twitch integration API 链接:
+STR_6253    :{SMALLFONT}{BLACK}提供Twitch集成API链接. 用以启用Twitch集成.
+STR_6254    :Twitch集成API链接:
 STR_6255    :链接无效
 STR_6256    :渲染效果
 STR_6257    :明净的 (半透明)
 STR_6258    :澄清 (透明)
 STR_6259    :已停用
-STR_6260    :显示受阻地砖
+STR_6260    :显示受阻网格
 STR_6261    :显示宽阔走道
+STR_6262    :主音量
+STR_6263    :{SMALLFONT}{BLACK}切换所有声音开/关
+STR_6264    :总是使用系统的文件浏览器
+STR_6265    :{SMALLFONT}{BLACK}当启用后, 操作系统自带的文件浏览器将代替OpenRCT2的.
+STR_6266    :打开自定义内容文件夹
+STR_6267    :打开网格inspector
+STR_6268    :移至下一帧
+STR_6269    :非法的气候ID
+STR_6270    :地表
+STR_6271    :地表边缘
+STR_6272    :站台
+STR_6273    :音乐
+STR_6274    :无法设置配色方案...
+STR_6275    :{WINDOW_COLOUR_2}车站类型:
 
 
 #############
