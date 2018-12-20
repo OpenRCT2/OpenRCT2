@@ -836,7 +836,7 @@ public:
         gPeepSpawns.clear();
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            if (_s6.peep_spawns[i].x != (uint16_t)LOCATION_NULL)
+            if (_s6.peep_spawns[i].x != PEEP_SPAWN_UNDEFINED)
             {
                 PeepSpawn spawn = { _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z * 16,
                                     _s6.peep_spawns[i].direction };

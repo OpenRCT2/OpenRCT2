@@ -438,7 +438,7 @@ void S6Exporter::ExportPeepSpawns()
         }
         else
         {
-            _s6.peep_spawns[i] = { (uint16_t)LOCATION_NULL, (uint16_t)LOCATION_NULL, 0, 0 };
+            _s6.peep_spawns[i] = { PEEP_SPAWN_UNDEFINED, PEEP_SPAWN_UNDEFINED, 0, 0 };
         }
     }
 }

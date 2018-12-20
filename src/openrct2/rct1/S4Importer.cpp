@@ -1789,7 +1789,7 @@ private:
         gPeepSpawns.clear();
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            if (_s4.peep_spawn[i].x != (uint16_t)LOCATION_NULL)
+            if (_s4.peep_spawn[i].x != PEEP_SPAWN_UNDEFINED)
             {
                 PeepSpawn spawn = { _s4.peep_spawn[i].x, _s4.peep_spawn[i].y, _s4.peep_spawn[i].z * 16,
                                     _s4.peep_spawn[i].direction };
