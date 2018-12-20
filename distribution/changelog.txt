@@ -39,6 +39,7 @@
 - Fix: [#8204] Crash when tile element has no surface elements.
 - Fix: [#8335] Rides with arbitrary ride types can crash the game when they break down.
 - Fix: [#8358] Infinite loop when changing vehicle count on stopped ride.
+- Fix: [#8402] Crash closing a window in some cases.
 - Fix: [#8431] Crash when game action logging is enabled.
 - Fix: [#8433] Crash if master server response is not valid JSON.
 - Fix: [#8434] Crash if curl_easy_init fails.
