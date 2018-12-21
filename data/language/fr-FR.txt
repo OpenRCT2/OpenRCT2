@@ -2079,7 +2079,7 @@ STR_2739    :Aucun
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat introuvable
-STR_2743    :Copiez 'data/css17.dat' depuis votre installation de RCT1 en 'data/css50.dat' dans celui de RCT2, ou vérifiez que le chemin vers l'installation de RCT1 dans les options diverses est défini correctement.
+STR_2743    :Copiez 'data/css17.dat' depuis votre installation de RCT1 en 'data/css50.dat' dans celui de RCT2, ou vérifiez que le chemin vers l'installation de RCT1 dans les options avancées est défini correctement.
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2096,8 +2096,8 @@ STR_2756    :Nettoyer déchets
 STR_2763    :???
 STR_2765    :Grand tram
 STR_2766    :Gagner
-STR_2767    :Bloquer climat
-STR_2768    :Débloquer climat
+STR_2767    :Bloquer météo
+STR_2768    :Débloquer météo
 STR_2769    :Ouvrir le parc
 STR_2770    :Fermer le parc
 STR_2773    :Fenêtré
@@ -2224,7 +2224,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia :   (Allister Brimble) copyright © Ch
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride :   (Allister Brimble) copyright © Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn :   (Allister Brimble) copyright © Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam :   (Allister Brimble) copyright © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Extraits avec l'aimable autorisation de Spectrasonics ”Liquid Grooves”)
+STR_2901    :{WINDOW_COLOUR_2}(Extraits avec l'aimable autorisation de Spectrasonics "Liquid Grooves")
 STR_2902    :{WINDOW_COLOUR_2}Toccata :   (C.M.Widor, joué par Peter James Adcock) enregistrements © Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock :   (Allister Brimble) copyright © Chris Sawyer
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic :   (Allister Brimble) copyright © Chris Sawyer
@@ -2334,18 +2334,6 @@ STR_3074    :{RED}AVERTISSEMENT : l'évaluation de votre parc est toujours infé
 STR_3075    :{RED}AVERTISSEMENT : l'évaluation de votre parc est toujours inférieure à 700 !{NEWLINE}Il ne vous reste plus que 2 semaines pour l'améliorer, sous peine de fermeture
 STR_3076    :{RED}DERNIER AVERTISSEMENT : l'évaluation de votre parc est toujours inférieure à 700 !{NEWLINE}Si elle n'a pas augmenté dans 7 jours, votre parc sera fermé
 STR_3077    :{RED}AVIS DE FERMETURE : votre parc a été fermé !
-STR_3078    :Entrée simple
-STR_3079    :Entrée en bois
-STR_3080    :Entrée en toile
-STR_3081    :Entrée château (gris)
-STR_3082    :Entrée château (marron)
-STR_3083    :Entrée jungle
-STR_3084    :Entrée rondins
-STR_3085    :Entrée classique/romaine
-STR_3086    :Entrée abstraite
-STR_3087    :Entrée neige/glace
-STR_3088    :Entrée pagode
-STR_3089    :Entrée espace
 STR_3090    :{SMALLFONT}{BLACK}Choisir style d'entrée, de sortie et de station
 STR_3091    :Interdit de supprimer cette section !
 STR_3092    :Interdit de déplacer ou modifier la station de cette attraction !
@@ -2974,7 +2962,7 @@ STR_5461    :Paramètre des visiteurs
 STR_5462    :{CURRENCY}
 STR_5463    :But : Amusez-vous !
 STR_5464    :Général
-STR_5465    :Climat
+STR_5465    :Météo
 STR_5466    :Personnel
 STR_5467    :ALT + 
 STR_5468    :Messages récents
@@ -3740,6 +3728,16 @@ STR_6262    :Volume principal
 STR_6263    :{SMALLFONT}{BLACK}Activer/Désactiver tous les sons
 STR_6264    :Toujours utiliser l'explorateur de fichiers système
 STR_6265    :{SMALLFONT}{BLACK}Lorsqu'activé, l'explorateur de fichiers du système d'exploitation sera utilisé à la place de celui d'OpenRCT2.
+STR_6266    :Ouvrir le dossier du contenu personnalisé
+STR_6267    :Ouvrir l'inspecteur de tuiles
+STR_6268    :Avancer au prochain temps
+STR_6269    :ID de climat invalide
+STR_6270    :Surface du terrain
+STR_6271    :Bords du terrain
+STR_6272    :Quais
+STR_6273    :Musique
+STR_6274    :Impossible de définir le schéma de couleurs...
+STR_6275    :{WINDOW_COLOUR_2}Style de quai :
 
 #############
 # Scenarios #
