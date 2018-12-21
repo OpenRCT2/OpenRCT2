@@ -253,7 +253,7 @@ void screenshot_giant()
     viewport.view_width = viewport.width;
     viewport.view_height = viewport.height;
     viewport.var_11 = 0;
-    viewport.flags = 0;
+    viewport.flags = vp->flags;
 
     int32_t centreX = (mapSize / 2) * 32 + 16;
     int32_t centreY = (mapSize / 2) * 32 + 16;
