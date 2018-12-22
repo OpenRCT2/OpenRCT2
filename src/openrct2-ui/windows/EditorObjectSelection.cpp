@@ -63,6 +63,7 @@ enum
 static constexpr uint8_t _numSourceGameItems = 8;
 
 static uint32_t _filter_flags;
+static uint16_t _filter_object_counts[OBJECT_TYPE_COUNT];
 
 static char _filter_string[MAX_PATH];
 
@@ -106,8 +107,6 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     // { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               false },
     // { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
 };
-
-static uint16_t _filter_object_counts[std::size(ObjectSelectionPages)];
 
 #pragma region Widgets
 
@@ -1473,10 +1472,7 @@ static void filter_update_counts()
     if (!_FILTER_ALL || strlen(_filter_string) > 0)
     {
         const auto& selectionFlags = _objectSelectionFlags;
-        for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
-        {
-            _filter_object_counts[i] = 0;
-        }
+        std::fill(std::begin(_filter_object_counts), std::end(_filter_object_counts), 0);
 
         size_t numObjects = object_repository_get_items_count();
         const ObjectRepositoryItem* items = object_repository_get_items();
