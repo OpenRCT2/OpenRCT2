@@ -24,6 +24,7 @@
 #include "RideSetColourScheme.hpp"
 #include "RideSetName.hpp"
 #include "RideSetStatus.hpp"
+#include "SceneryRemoveSmallAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
 #include "StaffSetColourAction.hpp"
@@ -55,5 +56,6 @@ namespace GameActions
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<WallRemoveAction>();
+        Register<SceneryRemoveSmallAction>();
     }
 } // namespace GameActions

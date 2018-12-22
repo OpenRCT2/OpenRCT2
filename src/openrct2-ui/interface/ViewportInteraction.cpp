@@ -16,6 +16,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/SceneryRemoveSmallAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
@@ -465,10 +466,11 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
  */
 static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y)
 {
-    gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(
-        x, (tileElement->AsSmallScenery()->GetSceneryQuadrant() << 8) | GAME_COMMAND_FLAG_APPLY, y,
-        (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | tileElement->base_height, GAME_COMMAND_REMOVE_SCENERY, 0, 0);
+    auto removeSceneryAction = SceneryRemoveSmallAction(
+        x, y, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+        tileElement->AsSmallScenery()->GetEntryIndex());
+
+    GameActions::Execute(&removeSceneryAction);
 }
 
 /**

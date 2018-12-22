@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../actions/SceneryRemoveSmallAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../common.h"
 #include "../localisation/Localisation.h"
@@ -184,10 +185,10 @@ void scenery_remove_ghost_tool_placement()
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_0)
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_0;
-        uint8_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
-            | GAME_COMMAND_FLAG_GHOST;
-        game_do_command(
-            x, flags | (gSceneryQuadrant << 8), y, z | (gSceneryPlaceObject << 8), GAME_COMMAND_REMOVE_SCENERY, 0, 0);
+
+        auto removeSceneryAction = SceneryRemoveSmallAction(x, y, z, gSceneryQuadrant, gSceneryPlaceObject);
+        removeSceneryAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
+        removeSceneryAction.Execute();
     }
 
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_1)

@@ -15,6 +15,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/SceneryRemoveSmallAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -1078,17 +1079,17 @@ restart_from_beginning:
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 if (clear & (1 << 0))
                 {
-                    int32_t eax = x * 32;
-                    int32_t ebx = (tileElement->AsSmallScenery()->GetSceneryQuadrant() << 8) | flags;
-                    int32_t ecx = y * 32;
-                    int32_t edx = (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | (tileElement->base_height);
-                    int32_t edi = 0, ebp = 0;
-                    cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_SCENERY, edi, ebp);
+                    auto removeSceneryAction = SceneryRemoveSmallAction(
+                        x * 32, y * 32, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+                        tileElement->AsSmallScenery()->GetEntryIndex());
+                    removeSceneryAction.SetFlags(flags);
 
-                    if (cost == MONEY32_UNDEFINED)
+                    auto res
+                        = ((flags & GAME_COMMAND_FLAG_APPLY) ? removeSceneryAction.Execute() : removeSceneryAction.Query());
+                    if (res->Error != GA_ERROR::OK)
                         return MONEY32_UNDEFINED;
 
-                    totalCost += cost;
+                    totalCost += res->Cost;
 
                     if (flags & GAME_COMMAND_FLAG_APPLY)
                         goto restart_from_beginning;

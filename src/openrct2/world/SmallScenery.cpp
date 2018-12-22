@@ -24,95 +24,6 @@
 #include "Scenery.h"
 #include "Surface.h"
 
-static money32 SmallSceneryRemove(
-    int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType, uint8_t flags)
-{
-    if (!map_is_location_valid({ x, y }))
-    {
-        return MONEY32_UNDEFINED;
-    }
-    money32 cost;
-
-    rct_scenery_entry* entry = get_small_scenery_entry(sceneryType);
-    if (entry == nullptr)
-    {
-        log_warning("Invalid game command for scenery removal, scenery_type = %u", sceneryType);
-        return MONEY32_UNDEFINED;
-    }
-    cost = entry->small_scenery.removal_price * 10;
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = baseHeight * 8;
-
-    if (!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode)
-    {
-        // Check if allowed to remove item
-        if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
-        {
-            if (entry->small_scenery.height > 64)
-            {
-                gGameCommandErrorText = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
-                return MONEY32_UNDEFINED;
-            }
-        }
-
-        // Check if the land is owned
-        if (!map_is_location_owned(x, y, gCommandPosition.z))
-        {
-            return MONEY32_UNDEFINED;
-        }
-    }
-
-    bool sceneryFound = false;
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-    do
-    {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
-            continue;
-        if ((tileElement->AsSmallScenery()->GetSceneryQuadrant()) != quadrant)
-            continue;
-        if (tileElement->base_height != baseHeight)
-            continue;
-        if (tileElement->AsSmallScenery()->GetEntryIndex() != sceneryType)
-            continue;
-        if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
-            continue;
-
-        sceneryFound = true;
-        break;
-    } while (!(tileElement++)->IsLastForTile());
-
-    if (!sceneryFound)
-    {
-        return 0;
-    }
-
-    // Remove element
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
-        {
-            LocationXYZ16 coord;
-            coord.x = x + 16;
-            coord.y = y + 16;
-            coord.z = tile_element_height(coord.x, coord.y);
-            network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-        }
-
-        map_invalidate_tile_full(x, y);
-        tile_element_remove(tileElement);
-    }
-    return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
-}
-
 static money32 SmallScenerySetColour(
     int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour,
     uint8_t secondaryColour, uint8_t flags)
@@ -410,17 +321,6 @@ static money32 SmallSceneryPlace(
     }
 
     return cost;
-}
-
-/**
- *
- *  rct2: 0x006E0E01
- */
-void game_command_remove_scenery(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    *ebx = SmallSceneryRemove(*eax & 0xFFFF, *ecx & 0xFFFF, *edx & 0xFF, ((*ebx >> 8) & 0xFF), (*edx >> 8) & 0xFF, *ebx & 0xFF);
 }
 
 /**

@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/SceneryRemoveSmallAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../core/File.h"
@@ -828,9 +829,11 @@ static int32_t track_design_place_scenery(
                         }
 
                         z = (scenery->z * 8 + originZ) / 8;
-                        game_do_command(
-                            mapCoord.x, flags | quadrant << 8, mapCoord.y, (entry_index << 8) | z, GAME_COMMAND_REMOVE_SCENERY,
-                            0, 0);
+
+                        auto removeSceneryAction = SceneryRemoveSmallAction(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
+                        removeSceneryAction.SetFlags(flags);
+                        removeSceneryAction.Execute();
+
                         break;
                     }
                     case OBJECT_TYPE_LARGE_SCENERY:
