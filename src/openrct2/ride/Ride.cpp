@@ -8990,3 +8990,20 @@ void determine_ride_entrance_and_exit_locations()
         }
     }
 }
+
+void ride_clear_leftover_entrances(uint8_t rideIndex)
+{
+    tile_element_iterator it;
+
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        if (it.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
+            && it.element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE
+            && it.element->AsEntrance()->GetRideIndex() == rideIndex)
+        {
+            tile_element_remove(it.element);
+            tile_element_iterator_restart_for_tile(&it);
+        }
+    }
+}

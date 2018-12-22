@@ -126,6 +126,7 @@ private:
         ride_stop_peeps_queuing(_rideIndex);
 
         sub_6CB945(_rideIndex);
+        ride_clear_leftover_entrances(_rideIndex);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
         for (auto& banner : gBanners)
@@ -150,7 +151,7 @@ private:
             {
                 if (peep->current_ride == _rideIndex)
                 {
-                    peep->current_ride = MAX_RIDES;
+                    peep->current_ride = RIDE_ID_NULL;
                     if (peep->time_to_stand >= 50)
                     {
                         // make peep stop watching the ride
@@ -200,11 +201,11 @@ private:
 
             if (peep->guest_heading_to_ride_id == _rideIndex)
             {
-                peep->guest_heading_to_ride_id = MAX_RIDES;
+                peep->guest_heading_to_ride_id = RIDE_ID_NULL;
             }
             if (peep->favourite_ride == _rideIndex)
             {
-                peep->favourite_ride = MAX_RIDES;
+                peep->favourite_ride = RIDE_ID_NULL;
             }
 
             for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
@@ -288,24 +289,7 @@ private:
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
-            uint8_t tile_type = it.element->GetType();
-
-            if (tile_type == TILE_ELEMENT_TYPE_ENTRANCE)
-            {
-                uint8_t type = it.element->AsEntrance()->GetEntranceType();
-                if (type == ENTRANCE_TYPE_PARK_ENTRANCE)
-                    continue;
-
-                if (it.element->AsEntrance()->GetRideIndex() == _rideIndex)
-                {
-                    tile_element_remove(it.element);
-                    tile_element_iterator_restart_for_tile(&it);
-                }
-
-                continue;
-            }
-
-            if (tile_type != TILE_ELEMENT_TYPE_TRACK)
+            if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
                 continue;
 
             if (it.element->AsTrack()->GetRideIndex() != _rideIndex)

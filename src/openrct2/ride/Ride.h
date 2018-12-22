@@ -1195,5 +1195,6 @@ void ride_stop_peeps_queuing(int32_t rideIndex);
 LocationXY16 ride_get_rotated_coords(int16_t x, int16_t y, int16_t z);
 
 void determine_ride_entrance_and_exit_locations();
+void ride_clear_leftover_entrances(uint8_t rideIndex);
 
 #endif
