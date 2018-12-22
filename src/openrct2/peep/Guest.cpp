@@ -1718,6 +1718,7 @@ bool rct_peep::ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQue
     if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
+        assert(ride->type < std::size(RideData4));
         if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_TRANSPORT_RIDE) || ride->value == 0xFFFF
             || ride_get_price(ride) != 0)
         {
