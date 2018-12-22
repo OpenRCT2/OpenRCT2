@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../actions/SceneryRemoveLargeAction.hpp"
 #include "../actions/SceneryRemoveSmallAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../common.h"
@@ -224,13 +225,19 @@ void scenery_remove_ghost_tool_placement()
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_3)
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_3;
-        game_do_command(x, 105 | (gSceneryPlaceRotation << 8), y, z, GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+
+        auto removeSceneryAction = SceneryRemoveLargeAction(x, y, z, gSceneryPlaceRotation, 0);
+        removeSceneryAction.SetFlags(
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5);
+        removeSceneryAction.Execute();
     }
 
     if (gSceneryGhostType & SCENERY_GHOST_FLAG_4)
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_4;
-        game_do_command(x, 105, y, z | (gSceneryPlaceRotation << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
+        constexpr uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+            | GAME_COMMAND_FLAG_5;
+        game_do_command(x, flags, y, z | (gSceneryPlaceRotation << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
     }
 }
 

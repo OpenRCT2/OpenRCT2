@@ -16,6 +16,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/SceneryRemoveLargeAction.hpp>
 #include <openrct2/actions/SceneryRemoveSmallAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/localisation/Localisation.h>
@@ -574,11 +575,9 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     }
     else
     {
-        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        game_do_command(
-            x, 1 | (tileElement->GetDirection() << 8), y,
-            tileElement->base_height | (tileElement->AsLargeScenery()->GetSequenceIndex() << 8),
-            GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+        auto removeSceneryAction = SceneryRemoveLargeAction(
+            x, y, tileElement->base_height, tileElement->GetDirection(), tileElement->AsLargeScenery()->GetSequenceIndex());
+        GameActions::Execute(&removeSceneryAction);
     }
 }
 

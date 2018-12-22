@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../actions/SceneryRemoveLargeAction.hpp"
 #include "../actions/SceneryRemoveSmallAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
@@ -837,11 +838,16 @@ static int32_t track_design_place_scenery(
                         break;
                     }
                     case OBJECT_TYPE_LARGE_SCENERY:
+                    {
                         z = (scenery->z * 8 + originZ) / 8;
-                        game_do_command(
-                            mapCoord.x, flags | (((rotation + scenery->flags) & 0x3) << 8), mapCoord.y, z,
-                            GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+
+                        auto removeSceneryAction = SceneryRemoveLargeAction(
+                            mapCoord.x, mapCoord.y, z, (rotation + scenery->flags) & 0x3, 0);
+                        removeSceneryAction.SetFlags(flags);
+                        removeSceneryAction.Execute();
+
                         break;
+                    }
                     case OBJECT_TYPE_WALLS:
                     {
                         z = (scenery->z * 8 + originZ) / 8;
@@ -853,8 +859,9 @@ static int32_t track_design_place_scenery(
                         wallRemoveAction.SetFlags(flags);
 
                         GameActions::Execute(&wallRemoveAction);
+
+                        break;
                     }
-                    break;
                     case OBJECT_TYPE_PATHS:
                         z = (scenery->z * 8 + originZ) / 8;
                         footpath_remove(mapCoord.x, mapCoord.y, z, flags);

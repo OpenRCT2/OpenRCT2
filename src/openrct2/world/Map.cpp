@@ -15,6 +15,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/SceneryRemoveLargeAction.hpp"
 #include "../actions/SceneryRemoveSmallAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
@@ -791,167 +792,6 @@ bool map_is_location_owned_or_has_rights(int32_t x, int32_t y)
 
 /**
  *
- *  rct2: 0x006B8E1B
- */
-void game_command_remove_large_scenery(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, [[maybe_unused]] int32_t* esi, [[maybe_unused]] int32_t* edi,
-    [[maybe_unused]] int32_t* ebp)
-{
-    uint8_t base_height = *edx;
-    uint8_t tileIndex = *edx >> 8;
-    uint8_t tile_element_direction = *ebx >> 8;
-    int32_t x = *eax;
-    int32_t y = *ecx;
-    int32_t z = tile_element_height(x, y);
-    uint8_t flags = *ebx & 0xFF;
-    gCommandPosition.x = x + 16;
-    gCommandPosition.y = y + 16;
-    gCommandPosition.z = z;
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-
-    if (!(flags & GAME_COMMAND_FLAG_GHOST) && game_is_paused() && !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    bool element_found = false;
-    TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);
-    if (tileElement == nullptr)
-    {
-        log_warning("Invalid game command for scenery removal, x = %d, y = %d", x, y);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-    do
-    {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
-            continue;
-
-        if (tileElement->base_height != base_height)
-            continue;
-
-        if (tileElement->AsLargeScenery()->GetSequenceIndex() != tileIndex)
-            continue;
-
-        if (tileElement->GetDirection() != tile_element_direction)
-            continue;
-
-        // If we are removing ghost elements
-        if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
-            continue;
-
-        element_found = true;
-        break;
-    } while (!(tileElement++)->IsLastForTile());
-
-    if (element_found == false)
-    {
-        *ebx = 0;
-        return;
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY)
-    {
-        tile_element_remove_banner_entry(tileElement);
-    }
-
-    rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
-    LocationXYZ16 firstTile = {
-        scenery_entry->large_scenery.tiles[tileIndex].x_offset, scenery_entry->large_scenery.tiles[tileIndex].y_offset,
-        static_cast<int16_t>((base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset)
-    };
-
-    rotate_map_coordinates(&firstTile.x, &firstTile.y, tile_element_direction);
-
-    firstTile.x = x - firstTile.x;
-    firstTile.y = y - firstTile.y;
-
-    bool calculate_cost = true;
-    for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++)
-    {
-        LocationXYZ16 currentTile = { scenery_entry->large_scenery.tiles[i].x_offset,
-                                      scenery_entry->large_scenery.tiles[i].y_offset,
-                                      scenery_entry->large_scenery.tiles[i].z_offset };
-
-        rotate_map_coordinates(&currentTile.x, &currentTile.y, tile_element_direction);
-
-        currentTile.x += firstTile.x;
-        currentTile.y += firstTile.y;
-        currentTile.z += firstTile.z;
-
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
-        {
-            if (!map_is_location_owned(currentTile.x, currentTile.y, currentTile.z))
-            {
-                *ebx = MONEY32_UNDEFINED;
-                return;
-            }
-        }
-
-        // If not applying then no need to delete the actual element
-        if (!(flags & GAME_COMMAND_FLAG_APPLY))
-        {
-            if (flags & (1 << 7))
-            {
-                if (tileElement->flags & (1 << 6))
-                    calculate_cost = false;
-                tileElement->flags |= (1 << 6);
-            }
-            continue;
-        }
-
-        TileElement* sceneryElement = map_get_first_element_at(currentTile.x / 32, currentTile.y / 32);
-        element_found = false;
-        do
-        {
-            if (sceneryElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
-                continue;
-
-            if (sceneryElement->GetDirection() != tile_element_direction)
-                continue;
-
-            if (sceneryElement->AsLargeScenery()->GetSequenceIndex() != i)
-                continue;
-
-            if (sceneryElement->base_height != currentTile.z / 8)
-                continue;
-
-            // If we are removing ghost elements
-            if ((flags & GAME_COMMAND_FLAG_GHOST) && !(sceneryElement->flags & TILE_ELEMENT_FLAG_GHOST))
-                continue;
-
-            map_invalidate_tile_full(currentTile.x, currentTile.y);
-            tile_element_remove(sceneryElement);
-            element_found = true;
-            break;
-        } while (!(sceneryElement++)->IsLastForTile());
-
-        if (element_found == false)
-        {
-            log_error("Tile not found when trying to remove element!");
-        }
-    }
-
-    if (flags & GAME_COMMAND_FLAG_APPLY && gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
-    {
-        LocationXYZ16 coord;
-        coord.x = x + 16;
-        coord.y = y + 16;
-        coord.z = tile_element_height(coord.x, coord.y);
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-    }
-
-    *ebx = scenery_entry->large_scenery.removal_price * 10;
-    if (gParkFlags & PARK_FLAGS_NO_MONEY || calculate_cost == false)
-    {
-        *ebx = 0;
-    }
-}
-
-/**
- *
  *  rct2: 0x006B909A
  */
 void game_command_set_large_scenery_colour(
@@ -1044,7 +884,7 @@ void game_command_set_large_scenery_colour(
 static money32 map_clear_scenery_from_tile(int32_t x, int32_t y, int32_t clear, int32_t flags)
 {
     int32_t type;
-    money32 cost, totalCost;
+    money32 totalCost;
     TileElement* tileElement;
 
     totalCost = 0;
@@ -1112,17 +952,17 @@ restart_from_beginning:
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 if (clear & (1 << 1))
                 {
-                    int32_t eax = x * 32;
-                    int32_t ebx = flags | ((tileElement->GetDirection()) << 8);
-                    int32_t ecx = y * 32;
-                    int32_t edx = tileElement->base_height | (tileElement->AsLargeScenery()->GetSequenceIndex() << 8);
-                    int32_t edi = 0, ebp = 0;
-                    cost = game_do_command(eax, ebx | (1 << 7), ecx, edx, GAME_COMMAND_REMOVE_LARGE_SCENERY, edi, ebp);
+                    auto removeSceneryAction = SceneryRemoveLargeAction(
+                        x * 32, y * 32, tileElement->base_height, tileElement->GetDirection(),
+                        tileElement->AsLargeScenery()->GetSequenceIndex());
+                    removeSceneryAction.SetFlags(flags | GAME_COMMAND_FLAG_PATH_SCENERY);
 
-                    if (cost == MONEY32_UNDEFINED)
+                    auto res
+                        = ((flags & GAME_COMMAND_FLAG_APPLY) ? removeSceneryAction.Execute() : removeSceneryAction.Query());
+                    if (res->Error != GA_ERROR::OK)
                         return MONEY32_UNDEFINED;
 
-                    totalCost += cost;
+                    totalCost += res->Cost;
 
                     if (flags & GAME_COMMAND_FLAG_APPLY)
                         goto restart_from_beginning;
@@ -3859,12 +3699,12 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         }
         break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-            game_do_command(
-                x, (GAME_COMMAND_FLAG_APPLY) | (element->GetDirection() << 8), y,
-                (element->base_height) | (element->AsLargeScenery()->GetSequenceIndex() << 8),
-                GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
-            break;
+        {
+            auto removeSceneryAction = SceneryRemoveLargeAction(
+                x, y, element->base_height, element->GetDirection(), element->AsLargeScenery()->GetSequenceIndex());
+            GameActions::Execute(&removeSceneryAction);
+        }
+        break;
         case TILE_ELEMENT_TYPE_BANNER:
             gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
             game_do_command(

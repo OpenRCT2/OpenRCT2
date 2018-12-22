@@ -1500,7 +1500,7 @@ GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT] = {
     game_command_place_wall,
     nullptr,
     game_command_place_large_scenery,
-    game_command_remove_large_scenery,
+    nullptr,
     nullptr,
     nullptr,
     game_command_place_track_design,
