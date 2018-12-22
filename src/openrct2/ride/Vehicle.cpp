@@ -3114,45 +3114,26 @@ void vehicle_test_reset(rct_vehicle* vehicle)
     window_invalidate_by_number(WC_RIDE, vehicle->ride);
 }
 
-static bool vehicle_next_tower_element_is_top(rct_vehicle* vehicle)
+static bool vehicle_current_tower_element_is_top(rct_vehicle* vehicle)
 {
     TileElement* tileElement = map_get_track_element_at_of_type(
         vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
 
-    if (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE)
+    if (tileElement->IsLastForTile())
     {
         return true;
     }
 
-    if (tileElement->clearance_height == (tileElement + 1)->base_height)
+    while (!tileElement->IsLastForTile())
     {
-        if ((tileElement + 1)->GetType() != TILE_ELEMENT_TYPE_TRACK)
-        {
-            return true;
-        }
-
-        if ((tileElement + 1)->AsTrack()->GetTrackType() == TRACK_ELEM_TOWER_SECTION)
+        tileElement++;
+        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+            && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_TOWER_SECTION)
         {
             return false;
         }
     }
-
-    if ((tileElement + 1)->flags & TILE_ELEMENT_FLAG_LAST_TILE)
-    {
-        return true;
-    }
-
-    if (tileElement->clearance_height != (tileElement + 2)->base_height)
-    {
-        return true;
-    }
-
-    if ((tileElement + 2)->GetType() != TILE_ELEMENT_TYPE_TRACK)
-    {
-        return true;
-    }
-
-    return (tileElement + 2)->AsTrack()->GetTrackType() != TRACK_ELEM_TOWER_SECTION;
+    return true;
 }
 
 /**
@@ -3417,7 +3398,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
         }
     }
 
-    if (vehicle_next_tower_element_is_top(vehicle) == false)
+    if (vehicle_current_tower_element_is_top(vehicle) == false)
     {
         if (ride->mode == RIDE_MODE_FREEFALL_DROP)
             vehicle_invalidate(vehicle);
@@ -3762,7 +3743,7 @@ static void vehicle_update_travelling(rct_vehicle* vehicle)
         }
         else
         {
-            if (vehicle_next_tower_element_is_top(vehicle) == true)
+            if (vehicle_current_tower_element_is_top(vehicle) == true)
             {
                 vehicle->velocity = 0;
                 vehicle->sub_state = 2;
