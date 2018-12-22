@@ -3585,7 +3585,7 @@ void rct_peep::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    Guard::Assert(sub_state == PEEP_RIDE_LEAVE_ENTRANCE, "Peep substate should be LEAVE_ENTRACE");
+    Guard::Assert(sub_state == PEEP_RIDE_LEAVE_ENTRANCE, "Peep substate should be LEAVE_ENTRANCE");
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
         TileCoordsXYZD entranceLocation = ride_get_entrance_location(current_ride, current_ride_station);
