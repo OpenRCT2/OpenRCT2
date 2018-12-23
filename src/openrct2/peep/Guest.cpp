@@ -3597,10 +3597,30 @@ void rct_peep::UpdateRideAdvanceThroughEntrance()
             peep_update_ride_leave_entrance_maze(this, ride, entranceLocation);
             return;
         }
-        Guard::Assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
+        else if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
+        {
+            peep_update_ride_leave_entrance_spiral_slide(this, ride, entranceLocation);
+            return;
+        }
+        else
+        {
+            // If the ride type was changed guests will become stuck.
+            // Inform the player about this if its a new issue or hasn't been addressed within 120 seconds.
+            if ((ride->current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || gCurrentTicks - ride->last_issue_time > 3000)
+            {
+                ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
+                ride->last_issue_time = gCurrentTicks;
 
-        peep_update_ride_leave_entrance_spiral_slide(this, ride, entranceLocation);
-        return;
+                set_format_arg(0, rct_string_id, ride->name);
+                set_format_arg(2, uint32_t, ride->name_arguments);
+                if (gConfigNotifications.ride_warnings)
+                {
+                    news_item_add_to_queue(NEWS_ITEM_RIDE, STR_GUESTS_GETTING_STUCK_ON_RIDE, current_ride);
+                }
+            }
+
+            return;
+        }
     }
 
     rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
