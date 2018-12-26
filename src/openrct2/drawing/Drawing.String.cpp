@@ -588,10 +588,26 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, const utf8* text, te
                 {
                     if (*src != 0)
                     {
-                        *(dst + 1) = info->palette[3];                   // right
-                        *(dst - 1) = info->palette[3];                   // left
-                        *(dst - width - dstScanSkip) = info->palette[3]; // top
-                        *(dst + width + dstScanSkip) = info->palette[3]; // bottom
+                        // right
+                        if (xx + skipX < dpi->width + dpi->pitch - 1)
+                        {
+                            *(dst + 1) = info->palette[3];
+                        }
+                        // left
+                        if (xx + skipX > 1)
+                        {
+                            *(dst - 1) = info->palette[3];
+                        }
+                        // top
+                        if (yy + skipY > 1)
+                        {
+                            *(dst - width - dstScanSkip) = info->palette[3];
+                        }
+                        // bottom
+                        if (yy + skipY < dpi->height - 1)
+                        {
+                            *(dst + width + dstScanSkip) = info->palette[3];
+                        }
                     }
                     src++;
                     dst++;
