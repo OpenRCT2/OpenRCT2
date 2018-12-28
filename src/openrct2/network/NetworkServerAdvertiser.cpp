@@ -279,9 +279,9 @@ public:
     virtual void Update() override{};
 };
 
-INetworkServerAdvertiser* CreateServerAdvertiser(uint16_t port)
+std::unique_ptr<INetworkServerAdvertiser> CreateServerAdvertiser(uint16_t port)
 {
-    return new DummyNetworkServerAdvertiser();
+    return std::make_unique<DummyNetworkServerAdvertiser>();
 }
 
 #    endif // DISABLE_HTTP
