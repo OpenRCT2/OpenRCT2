@@ -19,6 +19,8 @@ struct GameAction;
 
 namespace OpenRCT2
 {
+    static constexpr uint32_t k_MaxReplayTicks = 0xFFFFFFFF;
+
     interface IReplayManager
     {
     public:
@@ -37,7 +39,7 @@ namespace OpenRCT2
             = 0;
         virtual void AddGameAction(uint32_t tick, const GameAction* action) = 0;
 
-        virtual bool StartRecording(const std::string& name, uint32_t maxTicks = 0xFFFFFFFF) = 0;
+        virtual bool StartRecording(const std::string& name, uint32_t maxTicks = k_MaxReplayTicks) = 0;
         virtual bool StopRecording() = 0;
 
         virtual bool StartPlayback(const std::string& file) = 0;

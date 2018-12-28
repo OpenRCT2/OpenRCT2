@@ -23,6 +23,7 @@
 #include "rct2/S6Exporter.h"
 #include "world/Park.h"
 
+#include <chrono>
 #include <vector>
 
 namespace OpenRCT2
@@ -146,16 +147,7 @@ namespace OpenRCT2
             if (_currentRecording == nullptr)
                 return;
 
-            MemoryStream stream;
-            DataSerialiser dsOut(true, stream);
-            action->Serialise(dsOut);
-
-            std::unique_ptr<GameAction> ga = GameActions::Create(action->GetType());
-            ga->SetCallback(action->GetCallback());
-
-            stream.SetPosition(0);
-            DataSerialiser dsIn(false, stream);
-            ga->Serialise(dsIn);
+            auto ga = GameActions::Clone(action);
 
             _currentRecording->commands.emplace(gCurrentTicks, std::move(ga), _commandId++);
 
@@ -202,6 +194,8 @@ namespace OpenRCT2
             else if (_mode == ReplayMode::PLAYING)
             {
 #ifndef DISABLE_NETWORK
+                // If the network is disabled we will only get a dummy hash which will cause
+                // false positives during replay.
                 CheckState();
 #endif
                 ReplayCommands();
@@ -230,7 +224,7 @@ namespace OpenRCT2
             }
         }
 
-        virtual bool StartRecording(const std::string& name, uint32_t maxTicks /*= 0xFFFFFFFF*/) override
+        virtual bool StartRecording(const std::string& name, uint32_t maxTicks /*= k_MaxReplayTicks*/) override
         {
             if (_mode != ReplayMode::NONE && _mode != ReplayMode::NORMALISATION)
                 return false;
@@ -238,10 +232,10 @@ namespace OpenRCT2
             auto replayData = std::make_unique<ReplayRecordData>();
             replayData->name = name;
             replayData->tickStart = gCurrentTicks;
-            if (maxTicks != 0xFFFFFFFF)
+            if (maxTicks != k_MaxReplayTicks)
                 replayData->tickEnd = gCurrentTicks + maxTicks;
             else
-                replayData->tickEnd = 0xFFFFFFFF;
+                replayData->tickEnd = k_MaxReplayTicks;
 
             auto context = GetContext();
             auto& objManager = context->GetObjectManager();
@@ -253,31 +247,10 @@ namespace OpenRCT2
             s6exporter->SaveGame(&replayData->parkData);
 
             replayData->spriteSpatialData.Write(gSpriteSpatialIndex, sizeof(gSpriteSpatialIndex));
+            replayData->timeRecorded = std::chrono::seconds(std::time(nullptr)).count();
 
             DataSerialiser parkParams(true, replayData->parkParams);
-            parkParams << _guestGenerationProbability;
-            parkParams << _suggestedGuestMaximum;
-            parkParams << gCheatsSandboxMode;
-            parkParams << gCheatsDisableClearanceChecks;
-            parkParams << gCheatsDisableSupportLimits;
-            parkParams << gCheatsDisableTrainLengthLimit;
-            parkParams << gCheatsEnableChainLiftOnAllTrack;
-            parkParams << gCheatsShowAllOperatingModes;
-            parkParams << gCheatsShowVehiclesFromOtherTrackTypes;
-            parkParams << gCheatsFastLiftHill;
-            parkParams << gCheatsDisableBrakesFailure;
-            parkParams << gCheatsDisableAllBreakdowns;
-            parkParams << gCheatsBuildInPauseMode;
-            parkParams << gCheatsIgnoreRideIntensity;
-            parkParams << gCheatsDisableVandalism;
-            parkParams << gCheatsDisableLittering;
-            parkParams << gCheatsNeverendingMarketing;
-            parkParams << gCheatsFreezeWeather;
-            parkParams << gCheatsDisablePlantAging;
-            parkParams << gCheatsAllowArbitraryRideTypeChanges;
-            parkParams << gCheatsDisableRideValueAging;
-            parkParams << gConfigGeneral.show_real_names_of_guests;
-            parkParams << gCheatsIgnoreResearchStatus;
+            SerialiseParkParameters(parkParams);
 
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::RECORDING;
@@ -304,6 +277,8 @@ namespace OpenRCT2
             std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
             std::string outFile = Path::Combine(outPath, replayName);
 
+            bool result = true;
+
             FILE* fp = fopen(outFile.c_str(), "wb");
             if (fp)
             {
@@ -311,6 +286,13 @@ namespace OpenRCT2
 
                 fwrite(stream.GetData(), 1, stream.GetLength(), fp);
                 fclose(fp);
+
+                result = true;
+            }
+            else
+            {
+                log_error("Unable to write to file '%s'", outFile.c_str());
+                result = false;
             }
 
             // When normalizing the output we don't touch the mode.
@@ -319,7 +301,7 @@ namespace OpenRCT2
 
             _currentRecording.reset();
 
-            return true;
+            return result;
         }
 
         virtual bool StartPlayback(const std::string& file) override
@@ -393,7 +375,7 @@ namespace OpenRCT2
                 return false;
             }
 
-            if (StartRecording(outFile, 0xFFFFFFFF) == false)
+            if (StartRecording(outFile, k_MaxReplayTicks) == false)
             {
                 StopPlayback();
                 return false;
@@ -434,8 +416,10 @@ namespace OpenRCT2
 
         bool TranslateDeprecatedGameCommands(ReplayRecordData& data)
         {
-            for (auto&& replayCommand : data.commands)
+            for (auto it = data.commands.begin(); it != data.commands.end(); it++)
             {
+                const ReplayCommand& replayCommand = *it;
+
                 if (replayCommand.action == nullptr)
                 {
                     // Check if we can create a game action with the command id.
@@ -444,13 +428,18 @@ namespace OpenRCT2
                     {
                         // Convert
                         ReplayCommand converted;
+                        converted.commandIndex = replayCommand.commandIndex;
+
                         if (!ConvertDeprecatedGameCommand(replayCommand, converted))
                         {
                             return false;
                         }
 
-                        data.commands.erase(replayCommand);
-                        data.commands.emplace(std::move(converted));
+                        // Remove deprecated command.
+                        data.commands.erase(it);
+
+                        // Insert new game action, iterator points to the replaced element.
+                        it = data.commands.emplace(std::move(converted));
                     }
                 }
             }
@@ -474,38 +463,22 @@ namespace OpenRCT2
 
                 sprite_position_tween_reset();
 
+                Guard::Assert(sizeof(gSpriteSpatialIndex) >= data.spriteSpatialData.GetLength());
+
+                // In case the sprite limit will be increased we keep the unused fields cleared.
+                std::fill_n(gSpriteSpatialIndex, std::size(gSpriteSpatialIndex), SPRITE_INDEX_NULL);
                 std::memcpy(gSpriteSpatialIndex, data.spriteSpatialData.GetData(), data.spriteSpatialData.GetLength());
 
+                // Load all map global variables.
                 DataSerialiser parkParams(false, data.parkParams);
-                parkParams << _guestGenerationProbability;
-                parkParams << _suggestedGuestMaximum;
-                parkParams << gCheatsSandboxMode;
-                parkParams << gCheatsDisableClearanceChecks;
-                parkParams << gCheatsDisableSupportLimits;
-                parkParams << gCheatsDisableTrainLengthLimit;
-                parkParams << gCheatsEnableChainLiftOnAllTrack;
-                parkParams << gCheatsShowAllOperatingModes;
-                parkParams << gCheatsShowVehiclesFromOtherTrackTypes;
-                parkParams << gCheatsFastLiftHill;
-                parkParams << gCheatsDisableBrakesFailure;
-                parkParams << gCheatsDisableAllBreakdowns;
-                parkParams << gCheatsBuildInPauseMode;
-                parkParams << gCheatsIgnoreRideIntensity;
-                parkParams << gCheatsDisableVandalism;
-                parkParams << gCheatsDisableLittering;
-                parkParams << gCheatsNeverendingMarketing;
-                parkParams << gCheatsFreezeWeather;
-                parkParams << gCheatsDisablePlantAging;
-                parkParams << gCheatsAllowArbitraryRideTypeChanges;
-                parkParams << gCheatsDisableRideValueAging;
-                parkParams << gConfigGeneral.show_real_names_of_guests;
-                parkParams << gCheatsIgnoreResearchStatus;
+                SerialiseParkParameters(parkParams);
 
                 game_load_init();
                 fix_invalid_vehicle_sprite_sizes();
             }
-            catch (const std::exception&)
+            catch (const std::exception& ex)
             {
+                log_error("Exception: %s", ex.what());
                 return false;
             }
             return true;
@@ -520,10 +493,10 @@ namespace OpenRCT2
             char buffer[128];
             while (feof(fp) == false)
             {
-                size_t read = fread(buffer, 1, 128, fp);
-                if (read == 0)
+                size_t numBytesRead = fread(buffer, 1, 128, fp);
+                if (numBytesRead == 0)
                     break;
-                stream.Write(buffer, read);
+                stream.Write(buffer, numBytesRead);
             }
 
             fclose(fp);
@@ -567,6 +540,35 @@ namespace OpenRCT2
             data.parkData.SetPosition(0);
             data.parkParams.SetPosition(0);
             data.spriteSpatialData.SetPosition(0);
+
+            return true;
+        }
+
+        bool SerialiseParkParameters(DataSerialiser& serialiser)
+        {
+            serialiser << _guestGenerationProbability;
+            serialiser << _suggestedGuestMaximum;
+            serialiser << gCheatsSandboxMode;
+            serialiser << gCheatsDisableClearanceChecks;
+            serialiser << gCheatsDisableSupportLimits;
+            serialiser << gCheatsDisableTrainLengthLimit;
+            serialiser << gCheatsEnableChainLiftOnAllTrack;
+            serialiser << gCheatsShowAllOperatingModes;
+            serialiser << gCheatsShowVehiclesFromOtherTrackTypes;
+            serialiser << gCheatsFastLiftHill;
+            serialiser << gCheatsDisableBrakesFailure;
+            serialiser << gCheatsDisableAllBreakdowns;
+            serialiser << gCheatsBuildInPauseMode;
+            serialiser << gCheatsIgnoreRideIntensity;
+            serialiser << gCheatsDisableVandalism;
+            serialiser << gCheatsDisableLittering;
+            serialiser << gCheatsNeverendingMarketing;
+            serialiser << gCheatsFreezeWeather;
+            serialiser << gCheatsDisablePlantAging;
+            serialiser << gCheatsAllowArbitraryRideTypeChanges;
+            serialiser << gCheatsDisableRideValueAging;
+            serialiser << gConfigGeneral.show_real_names_of_guests;
+            serialiser << gCheatsIgnoreResearchStatus;
 
             return true;
         }
@@ -673,7 +675,7 @@ namespace OpenRCT2
             if (_currentReplay->checksums[checksumIndex].first == gCurrentTicks)
             {
                 rct_sprite_checksum checksum = sprite_checksum();
-                if (savedChecksum.second.ToString() != checksum.ToString())
+                if (savedChecksum.second.raw != checksum.raw)
                 {
                     // Detected different game state.
                     log_verbose(
@@ -724,8 +726,6 @@ namespace OpenRCT2
                     GameAction* action = command.action.get();
                     action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                    Guard::Assert(action != nullptr);
-
                     GameActionResult::Ptr result = GameActions::Execute(action);
                     if (result->Error == GA_ERROR::OK)
                     {
@@ -744,7 +744,7 @@ namespace OpenRCT2
                 }
 
                 // Focus camera on event.
-                if (isPositionValid && static_cast<uint16_t>(gCommandPosition.x) != 0x8000)
+                if (isPositionValid && gCommandPosition.x != LOCATION_NULL)
                 {
                     auto* mainWindow = window_get_main();
                     if (mainWindow != nullptr)

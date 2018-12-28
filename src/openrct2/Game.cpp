@@ -389,7 +389,7 @@ int32_t game_do_command_p(
     flags = *ebx;
 
     auto* replayManager = GetContext()->GetReplayManager();
-    if (replayManager != nullptr && replayManager->IsReplaying())
+    if (replayManager->IsReplaying())
     {
         // We only accept replay commands as long the replay is active.
         if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)

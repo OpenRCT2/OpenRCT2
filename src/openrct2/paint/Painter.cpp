@@ -59,20 +59,17 @@ void Painter::Paint(IDrawingEngine& de)
     }
 
     auto* replayManager = GetContext()->GetReplayManager();
-    if (replayManager != nullptr)
-    {
-        const char* text = nullptr;
+    const char* text = nullptr;
 
-        if (replayManager->IsReplaying())
-            text = "Replaying...";
-        else if (replayManager->IsRecording())
-            text = "Recording...";
-        else if (replayManager->IsNormalising())
-            text = "Normalising...";
+    if (replayManager->IsReplaying())
+        text = "Replaying...";
+    else if (replayManager->IsRecording())
+        text = "Recording...";
+    else if (replayManager->IsNormalising())
+        text = "Normalising...";
 
-        if (text != nullptr)
-            PaintReplayNotice(dpi, text);
-    }
+    if (text != nullptr)
+        PaintReplayNotice(dpi, text);
 
     if (gConfigGeneral.show_fps)
     {

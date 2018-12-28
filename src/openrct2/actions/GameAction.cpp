@@ -94,6 +94,25 @@ namespace GameActions
         return std::unique_ptr<GameAction>(result);
     }
 
+    GameAction::Ptr Clone(const GameAction* action)
+    {
+        std::unique_ptr<GameAction> ga = GameActions::Create(action->GetType());
+        ga->SetCallback(action->GetCallback());
+
+        // Serialise action data into stream.
+        DataSerialiser dsOut(true);
+        action->Serialise(dsOut);
+
+        // Serialise into new action.
+        MemoryStream& stream = dsOut.GetStream();
+        stream.SetPosition(0);
+
+        DataSerialiser dsIn(false, stream);
+        ga->Serialise(dsIn);
+
+        return ga;
+    }
+
     static bool CheckActionInPausedMode(uint32_t actionFlags)
     {
         if (gGamePaused == 0)

@@ -1348,20 +1348,19 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const utf8** a
     }
 
     std::string name = argv[0];
-    uint32_t maxTicks = 0xFFFFFFFF;
+
+    // If ticks are specified by user use that otherwise maximum ticks specified by const.
+    uint32_t maxTicks = OpenRCT2::k_MaxReplayTicks;
     if (argc >= 2)
     {
         maxTicks = atol(argv[1]);
     }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager != nullptr)
+    if (replayManager->StartRecording(name, maxTicks))
     {
-        if (replayManager->StartRecording(name, maxTicks))
-        {
-            console.WriteFormatLine("Replay recording start");
-            return 1;
-        }
+        console.WriteFormatLine("Replay recording start");
+        return 1;
     }
 
     return 0;
@@ -1376,13 +1375,10 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const utf8** ar
     }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager != nullptr)
+    if (replayManager->StopRecording())
     {
-        if (replayManager->StopRecording())
-        {
-            console.WriteFormatLine("Replay recording stopped");
-            return 1;
-        }
+        console.WriteFormatLine("Replay recording stopped");
+        return 1;
     }
 
     return 0;
@@ -1405,13 +1401,10 @@ static int32_t cc_replay_start(InteractiveConsole& console, const utf8** argv, i
     std::string name = argv[0];
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager != nullptr)
+    if (replayManager->StartPlayback(name))
     {
-        if (replayManager->StartPlayback(name))
-        {
-            console.WriteFormatLine("Started replay");
-            return 1;
-        }
+        console.WriteFormatLine("Started replay");
+        return 1;
     }
 
     return 0;
@@ -1426,13 +1419,10 @@ static int32_t cc_replay_stop(InteractiveConsole& console, const utf8** argv, in
     }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager != nullptr)
+    if (replayManager->StopPlayback())
     {
-        if (replayManager->StopPlayback())
-        {
-            console.WriteFormatLine("Stopped replay");
-            return 1;
-        }
+        console.WriteFormatLine("Stopped replay");
+        return 1;
     }
 
     return 0;
@@ -1456,13 +1446,10 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const utf8** arg
     std::string outputFile = argv[1];
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
-    if (replayManager != nullptr)
+    if (replayManager->NormaliseReplay(inputFile, outputFile))
     {
-        if (replayManager->NormaliseReplay(inputFile, outputFile))
-        {
-            console.WriteFormatLine("Stopped replay");
-            return 1;
-        }
+        console.WriteFormatLine("Stopped replay");
+        return 1;
     }
 
     return 0;

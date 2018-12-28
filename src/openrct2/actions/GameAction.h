@@ -243,6 +243,7 @@ namespace GameActions
     void Register();
     bool IsValidId(uint32_t id);
     GameAction::Ptr Create(uint32_t id);
+    GameAction::Ptr Clone(const GameAction* action);
     GameActionResult::Ptr Query(const GameAction* action);
     GameActionResult::Ptr Execute(const GameAction* action);
     GameActionFactory Register(uint32_t id, GameActionFactory action);
