@@ -78,6 +78,9 @@ namespace OpenRCT2
 
     struct ReplayRecordData
     {
+        uint32_t magic;
+        uint16_t version;
+        std::string networkId;
         MemoryStream parkData;
         MemoryStream spriteSpatialData;
         MemoryStream parkParams;
@@ -92,6 +95,9 @@ namespace OpenRCT2
 
     class ReplayManager final : public IReplayManager
     {
+        static constexpr uint16_t ReplayVersion = 1;
+        static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
+
         enum class ReplayMode
         {
             NONE = 0,
@@ -230,6 +236,9 @@ namespace OpenRCT2
                 return false;
 
             auto replayData = std::make_unique<ReplayRecordData>();
+            replayData->magic = ReplayMagic;
+            replayData->version = ReplayVersion;
+            replayData->networkId = network_get_version();
             replayData->name = name;
             replayData->tickStart = gCurrentTicks;
             if (maxTicks != k_MaxReplayTicks)
@@ -268,6 +277,7 @@ namespace OpenRCT2
 
             _currentRecording->tickEnd = gCurrentTicks;
 
+            // Serialise Body.
             DataSerialiser serialiser(true);
             Serialise(serialiser, *_currentRecording);
 
@@ -282,9 +292,9 @@ namespace OpenRCT2
             FILE* fp = fopen(outFile.c_str(), "wb");
             if (fp)
             {
-                auto& stream = serialiser.GetStream();
-
+                const auto& stream = serialiser.GetStream();
                 fwrite(stream.GetData(), 1, stream.GetLength(), fp);
+
                 fclose(fp);
 
                 result = true;
@@ -618,6 +628,19 @@ namespace OpenRCT2
 
         bool Serialise(DataSerialiser& serialiser, ReplayRecordData& data)
         {
+            serialiser << data.magic;
+            if (data.magic != ReplayMagic)
+            {
+                log_error("Magic does not match %08X", data.magic);
+                return false;
+            }
+            serialiser << data.version;
+            if (data.version != ReplayVersion)
+            {
+                log_error("Invalid version detected %04X", data.version);
+                return false;
+            }
+            serialiser << data.networkId;
             serialiser << data.name;
             serialiser << data.parkData;
             serialiser << data.parkParams;
