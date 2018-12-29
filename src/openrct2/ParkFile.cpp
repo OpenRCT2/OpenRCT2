@@ -27,6 +27,7 @@
 #include <ctime>
 #include <fstream>
 #include <functional>
+#include <numeric>
 #include <sstream>
 #include <string_view>
 #include <vector>
@@ -157,6 +158,8 @@ namespace OpenRCT2
             }
         }
 
+        OrcaBlob(const OrcaBlob&) = delete;
+
         ~OrcaBlob()
         {
             if (_mode == Mode::READING)
@@ -184,6 +187,11 @@ namespace OpenRCT2
                 // Write chunk data
                 fs.write(uncompressedData.data(), uncompressedData.size());
             }
+        }
+
+        Mode GetMode() const
+        {
+            return _mode;
         }
 
         template<typename TFunc> bool ReadWriteChunk(uint32_t chunkId, TFunc f)
@@ -226,36 +234,31 @@ namespace OpenRCT2
 
         template<typename T> void ReadWrite(T& v)
         {
-            ReadWrite(&v, sizeof(T));
+            ReadWrite((void*)&v, sizeof(T));
+        }
+
+        template<typename TMem, typename TSave> void ReadWriteAs(TMem& v)
+        {
+            TSave sv;
+            if (_mode != Mode::READING)
+            {
+                sv = v;
+            }
+            ReadWrite((void*)&sv, sizeof(TSave));
+            if (_mode == Mode::READING)
+            {
+                v = static_cast<TMem>(sv);
+            }
         }
 
         template<typename T> T Read()
         {
-            if (_mode == Mode::READING)
-            {
-                T v;
-                ReadBuffer(&v, sizeof(T));
-                return v;
-            }
-            else
-            {
-                std::array<char, sizeof(T)> buffer;
-                WriteBuffer(buffer.data(), buffer.size());
-                return T();
-            }
+            T v{};
+            ReadWrite(v);
+            return v;
         }
 
-        template<typename T> void Write(const T& v)
-        {
-            if (_mode == Mode::READING)
-            {
-                _buffer.seekg(sizeof(T));
-            }
-            else
-            {
-                ReadWrite((void*)&v, sizeof(T));
-            }
-        }
+        template<> void ReadWrite(std::string_view& v) = delete;
 
         template<> void ReadWrite(std::string& v)
         {
@@ -269,11 +272,25 @@ namespace OpenRCT2
             }
         }
 
+        template<typename T> void Write(const T& v)
+        {
+            if (_mode == Mode::READING)
+            {
+                T temp;
+                ReadWrite(temp);
+            }
+            else
+            {
+                ReadWrite(v);
+            }
+        }
+
         template<> void Write(const std::string_view& v)
         {
             if (_mode == Mode::READING)
             {
-                ReadString();
+                std::string temp;
+                ReadWrite(temp);
             }
             else
             {
@@ -289,7 +306,7 @@ namespace OpenRCT2
                 arr.clear();
                 for (size_t i = 0; i < count; i++)
                 {
-                    auto &el = arr.emplace_back();
+                    auto& el = arr.emplace_back();
                     f(el);
                     NextArrayElement();
                 }
@@ -391,7 +408,8 @@ namespace OpenRCT2
                 }
                 if (_currentArrayElementSize != 0)
                 {
-                    _buffer.seekg((size_t)_currentArrayLastPos + _currentArrayElementSize);
+                    _currentArrayLastPos += _currentArrayElementSize;
+                    _buffer.seekg(_currentArrayLastPos);
                 }
                 _currentArrayCount--;
                 return _currentArrayCount == 0;
@@ -442,258 +460,153 @@ namespace OpenRCT2
         std::vector<rct_object_entry> RequiredObjects;
 
     private:
-#pragma pack(push, 1)
-        struct Header
-        {
-            uint32_t Magic{};
-            uint32_t TargetVersion{};
-            uint32_t MinVersion{};
-            uint32_t NumChunks{};
-            uint64_t UncompressedSize{};
-            uint32_t Compression{};
-            std::array<uint8_t, 20> Sha1{};
-        };
-
-        struct ChunkEntry
-        {
-            uint32_t Id{};
-            uint64_t Offset{};
-            uint64_t Length{};
-        };
-#pragma pack(pop)
-
-        Header _header;
-        std::vector<ChunkEntry> _chunks;
-        std::stringstream _buffer;
-        ChunkEntry _currentChunk;
-        std::streampos _currentArrayStartPos;
-        std::streampos _currentArrayLastPos;
-        size_t _currentArrayCount;
-        size_t _currentArrayElementSize;
-
-    private:
-        template<typename T> void WriteValue(T v)
-        {
-            WriteBuffer(&v, sizeof(T));
-        }
-
-        template<typename T> T ReadValue()
-        {
-            T v{};
-            ReadBuffer(&v, sizeof(v));
-            return v;
-        }
+        std::unique_ptr<OrcaBlob> _blob;
 
     public:
+        void Load(const std::string_view& path)
+        {
+            _blob = std::make_unique<OrcaBlob>(path, OrcaBlob::Mode::READING);
+            RequiredObjects.clear();
+            WriteObjectsChunk(*_blob);
+        }
+
+        void Import()
+        {
+            auto &blob = *_blob;
+            WriteTilesChunk(blob);
+            WriteScenarioChunk(blob);
+            WriteGeneralChunk(blob);
+            WriteParkChunk(blob);
+            WriteClimateChunk(blob);
+            WriteResearch(blob);
+            WriteNotifications(blob);
+            WriteInterfaceChunk(blob);
+
+            // Initial cash will eventually be removed
+            gInitialCash = gCash;
+            String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName.c_str());
+            String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName.c_str());
+        }
+
         void Save(const std::string_view& path)
         {
             OrcaBlob blob(path, OrcaBlob::Mode::WRITING);
-
-            // Write-only for now
-            blob.ReadWriteChunk(ParkFileChunkType::AUTHORING, [](OrcaBlob& b) {
-                b.Write(std::string_view(gVersionInfoFull));
-                std::vector<std::string> authors;
-                b.ReadWriteArray(authors, [](std::string& s) { });
-                b.Write(std::string_view());     // custom notes that can be attached to the save
-                b.Write<uint64_t>(std::time(0)); // date started
-                b.Write<uint64_t>(std::time(0)); // date modified
-            });
-
-            WriteAuthoringChunk();
-            WriteObjectsChunk();
-            WriteTilesChunk();
-            WriteScenarioChunk();
+            WriteAuthoringChunk(blob);
+            WriteObjectsChunk(blob);
+            WriteTilesChunk(blob);
+            WriteScenarioChunk(blob);
             WriteGeneralChunk(blob);
-            WriteParkChunk();
-            WriteClimateChunk();
-            WriteResearch();
-            WriteNotifications();
-            WriteInterfaceChunk();
-
-            // TODO avoid copying the buffer
-            auto uncompressedData = _buffer.str();
-
-            _header.NumChunks = (uint32_t)_chunks.size();
-            _header.UncompressedSize = _buffer.tellp();
-            _header.Sha1 = Crypt::SHA1(uncompressedData.data(), uncompressedData.size());
-
-            std::ofstream fs(std::string(path).c_str(), std::ios::binary);
-            WriteHeader(fs);
-            fs.write(uncompressedData.data(), uncompressedData.size());
+            WriteParkChunk(blob);
+            WriteClimateChunk(blob);
+            WriteResearch(blob);
+            WriteNotifications(blob);
+            WriteInterfaceChunk(blob);
         }
 
     private:
-        void WriteHeader(std::ostream& fs)
+        void WriteAuthoringChunk(OrcaBlob& blob)
         {
-            fs.seekp(0);
-            fs.write((const char*)&_header, sizeof(_header));
-            for (const auto& chunk : _chunks)
+            // Write-only for now
+            if (blob.GetMode() == OrcaBlob::Mode::WRITING)
             {
-                fs.write((const char*)&chunk, sizeof(chunk));
+                blob.ReadWriteChunk(ParkFileChunkType::AUTHORING, [](OrcaBlob& b) {
+                    b.Write(std::string_view(gVersionInfoFull));
+                    std::vector<std::string> authors;
+                    b.ReadWriteArray(authors, [](std::string& s) {});
+                    b.Write(std::string_view());     // custom notes that can be attached to the save
+                    b.Write<uint64_t>(std::time(0)); // date started
+                    b.Write<uint64_t>(std::time(0)); // date modified
+                });
             }
         }
 
-        void BeginChunk(uint32_t id)
+        void WriteObjectsChunk(OrcaBlob& blob)
         {
-            _currentChunk.Id = id;
-            _currentChunk.Offset = _buffer.tellp();
-            _currentChunk.Length = 0;
-        }
-
-        void EndChunk()
-        {
-            _currentChunk.Length = (uint64_t)_buffer.tellp() - _currentChunk.Offset;
-            _chunks.push_back(_currentChunk);
-        }
-
-        void BeginArray()
-        {
-            _currentArrayCount = 0;
-            _currentArrayElementSize = 0;
-            _currentArrayStartPos = _buffer.tellp();
-            WriteValue<uint32_t>(0);
-            WriteValue<uint32_t>(0);
-            _currentArrayLastPos = _buffer.tellp();
-        }
-
-        void NextArrayElement()
-        {
-            auto lastElSize = (size_t)_buffer.tellp() - _currentArrayLastPos;
-            if (_currentArrayCount == 0)
+            if (blob.GetMode() == OrcaBlob::Mode::READING)
             {
-                // Set array element size based on first element size
-                _currentArrayElementSize = lastElSize;
-            }
-            else if (_currentArrayElementSize != lastElSize)
-            {
-                // Array element size was different from first element so reset it
-                // to dynamic
-                _currentArrayElementSize = 0;
-            }
-            _currentArrayCount++;
-            _currentArrayLastPos = _buffer.tellp();
-        }
+                std::vector<rct_object_entry> entries;
+                blob.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&entries](OrcaBlob& b) {
+                    b.ReadWriteArray(entries, [&b](rct_object_entry& entry) {
+                        auto type = b.Read<uint16_t>();
+                        auto id = b.Read<std::string>();
+                        auto version = b.Read<std::string>();
 
-        void EndArray()
-        {
-            auto backupPos = _buffer.tellp();
-            if ((size_t)backupPos != (size_t)_currentArrayStartPos + 8 && _currentArrayCount == 0)
-            {
-                throw std::runtime_error("Array data was written but no elements were added.");
-            }
-            _buffer.seekp(_currentArrayStartPos);
-            WriteValue((uint32_t)_currentArrayCount);
-            WriteValue((uint32_t)_currentArrayElementSize);
-            _buffer.seekp(backupPos);
-        }
-
-        void WriteBuffer(const void* buffer, size_t len)
-        {
-            _buffer.write((char*)buffer, len);
-        }
-
-        void WriteString(const std::string_view& s)
-        {
-            char nullt = '\0';
-            auto len = s.find('\0');
-            if (len == std::string_view::npos)
-            {
-                len = s.size();
-            }
-            _buffer.write(s.data(), len);
-            _buffer.write(&nullt, sizeof(nullt));
-        }
-
-        void WriteStringTable(const std::string_view& lcode, const std::string_view& value)
-        {
-            BeginArray();
-            WriteString(lcode);
-            WriteString(value);
-            NextArrayElement();
-            EndArray();
-        }
-
-        void WriteAuthoringChunk()
-        {
-            BeginChunk(ParkFileChunkType::AUTHORING);
-            WriteString(gVersionInfoFull);
-            BeginArray();
-            EndArray();
-            WriteString("");                    // custom notes that can be attached to the save
-            WriteValue<uint64_t>(std::time(0)); // date started
-            WriteValue<uint64_t>(std::time(0)); // date modified
-            EndChunk();
-        }
-
-        void WriteObjectsChunk()
-        {
-            BeginChunk(ParkFileChunkType::OBJECTS);
-            BeginArray();
-            // TODO do not hard code object count
-            auto& objManager = GetContext()->GetObjectManager();
-            for (size_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
-            {
-                auto obj = objManager.GetLoadedObject(i);
-                if (obj != nullptr)
-                {
-                    auto entry = obj->GetObjectEntry();
-                    auto type = (uint16_t)(entry->flags & 0x0F);
-                    type |= 0x8000; // Make as legacy object
-                    WriteValue<uint16_t>(type);
-                    WriteString(std::string_view(entry->name, 8));
-                    WriteString("");
-                }
-                else
-                {
-                    WriteValue<uint16_t>(0);
-                    WriteString("");
-                    WriteString("");
-                }
-                NextArrayElement();
-            }
-            EndArray();
-            EndChunk();
-        }
-
-        void WriteScenarioChunk()
-        {
-            BeginChunk(ParkFileChunkType::SCENARIO);
-            WriteValue<uint32_t>(gS6Info.category);
-            WriteStringTable("en-GB", gScenarioName);
-            char parkName[128];
-            format_string(parkName, sizeof(parkName), gParkName, &gParkNameArgs);
-            WriteStringTable("en-GB", parkName);
-            WriteStringTable("en-GB", gScenarioDetails);
-
-            WriteValue<uint32_t>(gScenarioObjectiveType);
-            WriteValue<uint16_t>(gScenarioObjectiveYear);      // year
-            WriteValue<uint32_t>(gScenarioObjectiveNumGuests); // guests
-            WriteValue<uint16_t>(600);                         // rating
-            WriteValue<uint16_t>(gScenarioObjectiveCurrency);  // excitement
-            WriteValue<uint16_t>(gScenarioObjectiveNumGuests); // length
-            WriteValue<money32>(gScenarioObjectiveCurrency);   // park value
-            WriteValue<money32>(gScenarioObjectiveCurrency);   // ride profit
-            WriteValue<money32>(gScenarioObjectiveCurrency);   // shop profit
-
-            WriteValue(gScenarioParkRatingWarningDays);
-
-            WriteValue<money32>(gScenarioCompletedCompanyValue);
-            if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED || gScenarioCompletedCompanyValue == (money32)0x80000001)
-            {
-                WriteString("");
+                        entry.flags = type & 0x7FFF;
+                        strncpy(entry.name, id.c_str(), 8);
+                    });
+                });
+                RequiredObjects = entries;
             }
             else
             {
-                WriteString(gScenarioCompletedBy);
+                std::vector<size_t> objectIds(OBJECT_ENTRY_COUNT);
+                std::iota(objectIds.begin(), objectIds.end(), 0);
+                blob.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&objectIds](OrcaBlob& b) {
+                    auto& objManager = GetContext()->GetObjectManager();
+                    b.ReadWriteArray(objectIds, [&b, &objManager](size_t& i) {
+                        auto obj = objManager.GetLoadedObject(i);
+                        if (obj != nullptr)
+                        {
+                            auto entry = obj->GetObjectEntry();
+                            auto type = (uint16_t)(entry->flags & 0x0F);
+                            type |= 0x8000; // Make as legacy object
+                            b.Write(type);
+                            b.Write(std::string_view(entry->name, 8));
+                            b.Write("");
+                        }
+                        else
+                        {
+                            b.Write<uint16_t>(0);
+                            b.Write("");
+                            b.Write("");
+                        }
+                    });
+                });
             }
-            EndChunk();
+        }
+
+        void WriteScenarioChunk(OrcaBlob& blob)
+        {
+            blob.ReadWriteChunk(ParkFileChunkType::SCENARIO, [](OrcaBlob& b) {
+                b.ReadWriteAs<uint8_t, uint32_t>(gS6Info.category);
+                ReadWriteStringTable(b, gScenarioName, "en-GB");
+
+                std::string parkName(128, '\0');
+                format_string(parkName.data(), parkName.size(), gParkName, &gParkNameArgs);
+                ReadWriteStringTable(b, parkName, "en-GB");
+
+                ReadWriteStringTable(b, gScenarioDetails, "en-GB");
+
+                b.ReadWriteAs<uint8_t, uint32_t>(gScenarioObjectiveType);
+                b.ReadWriteAs<uint8_t, uint16_t>(gScenarioObjectiveYear);       // year
+                b.ReadWriteAs<uint16_t, uint32_t>(gScenarioObjectiveNumGuests); // guests
+                b.Write<uint16_t>(600);                                         // rating
+                b.ReadWriteAs<money32, uint16_t>(gScenarioObjectiveCurrency);   // excitement
+                b.ReadWriteAs<uint16_t, uint32_t>(gScenarioObjectiveNumGuests); // length
+                b.ReadWrite<money32>(gScenarioObjectiveCurrency);               // park value
+                b.ReadWrite<money32>(gScenarioObjectiveCurrency);               // ride profit
+                b.ReadWrite<money32>(gScenarioObjectiveCurrency);               // shop profit
+
+                b.ReadWrite(gScenarioParkRatingWarningDays);
+
+                b.ReadWrite(gScenarioCompletedCompanyValue);
+                if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED
+                    || gScenarioCompletedCompanyValue == (money32)0x80000001)
+                {
+                    b.Write("");
+                }
+                else
+                {
+                    b.ReadWrite(gScenarioCompletedBy);
+                }
+            });
         }
 
         void WriteGeneralChunk(OrcaBlob& blob)
         {
             auto found = blob.ReadWriteChunk(ParkFileChunkType::GENERAL, [](OrcaBlob& b) {
-                b.ReadWrite(gScenarioTicks);
-                b.ReadWrite(gDateMonthTicks);
+                b.ReadWriteAs<uint32_t, uint64_t>(gScenarioTicks);
+                b.ReadWriteAs<uint16_t, uint32_t>(gDateMonthTicks);
                 b.ReadWrite(gDateMonthsElapsed);
                 b.ReadWrite(gScenarioSrand0);
                 b.ReadWrite(gScenarioSrand1);
@@ -719,498 +632,234 @@ namespace OpenRCT2
             }
         }
 
-        void WriteInterfaceChunk()
+        void WriteInterfaceChunk(OrcaBlob& blob)
         {
-            BeginChunk(ParkFileChunkType::INTERFACE);
-            WriteValue(gSavedViewX);
-            WriteValue(gSavedViewY);
-            WriteValue(gSavedViewZoom);
-            WriteValue(gSavedViewRotation);
-            WriteValue<uint32_t>(gLastEntranceStyle);
-            EndChunk();
+            blob.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaBlob& b) {
+                b.ReadWrite(gSavedViewX);
+                b.ReadWrite(gSavedViewY);
+                b.ReadWrite(gSavedViewZoom);
+                b.ReadWrite(gSavedViewRotation);
+                b.ReadWriteAs<uint8_t, uint32_t>(gLastEntranceStyle);
+            });
         }
 
-        void WriteClimateChunk()
+        void WriteClimateChunk(OrcaBlob& blob)
         {
-            BeginChunk(ParkFileChunkType::CLIMATE);
-            WriteValue(gClimate);
-            WriteValue(gClimateUpdateTimer);
-            for (const auto* cs : { &gClimateCurrent, &gClimateNext })
-            {
-                WriteValue(cs->Weather);
-                WriteValue(cs->Temperature);
-                WriteValue(cs->WeatherEffect);
-                WriteValue(cs->WeatherGloom);
-                WriteValue(cs->RainLevel);
-            }
-            EndChunk();
-        }
+            blob.ReadWriteChunk(ParkFileChunkType::CLIMATE, [](OrcaBlob& b) {
+                b.ReadWrite(gClimate);
+                b.ReadWrite(gClimateUpdateTimer);
 
-        void WriteParkChunk()
-        {
-            BeginChunk(ParkFileChunkType::PARK);
-            WriteValue<uint32_t>(gParkNameArgs);
-            WriteValue<money32>(gCash);
-            WriteValue<money32>(gBankLoan);
-            WriteValue<money32>(gMaxBankLoan);
-            WriteValue<uint16_t>(gBankLoanInterestRate);
-            WriteValue<uint64_t>(gParkFlags);
-            WriteValue<money32>(gParkEntranceFee);
-            WriteValue(gStaffHandymanColour);
-            WriteValue(gStaffMechanicColour);
-            WriteValue(gStaffSecurityColour);
-
-            // TODO use a uint64 or a list of active items
-            WriteValue(gSamePriceThroughoutParkA);
-            WriteValue(gSamePriceThroughoutParkB);
-
-            // Marketing
-            BeginArray();
-            for (size_t i = 0; i < std::size(gMarketingCampaignDaysLeft); i++)
-            {
-                WriteValue<uint32_t>(gMarketingCampaignDaysLeft[i]);
-                WriteValue<uint32_t>(gMarketingCampaignRideIndex[i]);
-                NextArrayElement();
-            }
-            EndArray();
-
-            // Awards
-            BeginArray();
-            for (const auto& award : gCurrentAwards)
-            {
-                WriteValue(award.Time);
-                WriteValue(award.Type);
-                NextArrayElement();
-            }
-            EndArray();
-
-            BeginArray();
-            for (const auto& t : gPeepWarningThrottle)
-            {
-                WriteValue(t);
-                NextArrayElement();
-            }
-            EndArray();
-            WriteValue(gParkRatingCasualtyPenalty);
-            WriteValue(gCurrentExpenditure);
-            WriteValue(gCurrentProfit);
-            WriteValue(gTotalAdmissions);
-            WriteValue(gTotalIncomeFromAdmissions);
-
-            EndChunk();
-        }
-
-        void WriteResearch()
-        {
-            BeginChunk(ParkFileChunkType::RESEARCH);
-
-            // Research status
-            WriteValue(gResearchFundingLevel);
-            WriteValue(gResearchPriorities);
-            WriteValue(gResearchProgressStage);
-            WriteValue(gResearchProgress);
-            WriteValue(gResearchExpectedMonth);
-            WriteValue(gResearchExpectedDay);
-            WriteValue(gResearchLastItem);
-            WriteValue(gResearchNextItem);
-
-            // Research order
-            BeginArray();
-            // type (uint8_t)
-            // flags (uint8_t)
-            // entry (uint32_t)
-            EndArray();
-
-            EndChunk();
-        }
-
-        void WriteNotifications()
-        {
-            BeginChunk(ParkFileChunkType::NOTIFICATIONS);
-            BeginArray();
-            for (const auto& notification : gNewsItems)
-            {
-                WriteValue(notification.Type);
-                WriteValue(notification.Flags);
-                WriteValue(notification.Assoc);
-                WriteValue(notification.Ticks);
-                WriteValue(notification.MonthYear);
-                WriteValue(notification.Day);
-                WriteString(notification.Text);
-                NextArrayElement();
-            }
-            EndArray();
-            EndChunk();
-        }
-
-        void WriteDerivedChunk()
-        {
-            BeginChunk(ParkFileChunkType::DERIVED);
-            WriteValue<uint32_t>(gParkSize);
-            WriteValue<uint32_t>(gNumGuestsInPark);
-            WriteValue<uint32_t>(gNumGuestsHeadingForPark);
-            WriteValue<uint32_t>(gCompanyValue);
-            WriteValue<uint32_t>(gParkValue);
-            WriteValue<uint32_t>(gParkRating);
-            EndChunk();
-        }
-
-        void WriteTilesChunk()
-        {
-            BeginChunk(ParkFileChunkType::TILES);
-            WriteValue<uint32_t>(gMapSize);
-            WriteValue<uint32_t>(gMapSize);
-            BeginArray();
-            auto numTiles = std::size(gTileElements);
-            for (size_t i = 0; i < numTiles; i++)
-            {
-                WriteBuffer(&gTileElements[i], sizeof(gTileElements[i]));
-                NextArrayElement();
-            }
-            EndArray();
-            EndChunk();
-        }
-
-    public:
-        void Load(const std::string_view& path)
-        {
-            std::ifstream fs(std::string(path).c_str(), std::ios::binary);
-
-            _header = ReadHeader(fs);
-
-            _chunks.clear();
-            for (uint32_t i = 0; i < _header.NumChunks; i++)
-            {
-                ChunkEntry entry;
-                fs.read((char*)&entry, sizeof(entry));
-                _chunks.push_back(entry);
-            }
-
-            _buffer = std::stringstream(std::ios::in | std::ios::out | std::ios::binary);
-            _buffer.clear();
-
-            char temp[2048];
-            size_t read = 0;
-            do
-            {
-                fs.read(temp, sizeof(temp));
-                read = fs.gcount();
-                _buffer.write(temp, read);
-            } while (read != 0);
-
-            RequiredObjects.clear();
-            if (SeekChunk(ParkFileChunkType::OBJECTS))
-            {
-                auto len = ReadArray();
-                for (size_t i = 0; i < len; i++)
+                for (const auto* cs : { &gClimateCurrent, &gClimateNext })
                 {
-                    auto type = ReadValue<uint16_t>();
-                    auto id = ReadString();
-                    auto version = ReadString();
-
-                    rct_object_entry entry{};
-                    entry.flags = type & 0x7FFF;
-                    strncpy(entry.name, id.c_str(), 8);
-                    RequiredObjects.push_back(entry);
+                    b.ReadWrite(cs->Weather);
+                    b.ReadWrite(cs->Temperature);
+                    b.ReadWrite(cs->WeatherEffect);
+                    b.ReadWrite(cs->WeatherGloom);
+                    b.ReadWrite(cs->RainLevel);
                 }
-            }
+            });
         }
 
-        void Import()
+        void WriteParkChunk(OrcaBlob& blob)
         {
-            ReadTilesChunk();
-            ReadScenarioChunk();
-            ReadGeneralChunk();
-            ReadParkChunk();
-            ReadClimateChunk();
-            ReadResearchChunk();
-            ReadNotifications();
-            ReadInterfaceChunk();
+            blob.ReadWriteChunk(ParkFileChunkType::PARK, [](OrcaBlob& b) {
+                b.ReadWrite(gParkNameArgs);
+                b.ReadWrite(gCash);
+                b.ReadWrite(gBankLoan);
+                b.ReadWrite(gMaxBankLoan);
+                b.ReadWriteAs<uint8_t, uint16_t>(gBankLoanInterestRate);
+                b.ReadWriteAs<uint32_t, uint64_t>(gParkFlags);
+                b.ReadWriteAs<money16, money32>(gParkEntranceFee);
+                b.ReadWrite(gStaffHandymanColour);
+                b.ReadWrite(gStaffMechanicColour);
+                b.ReadWrite(gStaffSecurityColour);
 
-            // Initial cash will eventually be removed
-            gInitialCash = gCash;
-            String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName.c_str());
-            String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName.c_str());
-        }
-
-    private:
-        Header ReadHeader(std::istream& fs)
-        {
-            Header header;
-            fs.read((char*)&header, sizeof(header));
-            return header;
-        }
-
-        bool SeekChunk(uint32_t id)
-        {
-            auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.Id == id; });
-            if (result != _chunks.end())
-            {
-                auto offset = result->Offset;
-                _buffer.seekg(offset);
-                return true;
-            }
-            return false;
-        }
-
-        size_t ReadArray()
-        {
-            _currentArrayCount = ReadValue<uint32_t>();
-            _currentArrayElementSize = ReadValue<uint32_t>();
-            _currentArrayLastPos = _buffer.tellg();
-            return _currentArrayCount;
-        }
-
-        bool ReadNextArrayElement()
-        {
-            if (_currentArrayCount == 0)
-            {
-                return false;
-            }
-            if (_currentArrayElementSize != 0)
-            {
-                _buffer.seekg((size_t)_currentArrayLastPos + _currentArrayElementSize);
-            }
-            _currentArrayCount--;
-            return _currentArrayCount == 0;
-        }
-
-        void ReadBuffer(void* dst, size_t len)
-        {
-            _buffer.read((char*)dst, len);
-        }
-
-        std::string ReadString()
-        {
-            std::string buffer;
-            buffer.reserve(64);
-            char c;
-            while ((c = ReadValue<char>()) != 0)
-            {
-                buffer.push_back(c);
-            }
-            buffer.shrink_to_fit();
-            return buffer;
-        }
-
-        std::string ReadStringTable()
-        {
-            std::string result;
-            auto len = ReadArray();
-            for (size_t i = 0; i < len; i++)
-            {
-                auto lcode = ReadString();
-                auto value = ReadString();
-                if (i == 0)
-                {
-                    result = value;
-                }
-            }
-            return result;
-        }
-
-        void ReadScenarioChunk()
-        {
-            if (SeekChunk(ParkFileChunkType::SCENARIO))
-            {
-                ReadValue<uint32_t>();
-
-                gScenarioName = ReadStringTable();
-                ReadStringTable(); // park name
-                gScenarioDetails = ReadStringTable();
-
-                gScenarioObjectiveType = ReadValue<uint32_t>();
-                gScenarioObjectiveYear = ReadValue<uint16_t>();      // year
-                gScenarioObjectiveNumGuests = ReadValue<uint32_t>(); // guests
-                ReadValue<uint16_t>();                               // rating
-                ReadValue<uint16_t>();                               // excitement
-                ReadValue<uint16_t>();                               // length
-                gScenarioObjectiveCurrency = ReadValue<money32>();   // park value
-                ReadValue<money32>();                                // ride profit
-                ReadValue<money32>();                                // shop profit
-
-                gScenarioParkRatingWarningDays = ReadValue<uint16_t>();
-
-                gScenarioCompletedCompanyValue = ReadValue<money32>();
-                gScenarioCompletedBy = ReadString();
-                EndChunk();
-            }
-            else
-            {
-                throw std::runtime_error("No scenario chunk found.");
-            }
-        }
-
-        void ReadGeneralChunk()
-        {
-            if (SeekChunk(ParkFileChunkType::GENERAL))
-            {
-                gScenarioTicks = ReadValue<uint64_t>();
-                gDateMonthTicks = ReadValue<uint32_t>();
-                gDateMonthsElapsed = ReadValue<uint16_t>();
-                gScenarioSrand0 = ReadValue<uint32_t>();
-                gScenarioSrand1 = ReadValue<uint32_t>();
-                gGuestInitialCash = ReadValue<money16>();
-                gGuestInitialHunger = ReadValue<uint8_t>();
-                gGuestInitialThirst = ReadValue<uint8_t>();
-
-                gNextGuestNumber = ReadValue<uint32_t>();
-                size_t numPeepSpawns = ReadArray();
-                gPeepSpawns.clear();
-                for (size_t i = 0; i < numPeepSpawns; i++)
-                {
-                    PeepSpawn spawn;
-                    spawn.x = ReadValue<uint32_t>();
-                    spawn.y = ReadValue<uint32_t>();
-                    spawn.z = ReadValue<uint32_t>();
-                    spawn.direction = ReadValue<uint8_t>();
-                    gPeepSpawns.push_back(spawn);
-                }
-
-                gLandPrice = ReadValue<money16>();
-                gConstructionRightsPrice = ReadValue<money16>();
-                gGrassSceneryTileLoopPosition = ReadValue<uint16_t>();
-            }
-            else
-            {
-                throw std::runtime_error("No general chunk found.");
-            }
-        }
-
-        void ReadInterfaceChunk()
-        {
-            if (SeekChunk(ParkFileChunkType::INTERFACE))
-            {
-                gSavedViewX = ReadValue<uint16_t>();
-                gSavedViewY = ReadValue<uint16_t>();
-                gSavedViewZoom = ReadValue<uint8_t>();
-                gSavedViewRotation = ReadValue<uint8_t>();
-                gLastEntranceStyle = ReadValue<uint32_t>();
-            }
-        }
-
-        void ReadClimateChunk()
-        {
-            if (SeekChunk(ParkFileChunkType::CLIMATE))
-            {
-                gClimate = ReadValue<uint8_t>();
-                gClimateUpdateTimer = ReadValue<uint16_t>();
-                for (auto cs : { &gClimateCurrent, &gClimateNext })
-                {
-                    cs->Weather = ReadValue<uint8_t>();
-                    cs->Temperature = ReadValue<int8_t>();
-                    cs->WeatherEffect = ReadValue<uint8_t>();
-                    cs->WeatherGloom = ReadValue<uint8_t>();
-                    cs->RainLevel = ReadValue<uint8_t>();
-                }
-            }
-        }
-
-        void ReadParkChunk()
-        {
-            if (SeekChunk(ParkFileChunkType::PARK))
-            {
-                gParkNameArgs = ReadValue<uint32_t>();
-                gCash = ReadValue<money32>();
-                gBankLoan = ReadValue<money32>();
-                gMaxBankLoan = ReadValue<money32>();
-                gBankLoanInterestRate = ReadValue<uint16_t>();
-                gParkFlags = ReadValue<uint64_t>();
-                gParkEntranceFee = ReadValue<money32>();
-                gStaffHandymanColour = ReadValue<uint8_t>();
-                gStaffMechanicColour = ReadValue<uint8_t>();
-                gStaffSecurityColour = ReadValue<uint8_t>();
-
-                gSamePriceThroughoutParkA = ReadValue<uint64_t>();
-                gSamePriceThroughoutParkB = ReadValue<uint64_t>();
+                // TODO use a uint64 or a list of active items
+                b.ReadWrite(gSamePriceThroughoutParkA);
+                b.ReadWrite(gSamePriceThroughoutParkB);
 
                 // Marketing
-                auto numItems = ReadArray();
-                for (size_t i = 0; i < numItems; i++)
+                std::vector<std::tuple<uint32_t, uint32_t>> marketing;
+                if (b.GetMode() != OrcaBlob::Mode::READING)
                 {
-                    gMarketingCampaignDaysLeft[i] = ReadValue<uint32_t>();
-                    gMarketingCampaignRideIndex[i] = ReadValue<uint32_t>();
+                    for (size_t i = 0; i < std::size(gMarketingCampaignDaysLeft); i++)
+                    {
+                        marketing.push_back(std::make_tuple(gMarketingCampaignDaysLeft[i], gMarketingCampaignRideIndex[i]));
+                    }
+                }
+                b.ReadWriteArray(marketing, [&b](std::tuple<uint32_t, uint32_t>& m) {
+                    b.ReadWrite(std::get<0>(m));
+                    b.ReadWrite(std::get<1>(m));
+                });
+                if (b.GetMode() == OrcaBlob::Mode::READING)
+                {
+                    auto count = std::min(std::size(gMarketingCampaignDaysLeft), marketing.size());
+                    for (size_t i = 0; i < count; i++)
+                    {
+                        gMarketingCampaignDaysLeft[i] = std::get<0>(marketing[i]);
+                        gMarketingCampaignRideIndex[i] = std::get<1>(marketing[i]);
+                    }
                 }
 
                 // Awards
-                numItems = ReadArray();
-                for (size_t i = 0; i < numItems; i++)
+                std::vector<Award> awards(std::begin(gCurrentAwards), std::end(gCurrentAwards));
+                b.ReadWriteArray(awards, [&b](Award& award) {
+                    b.ReadWrite(award.Time);
+                    b.ReadWrite(award.Type);
+                });
+                if (b.GetMode() == OrcaBlob::Mode::READING)
                 {
-                    Award award;
-                    award.Time = ReadValue<uint16_t>();
-                    award.Type = ReadValue<uint16_t>();
+                    for (size_t i = 0; i < std::size(gCurrentAwards); i++)
+                    {
+                        if (awards.size() > i)
+                        {
+                            gCurrentAwards[i] = awards[i];
+                        }
+                        else
+                        {
+                            gCurrentAwards[i].Time = 0;
+                            gCurrentAwards[i].Type = 0;
+                        }
+                    }
                 }
 
-                numItems = ReadArray();
-                for (size_t i = 0; i < numItems; i++)
-                {
-                    gPeepWarningThrottle[i] = ReadValue<uint8_t>();
-                }
-
-                gParkRatingCasualtyPenalty = ReadValue<uint16_t>();
-                gCurrentExpenditure = ReadValue<money32>();
-                gCurrentProfit = ReadValue<money32>();
-                gTotalAdmissions = ReadValue<uint32_t>();
-                gTotalIncomeFromAdmissions = ReadValue<money32>();
-            }
-            else
-            {
-                throw std::runtime_error("No park chunk found.");
-            }
+                b.ReadWrite(gParkRatingCasualtyPenalty);
+                b.ReadWrite(gCurrentExpenditure);
+                b.ReadWrite(gCurrentProfit);
+                b.ReadWrite(gTotalAdmissions);
+                b.ReadWrite(gTotalIncomeFromAdmissions);
+            });
         }
 
-        void ReadResearchChunk()
+        void WriteResearch(OrcaBlob& blob)
         {
-            if (SeekChunk(ParkFileChunkType::RESEARCH))
-            {
+            blob.ReadWriteChunk(ParkFileChunkType::RESEARCH, [](OrcaBlob& b) {
                 // Research status
-                gResearchFundingLevel = ReadValue<uint8_t>();
-                gResearchPriorities = ReadValue<uint8_t>();
-                gResearchProgressStage = ReadValue<uint8_t>();
-                gResearchProgress = ReadValue<uint16_t>();
-                gResearchExpectedMonth = ReadValue<uint8_t>();
-                gResearchExpectedDay = ReadValue<uint8_t>();
-                gResearchLastItem = ReadValue<rct_research_item>();
-                gResearchNextItem = ReadValue<rct_research_item>();
+                b.ReadWrite(gResearchFundingLevel);
+                b.ReadWrite(gResearchPriorities);
+                b.ReadWrite(gResearchProgressStage);
+                b.ReadWrite(gResearchProgress);
+                b.ReadWrite(gResearchExpectedMonth);
+                b.ReadWrite(gResearchExpectedDay);
+                b.ReadWrite(gResearchLastItem);
+                b.ReadWrite(gResearchNextItem);
 
-                // auto numItems = ReadArray();
+                // Research order
+                //   type (uint8_t)
+                //   flags (uint8_t)
+                //   entry (uint32_t)
+            });
+        }
+
+        void WriteNotifications(OrcaBlob& blob)
+        {
+            blob.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaBlob& b) {
+                std::vector<NewsItem> notifications(std::begin(gNewsItems), std::end(gNewsItems));
+                b.ReadWriteArray(notifications, [&b](NewsItem& notification) {
+                    b.ReadWrite(notification.Type);
+                    b.ReadWrite(notification.Flags);
+                    b.ReadWrite(notification.Assoc);
+                    b.ReadWrite(notification.Ticks);
+                    b.ReadWrite(notification.MonthYear);
+                    b.ReadWrite(notification.Day);
+                    if (b.GetMode() == OrcaBlob::Mode::READING)
+                    {
+                        auto s = b.Read<std::string>();
+                        String::Set(notification.Text, sizeof(notification.Text), s.c_str());
+                    }
+                    else
+                    {
+                        b.Write(std::string(notification.Text));
+                    }
+                });
+                if (b.GetMode() == OrcaBlob::Mode::READING)
+                {
+                    for (size_t i = 0; i < std::size(gNewsItems); i++)
+                    {
+                        if (notifications.size() > i)
+                        {
+                            gNewsItems[i] = notifications[i];
+                        }
+                        else
+                        {
+                            gNewsItems[i] = {};
+                            gNewsItems[i].Type = NEWS_ITEM_NULL;
+                        }
+                    }
+                }
+            });
+        }
+
+        void WriteDerivedChunk(OrcaBlob& blob)
+        {
+            if (blob.GetMode() == OrcaBlob::Mode::WRITING)
+            {
+                blob.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaBlob& b) {
+                    b.Write<uint32_t>(gParkSize);
+                    b.Write<uint32_t>(gNumGuestsInPark);
+                    b.Write<uint32_t>(gNumGuestsHeadingForPark);
+                    b.Write<uint32_t>(gCompanyValue);
+                    b.Write<uint32_t>(gParkValue);
+                    b.Write<uint32_t>(gParkRating);
+                });
             }
         }
 
-        void ReadNotifications()
+        void WriteTilesChunk(OrcaBlob& blob)
         {
-            if (SeekChunk(ParkFileChunkType::NOTIFICATIONS))
-            {
-                NewsItem notification;
-                notification.Type = ReadValue<uint8_t>();
-                notification.Flags = ReadValue<uint8_t>();
-                notification.Assoc = ReadValue<uint32_t>();
-                notification.Ticks = ReadValue<uint16_t>();
-                notification.MonthYear = ReadValue<uint16_t>();
-                notification.Day = ReadValue<uint8_t>();
-                auto text = ReadString();
-                String::Set(notification.Text, sizeof(notification.Text), text.c_str());
-            }
-        }
+            auto found = blob.ReadWriteChunk(ParkFileChunkType::TILES, [](OrcaBlob& b) {
+                b.ReadWriteAs<int16_t, uint32_t>(gMapSize); // x
+                b.Write<uint32_t>(gMapSize);                // y
 
-        void ReadTilesChunk()
-        {
-            if (SeekChunk(ParkFileChunkType::TILES))
-            {
-                auto mapWidth = ReadValue<uint32_t>();
-                [[maybe_unused]] auto mapHeight = ReadValue<uint32_t>();
+                if (b.GetMode() == OrcaBlob::Mode::READING)
+                {
+                    OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
+                }
 
-                OpenRCT2::GetContext()->GetGameState()->InitAll(mapWidth);
-
-                auto numElements = ReadArray();
-                ReadBuffer(gTileElements, numElements * sizeof(TileElement));
+                std::vector<TileElement> tiles(std::begin(gTileElements), std::end(gTileElements));
+                b.ReadWriteArray(tiles, [&b](TileElement& el)
+                {
+                    b.ReadWrite(&el, sizeof(TileElement));
+                });
+                std::copy_n(tiles.data(), std::min(tiles.size(), std::size(gTileElements)), gTileElements);
 
                 map_update_tile_pointers();
                 UpdateParkEntranceLocations();
-            }
-            else
+            });
+            if (!found)
             {
                 throw std::runtime_error("No tiles chunk found.");
+            }
+        }
+
+        static void ReadWriteStringTable(OrcaBlob& b, std::string& value, const std::string_view& lcode)
+        {
+            std::vector<std::tuple<std::string, std::string>> table;
+            if (b.GetMode() != OrcaBlob::Mode::READING)
+            {
+                table.push_back(std::make_tuple(std::string(lcode), value));
+            }
+            b.ReadWriteArray(table, [&b](std::tuple<std::string, std::string>& v) {
+                b.ReadWrite(std::get<0>(v));
+                b.ReadWrite(std::get<1>(v));
+            });
+            if (b.GetMode() == OrcaBlob::Mode::READING)
+            {
+                auto fr = std::find_if(table.begin(), table.end(), [&lcode](const std::tuple<std::string, std::string>& v) {
+                    return std::get<0>(v) == lcode;
+                });
+                if (fr != table.end())
+                {
+                    value = std::get<1>(*fr);
+                }
+                else if (table.size() > 0)
+                {
+                    value = std::get<1>(table[0]);
+                }
+                else
+                {
+                    value = "";
+                }
             }
         }
     };

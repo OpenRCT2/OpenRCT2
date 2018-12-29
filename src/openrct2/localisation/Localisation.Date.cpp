@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <time.h>
 
-uint32_t gDateMonthTicks;
+uint16_t gDateMonthTicks;
 int32_t gDateMonthsElapsed;
 
 // rct2: 0x00993988
