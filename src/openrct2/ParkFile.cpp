@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <ctime>
 #include <fstream>
+#include <functional>
 #include <sstream>
 #include <string_view>
 #include <vector>
@@ -72,6 +73,368 @@ namespace OpenRCT2
         constexpr uint32_t DERIVED          = 0x50;
         // clang-format on
     }; // namespace ParkFileChunkType
+
+    class OrcaBlob
+    {
+    public:
+        enum class Mode
+        {
+            READING,
+            WRITING,
+        };
+
+    private:
+#pragma pack(push, 1)
+        struct Header
+        {
+            uint32_t Magic{};
+            uint32_t TargetVersion{};
+            uint32_t MinVersion{};
+            uint32_t NumChunks{};
+            uint64_t UncompressedSize{};
+            uint32_t Compression{};
+            std::array<uint8_t, 20> Sha1{};
+        };
+
+        struct ChunkEntry
+        {
+            uint32_t Id{};
+            uint64_t Offset{};
+            uint64_t Length{};
+        };
+#pragma pack(pop)
+
+        std::string _path;
+        Mode _mode;
+        Header _header;
+        std::vector<ChunkEntry> _chunks;
+        std::stringstream _buffer;
+        ChunkEntry _currentChunk;
+        std::streampos _currentArrayStartPos;
+        std::streampos _currentArrayLastPos;
+        size_t _currentArrayCount;
+        size_t _currentArrayElementSize;
+
+    public:
+        OrcaBlob(const std::string_view& path, Mode mode)
+        {
+            _path = path;
+            _mode = mode;
+            if (mode == Mode::READING)
+            {
+                std::ifstream fs(std::string(path).c_str(), std::ios::binary);
+                fs.read((char*)&_header, sizeof(_header));
+
+                _chunks.clear();
+                for (uint32_t i = 0; i < _header.NumChunks; i++)
+                {
+                    ChunkEntry entry;
+                    fs.read((char*)&entry, sizeof(entry));
+                    _chunks.push_back(entry);
+                }
+
+                _buffer = std::stringstream(std::ios::in | std::ios::out | std::ios::binary);
+                _buffer.clear();
+
+                char temp[2048];
+                size_t read = 0;
+                do
+                {
+                    fs.read(temp, sizeof(temp));
+                    read = fs.gcount();
+                    _buffer.write(temp, read);
+                } while (read != 0);
+            }
+            else
+            {
+                _header = {};
+                _header.Magic = PARK_FILE_MAGIC;
+                _header.TargetVersion = PARK_FILE_CURRENT_VERSION;
+                _header.MinVersion = PARK_FILE_MIN_VERSION;
+                _header.Compression = COMPRESSION_NONE;
+
+                _buffer = std::stringstream(std::ios::out | std::ios::binary);
+            }
+        }
+
+        ~OrcaBlob()
+        {
+            if (_mode == Mode::READING)
+            {
+            }
+            else
+            {
+                // TODO avoid copying the buffer
+                auto uncompressedData = _buffer.str();
+
+                _header.NumChunks = (uint32_t)_chunks.size();
+                _header.UncompressedSize = _buffer.tellp();
+                _header.Sha1 = Crypt::SHA1(uncompressedData.data(), uncompressedData.size());
+
+                std::ofstream fs(_path.c_str(), std::ios::binary);
+
+                // Write header
+                fs.seekp(0);
+                fs.write((const char*)&_header, sizeof(_header));
+                for (const auto& chunk : _chunks)
+                {
+                    fs.write((const char*)&chunk, sizeof(chunk));
+                }
+
+                // Write chunk data
+                fs.write(uncompressedData.data(), uncompressedData.size());
+            }
+        }
+
+        template<typename TFunc> bool ReadWriteChunk(uint32_t chunkId, TFunc f)
+        {
+            if (_mode == Mode::READING)
+            {
+                if (SeekChunk(chunkId))
+                {
+                    f(*this);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                _currentChunk.Id = chunkId;
+                _currentChunk.Offset = _buffer.tellp();
+                _currentChunk.Length = 0;
+                f(*this);
+                _currentChunk.Length = (uint64_t)_buffer.tellp() - _currentChunk.Offset;
+                _chunks.push_back(_currentChunk);
+                return true;
+            }
+        }
+
+        void ReadWrite(void* addr, size_t len)
+        {
+            if (_mode == Mode::READING)
+            {
+                ReadBuffer(addr, len);
+            }
+            else
+            {
+                WriteBuffer(addr, len);
+            }
+        }
+
+        template<typename T> void ReadWrite(T& v)
+        {
+            ReadWrite(&v, sizeof(T));
+        }
+
+        template<typename T> T Read()
+        {
+            if (_mode == Mode::READING)
+            {
+                T v;
+                ReadBuffer(&v, sizeof(T));
+                return v;
+            }
+            else
+            {
+                std::array<char, sizeof(T)> buffer;
+                WriteBuffer(buffer.data(), buffer.size());
+                return T();
+            }
+        }
+
+        template<typename T> void Write(const T& v)
+        {
+            if (_mode == Mode::READING)
+            {
+                _buffer.seekg(sizeof(T));
+            }
+            else
+            {
+                ReadWrite((void*)&v, sizeof(T));
+            }
+        }
+
+        template<> void ReadWrite(std::string& v)
+        {
+            if (_mode == Mode::READING)
+            {
+                v = ReadString();
+            }
+            else
+            {
+                WriteString(v);
+            }
+        }
+
+        template<> void Write(const std::string_view& v)
+        {
+            if (_mode == Mode::READING)
+            {
+                ReadString();
+            }
+            else
+            {
+                WriteString(v);
+            }
+        }
+
+        template<typename TArr, typename TFunc> void ReadWriteArray(TArr& arr, TFunc f)
+        {
+            if (_mode == Mode::READING)
+            {
+                auto count = BeginArray();
+                arr.clear();
+                for (size_t i = 0; i < count; i++)
+                {
+                    auto &el = arr.emplace_back();
+                    f(el);
+                    NextArrayElement();
+                }
+                EndArray();
+            }
+            else
+            {
+                BeginArray();
+                for (auto& el : arr)
+                {
+                    f(el);
+                    NextArrayElement();
+                }
+                EndArray();
+            }
+        }
+
+    private:
+        void ReadBuffer(void* dst, size_t len)
+        {
+            _buffer.read((char*)dst, len);
+        }
+
+        void WriteBuffer(const void* buffer, size_t len)
+        {
+            _buffer.write((char*)buffer, len);
+        }
+
+        std::string ReadString()
+        {
+            std::string buffer;
+            buffer.reserve(64);
+            while (true)
+            {
+                char c;
+                ReadBuffer(&c, sizeof(c));
+                if (c == 0)
+                {
+                    break;
+                }
+                buffer.push_back(c);
+            }
+            buffer.shrink_to_fit();
+            return buffer;
+        }
+
+        void WriteString(const std::string_view& s)
+        {
+            char nullt = '\0';
+            auto len = s.find('\0');
+            if (len == std::string_view::npos)
+            {
+                len = s.size();
+            }
+            _buffer.write(s.data(), len);
+            _buffer.write(&nullt, sizeof(nullt));
+        }
+
+        bool SeekChunk(uint32_t id)
+        {
+            auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.Id == id; });
+            if (result != _chunks.end())
+            {
+                auto offset = result->Offset;
+                _buffer.seekg(offset);
+                return true;
+            }
+            return false;
+        }
+
+        size_t BeginArray()
+        {
+            if (_mode == Mode::READING)
+            {
+                _currentArrayCount = Read<uint32_t>();
+                _currentArrayElementSize = Read<uint32_t>();
+                _currentArrayLastPos = _buffer.tellg();
+                return _currentArrayCount;
+            }
+            else
+            {
+                _currentArrayCount = 0;
+                _currentArrayElementSize = 0;
+                _currentArrayStartPos = _buffer.tellp();
+                Write<uint32_t>(0);
+                Write<uint32_t>(0);
+                _currentArrayLastPos = _buffer.tellp();
+                return 0;
+            }
+        }
+
+        bool NextArrayElement()
+        {
+            if (_mode == Mode::READING)
+            {
+                if (_currentArrayCount == 0)
+                {
+                    return false;
+                }
+                if (_currentArrayElementSize != 0)
+                {
+                    _buffer.seekg((size_t)_currentArrayLastPos + _currentArrayElementSize);
+                }
+                _currentArrayCount--;
+                return _currentArrayCount == 0;
+            }
+            else
+            {
+                auto lastElSize = (size_t)_buffer.tellp() - _currentArrayLastPos;
+                if (_currentArrayCount == 0)
+                {
+                    // Set array element size based on first element size
+                    _currentArrayElementSize = lastElSize;
+                }
+                else if (_currentArrayElementSize != lastElSize)
+                {
+                    // Array element size was different from first element so reset it
+                    // to dynamic
+                    _currentArrayElementSize = 0;
+                }
+                _currentArrayCount++;
+                _currentArrayLastPos = _buffer.tellp();
+                return true;
+            }
+        }
+
+        void EndArray()
+        {
+            if (_mode == Mode::READING)
+            {
+            }
+            else
+            {
+                auto backupPos = _buffer.tellp();
+                if ((size_t)backupPos != (size_t)_currentArrayStartPos + 8 && _currentArrayCount == 0)
+                {
+                    throw std::runtime_error("Array data was written but no elements were added.");
+                }
+                _buffer.seekp(_currentArrayStartPos);
+                Write((uint32_t)_currentArrayCount);
+                Write((uint32_t)_currentArrayElementSize);
+                _buffer.seekp(backupPos);
+            }
+        }
+    };
 
     class ParkFile
     {
@@ -124,19 +487,23 @@ namespace OpenRCT2
     public:
         void Save(const std::string_view& path)
         {
-            _header = {};
-            _header.Magic = PARK_FILE_MAGIC;
-            _header.TargetVersion = PARK_FILE_CURRENT_VERSION;
-            _header.MinVersion = PARK_FILE_MIN_VERSION;
-            _header.Compression = COMPRESSION_NONE;
+            OrcaBlob blob(path, OrcaBlob::Mode::WRITING);
 
-            _buffer = std::stringstream(std::ios::out | std::ios::binary);
+            // Write-only for now
+            blob.ReadWriteChunk(ParkFileChunkType::AUTHORING, [](OrcaBlob& b) {
+                b.Write(std::string_view(gVersionInfoFull));
+                std::vector<std::string> authors;
+                b.ReadWriteArray(authors, [](std::string& s) { });
+                b.Write(std::string_view());     // custom notes that can be attached to the save
+                b.Write<uint64_t>(std::time(0)); // date started
+                b.Write<uint64_t>(std::time(0)); // date modified
+            });
 
             WriteAuthoringChunk();
             WriteObjectsChunk();
             WriteTilesChunk();
             WriteScenarioChunk();
-            WriteGeneralChunk();
+            WriteGeneralChunk(blob);
             WriteParkChunk();
             WriteClimateChunk();
             WriteResearch();
@@ -322,35 +689,34 @@ namespace OpenRCT2
             EndChunk();
         }
 
-        void WriteGeneralChunk()
+        void WriteGeneralChunk(OrcaBlob& blob)
         {
-            BeginChunk(ParkFileChunkType::GENERAL);
-            WriteValue<uint64_t>(gScenarioTicks);
-            WriteValue<uint32_t>(gDateMonthTicks);
-            WriteValue(gDateMonthsElapsed);
-            WriteValue(gScenarioSrand0);
-            WriteValue(gScenarioSrand1);
-            WriteValue(gGuestInitialCash);
-            WriteValue(gGuestInitialHunger);
-            WriteValue(gGuestInitialThirst);
+            auto found = blob.ReadWriteChunk(ParkFileChunkType::GENERAL, [](OrcaBlob& b) {
+                b.ReadWrite(gScenarioTicks);
+                b.ReadWrite(gDateMonthTicks);
+                b.ReadWrite(gDateMonthsElapsed);
+                b.ReadWrite(gScenarioSrand0);
+                b.ReadWrite(gScenarioSrand1);
+                b.ReadWrite(gGuestInitialCash);
+                b.ReadWrite(gGuestInitialHunger);
+                b.ReadWrite(gGuestInitialThirst);
 
-            WriteValue(gNextGuestNumber);
-            BeginArray();
-            for (const auto& spawn : gPeepSpawns)
+                b.ReadWrite(gNextGuestNumber);
+                b.ReadWriteArray(gPeepSpawns, [&b](PeepSpawn& spawn) {
+                    b.ReadWrite(spawn.x);
+                    b.ReadWrite(spawn.y);
+                    b.ReadWrite(spawn.z);
+                    b.ReadWrite(spawn.direction);
+                });
+
+                b.ReadWrite(gLandPrice);
+                b.ReadWrite(gConstructionRightsPrice);
+                b.ReadWrite(gGrassSceneryTileLoopPosition); // TODO (this needs to be xy32)
+            });
+            if (!found)
             {
-                WriteValue(spawn.x);
-                WriteValue(spawn.y);
-                WriteValue(spawn.z);
-                WriteValue(spawn.direction);
-                NextArrayElement();
+                throw std::runtime_error("No general chunk found.");
             }
-            EndArray();
-
-            WriteValue(gLandPrice);
-            WriteValue(gConstructionRightsPrice);
-            WriteValue(gGrassSceneryTileLoopPosition); // TODO (this needs to be xy32)
-
-            EndChunk();
         }
 
         void WriteInterfaceChunk()
