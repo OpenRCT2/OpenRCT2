@@ -435,6 +435,11 @@ int32_t game_do_command_p(
 
     *ebx &= ~GAME_COMMAND_FLAG_APPLY;
 
+    // Make sure the camera position won't change if the command skips setting them.
+    gCommandPosition.x = LOCATION_NULL;
+    gCommandPosition.y = LOCATION_NULL;
+    gCommandPosition.z = LOCATION_NULL;
+
     // First call for validity and price check
     new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
     cost = *ebx;
