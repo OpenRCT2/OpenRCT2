@@ -132,6 +132,9 @@ namespace OpenRCT2
             , _uiContext(uiContext)
             , _localisationService(std::make_unique<LocalisationService>(env))
         {
+            // Can't have more than one context currently.
+            Guard::Assert(Instance == nullptr);
+
             Instance = this;
         }
 
