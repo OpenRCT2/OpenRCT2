@@ -2093,8 +2093,8 @@ STR_2756    :Städa nedskräpning
 STR_2763    :???
 STR_2765    :Stort Tåg
 STR_2766    :Vinn scenario
-STR_2767    :Frys Klimat
-STR_2768    :Avfrys klimat
+STR_2767    :Frys väder
+STR_2768    :Avfrys väder
 STR_2769    :Öppna Park
 STR_2770    :Stäng Park
 STR_2773    :Fönster
@@ -2971,7 +2971,7 @@ STR_5461    :Gästernas inställningar
 STR_5462    :{CURRENCY}
 STR_5463    :Mål: Ha kul!
 STR_5464    :Allmänt
-STR_5465    :Klimat
+STR_5465    :Väder
 STR_5466    :Personal
 STR_5467    :ALT + 
 STR_5468    :Nyliga meddelanden

@@ -2078,7 +2078,7 @@ STR_2739    :Nessuno
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copiare 'data/css17.dat' dalla cartella di installazione di RCT1 come 'data/css50.dat' nella cartella di RCT2, oppure impostare il percorso di installazione di RCT1 nella scheda "Altro".
+STR_2743    :Copiare 'data/css17.dat' dalla cartella di installazione di RCT1 come 'data/css50.dat' nella cartella di RCT2, oppure impostare il percorso di installazione di RCT1 nella scheda "Avanzate".
 STR_2744    :[
 STR_2745    :\
 STR_2746    :]
@@ -2332,18 +2332,6 @@ STR_3074    :{RED}ATTENZIONE: La valutazione del parco è ancora sotto a 700!{NE
 STR_3075    :{RED}ATTENZIONE: La valutazione del parco è sempre sotto a 700!{NEWLINE}Hai soltanto 2 settimane per alzare il punteggio, poi il parco verrà fatto chiudere
 STR_3076    :{RED}ULTIMO AVVERTIMENTO: La valutazione del parco è rimasta sotto 700!{NEWLINE}Hai 7 giorni di tempo, poi il parco verrà fatto chiudere se il punteggio non tornerà sopra a 700
 STR_3077    :{RED}AVVISO DI CHIUSURA: Hanno fatto chiudere il tuo parco!
-STR_3078    :Entrata semplice
-STR_3079    :Entrata di legno
-STR_3080    :Entrata a tenda
-STR_3081    :Entrata a castello (grigio)
-STR_3082    :Entrata a castello (marrone)
-STR_3083    :Entrata tropicale
-STR_3084    :Entrata a capanna
-STR_3085    :Entrata classica/romana
-STR_3086    :Entrata astratta
-STR_3087    :Entrata nevosa/ghiacciata
-STR_3088    :Entrata a pagoda
-STR_3089    :Entrata spaziale
 STR_3090    :{SMALLFONT}{BLACK}Scegli lo stile dell'entrata, dell'uscita e della stazione
 STR_3091    :Non ti è permesso cancellare questa sezione!
 STR_3092    :Non ti è permesso spostare o modificare la stazione di quest'attrazione!
@@ -3738,6 +3726,15 @@ STR_6264    :Usa sempre il file manager di sistema
 STR_6265    :{SMALLFONT}{BLACK}Se abilitato, viene usato il file manager del sistema operativo anziché quello di OpenRCT2.
 STR_6266    :Apri la cartella dei contenuti personalizzati
 STR_6267    :Apri analizzatore celle
+STR_6268    :Avanza al prossimo tick
+STR_6269    :ID del clima non valido
+STR_6270    :Superfici terreno
+STR_6271    :Pareti terreno
+STR_6272    :Stazioni
+STR_6273    :Musica
+STR_6274    :Impossibile impostare schema colore...
+STR_6275    :{WINDOW_COLOUR_2}Stile stazione:
+STR_6276    :{RED}{STRINGID} ha ospiti bloccati, probabilmente a causa di un errato tipo di attrazione o modalità operativa.
 
 #############
 # Scenarios #
