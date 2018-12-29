@@ -36,6 +36,12 @@ protected:
         SUCCEED();
     }
 
+    static void TearDownTestCase()
+    {
+        if (_context)
+            _context.reset();
+    }
+
 private:
     static std::shared_ptr<IContext> _context;
 };
