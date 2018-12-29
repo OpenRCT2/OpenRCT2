@@ -134,11 +134,14 @@ namespace OpenRCT2
 
             WriteAuthoringChunk();
             WriteObjectsChunk();
+            WriteTilesChunk();
             WriteScenarioChunk();
             WriteGeneralChunk();
-            WriteInterfaceChunk();
+            WriteParkChunk();
             WriteClimateChunk();
-            WriteTilesChunk();
+            WriteResearch();
+            WriteNotifications();
+            WriteInterfaceChunk();
 
             // TODO avoid copying the buffer
             auto uncompressedData = _buffer.str();
@@ -427,6 +430,8 @@ namespace OpenRCT2
             WriteValue(gCurrentProfit);
             WriteValue(gTotalAdmissions);
             WriteValue(gTotalIncomeFromAdmissions);
+
+            EndChunk();
         }
 
         void WriteResearch()
@@ -685,12 +690,15 @@ namespace OpenRCT2
 
                 gNextGuestNumber = ReadValue<uint32_t>();
                 size_t numPeepSpawns = ReadArray();
+                gPeepSpawns.clear();
                 for (size_t i = 0; i < numPeepSpawns; i++)
                 {
-                    gPeepSpawns[i].x = ReadValue<uint32_t>();
-                    gPeepSpawns[i].y = ReadValue<uint32_t>();
-                    gPeepSpawns[i].z = ReadValue<uint32_t>();
-                    gPeepSpawns[i].direction = ReadValue<uint8_t>();
+                    PeepSpawn spawn;
+                    spawn.x = ReadValue<uint32_t>();
+                    spawn.y = ReadValue<uint32_t>();
+                    spawn.z = ReadValue<uint32_t>();
+                    spawn.direction = ReadValue<uint8_t>();
+                    gPeepSpawns.push_back(spawn);
                 }
 
                 gLandPrice = ReadValue<money16>();
