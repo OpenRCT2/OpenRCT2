@@ -116,6 +116,16 @@ struct TileCoordsXYZ
         y += rhs.y;
         return *this;
     }
+
+    bool operator==(const TileCoordsXYZ& other) const
+    {
+        return x == other.x && y == other.y && z == other.z;
+    }
+    bool operator!=(const TileCoordsXYZ& other) const
+    {
+        return !(*this == other);
+    }
+
     int32_t x = 0, y = 0, z = 0;
 };
 
