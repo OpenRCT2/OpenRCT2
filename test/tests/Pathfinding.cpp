@@ -122,7 +122,7 @@ protected:
     {
         const uint32_t forbiddenSurfaceStyle = 8u;
 
-        const uint32_t style = GetSurfaceStyleAtLocation(TileCoordsXY(location.x, location.y));
+        const uint32_t style = map_get_surface_element_at(location.x, location.y)->AsSurface()->GetSurfaceStyle();
 
         if (style == forbiddenSurfaceStyle)
             return ::testing::AssertionFailure()
@@ -134,21 +134,9 @@ protected:
 
 private:
 
-    static uint32_t GetSurfaceStyleAtLocation(const TileCoordsXY& location)
-    {
-        TileElement* element = map_get_first_element_at(location.x, location.y);
-
-        // Every tile *should* have a surface sprite, so we should be guaranteed to find
-        // something before we go off the end of the data.
-        while (element->GetType() != TILE_ELEMENT_TYPE_SURFACE)
-            element++;
-
-        return element->AsSurface()->GetSurfaceStyle();
-    }
-
     static ::testing::AssertionResult AssertPositionIsSetUp(const char* positionKind, uint32_t expectedSurfaceStyle, const TileCoordsXYZ& location)
     {
-        const uint32_t style = GetSurfaceStyleAtLocation(TileCoordsXY(location.x, location.y));
+        const uint32_t style = map_get_surface_element_at(location.x, location.y)->AsSurface()->GetSurfaceStyle();
 
         if (style != expectedSurfaceStyle)
             return ::testing::AssertionFailure()
