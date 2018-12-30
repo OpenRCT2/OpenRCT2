@@ -110,6 +110,8 @@ namespace OpenRCT2
             gInitialCash = gCash;
             String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName.c_str());
             String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName.c_str());
+
+            AutoCreateMapAnimations();
         }
 
         void Save(const std::string_view& path)
@@ -456,6 +458,28 @@ namespace OpenRCT2
             if (!found)
             {
                 throw std::runtime_error("No tiles chunk found.");
+            }
+        }
+
+        void AutoCreateMapAnimations()
+        {
+            // Automatically create map animations from tile elements
+            // TODO this should also be done when importing S4 and S6 files
+            tile_element_iterator it;
+            tile_element_iterator_begin(&it);
+            while (tile_element_iterator_next(&it))
+            {
+                auto el = it.element;
+                switch (el->GetType())
+                {
+                    case TILE_ELEMENT_TYPE_ENTRANCE:
+                        auto entrance = el->AsEntrance();
+                        if (entrance->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE && entrance->GetSequenceIndex() == 0)
+                        {
+                            map_animation_create(MAP_ANIMATION_TYPE_PARK_ENTRANCE, it.x * 32, it.y * 32, entrance->base_height);
+                        }
+                        break;
+                }
             }
         }
 
