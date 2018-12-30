@@ -75,7 +75,7 @@ namespace OpenRCT2
         // clang-format on
     }; // namespace ParkFileChunkType
 
-    class OrcaBlob
+    class OrcaStream
     {
     public:
         enum class Mode
@@ -111,13 +111,9 @@ namespace OpenRCT2
         std::vector<ChunkEntry> _chunks;
         std::stringstream _buffer;
         ChunkEntry _currentChunk;
-        std::streampos _currentArrayStartPos;
-        std::streampos _currentArrayLastPos;
-        size_t _currentArrayCount;
-        size_t _currentArrayElementSize;
 
     public:
-        OrcaBlob(const std::string_view& path, Mode mode)
+        OrcaStream(const std::string_view& path, Mode mode)
         {
             _path = path;
             _mode = mode;
@@ -158,9 +154,9 @@ namespace OpenRCT2
             }
         }
 
-        OrcaBlob(const OrcaBlob&) = delete;
+        OrcaStream(const OrcaStream&) = delete;
 
-        ~OrcaBlob()
+        ~OrcaStream()
         {
             if (_mode == Mode::READING)
             {
@@ -200,7 +196,8 @@ namespace OpenRCT2
             {
                 if (SeekChunk(chunkId))
                 {
-                    f(*this);
+                    ChunkStream stream(_buffer, _mode);
+                    f(stream);
                     return true;
                 }
                 else
@@ -213,158 +210,15 @@ namespace OpenRCT2
                 _currentChunk.Id = chunkId;
                 _currentChunk.Offset = _buffer.tellp();
                 _currentChunk.Length = 0;
-                f(*this);
+                ChunkStream stream(_buffer, _mode);
+                f(stream);
                 _currentChunk.Length = (uint64_t)_buffer.tellp() - _currentChunk.Offset;
                 _chunks.push_back(_currentChunk);
                 return true;
             }
         }
 
-        void ReadWrite(void* addr, size_t len)
-        {
-            if (_mode == Mode::READING)
-            {
-                ReadBuffer(addr, len);
-            }
-            else
-            {
-                WriteBuffer(addr, len);
-            }
-        }
-
-        template<typename T> void ReadWrite(T& v)
-        {
-            ReadWrite((void*)&v, sizeof(T));
-        }
-
-        template<typename TMem, typename TSave> void ReadWriteAs(TMem& v)
-        {
-            TSave sv;
-            if (_mode != Mode::READING)
-            {
-                sv = v;
-            }
-            ReadWrite((void*)&sv, sizeof(TSave));
-            if (_mode == Mode::READING)
-            {
-                v = static_cast<TMem>(sv);
-            }
-        }
-
-        template<typename T> T Read()
-        {
-            T v{};
-            ReadWrite(v);
-            return v;
-        }
-
-        template<> void ReadWrite(std::string_view& v) = delete;
-
-        template<> void ReadWrite(std::string& v)
-        {
-            if (_mode == Mode::READING)
-            {
-                v = ReadString();
-            }
-            else
-            {
-                WriteString(v);
-            }
-        }
-
-        template<typename T> void Write(const T& v)
-        {
-            if (_mode == Mode::READING)
-            {
-                T temp;
-                ReadWrite(temp);
-            }
-            else
-            {
-                ReadWrite(v);
-            }
-        }
-
-        template<> void Write(const std::string_view& v)
-        {
-            if (_mode == Mode::READING)
-            {
-                std::string temp;
-                ReadWrite(temp);
-            }
-            else
-            {
-                WriteString(v);
-            }
-        }
-
-        template<typename TArr, typename TFunc> void ReadWriteArray(TArr& arr, TFunc f)
-        {
-            if (_mode == Mode::READING)
-            {
-                auto count = BeginArray();
-                arr.clear();
-                for (size_t i = 0; i < count; i++)
-                {
-                    auto& el = arr.emplace_back();
-                    f(el);
-                    NextArrayElement();
-                }
-                EndArray();
-            }
-            else
-            {
-                BeginArray();
-                for (auto& el : arr)
-                {
-                    f(el);
-                    NextArrayElement();
-                }
-                EndArray();
-            }
-        }
-
     private:
-        void ReadBuffer(void* dst, size_t len)
-        {
-            _buffer.read((char*)dst, len);
-        }
-
-        void WriteBuffer(const void* buffer, size_t len)
-        {
-            _buffer.write((char*)buffer, len);
-        }
-
-        std::string ReadString()
-        {
-            std::string buffer;
-            buffer.reserve(64);
-            while (true)
-            {
-                char c;
-                ReadBuffer(&c, sizeof(c));
-                if (c == 0)
-                {
-                    break;
-                }
-                buffer.push_back(c);
-            }
-            buffer.shrink_to_fit();
-            return buffer;
-        }
-
-        void WriteString(const std::string_view& s)
-        {
-            char nullt = '\0';
-            auto len = s.find('\0');
-            if (len == std::string_view::npos)
-            {
-                len = s.size();
-            }
-            _buffer.write(s.data(), len);
-            _buffer.write(&nullt, sizeof(nullt));
-        }
-
         bool SeekChunk(uint32_t id)
         {
             auto result = std::find_if(_chunks.begin(), _chunks.end(), [id](const ChunkEntry& e) { return e.Id == id; });
@@ -377,81 +231,250 @@ namespace OpenRCT2
             return false;
         }
 
-        size_t BeginArray()
+    public:
+        class ChunkStream
         {
-            if (_mode == Mode::READING)
-            {
-                _currentArrayCount = Read<uint32_t>();
-                _currentArrayElementSize = Read<uint32_t>();
-                _currentArrayLastPos = _buffer.tellg();
-                return _currentArrayCount;
-            }
-            else
-            {
-                _currentArrayCount = 0;
-                _currentArrayElementSize = 0;
-                _currentArrayStartPos = _buffer.tellp();
-                Write<uint32_t>(0);
-                Write<uint32_t>(0);
-                _currentArrayLastPos = _buffer.tellp();
-                return 0;
-            }
-        }
+        private:
+            std::stringstream& _buffer;
+            Mode _mode;
+            std::streampos _currentArrayStartPos;
+            std::streampos _currentArrayLastPos;
+            size_t _currentArrayCount;
+            size_t _currentArrayElementSize;
 
-        bool NextArrayElement()
-        {
-            if (_mode == Mode::READING)
+        public:
+            ChunkStream(std::stringstream& buffer, Mode mode)
+                : _buffer(buffer)
+                , _mode(mode)
             {
-                if (_currentArrayCount == 0)
-                {
-                    return false;
-                }
-                if (_currentArrayElementSize != 0)
-                {
-                    _currentArrayLastPos += _currentArrayElementSize;
-                    _buffer.seekg(_currentArrayLastPos);
-                }
-                _currentArrayCount--;
-                return _currentArrayCount == 0;
             }
-            else
+
+            Mode GetMode() const
             {
-                auto lastElSize = (size_t)_buffer.tellp() - _currentArrayLastPos;
-                if (_currentArrayCount == 0)
+                return _mode;
+            }
+
+            void ReadWrite(void* addr, size_t len)
+            {
+                if (_mode == Mode::READING)
                 {
-                    // Set array element size based on first element size
-                    _currentArrayElementSize = lastElSize;
+                    ReadBuffer(addr, len);
                 }
-                else if (_currentArrayElementSize != lastElSize)
+                else
                 {
-                    // Array element size was different from first element so reset it
-                    // to dynamic
+                    WriteBuffer(addr, len);
+                }
+            }
+
+            template<typename T> void ReadWrite(T& v)
+            {
+                ReadWrite((void*)&v, sizeof(T));
+            }
+
+            template<typename TMem, typename TSave> void ReadWriteAs(TMem& v)
+            {
+                TSave sv;
+                if (_mode != Mode::READING)
+                {
+                    sv = v;
+                }
+                ReadWrite((void*)&sv, sizeof(TSave));
+                if (_mode == Mode::READING)
+                {
+                    v = static_cast<TMem>(sv);
+                }
+            }
+
+            template<typename T> T Read()
+            {
+                T v{};
+                ReadWrite(v);
+                return v;
+            }
+
+            template<> void ReadWrite(std::string_view& v) = delete;
+
+            template<> void ReadWrite(std::string& v)
+            {
+                if (_mode == Mode::READING)
+                {
+                    v = ReadString();
+                }
+                else
+                {
+                    WriteString(v);
+                }
+            }
+
+            template<typename T> void Write(const T& v)
+            {
+                if (_mode == Mode::READING)
+                {
+                    T temp;
+                    ReadWrite(temp);
+                }
+                else
+                {
+                    ReadWrite(v);
+                }
+            }
+
+            template<> void Write(const std::string_view& v)
+            {
+                if (_mode == Mode::READING)
+                {
+                    std::string temp;
+                    ReadWrite(temp);
+                }
+                else
+                {
+                    WriteString(v);
+                }
+            }
+
+            template<typename TArr, typename TFunc> void ReadWriteArray(TArr& arr, TFunc f)
+            {
+                if (_mode == Mode::READING)
+                {
+                    auto count = BeginArray();
+                    arr.clear();
+                    for (size_t i = 0; i < count; i++)
+                    {
+                        auto& el = arr.emplace_back();
+                        f(el);
+                        NextArrayElement();
+                    }
+                    EndArray();
+                }
+                else
+                {
+                    BeginArray();
+                    for (auto& el : arr)
+                    {
+                        f(el);
+                        NextArrayElement();
+                    }
+                    EndArray();
+                }
+            }
+
+        private:
+            void ReadBuffer(void* dst, size_t len)
+            {
+                _buffer.read((char*)dst, len);
+            }
+
+            void WriteBuffer(const void* buffer, size_t len)
+            {
+                _buffer.write((char*)buffer, len);
+            }
+
+            std::string ReadString()
+            {
+                std::string buffer;
+                buffer.reserve(64);
+                while (true)
+                {
+                    char c;
+                    ReadBuffer(&c, sizeof(c));
+                    if (c == 0)
+                    {
+                        break;
+                    }
+                    buffer.push_back(c);
+                }
+                buffer.shrink_to_fit();
+                return buffer;
+            }
+
+            void WriteString(const std::string_view& s)
+            {
+                char nullt = '\0';
+                auto len = s.find('\0');
+                if (len == std::string_view::npos)
+                {
+                    len = s.size();
+                }
+                _buffer.write(s.data(), len);
+                _buffer.write(&nullt, sizeof(nullt));
+            }
+
+            size_t BeginArray()
+            {
+                if (_mode == Mode::READING)
+                {
+                    _currentArrayCount = Read<uint32_t>();
+                    _currentArrayElementSize = Read<uint32_t>();
+                    _currentArrayLastPos = _buffer.tellg();
+                    return _currentArrayCount;
+                }
+                else
+                {
+                    _currentArrayCount = 0;
                     _currentArrayElementSize = 0;
+                    _currentArrayStartPos = _buffer.tellp();
+                    Write<uint32_t>(0);
+                    Write<uint32_t>(0);
+                    _currentArrayLastPos = _buffer.tellp();
+                    return 0;
                 }
-                _currentArrayCount++;
-                _currentArrayLastPos = _buffer.tellp();
-                return true;
             }
-        }
 
-        void EndArray()
-        {
-            if (_mode == Mode::READING)
+            bool NextArrayElement()
             {
-            }
-            else
-            {
-                auto backupPos = _buffer.tellp();
-                if ((size_t)backupPos != (size_t)_currentArrayStartPos + 8 && _currentArrayCount == 0)
+                if (_mode == Mode::READING)
                 {
-                    throw std::runtime_error("Array data was written but no elements were added.");
+                    if (_currentArrayCount == 0)
+                    {
+                        return false;
+                    }
+                    if (_currentArrayElementSize != 0)
+                    {
+                        _currentArrayLastPos += _currentArrayElementSize;
+                        _buffer.seekg(_currentArrayLastPos);
+                    }
+                    _currentArrayCount--;
+                    return _currentArrayCount == 0;
                 }
-                _buffer.seekp(_currentArrayStartPos);
-                Write((uint32_t)_currentArrayCount);
-                Write((uint32_t)_currentArrayElementSize);
-                _buffer.seekp(backupPos);
+                else
+                {
+                    auto lastElSize = (size_t)_buffer.tellp() - _currentArrayLastPos;
+                    if (_currentArrayCount == 0)
+                    {
+                        // Set array element size based on first element size
+                        _currentArrayElementSize = lastElSize;
+                    }
+                    else if (_currentArrayElementSize != lastElSize)
+                    {
+                        // Array element size was different from first element so reset it
+                        // to dynamic
+                        _currentArrayElementSize = 0;
+                    }
+                    _currentArrayCount++;
+                    _currentArrayLastPos = _buffer.tellp();
+                    return true;
+                }
             }
-        }
+
+            void EndArray()
+            {
+                if (_mode == Mode::READING)
+                {
+                }
+                else
+                {
+                    auto backupPos = _buffer.tellp();
+                    if ((size_t)backupPos != (size_t)_currentArrayStartPos + 8 && _currentArrayCount == 0)
+                    {
+                        throw std::runtime_error("Array data was written but no elements were added.");
+                    }
+                    _buffer.seekp(_currentArrayStartPos);
+                    Write((uint32_t)_currentArrayCount);
+                    Write((uint32_t)_currentArrayElementSize);
+                    _buffer.seekp(backupPos);
+                }
+            }
+        };
     };
 
     class ParkFile
@@ -460,19 +483,19 @@ namespace OpenRCT2
         std::vector<rct_object_entry> RequiredObjects;
 
     private:
-        std::unique_ptr<OrcaBlob> _blob;
+        std::unique_ptr<OrcaStream> _blob;
 
     public:
         void Load(const std::string_view& path)
         {
-            _blob = std::make_unique<OrcaBlob>(path, OrcaBlob::Mode::READING);
+            _blob = std::make_unique<OrcaStream>(path, OrcaStream::Mode::READING);
             RequiredObjects.clear();
             WriteObjectsChunk(*_blob);
         }
 
         void Import()
         {
-            auto &blob = *_blob;
+            auto& blob = *_blob;
             WriteTilesChunk(blob);
             WriteScenarioChunk(blob);
             WriteGeneralChunk(blob);
@@ -490,7 +513,7 @@ namespace OpenRCT2
 
         void Save(const std::string_view& path)
         {
-            OrcaBlob blob(path, OrcaBlob::Mode::WRITING);
+            OrcaStream blob(path, OrcaStream::Mode::WRITING);
             WriteAuthoringChunk(blob);
             WriteObjectsChunk(blob);
             WriteTilesChunk(blob);
@@ -504,12 +527,12 @@ namespace OpenRCT2
         }
 
     private:
-        void WriteAuthoringChunk(OrcaBlob& blob)
+        void WriteAuthoringChunk(OrcaStream& blob)
         {
             // Write-only for now
-            if (blob.GetMode() == OrcaBlob::Mode::WRITING)
+            if (blob.GetMode() == OrcaStream::Mode::WRITING)
             {
-                blob.ReadWriteChunk(ParkFileChunkType::AUTHORING, [](OrcaBlob& b) {
+                blob.ReadWriteChunk(ParkFileChunkType::AUTHORING, [](OrcaStream::ChunkStream& b) {
                     b.Write(std::string_view(gVersionInfoFull));
                     std::vector<std::string> authors;
                     b.ReadWriteArray(authors, [](std::string& s) {});
@@ -520,12 +543,12 @@ namespace OpenRCT2
             }
         }
 
-        void WriteObjectsChunk(OrcaBlob& blob)
+        void WriteObjectsChunk(OrcaStream& blob)
         {
-            if (blob.GetMode() == OrcaBlob::Mode::READING)
+            if (blob.GetMode() == OrcaStream::Mode::READING)
             {
                 std::vector<rct_object_entry> entries;
-                blob.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&entries](OrcaBlob& b) {
+                blob.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&entries](OrcaStream::ChunkStream& b) {
                     b.ReadWriteArray(entries, [&b](rct_object_entry& entry) {
                         auto type = b.Read<uint16_t>();
                         auto id = b.Read<std::string>();
@@ -541,7 +564,7 @@ namespace OpenRCT2
             {
                 std::vector<size_t> objectIds(OBJECT_ENTRY_COUNT);
                 std::iota(objectIds.begin(), objectIds.end(), 0);
-                blob.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&objectIds](OrcaBlob& b) {
+                blob.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&objectIds](OrcaStream::ChunkStream& b) {
                     auto& objManager = GetContext()->GetObjectManager();
                     b.ReadWriteArray(objectIds, [&b, &objManager](size_t& i) {
                         auto obj = objManager.GetLoadedObject(i);
@@ -565,9 +588,9 @@ namespace OpenRCT2
             }
         }
 
-        void WriteScenarioChunk(OrcaBlob& blob)
+        void WriteScenarioChunk(OrcaStream& blob)
         {
-            blob.ReadWriteChunk(ParkFileChunkType::SCENARIO, [](OrcaBlob& b) {
+            blob.ReadWriteChunk(ParkFileChunkType::SCENARIO, [](OrcaStream::ChunkStream& b) {
                 b.ReadWriteAs<uint8_t, uint32_t>(gS6Info.category);
                 ReadWriteStringTable(b, gScenarioName, "en-GB");
 
@@ -602,9 +625,9 @@ namespace OpenRCT2
             });
         }
 
-        void WriteGeneralChunk(OrcaBlob& blob)
+        void WriteGeneralChunk(OrcaStream& blob)
         {
-            auto found = blob.ReadWriteChunk(ParkFileChunkType::GENERAL, [](OrcaBlob& b) {
+            auto found = blob.ReadWriteChunk(ParkFileChunkType::GENERAL, [](OrcaStream::ChunkStream& b) {
                 b.ReadWriteAs<uint32_t, uint64_t>(gScenarioTicks);
                 b.ReadWriteAs<uint16_t, uint32_t>(gDateMonthTicks);
                 b.ReadWrite(gDateMonthsElapsed);
@@ -632,9 +655,9 @@ namespace OpenRCT2
             }
         }
 
-        void WriteInterfaceChunk(OrcaBlob& blob)
+        void WriteInterfaceChunk(OrcaStream& blob)
         {
-            blob.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaBlob& b) {
+            blob.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaStream::ChunkStream& b) {
                 b.ReadWrite(gSavedViewX);
                 b.ReadWrite(gSavedViewY);
                 b.ReadWrite(gSavedViewZoom);
@@ -643,9 +666,9 @@ namespace OpenRCT2
             });
         }
 
-        void WriteClimateChunk(OrcaBlob& blob)
+        void WriteClimateChunk(OrcaStream& blob)
         {
-            blob.ReadWriteChunk(ParkFileChunkType::CLIMATE, [](OrcaBlob& b) {
+            blob.ReadWriteChunk(ParkFileChunkType::CLIMATE, [](OrcaStream::ChunkStream& b) {
                 b.ReadWrite(gClimate);
                 b.ReadWrite(gClimateUpdateTimer);
 
@@ -660,9 +683,9 @@ namespace OpenRCT2
             });
         }
 
-        void WriteParkChunk(OrcaBlob& blob)
+        void WriteParkChunk(OrcaStream& blob)
         {
-            blob.ReadWriteChunk(ParkFileChunkType::PARK, [](OrcaBlob& b) {
+            blob.ReadWriteChunk(ParkFileChunkType::PARK, [](OrcaStream::ChunkStream& b) {
                 b.ReadWrite(gParkNameArgs);
                 b.ReadWrite(gCash);
                 b.ReadWrite(gBankLoan);
@@ -680,7 +703,7 @@ namespace OpenRCT2
 
                 // Marketing
                 std::vector<std::tuple<uint32_t, uint32_t>> marketing;
-                if (b.GetMode() != OrcaBlob::Mode::READING)
+                if (b.GetMode() != OrcaStream::Mode::READING)
                 {
                     for (size_t i = 0; i < std::size(gMarketingCampaignDaysLeft); i++)
                     {
@@ -691,7 +714,7 @@ namespace OpenRCT2
                     b.ReadWrite(std::get<0>(m));
                     b.ReadWrite(std::get<1>(m));
                 });
-                if (b.GetMode() == OrcaBlob::Mode::READING)
+                if (b.GetMode() == OrcaStream::Mode::READING)
                 {
                     auto count = std::min(std::size(gMarketingCampaignDaysLeft), marketing.size());
                     for (size_t i = 0; i < count; i++)
@@ -707,7 +730,7 @@ namespace OpenRCT2
                     b.ReadWrite(award.Time);
                     b.ReadWrite(award.Type);
                 });
-                if (b.GetMode() == OrcaBlob::Mode::READING)
+                if (b.GetMode() == OrcaStream::Mode::READING)
                 {
                     for (size_t i = 0; i < std::size(gCurrentAwards); i++)
                     {
@@ -731,9 +754,9 @@ namespace OpenRCT2
             });
         }
 
-        void WriteResearch(OrcaBlob& blob)
+        void WriteResearch(OrcaStream& blob)
         {
-            blob.ReadWriteChunk(ParkFileChunkType::RESEARCH, [](OrcaBlob& b) {
+            blob.ReadWriteChunk(ParkFileChunkType::RESEARCH, [](OrcaStream::ChunkStream& b) {
                 // Research status
                 b.ReadWrite(gResearchFundingLevel);
                 b.ReadWrite(gResearchPriorities);
@@ -751,9 +774,9 @@ namespace OpenRCT2
             });
         }
 
-        void WriteNotifications(OrcaBlob& blob)
+        void WriteNotifications(OrcaStream& blob)
         {
-            blob.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaBlob& b) {
+            blob.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& b) {
                 std::vector<NewsItem> notifications(std::begin(gNewsItems), std::end(gNewsItems));
                 b.ReadWriteArray(notifications, [&b](NewsItem& notification) {
                     b.ReadWrite(notification.Type);
@@ -762,7 +785,7 @@ namespace OpenRCT2
                     b.ReadWrite(notification.Ticks);
                     b.ReadWrite(notification.MonthYear);
                     b.ReadWrite(notification.Day);
-                    if (b.GetMode() == OrcaBlob::Mode::READING)
+                    if (b.GetMode() == OrcaStream::Mode::READING)
                     {
                         auto s = b.Read<std::string>();
                         String::Set(notification.Text, sizeof(notification.Text), s.c_str());
@@ -772,7 +795,7 @@ namespace OpenRCT2
                         b.Write(std::string(notification.Text));
                     }
                 });
-                if (b.GetMode() == OrcaBlob::Mode::READING)
+                if (b.GetMode() == OrcaStream::Mode::READING)
                 {
                     for (size_t i = 0; i < std::size(gNewsItems); i++)
                     {
@@ -790,11 +813,11 @@ namespace OpenRCT2
             });
         }
 
-        void WriteDerivedChunk(OrcaBlob& blob)
+        void WriteDerivedChunk(OrcaStream& blob)
         {
-            if (blob.GetMode() == OrcaBlob::Mode::WRITING)
+            if (blob.GetMode() == OrcaStream::Mode::WRITING)
             {
-                blob.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaBlob& b) {
+                blob.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& b) {
                     b.Write<uint32_t>(gParkSize);
                     b.Write<uint32_t>(gNumGuestsInPark);
                     b.Write<uint32_t>(gNumGuestsHeadingForPark);
@@ -805,22 +828,19 @@ namespace OpenRCT2
             }
         }
 
-        void WriteTilesChunk(OrcaBlob& blob)
+        void WriteTilesChunk(OrcaStream& blob)
         {
-            auto found = blob.ReadWriteChunk(ParkFileChunkType::TILES, [](OrcaBlob& b) {
+            auto found = blob.ReadWriteChunk(ParkFileChunkType::TILES, [](OrcaStream::ChunkStream& b) {
                 b.ReadWriteAs<int16_t, uint32_t>(gMapSize); // x
                 b.Write<uint32_t>(gMapSize);                // y
 
-                if (b.GetMode() == OrcaBlob::Mode::READING)
+                if (b.GetMode() == OrcaStream::Mode::READING)
                 {
                     OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
                 }
 
                 std::vector<TileElement> tiles(std::begin(gTileElements), std::end(gTileElements));
-                b.ReadWriteArray(tiles, [&b](TileElement& el)
-                {
-                    b.ReadWrite(&el, sizeof(TileElement));
-                });
+                b.ReadWriteArray(tiles, [&b](TileElement& el) { b.ReadWrite(&el, sizeof(TileElement)); });
                 std::copy_n(tiles.data(), std::min(tiles.size(), std::size(gTileElements)), gTileElements);
 
                 map_update_tile_pointers();
@@ -832,10 +852,10 @@ namespace OpenRCT2
             }
         }
 
-        static void ReadWriteStringTable(OrcaBlob& b, std::string& value, const std::string_view& lcode)
+        static void ReadWriteStringTable(OrcaStream::ChunkStream& b, std::string& value, const std::string_view& lcode)
         {
             std::vector<std::tuple<std::string, std::string>> table;
-            if (b.GetMode() != OrcaBlob::Mode::READING)
+            if (b.GetMode() != OrcaStream::Mode::READING)
             {
                 table.push_back(std::make_tuple(std::string(lcode), value));
             }
@@ -843,7 +863,7 @@ namespace OpenRCT2
                 b.ReadWrite(std::get<0>(v));
                 b.ReadWrite(std::get<1>(v));
             });
-            if (b.GetMode() == OrcaBlob::Mode::READING)
+            if (b.GetMode() == OrcaStream::Mode::READING)
             {
                 auto fr = std::find_if(table.begin(), table.end(), [&lcode](const std::tuple<std::string, std::string>& v) {
                     return std::get<0>(v) == lcode;
