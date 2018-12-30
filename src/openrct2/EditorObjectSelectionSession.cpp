@@ -545,8 +545,7 @@ int32_t editor_remove_unused_objects()
             const ObjectRepositoryItem* item = &items[i];
             uint8_t objectType = object_entry_get_type(&item->ObjectEntry);
 
-            if (objectType == OBJECT_TYPE_PARK_ENTRANCE || objectType == OBJECT_TYPE_WATER
-                || objectType == OBJECT_TYPE_SCENERY_GROUP)
+            if (objectType >= OBJECT_TYPE_SCENERY_GROUP)
             {
                 continue;
             }
