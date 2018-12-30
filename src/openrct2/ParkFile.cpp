@@ -91,20 +91,20 @@ namespace OpenRCT2
         {
             _os = std::make_unique<OrcaStream>(path, OrcaStream::Mode::READING);
             RequiredObjects.clear();
-            WriteObjectsChunk(*_os);
+            ReadWriteObjectsChunk(*_os);
         }
 
         void Import()
         {
             auto& os = *_os;
-            WriteTilesChunk(os);
-            WriteScenarioChunk(os);
-            WriteGeneralChunk(os);
-            WriteParkChunk(os);
-            WriteClimateChunk(os);
-            WriteResearch(os);
-            WriteNotifications(os);
-            WriteInterfaceChunk(os);
+            ReadWriteTilesChunk(os);
+            ReadWriteScenarioChunk(os);
+            ReadWriteGeneralChunk(os);
+            ReadWriteParkChunk(os);
+            ReadWriteClimateChunk(os);
+            ReadWriteResearchChunk(os);
+            ReadWriteNotificationsChunk(os);
+            ReadWriteInterfaceChunk(os);
 
             // Initial cash will eventually be removed
             gInitialCash = gCash;
@@ -121,20 +121,20 @@ namespace OpenRCT2
             header.TargetVersion = PARK_FILE_CURRENT_VERSION;
             header.MinVersion = PARK_FILE_MIN_VERSION;
 
-            WriteAuthoringChunk(os);
-            WriteObjectsChunk(os);
-            WriteTilesChunk(os);
-            WriteScenarioChunk(os);
-            WriteGeneralChunk(os);
-            WriteParkChunk(os);
-            WriteClimateChunk(os);
-            WriteResearch(os);
-            WriteNotifications(os);
-            WriteInterfaceChunk(os);
+            ReadWriteAuthoringChunk(os);
+            ReadWriteObjectsChunk(os);
+            ReadWriteTilesChunk(os);
+            ReadWriteScenarioChunk(os);
+            ReadWriteGeneralChunk(os);
+            ReadWriteParkChunk(os);
+            ReadWriteClimateChunk(os);
+            ReadWriteResearchChunk(os);
+            ReadWriteNotificationsChunk(os);
+            ReadWriteInterfaceChunk(os);
         }
 
     private:
-        void WriteAuthoringChunk(OrcaStream& os)
+        void ReadWriteAuthoringChunk(OrcaStream& os)
         {
             // Write-only for now
             if (os.GetMode() == OrcaStream::Mode::WRITING)
@@ -150,7 +150,7 @@ namespace OpenRCT2
             }
         }
 
-        void WriteObjectsChunk(OrcaStream& os)
+        void ReadWriteObjectsChunk(OrcaStream& os)
         {
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
@@ -195,7 +195,7 @@ namespace OpenRCT2
             }
         }
 
-        void WriteScenarioChunk(OrcaStream& os)
+        void ReadWriteScenarioChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWriteAs<uint8_t, uint32_t>(gS6Info.category);
@@ -232,7 +232,7 @@ namespace OpenRCT2
             });
         }
 
-        void WriteGeneralChunk(OrcaStream& os)
+        void ReadWriteGeneralChunk(OrcaStream& os)
         {
             auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWriteAs<uint32_t, uint64_t>(gScenarioTicks);
@@ -262,7 +262,7 @@ namespace OpenRCT2
             }
         }
 
-        void WriteInterfaceChunk(OrcaStream& os)
+        void ReadWriteInterfaceChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gSavedViewX);
@@ -273,7 +273,7 @@ namespace OpenRCT2
             });
         }
 
-        void WriteClimateChunk(OrcaStream& os)
+        void ReadWriteClimateChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::CLIMATE, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gClimate);
@@ -290,7 +290,7 @@ namespace OpenRCT2
             });
         }
 
-        void WriteParkChunk(OrcaStream& os)
+        void ReadWriteParkChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::PARK, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gParkNameArgs);
@@ -361,7 +361,7 @@ namespace OpenRCT2
             });
         }
 
-        void WriteResearch(OrcaStream& os)
+        void ReadWriteResearchChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::RESEARCH, [](OrcaStream::ChunkStream& cs) {
                 // Research status
@@ -381,7 +381,7 @@ namespace OpenRCT2
             });
         }
 
-        void WriteNotifications(OrcaStream& os)
+        void ReadWriteNotificationsChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& cs) {
                 std::vector<NewsItem> notifications(std::begin(gNewsItems), std::end(gNewsItems));
@@ -420,7 +420,7 @@ namespace OpenRCT2
             });
         }
 
-        void WriteDerivedChunk(OrcaStream& os)
+        void ReadWriteDerivedChunk(OrcaStream& os)
         {
             if (os.GetMode() == OrcaStream::Mode::WRITING)
             {
@@ -435,7 +435,7 @@ namespace OpenRCT2
             }
         }
 
-        void WriteTilesChunk(OrcaStream& os)
+        void ReadWriteTilesChunk(OrcaStream& os)
         {
             auto found = os.ReadWriteChunk(ParkFileChunkType::TILES, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWriteAs<int16_t, uint32_t>(gMapSize); // x
