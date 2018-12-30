@@ -197,3 +197,10 @@ if (NOT DISABLE_NETWORK)
     target_link_libraries(test_replays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
     add_test(NAME replay_tests COMMAND test_replays)
 endif ()
+
+# Pathfinding test
+set(PATHFINDING_TEST_SOURCES  "${CMAKE_CURRENT_LIST_DIR}/Pathfinding.cpp"
+                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_pathfinding ${PATHFINDING_TEST_SOURCES})
+target_link_libraries(test_pathfinding ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+add_test(NAME pathfinding COMMAND test_pathfinding)
