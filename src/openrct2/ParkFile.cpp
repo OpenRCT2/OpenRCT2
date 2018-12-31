@@ -98,6 +98,7 @@ namespace OpenRCT2
         {
             auto& os = *_os;
             ReadWriteTilesChunk(os);
+            ReadWriteRidesChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
@@ -459,6 +460,194 @@ namespace OpenRCT2
             {
                 throw std::runtime_error("No tiles chunk found.");
             }
+        }
+
+        void ReadWriteRidesChunk(OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::RIDES, [](OrcaStream::ChunkStream& cs) {
+                std::vector<Ride> rides(std::begin(gRideList), std::end(gRideList));
+                cs.ReadWriteArray(rides, [&cs](Ride& ride)
+                {
+                    // Meta
+                    cs.ReadWrite(ride.name);
+                    cs.ReadWrite(ride.name_arguments);
+
+                    cs.ReadWrite(ride.price);
+                    cs.ReadWrite(ride.price_secondary);
+
+                    // Status
+                    cs.ReadWrite(ride.type);
+                    cs.ReadWrite(ride.subtype);
+                    cs.ReadWrite(ride.mode);
+                    cs.ReadWrite(ride.status);
+                    cs.ReadWrite(ride.depart_flags);
+                    cs.ReadWrite(ride.lifecycle_flags);
+
+                    // Colours
+                    cs.ReadWrite(ride.entrance_style);
+                    cs.ReadWrite(ride.colour_scheme_type);
+                    // cs.ReadWriteArray(ride.track_colour, [&cs](TrackColour& tc)
+                    // {
+                    //     cs.ReadWrite(tc.main);
+                    //     cs.ReadWrite(tc.additional);
+                    //     cs.ReadWrite(tc.supports);
+                    // });
+
+                    // std::vector<VehicleColour> colours(std::begin(ride.vehicle_colours), std::end(ride.vehicle_colours));
+                    // cs.ReadWriteArray(colours, [&cs](VehicleColour& vc)
+                    // {
+                    //     cs.ReadWrite(vc);
+                    // });
+                    // std::copy(colours.begin(), colours.end(), ride.vehicle_colours);
+
+                    // Stations
+                    cs.ReadWrite(ride.num_stations);
+                    std::vector<RideStation> stations(std::begin(ride.stations), std::end(ride.stations));
+                    cs.ReadWriteArray(stations, [&cs](RideStation& station)
+                    {
+                        cs.ReadWrite(station.Start);
+                        cs.ReadWrite(station.Height);
+                        cs.ReadWrite(station.Length);
+                        cs.ReadWrite(station.Depart);
+                        cs.ReadWrite(station.TrainAtStation);
+                        cs.ReadWrite(station.Entrance);
+                        cs.ReadWrite(station.Exit);
+                        cs.ReadWrite(station.SegmentLength);
+                        cs.ReadWrite(station.SegmentTime);
+                        cs.ReadWrite(station.QueueTime);
+                        cs.ReadWrite(station.QueueLength);
+                        cs.ReadWrite(station.LastPeepInQueue);
+                    });
+
+                    cs.ReadWrite(ride.overall_view);
+
+                    // Vehicles
+                    cs.ReadWrite(ride.num_vehicles);
+                    cs.ReadWrite(ride.num_cars_per_train);
+                    cs.ReadWrite(ride.proposed_num_vehicles);
+                    cs.ReadWrite(ride.proposed_num_cars_per_train);
+                    cs.ReadWrite(ride.max_trains);
+                    cs.ReadWrite(ride.min_max_cars_per_train);
+                    cs.ReadWrite(ride.min_waiting_time);
+                    cs.ReadWrite(ride.max_waiting_time);
+                    cs.ReadWrite(ride.vehicles);
+
+                    // Operation
+                    cs.ReadWrite(ride.operation_option);
+                    cs.ReadWrite(ride.lift_hill_speed);
+                    cs.ReadWrite(ride.num_circuits);
+
+                    // Special
+                    cs.ReadWrite(ride.boat_hire_return_direction);
+                    cs.ReadWrite(ride.boat_hire_return_position);
+                    cs.ReadWrite(ride.chairlift_bullwheel_location[0]);
+                    cs.ReadWrite(ride.chairlift_bullwheel_z[0]);
+                    cs.ReadWrite(ride.chairlift_bullwheel_location[1]);
+                    cs.ReadWrite(ride.chairlift_bullwheel_z[1]);
+                    cs.ReadWrite(ride.chairlift_bullwheel_rotation);
+                    cs.ReadWrite(ride.slide_in_use);
+                    cs.ReadWrite(ride.slide_peep);
+                    cs.ReadWrite(ride.slide_peep_t_shirt_colour);
+                    cs.ReadWrite(ride.spiral_slide_progress);
+                    cs.ReadWrite(ride.race_winner);
+                    cs.ReadWrite(ride.cable_lift);
+                    cs.ReadWrite(ride.cable_lift_x);
+                    cs.ReadWrite(ride.cable_lift_y);
+                    cs.ReadWrite(ride.cable_lift_z);
+
+                    // Stats
+                    cs.ReadWrite(ride.measurement_index);
+
+                    cs.ReadWrite(ride.special_track_elements);
+                    cs.ReadWrite(ride.max_speed);
+                    cs.ReadWrite(ride.average_speed);
+                    cs.ReadWrite(ride.current_test_segment);
+                    cs.ReadWrite(ride.average_speed_test_timeout);
+
+                    cs.ReadWrite(ride.max_positive_vertical_g);
+                    cs.ReadWrite(ride.max_negative_vertical_g);
+                    cs.ReadWrite(ride.max_lateral_g);
+                    cs.ReadWrite(ride.previous_vertical_g);
+                    cs.ReadWrite(ride.previous_lateral_g);
+
+                    cs.ReadWrite(ride.testing_flags);
+                    cs.ReadWrite(ride.cur_test_track_location);
+
+                    cs.ReadWrite(ride.turn_count_default);
+                    cs.ReadWrite(ride.turn_count_banked);
+                    cs.ReadWrite(ride.turn_count_sloped);
+
+                    cs.ReadWrite(ride.inversions);
+                    cs.ReadWrite(ride.drops);
+                    cs.ReadWrite(ride.start_drop_height);
+                    cs.ReadWrite(ride.highest_drop_height);
+                    cs.ReadWrite(ride.sheltered_length);
+                    cs.ReadWrite(ride.var_11C);
+                    cs.ReadWrite(ride.num_sheltered_sections);
+                    cs.ReadWrite(ride.cur_test_track_z);
+                    cs.ReadWrite(ride.current_test_station);
+                    cs.ReadWrite(ride.num_block_brakes);
+                    cs.ReadWrite(ride.total_air_time);
+
+
+                    cs.ReadWrite(ride.excitement);
+                    cs.ReadWrite(ride.intensity);
+                    cs.ReadWrite(ride.nausea);
+
+                    cs.ReadWrite(ride.value);
+
+                    cs.ReadWrite(ride.num_riders);
+                    cs.ReadWrite(ride.build_date);
+                    cs.ReadWrite(ride.upkeep_cost);
+
+                    cs.ReadWrite(ride.cur_num_customers);
+                    cs.ReadWrite(ride.num_customers_timeout);
+                    cs.ReadWrite(ride.num_customers);
+                    cs.ReadWrite(ride.total_customers);
+                    cs.ReadWrite(ride.total_profit);
+                    cs.ReadWrite(ride.popularity);
+                    cs.ReadWrite(ride.popularity_time_out);
+                    cs.ReadWrite(ride.popularity_next);
+                    cs.ReadWrite(ride.guests_favourite);
+                    cs.ReadWrite(ride.no_primary_items_sold);
+                    cs.ReadWrite(ride.no_secondary_items_sold);
+                    cs.ReadWrite(ride.income_per_hour);
+                    cs.ReadWrite(ride.profit);
+                    cs.ReadWrite(ride.satisfaction);
+                    cs.ReadWrite(ride.satisfaction_time_out);
+                    cs.ReadWrite(ride.satisfaction_next);
+
+                    // Breakdown
+                    cs.ReadWrite(ride.breakdown_reason_pending);
+                    cs.ReadWrite(ride.mechanic_status);
+                    cs.ReadWrite(ride.mechanic);
+                    cs.ReadWrite(ride.inspection_station);
+                    cs.ReadWrite(ride.broken_vehicle);
+                    cs.ReadWrite(ride.broken_car);
+                    cs.ReadWrite(ride.breakdown_reason);
+                    cs.ReadWrite(ride.reliability_subvalue);
+                    cs.ReadWrite(ride.reliability_percentage);
+                    cs.ReadWrite(ride.unreliability_factor);
+                    cs.ReadWrite(ride.downtime);
+                    cs.ReadWrite(ride.inspection_interval);
+                    cs.ReadWrite(ride.last_inspection);
+                    cs.ReadWrite(ride.downtime_history);
+                    cs.ReadWrite(ride.breakdown_sound_modifier);
+                    cs.ReadWrite(ride.not_fixed_timeout);
+                    cs.ReadWrite(ride.last_crash_type);
+                    cs.ReadWrite(ride.connected_message_throttle);
+
+                    cs.ReadWrite(ride.vehicle_change_timeout);
+
+                    cs.ReadWrite(ride.current_issues);
+                    cs.ReadWrite(ride.last_issue_time);
+
+                    // Music
+                    cs.ReadWrite(ride.music);
+                    cs.ReadWrite(ride.music_tune_id);
+                    cs.ReadWrite(ride.music_position);
+                });
+            });
         }
 
         void AutoCreateMapAnimations()
