@@ -159,7 +159,7 @@ struct SimplePathfindingScenario
     TileCoordsXYZ goal;
     uint32_t steps;
 
-    SimplePathfindingScenario(const char* _name, const TileCoordsXYZ& _start, const TileCoordsXYZ& _goal, int _steps = 10000)
+    SimplePathfindingScenario(const char* _name, const TileCoordsXYZ& _start, const TileCoordsXYZ& _goal, int _steps)
         : name(_name)
         , start(_start)
         , goal(_goal)
@@ -231,7 +231,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
 INSTANTIATE_TEST_CASE_P(
     ForScenario, ImpossiblePathfindingTest,
     ::testing::Values(
-        SimplePathfindingScenario("PathWithGap", { 6, 9, 14 }, { 10, 9, 14 }),
-        SimplePathfindingScenario("PathWithFences", { 6, 7, 14 }, { 10, 7, 14 }),
-        SimplePathfindingScenario("PathWithCliff", { 10, 5, 14 }, { 12, 5, 14 })),
+        SimplePathfindingScenario("PathWithGap", { 6, 9, 14 }, { 10, 9, 14 }, 10000),
+        SimplePathfindingScenario("PathWithFences", { 6, 7, 14 }, { 10, 7, 14 }, 10000),
+        SimplePathfindingScenario("PathWithCliff", { 10, 5, 14 }, { 12, 5, 14 }, 10000)),
     SimplePathfindingScenario::ToName);
