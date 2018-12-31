@@ -4,11 +4,11 @@
 #include "openrct2/scenario/Scenario.h"
 
 #include <gtest/gtest.h>
-#include <openrct2/platform/platform.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/platform/platform.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 
@@ -37,7 +37,7 @@ public:
         game_load_init();
     }
 
-    void SetUp() override 
+    void SetUp() override
     {
         // Use a consistent random seed in every test
         gScenarioSrand0 = 0x12345678;
@@ -50,7 +50,6 @@ public:
     }
 
 protected:
-
     static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps)
     {
         // Our start position is in tile coordinates, but we need to give the peep spawn
@@ -97,7 +96,7 @@ protected:
 
             EXPECT_PRED_FORMAT1(AssertIsNotForbiddenPosition, *pos);
         }
-        
+
         // Clean up the peep, because we're reusing this loaded context for all tests.
         peep_sprite_remove(peep);
 
@@ -136,8 +135,8 @@ protected:
     }
 
 private:
-
-    static ::testing::AssertionResult AssertPositionIsSetUp(const char* positionKind, uint32_t expectedSurfaceStyle, const TileCoordsXYZ& location)
+    static ::testing::AssertionResult AssertPositionIsSetUp(
+        const char* positionKind, uint32_t expectedSurfaceStyle, const TileCoordsXYZ& location)
     {
         const uint32_t style = map_get_surface_element_at(location.x, location.y)->AsSurface()->GetSurfaceStyle();
 
