@@ -1021,8 +1021,8 @@ private:
         if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)
         {
             // The merry-go-round in pre-LL versions was always yellow with red
-            dst->vehicle_colours[0].body_colour = COLOUR_YELLOW;
-            dst->vehicle_colours[0].trim_colour = COLOUR_BRIGHT_RED;
+            dst->vehicle_colours[0].Body = COLOUR_YELLOW;
+            dst->vehicle_colours[0].Trim = COLOUR_BRIGHT_RED;
         }
         else
         {
@@ -1033,41 +1033,41 @@ private:
                     src->vehicle_type);
                 if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                 {
-                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].body);
+                    dst->vehicle_colours[i].Body = RCT1::GetColour(src->vehicle_colours[i].body);
                 }
                 else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
                 {
-                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                    dst->vehicle_colours[i].Body = RCT1::GetColour(src->vehicle_colours[i].trim);
                 }
                 else
                 {
-                    dst->vehicle_colours[i].body_colour = colourSchemeCopyDescriptor.colour1;
+                    dst->vehicle_colours[i].Body = colourSchemeCopyDescriptor.colour1;
                 }
 
                 if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
                 {
-                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].body);
+                    dst->vehicle_colours[i].Trim = RCT1::GetColour(src->vehicle_colours[i].body);
                 }
                 else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
                 {
-                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                    dst->vehicle_colours[i].Trim = RCT1::GetColour(src->vehicle_colours[i].trim);
                 }
                 else
                 {
-                    dst->vehicle_colours[i].trim_colour = colourSchemeCopyDescriptor.colour2;
+                    dst->vehicle_colours[i].Trim = colourSchemeCopyDescriptor.colour2;
                 }
 
                 if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
                 {
-                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].body);
+                    dst->vehicle_colours[i].Ternary = RCT1::GetColour(src->vehicle_colours[i].body);
                 }
                 else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
                 {
-                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].trim);
+                    dst->vehicle_colours[i].Ternary = RCT1::GetColour(src->vehicle_colours[i].trim);
                 }
                 else
                 {
-                    dst->vehicle_colours_extended[i] = colourSchemeCopyDescriptor.colour3;
+                    dst->vehicle_colours[i].Ternary = colourSchemeCopyDescriptor.colour3;
                 }
             }
         }

@@ -485,7 +485,8 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
     {
-        dst->vehicle_colours[i] = src->vehicle_colours[i];
+        dst->vehicle_colours[i].body_colour = src->vehicle_colours[i].Body;
+        dst->vehicle_colours[i].trim_colour = src->vehicle_colours[i].Trim;
     }
 
     // pad_046;
@@ -678,7 +679,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
     {
-        dst->vehicle_colours_extended[i] = src->vehicle_colours_extended[i];
+        dst->vehicle_colours_extended[i] = src->vehicle_colours[i].Ternary;
     }
 
     dst->total_air_time = src->total_air_time;

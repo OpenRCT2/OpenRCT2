@@ -150,7 +150,7 @@ struct Ride
     uint8_t subtype;
     uint8_t mode;
     uint8_t colour_scheme_type;
-    rct_vehicle_colour vehicle_colours[MAX_CARS_PER_TRAIN];
+    VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
     // 0 = closed, 1 = open, 2 = test
     uint8_t status;
     rct_string_id name;
@@ -333,7 +333,6 @@ struct Ride
     uint8_t lift_hill_speed;
     uint16_t guests_favourite;
     uint32_t lifecycle_flags;
-    uint8_t vehicle_colours_extended[MAX_CARS_PER_TRAIN];
     uint16_t total_air_time;
     uint8_t current_test_station;
     uint8_t num_circuits;

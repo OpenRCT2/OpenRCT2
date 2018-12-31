@@ -527,7 +527,8 @@ public:
 
         for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
         {
-            dst->vehicle_colours[i] = src->vehicle_colours[i];
+            dst->vehicle_colours[i].Body = src->vehicle_colours[i].body_colour;
+            dst->vehicle_colours[i].Trim = src->vehicle_colours[i].trim_colour;
         }
 
         // pad_046;
@@ -734,7 +735,7 @@ public:
 
         for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
         {
-            dst->vehicle_colours_extended[i] = src->vehicle_colours_extended[i];
+            dst->vehicle_colours[i].Ternary = src->vehicle_colours_extended[i];
         }
 
         dst->total_air_time = src->total_air_time;

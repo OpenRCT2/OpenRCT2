@@ -1757,8 +1757,9 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, uint8_
     {
         for (int32_t i = 0; i < RCT12_MAX_VEHICLE_COLOURS; i++)
         {
-            ride->vehicle_colours[i] = td6->vehicle_colours[i];
-            ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
+            ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
+            ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;
+            ride->vehicle_colours[i].Ternary = td6->vehicle_additional_colour[i];
         }
     }
 
@@ -1984,9 +1985,9 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
 
     for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
     {
-        ride->vehicle_colours[i].body_colour = td6->vehicle_colours[i].body_colour;
-        ride->vehicle_colours[i].trim_colour = td6->vehicle_colours[i].trim_colour;
-        ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
+        ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
+        ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;
+        ride->vehicle_colours[i].Ternary = td6->vehicle_additional_colour[i];
     }
 
     ride_set_name(rideIndex, td6->name);
