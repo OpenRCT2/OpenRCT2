@@ -4,6 +4,7 @@
 #include "openrct2/scenario/Scenario.h"
 
 #include <gtest/gtest.h>
+#include <openrct2/platform/platform.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
@@ -23,6 +24,8 @@ class PathfindingTestBase : public testing::Test
 public:
     static void SetUpTestCase()
     {
+        core_init();
+
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
         _context = CreateContext();
@@ -32,8 +35,6 @@ public:
         std::string parkPath = TestData::GetParkPath("pathfinding-tests.sv6");
         load_from_sv6(parkPath.c_str());
         game_load_init();
-
-        bitcount_init();
     }
 
     void SetUp() override 
