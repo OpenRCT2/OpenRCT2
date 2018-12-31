@@ -50,7 +50,7 @@ public:
 
 protected:
 
-    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int maxSteps)
+    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps)
     {
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
@@ -84,7 +84,7 @@ protected:
         // elapsed. Each step, check that the tile they are standing on is not marked as forbidden in the test data
         // (red neon ground type).
         int step = 0;
-        while (!(*pos == goal) && step < maxSteps)
+        while (!(*pos == goal) && step < expectedSteps)
         {
             uint8_t pathingResult = 0;
             peep->PerformNextAction(pathingResult);
@@ -102,8 +102,10 @@ protected:
 
         // Require that the number of steps taken is exactly what we expected. The pathfinder is supposed to be
         // deterministic, and we reset the RNG seed for each test, everything should be entirely repeatable; as
-        // such a change in the number of steps taken on one of these paths needs to be reviewed.
-        EXPECT_EQ(step, maxSteps);
+        // such a change in the number of steps taken on one of these paths needs to be reviewed. For the negative
+        // tests, we will not have reached the goal but we still expect the loop to have run for the total number
+        // of steps requested before giving up.
+        EXPECT_EQ(step, expectedSteps);
 
         return *pos == goal;
     }
