@@ -2401,7 +2401,7 @@ static bool peep_update_queue_position(rct_peep* peep, uint8_t previous_action)
         return true;
 
     peep->action = PEEP_ACTION_NONE_1;
-    peep->next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_2;
+    peep->next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
     if (previous_action != PEEP_ACTION_NONE_1)
         peep->Invalidate();
     return true;

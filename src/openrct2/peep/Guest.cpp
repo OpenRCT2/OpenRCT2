@@ -5646,7 +5646,7 @@ void rct_peep::UpdateWatching()
         Invalidate();
 
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_2;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
 
         SwitchNextActionSpriteType();
 
@@ -6675,7 +6675,7 @@ void rct_peep::SetSpriteType(PEEP_SPRITE_TYPE new_sprite_type)
     if (state == PEEP_STATE_WATCHING)
     {
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_2;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
         SwitchNextActionSpriteType();
     }
 }
