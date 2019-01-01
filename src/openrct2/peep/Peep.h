@@ -291,7 +291,7 @@ enum PEEP_ACTION_EVENTS : uint8_t
     PEEP_ACTION_NONE_2 = 255,
 };
 
-enum PEEP_ACTION_SPRITE_TYPE
+enum PEEP_ACTION_SPRITE_TYPE : uint8_t
 {
     PEEP_ACTION_SPRITE_TYPE_NONE = 0,
     PEEP_ACTION_SPRITE_TYPE_CHECK_TIME = 1,
@@ -330,6 +330,8 @@ enum PEEP_ACTION_SPRITE_TYPE
     PEEP_ACTION_SPRITE_TYPE_DRAW_PICTURE = 34,
     PEEP_ACTION_SPRITE_TYPE_BEING_WATCHED = 35,
     PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY = 36,
+
+    PEEP_ACTION_SPRITE_TYPE_INVALID = 255
 };
 
 enum PEEP_FLAGS : uint32_t
@@ -607,10 +609,10 @@ struct rct_peep
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
     uint8_t special_sprite;     // 0x6D
-    uint8_t action_sprite_type; // 0x6E
+    PEEP_ACTION_SPRITE_TYPE action_sprite_type; // 0x6E
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    uint8_t next_action_sprite_type;    // 0x6F
+    PEEP_ACTION_SPRITE_TYPE next_action_sprite_type; // 0x6F
     uint8_t action_sprite_image_offset; // 0x70
     PEEP_ACTION_EVENTS action;          // 0x71
     uint8_t action_frame;               // 0x72
@@ -807,7 +809,7 @@ public: // Peep
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextActionSpriteType();
-    uint8_t GetActionSpriteType();
+    PEEP_ACTION_SPRITE_TYPE GetActionSpriteType();
 
 public: // Guest
     void StopPurchaseThought(uint8_t ride_type);

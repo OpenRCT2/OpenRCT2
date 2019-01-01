@@ -230,7 +230,7 @@ static money32 staff_hire_new_staff_member(
             newPeep->special_sprite = 0;
             newPeep->action_sprite_image_offset = 0;
             newPeep->no_action_frame_num = 0;
-            newPeep->action_sprite_type = 0;
+            newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->path_check_optimisation = 0;
             newPeep->type = PEEP_TYPE_STAFF;
             newPeep->outside_of_park = 0;
@@ -2319,7 +2319,7 @@ void rct_peep::Tick128UpdateStaff()
         peep_flags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    action_sprite_type = 0xFF;
+    action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;
     UpdateCurrentActionSpriteType();
 }
 

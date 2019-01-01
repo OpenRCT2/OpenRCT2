@@ -293,13 +293,13 @@ static struct
     { PEEP_ACTION_NONE_2, 1 },
 };
 
-static uint8_t PeepSpecialSpriteToSpriteTypeMap[] = {
+static PEEP_ACTION_SPRITE_TYPE PeepSpecialSpriteToSpriteTypeMap[] = {
     PEEP_ACTION_SPRITE_TYPE_NONE,
     PEEP_ACTION_SPRITE_TYPE_HOLD_MAT,
     PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER
 };
 
-static uint8_t PeepActionToSpriteTypeMap[] = {
+static PEEP_ACTION_SPRITE_TYPE PeepActionToSpriteTypeMap[] = {
     PEEP_ACTION_SPRITE_TYPE_CHECK_TIME,
     PEEP_ACTION_SPRITE_TYPE_EAT_FOOD,
     PEEP_ACTION_SPRITE_TYPE_SHAKE_HEAD,
@@ -511,7 +511,7 @@ bool rct_peep::CheckForPath()
     return false;
 }
 
-uint8_t rct_peep::GetActionSpriteType()
+PEEP_ACTION_SPRITE_TYPE rct_peep::GetActionSpriteType()
 {
     if (action >= PEEP_ACTION_NONE_1)
     { // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
@@ -525,7 +525,7 @@ uint8_t rct_peep::GetActionSpriteType()
     {
         openrct2_assert(
             action >= std::size(PeepActionToSpriteTypeMap) && action < PEEP_ACTION_NONE_1, "Invalid peep action %u", action);
-        return 0;
+        return PEEP_ACTION_SPRITE_TYPE_NONE;
     }
 }
 
@@ -538,7 +538,7 @@ void rct_peep::UpdateCurrentActionSpriteType()
     {
         return;
     }
-    uint8_t newActionSpriteType = GetActionSpriteType();
+    PEEP_ACTION_SPRITE_TYPE newActionSpriteType = GetActionSpriteType();
     if (action_sprite_type == newActionSpriteType)
     {
         return;
@@ -763,7 +763,7 @@ void rct_peep::PickupAbort(int32_t old_x)
         action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         action_sprite_image_offset = 0;
-        action_sprite_type = 0;
+        action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
         path_check_optimisation = 0;
     }
 
@@ -817,13 +817,13 @@ bool rct_peep::Place(TileCoordsXYZ location, bool apply)
         action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         action_sprite_image_offset = 0;
-        action_sprite_type = 0;
+        action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
         path_check_optimisation = 0;
         sprite_position_tween_reset();
 
         if (type == PEEP_TYPE_GUEST)
         {
-            action_sprite_type = 0xFF;
+            action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;
             happiness_target = std::max(happiness_target - 10, 0);
             UpdateCurrentActionSpriteType();
         }
@@ -1735,7 +1735,7 @@ rct_peep* peep_generate(int32_t x, int32_t y, int32_t z)
     peep->special_sprite = 0;
     peep->action_sprite_image_offset = 0;
     peep->no_action_frame_num = 0;
-    peep->action_sprite_type = 0;
+    peep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
     peep->peep_flags = 0;
     peep->favourite_ride = RIDE_ID_NULL;
     peep->favourite_ride_rating = 0;
@@ -2401,7 +2401,7 @@ static bool peep_update_queue_position(rct_peep* peep, uint8_t previous_action)
         return true;
 
     peep->action = PEEP_ACTION_NONE_1;
-    peep->next_action_sprite_type = 2;
+    peep->next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_2;
     if (previous_action != PEEP_ACTION_NONE_1)
         peep->Invalidate();
     return true;

@@ -1405,10 +1405,10 @@ private:
         dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
         dst->action = static_cast<PEEP_ACTION_EVENTS>(src->action);
         dst->special_sprite = src->special_sprite;
-        dst->next_action_sprite_type = src->next_action_sprite_type;
+        dst->next_action_sprite_type = static_cast<PEEP_ACTION_SPRITE_TYPE>(src->next_action_sprite_type);
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
         dst->no_action_frame_num = src->no_action_frame_num;
-        dst->action_sprite_type = src->action_sprite_type;
+        dst->action_sprite_type = static_cast<PEEP_ACTION_SPRITE_TYPE>(src->action_sprite_type);
         dst->action_frame = src->action_frame;
 
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->sprite_type].sprite_bounds;

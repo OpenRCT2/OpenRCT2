@@ -911,7 +911,7 @@ void rct_peep::UpdateSitting()
         sprite_direction = ((var_37 + 2) & 3) * 8;
         Invalidate();
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = 7;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_7;
         SwitchNextActionSpriteType();
 
         sub_state = PEEP_SITTING_SAT_DOWN;
@@ -5646,7 +5646,7 @@ void rct_peep::UpdateWatching()
         Invalidate();
 
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = 2;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_2;
 
         SwitchNextActionSpriteType();
 
@@ -6663,19 +6663,19 @@ void rct_peep::SetSpriteType(uint8_t new_sprite_type)
         peep_flags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    action_sprite_type = 0xFF;
+    action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;
     UpdateCurrentActionSpriteType();
 
     if (state == PEEP_STATE_SITTING)
     {
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = 7;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_7;
         SwitchNextActionSpriteType();
     }
     if (state == PEEP_STATE_WATCHING)
     {
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = 2;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_2;
         SwitchNextActionSpriteType();
     }
 }
