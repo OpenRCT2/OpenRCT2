@@ -951,7 +951,7 @@ void peep_sprite_remove(rct_peep* peep)
         window_invalidate_by_class(WC_STAFF_LIST);
 
         gStaffModes[peep->staff_id] = 0;
-        peep->type = 0xFF;
+        peep->type = PEEP_TYPE_INVALID;
         staff_update_greyed_patrol_areas();
         peep->type = PEEP_TYPE_STAFF;
 

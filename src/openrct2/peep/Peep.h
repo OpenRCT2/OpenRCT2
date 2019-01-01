@@ -34,10 +34,12 @@
 struct TileElement;
 struct Ride;
 
-enum PEEP_TYPE
+enum PEEP_TYPE : uint8_t
 {
     PEEP_TYPE_GUEST,
-    PEEP_TYPE_STAFF
+    PEEP_TYPE_STAFF,
+
+    PEEP_TYPE_INVALID = 0xFF
 };
 
 enum PEEP_THOUGHT_TYPE
@@ -553,7 +555,7 @@ struct rct_peep
     PEEP_STATE state;              // 0x2B
     uint8_t sub_state;             // 0x2C
     uint8_t sprite_type;           // 0x2D
-    uint8_t type;                  // 0x2E
+    PEEP_TYPE type;                // 0x2E
     union
     {
         uint8_t staff_type;  // 0x2F
