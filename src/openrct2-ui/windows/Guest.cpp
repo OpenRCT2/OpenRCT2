@@ -623,6 +623,10 @@ void window_guest_disable_widgets(rct_window* w)
     {
         disabled_widgets |= (1 << WIDX_TAB_4); // Disable finance tab if no money
     }
+    if (!gConfigGeneral.debugging_tools)
+    {
+        disabled_widgets |= (1 << WIDX_TAB_7); // Disable debug tab when debug tools not turned on
+    }
     w->disabled_widgets = disabled_widgets;
 }
 
