@@ -42,7 +42,7 @@ enum PEEP_TYPE : uint8_t
     PEEP_TYPE_INVALID = 0xFF
 };
 
-enum PEEP_THOUGHT_TYPE
+enum PEEP_THOUGHT_TYPE : uint8_t
 {
     PEEP_THOUGHT_TYPE_CANT_AFFORD_0 = 0,      // "I can't afford"
     PEEP_THOUGHT_TYPE_SPENT_MONEY = 1,        // "I've spent all my money"
@@ -514,10 +514,10 @@ enum PEEP_RIDE_DECISION
 #pragma pack(push, 1)
 struct rct_peep_thought
 {
-    uint8_t type;          // 0
-    uint8_t item;          // 1
-    uint8_t freshness;     // 2 larger is less fresh
-    uint8_t fresh_timeout; // 3 updates every tick
+    PEEP_THOUGHT_TYPE type; // 0
+    uint8_t item;           // 1
+    uint8_t freshness;      // 2 larger is less fresh
+    uint8_t fresh_timeout;  // 3 updates every tick
 };
 assert_struct_size(rct_peep_thought, 4);
 
@@ -967,7 +967,7 @@ void peep_decrement_num_riders(rct_peep* peep);
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep* peep, uint8_t thought_type, uint8_t thought_arguments);
+void peep_insert_new_thought(rct_peep* peep, PEEP_THOUGHT_TYPE thought_type, uint8_t thought_arguments);
 
 void peep_set_map_tooltip(rct_peep* peep);
 

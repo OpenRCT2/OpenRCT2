@@ -2246,7 +2246,7 @@ int32_t peep_get_easteregg_name_id(rct_peep* peep)
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep* peep, uint8_t thought_type, uint8_t thought_arguments)
+void peep_insert_new_thought(rct_peep* peep, PEEP_THOUGHT_TYPE thought_type, uint8_t thought_arguments)
 {
     PEEP_ACTION_EVENTS action = PeepThoughtToActionMap[thought_type].action;
     if (action != PEEP_ACTION_NONE_2 && peep->action >= PEEP_ACTION_NONE_1)
