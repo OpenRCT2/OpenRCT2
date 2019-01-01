@@ -2330,4 +2330,16 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_guest_thoughts_tab_paint(w, dpi);
     window_guest_inventory_tab_paint(w, dpi);
     window_guest_debug_tab_paint(w, dpi);
+
+    rct_peep* peep = GET_PEEP(w->number);
+
+    // cx
+    int32_t x = w->x + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4;
+    // dx
+    int32_t y = w->y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
+
+    char buffer[4096];
+    snprintf(buffer, 4096, "Position: %i, %i, %i", peep->x, peep->y, peep->z);
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+    y += LIST_ROW_HEIGHT;
 }
