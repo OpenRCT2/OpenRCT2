@@ -184,7 +184,7 @@ enum PEEP_THOUGHT_TYPE
     PEEP_THOUGHT_TYPE_NONE = 255
 };
 
-enum PEEP_STATE
+enum PEEP_STATE : uint8_t
 {
     PEEP_STATE_FALLING = 0, // Drowning is part of falling
     PEEP_STATE_1 = 1,
@@ -550,7 +550,7 @@ struct rct_peep
     uint8_t next_z;                // 0x28
     uint8_t next_flags;            // 0x29
     uint8_t outside_of_park;       // 0x2A
-    uint8_t state;                 // 0x2B
+    PEEP_STATE state;              // 0x2B
     uint8_t sub_state;             // 0x2C
     uint8_t sprite_type;           // 0x2D
     uint8_t type;                  // 0x2E
@@ -707,7 +707,7 @@ public: // Peep
     void Update();
     bool UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance);
     bool UpdateAction();
-    void SetState(uint8_t new_state);
+    void SetState(PEEP_STATE new_state);
     void Remove();
     void Invalidate();
     void UpdateCurrentActionSpriteType();

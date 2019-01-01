@@ -1438,7 +1438,7 @@ private:
 
         dst->outside_of_park = src->outside_of_park;
 
-        dst->state = src->state;
+        dst->state = static_cast<PEEP_STATE>(src->state);
         dst->sub_state = src->sub_state;
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;

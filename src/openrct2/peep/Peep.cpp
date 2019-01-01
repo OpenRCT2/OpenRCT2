@@ -1127,7 +1127,7 @@ void rct_peep::Update1()
     direction = sprite_direction >> 3;
 }
 
-void rct_peep::SetState(uint8_t new_state)
+void rct_peep::SetState(PEEP_STATE new_state)
 {
     peep_decrement_num_riders(this);
     state = new_state;
