@@ -443,7 +443,7 @@ enum PEEP_ITEM
     PEEP_ITEM_EMPTY_BOWL_BLUE = (1 << 21),
 };
 
-enum PEEP_SPRITE_TYPE
+enum PEEP_SPRITE_TYPE : uint8_t
 {
     PEEP_SPRITE_TYPE_NORMAL = 0,
     PEEP_SPRITE_TYPE_HANDYMAN = 1,
@@ -494,6 +494,8 @@ enum PEEP_SPRITE_TYPE
     PEEP_SPRITE_TYPE_SOUP = 46,
     PEEP_SPRITE_TYPE_SANDWICH = 47,
     PEEP_SPRITE_TYPE_COUNT,
+
+    PEEP_SPRITE_TYPE_INVALID = 255
 };
 
 // Flags used by peep->window_invalidate_flags
@@ -556,7 +558,7 @@ struct rct_peep
     uint8_t outside_of_park;       // 0x2A
     PEEP_STATE state;              // 0x2B
     uint8_t sub_state;             // 0x2C
-    uint8_t sprite_type;           // 0x2D
+    PEEP_SPRITE_TYPE sprite_type;  // 0x2D
     PEEP_TYPE type;                // 0x2E
     union
     {
@@ -838,7 +840,7 @@ public: // Guest
     void CheckCantFindRide();
     void CheckCantFindExit();
     bool DecideAndBuyItem(uint8_t rideIndex, int32_t shopItem, money32 price);
-    void SetSpriteType(uint8_t new_sprite_type);
+    void SetSpriteType(PEEP_SPRITE_TYPE new_sprite_type);
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)

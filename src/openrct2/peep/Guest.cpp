@@ -6644,7 +6644,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 }
 
 /* Part of 0x0069B8CC rct2: 0x0069BC31 */
-void rct_peep::SetSpriteType(uint8_t new_sprite_type)
+void rct_peep::SetSpriteType(PEEP_SPRITE_TYPE new_sprite_type)
 {
     if (sprite_type == new_sprite_type)
         return;
@@ -6684,7 +6684,7 @@ struct item_pref_t
 {
     uint8_t type;  // 0 for standard, 1 for extra
     uint32_t item; // And this with the relevant flags
-    uint8_t sprite_type;
+    PEEP_SPRITE_TYPE sprite_type;
 };
 
 // clang-format off
@@ -6720,7 +6720,7 @@ static item_pref_t item_order_preference[] = {
         { 0, PEEP_ITEM_BALLOON, PEEP_SPRITE_TYPE_BALLOON },
         { 0, PEEP_ITEM_HAT, PEEP_SPRITE_TYPE_HAT },
         { 1, PEEP_ITEM_SUNGLASSES, PEEP_SPRITE_TYPE_SUNGLASSES },
-        { 0xFF, 0xFFFFFFFF, 0xFF}
+        { 0xFF, 0xFFFFFFFF, PEEP_SPRITE_TYPE_INVALID }
 };
 // clang-format on
 
