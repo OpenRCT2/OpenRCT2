@@ -1367,16 +1367,16 @@ loc_69B221:
         item_standard_flags |= (1u << shopItem);
 
     if (shopItem == SHOP_ITEM_TSHIRT)
-        tshirt_colour = ride->track_colour_main[0];
+        tshirt_colour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_HAT)
-        hat_colour = ride->track_colour_main[0];
+        hat_colour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_BALLOON)
-        balloon_colour = ride->track_colour_main[0];
+        balloon_colour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_UMBRELLA)
-        umbrella_colour = ride->track_colour_main[0];
+        umbrella_colour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_MAP)
         peep_reset_pathfind_goal(this);

@@ -4386,13 +4386,13 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             dropdown_set_checked(colourSchemeIndex, true);
             break;
         case WIDX_TRACK_MAIN_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_main[colourSchemeIndex]);
+            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].main);
             break;
         case WIDX_TRACK_ADDITIONAL_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_additional[colourSchemeIndex]);
+            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].additional);
             break;
         case WIDX_TRACK_SUPPORT_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_supports[colourSchemeIndex]);
+            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].supports);
             break;
         case WIDX_MAZE_STYLE_DROPDOWN:
             for (i = 0; i < 4; i++)
@@ -4405,7 +4405,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
                 w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
                 w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, widget->right - dropdownWidget->left);
 
-            dropdown_set_checked(ride->track_colour_supports[colourSchemeIndex], true);
+            dropdown_set_checked(ride->track_colour[colourSchemeIndex].supports, true);
             break;
         case WIDX_ENTRANCE_STYLE_DROPDOWN:
         {
@@ -4595,7 +4595,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     rct_widget* widgets;
     rct_ride_entry* rideEntry;
     Ride* ride;
-    track_colour trackColour;
+    TrackColour trackColour;
     vehicle_colour vehicleColour;
 
     widgets = window_ride_page_widgets[w->page];
@@ -4836,7 +4836,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1,
             PALETTE_INDEX_12);
 
-    track_colour trackColour = ride_get_track_colour(ride, w->ride_colour);
+    auto trackColour = ride_get_track_colour(ride, w->ride_colour);
 
     //
     if (rideEntry->shop_item == SHOP_ITEM_NONE)
@@ -4876,7 +4876,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
         uint8_t shopItem = rideEntry->shop_item_secondary == SHOP_ITEM_NONE ? rideEntry->shop_item
                                                                             : rideEntry->shop_item_secondary;
         int32_t spriteIndex = ShopItemImage[shopItem];
-        spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_main[0]);
+        spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[0].main);
 
         gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
     }

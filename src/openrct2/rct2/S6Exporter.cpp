@@ -664,9 +664,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
-        dst->track_colour_main[i] = src->track_colour_main[i];
-        dst->track_colour_additional[i] = src->track_colour_additional[i];
-        dst->track_colour_supports[i] = src->track_colour_supports[i];
+        dst->track_colour_main[i] = src->track_colour[i].main;
+        dst->track_colour_additional[i] = src->track_colour[i].additional;
+        dst->track_colour_supports[i] = src->track_colour[i].supports;
     }
 
     dst->music = src->music;

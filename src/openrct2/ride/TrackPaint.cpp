@@ -2188,8 +2188,8 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         session->TrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(
-            ride->track_colour_main[trackColourScheme], ride->track_colour_additional[trackColourScheme]);
-        session->TrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
+            ride->track_colour[trackColourScheme].main, ride->track_colour[trackColourScheme].additional);
+        session->TrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[trackColourScheme].supports);
         session->TrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
         session->TrackColours[SCHEME_3] = 0x20C00000;
         if (tileElement->AsTrack()->IsHighlighted())

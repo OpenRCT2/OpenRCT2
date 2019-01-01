@@ -57,13 +57,13 @@ struct ride_list_item
 };
 assert_struct_size(ride_list_item, 2);
 
-struct track_colour
+struct TrackColour
 {
     uint8_t main;
     uint8_t additional;
     uint8_t supports;
 };
-assert_struct_size(track_colour, 3);
+assert_struct_size(TrackColour, 3);
 
 struct vehicle_colour
 {
@@ -76,7 +76,7 @@ assert_struct_size(vehicle_colour, 3);
 struct track_colour_preset_list
 {
     uint8_t count;
-    track_colour list[256];
+    TrackColour list[256];
 };
 assert_struct_size(track_colour_preset_list, (1 + 256 * 3));
 
@@ -326,9 +326,7 @@ struct Ride
     uint8_t connected_message_throttle;
     money32 income_per_hour;
     money32 profit;
-    uint8_t track_colour_main[NUM_COLOUR_SCHEMES];
-    uint8_t track_colour_additional[NUM_COLOUR_SCHEMES];
-    uint8_t track_colour_supports[NUM_COLOUR_SCHEMES];
+    TrackColour track_colour[NUM_COLOUR_SCHEMES];
     uint8_t music;
     uint8_t entrance_style;
     uint16_t vehicle_change_timeout;
@@ -1025,7 +1023,7 @@ rct_peep* ride_get_assigned_mechanic(Ride* ride);
 int32_t ride_get_total_length(Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 int32_t ride_can_have_multiple_circuits(Ride* ride);
-track_colour ride_get_track_colour(Ride* ride, int32_t colourScheme);
+TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);

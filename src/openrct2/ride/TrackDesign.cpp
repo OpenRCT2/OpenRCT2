@@ -1746,9 +1746,9 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, uint8_
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
-        ride->track_colour_main[i] = td6->track_spine_colour[i];
-        ride->track_colour_additional[i] = td6->track_rail_colour[i];
-        ride->track_colour_supports[i] = td6->track_support_colour[i];
+        ride->track_colour[i].main = td6->track_spine_colour[i];
+        ride->track_colour[i].additional = td6->track_rail_colour[i];
+        ride->track_colour[i].supports = td6->track_support_colour[i];
     }
 
     // Flat rides need their vehicle colours loaded for display
@@ -1978,9 +1978,9 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
-        ride->track_colour_main[i] = td6->track_spine_colour[i];
-        ride->track_colour_additional[i] = td6->track_rail_colour[i];
-        ride->track_colour_supports[i] = td6->track_support_colour[i];
+        ride->track_colour[i].main = td6->track_spine_colour[i];
+        ride->track_colour[i].additional = td6->track_rail_colour[i];
+        ride->track_colour[i].supports = td6->track_support_colour[i];
     }
 
     for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)

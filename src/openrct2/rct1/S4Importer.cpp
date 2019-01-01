@@ -992,27 +992,27 @@ private:
         dst->colour_scheme_type = src->colour_scheme;
         if (_gameVersion == FILE_VERSION_RCT1)
         {
-            dst->track_colour_main[0] = RCT1::GetColour(src->track_primary_colour);
-            dst->track_colour_additional[0] = RCT1::GetColour(src->track_secondary_colour);
-            dst->track_colour_supports[0] = RCT1::GetColour(src->track_support_colour);
+            dst->track_colour[0].main = RCT1::GetColour(src->track_primary_colour);
+            dst->track_colour[0].additional = RCT1::GetColour(src->track_secondary_colour);
+            dst->track_colour[0].supports = RCT1::GetColour(src->track_support_colour);
 
             // Balloons were always blue in the original RCT.
             if (src->type == RCT1_RIDE_TYPE_BALLOON_STALL)
             {
-                dst->track_colour_main[0] = COLOUR_LIGHT_BLUE;
+                dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
             }
             else if (src->type == RCT1_RIDE_TYPE_RIVER_RAPIDS)
             {
-                dst->track_colour_main[0] = COLOUR_WHITE;
+                dst->track_colour[0].main = COLOUR_WHITE;
             }
         }
         else
         {
             for (int i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
             {
-                dst->track_colour_main[i] = RCT1::GetColour(src->track_colour_main[i]);
-                dst->track_colour_additional[i] = RCT1::GetColour(src->track_colour_additional[i]);
-                dst->track_colour_supports[i] = RCT1::GetColour(src->track_colour_supports[i]);
+                dst->track_colour[i].main = RCT1::GetColour(src->track_colour_main[i]);
+                dst->track_colour[i].additional = RCT1::GetColour(src->track_colour_additional[i]);
+                dst->track_colour[i].supports = RCT1::GetColour(src->track_colour_supports[i]);
             }
             // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
             dst->entrance_style = src->entrance_style;
@@ -1077,9 +1077,9 @@ private:
         if (dst->type == RIDE_TYPE_MAZE)
         {
             if (_gameVersion < FILE_VERSION_RCT1_LL || src->track_colour_supports[0] > 3)
-                dst->track_colour_supports[0] = MAZE_WALL_TYPE_HEDGE;
+                dst->track_colour[0].supports = MAZE_WALL_TYPE_HEDGE;
             else
-                dst->track_colour_supports[0] = src->track_colour_supports[0];
+                dst->track_colour[0].supports = src->track_colour_supports[0];
         }
     }
 

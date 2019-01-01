@@ -3306,12 +3306,12 @@ rct_ride_measurement* ride_get_measurement(int32_t rideIndex, rct_string_id* mes
 
 #pragma region Colour functions
 
-track_colour ride_get_track_colour(Ride* ride, int32_t colourScheme)
+TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme)
 {
-    track_colour result;
-    result.main = ride->track_colour_main[colourScheme];
-    result.additional = ride->track_colour_additional[colourScheme];
-    result.supports = ride->track_colour_supports[colourScheme];
+    TrackColour result;
+    result.main = ride->track_colour[colourScheme].main;
+    result.additional = ride->track_colour[colourScheme].additional;
+    result.supports = ride->track_colour[colourScheme].supports;
     return result;
 }
 
@@ -6122,7 +6122,7 @@ int32_t ride_get_default_mode(Ride* ride)
     return availableModes[0];
 }
 
-static bool ride_with_colour_config_exists(uint8_t ride_type, const track_colour* colours)
+static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour* colours)
 {
     Ride* ride;
     int32_t i;
@@ -6131,11 +6131,11 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const track_colour
     {
         if (ride->type != ride_type)
             continue;
-        if (ride->track_colour_main[0] != colours->main)
+        if (ride->track_colour[0].main != colours->main)
             continue;
-        if (ride->track_colour_additional[0] != colours->additional)
+        if (ride->track_colour[0].additional != colours->additional)
             continue;
-        if (ride->track_colour_supports[0] != colours->supports)
+        if (ride->track_colour[0].supports != colours->supports)
             continue;
 
         return true;
@@ -6176,7 +6176,7 @@ int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
     for (int32_t i = 0; i < 200; i++)
     {
         int32_t listIndex = util_rand() % colourPresets->count;
-        const track_colour* colours = &colourPresets->list[listIndex];
+        const TrackColour* colours = &colourPresets->list[listIndex];
 
         if (!ride_with_colour_config_exists(ride_type, colours))
         {
@@ -6193,16 +6193,16 @@ int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
 void ride_set_colour_preset(Ride* ride, uint8_t index)
 {
     const track_colour_preset_list* colourPresets = &RideColourPresets[ride->type];
-    track_colour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
+    TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
     if (index < colourPresets->count)
     {
         colours = colourPresets->list[index];
     }
     for (int32_t i = 0; i < NUM_COLOUR_SCHEMES; i++)
     {
-        ride->track_colour_main[i] = colours.main;
-        ride->track_colour_additional[i] = colours.additional;
-        ride->track_colour_supports[i] = colours.supports;
+        ride->track_colour[i].main = colours.main;
+        ride->track_colour[i].additional = colours.additional;
+        ride->track_colour[i].supports = colours.supports;
     }
     ride->colour_scheme_type = 0;
 }
@@ -6475,7 +6475,7 @@ void game_command_set_ride_appearance(
     switch (type)
     {
         case 0:
-            if (index >= std::size(ride->track_colour_main))
+            if (index >= std::size(ride->track_colour))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;
@@ -6483,12 +6483,12 @@ void game_command_set_ride_appearance(
             }
             if (apply)
             {
-                ride->track_colour_main[index] = value;
+                ride->track_colour[index].main = value;
                 gfx_invalidate_screen();
             }
             break;
         case 1:
-            if (index >= std::size(ride->track_colour_additional))
+            if (index >= std::size(ride->track_colour))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;
@@ -6496,7 +6496,7 @@ void game_command_set_ride_appearance(
             }
             if (apply)
             {
-                ride->track_colour_additional[index] = value;
+                ride->track_colour[index].additional = value;
                 gfx_invalidate_screen();
             }
             break;
@@ -6527,7 +6527,7 @@ void game_command_set_ride_appearance(
             }
             break;
         case 4:
-            if (index >= std::size(ride->track_colour_supports))
+            if (index >= std::size(ride->track_colour))
             {
                 log_warning("Invalid game command, index %d out of bounds", index);
                 *ebx = MONEY32_UNDEFINED;
@@ -6535,7 +6535,7 @@ void game_command_set_ride_appearance(
             }
             if (apply)
             {
-                ride->track_colour_supports[index] = value;
+                ride->track_colour[index].supports = value;
                 gfx_invalidate_screen();
             }
             break;

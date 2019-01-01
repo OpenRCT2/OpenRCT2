@@ -777,9 +777,9 @@ static rct_track_td6* track_design_save_to_td6(uint8_t rideIndex)
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
-        td6->track_spine_colour[i] = ride->track_colour_main[i];
-        td6->track_rail_colour[i] = ride->track_colour_additional[i];
-        td6->track_support_colour[i] = ride->track_colour_supports[i];
+        td6->track_spine_colour[i] = ride->track_colour[i].main;
+        td6->track_rail_colour[i] = ride->track_colour[i].additional;
+        td6->track_support_colour[i] = ride->track_colour[i].supports;
     }
 
     td6->depart_flags = ride->depart_flags;

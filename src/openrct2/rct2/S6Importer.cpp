@@ -720,9 +720,9 @@ public:
 
         for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
         {
-            dst->track_colour_main[i] = src->track_colour_main[i];
-            dst->track_colour_additional[i] = src->track_colour_additional[i];
-            dst->track_colour_supports[i] = src->track_colour_supports[i];
+            dst->track_colour[i].main = src->track_colour_main[i];
+            dst->track_colour[i].additional = src->track_colour_additional[i];
+            dst->track_colour[i].supports = src->track_colour_supports[i];
         }
 
         dst->music = src->music;
