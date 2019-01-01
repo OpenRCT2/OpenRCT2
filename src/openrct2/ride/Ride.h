@@ -136,6 +136,22 @@ struct rct_ride_entry
 
 #pragma pack(pop)
 
+struct RideStation
+{
+    LocationXY8 Start;
+    uint8_t Height;
+    uint8_t Length;
+    uint8_t Depart;
+    uint8_t TrainAtStation;
+    TileCoordsXYZD Entrance;
+    TileCoordsXYZD Exit;
+    int32_t SegmentLength;
+    uint16_t SegmentTime;
+    uint8_t QueueTime;
+    uint16_t QueueLength;
+    uint16_t LastPeepInQueue;
+};
+
 /**
  * Ride structure.
  *
@@ -164,16 +180,6 @@ struct Ride
         };
     };
     LocationXY8 overall_view;
-    LocationXY8 station_starts[MAX_STATIONS];
-    uint8_t station_heights[MAX_STATIONS];
-    uint8_t station_length[MAX_STATIONS];
-    uint8_t station_depart[MAX_STATIONS];
-    // ride->vehicle index for current train waiting for passengers
-    // at station
-    uint8_t train_at_station[MAX_STATIONS];
-    TileCoordsXYZD entrances[MAX_STATIONS];
-    TileCoordsXYZD exits[MAX_STATIONS];
-    uint16_t last_peep_in_queue[MAX_STATIONS];
     uint16_t vehicles[MAX_VEHICLES_PER_RIDE]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
@@ -209,8 +215,6 @@ struct Ride
     int32_t average_speed;
     uint8_t current_test_segment;
     uint8_t average_speed_test_timeout;
-    int32_t length[MAX_STATIONS];
-    uint16_t time[MAX_STATIONS];
     fixed16_2dp max_positive_vertical_g;
     fixed16_2dp max_negative_vertical_g;
     fixed16_2dp max_lateral_g;
@@ -322,7 +326,6 @@ struct Ride
     uint8_t connected_message_throttle;
     money32 income_per_hour;
     money32 profit;
-    uint8_t queue_time[MAX_STATIONS];
     uint8_t track_colour_main[NUM_COLOUR_SCHEMES];
     uint8_t track_colour_additional[NUM_COLOUR_SCHEMES];
     uint8_t track_colour_supports[NUM_COLOUR_SCHEMES];
@@ -340,12 +343,13 @@ struct Ride
     int16_t cable_lift_y;
     uint8_t cable_lift_z;
     uint16_t cable_lift;
-    uint16_t queue_length[MAX_STATIONS];
     // These fields are used to warn users about issues.
     // Such issue can be hacked rides with incompatible options set.
     // They don't require export/import.
     uint8_t current_issues;
     uint32_t last_issue_time;
+    RideStation stations[MAX_STATIONS];
+
     bool CanBreakDown() const;
 };
 

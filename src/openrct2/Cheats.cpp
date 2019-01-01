@@ -370,8 +370,8 @@ static void cheat_remove_all_guests()
 
         for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
-            ride->queue_length[stationIndex] = 0;
-            ride->last_peep_in_queue[stationIndex] = SPRITE_INDEX_NULL;
+            ride->stations[stationIndex].QueueLength = 0;
+            ride->stations[stationIndex].LastPeepInQueue = SPRITE_INDEX_NULL;
         }
 
         for (auto trainIndex : ride->vehicles)

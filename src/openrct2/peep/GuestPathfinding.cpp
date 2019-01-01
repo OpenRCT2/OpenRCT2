@@ -2116,10 +2116,10 @@ int32_t guest_path_finding(rct_peep* peep)
     if (numEntranceStations == 0)
     {
         // closestStationNum is always 0 here.
-        LocationXY8 entranceXY = ride->station_starts[closestStationNum];
+        LocationXY8 entranceXY = ride->stations[closestStationNum].Start;
         loc.x = entranceXY.x;
         loc.y = entranceXY.y;
-        loc.z = ride->station_heights[closestStationNum];
+        loc.z = ride->stations[closestStationNum].Height;
     }
     else
     {

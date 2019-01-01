@@ -1542,13 +1542,14 @@ static void vehicle_update_measurements(rct_vehicle* vehicle)
         if (ride->average_speed_test_timeout == 0 && velocity > 0x8000)
         {
             ride->average_speed = add_clamp_int32_t(ride->average_speed, velocity);
-            ride->time[test_segment]++;
+            ride->stations[test_segment].SegmentTime++;
         }
 
         int32_t distance = abs(((vehicle->velocity + vehicle->acceleration) >> 10) * 42);
         if (vehicle->var_CE == 0)
         {
-            ride->length[test_segment] = add_clamp_int32_t(ride->length[test_segment], distance);
+            ride->stations[test_segment].SegmentLength = add_clamp_int32_t(
+                ride->stations[test_segment].SegmentLength, distance);
         }
 
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
@@ -2157,7 +2158,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
         // Boat Hire with passengers on it.
         if (ride->status != RIDE_STATUS_CLOSED || (ride->num_riders != 0 && ride->type != RIDE_TYPE_BOAT_HIRE))
         {
-            ride->train_at_station[vehicle->current_station] = 0xFF;
+            ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
             vehicle->sub_state = 2;
             return;
         }
@@ -2168,7 +2169,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
         uint8_t peep = ((-vehicle->vehicle_sprite_type) / 8) & 0xF;
         if (vehicle->peep[peep] != SPRITE_INDEX_NULL)
         {
-            ride->train_at_station[vehicle->current_station] = 0xFF;
+            ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
             vehicle->status = VEHICLE_STATUS_UNLOADING_PASSENGERS;
             vehicle->sub_state = 0;
             vehicle_invalidate_window(vehicle);
@@ -2178,7 +2179,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
         if (vehicle->num_peeps == 0)
             return;
 
-        ride->train_at_station[vehicle->current_station] = 0xFF;
+        ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
         vehicle->sub_state = 2;
         return;
     }
@@ -2186,7 +2187,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
     if (num_peeps_on_train == 0)
         return;
 
-    ride->train_at_station[vehicle->current_station] = 0xFF;
+    ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
     vehicle->status = VEHICLE_STATUS_WAITING_FOR_PASSENGERS;
     vehicle->sub_state = 0;
     vehicle_invalidate_window(vehicle);
@@ -2230,7 +2231,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
 
         if (ride_get_entrance_location(ride, vehicle->current_station).isNull())
         {
-            ride->train_at_station[vehicle->current_station] = 0xFF;
+            ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
             vehicle->sub_state = 2;
             return;
         }
@@ -2241,10 +2242,10 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle* vehicle)
             return;
         }
 
-        if (ride->train_at_station[vehicle->current_station] != 0xFF)
+        if (ride->stations[vehicle->current_station].TrainAtStation != 0xFF)
             return;
 
-        ride->train_at_station[vehicle->current_station] = trainIndex;
+        ride->stations[vehicle->current_station].TrainAtStation = trainIndex;
         vehicle->sub_state = 1;
         vehicle->time_waiting = 0;
 
@@ -2535,7 +2536,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
 
     if (skipCheck == false)
     {
-        if (!(ride->station_depart[vehicle->current_station] & STATION_DEPART_FLAG))
+        if (!(ride->stations[vehicle->current_station].Depart & STATION_DEPART_FLAG))
             return;
     }
 
@@ -2770,7 +2771,7 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
 
     /* Station is not ready to depart, so just return;
      * vehicle_id for this station is SPRITE_INDEX_NULL. */
-    if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG))
+    if (!(ride->stations[stationIndex].Depart & STATION_DEPART_FLAG))
     {
         return true;
     }
@@ -2827,10 +2828,10 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
 {
     Ride* ride = get_ride(vehicle->ride);
     int32_t station = vehicle->current_station;
-    LocationXY8 location = ride->station_starts[station];
+    LocationXY8 location = ride->stations[station].Start;
     int32_t x = location.x * 32;
     int32_t y = location.y * 32;
-    int32_t z = ride->station_heights[station];
+    int32_t z = ride->stations[station].Height;
 
     TileElement* tileElement = map_get_track_element_at(x, y, z);
     if (tileElement == nullptr)
@@ -2904,7 +2905,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
             {
                 if (ride_is_block_sectioned(sv_ride))
                 {
-                    if (!(sv_ride->station_depart[sv->station_id] & STATION_DEPART_FLAG))
+                    if (!(sv_ride->stations[sv->station_id].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
                         uint8_t rideId = 0xFF;
@@ -3050,22 +3051,22 @@ void vehicle_update_test_finish(rct_vehicle* vehicle)
 
     for (int32_t i = ride->num_stations - 1; i >= 1; i--)
     {
-        if (ride->time[i - 1] != 0)
+        if (ride->stations[i - 1].SegmentTime != 0)
             continue;
 
-        uint16_t oldTime = ride->time[i - 1];
-        ride->time[i - 1] = ride->time[i];
-        ride->time[i] = oldTime;
+        uint16_t oldTime = ride->stations[i - 1].SegmentTime;
+        ride->stations[i - 1].SegmentTime = ride->stations[i].SegmentTime;
+        ride->stations[i].SegmentTime = oldTime;
 
-        int32_t oldLength = ride->length[i - 1];
-        ride->length[i - 1] = ride->length[i];
-        ride->length[i] = oldLength;
+        int32_t oldLength = ride->stations[i - 1].SegmentLength;
+        ride->stations[i - 1].SegmentLength = ride->stations[i].SegmentLength;
+        ride->stations[i].SegmentLength = oldLength;
     }
 
     uint32_t totalTime = 0;
     for (uint8_t i = 0; i < ride->num_stations; ++i)
     {
-        totalTime += ride->time[i];
+        totalTime += ride->stations[i].SegmentTime;
     }
 
     totalTime = std::max(totalTime, 1u);
@@ -3107,8 +3108,11 @@ void vehicle_test_reset(rct_vehicle* vehicle)
     ride->num_sheltered_sections = 0;
     ride->highest_drop_height = 0;
     ride->special_track_elements = 0;
-    std::fill_n(ride->length, MAX_STATIONS, 0);
-    std::fill_n(ride->time, MAX_STATIONS, 0);
+    for (auto& station : ride->stations)
+    {
+        station.SegmentLength = 0;
+        station.SegmentTime = 0;
+    }
     ride->total_air_time = 0;
     ride->current_test_station = vehicle->current_station;
     window_invalidate_by_number(WC_RIDE, vehicle->ride);
@@ -3170,10 +3174,10 @@ static void vehicle_update_departing_boat_hire(rct_vehicle* vehicle)
     vehicle->lost_time_out = 0;
     Ride* ride = get_ride(vehicle->ride);
 
-    ride->station_depart[vehicle->current_station] &= STATION_DEPART_FLAG;
+    ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
     uint8_t waitingTime = std::max(ride->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
-    ride->station_depart[vehicle->current_station] |= waitingTime;
+    ride->stations[vehicle->current_station].Depart |= waitingTime;
     vehicle_update_travelling_boat_hire_setup(vehicle);
 }
 
@@ -3440,7 +3444,7 @@ static void vehicle_finish_departing(rct_vehicle* vehicle)
     if (ride->mode != RIDE_MODE_RACE && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
         && ride->mode != RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
     {
-        ride->station_depart[vehicle->current_station] &= STATION_DEPART_FLAG;
+        ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
         uint8_t waitingTime = 3;
         if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
@@ -3448,7 +3452,7 @@ static void vehicle_finish_departing(rct_vehicle* vehicle)
             waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
         }
 
-        ride->station_depart[vehicle->current_station] |= waitingTime;
+        ride->stations[vehicle->current_station].Depart |= waitingTime;
     }
 
     vehicle->status = VEHICLE_STATUS_TRAVELLING;
@@ -4237,7 +4241,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle)
         return;
 
     // This is slightly different to the vanilla function
-    ride->station_depart[vehicle->current_station] &= STATION_DEPART_FLAG;
+    ride->stations[vehicle->current_station].Depart &= STATION_DEPART_FLAG;
     uint8_t waitingTime = 3;
     if (ride->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
     {
@@ -4245,7 +4249,7 @@ static void vehicle_update_travelling_cable_lift(rct_vehicle* vehicle)
         waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
     }
 
-    ride->station_depart[vehicle->current_station] |= waitingTime;
+    ride->stations[vehicle->current_station].Depart |= waitingTime;
 }
 
 /**
@@ -9298,11 +9302,11 @@ loc_6DCE68:
     regs.dl = vehicle->track_z >> 3;
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if ((uint16_t)regs.ax != ride->station_starts[i].xy)
+        if ((uint16_t)regs.ax != ride->stations[i].Start.xy)
         {
             continue;
         }
-        if ((uint16_t)regs.dl != ride->station_heights[i])
+        if ((uint16_t)regs.dl != ride->stations[i].Height)
         {
             continue;
         }

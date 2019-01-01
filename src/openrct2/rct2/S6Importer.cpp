@@ -540,11 +540,11 @@ public:
 
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
-            dst->station_starts[i] = src->station_starts[i];
-            dst->station_heights[i] = src->station_heights[i];
-            dst->station_length[i] = src->station_length[i];
-            dst->station_depart[i] = src->station_depart[i];
-            dst->train_at_station[i] = src->train_at_station[i];
+            dst->stations[i].Start = src->station_starts[i];
+            dst->stations[i].Height = src->station_heights[i];
+            dst->stations[i].Length = src->station_length[i];
+            dst->stations[i].Depart = src->station_depart[i];
+            dst->stations[i].TrainAtStation = src->train_at_station[i];
             // Direction is fixed later.
 
             if (src->entrances[i].xy == RCT_XY8_UNDEFINED)
@@ -557,23 +557,23 @@ public:
             else
                 ride_set_exit_location(dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
 
-            dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
+            dst->stations[i].LastPeepInQueue = src->last_peep_in_queue[i];
 
-            dst->length[i] = src->length[i];
-            dst->time[i] = src->time[i];
+            dst->stations[i].SegmentLength = src->length[i];
+            dst->stations[i].SegmentTime = src->time[i];
 
-            dst->queue_time[i] = src->queue_time[i];
+            dst->stations[i].QueueTime = src->queue_time[i];
 
-            dst->queue_length[i] = src->queue_length[i];
+            dst->stations[i].QueueLength = src->queue_length[i];
         }
         // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
         for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
         {
-            dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
-            dst->train_at_station[i] = 255;
+            dst->stations[i].Start.xy = RCT_XY8_UNDEFINED;
+            dst->stations[i].TrainAtStation = 255;
             ride_clear_entrance_location(dst, i);
             ride_clear_exit_location(dst, i);
-            dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
+            dst->stations[i].LastPeepInQueue = SPRITE_INDEX_NULL;
         }
 
         for (int32_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)

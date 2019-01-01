@@ -2125,8 +2125,8 @@ static money32 place_maze_design(uint8_t flags, uint8_t rideIndex, uint16_t maze
         map_invalidate_element(fx, fy, tileElement);
 
         ride->maze_tiles++;
-        ride->station_heights[0] = tileElement->base_height;
-        ride->station_starts[0].xy = 0;
+        ride->stations[0].Height = tileElement->base_height;
+        ride->stations[0].Start.xy = 0;
         if (ride->maze_tiles == 1)
         {
             ride->overall_view.x = fx / 32;

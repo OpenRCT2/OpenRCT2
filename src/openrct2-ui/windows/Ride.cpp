@@ -1625,7 +1625,7 @@ static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIn
     // View
     for (i = stationIndex; i >= 0; i--)
     {
-        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
         {
             stationIndex--;
         }
@@ -1873,17 +1873,17 @@ static void window_ride_init_viewport(rct_window* w)
         do
         {
             stationIndex++;
-            if (ride->station_starts[stationIndex].xy != RCT_XY8_UNDEFINED)
+            if (ride->stations[stationIndex].Start.xy != RCT_XY8_UNDEFINED)
             {
                 count--;
             }
         } while (count >= 0);
 
-        LocationXY8 location = ride->station_starts[stationIndex];
+        LocationXY8 location = ride->stations[stationIndex].Start;
 
         focus.coordinate.x = location.x * 32;
         focus.coordinate.y = location.y * 32;
-        focus.coordinate.z = ride->station_heights[stationIndex] << 3;
+        focus.coordinate.z = ride->stations[stationIndex].Height << 3;
         focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
     }
     else
@@ -2697,7 +2697,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     do
     {
         stationIndex++;
-        if (ride->station_starts[stationIndex].xy != RCT_XY8_UNDEFINED)
+        if (ride->stations[stationIndex].Start.xy != RCT_XY8_UNDEFINED)
             count--;
     } while (count >= 0);
 
@@ -2718,7 +2718,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     // Queue length
     if (stringId == 0)
     {
-        int32_t queueLength = ride->queue_length[stationIndex];
+        int32_t queueLength = ride->stations[stationIndex].QueueLength;
         set_format_arg_body(static_cast<uint8_t*>(arguments), 2, (uintptr_t)queueLength, sizeof(uint16_t));
         stringId = STR_QUEUE_EMPTY;
         if (queueLength == 1)
@@ -5581,7 +5581,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     int32_t numTimes = 0;
                     for (int32_t i = 0; i < ride->num_stations; i++)
                     {
-                        time = ride->time[numTimes];
+                        time = ride->stations[numTimes].SegmentTime;
                         if (time != 0)
                         {
                             set_format_arg(0 + (numTimes * 4), uint16_t, STR_RIDE_TIME_ENTRY_WITH_SEPARATOR);
@@ -5613,7 +5613,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 int32_t numLengths = 0;
                 for (int32_t i = 0; i < ride->num_stations; i++)
                 {
-                    length = ride->length[numLengths];
+                    length = ride->stations[numLengths].SegmentLength;
                     if (length != 0)
                     {
                         length >>= 16;

@@ -368,7 +368,7 @@ static void ride_ratings_begin_proximity_loop()
 
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.xy != RCT_XY8_UNDEFINED)
         {
             gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             if (ride_get_entrance_location(rideIndex, i).isNull())
@@ -376,9 +376,9 @@ static void ride_ratings_begin_proximity_loop()
                 gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
 
-            int32_t x = ride->station_starts[i].x * 32;
-            int32_t y = ride->station_starts[i].y * 32;
-            int32_t z = ride->station_heights[i] * 8;
+            int32_t x = ride->stations[i].Start.x * 32;
+            int32_t y = ride->stations[i].Start.y * 32;
+            int32_t z = ride->stations[i].Height * 8;
 
             gRideRatingsCalcData.proximity_x = x;
             gRideRatingsCalcData.proximity_y = y;
@@ -1403,7 +1403,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     }
     else
     {
-        LocationXY8 location = ride->station_starts[i];
+        LocationXY8 location = ride->stations[i].Start;
         x = location.x;
         y = location.y;
     }
@@ -1411,7 +1411,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     int32_t z = tile_element_height(x * 32, y * 32) & 0xFFFF;
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
-    if (z > ride->station_heights[i] * 8)
+    if (z > ride->stations[i].Height * 8)
     {
         return 40;
     }
@@ -1642,7 +1642,7 @@ static void ride_ratings_apply_first_length_penalty(
     rating_tuple* ratings, Ride* ride, int32_t minFirstLength, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
-    if (ride->length[0] < minFirstLength)
+    if (ride->stations[0].SegmentLength < minFirstLength)
     {
         ratings->excitement /= excitementPenalty;
         ratings->intensity /= intensityPenalty;

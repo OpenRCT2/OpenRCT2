@@ -1108,7 +1108,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
     {
         for (int32_t station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
         {
-            z = ride->station_heights[station_index];
+            z = ride->stations[station_index].Height;
 
             TileCoordsXYZD location;
             if (i == 0)

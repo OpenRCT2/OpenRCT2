@@ -27,7 +27,7 @@ static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool
  */
 void ride_update_station(Ride* ride, int32_t stationIndex)
 {
-    if (ride->station_starts[stationIndex].xy == RCT_XY8_UNDEFINED)
+    if (ride->stations[stationIndex].Start.xy == RCT_XY8_UNDEFINED)
         return;
 
     switch (ride->mode)
@@ -58,17 +58,17 @@ static void ride_update_station_blocksection(Ride* ride, int32_t stationIndex)
 
     if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (tileElement != nullptr && tileElement->flags & 0x20))
     {
-        ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+        ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
 
-        if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
+        if ((ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
             || (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight()))
             ride_invalidate_station_start(ride, stationIndex, false);
     }
     else
     {
-        if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG))
+        if (!(ride->stations[stationIndex].Depart & STATION_DEPART_FLAG))
         {
-            ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+            ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
         }
         else if (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight())
@@ -88,7 +88,7 @@ static void ride_update_station_bumpercar(Ride* ride, int32_t stationIndex)
     // but since dodgems do not have station lights there is no point.
     if (ride->status == RIDE_STATUS_CLOSED || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
-        ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+        ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
         return;
     }
 
@@ -109,12 +109,12 @@ static void ride_update_station_bumpercar(Ride* ride, int32_t stationIndex)
 
             // End match
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-            ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+            ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
             return;
         }
 
         // Continue match
-        ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+        ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
     }
     else
     {
@@ -128,14 +128,14 @@ static void ride_update_station_bumpercar(Ride* ride, int32_t stationIndex)
             rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
             {
-                ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+                ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
                 return;
             }
         }
 
         // Begin the match
         ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-        ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+        ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
     }
 }
@@ -146,21 +146,21 @@ static void ride_update_station_bumpercar(Ride* ride, int32_t stationIndex)
  */
 static void ride_update_station_normal(Ride* ride, int32_t stationIndex)
 {
-    int32_t time = ride->station_depart[stationIndex] & STATION_DEPART_MASK;
+    int32_t time = ride->stations[stationIndex].Depart & STATION_DEPART_MASK;
     if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         || (ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0))
     {
         if (time != 0 && time != 127 && !(gCurrentTicks & 7))
             time--;
 
-        ride->station_depart[stationIndex] = time;
+        ride->stations[stationIndex].Depart = time;
         ride_invalidate_station_start(ride, stationIndex, false);
     }
     else
     {
         if (time == 0)
         {
-            ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+            ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
         }
         else
@@ -168,7 +168,7 @@ static void ride_update_station_normal(Ride* ride, int32_t stationIndex)
             if (time != 127 && !(gCurrentTicks & 31))
                 time--;
 
-            ride->station_depart[stationIndex] = time;
+            ride->stations[stationIndex].Depart = time;
             ride_invalidate_station_start(ride, stationIndex, false);
         }
     }
@@ -182,9 +182,9 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
 {
     if (ride->status == RIDE_STATUS_CLOSED || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
-        if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
+        if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
         {
-            ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+            ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, false);
         }
         return;
@@ -213,9 +213,9 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
 
                 // Race is over
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-                if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
+                if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
                 {
-                    ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+                    ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
                     ride_invalidate_station_start(ride, stationIndex, false);
                 }
                 return;
@@ -223,7 +223,7 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
         }
 
         // Continue racing
-        ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+        ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
     }
     else
     {
@@ -237,9 +237,9 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
             rct_vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING)
             {
-                if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
+                if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
                 {
-                    ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
+                    ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
                     ride_invalidate_station_start(ride, stationIndex, false);
                 }
                 return;
@@ -249,9 +249,9 @@ static void ride_update_station_race(Ride* ride, int32_t stationIndex)
         // Begin the race
         ride_race_init_vehicle_speeds(ride);
         ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-        if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG))
+        if (!(ride->stations[stationIndex].Depart & STATION_DEPART_FLAG))
         {
-            ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
+            ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
         }
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
@@ -311,8 +311,8 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
  */
 static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool greenLight)
 {
-    int32_t x = ride->station_starts[stationIndex].x * 32;
-    int32_t y = ride->station_starts[stationIndex].y * 32;
+    int32_t x = ride->stations[stationIndex].Start.x * 32;
+    int32_t y = ride->stations[stationIndex].Start.y * 32;
     TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
     // If no station track found return
@@ -327,9 +327,9 @@ static void ride_invalidate_station_start(Ride* ride, int32_t stationIndex, bool
 
 TileElement* ride_get_station_start_track_element(Ride* ride, int32_t stationIndex)
 {
-    int32_t x = ride->station_starts[stationIndex].x;
-    int32_t y = ride->station_starts[stationIndex].y;
-    int32_t z = ride->station_heights[stationIndex];
+    int32_t x = ride->stations[stationIndex].Start.x;
+    int32_t y = ride->stations[stationIndex].Start.y;
+    int32_t z = ride->stations[stationIndex].Height;
 
     // Find the station track element
     TileElement* tileElement = map_get_first_element_at(x, y);
@@ -360,7 +360,7 @@ int8_t ride_get_first_valid_station_exit(Ride* ride)
 {
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->exits[i].x != COORDS_NULL)
+        if (ride->stations[i].Exit.x != COORDS_NULL)
         {
             return i;
         }
@@ -372,7 +372,7 @@ int8_t ride_get_first_valid_station_start(const Ride* ride)
 {
     for (int8_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.xy != RCT_XY8_UNDEFINED)
         {
             return i;
         }
@@ -384,7 +384,7 @@ int8_t ride_get_first_empty_station_start(const Ride* ride)
 {
     for (int8_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
         {
             return i;
         }
@@ -395,41 +395,41 @@ int8_t ride_get_first_empty_station_start(const Ride* ride)
 TileCoordsXYZD ride_get_entrance_location(const int32_t rideIndex, const int32_t stationIndex)
 {
     const Ride* ride = get_ride(rideIndex);
-    return ride->entrances[stationIndex];
+    return ride->stations[stationIndex].Entrance;
 }
 
 TileCoordsXYZD ride_get_exit_location(const int32_t rideIndex, const int32_t stationIndex)
 {
     const Ride* ride = get_ride(rideIndex);
-    return ride->exits[stationIndex];
+    return ride->stations[stationIndex].Exit;
 }
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
 {
-    return ride->entrances[stationIndex];
+    return ride->stations[stationIndex].Entrance;
 }
 
 TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex)
 {
-    return ride->exits[stationIndex];
+    return ride->stations[stationIndex].Exit;
 }
 
 void ride_clear_entrance_location(Ride* ride, const int32_t stationIndex)
 {
-    ride->entrances[stationIndex].x = COORDS_NULL;
+    ride->stations[stationIndex].Entrance.x = COORDS_NULL;
 }
 
 void ride_clear_exit_location(Ride* ride, const int32_t stationIndex)
 {
-    ride->exits[stationIndex].x = COORDS_NULL;
+    ride->stations[stationIndex].Exit.x = COORDS_NULL;
 }
 
 void ride_set_entrance_location(Ride* ride, const int32_t stationIndex, const TileCoordsXYZD location)
 {
-    ride->entrances[stationIndex] = location;
+    ride->stations[stationIndex].Entrance = location;
 }
 
 void ride_set_exit_location(Ride* ride, const int32_t stationIndex, const TileCoordsXYZD location)
 {
-    ride->exits[stationIndex] = location;
+    ride->stations[stationIndex].Exit = location;
 }

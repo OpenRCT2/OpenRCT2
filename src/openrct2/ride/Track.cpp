@@ -623,9 +623,9 @@ static void ride_remove_station(Ride* ride, int32_t x, int32_t y, int32_t z)
 {
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->station_starts[i].x == (x >> 5) && ride->station_starts[i].y == (y >> 5) && ride->station_heights[i] == z)
+        if (ride->stations[i].Start.x == (x >> 5) && ride->stations[i].Start.y == (y >> 5) && ride->stations[i].Height == z)
         {
-            ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
+            ride->stations[i].Start.xy = RCT_XY8_UNDEFINED;
             ride->num_stations--;
             break;
         }
@@ -657,11 +657,11 @@ static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t d
             int8_t stationIndex = ride_get_first_empty_station_start(ride);
             assert(stationIndex != -1);
 
-            ride->station_starts[stationIndex].x = (x >> 5);
-            ride->station_starts[stationIndex].y = (y >> 5);
-            ride->station_heights[stationIndex] = z;
-            ride->station_depart[stationIndex] = 1;
-            ride->station_length[stationIndex] = 0;
+            ride->stations[stationIndex].Start.x = (x >> 5);
+            ride->stations[stationIndex].Start.y = (y >> 5);
+            ride->stations[stationIndex].Height = z;
+            ride->stations[stationIndex].Depart = 1;
+            ride->stations[stationIndex].Length = 0;
             ride->num_stations++;
         }
         return true;
@@ -750,11 +750,11 @@ static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t d
                     int8_t stationIndex = ride_get_first_empty_station_start(ride);
                     assert(stationIndex != -1);
 
-                    ride->station_starts[stationIndex].x = (x >> 5);
-                    ride->station_starts[stationIndex].y = (y >> 5);
-                    ride->station_heights[stationIndex] = z;
-                    ride->station_depart[stationIndex] = 1;
-                    ride->station_length[stationIndex] = stationLength;
+                    ride->stations[stationIndex].Start.x = (x >> 5);
+                    ride->stations[stationIndex].Start.y = (y >> 5);
+                    ride->stations[stationIndex].Height = z;
+                    ride->stations[stationIndex].Depart = 1;
+                    ride->stations[stationIndex].Length = stationLength;
                     ride->num_stations++;
 
                     targetTrackType = TRACK_ELEM_END_STATION;
@@ -893,11 +893,11 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
                     int8_t stationIndex = ride_get_first_empty_station_start(ride);
                     assert(stationIndex != -1);
 
-                    ride->station_starts[stationIndex].x = (x >> 5);
-                    ride->station_starts[stationIndex].y = (y >> 5);
-                    ride->station_heights[stationIndex] = z;
-                    ride->station_depart[stationIndex] = 1;
-                    ride->station_length[stationIndex] = stationLength != 0 ? stationLength : byte_F441D1;
+                    ride->stations[stationIndex].Start.x = (x >> 5);
+                    ride->stations[stationIndex].Start.y = (y >> 5);
+                    ride->stations[stationIndex].Height = z;
+                    ride->stations[stationIndex].Depart = 1;
+                    ride->stations[stationIndex].Length = stationLength != 0 ? stationLength : byte_F441D1;
                     ride->num_stations++;
 
                     stationLength = 0;

@@ -1959,7 +1959,7 @@ void rct_peep::UpdateHeadingToInspect()
         return;
     }
 
-    int32_t newZ = ride->station_heights[current_ride_station] * 8;
+    int32_t newZ = ride->stations[current_ride_station].Height * 8;
 
     if (delta_y < 20)
     {
@@ -2077,7 +2077,7 @@ void rct_peep::UpdateAnswering()
         return;
     }
 
-    int32_t newZ = ride->station_heights[current_ride_station] * 8;
+    int32_t newZ = ride->stations[current_ride_station].Height * 8;
 
     if (delta_y < 20)
     {
@@ -2768,13 +2768,13 @@ bool rct_peep::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
             return true;
         }
 
-        LocationXY8 stationPosition = ride->station_starts[current_ride_station];
+        LocationXY8 stationPosition = ride->stations[current_ride_station].Start;
         if (stationPosition.xy == RCT_XY8_UNDEFINED)
         {
             return true;
         }
 
-        uint8_t stationZ = ride->station_heights[current_ride_station];
+        uint8_t stationZ = ride->stations[current_ride_station].Height;
         uint16_t stationX = stationPosition.x * 32;
         uint16_t stationY = stationPosition.y * 32;
 
@@ -2864,13 +2864,13 @@ bool rct_peep::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
             return true;
         }
 
-        LocationXY8 stationPosition = ride->station_starts[current_ride_station];
+        LocationXY8 stationPosition = ride->stations[current_ride_station].Start;
         if (stationPosition.xy == RCT_XY8_UNDEFINED)
         {
             return true;
         }
 
-        uint8_t stationZ = ride->station_heights[current_ride_station];
+        uint8_t stationZ = ride->stations[current_ride_station].Height;
 
         CoordsXYE input;
         input.x = stationPosition.x * 32;
@@ -3147,7 +3147,7 @@ bool rct_peep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
         return false;
     }
 
-    uint16_t stationHeight = ride->station_heights[current_ride_station] * 8;
+    uint16_t stationHeight = ride->stations[current_ride_station].Height * 8;
 
     if (xy_distance >= 16)
     {

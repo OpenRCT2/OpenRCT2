@@ -865,7 +865,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
             if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
                 continue;
-            if (ride->length[0] < (600 << 16))
+            if (ride->stations[0].SegmentLength < (600 << 16))
                 continue;
             if (ride->excitement < RIDE_RATING(6, 00))
                 continue;

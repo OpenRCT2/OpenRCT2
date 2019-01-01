@@ -1002,21 +1002,21 @@ void rct_peep::RemoveFromQueue()
 {
     Ride* ride = get_ride(current_ride);
 
-    uint8_t cur_station = current_ride_station;
+    auto& station = ride->stations[current_ride_station];
     // Make sure we don't underflow, building while paused might reset it to 0 where peeps have
     // not yet left the queue.
-    if (ride->queue_length[cur_station] > 0)
+    if (station.QueueLength > 0)
     {
-        ride->queue_length[cur_station]--;
+        station.QueueLength--;
     }
 
-    if (sprite_index == ride->last_peep_in_queue[cur_station])
+    if (sprite_index == station.LastPeepInQueue)
     {
-        ride->last_peep_in_queue[cur_station] = next_in_queue;
+        station.LastPeepInQueue = next_in_queue;
         return;
     }
 
-    uint16_t spriteId = ride->last_peep_in_queue[cur_station];
+    auto spriteId = station.LastPeepInQueue;
     while (spriteId != SPRITE_INDEX_NULL)
     {
         rct_peep* other_peep = GET_PEEP(spriteId);
@@ -1739,7 +1739,7 @@ bool rct_peep::ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQue
         if (peepAtRide)
         {
             // Peeps won't join a queue that has 1000 peeps already in it.
-            if (ride->queue_length[entranceNum] >= 1000)
+            if (ride->stations[entranceNum].QueueLength >= 1000)
             {
                 peep_tried_to_enter_full_queue(this, rideIndex);
                 return false;
@@ -1748,7 +1748,7 @@ bool rct_peep::ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQue
             // Rides without queues can only have one peep waiting at a time.
             if (!atQueue)
             {
-                if (ride->last_peep_in_queue[entranceNum] != 0xFFFF)
+                if (ride->stations[entranceNum].LastPeepInQueue != 0xFFFF)
                 {
                     peep_tried_to_enter_full_queue(this, rideIndex);
                     return false;
@@ -1757,9 +1757,9 @@ bool rct_peep::ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQue
             else
             {
                 // Check if there's room in the queue for the peep to enter.
-                if (ride->last_peep_in_queue[entranceNum] != 0xFFFF)
+                if (ride->stations[entranceNum].LastPeepInQueue != 0xFFFF)
                 {
-                    rct_peep* lastPeepInQueue = GET_PEEP(ride->last_peep_in_queue[entranceNum]);
+                    rct_peep* lastPeepInQueue = GET_PEEP(ride->stations[entranceNum].LastPeepInQueue);
                     if (abs(lastPeepInQueue->z - z) <= 6)
                     {
                         int32_t dx = abs(lastPeepInQueue->x - x);
@@ -2340,7 +2340,7 @@ static bool peep_find_vehicle_to_enter(rct_peep* peep, Ride* ride, std::vector<u
     }
     else
     {
-        chosen_train = ride->train_at_station[peep->current_ride_station];
+        chosen_train = ride->stations[peep->current_ride_station].TrainAtStation;
     }
     if (chosen_train == 0xFF)
     {
@@ -2995,8 +2995,8 @@ static void peep_head_for_nearest_ride_type(rct_peep* peep, int32_t rideType)
     for (int32_t i = 0; i < numPotentialRides; i++)
     {
         ride = get_ride(potentialRides[i]);
-        int32_t rideX = ride->station_starts[0].x * 32;
-        int32_t rideY = ride->station_starts[0].y * 32;
+        int32_t rideX = ride->stations[0].Start.x * 32;
+        int32_t rideY = ride->stations[0].Start.y * 32;
         int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
         if (distance < closestRideDistance)
         {
@@ -3124,8 +3124,8 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep* peep, int32_t rideTy
     for (int32_t i = 0; i < numPotentialRides; i++)
     {
         ride = get_ride(potentialRides[i]);
-        int32_t rideX = ride->station_starts[0].x * 32;
-        int32_t rideY = ride->station_starts[0].y * 32;
+        int32_t rideX = ride->stations[0].Start.x * 32;
+        int32_t rideY = ride->stations[0].Start.y * 32;
         int32_t distance = abs(rideX - peep->x) + abs(rideY - peep->y);
         if (distance < closestRideDistance)
         {
@@ -3458,8 +3458,8 @@ static void peep_update_ride_leave_entrance_maze(rct_peep* peep, Ride* ride, Til
 
 static void peep_update_ride_leave_entrance_spiral_slide(rct_peep* peep, Ride* ride, TileCoordsXYZD& entrance_loc)
 {
-    entrance_loc.x = ride->station_starts[peep->current_ride_station].x * 32;
-    entrance_loc.y = ride->station_starts[peep->current_ride_station].y * 32;
+    entrance_loc.x = ride->stations[peep->current_ride_station].Start.x * 32;
+    entrance_loc.y = ride->stations[peep->current_ride_station].Start.y * 32;
 
     TileElement* tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
@@ -3514,8 +3514,8 @@ static void peep_update_ride_leave_entrance_waypoints(rct_peep* peep, Ride* ride
     uint8_t direction_entrance = entranceLocation.direction;
 
     LocationXY16 waypoint;
-    waypoint.x = ride->station_starts[peep->current_ride_station].x * 32 + 16;
-    waypoint.y = ride->station_starts[peep->current_ride_station].y * 32 + 16;
+    waypoint.x = ride->stations[peep->current_ride_station].Start.x * 32 + 16;
+    waypoint.y = ride->stations[peep->current_ride_station].Start.y * 32 + 16;
 
     TileElement* tile_element = ride_get_station_start_track_element(ride, peep->current_ride_station);
 
@@ -3573,7 +3573,7 @@ void rct_peep::UpdateRideAdvanceThroughEntrance()
 
         Invalidate();
 
-        actionZ = ride->station_heights[current_ride_station] * 8;
+        actionZ = ride->stations[current_ride_station].Height * 8;
 
         distanceThreshold += 4;
         if (xy_distance < distanceThreshold)
@@ -3765,9 +3765,9 @@ void rct_peep::UpdateRideFreeVehicleEnterRide(Ride* ride)
         queueTime += 3;
 
     queueTime /= 2;
-    if (queueTime != ride->queue_time[current_ride_station])
+    if (queueTime != ride->stations[current_ride_station].QueueTime)
     {
-        ride->queue_time[current_ride_station] = queueTime;
+        ride->stations[current_ride_station].QueueTime = queueTime;
         window_invalidate_by_number(WC_RIDE, current_ride);
     }
 
@@ -4045,7 +4045,7 @@ void rct_peep::UpdateRideLeaveVehicle()
         assert(current_ride_station < MAX_STATIONS);
         TileCoordsXYZD exitLocation = ride_get_exit_location(current_ride, current_ride_station);
         CoordsXYZD platformLocation;
-        platformLocation.z = ride->station_heights[current_ride_station];
+        platformLocation.z = ride->stations[current_ride_station].Height;
 
         platformLocation.direction = exitLocation.direction ^ (1 << 1);
 
@@ -4128,7 +4128,7 @@ void rct_peep::UpdateRideLeaveVehicle()
                 break;
         }
 
-        platformLocation.z = ride->station_heights[current_ride_station] * 8;
+        platformLocation.z = ride->stations[current_ride_station].Height * 8;
 
         peep_go_to_ride_exit(
             this, ride, platformLocation.x, platformLocation.y, platformLocation.z, platformLocation.direction);
@@ -4140,8 +4140,8 @@ void rct_peep::UpdateRideLeaveVehicle()
     CoordsXYZ waypointLoc;
 
     waypointLoc.z = (int16_t)exitLocation.z * 8 + RideData5[ride->type].z;
-    waypointLoc.x = ride->station_starts[current_ride_station].x * 32 + 16;
-    waypointLoc.y = ride->station_starts[current_ride_station].y * 32 + 16;
+    waypointLoc.x = ride->stations[current_ride_station].Start.x * 32 + 16;
+    waypointLoc.y = ride->stations[current_ride_station].Start.y * 32 + 16;
 
     TileElement* trackElement = ride_get_station_start_track_element(ride, current_ride_station);
 
@@ -4190,7 +4190,7 @@ static void peep_update_ride_prepare_for_exit(rct_peep* peep)
 {
     Ride* ride = get_ride(peep->current_ride);
 
-    Guard::Assert(peep->current_ride_station < std::size(ride->exits), GUARD_LINE);
+    Guard::Assert(peep->current_ride_station < std::size(ride->stations), GUARD_LINE);
     auto exit = ride_get_exit_location(peep->current_ride, peep->current_ride_station);
     int16_t x = exit.x;
     int16_t y = exit.y;
@@ -4261,7 +4261,7 @@ void rct_peep::UpdateRideInExit()
 
         if (xy_distance >= 16)
         {
-            int16_t actionZ = ride->station_heights[current_ride_station] * 8;
+            int16_t actionZ = ride->stations[current_ride_station].Height * 8;
 
             actionZ += RideData5[ride->type].z;
             MoveTo(actionX, actionY, actionZ);
@@ -4301,7 +4301,7 @@ void rct_peep::UpdateRideApproachVehicleWaypoints()
         // Motion simulators have steps this moves the peeps up the steps
         if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         {
-            actionZ = ride->station_heights[current_ride_station] * 8 + 2;
+            actionZ = ride->stations[current_ride_station].Height * 8 + 2;
 
             if (waypoint == 2)
             {
@@ -4337,8 +4337,8 @@ void rct_peep::UpdateRideApproachVehicleWaypoints()
 
     rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 
-    actionX = ride->station_starts[current_ride_station].x * 32 + 16;
-    actionY = ride->station_starts[current_ride_station].y * 32 + 16;
+    actionX = ride->stations[current_ride_station].Start.x * 32 + 16;
+    actionY = ride->stations[current_ride_station].Start.y * 32 + 16;
 
     if (ride->type == RIDE_TYPE_ENTERPRISE)
     {
@@ -4375,7 +4375,7 @@ void rct_peep::UpdateRideApproachExitWaypoints()
         int16_t actionZ;
         if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         {
-            actionZ = ride->station_heights[current_ride_station] * 8 + 2;
+            actionZ = ride->stations[current_ride_station].Height * 8 + 2;
 
             if ((var_37 & 3) == 1)
             {
@@ -4406,8 +4406,8 @@ void rct_peep::UpdateRideApproachExitWaypoints()
         var_37--;
         rct_vehicle* vehicle = GET_VEHICLE(ride->vehicles[current_train]);
 
-        actionX = ride->station_starts[current_ride_station].x * 32 + 16;
-        actionY = ride->station_starts[current_ride_station].y * 32 + 16;
+        actionX = ride->stations[current_ride_station].Start.x * 32 + 16;
+        actionY = ride->stations[current_ride_station].Start.y * 32 + 16;
 
         if (ride->type == RIDE_TYPE_ENTERPRISE)
         {
@@ -4507,8 +4507,8 @@ void rct_peep::UpdateRideApproachSpiralSlide()
             auto exit = ride_get_exit_location(current_ride, current_ride_station);
             waypoint = 1;
             var_37 = (exit.direction * 4) | (var_37 & 0x30) | waypoint;
-            actionX = ride->station_starts[current_ride_station].x * 32;
-            actionY = ride->station_starts[current_ride_station].y * 32;
+            actionX = ride->stations[current_ride_station].Start.x * 32;
+            actionY = ride->stations[current_ride_station].Start.y * 32;
 
             assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
             const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
@@ -4526,8 +4526,8 @@ void rct_peep::UpdateRideApproachSpiralSlide()
     // Actually increment the real peep waypoint
     var_37++;
 
-    actionX = ride->station_starts[current_ride_station].x * 32;
-    actionY = ride->station_starts[current_ride_station].y * 32;
+    actionX = ride->stations[current_ride_station].Start.x * 32;
+    actionY = ride->stations[current_ride_station].Start.y * 32;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
@@ -4589,8 +4589,8 @@ void rct_peep::UpdateRideOnSpiralSlide()
                 return;
             case 3:
             {
-                int16_t newX = ride->station_starts[current_ride_station].x * 32;
-                int16_t newY = ride->station_starts[current_ride_station].y * 32;
+                int16_t newX = ride->stations[current_ride_station].Start.x * 32;
+                int16_t newY = ride->stations[current_ride_station].Start.y * 32;
                 uint8_t dir = (var_37 / 4) & 3;
 
                 // Set the location that the peep walks to go on slide again
@@ -4626,8 +4626,8 @@ void rct_peep::UpdateRideOnSpiralSlide()
     uint8_t waypoint = 2;
     var_37 = (var_37 * 4 & 0x30) + waypoint;
 
-    actionX = ride->station_starts[current_ride_station].x * 32;
-    actionY = ride->station_starts[current_ride_station].y * 32;
+    actionX = ride->stations[current_ride_station].Start.x * 32;
+    actionY = ride->stations[current_ride_station].Start.y * 32;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
@@ -4673,8 +4673,8 @@ void rct_peep::UpdateRideLeaveSpiralSlide()
         waypoint--;
         // Actually decrement the peep waypoint
         var_37--;
-        actionX = ride->station_starts[current_ride_station].x * 32;
-        actionY = ride->station_starts[current_ride_station].y * 32;
+        actionX = ride->stations[current_ride_station].Start.x * 32;
+        actionY = ride->stations[current_ride_station].Start.y * 32;
 
         assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
         const CoordsXY slidePlatformDestination = SpiralSlideWalkingPath[var_37];
@@ -4763,7 +4763,7 @@ void rct_peep::UpdateRideMazePathfinding()
 
     actionX = destination_x & 0xFFE0;
     actionY = destination_y & 0xFFE0;
-    int16_t stationHeight = ride->station_heights[0];
+    int16_t stationHeight = ride->stations[0].Height;
 
     // Find the station track element
     TileElement* tileElement = map_get_first_element_at(actionX / 32, actionY / 32);
@@ -4901,7 +4901,7 @@ void rct_peep::UpdateRideLeaveExit()
     if (UpdateAction(&actionX, &actionY, &xy_distance))
     {
         Invalidate();
-        MoveTo(actionX, actionY, ride->station_heights[current_ride_station] * 8);
+        MoveTo(actionX, actionY, ride->stations[current_ride_station].Height * 8);
         Invalidate();
         return;
     }
