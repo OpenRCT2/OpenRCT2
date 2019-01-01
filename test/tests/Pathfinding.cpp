@@ -11,6 +11,7 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
+#include "openrct2/ride/Station.h"
 
 using namespace OpenRCT2;
 
@@ -50,7 +51,22 @@ public:
     }
 
 protected:
-    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps)
+
+    static Ride* FindRideByName(const char* name, int32_t* outRideIndex)
+    {
+        Ride* ride;
+        FOR_ALL_RIDES ((*outRideIndex), ride)
+        {
+            char thisName[256];
+            format_string(thisName, sizeof(thisName), ride->name, &ride->name_arguments);
+            if (!_strnicmp(thisName, name, sizeof(thisName)))
+                return ride;
+        }
+
+        return nullptr;
+    }
+
+    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, int targetRideID)
     {
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
@@ -60,6 +76,12 @@ protected:
         // Peeps that are outside of the park use specialized pathfinding which we don't want to
         // use here
         peep->outside_of_park = 0;
+
+        // An earlier iteration of this code just gave peeps a target position to walk to, but it turns out
+        // that with no actual ride to head towards, when a peep reaches a junction they use the 'aimless'
+        // pathfinder instead of pursuing their original pathfinding target. So, we always need to give them
+        // an actual ride to walk to the entrance of.
+        peep->guest_heading_to_ride_id = targetRideID;
 
         // Pick the direction the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.
@@ -112,12 +134,16 @@ protected:
 
     static ::testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
-        return AssertPositionIsSetUp("Start", 11u, location);
-    }
+        const uint32_t expectedSurfaceStyle = 11u;
+        const uint32_t style = map_get_surface_element_at(location.x, location.y)->AsSurface()->GetSurfaceStyle();
 
-    static ::testing::AssertionResult AssertIsGoalPosition(const char*, const TileCoordsXYZ& location)
-    {
-        return AssertPositionIsSetUp("Goal", 9u, location);
+        if (style != expectedSurfaceStyle)
+            return ::testing::AssertionFailure()
+                << "Start location " << location << " should have surface style " << expectedSurfaceStyle
+                << " but actually has style " << style
+                << ". Either the test map is not set up correctly, or you got the coordinates wrong.";
+
+        return ::testing::AssertionSuccess();
     }
 
     static ::testing::AssertionResult AssertIsNotForbiddenPosition(const char*, const TileCoordsXYZ& location)
@@ -135,20 +161,6 @@ protected:
     }
 
 private:
-    static ::testing::AssertionResult AssertPositionIsSetUp(
-        const char* positionKind, uint32_t expectedSurfaceStyle, const TileCoordsXYZ& location)
-    {
-        const uint32_t style = map_get_surface_element_at(location.x, location.y)->AsSurface()->GetSurfaceStyle();
-
-        if (style != expectedSurfaceStyle)
-            return ::testing::AssertionFailure()
-                << positionKind << " location " << location << " should have surface style " << expectedSurfaceStyle
-                << " but actually has style " << style
-                << ". Either the test map is not set up correctly, or you got the coordinates wrong.";
-
-        return ::testing::AssertionSuccess();
-    }
-
     static std::shared_ptr<IContext> _context;
 };
 
@@ -158,20 +170,13 @@ struct SimplePathfindingScenario
 {
     const char* name;
     TileCoordsXYZ start;
-    TileCoordsXYZ goal;
     uint32_t steps;
 
-    SimplePathfindingScenario(const char* _name, const TileCoordsXYZ& _start, const TileCoordsXYZ& _goal, int _steps)
+    SimplePathfindingScenario(const char* _name, const TileCoordsXYZ& _start, int _steps)
         : name(_name)
         , start(_start)
-        , goal(_goal)
         , steps(_steps)
     {
-    }
-
-    friend std::ostream& operator<<(std::ostream& os, const SimplePathfindingScenario& scenario)
-    {
-        return os << scenario.start << " => " << scenario.goal;
     }
 
     static std::string ToName(const ::testing::TestParamInfo<SimplePathfindingScenario>& param_info)
@@ -189,13 +194,21 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     const SimplePathfindingScenario& scenario = GetParam();
 
     ASSERT_PRED_FORMAT1(AssertIsStartPosition, scenario.start);
-    ASSERT_PRED_FORMAT1(AssertIsGoalPosition, scenario.goal);
-
     TileCoordsXYZ pos = scenario.start;
 
-    const auto succeeded = FindPath(&pos, scenario.goal, scenario.steps) ? ::testing::AssertionSuccess()
-                                                                         : ::testing::AssertionFailure()
-            << "Failed to find path from " << scenario.start << " to " << scenario.goal << " in " << scenario.steps
+    int32_t rideIndex;
+    Ride* ride = FindRideByName(scenario.name, &rideIndex);
+    ASSERT_NE(ride, nullptr);
+
+    auto entrancePos = ride_get_entrance_location(ride, 0);
+    TileCoordsXYZ goal = TileCoordsXYZ(
+        entrancePos.x - TileDirectionDelta[entrancePos.direction].x,
+        entrancePos.y - TileDirectionDelta[entrancePos.direction].y,
+        entrancePos.z);
+
+    const auto succeeded = FindPath(&pos, goal, scenario.steps, rideIndex) ? ::testing::AssertionSuccess()
+                                                                                    : ::testing::AssertionFailure()
+            << "Failed to find path from " << scenario.start << " to " << goal << " in " << scenario.steps
             << " steps; reached " << pos << " before giving up.";
 
     EXPECT_TRUE(succeeded);
@@ -204,15 +217,15 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
 INSTANTIATE_TEST_CASE_P(
     ForScenario, SimplePathfindingTest,
     ::testing::Values(
-        SimplePathfindingScenario("StraightFlat", { 2, 19, 14 }, { 4, 19, 14 }, 24),
-        SimplePathfindingScenario("SBend", { 2, 17, 14 }, { 4, 16, 14 }, 39),
-        SimplePathfindingScenario("UBend", { 2, 14, 14 }, { 2, 12, 14 }, 88),
-        SimplePathfindingScenario("CBend", { 2, 10, 14 }, { 2, 7, 14 }, 133),
-        SimplePathfindingScenario("TwoEqualRoutes", { 6, 18, 14 }, { 10, 18, 14 }, 819),
-        SimplePathfindingScenario("TwoUnequalRoutes", { 6, 14, 14 }, { 10, 14, 14 }, 15643),
-        SimplePathfindingScenario("StraightUpBridge", { 2, 4, 14 }, { 4, 4, 16 }, 24),
-        SimplePathfindingScenario("StraightUpSlope", { 4, 1, 14 }, { 6, 1, 16 }, 24),
-        SimplePathfindingScenario("SelfCrossingPath", { 6, 5, 14 }, { 8, 5, 14 }, 213)),
+        SimplePathfindingScenario("StraightFlat", { 19, 15, 14 }, 24),
+        SimplePathfindingScenario("SBend", { 15, 12, 14 }, 88),
+        SimplePathfindingScenario("UBend", { 17, 9, 14 }, 86),
+        SimplePathfindingScenario("CBend", { 14, 5, 14 }, 164),
+        SimplePathfindingScenario("TwoEqualRoutes", { 9, 13, 14 }, 87),
+        SimplePathfindingScenario("TwoUnequalRoutes", { 3, 13, 14 }, 87),
+        SimplePathfindingScenario("StraightUpBridge", { 12, 15, 14 }, 24),
+        SimplePathfindingScenario("StraightUpSlope", { 14, 15, 14 }, 24),
+        SimplePathfindingScenario("SelfCrossingPath", { 6, 5, 14 }, 213)),
     SimplePathfindingScenario::ToName);
 
 class ImpossiblePathfindingTest : public PathfindingTestBase, public ::testing::WithParamInterface<SimplePathfindingScenario>
@@ -223,17 +236,25 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
 {
     const SimplePathfindingScenario& scenario = GetParam();
     TileCoordsXYZ pos = scenario.start;
-
     ASSERT_PRED_FORMAT1(AssertIsStartPosition, scenario.start);
-    ASSERT_PRED_FORMAT1(AssertIsGoalPosition, scenario.goal);
 
-    EXPECT_FALSE(FindPath(&pos, scenario.goal, 10000));
+    int32_t rideIndex;
+    Ride* ride = FindRideByName(scenario.name, &rideIndex);
+    ASSERT_NE(ride, nullptr);
+
+    auto entrancePos = ride_get_entrance_location(ride, 0);
+    TileCoordsXYZ goal = TileCoordsXYZ(
+        entrancePos.x + TileDirectionDelta[entrancePos.direction].x,
+        entrancePos.y + TileDirectionDelta[entrancePos.direction].y,
+        entrancePos.z);
+
+    EXPECT_FALSE(FindPath(&pos, goal, 10000, rideIndex));
 }
 
 INSTANTIATE_TEST_CASE_P(
     ForScenario, ImpossiblePathfindingTest,
     ::testing::Values(
-        SimplePathfindingScenario("PathWithGap", { 6, 9, 14 }, { 10, 9, 14 }, 10000),
-        SimplePathfindingScenario("PathWithFences", { 6, 7, 14 }, { 10, 7, 14 }, 10000),
-        SimplePathfindingScenario("PathWithCliff", { 10, 5, 14 }, { 12, 5, 14 }, 10000)),
+        SimplePathfindingScenario("PathWithGap", { 1, 6, 14 }, 10000),
+        SimplePathfindingScenario("PathWithFences", { 11, 6, 14 }, 10000),
+        SimplePathfindingScenario("PathWithCliff", { 7, 17, 14 }, 10000)),
     SimplePathfindingScenario::ToName);
