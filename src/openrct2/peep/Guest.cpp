@@ -3246,7 +3246,7 @@ void rct_peep::UpdateBuying()
 
     if (sub_state == 1)
     {
-        if (action != 0xFF)
+        if (action != PEEP_ACTION_NONE_2)
         {
             int16_t actionX;
             int16_t actionY;
@@ -5475,7 +5475,7 @@ void rct_peep::UpdateQueuing()
 
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
-    if (action < 0xFE)
+    if (action < PEEP_ACTION_NONE_1)
         return;
     if (sprite_type == PEEP_SPRITE_TYPE_NORMAL)
     {
@@ -5496,7 +5496,7 @@ void rct_peep::UpdateQueuing()
     }
     else
     {
-        if (!(time_in_queue & 0x3F) && action == 0xFE && next_action_sprite_type == 2)
+        if (!(time_in_queue & 0x3F) && action == PEEP_ACTION_NONE_1 && next_action_sprite_type == 2)
         {
             switch (sprite_type)
             {
@@ -5644,7 +5644,7 @@ void rct_peep::UpdateWatching()
         sprite_direction = (var_37 & 3) * 8;
         Invalidate();
 
-        action = 0xFE;
+        action = PEEP_ACTION_NONE_1;
         next_action_sprite_type = 2;
 
         SwitchNextActionSpriteType();
@@ -5656,7 +5656,7 @@ void rct_peep::UpdateWatching()
     }
     else if (sub_state == 1)
     {
-        if (action < 0xFE)
+        if (action < PEEP_ACTION_NONE_1)
         {
             // 6917F6
             int16_t actionX = 0;
@@ -5664,9 +5664,9 @@ void rct_peep::UpdateWatching()
             int16_t xy_distance;
             UpdateAction(&actionX, &actionY, &xy_distance);
 
-            if (action != 0xFF)
+            if (action != PEEP_ACTION_NONE_2)
                 return;
-            action = 0xFE;
+            action = PEEP_ACTION_NONE_1;
         }
         else
         {

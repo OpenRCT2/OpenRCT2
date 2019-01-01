@@ -249,7 +249,7 @@ enum PEEP_USING_BIN_SUB_STATE
     PEEP_USING_BIN_GOING_BACK,
 };
 
-enum PEEP_ACTION_EVENTS
+enum PEEP_ACTION_EVENTS : uint8_t
 {
     PEEP_ACTION_CHECK_TIME = 0,
     // If no food then check watch
@@ -610,7 +610,7 @@ struct rct_peep
     // reads this again
     uint8_t next_action_sprite_type;    // 0x6F
     uint8_t action_sprite_image_offset; // 0x70
-    uint8_t action;                     // 0x71
+    PEEP_ACTION_EVENTS action;          // 0x71
     uint8_t action_frame;               // 0x72
     uint8_t step_progress;              // 0x73
     union

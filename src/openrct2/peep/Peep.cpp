@@ -114,7 +114,7 @@ static constexpr const char *gPeepEasterEggNames[] = {
 /** rct2: 0x00981DB0 */
 static struct
 {
-    uint8_t action;
+    PEEP_ACTION_EVENTS action;
     uint8_t flags;
 } PeepThoughtToActionMap[] = {
     { PEEP_ACTION_SHAKE_HEAD, 1 },
@@ -654,7 +654,7 @@ bool rct_peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_dist
     if (action_frame >= peepAnimation[action_sprite_type].num_frames)
     {
         action_sprite_image_offset = 0;
-        action = 0xFF;
+        action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
         Invalidate();
         *actionX = x;
@@ -760,7 +760,7 @@ void rct_peep::PickupAbort(int32_t old_x)
     if (x != (int16_t)LOCATION_NULL)
     {
         SetState(PEEP_STATE_FALLING);
-        action = 0xFF;
+        action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         action_sprite_image_offset = 0;
         action_sprite_type = 0;
@@ -814,7 +814,7 @@ bool rct_peep::Place(TileCoordsXYZ location, bool apply)
         sprite_move(destination.x, destination.y, destination.z, (rct_sprite*)this);
         Invalidate();
         SetState(PEEP_STATE_FALLING);
-        action = 0xFF;
+        action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         action_sprite_image_offset = 0;
         action_sprite_type = 0;
@@ -1231,7 +1231,7 @@ void rct_peep::Update()
         stepsToTake = 95;
     if ((peep_flags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
         stepsToTake /= 2;
-    if (action == 255 && (GetNextIsSloped()))
+    if (action == PEEP_ACTION_NONE_2 && (GetNextIsSloped()))
     {
         stepsToTake /= 2;
         if (state == PEEP_STATE_QUEUING)
@@ -2248,8 +2248,8 @@ int32_t peep_get_easteregg_name_id(rct_peep* peep)
  */
 void peep_insert_new_thought(rct_peep* peep, uint8_t thought_type, uint8_t thought_arguments)
 {
-    uint8_t action = PeepThoughtToActionMap[thought_type].action;
-    if (action != 0xFF && peep->action >= 254)
+    PEEP_ACTION_EVENTS action = PeepThoughtToActionMap[thought_type].action;
+    if (action != PEEP_ACTION_NONE_2 && peep->action >= PEEP_ACTION_NONE_1)
     {
         peep->action = action;
         peep->action_frame = 0;
@@ -3127,7 +3127,7 @@ void rct_peep::PerformNextAction(uint8_t& pathing_result)
 void rct_peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 {
     pathing_result = 0;
-    uint8_t previousAction = action;
+    PEEP_ACTION_EVENTS previousAction = action;
 
     if (action == PEEP_ACTION_NONE_1)
         action = PEEP_ACTION_NONE_2;

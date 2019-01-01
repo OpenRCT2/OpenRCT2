@@ -3092,7 +3092,7 @@ bool rct_peep::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride
         Invalidate();
     }
 
-    if (action != 0xFF)
+    if (action != PEEP_ACTION_NONE_2)
     {
         UpdateAction();
         return false;

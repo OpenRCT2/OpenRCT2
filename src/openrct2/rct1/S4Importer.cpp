@@ -1403,7 +1403,7 @@ private:
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
         dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
-        dst->action = src->action;
+        dst->action = static_cast<PEEP_ACTION_EVENTS>(src->action);
         dst->special_sprite = src->special_sprite;
         dst->next_action_sprite_type = src->next_action_sprite_type;
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
