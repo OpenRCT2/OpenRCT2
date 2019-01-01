@@ -1030,7 +1030,7 @@ static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* d
     gfx_draw_sprite(dpi, image_id, x, y, 0);
 }
 
-static void window_guest_debug_tab_paint(rct_window *w, rct_drawpixelinfo* dpi)
+static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     if (w->disabled_widgets & (1 << WIDX_TAB_7))
         return;
