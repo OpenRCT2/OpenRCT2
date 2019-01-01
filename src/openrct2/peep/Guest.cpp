@@ -911,7 +911,7 @@ void rct_peep::UpdateSitting()
         sprite_direction = ((var_37 + 2) & 3) * 8;
         Invalidate();
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_7;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
 
         sub_state = PEEP_SITTING_SAT_DOWN;
@@ -6669,7 +6669,7 @@ void rct_peep::SetSpriteType(PEEP_SPRITE_TYPE new_sprite_type)
     if (state == PEEP_STATE_SITTING)
     {
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_7;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
     }
     if (state == PEEP_STATE_WATCHING)
