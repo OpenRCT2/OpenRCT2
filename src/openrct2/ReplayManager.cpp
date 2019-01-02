@@ -337,7 +337,10 @@ namespace OpenRCT2
             info.Name = data->name;
             info.Version = data->version;
             info.TimeRecorded = data->timeRecorded;
-            info.Ticks = gCurrentTicks - data->tickStart;
+            if (_mode == ReplayMode::RECORDING)
+                info.Ticks = gCurrentTicks - data->tickStart;
+            else if (_mode == ReplayMode::PLAYING)
+                info.Ticks = data->tickEnd - data->tickStart;
             info.NumCommands = (uint32_t)data->commands.size();
             info.NumChecksums = (uint32_t)data->checksums.size();
 
@@ -372,6 +375,7 @@ namespace OpenRCT2
             gCurrentTicks = replayData->tickStart;
 
             _currentReplay = std::move(replayData);
+            _currentReplay->filePath = file;
             _currentReplay->checksumIndex = 0;
             _faultyChecksumIndex = -1;
 
@@ -683,6 +687,7 @@ namespace OpenRCT2
 
             serialiser << data.networkId;
             serialiser << data.name;
+            serialiser << data.timeRecorded;
             serialiser << data.parkData;
             serialiser << data.parkParams;
             serialiser << data.spriteSpatialData;
