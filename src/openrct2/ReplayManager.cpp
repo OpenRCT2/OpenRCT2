@@ -18,9 +18,9 @@
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
+#include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "openrct2/management/NewsItem.h"
 #include "rct2/S6Exporter.h"
 #include "world/Park.h"
 
@@ -687,6 +687,16 @@ namespace OpenRCT2
             }
 
             serialiser << data.networkId;
+#ifndef DISABLE_NETWORK
+            // NOTE: This does not mean the replay will not function, only a warning.
+            if (data.networkId != network_get_version())
+            {
+                log_warning(
+                    "Replay network version mismatch: '%s', expected: '%s'", data.networkId.c_str(),
+                    network_get_version().c_str());
+            }
+#endif
+
             serialiser << data.name;
             serialiser << data.timeRecorded;
             serialiser << data.parkData;
