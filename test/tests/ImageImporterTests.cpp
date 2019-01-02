@@ -55,4 +55,5 @@ TEST_F(ImageImporterTests, Import_Logo)
     ASSERT_NE(nullptr, result.Buffer);
     auto hash = GetHash(result.Buffer, result.BufferLength);
     ASSERT_EQ(0xCEF27C7D, hash);
+    free(result.Buffer);
 }
