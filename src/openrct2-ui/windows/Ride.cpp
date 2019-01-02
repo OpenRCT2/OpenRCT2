@@ -1625,7 +1625,7 @@ static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIn
     // View
     for (i = stationIndex; i >= 0; i--)
     {
-        if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
+        if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
         {
             stationIndex--;
         }
@@ -1873,17 +1873,17 @@ static void window_ride_init_viewport(rct_window* w)
         do
         {
             stationIndex++;
-            if (ride->station_starts[stationIndex].xy != RCT_XY8_UNDEFINED)
+            if (ride->stations[stationIndex].Start.xy != RCT_XY8_UNDEFINED)
             {
                 count--;
             }
         } while (count >= 0);
 
-        LocationXY8 location = ride->station_starts[stationIndex];
+        LocationXY8 location = ride->stations[stationIndex].Start;
 
         focus.coordinate.x = location.x * 32;
         focus.coordinate.y = location.y * 32;
-        focus.coordinate.z = ride->station_heights[stationIndex] << 3;
+        focus.coordinate.z = ride->stations[stationIndex].Height << 3;
         focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
     }
     else
@@ -2697,7 +2697,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     do
     {
         stationIndex++;
-        if (ride->station_starts[stationIndex].xy != RCT_XY8_UNDEFINED)
+        if (ride->stations[stationIndex].Start.xy != RCT_XY8_UNDEFINED)
             count--;
     } while (count >= 0);
 
@@ -2718,7 +2718,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     // Queue length
     if (stringId == 0)
     {
-        int32_t queueLength = ride->queue_length[stationIndex];
+        int32_t queueLength = ride->stations[stationIndex].QueueLength;
         set_format_arg_body(static_cast<uint8_t*>(arguments), 2, (uintptr_t)queueLength, sizeof(uint16_t));
         stringId = STR_QUEUE_EMPTY;
         if (queueLength == 1)
@@ -4386,13 +4386,13 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             dropdown_set_checked(colourSchemeIndex, true);
             break;
         case WIDX_TRACK_MAIN_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_main[colourSchemeIndex]);
+            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].main);
             break;
         case WIDX_TRACK_ADDITIONAL_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_additional[colourSchemeIndex]);
+            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].additional);
             break;
         case WIDX_TRACK_SUPPORT_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour_supports[colourSchemeIndex]);
+            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].supports);
             break;
         case WIDX_MAZE_STYLE_DROPDOWN:
             for (i = 0; i < 4; i++)
@@ -4405,7 +4405,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
                 w->x + dropdownWidget->left, w->y + dropdownWidget->top, dropdownWidget->bottom - dropdownWidget->top + 1,
                 w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, widget->right - dropdownWidget->left);
 
-            dropdown_set_checked(ride->track_colour_supports[colourSchemeIndex], true);
+            dropdown_set_checked(ride->track_colour[colourSchemeIndex].supports, true);
             break;
         case WIDX_ENTRANCE_STYLE_DROPDOWN:
         {
@@ -4595,7 +4595,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     rct_widget* widgets;
     rct_ride_entry* rideEntry;
     Ride* ride;
-    track_colour trackColour;
+    TrackColour trackColour;
     vehicle_colour vehicleColour;
 
     widgets = window_ride_page_widgets[w->page];
@@ -4836,7 +4836,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             dpi, w->x + widget->left + 1, w->y + widget->top + 1, w->x + widget->right - 1, w->y + widget->bottom - 1,
             PALETTE_INDEX_12);
 
-    track_colour trackColour = ride_get_track_colour(ride, w->ride_colour);
+    auto trackColour = ride_get_track_colour(ride, w->ride_colour);
 
     //
     if (rideEntry->shop_item == SHOP_ITEM_NONE)
@@ -4876,7 +4876,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
         uint8_t shopItem = rideEntry->shop_item_secondary == SHOP_ITEM_NONE ? rideEntry->shop_item
                                                                             : rideEntry->shop_item_secondary;
         int32_t spriteIndex = ShopItemImage[shopItem];
-        spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_main[0]);
+        spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[0].main);
 
         gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
     }
@@ -5581,7 +5581,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     int32_t numTimes = 0;
                     for (int32_t i = 0; i < ride->num_stations; i++)
                     {
-                        time = ride->time[numTimes];
+                        time = ride->stations[numTimes].SegmentTime;
                         if (time != 0)
                         {
                             set_format_arg(0 + (numTimes * 4), uint16_t, STR_RIDE_TIME_ENTRY_WITH_SEPARATOR);
@@ -5613,7 +5613,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 int32_t numLengths = 0;
                 for (int32_t i = 0; i < ride->num_stations; i++)
                 {
-                    length = ride->length[numLengths];
+                    length = ride->stations[numLengths].SegmentLength;
                     if (length != 0)
                     {
                         length >>= 16;

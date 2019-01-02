@@ -218,7 +218,7 @@ static money32 RideEntranceExitPlace(
             }
         }
 
-        z = ride->station_heights[stationNum] * 8;
+        z = ride->stations[stationNum].Height * 8;
         gCommandPosition.z = z;
 
         if ((flags & GAME_COMMAND_FLAG_APPLY) && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
@@ -283,8 +283,8 @@ static money32 RideEntranceExitPlace(
             else
             {
                 ride_set_entrance_location(ride, stationNum, { x / 32, y / 32, z / 8, (uint8_t)tileElement->GetDirection() });
-                ride->last_peep_in_queue[stationNum] = SPRITE_INDEX_NULL;
-                ride->queue_length[stationNum] = 0;
+                ride->stations[stationNum].LastPeepInQueue = SPRITE_INDEX_NULL;
+                ride->stations[stationNum].QueueLength = 0;
 
                 map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, x, y, z / 8);
             }

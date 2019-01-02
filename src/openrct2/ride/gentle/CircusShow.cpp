@@ -35,8 +35,7 @@ static void paint_circus_show_tent(
     uint32_t imageId = rideEntry->vehicles[0].base_image_id;
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
-            ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
         imageId += direction;
     }
 

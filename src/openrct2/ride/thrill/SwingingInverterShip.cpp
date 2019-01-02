@@ -90,7 +90,7 @@ static void paint_swinging_inverter_ship_structure(
     uint32_t colourFlags = session->TrackColours[SCHEME_MISC];
     if (colourFlags == IMAGE_TYPE_REMAP)
     {
-        colourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        colourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
     }
 
     swinging_inverter_ship_bound_box boundBox = swinging_inverter_ship_bounds[direction];

@@ -485,7 +485,8 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
     {
-        dst->vehicle_colours[i] = src->vehicle_colours[i];
+        dst->vehicle_colours[i].body_colour = src->vehicle_colours[i].Body;
+        dst->vehicle_colours[i].trim_colour = src->vehicle_colours[i].Trim;
     }
 
     // pad_046;
@@ -497,11 +498,11 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
     {
-        dst->station_starts[i] = src->station_starts[i];
-        dst->station_heights[i] = src->station_heights[i];
-        dst->station_length[i] = src->station_length[i];
-        dst->station_depart[i] = src->station_depart[i];
-        dst->train_at_station[i] = src->train_at_station[i];
+        dst->station_starts[i] = src->stations[i].Start;
+        dst->station_heights[i] = src->stations[i].Height;
+        dst->station_length[i] = src->stations[i].Length;
+        dst->station_depart[i] = src->stations[i].Depart;
+        dst->train_at_station[i] = src->stations[i].TrainAtStation;
 
         TileCoordsXYZD entrance = ride_get_entrance_location(src, i);
         if (entrance.isNull())
@@ -515,14 +516,14 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
         else
             dst->exits[i] = { (uint8_t)exit.x, (uint8_t)exit.y };
 
-        dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
+        dst->last_peep_in_queue[i] = src->stations[i].LastPeepInQueue;
 
-        dst->length[i] = src->length[i];
-        dst->time[i] = src->time[i];
+        dst->length[i] = src->stations[i].SegmentLength;
+        dst->time[i] = src->stations[i].SegmentTime;
 
-        dst->queue_time[i] = src->queue_time[i];
+        dst->queue_time[i] = src->stations[i].QueueTime;
 
-        dst->queue_length[i] = src->queue_length[i];
+        dst->queue_length[i] = src->stations[i].QueueLength;
     }
 
     for (uint8_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
@@ -663,9 +664,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (uint8_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
-        dst->track_colour_main[i] = src->track_colour_main[i];
-        dst->track_colour_additional[i] = src->track_colour_additional[i];
-        dst->track_colour_supports[i] = src->track_colour_supports[i];
+        dst->track_colour_main[i] = src->track_colour[i].main;
+        dst->track_colour_additional[i] = src->track_colour[i].additional;
+        dst->track_colour_supports[i] = src->track_colour[i].supports;
     }
 
     dst->music = src->music;
@@ -678,7 +679,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 
     for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
     {
-        dst->vehicle_colours_extended[i] = src->vehicle_colours_extended[i];
+        dst->vehicle_colours_extended[i] = src->vehicle_colours[i].Ternary;
     }
 
     dst->total_air_time = src->total_air_time;

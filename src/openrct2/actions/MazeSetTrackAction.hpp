@@ -243,8 +243,8 @@ public:
             map_invalidate_tile_full(flooredX, flooredY);
 
             ride->maze_tiles++;
-            ride->station_heights[0] = tileElement->base_height;
-            ride->station_starts[0].xy = 0;
+            ride->stations[0].Height = tileElement->base_height;
+            ride->stations[0].Start.xy = 0;
 
             if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
             {

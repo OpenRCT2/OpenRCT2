@@ -1746,9 +1746,9 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, uint8_
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
-        ride->track_colour_main[i] = td6->track_spine_colour[i];
-        ride->track_colour_additional[i] = td6->track_rail_colour[i];
-        ride->track_colour_supports[i] = td6->track_support_colour[i];
+        ride->track_colour[i].main = td6->track_spine_colour[i];
+        ride->track_colour[i].additional = td6->track_rail_colour[i];
+        ride->track_colour[i].supports = td6->track_support_colour[i];
     }
 
     // Flat rides need their vehicle colours loaded for display
@@ -1757,8 +1757,9 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, uint8_
     {
         for (int32_t i = 0; i < RCT12_MAX_VEHICLE_COLOURS; i++)
         {
-            ride->vehicle_colours[i] = td6->vehicle_colours[i];
-            ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
+            ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
+            ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;
+            ride->vehicle_colours[i].Ternary = td6->vehicle_additional_colour[i];
         }
     }
 
@@ -1964,16 +1965,16 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
-        ride->track_colour_main[i] = td6->track_spine_colour[i];
-        ride->track_colour_additional[i] = td6->track_rail_colour[i];
-        ride->track_colour_supports[i] = td6->track_support_colour[i];
+        ride->track_colour[i].main = td6->track_spine_colour[i];
+        ride->track_colour[i].additional = td6->track_rail_colour[i];
+        ride->track_colour[i].supports = td6->track_support_colour[i];
     }
 
     for (int32_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
     {
-        ride->vehicle_colours[i].body_colour = td6->vehicle_colours[i].body_colour;
-        ride->vehicle_colours[i].trim_colour = td6->vehicle_colours[i].trim_colour;
-        ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
+        ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
+        ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;
+        ride->vehicle_colours[i].Ternary = td6->vehicle_additional_colour[i];
     }
 
     ride_set_name(rideIndex, td6->name, flags);
@@ -2111,8 +2112,8 @@ static money32 place_maze_design(uint8_t flags, uint8_t rideIndex, uint16_t maze
         map_invalidate_element(fx, fy, tileElement);
 
         ride->maze_tiles++;
-        ride->station_heights[0] = tileElement->base_height;
-        ride->station_starts[0].xy = 0;
+        ride->stations[0].Height = tileElement->base_height;
+        ride->stations[0].Start.xy = 0;
         if (ride->maze_tiles == 1)
         {
             ride->overall_view.x = fx / 32;

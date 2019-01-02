@@ -57,13 +57,13 @@ struct ride_list_item
 };
 assert_struct_size(ride_list_item, 2);
 
-struct track_colour
+struct TrackColour
 {
     uint8_t main;
     uint8_t additional;
     uint8_t supports;
 };
-assert_struct_size(track_colour, 3);
+assert_struct_size(TrackColour, 3);
 
 struct vehicle_colour
 {
@@ -76,7 +76,7 @@ assert_struct_size(vehicle_colour, 3);
 struct track_colour_preset_list
 {
     uint8_t count;
-    track_colour list[256];
+    TrackColour list[256];
 };
 assert_struct_size(track_colour_preset_list, (1 + 256 * 3));
 
@@ -136,6 +136,24 @@ struct rct_ride_entry
 
 #pragma pack(pop)
 
+struct RideStation
+{
+    LocationXY8 Start;
+    uint8_t Height;
+    uint8_t Length;
+    uint8_t Depart;
+    uint8_t TrainAtStation;
+    TileCoordsXYZD Entrance;
+    TileCoordsXYZD Exit;
+    int32_t SegmentLength; // Length of track between this station and the next.
+    uint16_t SegmentTime;  // Time for train to reach the next station from this station.
+    uint8_t QueueTime;
+    uint16_t QueueLength;
+    uint16_t LastPeepInQueue;
+
+    static constexpr uint8_t NO_TRAIN = std::numeric_limits<uint8_t>::max();
+};
+
 /**
  * Ride structure.
  *
@@ -150,7 +168,7 @@ struct Ride
     uint8_t subtype;
     uint8_t mode;
     uint8_t colour_scheme_type;
-    rct_vehicle_colour vehicle_colours[MAX_CARS_PER_TRAIN];
+    VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
     // 0 = closed, 1 = open, 2 = test
     uint8_t status;
     rct_string_id name;
@@ -164,16 +182,6 @@ struct Ride
         };
     };
     LocationXY8 overall_view;
-    LocationXY8 station_starts[MAX_STATIONS];
-    uint8_t station_heights[MAX_STATIONS];
-    uint8_t station_length[MAX_STATIONS];
-    uint8_t station_depart[MAX_STATIONS];
-    // ride->vehicle index for current train waiting for passengers
-    // at station
-    uint8_t train_at_station[MAX_STATIONS];
-    TileCoordsXYZD entrances[MAX_STATIONS];
-    TileCoordsXYZD exits[MAX_STATIONS];
-    uint16_t last_peep_in_queue[MAX_STATIONS];
     uint16_t vehicles[MAX_VEHICLES_PER_RIDE]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
@@ -209,8 +217,6 @@ struct Ride
     int32_t average_speed;
     uint8_t current_test_segment;
     uint8_t average_speed_test_timeout;
-    int32_t length[MAX_STATIONS];
-    uint16_t time[MAX_STATIONS];
     fixed16_2dp max_positive_vertical_g;
     fixed16_2dp max_negative_vertical_g;
     fixed16_2dp max_lateral_g;
@@ -322,10 +328,7 @@ struct Ride
     uint8_t connected_message_throttle;
     money32 income_per_hour;
     money32 profit;
-    uint8_t queue_time[MAX_STATIONS];
-    uint8_t track_colour_main[NUM_COLOUR_SCHEMES];
-    uint8_t track_colour_additional[NUM_COLOUR_SCHEMES];
-    uint8_t track_colour_supports[NUM_COLOUR_SCHEMES];
+    TrackColour track_colour[NUM_COLOUR_SCHEMES];
     uint8_t music;
     uint8_t entrance_style;
     uint16_t vehicle_change_timeout;
@@ -333,7 +336,6 @@ struct Ride
     uint8_t lift_hill_speed;
     uint16_t guests_favourite;
     uint32_t lifecycle_flags;
-    uint8_t vehicle_colours_extended[MAX_CARS_PER_TRAIN];
     uint16_t total_air_time;
     uint8_t current_test_station;
     uint8_t num_circuits;
@@ -341,12 +343,13 @@ struct Ride
     int16_t cable_lift_y;
     uint8_t cable_lift_z;
     uint16_t cable_lift;
-    uint16_t queue_length[MAX_STATIONS];
     // These fields are used to warn users about issues.
     // Such issue can be hacked rides with incompatible options set.
     // They don't require export/import.
     uint8_t current_issues;
     uint32_t last_issue_time;
+    RideStation stations[MAX_STATIONS];
+
     bool CanBreakDown() const;
 };
 
@@ -1022,7 +1025,7 @@ rct_peep* ride_get_assigned_mechanic(Ride* ride);
 int32_t ride_get_total_length(Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 int32_t ride_can_have_multiple_circuits(Ride* ride);
-track_colour ride_get_track_colour(Ride* ride, int32_t colourScheme);
+TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);

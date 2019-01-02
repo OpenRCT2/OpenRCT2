@@ -2501,10 +2501,10 @@ static void peep_interact_with_entrance(
         peep->interaction_ride_index = rideIndex;
 
         Ride* ride = get_ride(rideIndex);
-        uint16_t previous_last = ride->last_peep_in_queue[stationNum];
-        ride->last_peep_in_queue[stationNum] = peep->sprite_index;
+        uint16_t previous_last = ride->stations[stationNum].LastPeepInQueue;
+        ride->stations[stationNum].LastPeepInQueue = peep->sprite_index;
         peep->next_in_queue = previous_last;
-        ride->queue_length[stationNum]++;
+        ride->stations[stationNum].QueueLength++;
 
         peep->current_ride = rideIndex;
         peep->current_ride_station = stationNum;
@@ -2951,10 +2951,10 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
         Ride* ride = get_ride(rideIndex);
 
         // Add the peep to the ride queue.
-        uint16_t old_last_peep = ride->last_peep_in_queue[stationNum];
-        ride->last_peep_in_queue[stationNum] = peep->sprite_index;
+        uint16_t old_last_peep = ride->stations[stationNum].LastPeepInQueue;
+        ride->stations[stationNum].LastPeepInQueue = peep->sprite_index;
         peep->next_in_queue = old_last_peep;
-        ride->queue_length[stationNum]++;
+        ride->stations[stationNum].QueueLength++;
 
         peep_decrement_num_riders(peep);
         peep->current_ride = rideIndex;

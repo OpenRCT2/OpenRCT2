@@ -563,7 +563,7 @@ static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardType
 
         countedRides++;
 
-        mainTrackColour = ride->track_colour_main[0];
+        mainTrackColour = ride->track_colour[0].main;
         for (auto dazzling_ride_colour : dazzling_ride_colours)
         {
             if (mainTrackColour == dazzling_ride_colour)

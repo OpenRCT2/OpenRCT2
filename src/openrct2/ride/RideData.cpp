@@ -2333,7 +2333,7 @@ const uint8_t RideConstructionDefaultTrackType[] = {
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
 
-#define TRACK_COLOUR_PRESETS(...)       {static_cast<uint8_t>(std::size<track_colour>({__VA_ARGS__})), {__VA_ARGS__}}
+#define TRACK_COLOUR_PRESETS(...)       {static_cast<uint8_t>(std::size<TrackColour>({__VA_ARGS__})), {__VA_ARGS__}}
 
 #define DEFAULT_FLAT_RIDE_COLOUR_PRESET TRACK_COLOUR_PRESETS( { COLOUR_BRIGHT_RED, COLOUR_LIGHT_BLUE, COLOUR_YELLOW } )
 #define DEFAULT_STALL_COLOUR_PRESET     TRACK_COLOUR_PRESETS( { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED } )

@@ -23,6 +23,13 @@ struct rct_vehicle_colour
     uint8_t trim_colour;
 };
 
+struct VehicleColour
+{
+    uint8_t Body;
+    uint8_t Trim;
+    uint8_t Ternary;
+};
+
 #ifdef __TESTPAINT__
 #    pragma pack(push, 1)
 #endif // __TESTPAINT__

@@ -809,12 +809,12 @@ private:
         dst->overall_view = src->overall_view;
         for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
-            dst->station_starts[i] = src->station_starts[i];
-            dst->station_heights[i] = src->station_height[i] / 2;
-            dst->station_length[i] = src->station_length[i];
-            dst->station_depart[i] = src->station_light[i];
+            dst->stations[i].Start = src->station_starts[i];
+            dst->stations[i].Height = src->station_height[i] / 2;
+            dst->stations[i].Length = src->station_length[i];
+            dst->stations[i].Depart = src->station_light[i];
 
-            dst->train_at_station[i] = src->station_depart[i];
+            dst->stations[i].TrainAtStation = src->station_depart[i];
 
             // Direction is fixed later.
             if (src->entrance[i].xy == RCT_XY8_UNDEFINED)
@@ -827,21 +827,21 @@ private:
             else
                 ride_set_exit_location(dst, i, { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 });
 
-            dst->queue_time[i] = src->queue_time[i];
-            dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
-            dst->queue_length[i] = src->num_peeps_in_queue[i];
+            dst->stations[i].QueueTime = src->queue_time[i];
+            dst->stations[i].LastPeepInQueue = src->last_peep_in_queue[i];
+            dst->stations[i].QueueLength = src->num_peeps_in_queue[i];
 
-            dst->time[i] = src->time[i];
-            dst->length[i] = src->length[i];
+            dst->stations[i].SegmentTime = src->time[i];
+            dst->stations[i].SegmentLength = src->length[i];
         }
         // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
         for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
         {
-            dst->station_starts[i].xy = RCT_XY8_UNDEFINED;
-            dst->train_at_station[i] = 255;
+            dst->stations[i].Start.xy = RCT_XY8_UNDEFINED;
+            dst->stations[i].TrainAtStation = 255;
             ride_clear_entrance_location(dst, i);
             ride_clear_exit_location(dst, i);
-            dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
+            dst->stations[i].LastPeepInQueue = SPRITE_INDEX_NULL;
         }
 
         dst->num_stations = src->num_stations;
@@ -992,27 +992,27 @@ private:
         dst->colour_scheme_type = src->colour_scheme;
         if (_gameVersion == FILE_VERSION_RCT1)
         {
-            dst->track_colour_main[0] = RCT1::GetColour(src->track_primary_colour);
-            dst->track_colour_additional[0] = RCT1::GetColour(src->track_secondary_colour);
-            dst->track_colour_supports[0] = RCT1::GetColour(src->track_support_colour);
+            dst->track_colour[0].main = RCT1::GetColour(src->track_primary_colour);
+            dst->track_colour[0].additional = RCT1::GetColour(src->track_secondary_colour);
+            dst->track_colour[0].supports = RCT1::GetColour(src->track_support_colour);
 
             // Balloons were always blue in the original RCT.
             if (src->type == RCT1_RIDE_TYPE_BALLOON_STALL)
             {
-                dst->track_colour_main[0] = COLOUR_LIGHT_BLUE;
+                dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
             }
             else if (src->type == RCT1_RIDE_TYPE_RIVER_RAPIDS)
             {
-                dst->track_colour_main[0] = COLOUR_WHITE;
+                dst->track_colour[0].main = COLOUR_WHITE;
             }
         }
         else
         {
             for (int i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
             {
-                dst->track_colour_main[i] = RCT1::GetColour(src->track_colour_main[i]);
-                dst->track_colour_additional[i] = RCT1::GetColour(src->track_colour_additional[i]);
-                dst->track_colour_supports[i] = RCT1::GetColour(src->track_colour_supports[i]);
+                dst->track_colour[i].main = RCT1::GetColour(src->track_colour_main[i]);
+                dst->track_colour[i].additional = RCT1::GetColour(src->track_colour_additional[i]);
+                dst->track_colour[i].supports = RCT1::GetColour(src->track_colour_supports[i]);
             }
             // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
             dst->entrance_style = src->entrance_style;
@@ -1021,8 +1021,8 @@ private:
         if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)
         {
             // The merry-go-round in pre-LL versions was always yellow with red
-            dst->vehicle_colours[0].body_colour = COLOUR_YELLOW;
-            dst->vehicle_colours[0].trim_colour = COLOUR_BRIGHT_RED;
+            dst->vehicle_colours[0].Body = COLOUR_YELLOW;
+            dst->vehicle_colours[0].Trim = COLOUR_BRIGHT_RED;
         }
         else
         {
@@ -1033,41 +1033,41 @@ private:
                     src->vehicle_type);
                 if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_1)
                 {
-                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].body);
+                    dst->vehicle_colours[i].Body = RCT1::GetColour(src->vehicle_colours[i].body);
                 }
                 else if (colourSchemeCopyDescriptor.colour1 == COPY_COLOUR_2)
                 {
-                    dst->vehicle_colours[i].body_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                    dst->vehicle_colours[i].Body = RCT1::GetColour(src->vehicle_colours[i].trim);
                 }
                 else
                 {
-                    dst->vehicle_colours[i].body_colour = colourSchemeCopyDescriptor.colour1;
+                    dst->vehicle_colours[i].Body = colourSchemeCopyDescriptor.colour1;
                 }
 
                 if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_1)
                 {
-                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].body);
+                    dst->vehicle_colours[i].Trim = RCT1::GetColour(src->vehicle_colours[i].body);
                 }
                 else if (colourSchemeCopyDescriptor.colour2 == COPY_COLOUR_2)
                 {
-                    dst->vehicle_colours[i].trim_colour = RCT1::GetColour(src->vehicle_colours[i].trim);
+                    dst->vehicle_colours[i].Trim = RCT1::GetColour(src->vehicle_colours[i].trim);
                 }
                 else
                 {
-                    dst->vehicle_colours[i].trim_colour = colourSchemeCopyDescriptor.colour2;
+                    dst->vehicle_colours[i].Trim = colourSchemeCopyDescriptor.colour2;
                 }
 
                 if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
                 {
-                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].body);
+                    dst->vehicle_colours[i].Ternary = RCT1::GetColour(src->vehicle_colours[i].body);
                 }
                 else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
                 {
-                    dst->vehicle_colours_extended[i] = RCT1::GetColour(src->vehicle_colours[i].trim);
+                    dst->vehicle_colours[i].Ternary = RCT1::GetColour(src->vehicle_colours[i].trim);
                 }
                 else
                 {
-                    dst->vehicle_colours_extended[i] = colourSchemeCopyDescriptor.colour3;
+                    dst->vehicle_colours[i].Ternary = colourSchemeCopyDescriptor.colour3;
                 }
             }
         }
@@ -1077,9 +1077,9 @@ private:
         if (dst->type == RIDE_TYPE_MAZE)
         {
             if (_gameVersion < FILE_VERSION_RCT1_LL || src->track_colour_supports[0] > 3)
-                dst->track_colour_supports[0] = MAZE_WALL_TYPE_HEDGE;
+                dst->track_colour[0].supports = MAZE_WALL_TYPE_HEDGE;
             else
-                dst->track_colour_supports[0] = src->track_colour_supports[0];
+                dst->track_colour[0].supports = src->track_colour_supports[0];
         }
     }
 
@@ -1588,9 +1588,9 @@ private:
 
     void FixRidePeepLinks(Ride* ride, const uint16_t* spriteIndexMap)
     {
-        for (auto& peep : ride->last_peep_in_queue)
+        for (auto& station : ride->stations)
         {
-            peep = MapSpriteIndex(peep, spriteIndexMap);
+            station.LastPeepInQueue = MapSpriteIndex(station.LastPeepInQueue, spriteIndexMap);
         }
         ride->mechanic = MapSpriteIndex(ride->mechanic, spriteIndexMap);
         if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)

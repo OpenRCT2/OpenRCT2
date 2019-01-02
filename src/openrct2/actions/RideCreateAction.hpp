@@ -148,11 +148,11 @@ public:
 
         for (int32_t i = 0; i < MAX_STATIONS; i++)
         {
-            ride->station_starts[i].xy = RCT_XY8_UNDEFINED;
+            ride->stations[i].Start.xy = RCT_XY8_UNDEFINED;
             ride_clear_entrance_location(ride, i);
             ride_clear_exit_location(ride, i);
-            ride->train_at_station[i] = 255;
-            ride->queue_time[i] = 0;
+            ride->stations[i].TrainAtStation = 255;
+            ride->stations[i].QueueTime = 0;
         }
 
         for (auto& vehicle : ride->vehicles)

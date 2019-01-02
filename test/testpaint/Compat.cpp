@@ -377,12 +377,12 @@ void TrackElement::SetHasChain(bool on)
 
 TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const int32_t stationIndex)
 {
-    return ride->entrances[stationIndex];
+    return ride->stations[stationIndex].Entrance;
 }
 
 TileCoordsXYZD ride_get_exit_location(const Ride* ride, const int32_t stationIndex)
 {
-    return ride->exits[stationIndex];
+    return ride->stations[stationIndex].Exit;
 }
 
 void TileElementBase::SetType(uint8_t newType)

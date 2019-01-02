@@ -82,7 +82,7 @@ static void top_spin_paint_vehicle(
     uint32_t image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
     {
-        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_supports[0]);
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour[0].main, ride->track_colour[0].supports);
     }
 
     image_id += (direction & 1) << 1;
@@ -94,7 +94,7 @@ static void top_spin_paint_vehicle(
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
     {
-        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_additional[0]);
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour[0].main, ride->track_colour[0].additional);
     }
 
     int32_t var_1F = armRotation;
@@ -135,7 +135,7 @@ static void top_spin_paint_vehicle(
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
     {
-        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
     }
     image_id += seatImageId;
 
@@ -211,7 +211,7 @@ static void top_spin_paint_vehicle(
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
     {
-        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_additional[0]);
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour[0].main, ride->track_colour[0].additional);
     }
 
     image_id += var_1F;
@@ -225,7 +225,7 @@ static void top_spin_paint_vehicle(
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
     {
-        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_supports[0]);
+        image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour[0].main, ride->track_colour[0].supports);
     }
 
     image_id += (direction & 1) << 1;

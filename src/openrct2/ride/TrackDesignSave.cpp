@@ -770,15 +770,16 @@ static rct_track_td6* track_design_save_to_td6(uint8_t rideIndex)
 
     for (int32_t i = 0; i < RCT12_MAX_VEHICLES_PER_RIDE; i++)
     {
-        td6->vehicle_colours[i] = ride->vehicle_colours[i];
-        td6->vehicle_additional_colour[i] = ride->vehicle_colours_extended[i];
+        td6->vehicle_colours[i].body_colour = ride->vehicle_colours[i].Body;
+        td6->vehicle_colours[i].trim_colour = ride->vehicle_colours[i].Trim;
+        td6->vehicle_additional_colour[i] = ride->vehicle_colours[i].Ternary;
     }
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {
-        td6->track_spine_colour[i] = ride->track_colour_main[i];
-        td6->track_rail_colour[i] = ride->track_colour_additional[i];
-        td6->track_support_colour[i] = ride->track_colour_supports[i];
+        td6->track_spine_colour[i] = ride->track_colour[i].main;
+        td6->track_rail_colour[i] = ride->track_colour[i].additional;
+        td6->track_support_colour[i] = ride->track_colour[i].supports;
     }
 
     td6->depart_flags = ride->depart_flags;
@@ -1107,7 +1108,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_tra
     {
         for (int32_t station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
         {
-            z = ride->station_heights[station_index];
+            z = ride->stations[station_index].Height;
 
             TileCoordsXYZD location;
             if (i == 0)
