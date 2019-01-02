@@ -114,7 +114,7 @@ static constexpr const char *gPeepEasterEggNames[] = {
 /** rct2: 0x00981DB0 */
 static struct
 {
-    PEEP_ACTION_EVENTS action;
+    PeepActionType action;
     uint8_t flags;
 } PeepThoughtToActionMap[] = {
     { PEEP_ACTION_SHAKE_HEAD, 1 },
@@ -293,13 +293,13 @@ static struct
     { PEEP_ACTION_NONE_2, 1 },
 };
 
-static PEEP_ACTION_SPRITE_TYPE PeepSpecialSpriteToSpriteTypeMap[] = {
+static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
     PEEP_ACTION_SPRITE_TYPE_NONE,
     PEEP_ACTION_SPRITE_TYPE_HOLD_MAT,
     PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER
 };
 
-static PEEP_ACTION_SPRITE_TYPE PeepActionToSpriteTypeMap[] = {
+static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
     PEEP_ACTION_SPRITE_TYPE_CHECK_TIME,
     PEEP_ACTION_SPRITE_TYPE_EAT_FOOD,
     PEEP_ACTION_SPRITE_TYPE_SHAKE_HEAD,
@@ -511,7 +511,7 @@ bool rct_peep::CheckForPath()
     return false;
 }
 
-PEEP_ACTION_SPRITE_TYPE rct_peep::GetActionSpriteType()
+PeepActionSpriteType rct_peep::GetActionSpriteType()
 {
     if (action >= PEEP_ACTION_NONE_1)
     { // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
@@ -538,7 +538,7 @@ void rct_peep::UpdateCurrentActionSpriteType()
     {
         return;
     }
-    PEEP_ACTION_SPRITE_TYPE newActionSpriteType = GetActionSpriteType();
+    PeepActionSpriteType newActionSpriteType = GetActionSpriteType();
     if (action_sprite_type == newActionSpriteType)
     {
         return;
@@ -1127,7 +1127,7 @@ void rct_peep::Update1()
     direction = sprite_direction >> 3;
 }
 
-void rct_peep::SetState(PEEP_STATE new_state)
+void rct_peep::SetState(PeepState new_state)
 {
     peep_decrement_num_riders(this);
     state = new_state;
@@ -1640,7 +1640,7 @@ void peep_update_days_in_queue()
 
 // clang-format off
 /** rct2: 0x009823A0 */
-static constexpr const enum PEEP_NAUSEA_TOLERANCE nausea_tolerance_distribution[] = {
+static constexpr const enum PeepNauseaTolerance nausea_tolerance_distribution[] = {
     PEEP_NAUSEA_TOLERANCE_NONE,
     PEEP_NAUSEA_TOLERANCE_LOW, PEEP_NAUSEA_TOLERANCE_LOW,
     PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE,
@@ -2246,9 +2246,9 @@ int32_t peep_get_easteregg_name_id(rct_peep* peep)
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep* peep, PEEP_THOUGHT_TYPE thought_type, uint8_t thought_arguments)
+void peep_insert_new_thought(rct_peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments)
 {
-    PEEP_ACTION_EVENTS action = PeepThoughtToActionMap[thought_type].action;
+    PeepActionType action = PeepThoughtToActionMap[thought_type].action;
     if (action != PEEP_ACTION_NONE_2 && peep->action >= PEEP_ACTION_NONE_1)
     {
         peep->action = action;
@@ -3127,7 +3127,7 @@ void rct_peep::PerformNextAction(uint8_t& pathing_result)
 void rct_peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 {
     pathing_result = 0;
-    PEEP_ACTION_EVENTS previousAction = action;
+    PeepActionType previousAction = action;
 
     if (action == PEEP_ACTION_NONE_1)
         action = PEEP_ACTION_NONE_2;
