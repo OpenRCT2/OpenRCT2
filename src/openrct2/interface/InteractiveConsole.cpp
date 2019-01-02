@@ -1431,15 +1431,17 @@ static int32_t cc_replay_start(InteractiveConsole& console, const utf8** argv, i
 
         std::time_t ts = info.TimeRecorded;
 
-        const char* recordingDate = std::asctime(std::localtime(&ts));
+        char recordingDate[128] = {};
+        std::strftime(recordingDate, sizeof(recordingDate), "%c", std::localtime(&ts));
+
         const char* logFmt = "Replay playback started: %s\n"
-                             "  Date: %s\n"
+                             "  Date Recorded: %s\n"
                              "  Ticks: %u\n"
                              "  Commands: %u\n"
                              "  Checksums: %u";
 
-        console.WriteFormatLine(logFmt, recordingDate, info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
-        log_info(logFmt, recordingDate, info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+        console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
+        log_info(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
 
         return 1;
     }
