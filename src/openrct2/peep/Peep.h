@@ -518,10 +518,10 @@ enum PeepRideDecision
 #pragma pack(push, 1)
 struct rct_peep_thought
 {
-    PeepThoughtType type; // 0
-    uint8_t item;           // 1
-    uint8_t freshness;      // 2 larger is less fresh
-    uint8_t fresh_timeout;  // 3 updates every tick
+    PeepThoughtType type;  // 0
+    uint8_t item;          // 1
+    uint8_t freshness;     // 2 larger is less fresh
+    uint8_t fresh_timeout; // 3 updates every tick
 };
 assert_struct_size(rct_peep_thought, 4);
 
@@ -556,10 +556,10 @@ struct rct_peep
     uint8_t next_z;                // 0x28
     uint8_t next_flags;            // 0x29
     uint8_t outside_of_park;       // 0x2A
-    PeepState state;              // 0x2B
+    PeepState state;               // 0x2B
     uint8_t sub_state;             // 0x2C
-    PeepSpriteType sprite_type;  // 0x2D
-    PeepType type;                // 0x2E
+    PeepSpriteType sprite_type;    // 0x2D
+    PeepType type;                 // 0x2E
     union
     {
         uint8_t staff_type;  // 0x2F
@@ -610,15 +610,15 @@ struct rct_peep
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t special_sprite;     // 0x6D
+    uint8_t special_sprite;                  // 0x6D
     PeepActionSpriteType action_sprite_type; // 0x6E
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
     PeepActionSpriteType next_action_sprite_type; // 0x6F
-    uint8_t action_sprite_image_offset; // 0x70
-    PeepActionType action;          // 0x71
-    uint8_t action_frame;               // 0x72
-    uint8_t step_progress;              // 0x73
+    uint8_t action_sprite_image_offset;           // 0x70
+    PeepActionType action;                        // 0x71
+    uint8_t action_frame;                         // 0x72
+    uint8_t step_progress;                        // 0x73
     union
     {
         uint16_t mechanic_time_since_call; // time getting to ride to fix
