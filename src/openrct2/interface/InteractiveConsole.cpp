@@ -1359,7 +1359,13 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const utf8** a
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->StartRecording(name, maxTicks))
     {
-        console.WriteFormatLine("Replay recording start");
+        OpenRCT2::ReplayRecordInfo info;
+        replayManager->GetCurrentReplayInfo(info);
+
+        const char* logFmt = "Replay recording started: (%s) %s";
+        console.WriteFormatLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
+        log_info(logFmt, info.Name.c_str(), info.FilePath.c_str());
+
         return 1;
     }
 
@@ -1375,9 +1381,26 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const utf8** ar
     }
 
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager->IsRecording() == false && replayManager->IsNormalising() == false)
+    {
+        console.WriteFormatLine("Replay currently not recording");
+        return 0;
+    }
+
+    OpenRCT2::ReplayRecordInfo info;
+    replayManager->GetCurrentReplayInfo(info);
+
     if (replayManager->StopRecording())
     {
-        console.WriteFormatLine("Replay recording stopped");
+        const char* logFmt = "Replay recording stopped: (%s) %s\n"
+                             "  Ticks: %u\n"
+                             "  Commands: %u\n"
+                             "  Checksums: %u";
+
+        console.WriteFormatLine(
+            logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+        log_info(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+
         return 1;
     }
 
@@ -1403,7 +1426,21 @@ static int32_t cc_replay_start(InteractiveConsole& console, const utf8** argv, i
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->StartPlayback(name))
     {
-        console.WriteFormatLine("Started replay");
+        OpenRCT2::ReplayRecordInfo info;
+        replayManager->GetCurrentReplayInfo(info);
+
+        std::time_t ts = info.TimeRecorded;
+
+        const char* recordingDate = std::asctime(std::localtime(&ts));
+        const char* logFmt = "Replay playback started: %s\n"
+                             "  Date: %s\n"
+                             "  Ticks: %u\n"
+                             "  Commands: %u\n"
+                             "  Checksums: %u";
+
+        console.WriteFormatLine(logFmt, recordingDate, info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+        log_info(logFmt, recordingDate, info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+
         return 1;
     }
 

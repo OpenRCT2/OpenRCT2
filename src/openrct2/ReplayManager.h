@@ -21,6 +21,17 @@ namespace OpenRCT2
 {
     static constexpr uint32_t k_MaxReplayTicks = 0xFFFFFFFF;
 
+    struct ReplayRecordInfo
+    {
+        uint16_t Version;
+        uint32_t Ticks;
+        uint64_t TimeRecorded;
+        uint32_t NumCommands;
+        uint32_t NumChecksums;
+        std::string Name;
+        std::string FilePath;
+    };
+
     interface IReplayManager
     {
     public:
@@ -41,6 +52,7 @@ namespace OpenRCT2
 
         virtual bool StartRecording(const std::string& name, uint32_t maxTicks = k_MaxReplayTicks) = 0;
         virtual bool StopRecording() = 0;
+        virtual bool GetCurrentReplayInfo(ReplayRecordInfo & info) const = 0;
 
         virtual bool StartPlayback(const std::string& file) = 0;
         virtual bool IsPlaybackStateMismatching() const = 0;

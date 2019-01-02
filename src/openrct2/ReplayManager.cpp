@@ -20,6 +20,7 @@
 #include "core/Path.hpp"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
+#include "openrct2/management/NewsItem.h"
 #include "rct2/S6Exporter.h"
 #include "world/Park.h"
 
@@ -85,6 +86,7 @@ namespace OpenRCT2
         MemoryStream spriteSpatialData;
         MemoryStream parkParams;
         std::string name;      // Name of play
+        std::string filePath;  // File path of replay.
         uint64_t timeRecorded; // Posix Time.
         uint32_t tickStart;    // First tick of replay.
         uint32_t tickEnd;      // Last tick of replay.
@@ -246,6 +248,10 @@ namespace OpenRCT2
             else
                 replayData->tickEnd = k_MaxReplayTicks;
 
+            std::string replayName = String::StdFormat("%s.sv6r", name.c_str());
+            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
+            replayData->filePath = Path::Combine(outPath, replayName);
+
             auto context = GetContext();
             auto& objManager = context->GetObjectManager();
             auto objects = objManager.GetPackableObjects();
@@ -281,13 +287,9 @@ namespace OpenRCT2
             DataSerialiser serialiser(true);
             Serialise(serialiser, *_currentRecording);
 
-            char replayName[512] = {};
-            snprintf(replayName, sizeof(replayName), "%s.sv6r", _currentRecording->name.c_str());
-
-            std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
-            std::string outFile = Path::Combine(outPath, replayName);
-
             bool result = true;
+
+            const std::string& outFile = _currentRecording->filePath;
 
             FILE* fp = fopen(outFile.c_str(), "wb");
             if (fp)
@@ -311,7 +313,35 @@ namespace OpenRCT2
 
             _currentRecording.reset();
 
+            NewsItem* news = news_item_add_to_queue_raw(NEWS_ITEM_BLANK, "Replay recording stopped", 0);
+            news->Flags |= NEWS_FLAG_HAS_BUTTON; // Has no subject.
+
             return result;
+        }
+
+        virtual bool GetCurrentReplayInfo(ReplayRecordInfo& info) const override
+        {
+            ReplayRecordData* data = nullptr;
+
+            if (_mode == ReplayMode::PLAYING)
+                data = _currentReplay.get();
+            else if (_mode == ReplayMode::RECORDING)
+                data = _currentRecording.get();
+            else if (_mode == ReplayMode::NORMALISATION)
+                data = _currentRecording.get();
+
+            if (data == nullptr)
+                return false;
+
+            info.FilePath = data->filePath;
+            info.Name = data->name;
+            info.Version = data->version;
+            info.TimeRecorded = data->timeRecorded;
+            info.Ticks = gCurrentTicks - data->tickStart;
+            info.NumCommands = (uint32_t)data->commands.size();
+            info.NumChecksums = (uint32_t)data->checksums.size();
+
+            return true;
         }
 
         virtual bool StartPlayback(const std::string& file) override
@@ -345,6 +375,9 @@ namespace OpenRCT2
             _currentReplay->checksumIndex = 0;
             _faultyChecksumIndex = -1;
 
+            // Make sure game is not paused.
+            gGamePaused = 0;
+
             if (_mode != ReplayMode::NORMALISATION)
                 _mode = ReplayMode::PLAYING;
 
@@ -364,6 +397,13 @@ namespace OpenRCT2
         {
             if (_mode != ReplayMode::PLAYING && _mode != ReplayMode::NORMALISATION)
                 return false;
+
+            // During normal playback we pause the game if stopped.
+            if (_mode == ReplayMode::PLAYING)
+            {
+                NewsItem* news = news_item_add_to_queue_raw(NEWS_ITEM_BLANK, "Replay playback complete", 0);
+                news->Flags |= NEWS_FLAG_HAS_BUTTON; // Has no subject.
+            }
 
             // When normalizing the output we don't touch the mode.
             if (_mode != ReplayMode::NORMALISATION)
@@ -631,15 +671,16 @@ namespace OpenRCT2
             serialiser << data.magic;
             if (data.magic != ReplayMagic)
             {
-                log_error("Magic does not match %08X", data.magic);
+                log_error("Magic does not match %08X, expected: %08X", data.magic, ReplayMagic);
                 return false;
             }
             serialiser << data.version;
             if (data.version != ReplayVersion)
             {
-                log_error("Invalid version detected %04X", data.version);
+                log_error("Invalid version detected %04X, expected: %04X", data.version, ReplayVersion);
                 return false;
             }
+
             serialiser << data.networkId;
             serialiser << data.name;
             serialiser << data.parkData;
