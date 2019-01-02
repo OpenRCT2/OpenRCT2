@@ -51,7 +51,7 @@ template<typename T> struct DataSerializerTraitsIntegral
         else if constexpr (sizeof(T) == 4)
             snprintf(temp, sizeof(temp), "%08X", val);
         else if constexpr (sizeof(T) == 8)
-            snprintf(temp, sizeof(temp), "%16X", val);
+            snprintf(temp, sizeof(temp), "%016llX", val);
         else
             static_assert("Invalid size");
 
@@ -99,6 +99,14 @@ template<> struct DataSerializerTraits<uint32_t> : public DataSerializerTraitsIn
 };
 
 template<> struct DataSerializerTraits<int32_t> : public DataSerializerTraitsIntegral<int32_t>
+{
+};
+
+template<> struct DataSerializerTraits<uint64_t> : public DataSerializerTraitsIntegral<uint64_t>
+{
+};
+
+template<> struct DataSerializerTraits<int64_t> : public DataSerializerTraitsIntegral<int64_t>
 {
 };
 

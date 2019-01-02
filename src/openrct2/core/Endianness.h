@@ -39,6 +39,17 @@ template<> struct ByteSwapT<4>
     }
 };
 
+template<> struct ByteSwapT<8>
+{
+    static uint64_t SwapBE(uint64_t value)
+    {
+        value = (value & 0x00000000FFFFFFFF) << 32 | (value & 0xFFFFFFFF00000000) >> 32;
+        value = (value & 0x0000FFFF0000FFFF) << 16 | (value & 0xFFFF0000FFFF0000) >> 16;
+        value = (value & 0x00FF00FF00FF00FF) << 8 | (value & 0xFF00FF00FF00FF00) >> 8;
+        return value;
+    }
+};
+
 template<typename T> static T ByteSwapBE(const T& value)
 {
     return ByteSwapT<sizeof(T)>::SwapBE(value);
