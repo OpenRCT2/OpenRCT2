@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
@@ -64,6 +64,7 @@
     <ClCompile Include="Localisation.cpp" />
     <ClCompile Include="MultiLaunch.cpp" />
     <ClCompile Include="ReplayTests.cpp" />
+    <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="RideRatings.cpp" />
     <ClCompile Include="sawyercoding_test.cpp" />
     <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
