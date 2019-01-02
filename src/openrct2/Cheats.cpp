@@ -876,10 +876,7 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi)
             {
                 return language_get_string(STR_CHEAT_MOWED_GRASS);
             }
-            else if (edx == 1)
-            {
-                return language_get_string(STR_CHEAT_CLEAR_GRASS);
-            }
+            return language_get_string(STR_CHEAT_CLEAR_GRASS);
         case CHEAT_WATERPLANTS:
             return language_get_string(STR_CHEAT_WATER_PLANTS);
         case CHEAT_FIXVANDALISM:

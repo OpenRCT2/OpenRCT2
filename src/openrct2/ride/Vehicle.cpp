@@ -2048,7 +2048,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle* vehicle)
             flags = vehicle_update_track_motion(vehicle, &station);
             if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
-            // Fall through to next case
+            [[fallthrough]];
         case RIDE_MODE_BUMPERCAR:
         case RIDE_MODE_SWING:
         case RIDE_MODE_ROTATION:
