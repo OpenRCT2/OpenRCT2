@@ -747,6 +747,7 @@ void config_release()
     SafeFree(gConfigInterface.current_theme_preset);
     SafeFree(gConfigInterface.current_title_sequence_preset);
     SafeFree(gConfigSound.device);
+    SafeFree(gConfigTwitch.api_url);
     SafeFree(gConfigTwitch.channel);
     SafeFree(gConfigNetwork.player_name);
     SafeFree(gConfigNetwork.listen_address);
