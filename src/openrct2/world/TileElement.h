@@ -176,9 +176,13 @@ private:
     };
 
 public:
-    uint8_t GetEntryIndex() const;
-    rct_footpath_entry* GetEntry() const;
-    void SetEntryIndex(uint8_t newIndex);
+    uint8_t GetPathEntryIndex() const;
+    rct_footpath_entry* GetPathEntry() const;
+    void SetPathEntryIndex(uint8_t newIndex);
+
+    uint8_t GetRailingEntryIndex() const;
+    rct_footpath_entry* GetRailingEntry() const;
+    void SetRailingEntryIndex(uint8_t newIndex);
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);

@@ -277,7 +277,7 @@ static money32 footpath_element_insert(
             tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
             PathElement* pathElement = tileElement->AsPath();
             pathElement->clearance_height = z + 4 + ((slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) ? 2 : 0);
-            pathElement->SetEntryIndex(type);
+            pathElement->SetPathEntryIndex(type);
             pathElement->SetSlopeDirection(slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
                 pathElement->SetSloped(true);
@@ -315,7 +315,7 @@ static money32 footpath_element_update(
     const int32_t newFootpathType = (type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
     const bool newPathIsQueue = ((type >> 7) == 1);
 
-    if (tileElement->AsPath()->GetEntryIndex() != newFootpathType || tileElement->AsPath()->IsQueue() != newPathIsQueue)
+    if (tileElement->AsPath()->GetPathEntryIndex() != newFootpathType || tileElement->AsPath()->IsQueue() != newPathIsQueue)
     {
         gFootpathPrice += MONEY(6, 00);
     }
@@ -414,7 +414,7 @@ static money32 footpath_element_update(
         if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
             footpath_remove_edges_at(x, y, tileElement);
 
-        tileElement->AsPath()->SetEntryIndex(type);
+        tileElement->AsPath()->SetPathEntryIndex(type);
         if (type & (1 << 7))
             tileElement->AsPath()->SetIsQueue(true);
         else
@@ -670,7 +670,7 @@ static money32 footpath_place_from_track(
                 return MONEY32_UNDEFINED;
             }
             pathElement->clearance_height = z + 4 + ((slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) ? 2 : 0);
-            pathElement->SetEntryIndex(type & 0xF);
+            pathElement->SetPathEntryIndex(type & 0xF);
             pathElement->SetSlopeDirection(slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             if (slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
                 pathElement->SetSloped(true);
@@ -2091,20 +2091,35 @@ void PathElement::SetAdditionIsGhost(bool isGhost)
         additions |= FOOTPATH_ADDITION_FLAG_IS_GHOST;
 }
 
-uint8_t PathElement::GetEntryIndex() const
+uint8_t PathElement::GetPathEntryIndex() const
 {
     return (entryIndex & FOOTPATH_PROPERTIES_TYPE_MASK) >> 4;
 }
 
-rct_footpath_entry* PathElement::GetEntry() const
+uint8_t PathElement::GetRailingEntryIndex() const
 {
-    return get_footpath_entry(GetEntryIndex());
+    return GetPathEntryIndex();
 }
 
-void PathElement::SetEntryIndex(uint8_t newEntryIndex)
+rct_footpath_entry* PathElement::GetPathEntry() const
+{
+    return get_footpath_entry(GetPathEntryIndex());
+}
+
+rct_footpath_entry* PathElement::GetRailingEntry() const
+{
+    return get_footpath_entry(GetRailingEntryIndex());
+}
+
+void PathElement::SetPathEntryIndex(uint8_t newEntryIndex)
 {
     entryIndex &= ~FOOTPATH_PROPERTIES_TYPE_MASK;
     entryIndex |= (newEntryIndex << 4);
+}
+
+void PathElement::SetRailingEntryIndex(uint8_t newEntryIndex)
+{
+    log_verbose("Setting railing entry index to %d", newEntryIndex);
 }
 
 uint8_t PathElement::GetQueueBannerDirection() const

@@ -78,11 +78,11 @@ static constexpr const uint8_t byte_98D8A4[] = {
 // clang-format on
 
 void path_paint_box_support(
-    paint_session* session, const TileElement* tileElement, int32_t height, rct_footpath_entry* footpathEntry, bool hasFences,
-    uint32_t imageFlags, uint32_t sceneryImageFlags);
+    paint_session* session, const TileElement* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
+    rct_footpath_entry* railingEntry, bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags);
 void path_paint_pole_support(
-    paint_session* session, const TileElement* tileElement, int16_t height, rct_footpath_entry* footpathEntry, bool hasFences,
-    uint32_t imageFlags, uint32_t sceneryImageFlags);
+    paint_session* session, const TileElement* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
+    rct_footpath_entry* railingEntry, bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
@@ -924,17 +924,20 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2);
     }
 
-    rct_footpath_entry* footpathEntry = tile_element->AsPath()->GetEntry();
+    rct_footpath_entry* footpathEntry = tile_element->AsPath()->GetPathEntry();
+    rct_footpath_entry* railingEntry = tile_element->AsPath()->GetRailingEntry();
 
-    if (footpathEntry != nullptr)
+    if (footpathEntry != nullptr && railingEntry != nullptr)
     {
-        if (footpathEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE)
+        if (railingEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE)
         {
-            path_paint_pole_support(session, tile_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
+            path_paint_pole_support(
+                session, tile_element, height, footpathEntry, railingEntry, word_F3F038, imageFlags, sceneryImageFlags);
         }
         else
         {
-            path_paint_box_support(session, tile_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
+            path_paint_box_support(
+                session, tile_element, height, footpathEntry, railingEntry, word_F3F038, imageFlags, sceneryImageFlags);
         }
     }
 
@@ -973,8 +976,8 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 }
 
 void path_paint_box_support(
-    paint_session* session, const TileElement* tileElement, int32_t height, rct_footpath_entry* footpathEntry, bool hasFences,
-    uint32_t imageFlags, uint32_t sceneryImageFlags)
+    paint_session* session, const TileElement* tileElement, int32_t height, rct_footpath_entry* footpathEntry,
+    rct_footpath_entry* railingEntry, bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     PathElement* pathElement = tileElement->AsPath();
 
@@ -1042,18 +1045,19 @@ void path_paint_box_support(
         {
             image_id = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                         & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-                + footpathEntry->bridge_image + 51;
+                + railingEntry->bridge_image + 51;
         }
         else
         {
-            image_id = byte_98D8A4[edges] + footpathEntry->bridge_image + 49;
+            image_id = byte_98D8A4[edges] + railingEntry->bridge_image + 49;
         }
 
         sub_98197C(
             session, image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y,
             height + boundingBoxZOffset);
 
-        if (!pathElement->IsQueue() && !(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
+        // TODO: Revert this when path import works correctly.
+        if (!pathElement->IsQueue() && !(railingEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
         {
             // don't draw
         }
@@ -1065,7 +1069,7 @@ void path_paint_box_support(
         }
     }
 
-    sub_6A3F61(session, tileElement, edi, height, footpathEntry, imageFlags, sceneryImageFlags, hasFences);
+    sub_6A3F61(session, tileElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasFences);
 
     uint16_t ax = 0;
     if (tileElement->AsPath()->IsSloped())
@@ -1075,11 +1079,11 @@ void path_paint_box_support(
 
     if (byte_98D8A4[edges] == 0)
     {
-        path_a_supports_paint_setup(session, 0, ax, height, imageFlags, footpathEntry, nullptr);
+        path_a_supports_paint_setup(session, 0, ax, height, imageFlags, railingEntry, nullptr);
     }
     else
     {
-        path_a_supports_paint_setup(session, 1, ax, height, imageFlags, footpathEntry, nullptr);
+        path_a_supports_paint_setup(session, 1, ax, height, imageFlags, railingEntry, nullptr);
     }
 
     height += 32;
@@ -1126,8 +1130,8 @@ void path_paint_box_support(
 }
 
 void path_paint_pole_support(
-    paint_session* session, const TileElement* tileElement, int16_t height, rct_footpath_entry* footpathEntry, bool hasFences,
-    uint32_t imageFlags, uint32_t sceneryImageFlags)
+    paint_session* session, const TileElement* tileElement, int16_t height, rct_footpath_entry* footpathEntry,
+    rct_footpath_entry* railingEntry, bool hasFences, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     PathElement* pathElement = tileElement->AsPath();
 
@@ -1195,11 +1199,11 @@ void path_paint_pole_support(
         {
             bridgeImage = ((tileElement->AsPath()->GetSlopeDirection() + session->CurrentRotation)
                            & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
-                + footpathEntry->bridge_image + 16;
+                + railingEntry->bridge_image + 16;
         }
         else
         {
-            bridgeImage = edges + footpathEntry->bridge_image;
+            bridgeImage = edges + railingEntry->bridge_image;
             bridgeImage |= imageFlags;
         }
 
@@ -1207,7 +1211,8 @@ void path_paint_pole_support(
             session, bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
             boundBoxOffset.y, height + boundingBoxZOffset);
 
-        if (pathElement->IsQueue() || (footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
+        // TODO: Revert this when path import works correctly.
+        if (pathElement->IsQueue() || (railingEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE))
         {
             sub_98199C(
                 session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x,
@@ -1215,7 +1220,7 @@ void path_paint_pole_support(
         }
     }
 
-    sub_6A3F61(session, tileElement, edi, height, footpathEntry, imageFlags, sceneryImageFlags, hasFences); // TODO: arguments
+    sub_6A3F61(session, tileElement, edi, height, railingEntry, imageFlags, sceneryImageFlags, hasFences); // TODO: arguments
 
     uint16_t ax = 0;
     if (tileElement->AsPath()->IsSloped())
@@ -1234,7 +1239,7 @@ void path_paint_pole_support(
     {
         if (!(edges & (1 << i)))
         {
-            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags, footpathEntry);
+            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags, railingEntry);
         }
     }
 

@@ -370,7 +370,7 @@ static void track_design_save_add_wall(int32_t x, int32_t y, TileElement* tileEl
 
 static void track_design_save_add_footpath(int32_t x, int32_t y, TileElement* tileElement)
 {
-    int32_t entryType = tileElement->AsPath()->GetEntryIndex();
+    int32_t entryType = tileElement->AsPath()->GetPathEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
 
     uint8_t flags = 0;
@@ -557,7 +557,7 @@ static void track_design_save_remove_wall(int32_t x, int32_t y, TileElement* til
 
 static void track_design_save_remove_footpath(int32_t x, int32_t y, TileElement* tileElement)
 {
-    int32_t entryType = tileElement->AsPath()->GetEntryIndex();
+    int32_t entryType = tileElement->AsPath()->GetPathEntryIndex();
     auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
 
     uint8_t flags = 0;
