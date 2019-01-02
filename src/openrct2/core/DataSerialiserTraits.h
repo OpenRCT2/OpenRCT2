@@ -19,6 +19,9 @@
 #include "MemoryStream.h"
 
 #include <cstdio>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 template<typename T> struct DataSerializerTraits
@@ -43,19 +46,11 @@ template<typename T> struct DataSerializerTraitsIntegral
     }
     static void log(IStream* stream, const T& val)
     {
-        char temp[32] = {};
-        if constexpr (sizeof(T) == 1)
-            snprintf(temp, sizeof(temp), "%02X", val);
-        else if constexpr (sizeof(T) == 2)
-            snprintf(temp, sizeof(temp), "%04X", val);
-        else if constexpr (sizeof(T) == 4)
-            snprintf(temp, sizeof(temp), "%08X", val);
-        else if constexpr (sizeof(T) == 8)
-            snprintf(temp, sizeof(temp), "%016llX", val);
-        else
-            static_assert("Invalid size");
+        std::stringstream ss;
+        ss << std::hex << std::setw(sizeof(T) * 2) << std::setfill('0') << +val;
 
-        stream->Write(temp, strlen(temp));
+        std::string str = ss.str();
+        stream->Write(str.c_str(), str.size());
     }
 };
 
@@ -132,9 +127,9 @@ template<> struct DataSerializerTraits<std::string>
     }
     static void log(IStream* stream, const std::string& str)
     {
-        stream->Write("\"");
+        stream->Write("\"", 1);
         stream->Write(str.data(), str.size());
-        stream->Write("\"");
+        stream->Write("\"", 1);
     }
 };
 
@@ -287,13 +282,13 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty,
     }
     static void log(IStream* stream, const std::array<_Ty, _Size>& val)
     {
-        stream->Write("{");
+        stream->Write("{", 1);
         DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.log(stream, sub);
             stream->Write("; ", 2);
         }
-        stream->Write("}");
+        stream->Write("}", 1);
     }
 };
