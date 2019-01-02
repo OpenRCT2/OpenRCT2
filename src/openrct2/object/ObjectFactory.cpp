@@ -367,7 +367,9 @@ namespace ObjectFactory
             }
 
             auto fileDataRetriever = ZipDataRetriever(*archive);
-            return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
+            Object* obj = CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
+            json_decref(jRoot);
+            return obj;
         }
         catch (const std::exception& e)
         {
