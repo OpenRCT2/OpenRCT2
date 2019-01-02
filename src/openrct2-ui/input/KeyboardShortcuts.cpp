@@ -9,7 +9,7 @@
 
 #include "KeyboardShortcuts.h"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <algorithm>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/common.h>

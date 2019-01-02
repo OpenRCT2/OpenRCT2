@@ -22,8 +22,8 @@
 // Then the rest
 #    include "UiContext.h"
 
-#    include <SDL2/SDL.h>
-#    include <SDL2/SDL_syswm.h>
+#    include <SDL.h>
+#    include <SDL_syswm.h>
 #    include <algorithm>
 #    include <openrct2/common.h>
 #    include <openrct2/core/Path.hpp>

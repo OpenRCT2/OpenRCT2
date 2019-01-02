@@ -9,7 +9,7 @@
 
 #include "DrawingEngineFactory.hpp"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <algorithm>
 #include <openrct2/Game.h>
 #include <openrct2/common.h>

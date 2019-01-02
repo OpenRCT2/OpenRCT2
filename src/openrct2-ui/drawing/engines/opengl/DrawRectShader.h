@@ -13,7 +13,7 @@
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
 
-#include <SDL2/SDL_pixels.h>
+#include <SDL_pixels.h>
 #include <vector>
 
 class DrawRectShader final : public OpenGLShaderProgram

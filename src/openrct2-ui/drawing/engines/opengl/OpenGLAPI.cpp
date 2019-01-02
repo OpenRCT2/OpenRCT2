@@ -17,7 +17,7 @@
 #        include "OpenGLAPIProc.h"
 #        undef OPENGL_PROC
 
-#        include <SDL2/SDL_video.h>
+#        include <SDL_video.h>
 #        include <openrct2/core/Console.hpp>
 
 static const char* TryLoadAllProcAddresses()

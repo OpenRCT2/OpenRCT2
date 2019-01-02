@@ -19,7 +19,7 @@
 #include "interface/Theme.h"
 #include "title/TitleSequencePlayer.h"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <algorithm>
 #include <chrono>
 #include <cmath>
