@@ -57,7 +57,7 @@ private:
 
     int32_t _lastScreenWidth = 0;
     int32_t _lastScreenHeight = 0;
-    CoordsXY _viewCentreLocation = {};
+    CoordsXY _viewCentreLocation;
 
 public:
     explicit TitleSequencePlayer(IScenarioRepository& scenarioRepository, GameState& gameState)

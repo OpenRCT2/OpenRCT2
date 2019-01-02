@@ -146,6 +146,9 @@ private:
     TileElement* FindSceneryElement() const
     {
         TileElement* tileElement = map_get_first_element_at(_x / 32, _y / 32);
+        if (!tileElement)
+            return nullptr;
+
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)

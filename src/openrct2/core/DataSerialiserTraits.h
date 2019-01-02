@@ -14,6 +14,7 @@
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
 #include "../ride/Ride.h"
+#include "../world/Location.hpp"
 #include "DataSerialiserTag.h"
 #include "Endianness.h"
 #include "MemoryStream.h"
@@ -290,5 +291,33 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty,
             stream->Write("; ", 2);
         }
         stream->Write("}", 1);
+    }
+};
+
+template<> struct DataSerializerTraits<MapRange>
+{
+    static void encode(IStream* stream, const MapRange& v)
+    {
+        stream->WriteValue(ByteSwapBE(v.LeftTop.x));
+        stream->WriteValue(ByteSwapBE(v.LeftTop.y));
+        stream->WriteValue(ByteSwapBE(v.RightBottom.x));
+        stream->WriteValue(ByteSwapBE(v.RightBottom.y));
+    }
+    static void decode(IStream* stream, MapRange& v)
+    {
+        auto l = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto t = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto r = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto b = ByteSwapBE(stream->ReadValue<int32_t>());
+        v = MapRange(l, t, r, b);
+    }
+    static void log(IStream* stream, const MapRange& v)
+    {
+        char coords[128] = {};
+        snprintf(
+            coords, sizeof(coords), "MapRange(l = %d, t = %d, r = %d, b = %d)", v.LeftTop.x, v.LeftTop.y, v.RightBottom.x,
+            v.RightBottom.y);
+
+        stream->Write(coords, strlen(coords));
     }
 };

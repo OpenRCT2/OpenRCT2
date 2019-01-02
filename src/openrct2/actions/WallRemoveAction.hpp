@@ -99,6 +99,9 @@ private:
     TileElement* GetFirstWallElementAt(const TileCoordsXYZD& location, bool isGhost) const
     {
         TileElement* tileElement = map_get_first_element_at(location.x, location.y);
+        if (!tileElement)
+            return nullptr;
+
         do
         {
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)

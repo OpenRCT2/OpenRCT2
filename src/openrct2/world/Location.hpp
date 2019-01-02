@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <algorithm>
+
 #define LOCATION_NULL ((int16_t)(uint16_t)0x8000)
 #define RCT_XY8_UNDEFINED 0xFFFF
 #define MakeXY16(x, y)                                                                                                         \
@@ -59,7 +61,15 @@ constexpr int32_t COORDS_NULL = -1;
  */
 struct CoordsXY
 {
-    int32_t x, y;
+    int32_t x = 0;
+    int32_t y = 0;
+
+    CoordsXY() = default;
+    constexpr CoordsXY(int32_t _x, int32_t _y)
+        : x(_x)
+        , y(_y)
+    {
+    }
 };
 
 struct TileCoordsXY
@@ -86,7 +96,17 @@ struct TileCoordsXY
 
 struct CoordsXYZ
 {
-    int32_t x, y, z;
+    int32_t x = 0;
+    int32_t y = 0;
+    int32_t z = 0;
+
+    CoordsXYZ() = default;
+    constexpr CoordsXYZ(int32_t _x, int32_t _y, int32_t _z)
+        : x(_x)
+        , y(_y)
+        , z(_z)
+    {
+    }
 };
 
 struct TileCoordsXYZ
@@ -149,4 +169,48 @@ struct TileCoordsXYZD
     {
         return x == COORDS_NULL;
     };
+};
+
+/**
+ * Represents a rectangular range of the map using regular coordinates (32 per tile).
+ */
+struct MapRange
+{
+    CoordsXY LeftTop;
+    CoordsXY RightBottom;
+
+    int32_t GetLeft() const
+    {
+        return LeftTop.x;
+    }
+    int32_t GetTop() const
+    {
+        return LeftTop.y;
+    }
+    int32_t GetRight() const
+    {
+        return RightBottom.x;
+    }
+    int32_t GetBottom() const
+    {
+        return RightBottom.y;
+    }
+
+    MapRange()
+        : MapRange(0, 0, 0, 0)
+    {
+    }
+    MapRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
+        : LeftTop(left, top)
+        , RightBottom(right, bottom)
+    {
+    }
+
+    MapRange Normalise() const
+    {
+        auto result = MapRange(
+            std::min(GetLeft(), GetRight()), std::min(GetTop(), GetBottom()), std::max(GetLeft(), GetRight()),
+            std::max(GetTop(), GetBottom()));
+        return result;
+    }
 };

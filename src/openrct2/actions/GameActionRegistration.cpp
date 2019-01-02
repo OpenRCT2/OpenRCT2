@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "BannerSetNameAction.hpp"
+#include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
 #include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
@@ -59,5 +60,6 @@ namespace GameActions
         Register<WallRemoveAction>();
         Register<SceneryRemoveSmallAction>();
         Register<SceneryRemoveLargeAction>();
+        Register<ClearAction>();
     }
 } // namespace GameActions
