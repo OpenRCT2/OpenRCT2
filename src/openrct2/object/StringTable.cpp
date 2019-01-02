@@ -55,7 +55,7 @@ void StringTable::Read(IReadObjectContext* context, IStream* stream, uint8_t id)
         while ((rct2LanguageId = (RCT2LanguageId)stream->ReadValue<uint8_t>()) != RCT2_LANGUAGE_ID_END)
         {
             uint8_t languageId = (rct2LanguageId <= RCT2_LANGUAGE_ID_PORTUGUESE) ? RCT2ToOpenRCT2LanguageId[rct2LanguageId]
-                                                                                 : LANGUAGE_UNDEFINED;
+                                                                                 : (uint8_t)LANGUAGE_UNDEFINED;
             StringTableEntry entry{};
             entry.Id = id;
             entry.LanguageId = languageId;

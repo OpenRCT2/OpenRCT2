@@ -160,7 +160,7 @@ namespace ObjectFactory
 
     static uint8_t ParseSourceGame(const std::string& s)
     {
-        static const std::unordered_map<std::string, uint8_t> LookupTable{
+        static const std::unordered_map<std::string, OBJECT_SOURCE_GAME> LookupTable{
             { "rct1", OBJECT_SOURCE_RCT1 },
             { "rct1aa", OBJECT_SOURCE_ADDED_ATTRACTIONS },
             { "rct1ll", OBJECT_SOURCE_LOOPY_LANDSCAPES },

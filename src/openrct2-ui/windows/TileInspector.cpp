@@ -1812,7 +1812,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     const uint8_t pathAdditionType = tileElement->AsPath()->GetAdditionEntryIndex();
                     const auto* sceneryElement = get_footpath_item_entry(pathAdditionType);
-                    rct_string_id additionNameId = sceneryElement != nullptr ? sceneryElement->name : STR_UNKNOWN_OBJECT_TYPE;
+                    rct_string_id additionNameId = sceneryElement != nullptr ? sceneryElement->name
+                                                                             : (rct_string_id)STR_UNKNOWN_OBJECT_TYPE;
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId, COLOUR_DARK_GREEN, x, y + 11);
                 }
                 else
