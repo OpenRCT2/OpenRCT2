@@ -375,7 +375,6 @@ namespace OpenRCT2
             gCurrentTicks = replayData->tickStart;
 
             _currentReplay = std::move(replayData);
-            _currentReplay->filePath = file;
             _currentReplay->checksumIndex = 0;
             _faultyChecksumIndex = -1;
 
@@ -574,10 +573,12 @@ namespace OpenRCT2
             bool loaded = false;
             if (ReadReplayFromFile(outFile, stream))
             {
+                data.filePath = outFile;
                 loaded = true;
             }
             else if (ReadReplayFromFile(file, stream))
             {
+                data.filePath = file;
                 loaded = true;
             }
             if (!loaded)
