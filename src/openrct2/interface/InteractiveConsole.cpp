@@ -13,6 +13,7 @@
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
+#include "../ReplayManager.h"
 #include "../Version.h"
 #include "../actions/ClimateSetAction.hpp"
 #include "../config/Config.h"
@@ -1332,6 +1333,167 @@ static int32_t cc_say(InteractiveConsole& console, const utf8** argv, int32_t ar
     }
 }
 
+static int32_t cc_replay_startrecord(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    if (argc < 1)
+    {
+        console.WriteFormatLine("Parameters required <replay_name> [<max_ticks = 0xFFFFFFFF>]");
+        return 0;
+    }
+
+    std::string name = argv[0];
+
+    // If ticks are specified by user use that otherwise maximum ticks specified by const.
+    uint32_t maxTicks = OpenRCT2::k_MaxReplayTicks;
+    if (argc >= 2)
+    {
+        maxTicks = atol(argv[1]);
+    }
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager->StartRecording(name, maxTicks))
+    {
+        OpenRCT2::ReplayRecordInfo info;
+        replayManager->GetCurrentReplayInfo(info);
+
+        const char* logFmt = "Replay recording started: (%s) %s";
+        console.WriteFormatLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
+        log_info(logFmt, info.Name.c_str(), info.FilePath.c_str());
+
+        return 1;
+    }
+
+    return 0;
+}
+
+static int32_t cc_replay_stoprecord(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager->IsRecording() == false && replayManager->IsNormalising() == false)
+    {
+        console.WriteFormatLine("Replay currently not recording");
+        return 0;
+    }
+
+    OpenRCT2::ReplayRecordInfo info;
+    replayManager->GetCurrentReplayInfo(info);
+
+    if (replayManager->StopRecording())
+    {
+        const char* logFmt = "Replay recording stopped: (%s) %s\n"
+                             "  Ticks: %u\n"
+                             "  Commands: %u\n"
+                             "  Checksums: %u";
+
+        console.WriteFormatLine(
+            logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+        log_info(logFmt, info.Name.c_str(), info.FilePath.c_str(), info.Ticks, info.NumCommands, info.NumChecksums);
+
+        return 1;
+    }
+
+    return 0;
+}
+
+static int32_t cc_replay_start(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    if (argc < 1)
+    {
+        console.WriteFormatLine("Parameters required <replay_name>");
+        return 0;
+    }
+
+    std::string name = argv[0];
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager->StartPlayback(name))
+    {
+        OpenRCT2::ReplayRecordInfo info;
+        replayManager->GetCurrentReplayInfo(info);
+
+        std::time_t ts = info.TimeRecorded;
+
+        char recordingDate[128] = {};
+        std::strftime(recordingDate, sizeof(recordingDate), "%c", std::localtime(&ts));
+
+        const char* logFmt = "Replay playback started: %s\n"
+                             "  Date Recorded: %s\n"
+                             "  Ticks: %u\n"
+                             "  Commands: %u\n"
+                             "  Checksums: %u";
+
+        console.WriteFormatLine(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
+        log_info(logFmt, info.FilePath.c_str(), recordingDate, info.Ticks, info.NumCommands, info.NumChecksums);
+
+        return 1;
+    }
+
+    return 0;
+}
+
+static int32_t cc_replay_stop(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager->StopPlayback())
+    {
+        console.WriteFormatLine("Stopped replay");
+        return 1;
+    }
+
+    return 0;
+}
+
+static int32_t cc_replay_normalise(InteractiveConsole& console, const utf8** argv, int32_t argc)
+{
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
+        return 0;
+    }
+
+    if (argc < 2)
+    {
+        console.WriteFormatLine("Parameters required <replay_input> <replay_output>");
+        return 0;
+    }
+
+    std::string inputFile = argv[0];
+    std::string outputFile = argv[1];
+
+    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    if (replayManager->NormaliseReplay(inputFile, outputFile))
+    {
+        console.WriteFormatLine("Stopped replay");
+        return 1;
+    }
+
+    return 0;
+}
+
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
 static int32_t cc_abort(
@@ -1451,6 +1613,12 @@ static constexpr const console_command console_command_table[] = {
     { "twitch", cc_twitch, "Twitch API", "twitch" },
     { "variables", cc_variables, "Lists all the variables that can be used with get and sometimes set.", "variables" },
     { "windows", cc_windows, "Lists all the windows that can be opened.", "windows" },
+    { "replay_startrecord", cc_replay_startrecord, "Starts recording a new replay.", "replay_startrecord <name> [max_ticks]"},
+    { "replay_stoprecord", cc_replay_stoprecord, "Stops recording a new replay.", "replay_stoprecord"},
+    { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
+    { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
+    { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
+    
 };
 // clang-format on
 

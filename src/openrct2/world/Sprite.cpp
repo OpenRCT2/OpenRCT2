@@ -53,6 +53,21 @@ static LocationXYZ16 _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
 
+std::string rct_sprite_checksum::ToString() const
+{
+    std::string result;
+
+    result.reserve(raw.size() * 2);
+    for (auto b : raw)
+    {
+        char buf[3];
+        snprintf(buf, 3, "%02x", b);
+        result.append(buf);
+    }
+
+    return result;
+}
+
 rct_sprite* try_get_sprite(size_t spriteIndex)
 {
     rct_sprite* sprite = nullptr;
@@ -207,14 +222,15 @@ static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
 
 #ifndef DISABLE_NETWORK
 
-const char* sprite_checksum()
+rct_sprite_checksum sprite_checksum()
 {
     using namespace Crypt;
 
     // TODO Remove statics, should be one of these per sprite manager / OpenRCT2 context.
     //      Alternatively, make a new class for this functionality.
     static std::unique_ptr<HashAlgorithm<20>> _spriteHashAlg;
-    static std::string result;
+
+    rct_sprite_checksum checksum;
 
     try
     {
@@ -245,29 +261,21 @@ const char* sprite_checksum()
             }
         }
 
-        auto hash = _spriteHashAlg->Finish();
-
-        result.clear();
-        result.reserve(hash.size() * 2);
-        for (auto b : hash)
-        {
-            char buf[3];
-            snprintf(buf, 3, "%02x", b);
-            result.append(buf);
-        }
-        return result.c_str();
+        checksum.raw = _spriteHashAlg->Finish();
     }
     catch (std::exception& e)
     {
         log_error("sprite_checksum failed: %s", e.what());
         throw;
     }
+
+    return checksum;
 }
 #else
 
-const char* sprite_checksum()
+rct_sprite_checksum sprite_checksum()
 {
-    return nullptr;
+    return rct_sprite_checksum{};
 }
 
 #endif // DISABLE_NETWORK

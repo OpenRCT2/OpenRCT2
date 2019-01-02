@@ -1881,7 +1881,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
 
     uint8_t rideIndex;
     uint8_t rideColour;
-    money32 createRideResult = ride_create_command(td6->type, entryIndex, GAME_COMMAND_FLAG_APPLY, &rideIndex, &rideColour);
+    money32 createRideResult = ride_create_command(td6->type, entryIndex, flags, &rideIndex, &rideColour);
     if (createRideResult == MONEY32_UNDEFINED)
     {
         gGameCommandErrorTitle = STR_CANT_CREATE_NEW_RIDE_ATTRACTION;
@@ -1925,7 +1925,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     if (cost == MONEY32_UNDEFINED || !(flags & GAME_COMMAND_FLAG_APPLY))
     {
         rct_string_id error_reason = gGameCommandErrorText;
-        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+        ride_action_modify(rideIndex, RIDE_MODIFY_DEMOLISH, flags);
         gGameCommandErrorText = error_reason;
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
         *outRideIndex = rideIndex;
@@ -1934,40 +1934,27 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
 
     if (entryIndex != 0xFF)
     {
-        game_do_command(
-            0, GAME_COMMAND_FLAG_APPLY | (2 << 8), 0, rideIndex | (entryIndex << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+        game_do_command(0, flags | (2 << 8), 0, rideIndex | (entryIndex << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
     }
 
+    game_do_command(0, flags | (td6->ride_mode << 8), 0, rideIndex | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    game_do_command(0, flags | (0 << 8), 0, rideIndex | (td6->number_of_trains << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
     game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (td6->ride_mode << 8), 0, rideIndex | (0 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+        0, flags | (1 << 8), 0, rideIndex | (td6->number_of_cars_per_train << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
+    game_do_command(0, flags | (td6->depart_flags << 8), 0, rideIndex | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    game_do_command(0, flags | (td6->min_waiting_time << 8), 0, rideIndex | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    game_do_command(0, flags | (td6->max_waiting_time << 8), 0, rideIndex | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    game_do_command(0, flags | (td6->operation_setting << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
     game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (0 << 8), 0, rideIndex | (td6->number_of_trains << 8), GAME_COMMAND_SET_RIDE_VEHICLES, 0,
+        0, flags | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8), 0, rideIndex | (8 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0,
         0);
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (1 << 8), 0, rideIndex | (td6->number_of_cars_per_train << 8),
-        GAME_COMMAND_SET_RIDE_VEHICLES, 0, 0);
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (td6->depart_flags << 8), 0, rideIndex | (1 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (td6->min_waiting_time << 8), 0, rideIndex | (2 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0,
-        0);
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (td6->max_waiting_time << 8), 0, rideIndex | (3 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0,
-        0);
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (td6->operation_setting << 8), 0, rideIndex | (4 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0,
-        0);
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | ((td6->lift_hill_speed_num_circuits & 0x1F) << 8), 0, rideIndex | (8 << 8),
-        GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 
     uint8_t num_circuits = td6->lift_hill_speed_num_circuits >> 5;
     if (num_circuits == 0)
     {
         num_circuits = 1;
     }
-    game_do_command(
-        0, GAME_COMMAND_FLAG_APPLY | (num_circuits << 8), 0, rideIndex | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
+    game_do_command(0, flags | (num_circuits << 8), 0, rideIndex | (9 << 8), GAME_COMMAND_SET_RIDE_SETTING, 0, 0);
 
     ride_set_to_default_inspection_interval(rideIndex);
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN;
@@ -1989,7 +1976,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
         ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
     }
 
-    ride_set_name(rideIndex, td6->name);
+    ride_set_name(rideIndex, td6->name, flags);
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
     *outRideIndex = rideIndex;

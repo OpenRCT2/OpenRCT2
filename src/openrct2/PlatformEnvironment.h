@@ -46,6 +46,7 @@ namespace OpenRCT2
         THEME,       // Contains interface themes.
         TRACK,       // Contains track designs.
         HEIGHTMAP,   // Contains heightmap data.
+        REPLAY,      // Contains recorded replays.
     };
 
     enum class PATHID

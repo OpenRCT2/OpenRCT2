@@ -2478,7 +2478,7 @@ static void window_ride_main_textinput(rct_window* w, rct_widgetindex widgetInde
     if (widgetIndex != WIDX_RENAME || text == nullptr)
         return;
 
-    ride_set_name(w->number, text);
+    ride_set_name(w->number, text, 0);
 }
 
 /**

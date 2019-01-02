@@ -169,9 +169,10 @@ void game_command_set_ride_status(
 #pragma endregion
 
 #pragma region RideSetNameAction
-void ride_set_name(int32_t rideIndex, const char* name)
+void ride_set_name(int32_t rideIndex, const char* name, uint32_t flags)
 {
     auto gameAction = RideSetNameAction(rideIndex, name);
+    gameAction.SetFlags(flags);
     GameActions::Execute(&gameAction);
 }
 

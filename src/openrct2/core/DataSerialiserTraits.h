@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/MemoryStream.h"
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
@@ -18,12 +19,16 @@
 #include "MemoryStream.h"
 
 #include <cstdio>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
 
 template<typename T> struct DataSerializerTraits
 {
     static void encode(IStream* stream, const T& v) = delete;
     static void decode(IStream* stream, T& val) = delete;
-    static void log(IStream* stream, T& val) = delete;
+    static void log(IStream* stream, const T& val) = delete;
 };
 
 template<typename T> struct DataSerializerTraitsIntegral
@@ -39,21 +44,13 @@ template<typename T> struct DataSerializerTraitsIntegral
         stream->Read(&temp);
         val = ByteSwapBE(temp);
     }
-    static void log(IStream* stream, T& val)
+    static void log(IStream* stream, const T& val)
     {
-        char temp[32] = {};
-        if constexpr (sizeof(T) == 1)
-            snprintf(temp, sizeof(temp), "%02X", val);
-        else if constexpr (sizeof(T) == 2)
-            snprintf(temp, sizeof(temp), "%04X", val);
-        else if constexpr (sizeof(T) == 4)
-            snprintf(temp, sizeof(temp), "%08X", val);
-        else if constexpr (sizeof(T) == 8)
-            snprintf(temp, sizeof(temp), "%16X", val);
-        else
-            static_assert("Invalid size");
+        std::stringstream ss;
+        ss << std::hex << std::setw(sizeof(T) * 2) << std::setfill('0') << +val;
 
-        stream->Write(temp, strlen(temp));
+        std::string str = ss.str();
+        stream->Write(str.c_str(), str.size());
     }
 };
 
@@ -67,7 +64,7 @@ template<> struct DataSerializerTraits<bool>
     {
         stream->Read(&val);
     }
-    static void log(IStream* stream, bool& val)
+    static void log(IStream* stream, const bool& val)
     {
         if (val)
             stream->Write("true", 4);
@@ -100,6 +97,14 @@ template<> struct DataSerializerTraits<int32_t> : public DataSerializerTraitsInt
 {
 };
 
+template<> struct DataSerializerTraits<uint64_t> : public DataSerializerTraitsIntegral<uint64_t>
+{
+};
+
+template<> struct DataSerializerTraits<int64_t> : public DataSerializerTraitsIntegral<int64_t>
+{
+};
+
 template<> struct DataSerializerTraits<std::string>
 {
     static void encode(IStream* stream, const std::string& str)
@@ -122,9 +127,9 @@ template<> struct DataSerializerTraits<std::string>
     }
     static void log(IStream* stream, const std::string& str)
     {
-        stream->Write("\"");
+        stream->Write("\"", 1);
         stream->Write(str.data(), str.size());
-        stream->Write("\"");
+        stream->Write("\"", 1);
     }
 };
 
@@ -141,7 +146,7 @@ template<> struct DataSerializerTraits<NetworkPlayerId_t>
         stream->Read(&temp);
         val.id = ByteSwapBE(temp);
     }
-    static void log(IStream* stream, NetworkPlayerId_t& val)
+    static void log(IStream* stream, const NetworkPlayerId_t& val)
     {
         char playerId[28] = {};
         snprintf(playerId, sizeof(playerId), "%u", val.id);
@@ -175,7 +180,7 @@ template<> struct DataSerializerTraits<NetworkRideId_t>
         stream->Read(&temp);
         val.id = ByteSwapBE(temp);
     }
-    static void log(IStream* stream, NetworkRideId_t& val)
+    static void log(IStream* stream, const NetworkRideId_t& val)
     {
         char rideId[28] = {};
         snprintf(rideId, sizeof(rideId), "%u", val.id);
@@ -207,7 +212,7 @@ template<typename T> struct DataSerializerTraits<DataSerialiserTag<T>>
         DataSerializerTraits<T> s;
         s.decode(stream, tag.Data());
     }
-    static void log(IStream* stream, DataSerialiserTag<T>& tag)
+    static void log(IStream* stream, const DataSerialiserTag<T>& tag)
     {
         const char* name = tag.Name();
         stream->Write(name, strlen(name));
@@ -217,5 +222,73 @@ template<typename T> struct DataSerializerTraits<DataSerialiserTag<T>>
         s.log(stream, tag.Data());
 
         stream->Write("; ", 2);
+    }
+};
+
+template<> struct DataSerializerTraits<MemoryStream>
+{
+    static void encode(IStream* stream, const MemoryStream& val)
+    {
+        DataSerializerTraits<uint32_t> s;
+        s.encode(stream, val.GetLength());
+
+        stream->Write(val.GetData(), val.GetLength());
+    }
+    static void decode(IStream* stream, MemoryStream& val)
+    {
+        DataSerializerTraits<uint32_t> s;
+
+        uint32_t length = 0;
+        s.decode(stream, length);
+
+        std::unique_ptr<uint8_t[]> buf(new uint8_t[length]);
+        stream->Read(buf.get(), length);
+
+        val.Write(buf.get(), length);
+    }
+    static void log(IStream* stream, const MemoryStream& tag)
+    {
+    }
+};
+
+template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty, _Size>>
+{
+    static void encode(IStream* stream, const std::array<_Ty, _Size>& val)
+    {
+        uint16_t len = (uint16_t)_Size;
+        uint16_t swapped = ByteSwapBE(len);
+        stream->Write(&swapped);
+
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.encode(stream, sub);
+        }
+    }
+    static void decode(IStream* stream, std::array<_Ty, _Size>& val)
+    {
+        uint16_t len;
+        stream->Read(&len);
+        len = ByteSwapBE(len);
+
+        if (len != _Size)
+            throw std::runtime_error("Invalid size, can't decode");
+
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.decode(stream, sub);
+        }
+    }
+    static void log(IStream* stream, const std::array<_Ty, _Size>& val)
+    {
+        stream->Write("{", 1);
+        DataSerializerTraits<_Ty> s;
+        for (auto&& sub : val)
+        {
+            s.log(stream, sub);
+            stream->Write("; ", 2);
+        }
+        stream->Write("}", 1);
     }
 };

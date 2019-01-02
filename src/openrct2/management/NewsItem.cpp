@@ -279,17 +279,17 @@ void news_item_get_subject_location(int32_t type, int32_t subject, int32_t* x, i
  *
  *  rct2: 0x0066DF55
  */
-void news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t assoc)
+NewsItem* news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t assoc)
 {
     utf8 buffer[256];
     void* args = gCommonFormatArgs;
 
     // overflows possible?
     format_string(buffer, 256, string_id, args);
-    news_item_add_to_queue_raw(type, buffer, assoc);
+    return news_item_add_to_queue_raw(type, buffer, assoc);
 }
 
-void news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc)
+NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc)
 {
     NewsItem* newsItem = gNewsItems;
 
@@ -311,10 +311,14 @@ void news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc)
     newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
     safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
+    NewsItem* res = newsItem;
+
     // Blatant disregard for what happens on the last element.
     // TODO: Change this when we implement the queue ourselves.
     newsItem++;
     newsItem->Type = NEWS_ITEM_NULL;
+
+    return res;
 }
 
 /**

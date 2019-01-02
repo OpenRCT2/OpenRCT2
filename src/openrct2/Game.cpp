@@ -16,6 +16,7 @@
 #include "Input.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
+#include "ReplayManager.h"
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
@@ -387,6 +388,18 @@ int32_t game_do_command_p(
 
     flags = *ebx;
 
+    auto* replayManager = GetContext()->GetReplayManager();
+    if (replayManager->IsReplaying())
+    {
+        // We only accept replay commands as long the replay is active.
+        if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
+        {
+            // TODO: Introduce proper error.
+            gGameCommandErrorText = STR_CHEAT_BUILD_IN_PAUSE_MODE;
+            return MONEY32_UNDEFINED;
+        }
+    }
+
     if (gGameCommandNestLevel == 0)
     {
         gGameCommandErrorText = STR_NONE;
@@ -421,6 +434,11 @@ int32_t game_do_command_p(
     }
 
     *ebx &= ~GAME_COMMAND_FLAG_APPLY;
+
+    // Make sure the camera position won't change if the command skips setting them.
+    gCommandPosition.x = LOCATION_NULL;
+    gCommandPosition.y = LOCATION_NULL;
+    gCommandPosition.z = LOCATION_NULL;
 
     // First call for validity and price check
     new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
@@ -471,6 +489,27 @@ int32_t game_do_command_p(
 
             // Second call to actually perform the operation
             new_game_command_table[command](eax, ebx, ecx, edx, esi, edi, ebp);
+
+            if (replayManager != nullptr)
+            {
+                bool recordCommand = false;
+                bool commandExecutes = (flags & GAME_COMMAND_FLAG_APPLY) && (flags & GAME_COMMAND_FLAG_GHOST) == 0
+                    && (flags & GAME_COMMAND_FLAG_5) == 0;
+
+                if (replayManager->IsRecording() && commandExecutes)
+                    recordCommand = true;
+                else if (replayManager->IsNormalising() && commandExecutes && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
+                    recordCommand = true;
+
+                if (recordCommand && gGameCommandNestLevel == 1)
+                {
+                    int32_t callback = game_command_callback_get_index(game_command_callback);
+
+                    replayManager->AddGameCommand(
+                        gCurrentTicks, *eax, original_ebx, *ecx, original_edx, original_esi, original_edi, original_ebp,
+                        callback);
+                }
+            }
 
             // Do the callback (required for multiplayer to work correctly), but only for top level commands
             if (gGameCommandNestLevel == 1)
@@ -532,8 +571,11 @@ int32_t game_do_command_p(
 
     // Show error window
     if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740
-        && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+        && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED)
+        && !(flags & GAME_COMMAND_FLAG_GHOST))
+    {
         context_show_error(gGameCommandErrorTitle, gGameCommandErrorText);
+    }
 
     return MONEY32_UNDEFINED;
 }

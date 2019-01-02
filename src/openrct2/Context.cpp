@@ -21,6 +21,7 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
+#include "ReplayManager.h"
 #include "Version.h"
 #include "audio/AudioContext.h"
 #include "audio/audio.h"
@@ -90,6 +91,7 @@ namespace OpenRCT2
         std::unique_ptr<IObjectManager> _objectManager;
         std::unique_ptr<ITrackDesignRepository> _trackDesignRepository;
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
+        std::unique_ptr<IReplayManager> _replayManager;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
@@ -201,6 +203,11 @@ namespace OpenRCT2
         IScenarioRepository* GetScenarioRepository() override
         {
             return _scenarioRepository.get();
+        }
+
+        IReplayManager* GetReplayManager() override
+        {
+            return _replayManager.get();
         }
 
         int32_t GetDrawingEngineType() override
@@ -326,6 +333,7 @@ namespace OpenRCT2
             _objectManager = CreateObjectManager(*_objectRepository);
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
+            _replayManager = CreateReplayManager();
 #ifdef __ENABLE_DISCORD__
             _discordService = std::make_unique<DiscordService>();
 #endif
@@ -980,6 +988,7 @@ namespace OpenRCT2
                     DIRID::HEIGHTMAP,
                     DIRID::THEME,
                     DIRID::SEQUENCE,
+                    DIRID::REPLAY,
                 });
         }
 

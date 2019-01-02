@@ -10,6 +10,7 @@
 #include "GameAction.h"
 
 #include "../Context.h"
+#include "../ReplayManager.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
@@ -56,6 +57,15 @@ namespace GameActions
         return factory;
     }
 
+    bool IsValidId(uint32_t id)
+    {
+        if (id < std::size(_actions))
+        {
+            return _actions[id] != nullptr;
+        }
+        return false;
+    }
+
     void Initialize()
     {
         static bool initialized = false;
@@ -82,6 +92,25 @@ namespace GameActions
         }
         Guard::ArgumentNotNull(result, "Attempting to create unregistered gameaction: %u", id);
         return std::unique_ptr<GameAction>(result);
+    }
+
+    GameAction::Ptr Clone(const GameAction* action)
+    {
+        std::unique_ptr<GameAction> ga = GameActions::Create(action->GetType());
+        ga->SetCallback(action->GetCallback());
+
+        // Serialise action data into stream.
+        DataSerialiser dsOut(true);
+        action->Serialise(dsOut);
+
+        // Serialise into new action.
+        MemoryStream& stream = dsOut.GetStream();
+        stream.SetPosition(0);
+
+        DataSerialiser dsIn(false, stream);
+        ga->Serialise(dsIn);
+
+        return ga;
     }
 
     static bool CheckActionInPausedMode(uint32_t actionFlags)
@@ -199,6 +228,23 @@ namespace GameActions
         uint16_t actionFlags = action->GetActionFlags();
         uint32_t flags = action->GetFlags();
 
+        auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+        if (replayManager != nullptr && (replayManager->IsReplaying() || replayManager->IsNormalising()))
+        {
+            // We only accept replay commands as long the replay is active.
+            if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
+            {
+                // TODO: Introduce proper error.
+                GameActionResult::Ptr result = std::make_unique<GameActionResult>();
+
+                result->Error = GA_ERROR::GAME_PAUSED;
+                result->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+                result->ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
+
+                return result;
+            }
+        }
+
         GameActionResult::Ptr result = Query(action);
         if (result->Error == GA_ERROR::OK)
         {
@@ -247,9 +293,9 @@ namespace GameActions
                 money_effect_create(result->Cost);
             }
 
-            if (!(actionFlags & GA_FLAGS::CLIENT_ONLY))
+            if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)
             {
-                if (network_get_mode() == NETWORK_MODE_SERVER && result->Error == GA_ERROR::OK)
+                if (network_get_mode() == NETWORK_MODE_SERVER)
                 {
                     NetworkPlayerId_t playerId = action->GetPlayer();
 
@@ -260,6 +306,23 @@ namespace GameActions
                     if (result->Cost != 0)
                     {
                         network_add_player_money_spent(playerIndex, result->Cost);
+                    }
+                }
+                else if (network_get_mode() == NETWORK_MODE_NONE)
+                {
+                    bool commandExecutes = (flags & GAME_COMMAND_FLAG_GHOST) == 0 && (flags & GAME_COMMAND_FLAG_5) == 0;
+
+                    bool recordAction = false;
+                    if (replayManager)
+                    {
+                        if (replayManager->IsRecording() && commandExecutes)
+                            recordAction = true;
+                        else if (replayManager->IsNormalising() && (flags & GAME_COMMAND_FLAG_REPLAY) != 0)
+                            recordAction = true; // In normalisation we only feed back actions issued by the replay manager.
+                    }
+                    if (recordAction)
+                    {
+                        replayManager->AddGameAction(gCurrentTicks, action);
                     }
                 }
             }

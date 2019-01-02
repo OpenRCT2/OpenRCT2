@@ -105,6 +105,7 @@ enum : uint32_t
     GAME_COMMAND_FLAG_5 = (1 << 5),
     GAME_COMMAND_FLAG_GHOST = (1 << 6),
     GAME_COMMAND_FLAG_PATH_SCENERY = (1 << 7),
+    GAME_COMMAND_FLAG_REPLAY = (1u << 30),   // Command was issued from replay manager.
     GAME_COMMAND_FLAG_NETWORKED = (1u << 31) // Game command is coming from network
 };
 

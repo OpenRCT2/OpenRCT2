@@ -14,6 +14,7 @@
 #include "Game.h"
 #include "Input.h"
 #include "OpenRCT2.h"
+#include "ReplayManager.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
@@ -217,6 +218,8 @@ void GameState::UpdateLogic()
         gScreenAge--;
 
     network_update();
+
+    GetContext()->GetReplayManager()->Update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
         && network_get_authstatus() == NETWORK_AUTH_OK)
