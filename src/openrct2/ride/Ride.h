@@ -145,11 +145,13 @@ struct RideStation
     uint8_t TrainAtStation;
     TileCoordsXYZD Entrance;
     TileCoordsXYZD Exit;
-    int32_t SegmentLength;
-    uint16_t SegmentTime;
+    int32_t SegmentLength; // Length of track between this station and the next.
+    uint16_t SegmentTime;  // Time for train to reach the next station from this station.
     uint8_t QueueTime;
     uint16_t QueueLength;
     uint16_t LastPeepInQueue;
+
+    static constexpr uint8_t NO_TRAIN = std::numeric_limits<uint8_t>::max();
 };
 
 /**

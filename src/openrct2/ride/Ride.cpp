@@ -1123,7 +1123,7 @@ static void ride_remove_vehicles(Ride* ride)
         }
 
         for (size_t i = 0; i < MAX_STATIONS; i++)
-            ride->stations[i].TrainAtStation = 255;
+            ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;
     }
 }
 
@@ -5300,7 +5300,7 @@ static bool ride_create_vehicles(Ride* ride, int32_t rideIndex, CoordsXYE* eleme
     ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        ride->stations[i].Depart = (ride->stations[i].Depart & 0x80) | 1;
+        ride->stations[i].Depart = (ride->stations[i].Depart & STATION_DEPART_FLAG) | 1;
     }
 
     //
@@ -7492,7 +7492,6 @@ static void ride_update_vehicle_colours(int32_t rideIndex)
         int32_t carIndex = 0;
         uint16_t spriteIndex = ride->vehicles[i];
         VehicleColour colours = {};
-        uint8_t coloursExtended = 0;
 
         while (spriteIndex != SPRITE_INDEX_NULL)
         {
@@ -7501,21 +7500,21 @@ static void ride_update_vehicle_colours(int32_t rideIndex)
             {
                 case RIDE_COLOUR_SCHEME_ALL_SAME:
                     colours = ride->vehicle_colours[0];
-                    coloursExtended = ride->vehicle_colours[0].Ternary;
+                    colours.Ternary = ride->vehicle_colours[0].Ternary;
                     break;
                 case RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN:
                     colours = ride->vehicle_colours[i];
-                    coloursExtended = ride->vehicle_colours[i].Ternary;
+                    colours.Ternary = ride->vehicle_colours[i].Ternary;
                     break;
                 case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
                     colours = ride->vehicle_colours[std::min(carIndex, MAX_CARS_PER_TRAIN - 1)];
-                    coloursExtended = ride->vehicle_colours[std::min(carIndex, MAX_CARS_PER_TRAIN - 1)].Ternary;
+                    colours.Ternary = ride->vehicle_colours[std::min(carIndex, MAX_CARS_PER_TRAIN - 1)].Ternary;
                     break;
             }
 
             vehicle->colours.body_colour = colours.Body;
             vehicle->colours.trim_colour = colours.Trim;
-            vehicle->colours_extended = coloursExtended;
+            vehicle->colours_extended = colours.Ternary;
             invalidate_sprite_2((rct_sprite*)vehicle);
             spriteIndex = vehicle->next_vehicle_on_train;
             carIndex++;

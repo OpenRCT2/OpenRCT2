@@ -1748,7 +1748,7 @@ bool rct_peep::ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQue
             // Rides without queues can only have one peep waiting at a time.
             if (!atQueue)
             {
-                if (ride->stations[entranceNum].LastPeepInQueue != 0xFFFF)
+                if (ride->stations[entranceNum].LastPeepInQueue != SPRITE_INDEX_NULL)
                 {
                     peep_tried_to_enter_full_queue(this, rideIndex);
                     return false;
@@ -1757,7 +1757,7 @@ bool rct_peep::ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQue
             else
             {
                 // Check if there's room in the queue for the peep to enter.
-                if (ride->stations[entranceNum].LastPeepInQueue != 0xFFFF)
+                if (ride->stations[entranceNum].LastPeepInQueue != SPRITE_INDEX_NULL)
                 {
                     rct_peep* lastPeepInQueue = GET_PEEP(ride->stations[entranceNum].LastPeepInQueue);
                     if (abs(lastPeepInQueue->z - z) <= 6)

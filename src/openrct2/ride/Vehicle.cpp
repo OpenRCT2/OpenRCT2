@@ -2158,7 +2158,7 @@ static void train_ready_to_depart(rct_vehicle* vehicle, uint8_t num_peeps_on_tra
         // Boat Hire with passengers on it.
         if (ride->status != RIDE_STATUS_CLOSED || (ride->num_riders != 0 && ride->type != RIDE_TYPE_BOAT_HIRE))
         {
-            ride->stations[vehicle->current_station].TrainAtStation = 0xFF;
+            ride->stations[vehicle->current_station].TrainAtStation = RideStation::NO_TRAIN;
             vehicle->sub_state = 2;
             return;
         }
