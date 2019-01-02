@@ -277,7 +277,7 @@ namespace UnicodeChar
     constexpr char32_t non_breaking_space = 0xA0;
     constexpr char32_t leftguillemet = 0xAB;
     constexpr char32_t rightguillemet = 0xBB;
-    constexpr char32_t interpunct = 0x49F;
+    constexpr char32_t interpunct = 0xB7;
     constexpr char32_t single_quote_open = 0x2018;
     constexpr char32_t single_quote_end = 0x2019;
     constexpr char32_t single_german_quote_open = 0x201A;
