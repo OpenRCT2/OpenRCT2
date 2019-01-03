@@ -21,6 +21,7 @@
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
 - Fix: [#7439] Placement messages have mixed strings
 - Fix: [#7473] Disabling sound effects also disables "Disable audio on focus loss".
+- Fix: [#7536] Android builds fail to start.
 - Fix: [#7689] Deleting 0-tile maze gives a MONEY32_UNDEFINED (negative) refund.
 - Fix: [#7828] Copied entrances and exits stay when demolishing ride.
 - Fix: [#7945] Client IP address is logged as `(null)` in server logs.

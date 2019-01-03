@@ -15,6 +15,10 @@
 #include <string>
 #include <time.h>
 
+#ifdef __ANDROID__
+#    include <jni.h>
+#endif // __ANDROID__
+
 struct TTFFontDescriptor;
 struct rct2_install_info;
 
@@ -159,5 +163,19 @@ __declspec(dllexport) int32_t StartOpenRCT(HINSTANCE hInstance, HINSTANCE hPrevI
 void macos_disallow_automatic_window_tabbing();
 utf8* macos_str_decomp_to_precomp(utf8* input);
 #endif
+
+#ifdef __ANDROID__
+class AndroidClassLoader
+{
+public:
+    AndroidClassLoader();
+    ~AndroidClassLoader();
+    static jobject _classLoader;
+    static jmethodID _findClassMethod;
+};
+
+void platform_android_init_class_loader();
+jclass platform_android_find_class(JNIEnv* env, const char* name);
+#endif // __ANDROID__
 
 #endif
