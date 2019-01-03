@@ -127,6 +127,7 @@ namespace OpenRCT2
             ReadWriteAuthoringChunk(os);
             ReadWriteObjectsChunk(os);
             ReadWriteTilesChunk(os);
+            ReadWriteRidesChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
@@ -145,7 +146,7 @@ namespace OpenRCT2
                 os.ReadWriteChunk(ParkFileChunkType::AUTHORING, [](OrcaStream::ChunkStream& cs) {
                     cs.Write(std::string_view(gVersionInfoFull));
                     std::vector<std::string> authors;
-                    cs.ReadWriteArray(authors, [](std::string& s) {});
+                    cs.ReadWriteVector(authors, [](std::string& s) {});
                     cs.Write(std::string_view());     // custom notes that can be attached to the save
                     cs.Write<uint64_t>(std::time(0)); // date started
                     cs.Write<uint64_t>(std::time(0)); // date modified
@@ -159,7 +160,7 @@ namespace OpenRCT2
             {
                 std::vector<rct_object_entry> entries;
                 os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&entries](OrcaStream::ChunkStream& cs) {
-                    cs.ReadWriteArray(entries, [&cs](rct_object_entry& entry) {
+                    cs.ReadWriteVector(entries, [&cs](rct_object_entry& entry) {
                         auto type = cs.Read<uint16_t>();
                         auto id = cs.Read<std::string>();
                         auto version = cs.Read<std::string>();
@@ -176,7 +177,7 @@ namespace OpenRCT2
                 std::iota(objectIds.begin(), objectIds.end(), 0);
                 os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&objectIds](OrcaStream::ChunkStream& cs) {
                     auto& objManager = GetContext()->GetObjectManager();
-                    cs.ReadWriteArray(objectIds, [&cs, &objManager](size_t& i) {
+                    cs.ReadWriteVector(objectIds, [&cs, &objManager](size_t& i) {
                         auto obj = objManager.GetLoadedObject(i);
                         if (obj != nullptr)
                         {
@@ -248,7 +249,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gGuestInitialThirst);
 
                 cs.ReadWrite(gNextGuestNumber);
-                cs.ReadWriteArray(gPeepSpawns, [&cs](PeepSpawn& spawn) {
+                cs.ReadWriteVector(gPeepSpawns, [&cs](PeepSpawn& spawn) {
                     cs.ReadWrite(spawn.x);
                     cs.ReadWrite(spawn.y);
                     cs.ReadWrite(spawn.z);
@@ -320,7 +321,7 @@ namespace OpenRCT2
                         marketing.push_back(std::make_tuple(gMarketingCampaignDaysLeft[i], gMarketingCampaignRideIndex[i]));
                     }
                 }
-                cs.ReadWriteArray(marketing, [&cs](std::tuple<uint32_t, uint32_t>& m) {
+                cs.ReadWriteVector(marketing, [&cs](std::tuple<uint32_t, uint32_t>& m) {
                     cs.ReadWrite(std::get<0>(m));
                     cs.ReadWrite(std::get<1>(m));
                 });
@@ -335,26 +336,18 @@ namespace OpenRCT2
                 }
 
                 // Awards
-                std::vector<Award> awards(std::begin(gCurrentAwards), std::end(gCurrentAwards));
-                cs.ReadWriteArray(awards, [&cs](Award& award) {
-                    cs.ReadWrite(award.Time);
-                    cs.ReadWrite(award.Type);
-                });
-                if (cs.GetMode() == OrcaStream::Mode::READING)
-                {
-                    for (size_t i = 0; i < std::size(gCurrentAwards); i++)
+                cs.ReadWriteArray(gCurrentAwards, [&cs](Award& award) {
+                    if (award.Time != 0)
                     {
-                        if (awards.size() > i)
-                        {
-                            gCurrentAwards[i] = awards[i];
-                        }
-                        else
-                        {
-                            gCurrentAwards[i].Time = 0;
-                            gCurrentAwards[i].Type = 0;
-                        }
+                        cs.ReadWrite(award.Time);
+                        cs.ReadWrite(award.Type);
+                        return true;
                     }
-                }
+                    else
+                    {
+                        return false;
+                    }
+                });
 
                 cs.ReadWrite(gParkRatingCasualtyPenalty);
                 cs.ReadWrite(gCurrentExpenditure);
@@ -388,7 +381,7 @@ namespace OpenRCT2
         {
             os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& cs) {
                 std::vector<NewsItem> notifications(std::begin(gNewsItems), std::end(gNewsItems));
-                cs.ReadWriteArray(notifications, [&cs](NewsItem& notification) {
+                cs.ReadWriteVector(notifications, [&cs](NewsItem& notification) {
                     cs.ReadWrite(notification.Type);
                     cs.ReadWrite(notification.Flags);
                     cs.ReadWrite(notification.Assoc);
@@ -450,7 +443,7 @@ namespace OpenRCT2
                 }
 
                 std::vector<TileElement> tiles(std::begin(gTileElements), std::end(gTileElements));
-                cs.ReadWriteArray(tiles, [&cs](TileElement& el) { cs.ReadWrite(&el, sizeof(TileElement)); });
+                cs.ReadWriteVector(tiles, [&cs](TileElement& el) { cs.ReadWrite(&el, sizeof(TileElement)); });
                 std::copy_n(tiles.data(), std::min(tiles.size(), std::size(gTileElements)), gTileElements);
 
                 map_update_tile_pointers();
@@ -465,9 +458,19 @@ namespace OpenRCT2
         void ReadWriteRidesChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::RIDES, [](OrcaStream::ChunkStream& cs) {
-                std::vector<Ride> rides(std::begin(gRideList), std::end(gRideList));
-                cs.ReadWriteArray(rides, [&cs](Ride& ride)
-                {
+                cs.ReadWriteArray(gRideList, [&cs](Ride& ride) {
+                    // Status
+                    cs.ReadWrite(ride.type);
+                    if (ride.type == RIDE_TYPE_NULL)
+                    {
+                        return true;
+                    }
+                    cs.ReadWrite(ride.subtype);
+                    cs.ReadWrite(ride.mode);
+                    cs.ReadWrite(ride.status);
+                    cs.ReadWrite(ride.depart_flags);
+                    cs.ReadWrite(ride.lifecycle_flags);
+
                     // Meta
                     cs.ReadWrite(ride.name);
                     cs.ReadWrite(ride.name_arguments);
@@ -475,36 +478,25 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.price);
                     cs.ReadWrite(ride.price_secondary);
 
-                    // Status
-                    cs.ReadWrite(ride.type);
-                    cs.ReadWrite(ride.subtype);
-                    cs.ReadWrite(ride.mode);
-                    cs.ReadWrite(ride.status);
-                    cs.ReadWrite(ride.depart_flags);
-                    cs.ReadWrite(ride.lifecycle_flags);
-
                     // Colours
                     cs.ReadWrite(ride.entrance_style);
                     cs.ReadWrite(ride.colour_scheme_type);
-                    // cs.ReadWriteArray(ride.track_colour, [&cs](TrackColour& tc)
-                    // {
-                    //     cs.ReadWrite(tc.main);
-                    //     cs.ReadWrite(tc.additional);
-                    //     cs.ReadWrite(tc.supports);
-                    // });
+                    cs.ReadWriteArray(ride.track_colour, [&cs](TrackColour& tc) {
+                        cs.ReadWrite(tc.main);
+                        cs.ReadWrite(tc.additional);
+                        cs.ReadWrite(tc.supports);
+                        return true;
+                    });
 
-                    // std::vector<VehicleColour> colours(std::begin(ride.vehicle_colours), std::end(ride.vehicle_colours));
-                    // cs.ReadWriteArray(colours, [&cs](VehicleColour& vc)
-                    // {
-                    //     cs.ReadWrite(vc);
-                    // });
-                    // std::copy(colours.begin(), colours.end(), ride.vehicle_colours);
+                    cs.ReadWriteArray(ride.vehicle_colours, [&cs](VehicleColour& vc) {
+                        cs.ReadWrite(vc);
+                        return true;
+                    });
 
                     // Stations
                     cs.ReadWrite(ride.num_stations);
                     std::vector<RideStation> stations(std::begin(ride.stations), std::end(ride.stations));
-                    cs.ReadWriteArray(stations, [&cs](RideStation& station)
-                    {
+                    cs.ReadWriteVector(stations, [&cs](RideStation& station) {
                         cs.ReadWrite(station.Start);
                         cs.ReadWrite(station.Height);
                         cs.ReadWrite(station.Length);
@@ -530,7 +522,10 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.min_max_cars_per_train);
                     cs.ReadWrite(ride.min_waiting_time);
                     cs.ReadWrite(ride.max_waiting_time);
-                    cs.ReadWrite(ride.vehicles);
+                    cs.ReadWriteArray(ride.vehicles, [&cs](uint16_t& v) {
+                        cs.ReadWrite(v);
+                        return true;
+                    });
 
                     // Operation
                     cs.ReadWrite(ride.operation_option);
@@ -589,7 +584,6 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.num_block_brakes);
                     cs.ReadWrite(ride.total_air_time);
 
-
                     cs.ReadWrite(ride.excitement);
                     cs.ReadWrite(ride.intensity);
                     cs.ReadWrite(ride.nausea);
@@ -646,6 +640,7 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.music);
                     cs.ReadWrite(ride.music_tune_id);
                     cs.ReadWrite(ride.music_position);
+                    return true;
                 });
             });
         }
@@ -679,7 +674,7 @@ namespace OpenRCT2
             {
                 table.push_back(std::make_tuple(std::string(lcode), value));
             }
-            cs.ReadWriteArray(table, [&cs](std::tuple<std::string, std::string>& v) {
+            cs.ReadWriteVector(table, [&cs](std::tuple<std::string, std::string>& v) {
                 cs.ReadWrite(std::get<0>(v));
                 cs.ReadWrite(std::get<1>(v));
             });

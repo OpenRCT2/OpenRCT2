@@ -286,16 +286,47 @@ namespace OpenRCT2
                 }
             }
 
-            template<typename TArr, typename TFunc> void ReadWriteArray(TArr& arr, TFunc f)
+            template<typename TVec, typename TFunc> void ReadWriteVector(TVec& vec, TFunc f)
             {
                 if (_mode == Mode::READING)
                 {
                     auto count = BeginArray();
-                    arr.clear();
+                    vec.clear();
                     for (size_t i = 0; i < count; i++)
                     {
-                        auto& el = arr.emplace_back();
+                        auto& el = vec.emplace_back();
                         f(el);
+                        NextArrayElement();
+                    }
+                    EndArray();
+                }
+                else
+                {
+                    BeginArray();
+                    for (auto& el : vec)
+                    {
+                        f(el);
+                        NextArrayElement();
+                    }
+                    EndArray();
+                }
+            }
+
+            template<typename TArr, size_t TArrSize, typename TFunc> void ReadWriteArray(TArr (&arr)[TArrSize], TFunc f)
+            {
+                if (_mode == Mode::READING)
+                {
+                    auto count = BeginArray();
+                    for (auto& el : arr)
+                    {
+                        el = {};
+                    }
+                    for (size_t i = 0; i < count; i++)
+                    {
+                        if (i < TArrSize)
+                        {
+                            f(arr[i]);
+                        }
                         NextArrayElement();
                     }
                     EndArray();
@@ -305,8 +336,10 @@ namespace OpenRCT2
                     BeginArray();
                     for (auto& el : arr)
                     {
-                        f(el);
-                        NextArrayElement();
+                        if (f(el))
+                        {
+                            NextArrayElement();
+                        }
                     }
                     EndArray();
                 }
