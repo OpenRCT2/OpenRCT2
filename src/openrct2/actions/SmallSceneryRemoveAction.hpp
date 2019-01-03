@@ -23,7 +23,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SceneryRemoveSmallAction, GAME_COMMAND_REMOVE_SCENERY, GameActionResult)
+DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActionResult)
 {
 private:
     int16_t _x;
@@ -33,9 +33,9 @@ private:
     uint8_t _sceneryType;
 
 public:
-    SceneryRemoveSmallAction() = default;
+    SmallSceneryRemoveAction() = default;
 
-    SceneryRemoveSmallAction(int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType)
+    SmallSceneryRemoveAction(int16_t x, int16_t y, uint8_t baseHeight, uint8_t quadrant, uint8_t sceneryType)
         : _x(x)
         , _y(y)
         , _baseHeight(baseHeight)

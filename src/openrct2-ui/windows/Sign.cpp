@@ -12,7 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
-#include <openrct2/actions/SceneryRemoveLargeAction.hpp>
+#include <openrct2/actions/LargeSceneryRemoveAction.hpp>
 #include <openrct2/actions/SignSetNameAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/config/Config.h>
@@ -231,7 +231,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 tile_element++;
             }
 
-            auto sceneryRemoveAction = SceneryRemoveLargeAction(
+            auto sceneryRemoveAction = LargeSceneryRemoveAction(
                 x, y, tile_element->base_height, tile_element->GetDirection(),
                 tile_element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&sceneryRemoveAction);

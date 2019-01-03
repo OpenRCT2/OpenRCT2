@@ -290,10 +290,10 @@ static void virtual_floor_get_tile_properties(
 void virtual_floor_paint(paint_session* session)
 {
     static constexpr const CoordsXY scenery_half_tile_offsets[4] = {
-        CoordsXY{ -32, 0 },
-        CoordsXY{ 0, 32 },
-        CoordsXY{ 32, 0 },
-        CoordsXY{ 0, -32 },
+        { -32, 0 },
+        { 0, 32 },
+        { 32, 0 },
+        { 0, -32 },
     };
 
     if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)

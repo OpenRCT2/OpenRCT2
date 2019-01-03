@@ -13,6 +13,7 @@
 #include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
+#include "LargeSceneryRemoveAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
@@ -25,10 +26,9 @@
 #include "RideSetColourScheme.hpp"
 #include "RideSetName.hpp"
 #include "RideSetStatus.hpp"
-#include "SceneryRemoveLargeAction.hpp"
-#include "SceneryRemoveSmallAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
+#include "SmallSceneryRemoveAction.hpp"
 #include "StaffSetColourAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "WallRemoveAction.hpp"
@@ -58,8 +58,8 @@ namespace GameActions
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<WallRemoveAction>();
-        Register<SceneryRemoveSmallAction>();
-        Register<SceneryRemoveLargeAction>();
+        Register<SmallSceneryRemoveAction>();
+        Register<LargeSceneryRemoveAction>();
         Register<ClearAction>();
     }
 } // namespace GameActions

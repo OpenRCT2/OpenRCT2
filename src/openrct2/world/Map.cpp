@@ -15,8 +15,8 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathRemoveAction.hpp"
-#include "../actions/SceneryRemoveLargeAction.hpp"
-#include "../actions/SceneryRemoveSmallAction.hpp"
+#include "../actions/LargeSceneryRemoveAction.hpp"
+#include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -3503,7 +3503,7 @@ static void clear_element_at(int32_t x, int32_t y, TileElement** elementPtr)
         break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
-            auto removeSceneryAction = SceneryRemoveLargeAction(
+            auto removeSceneryAction = LargeSceneryRemoveAction(
                 x, y, element->base_height, element->GetDirection(), element->AsLargeScenery()->GetSequenceIndex());
             GameActions::Execute(&removeSceneryAction);
         }

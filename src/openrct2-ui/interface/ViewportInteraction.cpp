@@ -16,8 +16,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/SceneryRemoveLargeAction.hpp>
-#include <openrct2/actions/SceneryRemoveSmallAction.hpp>
+#include <openrct2/actions/LargeSceneryRemoveAction.hpp>
+#include <openrct2/actions/SmallSceneryRemoveAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
@@ -467,7 +467,7 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
  */
 static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y)
 {
-    auto removeSceneryAction = SceneryRemoveSmallAction(
+    auto removeSceneryAction = SmallSceneryRemoveAction(
         x, y, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
         tileElement->AsSmallScenery()->GetEntryIndex());
 
@@ -575,7 +575,7 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     }
     else
     {
-        auto removeSceneryAction = SceneryRemoveLargeAction(
+        auto removeSceneryAction = LargeSceneryRemoveAction(
             x, y, tileElement->base_height, tileElement->GetDirection(), tileElement->AsLargeScenery()->GetSequenceIndex());
         GameActions::Execute(&removeSceneryAction);
     }

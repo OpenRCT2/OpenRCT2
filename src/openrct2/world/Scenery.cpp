@@ -12,8 +12,8 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
-#include "../actions/SceneryRemoveLargeAction.hpp"
-#include "../actions/SceneryRemoveSmallAction.hpp"
+#include "../actions/LargeSceneryRemoveAction.hpp"
+#include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../common.h"
 #include "../localisation/Localisation.h"
@@ -187,7 +187,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_0;
 
-        auto removeSceneryAction = SceneryRemoveSmallAction(x, y, z, gSceneryQuadrant, gSceneryPlaceObject);
+        auto removeSceneryAction = SmallSceneryRemoveAction(x, y, z, gSceneryQuadrant, gSceneryPlaceObject);
         removeSceneryAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST);
         removeSceneryAction.Execute();
     }
@@ -226,7 +226,7 @@ void scenery_remove_ghost_tool_placement()
     {
         gSceneryGhostType &= ~SCENERY_GHOST_FLAG_3;
 
-        auto removeSceneryAction = SceneryRemoveLargeAction(x, y, z, gSceneryPlaceRotation, 0);
+        auto removeSceneryAction = LargeSceneryRemoveAction(x, y, z, gSceneryPlaceRotation, 0);
         removeSceneryAction.SetFlags(
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5);
         removeSceneryAction.Execute();

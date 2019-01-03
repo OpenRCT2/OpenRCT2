@@ -12,8 +12,8 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
-#include "../actions/SceneryRemoveLargeAction.hpp"
-#include "../actions/SceneryRemoveSmallAction.hpp"
+#include "../actions/LargeSceneryRemoveAction.hpp"
+#include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
 #include "../audio/audio.h"
 #include "../core/File.h"
@@ -831,7 +831,7 @@ static int32_t track_design_place_scenery(
 
                         z = (scenery->z * 8 + originZ) / 8;
 
-                        auto removeSceneryAction = SceneryRemoveSmallAction(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
+                        auto removeSceneryAction = SmallSceneryRemoveAction(mapCoord.x, mapCoord.y, z, quadrant, entry_index);
                         removeSceneryAction.SetFlags(flags);
                         removeSceneryAction.Execute();
 
@@ -841,7 +841,7 @@ static int32_t track_design_place_scenery(
                     {
                         z = (scenery->z * 8 + originZ) / 8;
 
-                        auto removeSceneryAction = SceneryRemoveLargeAction(
+                        auto removeSceneryAction = LargeSceneryRemoveAction(
                             mapCoord.x, mapCoord.y, z, (rotation + scenery->flags) & 0x3, 0);
                         removeSceneryAction.SetFlags(flags);
                         removeSceneryAction.Execute();

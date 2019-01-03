@@ -23,7 +23,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SceneryRemoveLargeAction, GAME_COMMAND_REMOVE_LARGE_SCENERY, GameActionResult)
+DEFINE_GAME_ACTION(LargeSceneryRemoveAction, GAME_COMMAND_REMOVE_LARGE_SCENERY, GameActionResult)
 {
 private:
     int16_t _x;
@@ -33,9 +33,9 @@ private:
     uint16_t _tileIndex;
 
 public:
-    SceneryRemoveLargeAction() = default;
+    LargeSceneryRemoveAction() = default;
 
-    SceneryRemoveLargeAction(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint16_t tileIndex)
+    LargeSceneryRemoveAction(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint16_t tileIndex)
         : _x(x)
         , _y(y)
         , _baseHeight(baseHeight)

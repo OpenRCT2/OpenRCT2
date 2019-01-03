@@ -19,8 +19,8 @@
 #include "../world/Map.h"
 #include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
-#include "SceneryRemoveLargeAction.hpp"
-#include "SceneryRemoveSmallAction.hpp"
+#include "LargeSceneryRemoveAction.hpp"
+#include "SmallSceneryRemoveAction.hpp"
 #include "WallRemoveAction.hpp"
 
 #include <algorithm>
@@ -166,7 +166,7 @@ private:
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                         {
-                            auto removeSceneryAction = SceneryRemoveSmallAction(
+                            auto removeSceneryAction = SmallSceneryRemoveAction(
                                 x * 32, y * 32, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
                                 tileElement->AsSmallScenery()->GetEntryIndex());
                             removeSceneryAction.SetFlags(GetFlags());
@@ -197,7 +197,7 @@ private:
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                         if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
                         {
-                            auto removeSceneryAction = SceneryRemoveLargeAction(
+                            auto removeSceneryAction = LargeSceneryRemoveAction(
                                 x * 32, y * 32, tileElement->base_height, tileElement->GetDirection(),
                                 tileElement->AsLargeScenery()->GetSequenceIndex());
                             removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
