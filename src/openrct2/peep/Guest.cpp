@@ -576,6 +576,8 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                         case PEEP_THOUGHT_TYPE_RUNNING_OUT:
                             peep_head_for_nearest_ride_type(this, RIDE_TYPE_CASH_MACHINE);
                             break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -680,6 +682,8 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                     peep_decide_whether_to_leave_park(this);
                 }
                 peep_update_hunger(this);
+                break;
+            default:
                 break;
         }
 
@@ -5529,6 +5533,8 @@ void rct_peep::UpdateQueuing()
                     action_sprite_image_offset = 0;
                     UpdateCurrentActionSpriteType();
                     Invalidate();
+                    break;
+                default:
                     break;
             }
         }
