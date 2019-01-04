@@ -1417,7 +1417,7 @@ static money32 track_place(
                 case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
                     if (!(liftHillAndAlternativeState & CONSTRUCTION_LIFT_HILL_SELECTED))
                         break;
-                    // Fall Through
+                    [[fallthrough]];
                 case TRACK_ELEM_CABLE_LIFT_HILL:
                     ride->num_block_brakes++;
                     break;
@@ -1833,7 +1833,7 @@ static money32 track_remove(
             case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
                 if (!isLiftHill)
                     break;
-                // Fall through
+                [[fallthrough]];
             case TRACK_ELEM_CABLE_LIFT_HILL:
                 ride->num_block_brakes--;
                 break;

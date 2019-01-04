@@ -1365,6 +1365,8 @@ void input_state_widget_pressed(
 
             widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
             window_event_mouse_up_call(w, widgetIndex);
+            return;
+
         default:
             return;
     }

@@ -3134,8 +3134,7 @@ void map_remove_all_rides()
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (it.element->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
-
-                // fall-through
+                [[fallthrough]];
             case TILE_ELEMENT_TYPE_TRACK:
                 footpath_queue_chain_reset();
                 footpath_remove_edges_at(it.x * 32, it.y * 32, it.element);

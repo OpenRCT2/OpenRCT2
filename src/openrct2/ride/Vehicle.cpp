@@ -3277,7 +3277,7 @@ static void vehicle_update_departing(rct_vehicle* vehicle)
                     vehicle->acceleration = 14 << 12;
                 break;
             }
-            // Fall through
+            [[fallthrough]];
         case RIDE_MODE_CONTINUOUS_CIRCUIT:
         case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
         case RIDE_MODE_ROTATING_LIFT:
@@ -7162,7 +7162,7 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
                 vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
                 break;
             }
-            // Fall through
+            [[fallthrough]];
         case L9_SPIN:
             spinningInertia += 9;
             vehicle->spin_speed += dword_F64E08 >> spinningInertia;
@@ -7189,7 +7189,7 @@ static void vehicle_update_spinning_car(rct_vehicle* vehicle)
                 vehicle->spin_speed += dword_F64E08 >> spinningInertia;
                 break;
             }
-            // Fall through
+            [[fallthrough]];
         case R9_SPIN:
             spinningInertia += 9;
             vehicle->spin_speed -= dword_F64E08 >> spinningInertia;

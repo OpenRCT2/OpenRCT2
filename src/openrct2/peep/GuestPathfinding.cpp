@@ -657,16 +657,12 @@ static void peep_pathfind_heuristic_search(
                  * tile. */
                 rideIndex = tileElement->AsTrack()->GetRideIndex();
                 Ride* ride = get_ride(rideIndex);
-                if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
-                {
-                    found = true;
-                    searchResult = PATH_SEARCH_SHOP_ENTRANCE;
-                    break;
-                }
-                else
-                {
+                if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
                     continue;
-                }
+
+                found = true;
+                searchResult = PATH_SEARCH_SHOP_ENTRANCE;
+                break;
             }
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (loc.z != tileElement->base_height)

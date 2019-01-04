@@ -59,7 +59,7 @@ static void paint_dodgems(
     {
         case 2:
             trackSequence = 15 - trackSequence;
-            // Fallthrough
+            [[fallthrough]];
         case 0:
             if ((trackSequence / 4) & 1)
             {
@@ -73,7 +73,7 @@ static void paint_dodgems(
 
         case 3:
             trackSequence = 15 - trackSequence;
-            // Fallthrough
+            [[fallthrough]];
         case 1:
             if ((trackSequence / 4) & 1)
             {
