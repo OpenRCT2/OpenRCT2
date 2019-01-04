@@ -98,14 +98,14 @@ enum GAME_COMMAND
 
 enum : uint32_t
 {
-    GAME_COMMAND_FLAG_APPLY = (1 << 0), // If this flag is set, the command is applied, otherwise only the cost is retrieved
+    GAME_COMMAND_FLAG_APPLY = (1 << 0),  // If this flag is set, the command is applied, otherwise only the cost is retrieved
+    GAME_COMMAND_FLAG_REPLAY = (1 << 1), // Command was issued from replay manager.
     GAME_COMMAND_FLAG_2 = (1 << 2),
     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED = (1 << 3), // Allow while paused
     GAME_COMMAND_FLAG_4 = (1 << 4),
     GAME_COMMAND_FLAG_5 = (1 << 5),
     GAME_COMMAND_FLAG_GHOST = (1 << 6),
     GAME_COMMAND_FLAG_PATH_SCENERY = (1 << 7),
-    GAME_COMMAND_FLAG_REPLAY = (1u << 30),   // Command was issued from replay manager.
     GAME_COMMAND_FLAG_NETWORKED = (1u << 31) // Game command is coming from network
 };
 
