@@ -9,6 +9,7 @@
 
 #ifdef __ANDROID__
 
+#    include "../platform/platform.h"
 #    include "IStream.hpp"
 #    include "Zip.h"
 
@@ -26,7 +27,7 @@ public:
         // retrieve the JNI environment.
         JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 
-        jclass jniClass = env->FindClass("website/openrct2/ZipArchive");
+        jclass jniClass = platform_android_find_class(env, "website/openrct2/ZipArchive");
         jmethodID constructor = env->GetMethodID(jniClass, "<init>", "(Ljava/lang/String;)V");
 
         jstring jniPath = env->NewStringUTF(path.data());

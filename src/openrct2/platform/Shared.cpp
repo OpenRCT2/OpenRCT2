@@ -212,6 +212,10 @@ void core_init()
     {
         initialised = true;
 
+#ifdef __ANDROID__
+        platform_android_init_class_loader();
+#endif // __ANDROID__
+
         platform_ticks_init();
         bitcount_init();
         mask_init();
