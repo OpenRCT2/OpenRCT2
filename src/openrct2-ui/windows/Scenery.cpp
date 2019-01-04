@@ -1174,7 +1174,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
             dpi, STR_COST_LABEL, gCommonFormatArgs, COLOUR_BLACK, w->x + w->width - 0x1A, w->y + w->height - 13);
     }
 
-    set_format_arg(0, rct_string_id, sceneryEntry != nullptr ? sceneryEntry->name : STR_UNKNOWN_OBJECT_TYPE);
+    set_format_arg(0, rct_string_id, sceneryEntry != nullptr ? sceneryEntry->name : (rct_string_id)STR_UNKNOWN_OBJECT_TYPE);
     gfx_draw_string_left_clipped(
         dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 3, w->y + w->height - 13, w->width - 19);
 }

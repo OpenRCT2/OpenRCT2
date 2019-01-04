@@ -575,7 +575,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 // Draw scenario name
                 char buffer[64];
                 safe_strcpy(buffer, scenario->name, sizeof(buffer));
-                rct_string_id format = isDisabled ? STR_STRINGID : (isHighlighted ? highlighted_format : unhighlighted_format);
+                rct_string_id format = isDisabled ? (rct_string_id)STR_STRINGID
+                                                  : (isHighlighted ? highlighted_format : unhighlighted_format);
                 set_format_arg(0, rct_string_id, STR_STRING);
                 set_format_arg(2, char*, buffer);
                 colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
