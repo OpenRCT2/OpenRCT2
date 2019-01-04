@@ -47,6 +47,7 @@ void intro_update()
         case INTRO_STATE_DISCLAIMER_2:
             // Originally used for the disclaimer text
             gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
+            [[fallthrough]];
         case INTRO_STATE_PUBLISHER_BEGIN:
             load_palette();
 

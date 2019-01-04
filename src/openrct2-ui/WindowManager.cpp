@@ -398,6 +398,7 @@ public:
                     }
                     window_invalidate(w);
                 }
+                break;
             }
 
             case INTENT_ACTION_UPDATE_CLIMATE:

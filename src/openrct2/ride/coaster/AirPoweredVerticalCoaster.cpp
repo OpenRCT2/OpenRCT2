@@ -670,8 +670,8 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
 
                 paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
                 paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
-                break;
             }
+            break;
         case 1:
         case 2:
         case 3:
