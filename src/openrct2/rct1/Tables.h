@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../peep/Peep.h"
 
 #include <vector>
 
@@ -21,7 +22,7 @@ namespace RCT1
     };
 
     colour_t GetColour(colour_t colour);
-    uint8_t GetPeepSpriteType(uint8_t rct1SpriteType);
+    PeepSpriteType GetPeepSpriteType(uint8_t rct1SpriteType);
     uint8_t GetTerrain(uint8_t terrain);
     uint8_t GetTerrainEdge(uint8_t terrainEdge);
 

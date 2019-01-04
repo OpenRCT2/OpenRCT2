@@ -114,7 +114,7 @@ static constexpr const char *gPeepEasterEggNames[] = {
 /** rct2: 0x00981DB0 */
 static struct
 {
-    uint8_t action;
+    PeepActionType action;
     uint8_t flags;
 } PeepThoughtToActionMap[] = {
     { PEEP_ACTION_SHAKE_HEAD, 1 },
@@ -293,13 +293,13 @@ static struct
     { PEEP_ACTION_NONE_2, 1 },
 };
 
-static uint8_t PeepSpecialSpriteToSpriteTypeMap[] = {
+static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
     PEEP_ACTION_SPRITE_TYPE_NONE,
     PEEP_ACTION_SPRITE_TYPE_HOLD_MAT,
     PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER
 };
 
-static uint8_t PeepActionToSpriteTypeMap[] = {
+static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
     PEEP_ACTION_SPRITE_TYPE_CHECK_TIME,
     PEEP_ACTION_SPRITE_TYPE_EAT_FOOD,
     PEEP_ACTION_SPRITE_TYPE_SHAKE_HEAD,
@@ -511,7 +511,7 @@ bool rct_peep::CheckForPath()
     return false;
 }
 
-uint8_t rct_peep::GetActionSpriteType()
+PeepActionSpriteType rct_peep::GetActionSpriteType()
 {
     if (action >= PEEP_ACTION_NONE_1)
     { // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
@@ -525,7 +525,7 @@ uint8_t rct_peep::GetActionSpriteType()
     {
         openrct2_assert(
             action >= std::size(PeepActionToSpriteTypeMap) && action < PEEP_ACTION_NONE_1, "Invalid peep action %u", action);
-        return 0;
+        return PEEP_ACTION_SPRITE_TYPE_NONE;
     }
 }
 
@@ -538,7 +538,7 @@ void rct_peep::UpdateCurrentActionSpriteType()
     {
         return;
     }
-    uint8_t newActionSpriteType = GetActionSpriteType();
+    PeepActionSpriteType newActionSpriteType = GetActionSpriteType();
     if (action_sprite_type == newActionSpriteType)
     {
         return;
@@ -654,7 +654,7 @@ bool rct_peep::UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_dist
     if (action_frame >= peepAnimation[action_sprite_type].num_frames)
     {
         action_sprite_image_offset = 0;
-        action = 0xFF;
+        action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
         Invalidate();
         *actionX = x;
@@ -760,10 +760,10 @@ void rct_peep::PickupAbort(int32_t old_x)
     if (x != (int16_t)LOCATION_NULL)
     {
         SetState(PEEP_STATE_FALLING);
-        action = 0xFF;
+        action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         action_sprite_image_offset = 0;
-        action_sprite_type = 0;
+        action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
         path_check_optimisation = 0;
     }
 
@@ -814,16 +814,16 @@ bool rct_peep::Place(TileCoordsXYZ location, bool apply)
         sprite_move(destination.x, destination.y, destination.z, (rct_sprite*)this);
         Invalidate();
         SetState(PEEP_STATE_FALLING);
-        action = 0xFF;
+        action = PEEP_ACTION_NONE_2;
         special_sprite = 0;
         action_sprite_image_offset = 0;
-        action_sprite_type = 0;
+        action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
         path_check_optimisation = 0;
         sprite_position_tween_reset();
 
         if (type == PEEP_TYPE_GUEST)
         {
-            action_sprite_type = 0xFF;
+            action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;
             happiness_target = std::max(happiness_target - 10, 0);
             UpdateCurrentActionSpriteType();
         }
@@ -951,7 +951,7 @@ void peep_sprite_remove(rct_peep* peep)
         window_invalidate_by_class(WC_STAFF_LIST);
 
         gStaffModes[peep->staff_id] = 0;
-        peep->type = 0xFF;
+        peep->type = PEEP_TYPE_INVALID;
         staff_update_greyed_patrol_areas();
         peep->type = PEEP_TYPE_STAFF;
 
@@ -1127,7 +1127,7 @@ void rct_peep::Update1()
     direction = sprite_direction >> 3;
 }
 
-void rct_peep::SetState(uint8_t new_state)
+void rct_peep::SetState(PeepState new_state)
 {
     peep_decrement_num_riders(this);
     state = new_state;
@@ -1231,7 +1231,7 @@ void rct_peep::Update()
         stepsToTake = 95;
     if ((peep_flags & PEEP_FLAGS_SLOW_WALK) && state != PEEP_STATE_QUEUING)
         stepsToTake /= 2;
-    if (action == 255 && (GetNextIsSloped()))
+    if (action == PEEP_ACTION_NONE_2 && (GetNextIsSloped()))
     {
         stepsToTake /= 2;
         if (state == PEEP_STATE_QUEUING)
@@ -1640,7 +1640,7 @@ void peep_update_days_in_queue()
 
 // clang-format off
 /** rct2: 0x009823A0 */
-static constexpr const enum PEEP_NAUSEA_TOLERANCE nausea_tolerance_distribution[] = {
+static constexpr const enum PeepNauseaTolerance nausea_tolerance_distribution[] = {
     PEEP_NAUSEA_TOLERANCE_NONE,
     PEEP_NAUSEA_TOLERANCE_LOW, PEEP_NAUSEA_TOLERANCE_LOW,
     PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE,
@@ -1735,7 +1735,7 @@ rct_peep* peep_generate(int32_t x, int32_t y, int32_t z)
     peep->special_sprite = 0;
     peep->action_sprite_image_offset = 0;
     peep->no_action_frame_num = 0;
-    peep->action_sprite_type = 0;
+    peep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
     peep->peep_flags = 0;
     peep->favourite_ride = RIDE_ID_NULL;
     peep->favourite_ride_rating = 0;
@@ -2246,10 +2246,10 @@ int32_t peep_get_easteregg_name_id(rct_peep* peep)
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep* peep, uint8_t thought_type, uint8_t thought_arguments)
+void peep_insert_new_thought(rct_peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments)
 {
-    uint8_t action = PeepThoughtToActionMap[thought_type].action;
-    if (action != 0xFF && peep->action >= 254)
+    PeepActionType action = PeepThoughtToActionMap[thought_type].action;
+    if (action != PEEP_ACTION_NONE_2 && peep->action >= PEEP_ACTION_NONE_1)
     {
         peep->action = action;
         peep->action_frame = 0;
@@ -2401,7 +2401,7 @@ static bool peep_update_queue_position(rct_peep* peep, uint8_t previous_action)
         return true;
 
     peep->action = PEEP_ACTION_NONE_1;
-    peep->next_action_sprite_type = 2;
+    peep->next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
     if (previous_action != PEEP_ACTION_NONE_1)
         peep->Invalidate();
     return true;
@@ -3127,7 +3127,7 @@ void rct_peep::PerformNextAction(uint8_t& pathing_result)
 void rct_peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 {
     pathing_result = 0;
-    uint8_t previousAction = action;
+    PeepActionType previousAction = action;
 
     if (action == PEEP_ACTION_NONE_1)
         action = PEEP_ACTION_NONE_2;

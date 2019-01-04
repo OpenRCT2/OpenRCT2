@@ -230,7 +230,7 @@ static money32 staff_hire_new_staff_member(
             newPeep->special_sprite = 0;
             newPeep->action_sprite_image_offset = 0;
             newPeep->no_action_frame_num = 0;
-            newPeep->action_sprite_type = 0;
+            newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
             newPeep->path_check_optimisation = 0;
             newPeep->type = PEEP_TYPE_STAFF;
             newPeep->outside_of_park = 0;
@@ -284,17 +284,17 @@ static money32 staff_hire_new_staff_member(
             };
 
             /* rct2: 0x009929FC */
-            static constexpr const uint8_t spriteTypes[] = {
+            static constexpr const PeepSpriteType spriteTypes[] = {
                 PEEP_SPRITE_TYPE_HANDYMAN,
                 PEEP_SPRITE_TYPE_MECHANIC,
                 PEEP_SPRITE_TYPE_SECURITY,
                 PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
             };
 
-            uint8_t sprite_type = spriteTypes[staff_type];
+            PeepSpriteType sprite_type = spriteTypes[staff_type];
             if (staff_type == STAFF_TYPE_ENTERTAINER)
             {
-                sprite_type = PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + entertainerType;
+                sprite_type = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + entertainerType);
             }
             newPeep->name_string_idx = staffNames[staff_type];
             newPeep->sprite_type = sprite_type;
@@ -402,8 +402,7 @@ void game_command_set_staff_order(
         rct_peep* peep = &get_sprite(sprite_id)->peep;
         if (order_id & 0x80)
         { // change costume
-            uint8_t sprite_type = order_id & ~0x80;
-            sprite_type += 4;
+            auto sprite_type = static_cast<PeepSpriteType>((order_id & ~0x80) + 4);
             if (sprite_type >= std::size(peep_slow_walking_types))
             {
                 log_error("Invalid change costume order for sprite_type %u", sprite_type);
@@ -2300,7 +2299,7 @@ void rct_peep::Tick128UpdateStaff()
     if (staff_type != STAFF_TYPE_SECURITY)
         return;
 
-    uint8_t newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
+    PeepSpriteType newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
     if (state != PEEP_STATE_PATROLLING)
         newSpriteType = PEEP_SPRITE_TYPE_SECURITY;
 
@@ -2319,7 +2318,7 @@ void rct_peep::Tick128UpdateStaff()
         peep_flags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    action_sprite_type = 0xFF;
+    action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;
     UpdateCurrentActionSpriteType();
 }
 
@@ -3092,7 +3091,7 @@ bool rct_peep::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride
         Invalidate();
     }
 
-    if (action != 0xFF)
+    if (action != PEEP_ACTION_NONE_2)
     {
         UpdateAction();
         return false;

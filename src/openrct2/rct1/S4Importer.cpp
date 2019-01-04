@@ -1403,12 +1403,12 @@ private:
         dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
         // Peep vs. staff (including which kind)
         dst->sprite_type = RCT1::GetPeepSpriteType(src->sprite_type);
-        dst->action = src->action;
+        dst->action = static_cast<PeepActionType>(src->action);
         dst->special_sprite = src->special_sprite;
-        dst->next_action_sprite_type = src->next_action_sprite_type;
+        dst->next_action_sprite_type = static_cast<PeepActionSpriteType>(src->next_action_sprite_type);
         dst->action_sprite_image_offset = src->action_sprite_image_offset;
         dst->no_action_frame_num = src->no_action_frame_num;
-        dst->action_sprite_type = src->action_sprite_type;
+        dst->action_sprite_type = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->action_frame = src->action_frame;
 
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->sprite_type].sprite_bounds;
@@ -1438,7 +1438,7 @@ private:
 
         dst->outside_of_park = src->outside_of_park;
 
-        dst->state = src->state;
+        dst->state = static_cast<PeepState>(src->state);
         dst->sub_state = src->sub_state;
         dst->next_x = src->next_x;
         dst->next_y = src->next_y;
@@ -1449,7 +1449,7 @@ private:
         dst->step_progress = src->step_progress;
         dst->vandalism_seen = src->vandalism_seen;
 
-        dst->type = src->type;
+        dst->type = static_cast<PeepType>(src->type);
 
         dst->tshirt_colour = RCT1::GetColour(src->tshirt_colour);
         dst->trousers_colour = RCT1::GetColour(src->trousers_colour);

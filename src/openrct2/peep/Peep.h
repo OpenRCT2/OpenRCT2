@@ -34,13 +34,15 @@
 struct TileElement;
 struct Ride;
 
-enum PEEP_TYPE
+enum PeepType : uint8_t
 {
     PEEP_TYPE_GUEST,
-    PEEP_TYPE_STAFF
+    PEEP_TYPE_STAFF,
+
+    PEEP_TYPE_INVALID = 0xFF
 };
 
-enum PEEP_THOUGHT_TYPE
+enum PeepThoughtType : uint8_t
 {
     PEEP_THOUGHT_TYPE_CANT_AFFORD_0 = 0,      // "I can't afford"
     PEEP_THOUGHT_TYPE_SPENT_MONEY = 1,        // "I've spent all my money"
@@ -184,7 +186,7 @@ enum PEEP_THOUGHT_TYPE
     PEEP_THOUGHT_TYPE_NONE = 255
 };
 
-enum PEEP_STATE
+enum PeepState : uint8_t
 {
     PEEP_STATE_FALLING = 0, // Drowning is part of falling
     PEEP_STATE_1 = 1,
@@ -212,13 +214,13 @@ enum PEEP_STATE
     PEEP_STATE_INSPECTING = 23
 };
 
-enum PEEP_SITTING_SUB_STATE
+enum PeepSittingSubState
 {
     PEEP_SITTING_TRYING_TO_SIT = 0,
     PEEP_SITTING_SAT_DOWN
 };
 
-enum PEEP_RIDE_SUB_STATE
+enum PeepRideSubState
 {
     PEEP_RIDE_AT_ENTRANCE = 0,
     PEEP_RIDE_IN_ENTRANCE = 1,
@@ -243,13 +245,13 @@ enum PEEP_RIDE_SUB_STATE
     PEEP_SHOP_LEAVE = 21
 };
 
-enum PEEP_USING_BIN_SUB_STATE
+enum PeepUsingBinSubState
 {
     PEEP_USING_BIN_WALKING_TO_BIN = 0,
     PEEP_USING_BIN_GOING_BACK,
 };
 
-enum PEEP_ACTION_EVENTS
+enum PeepActionType : uint8_t
 {
     PEEP_ACTION_CHECK_TIME = 0,
     // If no food then check watch
@@ -289,16 +291,16 @@ enum PEEP_ACTION_EVENTS
     PEEP_ACTION_NONE_2 = 255,
 };
 
-enum PEEP_ACTION_SPRITE_TYPE
+enum PeepActionSpriteType : uint8_t
 {
     PEEP_ACTION_SPRITE_TYPE_NONE = 0,
     PEEP_ACTION_SPRITE_TYPE_CHECK_TIME = 1,
-    PEEP_ACTION_SPRITE_TYPE_2 = 2,
+    PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE = 2,
     PEEP_ACTION_SPRITE_TYPE_EAT_FOOD = 3,
     PEEP_ACTION_SPRITE_TYPE_SHAKE_HEAD = 4,
     PEEP_ACTION_SPRITE_TYPE_EMPTY_POCKETS = 5,
     PEEP_ACTION_SPRITE_TYPE_HOLD_MAT = 6,
-    PEEP_ACTION_SPRITE_TYPE_7 = 7,
+    PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE = 7,
     PEEP_ACTION_SPRITE_TYPE_SITTING_EAT_FOOD = 8,
     PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_LEFT = 9,
     PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_RIGHT = 10,
@@ -328,9 +330,11 @@ enum PEEP_ACTION_SPRITE_TYPE
     PEEP_ACTION_SPRITE_TYPE_DRAW_PICTURE = 34,
     PEEP_ACTION_SPRITE_TYPE_BEING_WATCHED = 35,
     PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY = 36,
+
+    PEEP_ACTION_SPRITE_TYPE_INVALID = 255
 };
 
-enum PEEP_FLAGS : uint32_t
+enum PeepFlags : uint32_t
 {
     PEEP_FLAGS_LEAVING_PARK = (1 << 0),
     PEEP_FLAGS_SLOW_WALK = (1 << 1),
@@ -366,7 +370,7 @@ enum PEEP_FLAGS : uint32_t
     PEEP_FLAGS_TWITCH = (1u << 31),              // Added for twitch integration
 };
 
-enum PEEP_NEXT_FLAGS
+enum PeepNextFlags
 {
     PEEP_NEXT_FLAG_DIRECTION_MASK = 0x3,
     PEEP_NEXT_FLAG_IS_SLOPED = (1 << 2),
@@ -374,7 +378,7 @@ enum PEEP_NEXT_FLAGS
     PEEP_NEXT_FLAG_UNUSED = (1 << 4),
 };
 
-enum PEEP_NAUSEA_TOLERANCE
+enum PeepNauseaTolerance
 {
     PEEP_NAUSEA_TOLERANCE_NONE,
     PEEP_NAUSEA_TOLERANCE_LOW,
@@ -382,7 +386,7 @@ enum PEEP_NAUSEA_TOLERANCE
     PEEP_NAUSEA_TOLERANCE_HIGH,
 };
 
-enum PEEP_ITEM
+enum PeepItem
 {
     // item_standard_flags
     PEEP_ITEM_BALLOON = (1 << 0),
@@ -439,7 +443,7 @@ enum PEEP_ITEM
     PEEP_ITEM_EMPTY_BOWL_BLUE = (1 << 21),
 };
 
-enum PEEP_SPRITE_TYPE
+enum PeepSpriteType : uint8_t
 {
     PEEP_SPRITE_TYPE_NORMAL = 0,
     PEEP_SPRITE_TYPE_HANDYMAN = 1,
@@ -490,10 +494,12 @@ enum PEEP_SPRITE_TYPE
     PEEP_SPRITE_TYPE_SOUP = 46,
     PEEP_SPRITE_TYPE_SANDWICH = 47,
     PEEP_SPRITE_TYPE_COUNT,
+
+    PEEP_SPRITE_TYPE_INVALID = 255
 };
 
 // Flags used by peep->window_invalidate_flags
-enum PEEP_INVALIDATE
+enum PeepInvalidate
 {
     PEEP_INVALIDATE_PEEP_THOUGHTS = 1,
     PEEP_INVALIDATE_PEEP_STATS = 1 << 1,
@@ -503,7 +509,7 @@ enum PEEP_INVALIDATE
 };
 
 // Flags used by peep_should_go_on_ride()
-enum PEEP_RIDE_DECISION
+enum PeepRideDecision
 {
     PEEP_RIDE_DECISION_AT_QUEUE = 1,
     PEEP_RIDE_DECISION_THINKING = 1 << 2,
@@ -512,7 +518,7 @@ enum PEEP_RIDE_DECISION
 #pragma pack(push, 1)
 struct rct_peep_thought
 {
-    uint8_t type;          // 0
+    PeepThoughtType type;  // 0
     uint8_t item;          // 1
     uint8_t freshness;     // 2 larger is less fresh
     uint8_t fresh_timeout; // 3 updates every tick
@@ -550,10 +556,10 @@ struct rct_peep
     uint8_t next_z;                // 0x28
     uint8_t next_flags;            // 0x29
     uint8_t outside_of_park;       // 0x2A
-    uint8_t state;                 // 0x2B
+    PeepState state;               // 0x2B
     uint8_t sub_state;             // 0x2C
-    uint8_t sprite_type;           // 0x2D
-    uint8_t type;                  // 0x2E
+    PeepSpriteType sprite_type;    // 0x2D
+    PeepType type;                 // 0x2E
     union
     {
         uint8_t staff_type;  // 0x2F
@@ -604,15 +610,15 @@ struct rct_peep
         };
     };
     // Normally 0, 1 for carrying sliding board on spiral slide ride, 2 for carrying lawn mower
-    uint8_t special_sprite;     // 0x6D
-    uint8_t action_sprite_type; // 0x6E
+    uint8_t special_sprite;                  // 0x6D
+    PeepActionSpriteType action_sprite_type; // 0x6E
     // Seems to be used like a local variable, as it's always set before calling SwitchNextActionSpriteType, which
     // reads this again
-    uint8_t next_action_sprite_type;    // 0x6F
-    uint8_t action_sprite_image_offset; // 0x70
-    uint8_t action;                     // 0x71
-    uint8_t action_frame;               // 0x72
-    uint8_t step_progress;              // 0x73
+    PeepActionSpriteType next_action_sprite_type; // 0x6F
+    uint8_t action_sprite_image_offset;           // 0x70
+    PeepActionType action;                        // 0x71
+    uint8_t action_frame;                         // 0x72
+    uint8_t step_progress;                        // 0x73
     union
     {
         uint16_t mechanic_time_since_call; // time getting to ride to fix
@@ -707,7 +713,7 @@ public: // Peep
     void Update();
     bool UpdateAction(int16_t* actionX, int16_t* actionY, int16_t* xy_distance);
     bool UpdateAction();
-    void SetState(uint8_t new_state);
+    void SetState(PeepState new_state);
     void Remove();
     void Invalidate();
     void UpdateCurrentActionSpriteType();
@@ -805,7 +811,7 @@ public: // Peep
     void PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result);
     int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextActionSpriteType();
-    uint8_t GetActionSpriteType();
+    PeepActionSpriteType GetActionSpriteType();
 
 public: // Guest
     void StopPurchaseThought(uint8_t ride_type);
@@ -834,7 +840,7 @@ public: // Guest
     void CheckCantFindRide();
     void CheckCantFindExit();
     bool DecideAndBuyItem(uint8_t rideIndex, int32_t shopItem, money32 price);
-    void SetSpriteType(uint8_t new_sprite_type);
+    void SetSpriteType(PeepSpriteType new_sprite_type);
 };
 assert_struct_size(rct_peep, 0x100);
 #pragma pack(pop)
@@ -965,7 +971,7 @@ void peep_decrement_num_riders(rct_peep* peep);
  * ah:thought_arguments
  * esi: peep
  */
-void peep_insert_new_thought(rct_peep* peep, uint8_t thought_type, uint8_t thought_arguments);
+void peep_insert_new_thought(rct_peep* peep, PeepThoughtType thought_type, uint8_t thought_arguments);
 
 void peep_set_map_tooltip(rct_peep* peep);
 

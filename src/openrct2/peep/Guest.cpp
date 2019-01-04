@@ -266,7 +266,7 @@ static constexpr const uint8_t item_consumption_time[] = {
 };
 
 /** rct2: 009823AC */
-static constexpr const uint8_t crowded_thoughts[] = {
+static constexpr const PeepThoughtType crowded_thoughts[] = {
     PEEP_THOUGHT_TYPE_LOST,
     PEEP_THOUGHT_TYPE_TIRED,
     PEEP_THOUGHT_TYPE_BAD_LITTER,
@@ -361,7 +361,7 @@ static void peep_update_ride_nausea_growth(rct_peep* peep, Ride* ride);
 static bool peep_should_go_on_ride_again(rct_peep* peep, Ride* ride);
 static bool peep_should_preferred_intensity_increase(rct_peep* peep);
 static bool peep_really_liked_ride(rct_peep* peep, Ride* ride);
-static uint8_t peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z);
+static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z);
 static void peep_update_hunger(rct_peep* peep);
 static void peep_decide_whether_to_leave_park(rct_peep* peep);
 static void peep_leave_park(rct_peep* peep);
@@ -379,7 +379,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
          * is executed to once every four calls. */
         if (peep_flags & PEEP_FLAGS_CROWDED)
         {
-            uint8_t thought_type = crowded_thoughts[scenario_rand() & 0xF];
+            PeepThoughtType thought_type = crowded_thoughts[scenario_rand() & 0xF];
             if (thought_type != PEEP_THOUGHT_TYPE_NONE)
             {
                 peep_insert_new_thought(this, thought_type, PEEP_THOUGHT_ITEM_NONE);
@@ -439,7 +439,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                 surroundings_thought_timeout = 0;
                 if (x != LOCATION_NULL)
                 {
-                    uint8_t thought_type = peep_assess_surroundings(x & 0xFFE0, y & 0xFFE0, z);
+                    PeepThoughtType thought_type = peep_assess_surroundings(x & 0xFFE0, y & 0xFFE0, z);
 
                     if (thought_type != PEEP_THOUGHT_TYPE_NONE)
                     {
@@ -469,8 +469,9 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                 {
                     Ride* ride = get_ride(current_ride);
 
-                    uint8_t thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? PEEP_THOUGHT_TYPE_GET_OUT
-                                                                                                  : PEEP_THOUGHT_TYPE_GET_OFF;
+                    PeepThoughtType thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE)
+                        ? PEEP_THOUGHT_TYPE_GET_OUT
+                        : PEEP_THOUGHT_TYPE_GET_OFF;
 
                     peep_insert_new_thought(this, thought_type, current_ride);
                 }
@@ -513,7 +514,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
             if (outside_of_park == 0 && (state == PEEP_STATE_WALKING || state == PEEP_STATE_SITTING))
             {
                 uint8_t num_thoughts = 0;
-                uint8_t possible_thoughts[5] = { 0 };
+                PeepThoughtType possible_thoughts[5];
 
                 if (peep_flags & PEEP_FLAGS_LEAVING_PARK)
                 {
@@ -557,7 +558,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
 
                 if (num_thoughts != 0)
                 {
-                    uint8_t chosen_thought = possible_thoughts[scenario_rand() % num_thoughts];
+                    PeepThoughtType chosen_thought = possible_thoughts[scenario_rand() % num_thoughts];
 
                     peep_insert_new_thought(this, chosen_thought, PEEP_THOUGHT_ITEM_NONE);
 
@@ -575,6 +576,8 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                         case PEEP_THOUGHT_TYPE_RUNNING_OUT:
                             peep_head_for_nearest_ride_type(this, RIDE_TYPE_CASH_MACHINE);
                             break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -587,7 +590,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
              * the alternate time to the true branch). */
             if (nausea >= 140)
             {
-                uint8_t thought_type = PEEP_THOUGHT_TYPE_SICK;
+                PeepThoughtType thought_type = PEEP_THOUGHT_TYPE_SICK;
                 if (nausea >= 200)
                 {
                     thought_type = PEEP_THOUGHT_TYPE_VERY_SICK;
@@ -679,6 +682,8 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
                     peep_decide_whether_to_leave_park(this);
                 }
                 peep_update_hunger(this);
+                break;
+            default:
                 break;
         }
 
@@ -910,7 +915,7 @@ void rct_peep::UpdateSitting()
         sprite_direction = ((var_37 + 2) & 3) * 8;
         Invalidate();
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = 7;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
 
         sub_state = PEEP_SITTING_SAT_DOWN;
@@ -1303,9 +1308,9 @@ loc_69B119:
             if (itemValue > ((money16)(scenario_rand() & 0x07)))
             {
                 // "I'm not paying that much for x"
-                uint8_t thought_type
-                    = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
-                                      : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem));
+                PeepThoughtType thought_type = static_cast<PeepThoughtType>(
+                    (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
+                                    : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem)));
                 peep_insert_new_thought(this, thought_type, rideIndex);
                 return false;
             }
@@ -1320,9 +1325,9 @@ loc_69B119:
                 if (itemValue >= (money32)(scenario_rand() & 0x07))
                 {
                     // "This x is a really good value"
-                    uint8_t thought_item
-                        = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32))
-                                          : (PEEP_THOUGHT_TYPE_BALLOON + shopItem));
+                    PeepThoughtType thought_item = static_cast<PeepThoughtType>(
+                        (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32))
+                                        : (PEEP_THOUGHT_TYPE_BALLOON + shopItem)));
                     peep_insert_new_thought(this, thought_item, rideIndex);
                 }
             }
@@ -2689,7 +2694,7 @@ static bool peep_really_liked_ride(rct_peep* peep, Ride* ride)
  *
  *  rct2: 0x0069BC9A
  */
-static uint8_t peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
+static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
 {
     if ((tile_element_height(centre_x, centre_y) & 0xFFFF) > centre_z)
         return PEEP_THOUGHT_TYPE_NONE;
@@ -3246,7 +3251,7 @@ void rct_peep::UpdateBuying()
 
     if (sub_state == 1)
     {
-        if (action != 0xFF)
+        if (action != PEEP_ACTION_NONE_2)
         {
             int16_t actionX;
             int16_t actionY;
@@ -5475,7 +5480,7 @@ void rct_peep::UpdateQueuing()
 
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
-    if (action < 0xFE)
+    if (action < PEEP_ACTION_NONE_1)
         return;
     if (sprite_type == PEEP_SPRITE_TYPE_NORMAL)
     {
@@ -5496,7 +5501,7 @@ void rct_peep::UpdateQueuing()
     }
     else
     {
-        if (!(time_in_queue & 0x3F) && action == 0xFE && next_action_sprite_type == 2)
+        if (!(time_in_queue & 0x3F) && action == PEEP_ACTION_NONE_1 && next_action_sprite_type == 2)
         {
             switch (sprite_type)
             {
@@ -5528,6 +5533,8 @@ void rct_peep::UpdateQueuing()
                     action_sprite_image_offset = 0;
                     UpdateCurrentActionSpriteType();
                     Invalidate();
+                    break;
+                default:
                     break;
             }
         }
@@ -5644,8 +5651,8 @@ void rct_peep::UpdateWatching()
         sprite_direction = (var_37 & 3) * 8;
         Invalidate();
 
-        action = 0xFE;
-        next_action_sprite_type = 2;
+        action = PEEP_ACTION_NONE_1;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
 
         SwitchNextActionSpriteType();
 
@@ -5656,7 +5663,7 @@ void rct_peep::UpdateWatching()
     }
     else if (sub_state == 1)
     {
-        if (action < 0xFE)
+        if (action < PEEP_ACTION_NONE_1)
         {
             // 6917F6
             int16_t actionX = 0;
@@ -5664,9 +5671,9 @@ void rct_peep::UpdateWatching()
             int16_t xy_distance;
             UpdateAction(&actionX, &actionY, &xy_distance);
 
-            if (action != 0xFF)
+            if (action != PEEP_ACTION_NONE_2)
                 return;
-            action = 0xFE;
+            action = PEEP_ACTION_NONE_1;
         }
         else
         {
@@ -6643,7 +6650,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
 }
 
 /* Part of 0x0069B8CC rct2: 0x0069BC31 */
-void rct_peep::SetSpriteType(uint8_t new_sprite_type)
+void rct_peep::SetSpriteType(PeepSpriteType new_sprite_type)
 {
     if (sprite_type == new_sprite_type)
         return;
@@ -6662,19 +6669,19 @@ void rct_peep::SetSpriteType(uint8_t new_sprite_type)
         peep_flags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    action_sprite_type = 0xFF;
+    action_sprite_type = PEEP_ACTION_SPRITE_TYPE_INVALID;
     UpdateCurrentActionSpriteType();
 
     if (state == PEEP_STATE_SITTING)
     {
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = 7;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
     }
     if (state == PEEP_STATE_WATCHING)
     {
         action = PEEP_ACTION_NONE_1;
-        next_action_sprite_type = 2;
+        next_action_sprite_type = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
         SwitchNextActionSpriteType();
     }
 }
@@ -6683,7 +6690,7 @@ struct item_pref_t
 {
     uint8_t type;  // 0 for standard, 1 for extra
     uint32_t item; // And this with the relevant flags
-    uint8_t sprite_type;
+    PeepSpriteType sprite_type;
 };
 
 // clang-format off
@@ -6719,7 +6726,7 @@ static item_pref_t item_order_preference[] = {
         { 0, PEEP_ITEM_BALLOON, PEEP_SPRITE_TYPE_BALLOON },
         { 0, PEEP_ITEM_HAT, PEEP_SPRITE_TYPE_HAT },
         { 1, PEEP_ITEM_SUNGLASSES, PEEP_SPRITE_TYPE_SUNGLASSES },
-        { 0xFF, 0xFFFFFFFF, 0xFF}
+        { 0xFF, 0xFFFFFFFF, PEEP_SPRITE_TYPE_INVALID }
 };
 // clang-format on
 

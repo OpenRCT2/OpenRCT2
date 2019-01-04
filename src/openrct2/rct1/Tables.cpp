@@ -66,9 +66,9 @@ namespace RCT1
         return map[colour];
     }
 
-    uint8_t GetPeepSpriteType(uint8_t rct1SpriteType)
+    PeepSpriteType GetPeepSpriteType(uint8_t rct1SpriteType)
     {
-        static constexpr const uint8_t map[] =
+        static constexpr const PeepSpriteType map[] =
         {
             PEEP_SPRITE_TYPE_NORMAL, // 0x00
             PEEP_SPRITE_TYPE_HANDYMAN, // 0x01
