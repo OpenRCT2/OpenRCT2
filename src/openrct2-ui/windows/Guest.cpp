@@ -2345,14 +2345,14 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     snprintf(buffer, sizeof(buffer), "Next: %i, %i, %i", peep->next_x, peep->next_y, peep->next_z);
     if (peep->GetNextIsSurface())
-        strcat_s(buffer, " (surface)");
+        safe_strcat(buffer, " (surface)", sizeof(buffer));
     if (peep->GetNextIsSloped())
     {
-        strcat_s(buffer, " (slope ");
+        safe_strcat(buffer, " (slope ", sizeof(buffer));
         char slopeDir[10];
         _itoa(peep->GetNextDirection(), slopeDir, 10);
-        strcat_s(buffer, slopeDir);
-        strcat_s(buffer, ")");
+        safe_strcat(buffer, slopeDir, sizeof(buffer));
+        safe_strcat(buffer, ")", sizeof(buffer));
     }
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
