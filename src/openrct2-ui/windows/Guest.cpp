@@ -563,8 +563,11 @@ rct_window* window_guest_open(Peep* peep)
     window = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(
-            192 + (gConfigGeneral.debugging_tools ? TabWidth : 0), 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
+        int32_t windowWidth = 192;
+        if (gConfigGeneral.debugging_tools)
+            windowWidth += TabWidth;
+
+        window = window_create_auto_pos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
         window->widgets = window_guest_overview_widgets;
         window->enabled_widgets = window_guest_page_enabled_widgets[0];
         window->number = peep->sprite_index;
@@ -575,7 +578,7 @@ rct_window* window_guest_open(Peep* peep)
         window->picked_peep_frame = 0;
         window->highlighted_item = 0;
         window_guest_disable_widgets(window);
-        window->min_width = 192 + (gConfigGeneral.debugging_tools ? TabWidth : 0);
+        window->min_width = windowWidth;
         window->min_height = 157;
         window->max_width = 500;
         window->max_height = 450;
