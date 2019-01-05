@@ -97,7 +97,7 @@ public:
         else
         {
             // If empty name take closest ride name.
-            uint8_t rideIndex = banner_get_closest_ride_index(x, y, 16);
+            ride_id_t rideIndex = banner_get_closest_ride_index(x, y, 16);
             if (rideIndex == RIDE_ID_NULL)
             {
                 return MakeResult();

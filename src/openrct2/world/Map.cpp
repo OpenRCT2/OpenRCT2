@@ -1233,7 +1233,7 @@ static money32 map_set_land_height(int32_t flags, int32_t x, int32_t y, int32_t 
         {
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
             {
-                int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                 Ride* ride = get_ride(rideIndex);
                 if (ride != nullptr)
                 {
@@ -2543,7 +2543,7 @@ void game_command_place_large_scenery(
             banner->x = x / 32;
             banner->y = y / 32;
 
-            uint8_t rideIndex = banner_get_closest_ride_index(x, y, z);
+            ride_id_t rideIndex = banner_get_closest_ride_index(x, y, z);
             if (rideIndex != RIDE_ID_NULL)
             {
                 banner->ride_index = rideIndex;
@@ -4308,7 +4308,7 @@ TileElement* map_get_track_element_at_of_type_seq(int32_t x, int32_t y, int32_t 
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, int32_t z, int32_t trackType, int32_t rideIndex)
+TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, int32_t z, int32_t trackType, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -4334,7 +4334,7 @@ TileElement* map_get_track_element_at_of_type_from_ride(int32_t x, int32_t y, in
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, int32_t rideIndex)
+TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -4360,7 +4360,7 @@ TileElement* map_get_track_element_at_from_ride(int32_t x, int32_t y, int32_t z,
  * @param direction The direction (0 - 3).
  */
 TileElement* map_get_track_element_at_with_direction_from_ride(
-    int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex)
+    int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do

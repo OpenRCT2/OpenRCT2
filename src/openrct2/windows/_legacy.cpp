@@ -136,7 +136,7 @@ void game_command_callback_place_ride_entrance_or_exit(
  *  rct2: 0x006CA162
  */
 money32 place_provisional_track_piece(
-    int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
+    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
     int32_t z)
 {
     Ride* ride;
@@ -334,10 +334,11 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
  * @return (CF)
  */
 bool window_ride_construction_update_state(
-    int32_t* _trackType, int32_t* _trackDirection, int32_t* _rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* _x,
+    int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* _x,
     int32_t* _y, int32_t* _z, int32_t* _properties)
 {
-    uint8_t trackType, trackDirection, rideIndex;
+    ride_id_t rideIndex;
+    uint8_t trackType, trackDirection;
     uint16_t z, x, y, liftHillAndAlternativeState, properties;
 
     auto updated_element = window_ride_construction_update_state_get_track_element();

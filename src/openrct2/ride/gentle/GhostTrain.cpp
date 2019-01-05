@@ -129,7 +129,7 @@ static constexpr const uint32_t ghost_train_track_pieces_brakes[4] = {
 
 /** rct2: 0x00770BEC */
 static void paint_ghost_train_track_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     LocationXY16 position = session->MapPosition;
@@ -166,7 +166,7 @@ static void paint_ghost_train_track_flat(
 
 /** rct2: 0x00770BFC */
 static void paint_ghost_train_track_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     LocationXY16 position = session->MapPosition;
@@ -219,7 +219,7 @@ static void paint_ghost_train_track_25_deg_up(
 
 /** rct2: 0x00770C0C */
 static void paint_ghost_train_track_flat_to_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     LocationXY16 position = session->MapPosition;
@@ -271,7 +271,7 @@ static void paint_ghost_train_track_flat_to_25_deg_up(
 }
 
 static void paint_ghost_train_track_25_deg_up_to_flat_shared(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     LocationXY16 position = session->MapPosition;
@@ -308,7 +308,7 @@ static void paint_ghost_train_track_25_deg_up_to_flat_shared(
 
 /** rct2: 0x00770C1C */
 static void paint_ghost_train_track_25_deg_up_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     paint_ghost_train_track_25_deg_up_to_flat_shared(session, rideIndex, trackSequence, direction, height, tileElement);
@@ -332,7 +332,7 @@ static void paint_ghost_train_track_25_deg_up_to_flat(
 
 /** rct2: 0x00770C2C */
 static void paint_ghost_train_track_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     paint_ghost_train_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -340,7 +340,7 @@ static void paint_ghost_train_track_25_deg_down(
 
 /** rct2: 0x00770C3C */
 static void paint_ghost_train_track_flat_to_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     paint_ghost_train_track_25_deg_up_to_flat_shared(
@@ -365,7 +365,7 @@ static void paint_ghost_train_track_flat_to_25_deg_down(
 
 /** rct2: 0x00770C4C */
 static void paint_ghost_train_track_25_deg_down_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     paint_ghost_train_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -373,7 +373,7 @@ static void paint_ghost_train_track_25_deg_down_to_flat(
 
 /** rct2: 0x00770C5C, 0x00770C6C, 0x00770C7C */
 static void paint_ghost_train_station(
-    paint_session* session, uint8_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t imageId;
@@ -427,7 +427,7 @@ static void paint_ghost_train_station(
 
 /** rct2: 0x00770C9C */
 static void paint_ghost_train_track_right_quarter_turn_3_tiles(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
@@ -464,7 +464,7 @@ static void paint_ghost_train_track_right_quarter_turn_3_tiles(
 
 /** rct2: 0x00770CAC */
 static void paint_ghost_train_track_left_quarter_turn_3_tiles(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -474,7 +474,7 @@ static void paint_ghost_train_track_left_quarter_turn_3_tiles(
 
 /** rct2: 0x00770CAC */
 static void paint_ghost_train_track_left_quarter_turn_1_tile(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_left_quarter_turn_1_tile_paint(
@@ -488,7 +488,7 @@ static void paint_ghost_train_track_left_quarter_turn_1_tile(
 
 /** rct2: 0x00770CBC */
 static void paint_ghost_train_track_right_quarter_turn_1_tile(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     paint_ghost_train_track_left_quarter_turn_1_tile(
@@ -497,7 +497,7 @@ static void paint_ghost_train_track_right_quarter_turn_1_tile(
 
 /** rct2: 0x00770CCC */
 static void paint_ghost_train_track_spinning_tunnel(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t imageId = ghost_train_track_pieces_spinning_tunnel_track[direction] | session->TrackColours[SCHEME_TRACK];
@@ -530,7 +530,7 @@ static void paint_ghost_train_track_spinning_tunnel(
 
 /** rct2: 0x00770CDC */
 static void paint_ghost_train_track_brakes(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     LocationXY16 position = session->MapPosition;

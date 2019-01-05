@@ -392,13 +392,13 @@ int8_t ride_get_first_empty_station_start(const Ride* ride)
     return -1;
 }
 
-TileCoordsXYZD ride_get_entrance_location(const int32_t rideIndex, const int32_t stationIndex)
+TileCoordsXYZD ride_get_entrance_location(const ride_id_t rideIndex, const int32_t stationIndex)
 {
     const Ride* ride = get_ride(rideIndex);
     return ride->stations[stationIndex].Entrance;
 }
 
-TileCoordsXYZD ride_get_exit_location(const int32_t rideIndex, const int32_t stationIndex)
+TileCoordsXYZD ride_get_exit_location(const ride_id_t rideIndex, const int32_t stationIndex)
 {
     const Ride* ride = get_ride(rideIndex);
     return ride->stations[stationIndex].Exit;

@@ -23,7 +23,7 @@
  *  rct2: 0x007617A5
  */
 static void shop_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool hasSupports = wooden_a_supports_paint_setup(

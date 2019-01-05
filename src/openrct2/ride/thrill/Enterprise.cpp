@@ -78,7 +78,7 @@ static void paint_enterprise_structure(
 
 /** rct2: 0x008A1584 */
 static void paint_enterprise(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_4x4[direction][trackSequence];

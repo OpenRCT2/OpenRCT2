@@ -126,7 +126,7 @@ static void paint_motionsimulator_vehicle(
 
 /** rct2: 0x008A85C4 */
 static void paint_motionsimulator(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];

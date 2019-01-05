@@ -2706,7 +2706,7 @@ static void vehicle_update_waiting_to_depart(rct_vehicle* vehicle)
 #pragma pack(push, 1)
 struct rct_synchronised_vehicle
 {
-    uint8_t ride_id;
+    ride_id_t ride_id;
     uint8_t station_id;
     uint16_t vehicle_id;
 };
@@ -2741,7 +2741,7 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
         return false;
     }
 
-    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
     Ride* ride = get_ride(rideIndex);
     if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
@@ -2947,7 +2947,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
                         // Sync condition: there are at least 3 stations to sync
                         return false;
                     }
-                    uint8_t someRideIndex = _synchronisedVehicles[0].ride_id;
+                    ride_id_t someRideIndex = _synchronisedVehicles[0].ride_id;
                     // uint8_t currentStation = _synchronisedVehicles[0].station_id
                     if (someRideIndex != vehicle->ride)
                     {
@@ -6447,7 +6447,7 @@ bool vehicle_update_dodgems_collision(rct_vehicle* vehicle, int16_t x, int16_t y
 
     LocationXY8 location = { static_cast<uint8_t>(x / 32), static_cast<uint8_t>(y / 32) };
 
-    uint8_t rideIndex = vehicle->ride;
+    ride_id_t rideIndex = vehicle->ride;
     for (auto xy_offset : Unk9A37C4)
     {
         location.x += xy_offset.x;

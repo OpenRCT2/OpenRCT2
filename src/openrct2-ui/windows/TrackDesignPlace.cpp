@@ -120,7 +120,7 @@ static rct_track_td6* _trackDesign;
 static void window_track_place_clear_provisional();
 static int32_t window_track_place_get_base_z(int32_t x, int32_t y);
 static void window_track_place_attempt_placement(
-    rct_track_td6* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, uint8_t* rideIndex);
+    rct_track_td6* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex);
 
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(rct_track_td6* td6);
@@ -282,7 +282,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         // Try increasing Z until a feasible placement is found
         for (int32_t i = 0; i < 7; i++)
         {
-            uint8_t rideIndex;
+            ride_id_t rideIndex;
             uint16_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
             window_track_place_attempt_placement(_trackDesign, mapX, mapY, mapZ, flags, &cost, &rideIndex);
             if (cost != MONEY32_UNDEFINED)
@@ -318,7 +318,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     int32_t i;
     int16_t mapX, mapY, mapZ;
     money32 cost;
-    uint8_t rideIndex;
+    ride_id_t rideIndex;
 
     window_track_place_clear_provisional();
     map_invalidate_map_selection_tiles();
@@ -439,7 +439,7 @@ static int32_t window_track_place_get_base_z(int32_t x, int32_t y)
 }
 
 static void window_track_place_attempt_placement(
-    rct_track_td6* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, uint8_t* rideIndex)
+    rct_track_td6* td6, int32_t x, int32_t y, int32_t z, int32_t bl, money32* cost, ride_id_t* rideIndex)
 {
     int32_t eax, ebx, ecx, edx, esi, edi, ebp;
     money32 result;

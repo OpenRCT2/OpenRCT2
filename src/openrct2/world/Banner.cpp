@@ -39,13 +39,13 @@ rct_banner gBanners[MAX_BANNERS];
 static uint8_t banner_get_ride_index_at(int32_t x, int32_t y, int32_t z)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    uint8_t resultRideIndex = RIDE_ID_NULL;
+    ride_id_t resultRideIndex = RIDE_ID_NULL;
     do
     {
         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        uint8_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         Ride* ride = get_ride(rideIndex);
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;
@@ -423,7 +423,7 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
 
     for (size_t i = 0; i < (int32_t)std::size(NeighbourCheckOrder); i++)
     {
-        uint8_t rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
+        ride_id_t rideIndex = banner_get_ride_index_at(x + NeighbourCheckOrder[i].x, y + NeighbourCheckOrder[i].y, z);
         if (rideIndex != RIDE_ID_NULL)
         {
             return rideIndex;
@@ -431,7 +431,7 @@ uint8_t banner_get_closest_ride_index(int32_t x, int32_t y, int32_t z)
     }
 
     uint8_t index;
-    uint8_t rideIndex = RIDE_ID_NULL;
+    ride_id_t rideIndex = RIDE_ID_NULL;
     int32_t resultDistance = std::numeric_limits<int32_t>::max();
     FOR_ALL_RIDES (index, ride)
     {

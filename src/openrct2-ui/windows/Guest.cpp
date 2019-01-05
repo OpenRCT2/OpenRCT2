@@ -1597,7 +1597,7 @@ void window_guest_rides_update(rct_window* w)
         window_invalidate(w);
 
     uint8_t curr_list_position = 0;
-    for (uint8_t ride_id = 0; ride_id < 255; ++ride_id)
+    for (ride_id_t ride_id = 0; ride_id < MAX_RIDES; ride_id++)
     {
         // Offset to the ride_id bit in peep_rides_been_on
         uint8_t ride_id_bit = ride_id % 8;

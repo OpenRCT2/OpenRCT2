@@ -1154,7 +1154,7 @@ static int32_t track_design_place_scenery(
     return 1;
 }
 
-static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y, int16_t z, uint8_t rideIndex)
+static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y, int16_t z, ride_id_t rideIndex)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
@@ -1361,7 +1361,7 @@ static int32_t track_design_place_maze(rct_track_td6* td6, int16_t x, int16_t y,
     return 1;
 }
 
-static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, int16_t z, uint8_t rideIndex)
+static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, int16_t z, ride_id_t rideIndex)
 {
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
                                                                                                           : FlatRideTrackBlocks;
@@ -1658,7 +1658,7 @@ static bool track_design_place_ride(rct_track_td6* td6, int16_t x, int16_t y, in
  *  rct2: 0x006D01B3
  */
 int32_t place_virtual_track(
-    rct_track_td6* td6, uint8_t ptdOperation, bool placeScenery, uint8_t rideIndex, int16_t x, int16_t y, int16_t z)
+    rct_track_td6* td6, uint8_t ptdOperation, bool placeScenery, ride_id_t rideIndex, int16_t x, int16_t y, int16_t z)
 {
     // Previously byte_F4414E was cleared here
     _trackDesignPlaceStatePlaceScenery = placeScenery;
@@ -1735,7 +1735,7 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, uint8_
         entry_index = RIDE_ENTRY_INDEX_NULL;
     }
 
-    uint8_t rideIndex;
+    ride_id_t rideIndex;
     uint8_t colour;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
     if (ride_create_command(td6->type, entry_index, rideCreateFlags, &rideIndex, &colour) == MONEY32_UNDEFINED)
@@ -1826,9 +1826,9 @@ static bool track_design_place_preview(rct_track_td6* td6, money32* cost, uint8_
     }
 }
 
-static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags, uint8_t* outRideIndex)
+static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags, ride_id_t* outRideIndex)
 {
-    *outRideIndex = 255;
+    *outRideIndex = RIDE_ID_NULL;
 
     gCommandPosition.x = x + 16;
     gCommandPosition.y = y + 16;
@@ -1890,7 +1890,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
         }
     }
 
-    uint8_t rideIndex;
+    ride_id_t rideIndex;
     uint8_t rideColour;
     money32 createRideResult = ride_create_command(td6->type, entryIndex, flags, &rideIndex, &rideColour);
     if (createRideResult == MONEY32_UNDEFINED)
@@ -1994,7 +1994,7 @@ static money32 place_track_design(int16_t x, int16_t y, int16_t z, uint8_t flags
     return cost;
 }
 
-static money32 place_maze_design(uint8_t flags, uint8_t rideIndex, uint16_t mazeEntry, int16_t x, int16_t y, int16_t z)
+static money32 place_maze_design(uint8_t flags, ride_id_t rideIndex, uint16_t mazeEntry, int16_t x, int16_t y, int16_t z)
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
     gCommandPosition.x = x + 8;
@@ -2146,7 +2146,7 @@ void game_command_place_track_design(
     int16_t y = *ecx & 0xFFFF;
     int16_t z = *edi & 0xFFFF;
     uint8_t flags = *ebx;
-    uint8_t rideIndex;
+    ride_id_t rideIndex;
     *ebx = place_track_design(x, y, z, flags, &rideIndex);
     *edi = rideIndex;
 }
@@ -2186,7 +2186,7 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels)
     }
 
     money32 cost;
-    uint8_t rideIndex;
+    ride_id_t rideIndex;
     uint8_t flags;
     if (!track_design_place_preview(td6, &cost, &rideIndex, &flags))
     {

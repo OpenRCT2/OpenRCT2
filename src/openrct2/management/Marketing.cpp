@@ -35,7 +35,7 @@ static constexpr const int32_t AdvertisingCampaignGuestGenerationProbabilities[]
 };
 
 uint8_t gMarketingCampaignDaysLeft[20];
-uint8_t gMarketingCampaignRideIndex[22];
+ride_id_t gMarketingCampaignRideIndex[22];
 
 int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign)
 {

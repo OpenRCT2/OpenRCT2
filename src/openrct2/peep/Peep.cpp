@@ -70,7 +70,7 @@ uint8_t gPeepWarningThrottle[16];
 
 TileCoordsXYZ gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
-uint8_t gPeepPathFindQueueRideIndex;
+ride_id_t gPeepPathFindQueueRideIndex;
 // uint32_t gPeepPathFindAltStationNum;
 
 static uint8_t _unk_F1AEF0;
@@ -2427,7 +2427,7 @@ static void peep_interact_with_entrance(
     rct_peep* peep, int16_t x, int16_t y, TileElement* tile_element, uint8_t& pathing_result)
 {
     uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
-    uint8_t rideIndex = tile_element->AsEntrance()->GetRideIndex();
+    ride_id_t rideIndex = tile_element->AsEntrance()->GetRideIndex();
 
     // Store some details to determine when to override the default
     // behaviour (defined below) for when staff attempt to enter a ride
@@ -2900,7 +2900,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
 
     if (peep->type == PEEP_TYPE_GUEST && tile_element->AsPath()->IsQueue())
     {
-        uint8_t rideIndex = tile_element->AsPath()->GetRideIndex();
+        ride_id_t rideIndex = tile_element->AsPath()->GetRideIndex();
 
         if (peep->state == PEEP_STATE_QUEUING)
         {
@@ -2998,7 +2998,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
  */
 static bool peep_interact_with_shop(rct_peep* peep, int16_t x, int16_t y, TileElement* tile_element)
 {
-    uint8_t rideIndex = tile_element->AsTrack()->GetRideIndex();
+    ride_id_t rideIndex = tile_element->AsTrack()->GetRideIndex();
     Ride* ride = get_ride(rideIndex);
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))

@@ -38,7 +38,7 @@ public:
     {
     }
 
-    int32_t rideIndex = -1;
+    ride_id_t rideIndex = RIDE_ID_NULL;
 };
 
 DEFINE_GAME_ACTION(RideCreateAction, GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult)
@@ -75,8 +75,8 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        int32_t rideIndex = ride_get_empty_slot();
-        if (rideIndex == -1)
+        ride_id_t rideIndex = ride_get_empty_slot();
+        if (rideIndex == RIDE_ID_NULL)
         {
             // No more free slots available.
             return std::make_unique<RideCreateGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_RIDES);
@@ -117,7 +117,7 @@ public:
         auto res = std::make_unique<RideCreateGameActionResult>();
 
         int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
-        int32_t rideIndex = ride_get_empty_slot();
+        ride_id_t rideIndex = ride_get_empty_slot();
 
         res->rideIndex = rideIndex;
 

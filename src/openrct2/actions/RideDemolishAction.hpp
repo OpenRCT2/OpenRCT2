@@ -38,7 +38,7 @@ public:
     RideDemolishAction()
     {
     }
-    RideDemolishAction(int32_t rideIndex, uint8_t modifyType)
+    RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType)
         : _rideIndex(rideIndex)
         , _modifyType(modifyType)
     {

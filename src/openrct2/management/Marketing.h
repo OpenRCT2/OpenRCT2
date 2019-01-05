@@ -39,7 +39,7 @@ enum
 
 extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 extern uint8_t gMarketingCampaignDaysLeft[20];
-extern uint8_t gMarketingCampaignRideIndex[22];
+extern ride_id_t gMarketingCampaignRideIndex[22];
 
 int32_t marketing_get_campaign_guest_generation_probability(int32_t campaign);
 void marketing_update();

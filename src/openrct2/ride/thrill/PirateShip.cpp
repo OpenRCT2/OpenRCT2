@@ -167,7 +167,7 @@ static void paint_pirate_ship_structure(
 
 /** rct2: 0x008A85C4 */
 static void paint_pirate_ship(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];

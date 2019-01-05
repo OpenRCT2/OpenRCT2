@@ -146,7 +146,7 @@ static void cheat_remove_litter()
 
 static void cheat_fix_rides()
 {
-    int32_t rideIndex;
+    ride_id_t rideIndex;
     Ride* ride;
     rct_peep* mechanic;
 
@@ -361,7 +361,7 @@ static void cheat_remove_all_guests()
     rct_peep* peep;
     rct_vehicle* vehicle;
     uint16_t spriteIndex, nextSpriteIndex;
-    int32_t rideIndex;
+    ride_id_t rideIndex;
     Ride* ride;
 
     FOR_ALL_RIDES (rideIndex, ride)

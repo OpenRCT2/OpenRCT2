@@ -1458,7 +1458,7 @@ static void window_ride_disable_tabs(rct_window* w)
     w->disabled_widgets = disabled_tabs;
 }
 
-static void window_ride_update_overall_view(uint8_t ride_index)
+static void window_ride_update_overall_view(ride_id_t ride_index)
 {
     // Calculate x, y, z bounds of the entire ride using its track elements
     tile_element_iterator it;
@@ -1521,7 +1521,7 @@ static void window_ride_update_overall_view(uint8_t ride_index)
  *
  *  rct2: 0x006AEAB4
  */
-static rct_window* window_ride_open(int32_t rideIndex)
+static rct_window* window_ride_open(ride_id_t rideIndex)
 {
     rct_window* w;
 
@@ -1543,7 +1543,7 @@ static rct_window* window_ride_open(int32_t rideIndex)
     w->max_width = 500;
     w->max_height = 450;
 
-    window_ride_update_overall_view((uint8_t)rideIndex);
+    window_ride_update_overall_view(rideIndex);
 
     return w;
 }
@@ -1552,7 +1552,7 @@ static rct_window* window_ride_open(int32_t rideIndex)
  *
  *  rct2: 0x006ACC28
  */
-rct_window* window_ride_main_open(int32_t rideIndex)
+rct_window* window_ride_main_open(ride_id_t rideIndex)
 {
     rct_window* w;
 
@@ -1585,7 +1585,7 @@ rct_window* window_ride_main_open(int32_t rideIndex)
  *
  *  rct2: 0x006ACCCE
  */
-static rct_window* window_ride_open_station(int32_t rideIndex, int32_t stationIndex)
+static rct_window* window_ride_open_station(ride_id_t rideIndex, int32_t stationIndex)
 {
     int32_t i;
     Ride* ride;
@@ -1645,7 +1645,7 @@ rct_window* window_ride_open_track(TileElement* tileElement)
 
     if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
-        int32_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
+        ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
         // Open ride window in station view
         return window_ride_open_station(rideIndex, tileElement->AsEntrance()->GetStationIndex());
     }
@@ -1653,13 +1653,13 @@ rct_window* window_ride_open_track(TileElement* tileElement)
         tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
         && TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
     {
-        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         // Open ride window in station view
         return window_ride_open_station(rideIndex, tileElement->AsTrack()->GetStationIndex());
     }
     else
     {
-        int32_t rideIndex = tile_element_get_ride_index(tileElement);
+        ride_id_t rideIndex = tile_element_get_ride_index(tileElement);
         // Open ride window in overview mode.
         return window_ride_main_open(rideIndex);
     }
@@ -1673,7 +1673,7 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
 {
     rct_vehicle* headVehicle = vehicle_get_head(vehicle);
     uint16_t headVehicleSpriteIndex = headVehicle->sprite_index;
-    int32_t rideIndex = headVehicle->ride;
+    ride_id_t rideIndex = headVehicle->ride;
     Ride* ride = get_ride(rideIndex);
 
     // Get view index
@@ -1980,7 +1980,7 @@ static void window_ride_rename(rct_window* w)
  */
 static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    uint8_t rideIndex;
+    ride_id_t rideIndex;
     int32_t status;
 
     switch (widgetIndex)

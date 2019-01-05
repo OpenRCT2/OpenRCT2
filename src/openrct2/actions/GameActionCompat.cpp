@@ -110,7 +110,7 @@ void ride_construct_new(ride_list_item listItem)
     GameActions::Execute(&gameAction);
 }
 
-money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, uint8_t* outRideIndex, uint8_t* outRideColour)
+money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex, uint8_t* outRideColour)
 {
     int32_t rideEntryIndex = ride_get_entry_index(type, subType);
     int32_t colour1 = ride_get_random_colour_preset_index(type);
@@ -149,7 +149,7 @@ void game_command_create_ride(
 
 #pragma region RideSetStatusAction
 
-void ride_set_status(int32_t rideIndex, int32_t status)
+void ride_set_status(ride_id_t rideIndex, int32_t status)
 {
     auto gameAction = RideSetStatusAction(rideIndex, status);
     GameActions::Execute(&gameAction);
@@ -169,7 +169,7 @@ void game_command_set_ride_status(
 #pragma endregion
 
 #pragma region RideSetNameAction
-void ride_set_name(int32_t rideIndex, const char* name, uint32_t flags)
+void ride_set_name(ride_id_t rideIndex, const char* name, uint32_t flags)
 {
     auto gameAction = RideSetNameAction(rideIndex, name);
     gameAction.SetFlags(flags);
@@ -189,7 +189,7 @@ void game_command_set_ride_name(
 #pragma endregion
 
 #pragma region RideModifyAction
-void ride_action_modify(int32_t rideIndex, int32_t modifyType, int32_t flags)
+void ride_action_modify(ride_id_t rideIndex, int32_t modifyType, int32_t flags)
 {
     auto gameAction = RideDemolishAction(rideIndex, modifyType);
     gameAction.SetFlags(flags);
@@ -264,7 +264,7 @@ bool place_peep_spawn(CoordsXYZD location)
 
 #pragma region MazeSetTrack
 money32 maze_set_track(
-    uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, uint8_t rideIndex,
+    uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode)
 {
     auto gameAction = MazeSetTrackAction(x, y, z, initialPlacement, direction, rideIndex, mode);

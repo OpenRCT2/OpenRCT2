@@ -12,6 +12,7 @@
 
 #include "../common.h"
 #include "../rct12/RCT12.h"
+#include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 
 #define PEEP_MAX_THOUGHTS 5
@@ -735,8 +736,8 @@ public: // Guest
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
-    void OnEnterRide(uint8_t rideIndex);
-    void OnExitRide(uint8_t rideIndex);
+    void OnEnterRide(ride_id_t rideIndex);
+    void OnExitRide(ride_id_t rideIndex);
     void RemoveFromRide();
     void UpdateSpriteType();
     bool HeadingForRideOrParkExit() const;
@@ -801,7 +802,7 @@ private: // Staff update
     bool UpdateFixingMoveToStationExit(bool firstRun, Ride* ride);
     bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride);
     bool UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride);
-    void UpdateRideInspected(int32_t rideIndex);
+    void UpdateRideInspected(ride_id_t rideIndex);
     void UpdateHeadingToInspect();
 
     // TODO: Make these private again when done refactoring
@@ -816,18 +817,18 @@ public: // Peep
 public: // Guest
     void StopPurchaseThought(uint8_t ride_type);
     void TryGetUpFromSitting();
-    void ChoseNotToGoOnRide(int32_t rideIndex, bool peepAtRide, bool updateLastRide);
+    void ChoseNotToGoOnRide(ride_id_t rideIndex, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();
-    bool ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQueue, bool thinking);
-    bool ShouldGoToShop(int32_t rideIndex, bool peepAtShop);
+    bool ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop);
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();
     bool UpdateWalkingFindBin();
     void SpendMoney(money16& peep_expend_type, money32 amount);
     void SpendMoney(money32 amount);
-    void SetHasRidden(int32_t rideIndex);
-    bool HasRidden(int32_t rideIndex) const;
+    void SetHasRidden(ride_id_t rideIndex);
+    bool HasRidden(ride_id_t rideIndex) const;
     void SetHasRiddenRideType(int32_t rideType);
     bool HasRiddenRideType(int32_t rideType) const;
     int32_t HasFoodStandardFlag() const;
@@ -839,7 +840,7 @@ public: // Guest
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
-    bool DecideAndBuyItem(uint8_t rideIndex, int32_t shopItem, money32 price);
+    bool DecideAndBuyItem(ride_id_t rideIndex, int32_t shopItem, money32 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
 };
 assert_struct_size(rct_peep, 0x100);
@@ -940,7 +941,7 @@ extern uint8_t gPeepWarningThrottle[16];
 
 extern TileCoordsXYZ gPeepPathFindGoalPosition;
 extern bool gPeepPathFindIgnoreForeignQueues;
-extern uint8_t gPeepPathFindQueueRideIndex;
+extern ride_id_t gPeepPathFindQueueRideIndex;
 
 rct_peep* try_get_guest(uint16_t spriteIndex);
 int32_t peep_get_staff_count();

@@ -593,12 +593,12 @@ const rct_track_coordinates* get_track_coord_from_ride(Ride* ride, int32_t track
                                                                     : &TrackCoordinates[trackType];
 }
 
-const rct_preview_track* get_track_def_from_ride_index(int32_t rideIndex, int32_t trackType)
+const rct_preview_track* get_track_def_from_ride_index(ride_id_t rideIndex, int32_t trackType)
 {
     return get_track_def_from_ride(get_ride(rideIndex), trackType);
 }
 
-static TileElement* find_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex)
+static TileElement* find_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
@@ -636,7 +636,7 @@ static void ride_remove_station(Ride* ride, int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x006C4D89
  */
-static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex, int32_t flags)
+static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
 {
     int32_t stationX0 = x;
     int32_t stationY0 = y;
@@ -787,7 +787,7 @@ static bool track_add_station_element(int32_t x, int32_t y, int32_t z, int32_t d
  *
  *  rct2: 0x006C494B
  */
-static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t rideIndex, int32_t flags)
+static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_t direction, ride_id_t rideIndex, int32_t flags)
 {
     int32_t removeX = x;
     int32_t removeY = y;
@@ -947,7 +947,7 @@ static bool track_remove_station_element(int32_t x, int32_t y, int32_t z, int32_
 }
 
 static money32 track_place(
-    int32_t rideIndex, int32_t type, int32_t originX, int32_t originY, int32_t originZ, int32_t direction, int32_t brakeSpeed,
+    ride_id_t rideIndex, int32_t type, int32_t originX, int32_t originY, int32_t originZ, int32_t direction, int32_t brakeSpeed,
     int32_t colour, int32_t seatRotation, int32_t liftHillAndAlternativeState, int32_t flags)
 {
     Ride* ride = get_ride(rideIndex);
@@ -1640,7 +1640,7 @@ static money32 track_remove(
         return MONEY32_UNDEFINED;
     }
 
-    uint8_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
     type = tileElement->AsTrack()->GetTrackType();
     bool isLiftHill = tileElement->AsTrack()->HasChain();
 
@@ -2287,12 +2287,12 @@ uint8_t TrackElement::GetDoorBState() const
     return (colour & TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }
 
-uint8_t TrackElement::GetRideIndex() const
+ride_id_t TrackElement::GetRideIndex() const
 {
     return rideIndex;
 }
 
-void TrackElement::SetRideIndex(uint8_t newRideIndex)
+void TrackElement::SetRideIndex(ride_id_t newRideIndex)
 {
     rideIndex = newRideIndex;
 }

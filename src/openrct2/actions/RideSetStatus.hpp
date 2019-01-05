@@ -37,7 +37,7 @@ public:
     RideSetStatusAction()
     {
     }
-    RideSetStatusAction(uint8_t rideIndex, uint8_t status)
+    RideSetStatusAction(ride_id_t rideIndex, uint8_t status)
         : _rideIndex(rideIndex)
         , _status(status)
     {

@@ -3162,7 +3162,7 @@ bool rct_peep::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 /**
  * rct2: 0x6B7588
  */
-void rct_peep::UpdateRideInspected(int32_t rideIndex)
+void rct_peep::UpdateRideInspected(ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
