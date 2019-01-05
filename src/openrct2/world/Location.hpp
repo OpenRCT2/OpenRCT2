@@ -129,10 +129,12 @@ struct TileCoordsXYZ
     int32_t x = 0, y = 0, z = 0;
 };
 
+typedef uint8_t Direction;
+
 struct CoordsXYZD
 {
     int32_t x, y, z;
-    uint8_t direction;
+    Direction direction;
 
     bool isNull() const
     {
@@ -143,7 +145,7 @@ struct CoordsXYZD
 struct TileCoordsXYZD
 {
     int32_t x, y, z;
-    uint8_t direction;
+    Direction direction;
 
     bool isNull() const
     {
