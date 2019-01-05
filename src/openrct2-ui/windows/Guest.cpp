@@ -2338,12 +2338,12 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // dx
     int32_t y = w->y + window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4;
 
-    char buffer[4096];
-    snprintf(buffer, 4096, "Position: %i, %i, %i", peep->x, peep->y, peep->z);
+    char buffer[512];
+    snprintf(buffer, sizeof(buffer), "Position: %i, %i, %i", peep->x, peep->y, peep->z);
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    snprintf(buffer, 4096, "Next: %i, %i, %i", peep->next_x, peep->next_y, peep->next_z);
+    snprintf(buffer, sizeof(buffer), "Next: %i, %i, %i", peep->next_x, peep->next_y, peep->next_z);
     if (peep->GetNextIsSurface())
         strcat_s(buffer, " (surface)");
     if (peep->GetNextIsSloped())
@@ -2357,11 +2357,15 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    snprintf(buffer, 4096, "Dest: %i, %i, tolerance %i", peep->destination_x, peep->destination_y, peep->destination_tolerance);
+    snprintf(
+        buffer, sizeof(buffer), "Dest: %i, %i, tolerance %i", peep->destination_x, peep->destination_y,
+        peep->destination_tolerance);
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    snprintf(buffer, 4096, "Pathfind Goal: %i, %i, %i dir %i", peep->pathfind_goal.x, peep->pathfind_goal.y, peep->pathfind_goal.z, peep->pathfind_goal.direction);
+    snprintf(
+        buffer, sizeof(buffer), "Pathfind Goal: %i, %i, %i dir %i", peep->pathfind_goal.x, peep->pathfind_goal.y,
+        peep->pathfind_goal.z, peep->pathfind_goal.direction);
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
@@ -2370,7 +2374,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     x += 10;
     for (auto& point : peep->pathfind_history) {
-        snprintf(buffer, 4096, "%i, %i, %i dir %i", point.x, point.y, point.z, point.direction);
+        snprintf(buffer, sizeof(buffer), "%i, %i, %i dir %i", point.x, point.y, point.z, point.direction);
         gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
