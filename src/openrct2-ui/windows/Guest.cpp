@@ -2343,28 +2343,26 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    snprintf(buffer, sizeof(buffer), "Next: %i, %i, %i", peep->next_x, peep->next_y, peep->next_z);
+    snprintf(buffer, sizeof(buffer), "Next: %u, %u, %u", peep->next_x, peep->next_y, peep->next_z);
     if (peep->GetNextIsSurface())
         safe_strcat(buffer, " (surface)", sizeof(buffer));
     if (peep->GetNextIsSloped())
     {
-        safe_strcat(buffer, " (slope ", sizeof(buffer));
-        char slopeDir[10];
-        _itoa(peep->GetNextDirection(), slopeDir, 10);
-        safe_strcat(buffer, slopeDir, sizeof(buffer));
-        safe_strcat(buffer, ")", sizeof(buffer));
+        char slopeBuf[32];
+        snprintf(slopeBuf, sizeof(slopeBuf), " (slope %u)", peep->GetNextDirection());
+        safe_strcat(buffer, slopeBuf, sizeof(buffer));
     }
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
     snprintf(
-        buffer, sizeof(buffer), "Dest: %i, %i, tolerance %i", peep->destination_x, peep->destination_y,
+        buffer, sizeof(buffer), "Dest: %u, %u, tolerance %u", peep->destination_x, peep->destination_y,
         peep->destination_tolerance);
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
     snprintf(
-        buffer, sizeof(buffer), "Pathfind Goal: %i, %i, %i dir %i", peep->pathfind_goal.x, peep->pathfind_goal.y,
+        buffer, sizeof(buffer), "Pathfind Goal: %u, %u, %u dir %u", peep->pathfind_goal.x, peep->pathfind_goal.y,
         peep->pathfind_goal.z, peep->pathfind_goal.direction);
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
@@ -2373,8 +2371,9 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     y += LIST_ROW_HEIGHT;
 
     x += 10;
-    for (auto& point : peep->pathfind_history) {
-        snprintf(buffer, sizeof(buffer), "%i, %i, %i dir %i", point.x, point.y, point.z, point.direction);
+    for (auto& point : peep->pathfind_history)
+    {
+        snprintf(buffer, sizeof(buffer), "%u, %u, %u dir %u", point.x, point.y, point.z, point.direction);
         gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
         y += LIST_ROW_HEIGHT;
     }
