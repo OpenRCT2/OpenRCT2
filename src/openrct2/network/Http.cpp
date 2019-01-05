@@ -10,8 +10,8 @@
 #include "Http.h"
 
 #include <cstring>
-#include <exception>
 #include <memory>
+#include <stdexcept>
 #include <thread>
 
 #ifndef DISABLE_HTTP
