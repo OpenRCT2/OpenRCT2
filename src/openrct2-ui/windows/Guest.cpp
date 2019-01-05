@@ -660,7 +660,7 @@ void window_guest_overview_resize(rct_window* w)
 
     widget_invalidate(w, WIDX_MARQUEE);
 
-    window_set_resize(w, 192 + gConfigGeneral.debugging_tools ? TabWidth : 0, 159, 500, 450);
+    window_set_resize(w, 192 + (gConfigGeneral.debugging_tools ? TabWidth : 0), 159, 500, 450);
 
     rct_viewport* view = w->viewport;
 
