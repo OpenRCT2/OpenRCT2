@@ -1384,7 +1384,8 @@ static void loc_6A6D7E(
                     }
                     if (z - 2 == tileElement->base_height)
                     {
-                        if (!tileElement->AsPath()->IsSloped() || tileElement->AsPath()->GetSlopeDirection() != direction_reverse(direction))
+                        if (!tileElement->AsPath()->IsSloped()
+                            || tileElement->AsPath()->GetSlopeDirection() != direction_reverse(direction))
                         {
                             return;
                         }
@@ -1406,7 +1407,8 @@ static void loc_6A6D7E(
                         {
                             return;
                         }
-                        uint16_t dx = direction_reverse((direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
+                        uint16_t dx = direction_reverse(
+                            (direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
                         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
                         {
                             return;
