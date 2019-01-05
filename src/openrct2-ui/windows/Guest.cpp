@@ -66,7 +66,7 @@ enum WINDOW_GUEST_WIDGET_IDX {
 
 validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
-static const int32_t TabWidth = 30;
+static constexpr int32_t TabWidth = 30;
 
 static rct_widget window_guest_overview_widgets[] = {
     {WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
