@@ -1017,7 +1017,7 @@ static void footpath_remove_tile_element(TileElement* tileElement)
     if (tileElement->AsPath()->IsSloped())
     {
         uint8_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
-        slopeDirection ^= 2;
+        slopeDirection = direction_reverse(slopeDirection);
         if (slopeDirection == gFootpathConstructDirection)
         {
             z += 2;
@@ -1025,7 +1025,7 @@ static void footpath_remove_tile_element(TileElement* tileElement)
     }
 
     // Find a connected edge
-    int32_t edge = gFootpathConstructDirection ^ 2;
+    int32_t edge = direction_reverse(gFootpathConstructDirection);
     if (!(tileElement->AsPath()->GetEdges() & (1 << edge)))
     {
         edge = (edge + 1) & 3;
@@ -1037,7 +1037,7 @@ static void footpath_remove_tile_element(TileElement* tileElement)
                 edge = (edge - 1) & 3;
                 if (!(tileElement->AsPath()->GetEdges() & (1 << edge)))
                 {
-                    edge ^= 2;
+                    edge = direction_reverse(edge);
                 }
             }
         }
@@ -1048,7 +1048,7 @@ static void footpath_remove_tile_element(TileElement* tileElement)
         gFootpathConstructFromPosition.x, gFootpathConstructFromPosition.y, tileElement->base_height, GAME_COMMAND_FLAG_APPLY);
 
     // Move selection
-    edge ^= 2;
+    edge = direction_reverse(edge);
     x = gFootpathConstructFromPosition.x - CoordsDirectionDelta[edge].x;
     y = gFootpathConstructFromPosition.y - CoordsDirectionDelta[edge].y;
     gFootpathConstructFromPosition.x = x;
@@ -1086,7 +1086,7 @@ static TileElement* footpath_get_tile_element_to_remove()
             {
                 if (tileElement->AsPath()->IsSloped())
                 {
-                    if (((tileElement->AsPath()->GetSlopeDirection()) ^ 2) != gFootpathConstructDirection)
+                    if (direction_reverse(tileElement->AsPath()->GetSlopeDirection()) != gFootpathConstructDirection)
                     {
                         continue;
                     }

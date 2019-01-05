@@ -996,7 +996,7 @@ rct_peep* Park::GenerateGuest()
     const auto spawn = get_random_peep_spawn();
     if (spawn != nullptr)
     {
-        auto direction = spawn->direction ^ 2;
+        auto direction = direction_reverse(spawn->direction);
         peep = peep_generate(spawn->x, spawn->y, spawn->z);
         if (peep != nullptr)
         {

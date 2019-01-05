@@ -1070,10 +1070,10 @@ static bool staff_path_finding_handyman(rct_peep* peep)
                 }
                 else
                 {
-                    pathDirections &= ~(1 << (peep->direction ^ (1 << 1)));
+                    pathDirections &= ~(1 << direction_reverse(peep->direction));
                     if (pathDirections == 0)
                     {
-                        pathDirections |= 1 << (peep->direction ^ (1 << 1));
+                        pathDirections |= 1 << direction_reverse(peep->direction);
                     }
                 }
 
@@ -1137,7 +1137,8 @@ static uint8_t staff_direction_surface(rct_peep* peep, uint8_t initialDirection)
         if (fence_in_the_way(peep->next_x, peep->next_y, peep->next_z, peep->next_z + 4, direction) == true)
             continue;
 
-        if (fence_in_the_way(peep->next_x, peep->next_y, peep->next_z, peep->next_z + 4, direction ^ (1 << 1)) == true)
+        if (fence_in_the_way(peep->next_x, peep->next_y, peep->next_z, peep->next_z + 4, direction_reverse(direction))
+            == true)
             continue;
 
         LocationXY16 chosenTile = { static_cast<int16_t>(peep->next_x + CoordsDirectionDelta[direction].x),
@@ -1225,10 +1226,10 @@ static uint8_t staff_mechanic_direction_path(rct_peep* peep, uint8_t validDirect
     }
 
     // Check if this is dead end - i.e. only way out is the reverse direction.
-    pathDirections &= ~(1 << (peep->direction ^ (1 << 1)));
+    pathDirections &= ~(1 << direction_reverse(peep->direction));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << (peep->direction ^ (1 << 1)));
+        pathDirections |= (1 << direction_reverse(peep->direction));
     }
 
     direction = bitscanforward(pathDirections);
@@ -1361,10 +1362,10 @@ static uint8_t staff_direction_path(rct_peep* peep, uint8_t validDirections, Til
         return staff_direction_surface(peep, scenario_rand() & 3);
     }
 
-    pathDirections &= ~(1 << (peep->direction ^ (1 << 1)));
+    pathDirections &= ~(1 << direction_reverse(peep->direction));
     if (pathDirections == 0)
     {
-        pathDirections |= (1 << (peep->direction ^ (1 << 1)));
+        pathDirections |= (1 << direction_reverse(peep->direction));
     }
 
     direction = bitscanforward(pathDirections);

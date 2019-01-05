@@ -78,7 +78,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     // Opposite direction
-    direction ^= 2;
+    direction = direction_reverse(direction);
     direction--;
     // If text not showing / ghost
     if (direction >= 2 || (tile_element->flags & TILE_ELEMENT_FLAG_GHOST))

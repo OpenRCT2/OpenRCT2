@@ -3271,7 +3271,7 @@ void rct_peep::UpdateBuying()
         sprite_direction ^= 0x10;
         destination_x = next_x + 16;
         destination_y = next_y + 16;
-        direction ^= 2;
+        direction = direction_reverse(direction);
 
         SetState(PEEP_STATE_WALKING);
         return;
@@ -4052,7 +4052,7 @@ void rct_peep::UpdateRideLeaveVehicle()
         CoordsXYZD platformLocation;
         platformLocation.z = ride->stations[current_ride_station].Height;
 
-        platformLocation.direction = exitLocation.direction ^ (1 << 1);
+        platformLocation.direction = direction_reverse(exitLocation.direction);
 
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_16))
         {
@@ -4096,7 +4096,7 @@ void rct_peep::UpdateRideLeaveVehicle()
                     specialDirection &= 3;
 
                     if (vehicle->var_CD == 6)
-                        specialDirection ^= (1 << 1);
+                        specialDirection = direction_reverse(specialDirection);
                 }
             }
 
@@ -4437,7 +4437,7 @@ void rct_peep::UpdateRideApproachExitWaypoints()
     auto exit = ride_get_exit_location(current_ride, current_ride_station);
     actionX = exit.x;
     actionY = exit.y;
-    uint8_t exit_direction = exit.direction ^ 2;
+    uint8_t exit_direction = direction_reverse(exit.direction);
 
     actionX *= 32;
     actionY *= 32;
@@ -4699,7 +4699,7 @@ void rct_peep::UpdateRideLeaveSpiralSlide()
     actionX = exit.x * 32 + 16;
     actionY = exit.y * 32 + 16;
 
-    exit.direction ^= 2;
+    exit.direction = direction_reverse(exit.direction);
 
     int16_t xShift = word_981D6C[exit.direction].x;
     int16_t yShift = word_981D6C[exit.direction].y;
@@ -4807,7 +4807,7 @@ void rct_peep::UpdateRideMazePathfinding()
     if (openHedges == 0)
         return;
 
-    uint8_t mazeLastEdge = maze_last_edge ^ (1 << 1);
+    uint8_t mazeLastEdge = direction_reverse(maze_last_edge);
     openHedges &= ~(1 << mazeLastEdge);
     if (openHedges == 0)
         openHedges |= (1 << mazeLastEdge);

@@ -1069,7 +1069,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             {
                 sub_98196C(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn.z);
 
-                const int32_t offset = ((spawn.direction ^ 2) + rotation) & 3;
+                const int32_t offset = (direction_reverse(spawn.direction) + rotation) & 3;
                 const uint32_t image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;
                 sub_98196C(session, image_id, 0, 0, 32, 32, 19, spawn.z);
             }
