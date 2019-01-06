@@ -144,7 +144,7 @@ typedef uint8_t Direction;
  * Given a direction, return the direction that points the other way,
  * on the same axis.
  */
-inline Direction direction_reverse(const Direction& dir)
+constexpr Direction direction_reverse(Direction dir)
 {
     return dir ^ 2;
 }
