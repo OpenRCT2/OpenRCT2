@@ -412,18 +412,47 @@ static LocationXY16 window_multiplayer_information_get_size()
         return _windowInformationSize;
     }
 
-    int32_t width = 450;
-    int32_t height = 60;
-    int32_t minNumLines = 5;
-    int32_t descNumLines, fontSpriteBase;
-
+    // Reset font sprite base and compute line height
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    utf8* buffer = _strdup(network_get_server_description());
-    gfx_wrap_string(buffer, width, &descNumLines, &fontSpriteBase);
-    free(buffer);
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    int32_t lineHeight = font_get_line_height(fontSpriteBase);
-    height += (minNumLines + descNumLines) * lineHeight;
+    // Base dimensions.
+    const int32_t width = 450;
+    int32_t height = 55;
+    int32_t numLines, fontSpriteBase;
+
+    // Server name is displayed word-wrapped, so figure out how high it will be.
+    {
+        utf8* buffer = _strdup(network_get_server_name());
+        gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+        free(buffer);
+        height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
+    }
+
+    // Likewise, for the optional server description -- which can be a little longer.
+    const utf8* descString = network_get_server_description();
+    if (!str_is_null_or_empty(descString))
+    {
+        utf8* buffer = _strdup(descString);
+        gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+        free(buffer);
+        height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
+    }
+
+    // Finally, account for provider info, if present.
+    {
+        const utf8* providerName = network_get_server_provider_name();
+        if (!str_is_null_or_empty(providerName))
+            height += LIST_ROW_HEIGHT;
+
+        const utf8* providerEmail = network_get_server_provider_email();
+        if (!str_is_null_or_empty(providerEmail))
+            height += LIST_ROW_HEIGHT;
+
+        const utf8* providerWebsite = network_get_server_provider_website();
+        if (!str_is_null_or_empty(providerWebsite))
+            height += LIST_ROW_HEIGHT;
+    }
 
     _windowInformationSizeDirty = false;
     _windowInformationSize = { (int16_t)width, (int16_t)height };
@@ -465,10 +494,9 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
 
         const utf8* name = network_get_server_name();
         {
-            gfx_draw_string_left_wrapped(dpi, (void*)&name, x, y, width, STR_STRING, w->colours[1]);
-            y += LIST_ROW_HEIGHT;
+            y += gfx_draw_string_left_wrapped(dpi, (void*)&name, x, y, width, STR_STRING, w->colours[1]);
+            y += LIST_ROW_HEIGHT / 2;
         }
-        y += LIST_ROW_HEIGHT / 2;
 
         const utf8* description = network_get_server_description();
         if (!str_is_null_or_empty(description))
