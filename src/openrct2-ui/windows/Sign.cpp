@@ -12,6 +12,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
+#include <openrct2/actions/LargeSceneryRemoveAction.hpp>
 #include <openrct2/actions/SignSetNameAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/config/Config.h>
@@ -214,6 +215,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_SIGN_DEMOLISH:
+        {
             while (1)
             {
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
@@ -228,11 +230,14 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 }
                 tile_element++;
             }
-            game_do_command(
-                x, 1 | (tile_element->GetDirection() << 8), y,
-                tile_element->base_height | (tile_element->AsLargeScenery()->GetSequenceIndex() << 8),
-                GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+
+            auto sceneryRemoveAction = LargeSceneryRemoveAction(
+                x, y, tile_element->base_height, tile_element->GetDirection(),
+                tile_element->AsLargeScenery()->GetSequenceIndex());
+            GameActions::Execute(&sceneryRemoveAction);
+
             break;
+        }
         case WIDX_SIGN_TEXT:
             if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE)
             {

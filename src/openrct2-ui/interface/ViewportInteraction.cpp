@@ -16,6 +16,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
+#include <openrct2/actions/LargeSceneryRemoveAction.hpp>
+#include <openrct2/actions/SmallSceneryRemoveAction.hpp>
 #include <openrct2/actions/WallRemoveAction.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
@@ -465,10 +467,11 @@ int32_t viewport_interaction_right_click(int32_t x, int32_t y)
  */
 static void viewport_interaction_remove_scenery(TileElement* tileElement, int32_t x, int32_t y)
 {
-    gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(
-        x, (tileElement->AsSmallScenery()->GetSceneryQuadrant() << 8) | GAME_COMMAND_FLAG_APPLY, y,
-        (tileElement->AsSmallScenery()->GetEntryIndex() << 8) | tileElement->base_height, GAME_COMMAND_REMOVE_SCENERY, 0, 0);
+    auto removeSceneryAction = SmallSceneryRemoveAction(
+        x, y, tileElement->base_height, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+        tileElement->AsSmallScenery()->GetEntryIndex());
+
+    GameActions::Execute(&removeSceneryAction);
 }
 
 /**
@@ -572,11 +575,9 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     }
     else
     {
-        gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        game_do_command(
-            x, 1 | (tileElement->GetDirection() << 8), y,
-            tileElement->base_height | (tileElement->AsLargeScenery()->GetSequenceIndex() << 8),
-            GAME_COMMAND_REMOVE_LARGE_SCENERY, 0, 0);
+        auto removeSceneryAction = LargeSceneryRemoveAction(
+            x, y, tileElement->base_height, tileElement->GetDirection(), tileElement->AsLargeScenery()->GetSequenceIndex());
+        GameActions::Execute(&removeSceneryAction);
     }
 }
 

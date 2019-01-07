@@ -8,10 +8,12 @@
  *****************************************************************************/
 
 #include "BannerSetNameAction.hpp"
+#include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
 #include "FootpathRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
+#include "LargeSceneryRemoveAction.hpp"
 #include "MazeSetTrackAction.hpp"
 #include "ParkMarketingAction.hpp"
 #include "ParkSetLoanAction.hpp"
@@ -26,6 +28,7 @@
 #include "RideSetStatus.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "SignSetNameAction.hpp"
+#include "SmallSceneryRemoveAction.hpp"
 #include "StaffSetColourAction.hpp"
 #include "StaffSetNameAction.hpp"
 #include "WallRemoveAction.hpp"
@@ -55,5 +58,8 @@ namespace GameActions
         Register<StaffSetColourAction>();
         Register<StaffSetNameAction>();
         Register<WallRemoveAction>();
+        Register<SmallSceneryRemoveAction>();
+        Register<LargeSceneryRemoveAction>();
+        Register<ClearAction>();
     }
 } // namespace GameActions
