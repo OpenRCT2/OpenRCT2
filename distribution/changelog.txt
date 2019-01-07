@@ -51,6 +51,7 @@
 - Fix: [#8464] Crash on game shutdown.
 - Fix: [#8469] Crash modifying colour on hacked rides.
 - Fix: [#8508] Underground roto-drop is not going up.
+- Fix: [#8555] Multiplayer window text limits are not computed properly.
 - Improved: [#2940] Allow mouse-dragging to set patrol area (Singleplayer only).
 - Improved: [#7730] Draw extreme vertical and lateral Gs red in the ride window's graph tab.
 - Improved: [#7930] Automatically create folders for custom content.

@@ -416,7 +416,7 @@ static LocationXY16 window_multiplayer_information_get_size()
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    // Base dimensions. Assuming three lines of provider info, and one line of white space.
+    // Base dimensions.
     const int32_t width = 450;
     int32_t height = 55;
     int32_t numLines, fontSpriteBase;
