@@ -41,7 +41,7 @@
 
 #endif
 
-#include <SDL2/SDL_opengl.h>
+#include <SDL_opengl.h>
 // OpenRCT2: SDL_opengl.h includes windows.h, which defines the CreateWindow macro and causes conflicts
 #undef CreateWindow
 

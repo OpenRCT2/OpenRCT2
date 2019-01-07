@@ -13,7 +13,7 @@
 #include "../interface/InGameConsole.h"
 #include "KeyboardShortcuts.h"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <cctype>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>

@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <functional>
 #include <map>
 #include <openrct2/interface/Cursors.h>

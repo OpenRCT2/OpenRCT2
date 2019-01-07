@@ -11,7 +11,7 @@
 
 #include "../SDLException.h"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/common.h>
 #include <openrct2/core/String.hpp>

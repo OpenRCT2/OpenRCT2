@@ -21,7 +21,7 @@
 #    include "TextureCache.h"
 #    include "TransparencyDepth.h"
 
-#    include <SDL2/SDL.h>
+#    include <SDL.h>
 #    include <algorithm>
 #    include <cmath>
 #    include <openrct2-ui/interface/Window.h>

@@ -10,7 +10,7 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <algorithm>
 #include <iterator>
 #include <list>

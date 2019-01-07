@@ -12,7 +12,7 @@
 #include "UiContext.h"
 #include "interface/InGameConsole.h"
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <algorithm>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
