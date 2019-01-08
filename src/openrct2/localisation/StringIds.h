@@ -3896,6 +3896,8 @@ enum
     STR_STATION_STYLE = 6275,
     STR_GUESTS_GETTING_STUCK_ON_RIDE = 6276,
 
+    STR_TILE_INSPECTOR_STATION_INDEX = 6277,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

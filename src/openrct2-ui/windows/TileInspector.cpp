@@ -314,7 +314,7 @@ static rct_widget PathWidgets[] = {
 #define TRA_GBPB PADDING_BOTTOM                 // Track group box properties bottom
 #define TRA_GBPT (TRA_GBPB + 16 + 3 * 21)       // Track group box properties top
 #define TRA_GBDB (TRA_GBPT + GROUPBOX_PADDING)  // Track group box info bottom
-#define TRA_GBDT (TRA_GBDB + 20 + 5 * 11)       // Track group box info top
+#define TRA_GBDT (TRA_GBDB + 20 + 6 * 11)       // Track group box info top
 static rct_widget TrackWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 0),  STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,    STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
@@ -345,7 +345,7 @@ static rct_widget SceneryWidgets[] = {
 #define ENT_GBPB PADDING_BOTTOM                 // Entrance group box properties bottom
 #define ENT_GBPT (ENT_GBPB + 16 + 2 * 21)       // Entrance group box properties top
 #define ENT_GBDB (ENT_GBPT + GROUPBOX_PADDING)  // Entrance group box info bottom
-#define ENT_GBDT (ENT_GBDB + 20 + 3 * 11)       // Entrance group box info top
+#define ENT_GBDT (ENT_GBDB + 20 + 4 * 11)       // Entrance group box info top
 static rct_widget EntranceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - ENT_GBPT, 0) + 3, GBBB(WH - ENT_GBPT, 0) - 3,   STR_NONE,  STR_NONE),  // WIDX_ENTRANCE_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -1841,7 +1841,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Ride
-                int16_t rideId = tileElement->AsTrack()->GetRideIndex();
+                auto trackElement = tileElement->AsTrack();
+                int16_t rideId = trackElement->GetRideIndex();
                 Ride* ride = get_ride(rideId);
                 rct_string_id rideType = RideNaming[ride->type].name;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);
@@ -1850,10 +1851,15 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 set_format_arg(0 + sizeof(rct_string_id), uint32_t, ride->name_arguments);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_DARK_GREEN, x, y + 22);
                 // Track
-                int16_t trackType = tileElement->AsTrack()->GetTrackType();
-                int16_t sequenceNumber = tileElement->AsTrack()->GetSequenceIndex();
+                int16_t trackType = trackElement->GetTrackType();
+                int16_t sequenceNumber = trackElement->GetSequenceIndex();
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_DARK_GREEN, x, y + 33);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SEQUENCE, &sequenceNumber, COLOUR_DARK_GREEN, x, y + 44);
+                if (track_element_is_station(tileElement))
+                {
+                    int16_t stationIndex = trackElement->GetStationIndex();
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, &stationIndex, COLOUR_DARK_GREEN, x, y + 55);
+                }
 
                 // Properties
                 // Raise / lower label
@@ -1957,6 +1963,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     // Ride ID
                     int16_t rideId = tileElement->AsEntrance()->GetRideIndex();
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 22);
+                    // Station index
+                    int16_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_STATION_INDEX, &stationIndex, COLOUR_DARK_GREEN, x, y + 33);
                 }
 
                 // Properties
