@@ -27,5 +27,9 @@ if (APPLE)
     target_link_libraries(${PROJECT} "-framework Cocoa")
 endif ()
 
+if (WIN32)
+    target_link_libraries(${PROJECT} gdi32)
+endif ()
+
 # Includes
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/..")
