@@ -3091,7 +3091,6 @@ STR_5581    :Vis FPS
 STR_5582    :Lås musemarkør til vinduet
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
-
 STR_5585    :{SMALLFONT}{BLACK}Fjerner begrænsning på forlystelse operation, Tillader ting som {VELOCITY} hejse bakker
 STR_5586    :Åben butikker og boder automatisk
 STR_5587    :{SMALLFONT}{BLACK}Butikker og boder vil automatisk blive åbnet ,når de bliver bygget
@@ -3639,54 +3638,54 @@ STR_6164    :{WHITE}❌
 STR_6165    :Use vertical sync
 STR_6166    :{SMALLFONT}{BLACK}Synchronises each frame displayed to the monitor's refresh rate, preventing screen tearing.
 STR_6167    :{SMALLFONT}{BLACK}Avanceret
-STR_6168    :Title Sequence
-STR_6169    :Scenario selection
-STR_6170    :Interface Tweaks
+STR_6168    :Titel Sekvens
+STR_6169    :Scenarie valg
+STR_6170    :Interface Tilretninger
 STR_6171    :Søg
 STR_6172    :{SMALLFONT}{BLACK}Søg
-STR_6173    :Please provide the name to search:
-STR_6174    :Load Save
-STR_6175    :Load Scenario
-STR_6176    :Scenario to load:
-STR_6177    :Load{MOVE_X}{87}No scenario selected
-STR_6178    :Load{MOVE_X}{87}{RED}Missing scenario
-STR_6179    :Select
-STR_6180    :No scenario selected
-STR_6181    :{RED}Missing scenario
-STR_6182    :Follow{MOVE_X}{87}{STRING}
-STR_6183    :Follow{MOVE_X}{87}No sprite selected
-STR_6184    :Follow Sprite
-STR_6185    :Select Sprite
-STR_6186    :No sprite selected
+STR_6173    :Angiv navn til at søge efter:
+STR_6174    :Hent Gemt
+STR_6175    :Hent Scenarie
+STR_6176    :Scenarie der skal hentes:
+STR_6177    :Hent{MOVE_X}{87}Ingen scenarie valgt
+STR_6178    :Hent{MOVE_X}{87}{RED}Manglende scenarie
+STR_6179    :Vælg
+STR_6180    :Ingen scenarie valgt
+STR_6181    :{RED}Manglende scenarie
+STR_6182    :Følg{MOVE_X}{87}{STRING}
+STR_6183    :Følg{MOVE_X}{87}Ingen sprite valgt
+STR_6184    :Følg Sprite
+STR_6185    :Vælg Sprite
+STR_6186    :Ingen sprite valgt
 STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
-STR_6188    :Vomit
-STR_6189    :Duck
-STR_6190    :{SMALLFONT}{BLACK}You cannot select a sprite while the main title screen is active.
-STR_6191    :Surface
-STR_6192    :Wall
-STR_6193    :{COMMA16} guest
-STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guest
-STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guest
-STR_6196    :{BLACK}Year:
-STR_6197    :{BLACK}Month:
-STR_6198    :{BLACK}Day:
-STR_6199    :Set date
-STR_6200    :Reset date
+STR_6188    :Opkast
+STR_6189    :And
+STR_6190    :{SMALLFONT}{BLACK}Du kan ikke vælge en sprite, mens titelskærmen er aktiv.
+STR_6191    :Overflade
+STR_6192    :Væg
+STR_6193    :{COMMA16} gæst
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} gæst
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} gæst
+STR_6196    :{BLACK}År:
+STR_6197    :{BLACK}Måned:
+STR_6198    :{BLACK}Dag:
+STR_6199    :Sæt dato
+STR_6200    :Nulstil dato
 STR_6201    :{MONTH}
 STR_6202    :Virtuel gulv stil:
 STR_6203    :{SMALLFONT}{BLACK}Når aktiveret, et virtuel gulv vil blive vistnår du holder Ctrl eller Shift nede, for at lette placering af elementer.
 STR_6204    :Mursten
 STR_6205    :Jern
-STR_6206    :Grey stucco
-STR_6207    :Yellow stucco
-STR_6208    :Red stucco
-STR_6209    :Purple stucco
-STR_6210    :Green stucco
-STR_6211    :Brown sandstone
-STR_6212    :Grey sandstone
-STR_6213    :Skyscraper A
-STR_6214    :Skyscraper B
-STR_6215    :Construction
+STR_6206    :Grå stuk
+STR_6207    :Gul stuk
+STR_6208    :Rød stuk
+STR_6209    :Purple stuk
+STR_6210    :Grøn stuk
+STR_6211    :Brun sandsten
+STR_6212    :Grå sandsten
+STR_6213    :Skyskraber A
+STR_6214    :Skyskraber B
+STR_6215    :Konstruktion
 STR_6216    :Operation
 STR_6217    :Ride / track availability
 STR_6218    :OpenRCT2 Official
@@ -3748,6 +3747,7 @@ STR_6273    :Musik
 STR_6274    :Kan ikke sætte farveskema...
 STR_6275    :{WINDOW_COLOUR_2}Stations stil:
 STR_6276    :{RED}{STRINGID} har fastklemte gæster, muligvis på grund af forkert forlystelsetype eller operations tilstand.
+STR_6277    :{WINDOW_COLOUR_2}Stations index: {BLACK}{COMMA16}
 
 #############
 # Scenarios #
