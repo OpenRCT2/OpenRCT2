@@ -3735,6 +3735,7 @@ STR_6273    :Musica
 STR_6274    :Impossibile impostare schema colore...
 STR_6275    :{WINDOW_COLOUR_2}Stile stazione:
 STR_6276    :{RED}{STRINGID} ha ospiti bloccati, probabilmente a causa di un errato tipo di attrazione o modalità operativa.
+STR_6277    :{WINDOW_COLOUR_2}Indice stazione: {BLACK}{COMMA16}
 
 #############
 # Scenarios #
