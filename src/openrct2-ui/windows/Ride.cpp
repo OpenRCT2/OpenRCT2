@@ -2618,8 +2618,8 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* ar
     rct_string_id formatSecondary, stringId;
 
     ride_get_status(w->number, &formatSecondary, &argument);
-    *(uint16_t*)((uintptr_t)arguments + 0) = formatSecondary;
-    *(uintptr_t*)((uintptr_t)arguments + 2) = argument;
+    std::memcpy(arguments, &formatSecondary, sizeof(formatSecondary));
+    std::memcpy((void*)((uintptr_t)arguments + 2), &argument, sizeof(argument));
     stringId = STR_RED_OUTLINED_STRING;
     if (formatSecondary != STR_BROKEN_DOWN && formatSecondary != STR_CRASHED)
         stringId = STR_BLACK_STRING;
@@ -2794,9 +2794,10 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Status
     widget = &window_ride_main_widgets[WIDX_STATUS];
+    rct_string_id ride_status = window_ride_get_status(w, gCommonFormatArgs);
     gfx_draw_string_centred_clipped(
-        dpi, window_ride_get_status(w, gCommonFormatArgs), gCommonFormatArgs, COLOUR_BLACK,
-        w->x + (widget->left + widget->right) / 2, w->y + widget->top, widget->right - widget->left);
+        dpi, ride_status, gCommonFormatArgs, COLOUR_BLACK, w->x + (widget->left + widget->right) / 2, w->y + widget->top,
+        widget->right - widget->left);
 }
 
 #pragma endregion

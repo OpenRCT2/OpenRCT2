@@ -228,7 +228,7 @@ void research_finish_item(rct_research_item* researchItem)
 
             ride_entry_set_invented(rideEntryIndex);
 
-            bool seenRideEntry[MAX_RIDE_OBJECTS];
+            bool seenRideEntry[MAX_RIDE_OBJECTS]{};
 
             rct_research_item* researchItem2 = gResearchItems;
             for (; researchItem2->rawValue != RESEARCHED_ITEMS_END; researchItem2++)

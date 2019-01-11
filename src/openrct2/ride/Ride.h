@@ -95,6 +95,8 @@ struct rct_ride_name
 };
 assert_struct_size(rct_ride_name, 4);
 
+#pragma pack(pop)
+
 /**
  * Ride type structure.
  * size: unknown
@@ -134,8 +136,6 @@ struct rct_ride_entry
     rct_string_id capacity;
     void* obj;
 };
-
-#pragma pack(pop)
 
 struct RideStation
 {

@@ -263,7 +263,8 @@ static void colour_char(uint8_t colour, const uint16_t* current_font_flags, uint
     const rct_g1_element* g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
     if (g1 != nullptr)
     {
-        colour32 = ((uint32_t*)g1->offset)[colour & 0xFF];
+        uint32_t idx = (colour & 0xFF) * 4;
+        std::memcpy(&colour32, &g1->offset[idx], sizeof(colour32));
     }
 
     if (!(*current_font_flags & TEXT_DRAW_FLAG_OUTLINE))
@@ -760,7 +761,8 @@ static const utf8* ttf_process_format_code(rct_drawpixelinfo* dpi, const utf8* t
             break;
         case FORMAT_INLINE_SPRITE:
         {
-            uint32_t imageId = *((uint32_t*)(nextCh));
+            uint32_t imageId;
+            std::memcpy(&imageId, nextCh, sizeof(uint32_t));
             const rct_g1_element* g1 = gfx_get_g1_element(imageId & 0x7FFFF);
             if (g1 != nullptr)
             {
