@@ -998,7 +998,7 @@ void ride_init_all()
     for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
     {
         rct_ride_measurement* ride_measurement = get_ride_measurement(i);
-        ride_measurement->ride_index = 255;
+        ride_measurement->ride_index = RIDE_ID_NULL;
     }
 }
 
@@ -3076,7 +3076,7 @@ void ride_measurement_clear(Ride* ride)
         return;
 
     measurement = get_ride_measurement(ride->measurement_index);
-    measurement->ride_index = 255;
+    measurement->ride_index = RIDE_ID_NULL;
     ride->measurement_index = 255;
 }
 
@@ -3172,7 +3172,7 @@ void ride_measurements_update()
     for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
     {
         rct_ride_measurement* measurement = get_ride_measurement(i);
-        if (measurement->ride_index == 255)
+        if (measurement->ride_index == RIDE_ID_NULL)
             continue;
 
         Ride* ride = get_ride(measurement->ride_index);
@@ -3224,7 +3224,7 @@ static int32_t ride_get_free_measurement()
     for (int32_t i = 0; i < MAX_RIDE_MEASUREMENTS; i++)
     {
         rct_ride_measurement* measurement = get_ride_measurement(i);
-        if (measurement->ride_index == 255)
+        if (measurement->ride_index == RIDE_ID_NULL)
             return i;
     }
 

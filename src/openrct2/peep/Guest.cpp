@@ -479,7 +479,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
         }
 
         if (state == PEEP_STATE_WALKING && outside_of_park == 0 && !(peep_flags & PEEP_FLAGS_LEAVING_PARK) && no_of_rides == 0
-            && guest_heading_to_ride_id == 0xFF)
+            && guest_heading_to_ride_id == RIDE_ID_NULL)
         {
             uint32_t time_duration = gScenarioTicks - time_in_park;
             time_duration /= 2048;
@@ -488,7 +488,7 @@ void rct_peep::Tick128UpdateGuest(int32_t index)
             {
                 PickRideToGoOn();
 
-                if (guest_heading_to_ride_id == 0xFF)
+                if (guest_heading_to_ride_id == RIDE_ID_NULL)
                 {
                     happiness_target = std::max(happiness_target - 128, 0);
                     peep_leave_park(this);
@@ -1134,7 +1134,7 @@ void rct_peep::CheckIfLost()
  */
 void rct_peep::CheckCantFindRide()
 {
-    if (guest_heading_to_ride_id == 0xFF)
+    if (guest_heading_to_ride_id == RIDE_ID_NULL)
         return;
 
     // Peeps will think "I can't find ride X" twice before giving up completely.
@@ -1148,7 +1148,7 @@ void rct_peep::CheckCantFindRide()
     if (peep_is_lost_countdown != 0)
         return;
 
-    guest_heading_to_ride_id = 0xFF;
+    guest_heading_to_ride_id = RIDE_ID_NULL;
     rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
 
     if (w)
@@ -1585,7 +1585,7 @@ void rct_peep::PickRideToGoOn()
 
     if (state != PEEP_STATE_WALKING)
         return;
-    if (guest_heading_to_ride_id != 255)
+    if (guest_heading_to_ride_id != RIDE_ID_NULL)
         return;
     if (peep_flags & PEEP_FLAGS_LEAVING_PARK)
         return;
@@ -2193,7 +2193,7 @@ static void peep_reset_ride_heading(rct_peep* peep)
 {
     rct_window* w;
 
-    peep->guest_heading_to_ride_id = 255;
+    peep->guest_heading_to_ride_id = RIDE_ID_NULL;
     w = window_find_by_number(WC_PEEP, peep->sprite_index);
     if (w != nullptr)
     {
@@ -2882,7 +2882,7 @@ static void peep_decide_whether_to_leave_park(rct_peep* peep)
  */
 static void peep_leave_park(rct_peep* peep)
 {
-    peep->guest_heading_to_ride_id = 0xFF;
+    peep->guest_heading_to_ride_id = RIDE_ID_NULL;
     if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)
     {
         if (peep->peep_is_lost_countdown < 60)
@@ -2921,7 +2921,7 @@ static void peep_head_for_nearest_ride_type(rct_peep* peep, int32_t rideType)
         return;
     if (peep->x == LOCATION_NULL)
         return;
-    if (peep->guest_heading_to_ride_id != 255)
+    if (peep->guest_heading_to_ride_id != RIDE_ID_NULL)
     {
         ride = get_ride(peep->guest_heading_to_ride_id);
         if (ride->type == rideType)
@@ -3044,7 +3044,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep* peep, int32_t rideTy
         return;
     if (peep->x == LOCATION_NULL)
         return;
-    if (peep->guest_heading_to_ride_id != 255)
+    if (peep->guest_heading_to_ride_id != RIDE_ID_NULL)
     {
         ride = get_ride(peep->guest_heading_to_ride_id);
         if (ride_type_has_flag(
@@ -4926,7 +4926,7 @@ void rct_peep::UpdateRideLeaveExit()
         }
     }
 
-    interaction_ride_index = 0xFF;
+    interaction_ride_index = RIDE_ID_NULL;
     SetState(PEEP_STATE_FALLING);
 
     actionX = x & 0xFFE0;
@@ -5419,7 +5419,7 @@ void rct_peep::UpdateWalking()
     {
         peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_NEW_RIDE, PEEP_THOUGHT_ITEM_NONE);
     }
-    if (current_ride == 0xFF)
+    if (current_ride == RIDE_ID_NULL)
     {
         peep_insert_new_thought(this, PEEP_THOUGHT_TYPE_SCENERY, PEEP_THOUGHT_ITEM_NONE);
     }
@@ -6413,7 +6413,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
                 *rideSeatToView = 0x02;
             }
 
-            *rideToView = 0xFF;
+            *rideToView = RIDE_ID_NULL;
 
             return true;
         }
@@ -6530,7 +6530,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
                 *rideSeatToView = 0x02;
             }
 
-            *rideToView = 0xFF;
+            *rideToView = RIDE_ID_NULL;
 
             return true;
         }
@@ -6640,7 +6640,7 @@ static bool peep_find_ride_to_look_at(rct_peep* peep, uint8_t edge, uint8_t* rid
                 *rideSeatToView = 0x02;
             }
 
-            *rideToView = 0xFF;
+            *rideToView = RIDE_ID_NULL;
 
             return true;
         }

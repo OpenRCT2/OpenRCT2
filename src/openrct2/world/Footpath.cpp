@@ -1723,7 +1723,7 @@ void footpath_chain_ride_queue(
         break;
     }
 
-    if (rideIndex != 255 && lastPathElement != nullptr)
+    if (rideIndex != RIDE_ID_NULL && lastPathElement != nullptr)
     {
         if (lastPathElement->AsPath()->IsQueue())
         {

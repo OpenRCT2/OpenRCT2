@@ -1218,9 +1218,9 @@ void rct_peep::Update()
 {
     if (type == PEEP_TYPE_GUEST)
     {
-        if (previous_ride != 255)
+        if (previous_ride != RIDE_ID_NULL)
             if (++previous_ride_time_out >= 720)
-                previous_ride = 255;
+                previous_ride = RIDE_ID_NULL;
 
         peep_update_thoughts(this);
     }

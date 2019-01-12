@@ -30,7 +30,7 @@ Ride gRideList[MAX_RIDES];
 int16_t gMapSizeUnits;
 int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
-uint8_t gTrackDesignSaveRideIndex = 255;
+uint8_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 uint8_t gClipHeight = 255;
 LocationXY8 gClipSelectionA = { 0, 0 };
 LocationXY8 gClipSelectionB = { MAXIMUM_MAP_SIZE_TECHNICAL - 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1 };

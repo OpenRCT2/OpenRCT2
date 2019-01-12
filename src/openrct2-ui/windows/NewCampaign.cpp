@@ -154,7 +154,7 @@ rct_window* window_new_campaign_open(int16_t campaignType)
 
     // Get all applicable rides
     numApplicableRides = 0;
-    window_new_campaign_rides[0] = 255;
+    window_new_campaign_rides[0] = RIDE_ID_NULL;
     FOR_ALL_RIDES (i, ride)
     {
         if (ride->status != RIDE_STATUS_OPEN)
@@ -181,7 +181,7 @@ rct_window* window_new_campaign_open(int16_t campaignType)
     // Sort rides by name
     qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8_t), ride_name_compare);
 
-    window_new_campaign_rides[numApplicableRides] = 255;
+    window_new_campaign_rides[numApplicableRides] = RIDE_ID_NULL;
 
     return w;
 }
@@ -286,7 +286,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                 int32_t numItems = 0;
                 for (int32_t i = 0; i < DROPDOWN_ITEMS_MAX_SIZE; i++)
                 {
-                    if (window_new_campaign_rides[i] == 255)
+                    if (window_new_campaign_rides[i] == RIDE_ID_NULL)
                         break;
 
                     Ride* ride = get_ride(window_new_campaign_rides[i]);
