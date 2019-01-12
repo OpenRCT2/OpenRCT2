@@ -328,7 +328,7 @@ uint8_t* get_ride_entry_indices_for_ride_type(uint8_t rideType)
         do
         {
             entryIndexList++;
-        } while (*(entryIndexList - 1) != 255);
+        } while (*(entryIndexList - 1) != RIDE_ENTRY_INDEX_NULL);
         rideType--;
     }
     return entryIndexList;
@@ -5751,7 +5751,7 @@ int32_t ride_is_valid_for_test(ride_id_t rideIndex, int32_t goingToBeOpen, int32
         }
     }
 
-    if (ride->subtype != 255)
+    if (ride->subtype != RIDE_ENTRY_INDEX_NULL)
     {
         rct_ride_entry* rideType = get_ride_entry(ride->subtype);
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
@@ -5889,7 +5889,7 @@ int32_t ride_is_valid_for_open(ride_id_t rideIndex, int32_t goingToBeOpen, int32
         }
     }
 
-    if (ride->subtype != 255)
+    if (ride->subtype != RIDE_ENTRY_INDEX_NULL)
     {
         rct_ride_entry* rideType = get_ride_entry(ride->subtype);
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)

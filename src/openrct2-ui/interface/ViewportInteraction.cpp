@@ -77,7 +77,7 @@ int32_t viewport_interaction_get_item_left(int32_t x, int32_t y, viewport_intera
             {
                 case SPRITE_IDENTIFIER_VEHICLE:
                     vehicle = &(sprite->vehicle);
-                    if (vehicle->ride_subtype != 255)
+                    if (vehicle->ride_subtype != RIDE_ENTRY_INDEX_NULL)
                         vehicle_set_map_toolbar(vehicle);
                     else
                         info->type = VIEWPORT_INTERACTION_ITEM_NONE;
