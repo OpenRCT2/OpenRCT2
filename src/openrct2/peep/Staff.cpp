@@ -3097,7 +3097,7 @@ bool rct_peep::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride
         return false;
     }
 
-    ride_fix_breakdown(current_ride, steps);
+    ride_fix_breakdown(ride, steps);
 
     return true;
 }

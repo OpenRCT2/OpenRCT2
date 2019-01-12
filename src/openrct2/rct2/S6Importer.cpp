@@ -502,14 +502,9 @@ public:
         for (uint8_t index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
         {
             auto src = &_s6.rides[index];
-            auto dst = get_ride(index);
-            *dst = {};
-            if (src->type == RIDE_TYPE_NULL)
+            if (src->type != RIDE_TYPE_NULL)
             {
-                dst->type = RIDE_TYPE_NULL;
-            }
-            else
-            {
+                auto dst = get_ride(index);
                 ImportRide(dst, src, index);
             }
         }
@@ -517,8 +512,8 @@ public:
 
     void ImportRide(Ride* dst, const rct2_ride* src, const ride_id_t rideIndex)
     {
-        std::memset(dst, 0, sizeof(Ride));
-
+        *dst = {};
+        dst->id = rideIndex;
         dst->type = src->type;
         dst->subtype = src->subtype;
         // pad_002;

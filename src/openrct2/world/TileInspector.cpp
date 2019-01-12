@@ -825,7 +825,7 @@ int32_t tile_inspector_track_base_height_offset(int32_t x, int32_t y, int32_t el
                 map_get_surface_element_at({ elemX, elemY }) != nullptr, "No surface at %d,%d", elemX >> 5, elemY >> 5);
 
             // Keep?
-            // invalidate_test_results(rideIndex);
+            // invalidate_test_results(ride);
 
             tileElement->base_height += offset;
             tileElement->clearance_height += offset;
@@ -958,7 +958,7 @@ int32_t tile_inspector_track_set_chain(
                 map_get_surface_element_at({ elemX, elemY }) != nullptr, "No surface at %d,%d", elemX >> 5, elemY >> 5);
 
             // Keep?
-            // invalidate_test_results(rideIndex);
+            // invalidate_test_results(ride);
 
             if (tileElement->AsTrack()->HasChain() != setChain)
             {

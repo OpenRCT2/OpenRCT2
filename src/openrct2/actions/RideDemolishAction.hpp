@@ -121,8 +121,8 @@ private:
     {
         money32 refundPrice = DemolishTracks();
 
-        ride_clear_for_construction(_rideIndex);
-        ride_remove_peeps(_rideIndex);
+        ride_clear_for_construction(ride);
+        ride_remove_peeps(ride);
         ride_stop_peeps_queuing(_rideIndex);
 
         sub_6CB945(_rideIndex);

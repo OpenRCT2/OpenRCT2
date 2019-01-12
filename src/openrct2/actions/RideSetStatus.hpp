@@ -128,8 +128,8 @@ public:
                     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
                     {
                         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-                        ride_clear_for_construction(_rideIndex);
-                        ride_remove_peeps(_rideIndex);
+                        ride_clear_for_construction(ride);
+                        ride_remove_peeps(ride);
                     }
                 }
 

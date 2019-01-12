@@ -148,21 +148,19 @@ static void cheat_fix_rides()
 {
     ride_id_t rideIndex;
     Ride* ride;
-    rct_peep* mechanic;
 
     FOR_ALL_RIDES (rideIndex, ride)
     {
         if ((ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING)
             && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
         {
-            mechanic = ride_get_assigned_mechanic(ride);
-
+            auto mechanic = ride_get_assigned_mechanic(ride);
             if (mechanic != nullptr)
             {
                 mechanic->RemoveFromRide();
             }
 
-            ride_fix_breakdown(rideIndex, 0);
+            ride_fix_breakdown(ride, 0);
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
         }
     }

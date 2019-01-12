@@ -737,14 +737,15 @@ private:
         {
             if (_s4.rides[i].type != RIDE_TYPE_NULL)
             {
-                ImportRide(get_ride(i), &_s4.rides[i]);
+                ImportRide(get_ride(i), &_s4.rides[i], i);
             }
         }
     }
 
-    void ImportRide(Ride* dst, rct1_ride* src)
+    void ImportRide(Ride* dst, rct1_ride* src, ride_id_t rideIndex)
     {
-        std::memset(dst, 0x00, sizeof(Ride));
+        *dst = {};
+        dst->id = rideIndex;
 
         // This is a peculiarity of this exact version number, which only Heide-Park seems to use.
         if (_s4.game_version == 110018 && src->type == RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER)
