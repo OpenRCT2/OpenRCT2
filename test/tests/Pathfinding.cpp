@@ -51,7 +51,7 @@ public:
     }
 
 protected:
-    static Ride* FindRideByName(const char* name, int32_t* outRideIndex)
+    static Ride* FindRideByName(const char* name, ride_id_t* outRideIndex)
     {
         Ride* ride;
         FOR_ALL_RIDES ((*outRideIndex), ride)
@@ -199,7 +199,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     ASSERT_PRED_FORMAT1(AssertIsStartPosition, scenario.start);
     TileCoordsXYZ pos = scenario.start;
 
-    int32_t rideIndex;
+    ride_id_t rideIndex;
     Ride* ride = FindRideByName(scenario.name, &rideIndex);
     ASSERT_NE(ride, nullptr);
 
@@ -238,7 +238,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     TileCoordsXYZ pos = scenario.start;
     ASSERT_PRED_FORMAT1(AssertIsStartPosition, scenario.start);
 
-    int32_t rideIndex;
+    ride_id_t rideIndex;
     Ride* ride = FindRideByName(scenario.name, &rideIndex);
     ASSERT_NE(ride, nullptr);
 

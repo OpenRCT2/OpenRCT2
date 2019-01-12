@@ -293,15 +293,15 @@ bool track_paint_util_draw_station_covers_2(
 void track_paint_util_draw_station_platform(
     paint_session* session, Ride* ride, uint8_t direction, int32_t height, int32_t zOffset, const TileElement* tileElement);
 void track_paint_util_draw_station(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, const TileElement* tileElement);
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, const TileElement* tileElement);
 void track_paint_util_draw_station_2(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, const TileElement* tileElement,
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, const TileElement* tileElement,
     int32_t fenceOffsetA, int32_t fenceOffsetB);
 void track_paint_util_draw_station_3(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
     const TileElement* tileElement);
 void track_paint_util_draw_station_inverted(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, int32_t height, const TileElement* tileElement,
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, int32_t height, const TileElement* tileElement,
     uint8_t stationVariant);
 bool track_paint_util_should_paint_supports(LocationXY16 position);
 void track_paint_util_draw_pier(
@@ -392,7 +392,7 @@ void track_paint_util_right_vertical_loop_segments(paint_session* session, uint8
 void track_paint_util_left_corkscrew_up_supports(paint_session* session, uint8_t direction, uint16_t height);
 
 using TRACK_PAINT_FUNCTION = void (*)(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement);
 using TRACK_PAINT_FUNCTION_GETTER = TRACK_PAINT_FUNCTION (*)(int32_t trackType, int32_t direction);
 

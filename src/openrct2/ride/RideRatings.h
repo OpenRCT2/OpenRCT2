@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "RideTypes.h"
 
 using ride_rating = fixed16_2dp;
 
@@ -44,7 +45,7 @@ struct rct_ride_rating_calc_data
     uint16_t proximity_start_x;
     uint16_t proximity_start_y;
     uint16_t proximity_start_z;
-    uint8_t current_ride;
+    ride_id_t current_ride;
     uint8_t state;
     uint8_t proximity_track_type;
     uint8_t proximity_base_height;
@@ -57,5 +58,5 @@ struct rct_ride_rating_calc_data
 
 extern rct_ride_rating_calc_data gRideRatingsCalcData;
 
-void ride_ratings_update_ride(int rideIndex);
+void ride_ratings_update_ride(ride_id_t rideIndex);
 void ride_ratings_update_all();

@@ -220,7 +220,7 @@ extern LocationXYZ16 gTrackPreviewOrigin;
 extern bool byte_9D8150;
 
 extern bool gTrackDesignSaveMode;
-extern uint8_t gTrackDesignSaveRideIndex;
+extern ride_id_t gTrackDesignSaveRideIndex;
 
 rct_track_td6* track_design_open(const utf8* path);
 void track_design_dispose(rct_track_td6* td6);
@@ -228,7 +228,7 @@ void track_design_dispose(rct_track_td6* td6);
 void track_design_mirror(rct_track_td6* td6);
 
 int32_t place_virtual_track(
-    rct_track_td6* td6, uint8_t ptdOperation, bool placeScenery, uint8_t rideIndex, int16_t x, int16_t y, int16_t z);
+    rct_track_td6* td6, uint8_t ptdOperation, bool placeScenery, ride_id_t rideIndex, int16_t x, int16_t y, int16_t z);
 
 void game_command_place_track_design(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
@@ -246,10 +246,10 @@ void track_design_draw_preview(rct_track_td6* td6, uint8_t* pixels);
 void track_design_save_init();
 void track_design_save_reset_scenery();
 bool track_design_save_contains_tile_element(const TileElement* tileElement);
-void track_design_save_select_nearby_scenery(int32_t rideIndex);
+void track_design_save_select_nearby_scenery(ride_id_t rideIndex);
 void track_design_save_select_tile_element(
     int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement, bool collect);
-bool track_design_save(uint8_t rideIndex);
+bool track_design_save(ride_id_t rideIndex);
 bool track_design_save_to_file(const utf8* path);
 
 bool track_design_are_entrance_and_exit_placed();

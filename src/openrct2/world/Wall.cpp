@@ -460,7 +460,7 @@ static money32 WallPlace(
             banner->x = position.x / 32;
             banner->y = position.y / 32;
 
-            uint8_t rideIndex = banner_get_closest_ride_index(position.x, position.y, position.z);
+            ride_id_t rideIndex = banner_get_closest_ride_index(position.x, position.y, position.z);
             if (rideIndex != RIDE_ID_NULL)
             {
                 banner->ride_index = rideIndex;

@@ -91,7 +91,7 @@ static void ride_ratings_add(rating_tuple* rating, int32_t excitement, int32_t i
  * processed will be overwritten.
  * Only purpose of this function currently is for testing.
  */
-void ride_ratings_update_ride(int rideIndex)
+void ride_ratings_update_ride(ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
     if (ride->type != RIDE_TYPE_NULL && ride->status != RIDE_STATUS_CLOSED)
@@ -188,7 +188,7 @@ static void ride_ratings_update_state_1()
  */
 static void ride_ratings_update_state_2()
 {
-    const int32_t rideIndex = gRideRatingsCalcData.current_ride;
+    const ride_id_t rideIndex = gRideRatingsCalcData.current_ride;
     Ride* ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED)
     {
@@ -352,7 +352,7 @@ static void ride_ratings_update_state_5()
  */
 static void ride_ratings_begin_proximity_loop()
 {
-    const int32_t rideIndex = gRideRatingsCalcData.current_ride;
+    const ride_id_t rideIndex = gRideRatingsCalcData.current_ride;
     Ride* ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL || ride->status == RIDE_STATUS_CLOSED)
     {

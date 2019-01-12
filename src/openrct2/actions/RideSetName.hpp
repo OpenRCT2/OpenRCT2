@@ -32,7 +32,7 @@ public:
     RideSetNameAction()
     {
     }
-    RideSetNameAction(int32_t rideIndex, const std::string& name)
+    RideSetNameAction(ride_id_t rideIndex, const std::string& name)
         : _rideIndex(rideIndex)
         , _name(name)
     {

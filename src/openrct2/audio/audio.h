@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../ride/RideTypes.h"
 
 #define AUDIO_DEVICE_NAME_SIZE 256
 #define AUDIO_MAX_RIDE_MUSIC 2
@@ -26,7 +27,7 @@ struct audio_device
 
 struct rct_ride_music
 {
-    uint8_t ride_id;
+    ride_id_t ride_id;
     uint8_t tune_id;
     int16_t volume;
     int16_t pan;
@@ -43,7 +44,7 @@ struct rct_ride_music_info
 
 struct rct_ride_music_params
 {
-    uint8_t ride_id;
+    ride_id_t ride_id;
     uint8_t tune_id;
     int32_t offset;
     int16_t volume;

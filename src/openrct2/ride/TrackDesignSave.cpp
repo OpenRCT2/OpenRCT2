@@ -37,7 +37,7 @@
 #define TRACK_TD6_MAX_ELEMENTS 8192
 
 bool gTrackDesignSaveMode = false;
-uint8_t gTrackDesignSaveRideIndex = 255;
+ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 
 static size_t _trackSavedTileElementsCount;
 static TileElement* _trackSavedTileElements[TRACK_MAX_SAVED_TILE_ELEMENTS];
@@ -48,14 +48,14 @@ static rct_td6_scenery_element _trackSavedTileElementsDesc[TRACK_MAX_SAVED_TILE_
 static rct_track_td6* _trackDesign;
 static uint8_t _trackSaveDirection;
 
-static bool track_design_save_should_select_scenery_around(int32_t rideIndex, TileElement* tileElement);
-static void track_design_save_select_nearby_scenery_for_tile(int32_t rideIndex, int32_t cx, int32_t cy);
+static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement);
+static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy);
 static bool track_design_save_add_tile_element(int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement);
 static void track_design_save_remove_tile_element(int32_t interactionType, int32_t x, int32_t y, TileElement* tileElement);
 static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6);
-static rct_track_td6* track_design_save_to_td6(uint8_t rideIndex);
-static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* td6);
-static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_track_td6* td6);
+static rct_track_td6* track_design_save_to_td6(ride_id_t rideIndex);
+static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6* td6);
+static bool track_design_save_to_td6_for_tracked_ride(ride_id_t rideIndex, rct_track_td6* td6);
 
 void track_design_save_init()
 {
@@ -98,7 +98,7 @@ void track_design_save_select_tile_element(
  *
  *  rct2: 0x006D303D
  */
-void track_design_save_select_nearby_scenery(int32_t rideIndex)
+void track_design_save_select_nearby_scenery(ride_id_t rideIndex)
 {
     TileElement* tileElement;
 
@@ -148,7 +148,7 @@ static void track_design_save_callback(int32_t result, [[maybe_unused]] const ut
  *
  *  rct2: 0x006D2804, 0x006D264D
  */
-bool track_design_save(uint8_t rideIndex)
+bool track_design_save(ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -595,7 +595,7 @@ static void track_design_save_remove_tile_element(int32_t interactionType, int32
     }
 }
 
-static bool track_design_save_should_select_scenery_around(int32_t rideIndex, TileElement* tileElement)
+static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement)
 {
     switch (tileElement->GetType())
     {
@@ -620,7 +620,7 @@ static bool track_design_save_should_select_scenery_around(int32_t rideIndex, Ti
     return false;
 }
 
-static void track_design_save_select_nearby_scenery_for_tile(int32_t rideIndex, int32_t cx, int32_t cy)
+static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy)
 {
     TileElement* tileElement;
 
@@ -753,7 +753,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6* td6)
  *
  *  rct2: 0x006CE44F
  */
-static rct_track_td6* track_design_save_to_td6(uint8_t rideIndex)
+static rct_track_td6* track_design_save_to_td6(ride_id_t rideIndex)
 {
     rct_track_td6* td6 = (rct_track_td6*)calloc(1, sizeof(rct_track_td6));
     Ride* ride = get_ride(rideIndex);
@@ -838,7 +838,7 @@ static rct_track_td6* track_design_save_to_td6(uint8_t rideIndex)
  *
  *  rct2: 0x006CEAAE
  */
-static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* td6)
+static bool track_design_save_to_td6_for_maze(ride_id_t rideIndex, rct_track_td6* td6)
 {
     TileElement* tileElement = nullptr;
     bool mapFound = false;
@@ -1004,7 +1004,7 @@ static bool track_design_save_to_td6_for_maze(uint8_t rideIndex, rct_track_td6* 
  *
  *  rct2: 0x006CE68D
  */
-static bool track_design_save_to_td6_for_tracked_ride(uint8_t rideIndex, rct_track_td6* td6)
+static bool track_design_save_to_td6_for_tracked_ride(ride_id_t rideIndex, rct_track_td6* td6)
 {
     Ride* ride = get_ride(rideIndex);
     CoordsXYE trackElement;

@@ -37,7 +37,7 @@ static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t o
 }
 
 static void paint_dodgems(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];

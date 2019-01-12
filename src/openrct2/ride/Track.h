@@ -526,7 +526,7 @@ extern uint8_t gTrackGroundFlags;
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
 const rct_preview_track* get_track_def_from_ride(Ride* ride, int32_t trackType);
-const rct_preview_track* get_track_def_from_ride_index(int32_t rideIndex, int32_t trackType);
+const rct_preview_track* get_track_def_from_ride_index(ride_id_t rideIndex, int32_t trackType);
 const rct_track_coordinates* get_track_coord_from_ride(Ride* ride, int32_t trackType);
 
 void track_circuit_iterator_begin(track_circuit_iterator* it, CoordsXYE first);
@@ -552,7 +552,7 @@ void game_command_remove_track(
 void game_command_set_maze_track(
     int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 money32 maze_set_track(
-    uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, uint8_t rideIndex,
+    uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode);
 
 void game_command_set_brakes_speed(

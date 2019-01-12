@@ -494,8 +494,8 @@ struct rct1_peep
     uint8_t pad_C4;
     union
     {
-        uint8_t staff_id;                 // 0xC5
-        uint8_t guest_heading_to_ride_id; // 0xC5
+        uint8_t staff_id;                   // 0xC5
+        ride_id_t guest_heading_to_ride_id; // 0xC5
     };
     union
     {

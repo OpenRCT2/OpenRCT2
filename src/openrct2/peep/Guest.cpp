@@ -349,10 +349,10 @@ static constexpr const ride_rating NauseaMinimumThresholds[] = {
 };
 // clang-format on
 
-static bool peep_has_voucher_for_free_ride(rct_peep* peep, int32_t rideIndex);
-static void peep_ride_is_too_intense(rct_peep* peep, int32_t rideIndex, bool peepAtRide);
+static bool peep_has_voucher_for_free_ride(rct_peep* peep, ride_id_t rideIndex);
+static void peep_ride_is_too_intense(rct_peep* peep, ride_id_t rideIndex, bool peepAtRide);
 static void peep_reset_ride_heading(rct_peep* peep);
-static void peep_tried_to_enter_full_queue(rct_peep* peep, int32_t rideIndex);
+static void peep_tried_to_enter_full_queue(rct_peep* peep, ride_id_t rideIndex);
 static int16_t peep_calculate_ride_satisfaction(rct_peep* peep, Ride* ride);
 static void peep_update_favourite_ride(rct_peep* peep, Ride* ride);
 static int16_t peep_calculate_ride_value_satisfaction(rct_peep* peep, Ride* ride);
@@ -1193,7 +1193,7 @@ void rct_peep::CheckCantFindExit()
  *
  *  rct2: 0x0069AF1E
  */
-bool rct_peep::DecideAndBuyItem(uint8_t rideIndex, int32_t shopItem, money32 price)
+bool rct_peep::DecideAndBuyItem(ride_id_t rideIndex, int32_t shopItem, money32 price)
 {
     Ride* ride = get_ride(rideIndex);
     money32 itemValue;
@@ -1466,7 +1466,7 @@ loc_69B221:
  * ride's satisfaction value.
  *  rct2: 0x0069545B
  */
-void rct_peep::OnEnterRide(uint8_t rideIndex)
+void rct_peep::OnEnterRide(ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -1498,7 +1498,7 @@ void rct_peep::OnEnterRide(uint8_t rideIndex)
  *
  *  rct2: 0x0069576E
  */
-void rct_peep::OnExitRide(uint8_t rideIndex)
+void rct_peep::OnExitRide(ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -1628,7 +1628,7 @@ void rct_peep::PickRideToGoOn()
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                         rideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                     } while (!(tileElement++)->IsLastForTile());
                 }
@@ -1671,7 +1671,7 @@ void rct_peep::PickRideToGoOn()
     }
 
     // Pick the most exciting ride
-    int32_t mostExcitingRideIndex = -1;
+    ride_id_t mostExcitingRideIndex = RIDE_ID_NULL;
     ride_rating mostExcitingRideRating = 0;
     for (int32_t i = 0; i < numPotentialRides; i++)
     {
@@ -1684,7 +1684,7 @@ void rct_peep::PickRideToGoOn()
             mostExcitingRideRating = ride->excitement;
         }
     }
-    if (mostExcitingRideIndex == -1)
+    if (mostExcitingRideIndex == RIDE_ID_NULL)
         return;
 
     // Head to that ride
@@ -1713,7 +1713,7 @@ void rct_peep::PickRideToGoOn()
  * ride/shop, or they may just be thinking about it.
  *  rct2: 0x006960AB
  */
-bool rct_peep::ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQueue, bool thinking)
+bool rct_peep::ShouldGoOnRide(ride_id_t rideIndex, int32_t entranceNum, bool atQueue, bool thinking)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -2002,7 +2002,7 @@ bool rct_peep::ShouldGoOnRide(int32_t rideIndex, int32_t entranceNum, bool atQue
     return false;
 }
 
-bool rct_peep::ShouldGoToShop(int32_t rideIndex, bool peepAtShop)
+bool rct_peep::ShouldGoToShop(ride_id_t rideIndex, bool peepAtShop)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -2116,14 +2116,14 @@ void rct_peep::SpendMoney(money16& peep_expend_type, money32 amount)
     audio_play_sound_at_location(SOUND_PURCHASE, x, y, z);
 }
 
-void rct_peep::SetHasRidden(int32_t rideIndex)
+void rct_peep::SetHasRidden(ride_id_t rideIndex)
 {
     rides_been_on[rideIndex / 8] |= 1 << (rideIndex % 8);
     Ride* ride = get_ride(rideIndex);
     SetHasRiddenRideType(ride->type);
 }
 
-bool rct_peep::HasRidden(int32_t rideIndex) const
+bool rct_peep::HasRidden(ride_id_t rideIndex) const
 {
     return rides_been_on[rideIndex / 8] & (1 << (rideIndex % 8));
 }
@@ -2138,7 +2138,7 @@ bool rct_peep::HasRiddenRideType(int32_t rideType) const
     return ride_types_been_on[rideType / 8] & (1 << (rideType % 8));
 }
 
-void rct_peep::ChoseNotToGoOnRide(int32_t rideIndex, bool peepAtRide, bool updateLastRide)
+void rct_peep::ChoseNotToGoOnRide(ride_id_t rideIndex, bool peepAtRide, bool updateLastRide)
 {
     if (peepAtRide && updateLastRide)
     {
@@ -2164,7 +2164,7 @@ void rct_peep::ReadMap()
     }
 }
 
-static bool peep_has_voucher_for_free_ride(rct_peep* peep, int32_t rideIndex)
+static bool peep_has_voucher_for_free_ride(rct_peep* peep, ride_id_t rideIndex)
 {
     return peep->item_standard_flags & PEEP_ITEM_VOUCHER && peep->voucher_type == VOUCHER_TYPE_RIDE_FREE
         && peep->voucher_arguments == rideIndex;
@@ -2175,7 +2175,7 @@ static bool peep_has_voucher_for_free_ride(rct_peep* peep, int32_t rideIndex)
  * Does not effect peeps that walk up to the queue entrance.
  * This flag is reset the next time a peep successfully joins the queue.
  */
-static void peep_tried_to_enter_full_queue(rct_peep* peep, int32_t rideIndex)
+static void peep_tried_to_enter_full_queue(rct_peep* peep, ride_id_t rideIndex)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -2202,7 +2202,7 @@ static void peep_reset_ride_heading(rct_peep* peep)
     }
 }
 
-static void peep_ride_is_too_intense(rct_peep* peep, int32_t rideIndex, bool peepAtRide)
+static void peep_ride_is_too_intense(rct_peep* peep, ride_id_t rideIndex, bool peepAtRide)
 {
     Ride* ride = get_ride(rideIndex);
 
@@ -2962,7 +2962,7 @@ static void peep_head_for_nearest_ride_type(rct_peep* peep, int32_t rideType)
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                         ride = get_ride(rideIndex);
                         if (ride->type == rideType)
                         {
@@ -2995,7 +2995,7 @@ static void peep_head_for_nearest_ride_type(rct_peep* peep, int32_t rideType)
     }
 
     // Pick the closest ride
-    int32_t closestRideIndex = -1;
+    ride_id_t closestRideIndex = RIDE_ID_NULL;
     int32_t closestRideDistance = std::numeric_limits<int32_t>::max();
     for (int32_t i = 0; i < numPotentialRides; i++)
     {
@@ -3009,7 +3009,7 @@ static void peep_head_for_nearest_ride_type(rct_peep* peep, int32_t rideType)
             closestRideDistance = distance;
         }
     }
-    if (closestRideIndex == -1)
+    if (closestRideIndex == RIDE_ID_NULL)
         return;
 
     // Head to that ride
@@ -3091,7 +3091,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep* peep, int32_t rideTy
                         if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                         ride = get_ride(rideIndex);
                         if (ride_type_has_flag(ride->type, rideTypeFlags))
                         {
@@ -3124,7 +3124,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep* peep, int32_t rideTy
     }
 
     // Pick the closest ride
-    int32_t closestRideIndex = -1;
+    ride_id_t closestRideIndex = RIDE_ID_NULL;
     int32_t closestRideDistance = std::numeric_limits<int32_t>::max();
     for (int32_t i = 0; i < numPotentialRides; i++)
     {
@@ -3138,7 +3138,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep* peep, int32_t rideTy
             closestRideDistance = distance;
         }
     }
-    if (closestRideIndex == -1)
+    if (closestRideIndex == RIDE_ID_NULL)
         return;
 
     // Head to that ride
@@ -3212,7 +3212,7 @@ void rct_peep::StopPurchaseThought(uint8_t ride_type)
  *
  *  rct2: 0x0069AEB7
  */
-static bool peep_should_use_cash_machine(rct_peep* peep, int32_t rideIndex)
+static bool peep_should_use_cash_machine(rct_peep* peep, ride_id_t rideIndex)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return false;

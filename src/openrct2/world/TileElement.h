@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../ride/RideTypes.h"
 #include "Location.hpp"
 
 struct rct_scenery_entry;
@@ -172,7 +173,7 @@ private:
     union
     {
         uint8_t additionStatus; // 7
-        uint8_t rideIndex;
+        ride_id_t rideIndex;
     };
 
 public:
@@ -193,8 +194,8 @@ public:
     uint8_t GetSlopeDirection() const;
     void SetSlopeDirection(uint8_t newSlope);
 
-    uint8_t GetRideIndex() const;
-    void SetRideIndex(uint8_t newRideIndex);
+    ride_id_t GetRideIndex() const;
+    void SetRideIndex(ride_id_t newRideIndex);
 
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);
@@ -253,7 +254,7 @@ struct TrackElement : TileElementBase
         };
         uint16_t mazeEntry; // 5
     };
-    uint8_t rideIndex; // 7
+    ride_id_t rideIndex; // 7
 
 public:
     uint8_t GetTrackType() const;
@@ -262,8 +263,8 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    uint8_t GetRideIndex() const;
-    void SetRideIndex(uint8_t newRideIndex);
+    ride_id_t GetRideIndex() const;
+    void SetRideIndex(ride_id_t newRideIndex);
 
     uint8_t GetColourScheme() const;
     void SetColourScheme(uint8_t newColourScheme);
@@ -407,14 +408,14 @@ private:
     uint8_t entranceType; // 4
     uint8_t index;        // 5. 0bUSSS????, S = station index.
     uint8_t pathType;     // 6
-    uint8_t rideIndex;    // 7
+    ride_id_t rideIndex;  // 7
 
 public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
 
-    uint8_t GetRideIndex() const;
-    void SetRideIndex(uint8_t newRideIndex);
+    ride_id_t GetRideIndex() const;
+    void SetRideIndex(ride_id_t newRideIndex);
 
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t stationIndex);

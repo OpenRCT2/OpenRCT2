@@ -150,7 +150,7 @@ void footpath_connect_edges(int32_t x, int32_t y, TileElement* tileElement, int3
 void footpath_update_queue_chains();
 bool fence_in_the_way(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t direction);
 void footpath_chain_ride_queue(
-    int32_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, int32_t direction);
+    ride_id_t rideIndex, int32_t entranceIndex, int32_t x, int32_t y, TileElement* tileElement, int32_t direction);
 void footpath_update_path_wide_flags(int32_t x, int32_t y);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
@@ -161,6 +161,6 @@ int32_t entrance_get_directions(const TileElement* tileElement);
 rct_footpath_entry* get_footpath_entry(int32_t entryIndex);
 
 void footpath_queue_chain_reset();
-void footpath_queue_chain_push(uint8_t rideIndex);
+void footpath_queue_chain_push(ride_id_t rideIndex);
 
 #endif

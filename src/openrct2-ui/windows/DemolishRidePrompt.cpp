@@ -120,7 +120,7 @@ static rct_window_event_list window_ride_refurbish_events = {
 };
 
 /** Based off of rct2: 0x006B486A */
-rct_window* window_ride_demolish_prompt_open(int32_t rideIndex)
+rct_window* window_ride_demolish_prompt_open(ride_id_t rideIndex)
 {
     rct_window* w;
 
@@ -146,7 +146,7 @@ rct_window* window_ride_demolish_prompt_open(int32_t rideIndex)
     return w;
 }
 
-rct_window* window_ride_refurbish_prompt_open(int32_t rideIndex)
+rct_window* window_ride_refurbish_prompt_open(ride_id_t rideIndex)
 {
     rct_window* w;
 

@@ -515,7 +515,7 @@ public:
         }
     }
 
-    void ImportRide(Ride* dst, const rct2_ride* src, const uint8_t rideIndex)
+    void ImportRide(Ride* dst, const rct2_ride* src, const ride_id_t rideIndex)
     {
         std::memset(dst, 0, sizeof(Ride));
 
@@ -846,7 +846,7 @@ public:
         }
     }
 
-    void ImportNumRiders(Ride* dst, const uint8_t rideIndex)
+    void ImportNumRiders(Ride* dst, const ride_id_t rideIndex)
     {
         // The number of riders might have overflown or underflown. Re-calculate the value.
         uint16_t numRiders = 0;

@@ -459,10 +459,10 @@ static void window_ride_construction_entrance_click(rct_window* w);
 static void window_ride_construction_exit_click(rct_window* w);
 
 static void window_ride_construction_draw_track_piece(
-    rct_window* w, rct_drawpixelinfo* dpi, int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
+    rct_window* w, rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
     int32_t width, int32_t height);
 static void sub_6CBCE2(
-    rct_drawpixelinfo* dpi, int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, int32_t originX,
+    rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, int32_t originX,
     int32_t originY, int32_t originZ);
 static void window_ride_construction_update_map_selection();
 static void window_ride_construction_update_possible_ride_configurations();
@@ -512,7 +512,7 @@ static void close_ride_window_for_construction(rct_windownumber number)
  */
 rct_window* window_ride_construction_open()
 {
-    int32_t rideIndex = _currentRideIndex;
+    ride_id_t rideIndex = _currentRideIndex;
     close_ride_window_for_construction(rideIndex);
 
     rct_window* w;
@@ -597,7 +597,7 @@ static void window_ride_construction_close(rct_window* w)
 
     hide_gridlines();
 
-    uint8_t rideIndex = _currentRideIndex;
+    ride_id_t rideIndex = _currentRideIndex;
     Ride* ride = get_ride(rideIndex);
 
     // If we demolish a ride all windows will be closed including the construction window,
@@ -1653,7 +1653,8 @@ static void window_ride_construction_dropdown(rct_window* w, rct_widgetindex wid
  */
 static void window_ride_construction_construct(rct_window* w)
 {
-    int32_t trackType, trackDirection, rideIndex, liftHillAndAlternativeState, x, y, z, properties;
+    ride_id_t rideIndex;
+    int32_t trackType, trackDirection, liftHillAndAlternativeState, x, y, z, properties;
     track_begin_end trackBeginEnd;
 
     _currentTrackPrice = MONEY32_UNDEFINED;
@@ -2222,7 +2223,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     if (widget->type == WWT_EMPTY)
         return;
 
-    int32_t trackType, trackDirection, rideIndex, liftHillAndAlternativeState;
+    ride_id_t rideIndex;
+    int32_t trackType, trackDirection, liftHillAndAlternativeState;
     if (window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr, nullptr, nullptr))
         return;
@@ -2252,7 +2254,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
 }
 
 static void window_ride_construction_draw_track_piece(
-    rct_window* w, rct_drawpixelinfo* dpi, int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
+    rct_window* w, rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
     int32_t width, int32_t height)
 {
     const rct_preview_track* trackBlock;
@@ -2328,7 +2330,7 @@ static TileElement* _backupTileElementArrays[5];
  * dh: trackType
  */
 static void sub_6CBCE2(
-    rct_drawpixelinfo* dpi, int32_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, int32_t originX,
+    rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx, int32_t originX,
     int32_t originY, int32_t originZ)
 {
     Ride* ride;
@@ -2523,7 +2525,8 @@ void window_ride_construction_update_enabled_track_pieces()
  */
 void sub_6C94D8()
 {
-    int32_t x, y, z, direction, type, rideIndex, liftHillAndAlternativeState;
+    ride_id_t rideIndex;
+    int32_t x, y, z, direction, type, liftHillAndAlternativeState;
 
     // Recheck if area is fine for new track.
     // Set by footpath placement
@@ -2779,7 +2782,7 @@ static void window_ride_construction_update_possible_ride_configurations()
  */
 static void window_ride_construction_update_widgets(rct_window* w)
 {
-    uint8_t rideIndex = _currentRideIndex;
+    ride_id_t rideIndex = _currentRideIndex;
     Ride* ride = get_ride(rideIndex);
     int32_t rideType = ride_get_alternative_type(ride);
 
@@ -3472,7 +3475,8 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
     gMapSelectionTiles[1].x = -1;
     gMapSelectionTiles[1].y = -1;
 
-    int32_t trackType, trackDirection, rideIndex, liftHillAndAlternativeState;
+    ride_id_t rideIndex;
+    int32_t trackType, trackDirection, liftHillAndAlternativeState;
     if (window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr, nullptr, nullptr))
     {
@@ -3699,7 +3703,8 @@ void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY
 void ride_construction_tooldown_construct(int32_t screenX, int32_t screenY)
 {
     const CursorState* state = context_get_cursor_state();
-    int32_t trackType, trackDirection, rideIndex, liftHillAndAlternativeState, x, y, z, properties, highestZ;
+    ride_id_t rideIndex;
+    int32_t trackType, trackDirection, liftHillAndAlternativeState, x, y, z, properties, highestZ;
     rct_window* w;
 
     map_invalidate_map_selection_tiles();

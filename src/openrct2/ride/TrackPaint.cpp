@@ -297,31 +297,31 @@ bool track_paint_util_should_paint_supports(LocationXY16 position)
 }
 
 static void track_paint_util_draw_station_impl(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
     const TileElement* tileElement, int32_t fenceOffsetA, int32_t fenceOffsetB);
 
 void track_paint_util_draw_station(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, const TileElement* tileElement)
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, const TileElement* tileElement)
 {
     track_paint_util_draw_station_impl(session, rideIndex, direction, height, height, tileElement, 5, 7);
 }
 
 void track_paint_util_draw_station_2(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, const TileElement* tileElement,
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, const TileElement* tileElement,
     int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
     track_paint_util_draw_station_impl(session, rideIndex, direction, height, height, tileElement, fenceOffsetA, fenceOffsetB);
 }
 
 void track_paint_util_draw_station_3(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
     const TileElement* tileElement)
 {
     track_paint_util_draw_station_impl(session, rideIndex, direction, height, coverHeight, tileElement, 5, 7);
 }
 
 static void track_paint_util_draw_station_impl(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, uint16_t height, uint16_t coverHeight,
     const TileElement* tileElement, int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
     LocationXY16 position = session->MapPosition;
@@ -526,7 +526,7 @@ static void track_paint_util_draw_station_impl(
 }
 
 void track_paint_util_draw_station_inverted(
-    paint_session* session, uint8_t rideIndex, uint8_t direction, int32_t height, const TileElement* tileElement,
+    paint_session* session, ride_id_t rideIndex, uint8_t direction, int32_t height, const TileElement* tileElement,
     uint8_t stationVariant)
 {
     LocationXY16 position = session->MapPosition;
@@ -2156,7 +2156,7 @@ void track_paint_util_left_corkscrew_up_supports(paint_session* session, uint8_t
  */
 void track_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement)
 {
-    int32_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
     Ride* ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL)
     {

@@ -21,7 +21,7 @@
 
 /** rct2: 0x008A59A8 */
 static void steeplechase_track_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (tileElement->AsTrack()->HasChain())
@@ -67,7 +67,7 @@ static void steeplechase_track_flat(
 }
 
 static void steeplechase_track_station(
-    paint_session* session, uint8_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     static constexpr const uint32_t imageIds[4][3] = {
@@ -92,7 +92,7 @@ static void steeplechase_track_station(
 
 /** rct2: 0x008A59B8 */
 static void steeplechase_track_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (tileElement->AsTrack()->HasChain())
@@ -162,7 +162,7 @@ static void steeplechase_track_25_deg_up(
 
 /** rct2: 0x008A59C8 */
 static void steeplechase_track_flat_to_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (tileElement->AsTrack()->HasChain())
@@ -232,7 +232,7 @@ static void steeplechase_track_flat_to_25_deg_up(
 
 /** rct2: 0x008A59D8 */
 static void steeplechase_track_25_deg_up_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (tileElement->AsTrack()->HasChain())
@@ -302,7 +302,7 @@ static void steeplechase_track_25_deg_up_to_flat(
 
 /** rct2: 0x008A59E8 */
 static void steeplechase_track_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     steeplechase_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -310,7 +310,7 @@ static void steeplechase_track_25_deg_down(
 
 /** rct2: 0x008A59F8 */
 static void steeplechase_track_flat_to_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     steeplechase_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -318,7 +318,7 @@ static void steeplechase_track_flat_to_25_deg_down(
 
 /** rct2: 0x008A5A08 */
 static void steeplechase_track_25_deg_down_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     steeplechase_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -326,7 +326,7 @@ static void steeplechase_track_25_deg_down_to_flat(
 
 /** rct2: 0x008A5A18 */
 static void steeplechase_track_left_quarter_turn_5(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -497,7 +497,7 @@ static void steeplechase_track_left_quarter_turn_5(
 
 /** rct2: 0x008A5A28 */
 static void steeplechase_track_right_quarter_turn_5(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
@@ -506,7 +506,7 @@ static void steeplechase_track_right_quarter_turn_5(
 
 /** rct2: 0x008A5A38 */
 static void steeplechase_track_s_bend_left(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -655,7 +655,7 @@ static void steeplechase_track_s_bend_left(
 
 /** rct2: 0x008A5A48 */
 static void steeplechase_track_s_bend_right(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -804,7 +804,7 @@ static void steeplechase_track_s_bend_right(
 
 /** rct2: 0x008A5A88 */
 static void steeplechase_track_left_quarter_turn_3(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -918,7 +918,7 @@ static void steeplechase_track_left_quarter_turn_3(
 
 /** rct2: 0x008A5A98 */
 static void steeplechase_track_right_quarter_turn_3(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -927,7 +927,7 @@ static void steeplechase_track_right_quarter_turn_3(
 
 /** rct2: 0x008A5AA8 */
 static void steeplechase_track_brakes(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (direction)
@@ -952,7 +952,7 @@ static void steeplechase_track_brakes(
 
 /** rct2: 0x008A5AD8 */
 static void steeplechase_track_left_eighth_to_diag(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -1098,7 +1098,7 @@ static void steeplechase_track_left_eighth_to_diag(
 
 /** rct2: 0x008A5AE8 */
 static void steeplechase_track_right_eighth_to_diag(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -1243,7 +1243,7 @@ static void steeplechase_track_right_eighth_to_diag(
 
 /** rct2: 0x008A5AF8 */
 static void steeplechase_track_left_eighth_to_orthogonal(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1252,7 +1252,7 @@ static void steeplechase_track_left_eighth_to_orthogonal(
 
 /** rct2: 0x008A5B08 */
 static void steeplechase_track_right_eighth_to_orthogonal(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
@@ -1261,7 +1261,7 @@ static void steeplechase_track_right_eighth_to_orthogonal(
 
 /** rct2: 0x008A5AC8 */
 static void steeplechase_track_diag_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -1407,7 +1407,7 @@ static void steeplechase_track_diag_flat(
 
 /** rct2: 0x008A5B38 */
 static void steeplechase_track_diag_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -1553,7 +1553,7 @@ static void steeplechase_track_diag_25_deg_up(
 
 /** rct2: 0x008A5B18 */
 static void steeplechase_track_diag_flat_to_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -1699,7 +1699,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(
 
 /** rct2: 0x008A5B28 */
 static void steeplechase_track_diag_25_deg_up_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -1845,7 +1845,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(
 
 /** rct2: 0x008A5B68 */
 static void steeplechase_track_diag_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -1991,7 +1991,7 @@ static void steeplechase_track_diag_25_deg_down(
 
 /** rct2: 0x008A5B48 */
 static void steeplechase_track_diag_flat_to_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -2135,7 +2135,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(
 
 /** rct2: 0x008A5B58 */
 static void steeplechase_track_diag_25_deg_down_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (trackSequence)
@@ -2281,7 +2281,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(
 
 /** rct2: 0x008A5AB8 */
 static void steeplechase_track_block_brakes(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     switch (direction)

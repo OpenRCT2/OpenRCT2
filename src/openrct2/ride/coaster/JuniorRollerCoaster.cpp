@@ -1621,7 +1621,7 @@ static constexpr const uint32_t junior_rc_track_pieces_diag_60_deg_down_to_25_de
 // clang-format on
 
 void junior_rc_paint_track_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t imageId = junior_rc_track_pieces_flat[chainType][direction] | session->TrackColours[SCHEME_TRACK];
@@ -1641,7 +1641,7 @@ void junior_rc_paint_track_flat(
 }
 
 void junior_rc_paint_station(
-    paint_session* session, uint8_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, uint8_t rideType)
 {
     uint32_t imageId;
@@ -1699,7 +1699,7 @@ void junior_rc_paint_station(
 }
 
 void junior_rc_paint_track_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t imageId = junior_rc_track_pieces_25_deg_up[chainType][direction] | session->TrackColours[SCHEME_TRACK];
@@ -1721,7 +1721,7 @@ void junior_rc_paint_track_25_deg_up(
 }
 
 void junior_rc_paint_track_flat_to_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t imageId = junior_rc_track_pieces_flat_to_25_deg_up[chainType][direction] | session->TrackColours[SCHEME_TRACK];
@@ -1749,7 +1749,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(
 }
 
 void junior_rc_paint_track_25_deg_up_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t imageId = junior_rc_track_pieces_25_deg_up_to_flat[chainType][direction] | session->TrackColours[SCHEME_TRACK];
@@ -1796,7 +1796,7 @@ static constexpr const int8_t junior_rc_track_right_quarter_turn_5_tiles_support
 };
 
 static void junior_rc_right_quarter_turn_5_tiles_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
@@ -1876,7 +1876,7 @@ static constexpr const uint8_t junior_rc_left_quarter_turn_5_tiles_to_right_turn
 
 /* rct2: 0x0051917A */
 static void junior_rc_left_quarter_turn_5_tiles_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = junior_rc_left_quarter_turn_5_tiles_to_right_turn_map[trackSequence];
@@ -1888,7 +1888,7 @@ static void junior_rc_left_quarter_turn_5_tiles_paint_setup(
  * rct2: 0x008AAFC0, 0x00521593, 0x005216A1, 0x005217AF, 0x00521884
  */
 static void junior_rc_flat_to_left_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -1937,7 +1937,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(
  * rct2: 0x008AAFD0, 0x00521959, 0x00521A2E, 0x00521B03, 0x00521C11
  */
 static void junior_rc_flat_to_right_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -1983,14 +1983,14 @@ static void junior_rc_flat_to_right_bank_paint_setup(
 }
 
 static void junior_rc_left_bank_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_flat_to_right_bank_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 static void junior_rc_right_bank_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_flat_to_left_bank_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -2060,7 +2060,7 @@ static constexpr const LocationXYZ16 junior_rc_banked_right_quarter_turn_5_tiles
 
 /* rct2: 0x008AB010, 0x0052304C */
 static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t thickness = 1;
@@ -2154,7 +2154,7 @@ static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(
 
 /* rct2: 0x008AB000 */
 static void junior_rc_banked_left_quarter_turn_5_tiles_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = junior_rc_left_quarter_turn_5_tiles_to_right_turn_map[trackSequence];
@@ -2166,7 +2166,7 @@ static void junior_rc_banked_left_quarter_turn_5_tiles_paint_setup(
  * rct2: 0x008AB020, 0x00522073, 0x00522182, 0x00522291, 0x00522367
  */
 static void junior_rc_left_bank_to_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -2227,7 +2227,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(
  * rct2: 0x008AB030, 0x0052243D, 0x00522513, 0x005225E9, 0x005226F8
  */
 static void junior_rc_right_bank_to_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -2288,7 +2288,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(
  * rct2: 0x008AB040, 0x00522807, 0x0052291A, 0x00522A2D, 0x00522B07
  */
 static void junior_rc_25_deg_up_to_left_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -2350,7 +2350,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(
  * rct2: 0x008AB050, 0x00522BE1, 0x00522CBB, 0x00522D95, 0x00522EA8
  */
 static void junior_rc_25_deg_up_to_right_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -2412,7 +2412,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(
  * rct2: 0x008AB060
  */
 static void junior_rc_left_bank_to_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_25_deg_up_to_right_bank_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -2422,7 +2422,7 @@ static void junior_rc_left_bank_to_25_deg_down_paint_setup(
  * rct2: 0x008AB070
  */
 static void junior_rc_right_bank_to_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_25_deg_up_to_left_bank_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -2432,7 +2432,7 @@ static void junior_rc_right_bank_to_25_deg_down_paint_setup(
  * rct2: 0x008AB080
  */
 static void junior_rc_25_deg_down_to_left_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_right_bank_to_25_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -2442,7 +2442,7 @@ static void junior_rc_25_deg_down_to_left_bank_paint_setup(
  * rct2: 0x008AB090
  */
 static void junior_rc_25_deg_down_to_right_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_left_bank_to_25_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -2466,7 +2466,7 @@ static constexpr const LocationXY16 junior_rc_left_bank_bound_offsets[4] = {
  * rct2: 0x008AB0A0, 0x00521D1F, 0x00521DF4, 0x00521EC9, 0x00521F9E
  */
 static void junior_rc_left_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -2502,14 +2502,14 @@ static void junior_rc_left_bank_paint_setup(
  * rct2: 0x008AB0B0
  */
 static void junior_rc_right_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_left_bank_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
@@ -2589,7 +2589,7 @@ void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
 }
 
 void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
@@ -2670,7 +2670,7 @@ void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
 
 /* rct2: 0x008AAE10, 0x00519D88, 0x00519DAC, 0x00519DD0, 0x00519DF4 */
 static void junior_rc_left_quarter_turn_5_tiles_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -2681,7 +2681,7 @@ static void junior_rc_left_quarter_turn_5_tiles_25_deg_up_paint_setup(
 
 /* rct2: 0x008AAE20, 0x00519E18, 0x0051A148, 0x0051A452, 0x0051A738 */
 static void junior_rc_right_quarter_turn_5_tiles_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -2692,7 +2692,7 @@ static void junior_rc_right_quarter_turn_5_tiles_25_deg_up_paint_setup(
 
 /* rct2: 0x008AAE30, 0x0051AA42, 0x0051AA68, 0x0051AA8C, 0x0051AAB0 */
 static void junior_rc_left_quarter_turn_5_tiles_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_right_quarter_turn_5_tiles_25_deg_up_paint_setup(
@@ -2702,7 +2702,7 @@ static void junior_rc_left_quarter_turn_5_tiles_25_deg_down_paint_setup(
 
 /* rct2: 0x008AAE40, 0x0051AAD4, 0x0051AE04, 0x0051B10E, 0x0051B3F4 */
 static void junior_rc_right_quarter_turn_5_tiles_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_left_quarter_turn_5_tiles_25_deg_up_paint_setup(
@@ -2712,7 +2712,7 @@ static void junior_rc_right_quarter_turn_5_tiles_25_deg_down_paint_setup(
 
 /* rct2: 0x008AAE50, 0x0051B6FE, 0x0051B946, 0x0051BB8E, 0x0051BBA8 */
 static void junior_rc_s_bend_left_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (direction == 2 || direction == 3)
@@ -2816,7 +2816,7 @@ static void junior_rc_s_bend_left_paint_setup(
 
 /* rct2: 0x008AAE60, 0x0051BBC0, 0x0051BE06, 0x0051C04E, 0x0051C068 */
 static void junior_rc_s_bend_right_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (direction == 2 || direction == 3)
@@ -2920,7 +2920,7 @@ static void junior_rc_s_bend_right_paint_setup(
 
 /** rct2: 0x008AAEB0, 0x0051C0E0, 0x0051C2C1, 0x0051C47F, 0x0051C61D */
 static void junior_rc_right_quarter_turn_3_tiles_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
@@ -2959,7 +2959,7 @@ static void junior_rc_right_quarter_turn_3_tiles_paint_setup(
 
 /** rct2: 0x008AAEA0 */
 static void junior_rc_left_quarter_turn_3_tiles_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3015,7 +3015,7 @@ static constexpr const LocationXYZ16 junior_rc_right_quarter_turn_3_tiles_bank_o
 
 /** rct2: 0x008AA0D0, 0x00523EA0, 0x005240CC, 0x0052430F, 0x00524500*/
 static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t thickness[4][4] = { { 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 26, 1, 1, 26 }, { 1, 1, 1, 1 } };
@@ -3066,7 +3066,7 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(
 }
 
 void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t imageId = 0;
@@ -3145,7 +3145,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
 }
 
 void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t imageId = 0;
@@ -3225,7 +3225,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
 
 /** rct2: 0x008AA0C0 */
 static void junior_rc_left_quarter_turn_3_tiles_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -3235,7 +3235,7 @@ static void junior_rc_left_quarter_turn_3_tiles_bank_paint_setup(
 
 /** rct2: 0x008AAED0, 0x0051C83C, 0x0051C9EC, 0x0051CB76, 0x0051CCDC*/
 static void junior_rc_right_quarter_turn_3_tiles_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -3246,7 +3246,7 @@ static void junior_rc_right_quarter_turn_3_tiles_25_deg_up_paint_setup(
 
 /** rct2: 0x008AAEF0, 0x0051CEC8, 0x0051D078, 0x0051D202, 0x0051D368*/
 static void junior_rc_right_quarter_turn_3_tiles_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -3259,7 +3259,7 @@ static constexpr const uint8_t junior_rc_left_quarter_turn_3_tiles_to_right_turn
 
 /** rct2: 0x008AAEC0 */
 static void junior_rc_left_quarter_turn_3_tiles_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = junior_rc_left_quarter_turn_3_tiles_to_right_turn_map[trackSequence];
@@ -3269,7 +3269,7 @@ static void junior_rc_left_quarter_turn_3_tiles_25_deg_up_paint_setup(
 
 /** rct2: 0x008AAEE0 */
 static void junior_rc_left_quarter_turn_3_tiles_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     trackSequence = junior_rc_left_quarter_turn_3_tiles_to_right_turn_map[trackSequence];
@@ -3279,7 +3279,7 @@ static void junior_rc_left_quarter_turn_3_tiles_25_deg_down_paint_setup(
 
 /** rct2: 0x008AB0F0, 0x0052B3A4, 0x0052B5F8, 0x0052B863, 0x0052BA78 */
 static void junior_rc_right_half_banked_helix_up_small_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     const int8_t thickness[2] = { 1, 26 };
@@ -3347,7 +3347,7 @@ static void junior_rc_right_half_banked_helix_up_small_paint_setup(
 
 /** rct2: 0x008AB110, 0x0052BD80, 0x0052BFD4, 0x0052C23B, 0x0052C450 */
 static void junior_rc_right_half_banked_helix_down_small_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     const int8_t thickness[2] = { 1, 26 };
@@ -3415,7 +3415,7 @@ static void junior_rc_right_half_banked_helix_down_small_paint_setup(
 
 /** rct2: 0x008AB0E0 */
 static void junior_rc_left_half_banked_helix_up_small_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (trackSequence > 3)
@@ -3431,7 +3431,7 @@ static void junior_rc_left_half_banked_helix_up_small_paint_setup(
 
 /** rct2: 0x008AB100 */
 static void junior_rc_left_half_banked_helix_down_small_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (trackSequence > 3)
@@ -3447,7 +3447,7 @@ static void junior_rc_left_half_banked_helix_down_small_paint_setup(
 
 /** rct2: 0x008AB130, 0x0052C7BC, 0x0052CB6B, 0x0052CF32, 0x0052D2B3 */
 static void junior_rc_right_half_banked_helix_up_large_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     const int8_t thickness[2] = { 1, 26 };
@@ -3533,7 +3533,7 @@ static void junior_rc_right_half_banked_helix_up_large_paint_setup(
 
 /** rct2: 0x008AB150, 0x0052D778, 0x0052DB27, 0x0052DEEA, 0x0052E26B */
 static void junior_rc_right_half_banked_helix_down_large_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     const int8_t thickness[2] = { 1, 26 };
@@ -3619,7 +3619,7 @@ static void junior_rc_right_half_banked_helix_down_large_paint_setup(
 
 /** rct2: 0x008AB120 */
 static void junior_rc_left_half_banked_helix_up_large_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (trackSequence > 6)
@@ -3635,7 +3635,7 @@ static void junior_rc_left_half_banked_helix_up_large_paint_setup(
 
 /** rct2: 0x008AB140 */
 static void junior_rc_left_half_banked_helix_down_large_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (trackSequence > 6)
@@ -3653,7 +3653,7 @@ static void junior_rc_left_half_banked_helix_down_large_paint_setup(
  * rct2: 0x008AAF00, 0x0051851C, 0x005185D8
  */
 static void junior_rc_brake_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -3688,7 +3688,7 @@ static void junior_rc_brake_paint_setup(
  * rct2: 0x008AB280, 0x00518694, 0x00518759
  */
 static void junior_rc_block_brake_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id;
@@ -3723,7 +3723,7 @@ static void junior_rc_block_brake_paint_setup(
 
 /** rct2: 0x008AAF80 */
 static void junior_rc_left_eighth_to_diag_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_eighth_to_diag_tiles_paint(
@@ -3789,7 +3789,7 @@ static void junior_rc_left_eighth_to_diag_paint_setup(
 
 /** rct2: 0x008AAF90 */
 static void junior_rc_right_eighth_to_diag_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_eighth_to_diag_tiles_paint(
@@ -3855,7 +3855,7 @@ static void junior_rc_right_eighth_to_diag_paint_setup(
 
 /** rct2: 0x008AAFA0 */
 static void junior_rc_left_eighth_to_orthogonal_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     const uint8_t map[] = { 4, 2, 3, 1, 0 };
@@ -3865,7 +3865,7 @@ static void junior_rc_left_eighth_to_orthogonal_paint_setup(
 
 /** rct2: 0x008AAFB0 */
 static void junior_rc_right_eighth_to_orthogonal_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     const uint8_t map[] = { 4, 2, 3, 1, 0 };
@@ -3956,7 +3956,7 @@ static constexpr const int8_t junior_rc_left_eighth_to_diag_bank_thickness[4][4]
 
 /** rct2: 0x008AB160 */
 static void junior_rc_left_eighth_to_diag_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_eighth_to_diag_tiles_paint(
@@ -4103,7 +4103,7 @@ static constexpr const int8_t junior_rc_right_eighth_to_diag_bank_thickness[4][4
 
 /** rct2: 0x008AB170 */
 static void junior_rc_right_eighth_to_diag_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_eighth_to_diag_tiles_paint(
@@ -4169,7 +4169,7 @@ static void junior_rc_right_eighth_to_diag_bank_paint_setup(
 
 /** rct2: 0x008AB180 */
 static void junior_rc_left_eighth_to_orthogonal_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     const uint8_t map[] = { 4, 2, 3, 1, 0 };
@@ -4180,7 +4180,7 @@ static void junior_rc_left_eighth_to_orthogonal_bank_paint_setup(
 
 /** rct2: 0x008AB190 */
 static void junior_rc_right_eighth_to_orthogonal_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     const uint8_t map[] = { 4, 2, 3, 1, 0 };
@@ -4196,7 +4196,7 @@ static constexpr const int32_t junior_rc_diag_blocked_segments[] = { SEGMENT_C4 
 static constexpr const uint8_t junior_rc_diag_support_segment[] = { 1, 0, 2, 3 };
 
 void junior_rc_paint_track_diag_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -4216,7 +4216,7 @@ void junior_rc_paint_track_diag_flat(
 }
 
 void junior_rc_paint_track_diag_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -4236,7 +4236,7 @@ void junior_rc_paint_track_diag_25_deg_up(
 }
 
 void junior_rc_paint_track_diag_flat_to_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -4256,7 +4256,7 @@ void junior_rc_paint_track_diag_flat_to_25_deg_up(
 }
 
 void junior_rc_paint_track_diag_flat_to_60_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
@@ -4279,7 +4279,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(
 }
 
 void junior_rc_paint_track_diag_25_deg_up_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -4299,7 +4299,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_flat(
 }
 
 void junior_rc_paint_track_diag_60_deg_up_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
@@ -4322,7 +4322,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(
 }
 
 void junior_rc_paint_track_diag_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -4342,7 +4342,7 @@ void junior_rc_paint_track_diag_25_deg_down(
 }
 
 void junior_rc_paint_track_diag_flat_to_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -4362,7 +4362,7 @@ void junior_rc_paint_track_diag_flat_to_25_deg_down(
 }
 
 void junior_rc_paint_track_diag_flat_to_60_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
@@ -4385,7 +4385,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(
 }
 
 void junior_rc_paint_track_diag_25_deg_down_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -4405,7 +4405,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_flat(
 }
 
 void junior_rc_paint_track_diag_60_deg_down_to_flat(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
@@ -4429,7 +4429,7 @@ void junior_rc_paint_track_diag_60_deg_down_to_flat(
 
 /** rct2: 0x008AAF10 */
 static void junior_rc_diag_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4440,7 +4440,7 @@ static void junior_rc_diag_flat_paint_setup(
 
 /** rct2: 0x008AAF40 */
 static void junior_rc_diag_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4451,7 +4451,7 @@ static void junior_rc_diag_25_deg_up_paint_setup(
 
 /** rct2: 0x008AAF20 */
 static void junior_rc_diag_flat_to_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4461,7 +4461,7 @@ static void junior_rc_diag_flat_to_25_deg_up_paint_setup(
 }
 
 static void junior_rc_diag_flat_to_60_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4472,7 +4472,7 @@ static void junior_rc_diag_flat_to_60_deg_up_paint_setup(
 
 /** rct2: 0x008AAF30 */
 static void junior_rc_diag_25_deg_up_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4482,7 +4482,7 @@ static void junior_rc_diag_25_deg_up_to_flat_paint_setup(
 }
 
 static void junior_rc_diag_60_deg_up_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4493,7 +4493,7 @@ static void junior_rc_diag_60_deg_up_to_flat_paint_setup(
 
 /** rct2: 0x008AAF70 */
 static void junior_rc_diag_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4504,7 +4504,7 @@ static void junior_rc_diag_25_deg_down_paint_setup(
 
 /** rct2: 0x008AAF50 */
 static void junior_rc_diag_flat_to_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4514,7 +4514,7 @@ static void junior_rc_diag_flat_to_25_deg_down_paint_setup(
 }
 
 static void junior_rc_diag_flat_to_60_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4525,7 +4525,7 @@ static void junior_rc_diag_flat_to_60_deg_down_paint_setup(
 
 /** rct2: 0x008AAF60 */
 static void junior_rc_diag_25_deg_down_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4535,7 +4535,7 @@ static void junior_rc_diag_25_deg_down_to_flat_paint_setup(
 }
 
 static void junior_rc_diag_60_deg_down_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -4546,7 +4546,7 @@ static void junior_rc_diag_60_deg_down_to_flat_paint_setup(
 
 /** rct2: 0x008AB1C0 */
 static void junior_rc_diag_flat_to_left_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4573,7 +4573,7 @@ static void junior_rc_diag_flat_to_left_bank_paint_setup(
 
 /** rct2: 0x008AB1D0 */
 static void junior_rc_diag_flat_to_right_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4600,7 +4600,7 @@ static void junior_rc_diag_flat_to_right_bank_paint_setup(
 
 /** rct2: 0x008AB1E0 */
 static void junior_rc_diag_left_bank_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4627,7 +4627,7 @@ static void junior_rc_diag_left_bank_to_flat_paint_setup(
 
 /** rct2: 0x008AB1F0 */
 static void junior_rc_diag_right_bank_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4654,7 +4654,7 @@ static void junior_rc_diag_right_bank_to_flat_paint_setup(
 
 /** rct2: 0x008AB220 */
 static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4681,7 +4681,7 @@ static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(
 
 /** rct2: 0x008AB230 */
 static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4708,7 +4708,7 @@ static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(
 
 /** rct2: 0x008AB200 */
 static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4735,7 +4735,7 @@ static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(
 
 /** rct2: 0x008AB210 */
 static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4762,7 +4762,7 @@ static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(
 
 /** rct2: 0x008AB200 */
 static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4789,7 +4789,7 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(
 
 /** rct2: 0x008AB210 */
 static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4816,7 +4816,7 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(
 
 /** rct2: 0x008AB220 */
 static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4843,7 +4843,7 @@ static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(
 
 /** rct2: 0x008AB230 */
 static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     track_paint_util_diag_tiles_paint(
@@ -4884,7 +4884,7 @@ static constexpr const LocationXYZ16 junior_rc_diag_right_bank_bound_offsets[4] 
 
 /** rct2: 0x008AB1A0 */
 static void junior_rc_diag_left_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t thickness = direction == 0 ? 0 : 1;
@@ -4907,7 +4907,7 @@ static void junior_rc_diag_left_bank_paint_setup(
 
 /** rct2: 0x008AB1B0 */
 static void junior_rc_diag_right_bank_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint8_t thickness = direction == 2 ? 0 : 1;
@@ -4952,7 +4952,7 @@ static constexpr const LocationXY16 junior_rc_60_deg_up_bound_lengths[4] = {
 };
 
 void junior_rc_paint_track_60_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
@@ -4997,7 +4997,7 @@ void junior_rc_paint_track_60_deg_up(
 }
 
 static void junior_rc_60_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5007,7 +5007,7 @@ static void junior_rc_60_deg_up_paint_setup(
 }
 
 static void junior_rc_60_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_60_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
@@ -5030,7 +5030,7 @@ static constexpr const LocationXY16 junior_rc_25_deg_up_to_60_deg_up_bound_offse
 };
 
 void junior_rc_paint_track_25_deg_up_to_60_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
@@ -5093,7 +5093,7 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
 }
 
 static void junior_rc_25_deg_up_to_60_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5103,14 +5103,14 @@ static void junior_rc_25_deg_up_to_60_deg_up_paint_setup(
 }
 
 static void junior_rc_60_deg_down_to_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_25_deg_up_to_60_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 void junior_rc_paint_track_60_deg_up_to_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
@@ -5172,7 +5172,7 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
 }
 
 static void junior_rc_60_deg_up_to_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5182,14 +5182,14 @@ static void junior_rc_60_deg_up_to_25_deg_up_paint_setup(
 }
 
 static void junior_rc_25_deg_down_to_60_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_60_deg_up_to_25_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 void junior_rc_paint_track_diag_60_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -5209,7 +5209,7 @@ void junior_rc_paint_track_diag_60_deg_up(
 }
 
 void junior_rc_paint_track_diag_60_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -5229,7 +5229,7 @@ void junior_rc_paint_track_diag_60_deg_down(
 }
 
 void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -5250,7 +5250,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
 }
 
 void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     if (direction == 1 && trackSequence == 3)
@@ -5281,7 +5281,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
 }
 
 void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     if (direction == 3 && trackSequence == 0)
@@ -5312,7 +5312,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
 }
 
 void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JUNIOR_RC_CHAINTYPE chainType)
 {
     track_paint_util_diag_tiles_paint(
@@ -5333,7 +5333,7 @@ void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
 }
 
 static void junior_rc_diag_60_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5343,7 +5343,7 @@ static void junior_rc_diag_60_deg_up_paint_setup(
 }
 
 static void junior_rc_diag_60_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5353,7 +5353,7 @@ static void junior_rc_diag_60_deg_down_paint_setup(
 }
 
 static void junior_rc_diag_25_deg_up_to_60_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5363,7 +5363,7 @@ static void junior_rc_diag_25_deg_up_to_60_deg_up_paint_setup(
 }
 
 static void junior_rc_diag_60_deg_up_to_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5373,7 +5373,7 @@ static void junior_rc_diag_60_deg_up_to_25_deg_up_paint_setup(
 }
 
 static void junior_rc_diag_25_deg_down_to_60_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5383,7 +5383,7 @@ static void junior_rc_diag_25_deg_down_to_60_deg_down_paint_setup(
 }
 
 static void junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5423,7 +5423,7 @@ static constexpr const LocationXY16 junior_rc_60_deg_up_to_flat_tile_offsets[4][
 };
 
 static void junior_rc_flat_to_60_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
@@ -5487,14 +5487,14 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(
 }
 
 static void junior_rc_60_deg_down_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_flat_to_60_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 static void junior_rc_60_deg_up_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
@@ -5557,7 +5557,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(
 }
 
 static void junior_rc_flat_to_60_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_60_deg_up_to_flat_paint_setup(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -5565,7 +5565,7 @@ static void junior_rc_flat_to_60_deg_down_paint_setup(
 
 /* rct2: 0x00518394 */
 static void junior_rc_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5576,7 +5576,7 @@ static void junior_rc_flat_paint_setup(
 
 /* rct2: 0x00515629, 0x00514D22, 0x005151B9 */
 static void paint_junior_rc_station_track(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_paint_station(session, rideIndex, trackSequence, direction, height, tileElement, RIDE_TYPE_JUNIOR_ROLLER_COASTER);
@@ -5584,7 +5584,7 @@ static void paint_junior_rc_station_track(
 
 /* rct2: 0x0051881E */
 static void junior_rc_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5595,7 +5595,7 @@ static void junior_rc_25_deg_up_paint_setup(
 
 /* rct2: 0x00518B42 */
 static void junior_rc_flat_to_25_deg_up_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5606,7 +5606,7 @@ static void junior_rc_flat_to_25_deg_up_paint_setup(
 
 /* rct2: 0x00518E56 */
 static void junior_rc_25_deg_up_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     bool isChained = tileElement->AsTrack()->HasChain();
@@ -5617,7 +5617,7 @@ static void junior_rc_25_deg_up_to_flat_paint_setup(
 
 /* rct2: 0x005189B0 */
 static void junior_rc_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_25_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -5625,7 +5625,7 @@ static void junior_rc_25_deg_down_paint_setup(
 
 /* rct2: 0x00518FE8 */
 static void junior_rc_flat_to_25_deg_down_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_25_deg_up_to_flat_paint_setup(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
@@ -5633,14 +5633,14 @@ static void junior_rc_flat_to_25_deg_down_paint_setup(
 
 /* rct2: 0x00518CCC */
 static void junior_rc_25_deg_down_to_flat_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     junior_rc_flat_to_25_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 static void junior_rc_booster_paint_setup(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     if (direction & 1)
@@ -5669,7 +5669,7 @@ static void junior_rc_booster_paint_setup(
 }
 
 static void junior_rc_track_on_ride_photo(
-    paint_session* session, uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
     uint32_t imageId = junior_rc_track_pieces_flat[0][direction] | session->TrackColours[SCHEME_TRACK];

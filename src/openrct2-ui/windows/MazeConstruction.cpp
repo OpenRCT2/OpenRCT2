@@ -168,7 +168,7 @@ static void window_maze_construction_close(rct_window* w)
 
     hide_gridlines();
 
-    uint8_t rideIndex = _currentRideIndex;
+    ride_id_t rideIndex = _currentRideIndex;
     Ride* ride = get_ride(rideIndex);
     if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
     {
@@ -364,7 +364,7 @@ static void window_maze_construction_entrance_tooldown(int32_t x, int32_t y, rct
     if (gRideEntranceExitPlaceDirection == 0xFF)
         return;
 
-    uint8_t rideIndex = gRideEntranceExitPlaceRideIndex;
+    ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;
     uint8_t entranceExitType = gRideEntranceExitPlaceType;
     if (entranceExitType == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
