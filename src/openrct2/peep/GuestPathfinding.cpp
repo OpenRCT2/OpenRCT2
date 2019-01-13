@@ -1571,7 +1571,7 @@ static int32_t guest_path_find_entering_park(rct_peep* peep, [[maybe_unused]] Ti
 
     gPeepPathFindGoalPosition = { x / 32, y / 32, z >> 3 };
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = 255;
+    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
     int32_t chosenDirection = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
 
@@ -1632,7 +1632,7 @@ static int32_t guest_path_find_leaving_park(rct_peep* peep, [[maybe_unused]] Til
     }
 
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = 255;
+    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
     direction = peep_pathfind_choose_direction({ peep->next_x / 32, peep->next_y / 32, peep->next_z }, peep);
     if (direction == 0xFF)
         return guest_path_find_aimless(peep, edges);
@@ -1683,7 +1683,7 @@ static int32_t guest_path_find_park_entrance(rct_peep* peep, [[maybe_unused]] Ti
 
     gPeepPathFindGoalPosition = { x / 32, y / 32, z >> 3 };
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = 255;
+    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     pathfind_logging_enable(peep);

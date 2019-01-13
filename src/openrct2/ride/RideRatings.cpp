@@ -151,7 +151,7 @@ static void ride_ratings_update_state_0()
     int32_t currentRide = gRideRatingsCalcData.current_ride;
 
     currentRide++;
-    if (currentRide == 255)
+    if (currentRide == RIDE_ID_NULL)
     {
         currentRide = 0;
     }

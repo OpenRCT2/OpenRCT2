@@ -447,7 +447,7 @@ static void window_new_ride_scroll_to_focused_ride(rct_window* w)
     int32_t focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab].ride_type_and_entry;
     int32_t count = 0, row = 0;
     ride_list_item* listItem = _windowNewRideListItems;
-    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != 255)
+    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != RIDE_ENTRY_INDEX_NULL)
     {
         if (listItem->type == focusRideType)
         {
@@ -751,7 +751,7 @@ static void window_new_ride_scrollgetsize(rct_window* w, int32_t scrollIndex, in
     ride_list_item* listItem = _windowNewRideListItems;
 
     int32_t count = 0;
-    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != 255)
+    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != RIDE_ENTRY_INDEX_NULL)
     {
         count++;
         listItem++;
@@ -768,7 +768,7 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     ride_list_item item;
 
     item = window_new_ride_scroll_get_ride_list_item_at(w, x, y);
-    if (item.type == RIDE_TYPE_NULL && item.entry_index == 255)
+    if (item.type == RIDE_TYPE_NULL && item.entry_index == RIDE_ENTRY_INDEX_NULL)
         return;
 
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
@@ -839,7 +839,7 @@ static void window_new_ride_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ride_list_item item;
         item.ride_type_and_entry = static_cast<uint16_t>(w->new_ride.highlighted_ride_id);
-        if (item.type != RIDE_TYPE_NULL || item.entry_index != 255)
+        if (item.type != RIDE_TYPE_NULL || item.entry_index != RIDE_ENTRY_INDEX_NULL)
             window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 64, w->width - 6);
     }
     else
@@ -862,7 +862,7 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     int32_t x = 1;
     int32_t y = 1;
     ride_list_item* listItem = _windowNewRideListItems;
-    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != 255)
+    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != RIDE_ENTRY_INDEX_NULL)
     {
         rct_ride_entry* rideEntry;
         // Draw flat button rectangle
@@ -920,7 +920,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window* w
     int32_t index = column + (row * 5);
 
     ride_list_item* listItem = _windowNewRideListItems;
-    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != 255)
+    while (listItem->type != RIDE_TYPE_NULL || listItem->entry_index != RIDE_ENTRY_INDEX_NULL)
     {
         if (index-- == 0)
             return *listItem;
