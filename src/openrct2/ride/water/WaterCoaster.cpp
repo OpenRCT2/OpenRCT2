@@ -460,6 +460,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType, int32_
         case TRACK_ELEM_DIAG_LEFT_BANK:
         case TRACK_ELEM_DIAG_RIGHT_BANK:
         case TRACK_ELEM_BLOCK_BRAKES:
+        case TRACK_ELEM_BOOSTER:
             return get_track_paint_function_junior_rc(trackType, direction);
 
         //////////////////////////////////////////////////////

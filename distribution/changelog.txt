@@ -14,6 +14,7 @@
 - Feature: [#8191] Allow building on-ride photos and water S-bends on the Water Coaster.
 - Feature: [#8259] Add say command to in-game console.
 - Feature: [#8374] Add replay system.
+- Feature: [#8583] Add boosters to water coaster.
 - Change: [#7961] Add new object types: station, terrain surface, and terrain edge.
 - Change: [#8222] The climate setting has been moved from objective options to scenario options.
 - Fix: [#3832] Changing the colour scheme of track pieces does not work in multiplayer.
