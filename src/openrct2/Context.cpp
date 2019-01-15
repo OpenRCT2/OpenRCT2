@@ -857,7 +857,7 @@ namespace OpenRCT2
 
             uint32_t elapsed = currentTick - _lastTick;
             _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, (uint32_t)GAME_UPDATE_MAX_THRESHOLD);
+            _accumulator = std::min(_accumulator + elapsed, static_cast<uint32_t>(GAME_UPDATE_MAX_THRESHOLD));
 
             _uiContext->ProcessMessages();
 
@@ -867,9 +867,12 @@ namespace OpenRCT2
                 return;
             }
 
-            _accumulator -= GAME_UPDATE_TIME_MS;
+            while (_accumulator >= GAME_UPDATE_TIME_MS)
+            {
+                Update();
+                _accumulator -= GAME_UPDATE_TIME_MS;
+            }
 
-            Update();
             if (!_isWindowMinimised && !gOpenRCT2Headless)
             {
                 _drawingEngine->BeginDraw();
@@ -884,7 +887,6 @@ namespace OpenRCT2
             uint32_t currentTick = platform_get_ticks();
 
             bool draw = !_isWindowMinimised && !gOpenRCT2Headless;
-
             if (_lastTick == 0)
             {
                 sprite_position_tween_reset();
@@ -894,7 +896,7 @@ namespace OpenRCT2
             uint32_t elapsed = currentTick - _lastTick;
 
             _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, (uint32_t)GAME_UPDATE_MAX_THRESHOLD);
+            _accumulator = std::min(_accumulator + elapsed, static_cast<uint32_t>(GAME_UPDATE_MAX_THRESHOLD));
 
             _uiContext->ProcessMessages();
 
@@ -915,7 +917,7 @@ namespace OpenRCT2
 
             if (draw)
             {
-                const float alpha = (float)_accumulator / GAME_UPDATE_TIME_MS;
+                const float alpha = std::min((float)_accumulator / GAME_UPDATE_TIME_MS, 1.0f);
                 sprite_position_tween_all(alpha);
 
                 _drawingEngine->BeginDraw();
