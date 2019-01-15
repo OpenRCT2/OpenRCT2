@@ -8239,7 +8239,10 @@ loc_6DAEB9:
 
         if (!vehicle_update_track_motion_forwards_get_new_track(vehicle, trackType, ride, rideEntry))
         {
-            goto loc_6DB94A;
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+            _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
+            vehicle->remaining_distance = -1;
+            return false;
         }
         regs.ax = 0;
     }
@@ -8329,13 +8332,6 @@ loc_6DAEB9:
     vehicle->acceleration += regs.ebx;
     _vehicleUnkF64E10++;
     goto loc_6DAEB9;
-
-loc_6DB94A:
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
-    vehicle->remaining_distance = -1;
-    regs.ebx = vehicle->vehicle_sprite_type;
-    return false;
 
 loc_6DB967:
     _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
