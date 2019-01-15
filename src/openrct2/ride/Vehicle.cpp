@@ -8332,16 +8332,14 @@ loc_6DAEB9:
 
 loc_6DB94A:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    regs.eax = vehicle->remaining_distance + 1;
-    _vehicleVelocityF64E0C -= regs.eax;
-    vehicle->remaining_distance = 0xFFFFFFFF;
+    _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
+    vehicle->remaining_distance = -1;
     regs.ebx = vehicle->vehicle_sprite_type;
     return false;
 
 loc_6DB967:
-    regs.eax = vehicle->remaining_distance + 1;
-    _vehicleVelocityF64E0C -= regs.eax;
-    vehicle->remaining_distance -= regs.eax;
+    _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
+    vehicle->remaining_distance = -1;
 
     // Might need to be bp rather than vehicle, but hopefully not
     rct_vehicle* head = vehicle_get_head(GET_VEHICLE(regs.bp));
@@ -8655,24 +8653,20 @@ loc_6DBA33:;
 
 loc_6DBE5E:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    regs.eax = vehicle->remaining_distance - 0x368A;
-    _vehicleVelocityF64E0C -= regs.eax;
-    vehicle->remaining_distance -= regs.eax;
-    regs.ebx = vehicle->vehicle_sprite_type;
+    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 0x368A;
+    vehicle->remaining_distance = 0x368A;
     return false;
 
 loc_6DBE7F:
-    regs.eax = vehicle->remaining_distance - 0x368A;
-    _vehicleVelocityF64E0C -= regs.eax;
-    vehicle->remaining_distance -= regs.eax;
+    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 0x368A;
+    vehicle->remaining_distance = 0x368A;
 
     rct_vehicle* v3 = GET_VEHICLE(regs.bp);
     rct_vehicle* v4 = gCurrentVehicle;
-    regs.eax = abs(v4->velocity - v3->velocity);
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
     {
-        if (regs.eax > 0xE0000)
+        if (abs(v4->velocity - v3->velocity) > 0xE0000)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
@@ -9071,10 +9065,8 @@ loc_6DC99A:
 
 loc_6DC9BC:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    regs.eax = vehicle->remaining_distance + 1;
-    _vehicleVelocityF64E0C -= regs.eax;
-    vehicle->remaining_distance -= regs.eax;
-    regs.ebx = vehicle->vehicle_sprite_type;
+    _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
+    vehicle->remaining_distance = -1;
     goto loc_6DCD2B;
 
     /////////////////////////////////////////
@@ -9224,16 +9216,14 @@ loc_6DCD2B:
 
 loc_6DCD4A:
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    regs.eax = vehicle->remaining_distance - 0x368A;
-    _vehicleVelocityF64E0C -= regs.eax;
-    vehicle->remaining_distance -= regs.eax;
+    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 0x368A;
+    vehicle->remaining_distance = 0x368A;
     regs.ebx = vehicle->vehicle_sprite_type;
     goto loc_6DC99A;
 
 loc_6DCD6B:
-    regs.eax = vehicle->remaining_distance - 0x368A;
-    _vehicleVelocityF64E0C -= regs.eax;
-    vehicle->remaining_distance -= regs.eax;
+    _vehicleVelocityF64E0C -= vehicle->remaining_distance - 0x368A;
+    vehicle->remaining_distance = 0x368A;
     {
         rct_vehicle* vEBP = GET_VEHICLE(regs.bp);
         rct_vehicle* vEDI = gCurrentVehicle;
@@ -9634,8 +9624,7 @@ int32_t vehicle_update_track_motion(rct_vehicle* vehicle, int32_t* outStation)
         car->acceleration = dword_9A2970[car->vehicle_sprite_type];
         _vehicleUnkF64E10 = 1;
 
-        regs.eax = _vehicleVelocityF64E0C + car->remaining_distance;
-        car->remaining_distance = regs.eax;
+        car->remaining_distance += _vehicleVelocityF64E0C;
 
         car->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
         unk_F64E20.x = car->x;
