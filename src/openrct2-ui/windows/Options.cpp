@@ -1329,8 +1329,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     gConfigGeneral.autosave_amount += 1;
                     config_save_default();
                     gfx_invalidate_screen();
-                    context_trigger_resize();
-                    context_update_cursor_scale();
                     break;
                 case WIDX_AUTOSAVE_AMOUNT_DOWN:
                     if (gConfigGeneral.autosave_amount > 1)
@@ -1338,8 +1336,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                         gConfigGeneral.autosave_amount -= 1;
                         config_save_default();
                         gfx_invalidate_screen();
-                        context_trigger_resize();
-                        context_update_cursor_scale();
                     }
             }
             break;
