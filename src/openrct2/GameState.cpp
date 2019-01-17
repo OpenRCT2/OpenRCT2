@@ -73,11 +73,18 @@ void GameState::InitAll(int32_t mapSize)
     load_palette();
 }
 
+/**
+ * Function will be called every GAME_UPDATE_TIME_MS.
+ * It has its own loop which might run multiple updates per call such as
+ * when operating as a client it may run multiple updates to catch up with the server tick,
+ * another influence can be the game speed setting.
+ */
 void GameState::Update()
 {
     gInUpdateCode = true;
 
-    uint32_t numUpdates;
+    // Normal game play will update only once every GAME_UPDATE_TIME_MS
+    uint32_t numUpdates = 1;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
@@ -101,11 +108,8 @@ void GameState::Update()
     // Determine how many times we need to update the game
     if (gGameSpeed > 1)
     {
+        // Update more often if game speed is above normal.
         numUpdates = 1 << (gGameSpeed - 1);
-    }
-    else
-    {
-        numUpdates = realtimeTicksElapsed;
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
