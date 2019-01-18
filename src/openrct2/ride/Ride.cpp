@@ -1065,13 +1065,13 @@ static rct_window* ride_create_or_find_construction_window(ride_id_t rideIndex)
  *
  *  rct2: 0x006B4857
  */
-void ride_construct(ride_id_t rideIndex)
+void ride_construct(Ride* ride)
 {
     CoordsXYE trackElement;
 
-    if (ride_try_get_origin_element(rideIndex, &trackElement))
+    if (ride_try_get_origin_element(ride->id, &trackElement))
     {
-        ride_find_track_gap(rideIndex, &trackElement, &trackElement);
+        ride_find_track_gap(ride->id, &trackElement, &trackElement);
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(&trackElement))
@@ -1079,7 +1079,7 @@ void ride_construct(ride_id_t rideIndex)
     }
     else
     {
-        ride_initialise_construction_window(rideIndex);
+        ride_initialise_construction_window(ride->id);
     }
 }
 

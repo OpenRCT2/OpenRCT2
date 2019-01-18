@@ -1018,7 +1018,7 @@ void ride_update_popularity(Ride* ride, uint8_t pop_amount);
 bool ride_try_get_origin_element(ride_id_t rideIndex, CoordsXYE* output);
 int32_t ride_find_track_gap(ride_id_t rideIndex, CoordsXYE* input, CoordsXYE* output);
 void ride_construct_new(ride_list_item listItem);
-void ride_construct(ride_id_t rideIndex);
+void ride_construct(Ride* ride);
 int32_t ride_modify(CoordsXYE* input);
 void ride_remove_peeps(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);

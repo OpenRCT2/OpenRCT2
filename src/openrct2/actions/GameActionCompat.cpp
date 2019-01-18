@@ -104,7 +104,8 @@ void ride_construct_new(ride_list_item listItem)
         if (result->Error != GA_ERROR::OK)
             return;
 
-        ride_construct(result->rideIndex);
+        auto ride = get_ride(result->rideIndex);
+        ride_construct(ride);
     });
 
     GameActions::Execute(&gameAction);

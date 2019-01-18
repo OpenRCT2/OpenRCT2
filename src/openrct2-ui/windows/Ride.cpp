@@ -1459,7 +1459,7 @@ static void window_ride_disable_tabs(rct_window* w)
     w->disabled_widgets = disabled_tabs;
 }
 
-static void window_ride_update_overall_view(ride_id_t ride_index)
+static void window_ride_update_overall_view(Ride* ride)
 {
     // Calculate x, y, z bounds of the entire ride using its track elements
     tile_element_iterator it;
@@ -1476,7 +1476,7 @@ static void window_ride_update_overall_view(ride_id_t ride_index)
         if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (it.element->AsTrack()->GetRideIndex() != ride_index)
+        if (it.element->AsTrack()->GetRideIndex() != ride->id)
             continue;
 
         int32_t x = it.x * 32;
@@ -1493,7 +1493,7 @@ static void window_ride_update_overall_view(ride_id_t ride_index)
         maxz = std::max(maxz, z2);
     }
 
-    ride_overall_view* view = &ride_overall_views[ride_index];
+    auto view = &ride_overall_views[ride->id];
     view->x = (minx + maxx) / 2 + 16;
     view->y = (miny + maxy) / 2 + 16;
     view->z = (minz + maxz) / 2 - 8;
@@ -1522,7 +1522,7 @@ static void window_ride_update_overall_view(ride_id_t ride_index)
  *
  *  rct2: 0x006AEAB4
  */
-static rct_window* window_ride_open(ride_id_t rideIndex)
+static rct_window* window_ride_open(Ride* ride)
 {
     rct_window* w;
 
@@ -1530,7 +1530,7 @@ static rct_window* window_ride_open(ride_id_t rideIndex)
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->enabled_widgets = window_ride_page_enabled_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
-    w->number = rideIndex;
+    w->number = ride->id;
 
     w->page = WINDOW_RIDE_PAGE_MAIN;
     w->vehicleIndex = 0;
@@ -1544,7 +1544,7 @@ static rct_window* window_ride_open(ride_id_t rideIndex)
     w->max_width = 500;
     w->max_height = 450;
 
-    window_ride_update_overall_view(rideIndex);
+    window_ride_update_overall_view(ride);
 
     return w;
 }
@@ -1553,14 +1553,14 @@ static rct_window* window_ride_open(ride_id_t rideIndex)
  *
  *  rct2: 0x006ACC28
  */
-rct_window* window_ride_main_open(ride_id_t rideIndex)
+rct_window* window_ride_main_open(Ride* ride)
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_number(WC_RIDE, rideIndex);
+    w = window_bring_to_front_by_number(WC_RIDE, ride->id);
     if (w == nullptr)
     {
-        w = window_ride_open(rideIndex);
+        w = window_ride_open(ride);
         w->ride.var_482 = -1;
     }
 
@@ -1586,21 +1586,15 @@ rct_window* window_ride_main_open(ride_id_t rideIndex)
  *
  *  rct2: 0x006ACCCE
  */
-static rct_window* window_ride_open_station(ride_id_t rideIndex, int32_t stationIndex)
+static rct_window* window_ride_open_station(Ride* ride, int32_t stationIndex)
 {
-    int32_t i;
-    Ride* ride;
-    rct_window* w;
-
-    ride = get_ride(rideIndex);
-
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
-        return window_ride_main_open(rideIndex);
+        return window_ride_main_open(ride);
 
-    w = window_bring_to_front_by_number(WC_RIDE, rideIndex);
+    auto w = window_bring_to_front_by_number(WC_RIDE, ride->id);
     if (w == nullptr)
     {
-        w = window_ride_open(rideIndex);
+        w = window_ride_open(ride);
         w->ride.var_482 = -1;
     }
 
@@ -1624,7 +1618,7 @@ static rct_window* window_ride_open_station(ride_id_t rideIndex, int32_t station
     window_init_scroll_widgets(w);
 
     // View
-    for (i = stationIndex; i >= 0; i--)
+    for (int32_t i = stationIndex; i >= 0; i--)
     {
         if (ride->stations[i].Start.xy == RCT_XY8_UNDEFINED)
         {
@@ -1640,30 +1634,40 @@ static rct_window* window_ride_open_station(ride_id_t rideIndex, int32_t station
 
 rct_window* window_ride_open_track(TileElement* tileElement)
 {
-    assert(
-        tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
-        || tileElement->GetType() == TILE_ELEMENT_TYPE_PATH);
+    assert(tileElement != nullptr);
+    auto rideIndex = tile_element_get_ride_index(tileElement);
+    if (rideIndex != RIDE_ID_NULL)
+    {
+        auto ride = get_ride(rideIndex);
+        if (ride != nullptr)
+        {
+            switch (tileElement->GetType())
+            {
+                case TILE_ELEMENT_TYPE_ENTRANCE:
+                {
+                    // Open ride window in station view
+                    auto entranceElement = tileElement->AsEntrance();
+                    auto stationIndex = entranceElement->GetStationIndex();
+                    return window_ride_open_station(ride, stationIndex);
+                }
+                case TILE_ELEMENT_TYPE_TRACK:
+                {
+                    // Open ride window in station view
+                    auto trackElement = tileElement->AsTrack();
+                    auto trackType = trackElement->GetTrackType();
+                    if (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                    {
+                        auto stationIndex = trackElement->GetStationIndex();
+                        return window_ride_open_station(ride, stationIndex);
+                    }
+                }
+            }
 
-    if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
-    {
-        ride_id_t rideIndex = tileElement->AsEntrance()->GetRideIndex();
-        // Open ride window in station view
-        return window_ride_open_station(rideIndex, tileElement->AsEntrance()->GetStationIndex());
+            // Open ride window in overview mode
+            return window_ride_main_open(ride);
+        }
     }
-    else if (
-        tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
-        && TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
-    {
-        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-        // Open ride window in station view
-        return window_ride_open_station(rideIndex, tileElement->AsTrack()->GetStationIndex());
-    }
-    else
-    {
-        ride_id_t rideIndex = tile_element_get_ride_index(tileElement);
-        // Open ride window in overview mode.
-        return window_ride_main_open(rideIndex);
-    }
+    return nullptr;
 }
 
 /**
@@ -1674,8 +1678,7 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
 {
     rct_vehicle* headVehicle = vehicle_get_head(vehicle);
     uint16_t headVehicleSpriteIndex = headVehicle->sprite_index;
-    ride_id_t rideIndex = headVehicle->ride;
-    Ride* ride = get_ride(rideIndex);
+    auto ride = get_ride(headVehicle->ride);
 
     // Get view index
     int32_t view = 1;
@@ -1687,7 +1690,7 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
         view++;
     }
 
-    rct_window* w = window_find_by_number(WC_RIDE, rideIndex);
+    rct_window* w = window_find_by_number(WC_RIDE, ride->id);
     if (w != nullptr)
     {
         window_invalidate(w);
@@ -1723,12 +1726,12 @@ rct_window* window_ride_open_vehicle(rct_vehicle* vehicle)
             }
         }
 
-        w = openedPeepWindow ? window_find_by_number(WC_RIDE, rideIndex) : window_bring_to_front_by_number(WC_RIDE, rideIndex);
+        w = openedPeepWindow ? window_find_by_number(WC_RIDE, ride->id) : window_bring_to_front_by_number(WC_RIDE, ride->id);
     }
 
     if (w == nullptr)
     {
-        w = window_ride_open(rideIndex);
+        w = window_ride_open(ride);
         w->ride.var_482 = -1;
     }
 
@@ -2003,7 +2006,7 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_CONSTRUCTION:
             rideIndex = (uint8_t)w->number;
-            ride_construct(rideIndex);
+            ride_construct(get_ride(rideIndex));
             if (window_find_by_number(WC_RIDE_CONSTRUCTION, rideIndex) != nullptr)
             {
                 window_close(w);
