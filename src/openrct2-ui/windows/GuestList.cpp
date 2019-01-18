@@ -492,7 +492,7 @@ static void window_guest_list_scrollgetsize(rct_window* w, int32_t scrollIndex, 
             }
             w->var_492 = numGuests;
             y = numGuests * SCROLLABLE_ROW_HEIGHT;
-            _window_guest_list_num_pages = (int32_t)std::ceil((float)numGuests / GUESTS_PER_PAGE);
+            _window_guest_list_num_pages = 1 + (numGuests - 1) / GUESTS_PER_PAGE;
             if (_window_guest_list_num_pages == 0)
                 _window_guest_list_selected_page = 0;
             else if (_window_guest_list_selected_page >= _window_guest_list_num_pages)
