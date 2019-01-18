@@ -1328,14 +1328,18 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                 case WIDX_AUTOSAVE_AMOUNT_UP:
                     gConfigGeneral.autosave_amount += 1;
                     config_save_default();
-                    gfx_invalidate_screen();
+                    widget_invalidate(w, WIDX_AUTOSAVE);
+                    widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
+                    widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
                     break;
                 case WIDX_AUTOSAVE_AMOUNT_DOWN:
                     if (gConfigGeneral.autosave_amount > 1)
                     {
                         gConfigGeneral.autosave_amount -= 1;
                         config_save_default();
-                        gfx_invalidate_screen();
+                        widget_invalidate(w, WIDX_AUTOSAVE);
+                        widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
+                        widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
                     }
             }
             break;
