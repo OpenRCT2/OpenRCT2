@@ -30,8 +30,12 @@
 bool gPaintWidePathsAsGhost = false;
 
 // clang-format off
-const uint8_t byte_98D800[] = {
-    12, 9, 3, 6
+const uint8_t PathSlopeToLandSlope[] = 
+{
+    TILE_ELEMENT_SLOPE_SW_SIDE_UP,
+    TILE_ELEMENT_SLOPE_NW_SIDE_UP,
+    TILE_ELEMENT_SLOPE_NE_SIDE_UP,
+    TILE_ELEMENT_SLOPE_SE_SIDE_UP
 };
 
 static constexpr const uint8_t byte_98D6E0[] = {
@@ -794,7 +798,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
 
-    bool word_F3F038 = false;
+    bool hasSupports = false;
 
     uint32_t sceneryImageFlags = 0;
     uint32_t imageFlags = 0;
@@ -851,11 +855,11 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     uint16_t bl = height / 8;
     if (surface == nullptr)
     {
-        word_F3F038 = true;
+        hasSupports = true;
     }
     else if (surface->base_height != bl)
     {
-        word_F3F038 = true;
+        hasSupports = true;
     }
     else
     {
@@ -863,16 +867,16 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         {
             // Diagonal path
 
-            if (surface->AsSurface()->GetSlope() != byte_98D800[tile_element->AsPath()->GetSlopeDirection()])
+            if (surface->AsSurface()->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
             {
-                word_F3F038 = true;
+                hasSupports = true;
             }
         }
         else
         {
             if (surface->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
             {
-                word_F3F038 = true;
+                hasSupports = true;
             }
         }
     }
@@ -932,12 +936,12 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         if (railingEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE)
         {
             path_paint_pole_support(
-                session, tile_element, height, footpathEntry, railingEntry, word_F3F038, imageFlags, sceneryImageFlags);
+                session, tile_element, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);
         }
         else
         {
             path_paint_box_support(
-                session, tile_element, height, footpathEntry, railingEntry, word_F3F038, imageFlags, sceneryImageFlags);
+                session, tile_element, height, footpathEntry, railingEntry, hasSupports, imageFlags, sceneryImageFlags);
         }
     }
 
