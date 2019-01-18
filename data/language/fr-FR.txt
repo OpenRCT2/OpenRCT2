@@ -3,7 +3,7 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :Montagnes russes en spirales
+STR_0002    :Montagnes russes spirales
 STR_0003    :Montagnes russes debout
 STR_0004    :Montagnes russes suspendues 
 STR_0005    :Montagnes russes inversées
@@ -276,7 +276,7 @@ STR_0889    :Quitter le gestionnaire des voies
 STR_0891    :Capture d'écran
 STR_0892    :Capture d'écran sauvegardée en tant que '{STRINGID}'
 STR_0893    :Echec de la capture d'écran!
-STR_0894    :Landscape data area full !
+STR_0894    :Zone de donnée pleine !
 STR_0895    :Impossible de construire à la fois au-dessus et en-dessous du sol
 STR_0896    :{POP16}{POP16}{STRINGID} Construction
 STR_0897    :Direction
@@ -561,9 +561,9 @@ STR_1175    :Impossible de construire ceci sur une allée en pente
 STR_1176    :Impossible de construire une allée ici...
 STR_1177    :Impossible de supprimer cette allée...
 STR_1178    :Inclinaison inappropriée
-STR_1179    :Allée dans le passage
+STR_1179    :Chemin dans le passage
 STR_1180    :Impossible de construire ceci sous l'eau !
-STR_1181    :Allées
+STR_1181    :Chemins
 STR_1182    :Type
 STR_1183    :Direction
 STR_1184    :Pente
@@ -571,8 +571,8 @@ STR_1185    :{SMALLFONT}{BLACK}Direction
 STR_1186    :{SMALLFONT}{BLACK}Pente descendante
 STR_1187    :{SMALLFONT}{BLACK}Niveau
 STR_1188    :{SMALLFONT}{BLACK}Pente montante
-STR_1189    :{SMALLFONT}{BLACK}Construire la section d'allée sélectionnée
-STR_1190    :{SMALLFONT}{BLACK}Supprimer la section d'allée précédente
+STR_1189    :{SMALLFONT}{BLACK}Construire la section de chemin sélectionnée
+STR_1190    :{SMALLFONT}{BLACK}Supprimer la section de chemin précédente
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -754,9 +754,9 @@ STR_1368    :Demi tire-bouchon (gauche)
 STR_1369    :Demi tire-bouchon (droite)
 STR_1370    :Tonneau (gauche)
 STR_1371    :Tonneau (droite)
-STR_1372    :Remontée à propulsion
-STR_1373    :Grande demie boucle (gauche)
-STR_1374    :Grande demie boucle (droite)
+STR_1372    :Montée à propulsion
+STR_1373    :Grande demi boucle (gauche)
+STR_1374    :Grande demi boucle (droite)
 STR_1375    :Transfert supérieur
 STR_1376    :Transfert inférieur
 STR_1377    :Inversion à 360° (gauche)
@@ -862,10 +862,10 @@ STR_1476    :{WINDOW_COLOUR_2}Niveau d'intensité : {BLACK}Pas encore disponible
 STR_1477    :{WINDOW_COLOUR_2}Niveau d'intensité : {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Niveau de nausée : {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Niveau de nausée : {BLACK}Pas encore disponible
-STR_1480    :{SMALLFONT}“Je ne peux pas me payer {STRINGID}”
+STR_1480    :{SMALLFONT}“Je ne peux pas payer l'entrée{STRINGID}”
 STR_1481    :{SMALLFONT}“J'ai dépensé tout mon argent”
-STR_1482    :{SMALLFONT}“Je me sens mal”
-STR_1483    :{SMALLFONT}“Je me sens vraiment très mal”
+STR_1482    :{SMALLFONT}“Je suis malade”
+STR_1483    :{SMALLFONT}“Je suis vraiment malade”
 STR_1484    :{SMALLFONT}“Je veux faire quelque chose de plus excitant que {STRINGID}”
 STR_1485    :{SMALLFONT}“{STRINGID} a l'air trop intense pour moi”
 STR_1486    :{SMALLFONT}“Je n'ai pas encore fini mon {STRINGID} ”
@@ -892,10 +892,10 @@ STR_1506    :{SMALLFONT}“Les poubelles ne sont pas vidées ici”
 STR_1507    :{SMALLFONT}“Je trouve pas la sortie du parc”
 STR_1508    :{SMALLFONT}“Je veux descendre de {STRINGID}”
 STR_1509    :{SMALLFONT}“Je veux sortir de {STRINGID}”
-STR_1510    :{SMALLFONT}“Je n'irai pas sur {STRINGID} - C'est trop risqué”
+STR_1510    :{SMALLFONT}“Je n'irai pas sur {STRINGID}, C'est trop risqué”
 STR_1511    :{SMALLFONT}“Cette allée est dégoûtante”
 STR_1512    :{SMALLFONT}“Il y a trop de monde ici”
-STR_1513    :{SMALLFONT}“Il y a beaucoup de vandalisme ici”
+STR_1513    :{SMALLFONT}“Il y a beaucoup trop de vandalisme ici”
 STR_1514    :{SMALLFONT}“Quel beau décor !”
 STR_1515    :{SMALLFONT}“Ce parc est d'une propreté exemplaire”
 STR_1516    :{SMALLFONT}“Les jets d'eau sont super”
@@ -1093,7 +1093,7 @@ STR_1708    :{SMALLFONT}{BLACK}Définir une zone de patrouille pour cet employé
 STR_1709    :Licencier des employés
 STR_1710    :Oui
 STR_1711    :{WINDOW_COLOUR_1}Êtes-vous sûr de vouloir licencier {STRINGID} ?
-STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Balayer les allées
+STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Balayer les chemins
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Arroser les jardins
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Vider les poubelles
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Tondre la pelouse
@@ -1144,7 +1144,7 @@ STR_1762    :Cascades
 STR_1763    :Rapides
 STR_1764    :Rondins de bois
 STR_1765    :Section photo sur le vif
-STR_1766    :Reverser turntable
+STR_1766    :Renverseur
 STR_1767    :Tunnel tournoyant
 STR_1768    :Impossible de modifier le nombre de vrilles...
 STR_1769    :{WINDOW_COLOUR_2}Nombre de vrilles :
@@ -1575,7 +1575,7 @@ STR_2214    :Construction impossible tant que le jeu est en pause !
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
-STR_2218    :{RED}{STRINGID} sur {STRINGID} n'est pas encore revenu à {STRINGID}!{NEWLINE}Vérifiez s'il est coincé ou au point mort
+STR_2218    :{RED}{STRINGID} sur {STRINGID} n'est pas encore revenu à {STRINGID}!{NEWLINE}Vérifiez s'il est coincé ou resté à un point mort
 STR_2219    :{RED}{COMMA16} personnes sont mortes dans un accident sur {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Evaluation du parc : {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Evaluation du parc : {COMMA16}
@@ -1608,8 +1608,8 @@ STR_2247    :décembre
 STR_2248    :Impossible de démolir l'attraction...
 STR_2249    :{BABYBLUE}Nouvelle attraction disponible :{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}Nouveau décor/thème disponible :{NEWLINE}{STRINGID}
-STR_2251    :Ne peut être construit que sur les allées !
-STR_2252    :Ne peut être construit qu'à travers les allées !
+STR_2251    :Ne peut être construit que sur les chemins !
+STR_2252    :Ne peut être construit qu'à travers les chemins !
 STR_2253    :Attractions de transport
 STR_2254    :Attractions tranquilles
 STR_2255    :Montagnes russes
@@ -1826,7 +1826,7 @@ STR_2482    :{SMALLFONT}{BLACK}Bénéfice : {CURRENCY} par semaine, {NEWLINE}Val
 STR_2483    :{WINDOW_COLOUR_2}Bénéfice hebdomadaire : {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Bénéfice hebdomadaire : {RED}{CURRENCY2DP}
 STR_2487    :Afficher le 'vrai' nom des visiteurs
-STR_2488    :{SMALLFONT}{BLACK}Passer du 'vrai' nom des visiteurs à leur numéro
+STR_2488    :{SMALLFONT}{BLACK}Changer entre "vrais noms" et numéros (on=numéros)
 STR_2489    :Raccourcis...
 STR_2490    :Raccourcis clavier
 STR_2491    :Réinitial.
@@ -2094,7 +2094,7 @@ STR_2755    :Réparer vandalisme
 STR_2756    :Nettoyer déchets
 # New strings used in the cheats window previously these were ???
 STR_2763    :???
-STR_2765    :Grand tram
+STR_2765    :Arrivée soud   ine
 STR_2766    :Gagner
 STR_2767    :Bloquer météo
 STR_2768    :Débloquer météo
@@ -2232,9 +2232,9 @@ STR_2905    :{WINDOW_COLOUR_2}Techno Torture :   (Allister Brimble) copyright ©
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams :   (Allister Brimble) copyright © Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor :   (Anon/Allister Brimble) copyright © Chris Sawyer
 STR_2971    :Palette de couleurs principale
-STR_2972    :Palette de couleurs second. 1
-STR_2973    :Palette de couleurs second. 2
-STR_2974    :Palette de couleurs second. 3
+STR_2972    :Palette de couleurs 1
+STR_2973    :Palette de couleurs 2
+STR_2974    :Palette de couleurs 3
 STR_2975    :{SMALLFONT}{BLACK}Choisir la palette de couleurs à modifier ou peindre l'attraction avec
 STR_2976    :{SMALLFONT}{BLACK}Peindre une seule partie de l'attraction avec la palette de couleurs choisie
 STR_2977    :Nom de l'employé
@@ -2554,8 +2554,8 @@ STR_3327    :Positions de départ non définies
 STR_3328    :Impossible de passer à l'étape suivante de l'éditeur...
 STR_3329    :Entrée du parc pas encore construite
 STR_3330    :Le parc doit posséder du terrain
-STR_3331    :Allée depuis l'entrée du parc jusqu'au bord de la carte incomplète ou trop complexe. Une allée doit être simple avec aussi peu d'intersections et de virages que possible
-STR_3332    :L'entrée du parc est dans le mauvais sens ou ne possède pas d'allée conduisant au bord de la carte
+STR_3331    :Chemin depuis l'entrée du parc jusqu'au bord de la carte incomplète ou trop complexe. Une allée doit être simple avec aussi peu d'intersections et de virages que possible
+STR_3332    :L'entrée du parc est dans le mauvais sens ou ne possède pas de chemins conduisant au bord de la carte
 STR_3333    :Exporter objets plug-ins avec parties sauvegardées
 STR_3334    :{SMALLFONT}{BLACK}Choisir si vous souhaitez sauvegarder d'autres données requises pour objets plug-in (données supplémentaires non fournies avec ce produit) dans des fichiers de sauvegarde ou de scénario, afin qu'une personne ne disposant pas des données additionnelles puisse les charger
 STR_3335    :Concepteur de montagnes russes - Choisir type d'attraction et de véhicule
@@ -2658,7 +2658,7 @@ STR_5154    :Affichage matériel
 STR_5155    :Autoriser le test de circuits incomplets
 STR_5156    :{SMALLFONT}{BLACK}Autorise le test de la plupart des attractions même si le circuit est incomplet. Ne s'applique pas aux modes à blocs de voie.
 STR_5158    :Retour au menu
-STR_5159    :Quitter OpenRCT2
+STR_5159    :Quitter
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, année {POP16}{COMMA16}
 STR_5161    :Format de date :
 STR_5162    :Jour/Mois/Année
@@ -2818,7 +2818,7 @@ STR_5315    :Herbe
 STR_5316    :Sable
 STR_5317    :Boue
 STR_5318    :Pierre
-STR_5319    :Martien
+STR_5319    :Granite
 STR_5320    :Damier
 STR_5321    :Touffes d'herbe
 STR_5322    :Glace
