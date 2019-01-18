@@ -87,7 +87,7 @@ extern bool gShowSupportSegmentHeights;
 
 extern const LocationXY16 BannerBoundBoxes[][2];
 
-extern const uint8_t byte_98D800[4];
+extern const uint8_t PathSlopeToLandSlope[4];
 
 void paint_util_push_tunnel_left(paint_session* session, uint16_t height, uint8_t type);
 void paint_util_push_tunnel_right(paint_session* session, uint16_t height, uint8_t type);

@@ -951,7 +951,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8_t v
 
         if (peep->GetNextIsSloped())
         {
-            if (tileElement->AsSurface()->GetSlope() != byte_98D800[peep->GetNextDirection()])
+            if (tileElement->AsSurface()->GetSlope() != PathSlopeToLandSlope[peep->GetNextDirection()])
                 return 0xFF;
         }
         else if (tileElement->AsSurface()->GetSlope() != TILE_ELEMENT_SLOPE_FLAT)
