@@ -83,6 +83,7 @@ public:
               std::vector<std::string>{
                   env.GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::OBJECT),
                   env.GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
+                  env.GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT),
               })
         , _objectRepository(objectRepository)
     {
