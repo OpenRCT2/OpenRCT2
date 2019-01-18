@@ -149,10 +149,30 @@ struct TileCoordsXYZ
     int32_t x = 0, y = 0, z = 0;
 };
 
+/**
+ * Cardinal directions are represented by the Direction type. It has four
+ * possible values:
+ * 0 is X-decreasing
+ * 1 is Y-increasing
+ * 2 is X-increasing
+ * 3 is Y-decreasing
+ * Direction is not used to model up/down, or diagonal directions.
+ */
+typedef uint8_t Direction;
+
+/**
+ * Given a direction, return the direction that points the other way,
+ * on the same axis.
+ */
+constexpr Direction direction_reverse(Direction dir)
+{
+    return dir ^ 2;
+}
+
 struct CoordsXYZD
 {
     int32_t x, y, z;
-    uint8_t direction;
+    Direction direction;
 
     bool isNull() const
     {
@@ -163,7 +183,7 @@ struct CoordsXYZD
 struct TileCoordsXYZD
 {
     int32_t x, y, z;
-    uint8_t direction;
+    Direction direction;
 
     bool isNull() const
     {

@@ -604,7 +604,7 @@ static void track_design_mirror_ride(rct_track_td6* td6)
         entrance->y = -entrance->y;
         if (entrance->direction & 1)
         {
-            entrance->direction ^= (1 << 1);
+            entrance->direction = direction_reverse(entrance->direction);
         }
     }
 }
@@ -629,7 +629,7 @@ static void track_design_mirror_maze(rct_track_td6* td6)
         {
             if (maze->direction & 1)
             {
-                maze->direction ^= (1 << 1);
+                maze->direction = direction_reverse(maze->direction);
             }
             continue;
         }

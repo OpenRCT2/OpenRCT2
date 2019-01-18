@@ -1293,7 +1293,7 @@ static void window_map_set_peep_spawn_tool_update(int32_t x, int32_t y)
     gMapSelectPositionA.y = mapY;
     gMapSelectPositionB.x = mapX;
     gMapSelectPositionB.y = mapY;
-    gMapSelectArrowDirection = direction ^ 2;
+    gMapSelectArrowDirection = direction_reverse(direction);
     gMapSelectArrowPosition.x = mapX;
     gMapSelectArrowPosition.y = mapY;
     gMapSelectArrowPosition.z = mapZ;

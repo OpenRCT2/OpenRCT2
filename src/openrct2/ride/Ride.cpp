@@ -676,7 +676,7 @@ bool track_block_get_previous_from_zero(
     Ride* ride = get_ride(rideIndex);
 
     uint8_t directionStart = direction;
-    direction ^= (1 << 1);
+    direction = direction_reverse(direction);
 
     if (!(direction & (1 << 2)))
     {
@@ -690,7 +690,7 @@ bool track_block_get_previous_from_zero(
         outTrackBeginEnd->end_x = x;
         outTrackBeginEnd->end_y = y;
         outTrackBeginEnd->begin_element = nullptr;
-        outTrackBeginEnd->begin_direction = directionStart ^ (1 << 1);
+        outTrackBeginEnd->begin_direction = direction_reverse(directionStart);
         return 0;
     }
 
@@ -752,7 +752,7 @@ bool track_block_get_previous_from_zero(
             - nextTrackBlock->z;
 
         outTrackBeginEnd->begin_direction = nextRotation;
-        outTrackBeginEnd->end_direction = directionStart ^ (1 << 1);
+        outTrackBeginEnd->end_direction = direction_reverse(directionStart);
         return 1;
     } while (!(tileElement++)->IsLastForTile());
 
@@ -760,7 +760,7 @@ bool track_block_get_previous_from_zero(
     outTrackBeginEnd->end_y = y;
     outTrackBeginEnd->begin_z = z;
     outTrackBeginEnd->begin_element = nullptr;
-    outTrackBeginEnd->end_direction = directionStart ^ (1 << 1);
+    outTrackBeginEnd->end_direction = direction_reverse(directionStart);
     return 0;
 }
 
@@ -1191,7 +1191,7 @@ void ride_remove_peeps(Ride* ride)
             exitZ = (exitZ * 8) + 2;
 
             // Reverse direction
-            exitDirection ^= 2;
+            exitDirection = direction_reverse(exitDirection);
 
             exitDirection *= 8;
         }
@@ -1675,7 +1675,7 @@ void ride_construction_set_default_next_piece()
             x = _currentTrackBeginX;
             y = _currentTrackBeginY;
             z = _currentTrackBeginZ;
-            direction = _currentTrackPieceDirection ^ 2;
+            direction = direction_reverse(_currentTrackPieceDirection);
             if (!track_block_get_next_from_zero(x, y, z, rideIndex, direction, &xyElement, &z, &direction, false))
             {
                 ride_construction_reset_current_piece();
@@ -3539,7 +3539,7 @@ static void ride_shop_connected(Ride* ride)
         entrance_directions >>= 1;
 
         // Flip direction north<->south, east<->west
-        uint8_t face_direction = count ^ 2;
+        uint8_t face_direction = direction_reverse(count);
 
         int32_t y2 = y - CoordsDirectionDelta[face_direction].y;
         int32_t x2 = x - CoordsDirectionDelta[face_direction].x;
@@ -4420,7 +4420,7 @@ static void sub_6B5952(ride_id_t rideIndex)
                 continue;
 
             int32_t direction = tileElement->GetDirection();
-            footpath_chain_ride_queue(rideIndex, i, x, y, tileElement, direction ^ 2);
+            footpath_chain_ride_queue(rideIndex, i, x, y, tileElement, direction_reverse(direction));
         } while (!(tileElement++)->IsLastForTile());
     }
 }
@@ -6297,7 +6297,7 @@ void game_command_callback_ride_construct_placed_back(
     int32_t trackDirection, x, y, z;
     track_begin_end trackBeginEnd;
 
-    trackDirection = _currentTrackPieceDirection ^ 2;
+    trackDirection = direction_reverse(_currentTrackPieceDirection);
     x = _currentTrackBeginX;
     y = _currentTrackBeginY;
     z = _currentTrackBeginZ;
@@ -7192,8 +7192,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(
                         continue;
                     if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
                     {
-                        gRideEntranceExitPlaceDirection = direction ^ 2;
-                        *outDirection = direction ^ 2;
+                        gRideEntranceExitPlaceDirection = direction_reverse(direction);
+                        *outDirection = direction_reverse(direction);
                         return;
                     }
                     if (tileElement->AsTrack()->GetStationIndex() != gRideEntranceExitPlaceStationIndex)
@@ -7204,8 +7204,8 @@ void ride_get_entrance_or_exit_position_from_screen_position(
                                                        [tileElement->AsTrack()->GetSequenceIndex()]
                         & (1 << eax))
                     {
-                        gRideEntranceExitPlaceDirection = direction ^ 2;
-                        *outDirection = direction ^ 2;
+                        gRideEntranceExitPlaceDirection = direction_reverse(direction);
+                        *outDirection = direction_reverse(direction);
                         return;
                     }
                 } while (!(tileElement++)->IsLastForTile());
@@ -7276,7 +7276,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(
         }
 
         direction = loc_6CD18E(*outX, *outY, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32, entranceMaxY + 32);
-        if (direction != -1 && direction != stationDirection && direction != (stationDirection ^ 2))
+        if (direction != -1 && direction != stationDirection && direction != direction_reverse(stationDirection))
         {
             gRideEntranceExitPlaceDirection = direction;
             *outDirection = direction;
@@ -7319,7 +7319,7 @@ bool ride_select_forwards_from_back()
     x = _currentTrackBeginX;
     y = _currentTrackBeginY;
     z = _currentTrackBeginZ;
-    direction = _currentTrackPieceDirection ^ 2;
+    direction = direction_reverse(_currentTrackPieceDirection);
     CoordsXYE next_track;
 
     if (track_block_get_next_from_zero(x, y, z, _currentRideIndex, direction, &next_track, &z, &direction, false))
@@ -8511,7 +8511,7 @@ bool ride_has_adjacent_station(Ride* ride)
             if (found)
                 break;
             /* Check the other side of the station */
-            direction ^= 2;
+            direction = direction_reverse(direction);
             found = check_for_adjacent_station(stationX, stationY, stationZ, direction);
             if (found)
                 break;

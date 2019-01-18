@@ -180,7 +180,7 @@ static void loc_6A6620(int32_t flags, int32_t x, int32_t y, TileElement* tileEle
     {
         int32_t direction = tileElement->AsPath()->GetSlopeDirection();
         int32_t z = tileElement->base_height;
-        wall_remove_intersecting_walls(x, y, z, z + 6, direction ^ 2);
+        wall_remove_intersecting_walls(x, y, z, z + 6, direction_reverse(direction));
         wall_remove_intersecting_walls(x, y, z, z + 6, direction);
         // Removing walls may have made the pointer invalid, so find it again
         tileElement = map_get_footpath_element(x / 32, y / 32, z);
@@ -494,7 +494,7 @@ static money32 footpath_place_real(
             direction = direction & 0xF;
             // It is possible, let's remove walls between the old and new piece of path
             wall_remove_intersecting_walls(
-                x, y, z, z + 4 + ((slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 2 : 0), direction ^ 2);
+                x, y, z, z + 4 + ((slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 2 : 0), direction_reverse(direction));
             wall_remove_intersecting_walls(
                 x - CoordsDirectionDelta[direction].x, y - CoordsDirectionDelta[direction].y, z, z + 4, direction);
         }
@@ -1124,14 +1124,14 @@ static void footpath_connect_corners(int32_t initialX, int32_t initialY, TileEle
 
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
-        tileElement[1] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)));
+        tileElement[1] = footpath_connect_corners_get_neighbour(x, y, z, (1 << direction_reverse(direction)));
         if (tileElement[1] == nullptr)
             continue;
 
         direction = (direction + 1) & 3;
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
-        tileElement[2] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)));
+        tileElement[2] = footpath_connect_corners_get_neighbour(x, y, z, (1 << direction_reverse(direction)));
         if (tileElement[2] == nullptr)
             continue;
 
@@ -1139,7 +1139,7 @@ static void footpath_connect_corners(int32_t initialX, int32_t initialY, TileEle
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
         // First check link to previous tile
-        tileElement[3] = footpath_connect_corners_get_neighbour(x, y, z, (1 << (direction ^ 2)));
+        tileElement[3] = footpath_connect_corners_get_neighbour(x, y, z, (1 << direction_reverse(direction)));
         if (tileElement[3] == nullptr)
             continue;
         // Second check link to initial tile
@@ -1272,7 +1272,7 @@ static TileElement* footpath_get_element(int32_t x, int32_t y, int32_t z0, int32
             if (!tileElement->AsPath()->IsSloped())
                 break;
 
-            slope = tileElement->AsPath()->GetSlopeDirection() ^ 2;
+            slope = direction_reverse(tileElement->AsPath()->GetSlopeDirection());
             if (slope != direction)
                 break;
 
@@ -1384,7 +1384,8 @@ static void loc_6A6D7E(
                     }
                     if (z - 2 == tileElement->base_height)
                     {
-                        if (!tileElement->AsPath()->IsSloped() || tileElement->AsPath()->GetSlopeDirection() != (direction ^ 2))
+                        if (!tileElement->AsPath()->IsSloped()
+                            || tileElement->AsPath()->GetSlopeDirection() != direction_reverse(direction))
                         {
                             return;
                         }
@@ -1406,7 +1407,8 @@ static void loc_6A6D7E(
                         {
                             return;
                         }
-                        uint16_t dx = ((direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK) ^ 2;
+                        uint16_t dx = direction_reverse(
+                            (direction - tileElement->GetDirection()) & TILE_ELEMENT_DIRECTION_MASK);
                         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx)))
                         {
                             return;
@@ -1421,7 +1423,7 @@ static void loc_6A6D7E(
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                     if (z == tileElement->base_height)
                     {
-                        if (entrance_has_direction(tileElement, (direction - tileElement->GetDirection()) ^ 2))
+                        if (entrance_has_direction(tileElement, direction_reverse(direction - tileElement->GetDirection())))
                         {
                             if (query)
                             {
@@ -1447,7 +1449,7 @@ static void loc_6A6D7E(
     loc_6A6F1F:
         if (query)
         {
-            if (fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction ^ 2))
+            if (fence_in_the_way(x, y, tileElement->base_height, tileElement->clearance_height, direction_reverse(direction)))
             {
                 return;
             }
@@ -1480,7 +1482,7 @@ static void loc_6A6D7E(
         else
         {
             footpath_disconnect_queue_from_path(x, y, tileElement, 1 + ((flags >> 6) & 1));
-            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << (direction ^ 2)));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction_reverse(direction)));
             if (tileElement->AsPath()->IsQueue())
             {
                 footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
@@ -1672,7 +1674,7 @@ void footpath_chain_ride_queue(
                 if (!tileElement->AsPath()->IsSloped())
                     break;
 
-                if ((tileElement->AsPath()->GetSlopeDirection() ^ 2) != direction)
+                if (direction_reverse(tileElement->AsPath()->GetSlopeDirection()) != direction)
                     break;
 
                 z -= 2;
@@ -1690,7 +1692,7 @@ void footpath_chain_ride_queue(
             int32_t numEdges = bitcount(edges);
             if (numEdges >= 2)
             {
-                int32_t requiredEdgeMask = 1 << (direction ^ 2);
+                int32_t requiredEdgeMask = 1 << direction_reverse(direction);
                 if (!(edges & requiredEdgeMask))
                 {
                     break;
@@ -1698,7 +1700,7 @@ void footpath_chain_ride_queue(
             }
 
             tileElement->AsPath()->SetHasQueueBanner(false);
-            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << (direction ^ 2)));
+            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction_reverse(direction)));
             tileElement->AsPath()->SetRideIndex(rideIndex);
             tileElement->AsPath()->SetStationIndex(entranceIndex);
 
@@ -1716,7 +1718,7 @@ void footpath_chain_ride_queue(
             if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 continue;
 
-            direction ^= 2;
+            direction = direction_reverse(direction);
             if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 continue;
         }
@@ -1871,7 +1873,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
 
         if (tileElement->AsPath()->IsSloped() && (slopeDirection = tileElement->AsPath()->GetSlopeDirection()) != direction)
         {
-            if ((slopeDirection ^ 2) != direction)
+            if (direction_reverse(slopeDirection) != direction)
                 continue;
             if (tileElement->base_height + 2 != z)
                 continue;
@@ -1894,7 +1896,7 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
             footpath_fix_ownership(x, y);
         }
         edges = tileElement->AsPath()->GetEdges();
-        direction ^= 2;
+        direction = direction_reverse(direction);
         if (!(flags & (1 << 7)))
         {
             if (tileElement[1].GetType() == TILE_ELEMENT_TYPE_BANNER)
@@ -2427,7 +2429,7 @@ static void footpath_remove_edges_towards_here(
         footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
     }
 
-    int32_t d = direction ^ 2;
+    int32_t d = direction_reverse(direction);
     tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() & ~(1 << d));
     int32_t cd = ((d - 1) & 3);
     tileElement->AsPath()->SetCorners(tileElement->AsPath()->GetCorners() & ~(1 << cd));
@@ -2494,7 +2496,7 @@ static void footpath_remove_edges_towards(int32_t x, int32_t y, int32_t z0, int3
             if (!tileElement->AsPath()->IsSloped())
                 break;
 
-            uint8_t slope = tileElement->AsPath()->GetSlopeDirection() ^ 2;
+            uint8_t slope = direction_reverse(tileElement->AsPath()->GetSlopeDirection());
             if (slope != direction)
                 break;
 
@@ -2523,7 +2525,7 @@ bool tile_element_wants_path_connection_towards(TileCoordsXYZD coords, const Til
                     if (!tileElement->AsPath()->IsSloped())
                         // The footpath is flat, it can be connected to from any direction
                         return true;
-                    else if (tileElement->AsPath()->GetSlopeDirection() == (coords.direction ^ 2))
+                    else if (tileElement->AsPath()->GetSlopeDirection() == direction_reverse(coords.direction))
                         // The footpath is sloped and its lowest point matches the edge connection
                         return true;
                 }

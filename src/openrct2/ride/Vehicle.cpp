@@ -2872,7 +2872,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle* vehicle)
     y = location.y * 32;
 
     // Other search direction.
-    direction = (direction ^ 2) & 3;
+    direction = direction_reverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
@@ -7518,7 +7518,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle* vehicle)
     int32_t y = vehicle->track_y;
     int32_t z = (vehicle->track_z - trackBlock->z + trackCoordinates->z_begin) >> 3;
     int32_t direction = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
-    direction ^= 2;
+    direction = direction_reverse(direction);
 
     TileElement* tileElement = map_get_wall_element_at(x, y, z, direction);
     if (tileElement == nullptr)

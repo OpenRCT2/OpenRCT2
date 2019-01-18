@@ -499,7 +499,7 @@ namespace Editor
             int32_t x = parkEntrance.x;
             int32_t y = parkEntrance.y;
             int32_t z = parkEntrance.z / 8;
-            int32_t direction = parkEntrance.direction ^ 2;
+            int32_t direction = direction_reverse(parkEntrance.direction);
 
             switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0))
             {

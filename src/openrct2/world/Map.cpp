@@ -626,7 +626,7 @@ bool map_coord_is_connected(int32_t x, int32_t y, int32_t z, uint8_t faceDirecti
                 if (z == tileElement->base_height + 2)
                     return true;
             }
-            else if ((slopeDirection ^ 2) == faceDirection && z == tileElement->base_height)
+            else if (direction_reverse(slopeDirection) == faceDirection && z == tileElement->base_height)
             {
                 return true;
             }

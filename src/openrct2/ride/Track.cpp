@@ -1331,7 +1331,7 @@ static money32 track_place(
                         int32_t temp_direction = (direction + dl) & 3;
                         temp_x += CoordsDirectionDelta[temp_direction].x;
                         temp_y += CoordsDirectionDelta[temp_direction].y;
-                        temp_direction ^= (1 << 1);
+                        temp_direction = direction_reverse(temp_direction);
                         wall_remove_intersecting_walls(temp_x, temp_y, baseZ, clearanceZ, temp_direction & 3);
                     }
                 }

@@ -2413,7 +2413,7 @@ static bool peep_update_queue_position(rct_peep* peep, uint8_t previous_action)
  */
 static void peep_return_to_centre_of_tile(rct_peep* peep)
 {
-    peep->direction ^= (1 << 1);
+    peep->direction = direction_reverse(peep->direction);
     peep->destination_x = (peep->x & 0xFFE0) + 16;
     peep->destination_y = (peep->y & 0xFFE0) + 16;
     peep->destination_tolerance = 5;
@@ -2544,7 +2544,7 @@ static void peep_interact_with_entrance(
         uint8_t entranceDirection = tile_element->GetDirection();
         if (entranceDirection != peep->direction)
         {
-            if ((entranceDirection ^ (1 << 1)) != peep->direction)
+            if (direction_reverse(entranceDirection) != peep->direction)
             {
                 peep_return_to_centre_of_tile(peep);
                 return;
@@ -2642,7 +2642,7 @@ static void peep_interact_with_entrance(
                         break;
                     }
 
-                    if ((slopeDirection ^ (1 << 1)) != entranceDirection)
+                    if (direction_reverse(slopeDirection) != entranceDirection)
                         continue;
 
                     if (z - 2 != nextTileElement->base_height)
@@ -2926,7 +2926,7 @@ static void peep_interact_with_path(rct_peep* peep, int16_t x, int16_t y, TileEl
 
         if ((tile_element->AsPath()->HasQueueBanner())
             && (tile_element->AsPath()->GetQueueBannerDirection()
-                == ((peep->direction) ^ 2)) // Ride sign is facing the direction the peep is walking
+                == direction_reverse(peep->direction)) // Ride sign is facing the direction the peep is walking
         )
         {
             /* Peep is approaching the entrance of a ride queue.
@@ -3099,7 +3099,7 @@ bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, i
         }
         else
         {
-            slopeDirection ^= 2;
+            slopeDirection = direction_reverse(slopeDirection);
             if (slopeDirection != currentDirection)
                 return false;
             if (currentZ != tileElement->base_height + 2)

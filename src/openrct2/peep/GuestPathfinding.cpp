@@ -144,7 +144,7 @@ static int32_t guest_surface_path_finding(rct_peep* peep)
     {
         x += CoordsDirectionDelta[randDirection].x;
         y += CoordsDirectionDelta[randDirection].y;
-        uint8_t backwardsDirection = randDirection ^ (1 << 1);
+        uint8_t backwardsDirection = direction_reverse(randDirection);
 
         if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
         {
@@ -169,7 +169,7 @@ static int32_t guest_surface_path_finding(rct_peep* peep)
     {
         x += CoordsDirectionDelta[randDirection].x;
         y += CoordsDirectionDelta[randDirection].y;
-        uint8_t backwardsDirection = randDirection ^ (1 << 1);
+        uint8_t backwardsDirection = direction_reverse(randDirection);
 
         if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
         {
@@ -189,7 +189,7 @@ static int32_t guest_surface_path_finding(rct_peep* peep)
     {
         x += CoordsDirectionDelta[randDirection].x;
         y += CoordsDirectionDelta[randDirection].y;
-        uint8_t backwardsDirection = randDirection ^ (1 << 1);
+        uint8_t backwardsDirection = direction_reverse(randDirection);
 
         if (!fence_in_the_way(x, y, z, z + 4, backwardsDirection))
         {
@@ -342,7 +342,7 @@ static uint8_t footpath_element_dest_in_dir(
                     return PATH_SEARCH_WIDE;
 
                 uint8_t edges = path_get_permitted_edges(tileElement);
-                edges &= ~(1 << (chosenDirection ^ 2));
+                edges &= ~(1 << direction_reverse(chosenDirection));
                 loc.z = tileElement->base_height;
 
                 for (direction = 0; direction < 4; direction++)
@@ -1489,13 +1489,13 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
                 peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
                 /* Also remove the edge through which the peep
                  * entered the junction from those left to try. */
-                peep->pathfind_history[i].direction &= ~(1 << (peep->direction ^ 2));
+                peep->pathfind_history[i].direction &= ~(1 << direction_reverse(peep->direction));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (gPathFindDebug)
                 {
                     log_verbose(
                         "Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i,
-                        loc.x, loc.y, loc.z, peep->direction ^ 2, chosen_edge);
+                        loc.x, loc.y, loc.z, direction_reverse(peep->direction), chosen_edge);
                 }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 return chosen_edge;
@@ -1514,13 +1514,13 @@ int32_t peep_pathfind_choose_direction(TileCoordsXYZ loc, rct_peep* peep)
         peep->pathfind_history[i].direction &= ~(1 << chosen_edge);
         /* Also remove the edge through which the peep
          * entered the junction from those left to try. */
-        peep->pathfind_history[i].direction &= ~(1 << (peep->direction ^ 2));
+        peep->pathfind_history[i].direction &= ~(1 << direction_reverse(peep->direction));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
         {
             log_verbose(
                 "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x, loc.y,
-                loc.z, peep->direction ^ 2, chosen_edge);
+                loc.z, direction_reverse(peep->direction), chosen_edge);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
@@ -1788,7 +1788,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
                 if (!tileElement->AsPath()->IsSloped())
                     break;
 
-                if (tileElement->AsPath()->GetSlopeDirection() != (direction ^ 2))
+                if (tileElement->AsPath()->GetSlopeDirection() != direction_reverse(direction))
                     break;
 
                 baseZ -= 2;
@@ -1803,7 +1803,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         if (!tileElement->AsPath()->IsQueue())
             break;
 
-        if (!(tileElement->AsPath()->GetEdges() & (1 << (direction ^ (1 << 1)))))
+        if (!(tileElement->AsPath()->GetEdges() & (1 << direction_reverse(direction))))
             break;
 
         if (firstPathElement == nullptr)
@@ -1819,7 +1819,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
         if (tileElement->AsPath()->GetEdges() & (1 << (direction)))
             continue;
 
-        direction ^= (1 << 1);
+        direction = direction_reverse(direction);
         // More queue to go.
         if (tileElement->AsPath()->GetEdges() & (1 << (direction)))
             continue;
@@ -1901,7 +1901,7 @@ int32_t guest_path_finding(rct_peep* peep)
             edges = adjustedEdges;
     }
 
-    int8_t direction = peep->direction ^ (1 << 1);
+    int8_t direction = direction_reverse(peep->direction);
     // Check if in a dead end (i.e. only edge is where the peep came from)
     if (!(edges & ~(1 << direction)))
     {

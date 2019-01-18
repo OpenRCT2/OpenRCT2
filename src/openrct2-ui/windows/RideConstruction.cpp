@@ -1714,7 +1714,7 @@ static void window_ride_construction_construct(rct_window* w)
     // game_command_callback_ride_construct_placed_front/back Please update both ends if there are any changes here
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
-        trackDirection = _currentTrackPieceDirection ^ 2;
+        trackDirection = direction_reverse(_currentTrackPieceDirection);
         x = _currentTrackBeginX;
         y = _currentTrackBeginY;
         z = _currentTrackBeginZ;
@@ -2571,7 +2571,7 @@ void sub_6C94D8()
             if (direction >= 4)
                 direction += 4;
             if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
-                direction ^= 2;
+                direction = direction_reverse(direction);
             gMapSelectArrowDirection = direction;
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
@@ -3611,7 +3611,8 @@ void ride_construction_toolupdate_construct(int32_t screenX, int32_t screenY)
                 pathsByDir[i] = map_get_footpath_element((x >> 5) + DirOffsets[i].x, (y >> 5) + DirOffsets[i].y, (z >> 3) - 2);
 
                 if (pathsByDir[i]
-                    && (!(pathsByDir[i])->AsPath()->IsSloped() || (pathsByDir[i])->AsPath()->GetSlopeDirection() != (i ^ 2)))
+                    && (!(pathsByDir[i])->AsPath()->IsSloped()
+                        || (pathsByDir[i])->AsPath()->GetSlopeDirection() != direction_reverse(i)))
                 {
                     pathsByDir[i] = nullptr;
                 }
@@ -3678,13 +3679,13 @@ void ride_construction_toolupdate_entrance_exit(int32_t screenX, int32_t screenY
     gMapSelectPositionA.y = y;
     gMapSelectPositionB.x = x;
     gMapSelectPositionB.y = y;
-    gMapSelectArrowDirection = direction ^ 2;
+    gMapSelectArrowDirection = direction_reverse(direction);
     gMapSelectArrowPosition.x = x;
     gMapSelectArrowPosition.y = y;
     gMapSelectArrowPosition.z = _unkF44188.z * 8;
     map_invalidate_selection_rect();
 
-    direction = gRideEntranceExitPlaceDirection ^ 2;
+    direction = direction_reverse(gRideEntranceExitPlaceDirection);
     stationNum = gRideEntranceExitPlaceStationIndex;
     if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ENTRANCE_OR_EXIT) || x != gRideEntranceExitGhostPosition.x
         || y != gRideEntranceExitGhostPosition.y || direction != gRideEntranceExitGhostPosition.direction
@@ -3933,7 +3934,7 @@ static void ride_construction_tooldown_entrance_exit(int32_t screenX, int32_t sc
 
     game_command_callback = game_command_callback_place_ride_entrance_or_exit;
     game_do_command(
-        _unkF44188.x, (GAME_COMMAND_FLAG_APPLY) | ((gRideEntranceExitPlaceDirection ^ 2) << 8), _unkF44188.y,
+        _unkF44188.x, (GAME_COMMAND_FLAG_APPLY) | (direction_reverse(gRideEntranceExitPlaceDirection) << 8), _unkF44188.y,
         gRideEntranceExitPlaceRideIndex | (gRideEntranceExitPlaceType << 8), GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT,
         gRideEntranceExitPlaceStationIndex, 0);
 }

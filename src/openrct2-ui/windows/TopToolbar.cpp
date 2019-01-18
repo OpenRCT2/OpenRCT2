@@ -1615,7 +1615,7 @@ static void sub_6E1F34(
 
             if (tile_element->AsPath()->IsSloped())
             {
-                if (rotation != ((tile_element->AsPath()->GetSlopeDirection()) ^ 2))
+                if (rotation != direction_reverse(tile_element->AsPath()->GetSlopeDirection()))
                 {
                     z += 2;
                 }
