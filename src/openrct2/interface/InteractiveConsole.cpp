@@ -218,7 +218,7 @@ static int32_t cc_rides(InteractiveConsole& console, const utf8** argv, int32_t 
                     else
                     {
                         ride->mode = mode;
-                        invalidate_test_results(ride_index);
+                        invalidate_test_results(ride);
                     }
                 }
             }

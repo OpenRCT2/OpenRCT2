@@ -131,6 +131,7 @@ public:
             return std::move(res);
         }
 
+        ride->id = rideIndex;
         ride->type = _rideType;
         ride->subtype = rideEntryIndex;
         ride_set_colour_preset(ride, _colour1);

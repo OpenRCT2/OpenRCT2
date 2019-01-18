@@ -1382,7 +1382,7 @@ static money32 track_place(
         if (!(flags & GAME_COMMAND_FLAG_APPLY))
             continue;
 
-        invalidate_test_results(rideIndex);
+        invalidate_test_results(ride);
         switch (type)
         {
             case TRACK_ELEM_ON_RIDE_PHOTO:
@@ -1510,7 +1510,7 @@ static money32 track_place(
                 track_add_station_element(x, y, baseZ, direction, rideIndex, GAME_COMMAND_FLAG_APPLY);
             }
             sub_6CB945(rideIndex);
-            ride_update_max_vehicles(rideIndex);
+            ride_update_max_vehicles(ride);
         }
 
         if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
@@ -1787,7 +1787,7 @@ static money32 track_remove(
             surfaceElement->AsSurface()->SetHasTrackThatNeedsWater(false);
         }
 
-        invalidate_test_results(rideIndex);
+        invalidate_test_results(ride);
         footpath_queue_chain_reset();
         if (!gCheatsDisableClearanceChecks || !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
         {
@@ -1797,7 +1797,7 @@ static money32 track_remove(
         if (!(flags & GAME_COMMAND_FLAG_GHOST))
         {
             sub_6CB945(rideIndex);
-            ride_update_max_vehicles(rideIndex);
+            ride_update_max_vehicles(ride);
         }
     }
 

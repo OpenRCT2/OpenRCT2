@@ -168,8 +168,8 @@ static money32 RideEntranceExitPlace(
             return MONEY32_UNDEFINED;
         }
 
-        ride_clear_for_construction(rideIndex);
-        ride_remove_peeps(rideIndex);
+        ride_clear_for_construction(ride);
+        ride_remove_peeps(ride);
 
         bool requiresRemove = false;
         LocationXY16 removeCoord = { 0, 0 };
@@ -345,9 +345,9 @@ static money32 RideEntranceExitRemove(int16_t x, int16_t y, ride_id_t rideIndex,
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        ride_clear_for_construction(rideIndex);
-        ride_remove_peeps(rideIndex);
-        invalidate_test_results(rideIndex);
+        ride_clear_for_construction(ride);
+        ride_remove_peeps(ride);
+        invalidate_test_results(ride);
 
         bool found = false;
         TileElement* tileElement = map_get_first_element_at(x / 32, y / 32);

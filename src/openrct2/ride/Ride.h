@@ -163,6 +163,7 @@ struct RideStation
  */
 struct Ride
 {
+    ride_id_t id;
     uint8_t type;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
@@ -1019,8 +1020,8 @@ int32_t ride_find_track_gap(ride_id_t rideIndex, CoordsXYE* input, CoordsXYE* ou
 void ride_construct_new(ride_list_item listItem);
 void ride_construct(ride_id_t rideIndex);
 int32_t ride_modify(CoordsXYE* input);
-void ride_remove_peeps(ride_id_t rideIndex);
-void ride_clear_blocked_tiles(ride_id_t rideIndex);
+void ride_remove_peeps(Ride* ride);
+void ride_clear_blocked_tiles(Ride* ride);
 void ride_get_status(ride_id_t rideIndex, rct_string_id* formatSecondary, int32_t* argument);
 rct_peep* ride_get_assigned_mechanic(Ride* ride);
 int32_t ride_get_total_length(Ride* ride);
@@ -1084,13 +1085,13 @@ money32 ride_create_command(int32_t type, int32_t subType, int32_t flags, ride_i
 void ride_set_name_to_default(Ride* ride, rct_ride_entry* rideEntry);
 
 void ride_set_name_to_track_default(Ride* ride, rct_ride_entry* rideEntry);
-void ride_clear_for_construction(ride_id_t rideIndex);
+void ride_clear_for_construction(Ride* ride);
 void ride_entrance_exit_place_provisional_ghost();
 void ride_entrance_exit_remove_ghost();
 void ride_restore_provisional_track_piece();
 void ride_remove_provisional_track_piece();
 void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int32_t num_images);
-void invalidate_test_results(ride_id_t rideIndex);
+void invalidate_test_results(Ride* ride);
 
 void ride_select_next_section();
 void ride_select_previous_section();
@@ -1144,11 +1145,11 @@ bool ride_select_forwards_from_back();
 money32 ride_remove_track_piece(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type, uint8_t flags);
 
 bool ride_are_all_possible_entrances_and_exits_built(Ride* ride);
-void ride_fix_breakdown(ride_id_t rideIndex, int32_t reliabilityIncreaseFactor);
+void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
 
 void ride_entry_get_train_layout(int32_t rideEntryIndex, int32_t numCarsPerTrain, uint8_t* trainLayout);
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
-void ride_update_max_vehicles(ride_id_t rideIndex);
+void ride_update_max_vehicles(Ride* ride);
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 
 void ride_set_ride_entry(ride_id_t rideIndex, int32_t rideEntry);

@@ -1774,7 +1774,7 @@ static void window_ride_set_page(rct_window* w, int32_t page)
     w->var_492 = 0;
 
     // There doesn't seem to be any need for this call, and it can sometimes modify the reported number of cars per train, so
-    // I've removed it if (page == WINDOW_RIDE_PAGE_VEHICLE) { ride_update_max_vehicles(w->number);
+    // I've removed it if (page == WINDOW_RIDE_PAGE_VEHICLE) { ride_update_max_vehicles(ride);
     //}
 
     if (w->viewport != nullptr)
